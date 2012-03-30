@@ -1,0 +1,11 @@
+[
+  {
+    "settings": [ "master" ],
+    "specs": { 
+      "frame": {
+        "type": "QueryMojit"
+      }
+    }
+  }
+]
+

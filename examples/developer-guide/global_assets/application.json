@@ -1,0 +1,26 @@
+[
+  {
+    "settings": [ "master" ],
+    "specs": {
+        "ohhai": {
+            "type": "HTMLFrameMojit",
+            "config": {
+                "deploy": true,
+                "title": "global assets",
+                "child": {
+                    "type": "OhHai"
+                },
+                "assets": {
+                    "top": {
+                        "css": [
+                            "/static/global_assets/assets/ohhai.css"
+                        ]
+                    }
+                }
+            }
+        }
+    },
+    "staticHandling": {
+      "appName": "global_assets"
+    }
+}]

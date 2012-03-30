@@ -1,0 +1,16 @@
+[
+  {
+    "settings": [ "master" ],
+    "specs": {
+      "frame" : {
+        "type" : "HTMLFrameMojit",
+        "config": {
+	  "title": "HTMLFrameMojit Example",
+          "child" : {
+            "type" : "framed" 
+          }
+        }
+      }
+    }
+  }
+]

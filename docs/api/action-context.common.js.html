@@ -1,0 +1,426 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>API: MojitoClient   action-context.common.js  (YUI Library)</title>
+
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css?stamp=1327685402.48" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css?stamp=1327685402.48" />
+
+    <script type="text/javascript" src="assets/api-js?stamp=1327685402.48"></script>
+    <script type="text/javascript" src="assets/ac-js?stamp=1327685402.48"></script>
+</head>
+
+<body id="yahoo-com">
+
+<div id="doc3" class="yui-t2">
+	<div id="hd">
+        <h1><a href="http://developer.yahoo.com/yui/" title="mojito">mojito</a></h1>
+        <h3>MojitoClient&nbsp; <span class="subtitle">0.1.0</span></h3>
+        <a href="./index.html" title="mojito">mojito</a> 
+            &gt; <a href="./module_MojitoClient.html" title="MojitoClient">MojitoClient</a>
+                
+                 &gt; action-context.common.js (source view) 
+        <form onsubmit="return false">
+            <div id="propertysearch">
+                Search: <input autocomplete="off" id="searchinput" />
+                <div id="searchresults">
+                    &nbsp;
+                </div>
+            </div>
+        </form>
+	</div>
+
+	<div id="bd">
+		<div id="yui-main">
+			<div class="yui-b">
+            <form action="#" name="yui-classopts-form" method="get" id="yui-classopts-form">
+                <fieldset>
+                    <legend>Filters</legend>
+                <span class="classopts"><input type="checkbox" name="show_private" id="show_private" /> <label for="show_private">Show Private</label></span>
+                <span class="classopts"><input type="checkbox" name="show_protected" id="show_protected" /> <label for="show_protected">Show Protected</label></span>
+                <span class="classopts"><input type="checkbox" name="show_deprecated" id="show_deprecated" /> <label for="show_deprecated">Show Deprecated</label></span>
+                </fieldset>
+            </form>
+
+                    <div id="srcout">
+                        <style>
+                            #doc3 .classopts { display:none; }
+                        </style>
+<div class="highlight"><pre><span class="c">/*</span>
+<span class="c"> * Copyright (c) 2011 Yahoo! Inc. All rights reserved.</span>
+<span class="c"> */</span>
+
+<span class="c">/**</span>
+<span class="c"> * The Action Context is a key part of the Mojito framework. The &lt;em&gt;ac&lt;/em&gt;, for short, gives you access</span>
+<span class="c"> * to the frameworks features from within a controller function. The ac is an abstraction that</span>
+<span class="c"> * allows you to execute mojit actions within either a server or client context.</span>
+<span class="c"> *</span>
+<span class="c"> * @module ActionContext</span>
+<span class="c"> */</span>
+
+<span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;mojito-action-context&#39;</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="o">,</span> <span class="nx">NAME</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="kd">var</span> <span class="nx">CACHE</span><span class="o">;</span>
+
+    <span class="c">/**</span>
+<span class="c">     * The main point of entry for all mojits into Mojito. The Action Context is</span>
+<span class="c">     * passed to every mojit action during execution, either on the client or</span>
+<span class="c">     * server. This object is the API into Mojito, can can have many plugins</span>
+<span class="c">     * attached the provide extra functionality.</span>
+<span class="c">     * @submodule ActionContext</span>
+<span class="c">     * @class ActionContext</span>
+<span class="c">     */</span>
+    <span class="kd">function</span> <span class="nx">ActionContext</span><span class="p">(</span><span class="nx">opts</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;constructing action context&#39;</span><span class="o">,</span> <span class="s1">&#39;mojito&#39;</span><span class="o">,</span> <span class="s1">&#39;qeperf&#39;</span><span class="p">);</span>
+
+        <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="o">,</span>
+            <span class="nx">command</span> <span class="o">=</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">command</span><span class="o">,</span>
+            <span class="nx">instance</span> <span class="o">=</span> <span class="nx">command</span><span class="p">.</span><span class="nx">instance</span><span class="o">,</span>
+            <span class="nx">controller</span> <span class="o">=</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">controller</span><span class="o">,</span>
+            <span class="nx">models</span> <span class="o">=</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">models</span><span class="o">,</span>
+            <span class="nx">dispatch</span> <span class="o">=</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">dispatch</span><span class="o">,</span>
+            <span class="nx">adapter</span> <span class="o">=</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">adapter</span><span class="o">,</span>
+            <span class="nx">store</span> <span class="o">=</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">store</span><span class="o">,</span>
+            <span class="nx">actionFunction</span><span class="o">,</span>
+            <span class="nx">error</span><span class="o">;</span>
+
+        <span class="c">// &quot;init&quot; is not an action</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">command</span><span class="p">.</span><span class="nx">action</span> <span class="o">===</span> <span class="s1">&#39;init&#39;</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s2">&quot;Cannot execute action &#39;init&#39; on any mojit. This name is &quot;</span>
+                    <span class="o">+</span> <span class="s2">&quot;reserved by the Mojito framework.&quot;</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="c">// we want to make these easily accessible to any functions that addons attach directly to the ac object</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">command</span> <span class="o">=</span> <span class="nx">command</span><span class="o">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">instance</span> <span class="o">=</span> <span class="nx">instance</span><span class="o">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">action</span> <span class="o">=</span> <span class="nx">command</span><span class="p">.</span><span class="nx">action</span><span class="o">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">type</span> <span class="o">=</span> <span class="nx">instance</span><span class="p">.</span><span class="nx">type</span><span class="o">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">context</span> <span class="o">=</span> <span class="nx">command</span><span class="p">.</span><span class="nx">context</span><span class="o">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">models</span> <span class="o">=</span> <span class="nx">models</span><span class="o">;</span>
+
+        <span class="c">// identify this as internal... users probably won&#39;t want to use it, but addons might need</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">_dispatch</span> <span class="o">=</span> <span class="nx">dispatch</span><span class="o">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">_adapter</span> <span class="o">=</span> <span class="nx">adapter</span><span class="o">;</span>
+
+        <span class="c">// deprecated this function for current users</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">dispatch</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;ac.dispatch() will soon be deprecated to discourage it\&#39;s usage from within controllers. If you want to dispatch a command from within an ActionContext addon, please use ac._dispatch().&#39;</span><span class="o">,</span> <span class="s1">&#39;warn&#39;</span><span class="o">,</span> <span class="nx">NAME</span><span class="p">);</span>
+            <span class="nx">self</span><span class="p">.</span><span class="nx">_dispatch</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">self</span><span class="o">,</span> <span class="nx">arguments</span><span class="p">);</span>
+        <span class="p">};</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">app</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="nx">config</span><span class="o">:</span> <span class="nx">store</span><span class="p">.</span><span class="nx">getAppConfig</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="o">,</span> <span class="s1">&#39;definition&#39;</span><span class="p">)</span><span class="o">,</span>
+            <span class="nx">routes</span><span class="o">:</span> <span class="nx">store</span><span class="p">.</span><span class="nx">getRoutes</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">context</span><span class="p">)</span>
+        <span class="p">};</span>
+
+
+        <span class="nx">attachActionContextAddons</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">mojito</span><span class="p">.</span><span class="nx">addons</span><span class="p">.</span><span class="nx">ac</span><span class="o">,</span> <span class="nx">command</span><span class="o">,</span> <span class="nx">adapter</span><span class="o">,</span> <span class="k">this</span><span class="p">);</span>
+
+        <span class="c">// There is only one addon that requires the store so check for it here</span>
+        <span class="k">if</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">deploy</span><span class="p">){</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">deploy</span><span class="p">.</span><span class="nx">setStore</span><span class="p">(</span><span class="nx">store</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;ActionContext created for &quot;&#39;</span><span class="o">+</span><span class="p">(</span><span class="nx">instance</span><span class="p">.</span><span class="nx">id</span> <span class="o">||</span> <span class="s1">&#39;@&#39;</span><span class="o">+</span><span class="nx">instance</span><span class="p">.</span><span class="nx">type</span><span class="p">)</span><span class="o">+</span><span class="s1">&#39;/&#39;</span><span class="o">+</span><span class="nx">command</span><span class="p">.</span><span class="nx">action</span><span class="o">+</span><span class="s1">&#39;&quot;&#39;</span><span class="o">,</span> <span class="s1">&#39;mojito&#39;</span><span class="o">,</span> <span class="nx">NAME</span><span class="p">);</span>
+
+        <span class="c">// Grab the action here as me may change it</span>
+        <span class="nx">actionFunction</span> <span class="o">=</span> <span class="nx">command</span><span class="p">.</span><span class="nx">action</span><span class="o">;</span>
+
+        <span class="c">// Check if the controller has the requested action</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">controller</span><span class="p">[</span><span class="nx">actionFunction</span><span class="p">]))</span> <span class="p">{</span>
+            <span class="c">// If the action is not found try the &#39;__call&#39; function</span>
+            <span class="k">if</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">controller</span><span class="p">.</span><span class="nx">__call</span><span class="p">)){</span>
+                <span class="nx">actionFunction</span> <span class="o">=</span> <span class="s1">&#39;__call&#39;</span><span class="o">;</span>
+            <span class="p">}</span><span class="k">else</span><span class="p">{</span>
+                <span class="c">// If there is still no joy then die</span>
+                <span class="nx">error</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s2">&quot;No method &#39;&quot;</span> <span class="o">+</span> <span class="nx">command</span><span class="p">.</span><span class="nx">action</span> <span class="o">+</span> <span class="s2">&quot;&#39; on controller type &#39;&quot;</span> <span class="o">+</span> <span class="nx">instance</span><span class="p">.</span><span class="nx">type</span> <span class="o">+</span> <span class="s2">&quot;&#39;&quot;</span><span class="p">);</span>
+                <span class="nx">error</span><span class="p">.</span><span class="nx">code</span> <span class="o">=</span> <span class="mi">404</span><span class="o">;</span>
+                <span class="k">throw</span> <span class="nx">error</span><span class="o">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="c">// Time marker</span>
+        <span class="nx">Y</span><span class="p">.</span><span class="nx">mojito</span><span class="p">.</span><span class="nx">perf</span><span class="p">.</span><span class="nx">mark</span><span class="p">(</span><span class="s1">&#39;mojito&#39;</span><span class="o">,</span> <span class="s1">&#39;core_action_start[&#39;</span><span class="o">+</span><span class="nx">instance</span><span class="p">.</span><span class="nx">type</span><span class="o">+</span><span class="s1">&#39;:&#39;</span><span class="o">+</span><span class="nx">command</span><span class="p">.</span><span class="nx">action</span><span class="o">+</span><span class="s1">&#39;]&#39;</span><span class="o">,</span> <span class="s1">&#39;Calling the Mojit &quot;&#39;</span><span class="o">+</span><span class="nx">instance</span><span class="p">.</span><span class="nx">type</span><span class="o">+</span><span class="s1">&#39;&quot; with action &quot;&#39;</span><span class="o">+</span><span class="nx">command</span><span class="p">.</span><span class="nx">action</span><span class="o">+</span><span class="s1">&#39;&quot;&#39;</span><span class="p">);</span>
+
+        <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;action context created, executing action &quot;&#39;</span> <span class="o">+</span> <span class="nx">actionFunction</span> <span class="o">+</span> <span class="s1">&#39;&quot;&#39;</span><span class="o">,</span> <span class="s1">&#39;mojito&#39;</span><span class="o">,</span> <span class="s1">&#39;qeperf&#39;</span><span class="p">);</span>
+
+        <span class="nx">controller</span><span class="p">[</span><span class="nx">actionFunction</span><span class="p">](</span><span class="k">this</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c">/**</span>
+<span class="c">     * Returns data in the request and allows you to carry on execution.</span>
+<span class="c">     * @method flush</span>
+<span class="c">     * @param {object|string} data The data you want return by the request</span>
+<span class="c">     * @param {object} meta Any meta-data required to service the request</span>
+<span class="c">     */</span>
+
+    <span class="c">/**</span>
+<span class="c">     * Returns data and closes the request.</span>
+<span class="c">     * @method done</span>
+<span class="c">     * @param {object|string} data The data you want return by the request</span>
+<span class="c">     * @param {object} meta Any meta-data required to service the request</span>
+<span class="c">     */</span>
+
+    <span class="c">/**</span>
+<span class="c">     * Programatically report an error to Mojito, which will handle it gracefully.</span>
+<span class="c">     * @method error</span>
+<span class="c">     * @param err {Error} A normal JavaScript Error object is expected, but you may add a &quot;code&quot; property to the error</span>
+<span class="c">     * if you want the framework to report a certain HTTP status code for the error. For example, if the status code</span>
+<span class="c">     * is 404, Mojito will generate a 404 page.</span>
+<span class="c">     */</span>
+
+    <span class="c">/**</span>
+<span class="c">     * This dispatch function is called one time per Mojito execution. It creates a</span>
+<span class="c">     * contextualized Y instance for all further internal dispatches to use. It also</span>
+<span class="c">     * creates the ActionContext for the mojit.</span>
+<span class="c">     *</span>
+<span class="c">     * The command has three main parts:  the &quot;instance&quot;, the &quot;context&quot;, and the &quot;params&quot;.</span>
+<span class="c">     * &lt;pre&gt;</span>
+<span class="c">     *  command: {</span>
+<span class="c">     *      instance: ...see below...</span>
+<span class="c">     *      context: ...see below...</span>
+<span class="c">     *      params: ...see below...</span>
+<span class="c">     *  }</span>
+<span class="c">     * &lt;/pre&gt;</span>
+<span class="c">     *</span>
+<span class="c">     * The &quot;instance&quot; is a partial instance with details of the mojit instance.</span>
+<span class="c">     * See `ServerStore.expandInstance()` for details of the structure and which fields</span>
+<span class="c">     * are required.</span>
+<span class="c">     *</span>
+<span class="c">     * The &quot;context&quot; is the request context.  It is built by the &quot;contextualizer&quot;</span>
+<span class="c">     * middleware.</span>
+<span class="c">     *</span>
+<span class="c">     * The &quot;params&quot; is a structured set of parameters to pass to the mojit.</span>
+<span class="c">     * &lt;pre&gt;</span>
+<span class="c">     *  params: {</span>
+<span class="c">     *      route: {},</span>
+<span class="c">     *      url: {},</span>
+<span class="c">     *      body: {},</span>
+<span class="c">     *      file: {},</span>
+<span class="c">     *      ...</span>
+<span class="c">     *  }</span>
+<span class="c">     * &lt;/pre&gt;</span>
+<span class="c">     *</span>
+<span class="c">     * &lt;pre&gt;</span>
+<span class="c">     * adapter: {</span>
+<span class="c">     *      flush: function(data, meta){},</span>
+<span class="c">     *      done: function(data, meta){},</span>
+<span class="c">     *      error: function(err){}</span>
+<span class="c">     * }</span>
+<span class="c">     * &lt;/pre&gt;</span>
+<span class="c">     *</span>
+<span class="c">     * @method dispatch</span>
+<span class="c">     * @param command {map} the &quot;command&quot; describing how to dispatch the mojit. see above</span>
+<span class="c">     * @param adapter {object} the output adapter to pass to the mojit. see above</span>
+<span class="c">     * @return nothing. results are passed via the adapter</span>
+<span class="c">     */</span>
+
+    <span class="c">/**</span>
+<span class="c">     * Mixes all the Action Context addons into the Action Context</span>
+<span class="c">     * @param ac {Y.mojito.ActionContext}</span>
+<span class="c">     * @param acAddons {Array} the action context addons</span>
+<span class="c">     * @param store {object}</span>
+<span class="c">     * @param command {object}</span>
+<span class="c">     * @param adapter {object}</span>
+<span class="c">     * /</span>
+<span class="c">    function attachActionContextAddons(ac, acAddons, store, command, adapter) {</span>
+
+<span class="c">        var mixed = {},</span>
+<span class="c">            processDependencies,</span>
+<span class="c">            createAddon,</span>
+<span class="c">            addonName;</span>
+
+<span class="c">        // This inner function is used to process the dependencies of on action context addon.</span>
+<span class="c">        // An AC addon declares its dependencies by attaching a &quot;dependsOn&quot; property to its</span>
+<span class="c">        // constructor function that points to an array of strings, which are the names of all</span>
+<span class="c">        // the addon namespaces that are require to be plugged before it.</span>
+<span class="c">        processDependencies = function(addon, name, cb) {</span>
+
+<span class="c">            var i, dep, Dependee,</span>
+<span class="c">                dependsOn = addon.dependsOn;</span>
+
+<span class="c">            if (Y.Lang.isArray(dependsOn)) {</span>
+<span class="c">                for(i in dependsOn){</span>
+<span class="c">                    dep = dependsOn[i];</span>
+<span class="c">                    if (!mixed[dep]) {</span>
+<span class="c">                        Dependee = acAddons[dep];</span>
+<span class="c">                        if (!Dependee) {</span>
+<span class="c">                            throw new Error(&quot;Cannot process action-context addon &#39;&quot; + name + &quot;&#39;, missing dependency: &#39;&quot; + dep + &quot;&#39;&quot;);</span>
+<span class="c">                        }</span>
+<span class="c">                        processDependencies(Dependee, dep, function() {</span>
+<span class="c">                            createAddon(dep, Dependee, ac);</span>
+<span class="c">                        });</span>
+<span class="c">                    }</span>
+<span class="c">                }</span>
+<span class="c">            }</span>
+<span class="c">            cb();</span>
+<span class="c">        };</span>
+
+<span class="c">        createAddon = function(name, Ctor, ac) {</span>
+
+<span class="c">            var addon = new Ctor(command, adapter, ac);</span>
+<span class="c">            // if this is the &#39;deploy&#39; addon , and it requires the resource store,</span>
+<span class="c">            // deliver it</span>
+<span class="c">            if (addon.namespace === &#39;deploy&#39; &amp;&amp; Y.Lang.isFunction(addon.setStore)) {</span>
+<span class="c">                addon.setStore(store);</span>
+<span class="c">            }</span>
+
+<span class="c">            if (addon.namespace) {</span>
+<span class="c">                ac[addon.namespace] = addon;</span>
+<span class="c">            }</span>
+
+<span class="c">            mixed[name] = true;</span>
+<span class="c">        };</span>
+
+<span class="c">        for(addonName in acAddons){</span>
+<span class="c">            if (!mixed[addonName]) {</span>
+<span class="c">                processDependencies(acAddons[addonName], addonName, function() {</span>
+<span class="c">                    createAddon(addonName, acAddons[addonName], ac);</span>
+<span class="c">                });</span>
+<span class="c">            }</span>
+<span class="c">        }</span>
+<span class="c">    }*/</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">YUI</span><span class="p">.</span><span class="nx">_mojito</span><span class="p">){</span>
+        <span class="nx">YUI</span><span class="p">.</span><span class="nx">_mojito</span> <span class="o">=</span> <span class="p">{};</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">YUI</span><span class="p">.</span><span class="nx">_mojito</span><span class="p">.</span><span class="nx">_cache</span><span class="p">){</span>
+        <span class="nx">YUI</span><span class="p">.</span><span class="nx">_mojito</span><span class="p">.</span><span class="nx">_cache</span> <span class="o">=</span> <span class="p">{};</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">YUI</span><span class="p">.</span><span class="nx">_mojito</span><span class="p">.</span><span class="nx">_cache</span><span class="p">.</span><span class="nx">addons</span><span class="p">){</span>
+        <span class="nx">YUI</span><span class="p">.</span><span class="nx">_mojito</span><span class="p">.</span><span class="nx">_cache</span><span class="p">.</span><span class="nx">addons</span> <span class="o">=</span> <span class="p">{};</span>
+    <span class="p">}</span>
+
+    <span class="nx">CACHE</span> <span class="o">=</span> <span class="nx">YUI</span><span class="p">.</span><span class="nx">_mojito</span><span class="p">.</span><span class="nx">_cache</span><span class="p">.</span><span class="nx">addons</span><span class="o">;</span>
+
+    <span class="kd">function</span> <span class="nx">attachActionContextAddons</span><span class="p">(</span><span class="nx">addons</span><span class="o">,</span> <span class="nx">command</span><span class="o">,</span> <span class="nx">adapter</span><span class="o">,</span> <span class="nx">ac</span><span class="p">){</span>
+
+        <span class="kd">var</span> <span class="nx">addonName</span><span class="o">,</span>
+            <span class="nx">addon</span><span class="o">,</span>
+            <span class="nx">dependencies</span> <span class="o">=</span> <span class="p">{};</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="nx">CACHE</span><span class="p">[</span><span class="nx">ac</span><span class="p">.</span><span class="nx">type</span><span class="p">]){</span>
+            <span class="nx">dependencies</span> <span class="o">=</span> <span class="nx">CACHE</span><span class="p">[</span><span class="nx">ac</span><span class="p">.</span><span class="nx">type</span><span class="p">];</span>
+        <span class="p">}</span>
+        <span class="k">else</span><span class="p">{</span>
+            <span class="k">for</span><span class="p">(</span><span class="nx">addonName</span> <span class="k">in</span> <span class="nx">addons</span><span class="p">){</span>
+                <span class="k">if</span><span class="p">(</span><span class="nx">addons</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">addonName</span><span class="p">))</span> <span class="p">{</span>
+                    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">dependencies</span><span class="p">[</span><span class="nx">addonName</span><span class="p">])</span> <span class="p">{</span>
+                        <span class="nx">calculateAddonDependencies</span><span class="p">(</span><span class="nx">addons</span><span class="p">[</span><span class="nx">addonName</span><span class="p">]</span><span class="o">,</span> <span class="nx">addons</span><span class="o">,</span> <span class="nx">dependencies</span><span class="p">);</span>
+                    <span class="p">}</span>
+                    <span class="nx">dependencies</span><span class="p">[</span><span class="nx">addonName</span><span class="p">]</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="nx">CACHE</span><span class="p">[</span><span class="nx">ac</span><span class="p">.</span><span class="nx">type</span><span class="p">]</span> <span class="o">=</span> <span class="nx">dependencies</span><span class="o">;</span>
+        <span class="p">}</span>
+
+        <span class="k">for</span><span class="p">(</span><span class="nx">addonName</span> <span class="k">in</span> <span class="nx">dependencies</span><span class="p">){</span>
+            <span class="k">if</span><span class="p">(</span><span class="nx">dependencies</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">addonName</span><span class="p">))</span> <span class="p">{</span>
+                <span class="nx">addon</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">addons</span><span class="p">[</span><span class="nx">addonName</span><span class="p">](</span><span class="nx">command</span><span class="o">,</span> <span class="nx">adapter</span><span class="o">,</span> <span class="nx">ac</span><span class="p">);</span>
+                <span class="k">if</span><span class="p">(</span><span class="nx">addon</span><span class="p">.</span><span class="nx">namespace</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="nx">ac</span><span class="p">[</span><span class="nx">addon</span><span class="p">.</span><span class="nx">namespace</span><span class="p">]</span> <span class="o">=</span> <span class="nx">addon</span><span class="o">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kd">function</span> <span class="nx">calculateAddonDependencies</span><span class="p">(</span><span class="nx">addon</span><span class="o">,</span> <span class="nx">addons</span><span class="o">,</span> <span class="nx">dependencies</span><span class="p">){</span>
+
+        <span class="kd">var</span> <span class="nx">dep</span><span class="o">,</span>
+            <span class="nx">dependsOn</span> <span class="o">=</span> <span class="nx">addon</span><span class="p">.</span><span class="nx">dependsOn</span><span class="o">,</span>
+            <span class="nx">i</span><span class="o">;</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">dependsOn</span><span class="p">))</span> <span class="p">{</span>
+            <span class="k">return</span><span class="o">;</span>
+        <span class="p">}</span>
+
+        <span class="k">for</span><span class="p">(</span><span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">dependsOn</span><span class="p">.</span><span class="nx">length</span><span class="o">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">){</span>
+            <span class="nx">dep</span> <span class="o">=</span> <span class="nx">dependsOn</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+            <span class="k">if</span><span class="p">(</span><span class="o">!</span> <span class="nx">dependencies</span><span class="p">[</span><span class="nx">dep</span><span class="p">])</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nx">addons</span><span class="p">[</span><span class="nx">dep</span><span class="p">])</span> <span class="p">{</span>
+                    <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="nx">addon</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">namespace</span> <span class="o">+</span> <span class="s2">&quot; addon has invalid dependency: &#39;&quot;</span> <span class="o">+</span> <span class="nx">dep</span> <span class="o">+</span> <span class="s2">&quot;&#39;&quot;</span><span class="p">);</span>
+                <span class="p">}</span>
+                <span class="nx">calculateAddonDependencies</span><span class="p">(</span><span class="nx">addons</span><span class="p">[</span><span class="nx">dep</span><span class="p">]</span><span class="o">,</span> <span class="nx">addons</span><span class="o">,</span> <span class="nx">dependencies</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="nx">dependencies</span><span class="p">[</span><span class="nx">dep</span><span class="p">]</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="nx">Y</span><span class="p">.</span><span class="nx">mojito</span><span class="p">.</span><span class="nx">ActionContext</span> <span class="o">=</span> <span class="nx">ActionContext</span><span class="o">;</span>
+
+<span class="p">}</span><span class="o">,</span> <span class="s1">&#39;0.1.0&#39;</span><span class="o">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[</span>
+    <span class="c">// following are ACPs are always available</span>
+    <span class="s1">&#39;mojito-config-addon&#39;</span><span class="o">,</span>
+    <span class="s1">&#39;mojito-output-adapter-addon&#39;</span><span class="o">,</span>
+    <span class="s1">&#39;mojito-url-addon&#39;</span><span class="o">,</span>
+    <span class="s1">&#39;mojito-assets-addon&#39;</span><span class="o">,</span>
+    <span class="s1">&#39;mojito-cookie-addon&#39;</span><span class="o">,</span>
+    <span class="s1">&#39;mojito-params-addon&#39;</span><span class="o">,</span>
+    <span class="s1">&#39;mojito-composite-addon&#39;</span>
+<span class="p">]});</span>
+</pre></div>
+                    </div>
+			</div>
+		</div>
+		<div class="yui-b">
+            <div class="nav">
+
+                    <div id="moduleList" class="module">
+                        <h4>Modules</h4>
+                        <ul class="content">
+                                <li class=""><a href="module_ActionContext.html" title="ActionContext">ActionContext</a></li>
+                                <li class=""><a href="module_ActionContextAddon.html" title="ActionContextAddon">ActionContextAddon</a></li>
+                                <li class=""><a href="module_CommonLibs.html" title="CommonLibs">CommonLibs</a></li>
+                                <li class="selected"><a href="module_MojitoClient.html" title="MojitoClient">MojitoClient</a></li>
+                                <li class=""><a href="module_MojitoServer.html" title="MojitoServer">MojitoServer</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="classList" class="module">
+                        <h4>Classes</h4>
+                        <ul class="content">
+                                <li class=""><a href="Y.mojito.Client.html" title="Y.mojito.Client">Y.mojito.Client</a></li>
+                                <li class=""><a href="Y.mojito.MojitProxy.html" title="Y.mojito.MojitProxy">Y.mojito.MojitProxy</a></li>
+                        </ul>
+                    </div>
+
+                    <!--
+                    <div id="fileList" class="module">
+                        <h4>Files</h4>
+                        <ul class="content">        
+                                <li class="selected"><a href="action-context.common.js.html" title="action-context.common.js">action-context.common.js</a></li>
+                                <li class=""><a href="controller-context.common.js.html" title="controller-context.common.js">controller-context.common.js</a></li>
+                                <li class=""><a href="dispatch.common.js.html" title="dispatch.common.js">dispatch.common.js</a></li>
+                                <li class=""><a href="loader.common.js.html" title="loader.common.js">loader.common.js</a></li>
+                                <li class=""><a href="logger.common.js.html" title="logger.common.js">logger.common.js</a></li>
+                                <li class=""><a href="mojit-proxy.client.js.html" title="mojit-proxy.client.js">mojit-proxy.client.js</a></li>
+                                <li class=""><a href="mojito-test.common.js.html" title="mojito-test.common.js">mojito-test.common.js</a></li>
+                                <li class=""><a href="output-handler.client.js.html" title="output-handler.client.js">output-handler.client.js</a></li>
+                                <li class=""><a href="perf.server.js.html" title="perf.server.js">perf.server.js</a></li>
+                                <li class=""><a href="route-maker.common.js.html" title="route-maker.common.js">route-maker.common.js</a></li>
+                                <li class=""><a href="util.common.js.html" title="util.common.js">util.common.js</a></li>
+                                <li class=""><a href="view-renderer.common.js.html" title="view-renderer.common.js">view-renderer.common.js</a></li>
+                        </ul>
+                    </div>
+                    -->
+
+
+
+
+
+            </div>
+		</div>
+	</div>
+	<div id="ft">
+        <hr />
+        Copyright &copy; 2012 Yahoo! Inc. All rights reserved.
+	</div>
+</div>
+<script type="text/javascript">
+    ALL_YUI_PROPS = [{"url": "Y.mojito.MojitProxy.html#method_broadcast", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "broadcast"}, {"url": "Y.mojito.MojitProxy.html#property_children", "access": "", "host": "Y.mojito.MojitProxy", "type": "property", "name": "children"}, {"url": "Y.mojito.MojitProxy.html#property_config", "access": "", "host": "Y.mojito.MojitProxy", "type": "property", "name": "config"}, {"url": "Y.mojito.MojitProxy.html#property_context", "access": "", "host": "Y.mojito.MojitProxy", "type": "property", "name": "context"}, {"url": "Y.mojito.MojitProxy.html#method_destroyChild", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "destroyChild"}, {"url": "Y.mojito.MojitProxy.html#method_destroySelf", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "destroySelf"}, {"url": "Y.mojito.Client.html#method_find", "access": "", "host": "Y.mojito.Client", "type": "method", "name": "find"}, {"url": "Y.mojito.MojitProxy.html#method_getChildren", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "getChildren"}, {"url": "Y.mojito.Client.html#method_getComputedRoutes", "access": "", "host": "Y.mojito.Client", "type": "method", "name": "getComputedRoutes"}, {"url": "Y.mojito.MojitProxy.html#method_getFromUrl", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "getFromUrl"}, {"url": "Y.mojito.MojitProxy.html#method_invoke", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "invoke"}, {"url": "Y.mojito.MojitProxy.html#method_listen", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "listen"}, {"url": "Y.mojito.Client.html#method_pause", "access": "", "host": "Y.mojito.Client", "type": "method", "name": "pause"}, {"url": "Y.mojito.MojitProxy.html#method_refreshView", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "refreshView"}, {"url": "Y.mojito.MojitProxy.html#method_render", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "render"}, {"url": "Y.mojito.Client.html#method_resume", "access": "", "host": "Y.mojito.Client", "type": "method", "name": "resume"}, {"url": "Y.mojito.MojitProxy.html#property_type", "access": "", "host": "Y.mojito.MojitProxy", "type": "property", "name": "type"}, {"url": "Y.mojito.MojitProxy.html#method_unlisten", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "unlisten"}];
+</script>
+</body>
+</html>

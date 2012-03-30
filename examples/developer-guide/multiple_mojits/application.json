@@ -1,0 +1,24 @@
+[ 
+  {
+    "settings": [ "master" ],
+    "appPort": 8666,
+    "specs": {
+      "parent": {
+        "type": "FrameMojit", 
+        "config" : {
+          "children": {
+            "header": {
+              "type": "HeaderMojit"
+            },
+            "body": {
+              "type": "BodyMojit"
+            },
+            "footer": {
+              "type": "FooterMojit"
+            }
+          }
+        }
+      }
+    }
+  }
+]

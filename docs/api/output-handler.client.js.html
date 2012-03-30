@@ -1,0 +1,265 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>API: MojitoClient   output-handler.client.js  (YUI Library)</title>
+
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css?stamp=1327685402.48" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css?stamp=1327685402.48" />
+
+    <script type="text/javascript" src="assets/api-js?stamp=1327685402.48"></script>
+    <script type="text/javascript" src="assets/ac-js?stamp=1327685402.48"></script>
+</head>
+
+<body id="yahoo-com">
+
+<div id="doc3" class="yui-t2">
+	<div id="hd">
+        <h1><a href="http://developer.yahoo.com/yui/" title="mojito">mojito</a></h1>
+        <h3>MojitoClient&nbsp; <span class="subtitle">0.1.0</span></h3>
+        <a href="./index.html" title="mojito">mojito</a> 
+            &gt; <a href="./module_MojitoClient.html" title="MojitoClient">MojitoClient</a>
+                
+                 &gt; output-handler.client.js (source view) 
+        <form onsubmit="return false">
+            <div id="propertysearch">
+                Search: <input autocomplete="off" id="searchinput" />
+                <div id="searchresults">
+                    &nbsp;
+                </div>
+            </div>
+        </form>
+	</div>
+
+	<div id="bd">
+		<div id="yui-main">
+			<div class="yui-b">
+            <form action="#" name="yui-classopts-form" method="get" id="yui-classopts-form">
+                <fieldset>
+                    <legend>Filters</legend>
+                <span class="classopts"><input type="checkbox" name="show_private" id="show_private" /> <label for="show_private">Show Private</label></span>
+                <span class="classopts"><input type="checkbox" name="show_protected" id="show_protected" /> <label for="show_protected">Show Protected</label></span>
+                <span class="classopts"><input type="checkbox" name="show_deprecated" id="show_deprecated" /> <label for="show_deprecated">Show Deprecated</label></span>
+                </fieldset>
+            </form>
+
+                    <div id="srcout">
+                        <style>
+                            #doc3 .classopts { display:none; }
+                        </style>
+<div class="highlight"><pre><span class="c">/*</span>
+<span class="c"> * Copyright (c) 2011 Yahoo! Inc. All rights reserved.</span>
+<span class="c"> */</span>
+<span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;mojito-output-handler&#39;</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="o">,</span> <span class="nx">NAME</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="kd">var</span> <span class="nx">attachAssets</span><span class="o">,</span> <span class="nx">complete</span><span class="o">,</span>
+        <span class="nx">loaded</span> <span class="o">=</span> <span class="p">{</span><span class="nx">js</span><span class="o">:</span> <span class="p">{}</span><span class="o">,</span> <span class="nx">css</span><span class="o">:</span> <span class="p">{}};</span>
+
+    <span class="c">/*</span>
+<span class="c">     * This is an object used as the single pathway for data to leave a mojit</span>
+<span class="c">     * action execution. It is used as a component of the ActionContext object,</span>
+<span class="c">     * which uses it to call &lt;em&gt;done&lt;/em&gt; and &lt;em&gt;flush&lt;/em&gt; in order to complete.</span>
+<span class="c">     *</span>
+<span class="c">     * There are two versions of this object, one for the client, and one for the</span>
+<span class="c">     * server. This is the client version, which is much simpler than the server</span>
+<span class="c">     * version.</span>
+<span class="c">     *</span>
+<span class="c">     * @class OutputHandler</span>
+<span class="c">     * @constructor</span>
+<span class="c">     * @param {Function} cb</span>
+<span class="c">     * @param {Object} mojitoClient</span>
+<span class="c">     */</span>
+    <span class="kd">function</span> <span class="nx">OutputHandler</span><span class="p">(</span><span class="nx">cb</span><span class="o">,</span> <span class="nx">mojitoClient</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">callback</span> <span class="o">=</span> <span class="nx">cb</span><span class="o">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">buffer</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">mojitoClient</span> <span class="o">=</span> <span class="nx">mojitoClient</span><span class="o">;</span>
+    <span class="p">}</span>
+
+    <span class="nx">OutputHandler</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+
+        <span class="c">/*</span>
+<span class="c">         * @method flush</span>
+<span class="c">         * @param data</span>
+<span class="c">         * @param meta</span>
+<span class="c">         */</span>
+        <span class="nx">flush</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="o">,</span> <span class="nx">meta</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">done</span><span class="p">(</span><span class="nx">data</span><span class="o">,</span> <span class="nx">meta</span><span class="p">);</span>
+        <span class="p">}</span><span class="o">,</span>
+
+        <span class="c">/*</span>
+<span class="c">         * @method done</span>
+<span class="c">         * @param data</span>
+<span class="c">         * @param meta</span>
+<span class="c">         */</span>
+        <span class="nx">done</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="o">,</span> <span class="nx">meta</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">client</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">mojitoClient</span><span class="o">,</span>
+                <span class="nx">callback</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">callback</span><span class="o">;</span>
+            <span class="c">// Add meta to the page before going on</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">meta</span> <span class="o">&amp;&amp;</span> <span class="nx">meta</span><span class="p">.</span><span class="nx">assets</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">attachAssets</span><span class="p">(</span><span class="nx">meta</span><span class="p">.</span><span class="nx">assets</span><span class="o">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                    <span class="nx">complete</span><span class="p">(</span><span class="nx">data</span><span class="o">,</span> <span class="nx">meta</span><span class="o">,</span> <span class="nx">client</span><span class="o">,</span> <span class="nx">callback</span><span class="p">);</span>
+                <span class="p">});</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="nx">complete</span><span class="p">(</span><span class="nx">data</span><span class="o">,</span> <span class="nx">meta</span><span class="o">,</span> <span class="nx">client</span><span class="o">,</span> <span class="nx">callback</span><span class="p">);</span>
+            <span class="p">}</span>
+
+        <span class="p">}</span><span class="o">,</span>
+        
+        <span class="nx">error</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">callback</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+        <span class="p">}</span>
+
+    <span class="p">};</span>
+
+    <span class="c">// Attach assets found in the &quot;assets&quot; to the page</span>
+    <span class="nx">attachAssets</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">assets</span><span class="o">,</span> <span class="nx">cb</span><span class="p">){</span>
+        <span class="kd">var</span> <span class="nx">toLoad</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="nx">css</span><span class="o">:</span> <span class="p">[]</span><span class="o">,</span>
+                <span class="nx">js</span><span class="o">:</span> <span class="p">[]</span>
+            <span class="p">}</span><span class="o">,</span>
+            <span class="nx">done</span> <span class="o">=</span> <span class="p">{}</span><span class="o">,</span>
+            <span class="nx">blobNode</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">,</span>
+            <span class="nx">doneChecker</span><span class="o">;</span>
+
+        <span class="nx">Y</span><span class="p">.</span><span class="nb">Object</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">assets</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">types</span><span class="o">,</span> <span class="nx">location</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">Y</span><span class="p">.</span><span class="nb">Object</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">types</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">list</span><span class="o">,</span> <span class="nx">type</span><span class="p">)</span> <span class="p">{</span>
+                <span class="kd">var</span> <span class="nx">i</span><span class="o">;</span>
+                <span class="k">if</span><span class="p">(</span><span class="nx">type</span> <span class="o">===</span> <span class="s1">&#39;blob&#39;</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">for</span><span class="p">(</span><span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">list</span><span class="p">.</span><span class="nx">length</span><span class="o">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">){</span>
+                        <span class="nx">blobNode</span> <span class="o">+=</span> <span class="nx">list</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+                    <span class="p">}</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                    <span class="k">for</span> <span class="p">(</span><span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">list</span><span class="p">.</span><span class="nx">length</span><span class="o">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nx">loaded</span><span class="p">[</span><span class="nx">type</span><span class="p">][</span><span class="nx">list</span><span class="p">[</span><span class="nx">i</span><span class="p">]])</span> <span class="p">{</span>
+                            <span class="nx">toLoad</span><span class="p">[</span><span class="nx">type</span><span class="p">].</span><span class="nx">push</span><span class="p">(</span><span class="nx">list</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
+                        <span class="p">}</span>
+                        <span class="nx">loaded</span><span class="p">[</span><span class="nx">type</span><span class="p">][</span><span class="nx">list</span><span class="p">[</span><span class="nx">i</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">});</span>
+        <span class="p">});</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nx">blobNode</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">Y</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;head&#39;</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="nx">blobNode</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="nx">doneChecker</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">type</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c">//Y.log(&#39;doneChecker(&#39;+type+&#39;) -- css? &#39; + done.css + &#39; -- js? &#39; + done.js, &#39;debug&#39;, NAME);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">type</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">done</span><span class="p">[</span><span class="nx">type</span><span class="p">]</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+            <span class="p">}</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">done</span><span class="p">.</span><span class="nx">css</span> <span class="o">&amp;&amp;</span> <span class="nx">done</span><span class="p">.</span><span class="nx">js</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">cb</span><span class="p">();</span>
+            <span class="p">}</span>
+        <span class="p">};</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nx">toLoad</span><span class="p">.</span><span class="nx">css</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c">// TODO 2011-07-21: better error detection/handling</span>
+            <span class="nx">Y</span><span class="p">.</span><span class="nx">Get</span><span class="p">.</span><span class="nx">css</span><span class="p">(</span><span class="nx">toLoad</span><span class="p">.</span><span class="nx">css</span><span class="o">,</span> <span class="p">{</span>
+                <span class="nx">onEnd</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                    <span class="nx">doneChecker</span><span class="p">(</span><span class="s1">&#39;css&#39;</span><span class="p">);</span>
+                <span class="p">}</span>
+            <span class="p">});</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="p">{</span>
+            <span class="nx">done</span><span class="p">.</span><span class="nx">css</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">toLoad</span><span class="p">.</span><span class="nx">js</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c">// TODO 2011-07-21: better error detection/handling</span>
+            <span class="nx">Y</span><span class="p">.</span><span class="nx">Get</span><span class="p">.</span><span class="nx">script</span><span class="p">(</span><span class="nx">toLoad</span><span class="p">.</span><span class="nx">js</span><span class="o">,</span> <span class="p">{</span>
+                <span class="nx">onEnd</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                    <span class="nx">doneChecker</span><span class="p">(</span><span class="s1">&#39;js&#39;</span><span class="p">);</span>
+                <span class="p">}</span>
+            <span class="p">});</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="p">{</span>
+            <span class="nx">done</span><span class="p">.</span><span class="nx">js</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+        <span class="p">}</span>
+        <span class="c">// in case we have neither (or either Y.Get calls return really fast)</span>
+        <span class="nx">doneChecker</span><span class="p">();</span>
+    <span class="p">};</span>
+
+    <span class="nx">complete</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="o">,</span> <span class="nx">meta</span><span class="o">,</span> <span class="nx">client</span><span class="o">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c">// If we get some JSON decode it</span>
+        <span class="k">if</span><span class="p">(</span><span class="nx">meta</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="nx">headers</span><span class="p">[</span><span class="s1">&#39;content-type&#39;</span><span class="p">]</span>
+                <span class="o">&amp;&amp;</span> <span class="nx">meta</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="nx">headers</span><span class="p">[</span><span class="s1">&#39;content-type&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">].</span><span class="nx">indexOf</span><span class="p">(</span><span class="s1">&#39;application/json&#39;</span><span class="p">)</span> <span class="o">===</span> <span class="mi">0</span><span class="p">){</span>
+            <span class="nx">data</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="nx">callback</span><span class="p">(</span><span class="kc">null</span><span class="o">,</span> <span class="nx">data</span><span class="o">,</span> <span class="nx">meta</span><span class="p">);</span>
+
+        <span class="nx">client</span><span class="p">.</span><span class="nx">cleanupBinders</span><span class="p">();</span>
+
+        <span class="k">if</span><span class="p">(</span><span class="nx">meta</span> <span class="o">&amp;&amp;</span> <span class="nx">meta</span><span class="p">.</span><span class="nx">binders</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">setTimeout</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                <span class="nx">client</span><span class="p">.</span><span class="nx">attachBinders</span><span class="p">(</span><span class="nx">meta</span><span class="p">.</span><span class="nx">binders</span><span class="p">);</span>
+            <span class="p">});</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+
+    <span class="nx">Y</span><span class="p">.</span><span class="nx">mojito</span><span class="p">.</span><span class="nx">OutputHandler</span> <span class="o">=</span> <span class="nx">OutputHandler</span><span class="o">;</span>
+
+<span class="p">}</span><span class="o">,</span> <span class="s1">&#39;0.1.0&#39;</span><span class="o">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;mojito&#39;</span><span class="p">]});</span>
+</pre></div>
+                    </div>
+			</div>
+		</div>
+		<div class="yui-b">
+            <div class="nav">
+
+                    <div id="moduleList" class="module">
+                        <h4>Modules</h4>
+                        <ul class="content">
+                                <li class=""><a href="module_ActionContext.html" title="ActionContext">ActionContext</a></li>
+                                <li class=""><a href="module_ActionContextAddon.html" title="ActionContextAddon">ActionContextAddon</a></li>
+                                <li class=""><a href="module_CommonLibs.html" title="CommonLibs">CommonLibs</a></li>
+                                <li class="selected"><a href="module_MojitoClient.html" title="MojitoClient">MojitoClient</a></li>
+                                <li class=""><a href="module_MojitoServer.html" title="MojitoServer">MojitoServer</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="classList" class="module">
+                        <h4>Classes</h4>
+                        <ul class="content">
+                                <li class=""><a href="Y.mojito.Client.html" title="Y.mojito.Client">Y.mojito.Client</a></li>
+                                <li class=""><a href="Y.mojito.MojitProxy.html" title="Y.mojito.MojitProxy">Y.mojito.MojitProxy</a></li>
+                        </ul>
+                    </div>
+
+                    <!--
+                    <div id="fileList" class="module">
+                        <h4>Files</h4>
+                        <ul class="content">        
+                                <li class=""><a href="action-context.common.js.html" title="action-context.common.js">action-context.common.js</a></li>
+                                <li class=""><a href="controller-context.common.js.html" title="controller-context.common.js">controller-context.common.js</a></li>
+                                <li class=""><a href="dispatch.common.js.html" title="dispatch.common.js">dispatch.common.js</a></li>
+                                <li class=""><a href="loader.common.js.html" title="loader.common.js">loader.common.js</a></li>
+                                <li class=""><a href="logger.common.js.html" title="logger.common.js">logger.common.js</a></li>
+                                <li class=""><a href="mojit-proxy.client.js.html" title="mojit-proxy.client.js">mojit-proxy.client.js</a></li>
+                                <li class=""><a href="mojito-test.common.js.html" title="mojito-test.common.js">mojito-test.common.js</a></li>
+                                <li class="selected"><a href="output-handler.client.js.html" title="output-handler.client.js">output-handler.client.js</a></li>
+                                <li class=""><a href="perf.server.js.html" title="perf.server.js">perf.server.js</a></li>
+                                <li class=""><a href="route-maker.common.js.html" title="route-maker.common.js">route-maker.common.js</a></li>
+                                <li class=""><a href="util.common.js.html" title="util.common.js">util.common.js</a></li>
+                                <li class=""><a href="view-renderer.common.js.html" title="view-renderer.common.js">view-renderer.common.js</a></li>
+                        </ul>
+                    </div>
+                    -->
+
+
+
+
+
+            </div>
+		</div>
+	</div>
+	<div id="ft">
+        <hr />
+        Copyright &copy; 2012 Yahoo! Inc. All rights reserved.
+	</div>
+</div>
+<script type="text/javascript">
+    ALL_YUI_PROPS = [{"url": "Y.mojito.MojitProxy.html#method_broadcast", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "broadcast"}, {"url": "Y.mojito.MojitProxy.html#property_children", "access": "", "host": "Y.mojito.MojitProxy", "type": "property", "name": "children"}, {"url": "Y.mojito.MojitProxy.html#property_config", "access": "", "host": "Y.mojito.MojitProxy", "type": "property", "name": "config"}, {"url": "Y.mojito.MojitProxy.html#property_context", "access": "", "host": "Y.mojito.MojitProxy", "type": "property", "name": "context"}, {"url": "Y.mojito.MojitProxy.html#method_destroyChild", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "destroyChild"}, {"url": "Y.mojito.MojitProxy.html#method_destroySelf", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "destroySelf"}, {"url": "Y.mojito.Client.html#method_find", "access": "", "host": "Y.mojito.Client", "type": "method", "name": "find"}, {"url": "Y.mojito.MojitProxy.html#method_getChildren", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "getChildren"}, {"url": "Y.mojito.Client.html#method_getComputedRoutes", "access": "", "host": "Y.mojito.Client", "type": "method", "name": "getComputedRoutes"}, {"url": "Y.mojito.MojitProxy.html#method_getFromUrl", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "getFromUrl"}, {"url": "Y.mojito.MojitProxy.html#method_invoke", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "invoke"}, {"url": "Y.mojito.MojitProxy.html#method_listen", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "listen"}, {"url": "Y.mojito.Client.html#method_pause", "access": "", "host": "Y.mojito.Client", "type": "method", "name": "pause"}, {"url": "Y.mojito.MojitProxy.html#method_refreshView", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "refreshView"}, {"url": "Y.mojito.MojitProxy.html#method_render", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "render"}, {"url": "Y.mojito.Client.html#method_resume", "access": "", "host": "Y.mojito.Client", "type": "method", "name": "resume"}, {"url": "Y.mojito.MojitProxy.html#property_type", "access": "", "host": "Y.mojito.MojitProxy", "type": "property", "name": "type"}, {"url": "Y.mojito.MojitProxy.html#method_unlisten", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "unlisten"}];
+</script>
+</body>
+</html>

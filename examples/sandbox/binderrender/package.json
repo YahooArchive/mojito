@@ -1,0 +1,19 @@
+{
+    "name": "binderrender",
+    "description": "My Mojito application",
+    "version": "0.0.1",
+    "contributors": [
+          {
+              "name": "Your Name",
+              "email": "nobody@yahoo-inc.com"
+          }
+    ],
+    "config": {
+        "mojito": {
+            "version": "*"
+        }
+    },
+    "dependencies": {
+        "mojito": ">= 0.1.0"
+    }
+}

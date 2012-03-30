@@ -1,0 +1,15 @@
+[
+  {
+    "settings": [ "master" ],
+    "specs": { 
+      "frame": {
+        "type": "HTMLFrameMojit",
+        "config":{
+          "child": {
+            "type": "CookieMojit"
+          }
+        }
+      }
+    }
+  }
+]

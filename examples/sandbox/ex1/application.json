@@ -1,0 +1,44 @@
+[
+    {
+        "settings": [ "master" ],
+        "specs": {
+
+            "hello": {
+                "type": "Hello",
+                "config": {
+                    "test": "This data came from the mojit spec in application.yaml.",
+                    "children": {
+                        "sammy1": {
+                            "type": "Samuel"
+                        },
+                        "sammy2": {
+                            "type": "Samuel"
+                        },
+                        "sammy3": {
+                            "type": "Samuel"
+                        }
+                    }
+                }
+            },
+
+            "sam": {
+                "type": "Samuel"
+            },
+
+            "frame": {
+                "type": "HTMLFrameMojit",
+                "config": {
+                    "deploy": true,
+                    "child": {
+                        "base": "hello"
+                    }
+                }
+            },
+
+            "json": {
+                "type": "Samuel",
+                "action": "jsonReturn"
+            }
+        }
+    }
+]

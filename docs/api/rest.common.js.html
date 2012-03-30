@@ -1,0 +1,256 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>API: ActionContextAddon   rest.common.js  (YUI Library)</title>
+
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css?stamp=1327685402.65" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css?stamp=1327685402.65" />
+
+    <script type="text/javascript" src="assets/api-js?stamp=1327685402.65"></script>
+    <script type="text/javascript" src="assets/ac-js?stamp=1327685402.65"></script>
+</head>
+
+<body id="yahoo-com">
+
+<div id="doc3" class="yui-t2">
+	<div id="hd">
+        <h1><a href="http://developer.yahoo.com/yui/" title="mojito">mojito</a></h1>
+        <h3>ActionContextAddon&nbsp; <span class="subtitle">0.1.0</span></h3>
+        <a href="./index.html" title="mojito">mojito</a> 
+            &gt; <a href="./module_ActionContextAddon.html" title="ActionContextAddon">ActionContextAddon</a>
+                
+                 &gt; rest.common.js (source view) 
+        <form onsubmit="return false">
+            <div id="propertysearch">
+                Search: <input autocomplete="off" id="searchinput" />
+                <div id="searchresults">
+                    &nbsp;
+                </div>
+            </div>
+        </form>
+	</div>
+
+	<div id="bd">
+		<div id="yui-main">
+			<div class="yui-b">
+            <form action="#" name="yui-classopts-form" method="get" id="yui-classopts-form">
+                <fieldset>
+                    <legend>Filters</legend>
+                <span class="classopts"><input type="checkbox" name="show_private" id="show_private" /> <label for="show_private">Show Private</label></span>
+                <span class="classopts"><input type="checkbox" name="show_protected" id="show_protected" /> <label for="show_protected">Show Protected</label></span>
+                <span class="classopts"><input type="checkbox" name="show_deprecated" id="show_deprecated" /> <label for="show_deprecated">Show Deprecated</label></span>
+                </fieldset>
+            </form>
+
+                    <div id="srcout">
+                        <style>
+                            #doc3 .classopts { display:none; }
+                        </style>
+<div class="highlight"><pre><span class="c">/*</span>
+<span class="c"> * Copyright (c) 2011 Yahoo! Inc. All rights reserved.</span>
+<span class="c"> */</span>
+<span class="c">/**</span>
+<span class="c"> * Common Library</span>
+<span class="c"> * @module CommonLibs</span>
+<span class="c"> */</span>
+<span class="c">/**</span>
+<span class="c"> * @submodule CommonLibs</span>
+<span class="c"> */</span>
+<span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;mojito-rest-lib&#39;</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="o">,</span> <span class="nx">NAME</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="nx">Y</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="s1">&#39;mojito.lib&#39;</span><span class="p">);</span>
+
+    <span class="c">/**</span>
+<span class="c">     * The Rest module for Mojito provides an easy way to make RESTful calls to URLs</span>
+<span class="c">     * without messing about with Y.io.</span>
+<span class="c">     * @class REST</span>
+<span class="c">     * @namespace Y.mojito.lib</span>
+<span class="c">     * @static</span>
+<span class="c">     */</span>
+    <span class="nx">Y</span><span class="p">.</span><span class="nx">mojito</span><span class="p">.</span><span class="nx">lib</span><span class="p">.</span><span class="nx">REST</span> <span class="o">=</span> <span class="p">{</span>
+
+        <span class="c">/**</span>
+<span class="c">         * @private</span>
+<span class="c">         */</span>
+        <span class="nx">_doRequest</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">method</span><span class="o">,</span> <span class="nx">url</span><span class="o">,</span> <span class="nx">params</span><span class="o">,</span> <span class="nx">config</span><span class="o">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c">// TODO: [bug 4416153] Figure out why &#39;params&#39; values are attaching themselves to headers!</span>
+            <span class="kd">var</span> <span class="nx">ioConfig</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="nx">method</span><span class="o">:</span> <span class="nx">method</span><span class="o">,</span>
+                <span class="nx">data</span><span class="o">:</span> <span class="nx">params</span><span class="o">,</span>
+                <span class="nx">on</span><span class="o">:</span> <span class="p">{}</span>
+            <span class="p">};</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">config</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">ioConfig</span><span class="p">.</span><span class="nx">headers</span> <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">headers</span><span class="o">;</span>
+                <span class="nx">ioConfig</span><span class="p">.</span><span class="nx">timeout</span> <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">timeout</span><span class="o">;</span>
+            <span class="p">}</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">ioConfig</span><span class="p">.</span><span class="nx">on</span><span class="p">.</span><span class="nx">success</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">txid</span><span class="o">,</span> <span class="nx">resp</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="kd">var</span> <span class="nx">responseObj</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ResponseObject</span><span class="p">(</span><span class="nx">resp</span><span class="p">);</span>
+                    <span class="nx">callback</span><span class="p">(</span><span class="kc">null</span><span class="o">,</span> <span class="nx">responseObj</span><span class="p">);</span>
+                <span class="p">};</span>
+                <span class="nx">ioConfig</span><span class="p">.</span><span class="nx">on</span><span class="p">.</span><span class="nx">failure</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">txid</span><span class="o">,</span> <span class="nx">resp</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="nx">callback</span><span class="p">(</span><span class="nx">resp</span><span class="p">);</span>
+                <span class="p">};</span>
+            <span class="p">}</span>
+
+            <span class="nx">Y</span><span class="p">.</span><span class="nx">io</span><span class="p">(</span><span class="nx">url</span><span class="o">,</span> <span class="nx">ioConfig</span><span class="p">);</span>
+        <span class="p">}</span><span class="o">,</span>
+
+        <span class="c">/**</span>
+<span class="c">         * Makes a RESTful GET request to specified URL</span>
+<span class="c">         * @method GET</span>
+<span class="c">         * @param {String} url RESTful URL to hit</span>
+<span class="c">         * @param {Object} params parameters to add to the request</span>
+<span class="c">         * @param {Object} config may contain &#39;headers&#39; or &#39;timeout&#39; values</span>
+<span class="c">         * @param {Function} callback called with response or error</span>
+<span class="c">         */</span>
+        <span class="nx">GET</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">args</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">].</span><span class="nx">concat</span><span class="p">(</span><span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">slice</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">arguments</span><span class="p">));</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">_doRequest</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">args</span><span class="p">);</span>
+        <span class="p">}</span><span class="o">,</span>
+
+        <span class="c">/**</span>
+<span class="c">         * Makes a RESTful POST request to specified URL</span>
+<span class="c">         * @method POST</span>
+<span class="c">         * @param {String} url RESTful URL to hit</span>
+<span class="c">         * @param {Object} params parameters to add to the request</span>
+<span class="c">         * @param {Object} config may contain &#39;headers&#39; or &#39;timeout&#39; values</span>
+<span class="c">         * @param {Function} callback called with response or error</span>
+<span class="c">         */</span>
+        <span class="nx">POST</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">args</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">].</span><span class="nx">concat</span><span class="p">(</span><span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">slice</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">arguments</span><span class="p">));</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">_doRequest</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">args</span><span class="p">);</span>
+        <span class="p">}</span><span class="o">,</span>
+
+        <span class="c">/**</span>
+<span class="c">         * Makes a RESTful PUT request to specified URL</span>
+<span class="c">         * @method PUT</span>
+<span class="c">         * @param {String} url RESTful URL to hit</span>
+<span class="c">         * @param {Object} params parameters to add to the request</span>
+<span class="c">         * @param {Object} config may contain &#39;headers&#39; or &#39;timeout&#39; values</span>
+<span class="c">         * @param {Function} callback called with response or error</span>
+<span class="c">         */</span>
+        <span class="nx">PUT</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">args</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;PUT&#39;</span><span class="p">].</span><span class="nx">concat</span><span class="p">(</span><span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">slice</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">arguments</span><span class="p">));</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">_doRequest</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">args</span><span class="p">);</span>
+        <span class="p">}</span><span class="o">,</span>
+
+        <span class="c">/**</span>
+<span class="c">         * Makes a RESTful DELETE request to specified URL</span>
+<span class="c">         * @method DELETE</span>
+<span class="c">         * @param {String} url RESTful URL to hit</span>
+<span class="c">         * @param {Object} params parameters to add to the request</span>
+<span class="c">         * @param {Object} config may contain &#39;headers&#39; or &#39;timeout&#39; values</span>
+<span class="c">         * @param {Function} callback called with response or error</span>
+<span class="c">         */</span>
+        <span class="nx">DELETE</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">args</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;DELETE&#39;</span><span class="p">].</span><span class="nx">concat</span><span class="p">(</span><span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">slice</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">arguments</span><span class="p">));</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">_doRequest</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">args</span><span class="p">);</span>
+        <span class="p">}</span><span class="o">,</span>
+
+        <span class="c">/**</span>
+<span class="c">         * Makes a RESTful HEAD request to specified URL</span>
+<span class="c">         * @method HEAD</span>
+<span class="c">         * @param {String} url RESTful URL to hit</span>
+<span class="c">         * @param {Object} params parameters to add to the request</span>
+<span class="c">         * @param {Object} config may contain &#39;headers&#39; or &#39;timeout&#39; values</span>
+<span class="c">         * @param {Function} callback called with response or error</span>
+<span class="c">         */</span>
+        <span class="nx">HEAD</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">args</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;HEAD&#39;</span><span class="p">].</span><span class="nx">concat</span><span class="p">(</span><span class="nb">Array</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">slice</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">arguments</span><span class="p">));</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">_doRequest</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">args</span><span class="p">);</span>
+        <span class="p">}</span>
+
+    <span class="p">};</span>
+
+    <span class="c">/**</span>
+<span class="c">     * @private</span>
+<span class="c">     */</span>
+    <span class="kd">function</span> <span class="nx">ResponseObject</span><span class="p">(</span><span class="nx">resp</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">_resp</span> <span class="o">=</span> <span class="nx">resp</span><span class="o">;</span>
+    <span class="p">}</span>
+    <span class="nx">ResponseObject</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nx">getStatusCode</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_resp</span><span class="p">.</span><span class="nx">status</span><span class="o">;</span>
+        <span class="p">}</span><span class="o">,</span>
+        <span class="nx">getStatusMessage</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_resp</span><span class="p">.</span><span class="nx">statusText</span><span class="o">;</span>
+        <span class="p">}</span><span class="o">,</span>
+        <span class="nx">getHeader</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_resp</span><span class="p">.</span><span class="nx">getResponseHeader</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">arguments</span><span class="p">);</span>
+        <span class="p">}</span><span class="o">,</span>
+        <span class="nx">getHeaders</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_resp</span><span class="p">.</span><span class="nx">getResponseHeaders</span><span class="p">();</span>
+        <span class="p">}</span><span class="o">,</span>
+        <span class="nx">getBody</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_resp</span><span class="p">.</span><span class="nx">responseText</span><span class="o">;</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+
+<span class="p">}</span><span class="o">,</span> <span class="s1">&#39;0.1.0&#39;</span><span class="o">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;io&#39;</span><span class="o">,</span> <span class="s1">&#39;mojito&#39;</span><span class="p">]});</span>
+</pre></div>
+                    </div>
+			</div>
+		</div>
+		<div class="yui-b">
+            <div class="nav">
+
+                    <div id="moduleList" class="module">
+                        <h4>Modules</h4>
+                        <ul class="content">
+                                <li class=""><a href="module_ActionContext.html" title="ActionContext">ActionContext</a></li>
+                                <li class="selected"><a href="module_ActionContextAddon.html" title="ActionContextAddon">ActionContextAddon</a></li>
+                                <li class=""><a href="module_CommonLibs.html" title="CommonLibs">CommonLibs</a></li>
+                                <li class=""><a href="module_MojitoClient.html" title="MojitoClient">MojitoClient</a></li>
+                                <li class=""><a href="module_MojitoServer.html" title="MojitoServer">MojitoServer</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="classList" class="module">
+                        <h4>Classes</h4>
+                        <ul class="content">
+                                <li class=""><a href="Analytics.common.html" title="Analytics.common">Analytics.common</a></li>
+                                <li class=""><a href="Assets.common.html" title="Assets.common">Assets.common</a></li>
+                                <li class=""><a href="Carrier.common.html" title="Carrier.common">Carrier.common</a></li>
+                                <li class=""><a href="Deploy.server.html" title="Deploy.server">Deploy.server</a></li>
+                                <li class=""><a href="Device.common.html" title="Device.common">Device.common</a></li>
+                                <li class=""><a href="I13n.server.html" title="I13n.server">I13n.server</a></li>
+                                <li class=""><a href="Meta.common.html" title="Meta.common">Meta.common</a></li>
+                        </ul>
+                    </div>
+
+                    <!--
+                    <div id="fileList" class="module">
+                        <h4>Files</h4>
+                        <ul class="content">        
+                                <li class=""><a href="assets.common.js.html" title="assets.common.js">assets.common.js</a></li>
+                                <li class=""><a href="carrier.server.js.html" title="carrier.server.js">carrier.server.js</a></li>
+                                <li class=""><a href="deploy.server.js.html" title="deploy.server.js">deploy.server.js</a></li>
+                                <li class=""><a href="device.server.js.html" title="device.server.js">device.server.js</a></li>
+                                <li class=""><a href="i13n.common.js.html" title="i13n.common.js">i13n.common.js</a></li>
+                                <li class=""><a href="meta.common.js.html" title="meta.common.js">meta.common.js</a></li>
+                                <li class=""><a href="output-adapter.common.js.html" title="output-adapter.common.js">output-adapter.common.js</a></li>
+                                <li class="selected"><a href="rest.common.js.html" title="rest.common.js">rest.common.js</a></li>
+                        </ul>
+                    </div>
+                    -->
+
+
+
+
+
+            </div>
+		</div>
+	</div>
+	<div id="ft">
+        <hr />
+        Copyright &copy; 2012 Yahoo! Inc. All rights reserved.
+	</div>
+</div>
+<script type="text/javascript">
+    ALL_YUI_PROPS = [{"url": "Assets.common.html#method_addBlob", "access": "", "host": "Assets.common", "type": "method", "name": "addBlob"}, {"url": "Assets.common.html#method_addCss", "access": "", "host": "Assets.common", "type": "method", "name": "addCss"}, {"url": "Assets.common.html#method_addJs", "access": "", "host": "Assets.common", "type": "method", "name": "addJs"}, {"url": "Deploy.server.html#method_constructMojitoClientRuntime", "access": "", "host": "Deploy.server", "type": "method", "name": "constructMojitoClientRuntime"}, {"url": "Device.common.html#method_get", "access": "", "host": "Device.common", "type": "method", "name": "get"}, {"url": "Carrier.common.html#method_get", "access": "", "host": "Carrier.common", "type": "method", "name": "get"}, {"url": "I13n.server.html#method_getSpaceid", "access": "", "host": "I13n.server", "type": "method", "name": "getSpaceid"}, {"url": "I13n.server.html#method_make", "access": "", "host": "I13n.server", "type": "method", "name": "make"}, {"url": "Analytics.common.html#method_retrieve", "access": "", "host": "Analytics.common", "type": "method", "name": "retrieve"}, {"url": "Meta.common.html#method_retrieve", "access": "", "host": "Meta.common", "type": "method", "name": "retrieve"}, {"url": "Analytics.common.html#method_setMergeFunction", "access": "", "host": "Analytics.common", "type": "method", "name": "setMergeFunction"}, {"url": "I13n.server.html#method_stampPageView", "access": "", "host": "I13n.server", "type": "method", "name": "stampPageView"}, {"url": "Analytics.common.html#method_store", "access": "", "host": "Analytics.common", "type": "method", "name": "store"}, {"url": "Meta.common.html#method_store", "access": "", "host": "Meta.common", "type": "method", "name": "store"}, {"url": "I13n.server.html#method_trackClickOnly", "access": "", "host": "I13n.server", "type": "method", "name": "trackClickOnly"}, {"url": "I13n.server.html#method_trackForm", "access": "", "host": "I13n.server", "type": "method", "name": "trackForm"}, {"url": "I13n.server.html#method_trackLink", "access": "", "host": "I13n.server", "type": "method", "name": "trackLink"}, {"url": "I13n.server.html#method_trackPageParams", "access": "", "host": "I13n.server", "type": "method", "name": "trackPageParams"}, {"url": "I13n.server.html#method_trackUserLink", "access": "", "host": "I13n.server", "type": "method", "name": "trackUserLink"}];
+
+</script>
+</body>
+</html>

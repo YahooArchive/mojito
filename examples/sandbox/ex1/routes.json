@@ -1,0 +1,73 @@
+[
+    {
+        "settings": [ "master" ],
+
+        "frame index": {
+            "verbs": ["get"],
+            "path": "/",
+            "call": "frame.index"
+        },
+
+        "hello index": {
+            "verbs": ["get"],
+            "path": "/hello/index",
+            "call": "hello.index"
+        },
+
+        "hello defaults": {
+            "verbs": ["get"],
+            "path": "/hello/defaults",
+            "call": "@Hello.index"
+        },
+
+        "speedy": {
+            "verbs": ["get"],
+            "path": "/speedy",
+            "call": "hello.speedy"
+        },
+
+        "sam index": {
+            "verbs": ["get"],
+            "path": "/sam/index",
+            "call": "sam.index"
+        },
+
+        "sam datatest": {
+            "verbs": ["get"],
+            "path": "/sam/datatest",
+            "call": "sam.datatest"
+        },
+
+        "hello test": {
+            "verbs": ["get"],
+            "path": "/hello/test",
+            "call": "hello.test"
+        },
+
+        "hello composite": {
+            "verbs": ["post", "get"],
+            "path": "/hello/composite",
+            "call": "hello.composite",
+            "param": "rval=routevalue"
+        },
+
+        "hello manual composite": {
+            "verbs": ["get"],
+            "path": "/hello/manualComposite",
+            "call": "hello.manualComposite"
+        },
+
+        "json_test": {
+            "verbs": ["get"],
+            "path": "/json",
+            "call": "json.jsonReturn"
+        },
+
+        "view_dup": {
+            "verbs": ["get"],
+            "path": "/v2",
+            "call": "json.datatest2"
+        }
+
+    }
+]

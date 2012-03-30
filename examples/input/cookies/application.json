@@ -1,0 +1,31 @@
+[
+    {
+        "settings" : ["master"],
+
+        "specs": {
+
+            "server": {
+                "type": "HTMLFrameMojit",
+                "config": {
+                    "deploy": true,
+                    "child": {
+                        "type" : "ServerCookie",
+                        "action": "pitch"
+                    }
+                }
+            },
+
+            "client": {
+                "type": "HTMLFrameMojit",
+                "config": {
+                    "deploy": true,
+                    "child": {
+                        "type" : "ClientCookie"
+                    }
+                }
+            }
+
+        }
+
+    }
+]

@@ -1,0 +1,443 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>API: MojitoClient   mojit-proxy.client.js  (YUI Library)</title>
+
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css?stamp=1327685402.48" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css?stamp=1327685402.48" />
+
+    <script type="text/javascript" src="assets/api-js?stamp=1327685402.48"></script>
+    <script type="text/javascript" src="assets/ac-js?stamp=1327685402.48"></script>
+</head>
+
+<body id="yahoo-com">
+
+<div id="doc3" class="yui-t2">
+	<div id="hd">
+        <h1><a href="http://developer.yahoo.com/yui/" title="mojito">mojito</a></h1>
+        <h3>MojitoClient&nbsp; <span class="subtitle">0.1.0</span></h3>
+        <a href="./index.html" title="mojito">mojito</a> 
+            &gt; <a href="./module_MojitoClient.html" title="MojitoClient">MojitoClient</a>
+                
+                 &gt; mojit-proxy.client.js (source view) 
+        <form onsubmit="return false">
+            <div id="propertysearch">
+                Search: <input autocomplete="off" id="searchinput" />
+                <div id="searchresults">
+                    &nbsp;
+                </div>
+            </div>
+        </form>
+	</div>
+
+	<div id="bd">
+		<div id="yui-main">
+			<div class="yui-b">
+            <form action="#" name="yui-classopts-form" method="get" id="yui-classopts-form">
+                <fieldset>
+                    <legend>Filters</legend>
+                <span class="classopts"><input type="checkbox" name="show_private" id="show_private" /> <label for="show_private">Show Private</label></span>
+                <span class="classopts"><input type="checkbox" name="show_protected" id="show_protected" /> <label for="show_protected">Show Protected</label></span>
+                <span class="classopts"><input type="checkbox" name="show_deprecated" id="show_deprecated" /> <label for="show_deprecated">Show Deprecated</label></span>
+                </fieldset>
+            </form>
+
+                    <div id="srcout">
+                        <style>
+                            #doc3 .classopts { display:none; }
+                        </style>
+<div class="highlight"><pre><span class="c">/*</span>
+<span class="c"> * Copyright (c) 2011 Yahoo! Inc. All rights reserved.</span>
+<span class="c"> */</span>
+
+<span class="c">/**</span>
+<span class="c"> * Client side Mojito runtime</span>
+<span class="c"> * @module MojitoClient</span>
+<span class="c"> */</span>
+
+<span class="c">/**</span>
+<span class="c"> * @submodule MojitoClient</span>
+<span class="c"> */</span>
+
+<span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;mojito-mojit-proxy&#39;</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="o">,</span> <span class="nx">NAME</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="kd">var</span> <span class="nx">MJT_EVT_PRFX</span> <span class="o">=</span> <span class="s1">&#39;mojit:&#39;</span><span class="o">;</span>
+
+    <span class="c">// TODO MATT: [bug 4649682] Implement all these damn Dali API functions on the mojit proxy</span>
+    <span class="c">// (but only when as need them :-)</span>
+    <span class="kd">var</span> <span class="nx">DALI_API_METHODS</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;broadcast&quot;</span><span class="o">,</span> <span class="s2">&quot;listen&quot;</span><span class="o">,</span> <span class="s2">&quot;unlisten&quot;</span><span class="o">,</span> <span class="s2">&quot;closeView&quot;</span><span class="o">,</span> <span class="s2">&quot;getViewNode&quot;</span><span class="o">,</span>
+        <span class="s2">&quot;getViewDirection&quot;</span><span class="o">,</span> <span class="s2">&quot;isViewOpen&quot;</span><span class="o">,</span> <span class="s2">&quot;navigate&quot;</span><span class="o">,</span> <span class="s2">&quot;openView&quot;</span><span class="o">,</span> <span class="s2">&quot;makeRequest&quot;</span><span class="o">,</span>
+        <span class="s2">&quot;refreshView&quot;</span><span class="o">,</span> <span class="s2">&quot;setView&quot;</span><span class="o">,</span> <span class="s2">&quot;abortRequest&quot;</span><span class="o">,</span> <span class="s2">&quot;error&quot;</span><span class="o">,</span> <span class="s2">&quot;getContextData&quot;</span><span class="o">,</span>
+        <span class="s2">&quot;getId&quot;</span><span class="o">,</span> <span class="s2">&quot;getPref&quot;</span><span class="o">,</span> <span class="s2">&quot;getService&quot;</span><span class="o">,</span> <span class="s2">&quot;isRequestPending&quot;</span><span class="o">,</span> <span class="s2">&quot;setContextData&quot;</span><span class="o">,</span>
+        <span class="s2">&quot;setPref&quot;</span>
+    <span class="p">];</span>
+
+    <span class="c">/**</span>
+<span class="c">     * The object that is given to each mojit binder to be used to interact with other mojits</span>
+<span class="c">     * and the mojito framework.</span>
+<span class="c">     * @class MojitProxy</span>
+<span class="c">     */</span>
+    <span class="kd">function</span> <span class="nx">MojitProxy</span><span class="p">(</span><span class="nx">opts</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c">// &quot;private&quot;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">_action</span> <span class="o">=</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">action</span><span class="o">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">_binder</span> <span class="o">=</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">binder</span><span class="o">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">_base</span> <span class="o">=</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">base</span><span class="o">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">_node</span> <span class="o">=</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">node</span><span class="o">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">_element</span> <span class="o">=</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">element</span><span class="o">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">_viewId</span> <span class="o">=</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">viewId</span><span class="o">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">_instanceId</span> <span class="o">=</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">instanceId</span><span class="o">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">_client</span> <span class="o">=</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">client</span><span class="o">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">_store</span> <span class="o">=</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">store</span><span class="o">;</span>
+
+        <span class="c">/**</span>
+<span class="c">         * An object that contains information about the children used to generate this DOM node associted with this</span>
+<span class="c">         * binder. This should identify what mojits may exist as children within this binder&#39;s domain. You can use it</span>
+<span class="c">         * to broadcast messages directly to certain children as explained in the topical documentation.</span>
+<span class="c">         * @property children</span>
+<span class="c">         * @type {object}</span>
+<span class="c">         */</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">children</span> <span class="o">=</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">children</span><span class="o">;</span>
+        <span class="c">/**</span>
+<span class="c">         * The mojit type</span>
+<span class="c">         * @property type</span>
+<span class="c">         * @type {string}</span>
+<span class="c">         */</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">type</span> <span class="o">=</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">type</span><span class="o">;</span>
+        <span class="c">/**</span>
+<span class="c">         * The mojit configuration for this binder</span>
+<span class="c">         * @property config</span>
+<span class="c">         * @type {object}</span>
+<span class="c">         */</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">config</span> <span class="o">=</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">config</span><span class="o">;</span>
+        <span class="c">/**</span>
+<span class="c">         * The context used to generate this page</span>
+<span class="c">         * @property context</span>
+<span class="c">         * @type {object}</span>
+<span class="c">         */</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">context</span> <span class="o">=</span> <span class="nx">opts</span><span class="p">.</span><span class="nx">context</span><span class="o">;</span>
+
+        <span class="nx">Y</span><span class="p">.</span><span class="nb">Array</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">DALI_API_METHODS</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">m</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="k">this</span><span class="p">[</span><span class="nx">m</span><span class="p">])</span> <span class="p">{</span>
+                <span class="c">//Y.log(&#39;Stubbing Dali platform method: &#39; + m, &#39;debug&#39;, NAME);</span>
+                <span class="k">this</span><span class="p">[</span><span class="nx">m</span><span class="p">]</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                    <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s2">&quot;Function not implemented: &quot;</span> <span class="o">+</span> <span class="nx">m</span><span class="p">);</span>
+                <span class="p">};</span>
+            <span class="p">}</span>
+        <span class="p">}</span><span class="o">,</span> <span class="k">this</span><span class="p">);</span>
+    <span class="p">}</span>
+
+
+    <span class="nx">MojitProxy</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+
+        <span class="c">/**</span>
+<span class="c">         * Used by mojit binders to broadcast a message between mojits.</span>
+<span class="c">         * @method broadcast</span>
+<span class="c">         * @param {String} name event name</span>
+<span class="c">         * @param {Object} payload the payload for the event</span>
+<span class="c">         * @param {object} options currently only used to specify target for</span>
+<span class="c">         *      broadcast. For example, to target only one child mojit for broadcast,</span>
+<span class="c">         *      use: {target: {slot: &#39;slot name&#39;, viewId: &#39;DOM view id&#39;}}</span>
+<span class="c">         */</span>
+        <span class="nx">broadcast</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="o">,</span> <span class="nx">payload</span><span class="o">,</span> <span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">_client</span><span class="p">.</span><span class="nx">doBroadcast</span><span class="p">(</span><span class="nx">MJT_EVT_PRFX</span> <span class="o">+</span> <span class="nx">name</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_viewId</span><span class="o">,</span> <span class="nx">payload</span><span class="o">,</span> <span class="nx">options</span><span class="p">);</span>
+        <span class="p">}</span><span class="o">,</span>
+
+        <span class="c">/**</span>
+<span class="c">         * Allows mojit binders to register to listen to other mojit events</span>
+<span class="c">         * @method listen</span>
+<span class="c">         * @param {String} name event name</span>
+<span class="c">         * @param {Function} callback called when an event is broadcastd with the event data</span>
+<span class="c">         */</span>
+        <span class="nx">listen</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="o">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">_client</span><span class="p">.</span><span class="nx">doListen</span><span class="p">(</span><span class="nx">MJT_EVT_PRFX</span><span class="o">+</span><span class="nx">name</span><span class="o">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">_viewId</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">evt</span><span class="p">)</span> <span class="p">{</span>
+                <span class="c">// prevent mojits from listening to their own events</span>
+                <span class="k">if</span> <span class="p">(</span><span class="nx">evt</span><span class="p">.</span><span class="nx">source</span> <span class="o">!==</span> <span class="k">this</span><span class="p">.</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="nx">callback</span><span class="p">(</span><span class="nx">evt</span><span class="p">);</span>
+                <span class="p">}</span>
+            <span class="p">});</span>
+        <span class="p">}</span><span class="o">,</span>
+
+        <span class="c">/**</span>
+<span class="c">         * The opposite of the &quot;listen&quot; function. Deletes all callback functions from the</span>
+<span class="c">         * listener queue associated with this binder and event type. If event name is not</span>
+<span class="c">         * specified, all callbacks associated with this binder are deleted.</span>
+<span class="c">         * @param {String} [optional] name event name</span>
+<span class="c">         */</span>
+        <span class="nx">unlisten</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">eventName</span> <span class="o">=</span> <span class="nx">name</span> <span class="o">?</span> <span class="nx">MJT_EVT_PRFX</span> <span class="o">+</span> <span class="nx">name</span> <span class="o">:</span> <span class="kc">null</span><span class="o">;</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">_client</span><span class="p">.</span><span class="nx">doUnlisten</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_viewId</span><span class="o">,</span> <span class="nx">eventName</span><span class="p">);</span>
+        <span class="p">}</span><span class="o">,</span>
+
+        <span class="c">/**</span>
+<span class="c">         * This method renders the &quot;data&quot; provided into the &quot;View&quot; specified.</span>
+<span class="c">         * The &quot;view&quot; must be the name of one of the files in the current</span>
+<span class="c">         * Mojits &quot;views&quot; folder. Returns via the callback.</span>
+<span class="c">         *</span>
+<span class="c">         * @method render</span>
+<span class="c">         * @param {object} data</span>
+<span class="c">         * @param {string} view</span>
+<span class="c">         * @param {function(err,str)} cb</span>
+<span class="c">         */</span>
+        <span class="nx">render</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="o">,</span> <span class="nx">view</span><span class="o">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">_client</span><span class="p">.</span><span class="nx">doRender</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">data</span><span class="o">,</span> <span class="nx">view</span><span class="o">,</span> <span class="nx">cb</span><span class="p">);</span>
+        <span class="p">}</span><span class="o">,</span>
+
+        <span class="c">/**</span>
+<span class="c">         *</span>
+<span class="c">         * Used by the mojit binders to invoke actions on themselves within Mojito.</span>
+<span class="c">         * The &lt;em&gt;options&lt;/em&gt; parameter is optional and may contain:</span>
+<span class="c">         * &lt;dl&gt;</span>
+<span class="c">         *     &lt;dt&gt;params&lt;/dt&gt;&lt;dd&gt;&amp;lt;object&amp;gt; must be broken out explicitly:</span>
+<span class="c">         *     &lt;dl&gt;</span>
+<span class="c">         *      &lt;dt&gt;route&lt;/dt&gt;&lt;dd&gt;&amp;lt;object&amp;gt; Map of key/value pairs.&lt;/dd&gt;</span>
+<span class="c">         *      &lt;dt&gt;url&lt;/dt&gt;&lt;dd&gt;&amp;lt;object&amp;gt; Map of key/value pairs.&lt;/dd&gt;</span>
+<span class="c">         *      &lt;dt&gt;body&lt;/dt&gt;&lt;dd&gt;&amp;lt;object&amp;gt; Map of key/value pairs.&lt;/dd&gt;</span>
+<span class="c">         *      &lt;dt&gt;file&lt;/dt&gt;&lt;dd&gt;&amp;lt;object&amp;gt; Map of key/value pairs.&lt;/dd&gt;</span>
+<span class="c">         *     &lt;/dl&gt;&lt;/dd&gt;</span>
+<span class="c">         *     &lt;dt&gt;rpc&lt;/dt&gt;&lt;dd&gt;&amp;lt;boolean&amp;gt; Means that we are immediately</span>
+<span class="c">         *     sending the request to the server to answer the invocation.&lt;/dd&gt;</span>
+<span class="c">         * &lt;/dl&gt;</span>
+<span class="c">         *</span>
+<span class="c">         * @method invoke</span>
+<span class="c">         * @param {string} action name of the action to invoke</span>
+<span class="c">         * @param {Object} options see above</span>
+<span class="c">         * @param {function} cb function to be called on completion</span>
+<span class="c">         */</span>
+        <span class="nx">invoke</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">action</span><span class="o">,</span> <span class="nx">options</span><span class="o">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">callback</span><span class="o">,</span> <span class="nx">command</span><span class="o">,</span> <span class="nx">instance</span><span class="o">;</span>
+
+            <span class="c">// If there are no options use it as the callback</span>
+            <span class="k">if</span><span class="p">(</span><span class="s1">&#39;function&#39;</span> <span class="o">===</span> <span class="k">typeof</span> <span class="nx">options</span><span class="p">){</span>
+                <span class="nx">callback</span> <span class="o">=</span> <span class="nx">options</span><span class="o">;</span>
+                <span class="nx">options</span>  <span class="o">=</span> <span class="p">{};</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="nx">callback</span> <span class="o">=</span> <span class="nx">cb</span><span class="o">;</span>
+            <span class="p">}</span>
+
+            <span class="c">// If we don&#39;t have a callback set an empty one</span>
+            <span class="k">if</span><span class="p">(</span><span class="s1">&#39;function&#39;</span> <span class="o">!==</span> <span class="k">typeof</span> <span class="nx">callback</span><span class="p">){</span>
+                <span class="nx">callback</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){};</span>
+            <span class="p">}</span>
+
+            <span class="c">// Make sure we have a &quot;params&quot; key in our &quot;options&quot; object</span>
+            <span class="nx">options</span><span class="p">.</span><span class="nx">params</span> <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">params</span> <span class="o">||</span> <span class="p">{};</span>
+
+            <span class="nx">instance</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="nx">base</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">_base</span><span class="o">,</span>
+                <span class="nx">type</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">type</span><span class="o">,</span>
+                <span class="nx">guid</span><span class="o">:</span> <span class="k">this</span><span class="p">.</span><span class="nx">_instanceId</span><span class="o">,</span>
+                <span class="nx">config</span><span class="o">:</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">mojito</span><span class="p">.</span><span class="nx">util</span><span class="p">.</span><span class="nx">copy</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">config</span><span class="p">)</span>
+            <span class="p">};</span>
+
+            <span class="c">// Create the command we will use to call executeAction() with</span>
+            <span class="nx">command</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="nx">instance</span><span class="o">:</span> <span class="nx">instance</span><span class="o">,</span>
+                <span class="nx">action</span><span class="o">:</span> <span class="nx">action</span><span class="o">,</span>
+                <span class="nx">params</span><span class="o">:</span> <span class="p">{</span> <span class="c">// Explicitly map the params to there keys</span>
+                    <span class="nx">route</span><span class="o">:</span> <span class="nx">options</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">route</span> <span class="o">||</span> <span class="p">{}</span><span class="o">,</span>
+                    <span class="nx">url</span><span class="o">:</span> <span class="nx">options</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">url</span> <span class="o">||</span> <span class="k">this</span><span class="p">.</span><span class="nx">getFromUrl</span><span class="p">()</span><span class="o">,</span>
+                    <span class="nx">body</span><span class="o">:</span> <span class="nx">options</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">body</span> <span class="o">||</span> <span class="p">{}</span><span class="o">,</span>
+                    <span class="nx">file</span><span class="o">:</span> <span class="nx">options</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">file</span> <span class="o">||</span> <span class="p">{}</span>
+                <span class="p">}</span><span class="o">,</span>
+                <span class="nx">rpc</span><span class="o">:</span> <span class="nx">options</span><span class="p">.</span><span class="nx">rpc</span> <span class="o">||</span> <span class="kc">false</span>
+            <span class="p">};</span>
+
+            <span class="k">this</span><span class="p">.</span><span class="nx">_client</span><span class="p">.</span><span class="nx">executeAction</span><span class="p">(</span><span class="nx">command</span><span class="o">,</span> <span class="nx">callback</span><span class="p">);</span>
+        <span class="p">}</span><span class="o">,</span>
+
+        <span class="c">/**</span>
+<span class="c">         * Refreshes the current DOM view for this binder without recreating the binder instance. Will call</span>
+<span class="c">         * the binder&#39;s onRefreshView() function when complete with the new Y.Node and HTMLElement objects.</span>
+<span class="c">         * @param opts [optional] &lt;object&gt; same as the options for invoke()</span>
+<span class="c">         * @param cb [optional] called after replacement and onRefreshView have been called, sends data/meta</span>
+<span class="c">         */</span>
+        <span class="nx">refreshView</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">opts</span><span class="o">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">opts</span> <span class="o">=</span> <span class="nx">opts</span> <span class="o">||</span> <span class="p">{};</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">opts</span><span class="p">))</span> <span class="p">{</span>
+                <span class="nx">cb</span> <span class="o">=</span> <span class="nx">opts</span><span class="o">;</span>
+                <span class="nx">opts</span> <span class="o">=</span> <span class="p">{};</span>
+            <span class="p">}</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">_client</span><span class="p">.</span><span class="nx">refreshMojitView</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">opts</span><span class="o">,</span> <span class="nx">cb</span><span class="p">);</span>
+        <span class="p">}</span><span class="o">,</span>
+
+        <span class="c">/**</span>
+<span class="c">         * Gets URL parameters</span>
+<span class="c">         * @method getFromUrl</span>
+<span class="c">         * @param {string} key The name of the parameter required</span>
+<span class="c">         * @return {string|object} param value, or all params if no key specified</span>
+<span class="c">         */</span>
+        <span class="nx">getFromUrl</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">key</span><span class="p">){</span>
+            <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="k">this</span><span class="p">.</span><span class="nx">query</span><span class="p">){</span>
+                <span class="k">this</span><span class="p">.</span><span class="nx">query</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">QueryString</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">href</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39;?&#39;</span><span class="p">).</span><span class="nx">pop</span><span class="p">());</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span><span class="p">(</span><span class="nx">key</span><span class="p">){</span>
+                <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">query</span><span class="p">[</span><span class="nx">key</span><span class="p">];</span>
+            <span class="p">}</span>
+            
+            <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">query</span><span class="o">;</span>
+        <span class="p">}</span><span class="o">,</span>
+
+        <span class="c">/*</span>
+<span class="c">         * Returns the DOM Node ID for the current binder</span>
+<span class="c">         * @method getId</span>
+<span class="c">         * @return {string} YUI GUID</span>
+<span class="c">         */</span>
+        <span class="nx">getId</span><span class="o">:</span> <span class="kd">function</span><span class="p">(){</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_viewId</span><span class="o">;</span>
+        <span class="p">}</span><span class="o">,</span>
+
+        <span class="c">/**</span>
+<span class="c">         * Helper function to gather up details about a mojit&#39;s children from the Mojito Client</span>
+<span class="c">         * @method getChildren</span>
+<span class="c">         * @return &lt;object&gt; slot&lt;string&gt;--&gt;child&lt;object&gt;</span>
+<span class="c">         */</span>
+        <span class="nx">getChildren</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">slot</span><span class="o">,</span> <span class="nx">child</span><span class="o">,</span> <span class="nx">childMojit</span><span class="o">,</span> <span class="nx">children</span> <span class="o">=</span> <span class="p">{};</span>
+            <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="k">this</span><span class="p">.</span><span class="nx">children</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">return</span> <span class="kc">undefined</span><span class="o">;</span>
+            <span class="p">}</span>
+            <span class="k">for</span> <span class="p">(</span><span class="nx">slot</span> <span class="k">in</span> <span class="k">this</span><span class="p">.</span><span class="nx">children</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">children</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">slot</span><span class="p">))</span> <span class="p">{</span>
+                    <span class="nx">child</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">children</span><span class="p">[</span><span class="nx">slot</span><span class="p">];</span>
+                    <span class="nx">childMojit</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_client</span><span class="p">.</span><span class="nx">_mojits</span><span class="p">[</span><span class="nx">child</span><span class="p">.</span><span class="nx">viewId</span><span class="p">];</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="nx">childMojit</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="nx">children</span><span class="p">[</span><span class="nx">slot</span><span class="p">]</span> <span class="o">=</span> <span class="nx">childMojit</span><span class="p">.</span><span class="nx">proxy</span><span class="o">;</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="nx">children</span><span class="o">;</span>
+        <span class="p">}</span><span class="o">,</span>
+
+        <span class="c">/**</span>
+<span class="c">         * Clears out a child&#39;s view, calling the appropriate life cycle functions, then destroy&#39;s its binder and</span>
+<span class="c">         * dereferences it. Will also dereference the child from this mojit&#39;s children.</span>
+<span class="c">         * @method destroyChild</span>
+<span class="c">         * @param id &lt;string&gt; *Either* the slot key of the child, or the DOM view id of the child</span>
+<span class="c">         */</span>
+        <span class="nx">destroyChild</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">slot</span><span class="o">,</span> <span class="nx">doomed</span><span class="o">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">children</span><span class="p">[</span><span class="nx">id</span><span class="p">])</span> <span class="p">{</span>
+                <span class="nx">doomed</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">children</span><span class="p">[</span><span class="nx">id</span><span class="p">].</span><span class="nx">viewId</span><span class="o">;</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="k">for</span> <span class="p">(</span><span class="nx">slot</span> <span class="k">in</span> <span class="k">this</span><span class="p">.</span><span class="nx">children</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">children</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">slot</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="k">this</span><span class="p">.</span><span class="nx">children</span><span class="p">[</span><span class="nx">slot</span><span class="p">].</span><span class="nx">viewId</span> <span class="o">===</span> <span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="nx">doomed</span> <span class="o">=</span> <span class="nx">id</span><span class="o">;</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nx">doomed</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s2">&quot;Cannot detroy a child mojit with id &#39;&quot;</span> <span class="o">+</span> <span class="nx">id</span> <span class="o">+</span> <span class="s2">&quot;&#39;. Are you sure this is your child?&quot;</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">_client</span><span class="p">.</span><span class="nx">destroyMojitProxy</span><span class="p">(</span><span class="nx">doomed</span><span class="p">);</span>
+            <span class="nx">delete</span> <span class="k">this</span><span class="p">.</span><span class="nx">children</span><span class="p">[</span><span class="nx">id</span><span class="p">];</span>
+            <span class="nx">delete</span> <span class="k">this</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">children</span><span class="p">[</span><span class="nx">id</span><span class="p">];</span>
+        <span class="p">}</span><span class="o">,</span>
+
+        <span class="c">/**</span>
+<span class="c">         * Allows a binder to destroy itself and be removed from Mojito client runtime entirely.</span>
+<span class="c">         * @method destroySelf</span>
+<span class="c">         * @param retainNode &lt;boolean&gt; if true, the binder&#39;s node will remain in the dom</span>
+<span class="c">         */</span>
+        <span class="nx">destroySelf</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">retainNode</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">_client</span><span class="p">.</span><span class="nx">destroyMojitProxy</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">getId</span><span class="p">()</span><span class="o">,</span> <span class="nx">retainNode</span><span class="p">);</span>
+        <span class="p">}</span><span class="o">,</span>
+
+        <span class="nx">_destroy</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">retainNode</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">binder</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_binder</span><span class="o">;</span>
+            <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;destroying binder &#39;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">_viewId</span><span class="o">,</span> <span class="s1">&#39;debug&#39;</span><span class="o">,</span> <span class="nx">NAME</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">binder</span><span class="p">.</span><span class="nx">destroy</span><span class="p">))</span> <span class="p">{</span>
+                <span class="c">// this will de-register all this binder&#39;s callbacks from any</span>
+                <span class="c">// listener queues</span>
+                <span class="nx">binder</span><span class="p">.</span><span class="nx">destroy</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">binder</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nx">retainNode</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">this</span><span class="p">.</span><span class="nx">_node</span><span class="p">.</span><span class="nx">remove</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">_client</span><span class="p">.</span><span class="nx">doUnlisten</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_viewId</span><span class="p">);</span>
+        <span class="p">}</span><span class="o">,</span>
+
+        <span class="nx">_pause</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">binder</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_binder</span><span class="o">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">binder</span><span class="p">.</span><span class="nx">onPause</span><span class="p">))</span> <span class="p">{</span>
+                <span class="nx">binder</span><span class="p">.</span><span class="nx">onPause</span><span class="p">();</span>
+            <span class="p">}</span>
+        <span class="p">}</span><span class="o">,</span>
+
+        <span class="nx">_resume</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">binder</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_binder</span><span class="o">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">Lang</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">binder</span><span class="p">.</span><span class="nx">onResume</span><span class="p">))</span> <span class="p">{</span>
+                <span class="nx">binder</span><span class="p">.</span><span class="nx">onResume</span><span class="p">();</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+    <span class="p">};</span>
+
+    <span class="nx">Y</span><span class="p">.</span><span class="nx">mojito</span><span class="p">.</span><span class="nx">MojitProxy</span> <span class="o">=</span> <span class="nx">MojitProxy</span><span class="o">;</span>
+
+<span class="p">}</span><span class="o">,</span> <span class="s1">&#39;0.1.0&#39;</span><span class="o">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;mojito-util&#39;</span><span class="p">]});</span>
+</pre></div>
+                    </div>
+			</div>
+		</div>
+		<div class="yui-b">
+            <div class="nav">
+
+                    <div id="moduleList" class="module">
+                        <h4>Modules</h4>
+                        <ul class="content">
+                                <li class=""><a href="module_ActionContext.html" title="ActionContext">ActionContext</a></li>
+                                <li class=""><a href="module_ActionContextAddon.html" title="ActionContextAddon">ActionContextAddon</a></li>
+                                <li class=""><a href="module_CommonLibs.html" title="CommonLibs">CommonLibs</a></li>
+                                <li class="selected"><a href="module_MojitoClient.html" title="MojitoClient">MojitoClient</a></li>
+                                <li class=""><a href="module_MojitoServer.html" title="MojitoServer">MojitoServer</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="classList" class="module">
+                        <h4>Classes</h4>
+                        <ul class="content">
+                                <li class=""><a href="Y.mojito.Client.html" title="Y.mojito.Client">Y.mojito.Client</a></li>
+                                <li class=""><a href="Y.mojito.MojitProxy.html" title="Y.mojito.MojitProxy">Y.mojito.MojitProxy</a></li>
+                        </ul>
+                    </div>
+
+                    <!--
+                    <div id="fileList" class="module">
+                        <h4>Files</h4>
+                        <ul class="content">        
+                                <li class=""><a href="action-context.common.js.html" title="action-context.common.js">action-context.common.js</a></li>
+                                <li class=""><a href="controller-context.common.js.html" title="controller-context.common.js">controller-context.common.js</a></li>
+                                <li class=""><a href="dispatch.common.js.html" title="dispatch.common.js">dispatch.common.js</a></li>
+                                <li class=""><a href="loader.common.js.html" title="loader.common.js">loader.common.js</a></li>
+                                <li class=""><a href="logger.common.js.html" title="logger.common.js">logger.common.js</a></li>
+                                <li class="selected"><a href="mojit-proxy.client.js.html" title="mojit-proxy.client.js">mojit-proxy.client.js</a></li>
+                                <li class=""><a href="mojito-test.common.js.html" title="mojito-test.common.js">mojito-test.common.js</a></li>
+                                <li class=""><a href="output-handler.client.js.html" title="output-handler.client.js">output-handler.client.js</a></li>
+                                <li class=""><a href="perf.server.js.html" title="perf.server.js">perf.server.js</a></li>
+                                <li class=""><a href="route-maker.common.js.html" title="route-maker.common.js">route-maker.common.js</a></li>
+                                <li class=""><a href="util.common.js.html" title="util.common.js">util.common.js</a></li>
+                                <li class=""><a href="view-renderer.common.js.html" title="view-renderer.common.js">view-renderer.common.js</a></li>
+                        </ul>
+                    </div>
+                    -->
+
+
+
+
+
+            </div>
+		</div>
+	</div>
+	<div id="ft">
+        <hr />
+        Copyright &copy; 2012 Yahoo! Inc. All rights reserved.
+	</div>
+</div>
+<script type="text/javascript">
+    ALL_YUI_PROPS = [{"url": "Y.mojito.MojitProxy.html#method_broadcast", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "broadcast"}, {"url": "Y.mojito.MojitProxy.html#property_children", "access": "", "host": "Y.mojito.MojitProxy", "type": "property", "name": "children"}, {"url": "Y.mojito.MojitProxy.html#property_config", "access": "", "host": "Y.mojito.MojitProxy", "type": "property", "name": "config"}, {"url": "Y.mojito.MojitProxy.html#property_context", "access": "", "host": "Y.mojito.MojitProxy", "type": "property", "name": "context"}, {"url": "Y.mojito.MojitProxy.html#method_destroyChild", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "destroyChild"}, {"url": "Y.mojito.MojitProxy.html#method_destroySelf", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "destroySelf"}, {"url": "Y.mojito.Client.html#method_find", "access": "", "host": "Y.mojito.Client", "type": "method", "name": "find"}, {"url": "Y.mojito.MojitProxy.html#method_getChildren", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "getChildren"}, {"url": "Y.mojito.Client.html#method_getComputedRoutes", "access": "", "host": "Y.mojito.Client", "type": "method", "name": "getComputedRoutes"}, {"url": "Y.mojito.MojitProxy.html#method_getFromUrl", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "getFromUrl"}, {"url": "Y.mojito.MojitProxy.html#method_invoke", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "invoke"}, {"url": "Y.mojito.MojitProxy.html#method_listen", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "listen"}, {"url": "Y.mojito.Client.html#method_pause", "access": "", "host": "Y.mojito.Client", "type": "method", "name": "pause"}, {"url": "Y.mojito.MojitProxy.html#method_refreshView", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "refreshView"}, {"url": "Y.mojito.MojitProxy.html#method_render", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "render"}, {"url": "Y.mojito.Client.html#method_resume", "access": "", "host": "Y.mojito.Client", "type": "method", "name": "resume"}, {"url": "Y.mojito.MojitProxy.html#property_type", "access": "", "host": "Y.mojito.MojitProxy", "type": "property", "name": "type"}, {"url": "Y.mojito.MojitProxy.html#method_unlisten", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "unlisten"}];
+</script>
+</body>
+</html>

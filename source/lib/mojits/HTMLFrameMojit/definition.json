@@ -1,0 +1,8 @@
+[
+    {
+        "settings" : ["master"],
+        "yui": {
+            "sharedYUIInstance" : true
+        }
+    }
+]

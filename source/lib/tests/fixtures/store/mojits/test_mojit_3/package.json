@@ -1,0 +1,9 @@
+{
+    "name": "TestMojit3",
+    "config": {
+        "mojito": {
+            "version": "0.1.0",
+            "package": "public"
+        }
+    }
+}

@@ -1,0 +1,15 @@
+[{
+    "settings": [ "master" ],
+    "specs": {
+        "notepad": {
+            "type": "HTMLFrameMojit",
+            "config": {
+                "deploy": true,
+                "title": "Notepad example",
+                "child": {
+                    "type": "Notepad"
+                }
+            }
+        }
+    }
+}]

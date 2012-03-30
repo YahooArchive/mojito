@@ -1,0 +1,353 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>API: ActionContextAddon   i13n.common.js  (YUI Library)</title>
+
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css?stamp=1327685402.65" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css?stamp=1327685402.65" />
+
+    <script type="text/javascript" src="assets/api-js?stamp=1327685402.65"></script>
+    <script type="text/javascript" src="assets/ac-js?stamp=1327685402.65"></script>
+</head>
+
+<body id="yahoo-com">
+
+<div id="doc3" class="yui-t2">
+	<div id="hd">
+        <h1><a href="http://developer.yahoo.com/yui/" title="mojito">mojito</a></h1>
+        <h3>ActionContextAddon&nbsp; <span class="subtitle">0.1.0</span></h3>
+        <a href="./index.html" title="mojito">mojito</a> 
+            &gt; <a href="./module_ActionContextAddon.html" title="ActionContextAddon">ActionContextAddon</a>
+                
+                 &gt; i13n.common.js (source view) 
+        <form onsubmit="return false">
+            <div id="propertysearch">
+                Search: <input autocomplete="off" id="searchinput" />
+                <div id="searchresults">
+                    &nbsp;
+                </div>
+            </div>
+        </form>
+	</div>
+
+	<div id="bd">
+		<div id="yui-main">
+			<div class="yui-b">
+            <form action="#" name="yui-classopts-form" method="get" id="yui-classopts-form">
+                <fieldset>
+                    <legend>Filters</legend>
+                <span class="classopts"><input type="checkbox" name="show_private" id="show_private" /> <label for="show_private">Show Private</label></span>
+                <span class="classopts"><input type="checkbox" name="show_protected" id="show_protected" /> <label for="show_protected">Show Protected</label></span>
+                <span class="classopts"><input type="checkbox" name="show_deprecated" id="show_deprecated" /> <label for="show_deprecated">Show Deprecated</label></span>
+                </fieldset>
+            </form>
+
+                    <div id="srcout">
+                        <style>
+                            #doc3 .classopts { display:none; }
+                        </style>
+<div class="highlight"><pre><span class="c">/*</span>
+<span class="c">* Copyright (c) 2011 Yahoo! Inc. All rights reserved.</span>
+<span class="c">*/</span>
+<span class="c">/**</span>
+<span class="c"> * @submodule ActionContextAddon</span>
+<span class="c"> */</span>
+<span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;mojito-i13n-addon&#39;</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="o">,</span> <span class="nx">NAME</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="c">/**</span>
+<span class="c">     * Processes the following part of the mojit&#39;s config:</span>
+<span class="c">     *</span>
+<span class="c">     * &lt;code&gt;</span>
+<span class="c">     * &quot;i13n&quot; : {</span>
+<span class="c">     *      &quot;spaceid&quot; : 12345,</span>
+<span class="c">     *      &quot;page&quot;    : { &quot;val1&quot; : &quot;param1&quot;}</span>
+<span class="c">     * }</span>
+<span class="c">     * &lt;/code&gt;</span>
+<span class="c">     *</span>
+<span class="c">     * @method initFromConfig</span>
+<span class="c">     * @private</span>
+<span class="c">     *</span>
+<span class="c">     */</span>
+    <span class="kd">function</span> <span class="nx">initFromConfig</span><span class="p">(</span><span class="nx">command</span><span class="o">,</span> <span class="nx">ac</span><span class="o">,</span> <span class="nx">i13n</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">config</span><span class="o">,</span> <span class="nx">page</span><span class="o">,</span> <span class="nx">name</span><span class="o">;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">initialized</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span><span class="o">;</span>
+        <span class="p">}</span>
+        
+        <span class="c">/*</span>
+<span class="c">        function getI13n(node) {</span>
+<span class="c">            var entry, children, result;</span>
+
+<span class="c">            if (typeof node.config === &#39;object&#39;) {</span>
+
+<span class="c">                // return the i13n config</span>
+<span class="c">                if (typeof node.config.i13n === &#39;object&#39;) {</span>
+<span class="c">                    return  node.config.i13n;</span>
+<span class="c">                }</span>
+
+<span class="c">                // traverse the configs tree</span>
+<span class="c">                if (typeof node.config.child === &#39;object&#39;) {</span>
+<span class="c">                    return get13n(node.config.child);</span>
+<span class="c">                } else if (typeof node.config.children === &#39;object&#39;) {</span>
+<span class="c">                    children = node.config.children</span>
+<span class="c">                    for (entry in children) {</span>
+<span class="c">                        if (children.hasOwnProperty(entry)) {</span>
+
+<span class="c">                            // quick pre-check to speed up the traversing</span>
+<span class="c">                            if (children[entry].config) {</span>
+
+<span class="c">                                // check if we have found the i13n</span>
+<span class="c">                                result = get13n(children[entry]);</span>
+<span class="c">                                if (result) {</span>
+<span class="c">                                    return result;</span>
+<span class="c">                                }</span>
+<span class="c">                            }</span>
+<span class="c">                        }</span>
+<span class="c">                    }</span>
+<span class="c">                }</span>
+<span class="c">            }</span>
+<span class="c">        }</span>
+<span class="c">        */</span>
+        
+        <span class="c">// get the i13n</span>
+        <span class="c">//config = getI13n(ac.app.config.specs[&quot;???&quot;]);</span>
+        <span class="nx">config</span> <span class="o">=</span> <span class="nx">command</span><span class="p">.</span><span class="nx">instance</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">i13n</span> <span class="o">||</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">config</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">initialized</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">config</span><span class="p">.</span><span class="nx">spaceid</span> <span class="o">===</span> <span class="s1">&#39;number&#39;</span> <span class="o">||</span>
+            <span class="k">typeof</span> <span class="nx">config</span><span class="p">.</span><span class="nx">spaceid</span> <span class="o">===</span> <span class="s1">&#39;string&#39;</span><span class="p">)</span> <span class="p">{</span>
+
+                <span class="c">// stamp spaceid</span>
+                <span class="nx">i13n</span><span class="p">.</span><span class="nx">stamp</span><span class="p">.</span><span class="nx">stampPageView</span><span class="p">(</span><span class="nx">config</span><span class="p">.</span><span class="nx">spaceid</span><span class="p">);</span>
+
+                <span class="c">// track page params</span>
+                <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">config</span><span class="p">.</span><span class="nx">page</span> <span class="o">===</span> <span class="s1">&#39;object&#39;</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="nx">page</span> <span class="o">=</span> <span class="nx">config</span><span class="p">.</span><span class="nx">page</span><span class="o">;</span>
+                    <span class="k">for</span><span class="p">(</span><span class="nx">name</span> <span class="k">in</span> <span class="nx">page</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="nx">page</span><span class="p">.</span><span class="nx">hasOwnProperty</span><span class="p">(</span><span class="nx">name</span><span class="p">))</span> <span class="p">{</span>
+                            <span class="nx">i13n</span><span class="p">.</span><span class="nx">trackPageParams</span><span class="p">(</span><span class="nx">name</span><span class="o">,</span> <span class="nx">page</span><span class="p">[</span><span class="nx">name</span><span class="p">]</span><span class="o">,</span> <span class="nx">i13n</span><span class="p">.</span><span class="nx">ULT</span><span class="p">.</span><span class="nx">ULT_PRECEDENCE_DEFAULT</span><span class="p">);</span>
+                        <span class="p">}</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c">/**</span>
+<span class="c">     * &lt;strong&gt;Access point:&lt;/strong&gt; &lt;em&gt;ac.i13n.*&lt;/em&gt;</span>
+<span class="c">     * Instrumentation addon for link tracking and page views.</span>
+<span class="c">     * @class I13n.server</span>
+<span class="c">     */</span>
+    <span class="kd">function</span> <span class="nx">I13nAddon</span><span class="p">(</span><span class="nx">command</span><span class="o">,</span> <span class="nx">adapter</span><span class="o">,</span> <span class="nx">ac</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">req</span><span class="o">,</span>
+        <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="o">;</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">_ac</span> <span class="o">=</span> <span class="nx">ac</span><span class="o">;</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">command</span> <span class="o">=</span> <span class="nx">command</span><span class="o">;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="nx">ac</span><span class="p">.</span><span class="nx">http</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">req</span> <span class="o">=</span> <span class="nx">ac</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="nx">getRequest</span><span class="p">();</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">req</span> <span class="o">&amp;&amp;</span> <span class="nx">req</span><span class="p">.</span><span class="nx">i13n</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">ac</span><span class="p">.</span><span class="nx">i13n</span> <span class="o">=</span> <span class="nx">req</span><span class="p">.</span><span class="nx">i13n</span><span class="o">;</span>
+
+                <span class="c">// additional functionality</span>
+                <span class="nx">ac</span><span class="p">.</span><span class="nx">i13n</span><span class="p">.</span><span class="nx">make</span> <span class="o">=</span> <span class="nx">I13nAddon</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">make</span><span class="o">;</span>
+                <span class="nx">ac</span><span class="p">.</span><span class="nx">i13n</span><span class="p">.</span><span class="nx">_ac</span> <span class="o">=</span> <span class="nx">ac</span><span class="o">;</span>
+
+                <span class="nx">initFromConfig</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">command</span><span class="o">,</span> <span class="nx">ac</span><span class="o">,</span> <span class="nx">req</span><span class="p">.</span><span class="nx">i13n</span><span class="p">);</span>
+                <span class="k">return</span><span class="o">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="nx">ac</span><span class="p">.</span><span class="nx">i13n</span> <span class="o">=</span> <span class="k">this</span><span class="o">;</span>
+    <span class="p">}</span>
+
+    <span class="nx">I13nAddon</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+
+        <span class="c">// intentionally not setting the namespace here,</span>
+        <span class="c">// because we will add an object manually.</span>
+        <span class="c">//namespace: &#39;i13n&#39;,</span>
+
+        <span class="c">/**</span>
+<span class="c">         * Provides facility to create an URL to other</span>
+<span class="c">         * mojits with a link tracking instrumentation.</span>
+<span class="c">         *</span>
+<span class="c">         * @method make</span>
+<span class="c">         * @param id {string} it to a mojit defined at the root level of the Mojito application configuration</span>
+<span class="c">         * @param action {string}</span>
+<span class="c">         * @param routeParams {object} used to lookup the route in the routing table</span>
+<span class="c">         * @param verb {string} GET, POST, PUT, DELETE (case insensitive)</span>
+<span class="c">         * @param urlParams {object} added to the looked up route as query params</span>
+<span class="c">         * @param i13nParams {object} parameters to be used for link tracking.</span>
+<span class="c">         */</span>
+        <span class="nx">make</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">base</span><span class="o">,</span> <span class="nx">action</span><span class="o">,</span> <span class="nx">routeParams</span><span class="o">,</span> <span class="nx">verb</span><span class="o">,</span> <span class="nx">urlParams</span><span class="o">,</span> <span class="nx">i13nParams</span><span class="p">)</span> <span class="p">{</span>
+
+            <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_ac</span><span class="p">.</span><span class="nx">url</span><span class="p">.</span><span class="nx">make</span><span class="p">(</span><span class="nx">base</span><span class="o">,</span> <span class="nx">action</span><span class="o">,</span> <span class="nx">routeParams</span><span class="o">,</span> <span class="nx">verb</span><span class="o">,</span> <span class="nx">urlParams</span><span class="p">);</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="nx">result</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">result</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">trackLink</span><span class="p">(</span><span class="nx">result</span><span class="o">,</span> <span class="nx">i13nParams</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="nx">result</span><span class="o">;</span>
+        <span class="p">}</span><span class="o">,</span>
+        <span class="c">/**</span>
+<span class="c">         * Stamps the page view event.</span>
+<span class="c">         *</span>
+<span class="c">         * @method stampPageView</span>
+<span class="c">         * @param spaceid {number}  The spaceid to be used.</span>
+<span class="c">         */</span>
+        <span class="nx">stampPageView</span> <span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="p">}</span><span class="o">,</span>
+        <span class="c">/**</span>
+<span class="c">         * Tracks a pair of page parameters as (key, value) for this request.</span>
+<span class="c">         *</span>
+<span class="c">         * @param key {string} - The page parameter name</span>
+<span class="c">         * @param vlaue {string} -The page parameter value</span>
+<span class="c">         */</span>
+        <span class="nx">trackPageParams</span> <span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="p">}</span><span class="o">,</span>
+        <span class="c">/**</span>
+<span class="c">         * Tracks the link view and gemerates the URL</span>
+<span class="c">         * with the hash token appended to it.</span>
+<span class="c">         *</span>
+<span class="c">         *</span>
+<span class="c">         * @method trackLink</span>
+<span class="c">         * @param url {string} - The link to be instrumented.</span>
+<span class="c">         * @param link_params {object} - parameteres</span>
+<span class="c">         * @param local_groups - Optional</span>
+<span class="c">         * @param ult_args - Optional</span>
+<span class="c">         *</span>
+<span class="c">         * @return {string} url with the hash appended to it.</span>
+<span class="c">         */</span>
+        <span class="nx">trackLink</span> <span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="p">}</span><span class="o">,</span>
+        <span class="c">/**</span>
+<span class="c">         * Tracks the link view for the links taken from the user generated content</span>
+<span class="c">         * and hence need to be signed by B-cookie to prevent the security problems.</span>
+<span class="c">         *</span>
+<span class="c">         *</span>
+<span class="c">         * @method trackUserLink</span>
+<span class="c">         * @param url {string} - The link to be instrumented.</span>
+<span class="c">         * @param link_params {object} - parameteres</span>
+<span class="c">         * @param local_groups - Optional</span>
+<span class="c">         * @param ult_args - Optional</span>
+<span class="c">         *</span>
+<span class="c">         * @return {string} url with the hash appended to it.</span>
+<span class="c">         */</span>
+        <span class="nx">trackUserLink</span> <span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="p">}</span><span class="o">,</span>
+        <span class="c">/**</span>
+<span class="c">         * , ,  [, ult_args [, return_code]]</span>
+<span class="c">         *</span>
+<span class="c">         *</span>
+<span class="c">         * @method trackForm</span>
+<span class="c">         * @param is_post_method {boolean} - true, if the method is POST</span>
+<span class="c">         * @param action_url {string} - the form action link to be instrumented.</span>
+<span class="c">         * @param link_params - {object} Tracking parameters.</span>
+<span class="c">         * @param ult_args - Optional</span>
+<span class="c">         *</span>
+<span class="c">         * @return {string} form action url with the hash appended to it.</span>
+<span class="c">         */</span>
+        <span class="nx">trackForm</span> <span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="p">}</span><span class="o">,</span>
+        <span class="c">/**</span>
+<span class="c">         * Instrument links for tracking of the link clicks by gemerating the URL</span>
+<span class="c">         * with the hash token appended to it.</span>
+<span class="c">         *</span>
+<span class="c">         *</span>
+<span class="c">         * @method trackClickOnly</span>
+<span class="c">         * @param url {string} - The link to be instrumented.</span>
+<span class="c">         * @param link_params {object} - parameteres</span>
+<span class="c">         * @param ult_args - Optional</span>
+<span class="c">         *</span>
+<span class="c">         * @return {string} url with the hash appended to it.</span>
+<span class="c">         */</span>
+        <span class="nx">trackClickOnly</span> <span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="p">}</span><span class="o">,</span>
+        <span class="c">/**</span>
+<span class="c">         * Retrurn spaceid used for this request.</span>
+<span class="c">         *</span>
+<span class="c">         * @return spaceid previously set through stampPageView() or configuration.</span>
+<span class="c">         */</span>
+        <span class="nx">getSpaceid</span> <span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="p">}</span><span class="o">,</span>
+        <span class="c">// not documented</span>
+        <span class="nx">stampNonClassified</span> <span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="p">}</span><span class="o">,</span>
+        <span class="nx">stampIgnore</span> <span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="p">}</span><span class="o">,</span>
+        <span class="nx">isStamped</span> <span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+
+    <span class="nx">I13nAddon</span><span class="p">.</span><span class="nx">dependsOn</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;config&#39;</span><span class="o">,</span> <span class="s1">&#39;http&#39;</span><span class="o">,</span> <span class="s1">&#39;url&#39;</span><span class="p">];</span>
+    <span class="nx">Y</span><span class="p">.</span><span class="nx">mojito</span><span class="p">.</span><span class="nx">addons</span><span class="p">.</span><span class="nx">ac</span><span class="p">.</span><span class="nx">i13n</span> <span class="o">=</span> <span class="nx">I13nAddon</span><span class="o">;</span>
+
+<span class="p">}</span><span class="o">,</span> <span class="s1">&#39;0.1.0&#39;</span><span class="o">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[</span>
+    <span class="s1">&#39;mojito&#39;</span>
+    <span class="p">]});</span>
+</pre></div>
+                    </div>
+			</div>
+		</div>
+		<div class="yui-b">
+            <div class="nav">
+
+                    <div id="moduleList" class="module">
+                        <h4>Modules</h4>
+                        <ul class="content">
+                                <li class=""><a href="module_ActionContext.html" title="ActionContext">ActionContext</a></li>
+                                <li class="selected"><a href="module_ActionContextAddon.html" title="ActionContextAddon">ActionContextAddon</a></li>
+                                <li class=""><a href="module_CommonLibs.html" title="CommonLibs">CommonLibs</a></li>
+                                <li class=""><a href="module_MojitoClient.html" title="MojitoClient">MojitoClient</a></li>
+                                <li class=""><a href="module_MojitoServer.html" title="MojitoServer">MojitoServer</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="classList" class="module">
+                        <h4>Classes</h4>
+                        <ul class="content">
+                                <li class=""><a href="Analytics.common.html" title="Analytics.common">Analytics.common</a></li>
+                                <li class=""><a href="Assets.common.html" title="Assets.common">Assets.common</a></li>
+                                <li class=""><a href="Carrier.common.html" title="Carrier.common">Carrier.common</a></li>
+                                <li class=""><a href="Deploy.server.html" title="Deploy.server">Deploy.server</a></li>
+                                <li class=""><a href="Device.common.html" title="Device.common">Device.common</a></li>
+                                <li class=""><a href="I13n.server.html" title="I13n.server">I13n.server</a></li>
+                                <li class=""><a href="Meta.common.html" title="Meta.common">Meta.common</a></li>
+                        </ul>
+                    </div>
+
+                    <!--
+                    <div id="fileList" class="module">
+                        <h4>Files</h4>
+                        <ul class="content">        
+                                <li class=""><a href="assets.common.js.html" title="assets.common.js">assets.common.js</a></li>
+                                <li class=""><a href="carrier.server.js.html" title="carrier.server.js">carrier.server.js</a></li>
+                                <li class=""><a href="deploy.server.js.html" title="deploy.server.js">deploy.server.js</a></li>
+                                <li class=""><a href="device.server.js.html" title="device.server.js">device.server.js</a></li>
+                                <li class="selected"><a href="i13n.common.js.html" title="i13n.common.js">i13n.common.js</a></li>
+                                <li class=""><a href="meta.common.js.html" title="meta.common.js">meta.common.js</a></li>
+                                <li class=""><a href="output-adapter.common.js.html" title="output-adapter.common.js">output-adapter.common.js</a></li>
+                                <li class=""><a href="rest.common.js.html" title="rest.common.js">rest.common.js</a></li>
+                        </ul>
+                    </div>
+                    -->
+
+
+
+
+
+            </div>
+		</div>
+	</div>
+	<div id="ft">
+        <hr />
+        Copyright &copy; 2012 Yahoo! Inc. All rights reserved.
+	</div>
+</div>
+<script type="text/javascript">
+    ALL_YUI_PROPS = [{"url": "Assets.common.html#method_addBlob", "access": "", "host": "Assets.common", "type": "method", "name": "addBlob"}, {"url": "Assets.common.html#method_addCss", "access": "", "host": "Assets.common", "type": "method", "name": "addCss"}, {"url": "Assets.common.html#method_addJs", "access": "", "host": "Assets.common", "type": "method", "name": "addJs"}, {"url": "Deploy.server.html#method_constructMojitoClientRuntime", "access": "", "host": "Deploy.server", "type": "method", "name": "constructMojitoClientRuntime"}, {"url": "Device.common.html#method_get", "access": "", "host": "Device.common", "type": "method", "name": "get"}, {"url": "Carrier.common.html#method_get", "access": "", "host": "Carrier.common", "type": "method", "name": "get"}, {"url": "I13n.server.html#method_getSpaceid", "access": "", "host": "I13n.server", "type": "method", "name": "getSpaceid"}, {"url": "I13n.server.html#method_make", "access": "", "host": "I13n.server", "type": "method", "name": "make"}, {"url": "Analytics.common.html#method_retrieve", "access": "", "host": "Analytics.common", "type": "method", "name": "retrieve"}, {"url": "Meta.common.html#method_retrieve", "access": "", "host": "Meta.common", "type": "method", "name": "retrieve"}, {"url": "Analytics.common.html#method_setMergeFunction", "access": "", "host": "Analytics.common", "type": "method", "name": "setMergeFunction"}, {"url": "I13n.server.html#method_stampPageView", "access": "", "host": "I13n.server", "type": "method", "name": "stampPageView"}, {"url": "Analytics.common.html#method_store", "access": "", "host": "Analytics.common", "type": "method", "name": "store"}, {"url": "Meta.common.html#method_store", "access": "", "host": "Meta.common", "type": "method", "name": "store"}, {"url": "I13n.server.html#method_trackClickOnly", "access": "", "host": "I13n.server", "type": "method", "name": "trackClickOnly"}, {"url": "I13n.server.html#method_trackForm", "access": "", "host": "I13n.server", "type": "method", "name": "trackForm"}, {"url": "I13n.server.html#method_trackLink", "access": "", "host": "I13n.server", "type": "method", "name": "trackLink"}, {"url": "I13n.server.html#method_trackPageParams", "access": "", "host": "I13n.server", "type": "method", "name": "trackPageParams"}, {"url": "I13n.server.html#method_trackUserLink", "access": "", "host": "I13n.server", "type": "method", "name": "trackUserLink"}];
+</script>
+</body>
+</html>

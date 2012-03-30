@@ -1,0 +1,312 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>API: CommonLibs   resource-store-adapter.common.js  (YUI Library)</title>
+
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css?stamp=1327685402.41" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css?stamp=1327685402.41" />
+
+    <script type="text/javascript" src="assets/api-js?stamp=1327685402.41"></script>
+    <script type="text/javascript" src="assets/ac-js?stamp=1327685402.41"></script>
+</head>
+
+<body id="yahoo-com">
+
+<div id="doc3" class="yui-t2">
+	<div id="hd">
+        <h1><a href="http://developer.yahoo.com/yui/" title="mojito">mojito</a></h1>
+        <h3>CommonLibs&nbsp; <span class="subtitle">0.1.0</span></h3>
+        <a href="./index.html" title="mojito">mojito</a> 
+            &gt; <a href="./module_CommonLibs.html" title="CommonLibs">CommonLibs</a>
+                
+                 &gt; resource-store-adapter.common.js (source view) 
+        <form onsubmit="return false">
+            <div id="propertysearch">
+                Search: <input autocomplete="off" id="searchinput" />
+                <div id="searchresults">
+                    &nbsp;
+                </div>
+            </div>
+        </form>
+	</div>
+
+	<div id="bd">
+		<div id="yui-main">
+			<div class="yui-b">
+            <form action="#" name="yui-classopts-form" method="get" id="yui-classopts-form">
+                <fieldset>
+                    <legend>Filters</legend>
+                <span class="classopts"><input type="checkbox" name="show_private" id="show_private" /> <label for="show_private">Show Private</label></span>
+                <span class="classopts"><input type="checkbox" name="show_protected" id="show_protected" /> <label for="show_protected">Show Protected</label></span>
+                <span class="classopts"><input type="checkbox" name="show_deprecated" id="show_deprecated" /> <label for="show_deprecated">Show Deprecated</label></span>
+                </fieldset>
+            </form>
+
+                    <div id="srcout">
+                        <style>
+                            #doc3 .classopts { display:none; }
+                        </style>
+<div class="highlight"><pre><span class="c">/*</span>
+<span class="c"> * Copyright (c) 2011 Yahoo! Inc. All rights reserved.</span>
+<span class="c"> */</span>
+<span class="c">/**</span>
+<span class="c"> * This object is responsible for running mojits.</span>
+<span class="c"> * @class MojitoDispatcher</span>
+<span class="c"> * @constructor</span>
+<span class="c"> * @param resourceStore {ServerStore} the store to use</span>
+<span class="c"> * @private</span>
+<span class="c"> */</span>
+<span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;mojito-resource-store-adapter&#39;</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="o">,</span> <span class="nx">NAME</span><span class="p">){</span>
+
+    <span class="kd">var</span> <span class="nx">APP_ROOT_PATH</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">,</span>
+        <span class="nx">logger</span><span class="o">;</span>
+
+    <span class="nx">Y</span><span class="p">.</span><span class="nx">mojito</span><span class="p">.</span><span class="nx">ResourceStoreAdapter</span> <span class="o">=</span> <span class="p">{</span>
+
+        <span class="nx">ENV</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="o">,</span>
+
+        <span class="nx">init</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">env</span><span class="o">,</span> <span class="nx">resourceStore</span><span class="o">,</span> <span class="nx">globalLogger</span><span class="p">){</span>
+
+            <span class="c">// must be passed the Mojito logger and use it for consistent logging because the Y.log</span>
+            <span class="c">// within this scope has not been mutated yet</span>
+            <span class="nx">logger</span> <span class="o">=</span> <span class="nx">globalLogger</span><span class="o">;</span>
+
+            <span class="nx">logger</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;resource store adapter init&#39;</span><span class="o">,</span> <span class="s1">&#39;mojito&#39;</span><span class="o">,</span> <span class="nx">NAME</span><span class="p">);</span>
+            
+            <span class="nx">APP_ROOT_PATH</span> <span class="o">=</span> <span class="nx">resourceStore</span><span class="p">.</span><span class="nx">_root</span><span class="o">;</span>
+
+            <span class="k">this</span><span class="p">.</span><span class="nx">ENV</span> <span class="o">=</span> <span class="nx">env</span><span class="o">;</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">store</span> <span class="o">=</span> <span class="nx">resourceStore</span><span class="o">;</span>
+
+            <span class="k">this</span><span class="p">.</span><span class="nx">_root</span> <span class="o">=</span> <span class="nx">resourceStore</span><span class="p">.</span><span class="nx">_root</span><span class="o">;</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">_staticURLs</span> <span class="o">=</span> <span class="nx">resourceStore</span><span class="p">.</span><span class="nx">_staticURLs</span><span class="o">;</span>
+
+            <span class="k">return</span> <span class="k">this</span><span class="o">;</span>
+        <span class="p">}</span><span class="o">,</span>
+
+        <span class="nx">expandInstance</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">instance</span><span class="o">,</span> <span class="nx">ctx</span><span class="o">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c">//logger.log(&#39;expandInstance&#39;, &#39;mojito&#39;, NAME);</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">expandInstanceForEnv</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">ENV</span><span class="o">,</span> <span class="nx">instance</span><span class="o">,</span> <span class="nx">ctx</span><span class="o">,</span> <span class="nx">cb</span><span class="p">);</span>
+        <span class="p">}</span><span class="o">,</span>
+
+        <span class="nx">expandInstanceForEnv</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">env</span><span class="o">,</span> <span class="nx">instance</span><span class="o">,</span> <span class="nx">context</span><span class="o">,</span> <span class="nx">callback</span><span class="p">){</span>
+
+            <span class="kd">var</span> <span class="nx">base</span> <span class="o">=</span> <span class="p">{}</span><span class="o">,</span> <span class="nx">source</span> <span class="o">=</span> <span class="p">{}</span><span class="o">,</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="o">;</span>
+
+            <span class="c">/* this doesn&#39;t do anything yet */</span>
+<span class="c">//            // If we have this cached return it</span>
+<span class="c">//            if(this.isCached(env, instance, context)){</span>
+<span class="c">//                callback(this.getCached(env, instance, context));</span>
+<span class="c">//                return;</span>
+<span class="c">//            }</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nx">instance</span><span class="p">.</span><span class="nx">guid</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">instance</span><span class="p">.</span><span class="nx">guid</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">guid</span><span class="p">();</span>
+            <span class="p">}</span>
+
+            <span class="c">// What are being asked to expand?</span>
+            <span class="k">if</span><span class="p">(</span><span class="nx">instance</span><span class="p">.</span><span class="nx">base</span><span class="p">){</span>
+                <span class="nx">source</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">instance</span><span class="p">.</span><span class="nx">base</span><span class="o">;</span>
+                <span class="nx">source</span><span class="p">.</span><span class="nx">func</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getSpec</span><span class="o">;</span>
+            <span class="p">}</span>
+            <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">instance</span><span class="p">.</span><span class="nx">type</span><span class="p">){</span>
+                <span class="nx">source</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">instance</span><span class="p">.</span><span class="nx">type</span><span class="o">;</span>
+                <span class="nx">source</span><span class="p">.</span><span class="nx">func</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">getType</span><span class="o">;</span>
+            <span class="p">}</span>
+            <span class="k">else</span><span class="p">{</span>
+                <span class="c">// We don&#39;t have any inputs so fail</span>
+                <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;There was no info in the &quot;instance&quot; object&#39;</span><span class="p">);</span>
+            <span class="p">}</span>
+
+            <span class="c">// This contains the app &quot;definition&quot; and app config</span>
+            <span class="nx">self</span><span class="p">.</span><span class="nx">getApp</span><span class="p">(</span><span class="nx">env</span><span class="o">,</span> <span class="nx">context</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">app</span><span class="p">){</span>
+
+                <span class="c">// Here we get either the a spec or a type</span>
+                <span class="nx">source</span><span class="p">.</span><span class="nx">func</span><span class="p">(</span><span class="nx">env</span><span class="o">,</span> <span class="nx">source</span><span class="p">.</span><span class="nx">name</span><span class="o">,</span> <span class="nx">context</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="o">,</span> <span class="nx">data</span><span class="p">){</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="nx">callback</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+                        <span class="k">return</span><span class="o">;</span>
+                    <span class="p">}</span>
+
+                    <span class="c">// Merge the inputs from right to left (right most values win)</span>
+                    <span class="nx">base</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">merge</span><span class="p">(</span><span class="nx">app</span><span class="o">,</span> <span class="nx">data</span><span class="o">,</span> <span class="nx">instance</span><span class="p">);</span>
+
+                    <span class="c">// Ensure the &quot;instance&quot; has been properly resolved. If there are no specs in the application.json file,</span>
+                    <span class="c">// there is an error below because the instance is invalid. We should check here for a valid instance object</span>
+                    <span class="c">// and throw an error if it is not. This happens because someone could create a routes.json file with routes</span>
+                    <span class="c">// that don&#39;t route to mojit instances, and the URI router creates invalid commands, which are passed into</span>
+                    <span class="c">// the dispatch. -- Matt</span>
+                    <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">self</span><span class="p">.</span><span class="nx">validate</span><span class="p">(</span><span class="nx">base</span><span class="p">)){</span>
+                        <span class="nx">callback</span><span class="p">({</span>
+                            <span class="nx">message</span><span class="o">:</span> <span class="s1">&#39;Instance was not valid.&#39;</span><span class="o">,</span>
+                            <span class="nx">stack</span><span class="o">:</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">base</span><span class="o">,</span><span class="kc">null</span><span class="o">,</span><span class="mi">4</span><span class="p">)</span>
+                        <span class="p">});</span>
+                        <span class="k">return</span><span class="o">;</span>
+                    <span class="p">}</span>
+
+                    <span class="c">// Add the final &quot;base&quot; to the cache</span>
+                    <span class="nx">self</span><span class="p">.</span><span class="nx">cache</span><span class="p">(</span><span class="nx">env</span><span class="o">,</span> <span class="nx">instance</span><span class="o">,</span> <span class="nx">context</span><span class="o">,</span> <span class="nx">base</span><span class="p">);</span>
+
+                    <span class="nx">callback</span><span class="p">(</span><span class="kc">null</span><span class="o">,</span> <span class="nx">base</span><span class="p">);</span>
+                <span class="p">}</span><span class="o">,</span> <span class="nx">self</span><span class="p">);</span>
+            <span class="p">});</span>
+        <span class="p">}</span><span class="o">,</span>
+
+        <span class="nx">getApp</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">env</span><span class="o">,</span> <span class="nx">context</span><span class="o">,</span> <span class="nx">callback</span><span class="p">){</span>
+
+            <span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{};</span>
+
+            <span class="nx">callback</span><span class="p">(</span><span class="nx">obj</span><span class="p">);</span>
+        <span class="p">}</span><span class="o">,</span>
+
+        <span class="nx">getAppPath</span><span class="o">:</span> <span class="kd">function</span><span class="p">(){</span>
+            <span class="k">return</span> <span class="nx">APP_ROOT_PATH</span><span class="o">;</span>
+        <span class="p">}</span><span class="o">,</span>
+
+        <span class="nx">getAppConfig</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">context</span><span class="o">,</span> <span class="nx">name</span><span class="p">){</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">getAppConfig</span><span class="p">(</span><span class="nx">context</span><span class="o">,</span> <span class="nx">name</span><span class="p">);</span>
+        <span class="p">}</span><span class="o">,</span>
+
+        <span class="nx">getSpec</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">env</span><span class="o">,</span> <span class="nx">id</span><span class="o">,</span> <span class="nx">context</span><span class="o">,</span> <span class="nx">callback</span><span class="o">,</span> <span class="nx">scope</span><span class="p">){</span>
+
+            <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">scope</span><span class="p">){</span>
+                <span class="nx">scope</span> <span class="o">=</span> <span class="k">this</span><span class="o">;</span>
+            <span class="p">}</span>
+
+            <span class="nx">scope</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">getSpec</span><span class="p">(</span><span class="nx">env</span><span class="o">,</span> <span class="nx">id</span><span class="o">,</span> <span class="nx">context</span><span class="o">,</span> <span class="nx">callback</span><span class="p">);</span>
+        <span class="p">}</span><span class="o">,</span>
+
+        <span class="nx">getType</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">env</span><span class="o">,</span> <span class="nx">type</span><span class="o">,</span> <span class="nx">context</span><span class="o">,</span> <span class="nx">callback</span><span class="o">,</span> <span class="nx">scope</span><span class="p">){</span>
+
+            <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">scope</span><span class="p">){</span>
+                <span class="nx">scope</span> <span class="o">=</span> <span class="k">this</span><span class="o">;</span>
+            <span class="p">}</span>
+
+            <span class="nx">scope</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">getType</span><span class="p">(</span><span class="nx">env</span><span class="o">,</span> <span class="nx">type</span><span class="o">,</span> <span class="nx">context</span><span class="o">,</span> <span class="nx">callback</span><span class="p">);</span>
+        <span class="p">}</span><span class="o">,</span>
+
+        <span class="nx">merge</span><span class="o">:</span> <span class="kd">function</span><span class="p">(){</span>
+
+            <span class="kd">var</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{}</span><span class="o">,</span> <span class="nx">i</span><span class="o">;</span>
+
+            <span class="k">for</span><span class="p">(</span><span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="o">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">arguments</span><span class="p">.</span><span class="nx">length</span><span class="o">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">){</span>
+                <span class="nx">obj</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">mojito</span><span class="p">.</span><span class="nx">util</span><span class="p">.</span><span class="nx">mergeRecursive</span><span class="p">(</span><span class="nx">obj</span><span class="o">,</span> <span class="nx">arguments</span><span class="p">[</span><span class="nx">i</span><span class="p">]);</span>
+            <span class="p">}</span>
+
+            <span class="k">return</span> <span class="nx">obj</span><span class="o">;</span>
+        <span class="p">}</span><span class="o">,</span>
+
+        <span class="nx">validate</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">base</span><span class="p">){</span>
+
+            <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">base</span><span class="p">.</span><span class="nx">type</span> <span class="o">||</span> <span class="o">!</span><span class="nx">base</span><span class="p">.</span><span class="nx">yui</span><span class="p">){</span>
+                <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+        <span class="p">}</span><span class="o">,</span>
+
+        <span class="nx">isCached</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">env</span><span class="o">,</span> <span class="nx">instance</span><span class="o">,</span> <span class="nx">context</span><span class="p">){</span>
+            <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+        <span class="p">}</span><span class="o">,</span>
+
+        <span class="nx">getCached</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">env</span><span class="o">,</span> <span class="nx">instance</span><span class="o">,</span> <span class="nx">context</span><span class="p">){</span>
+            <span class="k">return</span> <span class="p">{};</span>
+        <span class="p">}</span><span class="o">,</span>
+
+        <span class="nx">cache</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">env</span><span class="o">,</span> <span class="nx">instance</span><span class="o">,</span> <span class="nx">context</span><span class="o">,</span> <span class="nx">obj</span><span class="p">){</span>
+            <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+        <span class="p">}</span><span class="o">,</span>
+
+        <span class="nx">getYuiConfigAllMojits</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">env</span><span class="o">,</span> <span class="nx">ctx</span><span class="p">){</span>
+            <span class="c">//logger.log(&#39;getYuiConfigAllMojits&#39;, &#39;warn&#39;, NAME);</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">getYuiConfigAllMojits</span><span class="p">(</span><span class="nx">env</span><span class="o">,</span> <span class="nx">ctx</span><span class="p">);</span>
+        <span class="p">}</span><span class="o">,</span>
+
+        <span class="nx">getYuiConfigApp</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">env</span><span class="o">,</span> <span class="nx">ctx</span><span class="p">){</span>
+            <span class="c">//logger.log(&#39;getYuiConfigApp&#39;, &#39;warn&#39;, NAME);</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">getYuiConfigApp</span><span class="p">(</span><span class="nx">env</span><span class="o">,</span> <span class="nx">ctx</span><span class="p">);</span>
+        <span class="p">}</span><span class="o">,</span>
+
+        <span class="nx">getYuiConfigFw</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">env</span><span class="o">,</span> <span class="nx">ctx</span><span class="p">){</span>
+            <span class="c">//logger.log(&#39;getYuiConfigFw&#39;, &#39;warn&#39;, NAME);</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">getYuiConfigFw</span><span class="p">(</span><span class="nx">env</span><span class="o">,</span> <span class="nx">ctx</span><span class="p">);</span>
+        <span class="p">}</span><span class="o">,</span>
+
+        <span class="nx">serializeClientStore</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">ctx</span><span class="o">,</span> <span class="nx">instances</span><span class="p">){</span>
+            <span class="c">//logger.log(&#39;serializeClientStore&#39;, &#39;warn&#39;, NAME);</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">serializeClientStore</span><span class="p">(</span><span class="nx">ctx</span><span class="o">,</span> <span class="nx">instances</span><span class="p">);</span>
+        <span class="p">}</span><span class="o">,</span>
+
+        <span class="nx">getMojitTypeDetails</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">env</span><span class="o">,</span> <span class="nx">ctx</span><span class="o">,</span> <span class="nx">mojitType</span><span class="o">,</span> <span class="nx">dest</span><span class="p">){</span>
+            <span class="c">//logger.log(&#39;getMojitTypeDetails&#39;, &#39;warn&#39;, NAME);</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">getMojitTypeDetails</span><span class="p">(</span><span class="nx">env</span><span class="o">,</span> <span class="nx">ctx</span><span class="o">,</span> <span class="nx">mojitType</span><span class="o">,</span> <span class="nx">dest</span><span class="p">);</span>
+        <span class="p">}</span><span class="o">,</span>
+
+        <span class="nx">fileFromStaticHandlerURL</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">url</span><span class="p">){</span>
+            <span class="c">//logger.log(&#39;fileFromStaticHandlerURL&#39;, &#39;warn&#39;, NAME);</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">fileFromStaticHandlerURL</span><span class="p">(</span><span class="nx">url</span><span class="p">);</span>
+        <span class="p">}</span><span class="o">,</span>
+
+        <span class="nx">getRoutes</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">ctx</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c">//logger.log(&#39;getRoutes&#39;, &#39;warn&#39;, NAME);</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">getRoutes</span><span class="p">(</span><span class="nx">ctx</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+
+<span class="p">}</span><span class="o">,</span> <span class="s1">&#39;0.1.0&#39;</span><span class="o">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span><span class="p">[</span><span class="s1">&#39;mojito-util&#39;</span><span class="p">]});</span>
+</pre></div>
+                    </div>
+			</div>
+		</div>
+		<div class="yui-b">
+            <div class="nav">
+
+                    <div id="moduleList" class="module">
+                        <h4>Modules</h4>
+                        <ul class="content">
+                                <li class=""><a href="module_ActionContext.html" title="ActionContext">ActionContext</a></li>
+                                <li class=""><a href="module_ActionContextAddon.html" title="ActionContextAddon">ActionContextAddon</a></li>
+                                <li class="selected"><a href="module_CommonLibs.html" title="CommonLibs">CommonLibs</a></li>
+                                <li class=""><a href="module_MojitoClient.html" title="MojitoClient">MojitoClient</a></li>
+                                <li class=""><a href="module_MojitoServer.html" title="MojitoServer">MojitoServer</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="classList" class="module">
+                        <h4>Classes</h4>
+                        <ul class="content">
+                                <li class=""><a href="Y.mojito.lib.REST.html" title="Y.mojito.lib.REST">Y.mojito.lib.REST</a></li>
+                        </ul>
+                    </div>
+
+                    <!--
+                    <div id="fileList" class="module">
+                        <h4>Files</h4>
+                        <ul class="content">        
+                                <li class=""><a href="mojito-client.client.js.html" title="mojito-client.client.js">mojito-client.client.js</a></li>
+                                <li class=""><a href="mojito.common.js.html" title="mojito.common.js">mojito.common.js</a></li>
+                                <li class=""><a href="perf.client.js.html" title="perf.client.js">perf.client.js</a></li>
+                                <li class="selected"><a href="resource-store-adapter.common.js.html" title="resource-store-adapter.common.js">resource-store-adapter.common.js</a></li>
+                                <li class=""><a href="store.client.js.html" title="store.client.js">store.client.js</a></li>
+                                <li class=""><a href="tunnel.client-optional.js.html" title="tunnel.client-optional.js">tunnel.client-optional.js</a></li>
+                        </ul>
+                    </div>
+                    -->
+
+
+
+
+
+            </div>
+		</div>
+	</div>
+	<div id="ft">
+        <hr />
+        Copyright &copy; 2012 Yahoo! Inc. All rights reserved.
+	</div>
+</div>
+<script type="text/javascript">
+    ALL_YUI_PROPS = [{"url": "Y.mojito.lib.REST.html#method_DELETE", "access": "", "host": "Y.mojito.lib.REST", "type": "method", "name": "DELETE"}, {"url": "Y.mojito.lib.REST.html#method_GET", "access": "", "host": "Y.mojito.lib.REST", "type": "method", "name": "GET"}, {"url": "Y.mojito.lib.REST.html#method_HEAD", "access": "", "host": "Y.mojito.lib.REST", "type": "method", "name": "HEAD"}, {"url": "Y.mojito.lib.REST.html#method_POST", "access": "", "host": "Y.mojito.lib.REST", "type": "method", "name": "POST"}, {"url": "Y.mojito.lib.REST.html#method_PUT", "access": "", "host": "Y.mojito.lib.REST", "type": "method", "name": "PUT"}];
+</script>
+</body>
+</html>

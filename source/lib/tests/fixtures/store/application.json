@@ -1,0 +1,32 @@
+[
+    {
+        "settings": [ "master" ],
+        "mojitDirs": [
+            "soloMojit"
+        ],
+        "staticHandling": {
+            "useRollups": true
+        },
+
+        "testKey1": "testVal1",
+        "testKey2": "testVal2",
+        "testKey3": "testVal3",
+        "specs": {
+            "test1": {
+                "type": "test_mojit_1"
+            }
+        }
+    },
+    {
+        "settings": [ "runtime:server" ],
+
+        "testKey1": "testVal1-server",
+        "pathos": "portended"
+    },
+    {
+        "settings": [ "runtime:client" ],
+
+        "testKey2": "testVal2-client",
+        "testKey4": "testVal4-client"
+    }
+]

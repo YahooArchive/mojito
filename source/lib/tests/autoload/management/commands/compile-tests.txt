@@ -1,0 +1,96 @@
+/*
+ * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
+ */
+YUI.add('mojito-compile-tests', function(Y, NAME) {
+
+    var path = require('path'),
+        compile = require(path.join(__dirname, '../../../../management/commands/compile.js')),
+        YuiModuleCacher = compile.YuiModuleCacher,
+        suite = new YUITest.TestSuite(NAME),
+        a = YUITest.Assert,
+        aa = YUITest.ArrayAssert;
+
+    suite.add(new YUITest.TestCase({
+
+        name: 'YUIModuleCacheWriter tests',
+
+        'caching one value into one namespace': function() {
+            var expected =
+                "YUI.add(\"cached-module-name\", function(Y, NAME) {\n" +
+                "    YUI.namespace(\"_mojito._cache.one\");\n" +
+                "    YUI._mojito._cache.one = {\"my-key\":\"my-value\"};\n" +
+                "});\n";
+
+            var ymcw = new YuiModuleCacher('cached-module-name');
+            var ns = ymcw.createNamespace('one');
+            ns.cache('my-key', 'my-value');
+            var result = ymcw.dump();
+            a.areEqual(expected, result, 'got bad dump output from compiled module, expected: \n\n' + expected + '\n\ngot:\n' + result);
+        },
+
+        'caching multiple values into one namespace': function() {
+            var expected =
+                "YUI.add(\"cached-module-name\", function(Y, NAME) {\n" +
+                "    YUI.namespace(\"_mojito._cache.one\");\n" +
+                "    YUI._mojito._cache.one = {\"my-key\":\"my-value\",\"my-key2\":\"my-value2\"};\n" +
+                "});\n";
+
+            var ymcw = new YuiModuleCacher('cached-module-name');
+            var ns = ymcw.createNamespace('one');
+            ns.cache('my-key', 'my-value');
+            ns.cache('my-key2', 'my-value2');
+            var result = ymcw.dump();
+            a.areEqual(expected, result, 'got bad dump output from compiled module, expected: \n\n' + expected + '\n\ngot:\n' + result);
+        },
+
+        'caching values into multiple namespaces': function() {
+            var expected =
+                "YUI.add(\"cached-module-name\", function(Y, NAME) {\n" +
+                "    YUI.namespace(\"_mojito._cache.one\");\n" +
+                "    YUI._mojito._cache.one = {\"my-key\":\"my-value\",\"my-key2\":\"my-value2\"};\n" +
+                "    YUI.namespace(\"_mojito._cache.two\");\n" +
+                "    YUI._mojito._cache.two = {\"my-key\":\"my-value\"};\n" +
+                "});\n";
+
+            var ymcw = new YuiModuleCacher('cached-module-name');
+            ymcw.createNamespace('one').cache('my-key', 'my-value');
+            ymcw.createNamespace('one').cache('my-key2', 'my-value2');
+            ymcw.createNamespace('two').cache('my-key', 'my-value');
+            var result = ymcw.dump();
+            a.areEqual(expected, result, 'got bad dump output from compiled module, expected: \n\n' + expected + '\n\ngot:\n' + result);
+        },
+
+        'caching values into dotted namespaces': function() {
+            var expected =
+                "YUI.add(\"cached-module-name\", function(Y, NAME) {\n" +
+                "    YUI.namespace(\"_mojito._cache.o.n.e\");\n" +
+                "    YUI._mojito._cache.o.n.e = {\"my-key\":\"my-value\"};\n" +
+                "});\n";
+
+            var ymcw = new YuiModuleCacher('cached-module-name');
+            var ns = ymcw.createNamespace('o.n.e');
+            ns.cache('my-key', 'my-value');
+            var result = ymcw.dump();
+            a.areEqual(expected, result, 'got bad dump output from compiled module, expected: \n\n' + expected + '\n\ngot:\n' + result);
+        },
+
+        'caching object value': function() {
+            var expected =
+                "YUI.add(\"cached-module-name\", function(Y, NAME) {\n" +
+                "    YUI.namespace(\"_mojito._cache.one\");\n" +
+                "    YUI._mojito._cache.one = {\"my-key\":{\"my\":\"value\"}};\n" +
+                "});\n";
+
+            var ymcw = new YuiModuleCacher('cached-module-name');
+            var ns = ymcw.createNamespace('one');
+            ns.cache('my-key', {my: 'value'});
+            var result = ymcw.dump();
+            a.areEqual(expected, result, 'got bad dump output from compiled module, expected: \n\n' + expected + '\n\ngot:\n' + result);
+        }
+
+
+    }));
+
+    YUITest.TestRunner.add(suite);
+
+}, '0.0.1');

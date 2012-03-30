@@ -1,0 +1,19 @@
+{
+    "name": "using_configs",
+    "description": "config access example",
+    "version": "0.0.1",
+    "author": {
+        "name": "Isao Yagi",
+        "email": "isao@yahoo-inc.com"
+    },
+    "contributors": [],
+    "dependencies": {
+        "mojito": ">= 0.1.0"
+    },
+    "engines": {
+        "node": ">= 0.4.2"
+    },
+    "scripts": {
+        "start": "mojito start"
+    }
+}

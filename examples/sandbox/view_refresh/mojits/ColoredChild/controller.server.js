@@ -1,0 +1,28 @@
+/*
+ * Copyright (c) 2011-2012, Yahoo! Inc.  All rights reserved.
+ * Copyrights licensed under the New BSD License.
+ * See the accompanying LICENSE file for terms.
+ */
+
+YUI.add('ColoredChild', function(Y) {
+
+    Y.mojito.controller = {
+
+        index: function(ac) {
+//            ac.assets.addCss('./style.css');
+
+            var bg = ac.params.url('background') || ac.config.get('background');
+
+            ac.done({
+                time: new Date(),
+                bg: bg
+            });
+        },
+        
+        alternative: function(ac) {
+            ac.done({time: new Date()});
+        }
+
+    };
+
+}, '0.0.1', {requires: ['mojito']});

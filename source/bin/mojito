@@ -1,0 +1,17 @@
+#!/usr/bin/env node
+/*
+ * Copyright (c) 2011-2012, Yahoo! Inc.  All rights reserved.
+ * Copyrights licensed under the New BSD License.
+ * See the accompanying LICENSE file for terms.
+ */
+var libpath, libmojito;
+try {
+    // this is the normal location
+    libmojito = require('mojito');
+}
+catch (e) {
+    libpath = require('path'),
+    // need to do this if mojito is installed via `npm link`
+    libmojito = require(libpath.join(__dirname, '..', 'lib'));
+}
+libmojito.include('management/cli');

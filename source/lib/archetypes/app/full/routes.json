@@ -1,0 +1,9 @@
+[{
+    "settings": [ "master" ],
+
+    "_default_path": {
+        "verbs": [ "GET" ],
+        "path": "/:module/:action",
+        "call": "{module}.{action}"
+    }
+}]

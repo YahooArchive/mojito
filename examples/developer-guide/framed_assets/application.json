@@ -1,0 +1,22 @@
+[
+  {
+    "settings": [ "master" ],
+    "specs": {
+      "frame" : {
+        "type" : "HTMLFrameMojit",
+        "config": {
+          "child" : {
+            "type" : "framed" 
+          },
+          "assets": {
+            "top": {
+              "css": [
+                "/static/framed/assets/index.css"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+]

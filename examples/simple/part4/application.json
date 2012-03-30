@@ -1,0 +1,15 @@
+[{
+    "settings": [ "master" ],
+    
+    "specs": {
+        "myBase": {
+            "type": "HTMLFrameMojit",
+            "config": {
+                "deploy": true,
+                "child": {
+                    "type": "myMojit"
+                }
+            }
+        }
+    }
+}]

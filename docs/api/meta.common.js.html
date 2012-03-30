@@ -1,0 +1,187 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>API: ActionContextAddon   meta.common.js  (YUI Library)</title>
+
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css?stamp=1327685402.65" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css?stamp=1327685402.65" />
+
+    <script type="text/javascript" src="assets/api-js?stamp=1327685402.65"></script>
+    <script type="text/javascript" src="assets/ac-js?stamp=1327685402.65"></script>
+</head>
+
+<body id="yahoo-com">
+
+<div id="doc3" class="yui-t2">
+	<div id="hd">
+        <h1><a href="http://developer.yahoo.com/yui/" title="mojito">mojito</a></h1>
+        <h3>ActionContextAddon&nbsp; <span class="subtitle">0.1.0</span></h3>
+        <a href="./index.html" title="mojito">mojito</a> 
+            &gt; <a href="./module_ActionContextAddon.html" title="ActionContextAddon">ActionContextAddon</a>
+                
+                 &gt; meta.common.js (source view) 
+        <form onsubmit="return false">
+            <div id="propertysearch">
+                Search: <input autocomplete="off" id="searchinput" />
+                <div id="searchresults">
+                    &nbsp;
+                </div>
+            </div>
+        </form>
+	</div>
+
+	<div id="bd">
+		<div id="yui-main">
+			<div class="yui-b">
+            <form action="#" name="yui-classopts-form" method="get" id="yui-classopts-form">
+                <fieldset>
+                    <legend>Filters</legend>
+                <span class="classopts"><input type="checkbox" name="show_private" id="show_private" /> <label for="show_private">Show Private</label></span>
+                <span class="classopts"><input type="checkbox" name="show_protected" id="show_protected" /> <label for="show_protected">Show Protected</label></span>
+                <span class="classopts"><input type="checkbox" name="show_deprecated" id="show_deprecated" /> <label for="show_deprecated">Show Deprecated</label></span>
+                </fieldset>
+            </form>
+
+                    <div id="srcout">
+                        <style>
+                            #doc3 .classopts { display:none; }
+                        </style>
+<div class="highlight"><pre><span class="c">/*</span>
+<span class="c"> * Copyright (c) 2011 Yahoo! Inc. All rights reserved.</span>
+<span class="c"> */</span>
+<span class="c">/**</span>
+<span class="c"> * @submodule ActionContextAddon</span>
+<span class="c"> */</span>
+<span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;mojito-meta-addon&#39;</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="o">,</span> <span class="nx">NAME</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="kd">var</span> <span class="nx">COMMON</span> <span class="o">=</span> <span class="s1">&#39;common&#39;</span><span class="o">;</span>
+
+    <span class="c">/**</span>
+<span class="c">     * &lt;strong&gt;Access point:&lt;/strong&gt; &lt;em&gt;ac.meta.*&lt;/em&gt;</span>
+<span class="c">     * Allows the usage of the &quot;meta&quot; object as a storage device, which can pass data from</span>
+<span class="c">     * child mojits up towards parents.</span>
+<span class="c">     * @class Meta.common</span>
+<span class="c">     */</span>
+    <span class="kd">function</span> <span class="nx">MetaAddon</span><span class="p">(</span><span class="nx">command</span><span class="o">,</span> <span class="nx">adapter</span><span class="o">,</span> <span class="nx">ac</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c">// this is our instance cache</span>
+        <span class="k">this</span><span class="p">[</span><span class="nx">COMMON</span><span class="p">]</span> <span class="o">=</span> <span class="p">{};</span>
+    <span class="p">}</span>
+
+    <span class="nx">MetaAddon</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+
+        <span class="nx">namespace</span><span class="o">:</span> <span class="s1">&#39;meta&#39;</span><span class="o">,</span>
+
+        <span class="c">/**</span>
+<span class="c">         * Stores a keyed value within the meta object of the current mojit</span>
+<span class="c">         * execution. You can call this as many times as you like, but</span>
+<span class="c">         * if you use the same key, you&#39;ll override previous data. Call this within</span>
+<span class="c">         * child mojits when you have some data you want to make available for</span>
+<span class="c">         * some reason to any parents up your hierarchy.</span>
+<span class="c">         *</span>
+<span class="c">         * @method store</span>
+<span class="c">         * @param {string} key</span>
+<span class="c">         * @param {object} val</span>
+<span class="c">         */</span>
+        <span class="nx">store</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">key</span><span class="o">,</span> <span class="nx">val</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">[</span><span class="nx">COMMON</span><span class="p">][</span><span class="nx">key</span><span class="p">]</span> <span class="o">=</span> <span class="nx">val</span><span class="o">;</span>
+        <span class="p">}</span><span class="o">,</span>
+
+        <span class="c">/**</span>
+<span class="c">         * To retrieve stashed data that has been stored by child mojits, call</span>
+<span class="c">         * this function and provide a function, which will be called once the children</span>
+<span class="c">         * have been dispatched and all their meta data has been merged.</span>
+<span class="c">         *</span>
+<span class="c">         * @method retrieve</span>
+<span class="c">         * @param {function} cb callback will be called with the stored merged object</span>
+<span class="c">         * @param {object} [optional] scope scope of the callback</span>
+<span class="c">         */</span>
+        <span class="nx">retrieve</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="o">,</span> <span class="nx">scope</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">_callback</span> <span class="o">=</span> <span class="nx">cb</span><span class="o">;</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">_cbScope</span> <span class="o">=</span> <span class="nx">scope</span><span class="o">;</span>
+        <span class="p">}</span><span class="o">,</span>
+
+        <span class="c">// internal to Mojito</span>
+        <span class="nx">mergeMetaInto</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">meta</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">scope</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">_cbScope</span> <span class="o">||</span> <span class="k">this</span><span class="o">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="o">!</span> <span class="nx">meta</span><span class="p">[</span><span class="nx">COMMON</span><span class="p">])</span> <span class="p">{</span>
+                <span class="nx">meta</span><span class="p">[</span><span class="nx">COMMON</span><span class="p">]</span> <span class="o">=</span> <span class="k">this</span><span class="p">[</span><span class="nx">COMMON</span><span class="p">];</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="nx">meta</span><span class="p">[</span><span class="nx">COMMON</span><span class="p">]</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">mojito</span><span class="p">.</span><span class="nx">util</span><span class="p">.</span><span class="nx">metaMerge</span><span class="p">(</span><span class="nx">meta</span><span class="p">[</span><span class="nx">COMMON</span><span class="p">]</span><span class="o">,</span> <span class="k">this</span><span class="p">[</span><span class="nx">COMMON</span><span class="p">]);</span>
+            <span class="p">}</span>
+            <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">this</span><span class="p">.</span><span class="nx">_callback</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="nx">scope</span><span class="o">,</span> <span class="nx">meta</span><span class="p">[</span><span class="nx">COMMON</span><span class="p">]);</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="nx">meta</span><span class="o">;</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+
+    <span class="nx">MetaAddon</span><span class="p">.</span><span class="nx">dependsOn</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;core&#39;</span><span class="p">];</span>
+    
+    <span class="nx">Y</span><span class="p">.</span><span class="nx">mojito</span><span class="p">.</span><span class="nx">addons</span><span class="p">.</span><span class="nx">ac</span><span class="p">.</span><span class="nx">meta</span> <span class="o">=</span> <span class="nx">MetaAddon</span><span class="o">;</span>
+
+<span class="p">}</span><span class="o">,</span> <span class="s1">&#39;0.1.0&#39;</span><span class="o">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;mojito-util&#39;</span><span class="o">,</span> <span class="s1">&#39;mojito-output-adapter-addon&#39;</span><span class="p">]});</span>
+</pre></div>
+                    </div>
+			</div>
+		</div>
+		<div class="yui-b">
+            <div class="nav">
+
+                    <div id="moduleList" class="module">
+                        <h4>Modules</h4>
+                        <ul class="content">
+                                <li class=""><a href="module_ActionContext.html" title="ActionContext">ActionContext</a></li>
+                                <li class="selected"><a href="module_ActionContextAddon.html" title="ActionContextAddon">ActionContextAddon</a></li>
+                                <li class=""><a href="module_CommonLibs.html" title="CommonLibs">CommonLibs</a></li>
+                                <li class=""><a href="module_MojitoClient.html" title="MojitoClient">MojitoClient</a></li>
+                                <li class=""><a href="module_MojitoServer.html" title="MojitoServer">MojitoServer</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="classList" class="module">
+                        <h4>Classes</h4>
+                        <ul class="content">
+                                <li class=""><a href="Analytics.common.html" title="Analytics.common">Analytics.common</a></li>
+                                <li class=""><a href="Assets.common.html" title="Assets.common">Assets.common</a></li>
+                                <li class=""><a href="Carrier.common.html" title="Carrier.common">Carrier.common</a></li>
+                                <li class=""><a href="Deploy.server.html" title="Deploy.server">Deploy.server</a></li>
+                                <li class=""><a href="Device.common.html" title="Device.common">Device.common</a></li>
+                                <li class=""><a href="I13n.server.html" title="I13n.server">I13n.server</a></li>
+                                <li class=""><a href="Meta.common.html" title="Meta.common">Meta.common</a></li>
+                        </ul>
+                    </div>
+
+                    <!--
+                    <div id="fileList" class="module">
+                        <h4>Files</h4>
+                        <ul class="content">        
+                                <li class=""><a href="assets.common.js.html" title="assets.common.js">assets.common.js</a></li>
+                                <li class=""><a href="carrier.server.js.html" title="carrier.server.js">carrier.server.js</a></li>
+                                <li class=""><a href="deploy.server.js.html" title="deploy.server.js">deploy.server.js</a></li>
+                                <li class=""><a href="device.server.js.html" title="device.server.js">device.server.js</a></li>
+                                <li class=""><a href="i13n.common.js.html" title="i13n.common.js">i13n.common.js</a></li>
+                                <li class="selected"><a href="meta.common.js.html" title="meta.common.js">meta.common.js</a></li>
+                                <li class=""><a href="output-adapter.common.js.html" title="output-adapter.common.js">output-adapter.common.js</a></li>
+                                <li class=""><a href="rest.common.js.html" title="rest.common.js">rest.common.js</a></li>
+                        </ul>
+                    </div>
+                    -->
+
+
+
+
+
+            </div>
+		</div>
+	</div>
+	<div id="ft">
+        <hr />
+        Copyright &copy; 2012 Yahoo! Inc. All rights reserved.
+	</div>
+</div>
+<script type="text/javascript">
+    ALL_YUI_PROPS = [{"url": "Assets.common.html#method_addBlob", "access": "", "host": "Assets.common", "type": "method", "name": "addBlob"}, {"url": "Assets.common.html#method_addCss", "access": "", "host": "Assets.common", "type": "method", "name": "addCss"}, {"url": "Assets.common.html#method_addJs", "access": "", "host": "Assets.common", "type": "method", "name": "addJs"}, {"url": "Deploy.server.html#method_constructMojitoClientRuntime", "access": "", "host": "Deploy.server", "type": "method", "name": "constructMojitoClientRuntime"}, {"url": "Device.common.html#method_get", "access": "", "host": "Device.common", "type": "method", "name": "get"}, {"url": "Carrier.common.html#method_get", "access": "", "host": "Carrier.common", "type": "method", "name": "get"}, {"url": "I13n.server.html#method_getSpaceid", "access": "", "host": "I13n.server", "type": "method", "name": "getSpaceid"}, {"url": "I13n.server.html#method_make", "access": "", "host": "I13n.server", "type": "method", "name": "make"}, {"url": "Analytics.common.html#method_retrieve", "access": "", "host": "Analytics.common", "type": "method", "name": "retrieve"}, {"url": "Meta.common.html#method_retrieve", "access": "", "host": "Meta.common", "type": "method", "name": "retrieve"}, {"url": "Analytics.common.html#method_setMergeFunction", "access": "", "host": "Analytics.common", "type": "method", "name": "setMergeFunction"}, {"url": "I13n.server.html#method_stampPageView", "access": "", "host": "I13n.server", "type": "method", "name": "stampPageView"}, {"url": "Analytics.common.html#method_store", "access": "", "host": "Analytics.common", "type": "method", "name": "store"}, {"url": "Meta.common.html#method_store", "access": "", "host": "Meta.common", "type": "method", "name": "store"}, {"url": "I13n.server.html#method_trackClickOnly", "access": "", "host": "I13n.server", "type": "method", "name": "trackClickOnly"}, {"url": "I13n.server.html#method_trackForm", "access": "", "host": "I13n.server", "type": "method", "name": "trackForm"}, {"url": "I13n.server.html#method_trackLink", "access": "", "host": "I13n.server", "type": "method", "name": "trackLink"}, {"url": "I13n.server.html#method_trackPageParams", "access": "", "host": "I13n.server", "type": "method", "name": "trackPageParams"}, {"url": "I13n.server.html#method_trackUserLink", "access": "", "host": "I13n.server", "type": "method", "name": "trackUserLink"}];
+</script>
+</body>
+</html>

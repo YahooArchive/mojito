@@ -1,0 +1,27 @@
+[
+    {
+        "settings": [ "master" ],
+    
+        "specs": {
+            "flickr": {
+                "type": "HTMLFrameMojit",
+                "config": {
+                    "deploy": true,
+                    "child": {
+                        "type": "PagedFlickr"
+                    },
+                    "assets": {
+                        "top": {
+                            "css": [
+                                "/static/PagedFlickr/assets/css/style.css"
+                            ]
+                        }
+                    }
+                }
+            },
+            "paged": {
+                "type": "PagedFlickr"
+            }
+        }
+    }
+]

@@ -1,0 +1,12 @@
+[
+    {
+        "settings": [ "master" ],
+    
+        "specs": {
+            "flickr" : {
+                "type": "Flickr"
+            }
+        }
+    
+    }
+]

@@ -1,0 +1,22 @@
+[{
+    "settings": ["master"],
+
+    "root": {
+        "verbs": ["get"],
+        "path": "/",
+        "call": "server.index"
+    },
+
+    "clientframe": {
+        "verbs": ["get"],
+        "path": "/client/index",
+        "call": "client.index"
+    },
+
+    "default": {
+        "verbs": ["get"],
+        "path": "/:module/:action",
+        "call": "{module}.{action}"
+    }
+
+}]

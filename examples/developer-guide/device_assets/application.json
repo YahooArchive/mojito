@@ -1,0 +1,17 @@
+[
+  {
+    "settings": [ "master" ],
+    "appPort": 8666,
+    "specs": {
+      "frame" : {
+        "type" : "HTMLFrameMojit",
+        "deploy": true,
+        "config": {
+          "child" : {
+            "type" : "device"
+          }
+        }
+      }
+    }
+  }
+]

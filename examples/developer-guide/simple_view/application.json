@@ -1,0 +1,10 @@
+[
+  {
+    "settings": [ "master" ],
+    "specs": { 
+      "simple" : { 
+        "type": "simple" 
+      } 
+    }
+  }
+]

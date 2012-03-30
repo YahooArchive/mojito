@@ -1,0 +1,28 @@
+[
+    {
+        "settings": [ "master" ],
+        "specs": {
+          "frame": {
+	    "type": "HTMLFrameMojit",
+	    "config":{
+	      "deploy": true,
+	      "child":{
+	        "type": "log"
+	      }
+            }
+	  }
+	},
+        "log":{
+         "client":{
+            "level":"debug",
+            "yui":true,
+           "timestamp": false
+         },
+         "server":{
+            "level":"debug",
+            "yui":true,
+           "timestamp": true
+         }
+      }
+    }
+]

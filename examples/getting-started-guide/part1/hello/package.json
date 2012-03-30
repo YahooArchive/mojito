@@ -1,0 +1,22 @@
+{
+    "name": "hello",
+    "description": "My Mojito Application",
+    "version": "0.1.0",
+    "author": "Your Name <nobody@yahoo-inc.com>",
+    "contributors": [
+          {
+              "name": "Your Name",
+              "email": "nobody@yahoo-inc.com"
+          }
+    ],
+    "scripts": {
+        "start": "mojito start"
+    },
+    "dependencies": {
+        "mojito": ">= 0.1.0"
+    },
+    "devDependencies": {},
+    "engines": {
+        "node": "*"
+    }
+}
