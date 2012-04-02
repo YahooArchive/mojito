@@ -7,27 +7,26 @@ on-line/off-line, multi-device, hosted application platform.
 
 ### via GitHub
 
-    $ git clone git@github.com:yahoo/mojito.git
+    $ git clone git://github.com/yahoo/mojito.git
     $ cd mojito/source
     $ npm install -g .
     $ npm install .
-    $ mojito test
 
 ### via npm
 
     $ npm install -g mojito
-    $ npm install mojito
 
 ## Quick Start
 
-Make an app:
+Make an app and install local Mojito:
 
-    $ mojito create app simple hello
+    $ mojito create app hello
     $ cd hello
+    $ npm install mojito
 
 Make a mojit:
 
-    $ mojito create mojit simple HelloMojit
+    $ mojito create mojit HelloMojit
 
 Edit application.json to configure mojit so that it looks like:
 
@@ -48,7 +47,7 @@ Start the server:
 
 Go to URL:
 
-    http://localhost:8666/hello/index
+    http://localhost:8666/@HelloMojit/index
 
 ## Documentation
 
