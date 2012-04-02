@@ -18,13 +18,13 @@ on-line/off-line, multi-device, hosted application platform.
 
 ## Quick Start
 
-Make an app and install local Mojito:
+Create an app and install local Mojito:
 
     $ mojito create app hello
     $ cd hello
     $ npm install mojito
 
-Make a mojit:
+Create a mojit:
 
     $ mojito create mojit HelloMojit
 
