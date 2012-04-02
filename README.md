@@ -7,7 +7,7 @@ on-line/off-line, multi-device, hosted application platform.
 
 ### via GitHub
 
-    $ git clone http://github.com:yahoo/mojito.git mojito
+    $ git clone git@github.com:yahoo/mojito.git
     $ cd mojito/source
     $ npm install -g .
     $ npm install .
