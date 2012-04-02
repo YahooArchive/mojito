@@ -5,20 +5,31 @@ on-line/off-line, multi-device, hosted application platform.
 
 ## Installation
 
-  $ npm install mojito
+### via GitHub
+
+    $ git clone http://github.com:yahoo/mojito.git mojito
+    $ cd mojito/source
+    $ npm install -g .
+    $ npm install .
+    $ mojito test
+
+### via npm
+
+    $ npm install -g mojito
+    $ npm install mojito
 
 ## Quick Start
 
-  Make an app:
+Make an app:
 
-  $ mojito create app simple hello
-  $ cd hello
+    $ mojito create app simple hello
+    $ cd hello
 
-  Make a mojit:
+Make a mojit:
 
-  $ mojito create mojit simple HelloMojit
+    $ mojito create mojit simple HelloMojit
 
-  Edit application.json to configure mojit so that it looks like:
+Edit application.json to configure mojit so that it looks like:
 
     [
         {
@@ -31,21 +42,21 @@ on-line/off-line, multi-device, hosted application platform.
         }
     ]
 
-  Start the server:
+Start the server:
 
-  $ mojito start
+    $ mojito start
 
-  Go to URL:
+Go to URL:
 
-  http://localhost:8666/hello/index
+    http://localhost:8666/hello/index
 
 ## Documentation
 
-https://github.com/yahoo/mojito/docs/topics
+http://developer.yahoo.com/cocktails/mojito
 
 ## Licensing
 
-Please see the file called LICENSE.txt
+Please see the LICENSE.txt file for details.
 
 ## Third-party libraries
 
