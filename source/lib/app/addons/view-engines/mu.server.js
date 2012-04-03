@@ -11,7 +11,7 @@
 
 YUI.add('mojito-mu', function(Y, NAME) {
 
-    var mu = YUI.require(__dirname + '/../../libs/Mulib/Mu'),
+    var mu = YUI.require('mu2'),
         fs = require('fs');
 
 
@@ -37,25 +37,7 @@ YUI.add('mojito-mu', function(Y, NAME) {
          * @param {boolean} more Whether there will be more content later.
          */
         render: function(data, mojitType, tmpl, adapter, meta, more) {
-            var me = this,
-                handleRender = function(err, output) {
-                    if (err) {
-                        throw err;
-                    }
-
-                    output.addListener('data', function(c) {
-                        adapter.flush(c, meta);
-                    });
-
-                    output.addListener('end', function() {
-                        if (!more) {
-                            Y.log('render complete for view "' +
-                                me.viewId + '"',
-                                'mojito', 'qeperf');
-                            adapter.done('', meta);
-                        }
-                    });
-                };
+            var me = this;
 
             /*
              * We can't use pre-compiled Mu templates on the server :(
@@ -63,8 +45,16 @@ YUI.add('mojito-mu', function(Y, NAME) {
 
             // If we don't have a compliled template, make one.
             Y.log('Rendering template "' + tmpl + '"', 'mojito', NAME);
-            mu.render(tmpl, data, {cached: meta.view.cacheTemplates},
-                handleRender);
+            mu.compileAndRender(tmpl, data).on('data', function (c) {
+                adapter.flush(c, meta);
+            }).on('end', function () {
+                if (!more) {
+                    Y.log('render complete for view "' +
+                        me.viewId + '"',
+                        'mojito', 'qeperf');
+                    adapter.done('', meta);
+                }
+            });
         },
 
 
