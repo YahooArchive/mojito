@@ -22,7 +22,7 @@ Create an app and install local Mojito:
 
     $ mojito create app hello
     $ cd hello
-    $ npm install mojito
+    $ npm install .
 
 Create a mojit:
 
@@ -52,6 +52,10 @@ Go to URL:
 ## Documentation
 
 http://developer.yahoo.com/cocktails/mojito
+
+## Discussion/Forums
+
+http://developer.yahoo.com/forum/Yahoo-Mojito
 
 ## Licensing
 
