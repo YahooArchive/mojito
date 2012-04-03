@@ -22,7 +22,6 @@ Create an app and install local Mojito:
 
     $ mojito create app hello
     $ cd hello
-    $ npm install mojito
 
 Create a mojit:
 
