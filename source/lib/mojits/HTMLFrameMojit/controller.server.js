@@ -11,6 +11,26 @@
 
 YUI.add('HTMLFrameMojit', function(Y, NAME) {
 
+    var DEFAULT_DOCTYPE = "html";
+    var DOCTYPE_PATTERNS = [];
+
+    var getDoctype = function(patterns, ua) {
+        var rv = DEFAULT_DOCTYPE;
+
+		if(patterns && patterns.length) {
+            var l = patterns.length;
+            var dcp;
+            for(var idx = 0; idx < l; idx++) {
+                dcp = patterns[idx].ua;
+                if(dcp.test(ua)) {
+                    rv = patterns[idx].value;
+                    break;
+                }
+            }
+        }
+        return rv;
+    };
+
     var renderListAsHtmlAssets = function(list, type) {
         var i,
             data = '';
@@ -75,8 +95,24 @@ YUI.add('HTMLFrameMojit', function(Y, NAME) {
                 meta.http.headers['content-type'] =
                     'text/html; charset="utf-8"';
 
+                var doctype = DEFAULT_DOCTYPE;
+
+                if(DOCTYPE_PATTERNS.length == 0) {
+                    var dtConfig = ac.config.get('doctype');
+                    var dtitems = [];
+
+                    if(dtConfig) {
+                        var dl = dtConfig.length;
+                        for(var idx = 0; idx < dl; idx++) {
+                            dtitems.push({ "ua": new RegExp(dtConfig[idx].ua, "i"), "value": dtConfig[idx].value });
+                        }
+                    }
+                    DOCTYPE_PATTERNS = dtitems;
+                }
+                doctype = "<!DOCTYPE " + getDoctype(DOCTYPE_PATTERNS, ac.http.getRequest().headers['user-agent']) + ">";
+
                 // Set the default data
-                data.doctype = ac.config.get('doctype') || '<!DOCTYPE HTML>';
+                data.doctype = doctype;
                 data.title = ac.config.get('title') ||
                     'Powered by Mojito ' + Y.mojito.version;
                 data.mojito_version = Y.mojito.version;
@@ -112,5 +148,7 @@ YUI.add('HTMLFrameMojit', function(Y, NAME) {
 }, '0.1.0', {requires: [
     'mojito-assets-addon',
     'mojito-deploy-addon',
-    'mojito-config-addon'
+    'mojito-config-addon',
+    'mojito-http-addon',
+    'json'
 ]});
