@@ -49,6 +49,25 @@ Go to URL:
 
     http://localhost:8666/@HelloMojit/index
 
+Add a route to map "/" to your HelloMojit.index action.  Edit your routes.json so that it looks like:
+
+```
+[{
+    "settings": ["master"],
+    "hello index": {
+        "verbs": ["get"],
+        "path": "/",
+        "call": "hello.index"
+    }
+}]
+```
+
+The "hello" in "hello.index" maps to the application.json "hello" specs property.
+
+Go to URL:
+
+    http://localhost:8666/
+
 ## Documentation
 
 http://developer.yahoo.com/cocktails/mojito
