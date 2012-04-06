@@ -1,4 +1,4 @@
-# GVaish mMojito (Gaurav's enhancements to Yahoo! Mojito)
+# Yahoo! Mojito
 
 Mojito is the JavaScript library implementing Cocktails, a JavaScript-based
 on-line/off-line, multi-device, hosted application platform.
