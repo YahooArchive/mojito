@@ -1,6 +1,7 @@
 {
     "name": "mojito",
     "version": "0.3.1",
+	"mversion": "0.0.1",
     "description": "Mojito provides an architecture, components and tools for developers to build complex web applications faster.",
     "preferGlobal": true,
     "author": "Team Mojito (http://developer.yahoo.com/cocktails/mojito)",
@@ -9,7 +10,8 @@
         "Matt Taylor <mtaylor@yahoo-inc.com>",
         "Chris Klaiber <cklaiber@yahoo-inc.com>",
         "Drew Folta <folta@yahoo-inc.com>",
-        "Martin Cooper <mcooper@yahoo-inc.com>"
+        "Martin Cooper <mcooper@yahoo-inc.com>",
+        "Gaurav Vaish <gaurav.vaish-AT-gmail.com>"
     ],
     "### dependencies notes" : {
         "jsdom": "version 0.2.0 does not (directly) install a binary extension"

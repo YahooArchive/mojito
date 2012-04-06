@@ -76,6 +76,7 @@ YUI.add('HTMLFrameMojit', function(Y, NAME) {
                     'text/html; charset="utf-8"';
 
                 // Set the default data
+                data.doctype = ac.config.get('doctype') || '<!DOCTYPE HTML>';
                 data.title = ac.config.get('title') ||
                     'Powered by Mojito ' + Y.mojito.version;
                 data.mojito_version = Y.mojito.version;
