@@ -37,10 +37,13 @@ function simpleMerge(to, from) {
  * @private
  */
 function Router(store) {
-    var self = this;
+    var self = this,
+        appConfig = store.getAppConfig(null, 'definition'),
+        maxRouteCacheEntries = appConfig.maxRouteCacheEntries;
+
     self._store = store;
     YUI().use('cache-base', function(Y) {
-        self._computedRoutes = new Y.Cache({max:1000, uniqueKeys:true});
+        self._computedRoutes = new Y.Cache({max:maxRouteCacheEntries, uniqueKeys:true});
     });
 }
 

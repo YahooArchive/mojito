@@ -4,6 +4,7 @@
     "appConfigBase": {
         "mojitsDirs": [ "mojits" ],
         "routesFiles": [ "routes.json" ],
+        "maxRouteCacheEntries": 1000,
         "tunnelPrefix": "/tunnel",
         "yui": {
             "dependencyCalculations": "precomputed"
