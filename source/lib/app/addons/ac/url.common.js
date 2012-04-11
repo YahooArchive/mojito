@@ -38,8 +38,8 @@ YUI.add('mojito-url-addon', function(Y, NAME) {
      * @class Url.common
      */
     function UrlAcAddon(command, adapter, ac) {
-        this.maker = new Y.mojito.RouteMaker(ac.app.routes);
         this.appConfig = ac.app.config;
+        this.maker = new Y.mojito.RouteMaker(ac.app.routes, ac.context);
     }
 
 

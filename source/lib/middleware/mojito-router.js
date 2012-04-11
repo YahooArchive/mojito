@@ -59,7 +59,7 @@ Router.prototype = {
             var command = {instance: {}},
                 context = req.context,
                 routes = store.getRoutes(context),
-                routeMaker = new RouteMakerClass(routes),
+                routeMaker = new RouteMakerClass(routes, context),
                 query = liburl.parse(req.url, true).query,
                 appConfig = store.getAppConfig(context, 'definition'),
                 url,
@@ -143,7 +143,7 @@ Router.prototype = {
             url = url.split('?')[0];
         }
 
-        routeCacheKey = method + " " + url;
+        routeCacheKey = method + " " + url + " " + routeMaker.getID();
         routeCache = (this._computedRoutes) ? this._computedRoutes.retrieve(routeCacheKey) : null;
 
         if (routeCache !== null) {
