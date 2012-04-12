@@ -57,9 +57,12 @@ http://developer.yahoo.com/cocktails/mojito
 
 http://developer.yahoo.com/forum/Yahoo-Mojito
 
-## Licensing
+## Licensing and Contributions
 
-Please see the LICENSE.txt file for details.
+Mojito is licensed under a [BSD license](https://github.com/yahoo/mojito/blob/master/LICENSE.txt).
+
+To contribute to the Mojito project, please review the [Mojito Contributor
+License Agreement](http://developer.yahoo.com/cocktails/mojito/cla/).
 
 ## Third-party libraries
 
