@@ -12,24 +12,6 @@
 YUI.add('HTMLFrameMojit', function(Y, NAME) {
 
     var DEFAULT_DOCTYPE = "html";
-    var DOCTYPE_PATTERNS = [];
-
-    var getDoctype = function(patterns, ua) {
-        var rv = DEFAULT_DOCTYPE;
-
-		if(patterns && patterns.length) {
-            var l = patterns.length;
-            var dcp;
-            for(var idx = 0; idx < l; idx++) {
-                dcp = patterns[idx].ua;
-                if(dcp.test(ua)) {
-                    rv = patterns[idx].value;
-                    break;
-                }
-            }
-        }
-        return rv;
-    };
 
     var renderListAsHtmlAssets = function(list, type) {
         var i,
@@ -96,24 +78,11 @@ YUI.add('HTMLFrameMojit', function(Y, NAME) {
                     'text/html; charset="utf-8"';
 
                 var doctype = DEFAULT_DOCTYPE;
-
-                if(DOCTYPE_PATTERNS.length == 0) {
-                    var dtConfig = ac.config.get('doctype');
-                    var dtitems = [];
-
-                    if(dtConfig) {
-                        var dl = dtConfig.length;
-                        for(var idx = 0; idx < dl; idx++) {
-                            dtitems.push({ "ua": new RegExp(dtConfig[idx].ua, "i"), "value": dtConfig[idx].value });
-                        }
-                    }
-                    DOCTYPE_PATTERNS = dtitems;
-                }
-                doctype = "<!DOCTYPE " + getDoctype(DOCTYPE_PATTERNS, ac.http.getRequest().headers['user-agent']) + ">";
+                doctype = "<!DOCTYPE " + (meta.common.doctype || doctype) + ">";
 
                 // Set the default data
                 data.doctype = doctype;
-                data.title = ac.config.get('title') ||
+                data.title = meta.common.title || ac.config.get('title') ||
                     'Powered by Mojito ' + Y.mojito.version;
                 data.mojito_version = Y.mojito.version;
 
@@ -150,5 +119,6 @@ YUI.add('HTMLFrameMojit', function(Y, NAME) {
     'mojito-deploy-addon',
     'mojito-config-addon',
     'mojito-http-addon',
+    'mojito-meta-addon',
     'json'
 ]});
