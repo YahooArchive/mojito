@@ -649,7 +649,7 @@ runTests = function(opts) {
         targetTests,
         testName = opts.name,
         testType = opts.type || 'fw',
-        path = opts.path,
+        path = pathlib.resolve(opts.path),
         coverage = inputOptions.coverage,
         verbose = inputOptions.verbose,
         store,
