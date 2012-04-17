@@ -51,8 +51,9 @@ YUI.add('HTMLFrameMojit', function(Y, NAME) {
             var child = ac.config.get('child'),
                 cfg;
 
-            // Map the action to the child
-            child.action = ac.action;
+            // Map the action to the child if the action
+            // is not specified as part of the child config.
+            child.action = child.action || ac.action;
 
             // Create a config object for the composite addon
             cfg = {
