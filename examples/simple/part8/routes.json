@@ -1,9 +1,0 @@
-[{
-    "settings": [ "master" ],
-
-    "index": {
-        "verbs": ["get"],
-        "path": "/",
-        "call": "myBase.index"
-    }
-}]
