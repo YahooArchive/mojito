@@ -142,13 +142,8 @@ exports.buildhtml5app = function(cmdOptions, store, config, destination,
         // files to fetch through the server
         serverFiles = { css: true, js: true, json: true },
         extension,
-// Removed manifest file from output
-//        manifest = 'CACHE MANIFEST\n',
-//        indexJs = "module.exports = require('express')." +
-//            "createServer(require('express')['static'](__dirname));",
         url,
         urls = {}, // from: to
-//        app,
         context = '',
         appConfig,
         tunnelPrefix;
@@ -183,10 +178,6 @@ exports.buildhtml5app = function(cmdOptions, store, config, destination,
 
     console.log('...');
 
-// Removed manifest file from output
-    // Set the cachable files in the manifest
-//    manifest += 'CACHE:\n';
-
     // Copy all the files into the destination directory
     for (url in store._staticURLs) {
         if (store._staticURLs.hasOwnProperty(url)) {
@@ -195,9 +186,6 @@ exports.buildhtml5app = function(cmdOptions, store, config, destination,
             extension = from.split('.').pop();
 
             mkdirP(libpath.dirname(to), MODE_755);
-
-// Removed manifest file from output
-//            manifest += url + '\n';
 
             if (serverFiles[extension] !== undefined) {
                 urls[url + context] = url;
@@ -216,21 +204,6 @@ exports.buildhtml5app = function(cmdOptions, store, config, destination,
             mkdirP(libpath.dirname(libpath.join(destination, url)), MODE_755);
         }
     }
-
-// Removed manifest file from output
-//    for (url in urls) {
-//        if (urls.hasOwnProperty(url)) {
-//            manifest += (urls[url] === '/' ? '/index.html' : urls[url]) + '\n';
-//        }
-//    }
-
-// Removed manifest file from output
-    // Write the "cache.manifest" file
-//    fs.writeFileSync(libpath.join(destination, 'cache.manifest'), manifest,
-//        'utf8');
-// Removed manifest file from output
-    // Write a "quick test" index.js file
-//    fs.writeFileSync(libpath.join(destination, 'index.js'), indexJs, 'utf8');
 
     // Now use the server to generate some of the files
     writeWebPagesToFiles(type, store, destination, urls, config, callback);
