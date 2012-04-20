@@ -10,7 +10,7 @@
 
 var fs = require('fs'),
     util = require('util'),
-    mu = require('../app/libs/Mulib/Mu'),
+    mu = require('mu2'),
     path = require('path'),
     http = require('http'),
     tty = require('tty'),
