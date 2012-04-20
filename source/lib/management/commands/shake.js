@@ -10,11 +10,16 @@ var path = require('path'),
     Shaker = null;
 
 try {
-    var shaker_path = path.join(process.cwd(),'node_modules','shaker');
-    Shaker = require(shaker_path).Shaker;
+    Shaker = require('shaker').Shaker;
 }
-catch (exception) {
-    utils.error('Please install the shaker package from the npm registry.');
+catch (exception){
+    try{
+         var shaker_path = path.join(process.cwd(),'node_modules','shaker');
+         Shaker = require(shaker_path).Shaker;
+
+    }catch(exception){
+        utils.error('Please install the shaker package from the npm registry.');
+    }
 }
 
 /**
