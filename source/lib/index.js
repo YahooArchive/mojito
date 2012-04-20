@@ -283,6 +283,16 @@ MojitoServer.prototype = {
                     midPath = libpath.join(__dirname, 'middleware', midName);
                     //console.log("======== MIDDLEWARE mojito " + midPath);
                     midFactory = require(midPath);
+                    // We assume the middleware is a factory function
+                    // and pass in the following config object when
+                    // calling said function.
+                    // 
+                    // midConfig = {
+                    //    Y: Y,
+                    //    store: store,
+                    //    logger: logger,
+                    //    context: options.context
+                    // };
                     app.use(midFactory(midConfig));
                 }
             } else {
