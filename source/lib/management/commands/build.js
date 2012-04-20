@@ -148,8 +148,11 @@ exports.buildhtml5app = function(cmdOptions, store, config, destination,
         appConfig,
         tunnelPrefix;
 
+    // If the cmdOptions.context has a string value then;
     // Convert the documented "mojito start --context" value "key:val,key:val" to "key=val&key=val"
-    cmdOptions.context = cmdOptions.context.replace(/:/g, '=').replace(/,/g, '&')
+    if (typeof cmdOptions.context === 'string') {
+        cmdOptions.context = cmdOptions.context.replace(/:/g, '=').replace(/,/g, '&');
+    }
 
     if (cmdOptions.context) {
         context = '?' + cmdOptions.context;
