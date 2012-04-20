@@ -9,6 +9,7 @@
 
 
 var qs = require('querystring'),
+    YUI = require('yui3').YUI,
     logger,
     liburl = require('url'),
     RX_END_SLASHES = /\/+$/,
@@ -36,7 +37,14 @@ function simpleMerge(to, from) {
  * @private
  */
 function Router(store) {
-    this._store = store;
+    var self = this,
+        appConfig = store.getAppConfig(null, 'definition'),
+        maxRouteCacheEntries = appConfig.maxRouteCacheEntries;
+
+    self._store = store;
+    YUI().use('cache-base', function(Y) {
+        self._computedRoutes = new Y.Cache({max:maxRouteCacheEntries, uniqueKeys:true});
+    });
 }
 
 
@@ -51,7 +59,7 @@ Router.prototype = {
             var command = {instance: {}},
                 context = req.context,
                 routes = store.getRoutes(context),
-                routeMaker = new RouteMakerClass(routes),
+                routeMaker = new RouteMakerClass(routes, context),
                 query = liburl.parse(req.url, true).query,
                 appConfig = store.getAppConfig(context, 'definition'),
                 url,
@@ -128,28 +136,37 @@ Router.prototype = {
     getRoute: function(method, url, routeMaker) {
 
 //        logger.log('[UriRouter] routing ' + method + ' ' + url);
-        var name, route, call = [];
+        var name, route, call = [], routeCacheKey, routeCache;
 
         // strip query string
         if (url.indexOf('?') > -1) {
             url = url.split('?')[0];
         }
 
-        route = routeMaker.find(url, method);
+        routeCacheKey = method + " " + url + " " + routeMaker.getID();
+        routeCache = (this._computedRoutes) ? this._computedRoutes.retrieve(routeCacheKey) : null;
 
-        if (!route) {
-            return null;
+        if (routeCache !== null) {
+            route = routeCache.response;
+        } else {
+            route = routeMaker.find(url, method);
+
+            if (!route) {
+                return null;
+            }
+
+            if ('*.*' === route.call) {
+                route.call = route.query.module + '.' + route.query.action;
+            }
+
+            call[0] = route.call.split('.');
+            call[1] = call[0].pop();
+            call[0] = call[0].join('.');
+
+            route.call = call;
+
+            this._computedRoutes.add(routeCacheKey, route);
         }
-
-        if ('*.*' === route.call) {
-            route.call = route.query.module + '.' + route.query.action;
-        }
-
-        call[0] = route.call.split('.');
-        call[1] = call[0].pop();
-        call[0] = call[0].join('.');
-
-        route.call = call;
 
         // This code does not know what Mojito is so just return the route.
         return route;

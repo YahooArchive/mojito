@@ -207,13 +207,25 @@ YUI.add('mojito-route-maker', function(Y, NAME) {
      * The route maker for reverse URL lookup.
      * @class Maker
      * @namespace Y.mojito
-     * @param {Object} routes key value store of all routes in the system
+     * @param {Object} routes key value store of all routes for a particular context
+     * @param {Object} context the routes are for
      */
-    function Maker(routes) {
-        var name;
+    function Maker(routes, context) {
+        var name, id = "";
         this._routes = {};
-        // TODO: [Issue 75] Cache these computed routes so we
-        // don't have to do this on each request.
+
+        // Backwards compatibility for constructor without context
+        if (typeof context === 'undefined'){
+            context = "";
+        }
+
+        // TODO: If anywhere else needs a concatenated string of the context, we should precompute this elsewhere
+        Y.Object.each(context, function(ctx_val, ctx_name) {
+            id += ctx_name + "=" + ctx_val + "&";
+        });
+
+        this._id = id;
+
         for (name in routes) {
             if (routes.hasOwnProperty(name)) {
                 this._routes[name] = buildRoute(name, routes[name]);
@@ -322,6 +334,16 @@ YUI.add('mojito-route-maker', function(Y, NAME) {
          */
         getComputedRoutes: function() {
             return this._routes;
+        },
+
+
+        /**
+         * Returns a unique ID for this routemaker. If any two route makers
+         * have the same ID, they should return the exact same routes.
+         * @return {string} ID
+         */
+        getID: function() {
+            return this._id;
         },
 
 
