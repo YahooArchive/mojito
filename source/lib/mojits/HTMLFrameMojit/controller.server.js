@@ -11,6 +11,8 @@
 
 YUI.add('HTMLFrameMojit', function(Y, NAME) {
 
+    var DEFAULT_DOCTYPE = "html";
+
     var renderListAsHtmlAssets = function(list, type) {
         var i,
             data = '';
@@ -75,8 +77,12 @@ YUI.add('HTMLFrameMojit', function(Y, NAME) {
                 meta.http.headers['content-type'] =
                     'text/html; charset="utf-8"';
 
+                var doctype = DEFAULT_DOCTYPE;
+                doctype = "<!DOCTYPE " + (meta.common.doctype || doctype) + ">";
+
                 // Set the default data
-                data.title = ac.config.get('title') ||
+                data.doctype = doctype;
+                data.title = meta.common.title || ac.config.get('title') ||
                     'Powered by Mojito ' + Y.mojito.version;
                 data.mojito_version = Y.mojito.version;
 
@@ -111,5 +117,8 @@ YUI.add('HTMLFrameMojit', function(Y, NAME) {
 }, '0.1.0', {requires: [
     'mojito-assets-addon',
     'mojito-deploy-addon',
-    'mojito-config-addon'
+    'mojito-config-addon',
+    'mojito-http-addon',
+    'mojito-meta-addon',
+    'json'
 ]});

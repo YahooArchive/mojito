@@ -1,0 +1,18 @@
+[{
+    "settings": [ "master" ],
+    
+    "specs": {
+        "myBase": {
+            "type": "HTMLFrameMojit",
+            "config": {
+                "deploy": true,
+                "doctype": [
+                   { "ua": "Mozilla.+MSIE [67]\\.\\d", "value": "HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"" }
+                ],
+                "child": {
+                    "type": "myMojit"
+                }
+            }
+        }
+    }
+}]
