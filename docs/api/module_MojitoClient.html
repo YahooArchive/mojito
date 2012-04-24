@@ -2,21 +2,21 @@
 <html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-	<title>API: MojitoClient   (YUI Library)</title>
+	<title>Mojito API: MojitoClient   (</title>
 
-	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css?stamp=1327685402.48" />
-	<link rel="stylesheet" type="text/css" href="assets/api.css?stamp=1327685402.48" />
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css?stamp=1334037082.24" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css?stamp=1334037082.24" />
 
-    <script type="text/javascript" src="assets/api-js?stamp=1327685402.48"></script>
-    <script type="text/javascript" src="assets/ac-js?stamp=1327685402.48"></script>
+    <script type="text/javascript" src="assets/api-js?stamp=1334037082.24"></script>
+    <script type="text/javascript" src="assets/ac-js?stamp=1334037082.24"></script>
 </head>
 
 <body id="yahoo-com">
 
 <div id="doc3" class="yui-t2">
 	<div id="hd">
-        <h1><a href="http://developer.yahoo.com/yui/" title="mojito">mojito</a></h1>
-        <h3>MojitoClient&nbsp; <span class="subtitle">0.1.0</span></h3>
+        <h1><a href="http://developer.yahoo.com/cocktails/mojito/" title="mojito">mojito</a></h1>
+        <h3>MojitoClient&nbsp; <span class="subtitle">0.3.0</span></h3>
         <a href="./index.html" title="mojito">mojito</a> 
             &gt; <a href="./module_MojitoClient.html" title="MojitoClient">MojitoClient</a>
                 
@@ -50,7 +50,9 @@
 
                     </h3>
                     <div class="description summary">
-                        Client side Mojito runtime
+                        The starting point for mojito to run in the browser. You can access one
+instance of the Mojito Client running within the browser environment
+through window.YMojito.client.
                     </div>
 
 
@@ -60,12 +62,12 @@
 
                             <p>This module contains the following classes:</p>
                             <script>
-                            //var YUI_CLASS_LIST = [{"extends": {"superclass": {}, "events": {}, "configs": {}, "properties": {}, "methods": {}}, "description": "The starting point for mojito to run in the browser. You can access one instance of the Mojito Client running\nwithin the browser environment through window.YMojito.client.", "guessedname": "Y.mojito.Client", "name": "Y.mojito.Client"}, {"extends": {"superclass": {}, "events": {}, "configs": {}, "properties": {}, "methods": {}}, "description": "The object that is given to each mojit binder to be used to interact with other mojits\nand the mojito framework.", "guessedname": "Y.mojito.MojitProxy", "name": "Y.mojito.MojitProxy"}];
+                            //var YUI_CLASS_LIST = [{"extends": {"superclass": {}, "events": {}, "configs": {}, "properties": {}, "methods": {}}, "description": "The object that is given to each mojit binder to be used to interact with\nother mojits and the mojito framework.", "guessedname": "MojitProxy", "name": "MojitProxy"}, {"extends": {"superclass": {}, "events": {}, "configs": {}, "properties": {}, "methods": {}}, "description": "The starting point for mojito to run in the browser. You can access one\ninstance of the Mojito Client running within the browser environment\nthrough window.YMojito.client.", "guessedname": "Y.mojito.Client", "name": "Y.mojito.Client"}];
                             </script>
                             <div id="splash_classList">
                                 <ul>
-                                    <li><a href="Y.mojito.Client.html" title="Y.mojito.Client" id="class_0">Y.mojito.Client</a></li>
-                                    <li><a href="Y.mojito.MojitProxy.html" title="Y.mojito.MojitProxy" id="class_1">Y.mojito.MojitProxy</a></li>
+                                    <li><a href="MojitProxy.html" title="MojitProxy" id="class_0">MojitProxy</a></li>
+                                    <li><a href="Y.mojito.Client.html" title="Y.mojito.Client" id="class_1">Y.mojito.Client</a></li>
                                 </ul>
                             </div>
                     </div>
@@ -93,8 +95,8 @@
                     <div id="classList" class="module">
                         <h4>Classes</h4>
                         <ul class="content">
+                                <li class=""><a href="MojitProxy.html" title="MojitProxy">MojitProxy</a></li>
                                 <li class=""><a href="Y.mojito.Client.html" title="Y.mojito.Client">Y.mojito.Client</a></li>
-                                <li class=""><a href="Y.mojito.MojitProxy.html" title="Y.mojito.MojitProxy">Y.mojito.MojitProxy</a></li>
                         </ul>
                     </div>
 
@@ -102,18 +104,14 @@
                     <div id="fileList" class="module">
                         <h4>Files</h4>
                         <ul class="content">        
-                                <li class=""><a href="action-context.common.js.html" title="action-context.common.js">action-context.common.js</a></li>
-                                <li class=""><a href="controller-context.common.js.html" title="controller-context.common.js">controller-context.common.js</a></li>
-                                <li class=""><a href="dispatch.common.js.html" title="dispatch.common.js">dispatch.common.js</a></li>
-                                <li class=""><a href="loader.common.js.html" title="loader.common.js">loader.common.js</a></li>
-                                <li class=""><a href="logger.common.js.html" title="logger.common.js">logger.common.js</a></li>
-                                <li class=""><a href="mojit-proxy.client.js.html" title="mojit-proxy.client.js">mojit-proxy.client.js</a></li>
+                                <li class=""><a href="mojito-client.client.js.html" title="mojito-client.client.js">mojito-client.client.js</a></li>
                                 <li class=""><a href="mojito-test.common.js.html" title="mojito-test.common.js">mojito-test.common.js</a></li>
+                                <li class=""><a href="mojito.common.js.html" title="mojito.common.js">mojito.common.js</a></li>
                                 <li class=""><a href="output-handler.client.js.html" title="output-handler.client.js">output-handler.client.js</a></li>
+                                <li class=""><a href="perf.client.js.html" title="perf.client.js">perf.client.js</a></li>
                                 <li class=""><a href="perf.server.js.html" title="perf.server.js">perf.server.js</a></li>
-                                <li class=""><a href="route-maker.common.js.html" title="route-maker.common.js">route-maker.common.js</a></li>
-                                <li class=""><a href="util.common.js.html" title="util.common.js">util.common.js</a></li>
-                                <li class=""><a href="view-renderer.common.js.html" title="view-renderer.common.js">view-renderer.common.js</a></li>
+                                <li class=""><a href="resource-store-adapter.common.js.html" title="resource-store-adapter.common.js">resource-store-adapter.common.js</a></li>
+                                <li class=""><a href="rest.common.js.html" title="rest.common.js">rest.common.js</a></li>
                         </ul>
                     </div>
                     -->
@@ -131,7 +129,7 @@
 	</div>
 </div>
 <script type="text/javascript">
-    ALL_YUI_PROPS = [{"url": "Y.mojito.MojitProxy.html#method_broadcast", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "broadcast"}, {"url": "Y.mojito.MojitProxy.html#property_children", "access": "", "host": "Y.mojito.MojitProxy", "type": "property", "name": "children"}, {"url": "Y.mojito.MojitProxy.html#property_config", "access": "", "host": "Y.mojito.MojitProxy", "type": "property", "name": "config"}, {"url": "Y.mojito.MojitProxy.html#property_context", "access": "", "host": "Y.mojito.MojitProxy", "type": "property", "name": "context"}, {"url": "Y.mojito.MojitProxy.html#method_destroyChild", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "destroyChild"}, {"url": "Y.mojito.MojitProxy.html#method_destroySelf", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "destroySelf"}, {"url": "Y.mojito.Client.html#method_find", "access": "", "host": "Y.mojito.Client", "type": "method", "name": "find"}, {"url": "Y.mojito.MojitProxy.html#method_getChildren", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "getChildren"}, {"url": "Y.mojito.Client.html#method_getComputedRoutes", "access": "", "host": "Y.mojito.Client", "type": "method", "name": "getComputedRoutes"}, {"url": "Y.mojito.MojitProxy.html#method_getFromUrl", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "getFromUrl"}, {"url": "Y.mojito.MojitProxy.html#method_invoke", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "invoke"}, {"url": "Y.mojito.MojitProxy.html#method_listen", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "listen"}, {"url": "Y.mojito.Client.html#method_pause", "access": "", "host": "Y.mojito.Client", "type": "method", "name": "pause"}, {"url": "Y.mojito.MojitProxy.html#method_refreshView", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "refreshView"}, {"url": "Y.mojito.MojitProxy.html#method_render", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "render"}, {"url": "Y.mojito.Client.html#method_resume", "access": "", "host": "Y.mojito.Client", "type": "method", "name": "resume"}, {"url": "Y.mojito.MojitProxy.html#property_type", "access": "", "host": "Y.mojito.MojitProxy", "type": "property", "name": "type"}, {"url": "Y.mojito.MojitProxy.html#method_unlisten", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "unlisten"}];
+    ALL_YUI_PROPS = [{"url": "MojitProxy.html#method_broadcast", "access": "", "host": "MojitProxy", "type": "method", "name": "broadcast"}, {"url": "MojitProxy.html#property_config", "access": "", "host": "MojitProxy", "type": "property", "name": "config"}, {"url": "MojitProxy.html#property_context", "access": "", "host": "MojitProxy", "type": "property", "name": "context"}, {"url": "MojitProxy.html#method_destroyChild", "access": "", "host": "MojitProxy", "type": "method", "name": "destroyChild"}, {"url": "MojitProxy.html#method_destroyChildren", "access": "", "host": "MojitProxy", "type": "method", "name": "destroyChildren"}, {"url": "MojitProxy.html#method_destroySelf", "access": "", "host": "MojitProxy", "type": "method", "name": "destroySelf"}, {"url": "MojitProxy.html#method_getChildren", "access": "", "host": "MojitProxy", "type": "method", "name": "getChildren"}, {"url": "MojitProxy.html#method_getFromUrl", "access": "", "host": "MojitProxy", "type": "method", "name": "getFromUrl"}, {"url": "MojitProxy.html#method_invoke", "access": "", "host": "MojitProxy", "type": "method", "name": "invoke"}, {"url": "MojitProxy.html#method_listen", "access": "", "host": "MojitProxy", "type": "method", "name": "listen"}, {"url": "MojitProxy.html#property__mojito", "access": "", "host": "MojitProxy", "type": "property", "name": "_mojito"}, {"url": "Y.mojito.Client.html#method_pause", "access": "", "host": "Y.mojito.Client", "type": "method", "name": "pause"}, {"url": "Y.mojito.Client.html#property_prototype", "access": "", "host": "Y.mojito.Client", "type": "property", "name": "prototype"}, {"url": "MojitProxy.html#method_refreshView", "access": "", "host": "MojitProxy", "type": "method", "name": "refreshView"}, {"url": "MojitProxy.html#method_render", "access": "", "host": "MojitProxy", "type": "method", "name": "render"}, {"url": "Y.mojito.Client.html#method_resume", "access": "", "host": "Y.mojito.Client", "type": "method", "name": "resume"}, {"url": "Y.mojito.Client.html#method_subscribe", "access": "", "host": "Y.mojito.Client", "type": "method", "name": "subscribe"}, {"url": "MojitProxy.html#property_type", "access": "", "host": "MojitProxy", "type": "property", "name": "type"}, {"url": "MojitProxy.html#method_unlisten", "access": "", "host": "MojitProxy", "type": "method", "name": "unlisten"}];
 </script>
 </body>
 </html>

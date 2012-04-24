@@ -8,7 +8,7 @@ YUI.add('mojito-middleware-handler-tunnel-tests', function(Y, NAME) {
     var Assert = YUITest.Assert,
         suite = new YUITest.TestSuite(NAME),
         path = require('path'),
-        factory = require(path.join(__dirname, '../../../middleware/mojito-handler-tunnel'));
+        factory = require(path.join(__dirname, '../../../app/middleware/mojito-handler-tunnel'));
 
     suite.add(new YUITest.TestCase({
 

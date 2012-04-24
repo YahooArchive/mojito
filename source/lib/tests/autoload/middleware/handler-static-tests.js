@@ -7,6 +7,6 @@ YUI.add('mojito-middleware-handler-static-tests', function(Y, NAME) {
 
     var suite = new YUITest.TestSuite(NAME),
         path = require('path'),
-        staticHandler = require(path.join(__dirname, '../../../middleware/mojito-handler-static'));
+        staticHandler = require(path.join(__dirname, '../../../app/middleware/mojito-handler-static'));
 
 }, '0.0.1');

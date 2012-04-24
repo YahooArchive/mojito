@@ -280,7 +280,7 @@ MojitoServer.prototype = {
                     //    "builtin mojito-handler-dispatcher");
                     app.use(dispatcher);
                 } else {
-                    midPath = libpath.join(__dirname, 'middleware', midName);
+                    midPath = libpath.join(__dirname, 'app', 'middleware', midName);
                     //console.log("======== MIDDLEWARE mojito " + midPath);
                     midFactory = require(midPath);
                     // We assume the middleware is a factory function

@@ -7,9 +7,10 @@ a:link { color: #003399; }
 a:visited { color: #003399;}
 
 #doc3 #hd { margin-bottom:1em; position: relative; zoom: 1; }
-#doc3 #hd h1 { color: #545454; font-size: 170%; padding: 0px 0 8px 150px; background: url(yui.png) 15px 9px no-repeat; height: 60px; font-weight: bold; }
-#doc3 #hd h1 a { position: relative; top: 14px; }
-#doc3 #hd a { text-decoration: none; color: black; }
+#doc3 #hd h1 { color: #545454; font-size: 170%; padding: 0px 0 8px 150px; background: url(mojito-logo-white-bkg.png) 15px 9px no-repeat; height: 60px; font-weight: bold;}
+#doc3 #hd h1 a { position: relative; top: 20px; }
+#doc3 #hd a { text-decoration: none; }
+#doc3 #hd h1 a { text-decoration: none; color: white; opacity: 0.0; }
 #doc3 #hd h3 {
     background: #98AAB1; background-image: url(bg_hd.gif); color: #000; font-size: 100%; padding: 4px 10px; margin: 0 0 7px 0;
     border: 1px solid #98AAB1;

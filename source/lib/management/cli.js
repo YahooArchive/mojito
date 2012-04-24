@@ -96,12 +96,15 @@ function main() {
         argInfo;
 
     try {
-        command = require('./commands/' + commandName);
+        command = require('mojito-cli-cmd-' + commandName);
     } catch (e) {
-        console.log(e);
-        utils.error('Invalid command: ' + command,
-                    'mojito <command> [<params>] [<options>]');
-        return;
+        try {
+            command = require('./commands/' + commandName);
+        } catch (e) {
+            utils.error('Invalid command: ' + command,
+                        'mojito <command> [<params>] [<options>]');
+            return;
+        }
     }
 
     if (args.length === 0) {

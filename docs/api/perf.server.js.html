@@ -2,21 +2,21 @@
 <html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-	<title>API: MojitoClient   perf.server.js  (YUI Library)</title>
+	<title>Mojito API: MojitoClient   perf.server.js  (</title>
 
-	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css?stamp=1327685402.48" />
-	<link rel="stylesheet" type="text/css" href="assets/api.css?stamp=1327685402.48" />
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css?stamp=1334037082.24" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css?stamp=1334037082.24" />
 
-    <script type="text/javascript" src="assets/api-js?stamp=1327685402.48"></script>
-    <script type="text/javascript" src="assets/ac-js?stamp=1327685402.48"></script>
+    <script type="text/javascript" src="assets/api-js?stamp=1334037082.24"></script>
+    <script type="text/javascript" src="assets/ac-js?stamp=1334037082.24"></script>
 </head>
 
 <body id="yahoo-com">
 
 <div id="doc3" class="yui-t2">
 	<div id="hd">
-        <h1><a href="http://developer.yahoo.com/yui/" title="mojito">mojito</a></h1>
-        <h3>MojitoClient&nbsp; <span class="subtitle">0.1.0</span></h3>
+        <h1><a href="http://developer.yahoo.com/cocktails/mojito/" title="mojito">mojito</a></h1>
+        <h3>MojitoClient&nbsp; <span class="subtitle">0.3.0</span></h3>
         <a href="./index.html" title="mojito">mojito</a> 
             &gt; <a href="./module_MojitoClient.html" title="MojitoClient">MojitoClient</a>
                 
@@ -48,105 +48,129 @@
                             #doc3 .classopts { display:none; }
                         </style>
 <div class="highlight"><pre><span class="c">/*</span>
-<span class="c"> * Copyright (c) 2011 Yahoo! Inc. All rights reserved.</span>
+<span class="c"> * Copyright (c) 2011-2012, Yahoo! Inc.  All rights reserved.</span>
+<span class="c"> * Copyrights licensed under the New BSD License.</span>
+<span class="c"> * See the accompanying LICENSE file for terms.</span>
 <span class="c"> */</span>
+
+
+<span class="c">/*jslint anon:true, sloppy:true, nomen:true*/</span>
+<span class="c">/*global YUI*/</span>
+
+
 <span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
 
     <span class="c">//a single shared message buffer</span>
     <span class="kd">var</span> <span class="nx">buffer</span> <span class="o">=</span> <span class="p">[];</span>
 
-<span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;mojito-perf&#39;</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="o">,</span> <span class="nx">NAME</span><span class="p">)</span> <span class="p">{</span>
 
-    <span class="kd">var</span> <span class="nx">perfEnabled</span> <span class="o">=</span> <span class="kc">false</span><span class="o">,</span>
-        <span class="nx">requestId</span> <span class="o">=</span> <span class="mi">0</span><span class="o">,</span>
-        <span class="nx">microtime</span><span class="o">;</span>
+    <span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;mojito-perf&#39;</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="o">,</span> <span class="nx">NAME</span><span class="p">)</span> <span class="p">{</span>
 
-    <span class="k">try</span> <span class="p">{</span>
-        <span class="nx">microtime</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s2">&quot;microtime&quot;</span><span class="p">);</span>
-    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;microtime not found. Recorded times will not have microsecond accuracy&#39;</span><span class="o">,</span> <span class="s1">&#39;warn&#39;</span><span class="o">,</span> <span class="nx">NAME</span><span class="p">);</span>
-    <span class="p">}</span>
+        <span class="kd">var</span> <span class="nx">perfEnabled</span> <span class="o">=</span> <span class="kc">false</span><span class="o">,</span>
+            <span class="nx">requestId</span> <span class="o">=</span> <span class="mi">0</span><span class="o">,</span>
+            <span class="nx">microtime</span><span class="o">;</span>
 
-    <span class="c">//internal. abstracts where timestamps come from</span>
-    <span class="kd">function</span> <span class="nx">timestamp</span><span class="p">()</span> <span class="p">{</span>
-        <span class="k">return</span> <span class="nx">microtime</span> <span class="o">?</span> <span class="nx">microtime</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span> <span class="o">:</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">().</span><span class="nx">getTime</span><span class="p">();</span>
-    <span class="p">}</span>
-
-    <span class="c">//internal. controls the format of performance marks</span>
-    <span class="kd">function</span> <span class="nx">format</span><span class="p">(</span><span class="nx">group</span><span class="o">,</span> <span class="kd">label</span><span class="o">,</span> <span class="nx">message</span><span class="o">,</span> <span class="nx">id</span><span class="o">,</span> <span class="nx">timestamp</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">id</span> <span class="o">===</span> <span class="s1">&#39;number&#39;</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">id</span> <span class="o">=</span> <span class="s1">&#39;req:&#39;</span> <span class="o">+</span> <span class="nx">id</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span><span class="o">;</span>
-        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-            <span class="nx">id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">;</span>
+        <span class="k">try</span> <span class="p">{</span>
+            <span class="nx">microtime</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;microtime&#39;</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;microtime not found. Recorded times will not have&#39;</span> <span class="o">+</span>
+                <span class="s1">&#39; microsecond accuracy&#39;</span><span class="o">,</span> <span class="s1">&#39;warn&#39;</span><span class="o">,</span> <span class="nx">NAME</span><span class="p">);</span>
         <span class="p">}</span>
 
-        <span class="k">if</span> <span class="p">(</span><span class="nx">timestamp</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">timestamp</span> <span class="o">=</span> <span class="nx">timestamp</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span><span class="o">;</span>
-        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-            <span class="nx">timestamp</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">;</span>
+
+        <span class="c">//internal. abstracts where timestamps come from</span>
+        <span class="kd">function</span> <span class="nx">timestamp</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="nx">microtime</span> <span class="o">?</span> <span class="nx">microtime</span><span class="p">.</span><span class="nx">now</span><span class="p">()</span> <span class="o">:</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">().</span><span class="nx">getTime</span><span class="p">();</span>
         <span class="p">}</span>
 
-        <span class="k">return</span> <span class="nx">id</span> <span class="o">+</span> <span class="nx">timestamp</span> <span class="o">+</span> <span class="nx">group</span> <span class="o">+</span> <span class="s1">&#39;:&#39;</span> <span class="o">+</span> <span class="kd">label</span><span class="o">;</span>
-    <span class="p">}</span>
 
-    <span class="kd">function</span> <span class="nx">mark</span><span class="p">(</span><span class="nx">request</span><span class="o">,</span> <span class="nx">group</span><span class="o">,</span> <span class="kd">label</span><span class="o">,</span> <span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">connection</span> <span class="o">&amp;&amp;</span> <span class="nx">request</span><span class="p">.</span><span class="nx">connection</span><span class="p">.</span><span class="nx">mojitoPerfMark</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">request</span><span class="p">.</span><span class="nx">connection</span><span class="p">.</span><span class="nx">mojitoPerfMark</span><span class="p">(</span><span class="nx">group</span><span class="o">,</span> <span class="kd">label</span><span class="o">,</span> <span class="nx">message</span><span class="p">);</span>
-        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">request</span> <span class="o">===</span> <span class="s2">&quot;string&quot;</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">message</span> <span class="o">=</span> <span class="kd">label</span><span class="o">;</span>
-            <span class="kd">label</span> <span class="o">=</span> <span class="nx">group</span><span class="o">;</span>
-            <span class="nx">group</span> <span class="o">=</span> <span class="nx">request</span><span class="o">;</span>
-            <span class="nx">s</span> <span class="o">=</span> <span class="nx">format</span><span class="p">(</span><span class="nx">group</span><span class="o">,</span> <span class="kd">label</span><span class="o">,</span> <span class="nx">message</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="nx">timestamp</span><span class="p">());</span>
-            <span class="nx">buffer</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">s</span><span class="p">);</span>
-        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-            <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Invalid request object&#39;</span><span class="o">,</span> <span class="s1">&#39;warn&#39;</span><span class="o">,</span> <span class="nx">NAME</span><span class="p">);</span>
-            <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;mark(): invalid argument&#39;</span><span class="o">,</span> <span class="s1">&#39;warn&#39;</span><span class="o">,</span> <span class="nx">NAME</span><span class="p">);</span>
+        <span class="c">//internal. controls the format of performance marks</span>
+        <span class="kd">function</span> <span class="nx">format</span><span class="p">(</span><span class="nx">group</span><span class="o">,</span> <span class="kd">label</span><span class="o">,</span> <span class="nx">message</span><span class="o">,</span> <span class="nx">id</span><span class="o">,</span> <span class="nx">timestamp</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">id</span> <span class="o">===</span> <span class="s1">&#39;number&#39;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">id</span> <span class="o">=</span> <span class="s1">&#39;req:&#39;</span> <span class="o">+</span> <span class="nx">id</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span><span class="o">;</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="nx">id</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">;</span>
+            <span class="p">}</span>
+
+            <span class="k">if</span> <span class="p">(</span><span class="nx">timestamp</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">timestamp</span> <span class="o">=</span> <span class="nx">timestamp</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span><span class="o">;</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="nx">timestamp</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">;</span>
+            <span class="p">}</span>
+
+            <span class="k">return</span> <span class="nx">id</span> <span class="o">+</span> <span class="nx">timestamp</span> <span class="o">+</span> <span class="nx">group</span> <span class="o">+</span> <span class="s1">&#39;:&#39;</span> <span class="o">+</span> <span class="kd">label</span><span class="o">;</span>
         <span class="p">}</span>
-    <span class="p">}</span>
 
-    <span class="kd">function</span> <span class="nx">dump</span><span class="p">()</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">len</span> <span class="o">=</span> <span class="nx">buffer</span><span class="p">.</span><span class="nx">length</span><span class="o">;</span>
-        <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="o">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">buffer</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="o">,</span> <span class="s1">&#39;mojito&#39;</span><span class="o">,</span> <span class="nx">NAME</span><span class="p">);</span>
-        <span class="p">}</span>
-        <span class="nx">buffer</span> <span class="o">=</span> <span class="p">[];</span>
-    <span class="p">}</span>
 
-    <span class="kd">function</span> <span class="nx">instrumentConnectApp</span><span class="p">(</span><span class="nx">app</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">app</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;connection&#39;</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">conn</span><span class="p">)</span> <span class="p">{</span>
-            <span class="kd">var</span> <span class="nx">id</span> <span class="o">=</span> <span class="nx">requestId</span><span class="o">++;</span>
+        <span class="kd">function</span> <span class="nx">mark</span><span class="p">(</span><span class="nx">request</span><span class="o">,</span> <span class="nx">group</span><span class="o">,</span> <span class="kd">label</span><span class="o">,</span> <span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">s</span><span class="o">;</span>
 
-            <span class="nx">conn</span><span class="p">.</span><span class="nx">mojitoPerfMark</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">group</span><span class="o">,</span> <span class="kd">label</span><span class="o">,</span> <span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
-                <span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="nx">format</span><span class="p">(</span><span class="nx">group</span><span class="o">,</span> <span class="kd">label</span><span class="o">,</span> <span class="nx">message</span><span class="o">,</span> <span class="nx">id</span><span class="o">,</span> <span class="nx">timestamp</span><span class="p">());</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">connection</span> <span class="o">&amp;&amp;</span> <span class="nx">request</span><span class="p">.</span><span class="nx">connection</span><span class="p">.</span><span class="nx">mojitoPerfMark</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">request</span><span class="p">.</span><span class="nx">connection</span><span class="p">.</span><span class="nx">mojitoPerfMark</span><span class="p">(</span><span class="nx">group</span><span class="o">,</span> <span class="kd">label</span><span class="o">,</span> <span class="nx">message</span><span class="p">);</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span> <span class="nx">request</span> <span class="o">===</span> <span class="s1">&#39;string&#39;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">message</span> <span class="o">=</span> <span class="kd">label</span><span class="o">;</span>
+                <span class="kd">label</span> <span class="o">=</span> <span class="nx">group</span><span class="o">;</span>
+                <span class="nx">group</span> <span class="o">=</span> <span class="nx">request</span><span class="o">;</span>
+                <span class="nx">s</span> <span class="o">=</span> <span class="nx">format</span><span class="p">(</span><span class="nx">group</span><span class="o">,</span> <span class="kd">label</span><span class="o">,</span> <span class="nx">message</span><span class="o">,</span> <span class="kc">null</span><span class="o">,</span> <span class="nx">timestamp</span><span class="p">());</span>
                 <span class="nx">buffer</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">s</span><span class="p">);</span>
-            <span class="p">};</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Invalid request object&#39;</span><span class="o">,</span> <span class="s1">&#39;warn&#39;</span><span class="o">,</span> <span class="nx">NAME</span><span class="p">);</span>
+                <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;mark(): invalid argument&#39;</span><span class="o">,</span> <span class="s1">&#39;warn&#39;</span><span class="o">,</span> <span class="nx">NAME</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
 
-            <span class="nx">conn</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;close&#39;</span><span class="o">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-                <span class="nx">conn</span><span class="p">.</span><span class="nx">mojitoPerfMark</span><span class="p">(</span><span class="s1">&#39;mojito&#39;</span><span class="o">,</span> <span class="nx">NAME</span><span class="o">+</span><span class="s1">&#39;:connection_end&#39;</span><span class="p">);</span>
-                <span class="nx">dump</span><span class="p">();</span>
+
+        <span class="kd">function</span> <span class="nx">dump</span><span class="p">()</span> <span class="p">{</span>
+            <span class="kd">var</span> <span class="nx">len</span> <span class="o">=</span> <span class="nx">buffer</span><span class="p">.</span><span class="nx">length</span><span class="o">,</span>
+                <span class="nx">i</span><span class="o">;</span>
+            <span class="k">for</span> <span class="p">(</span><span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">len</span><span class="o">;</span> <span class="nx">i</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">buffer</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="o">,</span> <span class="s1">&#39;mojito&#39;</span><span class="o">,</span> <span class="nx">NAME</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="nx">buffer</span> <span class="o">=</span> <span class="p">[];</span>
+        <span class="p">}</span>
+
+
+        <span class="kd">function</span> <span class="nx">instrumentConnectApp</span><span class="p">(</span><span class="nx">app</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">app</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;connection&#39;</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">conn</span><span class="p">)</span> <span class="p">{</span>
+                <span class="kd">var</span> <span class="nx">id</span> <span class="o">=</span> <span class="p">(</span><span class="nx">requestId</span> <span class="o">+=</span> <span class="mi">1</span><span class="p">);</span>
+
+                <span class="nx">conn</span><span class="p">.</span><span class="nx">mojitoPerfMark</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">group</span><span class="o">,</span> <span class="kd">label</span><span class="o">,</span> <span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="nx">format</span><span class="p">(</span><span class="nx">group</span><span class="o">,</span> <span class="kd">label</span><span class="o">,</span> <span class="nx">message</span><span class="o">,</span> <span class="nx">id</span><span class="o">,</span> <span class="nx">timestamp</span><span class="p">());</span>
+                    <span class="nx">buffer</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">s</span><span class="p">);</span>
+                <span class="p">};</span>
+
+                <span class="nx">conn</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;close&#39;</span><span class="o">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                    <span class="nx">conn</span><span class="p">.</span><span class="nx">mojitoPerfMark</span><span class="p">(</span><span class="s1">&#39;mojito&#39;</span><span class="o">,</span> <span class="nx">NAME</span> <span class="o">+</span> <span class="s1">&#39;:connection_end&#39;</span><span class="p">);</span>
+                    <span class="nx">dump</span><span class="p">();</span>
+                <span class="p">});</span>
+
+                <span class="nx">conn</span><span class="p">.</span><span class="nx">mojitoPerfMark</span><span class="p">(</span><span class="s1">&#39;mojito&#39;</span><span class="o">,</span> <span class="nx">NAME</span> <span class="o">+</span> <span class="s1">&#39;:connection&#39;</span><span class="p">);</span>
             <span class="p">});</span>
 
-            <span class="nx">conn</span><span class="p">.</span><span class="nx">mojitoPerfMark</span><span class="p">(</span><span class="s1">&#39;mojito&#39;</span><span class="o">,</span> <span class="nx">NAME</span><span class="o">+</span><span class="s1">&#39;:connection&#39;</span><span class="p">);</span>
-        <span class="p">});</span>
+            <span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="o">,</span> <span class="nx">res</span><span class="o">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nx">req</span><span class="p">.</span><span class="nx">connection</span><span class="p">.</span><span class="nx">mojitoPerfMark</span><span class="p">(</span><span class="s1">&#39;mojito&#39;</span><span class="o">,</span> <span class="nx">NAME</span> <span class="o">+</span> <span class="s1">&#39;:request&#39;</span><span class="p">);</span>
+                <span class="nx">next</span><span class="p">();</span>
+            <span class="p">});</span>
+        <span class="p">}</span>
 
-        <span class="nx">app</span><span class="p">.</span><span class="nx">use</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">req</span><span class="o">,</span> <span class="nx">res</span><span class="o">,</span> <span class="nx">next</span><span class="p">)</span> <span class="p">{</span>
-            <span class="nx">req</span><span class="p">.</span><span class="nx">connection</span><span class="p">.</span><span class="nx">mojitoPerfMark</span><span class="p">(</span><span class="s1">&#39;mojito&#39;</span><span class="o">,</span> <span class="nx">NAME</span><span class="o">+</span><span class="s1">&#39;:request&#39;</span><span class="p">);</span>
-            <span class="nx">next</span><span class="p">();</span>
-        <span class="p">});</span>
-    <span class="p">}</span>
 
-    <span class="nx">Y</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="s1">&#39;mojito&#39;</span><span class="p">).</span><span class="nx">perf</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nx">Y</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="s1">&#39;mojito&#39;</span><span class="p">).</span><span class="nx">perf</span> <span class="o">=</span> <span class="p">{</span>
 
-        <span class="nx">instrumentConnectApp</span><span class="o">:</span> <span class="nx">perfEnabled</span> <span class="o">?</span> <span class="nx">instrumentConnectApp</span> <span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{}</span><span class="o">,</span>
+            <span class="nx">instrumentConnectApp</span><span class="o">:</span> <span class="nx">perfEnabled</span> <span class="o">?</span>
+                    <span class="nx">instrumentConnectApp</span> <span class="o">:</span>
+                    <span class="kd">function</span><span class="p">()</span> <span class="p">{}</span><span class="o">,</span>
 
-        <span class="nx">mark</span><span class="o">:</span> <span class="nx">perfEnabled</span> <span class="o">?</span> <span class="nx">mark</span> <span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{}</span><span class="o">,</span>
 
-        <span class="nx">dump</span><span class="o">:</span> <span class="nx">perfEnabled</span> <span class="o">?</span> <span class="nx">dump</span> <span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{}</span>
+            <span class="nx">mark</span><span class="o">:</span> <span class="nx">perfEnabled</span> <span class="o">?</span>
+                    <span class="nx">mark</span> <span class="o">:</span>
+                    <span class="kd">function</span><span class="p">()</span> <span class="p">{}</span><span class="o">,</span>
 
-    <span class="p">};</span>
 
-<span class="p">});</span>
-
+            <span class="nx">dump</span><span class="o">:</span> <span class="nx">perfEnabled</span> <span class="o">?</span>
+                    <span class="nx">dump</span> <span class="o">:</span>
+                    <span class="kd">function</span><span class="p">()</span> <span class="p">{}</span>
+        <span class="p">};</span>
+    <span class="p">});</span>
 <span class="p">}());</span>
 </pre></div>
                     </div>
@@ -169,8 +193,8 @@
                     <div id="classList" class="module">
                         <h4>Classes</h4>
                         <ul class="content">
+                                <li class=""><a href="MojitProxy.html" title="MojitProxy">MojitProxy</a></li>
                                 <li class=""><a href="Y.mojito.Client.html" title="Y.mojito.Client">Y.mojito.Client</a></li>
-                                <li class=""><a href="Y.mojito.MojitProxy.html" title="Y.mojito.MojitProxy">Y.mojito.MojitProxy</a></li>
                         </ul>
                     </div>
 
@@ -178,18 +202,14 @@
                     <div id="fileList" class="module">
                         <h4>Files</h4>
                         <ul class="content">        
-                                <li class=""><a href="action-context.common.js.html" title="action-context.common.js">action-context.common.js</a></li>
-                                <li class=""><a href="controller-context.common.js.html" title="controller-context.common.js">controller-context.common.js</a></li>
-                                <li class=""><a href="dispatch.common.js.html" title="dispatch.common.js">dispatch.common.js</a></li>
-                                <li class=""><a href="loader.common.js.html" title="loader.common.js">loader.common.js</a></li>
-                                <li class=""><a href="logger.common.js.html" title="logger.common.js">logger.common.js</a></li>
-                                <li class=""><a href="mojit-proxy.client.js.html" title="mojit-proxy.client.js">mojit-proxy.client.js</a></li>
+                                <li class=""><a href="mojito-client.client.js.html" title="mojito-client.client.js">mojito-client.client.js</a></li>
                                 <li class=""><a href="mojito-test.common.js.html" title="mojito-test.common.js">mojito-test.common.js</a></li>
+                                <li class=""><a href="mojito.common.js.html" title="mojito.common.js">mojito.common.js</a></li>
                                 <li class=""><a href="output-handler.client.js.html" title="output-handler.client.js">output-handler.client.js</a></li>
+                                <li class=""><a href="perf.client.js.html" title="perf.client.js">perf.client.js</a></li>
                                 <li class="selected"><a href="perf.server.js.html" title="perf.server.js">perf.server.js</a></li>
-                                <li class=""><a href="route-maker.common.js.html" title="route-maker.common.js">route-maker.common.js</a></li>
-                                <li class=""><a href="util.common.js.html" title="util.common.js">util.common.js</a></li>
-                                <li class=""><a href="view-renderer.common.js.html" title="view-renderer.common.js">view-renderer.common.js</a></li>
+                                <li class=""><a href="resource-store-adapter.common.js.html" title="resource-store-adapter.common.js">resource-store-adapter.common.js</a></li>
+                                <li class=""><a href="rest.common.js.html" title="rest.common.js">rest.common.js</a></li>
                         </ul>
                     </div>
                     -->
@@ -207,7 +227,7 @@
 	</div>
 </div>
 <script type="text/javascript">
-    ALL_YUI_PROPS = [{"url": "Y.mojito.MojitProxy.html#method_broadcast", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "broadcast"}, {"url": "Y.mojito.MojitProxy.html#property_children", "access": "", "host": "Y.mojito.MojitProxy", "type": "property", "name": "children"}, {"url": "Y.mojito.MojitProxy.html#property_config", "access": "", "host": "Y.mojito.MojitProxy", "type": "property", "name": "config"}, {"url": "Y.mojito.MojitProxy.html#property_context", "access": "", "host": "Y.mojito.MojitProxy", "type": "property", "name": "context"}, {"url": "Y.mojito.MojitProxy.html#method_destroyChild", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "destroyChild"}, {"url": "Y.mojito.MojitProxy.html#method_destroySelf", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "destroySelf"}, {"url": "Y.mojito.Client.html#method_find", "access": "", "host": "Y.mojito.Client", "type": "method", "name": "find"}, {"url": "Y.mojito.MojitProxy.html#method_getChildren", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "getChildren"}, {"url": "Y.mojito.Client.html#method_getComputedRoutes", "access": "", "host": "Y.mojito.Client", "type": "method", "name": "getComputedRoutes"}, {"url": "Y.mojito.MojitProxy.html#method_getFromUrl", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "getFromUrl"}, {"url": "Y.mojito.MojitProxy.html#method_invoke", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "invoke"}, {"url": "Y.mojito.MojitProxy.html#method_listen", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "listen"}, {"url": "Y.mojito.Client.html#method_pause", "access": "", "host": "Y.mojito.Client", "type": "method", "name": "pause"}, {"url": "Y.mojito.MojitProxy.html#method_refreshView", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "refreshView"}, {"url": "Y.mojito.MojitProxy.html#method_render", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "render"}, {"url": "Y.mojito.Client.html#method_resume", "access": "", "host": "Y.mojito.Client", "type": "method", "name": "resume"}, {"url": "Y.mojito.MojitProxy.html#property_type", "access": "", "host": "Y.mojito.MojitProxy", "type": "property", "name": "type"}, {"url": "Y.mojito.MojitProxy.html#method_unlisten", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "unlisten"}];
+    ALL_YUI_PROPS = [{"url": "MojitProxy.html#method_broadcast", "access": "", "host": "MojitProxy", "type": "method", "name": "broadcast"}, {"url": "MojitProxy.html#property_config", "access": "", "host": "MojitProxy", "type": "property", "name": "config"}, {"url": "MojitProxy.html#property_context", "access": "", "host": "MojitProxy", "type": "property", "name": "context"}, {"url": "MojitProxy.html#method_destroyChild", "access": "", "host": "MojitProxy", "type": "method", "name": "destroyChild"}, {"url": "MojitProxy.html#method_destroyChildren", "access": "", "host": "MojitProxy", "type": "method", "name": "destroyChildren"}, {"url": "MojitProxy.html#method_destroySelf", "access": "", "host": "MojitProxy", "type": "method", "name": "destroySelf"}, {"url": "MojitProxy.html#method_getChildren", "access": "", "host": "MojitProxy", "type": "method", "name": "getChildren"}, {"url": "MojitProxy.html#method_getFromUrl", "access": "", "host": "MojitProxy", "type": "method", "name": "getFromUrl"}, {"url": "MojitProxy.html#method_invoke", "access": "", "host": "MojitProxy", "type": "method", "name": "invoke"}, {"url": "MojitProxy.html#method_listen", "access": "", "host": "MojitProxy", "type": "method", "name": "listen"}, {"url": "MojitProxy.html#property__mojito", "access": "", "host": "MojitProxy", "type": "property", "name": "_mojito"}, {"url": "Y.mojito.Client.html#method_pause", "access": "", "host": "Y.mojito.Client", "type": "method", "name": "pause"}, {"url": "Y.mojito.Client.html#property_prototype", "access": "", "host": "Y.mojito.Client", "type": "property", "name": "prototype"}, {"url": "MojitProxy.html#method_refreshView", "access": "", "host": "MojitProxy", "type": "method", "name": "refreshView"}, {"url": "MojitProxy.html#method_render", "access": "", "host": "MojitProxy", "type": "method", "name": "render"}, {"url": "Y.mojito.Client.html#method_resume", "access": "", "host": "Y.mojito.Client", "type": "method", "name": "resume"}, {"url": "Y.mojito.Client.html#method_subscribe", "access": "", "host": "Y.mojito.Client", "type": "method", "name": "subscribe"}, {"url": "MojitProxy.html#property_type", "access": "", "host": "MojitProxy", "type": "property", "name": "type"}, {"url": "MojitProxy.html#method_unlisten", "access": "", "host": "MojitProxy", "type": "method", "name": "unlisten"}];
 </script>
 </body>
 </html>

@@ -26,7 +26,7 @@
  * Module dependencies.
  */
 var fs = require('fs'),
-    mime = require('../libs/mime'),
+    mime = require('../../libs/mime'),
     pa = require('path'),
     parseUrl = require('url').parse,
     logger,
@@ -234,22 +234,17 @@ function staticProvider(store, globalLogger) {
                     charset = mime.charsets.lookup(mimetype),
                     // Response headers
                     headers = {
-                        'Content-Type': mimetype + (charset ? '; charset="' +
-                            charset + '"' : ''),
+                        'Content-Type': mimetype + (charset ? '; charset=' +
+                            charset : ''),
                         'Content-Length': stat.size,
-                        //"Last-Modified": stat.ctime.toUTCString(),
-                        // TODO: [Issue 91] See todo below
-                        'Last-Modified': new Date().toUTCString(),
+                        'Last-Modified': options.forceUpdate ? new Date().toUTCString() : stat.ctime.toUTCString(),
                         'Cache-Control': 'public max-age=' + (maxAge / 1000),
                         'ETag': etag(stat)
                     };
 
-                // TODO: [Issue 91] Removed for dev, need to add a switch
-                // here
-                // Conditional GET
-                //if (!modified(req, headers)) {
-                //    return notModified(res, headers);
-                //}
+                if (!options.forceUpdate && !modified(req, headers)) {
+                    return notModified(res, headers);
+                }
 
                 // logger.log('(staticProvider) serving static file: ' +
                 //     filename);

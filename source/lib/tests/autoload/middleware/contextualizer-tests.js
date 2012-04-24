@@ -7,7 +7,7 @@ YUI.add('mojito-middleware-contextualizer-tests', function(Y, NAME) {
     
     var suite = new YUITest.TestSuite(NAME),
         path = require('path'),
-        contextualizer = require(path.join(__dirname, '../../../middleware/mojito-contextualizer')),
+        contextualizer = require(path.join(__dirname, '../../../app/middleware/mojito-contextualizer')),
         handler = null,
         res = null,
         nextCalled = false,
