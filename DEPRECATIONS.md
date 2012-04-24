@@ -15,10 +15,6 @@ Currently Deprecated
 
 ### Deprecated but Available
 
-* (2012-04-23) The `autoload/` directory is going away in favor of
-`yui_modules/`, which better reflects its contents.  Everthing else about it is
-the same, only the name has changed.  You can start using `yui_modules/` today.
-
 * (2012-04-23) The `.guid` member of Mojito metadata (such as binder metadata)
 is going away.  Often there's an associated member which more specifically
 expresses the intent of the unique ID (for example `.viewId` or `.instanceId`).
