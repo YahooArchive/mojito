@@ -1,17 +1,50 @@
-#!/usr/bin/env node
-/*
- * Copyright (c) 2011-2012, Yahoo! Inc.  All rights reserved.
- * Copyrights licensed under the New BSD License.
- * See the accompanying LICENSE file for terms.
- */
-var libpath, libmojito;
-try {
-    // this is the normal location
-    libmojito = require('mojito');
-}
-catch (e) {
-    libpath = require('path'),
-    // need to do this if mojito is installed via `npm link`
-    libmojito = require(libpath.join(__dirname, '..', 'lib'));
-}
-libmojito.include('management/cli');
+#!/bin/bash
+#
+# Copyright (c) 2011-2012, Yahoo! Inc.  All rights reserved.
+# Copyrights licensed under the New BSD License.
+# See the accompanying LICENSE file for terms.
+#
+
+# Separate Mojito's arguments from Node's arguments
+MOJITO_ARGS=""
+FOUND_NODE_ARGS=0
+for ARG in "$@"; do
+    if [ "$ARG" == "--node" ]; then
+        FOUND_NODE_ARGS=1
+    else
+        if [ $FOUND_NODE_ARGS -eq 1 ]; then
+            NODE_ARGS="$ARG"
+            FOUND_NODE_ARGS=0
+        else
+            ARG=`echo $(printf '%q' "$ARG")`
+            MOJITO_ARGS="$MOJITO_ARGS $ARG"
+        fi
+    fi
+done
+
+# Determine the location of this script
+# http://stackoverflow.com/a/179231
+pushd . > /dev/null
+SCRIPT_PATH="${BASH_SOURCE[0]}";
+if ([ -h "${SCRIPT_PATH}" ]) then
+    while([ -h "${SCRIPT_PATH}" ]) do cd `dirname "$SCRIPT_PATH"`; SCRIPT_PATH=`readlink "${SCRIPT_PATH}"`; done
+fi
+cd `dirname ${SCRIPT_PATH}` > /dev/null
+SCRIPT_PATH=`pwd`;
+popd  > /dev/null
+
+# Run mojito from this script's location
+cd $SCRIPT_PATH
+node $NODE_ARGS -e "\
+\
+var libpath, libmojito;\
+try {\
+    libmojito = require('mojito');\
+}\
+catch (e) {\
+    libpath = require('path'),\
+    libmojito = require(libpath.join(__dirname, '..', 'lib'));\
+}\
+libmojito.include('management/cli');\
+\
+" NODE_COMMAND_BUG_WORKAROUND $MOJITO_ARGS
