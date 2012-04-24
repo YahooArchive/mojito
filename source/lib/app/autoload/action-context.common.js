@@ -91,6 +91,8 @@ YUI.add('mojito-action-context', function(Y, NAME) {
      *     See above.
      * @param {object} adapter the output adapter to pass to the mojit. See
      *     above.
+     * @deprecated Use 'ac._dispatch()' instead. See https://github.com/yahoo/mojito/blob/develop/DEPRECATIONS.md
+     * for details.
      */
 
     // TODO: probably should move to mojito.common.js (namespace definitions).
