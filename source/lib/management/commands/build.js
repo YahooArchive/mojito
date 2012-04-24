@@ -142,19 +142,25 @@ exports.buildhtml5app = function(cmdOptions, store, config, destination,
         // files to fetch through the server
         serverFiles = { css: true, js: true, json: true },
         extension,
-        manifest = 'CACHE MANIFEST\n',
-        indexJs = "module.exports = require('express')." +
-            "createServer(require('express')['static'](__dirname));",
         url,
         urls = {}, // from: to
-        app,
         context = '',
         appConfig,
         tunnelPrefix;
 
+    // If the cmdOptions.context has a string value then;
+    // Convert the documented "mojito start --context" value "key:val,key:val" to "key=val&key=val"
+    if (typeof cmdOptions.context === 'string') {
+        cmdOptions.context = cmdOptions.context.replace(/:/g, '=').replace(/,/g, '&');
+    }
+
     if (cmdOptions.context) {
         context = '?' + cmdOptions.context;
     }
+
+    // Add the provided context to the server config object so
+    // we start Mojito with the correct context.
+    config.context = libqs.parse(cmdOptions.context);
 
     urls['/' + context] = '/index.html';
 
@@ -175,9 +181,6 @@ exports.buildhtml5app = function(cmdOptions, store, config, destination,
 
     console.log('...');
 
-    // Set the cachable files in the manifest
-    manifest += 'CACHE:\n';
-
     // Copy all the files into the destination directory
     for (url in store._staticURLs) {
         if (store._staticURLs.hasOwnProperty(url)) {
@@ -186,8 +189,6 @@ exports.buildhtml5app = function(cmdOptions, store, config, destination,
             extension = from.split('.').pop();
 
             mkdirP(libpath.dirname(to), MODE_755);
-
-            manifest += url + '\n';
 
             if (serverFiles[extension] !== undefined) {
                 urls[url + context] = url;
@@ -206,19 +207,6 @@ exports.buildhtml5app = function(cmdOptions, store, config, destination,
             mkdirP(libpath.dirname(libpath.join(destination, url)), MODE_755);
         }
     }
-
-    for (url in urls) {
-        if (urls.hasOwnProperty(url)) {
-            manifest += (urls[url] === '/' ? '/index.html' : urls[url]) + '\n';
-        }
-    }
-
-    // Write the "cache.manifest" file
-    fs.writeFileSync(libpath.join(destination, 'cache.manifest'), manifest,
-        'utf8');
-
-    // Write a "quick test" index.js file
-    fs.writeFileSync(libpath.join(destination, 'index.js'), indexJs, 'utf8');
 
     // Now use the server to generate some of the files
     writeWebPagesToFiles(type, store, destination, urls, config, callback);
@@ -395,7 +383,8 @@ writeWebPagesToFiles = function(type, store, destination, urls, config,
     }
 
     options = {
-        port: 11111
+        port: 11111,
+        context: config.context // Added so we can pass the context to app.start()
     };
 
     app = new utils.App(options);
