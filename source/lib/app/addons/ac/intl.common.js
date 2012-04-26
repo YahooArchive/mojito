@@ -30,9 +30,9 @@ YUI.add('mojito-intl-addon', function(Y, NAME) {
 
         /**
          * Returns translated string.
-         * @param label {string} The initial label to be translated.
+         * @param label {string} Optional. The initial label to be translated. If not provided, returns a copy of all resources.
          * @param args {string|Array|Object} optional parameters for the string
-         * @return {string} translated string for label.
+         * @return {string|Object} translated string for label or if no label was provided an object containing all resources.
          */
         lang: function(label, args) {
             //Y.log('lang(' + label + ', ' + Y.JSON.stringify(args) + ') for ' + this.ac.type, 'debug', NAME);
