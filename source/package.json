@@ -3,7 +3,7 @@
     "version": "0.3.10",
     "description": "Mojito provides an architecture, components and tools for developers to build complex web applications faster.",
     "preferGlobal": true,
-    "author": "Team Mojito (http://developer.yahoo.com/cocktails/mojito)",
+    "author": "Drew Folta <folta@yahoo-inc.com>",
     "contributors": [
         "Ric Allinson <allinson@yahoo-inc.com>",
         "Matt Taylor <mtaylor@yahoo-inc.com>",
