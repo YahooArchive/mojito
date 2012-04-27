@@ -7,7 +7,7 @@ YUI.add('mojito-middleware-router-tests', function(Y, NAME) {
 
     var path = require('path'),
         suite = new YUITest.TestSuite(NAME),
-        factory = require(path.join(__dirname, '../../../middleware/mojito-router')),
+        factory = require(path.join(__dirname, '../../../app/middleware/mojito-router')),
         A = YUITest.Assert,
         AA = YUITest.ArrayAssert;
     

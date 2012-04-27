@@ -31,9 +31,9 @@ YUI.add('ParentBinderDyno', function(Y, NAME) {
             var mp = this.mp = mojitProxy;
             this.mp.listen('hover', function(payload) {
                 var source = payload.source;
-                var child = findChild(source, mp.children);
+                var child = findChild(source, mp.getChildren());
                 var order = child.config.order;
-                var surrounding = findChildrenAround(order, mp.children);
+                var surrounding = findChildrenAround(order, mp.getChildren());
                 var i;
                 for (i=0; i<surrounding.length; i++) {
                     mp.broadcast('explode',

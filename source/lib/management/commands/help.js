@@ -40,13 +40,21 @@ function helpTop() {
 function helpCommand(command) {
     var module;
 
-    try {
-        module = require('./' + command);
+    function help(ref) {
+        module = require(ref);
         console.log(module.help || module.usage ||
                 ('No help available for command: ' + command));
+    }
+
+    try {
+        help('mojito-cli-cmd-' + command);
     } catch (e) {
-        console.log('No such command: ' + command);
-        helpTop();
+        try {
+            help('./' + command);
+        } catch(e) {
+            console.log('No such command: ' + command);
+            helpTop();
+        }
     }
 }
 

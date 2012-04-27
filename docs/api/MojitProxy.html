@@ -2,13 +2,13 @@
 <html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-	<title>Mojito API: MojitoClient  Y.mojito.MojitProxy   (</title>
+	<title>Mojito API: MojitoClient  MojitProxy   (</title>
 
-	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css?stamp=1327685402.48" />
-	<link rel="stylesheet" type="text/css" href="assets/api.css?stamp=1327685402.48" />
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css?stamp=1334037082.24" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css?stamp=1334037082.24" />
 
-    <script type="text/javascript" src="assets/api-js?stamp=1327685402.48"></script>
-    <script type="text/javascript" src="assets/ac-js?stamp=1327685402.48"></script>
+    <script type="text/javascript" src="assets/api-js?stamp=1334037082.24"></script>
+    <script type="text/javascript" src="assets/ac-js?stamp=1334037082.24"></script>
 </head>
 
 <body id="yahoo-com">
@@ -19,7 +19,7 @@
         <h3>MojitoClient&nbsp; <span class="subtitle">0.3.0</span></h3>
         <a href="./index.html" title="mojito">mojito</a> 
             &gt; <a href="./module_MojitoClient.html" title="MojitoClient">MojitoClient</a>
-                 &gt; Y.mojito.MojitProxy 
+                 &gt; MojitProxy 
                 
         <form onsubmit="return false">
             <div id="propertysearch">
@@ -48,7 +48,7 @@
 
                         
                         
-                            Class <b property="yui:name">Y.mojito.MojitProxy</b>
+                            Class <b property="yui:name">MojitProxy</b>
                         <span class="extends">
                         </span>
 
@@ -59,8 +59,8 @@
   
 
                     <div class="summary description" property="yui:description">
-                        The object that is given to each mojit binder to be used to interact with other mojits
-and the mojito framework.
+                        The object that is given to each mojit binder to be used to interact with
+other mojits and the mojito framework.
                     </div>
 
                     
@@ -68,15 +68,13 @@ and the mojito framework.
                         <div class="section field details">
                             <h3 id="properties">Properties</h3>
                             <div class="content">
-                                    <div class="" rel="yui:property" resource="#property_children">
-                                    <h4><a name="property_children" property="yui:name">children</a>
-                                        - <code><span property="yui:type">{object}</span></code>
+                                    <div class="" rel="yui:property" resource="#property__mojito">
+                                    <h4><a name="property__mojito" property="yui:name">_mojito</a>
+                                        - <code><span property="yui:type">{Object}</span></code>
                                     </h4>
                                     <div class="detail">
                                         <div class="description" property="yui:description">
-                                            An object that contains information about the children used to generate this DOM node associted with this
-binder. This should identify what mojits may exist as children within this binder's domain. You can use it
-to broadcast messages directly to certain children as explained in the topical documentation.
+                                            The top-level Mojito namespace.
                                         </div>
                                     </div>
      
@@ -159,6 +157,10 @@ to broadcast messages directly to certain children as explained in the topical d
                                                          payload
                                                     
                                                 
+                                                        , 
+                                                        options
+                                                    
+                                                
                                             )
                                         </code>
                                         
@@ -174,13 +176,22 @@ to broadcast messages directly to certain children as explained in the topical d
                                                         <code><span property="yui:name">name</span>
                                                         &lt;<span property="yui:type">String</span>&gt;
                                                         </code>
-                                                        <span property="yui:description"> event name</span>
+                                                        <span property="yui:description"> event name.</span>
                                                         </dd>
                                                         <dd rel="yui:parameter">
                                                         <code><span property="yui:name">payload</span>
                                                         &lt;<span property="yui:type">Object</span>&gt;
                                                         </code>
-                                                        <span property="yui:description"> the payload for the event</span>
+                                                        <span property="yui:description"> the payload for the event.</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">options</span>
+                                                        &lt;<span property="yui:type">Object</span>&gt; currently only used to specify target for
+broadcast. For example, to target only one child mojit for
+broadcast, use:
+{target: {slot: 'slot name', viewId: 'DOM view id'}</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description"></span>
                                                         </dd>
                                                 </dl>
 
@@ -216,12 +227,17 @@ to broadcast messages directly to certain children as explained in the topical d
                                                          id
                                                     
                                                 
+                                                        , 
+                                                         retainNode
+                                                    
+                                                
                                             )
                                         </code>
                                         
                                         <div class="description" property="yui:description">
-                                            Clears out a child's view, calling the appropriate life cycle functions, then destroy's its binder and
-dereferences it. Will also dereference the child from this mojit's children.
+                                            Clears out a child's view, calling the appropriate life cycle
+functions, then destroy's its binder and dereferences it. Will also
+dereference the child from this mojit's children.
                                         </div>
 
                                         <div class="description">
@@ -230,9 +246,69 @@ dereferences it. Will also dereference the child from this mojit's children.
                                                     <dt>Parameters:</dt>
                                                         <dd rel="yui:parameter">
                                                         <code><span property="yui:name">id</span>
-                                                        &lt;<span property="yui:type">object</span>&gt;
+                                                        &lt;<span property="yui:type">string</span>&gt;
                                                         </code>
-                                                        <span property="yui:description"> <string> *Either* the slot key of the child, or the DOM view id of the child</span>
+                                                        <span property="yui:description"> Either the slot key of the child, or the DOM
+view id of the child.</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">retainNode</span>
+                                                        &lt;<span property="yui:type">boolean</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description"> if true, the binder's node will remain in
+the dom.</span>
+                                                        </dd>
+                                                </dl>
+
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        void
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo"></dd>
+                                                </dl>
+
+
+             
+
+                                        </div>
+
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    <div class="" rel="yui:method" resource="#method_destroyChildren">
+                                    <h4>
+                                        <a name="method_destroyChildren">destroyChildren</a></h4>
+                                    <div class="detail" >
+                                        <code>
+                                        
+                                        
+                                        
+                                        void
+                                            <strong property="yui:name">destroyChildren</strong>
+                                           (
+                                                
+                                                        
+                                                         retainNode
+                                                    
+                                                
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            Destroys all children. (Calls destroyChild() for each child.)
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">retainNode</span>
+                                                        &lt;<span property="yui:type">boolean</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description"> if true, the binder's node will remain in
+the dom.</span>
                                                         </dd>
                                                 </dl>
 
@@ -272,7 +348,8 @@ dereferences it. Will also dereference the child from this mojit's children.
                                         </code>
                                         
                                         <div class="description" property="yui:description">
-                                            Allows a binder to destroy itself and be removed from Mojito client runtime entirely.
+                                            Allows a binder to destroy itself and be removed from Mojito client
+runtime entirely.
                                         </div>
 
                                         <div class="description">
@@ -281,9 +358,10 @@ dereferences it. Will also dereference the child from this mojit's children.
                                                     <dt>Parameters:</dt>
                                                         <dd rel="yui:parameter">
                                                         <code><span property="yui:name">retainNode</span>
-                                                        &lt;<span property="yui:type">object</span>&gt;
+                                                        &lt;<span property="yui:type">boolean</span>&gt;
                                                         </code>
-                                                        <span property="yui:description"> <boolean> if true, the binder's node will remain in the dom</span>
+                                                        <span property="yui:description"> if true, the binder's node will remain in
+the dom.</span>
                                                         </dd>
                                                 </dl>
 
@@ -311,19 +389,27 @@ dereferences it. Will also dereference the child from this mojit's children.
                                         
                                         
                                         
-                                        
+                                        object
                                             <strong property="yui:name">getChildren</strong>
                                            (
                                             )
                                         </code>
                                         
                                         <div class="description" property="yui:description">
-                                            Helper function to gather up details about a mojit's children from the Mojito Client
+                                            Helper function to gather up details about a mojit's children from
+the Mojito Client.
                                         </div>
 
                                         <div class="description">
 
 
+                                                <dl>
+                                                    <dt>Returns:
+                                                    <code property="yui:return">
+                                                        object
+                                                    </code></dt>
+                                                    <dd property="yui:returnInfo">slot &lt;String&rt; --> child information &lt;Object&rt;</dd>
+                                                </dl>
 
 
              
@@ -364,7 +450,7 @@ dereferences it. Will also dereference the child from this mojit's children.
                                                         <code><span property="yui:name">key</span>
                                                         &lt;<span property="yui:type">string</span>&gt;
                                                         </code>
-                                                        <span property="yui:description"> The name of the parameter required</span>
+                                                        <span property="yui:description"> The name of the parameter required.</span>
                                                         </dd>
                                                 </dl>
 
@@ -373,7 +459,8 @@ dereferences it. Will also dereference the child from this mojit's children.
                                                     <code property="yui:return">
                                                         string|object
                                                     </code></dt>
-                                                    <dd property="yui:returnInfo">param value, or all params if no key specified</dd>
+                                                    <dd property="yui:returnInfo">param value, or all params if no key
+specified.</dd>
                                                 </dl>
 
 
@@ -412,7 +499,8 @@ dereferences it. Will also dereference the child from this mojit's children.
                                         </code>
                                         
                                         <div class="description" property="yui:description">
-                                            Used by the mojit binders to invoke actions on themselves within Mojito.
+                                            Used by the mojit binders to invoke actions on themselves within
+Mojito.
 The <em>options</em> parameter is optional and may contain:
 <dl>
 <dt>params</dt><dd>&lt;object&gt; must be broken out explicitly:
@@ -435,19 +523,19 @@ sending the request to the server to answer the invocation.</dd>
                                                         <code><span property="yui:name">action</span>
                                                         &lt;<span property="yui:type">string</span>&gt;
                                                         </code>
-                                                        <span property="yui:description"> name of the action to invoke</span>
+                                                        <span property="yui:description"> name of the action to invoke.</span>
                                                         </dd>
                                                         <dd rel="yui:parameter">
                                                         <code><span property="yui:name">options</span>
                                                         &lt;<span property="yui:type">Object</span>&gt;
                                                         </code>
-                                                        <span property="yui:description"> see above</span>
+                                                        <span property="yui:description"> see above.</span>
                                                         </dd>
                                                         <dd rel="yui:parameter">
                                                         <code><span property="yui:name">cb</span>
                                                         &lt;<span property="yui:type">function</span>&gt;
                                                         </code>
-                                                        <span property="yui:description"> function to be called on completion</span>
+                                                        <span property="yui:description"> function to be called on completion.</span>
                                                         </dd>
                                                 </dl>
 
@@ -502,13 +590,14 @@ sending the request to the server to answer the invocation.</dd>
                                                         <code><span property="yui:name">name</span>
                                                         &lt;<span property="yui:type">String</span>&gt;
                                                         </code>
-                                                        <span property="yui:description"> event name</span>
+                                                        <span property="yui:description"> event name.</span>
                                                         </dd>
                                                         <dd rel="yui:parameter">
                                                         <code><span property="yui:name">callback</span>
                                                         &lt;<span property="yui:type">Function</span>&gt;
                                                         </code>
-                                                        <span property="yui:description"> called when an event is broadcastd with the event data</span>
+                                                        <span property="yui:description"> called when an event is broadcast with
+the event data.</span>
                                                         </dd>
                                                 </dl>
 
@@ -552,8 +641,9 @@ sending the request to the server to answer the invocation.</dd>
                                         </code>
                                         
                                         <div class="description" property="yui:description">
-                                            Refreshes the current DOM view for this binder without recreating the binder instance. Will call
-the binder's onRefreshView() function when complete with the new Y.Node and HTMLElement objects.
+                                            Refreshes the current DOM view for this binder without recreating the
+binder instance. Will call the binder's onRefreshView() function when
+complete with the new Y.Node and HTMLElement objects.
                                         </div>
 
                                         <div class="description">
@@ -564,13 +654,14 @@ the binder's onRefreshView() function when complete with the new Y.Node and HTML
                                                         <code><span property="yui:name">opts</span>
                                                         &lt;<span property="yui:type">object</span>&gt;
                                                         </code>
-                                                        <span property="yui:description"> [optional] <object> same as the options for invoke()</span>
+                                                        <span property="yui:description"> same as the options for invoke().</span>
                                                         </dd>
                                                         <dd rel="yui:parameter">
                                                         <code><span property="yui:name">cb</span>
-                                                        &lt;<span property="yui:type">object</span>&gt;
+                                                        &lt;<span property="yui:type">function</span>&gt;
                                                         </code>
-                                                        <span property="yui:description"> [optional] called after replacement and onRefreshView have been called, sends data/meta</span>
+                                                        <span property="yui:description"> Called after replacement and onRefreshView have
+been called, sends data/meta.</span>
                                                         </dd>
                                                 </dl>
 
@@ -631,19 +722,19 @@ Mojits "views" folder. Returns via the callback.
                                                         <code><span property="yui:name">data</span>
                                                         &lt;<span property="yui:type">object</span>&gt;
                                                         </code>
-                                                        <span property="yui:description"></span>
+                                                        <span property="yui:description"> The data to render.</span>
                                                         </dd>
                                                         <dd rel="yui:parameter">
                                                         <code><span property="yui:name">view</span>
                                                         &lt;<span property="yui:type">string</span>&gt;
                                                         </code>
-                                                        <span property="yui:description"></span>
+                                                        <span property="yui:description"> The view name to use for rendering.</span>
                                                         </dd>
                                                         <dd rel="yui:parameter">
                                                         <code><span property="yui:name">cb</span>
                                                         &lt;<span property="yui:type">function(err,str)</span>&gt;
                                                         </code>
-                                                        <span property="yui:description"></span>
+                                                        <span property="yui:description"> The callback function.</span>
                                                         </dd>
                                                 </dl>
 
@@ -683,9 +774,10 @@ Mojits "views" folder. Returns via the callback.
                                         </code>
                                         
                                         <div class="description" property="yui:description">
-                                            The opposite of the "listen" function. Deletes all callback functions from the
-listener queue associated with this binder and event type. If event name is not
-specified, all callbacks associated with this binder are deleted.
+                                            The opposite of the "listen" function. Deletes all callback functions
+from the listener queue associated with this binder and event type.
+If event name is not specified, all callbacks associated with this
+binder are deleted.
                                         </div>
 
                                         <div class="description">
@@ -696,7 +788,7 @@ specified, all callbacks associated with this binder are deleted.
                                                         <code><span property="yui:name">[optional]</span>
                                                         &lt;<span property="yui:type">String</span>&gt;
                                                         </code>
-                                                        <span property="yui:description"> name event name</span>
+                                                        <span property="yui:description"> name event name.</span>
                                                         </dd>
                                                 </dl>
 
@@ -749,8 +841,8 @@ specified, all callbacks associated with this binder are deleted.
                     <div id="classList" class="module">
                         <h4>Classes</h4>
                         <ul class="content">
+                                <li class="selected"><a href="MojitProxy.html" title="MojitProxy">MojitProxy</a></li>
                                 <li class=""><a href="Y.mojito.Client.html" title="Y.mojito.Client">Y.mojito.Client</a></li>
-                                <li class="selected"><a href="Y.mojito.MojitProxy.html" title="Y.mojito.MojitProxy">Y.mojito.MojitProxy</a></li>
                         </ul>
                     </div>
 
@@ -758,18 +850,14 @@ specified, all callbacks associated with this binder are deleted.
                     <div id="fileList" class="module">
                         <h4>Files</h4>
                         <ul class="content">        
-                                <li class=""><a href="action-context.common.js.html" title="action-context.common.js">action-context.common.js</a></li>
-                                <li class=""><a href="controller-context.common.js.html" title="controller-context.common.js">controller-context.common.js</a></li>
-                                <li class=""><a href="dispatch.common.js.html" title="dispatch.common.js">dispatch.common.js</a></li>
-                                <li class=""><a href="loader.common.js.html" title="loader.common.js">loader.common.js</a></li>
-                                <li class=""><a href="logger.common.js.html" title="logger.common.js">logger.common.js</a></li>
-                                <li class=""><a href="mojit-proxy.client.js.html" title="mojit-proxy.client.js">mojit-proxy.client.js</a></li>
+                                <li class=""><a href="mojito-client.client.js.html" title="mojito-client.client.js">mojito-client.client.js</a></li>
                                 <li class=""><a href="mojito-test.common.js.html" title="mojito-test.common.js">mojito-test.common.js</a></li>
+                                <li class=""><a href="mojito.common.js.html" title="mojito.common.js">mojito.common.js</a></li>
                                 <li class=""><a href="output-handler.client.js.html" title="output-handler.client.js">output-handler.client.js</a></li>
+                                <li class=""><a href="perf.client.js.html" title="perf.client.js">perf.client.js</a></li>
                                 <li class=""><a href="perf.server.js.html" title="perf.server.js">perf.server.js</a></li>
-                                <li class=""><a href="route-maker.common.js.html" title="route-maker.common.js">route-maker.common.js</a></li>
-                                <li class=""><a href="util.common.js.html" title="util.common.js">util.common.js</a></li>
-                                <li class=""><a href="view-renderer.common.js.html" title="view-renderer.common.js">view-renderer.common.js</a></li>
+                                <li class=""><a href="resource-store-adapter.common.js.html" title="resource-store-adapter.common.js">resource-store-adapter.common.js</a></li>
+                                <li class=""><a href="rest.common.js.html" title="rest.common.js">rest.common.js</a></li>
                         </ul>
                     </div>
                     -->
@@ -777,7 +865,7 @@ specified, all callbacks associated with this binder are deleted.
                     <div id="propertyList" class="module">
                         <h4>Properties</h4>
                         <ul class="content">        
-                                <li class=""><a href="#property_children" title="children">children</a></li>
+                                <li class=""><a href="#property__mojito" title="_mojito">_mojito</a></li>
                                 <li class=""><a href="#property_config" title="config">config</a></li>
                                 <li class=""><a href="#property_context" title="context">context</a></li>
                                 <li class=""><a href="#property_type" title="type">type</a></li>
@@ -789,6 +877,7 @@ specified, all callbacks associated with this binder are deleted.
                         <ul class="content">        
                                 <li class=""><a href="#method_broadcast" title="broadcast">broadcast</a></li>
                                 <li class=""><a href="#method_destroyChild" title="destroyChild">destroyChild</a></li>
+                                <li class=""><a href="#method_destroyChildren" title="destroyChildren">destroyChildren</a></li>
                                 <li class=""><a href="#method_destroySelf" title="destroySelf">destroySelf</a></li>
                                 <li class=""><a href="#method_getChildren" title="getChildren">getChildren</a></li>
                                 <li class=""><a href="#method_getFromUrl" title="getFromUrl">getFromUrl</a></li>
@@ -811,7 +900,7 @@ specified, all callbacks associated with this binder are deleted.
 	</div>
 </div>
 <script type="text/javascript">
-    ALL_YUI_PROPS = [{"url": "Y.mojito.MojitProxy.html#method_broadcast", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "broadcast"}, {"url": "Y.mojito.MojitProxy.html#property_children", "access": "", "host": "Y.mojito.MojitProxy", "type": "property", "name": "children"}, {"url": "Y.mojito.MojitProxy.html#property_config", "access": "", "host": "Y.mojito.MojitProxy", "type": "property", "name": "config"}, {"url": "Y.mojito.MojitProxy.html#property_context", "access": "", "host": "Y.mojito.MojitProxy", "type": "property", "name": "context"}, {"url": "Y.mojito.MojitProxy.html#method_destroyChild", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "destroyChild"}, {"url": "Y.mojito.MojitProxy.html#method_destroySelf", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "destroySelf"}, {"url": "Y.mojito.Client.html#method_find", "access": "", "host": "Y.mojito.Client", "type": "method", "name": "find"}, {"url": "Y.mojito.MojitProxy.html#method_getChildren", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "getChildren"}, {"url": "Y.mojito.Client.html#method_getComputedRoutes", "access": "", "host": "Y.mojito.Client", "type": "method", "name": "getComputedRoutes"}, {"url": "Y.mojito.MojitProxy.html#method_getFromUrl", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "getFromUrl"}, {"url": "Y.mojito.MojitProxy.html#method_invoke", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "invoke"}, {"url": "Y.mojito.MojitProxy.html#method_listen", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "listen"}, {"url": "Y.mojito.Client.html#method_pause", "access": "", "host": "Y.mojito.Client", "type": "method", "name": "pause"}, {"url": "Y.mojito.MojitProxy.html#method_refreshView", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "refreshView"}, {"url": "Y.mojito.MojitProxy.html#method_render", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "render"}, {"url": "Y.mojito.Client.html#method_resume", "access": "", "host": "Y.mojito.Client", "type": "method", "name": "resume"}, {"url": "Y.mojito.MojitProxy.html#property_type", "access": "", "host": "Y.mojito.MojitProxy", "type": "property", "name": "type"}, {"url": "Y.mojito.MojitProxy.html#method_unlisten", "access": "", "host": "Y.mojito.MojitProxy", "type": "method", "name": "unlisten"}];
+    ALL_YUI_PROPS = [{"url": "MojitProxy.html#method_broadcast", "access": "", "host": "MojitProxy", "type": "method", "name": "broadcast"}, {"url": "MojitProxy.html#property_config", "access": "", "host": "MojitProxy", "type": "property", "name": "config"}, {"url": "MojitProxy.html#property_context", "access": "", "host": "MojitProxy", "type": "property", "name": "context"}, {"url": "MojitProxy.html#method_destroyChild", "access": "", "host": "MojitProxy", "type": "method", "name": "destroyChild"}, {"url": "MojitProxy.html#method_destroyChildren", "access": "", "host": "MojitProxy", "type": "method", "name": "destroyChildren"}, {"url": "MojitProxy.html#method_destroySelf", "access": "", "host": "MojitProxy", "type": "method", "name": "destroySelf"}, {"url": "MojitProxy.html#method_getChildren", "access": "", "host": "MojitProxy", "type": "method", "name": "getChildren"}, {"url": "MojitProxy.html#method_getFromUrl", "access": "", "host": "MojitProxy", "type": "method", "name": "getFromUrl"}, {"url": "MojitProxy.html#method_invoke", "access": "", "host": "MojitProxy", "type": "method", "name": "invoke"}, {"url": "MojitProxy.html#method_listen", "access": "", "host": "MojitProxy", "type": "method", "name": "listen"}, {"url": "MojitProxy.html#property__mojito", "access": "", "host": "MojitProxy", "type": "property", "name": "_mojito"}, {"url": "MojitProxy.html#method_refreshView", "access": "", "host": "MojitProxy", "type": "method", "name": "refreshView"}, {"url": "MojitProxy.html#method_render", "access": "", "host": "MojitProxy", "type": "method", "name": "render"}, {"url": "MojitProxy.html#property_type", "access": "", "host": "MojitProxy", "type": "property", "name": "type"}, {"url": "MojitProxy.html#method_unlisten", "access": "", "host": "MojitProxy", "type": "method", "name": "unlisten"}];
 </script>
 </body>
 </html>

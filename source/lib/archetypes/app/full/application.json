@@ -42,5 +42,11 @@
             }
 
         }
+    },
+    {
+        "settings": [ "environment:development" ],
+        "staticHandling": {
+            "forceUpdate": true
+        }
     }
 ]

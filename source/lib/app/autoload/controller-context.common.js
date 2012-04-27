@@ -31,6 +31,12 @@ YUI.add('mojito-controller-context', function(Y, NAME) {
                 instance = this.instance,
                 controller,
                 shareYUIInstance = this.shareYUIInstance,
+
+                // do a shallow merge of app-level and mojit-level configs
+                // mojit config properties take precedence
+                configApp = this.store.getAppConfig({}, 'definition').config,
+                configCombo = Y.merge(configApp, instance.config),
+
                 // Y.mojito.controller for legacy, multi-instance.
                 // Y.mojito.controllers for shared instance
                 c = this.Y.mojito.controller ||
@@ -52,7 +58,7 @@ YUI.add('mojito-controller-context', function(Y, NAME) {
             if (Y.Lang.isFunction(controller.init)) {
                 // Use the instance data which isn't really an instance to
                 // provide construction parameters for the controller init().
-                controller.init(instance.config);
+                controller.init(configCombo);
             }
 
             // mix in any (new) actions (the actions namespace here would be
@@ -80,9 +86,8 @@ YUI.add('mojito-controller-context', function(Y, NAME) {
 
                     if (Y.Lang.isFunction(modelInstance.init)) {
                         // NOTE that we use the same config here that we use to
-                        // config the controller...so the 'instance.config' data
-                        // is feeding both types.
-                        modelInstance.init(instance.config);
+                        // config the controller
+                        modelInstance.init(configCombo);
                     }
                     this.models[modelName] = modelInstance;
                 }

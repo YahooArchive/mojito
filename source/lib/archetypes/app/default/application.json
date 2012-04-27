@@ -2,5 +2,11 @@
     {
         "settings": [ "master" ],
         "specs": {}
+    },
+    {
+        "settings": [ "environment:development" ],
+        "staticHandling": {
+            "forceUpdate": true
+        }
     }
 ]

@@ -1561,7 +1561,7 @@ ServerStore.prototype = {
         // (A better name might have been "global" instead of "app-level".)
         this._preloadDirMojit('fw', false, libpath.join(mojitoRoot, 'app'));
 
-        this._preloadDirMojits(false, libpath.join(mojitoRoot, 'mojits'));
+        this._preloadDirMojits(false, libpath.join(mojitoRoot, 'app', 'mojits'));
 
         this._preloadFileConfig(this._preload.appMeta, 'app', null,
             libpath.join(this._root, 'application.json'), 'definition');

@@ -2,21 +2,21 @@
 <html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-	<title>API: MojitoServer   analytics.common.js  (YUI Library)</title>
+	<title>Mojito API: MojitoServer   analytics.common.js  (</title>
 
-	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css?stamp=1327685401.85" />
-	<link rel="stylesheet" type="text/css" href="assets/api.css?stamp=1327685401.85" />
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css?stamp=1334037081.93" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css?stamp=1334037081.93" />
 
-    <script type="text/javascript" src="assets/api-js?stamp=1327685401.85"></script>
-    <script type="text/javascript" src="assets/ac-js?stamp=1327685401.85"></script>
+    <script type="text/javascript" src="assets/api-js?stamp=1334037081.93"></script>
+    <script type="text/javascript" src="assets/ac-js?stamp=1334037081.93"></script>
 </head>
 
 <body id="yahoo-com">
 
 <div id="doc3" class="yui-t2">
 	<div id="hd">
-        <h1><a href="http://developer.yahoo.com/yui/" title="mojito">mojito</a></h1>
-        <h3>MojitoServer&nbsp; <span class="subtitle">0.1.0</span></h3>
+        <h1><a href="http://developer.yahoo.com/cocktails/mojito/" title="mojito">mojito</a></h1>
+        <h3>MojitoServer&nbsp; <span class="subtitle">0.3.0</span></h3>
         <a href="./index.html" title="mojito">mojito</a> 
             &gt; <a href="./module_MojitoServer.html" title="MojitoServer">MojitoServer</a>
                 
@@ -48,21 +48,32 @@
                             #doc3 .classopts { display:none; }
                         </style>
 <div class="highlight"><pre><span class="c">/*</span>
-<span class="c"> * Copyright (c) 2011 Yahoo! Inc. All rights reserved.</span>
+<span class="c"> * Copyright (c) 2011-2012, Yahoo! Inc.  All rights reserved.</span>
+<span class="c"> * Copyrights licensed under the New BSD License.</span>
+<span class="c"> * See the accompanying LICENSE file for terms.</span>
 <span class="c"> */</span>
+
+
+<span class="c">/*jslint anon:true, sloppy:true*/</span>
+<span class="c">/*global YUI*/</span>
+
+
 <span class="c">/**</span>
-<span class="c"> * The &lt;strong&gt;Action Context&lt;/strong&gt; uses a mechanism called &lt;strong&gt;&lt;em&gt;Addons&lt;/em&gt;&lt;/strong&gt;</span>
-<span class="c"> * to provide functionality that lives both</span>
-<span class="c"> * on the server and/or client. Each Addon provides additional functions through a namespace</span>
-<span class="c"> * that is attached directly to the ac argument available in every controller function.</span>
+<span class="c"> * The &lt;strong&gt;Action Context&lt;/strong&gt; uses a mechanism called</span>
+<span class="c"> * &lt;strong&gt;&lt;em&gt;Addons&lt;/em&gt;&lt;/strong&gt; to provide functionality that lives both on</span>
+<span class="c"> * the server and/or client. Each Addon provides additional functions through a</span>
+<span class="c"> * namespace that is attached directly to the ac argument available in every</span>
+<span class="c"> * controller function.</span>
 <span class="c"> * @module ActionContextAddon</span>
 <span class="c"> */</span>
+
+
 <span class="c">/**</span>
-<span class="c"> * @submodule ActionContextAddon</span>
+<span class="c"> * @module ActionContextAddon</span>
 <span class="c"> */</span>
 <span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;mojito-analytics-addon&#39;</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="o">,</span> <span class="nx">NAME</span><span class="p">)</span> <span class="p">{</span>
 
-    <span class="kd">var</span> <span class="nx">ANALYTICS</span> <span class="o">=</span> <span class="s1">&#39;anal&#39;</span><span class="o">;</span> <span class="c">// I saved 5 keystrokes!</span>
+    <span class="kd">var</span> <span class="nx">ANALYTICS</span> <span class="o">=</span> <span class="s1">&#39;analytics&#39;</span><span class="o">;</span>
 
     <span class="c">/**</span>
 <span class="c">     * &lt;strong&gt;Access point:&lt;/strong&gt; &lt;em&gt;ac.analytics.*&lt;/em&gt;</span>
@@ -81,31 +92,30 @@
         <span class="k">this</span><span class="p">.</span><span class="nx">mergeFunction</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">mojito</span><span class="p">.</span><span class="nx">util</span><span class="p">.</span><span class="nx">metaMerge</span><span class="o">;</span>
     <span class="p">}</span>
 
+
     <span class="nx">AnalyticsAddon</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
 
         <span class="nx">namespace</span><span class="o">:</span> <span class="s1">&#39;analytics&#39;</span><span class="o">,</span>
 
         <span class="c">/**</span>
 <span class="c">         * Allows a way for addons mixed in after this one to set an alternate</span>
-<span class="c">         * data merge function when analytics from multiple children are combined.</span>
-<span class="c">         * The default merge function is the same one used internally by Mojito</span>
-<span class="c">         * to merge meta data, and will be sufficient for most use cases.</span>
-<span class="c">         *</span>
-<span class="c">         * @method setMergeFunction</span>
+<span class="c">         * data merge function when analytics from multiple children are</span>
+<span class="c">         * combined. The default merge function is the same one used internally</span>
+<span class="c">         * by Mojito to merge meta data, and will be sufficient for most use</span>
+<span class="c">         * cases.</span>
 <span class="c">         * @param {function} fn user-defined merge function, which should accept</span>
-<span class="c">         * two objects, the first is &quot;to&quot;, and the second is &quot;from&quot;. this function</span>
-<span class="c">         * should return the merged object.</span>
+<span class="c">         * two objects, the first is &quot;to&quot;, and the second is &quot;from&quot;. this</span>
+<span class="c">         * function should return the merged object.</span>
 <span class="c">         */</span>
         <span class="nx">setMergeFunction</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">fn</span><span class="p">)</span> <span class="p">{</span>
             <span class="k">this</span><span class="p">.</span><span class="nx">mergeFunction</span> <span class="o">=</span> <span class="nx">fn</span><span class="o">;</span>
         <span class="p">}</span><span class="o">,</span>
 
+
         <span class="c">/**</span>
 <span class="c">         * Store an analytic value. This function can be called multiple times</span>
 <span class="c">         * within a mojit, and uses a merging function to combine objects.</span>
-<span class="c">         *</span>
-<span class="c">         * @method store</span>
-<span class="c">         * @param {object} val should be an object bag full of whatever you wish</span>
+<span class="c">         * @param {object} val An object bag full of whatever you wish.</span>
 <span class="c">         */</span>
         <span class="nx">store</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="p">{</span>
             <span class="c">// if you don&#39;t like using our internal meta merge function,</span>
@@ -115,30 +125,32 @@
             <span class="k">this</span><span class="p">.</span><span class="nx">ac</span><span class="p">.</span><span class="nx">meta</span><span class="p">.</span><span class="nx">store</span><span class="p">(</span><span class="nx">ANALYTICS</span><span class="o">,</span> <span class="k">this</span><span class="p">[</span><span class="nx">ANALYTICS</span><span class="p">]);</span>
         <span class="p">}</span><span class="o">,</span>
 
+
         <span class="c">/**</span>
 <span class="c">         * To retrieve analytics data that has been stored by child mojits, call</span>
-<span class="c">         * this function and provide a function, which will be called once the children</span>
-<span class="c">         * have been dispatched and all their analytics data has been merged.</span>
-<span class="c">         *</span>
-<span class="c">         * @method retrieve</span>
-<span class="c">         * @param {function} cb callback will be called with the analytics object</span>
-<span class="c">         * @param {object} [optional] scope scope of the callback</span>
+<span class="c">         * this function and provide a function, which will be called once the</span>
+<span class="c">         * children have been dispatched and all their analytics data has been</span>
+<span class="c">         * merged.</span>
+<span class="c">         * @param {function} cb callback invoked with the analytics object.</span>
+<span class="c">         * @param {object} [optional] scope scope of the callback.</span>
 <span class="c">         */</span>
         <span class="nx">retrieve</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="o">,</span> <span class="nx">scope</span><span class="p">)</span> <span class="p">{</span>
-            <span class="c">// mostly just deferring to the meta addon, but specifying that we only want the</span>
-            <span class="c">// ANALYTICS stuff off the meta</span>
+            <span class="c">// mostly just deferring to the meta addon, but specifying that we</span>
+            <span class="c">// only want the ANALYTICS stuff off the meta</span>
             <span class="k">this</span><span class="p">.</span><span class="nx">ac</span><span class="p">.</span><span class="nx">meta</span><span class="p">.</span><span class="nx">retrieve</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">metaStash</span><span class="p">)</span> <span class="p">{</span>
-
                 <span class="nx">cb</span><span class="p">.</span><span class="nx">call</span><span class="p">(</span><span class="k">this</span><span class="o">,</span> <span class="nx">metaStash</span><span class="p">[</span><span class="nx">ANALYTICS</span><span class="p">]);</span>
             <span class="p">}</span><span class="o">,</span> <span class="nx">scope</span><span class="p">);</span>
         <span class="p">}</span>
     <span class="p">};</span>
 
     <span class="nx">AnalyticsAddon</span><span class="p">.</span><span class="nx">dependsOn</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;meta&#39;</span><span class="p">];</span>
-    
+
     <span class="nx">Y</span><span class="p">.</span><span class="nx">mojito</span><span class="p">.</span><span class="nx">addons</span><span class="p">.</span><span class="nx">ac</span><span class="p">.</span><span class="nx">analytics</span> <span class="o">=</span> <span class="nx">AnalyticsAddon</span><span class="o">;</span>
 
-<span class="p">}</span><span class="o">,</span> <span class="s1">&#39;0.1.0&#39;</span><span class="o">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;mojito-util&#39;</span><span class="o">,</span> <span class="s1">&#39;mojito-meta-addon&#39;</span><span class="p">]});</span>
+<span class="p">}</span><span class="o">,</span> <span class="s1">&#39;0.3.0&#39;</span><span class="o">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[</span>
+    <span class="s1">&#39;mojito-util&#39;</span><span class="o">,</span>
+    <span class="s1">&#39;mojito-meta-addon&#39;</span>
+<span class="p">]});</span>
 </pre></div>
                     </div>
 			</div>
@@ -160,16 +172,9 @@
                     <div id="classList" class="module">
                         <h4>Classes</h4>
                         <ul class="content">
-                                <li class=""><a href="Composite.common.html" title="Composite.common">Composite.common</a></li>
-                                <li class=""><a href="Config.common.html" title="Config.common">Config.common</a></li>
-                                <li class=""><a href="Cookie.client.html" title="Cookie.client">Cookie.client</a></li>
-                                <li class=""><a href="Cookie.server.html" title="Cookie.server">Cookie.server</a></li>
-                                <li class=""><a href="Http.server.html" title="Http.server">Http.server</a></li>
-                                <li class=""><a href="Intl.common.html" title="Intl.common">Intl.common</a></li>
                                 <li class=""><a href="MojitoServer.html" title="MojitoServer">MojitoServer</a></li>
-                                <li class=""><a href="Params.common.html" title="Params.common">Params.common</a></li>
-                                <li class=""><a href="Partial.common.html" title="Partial.common">Partial.common</a></li>
-                                <li class=""><a href="Url.common.html" title="Url.common">Url.common</a></li>
+                                <li class=""><a href="OutputHandler.html" title="OutputHandler">OutputHandler</a></li>
+                                <li class=""><a href="ResourceStore.server.html" title="ResourceStore.server">ResourceStore.server</a></li>
                         </ul>
                     </div>
 
@@ -178,27 +183,11 @@
                         <h4>Files</h4>
                         <ul class="content">        
                                 <li class="selected"><a href="analytics.common.js.html" title="analytics.common.js">analytics.common.js</a></li>
-                                <li class=""><a href="composite.common.js.html" title="composite.common.js">composite.common.js</a></li>
-                                <li class=""><a href="config.common.js.html" title="config.common.js">config.common.js</a></li>
-                                <li class=""><a href="controller.common.js.html" title="controller.common.js">controller.common.js</a></li>
-                                <li class=""><a href="controller.server.js.html" title="controller.server.js">controller.server.js</a></li>
-                                <li class=""><a href="controller.server.js.html" title="controller.server.js">controller.server.js</a></li>
-                                <li class=""><a href="cookie.client.js.html" title="cookie.client.js">cookie.client.js</a></li>
-                                <li class=""><a href="cookie.server.js.html" title="cookie.server.js">cookie.server.js</a></li>
                                 <li class=""><a href="glob.js.html" title="glob.js">glob.js</a></li>
-                                <li class=""><a href="http.server.js.html" title="http.server.js">http.server.js</a></li>
                                 <li class=""><a href="index.js.html" title="index.js">index.js</a></li>
-                                <li class=""><a href="index.js.html" title="index.js">index.js</a></li>
-                                <li class=""><a href="intl.common.js.html" title="intl.common.js">intl.common.js</a></li>
-                                <li class=""><a href="mu.client.js.html" title="mu.client.js">mu.client.js</a></li>
-                                <li class=""><a href="mu.server.js.html" title="mu.server.js">mu.server.js</a></li>
                                 <li class=""><a href="output-handler.server.js.html" title="output-handler.server.js">output-handler.server.js</a></li>
-                                <li class=""><a href="params.common.js.html" title="params.common.js">params.common.js</a></li>
-                                <li class=""><a href="partial.common.js.html" title="partial.common.js">partial.common.js</a></li>
                                 <li class=""><a href="server-log.js.html" title="server-log.js">server-log.js</a></li>
-                                <li class=""><a href="store-provider.server.js.html" title="store-provider.server.js">store-provider.server.js</a></li>
                                 <li class=""><a href="store.server.js.html" title="store.server.js">store.server.js</a></li>
-                                <li class=""><a href="url.common.js.html" title="url.common.js">url.common.js</a></li>
                         </ul>
                     </div>
                     -->
@@ -216,7 +205,7 @@
 	</div>
 </div>
 <script type="text/javascript">
-    ALL_YUI_PROPS = [{"url": "Http.server.html#method_addHeader", "access": "", "host": "Http.server", "type": "method", "name": "addHeader"}, {"url": "Http.server.html#method_addHeaders", "access": "", "host": "Http.server", "type": "method", "name": "addHeaders"}, {"url": "MojitoServer.html#method_addMojitoToExpressApp", "access": "", "host": "MojitoServer", "type": "method", "name": "addMojitoToExpressApp"}, {"url": "Params.common.html#method_all", "access": "", "host": "Params.common", "type": "method", "name": "all"}, {"url": "Params.common.html#method_body", "access": "", "host": "Params.common", "type": "method", "name": "body"}, {"url": "MojitoServer.html#method_createServer", "access": "", "host": "MojitoServer", "type": "method", "name": "createServer"}, {"url": "Composite.common.html#method_done", "access": "", "host": "Composite.common", "type": "method", "name": "done"}, {"url": "Composite.common.html#method_execute", "access": "", "host": "Composite.common", "type": "method", "name": "execute"}, {"url": "Params.common.html#method_files", "access": "", "host": "Params.common", "type": "method", "name": "files"}, {"url": "Url.common.html#method_find", "access": "", "host": "Url.common", "type": "method", "name": "find"}, {"url": "Intl.common.html#method_formatDate", "access": "", "host": "Intl.common", "type": "method", "name": "formatDate"}, {"url": "Cookie.server.html#method_get", "access": "", "host": "Cookie.server", "type": "method", "name": "get"}, {"url": "Config.common.html#method_get", "access": "", "host": "Config.common", "type": "method", "name": "get"}, {"url": "Params.common.html#method_getAll", "access": "", "host": "Params.common", "type": "method", "name": "getAll"}, {"url": "Config.common.html#method_getDefinition", "access": "", "host": "Config.common", "type": "method", "name": "getDefinition"}, {"url": "Params.common.html#method_getFromBody", "access": "", "host": "Params.common", "type": "method", "name": "getFromBody"}, {"url": "Params.common.html#method_getFromMerged", "access": "", "host": "Params.common", "type": "method", "name": "getFromMerged"}, {"url": "Params.common.html#method_getFromRoute", "access": "", "host": "Params.common", "type": "method", "name": "getFromRoute"}, {"url": "Params.common.html#method_getFromUrl", "access": "", "host": "Params.common", "type": "method", "name": "getFromUrl"}, {"url": "Http.server.html#method_getHeader", "access": "", "host": "Http.server", "type": "method", "name": "getHeader"}, {"url": "Http.server.html#method_getHeaders", "access": "", "host": "Http.server", "type": "method", "name": "getHeaders"}, {"url": "Http.server.html#method_getRequest", "access": "", "host": "Http.server", "type": "method", "name": "getRequest"}, {"url": "Http.server.html#method_getResponse", "access": "", "host": "Http.server", "type": "method", "name": "getResponse"}, {"url": "Partial.common.html#method_invoke", "access": "", "host": "Partial.common", "type": "method", "name": "invoke"}, {"url": "Http.server.html#method_isXhr", "access": "", "host": "Http.server", "type": "method", "name": "isXhr"}, {"url": "Intl.common.html#method_lang", "access": "", "host": "Intl.common", "type": "method", "name": "lang"}, {"url": "Url.common.html#method_make", "access": "", "host": "Url.common", "type": "method", "name": "make"}, {"url": "Params.common.html#method_merged", "access": "", "host": "Params.common", "type": "method", "name": "merged"}, {"url": "Http.server.html#method_redirect", "access": "", "host": "Http.server", "type": "method", "name": "redirect"}, {"url": "Partial.common.html#method_render", "access": "", "host": "Partial.common", "type": "method", "name": "render"}, {"url": "Params.common.html#method_route", "access": "", "host": "Params.common", "type": "method", "name": "route"}, {"url": "Cookie.server.html#method_set", "access": "", "host": "Cookie.server", "type": "method", "name": "set"}, {"url": "Http.server.html#method_setHeader", "access": "", "host": "Http.server", "type": "method", "name": "setHeader"}, {"url": "Http.server.html#method_setHeaders", "access": "", "host": "Http.server", "type": "method", "name": "setHeaders"}, {"url": "Params.common.html#method_url", "access": "", "host": "Params.common", "type": "method", "name": "url"}];
+    ALL_YUI_PROPS = [{"url": "MojitoServer.html#method_addMojitoToExpressApp", "access": "", "host": "MojitoServer", "type": "method", "name": "addMojitoToExpressApp"}, {"url": "MojitoServer.html#property_constructor", "access": "", "host": "MojitoServer", "type": "property", "name": "constructor"}, {"url": "MojitoServer.html#method_createServer", "access": "", "host": "MojitoServer", "type": "method", "name": "createServer"}, {"url": "ResourceStore.server.html#method_expandInstance", "access": "", "host": "ResourceStore.server", "type": "method", "name": "expandInstance"}, {"url": "ResourceStore.server.html#method_expandInstanceForEnv", "access": "", "host": "ResourceStore.server", "type": "method", "name": "expandInstanceForEnv"}, {"url": "MojitoServer.html#property_exports", "access": "", "host": "MojitoServer", "type": "property", "name": "exports"}, {"url": "OutputHandler.html#property_exports", "access": "", "host": "OutputHandler", "type": "property", "name": "exports"}, {"url": "ResourceStore.server.html#method_fileFromStaticHandlerURL", "access": "", "host": "ResourceStore.server", "type": "method", "name": "fileFromStaticHandlerURL"}, {"url": "ResourceStore.server.html#method_getAllMojits", "access": "", "host": "ResourceStore.server", "type": "method", "name": "getAllMojits"}, {"url": "ResourceStore.server.html#method_getAppConfig", "access": "", "host": "ResourceStore.server", "type": "method", "name": "getAppConfig"}, {"url": "ResourceStore.server.html#method_getInlineCssMojits", "access": "", "host": "ResourceStore.server", "type": "method", "name": "getInlineCssMojits"}, {"url": "ResourceStore.server.html#method_getMojitTypeDetails", "access": "", "host": "ResourceStore.server", "type": "method", "name": "getMojitTypeDetails"}, {"url": "ResourceStore.server.html#method_getRollupsApp", "access": "", "host": "ResourceStore.server", "type": "method", "name": "getRollupsApp"}, {"url": "ResourceStore.server.html#method_getRollupsMojits", "access": "", "host": "ResourceStore.server", "type": "method", "name": "getRollupsMojits"}, {"url": "ResourceStore.server.html#method_getRoutes", "access": "", "host": "ResourceStore.server", "type": "method", "name": "getRoutes"}, {"url": "ResourceStore.server.html#method_getSpec", "access": "", "host": "ResourceStore.server", "type": "method", "name": "getSpec"}, {"url": "ResourceStore.server.html#method_getType", "access": "", "host": "ResourceStore.server", "type": "method", "name": "getType"}, {"url": "ResourceStore.server.html#method_getYuiConfigAllMojits", "access": "", "host": "ResourceStore.server", "type": "method", "name": "getYuiConfigAllMojits"}, {"url": "ResourceStore.server.html#method_getYuiConfigApp", "access": "", "host": "ResourceStore.server", "type": "method", "name": "getYuiConfigApp"}, {"url": "ResourceStore.server.html#method_getYuiConfigFw", "access": "", "host": "ResourceStore.server", "type": "method", "name": "getYuiConfigFw"}, {"url": "MojitoServer.html#method_include", "access": "", "host": "MojitoServer", "type": "method", "name": "include"}, {"url": "ResourceStore.server.html#method_listAllMojits", "access": "", "host": "ResourceStore.server", "type": "method", "name": "listAllMojits"}, {"url": "MojitoServer.html#property__mojito", "access": "", "host": "MojitoServer", "type": "property", "name": "_mojito"}, {"url": "ResourceStore.server.html#method_preload", "access": "", "host": "ResourceStore.server", "type": "method", "name": "preload"}, {"url": "ResourceStore.server.html#method_setLogger", "access": "", "host": "ResourceStore.server", "type": "method", "name": "setLogger"}];
 </script>
 </body>
 </html>

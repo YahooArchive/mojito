@@ -31,9 +31,11 @@ YUI.add('mojito-cookie-addon', function(Y, NAME) {
         namespace: 'cookie',
 
         /**
-         * Returns the cookie for the given key, or all cookies if the key is
-         * not specified.
+         * Returns the cookie for the given key or all the cookies if the key
+	 * is not specified.
          * @param {string} [optional] key The key to look for.
+	 * @return {string} the value of the cookie for the given key.
+	 * @return {object} contains all the cookies if the key is not specified.
          */
         get: function(key) {
             if (key) {

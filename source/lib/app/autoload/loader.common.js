@@ -39,13 +39,11 @@ YUI.add('mojito-loader', function(Y, NAME) {
                 if (paths.hasOwnProperty(mod)) {
                     if (!YUI.Env.mods[mod]) {
                         script = paths[mod];
-                        if (script) {
-                            if ('.js' === script.substr(-3).toLowerCase()) {
-                                if ('/' === script.charAt(0)) {
-                                    script = this.prefix + script;
-                                }
-                                scriptsToLoad[script] = true;
+                        if (/\.js$/i.test(script)) {
+                            if ('/' === script.charAt(0)) {
+                                script = this.prefix + script;
                             }
+                            scriptsToLoad[script] = true;
                         }
                     }
                 }

@@ -2,23 +2,23 @@
 <html xmlns:yui="http://yuilibrary.com/rdf/1.0/yui.rdf#">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-	<title>API: MojitoServer   controller.common.js  (YUI Library)</title>
+	<title>Mojito API: CommonLibs   controller.common.js  (</title>
 
-	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css?stamp=1327685401.85" />
-	<link rel="stylesheet" type="text/css" href="assets/api.css?stamp=1327685401.85" />
+	<link rel="stylesheet" type="text/css" href="assets/reset-fonts-grids-min.css?stamp=1334037082.74" />
+	<link rel="stylesheet" type="text/css" href="assets/api.css?stamp=1334037082.74" />
 
-    <script type="text/javascript" src="assets/api-js?stamp=1327685401.85"></script>
-    <script type="text/javascript" src="assets/ac-js?stamp=1327685401.85"></script>
+    <script type="text/javascript" src="assets/api-js?stamp=1334037082.74"></script>
+    <script type="text/javascript" src="assets/ac-js?stamp=1334037082.74"></script>
 </head>
 
 <body id="yahoo-com">
 
 <div id="doc3" class="yui-t2">
 	<div id="hd">
-        <h1><a href="http://developer.yahoo.com/yui/" title="mojito">mojito</a></h1>
-        <h3>MojitoServer&nbsp; <span class="subtitle">0.1.0</span></h3>
+        <h1><a href="http://developer.yahoo.com/cocktails/mojito/" title="mojito">mojito</a></h1>
+        <h3>CommonLibs&nbsp; <span class="subtitle">0.3.0</span></h3>
         <a href="./index.html" title="mojito">mojito</a> 
-            &gt; <a href="./module_MojitoServer.html" title="MojitoServer">MojitoServer</a>
+            &gt; <a href="./module_CommonLibs.html" title="CommonLibs">CommonLibs</a>
                 
                  &gt; controller.common.js (source view) 
         <form onsubmit="return false">
@@ -48,8 +48,16 @@
                             #doc3 .classopts { display:none; }
                         </style>
 <div class="highlight"><pre><span class="c">/*</span>
-<span class="c"> * Copyright (c) 2011 Yahoo! Inc. All rights reserved.</span>
+<span class="c"> * Copyright (c) 2011-2012, Yahoo! Inc.  All rights reserved.</span>
+<span class="c"> * Copyrights licensed under the New BSD License.</span>
+<span class="c"> * See the accompanying LICENSE file for terms.</span>
 <span class="c"> */</span>
+
+
+<span class="c">/*jslint anon:true, sloppy:true*/</span>
+<span class="c">/*global YUI*/</span>
+
+
 <span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;LazyLoad&#39;</span><span class="o">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="p">)</span> <span class="p">{</span>
 
     <span class="nx">Y</span><span class="p">.</span><span class="nx">mojito</span><span class="p">.</span><span class="nx">controller</span> <span class="o">=</span> <span class="p">{</span>
@@ -58,9 +66,10 @@
 <span class="c">         * Initially, renders a bar node</span>
 <span class="c">         */</span>
         <span class="nx">index</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">ac</span><span class="p">)</span> <span class="p">{</span>
-            <span class="c">// TODO: allow users to provide the loading content</span>
+            <span class="c">// TODO: allow users to provide the loading content.</span>
             <span class="nx">ac</span><span class="p">.</span><span class="nx">done</span><span class="p">({</span><span class="nx">content</span><span class="o">:</span> <span class="s1">&#39;Loading...&#39;</span><span class="p">});</span>
         <span class="p">}</span><span class="o">,</span>
+
 
         <span class="c">/*</span>
 <span class="c">         * binder calls this to execute the lazy-mojit</span>
@@ -77,13 +86,15 @@
                 <span class="nx">meta</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="nx">headers</span><span class="p">[</span><span class="s1">&#39;content-type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;application/json&#39;</span><span class="o">;</span>
                 <span class="c">// and we don&#39;t want the children</span>
                 <span class="nx">delete</span> <span class="nx">meta</span><span class="p">.</span><span class="nx">children</span><span class="o">;</span>
-                <span class="nx">ac</span><span class="p">.</span><span class="nx">done</span><span class="p">(</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span><span class="o">,</span> <span class="nx">meta</span><span class="p">);</span>
+                <span class="nx">ac</span><span class="p">.</span><span class="nx">done</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span><span class="o">,</span> <span class="nx">meta</span><span class="p">);</span>
             <span class="p">});</span>
         <span class="p">}</span>
-
     <span class="p">};</span>
 
-<span class="p">}</span><span class="o">,</span> <span class="s1">&#39;0.0.1&#39;</span><span class="o">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;mojito&#39;</span><span class="p">]});</span>
+<span class="p">}</span><span class="o">,</span> <span class="s1">&#39;0.0.1&#39;</span><span class="o">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[</span>
+    <span class="s1">&#39;mojito&#39;</span><span class="o">,</span>
+    <span class="s1">&#39;json&#39;</span>
+<span class="p">]});</span>
 </pre></div>
                     </div>
 			</div>
@@ -96,25 +107,16 @@
                         <ul class="content">
                                 <li class=""><a href="module_ActionContext.html" title="ActionContext">ActionContext</a></li>
                                 <li class=""><a href="module_ActionContextAddon.html" title="ActionContextAddon">ActionContextAddon</a></li>
-                                <li class=""><a href="module_CommonLibs.html" title="CommonLibs">CommonLibs</a></li>
+                                <li class="selected"><a href="module_CommonLibs.html" title="CommonLibs">CommonLibs</a></li>
                                 <li class=""><a href="module_MojitoClient.html" title="MojitoClient">MojitoClient</a></li>
-                                <li class="selected"><a href="module_MojitoServer.html" title="MojitoServer">MojitoServer</a></li>
+                                <li class=""><a href="module_MojitoServer.html" title="MojitoServer">MojitoServer</a></li>
                         </ul>
                     </div>
 
                     <div id="classList" class="module">
                         <h4>Classes</h4>
                         <ul class="content">
-                                <li class=""><a href="Composite.common.html" title="Composite.common">Composite.common</a></li>
-                                <li class=""><a href="Config.common.html" title="Config.common">Config.common</a></li>
-                                <li class=""><a href="Cookie.client.html" title="Cookie.client">Cookie.client</a></li>
-                                <li class=""><a href="Cookie.server.html" title="Cookie.server">Cookie.server</a></li>
-                                <li class=""><a href="Http.server.html" title="Http.server">Http.server</a></li>
-                                <li class=""><a href="Intl.common.html" title="Intl.common">Intl.common</a></li>
-                                <li class=""><a href="MojitoServer.html" title="MojitoServer">MojitoServer</a></li>
-                                <li class=""><a href="Params.common.html" title="Params.common">Params.common</a></li>
-                                <li class=""><a href="Partial.common.html" title="Partial.common">Partial.common</a></li>
-                                <li class=""><a href="Url.common.html" title="Url.common">Url.common</a></li>
+                                <li class=""><a href="Y.mojito.lib.REST.html" title="Y.mojito.lib.REST">Y.mojito.lib.REST</a></li>
                         </ul>
                     </div>
 
@@ -122,28 +124,27 @@
                     <div id="fileList" class="module">
                         <h4>Files</h4>
                         <ul class="content">        
-                                <li class=""><a href="analytics.common.js.html" title="analytics.common.js">analytics.common.js</a></li>
-                                <li class=""><a href="composite.common.js.html" title="composite.common.js">composite.common.js</a></li>
-                                <li class=""><a href="config.common.js.html" title="config.common.js">config.common.js</a></li>
                                 <li class="selected"><a href="controller.common.js.html" title="controller.common.js">controller.common.js</a></li>
                                 <li class=""><a href="controller.server.js.html" title="controller.server.js">controller.server.js</a></li>
                                 <li class=""><a href="controller.server.js.html" title="controller.server.js">controller.server.js</a></li>
-                                <li class=""><a href="cookie.client.js.html" title="cookie.client.js">cookie.client.js</a></li>
-                                <li class=""><a href="cookie.server.js.html" title="cookie.server.js">cookie.server.js</a></li>
-                                <li class=""><a href="glob.js.html" title="glob.js">glob.js</a></li>
-                                <li class=""><a href="http.server.js.html" title="http.server.js">http.server.js</a></li>
+                                <li class=""><a href="dali_bean.client-optional.js.html" title="dali_bean.client-optional.js">dali_bean.client-optional.js</a></li>
                                 <li class=""><a href="index.js.html" title="index.js">index.js</a></li>
-                                <li class=""><a href="index.js.html" title="index.js">index.js</a></li>
-                                <li class=""><a href="intl.common.js.html" title="intl.common.js">intl.common.js</a></li>
-                                <li class=""><a href="mu.client.js.html" title="mu.client.js">mu.client.js</a></li>
-                                <li class=""><a href="mu.server.js.html" title="mu.server.js">mu.server.js</a></li>
-                                <li class=""><a href="output-handler.server.js.html" title="output-handler.server.js">output-handler.server.js</a></li>
-                                <li class=""><a href="params.common.js.html" title="params.common.js">params.common.js</a></li>
-                                <li class=""><a href="partial.common.js.html" title="partial.common.js">partial.common.js</a></li>
-                                <li class=""><a href="server-log.js.html" title="server-log.js">server-log.js</a></li>
+                                <li class=""><a href="io_facade.client-optional.js.html" title="io_facade.client-optional.js">io_facade.client-optional.js</a></li>
+                                <li class=""><a href="performance_monitor.client-optional.js.html" title="performance_monitor.client-optional.js">performance_monitor.client-optional.js</a></li>
+                                <li class=""><a href="registry.client-optional.js.html" title="registry.client-optional.js">registry.client-optional.js</a></li>
+                                <li class=""><a href="request_formatter.client-optional.js.html" title="request_formatter.client-optional.js">request_formatter.client-optional.js</a></li>
+                                <li class=""><a href="request_handler.client-optional.js.html" title="request_handler.client-optional.js">request_handler.client-optional.js</a></li>
+                                <li class=""><a href="requestor.client-optional.js.html" title="requestor.client-optional.js">requestor.client-optional.js</a></li>
+                                <li class=""><a href="response_formatter.client-optional.js.html" title="response_formatter.client-optional.js">response_formatter.client-optional.js</a></li>
+                                <li class=""><a href="response_processor.client-optional.js.html" title="response_processor.client-optional.js">response_processor.client-optional.js</a></li>
+                                <li class=""><a href="route-maker.common.js.html" title="route-maker.common.js">route-maker.common.js</a></li>
                                 <li class=""><a href="store-provider.server.js.html" title="store-provider.server.js">store-provider.server.js</a></li>
-                                <li class=""><a href="store.server.js.html" title="store.server.js">store.server.js</a></li>
-                                <li class=""><a href="url.common.js.html" title="url.common.js">url.common.js</a></li>
+                                <li class=""><a href="store.client.js.html" title="store.client.js">store.client.js</a></li>
+                                <li class=""><a href="transport.client-optional.js.html" title="transport.client-optional.js">transport.client-optional.js</a></li>
+                                <li class=""><a href="transport_utils.client-optional.js.html" title="transport_utils.client-optional.js">transport_utils.client-optional.js</a></li>
+                                <li class=""><a href="tunnel.client-optional.js.html" title="tunnel.client-optional.js">tunnel.client-optional.js</a></li>
+                                <li class=""><a href="util.common.js.html" title="util.common.js">util.common.js</a></li>
+                                <li class=""><a href="view-renderer.common.js.html" title="view-renderer.common.js">view-renderer.common.js</a></li>
                         </ul>
                     </div>
                     -->
@@ -161,7 +162,7 @@
 	</div>
 </div>
 <script type="text/javascript">
-    ALL_YUI_PROPS = [{"url": "Http.server.html#method_addHeader", "access": "", "host": "Http.server", "type": "method", "name": "addHeader"}, {"url": "Http.server.html#method_addHeaders", "access": "", "host": "Http.server", "type": "method", "name": "addHeaders"}, {"url": "MojitoServer.html#method_addMojitoToExpressApp", "access": "", "host": "MojitoServer", "type": "method", "name": "addMojitoToExpressApp"}, {"url": "Params.common.html#method_all", "access": "", "host": "Params.common", "type": "method", "name": "all"}, {"url": "Params.common.html#method_body", "access": "", "host": "Params.common", "type": "method", "name": "body"}, {"url": "MojitoServer.html#method_createServer", "access": "", "host": "MojitoServer", "type": "method", "name": "createServer"}, {"url": "Composite.common.html#method_done", "access": "", "host": "Composite.common", "type": "method", "name": "done"}, {"url": "Composite.common.html#method_execute", "access": "", "host": "Composite.common", "type": "method", "name": "execute"}, {"url": "Params.common.html#method_files", "access": "", "host": "Params.common", "type": "method", "name": "files"}, {"url": "Url.common.html#method_find", "access": "", "host": "Url.common", "type": "method", "name": "find"}, {"url": "Intl.common.html#method_formatDate", "access": "", "host": "Intl.common", "type": "method", "name": "formatDate"}, {"url": "Cookie.server.html#method_get", "access": "", "host": "Cookie.server", "type": "method", "name": "get"}, {"url": "Config.common.html#method_get", "access": "", "host": "Config.common", "type": "method", "name": "get"}, {"url": "Params.common.html#method_getAll", "access": "", "host": "Params.common", "type": "method", "name": "getAll"}, {"url": "Config.common.html#method_getDefinition", "access": "", "host": "Config.common", "type": "method", "name": "getDefinition"}, {"url": "Params.common.html#method_getFromBody", "access": "", "host": "Params.common", "type": "method", "name": "getFromBody"}, {"url": "Params.common.html#method_getFromMerged", "access": "", "host": "Params.common", "type": "method", "name": "getFromMerged"}, {"url": "Params.common.html#method_getFromRoute", "access": "", "host": "Params.common", "type": "method", "name": "getFromRoute"}, {"url": "Params.common.html#method_getFromUrl", "access": "", "host": "Params.common", "type": "method", "name": "getFromUrl"}, {"url": "Http.server.html#method_getHeader", "access": "", "host": "Http.server", "type": "method", "name": "getHeader"}, {"url": "Http.server.html#method_getHeaders", "access": "", "host": "Http.server", "type": "method", "name": "getHeaders"}, {"url": "Http.server.html#method_getRequest", "access": "", "host": "Http.server", "type": "method", "name": "getRequest"}, {"url": "Http.server.html#method_getResponse", "access": "", "host": "Http.server", "type": "method", "name": "getResponse"}, {"url": "Partial.common.html#method_invoke", "access": "", "host": "Partial.common", "type": "method", "name": "invoke"}, {"url": "Http.server.html#method_isXhr", "access": "", "host": "Http.server", "type": "method", "name": "isXhr"}, {"url": "Intl.common.html#method_lang", "access": "", "host": "Intl.common", "type": "method", "name": "lang"}, {"url": "Url.common.html#method_make", "access": "", "host": "Url.common", "type": "method", "name": "make"}, {"url": "Params.common.html#method_merged", "access": "", "host": "Params.common", "type": "method", "name": "merged"}, {"url": "Http.server.html#method_redirect", "access": "", "host": "Http.server", "type": "method", "name": "redirect"}, {"url": "Partial.common.html#method_render", "access": "", "host": "Partial.common", "type": "method", "name": "render"}, {"url": "Params.common.html#method_route", "access": "", "host": "Params.common", "type": "method", "name": "route"}, {"url": "Cookie.server.html#method_set", "access": "", "host": "Cookie.server", "type": "method", "name": "set"}, {"url": "Http.server.html#method_setHeader", "access": "", "host": "Http.server", "type": "method", "name": "setHeader"}, {"url": "Http.server.html#method_setHeaders", "access": "", "host": "Http.server", "type": "method", "name": "setHeaders"}, {"url": "Params.common.html#method_url", "access": "", "host": "Params.common", "type": "method", "name": "url"}];
+    ALL_YUI_PROPS = [{"url": "Y.mojito.lib.REST.html#method_DELETE", "access": "", "host": "Y.mojito.lib.REST", "type": "method", "name": "DELETE"}, {"url": "Y.mojito.lib.REST.html#method_destroy", "access": "", "host": "Y.mojito.lib.REST", "type": "method", "name": "destroy"}, {"url": "Y.mojito.lib.REST.html#method_disable", "access": "", "host": "Y.mojito.lib.REST", "type": "method", "name": "disable"}, {"url": "Y.mojito.lib.REST.html#method_enable", "access": "", "host": "Y.mojito.lib.REST", "type": "method", "name": "enable"}, {"url": "Y.mojito.lib.REST.html#method_find", "access": "", "host": "Y.mojito.lib.REST", "type": "method", "name": "find"}, {"url": "Y.mojito.lib.REST.html#method_GET", "access": "", "host": "Y.mojito.lib.REST", "type": "method", "name": "GET"}, {"url": "Y.mojito.lib.REST.html#method_getBean", "access": "", "host": "Y.mojito.lib.REST", "type": "method", "name": "getBean"}, {"url": "Y.mojito.lib.REST.html#method_getBeans", "access": "", "host": "Y.mojito.lib.REST", "type": "method", "name": "getBeans"}, {"url": "Y.mojito.lib.REST.html#method_getComputedRoutes", "access": "", "host": "Y.mojito.lib.REST", "type": "method", "name": "getComputedRoutes"}, {"url": "Y.mojito.lib.REST.html#method_getName", "access": "", "host": "Y.mojito.lib.REST", "type": "method", "name": "getName"}, {"url": "Y.mojito.lib.REST.html#method_HEAD", "access": "", "host": "Y.mojito.lib.REST", "type": "method", "name": "HEAD"}, {"url": "Y.mojito.lib.REST.html#method_mergeRecursive", "access": "", "host": "Y.mojito.lib.REST", "type": "method", "name": "mergeRecursive"}, {"url": "Y.mojito.lib.REST.html#method_POST", "access": "", "host": "Y.mojito.lib.REST", "type": "method", "name": "POST"}, {"url": "Y.mojito.lib.REST.html#method_PUT", "access": "", "host": "Y.mojito.lib.REST", "type": "method", "name": "PUT"}, {"url": "Y.mojito.lib.REST.html#method_registerBean", "access": "", "host": "Y.mojito.lib.REST", "type": "method", "name": "registerBean"}, {"url": "Y.mojito.lib.REST.html#method_setRequestFormatter", "access": "", "host": "Y.mojito.lib.REST", "type": "method", "name": "setRequestFormatter"}, {"url": "Y.mojito.lib.REST.html#method_setResponseFormatter", "access": "", "host": "Y.mojito.lib.REST", "type": "method", "name": "setResponseFormatter"}];
 </script>
 </body>
 </html>
