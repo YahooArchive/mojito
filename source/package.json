@@ -9,7 +9,8 @@
         "Matt Taylor <mtaylor@yahoo-inc.com>",
         "Chris Klaiber <cklaiber@yahoo-inc.com>",
         "Drew Folta <folta@yahoo-inc.com>",
-        "Martin Cooper <mcooper@yahoo-inc.com>"
+        "Martin Cooper <mcooper@yahoo-inc.com>",
+        "Isao Yagi <isao@yahoo-inc.com>"
     ],
     "### dependencies notes" : {
         "jsdom": "version 0.2.0 does not (directly) install a binary extension"
