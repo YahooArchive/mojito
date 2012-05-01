@@ -88,6 +88,7 @@ YUI.add('mojito-output-handler', function(Y, NAME) {
 
     /*
      * Handles final processing for done().
+     * @method complete
      * @param {string} data The data to pass to the callback. Usually markup or
      *     JSON.
      * @param {Object} meta The meta object from the dispatch() call.

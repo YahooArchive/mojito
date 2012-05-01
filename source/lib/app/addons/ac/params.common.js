@@ -31,6 +31,7 @@ YUI.add('mojito-params-addon', function(Y, NAME) {
 
         /**
          * Gets all params, keyed by 'route', 'url', 'body', and 'file'.
+         * @method getAll
          * @return {object} all params.
          */
         getAll: function() {
@@ -46,6 +47,7 @@ YUI.add('mojito-params-addon', function(Y, NAME) {
 
         /**
          * Alias for 'getAll'.
+         * @method all
          * @return {object} all params.
          */
         all: function() {
@@ -56,6 +58,7 @@ YUI.add('mojito-params-addon', function(Y, NAME) {
         /**
          * Gets all params merged into one object. Route -> URL -> Body
          * precedence.
+         * @method getFromMerged
          * @param {string} key The name of the parameter required.
          * @return {string|object} param value, or all params if no key
          *     specified.
@@ -80,6 +83,7 @@ YUI.add('mojito-params-addon', function(Y, NAME) {
 
         /**
          * Alias for 'getFromMerged'.
+         * @method merged
          * @param {string} key The name of the parameter required.
          * @return {string|object} param value, or all params if no key
          *     specified.
@@ -91,6 +95,7 @@ YUI.add('mojito-params-addon', function(Y, NAME) {
 
         /**
          * Gets route parameters
+         * @method getFromRoute
          * @param {string} key The name of the parameter.
          * @return {string|object} param value, or all params if no key
          *     specified.
@@ -111,6 +116,7 @@ YUI.add('mojito-params-addon', function(Y, NAME) {
 
         /**
          * Alias for 'getFromRoute'.
+         * @method route
          * @param {string} key The name of the parameter required.
          * @return {string|object} param value, or all params if no key
          *     specified.
@@ -122,6 +128,7 @@ YUI.add('mojito-params-addon', function(Y, NAME) {
 
         /**
          * Gets URL parameters
+         * @method getFromUrl
          * @param {string} key The name of the parameter required.
          * @return {string|object} param value, or all params if no key
          *     specified.
@@ -142,6 +149,7 @@ YUI.add('mojito-params-addon', function(Y, NAME) {
 
         /**
          * Alias for 'getFromUrl'.
+         * @method url
          * @param {string} key The name of the parameter required.
          * @return {string|object} param value, or all params if no key
          *     specified.
@@ -153,6 +161,7 @@ YUI.add('mojito-params-addon', function(Y, NAME) {
 
         /**
          * Gets body parameters
+         * @method getFromBody
          * @param {string} key The name of the parameter required.
          * @return {string|object} param value, or all params if no key
          *     specified.
@@ -173,6 +182,7 @@ YUI.add('mojito-params-addon', function(Y, NAME) {
 
         /**
          * Alias for 'getFromBody'.
+         * @method body
          * @param {string} key The name of the parameter required.
          * @return {string|object} param value, or all params if no key
          *     specified.
@@ -184,6 +194,7 @@ YUI.add('mojito-params-addon', function(Y, NAME) {
 
         /**
          * Gets file parameters
+         * @method getFromFiles
          * @private
          * @param {string} key The name of the parameter required.
          * @return {string|object} param value, or all params if no key
@@ -197,6 +208,7 @@ YUI.add('mojito-params-addon', function(Y, NAME) {
 
         /**
          * Alias for 'getFromFiles'.
+         * @method files
          * @param {string} key The name of the parameter required.
          * @return {string|object} param value, or all params if no key
          *     specified.

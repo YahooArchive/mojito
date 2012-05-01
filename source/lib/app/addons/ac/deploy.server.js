@@ -54,6 +54,7 @@ YUI.add('mojito-deploy-addon', function(Y, NAME) {
 
         /**
          * Declaration of store requirement.
+         * @method setStore
          * @private
          * @param {ResourceStore} rs The resource store instance.
          */
@@ -68,6 +69,7 @@ YUI.add('mojito-deploy-addon', function(Y, NAME) {
 
         /**
          * Builds up the browser Mojito runtime.
+         * @method constructMojitoClientRuntime
          * @param {AssetHandler} assetHandler asset handler used to add scripts
          *     to the DOM under construction.
          * @param {object} binderMap information about the binders that will be
@@ -328,6 +330,7 @@ YUI.add('mojito-deploy-addon', function(Y, NAME) {
          *
          * Note: A single SCRIPT tag containing all the JS on the pages is
          * slower than many SCRIPT tags (checked on iPad only).
+         * @method getScripts
          * @private
          * @param {bool} embed Should returned scripts be embedded in script
          *     tags.

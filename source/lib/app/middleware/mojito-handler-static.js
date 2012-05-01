@@ -74,6 +74,7 @@ function modified(req, headers) {
 /*
  * Check if `req` is a conditional GET request.
  *
+ * @method conditionalGET
  * @param {IncomingMessage} req
  * @return {Boolean}
  * @api private
@@ -86,6 +87,7 @@ function conditionalGET(req) {
 /*
  * Return an ETag in the form of size-mtime.
  *
+ * @method etag
  * @param {Object} stat
  * @return {String}
  * @api private
@@ -97,6 +99,7 @@ function etag(stat) {
 /*
  * Respond with 304 "Not Modified".
  *
+ * @method notModified
  * @param {ServerResponse} res
  * @param {Object} headers
  * @api private
@@ -115,6 +118,7 @@ function notModified(res, headers) {
 /*
  * Respond with 403 "Forbidden".
  *
+ * @method forbidden
  * @param {ServerResponse} res
  * @api private
  */
@@ -130,6 +134,7 @@ function forbidden(res) {
 /*
  * Clear the memory cache for `key` or the entire cache.
  *
+ * @method clearCache
  * @param {String} key
  * @api public
  */

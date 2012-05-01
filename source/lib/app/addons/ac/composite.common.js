@@ -125,6 +125,7 @@ Y.mojito.controller = {
          * "BarMojit", returning their rendered values into the parent's view
          * template, thus rendering the full parent view including the children.
          * All the parent parameters are passed along to children.
+         * @method done
          * @param {object} opts The configuration object to be used.
          *     <em>template<em> can be used to provide additional
          * view template values.
@@ -192,7 +193,7 @@ callback({
    assets: {}
         })
 </pre>
-         *
+         * @method execute
          * @param {object} cfg The configuration object to be used.
          * @param {function} cb The callback that will be called.
          */

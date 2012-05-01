@@ -122,6 +122,7 @@ Router.prototype = {
     /**
      * Finds a route for a given method+URL
      *
+     * @method getRoute
      * @param {string} method The HTTP method.
      * @param {string} url The URL to find a route for.
      * @param {RouteMaker} routeMaker The route maker.

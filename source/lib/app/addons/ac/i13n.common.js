@@ -95,6 +95,7 @@ YUI.add('mojito-i13n-addon', function(Y, NAME) {
         /**
          * Provides facility to create an URL to other
          * mojits with a link tracking instrumentation.
+         * @method make
          * @param {string} base Reference to a mojit defined at the root
          *     level of the Mojito application configuration.
          * @param {string} action The action to associate with the base.
@@ -118,6 +119,7 @@ YUI.add('mojito-i13n-addon', function(Y, NAME) {
 
         /**
          * Stamps the page view event.
+         * @method stampPageView
          * @param {number} spaceid The spaceid to be used.
          */
         stampPageView: function(spaceid) {
@@ -138,6 +140,7 @@ YUI.add('mojito-i13n-addon', function(Y, NAME) {
         /**
          * Tracks the link view and generates the URL with the hash token
          * appended to it.
+         * @method trackLink
          * @param {string} url The link to be instrumented.
          * @param {object} link_params The link parameters.
          * @param {object} local_groups - Optional.
@@ -153,6 +156,7 @@ YUI.add('mojito-i13n-addon', function(Y, NAME) {
          * Tracks the link view for the links taken from the user generated
          * content and hence need to be signed by B-cookie to prevent the
          * security problems.
+         * @method trackuserLink
          * @param {string} url The link to be instrumented.
          * @param {object} link_params The link parameters.
          * @param {object} local_groups Optional.
@@ -166,6 +170,7 @@ YUI.add('mojito-i13n-addon', function(Y, NAME) {
 
         /**
          * , ,  [, ult_args [, return_code]]
+         * @method trackForm
          * @param {boolean} is_post_method True, if the method is POST.
          * @param {string} action_url The form action link to be instrumented.
          * @param {object} link_params Tracking parameters.
@@ -180,6 +185,7 @@ YUI.add('mojito-i13n-addon', function(Y, NAME) {
         /**
          * Instrument links for tracking of the link clicks by gemerating the
          * URL with the hash token appended to it.
+         * @method trackClickOnly
          * @param {string} url The link to be instrumented.
          * @param {object} link_params The link parameters.
          * @param {object} ult_args Optional.
