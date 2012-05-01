@@ -30,6 +30,7 @@ YUI.add('mojito-intl-addon', function(Y, NAME) {
 
         /**
          * Returns translated string.
+         * @method lang
          * @param label {string} Optional. The initial label to be translated. If not provided, returns a copy of all resources.
          * @param args {string|Array|Object} optional parameters for the string
          * @return {string|Object} translated string for label or if no label was provided an object containing all resources.
@@ -48,6 +49,7 @@ YUI.add('mojito-intl-addon', function(Y, NAME) {
 
         /**
          * Returns local-specified date.
+         * @method formatDate
          * @param {Date} date The initial date to be formatted.
          * @return {string} formatted data for language.
          */

@@ -256,7 +256,7 @@ YUI.add('mojito-client', function(Y, NAME) {
 
     /**
      * Fires a lifecycle event.
-     *
+     * @method fireLifecycle
      * @param {string} evt The name of event to fire.
      * @param {Object} data The data to pass to listeners.
      * @private
@@ -441,6 +441,7 @@ YUI.add('mojito-client', function(Y, NAME) {
         /**
          * Given a set of binder information, initialize binder instances and
          * bind them to the page.
+         * @method attachBinders
          * @private
          * @param {Object} binderMap viewId ==> binder data, contains all we
          *     need from the mojit dispatch's meta object about all the binders
@@ -660,6 +661,7 @@ YUI.add('mojito-client', function(Y, NAME) {
         /**
          * Used for binders to execute their actions through the Mojito
          * framework through their proxies.
+         * @method executeAction
          * @param {Object} command must contain mojit id and action to execute.
          * @param {String} viewId the view id of the current mojit, which is
          *     executing the action.
@@ -836,6 +838,7 @@ YUI.add('mojito-client', function(Y, NAME) {
          *
          * To resume, simply call .resume(). This will immediately execute all
          * actions that occurred while Mojito was paused.
+         * @method pause
          */
         pause: function() {
             if (this._state === State.PAUSED) {
@@ -857,6 +860,7 @@ YUI.add('mojito-client', function(Y, NAME) {
          * cached during the pause, calling resume() will immediately execute
          * them. All binders are notified through their onResume() function that
          * they are been resumed.
+         * @method resume
          */
         resume: function() {
             if (this._state !== State.PAUSED) {

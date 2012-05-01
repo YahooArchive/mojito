@@ -83,6 +83,7 @@ YUI.add('mojito-rest-lib', function(Y, NAME) {
 
         /**
          * Makes a RESTful GET request to specified URL
+         * @method GET
          * @param {String} url RESTful URL to hit.
          * @param {Object} params parameters to add to the request.
          * @param {Object} config may contain 'headers' or 'timeout' values.
@@ -96,6 +97,7 @@ YUI.add('mojito-rest-lib', function(Y, NAME) {
 
         /**
          * Makes a RESTful POST request to specified URL
+         * @method POST
          * @param {String} url RESTful URL to hit.
          * @param {Object} params parameters to add to the request.
          * @param {Object} config may contain 'headers' or 'timeout' values.
@@ -109,6 +111,7 @@ YUI.add('mojito-rest-lib', function(Y, NAME) {
 
         /**
          * Makes a RESTful PUT request to specified URL
+         * @method PUT
          * @param {String} url RESTful URL to hit.
          * @param {Object} params parameters to add to the request.
          * @param {Object} config may contain 'headers' or 'timeout' values.
@@ -122,6 +125,7 @@ YUI.add('mojito-rest-lib', function(Y, NAME) {
 
         /**
          * Makes a RESTful DELETE request to specified URL
+         * @method DELETE
          * @param {String} url RESTful URL to hit.
          * @param {Object} params parameters to add to the request.
          * @param {Object} config may contain 'headers' or 'timeout' values.
@@ -135,6 +139,7 @@ YUI.add('mojito-rest-lib', function(Y, NAME) {
 
         /**
          * Makes a RESTful HEAD request to specified URL
+         * @method HEAD
          * @param {String} url RESTful URL to hit.
          * @param {Object} params parameters to add to the request.
          * @param {Object} config may contain 'headers' or 'timeout' values.

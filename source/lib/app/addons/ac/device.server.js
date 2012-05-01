@@ -50,6 +50,7 @@ YUI.add('mojito-device-addon', function(Y, NAME) {
         /**
          * Returns the attribute of the catalog for the device
          * this request was intiated from.
+         * @method get
          * @param {string} attribute The name of the catalog attribute e.g
          *     "make" or "model".
          * @return {object} The value of the named attribute.

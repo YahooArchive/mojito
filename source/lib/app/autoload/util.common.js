@@ -97,6 +97,7 @@ YUI.add('mojito-util', function(Y) {
         /**
          * Used to merge meta objects into each other. Special consideration for
          * certain headers values like 'content-type'.
+         * @method metaMerge
          * @private
          * @param {object} to The target object.
          * @param {object} from The source object.
@@ -157,6 +158,7 @@ YUI.add('mojito-util', function(Y) {
 
         /**
          * Recursively merge properties of two objects
+         * @method mergeRecursive
          * @param {object} dest The destination object.
          * @param {object} src The source object.
          * @param {boolean} typeMatch Only replace if src and dest types are

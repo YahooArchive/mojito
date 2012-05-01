@@ -29,6 +29,7 @@ YUI.add('mojito-view-renderer', function(Y) {
 
         /*
          * Renders a view
+         * @method render
          * @param {Object} data data to push into the view.
          * @param {string} mojitType name of the mojit type.
          * @param {Object} tmpl some type of template identifier for the view

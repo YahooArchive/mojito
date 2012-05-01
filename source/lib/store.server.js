@@ -260,6 +260,7 @@ ServerStore.prototype = {
      * Preloads everything in the app, and as well pertinent parts of
      * the framework.
      *
+     * @method preload
      * @param {object} appContext the base context for reading configuration.
      * @param {object} appConfig overrides for the app config.
      * @return {nothing}
@@ -354,6 +355,7 @@ ServerStore.prototype = {
     /**
      * Sets the logger object.
      *
+     * @method setLogger
      * @param l {object} object containing a log(message,level,source) function
      * @return {nothing}
      */
@@ -365,6 +367,7 @@ ServerStore.prototype = {
     /**
      * Returns, via callback, the fully expanded mojit instance specification.
      *
+     * @method getSpec
      * @param env {string} either "client" or "server"
      * @param id {string} the ID of the spec to return
      * @param context {object} the runtime context for the spec
@@ -391,6 +394,7 @@ ServerStore.prototype = {
     /**
      * Returns, via callback, the details of the mojit type.
      *
+     * @method getType
      * @param env {string} either "client" or "server"
      * @param type {string} the mojit type
      * @param context {object} the runtime context for the spec
@@ -417,6 +421,7 @@ ServerStore.prototype = {
     /**
      * This just calls expandInstanceForEnv() with `env` set to `server`.
      *
+     * @method expandInstance
      * @param instance {map} Partial instance to expand.
      * @param ctx {object} The request context.
      * @param cb {function(err,instance)} callback used to return the results (or error)
@@ -508,6 +513,7 @@ ServerStore.prototype = {
      *  }
      * </pre>
      *
+     * @method expandInstanceForEnv
      * @param env {string} "client" or "server"
      * @param instance {object} partial instance to expand
      * @param ctx {object} the runtime context for the instance
@@ -601,6 +607,7 @@ ServerStore.prototype = {
     /**
      * gets application configuration
      *
+     * @method getAppConfig
      * @param ctx {object} the runtime context under which to load the config
      * @param name {string} type of config to read:
      *     - definition:  reads ./application.json
@@ -632,6 +639,7 @@ ServerStore.prototype = {
     /**
      * Returns the routes configured in the application.
      *
+     * @method getRoutes
      * @param ctx {object} runtime context under which to load the routes
      * @return {object} routes
      */
@@ -673,6 +681,7 @@ ServerStore.prototype = {
      * Returns the filesystem location of the static URL.
      * Returns undefined if given URL isn't part of the app.
      *
+     * @method fileFromStaticHandlerURL
      * @param url {string} static URL
      * @return {string} path on filesystem of specified URL, or undefined
      */
@@ -686,6 +695,7 @@ ServerStore.prototype = {
      * Returns the YUI configuration object which tells YUI about the
      * YUI modules in all the mojits.
      *
+     * @method getYuiConfigAllMojits
      * @param env {string} "client" or "server"
      * @param ctx {object} runtime context for YUI configuration
      * @return {object} YUI configuration for all mojits
@@ -751,6 +761,7 @@ ServerStore.prototype = {
      * Returns the YUI configuration object which tells YUI about the
      * YUI modules in the Mojito framework.
      *
+     * @method getYuiConfigFw
      * @param env {string} "client" or "server"
      * @param ctx {object} runtime context for YUI configuration
      * @return {object} YUI configuration for Mojito framework
@@ -788,6 +799,7 @@ ServerStore.prototype = {
      * Returns the YUI configuration object which tells YUI about the
      * YUI modules in the application (which aren't part of a mojit).
      *
+     * @method getYiConfigApp
      * @param env {string} "client" or "server"
      * @param ctx {object} runtime context for YUI configuration
      * @return {object} YUI configuration for the app-level modules
@@ -827,6 +839,7 @@ ServerStore.prototype = {
      * FUTURE: [Issue 105] Cache the output of this function
      * cache key:  all of ctx
      *
+     * @method serializeClientStore
      * @param context {object} runtime context
      * @param instance {array} DEPRECATED:  list of instances to deploy to the client
      *                  (only instances with IDs will be deployable)
@@ -878,6 +891,7 @@ ServerStore.prototype = {
     /**
      * Returns a list of all mojit types in the application.
      *
+     * @method listAllMojits
      * @param env {string} "client" or "server"
      * @return {array} list of mojit types
      */
@@ -897,6 +911,7 @@ ServerStore.prototype = {
     /**
      * Returns details about all mojits in the application.
      *
+     * @method getAllMojits
      * @param env {string} "client" or "server"
      * @param ctx {object} runtime context
      * @return {object} keys are mojit type names, values are details about each mojit
@@ -928,6 +943,7 @@ ServerStore.prototype = {
      * Given a set of known contexts, finds the best match for a runtime context.
      * Gives special consideration to the "lang" key in the contexts.
      *
+     * @method _findBestContext
      * @param currentContext {object} runtime context
      * @param contexts {object} a mapping of context key to context
      * @return {string} null or the context key of the best match
@@ -983,6 +999,7 @@ ServerStore.prototype = {
     /**
      * Returns details about a mojit type.
      *
+     * @method getMojitTypeDetails
      * @param env {string} "client" or "server"
      * @param ctx {object} runtime context
      * @param mojitType {string} mojit type
@@ -1276,6 +1293,7 @@ ServerStore.prototype = {
     /**
      * Returns details on how to make rollups for app-level resources.
      *
+     * @method getRollupsApp
      * @param env {string} "client" or "server"
      * @param ctx {object} runtime context
      * @return {object} object describing where to put the rollup and what it should contain
@@ -1330,6 +1348,7 @@ ServerStore.prototype = {
      *      ]
      * }
      *
+     * @method getRollupsMojits
      * @param env {string} "client" or "server"
      * @param ctx {object} runtime context
      * @return {object} object describing where to put the rollup and what it should contain
@@ -1399,6 +1418,7 @@ ServerStore.prototype = {
      *   }
      * ]
      *
+     * @method getInlineCssMojits
      * @param env {string} "client" or "server"
      * @param ctxFilter {object} (optional) runtime context to restrict results to
      * @return {array} object describing where to put the inline CSS file and what it should contain
@@ -1648,6 +1668,7 @@ ServerStore.prototype = {
     /*
      * preloads metadata for resources in a directory which contains a single mojit
      *
+     * @method _preloadDirMojit
      * @param source {string} "fw", "app" or "mojit"
      * @param readConfig {boolean} whether to read the config files in the mojit
      * @param fullpath {string}
@@ -1781,6 +1802,7 @@ ServerStore.prototype = {
     /*
      * preloads metadata for resources in a directory
      *
+     * @method _preloadDir
      * @param dest {object} where results shoulg go (passed to fileHandler)
      * @param source {string} where the resource is coming from (passed to fileHandler)
      * @param mojitType {string} name of mojit type (passed to fileHandler)
@@ -1826,6 +1848,7 @@ ServerStore.prototype = {
     /*
      * preloads metadata for a resource which is an action
      *
+     * @method _preloadFileAction
      * @param dest {object} where to store the metadata of the resource
      * @param source {string} "fw", "app", or "mojit"
      * @param mojitType {string} name of mojit type, might be null
@@ -1863,6 +1886,7 @@ ServerStore.prototype = {
     /*
      * preloads metadata for a resource which is an addon
      *
+     * @method _preloadFileAddon
      * @param dest {object} where to store the metadata of the resource
      * @param source {string} "fw", "app", or "mojit"
      * @param mojitType {string} name of mojit type, might be null
@@ -1901,6 +1925,7 @@ ServerStore.prototype = {
     /*
      * preloads metadata for a resource which is an asset
      *
+     * @method _preloadFileAsset
      * @param dest {object} where to store the metadata of the resource
      * @param source {string} "fw", "app", or "mojit"
      * @param mojitType {string} name of mojit type, might be null
@@ -1940,6 +1965,7 @@ ServerStore.prototype = {
     /*
      * preloads metadata for a resource which is an "autoload"
      *
+     * @method _preloadFileAutoload
      * @param dest {object} where to store the metadata of the resource
      * @param source {string} "fw", "app", or "mojit"
      * @param mojitType {string} name of mojit type, might be null
@@ -2000,6 +2026,7 @@ ServerStore.prototype = {
     /*
      * preloads metadata for a resource which is a binder
      *
+     * @method _preloadFileBinder
      * @param dest {object} where to store the metadata of the resource
      * @param source {string} "fw", "app", or "mojit"
      * @param mojitType {string} name of mojit type, might be null
@@ -2038,6 +2065,7 @@ ServerStore.prototype = {
     /*
      * preloads metadata for a resource which is a configuration file
      *
+     * @method _preloadFileConfig
      * @param dest {object} where to store the metadata of the resource
      * @param source {string} "fw", "app", or "mojit"
      * @param mojitType {string} name of mojit type, might be null
@@ -2074,6 +2102,7 @@ ServerStore.prototype = {
     /*
      * preloads metadata for a resource which is a controller
      *
+     * @method _preloadFileController
      * @param dest {object} where to store the metadata of the resource
      * @param source {string} "fw", "app", or "mojit"
      * @param mojitType {string} name of mojit type, might be null
@@ -2111,6 +2140,7 @@ ServerStore.prototype = {
     /*
      * preloads metadata for a resource which is a language bundle
      *
+     * @method _preloadFileLang
      * @param dest {object} where to store the metadata of the resource
      * @param source {string} "fw", "app", or "mojit"
      * @param mojitType {string} name of mojit type, might be null
@@ -2175,6 +2205,7 @@ ServerStore.prototype = {
     /*
      * preloads metadata for a resource which is a model
      *
+     * @method _preloadFileModel
      * @param dest {object} where to store the metadata of the resource
      * @param source {string} "fw", "app", or "mojit"
      * @param mojitType {string} name of mojit type, might be null
@@ -2212,6 +2243,7 @@ ServerStore.prototype = {
     /*
      * preloads metadata for a resource which is a mojit instance specification
      *
+     * @method _preloadFileSpec
      * @param dest {object} where to store the metadata of the resource
      * @param source {string} "fw", "app", or "mojit"
      * @param mojitType {string} name of mojit type, might be null
@@ -2268,6 +2300,7 @@ ServerStore.prototype = {
     /*
      * preloads metadata for a resource which is a view
      *
+     * @method _preloadFileView
      * @param dest {object} where to store the metadata of the resource
      * @param source {string} "fw", "app", or "mojit"
      * @param mojitType {string} name of mojit type, might be null
@@ -2417,6 +2450,7 @@ ServerStore.prototype = {
      * }
      * </pre>
      *
+     * @method _precalcValidYCBDimensions
      * @param dimensions {object} Top-level YCB "dimensions" object
      * @return object
      */
@@ -2443,6 +2477,7 @@ ServerStore.prototype = {
      * Flatten the keys in a nested structure into a single object. The first
      * argument is modified. All values are set to null.
      *
+     * @method _flattenYCBDimension
      * @param keys {object} The accumulator for keys.
      * @param obj {object}
      */
@@ -2463,6 +2498,7 @@ ServerStore.prototype = {
     /*
      * Return a context that contains only valid dimensions and values.
      *
+     * @method _getValidYCBContext
      * @param ctx {object} runtime context
      * @return {object} filtered runtime context
      */
@@ -2486,6 +2522,7 @@ ServerStore.prototype = {
 
     /*
      * reads a configuration file that is in YCB format
+     * @method _readConfigYCB
      * @param ctx {object} runtime context
      * @param fullpath {string} path to the YCB file
      * @param isAppConfig {boolean} indicates whether the file being read is the application.json
@@ -2541,6 +2578,7 @@ ServerStore.prototype = {
 
     /*
      * reads a configuration file for a mojit
+     * @method _readMojitConfigFile
      * @param path {string} path to the file
      * @param ycb {boolean} indicates whether the file should be read using the YCB library
      * @return {object} the configuration
@@ -2574,6 +2612,7 @@ ServerStore.prototype = {
      * has defined yahoo.mojito.package or config.mojito.package to
      * "public".
      *
+     * @method _mojitPackageAsAsset
      * @param pack {object} contents of the mojit's package.json file
      * @param path {string} the mojit's directory
      * @return {nothing} results are added to this object
@@ -2605,6 +2644,7 @@ ServerStore.prototype = {
      * checks to see if the version of Mojito specified in a mojit's
      * package.json matches the current verison of Mojito.
      *
+     * @method _mojitoVersionMatch
      * @param pack {object} contents of the mojit's package.json file
      * @param version {string} current version of mojito
      * @return {boolean} returns true if the mojit can be used
@@ -2822,6 +2862,7 @@ ServerStore.prototype = {
      * The general idea is that we start with the lowest priority items
      * and let higher priority items clobber.
      *
+     * @method _cookdownMerge
      * @param env {string} "client" or "server"
      * @param srcs {array} ORDER MATTERS! list of resources to merge
      * @return {DOING} DOING
@@ -3110,6 +3151,7 @@ ServerStore.prototype = {
     //                      source controller
     //  .viewEngines    hash name:yuiModuleName of view engines
     //
+    // @method _precalcYuiDependencies_getDepParts
     // @param env {string} "client" or "server"
     // @param source {object} list of resources
     // @param dest {object} where to add results
@@ -3239,6 +3281,7 @@ ServerStore.prototype = {
     /*
      * calculates the static handling URL for a resource
      *
+     * @method _precalcStaticURL
      * @param res {object} metadata about the resource
      * @param mojitType {string} mojit type, can be undefined for non-mojit-specific resources
      * @return {nothing} new metadata added to the "res" argument
@@ -3379,6 +3422,7 @@ ServerStore.prototype = {
     /*
      * attempt to gather YUI-module details
      *
+     * @method _precalcYuiModule
      * @param res {object} metadata about the resource
      * @return {nothing} new metadata added to the "res" argument
      */
@@ -3426,6 +3470,7 @@ ServerStore.prototype = {
     /*
      * reads one the configuration files for a mojit
      *
+     * @method _getMojitConfig
      * @param env {string} "client" or "server"
      * @param ctx {object} runtime context
      * @param mojitType {string} name of mojit
@@ -3454,6 +3499,7 @@ ServerStore.prototype = {
     /*
      * returns whether a runtime context matches a partial context
      *
+     * @method _matchContext
      * @param ctx {object} runtime context
      * @param ctxParts {object} partial context
      */
@@ -3479,6 +3525,7 @@ ServerStore.prototype = {
     /*
      * returns a list of resource metadata that match the context
      *
+     * @method _getResourceListForContext
      * @param src {object} list of contextualized resources, key is contextKey
      * @param ctx {object} context to match
      * @return {object} list of resources, key is resource ID
@@ -3519,6 +3566,7 @@ ServerStore.prototype = {
      * doesn't discriminate based on context:  returns all langs for all
      * contexts.
      *
+     * @method _getLangList
      * @param src {object} list of contextualized resources, key is contextKey
      * @return {object} list of language resources, key is resource ID
      */
@@ -3547,6 +3595,7 @@ ServerStore.prototype = {
     /*
      * returns the metadata for a resource specific for a particular runtime context
      *
+     * @method _getContextualizedResource
      * @param src {object} list of contextualized resources, key is contextKey
      * @param ctx {object} context to match
      * @param resid {string} ID of resource to find
@@ -3585,6 +3634,7 @@ ServerStore.prototype = {
      * utility for the _preloadFile*() methods that sets the new resource metadata
      * into a location consistent with the other parts of the algorithm
      *
+     * @method _preloadSetDest
      * @param dest {object} where to store the results
      * @param resid {string} resource ID
      * @param res {object} metadata about the resource
@@ -3611,6 +3661,7 @@ ServerStore.prototype = {
      * utility for the _preloadFile*() methods that takes a file path
      * and returns metadata about it
      *
+     * @method _parsePath
      * @param fullpath {string} full path to resource
      * @param defaultAffinity {string} affinity to use if the resource filename doesn't specify one
      * @param dir {string} base directory of resource type
@@ -3667,6 +3718,7 @@ ServerStore.prototype = {
     /*
      * indicates whether file should be skipped based on its path
      * 
+     * @method _skipBadPath
      * @param pathParts {object} return value of _parsePath() (or the equivalent)
      * @return {boolean} true indicates that the file should be skipped
      */
@@ -3683,6 +3735,7 @@ ServerStore.prototype = {
      * Generate a report of syntax errors for JavaScript code. This is also
      * very useful to find syntax errors in JSON documents.
      *
+     * @method _reportJavaScriptSyntaxErrors
      * @param {string} js the JavaScript
      * @param {string} filename OPTIONAL. the name of the file containing the
      *     JavaScript
@@ -3768,6 +3821,7 @@ ServerStore.prototype = {
     /*
      * finds the affinity in the filename
      *
+     * @method _detectAffinityFromShortFilename
      * @param name {string} filename
      * @return {string|undefined} affinity found in the filename
      */
@@ -3784,6 +3838,7 @@ ServerStore.prototype = {
     /*
      * finds the device in the filename
      *
+     * @method _detectDeviceFromShortFilename
      * @param name {string} filename
      * @return {string|undefined} device found in the filename
      */
@@ -3801,6 +3856,7 @@ ServerStore.prototype = {
     /*
      * returns the selector for the runtime context
      *
+     * @method _selectorFromContext
      * @param ctx {object} runtime context
      * @return {string|null} selector for context
      */
@@ -3815,6 +3871,7 @@ ServerStore.prototype = {
     /*
      * returns the short filename without the selector
      *
+     * @method _extractRootNameFromShortFilename
      * @param name {string} short filename
      * @return {string} short filename without the selector
      */
@@ -3845,6 +3902,7 @@ ServerStore.prototype = {
     /*
      * Recursively merge one object onto another
      *
+     * @method _mergeRecursive
      * @param dest {object} object to merge into
      * @param src {object} object to merge onto "dest"
      * @param matchType {boolean} controls whether a non-object in the src is
@@ -3912,6 +3970,7 @@ ServerStore.prototype = {
      * which the file system is walked is significant within the resource
      * store, e.g., when looking up a matching context.
      *
+     * @method _sortedReaddirSync
      * @param path {string} directory to read
      * @return {array} files in the directory
      */

@@ -87,6 +87,7 @@ YUI.add('mojito-action-context', function(Y, NAME) {
      *      error: function(err){}
      * }
      * </pre>
+     * @method dispatch
      * @param {map} command the "command" describing how to dispatch the mojit.
      *     See above.
      * @param {object} adapter the output adapter to pass to the mojit. See
@@ -136,6 +137,7 @@ YUI.add('mojito-action-context', function(Y, NAME) {
 
     /**
      * Mixes all the Action Context addons into the Action Context
+     * @method attachActionContextAddons
      * @param {Array} addons The action context addons.
      * @param {object} command The command object.
      * @param {object} adapter The output adapter.

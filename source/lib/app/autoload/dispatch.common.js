@@ -37,6 +37,7 @@ YUI.add('mojito-dispatcher', function(Y, NAME) {
      * Modifies the YUI modules in the instance to point to the correct
      * language.
      *
+     * @method fixupInstanceLang
      * @param {string} lang target language.
      * @param {Object} instance mojit instance (results of expandInstance()).
      * @private

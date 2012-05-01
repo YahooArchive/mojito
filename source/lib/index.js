@@ -90,6 +90,7 @@ MojitoServer.prototype = {
      * addMojitoToExpressApp().  Otherwise Mojito can create an app for you
      * if you use createServer().
      *
+     * @method addMojitoToExpressApp
      * @param {Object} app Express application.
      * @param {Object} options The directory to start the application in.
      */
@@ -314,6 +315,7 @@ MojitoServer.prototype = {
     /**
      * Creates an Express application with the Mojito framework already added.
      *
+     * @method createServer
      * @param {Object} options Options for starting the app.
      * @return {Object} Express application.
      */

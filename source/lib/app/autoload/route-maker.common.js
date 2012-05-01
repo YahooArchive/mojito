@@ -228,6 +228,7 @@ YUI.add('mojito-route-maker', function(Y, NAME) {
 
         /*
          * Generates a URL from a route query
+         * @method make
          * @param {String} query string to convert to a URL
          * @param {String} verb http method
          */
@@ -271,6 +272,7 @@ YUI.add('mojito-route-maker', function(Y, NAME) {
 
         /**
          * Finds a route for a given method+URL
+         * @method find
          * @param {string} url the URL to find a route for.
          * @param {string} verb the HTTP method.
          */
@@ -320,6 +322,7 @@ YUI.add('mojito-route-maker', function(Y, NAME) {
         /**
          * For optimization. Call this to get the computed routes that can be
          * passed to the constructor to avoid recomputing the routes.
+         * @method getComputedRoutes
          * @return {object} computed routes.
          */
         getComputedRoutes: function() {
@@ -329,6 +332,7 @@ YUI.add('mojito-route-maker', function(Y, NAME) {
 
         /**
          * Returns a matching route for the given URI
+         * @method _matchToInternal
          * @param {string} uri The uri to find a route for.
          * @param {string} verb. The HTTP verb for the route.
          * @private

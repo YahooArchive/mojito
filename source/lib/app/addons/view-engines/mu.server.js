@@ -29,6 +29,7 @@ YUI.add('mojito-mu', function(Y, NAME) {
 
         /**
          * Renders the mustache template using the data provided.
+         * @method render
          * @param {object} data The data to render.
          * @param {string} mojitType The name of the mojit type.
          * @param {string} tmpl The name of the template to render.
