@@ -1594,6 +1594,22 @@ ServerStore.prototype = {
                 dir: dir
             };
             info.pkg = this._readMojitConfigFile(libpath.join(dir, 'package.json'), false);
+
+            // special case for weird packaging situations
+            if (! Object.keys(info.pkg).length) {
+                info.dir = mojitoRoot;
+                info.pkg = {
+                    name: 'mojito',
+                    version: '0.666.666',
+                    yahoo: {
+                        mojito: {
+                            type: 'bundle',
+                            location: 'app'
+                        }
+                    }
+                };
+            }
+
             this._preloadPackage(info);
         }
     },
