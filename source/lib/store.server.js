@@ -1596,7 +1596,7 @@ ServerStore.prototype = {
             info.pkg = this._readMojitConfigFile(libpath.join(dir, 'package.json'), false);
 
             // special case for weird packaging situations
-            if (! Object.keys(info.pkg).length) {
+            if (!Object.keys(info.pkg).length) {
                 info.dir = mojitoRoot;
                 info.pkg = {
                     name: 'mojito',
