@@ -82,7 +82,7 @@ YUI.add('mojito-deploy-addon', function(Y, NAME) {
             var store = this.rs,
                 contextServer = this.ac.context,
                 appConfigServer = store.getAppConfig(contextServer,
-                    'definition'),
+                    'application'),
                 contextClient,
                 appConfigClient,
                 yuiConfig = {},
@@ -110,7 +110,7 @@ YUI.add('mojito-deploy-addon', function(Y, NAME) {
 
             contextClient = Y.mojito.util.copy(contextServer);
             contextClient.runtime = 'client';
-            appConfigClient = store.getAppConfig(contextClient, 'definition');
+            appConfigClient = store.getAppConfig(contextClient, 'application');
             clientConfig.context = contextClient;
 
             if (appConfigClient.yui && appConfigClient.yui.config) {

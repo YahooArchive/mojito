@@ -39,7 +39,7 @@ YUI.add('mojito-resource-store-adapter-tests', function(Y, NAME) {
 
             store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
 
-            var config = store.getAppConfig(null, 'definition');
+            var config = store.getAppConfig(null, 'application');
 
             A.isTrue(config.testKey1 === 'testVal1');
         },
@@ -348,8 +348,8 @@ YUI.add('mojito-resource-store-adapter-tests', function(Y, NAME) {
             store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
 
             var instance = {type:'TestMojit3', action: 'index1'};
-            store.expandInstance(instance, {device:'for.other.iphone'}, function(err, instance){
-                A.areSame('index1.for.other.iphone.mu.html', instance.views.index1['content-path'].split('/').pop());
+            store.expandInstance(instance, {device:'forotheriphone'}, function(err, instance){
+                A.areSame('index1.forotheriphone.mu.html', instance.views.index1['content-path'].split('/').pop());
             });
         },
 
@@ -362,8 +362,8 @@ YUI.add('mojito-resource-store-adapter-tests', function(Y, NAME) {
             store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
 
             var instance = {type:'TestMojit3', action: 'index1'};
-            store.expandInstance(instance, {device:'other.iphone'}, function(err, instance){
-                A.areSame('index1.other.iphone.mu.html', instance.views.index1['content-path'].split('/').pop());
+            store.expandInstance(instance, {device:'otheriphone'}, function(err, instance){
+                A.areSame('index1.otheriphone.mu.html', instance.views.index1['content-path'].split('/').pop());
             });
         },
 

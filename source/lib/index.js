@@ -128,7 +128,7 @@ MojitoServer.prototype = {
         app.store = store;
 
         store.preload(options.context, options.appConfig);
-        appConfig = store.getAppConfig(null, 'definition');
+        appConfig = store.getAppConfig(null, 'application');
 
         // TODO: extract function
         if (appConfig.log && appConfig.log.server) {
