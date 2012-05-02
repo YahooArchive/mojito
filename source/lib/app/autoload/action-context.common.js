@@ -228,7 +228,7 @@ YUI.add('mojito-action-context', function(Y, NAME) {
         // TODO: should rework to be 'getAppConfig()' and 'getAppRoutes()' and
         // not property access through a hash.
         this.app = {
-            config: store.getAppConfig(this.context, 'definition'),
+            config: store.getAppConfig(this.context, 'application'),
             routes: store.getRoutes(this.context)
         };
 

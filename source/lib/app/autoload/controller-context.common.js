@@ -34,7 +34,7 @@ YUI.add('mojito-controller-context', function(Y, NAME) {
 
                 // do a shallow merge of app-level and mojit-level configs
                 // mojit config properties take precedence
-                configApp = this.store.getAppConfig({}, 'definition').config,
+                configApp = this.store.getAppConfig({}, 'application').config,
                 configCombo = Y.merge(configApp, instance.config),
 
                 // Y.mojito.controller for legacy, multi-instance.

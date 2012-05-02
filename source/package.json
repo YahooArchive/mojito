@@ -48,6 +48,10 @@
         "bugzilla": {
             "product": "Mojito",
             "component": "General"
+        },
+        "mojito": {
+            "type": "bundle",
+            "location": "lib/app"
         }
     }
 }
