@@ -19,12 +19,12 @@ var pathlib = require('path'),
 
     MODE_ALL = parseInt('777', 8),
 
-    mojitoPath = pathlib.join(__dirname, '../..'),
+    mojitoPath = pathlib.join(__dirname, '../../..'),
     targetMojitoPath = mojitoPath,
     mojitoTmp = '/tmp/mojitotmp',
     mojitoInstrumentedDir = '/tmp/mojito-lib-inst',
 
-    fwTestsRoot = pathlib.join(targetMojitoPath, 'tests'),
+    fwTestsRoot = pathlib.join(targetMojitoPath, 'lib/tests'),
 
     ResourceStore,
 
@@ -541,14 +541,16 @@ function instrumentDirectory(from, verbose, testType, callback) {
             utils.log('coverage instrumentation finished for ' +
                 mojitoInstrumentedDir);
         }
-        var testsFrom = pathlib.join(realPathFrom, 'tests'),
-            testsTo = pathlib.join(mojitoInstrumentedDir, 'tests'),
-            cfgFrom = pathlib.join(mojitoTmp, 'config.json'),
-            cfgTo = pathlib.join(mojitoInstrumentedDir, 'config.json'),
-            dimFrom = pathlib.join(mojitoTmp, 'dimensions.json'),
-            dimTo = pathlib.join(mojitoInstrumentedDir, 'dimensions.json'),
-            libsFrom = pathlib.join(realPathFrom, 'libs'),
-            libsTo = pathlib.join(mojitoInstrumentedDir, 'libs');
+        var testsFrom = pathlib.join(realPathFrom, 'lib/tests'),
+            testsTo = pathlib.join(mojitoInstrumentedDir, 'lib/tests'),
+            packageFrom = pathlib.join(mojitoTmp, 'package.json'),
+            packageTo = pathlib.join(mojitoInstrumentedDir, 'package.json'),
+            cfgFrom = pathlib.join(mojitoTmp, 'lib/config.json'),
+            cfgTo = pathlib.join(mojitoInstrumentedDir, 'lib/config.json'),
+            dimFrom = pathlib.join(mojitoTmp, 'lib/dimensions.json'),
+            dimTo = pathlib.join(mojitoInstrumentedDir, 'lib/dimensions.json'),
+            libsFrom = pathlib.join(realPathFrom, 'lib/libs'),
+            libsTo = pathlib.join(mojitoInstrumentedDir, 'lib/libs');
         if (verbose) {
             utils.log('stdout: ' + stdout);
             utils.log('stderr: ' + stderr);
@@ -568,6 +570,7 @@ function instrumentDirectory(from, verbose, testType, callback) {
                 // copy remaining non-js files into instrumented directory
                 copyExclude(libsFrom, libsTo, [/\.svn/]);
                 copyExclude(testsFrom, testsTo, [/\.svn/]);
+                copyFile(packageFrom, packageTo);
                 copyFile(cfgFrom, cfgTo);
                 copyFile(dimFrom, dimTo);
                 callback();
@@ -671,17 +674,17 @@ runTests = function(opts) {
             });
             testConfigs['mojito-test'] = {
                 fullpath: pathlib.join(mojitoPath,
-                    'app/autoload/mojito-test.common.js'),
+                    'lib/app/autoload/mojito-test.common.js'),
                 requires: ['mojito']
             };
             testConfigs.mojito = {
                 fullpath: pathlib.join(mojitoPath,
-                    'app/autoload/mojito.common.js')
+                    'lib/app/autoload/mojito.common.js')
             };
             YUI.GlobalConfig.groups.mojitTests = { modules: testConfigs };
         } else {
             ResourceStore = require(pathlib.join(targetMojitoPath,
-                'store.server.js'));
+                'lib/store.server.js'));
             store = new ResourceStore(testPath);
 
             store.preload({}, { env: 'test' });
@@ -769,13 +772,13 @@ runTests = function(opts) {
     if (coverage) {
         if (testType === 'app' || testType === 'mojit') {
             instrumentDirectory(path, verbose, testType, function() {
-                testRunner(mojitoInstrumentedDir);
+                testRunner(pathlib.join(mojitoInstrumentedDir, 'lib'));
             });
         } else {
             instrumentDirectory(targetMojitoPath, verbose, testType,
                 function() {
                     targetMojitoPath = mojitoInstrumentedDir;
-                    testRunner(pathlib.join(targetMojitoPath, 'tests'));
+                    testRunner(pathlib.join(targetMojitoPath, 'lib/tests'));
                 });
         }
     } else {
