@@ -98,7 +98,6 @@ YUI.add('mojito-action-context', function(Y, NAME) {
      * @deprecated Use 'ac._dispatch()' instead. See https://github.com/yahoo/mojito/blob/develop/DEPRECATIONS.md
      * for details.
      */
-     
      /**
      * This _dispatch function is called one time per Mojito execution. It
      * creates a contextualized Y instance for all further internal dispatches
@@ -145,8 +144,6 @@ YUI.add('mojito-action-context', function(Y, NAME) {
      * @param {object} adapter the output adapter to pass to the mojit. See
      *     above.
      */
-     
-     
 
     // TODO: probably should move to mojito.common.js (namespace definitions).
     if (!YUI._mojito) {
