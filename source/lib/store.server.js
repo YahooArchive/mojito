@@ -944,7 +944,7 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * Given a set of known contexts, finds the best match for a runtime context.
      * Gives special consideration to the "lang" key in the contexts.
      *
@@ -952,6 +952,7 @@ ServerStore.prototype = {
      * @param currentContext {object} runtime context
      * @param contexts {object} a mapping of context key to context
      * @return {string} null or the context key of the best match
+     * @private
      */
     _findBestContext: function(currentContext, contexts) {
         var availableLangs = [],
@@ -1491,12 +1492,13 @@ ServerStore.prototype = {
     // ===========================================
     // ================= PRIVATE =================
 
-    /*
+    /**
      * the "static" version of the application.json is the version that has
      * the context applied that was given at server-start time.
      *
      * @method _readAppConfigStatic
      * @return {object} static config
+     * @private
      */
     _readAppConfigStatic: function() {
         var path = libpath.join(this._root, 'application.json'),
@@ -1512,12 +1514,13 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * Read the application's dimensions.json file for YCB processing. If not
      * available, fall back to the framework's default dimensions.json.
      *
      * @method _readYcbDimensions
      * @return {array} contents of the dimensions.json file
+     * @private
      */
     _readYcbDimensions: function() {
         var libpath = this._libs.path,
@@ -1536,7 +1539,7 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * Perform some light validation for YCB dimensions JSON objects. It should
      * look something like this:
      * [{
@@ -1550,6 +1553,7 @@ ServerStore.prototype = {
      * @method _isValidYcbDimensions
      * @param {array} dimensions
      * @return {boolean}
+     * @private
      */
     _isValidYcbDimensions: function(dims) {
         var isArray = Y.Lang.isArray;
@@ -1561,11 +1565,12 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * preload metadata about all resources in the application (and Mojito framework)
      *
      * @method _preloadMeta
      * @return {nothing} work down via other called methods
+     * @private
      */
     _preloadMeta: function() {
         var me = this,
@@ -1615,13 +1620,14 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * preloads metadata about resources in the application directory
      * (but not node_modules/)
      *
      * @method _preloadApp
      * @param pkg {object} metadata (name and version) about the app's package
      * @return {nothing} work down via other called methods
+     * @private
      */
     _preloadApp: function(pkg) {
         var i,
@@ -1658,13 +1664,14 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * preloads metadata about resources in a package
      * (but not subpackages in its node_modules/)
      *
      * @method _preloadPackage
      * @param info {object} metadata about the package
      * @return {nothing} work down via other called methods
+     * @private
      */
     _preloadPackage: function(info) {
         var dir,
@@ -1706,7 +1713,7 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * preloads metadata about resource in a directory
      *
      * @method _preloadDirBundle
@@ -1714,6 +1721,7 @@ ServerStore.prototype = {
      * @param pkg {object} metadata (name and version) about the package
      * @param loadConfig {boolean} whether to also preload metadata about the configuration files
      * @return {nothing} work down via other called methods
+     * @private
      */
     _preloadDirBundle: function(dir, pkg, loadConfig) {
         var i,
@@ -1762,10 +1770,11 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * @method _parseResourceArchetype
      * @param res {object} partial resource
      * @return {object|null} parsed resource, or null if shouldn't be used
+     * @private
      */
     _parseResourceArchetype: function(res, subtype) {
         var dir,
@@ -1785,10 +1794,11 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * @method _parseResourceCommand
      * @param res {object} partial resource
      * @return {object|null} parsed resource, or null if shouldn't be used
+     * @private
      */
     _parseResourceCommand: function(res) {
         var dir,
@@ -1807,10 +1817,11 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * @method _parseResourceMiddleware
      * @param res {object} partial resource
      * @return {object|null} parsed resource, or null if shouldn't be used
+     * @private
      */
     _parseResourceMiddleware: function(res) {
         var dir,
@@ -1829,10 +1840,11 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * @method _parseResourceConfig
      * @param res {object} partial resource
      * @return {object|null} parsed resource, or null if shouldn't be used
+     * @private
      */
     _parseResourceConfig: function(res, mojitType) {
         var dir,
@@ -1868,10 +1880,11 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * @method _parseResourceAction
      * @param res {object} partial resource
      * @return {object|null} parsed resource, or null if shouldn't be used
+     * @private
      */
     _parseResourceAction: function(res, mojitType) {
         var pathParts = this._parsePath(res, 'server');
@@ -1891,10 +1904,11 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * @method _parseResourceAddon
      * @param res {object} partial resource
      * @return {object|null} parsed resource, or null if shouldn't be used
+     * @private
      */
     _parseResourceAddon: function(res, mojitType, subtype) {
         var pathParts = this._parsePath(res, 'server');
@@ -1915,10 +1929,11 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * @method _parseResourceAsset
      * @param res {object} partial resource
      * @return {object|null} parsed resource, or null if shouldn't be used
+     * @private
      */
     _parseResourceAsset: function(res, mojitType) {
         var dir,
@@ -1958,10 +1973,11 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * @method _parseResourceBinder
      * @param res {object} partial resource
      * @return {object|null} parsed resource, or null if shouldn't be used
+     * @private
      */
     _parseResourceBinder: function(res, mojitType) {
         var dir,
@@ -2004,10 +2020,11 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * @method _parseResourceController
      * @param res {object} partial resource
      * @return {object|null} parsed resource, or null if shouldn't be used
+     * @private
      */
     _parseResourceController: function(res, mojitType) {
         var pathParts = this._parsePath(res, 'server');
@@ -2027,10 +2044,11 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * @method _parseResourceModel
      * @param res {object} partial resource
      * @return {object|null} parsed resource, or null if shouldn't be used
+     * @private
      */
     _parseResourceModel: function(res, mojitType) {
         var pathParts = this._parsePath(res, 'server');
@@ -2050,10 +2068,11 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * @method _parseResourceSpec
      * @param res {object} partial resource
      * @return {object|null} parsed resource, or null if shouldn't be used
+     * @private
      */
     _parseResourceSpec: function(res, mojitType) {
         var dir,
@@ -2102,10 +2121,11 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * @method _parseResourceView
      * @param res {object} partial resource
      * @return {object|null} parsed resource, or null if shouldn't be used
+     * @private
      */
     _parseResourceView: function(res, mojitType) {
         var pathParts,
@@ -2143,10 +2163,11 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * @method _parseResourceYuiLang
      * @param res {object} partial resource
      * @return {object|null} parsed resource, or null if shouldn't be used
+     * @private
      */
     _parseResourceYuiLang: function(res, mojitType) {
         var pathParts,
@@ -2196,10 +2217,11 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * @method _parseResourceYuiModule
      * @param res {object} partial resource
      * @return {object|null} parsed resource, or null if shouldn't be used
+     * @private
      */
     _parseResourceYuiModule: function(res, mojitType) {
         var pathParts = this._parsePath(res);
@@ -2237,13 +2259,14 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * preloads a directory containing many mojits
      *
      * @method _preloadDirMojits
      * @param dir {string} directory path
      * @param pkg {object} metadata (name and version) about the package
      * @return {nothing} work down via other called methods
+     * @private
      */
     _preloadDirMojits: function(dir, pkg) {
         var i,
@@ -2286,13 +2309,14 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * preloads a directory that represents a single mojit
      *
      * @method _preloadDirMojit
      * @param dir {string} directory path
      * @param pkg {object} metadata (name and version) about the package
      * @return {nothing} work down via other called methods
+     * @private
      */
     _preloadDirMojit: function(dir, pkg) {
         var i,
@@ -2403,8 +2427,9 @@ ServerStore.prototype = {
     },
 
 
-    /* finds resources based on our conventions
-     * -doesn't- load mojits or their contents.  that's done elsewhere.
+    /**
+     * Finds resources based on our conventions
+     * -doesn't- load mojits or their contents.  That's done elsewhere.
      *
      * actions/{name}.**.js
      * addons/{subtype}/{name}.**.js
@@ -2424,6 +2449,7 @@ ServerStore.prototype = {
      * @param pkg {object} metadata (name and version) about the package
      * @param mojitType {string|null} name of mojit to which the resource belongs
      * @return {array} list of resources
+     * @private
      */
     _findResourcesByConvention: function(dir, pkg, mojitType) {
         var me = this,
@@ -2657,10 +2683,11 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * @method _parsePath
      * @param res {object} partial resource
      * @return {object} metadata: ext, shortFile, affinity, contextKey, and contextParts
+     * @private
      */
     _parsePath: function(res, defaultAffinity) {
         var out = {},
@@ -2692,13 +2719,14 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * utility that registers the resource for later parts of the algorithm
      *
      * @method _preloadResource
      * @param res {object} metadata about the resource
      * @param mojitType {string} which mojit, if applicatable
      * @return {nothing}
+     * @private
      */
     _preloadResource: function(res, mojitType) {
         var dest,
@@ -2775,13 +2803,14 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * Note: this MUST be called before _parseResourceSpec()
      *
-     * generates URL's about each spec in application.json
+     * Generates URL's about each spec in application.json
      *
      * @method _urlsForAppSpecs
      * @return {nothing}
+     * @private
      */
     _urlsForAppSpecs: function() {
         var specs = this._appConfigStatic.specs || {},
@@ -2807,13 +2836,14 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * prereads the configuration file, if possible
      * (configuration files in YCB format cannot be preread)
      *
      * @method _prereadConfigs
      * @param src {object} contextualized resources
      * @return {nothing}
+     * @private
      */
     _prereadConfigs: function(src) {
         var ctxKey,
@@ -2842,12 +2872,13 @@ ServerStore.prototype = {
     },
 
 
-    /*
-     * reads and parses a JSON file
+    /**
+     * Reads and parses a JSON file
      *
      * @method _readConfigJSON
      * @param fullpath {string} path to JSON file
      * @return {mixed} contents of JSON file
+     * @private
      */
     _readConfigJSON: function(fullpath) {
         //logger.log('_readConfigJSON(' + fullpath + ')');
@@ -2865,7 +2896,7 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * Create a lookup table for validating YCB dimensions and values. The
      * table looks like this:
      *
@@ -2883,6 +2914,7 @@ ServerStore.prototype = {
      * @method _precalcValidYCBDimensions
      * @param dimensions {object} Top-level YCB "dimensions" object
      * @return object
+     * @private
      */
     _precalcValidYCBDimensions: function(dimensions) {
         var validDims = {},
@@ -2903,13 +2935,14 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * Flatten the keys in a nested structure into a single object. The first
      * argument is modified. All values are set to null.
      *
      * @method _flattenYCBDimensions
      * @param keys {object} The accumulator for keys.
      * @param obj {object}
+     * @private
      */
     _flattenYCBDimension: function(keys, obj) {
         var name;
@@ -2925,12 +2958,13 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * Return a context that contains only valid dimensions and values.
      *
      * @method _getValidYCBContext
      * @param ctx {object} runtime context
      * @return {object} filtered runtime context
+     * @private
      */
     _getValidYCBContext: function(ctx) {
         var validDims = this._validYCBDims,
@@ -2950,7 +2984,7 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * reads a configuration file that is in YCB format
      *
      * @method _readConfigYCB
@@ -2958,6 +2992,7 @@ ServerStore.prototype = {
      * @param fullpath {string} path to the YCB file
      * @param isAppConfig {boolean} indicates whether the file being read is the application.json
      * @return {object} the contextualized configuration
+     * @private
      */
     _readConfigYCB: function(ctx, fullpath, isAppConfig) {
         var cacheKey,
@@ -3007,13 +3042,14 @@ ServerStore.prototype = {
     },
 
 
-    /*
-     * reads a configuration file for a mojit
+    /**
+     * Reads a configuration file for a mojit
      *
      * @method _readMojitConfigFile
      * @param path {string} path to the file
      * @param ycb {boolean} indicates whether the file should be read using the YCB library
      * @return {object} the configuration
+     * @private
      */
     _readMojitConfigFile: function(path, ycb) {
         //logger.log('_readMojitConfigFile(' + path + ',' + ycb + ')');
@@ -3038,14 +3074,15 @@ ServerStore.prototype = {
     },
 
 
-    /*
-     * registers the mojit's package.json as a static resource
+    /** 
+     * Registers the mojit's package.json as a static resource
      *
      * @method _mojitPackageAsAsset
      * @param dir {string} directory of mojit
      * @param mojitType {string} name of mojit
      * @param packageJson {object} contents of mojit's package.json
      * @return {nothing}
+     * @private
      */
     _mojitPackageAsAsset: function(dir, mojitType, packageJson) {
         var pkg,
@@ -3073,14 +3110,15 @@ ServerStore.prototype = {
     },
 
 
-    /*
-     * checks to see if the version of Mojito specified in a mojit's
+    /**
+     * Checks to see if the version of Mojito specified in a mojit's
      * package.json matches the current verison of Mojito.
      *
      * @method _mojitoVersionMatch
      * @param pack {object} contents of the mojit's package.json file
      * @param version {string} current version of mojito
      * @return {boolean} returns true if the mojit can be used
+     * @private
      */
     _mojitoVersionMatch: function(pack, version) {
         var packageVersion;
@@ -3108,8 +3146,8 @@ ServerStore.prototype = {
     },
 
 
-    /*
-     * takes the preloaded info and resolves ("cooks down") affinity, etc
+    /**
+     * Takes the preloaded info and resolves ("cooks down") affinity, etc.
      *
      * This function is a doozy.  This is where all the magic happens as far
      * as which version of each resource is used.  The results are stored in
@@ -3133,6 +3171,7 @@ ServerStore.prototype = {
      *
      * @method _cookdown
      * @return {nothing}
+     * @private
      */
     _cookdown: function() {
         //logger.log('_cookdown()');
@@ -3284,7 +3323,7 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * This is a utility for _cookdown().  See docs on that for details.
      *
      * The general idea is that we start with the lowest priority items
@@ -3294,6 +3333,7 @@ ServerStore.prototype = {
      * @param env {string} "client" or "server"
      * @param srcs {array} ORDER MATTERS! list of resources to merge
      * @return {TODO} TODO
+     * @private
      */
     _cookdownMerge: function(env, srcs) {
         var merged = { contexts: {} },
@@ -3341,12 +3381,13 @@ ServerStore.prototype = {
     },
 
 
-    /*
-     * calculates, at server start time, the YUI module dependencies
+    /**
+     * Calculates, at server start time, the YUI module dependencies
      * for mojit controllers and binders
      *
      * @method _precalcYuiDependencies
      * @return {nothing}
+     * @private
      */
     _precalcYuiDependencies: function() {
         var e,
@@ -3571,7 +3612,7 @@ ServerStore.prototype = {
     },
 
 
-    // fills dest with:
+    // Fills dest with:
     //  .controller     resource for the controller
     //  .modules        hash yuiModuleName: {
     //                          fullpath: where to load the module from
@@ -3586,6 +3627,7 @@ ServerStore.prototype = {
     // @param source {object} list of resources
     // @param dest {object} where to add results
     // @return {nothing} results put in "dest" argument
+    // @private
     _precalcYuiDependencies_getDepParts: function(env, source, dest) {
         var resid,
             res,
@@ -3639,8 +3681,8 @@ ServerStore.prototype = {
     },
 
 
-    /*
-     * uses YUI Loader to sort a list of YUI modules
+    /**
+     * Uses YUI Loader to sort a list of YUI modules.
      *
      * @method _sortYUIModules
      * @param ctx {object} runtime context
@@ -3651,6 +3693,7 @@ ServerStore.prototype = {
      * @param required {object} lookup hash of modules that are required
      * @return {object} list of load-order sorted module names, and object
      *      listing paths used to load those modules
+     * @private
      */
     _sortYUIModules: function(ctx, env, yuiConfig, mojitType, modules,
             required) {
@@ -3716,13 +3759,14 @@ ServerStore.prototype = {
     },
 
 
-    /*
-     * calculates the static handling URL for a resource
+    /**
+     * Calculates the static handling URL for a resource.
      *
      * @method _precalcStaticURL
      * @param res {object} metadata about the resource
      * @param mojitType {string} mojit type, can be undefined for non-mojit-specific resources
      * @return {nothing} new metadata added to the "res" argument
+     * @private
      */
     _precalcStaticURL: function(res, mojitType) {
         /* alternate approach which shows power of precalculating the URL and
@@ -3849,12 +3893,13 @@ ServerStore.prototype = {
     },
 
 
-    /*
-     * attempt to gather YUI-module details
+    /**
+     * Attempt to gather YUI-module details.
      *
      * @method _precalcYuiModule
      * @param res {object} metadata about the resource
      * @return {nothing} new metadata added to the "res" argument
+     * @private
      */
     _precalcYuiModule: function(res) {
         var file = this._libs.fs.readFileSync(res.fsPath, 'utf8'),
@@ -3897,14 +3942,15 @@ ServerStore.prototype = {
     },
 
 
-    /*
-     * reads one the configuration files for a mojit
+    /**
+     * Reads one the configuration files for a mojit
      *
      * @method _getMojitConfig
      * @param env {string} "client" or "server"
      * @param ctx {object} runtime context
      * @param mojitType {string} name of mojit
      * @param name {string} config resource name, either "definition" or "defaults"
+     * @private
      */
     _getMojitConfig: function(env, ctx, mojitType, name) {
         //logger.log('_getMojitConfig('+env+','+mojitType+','+name+')');
@@ -3926,12 +3972,13 @@ ServerStore.prototype = {
     },
 
 
-    /*
-     * returns whether a runtime context matches a partial context
+    /**
+     * Returns whether a runtime context matches a partial context
      *
      * @method _matchContext
      * @param ctx {object} runtime context
      * @param ctxParts {object} partial context
+     * @private
      */
     _matchContext: function(ctx, ctxParts) {
         var k;
@@ -3952,13 +3999,14 @@ ServerStore.prototype = {
     },
 
 
-    /*
-     * returns a list of resource metadata that match the context
+    /**
+     * Returns a list of resource metadata that match the context
      *
      * @method _getResourceListForContext
      * @param src {object} list of contextualized resources, key is contextKey
      * @param ctx {object} context to match
      * @return {object} list of resources, key is resource ID
+     * @private
      */
     _getResourceListForContext: function(src, ctx) {
         var list = {},  // resid: resource
@@ -3991,14 +4039,15 @@ ServerStore.prototype = {
     },
 
 
-    /*
-     * returns a list of the language resources
+    /**
+     * Returns a list of the language resources
      * doesn't discriminate based on context:  returns all langs for all
      * contexts.
      *
      * @method _getLangList
      * @param src {object} list of contextualized resources, key is contextKey
      * @return {object} list of language resources, key is resource ID
+     * @private
      */
     _getLangList: function(src) {
         var list = {},  // resid: res
@@ -4022,14 +4071,15 @@ ServerStore.prototype = {
     },
 
 
-    /*
-     * returns the metadata for a resource specific for a particular runtime context
+    /**
+     * Returns the metadata for a resource specific for a particular runtime context
      *
      * @method _getContextualizedResource
      * @param src {object} list of contextualized resources, key is contextKey
      * @param ctx {object} context to match
      * @param resid {string} ID of resource to find
      * @return {object} resource metadata
+     * @private
      */
     _getContextualizedResource: function(src, ctx, resid) {
         var ctxKey,
@@ -4060,12 +4110,13 @@ ServerStore.prototype = {
     },
 
 
-    /*
-     * indicates whether file should be skipped based on its path
+    /**
+     * Indicates whether file should be skipped based on its path
      *
      * @method _skipBadPath
      * @param pathParts {object} return value of _parsePath() (or the equivalent)
      * @return {boolean} true indicates that the file should be skipped
+     * @private
      */
     _skipBadPath: function(pathParts) {
         var ext = pathParts.ext.substring(1);
@@ -4076,7 +4127,7 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * Generate a report of syntax errors for JavaScript code. This is also
      * very useful to find syntax errors in JSON documents.
      *
@@ -4085,6 +4136,7 @@ ServerStore.prototype = {
      * @param {string} filename OPTIONAL. the name of the file containing the
      *     JavaScript
      * @return {string} if errors were found, a multi-line error report
+     * @private
      */
     _reportJavaScriptSyntaxErrors: function(js, filename) {
 
@@ -4163,12 +4215,13 @@ ServerStore.prototype = {
     },
 
 
-    /*
-     * returns the selector for the runtime context
+    /**
+     * Returns the selector for the runtime context
      *
      * @method _selectorFromContext
      * @param ctx {object} runtime context
      * @return {string|null} selector for context
+     * @private
      */
     _selectorFromContext: function(ctx) {
         if (ctx.device) {
@@ -4178,10 +4231,11 @@ ServerStore.prototype = {
     },
 
 
-    /* 
+    /**
      * @method _objectIsEmpty
      * @param o {object}
      * @return {boolean} true if the object is empty
+     * @private
      */
     _objectIsEmpty: function(o) {
         if (!o) {
@@ -4194,7 +4248,7 @@ ServerStore.prototype = {
     // from http://stackoverflow.com/questions/171251/
     // how-can-i-merge-properties-of-two-javascript-objects-dynamically/
     // 383245#383245
-    /*
+    /**
      * Recursively merge one object onto another
      *
      * @method _mergeRecursive
@@ -4203,6 +4257,7 @@ ServerStore.prototype = {
      * @param matchType {boolean} controls whether a non-object in the src is
      *          allowed to clobber a non-object in the dest (if a different type)
      * @return {object} the modified "dest" object is also returned directly
+     * @private
      */
     _mergeRecursive: function(dest, src, typeMatch) {
         var p;
@@ -4230,10 +4285,11 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * @method _cloneObj
      * @param o {mixed}
      * @return {mixed} deep copy of argument
+     * @private
      */
     _cloneObj: function(o) {
         var newO,
@@ -4264,7 +4320,7 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * A wrapper for fs.readdirSync() that guarantees ordering. The order in
      * which the file system is walked is significant within the resource
      * store, e.g., when looking up a matching context.
@@ -4272,6 +4328,7 @@ ServerStore.prototype = {
      * @method _sortedReaddirSync
      * @param path {string} directory to read
      * @return {array} files in the directory
+     * @private
      */
     _sortedReaddirSync: function(path) {
         var out = this._libs.fs.readdirSync(path);
@@ -4279,13 +4336,15 @@ ServerStore.prototype = {
     },
 
 
-    /* recursively walks a directory
+    /** 
+     * Recursively walks a directory
      *
      * @method _walkDirRecursive
      * @param dir {string} directory to start at
      * @param cb {function(error, subdir, name, isFile)} callback called for each file
      * @param _subdir {string} INTERNAL argument, please ignore
      * @return {nothing} value returned via callback
+     * @private
      */
     _walkDirRecursive: function(dir, cb, _subdir) {
         var subdir,

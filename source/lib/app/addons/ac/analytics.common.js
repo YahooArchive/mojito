@@ -54,7 +54,7 @@ YUI.add('mojito-analytics-addon', function(Y, NAME) {
          * combined. The default merge function is the same one used internally
          * by Mojito to merge meta data, and will be sufficient for most use
          * cases.
-         * @method setmergFunction
+         * @method setmergeFunction
          * @param {function} fn user-defined merge function, which should accept
          * two objects, the first is "to", and the second is "from". this
          * function should return the merged object.

@@ -50,6 +50,7 @@ YUI.add('dali-transport-base', function(Y) {
 
             /**
              * Disables all Ajax requests for the application.
+             * @method disable
              * @param {Boolean} queue (Optional) When set to true, queues all
              *     requests while disabled.
              */
@@ -60,6 +61,7 @@ YUI.add('dali-transport-base', function(Y) {
 
             /**
              * Enables sending of requests.
+             * @method enable
              */
             enable: function() {
                 _requestHandler.enable();
@@ -131,6 +133,7 @@ YUI.add('dali-transport-base', function(Y) {
 
             /**
              * Sets the request formatter function for a given request type.
+             * @method setRequestFormatter
              * @param {String} requestType The type of request that the
              *     formatter should handle.
              * @param {Function} formatter The function to call to format the
@@ -143,6 +146,7 @@ YUI.add('dali-transport-base', function(Y) {
 
             /**
              * Sets the response formatter function for all responses.
+             * @method setResponseFormatter
              * @param {Function} formatter The function to call to format the
              *     response object.
              */
@@ -153,6 +157,7 @@ YUI.add('dali-transport-base', function(Y) {
 
             /**
              * Called by the bean registry whenever this bean is reinitialized
+             * @method destroy
              */
             destroy: function() {
                 return true;

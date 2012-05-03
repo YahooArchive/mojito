@@ -30,6 +30,7 @@ YUI.add('simple-request-formatter', function(Y) {
     /**
      * Format web service requests using var foo = function() format
      * so that reset is easier.
+     * @method _wsRequestFormatter
      * @return {Object} the formatted request.
      * @private
      */

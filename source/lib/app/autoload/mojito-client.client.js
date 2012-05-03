@@ -235,7 +235,7 @@ YUI.add('mojito-client', function(Y, NAME) {
 
     /**
      * Subscribe to a MojitoClient lifecycle event.
-     *
+     * @method subscribe
      * @param {string} evt name of event to subscribe to.
      * @param {function(data)} cb callback called when the event fires.
      */

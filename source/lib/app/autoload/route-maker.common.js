@@ -372,6 +372,7 @@ YUI.add('mojito-route-maker', function(Y, NAME) {
 
 
         /*
+         * @method _matchToExternal
          * @private
          */
         _matchToExternal: function(call, params, verb, routes) {

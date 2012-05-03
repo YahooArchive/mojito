@@ -149,7 +149,7 @@ YUI.add('mojito-assets-addon', function(Y, NAME) {
 
 
         /**
-         *
+         * @method addAssets
          */
         addAssets: function(assets) {
             var location,
@@ -175,7 +175,7 @@ YUI.add('mojito-assets-addon', function(Y, NAME) {
 
 
         /**
-         *
+         * @method preLoadImage
          */
         preLoadImage: function(url) {
             var img;
@@ -188,7 +188,7 @@ YUI.add('mojito-assets-addon', function(Y, NAME) {
 
 
         /**
-         *
+         * @method preLoadImages
          */
         preLoadImages: function(urls) {
             var i;
@@ -202,7 +202,7 @@ YUI.add('mojito-assets-addon', function(Y, NAME) {
 
 
         /**
-         *
+         * @method getUrl
          */
         getUrl: function(path) {
             return this.assetsRoot + '/' + path;
@@ -210,7 +210,7 @@ YUI.add('mojito-assets-addon', function(Y, NAME) {
 
 
         /**
-         *
+         * @method mixAssets
          */
         mixAssets: function(to, from) {
             return Y.mojito.util.metaMerge(to, from);
@@ -218,7 +218,7 @@ YUI.add('mojito-assets-addon', function(Y, NAME) {
 
 
         /**
-         *
+         * @getAssets
          */
         getAssets: function() {
             // MUST have some dedup code here
@@ -227,7 +227,8 @@ YUI.add('mojito-assets-addon', function(Y, NAME) {
 
 
         /**
-         *
+         * @mergeMetaInto
+         * @private
          */
         mergeMetaInto: function(meta) {
             this.mixAssets(meta.assets, this.assets);
