@@ -33,9 +33,8 @@ var pathlib = require('path'),
     coverageDir = pathlib.join(resultsDir, 'coverage'),
     coverageFile = pathlib.join(coverageDir, 'coverage.json'),
 
-    YUI = require('yui3').YUI,
-    YUITest = require(pathlib.join(fwTestsRoot,
-        'harness/lib/yuitest/javascript/build/yuitest/yuitest-node')).YUITest,
+    YUI = require('yui').YUI,
+    YUITest = require('yuitest').YUITest,
     TestRunner = YUITest.TestRunner,
 
     testStart,
@@ -119,12 +118,13 @@ function collectRunResults(results) {
 }
 
 function configureYUI(YUI, store, load) {
-    YUI.GlobalConfig.groups['mojito-fw'] = store.getYuiConfigFw('server', {});
-    YUI.GlobalConfig.groups['mojito-app'] = store.getYuiConfigApp('server', {});
-    YUI.GlobalConfig.groups['mojito-mojits'] = store.getYuiConfigAllMojits(
-        'server',
-        {}
-    );
+    YUI.applyConfig({
+        groups: {
+            'mojito-fw': store.getYuiConfigFw('server', {}),
+            'mojito-app': store.getYuiConfigApp('server', {}),
+            'mojito-mojits': store.getYuiConfigAllMojits('server,', {})
+        }
+    });
 }
 
 
