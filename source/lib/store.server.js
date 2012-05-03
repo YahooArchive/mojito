@@ -2058,10 +2058,10 @@ ServerStore.prototype = {
         if (this._skipBadPath(pathParts)) {
             return;
         }
-        res.name = libpath.join(libpath.dirname(res.shortPath), pathParts.shortFile);
+        this._precalcYuiModule(res);
+        res.name = res.yuiModuleName;
         res.type = 'model';
         res.id = 'model-' + res.name;
-        this._precalcYuiModule(res);
         this._precalcStaticURL(res, mojitType);
         res.pathParts = pathParts;
         return res;
