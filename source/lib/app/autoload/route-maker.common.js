@@ -135,7 +135,9 @@ YUI.add('mojito-route-maker', function(Y, NAME) {
                 }
             }
 
-            route.params = Y.QueryString.parse(route.params);
+            if (typeof route.params !== 'object') {
+                route.params = Y.QueryString.parse(String(route.params));
+            }
 
             build = [];
             for (i in route.requires) {

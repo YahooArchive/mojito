@@ -4,23 +4,23 @@
  * See the accompanying LICENSE file for terms.
  */
 YUI.add('mojito-ycb-tests', function(Y, NAME) {
-    
+
     var libycb = require(__dirname + '/../../../libs/ycb.js'),
         suite = new YUITest.TestSuite(NAME),
         A = YUITest.Assert,
         OA = YUITest.ObjectAssert,
         AA = YUITest.ArrayAssert;
-    
+
     suite.add(new YUITest.TestCase({
-        
+
         name: 'ycb',
 
         setUp: function() {
-            
+
         },
 
         tearDown: function() {
-            
+
         },
 
         'test if we can use the module': function() {
@@ -49,7 +49,7 @@ YUI.add('mojito-ycb-tests', function(Y, NAME) {
                 flat;
 
             flat = libycb._flattenDimensions(dims[0].dimensions);
-            
+
             //Y.log(JSON.stringify(flat,null,4));
 
             A.isTrue(flat['lang']['en'] === 'en');
@@ -141,7 +141,7 @@ YUI.add('mojito-ycb-tests', function(Y, NAME) {
                      .concat(readFixtureFile('simple-1.json')[0]);
 
             //Y.log(JSON.stringify(bundle,null,4));
-            
+
             ycb = libycb._processRawBundle(bundle);
 
             //Y.log(JSON.stringify(ycb,null,4));
@@ -169,7 +169,7 @@ YUI.add('mojito-ycb-tests', function(Y, NAME) {
             }
 
             //Y.log(JSON.stringify(ycb,null,4));
-            
+
             A.isTrue(false);
         },
 
@@ -184,7 +184,7 @@ YUI.add('mojito-ycb-tests', function(Y, NAME) {
             //Y.log(JSON.stringify(bundle,null,4));
 
             ycb = libycb._processRawBundle(bundle);
-            
+
             //Y.log(JSON.stringify(ycb,null,4));
 
             A.isTrue(ycb.settings['*/*/*/*/*/*/*/*/*/*/*'].title_key === 'YRB_YAHOO');
@@ -224,7 +224,7 @@ YUI.add('mojito-ycb-tests', function(Y, NAME) {
             ycb = libycb.read(bundle);
 
             //Y.log(JSON.stringify(ycb,null,4));
-            
+
             A.isTrue(ycb.title_key === 'YRB_YAHOO');
             A.isTrue(ycb.links.home === 'http://www.yahoo.com');
             A.isTrue(ycb.links.mail === 'http://mail.yahoo.com');
@@ -327,6 +327,36 @@ YUI.add('mojito-ycb-tests', function(Y, NAME) {
             A.isTrue(ycb.logo === 'yahoo_bt_GB.png');
             A.isTrue(ycb.links.home === 'http://gb.yahoo.com');
             A.isTrue(ycb.links.mail === 'http://gb.mail.yahoo.com');
+        },
+
+        'test ycb accepts falsey config values': function() {
+            var bundle,
+                ycb,
+                foo = {
+                    settings: [ 'master' ],
+                    title_key: 'YRB_YAHOO',
+                    'data-url': 'http://service.yahoo.com',
+                    logo: 'yahoo.png',
+                    false_ok: false,
+                    zero: 0,
+                    undef: undefined,
+                    links: { home: 'http://www.yahoo.com', mail: 'http://mail.yahoo.com' }
+                };
+
+            bundle = readFixtureFile('dimensions.json').concat([foo]);
+
+            ycb = libycb.read(bundle);
+
+            A.areEqual(ycb['data-url'], foo['data-url']);
+
+            A.isTrue('false_ok' in ycb);
+            A.areEqual(ycb.false_ok, foo.false_ok);
+
+            A.isTrue('undef' in ycb);
+            A.areEqual(ycb.undef, foo.undef);
+
+            A.isTrue('zero' in ycb);
+            A.areEqual(ycb.zero, foo.zero);
         }
 
     }));
@@ -338,7 +368,7 @@ YUI.add('mojito-ycb-tests', function(Y, NAME) {
 
         return JSON.parse(data);
     }
-    
+
     YUITest.TestRunner.add(suite);
-    
+
 }, '0.0.1', {requires: []});

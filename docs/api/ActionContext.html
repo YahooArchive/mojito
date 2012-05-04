@@ -16,7 +16,7 @@
 <div id="doc3" class="yui-t2">
 	<div id="hd">
         <h1><a href="http://developer.yahoo.com/cocktails/mojito/" title="mojito">mojito</a></h1>
-        <h3>ActionContext&nbsp; <span class="subtitle">0.3.0</span></h3>
+        <h3>ActionContext&nbsp; <span class="subtitle">0.3.8</span></h3>
         <a href="./index.html" title="mojito">mojito</a> 
             &gt; <a href="./module_ActionContext.html" title="ActionContext">ActionContext</a>
                  &gt; ActionContext 
@@ -162,25 +162,91 @@ attached the provide extra functionality.
                                     </div>
                                     <hr />
                                     </div>
-                                    <div class="" rel="yui:method" resource="#method_dispatch">
+                                    <div class="yui:method" rel="yui:method" resource="#method__dispatch">
+                                      <h4><a name="method_dispatch">_dispatch</a></h4>
+                                      <div class="detail" >
+                                        <code>
+                                            <strong property="yui:name">_dispatch</strong>
+                                           (
+
+                                                         command                                                
+                                                        , 
+                                                         adapter
+
+                                            )
+                                        </code>
+                                        
+                                        <div class="description" property="yui:description">
+                                            This dispatch function is called one time per Mojito execution. It creates a
+contextualized Y instance for all further internal dispatches to use. It also
+creates the ActionContext for the mojit.
+The command has three main parts:  the "instance", the "context", and the "params".
+<pre>
+command: {
+instance: ...see below...
+context: ...see below...
+params: ...see below...
+}
+</pre>
+The "instance" is a partial instance with details of the mojit instance.
+See `ServerStore.expandInstance()` for details of the structure and which fields
+are required.
+The "context" is the request context.  It is built by the "contextualizer"
+middleware.
+The "params" is a structured set of parameters to pass to the mojit.
+<pre>
+params: {
+route: {},
+url: {},
+body: {},
+file: {},
+...
+}
+</pre>
+<pre>
+adapter: {
+flush: function(data, meta){},
+done: function(data, meta){},
+error: function(err){}
+}
+</pre>
+                                        </div>
+
+                                        <div class="description">
+
+                                                <dl rel="yui:parameters">
+                                                    <dt>Parameters:</dt>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">command</span>
+                                                        &lt;<span property="yui:type">map</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  the "command" describing how to dispatch the mojit. see above</span>
+                                                        </dd>
+                                                        <dd rel="yui:parameter">
+                                                        <code><span property="yui:name">adapter</span>
+                                                        &lt;<span property="yui:type">object</span>&gt;
+                                                        </code>
+                                                        <span property="yui:description">  the output adapter to pass to the mojit. see above</span>
+                                                        </dd>
+                                                </dl>     
+
+                                       </div>
+                                    </div>
+                                    <hr />
+                                    </div>
+                                    
+                                    <div class="deprecated" rel="yui:method" resource="#method_dispatch">
                                     <h4>
                                         <a name="method_dispatch">dispatch</a></h4>
                                     <div class="detail" >
                                         <code>
-                                        
-                                        
-                                        
-                                        
                                             <strong property="yui:name">dispatch</strong>
                                            (
                                                 
                                                         
                                                          command
-                                                    
-                                                
                                                         , 
                                                          adapter
-                                                    
                                                 
                                             )
                                         </code>
@@ -238,13 +304,10 @@ error: function(err){}
                                                         <span property="yui:description">  the output adapter to pass to the mojit. see above</span>
                                                         </dd>
                                                 </dl>
-
-
-
-             
-
+                                                <div class="deprecated">
+                                                  <strong>Deprecated</strong> and will be going away. Use ac._dispatch().
+                                                </div>       
                                         </div>
-
                                     </div>
                                     <hr />
                                     </div>
@@ -300,9 +363,6 @@ error: function(err){}
                                                     </code></dt>
                                                     <dd property="yui:returnInfo"></dd>
                                                 </dl>
-
-
-             
 
                                         </div>
 
@@ -391,9 +451,6 @@ is 404, Mojito will generate a 404 page.</span>
                                                     <dd property="yui:returnInfo"></dd>
                                                 </dl>
 
-
-             
-
                                         </div>
 
                                     </div>
@@ -465,9 +522,7 @@ is 404, Mojito will generate a 404 page.</span>
                                         <a name="method_setRequestFormatter">setRequestFormatter</a></h4>
                                     <div class="detail" >
                                         <code>
-                                        
-                                        
-                                        
+                                     
                                         void
                                             <strong property="yui:name">setRequestFormatter</strong>
                                            (
@@ -512,9 +567,6 @@ is 404, Mojito will generate a 404 page.</span>
                                                     </code></dt>
                                                     <dd property="yui:returnInfo"></dd>
                                                 </dl>
-
-
-             
 
                                         </div>
 
