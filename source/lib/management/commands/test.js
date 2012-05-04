@@ -656,11 +656,22 @@ runTests = function(opts) {
         testRunner,
         runNext,
 
-        testModuleNames = ['mojito', 'mojito-test'];
+        testModuleNames = [],
+
+        ResourceStore = require(pathlib.join(targetMojitoPath,
+                'store.server.js'));
+
+    initStore = function(path) {
+        store = new ResourceStore(path);
+        store.preload({}, { env: 'test' });
+        configureYUI(YUI, store, testModuleNames);
+        return store;
+    };
 
     testRunner = function(testPath) {
         var testConfigs,
-            sourceConfigs;
+            sourceConfigs,
+            appPath;
 
         if (testType === 'mojit') {
             testConfigs = ymc(path);
@@ -669,24 +680,33 @@ runTests = function(opts) {
             Object.keys(sourceConfigs).forEach(function(k) {
                 testConfigs[k] = sourceConfigs[k];
             });
-            testConfigs['mojito-test'] = {
-                fullpath: pathlib.join(mojitoPath,
-                    'app/autoload/mojito-test.common.js'),
-                requires: ['mojito']
-            };
-            testConfigs.mojito = {
-                fullpath: pathlib.join(mojitoPath,
-                    'app/autoload/mojito.common.js')
-            };
-            YUI.GlobalConfig.groups.mojitTests = { modules: testConfigs };
+
+            //check if we can add app level stuff loaded
+            appPath = pathlib.resolve(testPath, '../..');
+            if (fs.statSync(appPath).isDirectory() &&
+                    utils.isMojitoApp(appPath)) {
+
+                store = initStore(appPath);
+
+                YUI.GlobalConfig.groups['mojito-mojits'] = {
+                    modules: testConfigs
+                };
+            } else {
+                //do it the manual way
+                testConfigs['mojito-test'] = {
+                    fullpath: pathlib.join(mojitoPath,
+                        'app/autoload/mojito-test.common.js'),
+                    requires: ['mojito']
+                };
+                testConfigs.mojito = {
+                    fullpath: pathlib.join(mojitoPath,
+                        'app/autoload/mojito.common.js')
+                };
+                YUI.GlobalConfig.groups.mojitTests = { modules: testConfigs };
+            }
+
         } else {
-            ResourceStore = require(pathlib.join(targetMojitoPath,
-                'store.server.js'));
-            store = new ResourceStore(testPath);
-
-            store.preload({}, { env: 'test' });
-
-            configureYUI(YUI, store, testModuleNames);
+            store = initStore(testPath);
 
             if (testType === 'fw') {
                 testConfigs = store.getYuiConfigApp('server', {}).modules;
@@ -727,7 +747,8 @@ runTests = function(opts) {
 
         if (!testModuleNames.length) {
             utils.error('No ' + testType + ' tests to run in ' + path +
-                ' with test name \'' + testName + '\'', null, true);
+                (testName !== undefined ? ' with test name \'' + testName + '\''
+                    : ''),null, true);
         }
 
         global.YUITest = YUITest;
@@ -735,33 +756,27 @@ runTests = function(opts) {
         // ensures all tests are run in the same order on any machine
         testModuleNames = testModuleNames.sort();
 
-        if (testType === 'app') {
-
-            // execute each test within new sandbox
-            testModuleNames.forEach(function(name) {
-                // only run tests, and not the frame mojit tests
-                if (/-tests$/.test(name) && name !== 'HTMLFrameMojit-tests') {
-                    testQueue.push(name);
-                }
-            });
-
-            runNext = function() {
-                var cb = runNext,
-                    next = testQueue.pop();
-
-                // only run next if there is a next
-                if (testQueue.length === 0) {
-                    cb = null;
-                }
-                executeTestsWithinY([next, 'mojito-test'], cb);
-            };
-
-            if (testQueue.length) {
-                runNext();
+        // execute each test within new sandbox
+        testModuleNames.forEach(function(name) {
+            // only run tests, and not the frame mojit tests
+            if (/-tests$/.test(name) && name !== 'HTMLFrameMojit-tests') {
+                testQueue.push(name);
             }
+        });
 
-        } else {
-            executeTestsWithinY(testModuleNames);
+        runNext = function() {
+            var cb = runNext,
+                next = testQueue.pop();
+
+            // only run next if there is a next
+            if (testQueue.length === 0) {
+                cb = null;
+            }
+            executeTestsWithinY([next, 'mojito-test'], cb);
+        };
+
+        if (testQueue.length) {
+            runNext();
         }
 
     };
