@@ -24,7 +24,7 @@ YUI.add('mojito-config-addon', function(Y, NAME) {
             i;
 
         for (i = 0; i < keys.length; i += 1) {
-            if (cur[keys[i]]) {
+            if (cur.hasOwnProperty(keys[i])) {
                 cur = cur[keys[i]];
             } else {
                 return def;
