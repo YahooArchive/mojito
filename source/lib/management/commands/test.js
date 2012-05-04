@@ -656,7 +656,6 @@ runTests = function(opts) {
         testRunner,
         runNext,
 
-//        testModuleNames = ['mojito', 'mojito-test'],
         testModuleNames = [],
 
         ResourceStore = require(pathlib.join(targetMojitoPath,
