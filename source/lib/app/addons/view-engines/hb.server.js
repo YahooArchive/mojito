@@ -54,21 +54,13 @@ YUI.add('mojito-hb', function(Y, NAME) {
         },
 
         /**
-         * Stringify the handlebars template.
+         * Precompiles the handlebars template.
          * @param {string} tmpl The name of the template to render.
+         * @param {Object} opts Optional argument depending on the engine.
          * @return {string} the string representation of the template
          * that can be sent to the client side.
          */
-        compiler: function(tmpl) {
-            return JSON.stringify(fs.readFileSync(tmpl, 'utf8'));
-        },
-
-        /**
-         * Precompiles the handlebars template.
-         * @param {string} tmpl The name of the template to render.
-         * @return {string} the precompiled template that can be sent to the client side.
-         */
-        precompile: function(tmpl) {
+        compiler: function(tmpl, opts) {
             return HB.precompile(fs.readFileSync(tmpl, 'utf8'));
         }
     };

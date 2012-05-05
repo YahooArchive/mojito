@@ -72,6 +72,32 @@ YUI.add('mojito-partial-addon', function(Y, NAME) {
             }, meta);
         },
 
+        /**
+         * This method compiles the "view" specified.
+         * The "view" must be the name of one of the files in the current
+         * Mojits "views" folder.
+         * @param {string} view The view name to be used for rendering.
+         * @param {Object} opts Optional argument depending on the engine.
+         * @return {string} compiled view.
+         */
+        compiler: function(view, opts) {
+            var renderer,
+                mojitView,
+                instance = this.command.instance;
+
+            if (!instance.views[view]) {
+                Y.log('View "' + view + '" not found', 'debug', NAME);
+                return;
+            }
+
+            mojitView = instance.views[view];
+            renderer = new Y.mojito.ViewRenderer(mojitView.engine);
+
+            Y.log('Compiling "' + view + '" view for "' + (instance.id || '@' +
+                instance.type) + '"', 'debug', NAME);
+
+            return renderer.compiler(mojitView['content-path'], opts);
+        },
 
         /**
          * This method calls the current mojit's controller with the "action"
