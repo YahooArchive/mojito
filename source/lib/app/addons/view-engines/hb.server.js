@@ -61,7 +61,18 @@ YUI.add('mojito-hb', function(Y, NAME) {
          * that can be sent to the client side.
          */
         compiler: function(tmpl, opts) {
-            return HB.precompile(fs.readFileSync(tmpl, 'utf8'));
+            // this is a little bit of black magic. We return an object
+            // that can be transformed into a string to facilitate the
+            // use of this compiled view through mojito compile view command.
+            // This is the way to differenciate regular strings 
+            // (like mustache compiled views) from handlebars javascript 
+            // functions.
+            return {
+                _d: HB.precompile(fs.readFileSync(tmpl, 'utf8')),
+                toString: function () {
+                    return this._d;
+                }
+            };
         }
     };
 
