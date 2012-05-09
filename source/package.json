@@ -24,7 +24,6 @@
     },
     "keywords": [
         "framework",
-        "symfony",
         "webapp"
     ],
     "main": "lib/index",
@@ -38,7 +37,8 @@
     "devDependencies": {},
     "homepage": "http://developer.yahoo.com/cocktails/mojito/",
     "repository": {
-        "url": ""
+        "type": "git",
+        "url": "git://github.com/yahoo/mojito.git"
     },
     "scripts": {
         "start": "mojito start",
