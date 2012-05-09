@@ -4,8 +4,8 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('i18n', function(Y) {
-  Y.mojito.controller = { 
+YUI.add('i18n', function(Y, NAME) {
+  Y.mojito.controllers[NAME] = { 
     init: function(config) {
       this.config = config;
     },

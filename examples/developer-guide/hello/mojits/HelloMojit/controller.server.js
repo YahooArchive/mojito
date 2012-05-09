@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('HelloMojit', function(Y) {
+YUI.add('HelloMojit', function(Y, NAME) {
 
 /**
  * The HelloMojit module.
@@ -18,7 +18,7 @@ YUI.add('HelloMojit', function(Y) {
      * @class Controller
      * @constructor
      */
-    Y.mojito.controller = {
+    Y.mojito.controllers[NAME] = {
 
         init: function(config) {
             this.config = config;

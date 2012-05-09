@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('simple', function(Y) {
+YUI.add('simple', function(Y, NAME) {
   /** 
   * The simple module. 
   * 
@@ -16,7 +16,7 @@ YUI.add('simple', function(Y) {
   * @class Controller     
   * @constructor     
   */    
-  Y.mojito.controller = {
+  Y.mojito.controllers[NAME] = {
     init: function(config) {
     this.config = config; 
   },

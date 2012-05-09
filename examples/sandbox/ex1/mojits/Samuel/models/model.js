@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('SamuelModel', function(Y,NAME) {
+YUI.add('SamuelModel', function(Y, NAME) {
 
     Y.mojito.models['default'] = {
 
