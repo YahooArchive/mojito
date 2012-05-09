@@ -4,8 +4,8 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('QueryMojit', function(Y) {
-  Y.mojito.controller = {
+YUI.add('QueryMojit', function(Y, NAME) {
+  Y.mojito.controllers[NAME] = {
     init: function(config) {
       this.config = config; 
   },

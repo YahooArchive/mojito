@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('MainMojit', function(Y) {
+YUI.add('MainMojit', function(Y, NAME) {
 
 /**
  * The MainMojit module.
@@ -18,7 +18,7 @@ YUI.add('MainMojit', function(Y) {
      * @class Controller
      * @constructor
      */
-      Y.mojito.controller = {
+      Y.mojito.controllers[NAME] = {
 
         /**
          * Method corresponding to the 'index' action.

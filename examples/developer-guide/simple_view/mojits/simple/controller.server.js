@@ -5,7 +5,7 @@
  */
 
 YUI.add('simple', function(Y, NAME) {
-  Y.mojito.controller = {
+  Y.mojito.controllers[NAME] = {
     init: function(config) {
       this.config = config;
     },

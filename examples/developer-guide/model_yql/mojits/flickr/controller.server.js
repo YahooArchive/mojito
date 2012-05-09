@@ -4,9 +4,9 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('flickr', function(Y) {
+YUI.add('flickr', function(Y, NAME) {
 
-  Y.mojito.controller = {
+  Y.mojito.controllers[NAME] = {
     init: function(config) {
       this.config = config;
     },  

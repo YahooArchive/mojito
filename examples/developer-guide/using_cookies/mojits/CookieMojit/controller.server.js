@@ -4,9 +4,9 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('CookieMojit', function(Y) {
+YUI.add('CookieMojit', function(Y, NAME) {
 
-  Y.mojito.controller = {
+  Y.mojito.controllers[NAME] = {
     init: function(config) {
       this.config = config;
     },
