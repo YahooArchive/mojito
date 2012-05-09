@@ -51,7 +51,19 @@ Go to URL:
 
 ## Documentation
 
-http://developer.yahoo.com/cocktails/mojito
+### General
+
+* Mojito Home Page - http://developer.yahoo.com/cocktails/mojito
+* Mojito Docs Navigation - http://developer.yahoo.com/cocktails/mojito/docs/
+* Mojito FAQ - http://developer.yahoo.com/cocktails/mojito/docs/faq/
+* Mojito Introduction - http://developer.yahoo.com/cocktails/mojito/docs/intro/
+* Mojito Getting Started - http://developer.yahoo.com/cocktails/mojito/docs/getting_started/
+
+### API Documentation
+
+* Running the following command will generate API docs and locally save them to `./artifacts/docs/mojito/`
+    `$ mojito docs mojito`
+* View the Mojito API documentation on YDN: http://developer.yahoo.com/cocktails/mojito/api/
 
 ## Discussion/Forums
 
