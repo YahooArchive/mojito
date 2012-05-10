@@ -1,5 +1,8 @@
 # Mojito Open Source Governance Model
 
+XXXXXXX
+
+
 Welcome to the Mojito project! We look forward to your involvement and participation. We try to keep everything as simple as possible, but we have a few ground rules to help us all work together. Normally these guidelines are not needed -- the project just gets on with its day-to-day operation -- but they enable everyone to understand how the project operates, what to expect, and, most importantly, how to get involved!
 
 ## 1. Overview
