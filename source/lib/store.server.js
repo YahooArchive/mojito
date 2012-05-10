@@ -2469,7 +2469,7 @@ ServerStore.prototype = {
             if ('libs' === file) {
                 return false;
             }
-            if ('tests' === file) {
+            if ('tests' === file && 'test' !== me._appConfigStatic.env) {
                 return false;
             }
 
@@ -2661,7 +2661,8 @@ ServerStore.prototype = {
             }
 
             if (pathParts.length >= 2 && ('yui_modules' === pathParts[0]
-                        || 'autoload' === pathParts[0])) {
+                        || 'autoload' === pathParts[0]
+                        || 'tests' === pathParts[0])) {
                 res = {
                     pkg: pkg,
                     fsPath: libpath.join(dir, subdir, file),
