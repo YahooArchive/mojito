@@ -1,8 +1,5 @@
 # Mojito Open Source Governance Model
 
-XXXXXXX
-
-
 Welcome to the Mojito project! We look forward to your involvement and participation. We try to keep everything as simple as possible, but we have a few ground rules to help us all work together. Normally these guidelines are not needed -- the project just gets on with its day-to-day operation -- but they enable everyone to understand how the project operates, what to expect, and, most importantly, how to get involved!
 
 ## 1. Overview
@@ -46,7 +43,7 @@ Committers are community members who have shown that they are committed to the c
 
 Committers have no more authority over the project than Contributors. While committership indicates a valued member of the community who has demonstrated a healthy respect for the project's aims and objectives, their work continues to be reviewed, by Reviewers (see below) before acceptance in an official release.
 
-To become a Committer, one must have shown a willingness and ability to participate in the project as a team player. Typically, a potential Committer will need to show that they have an understanding of the project, its objectives and its strategy. They will also have provided valuable contributions to the project over a period of time, and, specifically, **a minimum of 10 qualifying pull requests**. What's a qualifying pull request? One that carries significant technical weight, and requires little effort to accept because it honors our [coding and quality standards](mojito-open-source-contributing.md), comes with tests,  documentation, etc.
+To become a Committer, one must have shown a willingness and ability to participate in the project as a team player. Typically, a potential Committer will need to show that they have an understanding of the project, its objectives and its strategy. They will also have provided valuable contributions to the project over a period of time, and, specifically, **a minimum of 10 qualifying pull requests**. What's a qualifying pull request? One that carries significant technical weight, and requires little effort to accept because it honors our [coding and quality standards](contributing.md), comes with tests,  documentation, etc.
 
 New committers can be nominated by any existing Committer. Once they have been nominated, there will be a vote by the Reviewers (see below). Committer voting is one of the few activities that takes place on the project's private management list. Once the vote has been held, the aggregated voting results are published on the public mailing list. The nominee is entitled to request an explanation of any 'no' votes against them, regardless of the outcome of the vote. This explanation will be provided by the Reviewers (see below) and will be anonymous and constructive in nature.
 
@@ -78,7 +75,7 @@ and issue tracker, or might supply patches via pull requests. The
 [YDN forum](http://developer.yahoo.com/forum/Yahoo-Mojito)
 is the most appropriate place for a Contributor to ask for help when making their first contribution.
 
-For specific contribution and participation guidelines (coding standards etc.), please refer to <a href="mojito-open-source-contributing.html">Contributing</a>.
+For specific contribution and participation guidelines (coding standards etc.), please refer to [Contributing](contributing.md).
 
 ## 5. Decision making process
 

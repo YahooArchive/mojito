@@ -23,54 +23,54 @@ All Mojito modules use a standard layout, whether they are YUI-based or otherwis
 
 The following illustrates the structure of a YUI-based module.
 
-   /*
-    * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
-    */
-   // YUI module definition
-   //
-   // The function provides the closure within which we can define private variables and functions.
-   //
-   YUI.add('MyModule', function(Y, NAME) {
+    /*
+     * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
+     */
+    // YUI module definition
+    //
+    // The function provides the closure within which we can define private variables and functions.
+    //
+    YUI.add('MyModule', function(Y, NAME) {
 
-       //
-       // Private - not exposed from this module
-       //
+        //
+        // Private - not exposed from this module
+        //
 
-       // Private variables
-       // Private functions
+        // Private variables
+        // Private functions
 
-       //
-       // Base class
-       //
+        //
+        // Base class
+        //
 
-       // Class constructor
-       // Class methods
-       // Expose the class (if public)
+        // Class constructor
+        // Class methods
+        // Expose the class (if public)
 
-       //
-       // Subclass
-       //
+        //
+        // Subclass
+        //
 
-       // Class constructor
-       // Class methods
-       // Expose the class (if public)
+        // Class constructor
+        // Class methods
+        // Expose the class (if public)
 
-   }, '0.0.1', {requires: ['mojito']});
+    }, '0.0.1', {requires: ['mojito']});
 
 For a module that is not YUI-based, a closure is still used to enable the use of private variables and functions, as shown below.
 
-   /*
-    * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
-    */
-   // Non-YUI module definition
-   //
-   // The function provides the closure within which we can define private variables and functions.
-   //
-   (function() {
+    /*
+     * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
+     */
+    // Non-YUI module definition
+    //
+    // The function provides the closure within which we can define private variables and functions.
+    //
+    (function() {
 
        // Module content is the same as that for a YUI-based module
 
-   }());
+    }());
 
 ### Notes
 
@@ -108,11 +108,11 @@ For YUI-based code:
 
         MyBaseClass.prototype = {
 
-        methodOne: function() {
-        },
+            methodOne: function() {
+            },
 
-        methodTwo: function() {
-        }
+            methodTwo: function() {
+            }
         }
 
         // Expose the class as public
@@ -125,18 +125,18 @@ For YUI-based code:
         // Class constructor
 
         function MySubClass(arg1, arg2) {
-        MySubClass.superclass.constructor.apply(this, arguments);
+            MySubClass.superclass.constructor.apply(this, arguments);
         }
 
         // Class methods
 
         Y.extend(MySubClass, MyBaseClass, {
 
-        methodOne: function() {
-        },
+            methodOne: function() {
+            },
 
-        methodTwo: function() {
-        }
+            methodTwo: function() {
+            }
         }
 
         // Expose the class as public
@@ -161,11 +161,11 @@ Sometimes it is useful to define a set of related functions such that they share
 
         Y.mix(Y.namespace('MyNamespace'), {
 
-        functionOne: function() {
-        },
+            functionOne: function() {
+            },
 
-        functionTwo: function() {
-        }
+            functionTwo: function() {
+            }
         }
 
     }, '0.0.1', {requires: ['mojito']});
