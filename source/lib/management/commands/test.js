@@ -770,9 +770,13 @@ runTests = function(opts) {
     };
 
     if (coverage) {
-        if (testType === 'app' || testType === 'mojit') {
+        if (testType === 'mojit') {
             instrumentDirectory(path, verbose, testType, function() {
                 testRunner(pathlib.join(mojitoInstrumentedDir, 'lib'));
+            });
+        } else if (testType === 'app') {
+            instrumentDirectory(path, verbose, testType, function() {
+                testRunner(mojitoInstrumentedDir);
             });
         } else {
             instrumentDirectory(targetMojitoPath, verbose, testType,
