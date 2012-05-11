@@ -1,6 +1,6 @@
 # Contributing to Mojito
 
-All Mojito contributors are required to sign the
+All Mojito contributors are asked to sign the
 [Mojito Contributor License Agreement](http://developer.yahoo.com/cocktails/mojito/cla/).
 Why? The CLA ensures that everyone who submits a work of authorship to the Mojito project is contributing work that is their own or for which they can authoritatively speak. This protects the tens of thousands of developers who use Mojito, all of whom rely on
 [Mojito's BSD license](https://github.com/yahoo/mojito/blob/master/LICENSE.txt)
