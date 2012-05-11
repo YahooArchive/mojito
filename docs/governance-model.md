@@ -129,7 +129,7 @@ In summary:
 
 Different actions require different types of approval, ranging from lazy consensus to a majority decision by the Reviewers. These are summarised in the table below. The section after the table describes which type of approval should be used in common situations.
 
-| *Type* | *Description* | *Duration* |
+| **Type** | **Description** | **Duration** |
 | Lazy consensus | An action with lazy consensus is implicitly allowed, unless a binding -1 vote is received. Depending on the type of action, a vote will then be called. Note that even though a binding -1 is required to prevent the action, all community members are encouraged to cast a -1 vote with supporting argument. Committers are expected to evaluate the argument and, if necessary, support it with a binding -1. | N/A |
 | Lazy majority | A lazy majority vote requires more binding +1 votes than binding -1 votes. | 72 hours | 
 | Consensus approval | Consensus approval requires three binding +1 votes and no binding -1 votes. | 72 hours | 
@@ -141,7 +141,7 @@ Different actions require different types of approval, ranging from lazy consens
 Every effort is made to allow the majority of decisions to be taken through lazy consensus. That is, simply stating one's intentions is assumed to be enough to proceed, unless an objection is raised. However, some activities require a more formal approval process in order to ensure fully transparent decision making.
 The table below describes some of the actions that will require a vote. It also identifies which type of vote should be called.
 
-| **Action** | **Description** | *Approval type* | 
+| **Action** | **Description** | **Approval type** | 
 | Release plan | Defines the timetable and actions for a release. A release plan cannot be vetoed (hence lazy majority).< Lazy majority<
 | Product release | When a release of one of the project's products is ready, a vote is required to accept the release as an official release of the project. A release cannot be vetoed (hence lazy majority). | Lazy majority |
 | New Committer | A new committer has been proposed. | Consensus approval of the Reviewers | 
