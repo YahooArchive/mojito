@@ -4,9 +4,9 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('Notepad', function(Y) {
+YUI.add('Notepad', function(Y, NAME) {
 
-    Y.mojito.controller = {
+    Y.mojito.controllers[NAME] = {
 
         index: function(ac) {
             ac.done();

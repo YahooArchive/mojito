@@ -4,9 +4,9 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('OhHai', function(Y) {
+YUI.add('OhHai', function(Y, NAME) {
 
-    Y.mojito.controller = {
+    Y.mojito.controllers[NAME] = {
 
         index: function(ac) {
             ac.done();

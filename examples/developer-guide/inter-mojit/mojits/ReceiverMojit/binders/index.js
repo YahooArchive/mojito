@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('ReceiverMojitBinderIndex', function(Y,NAME) {
+YUI.add('ReceiverMojitBinderIndex', function(Y, NAME) {
 
     Y.namespace('mojito.binders')[NAME] = {
 
