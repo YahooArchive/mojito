@@ -99,7 +99,7 @@ YUI.add('mojito-package-walker-server-tests', function(Y, NAME) {
                 'ab@666.1.2',
                 'ba@666.2.1',
                 'bb@666.2.2',
-                'ca@999.999.999',
+                //'ca@999.999.999',
                 'cb@666.3.2'
                 ], order);
         },
