@@ -1070,6 +1070,10 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
                 // (which mojito package itself uses)
                 A.isNotUndefined(mojitMeta['addon-ac-assets']);
             }
+
+            var details = {};
+            store.getMojitTypeDetails('server', {}, 'a', details);
+            A.isNotNull(details.controller.match(/a\/foo\/controller\.server\.js$/));
         },
 
         'find and parse resources by convention': function() {
