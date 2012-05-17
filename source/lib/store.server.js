@@ -1658,7 +1658,7 @@ ServerStore.prototype = {
         if (this._appConfigStatic.mojitDirs) {
             for (i = 0; i < this._appConfigStatic.mojitDirs.length; i += 1) {
                 path = this._appConfigStatic.mojitDirs[i];
-                this._preloadDirMojit(path, pkg);
+                this._preloadDirMojit(path, pkg, path);
             }
         }
     },
@@ -1704,7 +1704,7 @@ ServerStore.prototype = {
             break;
         case 'mojit':
             dir = libpath.join(info.dir, info.pkg.yahoo.mojito.location);
-            this._preloadDirMojit(dir, pkg);
+            this._preloadDirMojit(dir, pkg, info.dir);
             break;
         default:
             logger.log('Unknown package type "' + info.pkg.yahoo.mojito.type + '"', 'warn', NAME);
@@ -2304,7 +2304,7 @@ ServerStore.prototype = {
                 continue;
             }
             childPath = libpath.join(dir, childName);
-            this._preloadDirMojit(childPath, pkg);
+            this._preloadDirMojit(childPath, pkg, childPath);
         }
     },
 
@@ -2315,10 +2315,11 @@ ServerStore.prototype = {
      * @method _preloadDirMojit
      * @param dir {string} directory path
      * @param pkg {object} metadata (name and version) about the package
+     * @param pkgDir {string} directory of the packaging for this mojit
      * @return {nothing} work down via other called methods
      * @private
      */
-    _preloadDirMojit: function(dir, pkg) {
+    _preloadDirMojit: function(dir, pkg, pkgDir) {
         var i,
             realDirs,
             resources,
@@ -2343,7 +2344,7 @@ ServerStore.prototype = {
                 return;
             }
             for (i = 0; i < realDirs.length; i += 1) {
-                this._preloadDirMojit(realDirs[i], pkg);
+                this._preloadDirMojit(realDirs[i], pkg, pkgDir);
             }
             return;
         }
@@ -2353,7 +2354,7 @@ ServerStore.prototype = {
         }
 
         mojitType = libpath.basename(dir);
-        packageJson = this._readMojitConfigFile(libpath.join(dir, 'package.json'), false);
+        packageJson = this._readMojitConfigFile(libpath.join(pkgDir, 'package.json'), false);
         if (packageJson) {
             if (packageJson.name) {
                 mojitType = packageJson.name;
