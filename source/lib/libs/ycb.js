@@ -62,6 +62,36 @@ module.exports = {
         return config;
     },
 
+    readNoMerge: function(bundle, context, debug){
+        var rawConfig, lookupPaths,
+            path, config = [];
+
+        if(!context){
+            context = {};
+        }
+
+        rawConfig = this._processRawBundle(bundle);
+        lookupPaths = this._getLookupPaths(rawConfig.dimensions, context);
+
+        if(debug){
+            console.log(JSON.stringify(context,null,4));
+            console.log(JSON.stringify(rawConfig,null,4));
+            console.log(JSON.stringify(lookupPaths,null,4));
+        }
+
+        // Now we simply merge each macting settings section we find into the config
+        for(path=0; path<lookupPaths.length; path++){
+            if(rawConfig.settings[lookupPaths[path]]){
+                if (debug) {
+                    console.log('----USING---- ' + lookupPaths[path]);
+                    console.log(JSON.stringify(rawConfig.settings[lookupPaths[path]],null,4));
+                }
+                config.push(rawConfig.settings[lookupPaths[path]]);
+            }
+        }
+        return config;
+    },
+
     /*
      * This is a first pass at hairball of a funciton.
      *
