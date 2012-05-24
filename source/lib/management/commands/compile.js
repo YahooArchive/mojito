@@ -559,12 +559,32 @@ compile.views = function(context, options, callback) {
                         renderer = new (Y.mojito.addons.viewEngines[engine])();
 
                         if (typeof renderer.compiler === 'function') {
-                            renderedView = JSON.parse(
-                                renderer.compiler(source).toString()
-                            );
+                            // there is not need to stringify this anymore
+                            // since we have a custom method to take care of that
+                            // down the road.
+                            renderedView = renderer.compiler(source);
+                            
                             yuiModuleCacheWriter.createNamespace('compiled.' +
                                 mojitNs + '.views').cache(viewName,
-                                renderedView);
+                                renderedView).toString = function () {
+                                    var chunks = [],
+                                        viewName;
+                                    // to support precompiled views as javascript
+                                    // we need to mess around a little bit. If the compiled version
+                                    // is an object exposing the compiled view through .toString() method,
+                                    // the we should be able to inject functions into the cache structure.
+                                    for (viewName in this) {
+                                        if (typeof this[viewName] !== 'function') {
+                                            chunks.push('"' + viewName + '":' + this[viewName].toString());
+                                        }
+                                    }
+                                    // we are synthetically creating the result string for each group of
+                                    // views. We intentionally call for toString() for every view so we
+                                    // can create specific compilers that produce functions or any other
+                                    // structure intentionally.
+                                    return '{' + chunks.join(',') + '}';
+                                };
+                            
                         }
                     }
                 }
@@ -971,6 +991,12 @@ YuiModuleCacher.prototype.createNamespace = function(ns) {
             _c: {},
             cache: function(k, v) {
                 this._c[k] = v;
+                // exposing the cache object in case we want to do
+                // some black magic to bend the way we produce cached
+                // content. Specifically to cache compiled views as
+                // javascript function rather than regular strings.
+                // Ding Ding, I'm talking about handlebars precompile.
+                return this._c;
             }
         };
     }
@@ -987,9 +1013,10 @@ YuiModuleCacher.prototype.dump = function() {
         namespaces = this.namespaces;
 
     Object.keys(namespaces).forEach(function(ns) {
+        var item = namespaces[ns]._c;
         s += '    YUI.namespace("_mojito._cache.' + ns + '");\n';
         s += '    YUI._mojito._cache.' + ns + ' = ' +
-            JSON.stringify(namespaces[ns]._c) + ';\n';
+            ( item.toString ? item.toString() : JSON.stringify(item) ) + ';\n';
     });
     s += '});\n';
     return s;

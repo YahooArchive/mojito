@@ -41,7 +41,19 @@ YUI.add('mojito-view-renderer', function(Y) {
          */
         render: function(data, mojitType, tmpl, adapter, meta, more) {
             this._renderer.render(data, mojitType, tmpl, adapter, meta, more);
+        },
+
+        /*
+         * Compiles a view into an string representation.
+         * @param {String} tmpl path to template to be precompiled
+         *     engine.
+         * @param {Object} opts Optional argument depending on the engine.
+         * @return {String} the precompiled view.
+         */
+        compiler: function(tmpl, opts) {
+            return this._renderer.compiler(tmpl, opts);
         }
+
     };
 
     Y.mojito.ViewRenderer = Renderer;

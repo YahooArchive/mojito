@@ -20,7 +20,8 @@
         "express": "2.5.2",
         "jsdom": "0.2.0",
         "mime": "1.2.4",
-        "yui3": "0.7.12"
+        "yui3": "0.7.12",
+        "yui": "3.5.0"
     },
     "keywords": [
         "framework",
