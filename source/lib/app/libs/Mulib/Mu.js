@@ -188,7 +188,7 @@ Mu.enumerable = function Mu_enumerable(context, val, fn) {
         return result;
     }
     
-    if (typeof val === 'object') {
+    if (typeof val === 'object' && val) {
         var oproto = insertProto(val, context);
         var ret = fn(val);
         oproto.__proto__ = baseProto;
