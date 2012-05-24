@@ -44,15 +44,12 @@ YUI.add('FlickrDetail', function(Y) {
                 details.intl.posted = ac.intl.formatDate(new Date(1000 * Number(details.dates.posted)));
 
                 // The mustache library we're using is a little finicky.
-                details.title = details.title || false;
                 if (details.title) {
                     details.have_title = true;
                 }
-                details.description = details.description || false;
                 if (details.description) {
                     details.have_description = true;
                 }
-                details.tags = details.tags || false;
 
                 ac.assets.addCss('./index.css');
                 ac.done(details);
