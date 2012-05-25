@@ -6,7 +6,7 @@
         "routesFiles": [ "routes.json" ],
         "tunnelPrefix": "/tunnel",
         "yui": {
-            "dependencyCalculations": "ondemand"
+            "dependencyCalculations": "precomputed"
         },
         "specs": {
             "daliProxy": {
