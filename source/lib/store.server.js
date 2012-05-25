@@ -3733,21 +3733,14 @@ ServerStore.prototype = {
             return { sorted: Object.keys(required), paths: sortedPaths };
         }
         
-        //TODO davglass USE resolve here!
+        //TODO davglass USE resolve her
         Y = YUI({ useSync: true }).use('loader-base');
-        loader = new Y.Loader({ lang: ctx.lang });
-
-        // We need to clear YUI's cached dependencies, since there's no
-        // guarantee that the previously calculated dependencies have been done
-        // using the same context as this calculation.
-        delete YUI.Env._renderedMods;
-
-        // This approach seems odd, but it's what the YUI Configurator is also
-        // doing.
+        //Use ignoreRegistered here instead of the old `delete YUI.Env._renderedMods` hack
+        loader = new Y.Loader({ lang: ctx.lang, ignoreRegistered: true });
+        
+        //Only override the default if it's required
         if (yuiConfig && yuiConfig.base) {
             loader.base = yuiConfig.base;
-        } else {
-            loader.base = Y.Env.meta.base + Y.Env.meta.root;
         }
         loader.addGroup({modules: modules}, mojitType);
         loader.calculate({required: required});
