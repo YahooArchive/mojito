@@ -40,11 +40,11 @@ var libfs = require('fs'),
     // nodejs-yui3 has global state about which modules are loaded. Use
     // multiple require()'d instances as a wall to prevent cross-contamination
     // when using loader for dependency calculations.
-    utilYUI = require('yui3').YUI,
-    serverYUI = require('yui3').YUI,
-    clientYUI = require('yui3').YUI,
+    utilYUI = require('yui').YUI,
+    serverYUI = require('yui').YUI,
+    clientYUI = require('yui').YUI,
 
-    Y = utilYUI().useSync('intl'),
+    Y = utilYUI({ useSync: true }).use('intl'),
 
     mojitoRoot = __dirname,
 
@@ -3732,8 +3732,9 @@ ServerStore.prototype = {
             }
             return { sorted: Object.keys(required), paths: sortedPaths };
         }
-
-        Y = YUI().useSync('loader-base');
+        
+        //TODO davglass USE resolve here!
+        Y = YUI({ useSync: true }).use('loader-base');
         loader = new Y.Loader({ lang: ctx.lang });
 
         // We need to clear YUI's cached dependencies, since there's no

@@ -489,7 +489,7 @@ compile.views = function(context, options, callback) {
         source,
         engine,
         mojitViews = {},
-        YUI = require('yui3').YUI;
+        YUI = require('yui').YUI;
 
     // there are no views in the app, so no need to do this
     if (options.app) {
@@ -554,8 +554,9 @@ compile.views = function(context, options, callback) {
                         source = view['content-path'];
                         engine = view.engine;
                         yuiConfig = mojit.yui.config;
+                        yuiConfig.useSync = true;
 
-                        Y = YUI(yuiConfig).useSync('mojito-' + engine);
+                        Y = YUI(yuiConfig).use('mojito-' + engine);
                         renderer = new (Y.mojito.addons.viewEngines[engine])();
 
                         if (typeof renderer.compiler === 'function') {
