@@ -1,8 +1,8 @@
+artifacts
+node_modules
 .lock-wscript
 .svn/
-.hg/
 .git/
-CVS/
 *~
 *.bak
 .DS_Store
