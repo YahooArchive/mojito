@@ -1,5 +1,4 @@
 artifacts
-node_modules
 .lock-wscript
 .svn/
 .git/
