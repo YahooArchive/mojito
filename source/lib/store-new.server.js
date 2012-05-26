@@ -328,18 +328,14 @@ YUI.add('resource-store', function(Y, NAME) {
                     mojitType = packageJson.name;
                 }
                 // FUTURE:  check NPM "engine"
-                // TODO:  register mojit's package.json as a static asset (in "static handler" plugin?)
+                // TODO:  register mojit's package.json as a static asset, in "static handler" plugin
             }
             // TODO:  this._mojitPaths[mojitType] = dir;
-            // replace with something more generic
+            // replace with something more generic (some kind of "mojitType attributes" store)
 
             definitionJson = this.config.readConfigYCB(libpath.join(dir, 'definition.json'), {});
             if (definitionJson.appLevel) {
                 mojitType = 'shared';
-            }
-
-            if ('shared' !== mojitType) {
-                // TODO:  register definition.json as a dynamic URL
             }
 
             this._findResourcesByConvention(dir, pkg, mojitType);
@@ -352,13 +348,13 @@ YUI.add('resource-store', function(Y, NAME) {
                 res;
 
             // TODO:  test
-            if (!fs.isFile && '.' === fs.typeDir && 'actions' === fs.basename) {
+            if (!fs.isFile && '.' === fs.subDir && 'actions' === fs.basename) {
                 return true;
             }
-            if (!fs.isFile && 'actions' === fs.typeDirArray[0]) {
+            if (!fs.isFile && 'actions' === fs.subDirArray[0]) {
                 return true;
             }
-            if (fs.isFile && fs.typeDirArray.length >= 1 && 'actions' === fs.typeDirArray[0]) {
+            if (fs.isFile && fs.subDirArray.length >= 1 && 'actions' === fs.subDirArray[0]) {
                 if ('.js' !== fs.ext) {
                     return false;
                 }
@@ -379,20 +375,20 @@ YUI.add('resource-store', function(Y, NAME) {
                     Y.log('invalid action filename. skipping ' + fs.fullPath, 'warn', NAME);
                     return false;
                 }
-                fs.relativePath = libpath.join(fs.typeDirArray.slice(1).join('/'), fs.basename + fs.ext);
-                res.name = libpath.join(fs.typeDirArray.slice(1).join('/'), baseParts.join('.'));
+                fs.relativePath = libpath.join(fs.subDirArray.slice(1).join('/'), fs.basename + fs.ext);
+                res.name = libpath.join(fs.subDirArray.slice(1).join('/'), baseParts.join('.'));
                 res.id = [res.type, res.subtype, res.name].join('-');
                 this.addResourceVersion(res);
                 return false;
             }
 
-            if (!fs.isFile && '.' === fs.typeDir && 'addons' === fs.basename) {
+            if (!fs.isFile && '.' === fs.subDir && 'addons' === fs.basename) {
                 return true;
             }
-            if (!fs.isFile && 'addons' === fs.typeDirArray[0]) {
+            if (!fs.isFile && 'addons' === fs.subDirArray[0]) {
                 return true;
             }
-            if (fs.isFile && fs.typeDirArray.length >= 2 && 'addons' === fs.typeDirArray[0]) {
+            if (fs.isFile && fs.subDirArray.length >= 2 && 'addons' === fs.subDirArray[0]) {
                 if ('.js' !== fs.ext) {
                     return false;
                 }
@@ -400,7 +396,7 @@ YUI.add('resource-store', function(Y, NAME) {
                     source: evt.source,
                     mojit: evt.mojitType,
                     type: 'action',
-                    subtype: fs.typeDirArray[1],
+                    subtype: fs.subDirArray[1],
                     affinity: 'server',
                     selector: '*'
                 };
@@ -414,25 +410,25 @@ YUI.add('resource-store', function(Y, NAME) {
                     Y.log('invalid addon filename. skipping ' + fs.fullPath, 'warn', NAME);
                     return false;
                 }
-                fs.relativePath = libpath.join(fs.typeDirArray.slice(2).join('/'), fs.basename + fs.ext);
-                res.name = libpath.join(fs.typeDirArray.slice(2).join('/'), baseParts.join('.'));
+                fs.relativePath = libpath.join(fs.subDirArray.slice(2).join('/'), fs.basename + fs.ext);
+                res.name = libpath.join(fs.subDirArray.slice(2).join('/'), baseParts.join('.'));
                 res.id = [res.type, res.subtype, res.name].join('-');
                 this.addResourceVersion(res);
                 return false;
             }
 
-            if (!fs.isFile && '.' === fs.typeDir && 'archetypes' === fs.basename) {
+            if (!fs.isFile && '.' === fs.subDir && 'archetypes' === fs.basename) {
                 return true;
             }
-            if (!fs.isFile && fs.typeDirArray.length < 2 && 'archetypes' === fs.typeDirArray[0]) {
+            if (!fs.isFile && fs.subDirArray.length < 2 && 'archetypes' === fs.subDirArray[0]) {
                 return true;
             }
-            if (!fs.isFile && fs.typeDirArray.length == 2 && 'archetypes' === fs.typeDirArray[0]) {
+            if (!fs.isFile && fs.subDirArray.length == 2 && 'archetypes' === fs.subDirArray[0]) {
                 res = {
                     source: evt.source,
                     mojit: null,
                     type: 'archetype',
-                    subtype: fs.typeDirArray[1],
+                    subtype: fs.subDirArray[1],
                     name: fs.basename,
                     affinity: 'common',
                     selector: '*'
@@ -443,13 +439,13 @@ YUI.add('resource-store', function(Y, NAME) {
                 return false;
             }
 
-            if (!fs.isFile && '.' === fs.typeDir && 'assets' === fs.basename) {
+            if (!fs.isFile && '.' === fs.subDir && 'assets' === fs.basename) {
                 return true;
             }
-            if (!fs.isFile && 'assets' === fs.typeDirArray[0]) {
+            if (!fs.isFile && 'assets' === fs.subDirArray[0]) {
                 return true;
             }
-            if (fs.isFile && fs.typeDirArray.length >= 1 && 'assets' === fs.typeDirArray[0]) {
+            if (fs.isFile && fs.subDirArray.length >= 1 && 'assets' === fs.subDirArray[0]) {
                 res = {
                     source: evt.source,
                     mojit: evt.mojitType,
@@ -465,20 +461,20 @@ YUI.add('resource-store', function(Y, NAME) {
                     Y.log('invalid asset filename. skipping ' + fs.fullPath, 'warn', NAME);
                     return false;
                 }
-                fs.relativePath = libpath.join(fs.typeDirArray.slice(1).join('/'), fs.basename + fs.ext);
-                res.name = libpath.join(fs.typeDirArray.slice(1).join('/'), baseParts.join('.'));
+                fs.relativePath = libpath.join(fs.subDirArray.slice(1).join('/'), fs.basename + fs.ext);
+                res.name = libpath.join(fs.subDirArray.slice(1).join('/'), baseParts.join('.'));
                 res.id = [res.type, res.subtype, res.name].join('-');
                 this.addResourceVersion(res);
                 return false;
             }
 
-            if (!fs.isFile && '.' === fs.typeDir && 'binders' === fs.basename) {
+            if (!fs.isFile && '.' === fs.subDir && 'binders' === fs.basename) {
                 return true;
             }
-            if (!fs.isFile && 'binders' === fs.typeDirArray[0]) {
+            if (!fs.isFile && 'binders' === fs.subDirArray[0]) {
                 return true;
             }
-            if (fs.isFile && fs.typeDirArray.length >= 1 && 'binders' === fs.typeDirArray[0]) {
+            if (fs.isFile && fs.subDirArray.length >= 1 && 'binders' === fs.subDirArray[0]) {
                 if ('.js' !== fs.ext) {
                     return false;
                 }
@@ -496,20 +492,20 @@ YUI.add('resource-store', function(Y, NAME) {
                     Y.log('invalid binder filename. skipping ' + fs.fullPath, 'warn', NAME);
                     return false;
                 }
-                fs.relativePath = libpath.join(fs.typeDirArray.slice(1).join('/'), fs.basename + fs.ext);
-                res.name = libpath.join(fs.typeDirArray.slice(1).join('/'), baseParts.join('.'));
+                fs.relativePath = libpath.join(fs.subDirArray.slice(1).join('/'), fs.basename + fs.ext);
+                res.name = libpath.join(fs.subDirArray.slice(1).join('/'), baseParts.join('.'));
                 res.id = [res.type, res.subtype, res.name].join('-');
                 this.addResourceVersion(res);
                 return false;
             }
 
-            if (!fs.isFile && '.' === fs.typeDir && 'commands' === fs.basename) {
+            if (!fs.isFile && '.' === fs.subDir && 'commands' === fs.basename) {
                 return true;
             }
-            if (!fs.isFile && 'commands' === fs.typeDirArray[0]) {
+            if (!fs.isFile && 'commands' === fs.subDirArray[0]) {
                 return true;
             }
-            if (fs.isFile && fs.typeDirArray.length >= 1 && 'commands' === fs.typeDirArray[0]) {
+            if (fs.isFile && fs.subDirArray.length >= 1 && 'commands' === fs.subDirArray[0]) {
                 if ('.js' !== fs.ext) {
                     return false;
                 }
@@ -524,14 +520,14 @@ YUI.add('resource-store', function(Y, NAME) {
                     Y.log('invalid command filename. skipping ' + fs.fullPath, 'warn', NAME);
                     return false;
                 }
-                fs.relativePath = libpath.join(fs.typeDirArray.slice(1).join('/'), fs.basename + fs.ext);
-                res.name = libpath.join(fs.typeDirArray.slice(1).join('/'), baseParts.join('.'));
+                fs.relativePath = libpath.join(fs.subDirArray.slice(1).join('/'), fs.basename + fs.ext);
+                res.name = libpath.join(fs.subDirArray.slice(1).join('/'), baseParts.join('.'));
                 res.id = [res.type, res.subtype, res.name].join('-');
                 this.addResourceVersion(res);
                 return false;
             }
 
-            if (fs.isFile && '.' === fs.typeDir && 'controller' === baseParts[0]) {
+            if (fs.isFile && '.' === fs.subDir && 'controller' === baseParts[0]) {
                 if ('.js' !== fs.ext) {
                     return false;
                 }
@@ -553,19 +549,19 @@ YUI.add('resource-store', function(Y, NAME) {
                     Y.log('invalid controller filename. skipping ' + fs.fullPath, 'warn', NAME);
                     return false;
                 }
-                fs.relativePath = libpath.join(fs.typeDirArray.slice(1).join('/'), fs.basename + fs.ext);
+                fs.relativePath = libpath.join(fs.subDirArray.slice(1).join('/'), fs.basename + fs.ext);
                 res.id = [res.type, res.subtype, res.name].join('-');
                 this.addResourceVersion(res);
                 return false;
             }
 
-            if (!fs.isFile && '.' === fs.typeDir && 'middleware' === fs.basename) {
+            if (!fs.isFile && '.' === fs.subDir && 'middleware' === fs.basename) {
                 return true;
             }
-            if (!fs.isFile && 'middleware' === fs.typeDirArray[0]) {
+            if (!fs.isFile && 'middleware' === fs.subDirArray[0]) {
                 return true;
             }
-            if (fs.isFile && fs.typeDirArray.length >= 1 && 'middleware' === fs.typeDirArray[0]) {
+            if (fs.isFile && fs.subDirArray.length >= 1 && 'middleware' === fs.subDirArray[0]) {
                 if ('.js' !== fs.ext) {
                     return false;
                 }
@@ -580,20 +576,20 @@ YUI.add('resource-store', function(Y, NAME) {
                     Y.log('invalid middleware filename. skipping ' + fs.fullPath, 'warn', NAME);
                     return false;
                 }
-                fs.relativePath = libpath.join(fs.typeDirArray.slice(1).join('/'), fs.basename + fs.ext);
-                res.name = libpath.join(fs.typeDirArray.slice(1).join('/'), baseParts.join('.'));
+                fs.relativePath = libpath.join(fs.subDirArray.slice(1).join('/'), fs.basename + fs.ext);
+                res.name = libpath.join(fs.subDirArray.slice(1).join('/'), baseParts.join('.'));
                 res.id = [res.type, res.subtype, res.name].join('-');
                 this.addResourceVersion(res);
                 return false;
             }
 
-            if (!fs.isFile && '.' === fs.typeDir && 'models' === fs.basename) {
+            if (!fs.isFile && '.' === fs.subDir && 'models' === fs.basename) {
                 return true;
             }
-            if (!fs.isFile && 'models' === fs.typeDirArray[0]) {
+            if (!fs.isFile && 'models' === fs.subDirArray[0]) {
                 return true;
             }
-            if (fs.isFile && fs.typeDirArray.length >= 1 && 'models' === fs.typeDirArray[0]) {
+            if (fs.isFile && fs.subDirArray.length >= 1 && 'models' === fs.subDirArray[0]) {
                 if ('.js' !== fs.ext) {
                     return false;
                 }
@@ -614,22 +610,22 @@ YUI.add('resource-store', function(Y, NAME) {
                     Y.log('invalid model filename. skipping ' + fs.fullPath, 'warn', NAME);
                     return false;
                 }
-                fs.relativePath = libpath.join(fs.typeDirArray.slice(1).join('/'), fs.basename + fs.ext);
-                res.name = libpath.join(fs.typeDirArray.slice(1).join('/'), baseParts.join('.'));
+                fs.relativePath = libpath.join(fs.subDirArray.slice(1).join('/'), fs.basename + fs.ext);
+                res.name = libpath.join(fs.subDirArray.slice(1).join('/'), baseParts.join('.'));
                 res.id = [res.type, res.subtype, res.name].join('-');
                 this.addResourceVersion(res);
                 return false;
             }
 
-            // TODO:  spec, in "config" or "instance" plugin?
+            // TODO:  spec, in "instance" plugin
 
-            if (!fs.isFile && '.' === fs.typeDir && 'views' === fs.basename) {
+            if (!fs.isFile && '.' === fs.subDir && 'views' === fs.basename) {
                 return true;
             }
-            if (!fs.isFile && 'views' === fs.typeDirArray[0]) {
+            if (!fs.isFile && 'views' === fs.subDirArray[0]) {
                 return true;
             }
-            if (fs.isFile && fs.typeDirArray.length >= 1 && 'views' === fs.typeDirArray[0]) {
+            if (fs.isFile && fs.subDirArray.length >= 1 && 'views' === fs.subDirArray[0]) {
                 res = {
                     source: evt.source,
                     mojit: evt.mojitType,
@@ -646,8 +642,8 @@ YUI.add('resource-store', function(Y, NAME) {
                     Y.log('invalid view filename. skipping ' + fs.fullPath, 'warn', NAME);
                     return false;
                 }
-                fs.relativePath = libpath.join(fs.typeDirArray.slice(1).join('/'), fs.basename + fs.ext);
-                res.name = libpath.join(fs.typeDirArray.slice(1).join('/'), baseParts.join('.'));
+                fs.relativePath = libpath.join(fs.subDirArray.slice(1).join('/'), fs.basename + fs.ext);
+                res.name = libpath.join(fs.subDirArray.slice(1).join('/'), baseParts.join('.'));
                 res.id = [res.type, res.subtype, res.name].join('-');
                 this.addResourceVersion(res);
                 return false;
@@ -657,7 +653,7 @@ YUI.add('resource-store', function(Y, NAME) {
 
             // TODO:  yui-module in the "yui" plugin
 
-//console.log('--TODO-- preloadFile ' + evt.mojitType + ' ' + libpath.join(fs.typeDir, fs.basename + fs.ext));
+//console.log('--TODO-- preloadFile ' + evt.mojitType + ' ' + libpath.join(fs.subDir, fs.basename + fs.ext));
             return true;
         },
 
@@ -698,8 +694,7 @@ YUI.add('resource-store', function(Y, NAME) {
                 if ('libs' === file) {
                     return false;
                 }
-                // TODO:  merge in fixes from master
-                if ('tests' === file) {
+                if ('tests' === file && 'test' !== me._appConfigStatic.env) {
                     return false;
                 }
                 // mojits are loaded another way later
@@ -711,9 +706,9 @@ YUI.add('resource-store', function(Y, NAME) {
                 source = {
                     fs: {
                         fullPath: libpath.join(dir, subdir, file),
-                        baseDir: dir,
-                        typeDir: subdir,
-                        typeDirArray: subdir.split('/'),
+                        rootDir: dir,
+                        subDir: subdir,
+                        subDirArray: subdir.split('/'),
                         isFile: isFile,
                         ext: libpath.extname(file)
                     },
@@ -1023,7 +1018,7 @@ YUI.add('addon-rs-config', function(Y, NAME) {
                 return true;
             }
             // we don't care about files in subdirectories
-            if ('.' !== fs.typeDir) {
+            if ('.' !== fs.subDir) {
                 return;
             }
             // we only care about json files
@@ -1058,8 +1053,8 @@ YUI.add('addon-rs-config', function(Y, NAME) {
                 Y.log('invalid config filename. skipping ' + fs.fullPath, 'warn', NAME);
                 return;
             }
-            fs.relativePath = libpath.join(fs.typeDirArray.slice(1).join('/'), fs.basename + fs.ext);
-            res.name = libpath.join(fs.typeDirArray.slice(1).join('/'), baseParts.join('.'));
+            fs.relativePath = libpath.join(fs.subDirArray.slice(1).join('/'), fs.basename + fs.ext);
+            res.name = libpath.join(fs.subDirArray.slice(1).join('/'), baseParts.join('.'));
             res.id = [res.type, res.subtype, res.name].join('-');
             this.rs.addResourceVersion(res);
         },
