@@ -360,8 +360,6 @@ YUI.add('resource-store', function(Y, NAME) {
                 // FUTURE:  check NPM "engine"
                 // TODO:  register mojit's package.json as a static asset, in "static handler" plugin
             }
-            // TODO:  this._mojitPaths[mojitType] = dir;
-            // replace with something more generic (some kind of "mojitType attributes" store)
 
             definitionJson = this.config.readConfigYCB(libpath.join(dir, 'definition.json'), {});
             if (definitionJson.appLevel) {
@@ -665,7 +663,6 @@ YUI.add('resource-store', function(Y, NAME) {
                     return false;
                 }
 
-                // TODO:  have fRBC() return mojitType and pass to parseResource()
                 ret = me.findResourceByConvention(source, mojitType);
                 if ('object' === typeof ret) {
                     if (ret.skipSubdirParts) {
@@ -897,7 +894,7 @@ YUI.add('addon-rs-config', function(Y, NAME) {
             this.beforeHostMethod('parseResource', this.parseResource, this);
 
             this._jsonCache = {};   // fullPath: contents as JSON object
-            this._ycbCache = {};    // fullPath: context: YCB config object
+            this._ycbCache = {};    // fullPath: YCB config object
             this._ycbDims = this._readYcbDimensions();
         },
 
@@ -950,24 +947,14 @@ YUI.add('addon-rs-config', function(Y, NAME) {
 
             ctx = this.rs.mergeRecursive(this.rs.getStaticContext(), ctx);
 
-            //cache key only needs to account for dynamic context
-            cacheKey = JSON.stringify(ctx);
-
-            if (!this._ycbCache[fullPath]) {
-                this._ycbCache[fullPath] = {};
-            }
-
-            ycb = this._ycbCache[fullPath][cacheKey];
+            ycb = this._ycbCache[fullPath];
             if (!ycb) {
                 json = this.readConfigJSON(fullPath);
                 json = this._ycbDims.concat(json);
-
-                // libycb.read() will distructively modify its first argument
-                ycb = libycb.read(this.rs.cloneObj(json), ctx);
-
-                this._ycbCache[fullPath][cacheKey] = ycb;
+                ycb = new libycb.Ycb(json);
+                this._ycbCache[fullPath] = ycb;
             }
-            return ycb;
+            return ycb.read(ctx, {});
         },
 
 
