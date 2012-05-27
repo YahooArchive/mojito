@@ -22,7 +22,22 @@ YUI.add('resource-store', function(Y, NAME) {
 
         isNotAlphaNum = /[^a-zA-Z0-9]/,
 
-        mojitoRoot = __dirname;
+        mojitoRoot = __dirname,
+
+        CONVENTION_SUBDIR_TYPES = {
+            // subdir: type
+            'actions':  'action',
+            'binders':  'binder',
+            'commands': 'command',
+            'middleware': 'middleware',
+            'models':   'model',
+            'views':    'view'
+        },
+        CONVENTION_SUBDIR_TYPE_IS_JS = {
+            'action': true,
+            'binder': true,
+            'model': true
+        };
 
 
     // The Affinity object is to manage the use of the affinity string in
@@ -59,9 +74,6 @@ YUI.add('resource-store', function(Y, NAME) {
             this._config = cfg;
             this._jsonCache = {};   // fullPath: contents as JSON object
             this._ycbCache = {};    // fullPath: context: YCB config object
-
-            this.publish('preloadFile', { prefix:'rs', emitFacade:true });
-            this.on('preloadFile', this.preloadFile, this);
 
             Y.Object.each(Y.mojito.addons.rs, function(fn, name) {
                 this.plug(fn, { appRoot:cfg.root, mojitoRoot:mojitoRoot });
@@ -136,6 +148,7 @@ YUI.add('resource-store', function(Y, NAME) {
 
             // user might not have installed mojito as a dependency of their
             // application.  (they -should- have but might not have.)
+            // FUTURE:  instead walk -all- global packages?
             if (!walkedMojito) {
                 dir = libpath.join(mojitoRoot, '..');
                 info = {
@@ -201,11 +214,10 @@ YUI.add('resource-store', function(Y, NAME) {
             case 'bundle':
                 dir = libpath.join(info.dir, info.pkg.yahoo.mojito.location);
                 this._preloadDirBundle(dir, pkg);
-                this._preloadDirMojits(libpath.join(dir, 'mojits'), pkg);
                 break;
             case 'mojit':
                 dir = libpath.join(info.dir, info.pkg.yahoo.mojito.location);
-                this.preloadDirMojit(dir, pkg);
+                this.preloadDirMojit(dir, 'pkg', pkg);
                 break;
             default:
                 Y.log('Unknown package type "' + info.pkg.yahoo.mojito.type + '"', 'warn', NAME);
@@ -223,21 +235,31 @@ YUI.add('resource-store', function(Y, NAME) {
          * @return {nothing} work down via other called methods
          */
         preloadApp: function(pkg) {
-            var list,
+            var ress,
+                r,
+                res,
+                list,
                 i;
 
-            this._preloadDirBundle(this._config.root, pkg);
+            ress = this._findResourcesByConvention(this._config.root, 'app', pkg, 'shared');
+            for (r = 0; r < ress.length; r += 1) {
+                res = ress[r];
+                if ('mojit' !== res.type) {
+                    // ignore app-level mojits found by convention, since they'll be loaded below
+                    this.addResourceVersion(ress[r]);
+                }
+            }
 
             // load mojitsDirs
             list = this._globList(this._config.root, this._appConfigStatic.mojitsDirs);
             for (i = 0; i < list.length; i += 1) {
-                this._preloadDirMojits(list[i], pkg);
+                this._preloadDirMojits(list[i], 'app', pkg);
             }
 
             // load mojitDirs
             list = this._globList(this._config.root, this._appConfigStatic.mojitDirs || []);
             for (i = 0; i < list.length; i += 1) {
-                this.preloadDirMojit(list[i], pkg);
+                this.preloadDirMojit(list[i], 'app', pkg);
             }
         },
 
@@ -252,7 +274,17 @@ YUI.add('resource-store', function(Y, NAME) {
          * @private
          */
         _preloadDirBundle: function(dir, pkg) {
-            this._findResourcesByConvention(dir, pkg, 'shared');
+            var ress,
+                r,
+                res;
+            // FUTURE:  support configuration too
+
+            ress = this._findResourcesByConvention(dir, 'bundle', pkg, 'shared');
+            for (r = 0; r < ress.length; r += 1) {
+                res = ress[r];
+                this.addResourceVersion(res);
+            }
+            this._preloadDirMojits(libpath.join(dir, 'mojits'), 'bundle', pkg);
         },
 
 
@@ -261,11 +293,12 @@ YUI.add('resource-store', function(Y, NAME) {
          *
          * @method _preloadDirMojits
          * @param dir {string} directory path
+         * @param dirType {string} type represented by the "dir" argument.  values are "app", "bundle", "pkg", or "mojit"
          * @param pkg {object} metadata (name and version) about the package
          * @return {nothing} work down via other called methods
          * @private
          */
-        _preloadDirMojits: function(dir, pkg) {
+        _preloadDirMojits: function(dir, dirType, pkg) {
             var i,
                 realDirs,
                 children,
@@ -287,7 +320,7 @@ YUI.add('resource-store', function(Y, NAME) {
                     continue;
                 }
                 childPath = libpath.join(dir, childName);
-                this.preloadDirMojit(childPath, pkg);
+                this.preloadDirMojit(childPath, dirType, pkg);
             }
         },
 
@@ -297,21 +330,18 @@ YUI.add('resource-store', function(Y, NAME) {
          *
          * @method preloadDirMojit
          * @param dir {string} directory path
+         * @param dirType {string} type represented by the "dir" argument.  values are "app", "bundle", "pkg", or "mojit"
          * @param pkg {object} metadata (name and version) about the package
          * @return {nothing} work down via other called methods
          * @private
          */
-        preloadDirMojit: function(dir, pkg) {
-            var i,
-                realDirs,
-                resources,
-                res,
-                mojitType,
+        preloadDirMojit: function(dir, dirType, pkg) {
+            var mojitType,
                 packageJson,
                 definitionJson,
-                appConfig,
-                prefix,
-                url;
+                ress,
+                r,
+                res;
 
             if ('/' !== dir.charAt(0)) {
                 dir = libpath.join(this._config.root, dir);
@@ -338,85 +368,83 @@ YUI.add('resource-store', function(Y, NAME) {
                 mojitType = 'shared';
             }
 
-            this._findResourcesByConvention(dir, pkg, mojitType);
+            res = {
+                source: {
+                    fs: {
+                        fullPath: dir,
+                        rootDir: dir,
+                        rootType: dirType,
+                        subDir: '.',
+                        subDirArray: ['.'],
+                        basename: libpath.basename(dir),
+                        isFile: false,
+                        ext: null
+                    },
+                    pkg: pkg
+                },
+                type: 'mojit',
+                subtype: null,
+                name: mojitType,
+                id: 'mojit--' + mojitType,
+                mojit: null,
+                affinity: 'common',
+                selector: '*'
+            };
+            this.addResourceVersion(res);
+
+            ress = this._findResourcesByConvention(dir, 'mojit', pkg, mojitType);
+            for (r = 0; r < ress.length; r += 1) {
+                res = ress[r];
+                // just in case, only add those resources that really do belong to us
+                if (res.mojit === mojitType) {
+                    this.addResourceVersion(res);
+                }
+                // FUTURE:  else warn?
+            }
         },
 
 
-        preloadFile: function(evt) {
-            var fs = evt.source.fs,
+        findResourceByConvention: function(source, mojitType) {
+            var fs = source.fs,
                 baseParts = fs.basename.split('.'),
-                res;
+                type;
 
-            // TODO:  test
-            if (!fs.isFile && '.' === fs.subDir && 'actions' === fs.basename) {
+            if (!fs.isFile && '.' === fs.subDir && CONVENTION_SUBDIR_TYPES[fs.basename]) {
                 return true;
             }
-            if (!fs.isFile && 'actions' === fs.subDirArray[0]) {
+            type = CONVENTION_SUBDIR_TYPES[fs.subDirArray[0]];
+            if (!fs.isFile && type) {
                 return true;
             }
-            if (fs.isFile && fs.subDirArray.length >= 1 && 'actions' === fs.subDirArray[0]) {
-                if ('.js' !== fs.ext) {
+            if (fs.isFile && type && fs.subDirArray.length >= 1) {
+                if (CONVENTION_SUBDIR_TYPE_IS_JS[type] && '.js' !== fs.ext) {
                     return false;
                 }
-                res = {
-                    source: evt.source,
-                    mojit: evt.mojitType,
-                    type: 'action',
-                    affinity: 'server',
-                    selector: '*'
+                return {
+                    type: type,
+                    skipSubdirParts: 1
                 };
-                if (baseParts.length >= 3) {
-                    res.selector = baseParts.pop();
-                }
-                if (baseParts.length >= 2) {
-                    res.affinity = baseParts.pop();
-                }
-                if (baseParts.length !== 1) {
-                    Y.log('invalid action filename. skipping ' + fs.fullPath, 'warn', NAME);
-                    return false;
-                }
-                fs.relativePath = libpath.join(fs.subDirArray.slice(1).join('/'), fs.basename + fs.ext);
-                res.name = libpath.join(fs.subDirArray.slice(1).join('/'), baseParts.join('.'));
-                res.id = [res.type, res.subtype, res.name].join('-');
-                this.addResourceVersion(res);
-                return false;
             }
 
+            // special case:  addons
             if (!fs.isFile && '.' === fs.subDir && 'addons' === fs.basename) {
                 return true;
             }
-            if (!fs.isFile && 'addons' === fs.subDirArray[0]) {
+            if (!fs.isFile && fs.subDirArray.length < 2 && 'addons' === fs.subDirArray[0]) {
                 return true;
             }
-            if (fs.isFile && fs.subDirArray.length >= 2 && 'addons' === fs.subDirArray[0]) {
+            if (fs.isFile && fs.subDirArray.length >= 1 && 'addons' === fs.subDirArray[0]) {
                 if ('.js' !== fs.ext) {
                     return false;
                 }
-                res = {
-                    source: evt.source,
-                    mojit: evt.mojitType,
-                    type: 'action',
+                return {
+                    type: 'addon',
                     subtype: fs.subDirArray[1],
-                    affinity: 'server',
-                    selector: '*'
+                    skipSubdirParts: 2
                 };
-                if (baseParts.length >= 3) {
-                    res.selector = baseParts.pop();
-                }
-                if (baseParts.length >= 2) {
-                    res.affinity = baseParts.pop();
-                }
-                if (baseParts.length !== 1) {
-                    Y.log('invalid addon filename. skipping ' + fs.fullPath, 'warn', NAME);
-                    return false;
-                }
-                fs.relativePath = libpath.join(fs.subDirArray.slice(2).join('/'), fs.basename + fs.ext);
-                res.name = libpath.join(fs.subDirArray.slice(2).join('/'), baseParts.join('.'));
-                res.id = [res.type, res.subtype, res.name].join('-');
-                this.addResourceVersion(res);
-                return false;
             }
 
+            // special case:  archetypes
             if (!fs.isFile && '.' === fs.subDir && 'archetypes' === fs.basename) {
                 return true;
             }
@@ -424,118 +452,86 @@ YUI.add('resource-store', function(Y, NAME) {
                 return true;
             }
             if (!fs.isFile && fs.subDirArray.length == 2 && 'archetypes' === fs.subDirArray[0]) {
-                res = {
-                    source: evt.source,
-                    mojit: null,
+                return {
                     type: 'archetype',
                     subtype: fs.subDirArray[1],
-                    name: fs.basename,
-                    affinity: 'common',
-                    selector: '*'
+                    skipSubdirParts: 2
                 };
-                fs.relativePath = fs.basename;
-                res.id = [res.type, res.subtype, res.name].join('-');
-                this.addResourceVersion(res);
-                return false;
             }
 
+            // special case:  assets
             if (!fs.isFile && '.' === fs.subDir && 'assets' === fs.basename) {
                 return true;
             }
             if (!fs.isFile && 'assets' === fs.subDirArray[0]) {
                 return true;
             }
-            if (fs.isFile && fs.subDirArray.length >= 1 && 'assets' === fs.subDirArray[0]) {
-                res = {
-                    source: evt.source,
-                    mojit: evt.mojitType,
+            if (fs.isFile && 'assets' === fs.subDirArray[0] && fs.subDirArray.length >= 1) {
+                return {
                     type: 'asset',
                     subtype: fs.ext.substr(1),
-                    affinity: 'common',
-                    selector: '*'
+                    skipSubdirParts: 1
                 };
-                if (baseParts.length >= 2) {
-                    res.selector = baseParts.pop();
-                }
-                if (baseParts.length !== 1) {
-                    Y.log('invalid asset filename. skipping ' + fs.fullPath, 'warn', NAME);
-                    return false;
-                }
-                fs.relativePath = libpath.join(fs.subDirArray.slice(1).join('/'), fs.basename + fs.ext);
-                res.name = libpath.join(fs.subDirArray.slice(1).join('/'), baseParts.join('.'));
-                res.id = [res.type, res.subtype, res.name].join('-');
-                this.addResourceVersion(res);
-                return false;
             }
 
-            if (!fs.isFile && '.' === fs.subDir && 'binders' === fs.basename) {
-                return true;
-            }
-            if (!fs.isFile && 'binders' === fs.subDirArray[0]) {
-                return true;
-            }
-            if (fs.isFile && fs.subDirArray.length >= 1 && 'binders' === fs.subDirArray[0]) {
-                if ('.js' !== fs.ext) {
-                    return false;
-                }
-                res = {
-                    source: evt.source,
-                    mojit: evt.mojitType,
-                    type: 'binder',
-                    affinity: 'common',
-                    selector: '*'
-                };
-                if (baseParts.length >= 2) {
-                    res.selector = baseParts.pop();
-                }
-                if (baseParts.length !== 1) {
-                    Y.log('invalid binder filename. skipping ' + fs.fullPath, 'warn', NAME);
-                    return false;
-                }
-                fs.relativePath = libpath.join(fs.subDirArray.slice(1).join('/'), fs.basename + fs.ext);
-                res.name = libpath.join(fs.subDirArray.slice(1).join('/'), baseParts.join('.'));
-                res.id = [res.type, res.subtype, res.name].join('-');
-                this.addResourceVersion(res);
-                return false;
-            }
-
-            if (!fs.isFile && '.' === fs.subDir && 'commands' === fs.basename) {
-                return true;
-            }
-            if (!fs.isFile && 'commands' === fs.subDirArray[0]) {
-                return true;
-            }
-            if (fs.isFile && fs.subDirArray.length >= 1 && 'commands' === fs.subDirArray[0]) {
-                if ('.js' !== fs.ext) {
-                    return false;
-                }
-                res = {
-                    source: evt.source,
-                    mojit: null,
-                    type: 'command',
-                    affinity: 'common',
-                    selector: '*'
-                };
-                if (baseParts.length !== 1) {
-                    Y.log('invalid command filename. skipping ' + fs.fullPath, 'warn', NAME);
-                    return false;
-                }
-                fs.relativePath = libpath.join(fs.subDirArray.slice(1).join('/'), fs.basename + fs.ext);
-                res.name = libpath.join(fs.subDirArray.slice(1).join('/'), baseParts.join('.'));
-                res.id = [res.type, res.subtype, res.name].join('-');
-                this.addResourceVersion(res);
-                return false;
-            }
-
+            // special case:  controller
             if (fs.isFile && '.' === fs.subDir && 'controller' === baseParts[0]) {
                 if ('.js' !== fs.ext) {
                     return false;
                 }
+                return {
+                    type: 'controller'
+                };
+            }
+
+            // special case:  mojit
+            if (!fs.isFile && '.' === fs.subDir && 'mojits' === fs.basename) {
+                // don't bother finding mojits here, since they're loaded explicitly in
+                // the app and bundle in different ways
+                return false;
+            }
+
+            // unknown path
+            return true;
+        },
+
+
+        parseResource: function(source, type, subtype, mojitType) {
+            var fs = source.fs,
+                baseParts = fs.basename.split('.'),
+                res;
+
+            // app-level resources
+            if ('archetype' === type || 'command' === type || 'middleware' === type) {
+                if ('mojit' === fs.rootType) {
+                    Y.log(type + ' cannot be defined in a mojit. skipping ' + fs.fullPath, 'warn', NAME);
+                    return false;
+                }
                 res = {
-                    source: evt.source,
-                    mojit: evt.mojitType,
-                    type: 'controller',
-                    name: 'controller',
+                    source: source,
+                    type: type,
+                    subtype: subtype,
+                    name: fs.basename,
+                    mojit: null,
+                    affinity: 'server',
+                    selector: '*'
+                };
+                res.id = [res.type, res.subtype, res.name].join('-');
+                return res;
+            }
+
+            // mojit parts with format {name}.{affinity}.{selector}
+            if (
+                'action' === type || 
+                'addon' === type || 
+                'controller' === type ||
+                'model' === type
+            ) {
+                res = {
+                    source: source,
+                    type: type,
+                    subtype: subtype,
+                    mojit: mojitType,
                     affinity: 'server',
                     selector: '*'
                 };
@@ -546,90 +542,43 @@ YUI.add('resource-store', function(Y, NAME) {
                     res.affinity = baseParts.pop();
                 }
                 if (baseParts.length !== 1) {
-                    Y.log('invalid controller filename. skipping ' + fs.fullPath, 'warn', NAME);
+                    Y.log('invalid ' + type + ' filename. skipping ' + fs.fullPath, 'warn', NAME);
                     return false;
                 }
-                fs.relativePath = libpath.join(fs.subDirArray.slice(1).join('/'), fs.basename + fs.ext);
+                res.name = libpath.join(fs.subDirArray.slice(1).join('/'), baseParts.join('.'));
                 res.id = [res.type, res.subtype, res.name].join('-');
-                this.addResourceVersion(res);
-                return false;
+                return res;
             }
 
-            if (!fs.isFile && '.' === fs.subDir && 'middleware' === fs.basename) {
-                return true;
-            }
-            if (!fs.isFile && 'middleware' === fs.subDirArray[0]) {
-                return true;
-            }
-            if (fs.isFile && fs.subDirArray.length >= 1 && 'middleware' === fs.subDirArray[0]) {
-                if ('.js' !== fs.ext) {
-                    return false;
-                }
+            // mojit parts with format {name}.{selector}
+            if ('asset' === type || 'binder' === type) {
                 res = {
-                    source: evt.source,
-                    mojit: null,
-                    type: 'middleware',
+                    source: source,
+                    type: type,
+                    subtype: subtype,
+                    mojit: mojitType,
                     affinity: 'common',
                     selector: '*'
                 };
-                if (baseParts.length !== 1) {
-                    Y.log('invalid middleware filename. skipping ' + fs.fullPath, 'warn', NAME);
-                    return false;
-                }
-                fs.relativePath = libpath.join(fs.subDirArray.slice(1).join('/'), fs.basename + fs.ext);
-                res.name = libpath.join(fs.subDirArray.slice(1).join('/'), baseParts.join('.'));
-                res.id = [res.type, res.subtype, res.name].join('-');
-                this.addResourceVersion(res);
-                return false;
-            }
-
-            if (!fs.isFile && '.' === fs.subDir && 'models' === fs.basename) {
-                return true;
-            }
-            if (!fs.isFile && 'models' === fs.subDirArray[0]) {
-                return true;
-            }
-            if (fs.isFile && fs.subDirArray.length >= 1 && 'models' === fs.subDirArray[0]) {
-                if ('.js' !== fs.ext) {
-                    return false;
-                }
-                res = {
-                    source: evt.source,
-                    mojit: evt.mojitType,
-                    type: 'model',
-                    affinity: 'server',
-                    selector: '*'
-                };
-                if (baseParts.length >= 3) {
+                if (baseParts.length >= 2) {
                     res.selector = baseParts.pop();
                 }
-                if (baseParts.length >= 2) {
-                    res.affinity = baseParts.pop();
-                }
                 if (baseParts.length !== 1) {
-                    Y.log('invalid model filename. skipping ' + fs.fullPath, 'warn', NAME);
+                    Y.log('invalid ' + type + ' filename. skipping ' + fs.fullPath, 'warn', NAME);
                     return false;
                 }
-                fs.relativePath = libpath.join(fs.subDirArray.slice(1).join('/'), fs.basename + fs.ext);
                 res.name = libpath.join(fs.subDirArray.slice(1).join('/'), baseParts.join('.'));
                 res.id = [res.type, res.subtype, res.name].join('-');
-                this.addResourceVersion(res);
-                return false;
+                return res;
             }
 
-            // TODO:  spec, in "instance" plugin
-
-            if (!fs.isFile && '.' === fs.subDir && 'views' === fs.basename) {
-                return true;
-            }
-            if (!fs.isFile && 'views' === fs.subDirArray[0]) {
-                return true;
-            }
-            if (fs.isFile && fs.subDirArray.length >= 1 && 'views' === fs.subDirArray[0]) {
+            // special case:  view
+            if ('view' === type) {
                 res = {
-                    source: evt.source,
-                    mojit: evt.mojitType,
-                    type: 'view',
+                    source: source,
+                    type: type,
+                    subtype: subtype,
+                    mojit: mojitType,
                     viewOutputFormat: fs.ext.substr(1),
                     viewEngine: baseParts.pop(),
                     affinity: 'common',
@@ -642,25 +591,23 @@ YUI.add('resource-store', function(Y, NAME) {
                     Y.log('invalid view filename. skipping ' + fs.fullPath, 'warn', NAME);
                     return false;
                 }
-                fs.relativePath = libpath.join(fs.subDirArray.slice(1).join('/'), fs.basename + fs.ext);
                 res.name = libpath.join(fs.subDirArray.slice(1).join('/'), baseParts.join('.'));
                 res.id = [res.type, res.subtype, res.name].join('-');
-                this.addResourceVersion(res);
-                return false;
+                return res;
             }
 
-            // TODO:  yui-lang in the "yui" plugin
-
-            // TODO:  yui-module in the "yui" plugin
-
-//console.log('--TODO-- preloadFile ' + evt.mojitType + ' ' + libpath.join(fs.subDir, fs.basename + fs.ext));
-            return true;
+            // just ignore unknown types
+            return null;
         },
 
 
         addResourceVersion: function(res) {
-//          console.log('---------------------------------------------- TODO addResourceVersion -- ' + res.mojit + ' ' + res.id);
-//          console.log(res);
+            console.log('---------------------------------------------- TODO addResourceVersion -- '
+                + res.source.fs.rootType + ' ' + res.mojit
+                + ' ' + res.id
+                + '    ' + res.affinity + ':' + res.selector
+            );
+            //console.log(res);
         },
 
 
@@ -676,17 +623,19 @@ YUI.add('resource-store', function(Y, NAME) {
          *
          * @method _findResourcesByConvention
          * @param dir {string} directory from which to find resources
+         * @param dirType {string} type represented by the "dir" argument.  values are "app", "bundle", "pkg", or "mojit"
          * @param pkg {object} metadata (name and version) about the package
          * @param mojitType {string|null} name of mojit to which the resource belongs
          * @return {array} list of resources
          * @private
          */
-        _findResourcesByConvention: function(dir, pkg, mojitType) {
-            var me = this;
+        _findResourcesByConvention: function(dir, dirType, pkg, mojitType) {
+            var me = this,
+                ress = [];
             //console.log('-- FIND RESOURCES BY CONVENTION -- ' + pkg.name + '@' + pkg.version + ' -- ' + mojitType);
 
             this._walkDirRecursive(dir, function(error, subdir, file, isFile) {
-                var source;
+                var source, ret, res;
 
                 if ('node_modules' === file) {
                     return false;
@@ -697,16 +646,12 @@ YUI.add('resource-store', function(Y, NAME) {
                 if ('tests' === file && 'test' !== me._appConfigStatic.env) {
                     return false;
                 }
-                // mojits are loaded another way later
-                // TODO:  better test for what is a mojit dir (i.e., check against mojitDirs and mojitsDirs)
-                if ('.' === subdir && 'mojits' === file) {
-                    return false;
-                }
 
                 source = {
                     fs: {
                         fullPath: libpath.join(dir, subdir, file),
                         rootDir: dir,
+                        rootType: dirType,
                         subDir: subdir,
                         subDirArray: subdir.split('/'),
                         isFile: isFile,
@@ -719,8 +664,25 @@ YUI.add('resource-store', function(Y, NAME) {
                 if (me._skipBadPath(source.fs)) {
                     return false;
                 }
-                return me.fire('preloadFile', { source: source, mojitType: mojitType } );
+
+                // TODO:  have fRBC() return mojitType and pass to parseResource()
+                ret = me.findResourceByConvention(source, mojitType);
+                if ('object' === typeof ret) {
+                    if (ret.skipSubdirParts) {
+                        source.fs.subDirArray = source.fs.subDirArray.slice(ret.skipSubdirParts);
+                        source.fs.subDir = source.fs.subDirArray.join('/') || '.';
+                    }
+                    res = me.parseResource(source, ret.type, ret.subtype, mojitType);
+                    if ('object' === typeof res) {
+                        ress.push(res);
+                    }
+                    // don't recurse into resources that are directories
+                    return false;
+                }
+                return ret;
             });
+
+            return ress;
         },
 
 
@@ -907,8 +869,10 @@ YUI.add('resource-store', function(Y, NAME) {
 
 }, '0.0.1', { requires: [
     'base',
-    'oop'
+    'oop',
+    'addon-rs-config'
 ]});
+
 
 
 YUI.add('addon-rs-config', function(Y, NAME) {
@@ -929,7 +893,8 @@ YUI.add('addon-rs-config', function(Y, NAME) {
             this.rs = config.host;
             this.appRoot = config.appRoot;
             this.mojitoRoot = config.mojitoRoot;
-            this.rs.on('preloadFile', this.preloadFile, this);
+            this.afterHostMethod('findResourceByConvention', this.findResourceByConvention, this);
+            this.beforeHostMethod('parseResource', this.parseResource, this);
 
             this._jsonCache = {};   // fullPath: contents as JSON object
             this._ycbCache = {};    // fullPath: context: YCB config object
@@ -1006,16 +971,13 @@ YUI.add('addon-rs-config', function(Y, NAME) {
         },
 
 
-        preloadFile: function(evt) {
-            var fs = evt.source.fs,
-                mojit = evt.mojitType,
-                use = false,
-                baseParts,
-                res;
+        findResourceByConvention: function(source, mojitType) {
+            var fs = source.fs,
+                use = false;
 
             // we only care about files
             if (!fs.isFile) {
-                return true;
+                return;
             }
             // we don't care about files in subdirectories
             if ('.' !== fs.subDir) {
@@ -1025,38 +987,53 @@ YUI.add('addon-rs-config', function(Y, NAME) {
             if ('.json' !== fs.ext) {
                 return;
             }
-            // always use package.json
-            if ('package' === fs.basename) {
+            // use package.json for the app and the mojit
+            if ('package' === fs.basename && 'bundle' !== fs.rootType) {
                 use = true;
             }
             // use all configs in the application
-            if (0 === evt.source.pkg.depth) {
+            if ('app' === fs.rootType) {
                 use = true;
             }
-            // use configs from non-shared mojits
-            if (mojit && 'shared' !== mojit) {
+            // use configs from non-shared mojit resources
+            if (mojitType && 'shared' !== mojitType) {
                 use = true;
             }
             if (!use) {
                 return;
             }
 
-            baseParts = fs.basename.split('.');
+            return new Y.Do.AlterReturn(null, {
+                type: 'config'
+            });
+        },
+
+
+        parseResource: function(source, type, subtype, mojitType) {
+            var baseParts,
+                res;
+
+            if ('config' !== type) {
+                return;
+            }
+
+            baseParts = source.fs.basename.split('.');
             res = {
-                source: evt.source,
-                mojit: mojit,
+                source: source,
                 type: 'config',
                 affinity: 'common',
                 selector: '*'
             };
-            if (baseParts.length !== 1) {
-                Y.log('invalid config filename. skipping ' + fs.fullPath, 'warn', NAME);
-                return;
+            if ('app' !== source.fs.rootType) {
+                res.mojit = mojitType;
             }
-            fs.relativePath = libpath.join(fs.subDirArray.slice(1).join('/'), fs.basename + fs.ext);
-            res.name = libpath.join(fs.subDirArray.slice(1).join('/'), baseParts.join('.'));
+            if (baseParts.length !== 1) {
+                Y.log('invalid config filename. skipping ' + source.fs.fullPath, 'warn', NAME);
+                return false;
+            }
+            res.name = libpath.join(source.fs.subDir, baseParts.join('.'));
             res.id = [res.type, res.subtype, res.name].join('-');
-            this.rs.addResourceVersion(res);
+            return new Y.Do.Halt(null, res);
         },
 
 
@@ -1082,4 +1059,6 @@ YUI.add('addon-rs-config', function(Y, NAME) {
     Y.mojito.addons.rs.config = RSAddonConfig;
 
 }, '0.0.1', { requires: ['plugin', 'oop']});
+
+
 
