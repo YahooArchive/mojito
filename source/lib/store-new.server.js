@@ -9,7 +9,57 @@
     anon:true, sloppy:true, regexp: true, continue: true, nomen:true, node:true
 */
 
-
+/**
+ * The ResourceStore manages information about the "resources" in a Mojito
+ * application.  These resources are things that have representation on the
+ * filesystem.
+ *
+ * You generally don't need to worry about this class (and its addons) unless
+ * you are extending Mojito.
+ *
+ * Each resource can have many different versions.  This is not talking about
+ * revisions, which is how the resource changes over time.  It is instead
+ * talking about how there can be a version of the resource just for iphones,
+ * one just for android, a fallback, etc.
+ *
+ * The metadata kept about each resource is normalized to the follow keys:
+ * <dl>
+ *      <dt><code>source</code> (object)</dt>
+ *      <dd>where the source came from.  (not shipped to the client.)
+ *          <dl>
+ *              <dt><code>fs</code> (object)</dt>
+ *              <dd>filesystem details</dd>
+ *              <dt><code>pkg</code> (object)</dt>
+ *              <dd>packaging details</dd>
+ *          </dl>
+ *      </dd>
+ *      <dt><code>mojit</code> (string)</dt>
+ *      <dd>which mojit this applies to, if any. ("shared" means the resource is available to all mojits.)</dd>
+ *      <dt><code>type</code> (string)</dt>
+ *      <dd>resource type</dd>
+ *      <dt><code>subtype</code> (string)</dt>
+ *      <dd>not all types of subtypes</dd>
+ *      <dt><code>name</code> (string)</dt>
+ *      <dd>common to all versions of the resource</dd>
+ *      <dt><code>id</code> (string)</dt>
+ *      <dd>unique ID.  common to all versions of the resource. (typically <code>{type}-{subtype}-{name}</code>.)</dd>
+ *      <dt><code>yui</code> (object)</dt>
+ *      <dd>for resources that are YUI modules</dd>
+ *  </dl>
+ *
+ *  The following are only used in the metadata for each resource <em>version</em>
+ *  (The metadata for resolved resources won't have these, since they're intrinsically
+ *  part of the resolved resource.)
+ *  <dd>
+ *      <dt><code>affinity</code> (string)</dt>
+ *      <dd>runtime affinity.  either <code>server</code>, <code>client</code>, or <code>common</code></dd>
+ *      <dt><code>selector</code> (string)</dt>
+ *      <dd>version selector</dd>
+ * </dl>
+ *
+ * @module ResourceStore
+ * @main
+ */
 YUI.add('resource-store', function(Y, NAME) {
 
     var libfs = require('fs'),
@@ -59,7 +109,15 @@ YUI.add('resource-store', function(Y, NAME) {
 
 
 
-    // TODO DOCS
+    /**
+     * @class ResourceStore.server
+     * @constructor
+     * @requires addon-rs-config, addon-rs-selector
+     * @param config {object}
+     *      @param root {string} directory to manage (usually the application directory)
+     *      @param context {object} static context
+     *      @param appConfig {object} overrides for `application.json`
+     */
     function ResourceStore(config) {
         ResourceStore.superclass.constructor.apply(this, arguments);
     }
@@ -86,19 +144,32 @@ YUI.add('resource-store', function(Y, NAME) {
         destructor: function() {},
 
 
-        // TODO DOCS
+        /**
+         * Returns the static (non-runtime-sensitive) context
+         * @method getStaticContext
+         * @return {object} the context
+         */
         getStaticContext: function() {
             return this.cloneObj(this._config.context);
         },
 
 
-        // TODO DOCS
+        /**
+         * Returns the static (non-runtime-sensitive) version of the application.json.
+         * @method getStaticAppConfig
+         * @return {object} the configuration from applications.json
+         */
         getStaticAppConfig: function() {
             return this.cloneObj(this._appConfigStatic);
         },
 
 
-        // TODO DOCS
+        /**
+         * Returns a contextualized application configuration.
+         * @method getAppConfig
+         * @param ctx {object} the context
+         * @return {object} the application configuration contextualized by the "ctx" argument.
+         */
         getAppConfig: function(ctx) {
             var appConfig,
                 ycb;
@@ -396,11 +467,11 @@ YUI.add('resource-store', function(Y, NAME) {
                     },
                     pkg: pkg
                 },
+                mojit: null,
                 type: 'mojit',
                 subtype: null,
                 name: mojitType,
                 id: 'mojit--' + mojitType,
-                mojit: null,
                 affinity: 'common',
                 selector: '*'
             };
@@ -418,7 +489,30 @@ YUI.add('resource-store', function(Y, NAME) {
         },
 
 
-        // TODO DOCS
+        /**
+         * Called by the ResourceStore to decide if a file should be considered
+         * a resource.  You most often don't want to call this directly, but
+         * instead to hook into it using the AOP mechanism of `Y.Plugin.Base`:
+         * ```
+         * this.afterHostMethod('findResourceByConvention', this._myFindResourceByConvention, this);
+         * ```
+         *
+         * Generally `findResourceByConvention()` and `parseResource()` are meant to work together.
+         * This method figures out the type (and subtype) of a file, and `parseResource()` turns
+         * the file into an actual resource.
+         *
+         * @method findResourceByConvention
+         * @param source {object} the same as the `source` part of a resource
+         * @param mojitType {string} the name of the mojit
+         * @return {boolean|object} If the source is a directory, a boolean can be returned.
+         *      True indicates that the directory contents should be scanned, while false
+         *      indicates that the directory should be skipped.
+         *      If the source does represent a resource, then an object with the following
+         *      fields should be returned;
+         *      @param type {string} type of the resource
+         *      @param subtype {string} optional subtype of the resource
+         *      @param skipSubdirParts {integer} number of path parts of `source.fs.subDir` to skip
+         */
         findResourceByConvention: function(source, mojitType) {
             var fs = source.fs,
                 baseParts = fs.basename.split('.'),
@@ -511,7 +605,25 @@ YUI.add('resource-store', function(Y, NAME) {
         },
 
 
-        // TODO DOCS
+        /**
+         * Called by the ResourceStore to turn a file into a resource.
+         * You most often don't want to call this directly, but instead to hook
+         * into it using the AOP mechanism of `Y.Plugin.Base`:
+         * ```
+         * this.beforeHostMethod('parseResource', this._myParseResource, this);
+         * ```
+         *
+         * Generally `findResourceByConvention()` and `parseResource()` are meant to work together.
+         * `findResourceByConvention()` figures out the type (and subtype) of a file, and 
+         * this method turns the file into an actual resource.
+         *
+         * @method parseResource
+         * @param source {object} the same as the `source` part of a resource
+         * @param type {string} the resource type of the file
+         * @param subtype {string} the optional resource subtype of the file
+         * @param mojitType {string} the name of the mojit
+         * @return {object|undefined} the resource version
+         */
         parseResource: function(source, type, subtype, mojitType) {
             var fs = source.fs,
                 baseParts = fs.basename.split('.'),
@@ -521,14 +633,14 @@ YUI.add('resource-store', function(Y, NAME) {
             if ('archetype' === type || 'command' === type || 'middleware' === type) {
                 if ('mojit' === fs.rootType) {
                     Y.log(type + ' cannot be defined in a mojit. skipping ' + fs.fullPath, 'warn', NAME);
-                    return false;
+                    return;
                 }
                 res = {
                     source: source,
+                    mojit: null,
                     type: type,
                     subtype: subtype,
                     name: fs.basename,
-                    mojit: null,
                     affinity: 'server',
                     selector: '*'
                 };
@@ -545,9 +657,9 @@ YUI.add('resource-store', function(Y, NAME) {
             ) {
                 res = {
                     source: source,
+                    mojit: mojitType,
                     type: type,
                     subtype: subtype,
-                    mojit: mojitType,
                     affinity: 'server',
                     selector: '*'
                 };
@@ -559,7 +671,7 @@ YUI.add('resource-store', function(Y, NAME) {
                 }
                 if (baseParts.length !== 1) {
                     Y.log('invalid ' + type + ' filename. skipping ' + fs.fullPath, 'warn', NAME);
-                    return false;
+                    return;
                 }
                 res.name = libpath.join(fs.subDirArray.slice(1).join('/'), baseParts.join('.'));
                 res.id = [res.type, res.subtype, res.name].join('-');
@@ -570,9 +682,9 @@ YUI.add('resource-store', function(Y, NAME) {
             if ('asset' === type || 'binder' === type) {
                 res = {
                     source: source,
+                    mojit: mojitType,
                     type: type,
                     subtype: subtype,
-                    mojit: mojitType,
                     affinity: 'common',
                     selector: '*'
                 };
@@ -581,20 +693,20 @@ YUI.add('resource-store', function(Y, NAME) {
                 }
                 if (baseParts.length !== 1) {
                     Y.log('invalid ' + type + ' filename. skipping ' + fs.fullPath, 'warn', NAME);
-                    return false;
+                    return;
                 }
                 res.name = libpath.join(fs.subDirArray.slice(1).join('/'), baseParts.join('.'));
                 res.id = [res.type, res.subtype, res.name].join('-');
-                return res;
-            }
+                    return res;
+                }
 
             // special case:  view
             if ('view' === type) {
                 res = {
                     source: source,
+                    mojit: mojitType,
                     type: type,
                     subtype: subtype,
-                    mojit: mojitType,
                     viewOutputFormat: fs.ext.substr(1),
                     viewEngine: baseParts.pop(),
                     affinity: 'common',
@@ -605,7 +717,7 @@ YUI.add('resource-store', function(Y, NAME) {
                 }
                 if (baseParts.length !== 1) {
                     Y.log('invalid view filename. skipping ' + fs.fullPath, 'warn', NAME);
-                    return false;
+                    return;
                 }
                 res.name = libpath.join(fs.subDirArray.slice(1).join('/'), baseParts.join('.'));
                 res.id = [res.type, res.subtype, res.name].join('-');
@@ -613,11 +725,22 @@ YUI.add('resource-store', function(Y, NAME) {
             }
 
             // just ignore unknown types
-            return null;
+            return;
         },
 
 
-        // TODO DOCS
+        /**
+         * Called by the ResourceStore to register a resource version.
+         * You most often don't want to call this directly, but instead to hook
+         * into it using the AOP mechanism of `Y.Plugin.Base`:
+         * ```
+         * this.beforeHostMethod('parseResource', this._myParseResource, this);
+         * ```
+         *
+         * @method addResourceVersion
+         * @param res {object} the resource version
+         * @return {nothing}
+         */
         addResourceVersion: function(res) {
             res.affinity = new Affinity(res.affinity);
             if (res.mojit) {
@@ -1285,7 +1408,7 @@ YUI.add('addon-rs-config', function(Y, NAME) {
             }
             if (baseParts.length !== 1) {
                 Y.log('invalid config filename. skipping ' + source.fs.fullPath, 'warn', NAME);
-                return false;
+                return;
             }
             res.name = libpath.join(source.fs.subDir, baseParts.join('.'));
             res.id = [res.type, res.subtype, res.name].join('-');
