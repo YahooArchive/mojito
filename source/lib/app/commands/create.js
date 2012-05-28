@@ -8,10 +8,10 @@
 /*jslint anon:true, sloppy:true, regexp:true, nomen:true*/
 
 
-var utils = require('../utils'),
+var path = require('path'),
     fs = require('fs'),
-    path = require('path'),
-    archetypePath = path.join(__dirname, '/../../archetypes'),
+    utils = require(path.join(__dirname, '../../management/utils')),
+    archetypePath = path.join(__dirname, '../archetypes'),
     // Found at http://www.crockford.com/javascript/survey.html
     reservedWords = [
         'abstract',

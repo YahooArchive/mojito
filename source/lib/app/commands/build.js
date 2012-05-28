@@ -9,7 +9,7 @@
 
 
 var libpath = require('path'),
-    utils = require('../utils'),
+    utils = require(libpath.join(__dirname, '../../management/utils')),
     fs = require('fs'),
     libqs = require('querystring'),
     ResourceStore = require(libpath.join(__dirname, '../..',

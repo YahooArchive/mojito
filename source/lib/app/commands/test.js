@@ -7,15 +7,14 @@
 
 /*jslint anon:true, sloppy:true, regexp:true, nomen:true*/
 
-
 var pathlib = require('path'),
     fs = require('fs'),
 
-    utils = require('../utils'),
-    ymc = require('../yui-module-configurator'),
+    utils = require(pathlib.join(__dirname, '../../management/utils')),
+    ymc = require(pathlib.join(__dirname, '../../management/yui-module-configurator')),
     exec = require('child_process').exec,
-    copyExclude = require('../utils').copyExclude,
-    copyFile = require('../utils').copyFile,
+    copyExclude = utils.copyExclude,
+    copyFile = utils.copyFile,
 
     MODE_ALL = parseInt('777', 8),
 

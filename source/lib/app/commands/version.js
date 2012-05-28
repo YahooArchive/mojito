@@ -10,7 +10,7 @@
 
 var fs = require('fs'),
     path = require('path'),
-    utils = require('../utils'),
+    utils = require(path.join(__dirname, '../../management/utils')),
     usage = 'mojito version [app | mojit] [<name>]';
 
 

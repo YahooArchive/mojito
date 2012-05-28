@@ -9,7 +9,7 @@
 
 
 var path = require('path'),
-    utils = require('../utils'),
+    utils = require(path.join(__dirname, '../../management/utils')),
     fs = require('fs');
 
 

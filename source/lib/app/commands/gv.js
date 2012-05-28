@@ -19,11 +19,11 @@ var run,
 
     libpath = require('path'),
     libfs = require('fs'),
-    libutils = require('../utils'),
+    libutils = require(libpath.join(__dirname, '../../management/utils')),
 
     MODE_ALL = parseInt('777', 8),
 
-    ResourceStore = require('../../store.server.js'),
+    ResourceStore = require(libpath.join(__dirname, '../../store.server.js')),
 
     artifactsDir = 'artifacts',
     resultsDir = 'artifacts/gv';

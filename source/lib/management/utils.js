@@ -15,7 +15,7 @@ var fs = require('fs'),
     http = require('http'),
     tty = require('tty'),
     mojito = require('../index.js'),
-    archetypes_dir = path.join(__dirname, '/../archetypes'),
+    archetypes_dir = path.join(__dirname, '../app/archetypes'),
     isatty = tty.isatty(1) && tty.isatty(2);
 
 
