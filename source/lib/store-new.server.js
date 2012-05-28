@@ -15,10 +15,7 @@ YUI.add('resource-store', function(Y, NAME) {
     var libfs = require('fs'),
         libglob = require('./glob'),
         libpath = require('path'),
-        libqs = require('querystring'),
-        libvm = require('vm'),
         libwalker = require('./package-walker.server'),
-        libycb = require('./libs/ycb'),
 
         isNotAlphaNum = /[^a-zA-Z0-9]/,
 
@@ -38,6 +35,7 @@ YUI.add('resource-store', function(Y, NAME) {
             'binder': true,
             'model': true
         };
+
 
 
     // The Affinity object is to manage the use of the affinity string in
@@ -61,6 +59,7 @@ YUI.add('resource-store', function(Y, NAME) {
 
 
 
+    // TODO DOCS
     function ResourceStore(config) {
         ResourceStore.superclass.constructor.apply(this, arguments);
     }
@@ -75,6 +74,11 @@ YUI.add('resource-store', function(Y, NAME) {
             this._jsonCache = {};   // fullPath: contents as JSON object
             this._ycbCache = {};    // fullPath: context: YCB config object
 
+            this._appRVs    = {};   // res.type: array of resource versions
+            this._mojitRVs  = {};   // mojitType: array of resource versions
+            this._appResources = {};    // env: posl: res.type: array of resources
+            this._mojitResources = {};  // env: posl: mojitType: array of resources
+
             Y.Object.each(Y.mojito.addons.rs, function(fn, name) {
                 this.plug(fn, { appRoot:cfg.root, mojitoRoot:mojitoRoot });
             }, this);
@@ -82,16 +86,19 @@ YUI.add('resource-store', function(Y, NAME) {
         destructor: function() {},
 
 
+        // TODO DOCS
         getStaticContext: function() {
             return this.cloneObj(this._config.context);
         },
 
 
+        // TODO DOCS
         getStaticAppConfig: function() {
             return this.cloneObj(this._appConfigStatic);
         },
 
 
+        // TODO DOCS
         getAppConfig: function(ctx) {
             var appConfig,
                 ycb;
@@ -114,6 +121,13 @@ YUI.add('resource-store', function(Y, NAME) {
         },
 
 
+        /**
+        * Preloads everything in the app, and as well pertinent parts of
+        * the framework.
+        *
+        * @method preload
+        * @return {nothing}
+        */
         preload: function() {
             this._fwConfig = this.config.readConfigJSON(libpath.join(mojitoRoot, 'config.json'));
             this._appConfigStatic = this.getAppConfig({});
@@ -125,9 +139,9 @@ YUI.add('resource-store', function(Y, NAME) {
         /**
          * preload metadata about all resources in the application (and Mojito framework)
          *
+         * @private
          * @method _preloadMeta
          * @return {nothing} work down via other called methods
-         * @private
          */
         _preloadMeta: function() {
             var me = this,
@@ -143,7 +157,7 @@ YUI.add('resource-store', function(Y, NAME) {
                 if ('mojito' === info.pkg.name) {
                     walkedMojito = true;
                 }
-                me.preloadPackage(info);
+                me._preloadPackage(info);
             });
 
             // user might not have installed mojito as a dependency of their
@@ -173,7 +187,7 @@ YUI.add('resource-store', function(Y, NAME) {
                     };
                 }
 
-                this.preloadPackage(info);
+                this._preloadPackage(info);
             }
         },
 
@@ -182,11 +196,12 @@ YUI.add('resource-store', function(Y, NAME) {
          * preloads metadata about resources in a package
          * (but not subpackages in its node_modules/)
          *
-         * @method preloadPackage
+         * @private
+         * @method _preloadPackage
          * @param info {object} metadata about the package
          * @return {nothing} work down via other called methods
          */
-        preloadPackage: function(info) {
+        _preloadPackage: function(info) {
             var dir,
                 pkg;
             // FUTURE:  use info.inherit to scope mojit dependencies
@@ -204,7 +219,7 @@ YUI.add('resource-store', function(Y, NAME) {
             };
             if (0 === info.depth) {
                 // the actual application is handled specially
-                this.preloadApp(pkg);
+                this._preloadApp(pkg);
                 return;
             }
             if (!info.pkg.yahoo || !info.pkg.yahoo.mojito) {
@@ -217,7 +232,7 @@ YUI.add('resource-store', function(Y, NAME) {
                 break;
             case 'mojit':
                 dir = libpath.join(info.dir, info.pkg.yahoo.mojito.location);
-                this.preloadDirMojit(dir, 'pkg', pkg);
+                this._preloadDirMojit(dir, 'pkg', pkg);
                 break;
             default:
                 Y.log('Unknown package type "' + info.pkg.yahoo.mojito.type + '"', 'warn', NAME);
@@ -230,11 +245,12 @@ YUI.add('resource-store', function(Y, NAME) {
          * preloads metadata about resources in the application directory
          * (but not node_modules/)
          *
-         * @method preloadApp
+         * @private
+         * @method _preloadApp
          * @param pkg {object} metadata (name and version) about the app's package
          * @return {nothing} work down via other called methods
          */
-        preloadApp: function(pkg) {
+        _preloadApp: function(pkg) {
             var ress,
                 r,
                 res,
@@ -259,7 +275,7 @@ YUI.add('resource-store', function(Y, NAME) {
             // load mojitDirs
             list = this._globList(this._config.root, this._appConfigStatic.mojitDirs || []);
             for (i = 0; i < list.length; i += 1) {
-                this.preloadDirMojit(list[i], 'app', pkg);
+                this._preloadDirMojit(list[i], 'app', pkg);
             }
         },
 
@@ -291,12 +307,12 @@ YUI.add('resource-store', function(Y, NAME) {
         /**
          * preloads a directory containing many mojits
          *
+         * @private
          * @method _preloadDirMojits
          * @param dir {string} directory path
          * @param dirType {string} type represented by the "dir" argument.  values are "app", "bundle", "pkg", or "mojit"
          * @param pkg {object} metadata (name and version) about the package
          * @return {nothing} work down via other called methods
-         * @private
          */
         _preloadDirMojits: function(dir, dirType, pkg) {
             var i,
@@ -320,7 +336,7 @@ YUI.add('resource-store', function(Y, NAME) {
                     continue;
                 }
                 childPath = libpath.join(dir, childName);
-                this.preloadDirMojit(childPath, dirType, pkg);
+                this._preloadDirMojit(childPath, dirType, pkg);
             }
         },
 
@@ -328,14 +344,14 @@ YUI.add('resource-store', function(Y, NAME) {
         /**
          * preloads a directory that represents a single mojit
          *
-         * @method preloadDirMojit
+         * @private
+         * @method _preloadDirMojit
          * @param dir {string} directory path
          * @param dirType {string} type represented by the "dir" argument.  values are "app", "bundle", "pkg", or "mojit"
          * @param pkg {object} metadata (name and version) about the package
          * @return {nothing} work down via other called methods
-         * @private
          */
-        preloadDirMojit: function(dir, dirType, pkg) {
+        _preloadDirMojit: function(dir, dirType, pkg) {
             var mojitType,
                 packageJson,
                 definitionJson,
@@ -402,6 +418,7 @@ YUI.add('resource-store', function(Y, NAME) {
         },
 
 
+        // TODO DOCS
         findResourceByConvention: function(source, mojitType) {
             var fs = source.fs,
                 baseParts = fs.basename.split('.'),
@@ -494,6 +511,7 @@ YUI.add('resource-store', function(Y, NAME) {
         },
 
 
+        // TODO DOCS
         parseResource: function(source, type, subtype, mojitType) {
             var fs = source.fs,
                 baseParts = fs.basename.split('.'),
@@ -599,19 +617,262 @@ YUI.add('resource-store', function(Y, NAME) {
         },
 
 
+        // TODO DOCS
         addResourceVersion: function(res) {
-            console.log('---------------------------------------------- TODO addResourceVersion -- '
-                + res.source.fs.rootType + ' ' + res.mojit
-                + ' ' + res.id
-                + '    ' + res.affinity + ':' + res.selector
-            );
-            //console.log(res);
+            res.affinity = new Affinity(res.affinity);
+            if (res.mojit) {
+                if (!this._mojitRVs[res.mojit]) {
+                    this._mojitRVs[res.mojit] = [];
+                }
+                this._mojitRVs[res.mojit].push(res);
+            } else {
+                if (!this._appRVs[res.type]) {
+                    this._appRVs[res.type] = [];
+                }
+                this._appRVs[res.type].push(res);
+            }
         },
 
 
+        /**
+         * For each possible runtime configuration (based on context), pre-calculates
+         * which versions of the resources will be used.
+         * The priority (highest to lowest):
+         *      source,
+         *      selector,
+         *      affinity (env or "common").
+         *
+         * @method resolveResourceVersions
+         * @return {nothing}
+         */
         resolveResourceVersions: function() {
-            console.log('---------------------------------------------- TODO resolveResourceVersions');
-            // OLD:  _cookdown
+            var c, ctx, ctxs,
+                poslKey, posl, posls = {},
+                e, env, envs = [ 'client', 'server' ],
+                affinities, selectors, sourceBase,
+                type, ress,
+                p;
+
+            ctxs = this._listAllContexts();
+            for (var c = 0; c < ctxs.length; c++) {
+                ctx = ctxs[c];
+                posl = this.selector.getListFromContext(ctx);
+                posls[JSON.stringify(posl)] = posl;
+            }
+
+            for (e = 0; e < envs.length; e += 1) {
+                env = envs[e];
+
+                affinities = {};    // affinity: priority modifier
+                affinities[env] = 1;
+                affinities.common = 0;
+
+                for (poslKey in posls) {
+                    if (posls.hasOwnProperty(poslKey)) {
+                        posl = posls[poslKey];
+                        selectors = {}; // selector:  priority modifier
+                        for (p = 0; p < posl.length; p += 1) {
+                            selectors[posl[p]] = (posl.length - p - 1) * 2;
+                        }
+                        sourceBase = posl.length * 2;
+                        //console.log('-- source base ' + sourceBase);
+                        //console.log(selectors);
+                        //console.log(affinities);
+
+                        if (!this._appResources[env]) {
+                            this._appResources[env] = {}
+                        }
+                        if (!this._appResources[env][poslKey]) {
+                            this._appResources[env][poslKey] = {}
+                        }
+                        for (type in this._appRVs) {
+                            if (this._appRVs.hasOwnProperty(type)) {
+                                this._appResources[env][poslKey][type] = 
+                                    this._resolveVersions(affinities, selectors, sourceBase, [ this._appRVs[type] ]);
+                            }
+                        }
+
+                        if (!this._mojitResources[env]) {
+                            this._mojitResources[env] = {}
+                        }
+                        if (!this._mojitResources[env][poslKey]) {
+                            this._mojitResources[env][poslKey] = {}
+                        }
+                        for (type in this._mojitRVs) {
+                            if ('shared' === type) {
+                                continue;
+                            }
+                            if (this._mojitRVs.hasOwnProperty(type)) {
+                                this._mojitResources[env][poslKey][type] = 
+                                    this._resolveVersions(affinities, selectors, sourceBase, [ this._mojitRVs.shared, this._mojitRVs[type] ]);
+                                // TODO:  fire event that mojit has been resolved
+                            }
+                        }
+                    }
+                }
+            }
+        },
+
+
+        /**
+         * Resolves versions for a list of resources.
+         * The priority is based on passed-in configuration.  See 
+         * resolveResourceVersions() for details.
+         *
+         * @private
+         * @method _resolveVersions
+         * @param affinities {object} lookup hash for priority adjustment for each affinity
+         * @param selectors {object} lookup hash for priority adjustment for each selector
+         * @param sourceBase {int} multiplier for order in priority list
+         * @param srcs {array of arrays} resource versions to resolve
+         * @return {array} list of resolved resources
+         */
+        _resolveVersions: function(affinities, selectors, sourceBase, srcs) {
+            var s, src,
+                r, res,
+                priority,
+                versions = {},  // id: priority: resource
+                out = [],
+                resid,
+                highest;
+
+            for (s = 0; s < srcs.length; s += 1) {
+                src = srcs[s];
+                for (r = 0; r < src.length; r += 1) {
+                    res = src[r];
+                    if (!selectors.hasOwnProperty(res.selector)) {
+                        continue;
+                    }
+                    if (!affinities.hasOwnProperty(res.affinity)) {
+                        continue;
+                    }
+                    // TODO:  conditionally skip optional affinities
+                    priority = (s * sourceBase) +
+                        selectors[res.selector] + affinities[res.affinity];
+                    //console.log('--DEBUG-- pri=' + priority + ' --'
+                    //            + ' src' + s + '=' + (s * sourceBase)
+                    //            + ' ' + res.selector + '=' + selectors[res.selector]
+                    //            + ' ' + res.affinity + '=' + affinities[res.affinity]
+                    //            + ' -- ' + res.id);
+                    if (!versions[res.id]) {
+                        versions[res.id] = {};
+                    }
+                    versions[res.id][priority] = res;
+                }
+            }
+            for (resid in versions) {
+                if (versions.hasOwnProperty(resid)) {
+                    highest = Math.max.apply(Math, Object.keys(versions[resid]))
+                    //console.log('--DEBUG-- highest=' + highest + ' -- ' + resid);
+                    out.push(versions[resid][highest]);
+                }
+            }
+            return out;
+        },
+
+
+        /**
+         * Generates a list of all possible context (which is a lot!).
+         * @private
+         * @method _listAllContext
+         * @return {array of objects} all possible contexts
+         */
+        _listAllContexts: function() {
+            var dims = this.config.getDimensions(),
+                nctxs, c, ctxs = [],
+                dn, dname, dnames,
+                dv, dval, dvals,
+                e, each, mod,
+                // only because we might want to change it at some point
+                // (not including it helps reduce the number of contexts)
+                SKIP_RUNTIME = true;
+
+            dims = dims[0].dimensions;
+            dims = this._flattenDims(dims);
+            dnames = Object.keys(dims);
+
+            nctxs = 1;
+            for (dn = 0; dn < dnames.length; dn++) {
+                dname = dnames[dn];
+                if (SKIP_RUNTIME && dname === 'runtime') {
+                    continue;
+                }
+                dvals = dims[dname];
+                if (dname !== 'runtime') {
+                    // we never have indeterminant runtime
+                    dvals.push('*');
+                }
+                nctxs *= dvals.length;
+            }
+
+            for (c = 0; c < nctxs; c++) {
+                ctxs[c] = {};
+            }
+            mod = 1;
+            for (dn = 0; dn < dnames.length; dn++) {
+                dname = dnames[dn];
+                if (SKIP_RUNTIME && dname === 'runtime') {
+                    continue;
+                }
+                dvals = dims[dname];
+                mod *= dvals.length;
+                each = nctxs / mod;
+
+                e = each;
+                dv = 0;
+                for (c = 0; c < nctxs; --e, c++) {
+                    if (0 === e) {
+                        e = each;
+                        dv++;
+                        dv = dv % dvals.length;
+                    }
+                    dval = dvals[dv];
+                    if ('*' !== dval) {
+                        ctxs[c][dname] = dval;
+                    }
+                }
+            }
+            return ctxs;
+        },
+
+
+        /**
+         * Flattens dimensions so that the structure of the dimension values doesn't matter.
+         * @private
+         * @method _flattenDims
+         * @param dims {object} dimensions structure
+         * @return {object}
+         */
+        _flattenDims: function(dims) {
+            var d, dim,
+                name, out = {};
+            for (d = 0; d < dims.length; d++) {
+                dim = dims[d];
+                name = Object.keys(dim)[0];
+                out[name] = this._listKeys(dim[name]);
+            }
+            return out;
+        },
+
+
+        /**
+         * Recursively finds all keys for the object (plus child objects).
+         * @private
+         * @method _listKeys
+         * @param obj {object}
+         * @return {array} list of all keys in the object (no matter how deep)
+         */
+        _listKeys: function(obj) {
+            var k, keys = [];
+            for (k in obj) {
+                if (obj.hasOwnProperty(k)) {
+                    keys.push(k);
+                    if ('object' === typeof obj[k]) {
+                        keys = keys.concat(this._listKeys(obj[k]));
+                    }
+                }
+            }
+            return keys;
         },
 
 
@@ -619,13 +880,13 @@ YUI.add('resource-store', function(Y, NAME) {
          * Finds resources based on our conventions
          * -doesn't- load mojits or their contents.  That's done elsewhere.
          *
+         * @private
          * @method _findResourcesByConvention
          * @param dir {string} directory from which to find resources
          * @param dirType {string} type represented by the "dir" argument.  values are "app", "bundle", "pkg", or "mojit"
          * @param pkg {object} metadata (name and version) about the package
          * @param mojitType {string|null} name of mojit to which the resource belongs
          * @return {array} list of resources
-         * @private
          */
         _findResourcesByConvention: function(dir, dirType, pkg, mojitType) {
             var me = this,
@@ -686,10 +947,10 @@ YUI.add('resource-store', function(Y, NAME) {
         /**
          * Indicates whether file should be skipped based on its path
          *
+         * @private
          * @method _skipBadPath
          * @param pathParts {object} the "source.fs" part of the resource
          * @return {boolean} true indicates that the file should be skipped
-         * @private
          */
         _skipBadPath: function(fs) {
             if (fs.isFile && fs.ext.substr(1).match(isNotAlphaNum)) {
@@ -704,10 +965,10 @@ YUI.add('resource-store', function(Y, NAME) {
          * which the file system is walked is significant within the resource
          * store, e.g., when looking up a matching context.
          *
+         * @private
          * @method _sortedReaddirSync
          * @param path {string} directory to read
          * @return {array} files in the directory
-         * @private
          */
         _sortedReaddirSync: function(path) {
             var out = libfs.readdirSync(path);
@@ -718,12 +979,12 @@ YUI.add('resource-store', function(Y, NAME) {
         /** 
          * Recursively walks a directory
          *
+         * @private
          * @method _walkDirRecursive
          * @param dir {string} directory to start at
          * @param cb {function(error, subdir, name, isFile)} callback called for each file
          * @param _subdir {string} INTERNAL argument, please ignore
          * @return {nothing} value returned via callback
-         * @private
          */
         _walkDirRecursive: function(dir, cb, _subdir) {
             var subdir,
@@ -766,10 +1027,10 @@ YUI.add('resource-store', function(Y, NAME) {
 
         /**
          * takes a list of globs and turns it into a list of matching paths
+         * @private
          * @param prefix {string} prefix for every path in the list
          * @param list {array} list of globs
          * @return {array} list of paths matching the globs
-         * @private
          */
         _globList: function(prefix, list) {
             var found = [],
@@ -786,11 +1047,11 @@ YUI.add('resource-store', function(Y, NAME) {
         },
 
 
-        // from http://stackoverflow.com/questions/171251/
-        // how-can-i-merge-properties-of-two-javascript-objects-dynamically/
-        // 383245#383245
         /**
-         * Recursively merge one object onto another
+         * Recursively merge one object onto another.
+         * From http://stackoverflow.com/questions/171251/
+         * how-can-i-merge-properties-of-two-javascript-objects-dynamically/
+         * 383245#383245.
          *
          * @method mergeRecursive
          * @param dest {object} object to merge into
@@ -867,7 +1128,8 @@ YUI.add('resource-store', function(Y, NAME) {
 }, '0.0.1', { requires: [
     'base',
     'oop',
-    'addon-rs-config'
+    'addon-rs-config',
+    'addon-rs-selector'
 ]});
 
 
@@ -899,9 +1161,14 @@ YUI.add('addon-rs-config', function(Y, NAME) {
         },
 
 
-        // TODO:  needed to break cycle so we don't leak memory?
         destructor: function() {
+            // TODO:  needed to break cycle so we don't leak memory?
             this.rs = null;
+        },
+
+
+        getDimensions: function() {
+            return this.rs.cloneObj(this._ycbDims);
         },
 
 
@@ -912,6 +1179,7 @@ YUI.add('addon-rs-config', function(Y, NAME) {
          * @param fullPath {string} path to JSON file
          * @return {mixed} contents of JSON file
          */
+        // TODO:  async interface
         readConfigJSON: function(fullPath) {
             var json,
                 contents;
@@ -940,6 +1208,7 @@ YUI.add('addon-rs-config', function(Y, NAME) {
          * @param fullPath {string} path to the YCB file
          * @return {object} the contextualized configuration
          */
+        // TODO:  async interface
         readConfigYCB: function(fullPath, ctx) {
             var cacheKey,
                 json,
@@ -1044,6 +1313,62 @@ YUI.add('addon-rs-config', function(Y, NAME) {
     });
     Y.namespace('mojito.addons.rs');
     Y.mojito.addons.rs.config = RSAddonConfig;
+
+}, '0.0.1', { requires: ['plugin', 'oop']});
+
+
+
+YUI.add('addon-rs-selector', function(Y, NAME) {
+
+    var libpath = require('path'),
+        libycb = require('./libs/ycb');
+
+    function RSAddonSelector() {
+        RSAddonSelector.superclass.constructor.apply(this, arguments);
+    }
+    RSAddonSelector.NS = 'selector';
+    RSAddonSelector.DEPS = ['config'];
+    RSAddonSelector.ATTRS = {};
+
+    Y.extend(RSAddonSelector, Y.Plugin.Base, {
+
+        initializer: function(config) {
+            var dims,
+                json;
+            this.rs = config.host;
+            this.appRoot = config.appRoot;
+            this.mojitoRoot = config.mojitoRoot;
+
+            dims = this.rs.config.getDimensions();
+            json = this.rs.config.readConfigJSON(libpath.join(this.appRoot, 'application.json'));
+            json = dims.concat(json);
+            this._appConfigYCB = new libycb.Ycb(json);
+        },
+
+
+        destructor: function() {
+            // TODO:  needed to break cycle so we don't leak memory?
+            this.rs = null;
+        },
+
+
+        getListFromContext: function(ctx) {
+            var sels = ['*'];
+            var p, part, parts;
+            parts = this._appConfigYCB.readNoMerge(ctx, {});
+            for (p = 0; p < parts.length; p++) {
+                part = parts[p];
+                if (part.selector) {
+                    sels.unshift(part.selector);
+                }
+            }
+            return sels;
+        }
+
+
+    });
+    Y.namespace('mojito.addons.rs');
+    Y.mojito.addons.rs.selector = RSAddonSelector;
 
 }, '0.0.1', { requires: ['plugin', 'oop']});
 
