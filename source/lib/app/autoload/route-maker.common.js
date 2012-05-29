@@ -439,7 +439,7 @@ YUI.add('mojito-route-maker', function(Y, NAME) {
 
     Y.mojito.RouteMaker = Maker;
 
-}, '0.1.0', {requires: [
+}, '0.1.0', {  requires: [
     'querystring-stringify-simple',
     'querystring-parse',
     'mojito-util'
