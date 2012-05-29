@@ -7,6 +7,7 @@ YUI.add('mojito-util-tests', function(Y, NAME) {
     
     var suite = new YUITest.TestSuite(NAME),
         A = YUITest.Assert,
+        AA = YUITest.ArrayAssert,
         OA = YUITest.ObjectAssert;
     
     suite.add(new YUITest.TestCase({
@@ -88,6 +89,8 @@ YUI.add('mojito-util-tests', function(Y, NAME) {
             };
             var result = Y.mojito.util.metaMerge(to, from);
             OA.areEqual(from, result, "result should be same as from");
+            AA.itemsAreEqual(from.arr, result.arr,
+                "result array items should equal from array items");
         },
 
         'metaMerge copies "from" properties into "to" objects': function() {
@@ -101,7 +104,8 @@ YUI.add('mojito-util-tests', function(Y, NAME) {
                 a: { one: 1, two: 2 }
             };
             var result = Y.mojito.util.metaMerge(to, from);
-            OA.areEqual(expected.a, result.a, "result should have objects merged");
+            OA.areEqual(expected.a, result.a,
+                "result should have objects merged");
         },
 
         'metaMerge copies "from" properties into "to" objects (DEEP)': function() {
@@ -166,7 +170,44 @@ YUI.add('mojito-util-tests', function(Y, NAME) {
                 arr: [1,2,3,'hello', 'world']
             };
             var result = Y.mojito.util.metaMerge(to, from);
-            OA.areEqual(expected.arr, result.arr, "result array should have added elements");
+            AA.itemsAreEqual(expected.arr, result.arr,
+                "result array should have added elements");
+        },
+
+        'metaMerge uniques arrays': function() {
+            var to = {
+                arr: [1, 2, 3, 'hello']
+            };
+            var from = {
+                arr: ['hello', 'world']
+            };
+            var expected = {
+                arr: [1,2,3,'hello', 'world']
+            };
+            var result = Y.mojito.util.metaMerge(to, from);
+            AA.itemsAreEqual(expected.arr, result.arr,
+                "result array should have merged and uniqued array elements");
+        },
+
+        'metaMerge uniques nested arrays': function() {
+            var to = {
+                arrContainer: {
+                    arr: [1, 2, 3, 'hello']
+                }
+            };
+            var from = {
+                arrContainer: {
+                    arr: ['hello', 'world']
+                }
+            };
+            var expected = {
+                arrContainer: {
+                    arr: [1,2,3,'hello', 'world']
+                }
+            };
+            var result = Y.mojito.util.metaMerge(to, from);
+            AA.itemsAreEqual(expected.arrContainer.arr, result.arrContainer.arr,
+                "result array should have merged and uniqued nested array elements");
         },
 
         'metaMerge overwrites content-type values': function() {
@@ -180,7 +221,7 @@ YUI.add('mojito-util-tests', function(Y, NAME) {
                 'content-type': ['bar']
             };
             var result = Y.mojito.util.metaMerge(to, from);
-            OA.areEqual(expected['content-type'], result['content-type'], "result array should have been overridden");
+            AA.itemsAreEqual(expected['content-type'], result['content-type'], "result array should have been overridden");
         },
 
         'metaMerge only uses the last content-type value': function() {
