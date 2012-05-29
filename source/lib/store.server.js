@@ -60,7 +60,7 @@
  * @module ResourceStore
  * @main
  */
-YUI.add('resource-store', function(Y, NAME) {
+YUI.add('mojito-resource-store', function(Y, NAME) {
 
     var libfs = require('fs'),
         libglob = require('./glob'),
@@ -135,9 +135,9 @@ YUI.add('resource-store', function(Y, NAME) {
             this._jsonCache = {};   // fullPath: contents as JSON object
             this._ycbCache = {};    // fullPath: context: YCB config object
 
-            this._appRVs    = {};   // res.type: array of resource versions
+            this._appRVs    = [];   // array of resource versions
             this._mojitRVs  = {};   // mojitType: array of resource versions
-            this._appResources = {};    // env: posl: res.type: array of resources
+            this._appResources = {};    // env: posl: array of resources
             this._mojitResources = {};  // env: posl: mojitType: array of resources
 
             // We'll start with just our "config" addon.
@@ -228,6 +228,7 @@ YUI.add('resource-store', function(Y, NAME) {
          */
         loadAddons: function() {
             var modules = {},
+                ress,
                 r,
                 res;
 
@@ -235,8 +236,9 @@ YUI.add('resource-store', function(Y, NAME) {
                 this.unplug(name);
             }, this);
 
-            for (r = 0; r < this._appRVs.addon.length; r += 1) {
-                res = this._appRVs.addon[r];
+            ress = this.getResourceVersions({type:'addon', subtype:'rs'});
+            for (r = 0; r < ress.length; r += 1) {
+                res = ress[r];
                 if ('rs' === res.subtype) {
                     // FUTURE:  ideally we shouldn't proscribe the YUI module name of RS addons
                     // (We can/should introspect the file for the YUI module name.)
@@ -266,7 +268,7 @@ YUI.add('resource-store', function(Y, NAME) {
                 dir,
                 info;
 
-            this._appRVs = {};
+            this._appRVs = [];
             this._mojitRVs = {};
 
             walker = new libwalker.BreadthFirst(this._config.root);
@@ -309,6 +311,78 @@ YUI.add('resource-store', function(Y, NAME) {
 
                 this._preloadPackage(info);
             }
+        },
+
+
+        /**
+         * Returns a list of resource versions that match the filter.
+         * @param filter {object} limit returned resource versions to only those whose keys/values match the filter
+         * @return {array of objects} list of matching resource versions
+         */
+        getResourceVersions: function(filter) {
+            var source,
+                out = [],
+                r,
+                res,
+                k,
+                use;
+
+            source = filter.mojit ? this._mojitRVs[filter.mojit] : this._appRVs;
+            for (r = 0; r < source.length; r += 1) {
+                res = source[r];
+                use = true;
+                for (k in filter) {
+                    if (filter.hasOwnProperty(k)) {
+                        if (res[k] !== filter[k]) {
+                            use = false;
+                            break;
+                        }
+                    }
+                }
+                if (use) {
+                    out.push(res);
+                }
+            }
+            return out;
+        },
+
+
+        /**
+         * Returns a list of resources that match the filter.
+         * @param env {string} the runtime environment
+         * @param ctx {object} the context
+         * @param filter {object} limit returned resources to only those whose keys/values match the filter
+         * @return {array of objects} list of matching resources
+         */
+        getResources: function(env, ctx, filter) {
+            var posl,
+                source,
+                out = [],
+                r,
+                res,
+                k,
+                use;
+
+            posl = JSON.stringify(this.selector.getListFromContext(ctx));
+            source = filter.mojit ? 
+                this._mojitResources[env][posl][filter.mojit] : 
+                this._appResources[env][posl];
+            for (r = 0; r < source.length; r += 1) {
+                res = source[r];
+                use = true;
+                for (k in filter) {
+                    if (filter.hasOwnProperty(k)) {
+                        if (res[k] !== filter[k]) {
+                            use = false;
+                            break;
+                        }
+                    }
+                }
+                if (use) {
+                    out.push(res);
+                }
+            }
+            return out;
         },
 
 
@@ -802,10 +876,7 @@ YUI.add('resource-store', function(Y, NAME) {
                 }
                 this._mojitRVs[res.mojit].push(res);
             } else {
-                if (!this._appRVs[res.type]) {
-                    this._appRVs[res.type] = [];
-                }
-                this._appRVs[res.type].push(res);
+                this._appRVs.push(res);
             }
         },
 
@@ -858,15 +929,8 @@ YUI.add('resource-store', function(Y, NAME) {
                         if (!this._appResources[env]) {
                             this._appResources[env] = {}
                         }
-                        if (!this._appResources[env][poslKey]) {
-                            this._appResources[env][poslKey] = {}
-                        }
-                        for (type in this._appRVs) {
-                            if (this._appRVs.hasOwnProperty(type)) {
-                                this._appResources[env][poslKey][type] = 
-                                    this._resolveVersions(affinities, selectors, sourceBase, [ this._appRVs[type] ]);
-                            }
-                        }
+                        this._appResources[env][poslKey] = 
+                            this._resolveVersions(affinities, selectors, sourceBase, [ this._appRVs ]);
 
                         if (!this._mojitResources[env]) {
                             this._mojitResources[env] = {}
