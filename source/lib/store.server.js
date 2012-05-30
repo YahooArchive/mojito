@@ -367,6 +367,9 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             source = filter.mojit ? 
                 this._mojitResources[env][posl][filter.mojit] : 
                 this._appResources[env][posl];
+            // this is taken care of already, and will trip up mojit-level
+            // resources that are actually shared
+            delete filter.mojit;
             for (r = 0; r < source.length; r += 1) {
                 res = source[r];
                 use = true;
