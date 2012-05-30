@@ -27,7 +27,7 @@ var MOJITO_MIDDLEWARE = [
     CORE_MOJITO_MODULES = ['mojito', 'mojito-route-maker'],
 
     MOJITO_INIT = new Date().getTime(),
-    YUI = require('yui3').YUI,
+    YUI = require('yui').YUI,
     serverLog = require('./server-log'),
     requestCounter = 0, // used to scope logs per request
     logger;
@@ -176,16 +176,16 @@ MojitoServer.prototype = {
             }
         });
 
-        Y = YUI({ core: CORE_YUI_MODULES });
+        Y = YUI({ core: CORE_YUI_MODULES, useSync: true });
 
         // Load logger early so that we can plug it in before the other loading
         // happens.
-        Y.useSync('mojito-logger');
+        Y.use('mojito-logger');
         // TODO: extract function
         logger = new Y.mojito.Logger(serverLog.options);
         store.setLogger(logger);
 
-        Y.useSync.apply(Y, CORE_MOJITO_MODULES);
+        Y.use.apply(Y, CORE_MOJITO_MODULES);
 
         loader = new Y.mojito.Loader(appConfig);
 
