@@ -806,16 +806,16 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
             store.preload();
             var spec = { type: 'PagedFlickr' };
             store.expandInstance(spec, {}, function(err, instance) {
-                A.isUndefined(instance.views.index['binder-yui-sorted']['breg']);
-                A.isUndefined(instance.views.index['binder-yui-sorted']['dali-bean']);
-                A.isUndefined(instance.views.index['binder-yui-sorted']['dali-transport-base']);
-                A.isUndefined(instance.views.index['binder-yui-sorted']['io-facade']);
-                A.isUndefined(instance.views.index['binder-yui-sorted']['mojito-tunnel-client']);
-                A.isUndefined(instance.views.index['binder-yui-sorted']['request-handler']);
-                A.isUndefined(instance.views.index['binder-yui-sorted']['requestor']);
-                A.isUndefined(instance.views.index['binder-yui-sorted']['response-formatter']);
-                A.isUndefined(instance.views.index['binder-yui-sorted']['response-processor']);
-                A.isUndefined(instance.views.index['binder-yui-sorted']['simple-request-formatter']);
+                A.isUndefined(instance.views.index['binder-yui-sorted']['breg'], 'breg');
+                A.isUndefined(instance.views.index['binder-yui-sorted']['dali-bean'], 'dali-bean');
+                A.isUndefined(instance.views.index['binder-yui-sorted']['dali-transport-base'], 'dali-transport-base');
+                A.isUndefined(instance.views.index['binder-yui-sorted']['io-facade'], 'io-facade');
+                A.isUndefined(instance.views.index['binder-yui-sorted']['mojito-tunnel-client'], 'mojito-tunnel-client');
+                A.isUndefined(instance.views.index['binder-yui-sorted']['request-handler'], 'request-handler');
+                A.isUndefined(instance.views.index['binder-yui-sorted']['requestor'], 'requestor');
+                A.isUndefined(instance.views.index['binder-yui-sorted']['response-formatter'], 'response-formatter');
+                A.isUndefined(instance.views.index['binder-yui-sorted']['response-processor'], 'response-processor');
+                A.isUndefined(instance.views.index['binder-yui-sorted']['simple-request-formatter'], 'simple-request-formatter');
             });
         },
 

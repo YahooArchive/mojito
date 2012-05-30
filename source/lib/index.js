@@ -27,7 +27,7 @@ var MOJITO_MIDDLEWARE = [
     CORE_MOJITO_MODULES = ['mojito', 'mojito-route-maker'],
 
     MOJITO_INIT = new Date().getTime(),
-    YUI = require('yui3').YUI,
+    YUI = require('yui').YUI,
     serverLog = require('./server-log'),
     requestCounter = 0, // used to scope logs per request
     logger;
@@ -48,19 +48,25 @@ global._mojito = {};
 // This configures YUI with both the Mojito framework and all the
 // YUI modules in the application.
 function configureYUI(YUI, store, load) {
-    var module;
-    YUI.GlobalConfig.groups['mojito-fw'] = store.getYuiConfigFw('server', {});
-    YUI.GlobalConfig.groups['mojito-app'] = store.getYuiConfigApp('server', {});
+    var fw,
+        app,
+        module;
+    fw = store.getYuiConfigFw('server', {});
+    app = store.getYuiConfigApp('server', {});
+    YUI.applyConfig({
+        groups: {
+            'mojito-fw': fw,
+            'mojito-app': app
+        }
+    });
     // also pre-load fw and app modules
-    for (module in YUI.GlobalConfig.groups['mojito-fw'].modules) {
-        if (YUI.GlobalConfig.groups['mojito-fw'].modules.hasOwnProperty(module)
-                ) {
+    for (module in fw.modules) {
+        if (fw.modules.hasOwnProperty(module)) {
             load.push(module);
         }
     }
-    for (module in YUI.GlobalConfig.groups['mojito-app'].modules) {
-        if (YUI.GlobalConfig.groups['mojito-app'].modules.hasOwnProperty(module)
-                ) {
+    for (module in app.modules) {
+        if (app.modules.hasOwnProperty(module)) {
             load.push(module);
         }
     }
@@ -176,16 +182,17 @@ MojitoServer.prototype = {
             }
         });
 
-        Y = YUI({ core: CORE_YUI_MODULES });
+        Y = YUI({ core: CORE_YUI_MODULES, useSync: true });
 
         // Load logger early so that we can plug it in before the other loading
         // happens.
-        Y.useSync('mojito-logger');
+        Y.use('mojito-logger');
         // TODO: extract function
         logger = new Y.mojito.Logger(serverLog.options);
         store.setLogger(logger);
 
-        Y.useSync.apply(Y, CORE_MOJITO_MODULES);
+        Y.use.apply(Y, CORE_MOJITO_MODULES);
+        Y.applyConfig({ useSync: false });
 
         loader = new Y.mojito.Loader(appConfig);
 

@@ -152,6 +152,6 @@ YUI.add('mojito-rest-lib', function(Y, NAME) {
     };
 
 }, '0.1.0', {requires: [
-    'io',
+    'io-base',
     'mojito'
 ]});

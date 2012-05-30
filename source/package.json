@@ -18,9 +18,8 @@
     "dependencies": {
         "connect": "1.8.2",
         "express": "2.5.2",
-        "jsdom": "0.2.0",
         "mime": "1.2.4",
-        "yui3": "0.7.12"
+        "yui": "3.5.1"
     },
     "keywords": [
         "framework",
