@@ -48,19 +48,25 @@ global._mojito = {};
 // This configures YUI with both the Mojito framework and all the
 // YUI modules in the application.
 function configureYUI(YUI, store, load) {
-    var module;
-    YUI.GlobalConfig.groups['mojito-fw'] = store.getYuiConfigFw('server', {});
-    YUI.GlobalConfig.groups['mojito-app'] = store.getYuiConfigApp('server', {});
+    var fw,
+        app,
+        module;
+    fw = store.getYuiConfigFw('server', {});
+    app = store.getYuiConfigApp('server', {});
+    YUI.applyConfig({
+        groups: {
+            'mojito-fw': fw,
+            'mojito-app': app
+        }
+    });
     // also pre-load fw and app modules
-    for (module in YUI.GlobalConfig.groups['mojito-fw'].modules) {
-        if (YUI.GlobalConfig.groups['mojito-fw'].modules.hasOwnProperty(module)
-                ) {
+    for (module in fw.modules) {
+        if (fw.modules.hasOwnProperty(module)) {
             load.push(module);
         }
     }
-    for (module in YUI.GlobalConfig.groups['mojito-app'].modules) {
-        if (YUI.GlobalConfig.groups['mojito-app'].modules.hasOwnProperty(module)
-                ) {
+    for (module in app.modules) {
+        if (app.modules.hasOwnProperty(module)) {
             load.push(module);
         }
     }
@@ -186,6 +192,7 @@ MojitoServer.prototype = {
         store.setLogger(logger);
 
         Y.use.apply(Y, CORE_MOJITO_MODULES);
+        Y.applyConfig({ useSync: false });
 
         loader = new Y.mojito.Loader(appConfig);
 

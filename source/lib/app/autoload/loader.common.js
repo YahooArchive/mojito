@@ -59,23 +59,8 @@ YUI.add('mojito-loader', function(Y, NAME) {
                 async: true,
 
                 onSuccess: function() {
-                    var done = false;
-
-                    if (typeof window !== 'undefined') {
-                        // --- ON CLIENT
-                        done = true;
-                    } else {
-                        // --- ON SERVER
-                        loaded += 1;
-                        if (loaded === scriptsToLoad.length) {
-                            done = true;
-                        }
-                    }
-
-                    if (done) {
-                        Y.log('SUCCESS', 'mojito', NAME);
-                        cb(null);
-                    }
+                    Y.log('SUCCESS', 'mojito', NAME);
+                    cb(null);
                 },
 
                 onFailure: function() {

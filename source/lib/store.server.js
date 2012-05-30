@@ -3718,8 +3718,6 @@ ServerStore.prototype = {
         if ('client' === env) {
             // Use clientYUI to avoid cross-contamination with serverYUI
             YUI = clientYUI;
-            // GlobalConfig is needed on nodejs but is invalid on the client
-            delete YUI.GlobalConfig;
         }
 
         // We don't actually need the full list, just the base required modules.
@@ -3732,9 +3730,9 @@ ServerStore.prototype = {
             }
             return { sorted: Object.keys(required), paths: sortedPaths };
         }
-        
-        //TODO davglass USE resolve her
+
         Y = YUI({ useSync: true }).use('loader-base');
+        Y.applyConfig({ useSync: false });
         //Use ignoreRegistered here instead of the old `delete YUI.Env._renderedMods` hack
         loader = new Y.Loader({ lang: ctx.lang, ignoreRegistered: true });
         
