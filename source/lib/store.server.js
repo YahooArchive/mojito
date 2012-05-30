@@ -3737,7 +3737,7 @@ ServerStore.prototype = {
         // We need to clear YUI's cached dependencies, since there's no
         // guarantee that the previously calculated dependencies have been done
         // using the same context as this calculation.
-        delete YUI.Env._renderedMods
+        delete YUI.Env._renderedMods;
 
         //Use ignoreRegistered here instead of the old `delete YUI.Env._renderedMods` hack
         loader = new Y.Loader({ lang: ctx.lang, ignoreRegistered: true });
