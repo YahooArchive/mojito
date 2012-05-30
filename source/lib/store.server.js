@@ -3735,7 +3735,7 @@ ServerStore.prototype = {
         Y.applyConfig({ useSync: false });
         //Use ignoreRegistered here instead of the old `delete YUI.Env._renderedMods` hack
         loader = new Y.Loader({ lang: ctx.lang, ignoreRegistered: true });
-        
+
         //Only override the default if it's required
         if (yuiConfig && yuiConfig.base) {
             loader.base = yuiConfig.base;
