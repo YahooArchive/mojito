@@ -23,7 +23,7 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
             var store = new ResourceStore(fixtures);
             store.preload();
 
-            //Y.log(JSON.stringify(store,null,4));
+            //Y.log(Y.JSON.stringify(store,null,4));
             A.isTrue(store._root === fixtures);
         },
 
@@ -33,7 +33,7 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
                 store = new ResourceStore(fixtures);
             store.preload();
 
-            //Y.log(JSON.stringify(store,null,4));
+            //Y.log(Y.JSON.stringify(store,null,4));
             A.isTrue(store._root === fixtures);
         },
 
@@ -491,7 +491,7 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
             store.preload();
             var instance = 'foo';
             var context = {};
-            store._expandInstanceCache.server[JSON.stringify(instance)+JSON.stringify(context)] = 'bar';
+            store._expandInstanceCache.server[Y.JSON.stringify(instance)+Y.JSON.stringify(context)] = 'bar';
             store.expandInstance(instance, context, function(err, instance) {
                 A.areEqual('bar', instance);
             });

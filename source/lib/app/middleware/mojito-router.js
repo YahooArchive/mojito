@@ -11,7 +11,8 @@
 var logger,
     liburl = require('url'),
     RX_END_SLASHES = /\/+$/,
-    NAME = 'UriRouter';
+    NAME = 'UriRouter',
+    Y = require('yui3').YUI().useSync('json-parse', 'json-stringify');
 
 
 function simpleMerge(to, from) {
@@ -110,7 +111,7 @@ Router.prototype = {
             };
 
             // logger.log('Attaching command: ' +
-            //     JSON.stringify(command, null, 2), 'debug', 'uri-router');
+            //     Y.JSON.stringify(command, null, 2), 'debug', 'uri-router');
 
             // attach the command to the route for the Mojito handler to process
             req.command = command;

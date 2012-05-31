@@ -37,9 +37,9 @@ module.exports = {
         lookupPaths = this._getLookupPaths(rawConfig.dimensions, context);
 
         if(debug){
-            console.log(JSON.stringify(context,null,4));
-            console.log(JSON.stringify(rawConfig,null,4));
-            console.log(JSON.stringify(lookupPaths,null,4));
+            console.log(Y.JSON.stringify(context,null,4));
+            console.log(Y.JSON.stringify(rawConfig,null,4));
+            console.log(Y.JSON.stringify(lookupPaths,null,4));
         }
 
         // Now we simply merge each macting settings section we find into the config
@@ -47,7 +47,7 @@ module.exports = {
             if(rawConfig.settings[lookupPaths[path]]){
                 if (debug) {
                     console.log('----USING---- ' + lookupPaths[path]);
-                    console.log(JSON.stringify(rawConfig.settings[lookupPaths[path]],null,4));
+                    console.log(Y.JSON.stringify(rawConfig.settings[lookupPaths[path]],null,4));
                 }
                 config = objectMerge(rawConfig.settings[lookupPaths[path]], config);
             }
@@ -194,7 +194,7 @@ module.exports = {
                     settings[key] = bundle[pos];
                 }
                 else{
-                    throw new Error("The settings group '"+JSON.stringify(context)+"' has already been added.");
+                    throw new Error("The settings group '"+Y.JSON.stringify(context)+"' has already been added.");
                 }
             }
         }
@@ -360,7 +360,7 @@ module.exports = {
                     dimensionPaths[name] = this._flattenDimension('', dimensions[pos][name]);
                 }
             }
-        }//console.log(JSON.stringify(dimensionPaths,null,4));
+        }//console.log(Y.JSON.stringify(dimensionPaths,null,4));
 
         return dimensionPaths;
     },

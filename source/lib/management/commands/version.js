@@ -11,7 +11,8 @@
 var fs = require('fs'),
     path = require('path'),
     utils = require('../utils'),
-    usage = 'mojito version [app | mojit] [<name>]';
+    usage = 'mojito version [app | mojit] [<name>]',
+    Y = require('yui3').YUI().useSync('json-parse', 'json-stringify');
 
 
 /*
@@ -22,7 +23,7 @@ function reportVersion(type, packagePath) {
     var packageJSON;
 
     try {
-        packageJSON = JSON.parse(String(fs.readFileSync(
+        packageJSON = Y.JSON.parse(String(fs.readFileSync(
             path.join(packagePath, 'package.json')
         )));
     } catch (err) {
