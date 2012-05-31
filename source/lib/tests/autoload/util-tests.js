@@ -132,7 +132,7 @@ YUI.add('mojito-util-tests', function(Y, NAME) {
             var result = Y.mojito.util.metaMerge(to, from);
             console.log(result);
             OA.areEqual(expected.a.b, result.a.b, "result should have objects merged (a.b)");
-            OA.areEqual(expected.a.c, result.a.c, "result should have objects merged (a.c)");
+            A.areSame(expected.a.c, result.a.c, "result should have objects merged (a.c)");
         },
 
         'metaMerge does not overwrite "from" properties into "to" objects (DEEP)': function() {
@@ -208,7 +208,7 @@ YUI.add('mojito-util-tests', function(Y, NAME) {
                 view: 'foo'
             };
             var result = Y.mojito.util.metaMerge(to, from);
-            OA.areEqual(expected.view, result.view, "meta view data should be retained");
+            A.areSame(expected.view, result.view, "meta view data should be retained");
         },
 
         'TODO: metaMerge sees content-type as case insensitive': function() {
