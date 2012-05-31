@@ -34,8 +34,7 @@ var pathlib = require('path'),
     coverageFile = pathlib.join(coverageDir, 'coverage.json'),
 
     YUI = require('yui').YUI,
-    YUITest = require(pathlib.join(fwTestsRoot,
-        'harness/lib/yuitest/javascript/build/yuitest/yuitest-node')).YUITest,
+    YUITest = require('yuitest').YUITest,
     TestRunner = YUITest.TestRunner,
 
     testStart,
@@ -552,7 +551,9 @@ function instrumentDirectory(from, verbose, testType, callback) {
             dimFrom = pathlib.join(mojitoTmp, 'lib/dimensions.json'),
             dimTo = pathlib.join(mojitoInstrumentedDir, 'lib/dimensions.json'),
             libsFrom = pathlib.join(realPathFrom, 'lib/libs'),
-            libsTo = pathlib.join(mojitoInstrumentedDir, 'lib/libs');
+            libsTo = pathlib.join(mojitoInstrumentedDir, 'lib/libs'),
+            nodeModulesFrom = pathlib.join(realPathFrom, 'node_modules'),
+            nodeModulesTo = pathlib.join(mojitoInstrumentedDir, 'node_modules');
         if (verbose) {
             utils.log('stdout: ' + stdout);
             utils.log('stderr: ' + stderr);
@@ -570,6 +571,7 @@ function instrumentDirectory(from, verbose, testType, callback) {
                         ' coverage directory');
                 }
                 // copy remaining non-js files into instrumented directory
+                copyExclude(nodeModulesFrom, nodeModulesTo, [/\.svn/]);
                 copyExclude(libsFrom, libsTo, [/\.svn/]);
                 copyExclude(testsFrom, testsTo, [/\.svn/]);
                 copyFile(packageFrom, packageTo);
@@ -683,7 +685,9 @@ runTests = function(opts) {
                 fullpath: pathlib.join(mojitoPath,
                     'lib/app/autoload/mojito.common.js')
             };
-            YUI.GlobalConfig.groups.mojitTests = { modules: testConfigs };
+            YUI.applyConfig({
+                modules: testConfigs
+            });
         } else {
             ResourceStore = require(pathlib.join(targetMojitoPath,
                 'lib/store.server.js'));
