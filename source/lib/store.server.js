@@ -40,11 +40,11 @@ var libfs = require('fs'),
     // nodejs-yui3 has global state about which modules are loaded. Use
     // multiple require()'d instances as a wall to prevent cross-contamination
     // when using loader for dependency calculations.
-    utilYUI = require('yui3').YUI,
-    serverYUI = require('yui3').YUI,
-    clientYUI = require('yui3').YUI,
+    utilYUI = require('yui').YUI,
+    serverYUI = require('yui').YUI,
+    clientYUI = require('yui').YUI,
 
-    Y = utilYUI().useSync('intl'),
+    Y = utilYUI({ useSync: true }).use('intl'),
 
     mojitoRoot = __dirname,
 
@@ -3718,8 +3718,6 @@ ServerStore.prototype = {
         if ('client' === env) {
             // Use clientYUI to avoid cross-contamination with serverYUI
             YUI = clientYUI;
-            // GlobalConfig is needed on nodejs but is invalid on the client
-            delete YUI.GlobalConfig;
         }
 
         // We don't actually need the full list, just the base required modules.
@@ -3733,20 +3731,20 @@ ServerStore.prototype = {
             return { sorted: Object.keys(required), paths: sortedPaths };
         }
 
-        Y = YUI().useSync('loader-base');
-        loader = new Y.Loader({ lang: ctx.lang });
+        Y = YUI({ useSync: true }).use('loader-base');
+        Y.applyConfig({ useSync: false });
 
         // We need to clear YUI's cached dependencies, since there's no
         // guarantee that the previously calculated dependencies have been done
         // using the same context as this calculation.
         delete YUI.Env._renderedMods;
 
-        // This approach seems odd, but it's what the YUI Configurator is also
-        // doing.
+        //Use ignoreRegistered here instead of the old `delete YUI.Env._renderedMods` hack
+        loader = new Y.Loader({ lang: ctx.lang, ignoreRegistered: true });
+
+        //Only override the default if it's required
         if (yuiConfig && yuiConfig.base) {
             loader.base = yuiConfig.base;
-        } else {
-            loader.base = Y.Env.meta.base + Y.Env.meta.root;
         }
         loader.addGroup({modules: modules}, mojitType);
         loader.calculate({required: required});
