@@ -211,6 +211,15 @@ callback({
                                 ' array. \'children\' must be an object.');
             }
 
+            // check to ensure children doesn't have a null child
+            // in which case it will be automatically discarded to
+            // facilitate disabling childs based on the context.
+            Y.Object.each(cfg.children, function(child, name) {
+                if (!child) {
+                    delete cfg.children[name];
+                }
+            });
+
             meta.children = cfg.children;
 
             buffer.__counter__ = Y.Object.size(cfg.children);
