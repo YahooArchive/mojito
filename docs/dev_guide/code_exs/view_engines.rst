@@ -1,4 +1,4 @@
-
+﻿
 
 ======================================
 Creating and Using a View Engine Addon 
@@ -21,24 +21,214 @@ The following topics will be covered:
 - using Handlebars in the view template
 
 
-
 Implementation Notes
 ####################
 
+Before you create your application, you should take a look at the following sections to better understand
+how the application works. For more details about view engines in Mojito, see `Mojito Topics: View Engines <../topics/mojito_extensions.html#view-engines>`_.
 
 What Is a View Engine?
 ----------------------
 
+A view engine is code that applies data returned by the controller to a view. This is most often done by interpreting the 
+view as a template. View engines in Mojito can be at either the application or mojit level. This example
+uses an application-level view engine addon that could theoretically be used by multiple mojits.
 
 
 Installing a Rendering Engine
 -----------------------------
 
+You could write your own rendering engine or copy code into your Mojito application, but this example 
+follows the typical use case of installing a rendering engine with ``npm``. We will be 
+installing the rendering engine `Handlebars <http://handlebarsjs.com>`_ with ``npm``.
+
+Your Mojito application is simply a ``npm`` module that has a ``package.json`` file and
+can have a ``node_modules`` directory for locally installing other modules.
+
+From your application directory, you would use ``npm`` to install ``handlebars``:
+
+``app_dir/ $ npm install handlebars --local``
+
+After you have installed ``handlebars``, a ``node_modules`` directory will be created with the following contents:
+
+::
+
+   node_modules
+   └── handlebars
+       ├── LICENSE
+       ├── README.markdown
+       ├── bin
+       │   └── handlebars
+       ├── lib
+       │   ├── handlebars
+       │   │   ├── base.js
+       │   │   ├── compiler
+       │   │   │   ├── ast.js
+       │   │   │   ├── base.js
+       │   │   │   ├── compiler.js
+       │   │   │   ├── index.js
+       │   │   │   ├── parser.js
+       │   │   │   ├── printer.js
+       │   │   │   └── visitor.js
+       │   │   ├── runtime.js
+       │   │   └── utils.js
+       │   └── handlebars.js
+       ├── node_modules
+       ...
+       
+       
 Creating the View Engine Addon
 ------------------------------
 
-Handlebar Template
-------------------
+The view engine addon is a YUI module like other addons that lives in the ``addons/view-engines`` directory. For the application-level view engine addons that
+this example is using, the view engine addon will be in ``{app_dir}/addons/view-engines``.
+
+Requirements
+~~~~~~~~~~~~
+
+The view engine addon must have the following:
+
+- a ``YUI.add`` statement to register the addon. For example, we register the view engine addon with the
+  name ``addons-viewengine-hb`` in our code example as seen below.
+
+   .. code-block:: javascript
+
+      YUI.add('addons-viewengine-hb', function(Y, NAME) {
+    
+      // The addon name 'addons-viewengine-hb' is registered by YUI.add
+    
+      }, '0.1.0', {requires: []});
+      
+- a prototype of the object has the following two methods ``render`` and ``compiler`` as shown below. We will look
+  at the ``render`` and ``compile`` methods more closely in the next section.
+
+   .. code-block:: javascript
+   
+      ...
+        
+      HbAdapter.prototype = {
+       
+        render: function(data, mojitType, tmpl, adapter, meta, more) {
+          ...
+        },
+        compiler: function(tmpl) {
+          ...
+        }
+        ...      
+
+- an object that is assigned to ``Y.mojito.addons.viewEngines.{view_engine_name}``. In our example,
+  the constructor ``HbAdapter`` is assigned to the namespace ``Y.namespace('mojito.addons.viewEngines').hb`` or
+  ``Y.mojito.addons.viewEngines.hb``.
+   
+   .. code-block:: javascript
+      
+      ...
+        
+      function HbAdapter(viewId) {
+        this.viewId = viewId;
+      }
+      ...
+      Y.namespace('mojito.addons.viewEngines').hb = HbAdapter;
+      
+
+
+render and compile Methods
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The ``render`` method renders the template and sends the output to the methods ``adapter.flush`` or ``adapter.done``
+that execute and return the page to the client.
+
+The implementation of how the ``render`` method is up to the developer. You could write code or use a
+library to render the template, but in this example we use the instance ``hb`` of ``handlebars`` to
+compile the view.
+
+.. code-block:: javascript
+
+     ...
+     
+     /**
+     * Renders the Handlebars template using the data provided.
+     * @method render
+     * @param {object} data The data to render.
+     * @param {string} mojitType The name of the mojit type.
+     * @param {string} tmpl The name of the template to render.
+        * @param {object} adapter The output adapter to use.
+        * @param {object} meta Optional metadata.
+        * @param {boolean} more Whether there will be more content later.
+        */
+        render: function(data, mojitType, tmpl, adapter, meta, more) {
+            var me = this,
+                handleRender = function(output) {
+
+                    output.addListener('data', function(c) {
+                        adapter.flush(c, meta);
+                    });
+
+                    output.addListener('end', function() {
+                        if (!more) {
+                            Y.log('render complete for view "' +
+                                me.viewId + '"',
+                                'mojito', 'qeperf');
+                            adapter.done('', meta);
+                        }
+                    });
+                };
+
+            /*
+             * We can't use pre-compiled Mu templates on the server :(
+             */
+
+            var template = hb.compile(this.compiler(tmpl));
+            var result = template(data);
+            console.log(result);
+            adapter.done(result,meta);
+ 
+        },
+        ...
+        
+The ``compile`` method is required to run the command ``mojito compile views``. In our example, 
+the ``compile`` method also reads the view template file and returns a string to ``render``
+so that it can be compiled by ``handlebars``.
+
+.. code-block:: javascript
+
+   ...
+   
+   compiler: function(tmpl) {
+     return fs.readFileSync(tmpl, 'utf8');
+   }
+
+
+Handlebar Templates
+-------------------
+
+Handlebars are similar to Mustache tags, but have some additional features such as registering help function and built-in block helpers. 
+Mustache templates are actually compatible with Handlebars, so both view templates used in the example could have been rendered by the view 
+engine addon for Handlebars. We're just going to look at some of the Handlebars expressions used in this example, so please see 
+`Handlebars expressions <http://handlebarsjs.com/expressions.html>`_ for more information.
+
+
+One of the things that we mentioned already is block helpers, which help you iterate through arrays. 
+In this example, the view template uses the block helper ``#each`` (shown below) to iterate through the array
+of strings containing some of the available view engine names such as Jade, EJS, etc.
+
+.. code-block:: html
+   
+   <ul>
+   {{#each view_engines}}
+     <li>{{this}}</li>
+   {{/each}} 
+   </ul>
+
+Another interesting block helper used in this example is ``#with``, which will invoke
+a block when given a specified context. For example, in the code snippet below,
+if the ``ul`` object is given, the property ``title`` is evaluated. 
+
+.. code-block:: html
+
+   {{#with ul}}
+     <h3>{{title}}</h3>
+   {{/with}}
 
 Setting Up this Example
 #######################
