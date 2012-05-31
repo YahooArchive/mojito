@@ -12,7 +12,7 @@ Summary
 #######
 
 This example shows how to install a third-party rendering engine, create a view engine addon 
-that uses the installed rendering engine and a view template for the view engine. 
+that uses the installed rendering engine and a view template. 
 
 The following topics will be covered:
 
@@ -25,7 +25,9 @@ Implementation Notes
 ####################
 
 Before you create your application, you should take a look at the following sections to better understand
-how the application works. For more details about view engines in Mojito, see `Mojito Topics: View Engines <../topics/mojito_extensions.html#view-engines>`_.
+how the application works. The focus here is to give you a practical example that you can use
+to add your own view engines and also to show some of important points of using view engines in Mojito applications.
+For more comprehensive but less practical documentation, see `Mojito Topics: View Engines <../topics/mojito_extensions.html#view-engines>`_.
 
 What Is a View Engine?
 ----------------------
@@ -89,44 +91,44 @@ The view engine addon must have the following:
 - a ``YUI.add`` statement to register the addon. For example, we register the view engine addon with the
   name ``addons-viewengine-hb`` in our code example as seen below.
 
-   .. code-block:: javascript
+.. code-block:: javascript
 
-      YUI.add('addons-viewengine-hb', function(Y, NAME) {
+   YUI.add('addons-viewengine-hb', function(Y, NAME) {
     
-      // The addon name 'addons-viewengine-hb' is registered by YUI.add
+     // The addon name 'addons-viewengine-hb' is registered by YUI.add
     
-      }, '0.1.0', {requires: []});
+   }, '0.1.0', {requires: []});
       
 - a prototype of the object has the following two methods ``render`` and ``compiler`` as shown below. We will look
   at the ``render`` and ``compile`` methods more closely in the next section.
 
-   .. code-block:: javascript
+.. code-block:: javascript
    
-      ...
+   ...
         
-      HbAdapter.prototype = {
+   HbAdapter.prototype = {
        
-        render: function(data, mojitType, tmpl, adapter, meta, more) {
+     render: function(data, mojitType, tmpl, adapter, meta, more) {
           ...
-        },
-        compiler: function(tmpl) {
-          ...
-        }
-        ...      
+     },
+     compiler: function(tmpl) {
+       ...
+     }
+     ...      
 
 - an object that is assigned to ``Y.mojito.addons.viewEngines.{view_engine_name}``. In our example,
   the constructor ``HbAdapter`` is assigned to the namespace ``Y.namespace('mojito.addons.viewEngines').hb`` or
   ``Y.mojito.addons.viewEngines.hb``.
    
-   .. code-block:: javascript
+.. code-block:: javascript
       
-      ...
+   ...
         
-      function HbAdapter(viewId) {
-        this.viewId = viewId;
-      }
-      ...
-      Y.namespace('mojito.addons.viewEngines').hb = HbAdapter;
+   function HbAdapter(viewId) {
+     this.viewId = viewId;
+   }
+   ...
+   Y.namespace('mojito.addons.viewEngines').hb = HbAdapter;
       
 
 
@@ -288,39 +290,35 @@ To set up and run ``hb_view_engine_demo``:
       YUI.add('addons-viewengine-hb', function(Y, NAME) {
 	
         var hb = require('handlebars'),
-			 fs = require('fs');
-		function HbAdapter(viewId) {
-			this.viewId = viewId;
-		}
-	
-		HbAdapter.prototype = {
-
-	      render: function(data, mojitType, tmpl, adapter, meta, more) {
-	        var me = this,
-		    handleRender = function(output) {
+        fs = require('fs');
+        function HbAdapter(viewId) {
+          this.viewId = viewId;
+        }
+        HbAdapter.prototype = {
+        
+          render: function(data, mojitType, tmpl, adapter, meta, more) {
+            var me = this,
+            handleRender = function(output) {
 		    
-			  output.addListener('data', function(c) {
-			    adapter.flush(c, meta);
-			  });
-	
-			  output.addListener('end', function() {
-			    if (!more) {
-				  adapter.done('', meta);
-				}
-              });
-			};
+		      output.addListener('data', function(c) {
+		        adapter.flush(c, meta);
+		      });
+		      output.addListener('end', function() {
+		        if (!more) {
+		          adapter.done('', meta);
+		        }
+		      });
+		    };
 		    Y.log('Rendering template "' + tmpl + '"', 'mojito', NAME);
-			var template = hb.compile(this.compiler(tmpl));
-			var result = template(data);
-			console.log(result);
-			adapter.done(result,meta);
-	 
-	      },
-	      compiler: function(tmpl) {
+		    var template = hb.compile(this.compiler(tmpl));
+		    var result = template(data);
+		    console.log(result);
+		    adapter.done(result,meta);
+		  },
+		  compiler: function(tmpl) {
 		    return fs.readFileSync(tmpl, 'utf8');
 		  }
 		};
-	
 		Y.namespace('mojito.addons.viewEngines').hb = HbAdapter;
       }, '0.1.0', {requires: []});
 
