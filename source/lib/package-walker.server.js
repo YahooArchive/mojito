@@ -11,14 +11,15 @@
 
 
 var libpath = require('path'),
-    libfs = require('fs');
+    libfs = require('fs'),
+    Y = require('yui3').YUI().useSync('json-parse', 'json-stringify');
 
 
 function copy(x) {
     if (!x) {
         return x;
     }
-    return JSON.parse(JSON.stringify(x));
+    return Y.JSON.parse(Y.JSON.stringify(x));
 }
 
 
@@ -91,7 +92,7 @@ BreadthFirstPackageWalker.prototype._walkPackage = function(work, cb) {
     if (libpath.existsSync(packagePath)) {
         try {
             pkg = libfs.readFileSync(packagePath, 'utf-8');
-            pkg = JSON.parse(pkg);
+            pkg = Y.JSON.parse(pkg);
             work.pkg = pkg;
         } catch (e) {
             cb(e);

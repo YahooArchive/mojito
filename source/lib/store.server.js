@@ -44,7 +44,7 @@ var libfs = require('fs'),
     serverYUI = require('yui').YUI,
     clientYUI = require('yui').YUI,
 
-    Y = utilYUI({ useSync: true }).use('intl'),
+    Y = utilYUI({ useSync: true }).use('intl', 'json-parse', 'json-stringify'),
 
     mojitoRoot = __dirname,
 
@@ -527,7 +527,7 @@ ServerStore.prototype = {
         var self = this,
             base,
             appConfig = this.getAppConfig(ctx, 'application'),
-            cacheKey = JSON.stringify(instance) + JSON.stringify(
+            cacheKey = Y.JSON.stringify(instance) + Y.JSON.stringify(
                 this._getValidYCBContext(ctx)
             ),
             cacheValue = this._expandInstanceCache[env][cacheKey];
@@ -1681,7 +1681,7 @@ ServerStore.prototype = {
         console.log('--PACKAGE-- ' + info.depth + ' ' + info.pkg.name + '@' + info.pkg.version
                 + ' \t' + (info.pkg.yahoo && info.pkg.yahoo.mojito && info.pkg.yahoo.mojito.type)
                 + ' \t[' + info.parents.join(',') + ']'
-        //      + ' \t-- ' + JSON.stringify(info.inherit)
+        //      + ' \t-- ' + Y.JSON.stringify(info.inherit)
         );
         */
         pkg = {
@@ -2888,7 +2888,7 @@ ServerStore.prototype = {
             contents = this._libs.fs.readFileSync(fullpath, 'utf-8');
 
         try {
-            json = JSON.parse(contents);
+            json = Y.JSON.parse(contents);
         } catch (e) {
             logger.log(this._reportJavaScriptSyntaxErrors(contents, fullpath),
                 'warn', NAME);
@@ -3007,7 +3007,7 @@ ServerStore.prototype = {
         ctx = this._getValidYCBContext(ctx);
 
         //cache key only needs to account for dynamic context
-        cacheKey = JSON.stringify(ctx);
+        cacheKey = Y.JSON.stringify(ctx);
 
         //logger.log('_readConfigYCB('+fullpath+')', 'mojito', NAME);
 
@@ -3066,7 +3066,7 @@ ServerStore.prototype = {
         }
         try {
             contents = this._libs.fs.readFileSync(path, 'utf-8');
-            json = JSON.parse(contents);
+            json = Y.JSON.parse(contents);
         } catch (e) {
             logger.log(this._reportJavaScriptSyntaxErrors(contents, path),
                 'warn', NAME);

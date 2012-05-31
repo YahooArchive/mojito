@@ -18,7 +18,8 @@ var libpath = require('path'),
     MODE_755 = parseInt('755', 8),
     mkdirP,
     rmdirR,
-    writeWebPagesToFiles;
+    writeWebPagesToFiles,
+    Y = require('yui3').YUI().useSync('json-parse', 'json-stringify');
 
 
 /**
@@ -99,7 +100,7 @@ exports.run = function(params, options, callback) {
 
     // TODO:  probably should try to use store to read appConfig
     try {
-        appConfig = JSON.parse(String(fs.readFileSync(libpath.join(store._root,
+        appConfig = Y.JSON.parse(String(fs.readFileSync(libpath.join(store._root,
             'application.json'))));
         appConfig = appConfig[0];
 

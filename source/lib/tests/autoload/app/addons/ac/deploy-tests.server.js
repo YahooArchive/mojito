@@ -86,7 +86,7 @@ YUI.add('mojito-deploy-addon-tests', function(Y, NAME) {
             A.areSame(1, blobs.length, 'wrong number of blobs');
             var matches = blobs[0].match(/YUI_config = ({[^}]+})/);
             A.isNotUndefined(matches[1], 'failed to find YUI_config in blob');
-            var config = JSON.parse(matches[1]);
+            var config = Y.JSON.parse(matches[1]);
             A.isObject(config, 'failed to parse YUI_config');
             A.areSame('bar', config.foo, 'failed to base YUI_config on application.yui.config');
             A.areSame('klingon', config.lang, 'wrong lang used');
@@ -423,5 +423,6 @@ YUI.add('mojito-deploy-addon-tests', function(Y, NAME) {
     
 
 }, '0.0.1', {requires: [
-    'mojito-deploy-addon'
+    'mojito-deploy-addon',
+    'json'
 ]});

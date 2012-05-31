@@ -10,7 +10,8 @@
 
 var fs = require('fs'),
     path = require('path'),
-    utils = require('../utils');
+    utils = require('../utils'),
+    Y = require('yui3').YUI().useSync('json-parse', 'json-stringify');
 
 
 /**
@@ -31,7 +32,7 @@ exports.run = function(params, options, callback) {
     var pack;
 
     try {
-        pack = JSON.parse(String(fs.readFileSync(path.join(process.cwd(),
+        pack = Y.JSON.parse(String(fs.readFileSync(path.join(process.cwd(),
             'package.json'))));
     } catch (err) {
         utils.error('Error getting ino.');

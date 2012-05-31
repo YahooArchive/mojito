@@ -271,7 +271,7 @@ YUI.add('mojito-assets-addon-tests', function(Y, NAME) {
             A.isNotUndefined(results);
             var expected = { top: { blob: [ '<style type="text/css">\nfile-contents</style>\n' ] } };
             console.log(results);
-            A.areEqual(JSON.stringify(expected), JSON.stringify(results));
+            A.areEqual(Y.JSON.stringify(expected), Y.JSON.stringify(results));
         }
 
 
