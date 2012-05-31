@@ -164,9 +164,6 @@ compile the view.
 
          output.addListener('end', function() {
            if (!more) {
-             Y.log('render complete for view "' +
-               me.viewId + '"',
-               'mojito', 'qeperf');
              adapter.done('', meta);
            }
          });
@@ -308,9 +305,6 @@ To set up and run ``hb_view_engine_demo``:
 	
 			  output.addListener('end', function() {
 			    if (!more) {
-				  Y.log('render complete for view "' +
-									me.viewId + '"',
-									'mojito', 'qeperf');
 				  adapter.done('', meta);
 				}
               });
