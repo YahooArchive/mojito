@@ -685,12 +685,8 @@ runTests = function(opts) {
                 fullpath: pathlib.join(mojitoPath,
                     'lib/app/autoload/mojito.common.js')
             };
-            YUI.addConfig({
-                groups: {
-                    mojitTests: {
-                        modules: testConfigs
-                    }
-                }
+            YUI.applyConfig({
+                modules: testConfigs
             });
         } else {
             ResourceStore = require(pathlib.join(targetMojitoPath,
