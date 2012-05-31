@@ -91,46 +91,45 @@ The view engine addon must have the following:
 - a ``YUI.add`` statement to register the addon. For example, we register the view engine addon with the
   name ``addons-viewengine-hb`` in our code example as seen below.
 
-.. code-block:: javascript
+   .. code-block:: javascript
 
-   YUI.add('addons-viewengine-hb', function(Y, NAME) {
+      YUI.add('addons-viewengine-hb', function(Y, NAME) {
     
-     // The addon name 'addons-viewengine-hb' is registered by YUI.add
+        // The addon name 'addons-viewengine-hb' is registered by YUI.add
     
-   }, '0.1.0', {requires: []});
+      }, '0.1.0', {requires: []});
       
 - a prototype of the object has the following two methods ``render`` and ``compiler`` as shown below. We will look
   at the ``render`` and ``compile`` methods more closely in the next section.
 
-.. code-block:: javascript
+   .. code-block:: javascript
    
-   ...
+      ...
         
-   HbAdapter.prototype = {
+      HbAdapter.prototype = {
        
-     render: function(data, mojitType, tmpl, adapter, meta, more) {
+        render: function(data, mojitType, tmpl, adapter, meta, more) {
           ...
-     },
-     compiler: function(tmpl) {
-       ...
-     }
-     ...      
-
+        },
+        compiler: function(tmpl) {
+          ...
+        }
+        ...      
+        
 - an object that is assigned to ``Y.mojito.addons.viewEngines.{view_engine_name}``. In our example,
   the constructor ``HbAdapter`` is assigned to the namespace ``Y.namespace('mojito.addons.viewEngines').hb`` or
   ``Y.mojito.addons.viewEngines.hb``.
    
-.. code-block:: javascript
+   .. code-block:: javascript
       
-   ...
+      ...
         
-   function HbAdapter(viewId) {
-     this.viewId = viewId;
-   }
-   ...
-   Y.namespace('mojito.addons.viewEngines').hb = HbAdapter;
+      function HbAdapter(viewId) {
+        this.viewId = viewId;
+      }
+      ...
+      Y.namespace('mojito.addons.viewEngines').hb = HbAdapter;
       
-
 
 render and compile
 ~~~~~~~~~~~~~~~~~~
