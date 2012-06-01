@@ -224,11 +224,11 @@ if the ``ul`` object is given, the property ``title`` is evaluated.
 Setting Up this Example
 #######################
 
-To set up and run ``hb_view_engine_demo``:
+To set up and run ``adding_view_engines``:
 
 #. Create your application.
 
-   ``$ mojito create app hb_view_engine_demo``
+   ``$ mojito create app adding_view_engines``
 
 #. Change to the application directory.
 
@@ -279,7 +279,7 @@ To set up and run ``hb_view_engine_demo``:
 
    ``$ mkdir -p addons/view-engines``
    
-#. Change to the ``view-engines`` directory that you created.
+#. Change to the ``addons/view-engines`` directory that you created.
 
 
 #. Create the view engine addon file ``hb.server.js`` with the following code:
@@ -321,7 +321,7 @@ To set up and run ``hb_view_engine_demo``:
 		Y.namespace('mojito.addons.viewEngines').hb = HbAdapter;
       }, '0.1.0', {requires: []});
 
-#. Change to the ``hb_view_engine_demo/mojits/myMojit`` directory.
+#. Change to the ``adding_view_engines/mojits/myMojit`` directory.
 
 #. Replace the code in ``controller.server.js`` with the following:
 
@@ -411,8 +411,8 @@ To set up and run ``hb_view_engine_demo``:
 Source Code
 ###########
 
-- `View Engines <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/hb_view_engine_demo/>`_
-- `View Engine Addon <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/hb_view_engine_demo/addons/view-engines/hb.server.js>`_
-- `View Templates <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/hb_view_engine_demo/mojits/myMojit/views/>`_
+- `View Engines <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/adding_view_engines/>`_
+- `View Engine Addon <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/adding_view_engines/addons/view-engines/hb.server.js>`_
+- `View Templates <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/adding_view_engines/mojits/myMojit/views/>`_
 
 
