@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-﻿
-=======
-
->>>>>>> f3089d0... Adding view engines example.
 
 ======================================
 Creating and Using a View Engine Addon 
@@ -15,13 +10,11 @@ Creating and Using a View Engine Addon
 Summary
 #######
 
-<<<<<<< HEAD
 This example shows how to install a third-party rendering engine, create a view engine addon 
 that uses the installed rendering engine and a view template. 
-=======
+
 This example shows how how to install a third-party rendering engine, create a view engine addon 
 that uses that rendering engine, and create a view template for the view engine.
->>>>>>> f3089d0... Adding view engines example.
 
 The following topics will be covered:
 
@@ -30,7 +23,6 @@ The following topics will be covered:
 - using Handlebars in the view template
 
 
-<<<<<<< HEAD
 Implementation Notes
 ####################
 
@@ -38,28 +30,19 @@ Before you create your application, you should take a look at the following sect
 how the application works. The focus here is to give you a practical example that you can use
 to add your own view engines and also to show some of important points of using view engines in Mojito applications.
 For more comprehensive but less practical documentation, see `Mojito Topics: View Engines <../topics/mojito_extensions.html#view-engines>`_.
-=======
 
-Implementation Notes
-####################
-
->>>>>>> f3089d0... Adding view engines example.
 
 What Is a View Engine?
 ----------------------
 
-<<<<<<< HEAD
 A view engine is code that applies data returned by the controller to a view. This is most often done by interpreting the 
 view as a template. View engines in Mojito can function at either the application or mojit level. This example
 uses an application-level view engine addon, allowing multiple mojits to use it although the example only uses one mojit.
-=======
->>>>>>> f3089d0... Adding view engines example.
 
 
 Installing a Rendering Engine
 -----------------------------
 
-<<<<<<< HEAD
 You could write your own rendering engine or copy code into your Mojito application, but this example 
 follows the most common use case of installing a rendering engine with ``npm``. We will be 
 installing the rendering engine `Handlebars <http://handlebarsjs.com>`_ with ``npm``.
@@ -67,7 +50,7 @@ installing the rendering engine `Handlebars <http://handlebarsjs.com>`_ with ``n
 Because your Mojito application is simply a ``npm`` module, you can have a ``node_modules`` directory for locally
 installing other modules. Thus, from your application directory, you would use the following ``npm`` command to install ``handlebars``:
 
-``app_dir/ $ npm install handlebars --local``
+``app_dir/ $ npm install handlebars``
 
 After you have installed ``handlebars``, a ``node_modules`` directory will be created with the contents similar to the following:
 
@@ -199,7 +182,7 @@ compile the view.
         
 The ``compile`` method is required to run the command ``mojito compile views``. In our example, 
 the ``compile`` method also reads the view template file and returns a string to ``render``
-so that it can be compiled by ``handlebars``.
+so that it can be compiled by ``handlebars``. 
 
 .. code-block:: javascript
 
@@ -209,6 +192,12 @@ so that it can be compiled by ``handlebars``.
      return fs.readFileSync(tmpl, 'utf8');
    }
 
+The Mustache and Handlebars rendering engines compile templates into an executable JavaScript function, 
+but the implementation of the ``compile`` method in the view engine addon is up to the developer. 
+In the above code snippet, the ``compile`` method simply returns the template file to the
+``render`` method, where the instance of the Handlebars rendering engine calls ``compile`` to render 
+the template file into a JavaScript function. The implementation of the ``compile`` method in the 
+addon could have been written to call ``hb.compile`` and return the JavaScript function to ``render``.
 
 Handlebar Templates
 -------------------
@@ -240,30 +229,24 @@ if the ``ul`` object is given, the property ``title`` is evaluated.
    {{#with ul}}
      <h3>{{title}}</h3>
    {{/with}}
-=======
-Creating the View Engine Addon
-------------------------------
 
-Handlebar Template
-------------------
->>>>>>> f3089d0... Adding view engines example.
+
 
 Setting Up this Example
 #######################
 
-<<<<<<< HEAD
+
 To set up and run ``adding_view_engines``:
 
 #. Create your application.
 
    ``$ mojito create app adding_view_engines``
-=======
+
 To set up and run ``view_engines``:
 
 #. Create your application.
 
    ``$ mojito create app view_engine``
->>>>>>> f3089d0... Adding view engines example.
 
 #. Change to the application directory.
 
@@ -271,11 +254,7 @@ To set up and run ``view_engines``:
 
    ``$ mojito create mojit myMojit``
 
-<<<<<<< HEAD
 #. To specify that your application use ``myMojit``, replace the code in ``application.json`` with the following:
-=======
-#. To specify that your application use ``SimpleMojit``, replace the code in ``application.json`` with the following:
->>>>>>> f3089d0... Adding view engines example.
 
    .. code-block:: javascript
 
@@ -290,11 +269,8 @@ To set up and run ``view_engines``:
         }
       ]
 
-<<<<<<< HEAD
+
 #. To configure routing so controller functions using different view templates are used, create the file ``routes.json`` with the following:
-=======
-#. To configure routing, create the file ``routes.json`` with the following:
->>>>>>> f3089d0... Adding view engines example.
 
    .. code-block:: javascript
 
@@ -322,12 +298,7 @@ To set up and run ``view_engines``:
 
    ``$ mkdir -p addons/view-engines``
    
-<<<<<<< HEAD
 #. Change to the ``addons/view-engines`` directory that you created.
-=======
-#. Change to the ``view-engines`` directory that you created.
->>>>>>> f3089d0... Adding view engines example.
-
 
 #. Create the view engine addon file ``hb.server.js`` with the following code:
 
@@ -336,7 +307,6 @@ To set up and run ``view_engines``:
       YUI.add('addons-viewengine-hb', function(Y, NAME) {
 	
         var hb = require('handlebars'),
-<<<<<<< HEAD
         fs = require('fs');
         function HbAdapter(viewId) {
           this.viewId = viewId;
@@ -370,48 +340,6 @@ To set up and run ``view_engines``:
       }, '0.1.0', {requires: []});
 
 #. Change to the ``adding_view_engines/mojits/myMojit`` directory.
-=======
-			 fs = require('fs');
-		function HbAdapter(viewId) {
-			this.viewId = viewId;
-		}
-	
-		HbAdapter.prototype = {
-
-	      render: function(data, mojitType, tmpl, adapter, meta, more) {
-	        var me = this,
-		    handleRender = function(output) {
-		    
-			  output.addListener('data', function(c) {
-			    adapter.flush(c, meta);
-			  });
-	
-			  output.addListener('end', function() {
-			    if (!more) {
-				  Y.log('render complete for view "' +
-									me.viewId + '"',
-									'mojito', 'qeperf');
-				  adapter.done('', meta);
-				}
-              });
-			};
-		    Y.log('Rendering template "' + tmpl + '"', 'mojito', NAME);
-			var template = hb.compile(this.compiler(tmpl));
-			var result = template(data);
-			console.log(result);
-			adapter.done(result,meta);
-	 
-	      },
-	      compiler: function(tmpl) {
-		    return fs.readFileSync(tmpl, 'utf8');
-		  }
-		};
-	
-		Y.namespace('mojito.addons.viewEngines').hb = HbAdapter;
-      }, '0.1.0', {requires: []});
-
-#. Change to your mojit ``myMojit`` directory.
->>>>>>> f3089d0... Adding view engines example.
 
 #. Replace the code in ``controller.server.js`` with the following:
 
@@ -494,25 +422,14 @@ To set up and run ``view_engines``:
    
 #. Now see the view template rendered by the Handlebars rendering engine at the following URL:
 
-   `http://localhost:8666/hb <http://localhost:8666/hb>`_
-   
-<<<<<<< HEAD
+   `http://localhost:8666/hb <http://localhost:8666/hb>`_   
+
 #. Great, your application is using two different rendering engines. You should now be ready to add your own view engine that uses a rendering engine such as Jade.   
-=======
-#. Great, your application is using two different rendering engines. You should now be ready to add your own view engine such as Jade.   
->>>>>>> f3089d0... Adding view engines example.
+
 
 Source Code
 ###########
 
-<<<<<<< HEAD
 - `View Engines <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/adding_view_engines/>`_
 - `View Engine Addon <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/adding_view_engines/addons/view-engines/hb.server.js>`_
 - `View Templates <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/adding_view_engines/mojits/myMojit/views/>`_
-=======
-- `View Engines <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/view_engines/>`_
-- `View Engine Addon <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/view_engines/addons/view-engines/hb.server.js>`_
-- `View Templates <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/view_engines/mojits/myMojit/views/>`_
->>>>>>> f3089d0... Adding view engines example.
-
-
