@@ -3752,6 +3752,10 @@ ServerStore.prototype = {
             module = loader.sorted[j];
             info = loader.moduleInfo[module];
             if (info) {
+                // modules with "nodejs" in their name are tweaks on other modules
+                if ('client' === env && module.indexOf('nodejs') !== -1) {
+                    continue;
+                }
                 sortedPaths[module] = info.fullpath || loader._url(info.path);
             }
         }
