@@ -945,39 +945,14 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
         },
 
         '_readYcbDimensions() falls back when application dimensions.json missing': function() {
-            var store,
-                mockpath = Mock(),
-                joinCount = 0;
-
-            Mock.expect(mockpath, {
-                method: 'join',
-                args: [Mock.Value.String, 'dimensions.json'],
-                callCount: 2,
-                run: function(base, ignored) {
-                    ++joinCount;
-                    if (joinCount === 1) {
-                        //application-level dimensions
-                        A.areSame(store._root, base);
-                        return 'joinedpath_app';
-                    } else if (joinCount === 2) {
-                        //framework-level dimensions
-                        A.areSame(mojitoRoot, base);
-                        return 'joinedpath_fw';
-                    }
-                }
-            });
-
-            Mock.expect(mockpath, {
-                method: 'existsSync',
-                args: ['joinedpath_app'],
-                returns: false
-            });
+            var store;
 
             var mockstore = Mock();
 
             Mock.expect(mockstore, {
                 method: '_readConfigJSON',
                 args: ['joinedpath_fw'],
+                args: [libpath.join(__dirname, '../../dimensions.json')],
                 returns: []
             });
 
@@ -987,7 +962,7 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
                 returns: true
             });
 
-            store = new ResourceStore(fixtures, { path: mockpath });
+            store = new ResourceStore(fixtures);
             store._readConfigJSON = Y.bind(mockstore._readConfigJSON, mockstore);
             store._isValidYcbDimensions = Y.bind(mockstore._isValidYcbDimensions, mockstore);
 
@@ -995,7 +970,6 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
             AA.isEmpty(dims, 'Expected the empty array returned by the mocked method');
 
             Mock.verify(mockstore);
-            Mock.verify(mockpath);
         },
 
         '_readYcbDimensions() throws an error when dimensions.json is invalid': function() {
@@ -1055,25 +1029,33 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
                 store = new ResourceStore(fixtures);
             store.preload();
 
+            if (!store._mojitMeta.server.a && !store._mojitMeta.server.aa && !store._mojitMeta.server.ba) {
+                // This happens when mojito is installed via npm, since npm
+                // won't install the node_modules/ directories in
+                // tests/fixtures/packages.
+                A.skip();
+                return;
+            }
+
             var m, mojits = ['a', 'aa', 'ba'];
             var mojitType, mojitMeta;
             for (m = 0; m < mojits.length; m += 1) {
                 mojitType = mojits[m];
                 mojitMeta = store._mojitMeta.server[mojitType];
-                A.isNotUndefined(mojitMeta);
+                A.isNotUndefined(mojitMeta, 'mojitMeta should be defined');
                 mojitMeta = mojitMeta['*'];
-                A.isNotUndefined(mojitMeta['yui-module-b']);
-                A.isNotUndefined(mojitMeta['yui-module-ab']);
-                A.isNotUndefined(mojitMeta['yui-module-bb']);
-                A.isNotUndefined(mojitMeta['yui-module-cb']);
+                A.isNotUndefined(mojitMeta['yui-module-b'], 'yui-module-b should be defined');
+                A.isNotUndefined(mojitMeta['yui-module-ab'], 'yui-module-ab should be defined');
+                A.isNotUndefined(mojitMeta['yui-module-bb'], 'yui-module-bb should be defined');
+                A.isNotUndefined(mojitMeta['yui-module-cb'], 'yui-module-cb should be defined');
                 // tests that yahoo.mojito.location in package.json works
                 // (which mojito package itself uses)
-                A.isNotUndefined(mojitMeta['addon-ac-assets']);
+                A.isNotUndefined(mojitMeta['addon-ac-assets'], 'addon-ac-assets should be defined');
             }
 
             var details = {};
             store.getMojitTypeDetails('server', {}, 'a', details);
-            A.isNotNull(details.controller.match(/a\/foo\/controller\.server\.js$/));
+            A.isNotNull(details.controller.match(/a\/foo\/controller\.server\.js$/), 'controller should not be null');
         },
 
         'find and parse resources by convention': function() {

@@ -83,7 +83,7 @@ following compound context: ``"environment:test,device:android"``
 - ``device:palm``
 - ``lang:{BCP 47 language tag}``
 
-You can view the supported BCP 47 language tags and default contexts in the `dimensions.json <http://github.com/yahoo/mojito/source/lib/dimensions.json>`_ file of Mojito.
+You can view the supported BCP 47 language tags and default contexts in the `dimensions.json <https://github.com/yahoo/mojito/blob/develop/source/lib/dimensions.json>`_ file of Mojito.
 
 Configuration Precedence
 ========================
