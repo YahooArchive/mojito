@@ -251,7 +251,43 @@ YUI.add('mojito-composite-addon-tests', function(Y, NAME) {
             });
 
             A.isTrue(exeCbCalled, "execute callback never called");
+        },
+
+        'null or undefined child should be discarded': function() {
+            var command = {instance: {}},
+                adapter = null,
+                ac = {
+                    _dispatch: function(command, adapter) {
+                        A.isObject(command, "bad command object to dispatch");
+                        A.isNotUndefined(adapter, "bad adapter for dispatch");
+                        var id = command.instance.id;
+                        var meta = {};
+                        meta[id] = id + '__meta';
+                        adapter.done(id + '__data', meta);
+                    }, _notify: function() {}
+                },
+                c = new Y.mojito.addons.ac.composite(command, adapter, ac),
+                config = {
+                    children: {
+                        kid_a: null,
+                        kid_b: { id: 'kid_b', type: 'kidb' }
+                    }
+                },
+                exeCbCalled = false;
+
+            c.execute(config, function(data, meta) {
+                exeCbCalled = true;
+                A.isUndefined(data.kid_a, "unexpected kid_a data for null child");
+                A.isString(data.kid_b, "missing kid_b data");
+                A.areSame('kid_b__data', data.kid_b, "wrong kid_b data");
+                A.isUndefined(meta.kid_a, "unexpected kid_a meta for null child");
+                A.isString(meta.kid_b, "missing kid_b meta");
+                A.areSame('kid_b__meta', meta.kid_b, "wrong kid_b meta");
+            });
+
+            A.isTrue(exeCbCalled, "execute callback never called");
         }
+
     }));
     
     YUITest.TestRunner.add(suite);

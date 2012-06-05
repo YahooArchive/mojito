@@ -54,6 +54,7 @@ YUI.add('mojito-analytics-addon', function(Y, NAME) {
          * combined. The default merge function is the same one used internally
          * by Mojito to merge meta data, and will be sufficient for most use
          * cases.
+         * @method setmergeFunction
          * @param {function} fn user-defined merge function, which should accept
          * two objects, the first is "to", and the second is "from". this
          * function should return the merged object.
@@ -66,6 +67,7 @@ YUI.add('mojito-analytics-addon', function(Y, NAME) {
         /**
          * Store an analytic value. This function can be called multiple times
          * within a mojit, and uses a merging function to combine objects.
+         * @method store
          * @param {object} val An object bag full of whatever you wish.
          */
         store: function(val) {
@@ -82,6 +84,7 @@ YUI.add('mojito-analytics-addon', function(Y, NAME) {
          * this function and provide a function, which will be called once the
          * children have been dispatched and all their analytics data has been
          * merged.
+         * @method retrieve
          * @param {function} cb callback invoked with the analytics object.
          * @param {object} [optional] scope scope of the callback.
          */

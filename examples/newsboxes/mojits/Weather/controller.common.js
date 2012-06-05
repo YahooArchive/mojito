@@ -9,17 +9,17 @@
 /*global YUI*/
 
 
-YUI.add('WeatherController', function(Y) {
+YUI.add('WeatherController', function(Y, NAME) {
 
-    Y.mojito.controller = {
+    Y.mojito.controllers[NAME] = {
 
         index: function(ac) {
             var location = 'san francisco, california';
 
-            ac.models.weather.fetch(location, function(error, response) {
+            ac.models.YqlWeatherModel.fetch(location, function(error, response) {
                 return ac.done(response);
             });
         }
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['YqlWeatherModel']});

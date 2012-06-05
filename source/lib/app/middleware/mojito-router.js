@@ -8,8 +8,7 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
 
 
-var qs = require('querystring'),
-    logger,
+var logger,
     liburl = require('url'),
     RX_END_SLASHES = /\/+$/,
     NAME = 'UriRouter';
@@ -53,7 +52,7 @@ Router.prototype = {
                 routes = store.getRoutes(context),
                 routeMaker = new RouteMakerClass(routes),
                 query = liburl.parse(req.url, true).query,
-                appConfig = store.getAppConfig(context, 'definition'),
+                appConfig = store.getAppConfig(context, 'application'),
                 url,
                 routeMatch;
 
@@ -99,9 +98,12 @@ Router.prototype = {
             // of instance
             // command.action = routeMatch.call[1];
             command.context = req.context;
+
+            //routeMatch.param is converted to object in route-maker.common.js
+            //and is never a string here. i.e. this assert always passes:
+            //require('assert').ok(typeof routeMatch.param !== 'string');
             command.params = {
-                route: simpleMerge(routeMatch.query,
-                    qs.parse(routeMatch.param)),
+                route: simpleMerge(routeMatch.query, routeMatch.param),
                 url: query || {},
                 body: req.body || {},
                 file: {} // FUTURE: add multi-part file data here
@@ -120,6 +122,7 @@ Router.prototype = {
     /**
      * Finds a route for a given method+URL
      *
+     * @method getRoute
      * @param {string} method The HTTP method.
      * @param {string} url The URL to find a route for.
      * @param {RouteMaker} routeMaker The route maker.

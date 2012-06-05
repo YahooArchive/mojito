@@ -37,6 +37,7 @@ YUI.add('mojito-http-addon', function(Y, NAME) {
 
         /**
          * Returns the HTTP request.
+         * @method getRequest
          * @return {ServerRequest} The node.js http.ServerRequest instance.
          */
         getRequest: function() {
@@ -46,6 +47,7 @@ YUI.add('mojito-http-addon', function(Y, NAME) {
 
         /**
          * Returns the HTTP response object from the request.
+         * @method getResponse
          * @return {ServerResponse} The node.js http.ServerResponse instance.
          */
         getResponse: function() {
@@ -55,6 +57,7 @@ YUI.add('mojito-http-addon', function(Y, NAME) {
 
         /**
          * Adds a header to the response without overriding previous values
+         * @method addHeader
          * @param {String} key header name.
          * @param {String} val header value.
          */
@@ -81,6 +84,7 @@ YUI.add('mojito-http-addon', function(Y, NAME) {
 
         /**
          * Adds a object of headers all at once, adding to previous values
+         * @method addHeaders
          * @param {object} hdrs header values to add.
          */
         addHeaders: function(hdrs) {
@@ -92,6 +96,7 @@ YUI.add('mojito-http-addon', function(Y, NAME) {
 
         /**
          * Sets a header by key, overriding previous values
+         * @method setHeader
          * @param {string} key header name.
          * @param {string} val header value.
          */
@@ -102,6 +107,7 @@ YUI.add('mojito-http-addon', function(Y, NAME) {
 
         /**
          * Sets a object full of headers all at once, overriding previous values
+         * @method setHeaders
          * @param {object} hdrs header values to set.
          */
         setHeaders: function(hdrs) {
@@ -113,6 +119,7 @@ YUI.add('mojito-http-addon', function(Y, NAME) {
 
         /**
          * Returns one request header value
+         * @method getHeader
          * @param {string} name header name.
          * @return {object} header value.
          */
@@ -133,6 +140,7 @@ YUI.add('mojito-http-addon', function(Y, NAME) {
 
         /**
          * Returns all request headers
+         * @method getHeaders
          * @return {object} all headers.
          */
         getHeaders: function() {
@@ -143,6 +151,7 @@ YUI.add('mojito-http-addon', function(Y, NAME) {
         /**
          * Helper to tell you if this is an XHR request. Checks specifically
          * for the 'x-requested-with' header.
+         * @method isXhr
          * @return {boolean} True if the receiver is associated with an XHR
          *     request.
          */
@@ -154,6 +163,7 @@ YUI.add('mojito-http-addon', function(Y, NAME) {
         /**
          * This redirect is an external redirect. It causes an HTTP
          * status code 301 by default.
+         * @method redirect
          * @param {string} uri the URI to redirect to.
          * @param {Number} code [optional] if not specifed, 301.
          */

@@ -24,7 +24,7 @@ YUI.add('mojito-config-addon', function(Y, NAME) {
             i;
 
         for (i = 0; i < keys.length; i += 1) {
-            if (cur[keys[i]]) {
+            if (cur.hasOwnProperty(keys[i])) {
                 cur = cur[keys[i]];
             } else {
                 return def;
@@ -52,6 +52,7 @@ YUI.add('mojito-config-addon', function(Y, NAME) {
 
         /**
          * Access config values.
+         * @method get
          * @param {String} key A period separated key path to look for i.e.
          *     "get.my.value".
          * @param {Object|Array|String} def The default value to use if no match
@@ -65,6 +66,7 @@ YUI.add('mojito-config-addon', function(Y, NAME) {
 
         /**
          * Access definition values.
+         * @method getDefinition
          * @param {String} key A period separated key path to look for i.e.
          *     "get.my.value".
          * @param {Object|Array|String} def The default value to use if no match

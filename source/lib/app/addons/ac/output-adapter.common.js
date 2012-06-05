@@ -266,6 +266,7 @@ YUI.add('mojito-output-adapter-addon', function(Y, NAME) {
 
 
     /*
+     * @method serialize_json
      * @private
      * @param {object} data
      * @param {object} meta
@@ -285,6 +286,7 @@ YUI.add('mojito-output-adapter-addon', function(Y, NAME) {
 
 
     /*
+     * @method serialize_xml
      * @private
      * @param {object} data
      * @param {object} meta

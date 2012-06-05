@@ -55,6 +55,7 @@ YUI.add('mojito-carrier-addon', function(Y, NAME) {
         /**
          * Returns the attribute of the catalog for the current carrier used for
          * this request.
+         * @method get
          * @param {string} attribute The name of the catalog attribute e.g
          *     "ticker".
          * @return {object} The catalog attribute value.

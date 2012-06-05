@@ -28,12 +28,14 @@ YUI.add('mojito-action-context', function(Y, NAME) {
 
     /**
      * Returns data in the request and allows you to carry on execution.
+     * @method flush
      * @param {object|string} data The data you want return by the request.
      * @param {object} meta Any meta-data required to service the request.
      */
 
     /**
      * Returns data and closes the request.
+     * @method done
      * @param {object|string} data The data you want return by the request.
      * @param {object} meta Any meta-data required to service the request.
      */
@@ -41,6 +43,7 @@ YUI.add('mojito-action-context', function(Y, NAME) {
     /**
      * Programatically report an error to Mojito, which will handle it
      * gracefully.
+     * @method error
      * @param {Error} err A normal JavaScript Error object is expected, but you
      *     may add a "code" property to the error if you want the framework to
      *     report a certain HTTP status code for the error. For example, if the
@@ -87,6 +90,55 @@ YUI.add('mojito-action-context', function(Y, NAME) {
      *      error: function(err){}
      * }
      * </pre>
+     * @method dispatch
+     * @param {map} command the "command" describing how to dispatch the mojit.
+     *     See above.
+     * @param {object} adapter the output adapter to pass to the mojit. See
+     *     above.
+     * @deprecated Use 'ac._dispatch()' instead. See https://github.com/yahoo/mojito/blob/develop/DEPRECATIONS.md
+     * for details.
+     */
+     /**
+     * This _dispatch function is called one time per Mojito execution. It
+     * creates a contextualized Y instance for all further internal dispatches
+     * to use. It also creates the ActionContext for the mojit.
+     *
+     * The command has three main parts:  the "instance", the "context", and the
+     * "params".
+     * <pre>
+     *  command: {
+     *      instance: ...see below...
+     *      context: ...see below...
+     *      params: ...see below...
+     *  }
+     * </pre>
+     *
+     * The "instance" is a partial instance with details of the mojit instance.
+     * See `ServerStore.expandInstance()` for details of the structure and which
+     * fields are required.
+     *
+     * The "context" is the request context.  It is built by the
+     * "contextualizer" middleware.
+     *
+     * The "params" is a structured set of parameters to pass to the mojit.
+     * <pre>
+     *  params: {
+     *      route: {},
+     *      url: {},
+     *      body: {},
+     *      file: {},
+     *      ...
+     *  }
+     * </pre>
+     *
+     * <pre>
+     * adapter: {
+     *      flush: function(data, meta){},
+     *      done: function(data, meta){},
+     *      error: function(err){}
+     * }
+     * </pre>
+     * @method _dispatch
      * @param {map} command the "command" describing how to dispatch the mojit.
      *     See above.
      * @param {object} adapter the output adapter to pass to the mojit. See
@@ -134,6 +186,7 @@ YUI.add('mojito-action-context', function(Y, NAME) {
 
     /**
      * Mixes all the Action Context addons into the Action Context
+     * @attachActionContextAddons
      * @param {Array} addons The action context addons.
      * @param {object} command The command object.
      * @param {object} adapter The output adapter.
@@ -224,7 +277,7 @@ YUI.add('mojito-action-context', function(Y, NAME) {
         // TODO: should rework to be 'getAppConfig()' and 'getAppRoutes()' and
         // not property access through a hash.
         this.app = {
-            config: store.getAppConfig(this.context, 'definition'),
+            config: store.getAppConfig(this.context, 'application'),
             routes: store.getRoutes(this.context)
         };
 

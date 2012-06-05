@@ -32,10 +32,11 @@ YUI.add('mojito-cookie-addon', function(Y, NAME) {
 
         /**
          * Returns the cookie for the given key or all the cookies if the key
-	 * is not specified.
+	     * is not specified.
+         * @method get
          * @param {string} [optional] key The key to look for.
-	 * @return {string} the value of the cookie for the given key.
-	 * @return {object} contains all the cookies if the key is not specified.
+	     * @return {string} the value of the cookie for the given key.
+	     * @return {object} contains all the cookies if the key is not specified.
          */
         get: function(key) {
             if (key) {
@@ -47,6 +48,7 @@ YUI.add('mojito-cookie-addon', function(Y, NAME) {
 
         /**
          * Set a cookie on the given key with the given value
+         * @method set
          * @param {string} key The key to use.
          * @param {string} val The value that will be set.
          */

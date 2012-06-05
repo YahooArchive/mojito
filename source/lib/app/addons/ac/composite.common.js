@@ -125,6 +125,7 @@ Y.mojito.controller = {
          * "BarMojit", returning their rendered values into the parent's view
          * template, thus rendering the full parent view including the children.
          * All the parent parameters are passed along to children.
+         * @method done
          * @param {object} opts The configuration object to be used.
          *     <em>template<em> can be used to provide additional
          * view template values.
@@ -192,7 +193,7 @@ callback({
    assets: {}
         })
 </pre>
-         *
+         * @method execute
          * @param {object} cfg The configuration object to be used.
          * @param {function} cb The callback that will be called.
          */
@@ -210,6 +211,15 @@ callback({
                 throw new Error('Cannot process children in the format of an' +
                                 ' array. \'children\' must be an object.');
             }
+
+            // check to ensure children doesn't have a null child
+            // in which case it will be automatically discarded to
+            // facilitate disabling childs based on the context.
+            Y.Object.each(cfg.children, function(child, name) {
+                if (!child) {
+                    delete cfg.children[name];
+                }
+            });
 
             meta.children = cfg.children;
 

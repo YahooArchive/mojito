@@ -49,6 +49,7 @@ YUI.add('mojito-assets-addon', function(Y, NAME) {
 
         /**
          * Method for adding a JS file to the page.
+         * @method addCss
          * @param {string} link A URL (./local.css converts to
          *     /static/mojit_type/assets/local.css).
          * @param {string} location Either "top" or "bottom".
@@ -60,6 +61,7 @@ YUI.add('mojito-assets-addon', function(Y, NAME) {
 
         /**
          * Method for adding a JS file to the page.
+         * @method addJs
          * @param {string} link A URL (./local.css converts to
          *     /static/mojit_type/assets/local.css).
          * @param {string} location Either "top" or "bottom".
@@ -72,6 +74,7 @@ YUI.add('mojito-assets-addon', function(Y, NAME) {
         /**
          * Method for adding a Blob of data to the page. This can be used
          * for adding custom "script" or "style" blocks.
+         * @method addBlob
          * @param {string} content A string of data.
          * @param {string} location Either "top" or "bottom".
          */
@@ -146,7 +149,7 @@ YUI.add('mojito-assets-addon', function(Y, NAME) {
 
 
         /**
-         *
+         * @method addAssets
          */
         addAssets: function(assets) {
             var location,
@@ -172,7 +175,7 @@ YUI.add('mojito-assets-addon', function(Y, NAME) {
 
 
         /**
-         *
+         * @method preLoadImage
          */
         preLoadImage: function(url) {
             var img;
@@ -185,7 +188,7 @@ YUI.add('mojito-assets-addon', function(Y, NAME) {
 
 
         /**
-         *
+         * @method preLoadImages
          */
         preLoadImages: function(urls) {
             var i;
@@ -199,7 +202,7 @@ YUI.add('mojito-assets-addon', function(Y, NAME) {
 
 
         /**
-         *
+         * @method getUrl
          */
         getUrl: function(path) {
             return this.assetsRoot + '/' + path;
@@ -207,7 +210,7 @@ YUI.add('mojito-assets-addon', function(Y, NAME) {
 
 
         /**
-         *
+         * @method mixAssets
          */
         mixAssets: function(to, from) {
             return Y.mojito.util.metaMerge(to, from);
@@ -215,7 +218,7 @@ YUI.add('mojito-assets-addon', function(Y, NAME) {
 
 
         /**
-         *
+         * @getAssets
          */
         getAssets: function() {
             // MUST have some dedup code here
@@ -224,7 +227,8 @@ YUI.add('mojito-assets-addon', function(Y, NAME) {
 
 
         /**
-         *
+         * @mergeMetaInto
+         * @private
          */
         mergeMetaInto: function(meta) {
             this.mixAssets(meta.assets, this.assets);

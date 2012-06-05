@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('PagerMojit', function(Y) {
+YUI.add('PagerMojit', function(Y, NAME) {
 
   var PAGE_SIZE = 10;
   /**
@@ -12,7 +12,7 @@ YUI.add('PagerMojit', function(Y) {
    * @class Controller     
    * @constructor     
   */    
-  Y.mojito.controller = {
+  Y.mojito.controllers[NAME] = {
     init: function(config) {
       this.config = config;
     },

@@ -51,7 +51,19 @@ Go to URL:
 
 ## Documentation
 
-http://developer.yahoo.com/cocktails/mojito
+### General
+
+* Mojito Home Page - http://developer.yahoo.com/cocktails/mojito
+* Mojito Docs Navigation - http://developer.yahoo.com/cocktails/mojito/docs/
+* Mojito FAQ - http://developer.yahoo.com/cocktails/mojito/docs/faq/
+* Mojito Introduction - http://developer.yahoo.com/cocktails/mojito/docs/intro/
+* Mojito Getting Started - http://developer.yahoo.com/cocktails/mojito/docs/getting_started/
+
+### API Documentation
+
+* Running the following command will generate API docs and locally save them to `./artifacts/docs/mojito/`
+    `$ mojito docs mojito`
+* View the Mojito API documentation on YDN: http://developer.yahoo.com/cocktails/mojito/api/
 
 ## Discussion/Forums
 
@@ -59,10 +71,9 @@ http://developer.yahoo.com/forum/Yahoo-Mojito
 
 ## Licensing and Contributions
 
-Mojito is licensed under a [BSD license](https://github.com/yahoo/mojito/blob/master/LICENSE.txt).
+Mojito is licensed under a [BSD license](LICENSE.txt). To contribute to the Mojito project, please see [Contributing](docs/contributing.md). 
 
-To contribute to the Mojito project, please review the [Mojito Contributor
-License Agreement](http://developer.yahoo.com/cocktails/mojito/cla/).
+The Mojito project is a [meritocratic, consensus-based community project](docs/governance-model.md) which allows anyone to contribute and gain additional responsibilities.
 
 ## Third-party libraries
 

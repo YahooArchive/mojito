@@ -22,6 +22,7 @@ YUI.add('mojito-i13n-addon', function(Y, NAME) {
      *      "page"    : { "val1" : "param1"}
      * }
      * </code>
+     * @method initFromConfig
      * @param {object} command The comment object providing configuration data.
      * @param {ActionContext} ac The action context.
      * @param {object} i13n The localization object.
@@ -95,6 +96,7 @@ YUI.add('mojito-i13n-addon', function(Y, NAME) {
         /**
          * Provides facility to create an URL to other
          * mojits with a link tracking instrumentation.
+         * @method make
          * @param {string} base Reference to a mojit defined at the root
          *     level of the Mojito application configuration.
          * @param {string} action The action to associate with the base.

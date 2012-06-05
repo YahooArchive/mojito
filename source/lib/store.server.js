@@ -4,17 +4,17 @@
  * See the accompanying LICENSE file for terms.
  */
 
-
 /*jslint
     anon:true, sloppy:true, regexp: true, continue: true, nomen:true, node:true
 */
 
 
 var libfs = require('fs'),
+    libglob = require('./glob'),
     libpath = require('path'),
     libqs = require('querystring'),
     libvm = require('vm'),
-    libglob = require('./glob'),
+    libwalker = require('./package-walker.server'),
     libycb = require('./libs/ycb'),
 
     isPositiveInt = /^[0-9]+$/,
@@ -79,6 +79,7 @@ Affinity.prototype = {
 };
 
 
+
 /**
  * The Resource Store manages information about the "resources" in a Mojito
  * application.  These resources are things that have representation on the
@@ -107,7 +108,6 @@ Affinity.prototype = {
  * The metadata kept about each resource is "normalized" to the follow keys:
  *   (not all resources will have all keys)
  *   (some types will have additional keys)
- *   (not all combinations of type:source are valid)
  *
  * <pre>
  *   - id
@@ -116,10 +116,6 @@ Affinity.prototype = {
  *
  *   - type
  *       see above
- *
- *   - source
- *       `fw`, `app` or `mojit`
- *       where the resource is defined
  *
  *   - fsPath
  *       the path on the filesystem
@@ -191,6 +187,9 @@ function ServerStore(root, libs) {
     // change after that.
     this._appConfigStatic = null;
 
+    // full paths to routes files, to aid detection
+    this._preload_routes = {};
+
     // Each of these is a complex datastructure, the first key of which is the
     // resource ID ("resid").  (For mojitMeta, the first key is the mojit type
     // and the second key is resid.)
@@ -206,18 +205,19 @@ function ServerStore(root, libs) {
     // the values are the metadata about the resource versions.
     //      [resid][affinity].contexts
     //      [resid][affinity][ctxKey] = { metadata }
-    // (These are mostly populated by the _preloadSetDest() method.)
+    // (These are mostly populated by the _preloadResource() method.)
     this._preload = {
-        fwMeta: {},
-        appMeta: {},
-        mojitMeta: {}
+        appMeta:    {}, // application-level
+        sharedMeta: {}, // shared between each mojit
+        mojitMeta:  {}  // individual to each mojit
     };
 
     // These are similar to the _preload above, except the affinity has been resolved
     // down for each environment ("client" or "server").  Also, the ctxKey has been
     // moved above resid to optimize lookup during runtime.
-    this._fwMeta = {};              // [env][ctxKey][resid] = { parts }
+    this._appMetaNC = {};           // [resid] = { parts }
     this._appMeta = {};             // [env][ctxKey][resid] = { parts }
+    this._sharedMeta = {};          // [env][ctxKey][resid] = { parts }
     this._mojitMeta = {};           // [env][type][ctxKey][resid] = { parts }
     this._mojitYuiRequired = {};    // [env][type][ctxKey] = [ YUI module names ]
     this._mojitYuiSorted = {};      // [env][type][ctxKey] = [ YUI module names ]
@@ -261,6 +261,7 @@ ServerStore.prototype = {
      * Preloads everything in the app, and as well pertinent parts of
      * the framework.
      *
+     * @method preload
      * @param {object} appContext the base context for reading configuration.
      * @param {object} appConfig overrides for the app config.
      * @return {nothing}
@@ -355,6 +356,7 @@ ServerStore.prototype = {
     /**
      * Sets the logger object.
      *
+     * @method setLogger
      * @param l {object} object containing a log(message,level,source) function
      * @return {nothing}
      */
@@ -366,6 +368,7 @@ ServerStore.prototype = {
     /**
      * Returns, via callback, the fully expanded mojit instance specification.
      *
+     * @method getSpec
      * @param env {string} either "client" or "server"
      * @param id {string} the ID of the spec to return
      * @param context {object} the runtime context for the spec
@@ -392,6 +395,7 @@ ServerStore.prototype = {
     /**
      * Returns, via callback, the details of the mojit type.
      *
+     * @method getType
      * @param env {string} either "client" or "server"
      * @param type {string} the mojit type
      * @param context {object} the runtime context for the spec
@@ -418,6 +422,7 @@ ServerStore.prototype = {
     /**
      * This just calls expandInstanceForEnv() with `env` set to `server`.
      *
+     * @method expandInstance
      * @param instance {map} Partial instance to expand.
      * @param ctx {object} The request context.
      * @param cb {function(err,instance)} callback used to return the results (or error)
@@ -509,6 +514,7 @@ ServerStore.prototype = {
      *  }
      * </pre>
      *
+     * @method expandInstanceForEnv
      * @param env {string} "client" or "server"
      * @param instance {object} partial instance to expand
      * @param ctx {object} the runtime context for the instance
@@ -518,8 +524,9 @@ ServerStore.prototype = {
     expandInstanceForEnv: function(env, instance, ctx, cb) {
         //logger.log('expandInstanceForEnv(' + env + ',' +
         //    (instance.id||'@'+instance.type) + ')');
-        var self = this, base,
-            appConfig = this.getAppConfig(ctx, 'definition'),
+        var self = this,
+            base,
+            appConfig = this.getAppConfig(ctx, 'application'),
             cacheKey = JSON.stringify(instance) + JSON.stringify(
                 this._getValidYCBContext(ctx)
             ),
@@ -602,6 +609,7 @@ ServerStore.prototype = {
     /**
      * gets application configuration
      *
+     * @method getAppConfig
      * @param ctx {object} the runtime context under which to load the config
      * @param name {string} type of config to read:
      *     - definition:  reads ./application.json
@@ -616,7 +624,7 @@ ServerStore.prototype = {
             res,
             ycb;
 
-        if ('definition' === name && (!ctx || !Object.keys(ctx).length)) {
+        if ('application' === name && (!ctx || !Object.keys(ctx).length)) {
             return this._cloneObj(this._appConfigStatic);
         }
 
@@ -633,6 +641,7 @@ ServerStore.prototype = {
     /**
      * Returns the routes configured in the application.
      *
+     * @method getRoutes
      * @param ctx {object} runtime context under which to load the routes
      * @return {object} routes
      */
@@ -674,6 +683,7 @@ ServerStore.prototype = {
      * Returns the filesystem location of the static URL.
      * Returns undefined if given URL isn't part of the app.
      *
+     * @method fileFromStaticHandlerURL
      * @param url {string} static URL
      * @return {string} path on filesystem of specified URL, or undefined
      */
@@ -687,6 +697,7 @@ ServerStore.prototype = {
      * Returns the YUI configuration object which tells YUI about the
      * YUI modules in all the mojits.
      *
+     * @method getYuiConfigAllMojits
      * @param env {string} "client" or "server"
      * @param ctx {object} runtime context for YUI configuration
      * @return {object} YUI configuration for all mojits
@@ -713,10 +724,7 @@ ServerStore.prototype = {
                         if (!res.yuiModuleName) {
                             continue;
                         }
-                        if ('fw' === res.source) {
-                            continue;
-                        }
-                        if ('app' === res.source) {
+                        if (res.sharedMojit) {
                             continue;
                         }
                         modules[res.yuiModuleName] = {
@@ -752,6 +760,7 @@ ServerStore.prototype = {
      * Returns the YUI configuration object which tells YUI about the
      * YUI modules in the Mojito framework.
      *
+     * @method getYuiConfigFw
      * @param env {string} "client" or "server"
      * @param ctx {object} runtime context for YUI configuration
      * @return {object} YUI configuration for Mojito framework
@@ -763,14 +772,17 @@ ServerStore.prototype = {
             resid,
             res;
 
-        if (!this._fwMeta[env]) {
+        if (!this._sharedMeta[env]) {
             return {modules: {}};
         }
-        ress = this._getResourceListForContext(this._fwMeta[env], ctx);
+        ress = this._getResourceListForContext(this._sharedMeta[env], ctx);
         for (resid in ress) {
             if (ress.hasOwnProperty(resid)) {
                 res = ress[resid];
                 if (!res.yuiModuleName) {
+                    continue;
+                }
+                if ('mojito' !== res.pkg.name) {
                     continue;
                 }
                 modules[res.yuiModuleName] = {
@@ -789,6 +801,7 @@ ServerStore.prototype = {
      * Returns the YUI configuration object which tells YUI about the
      * YUI modules in the application (which aren't part of a mojit).
      *
+     * @method getYiConfigApp
      * @param env {string} "client" or "server"
      * @param ctx {object} runtime context for YUI configuration
      * @return {object} YUI configuration for the app-level modules
@@ -800,14 +813,17 @@ ServerStore.prototype = {
             resid,
             res;
 
-        if (!this._appMeta[env]) {
+        if (!this._sharedMeta[env]) {
             return {modules: {}};
         }
-        ress = this._getResourceListForContext(this._appMeta[env], ctx);
+        ress = this._getResourceListForContext(this._sharedMeta[env], ctx);
         for (resid in ress) {
             if (ress.hasOwnProperty(resid)) {
                 res = ress[resid];
                 if (!res.yuiModuleName) {
+                    continue;
+                }
+                if ('mojito' === res.pkg.name) {
                     continue;
                 }
                 modules[res.yuiModuleName] = {
@@ -822,12 +838,13 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * returns a serializeable object used to initialize Mojito on the client
      *
      * FUTURE: [Issue 105] Cache the output of this function
      * cache key:  all of ctx
      *
+     * @method serializeClientStore
      * @param context {object} runtime context
      * @param instance {array} DEPRECATED:  list of instances to deploy to the client
      *                  (only instances with IDs will be deployable)
@@ -847,7 +864,7 @@ ServerStore.prototype = {
                 routes: {}
             };
 
-        out.appConfig = this.getAppConfig(ctx, 'definition');
+        out.appConfig = this.getAppConfig(ctx, 'application');
 
         for (i = 0; i < instances.length; i += 1) {
             instance = instances[i];
@@ -879,6 +896,7 @@ ServerStore.prototype = {
     /**
      * Returns a list of all mojit types in the application.
      *
+     * @method listAllMojits
      * @param env {string} "client" or "server"
      * @return {array} list of mojit types
      */
@@ -898,6 +916,7 @@ ServerStore.prototype = {
     /**
      * Returns details about all mojits in the application.
      *
+     * @method getAllMojits
      * @param env {string} "client" or "server"
      * @param ctx {object} runtime context
      * @return {object} keys are mojit type names, values are details about each mojit
@@ -925,13 +944,15 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * Given a set of known contexts, finds the best match for a runtime context.
      * Gives special consideration to the "lang" key in the contexts.
      *
+     * @method _findBestContext
      * @param currentContext {object} runtime context
      * @param contexts {object} a mapping of context key to context
      * @return {string} null or the context key of the best match
+     * @private
      */
     _findBestContext: function(currentContext, contexts) {
         var availableLangs = [],
@@ -984,6 +1005,7 @@ ServerStore.prototype = {
     /**
      * Returns details about a mojit type.
      *
+     * @method getMojitTypeDetails
      * @param env {string} "client" or "server"
      * @param ctx {object} runtime context
      * @param mojitType {string} mojit type
@@ -1088,7 +1110,7 @@ ServerStore.prototype = {
                 }
 
                 if (res.type === 'asset') {
-                    name = res.name + '.' + res.assetType;
+                    name = res.name;
                     if (env === 'client') {
                         if (assumeRollups) {
                             dest.assets[name] = res.rollupURL;
@@ -1188,7 +1210,7 @@ ServerStore.prototype = {
                     if (useOnDemand) {
                         dest.yui.requires.push(res.yuiModuleName);
                     }
-                    if (('fw' === res.source) || ('app' === res.source)) {
+                    if (res.sharedMojit) {
                         continue;
                     }
                     dest.yui.config.modules[res.yuiModuleName] = {
@@ -1277,6 +1299,7 @@ ServerStore.prototype = {
     /**
      * Returns details on how to make rollups for app-level resources.
      *
+     * @method getRollupsApp
      * @param env {string} "client" or "server"
      * @param ctx {object} runtime context
      * @return {object} object describing where to put the rollup and what it should contain
@@ -1288,7 +1311,7 @@ ServerStore.prototype = {
             resid,
             res;
 
-        ress = this._getResourceListForContext(this._fwMeta[env], ctx);
+        ress = this._getResourceListForContext(this._sharedMeta[env], ctx);
         for (resid in ress) {
             if (ress.hasOwnProperty(resid)) {
                 res = ress[resid];
@@ -1296,18 +1319,6 @@ ServerStore.prototype = {
                     continue;
                 }
                 srcs.push(res.fsPath);
-            }
-        }
-        if (this._appMeta[env]) {
-            ress = this._getResourceListForContext(this._appMeta[env], ctx);
-            for (resid in ress) {
-                if (ress.hasOwnProperty(resid)) {
-                    res = ress[resid];
-                    if (!res.yuiModuleName) {
-                        continue;
-                    }
-                    srcs.push(res.fsPath);
-                }
             }
         }
         return {
@@ -1331,6 +1342,7 @@ ServerStore.prototype = {
      *      ]
      * }
      *
+     * @method getRollupsMojits
      * @param env {string} "client" or "server"
      * @param ctx {object} runtime context
      * @return {object} object describing where to put the rollup and what it should contain
@@ -1355,7 +1367,7 @@ ServerStore.prototype = {
                 for (resid in ress) {
                     if (ress.hasOwnProperty(resid)) {
                         res = ress[resid];
-                        if (res.source !== 'mojit') {
+                        if (res.sharedMojit) {
                             continue;
                         }
                         if (!res.yuiModuleName) {
@@ -1400,6 +1412,7 @@ ServerStore.prototype = {
      *   }
      * ]
      *
+     * @method getInlineCssMojits
      * @param env {string} "client" or "server"
      * @param ctxFilter {object} (optional) runtime context to restrict results to
      * @return {array} object describing where to put the inline CSS file and what it should contain
@@ -1442,9 +1455,6 @@ ServerStore.prototype = {
                         for (resid in ress) {
                             if (ress.hasOwnProperty(resid)) {
                                 res = ress[resid];
-                                if (res.source !== 'mojit') {
-                                    continue;
-                                }
                                 if ((res.type !== 'asset') ||
                                         (res.assetType !== 'css')) {
                                     continue;
@@ -1482,9 +1492,13 @@ ServerStore.prototype = {
     // ===========================================
     // ================= PRIVATE =================
 
-    /*
+    /**
      * the "static" version of the application.json is the version that has
      * the context applied that was given at server-start time.
+     *
+     * @method _readAppConfigStatic
+     * @return {object} static config
+     * @private
      */
     _readAppConfigStatic: function() {
         var path = libpath.join(this._root, 'application.json'),
@@ -1500,11 +1514,13 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * Read the application's dimensions.json file for YCB processing. If not
      * available, fall back to the framework's default dimensions.json.
      *
-     * @return {array}
+     * @method _readYcbDimensions
+     * @return {array} contents of the dimensions.json file
+     * @private
      */
     _readYcbDimensions: function() {
         var libpath = this._libs.path,
@@ -1523,7 +1539,7 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * Perform some light validation for YCB dimensions JSON objects. It should
      * look something like this:
      * [{
@@ -1534,8 +1550,10 @@ ServerStore.prototype = {
      *     ]
      * }]
      *
+     * @method _isValidYcbDimensions
      * @param {array} dimensions
      * @return {boolean}
+     * @private
      */
     _isValidYcbDimensions: function(dims) {
         var isArray = Y.Lang.isArray;
@@ -1547,419 +1565,672 @@ ServerStore.prototype = {
     },
 
 
-    // TODO: [Issue 109] work out story for this stage.
-    /*
+    /**
      * preload metadata about all resources in the application (and Mojito framework)
+     *
+     * @method _preloadMeta
+     * @return {nothing} work down via other called methods
+     * @private
      */
     _preloadMeta: function() {
+        var me = this,
+            walker,
+            walkedMojito = false,
+            dir,
+            info;
+        walker = new libwalker.BreadthFirst(this._root);
+        walker.walk(function(err, info) {
+            if (err) {
+                throw err;
+            }
+            if ('mojito' === info.pkg.name) {
+                walkedMojito = true;
+            }
+            me._preloadPackage(info);
+        });
+
+        // user might not have installed mojito as a dependency of their
+        // application.  (they -should- have but might not have.)
+        if (!walkedMojito) {
+            dir = libpath.join(mojitoRoot, '..');
+            info = {
+                depth: 999,
+                parents: [],
+                dir: dir
+            };
+            info.pkg = this._readMojitConfigFile(libpath.join(dir, 'package.json'), false);
+
+            // special case for weird packaging situations
+            if (!Object.keys(info.pkg).length) {
+                info.dir = mojitoRoot;
+                info.pkg = {
+                    name: 'mojito',
+                    version: '0.666.666',
+                    yahoo: {
+                        mojito: {
+                            type: 'bundle',
+                            location: 'app'
+                        }
+                    }
+                };
+            }
+
+            this._preloadPackage(info);
+        }
+    },
+
+
+    /**
+     * preloads metadata about resources in the application directory
+     * (but not node_modules/)
+     *
+     * @method _preloadApp
+     * @param pkg {object} metadata (name and version) about the app's package
+     * @return {nothing} work down via other called methods
+     * @private
+     */
+    _preloadApp: function(pkg) {
         var i,
-            path,
-            realDirs = [];
+            path;
 
-        // All the contents of the app/ directory are "app-level" resource 
-        // (resources for mojits which are applied to -all- mojits)
-        // (A better name might have been "global" instead of "app-level".)
-        this._preloadDirMojit('fw', false, libpath.join(mojitoRoot, 'app'));
-
-        this._preloadDirMojits(false, libpath.join(mojitoRoot, 'app', 'mojits'));
-
-        this._preloadFileConfig(this._preload.appMeta, 'app', null,
-            libpath.join(this._root, 'application.json'), 'definition');
-
-        // read app-level resources
-        this._preloadDirMojit('app', false, this._root);
-
-        // TODO: [Issue 109] split loops into separate functions (for readability).
-
-        // load routes file(s)
+        // mark routes, to aid in detecting them later
         for (i = 0; i < this._appConfigStatic.routesFiles.length; i += 1) {
             path = this._appConfigStatic.routesFiles[i];
             if ('/' !== path.charAt(0)) {
                 path = libpath.join(this._root, path);
             }
-            this._preloadFileConfig(this._preload.appMeta, 'app', null, path,
-                'routes');
+            if (!libpath.existsSync(path)) {
+                logger.log('missing routes file. skipping ' + path, 'warn', NAME);
+                continue;
+            }
+            this._preload_routes[path] = true;
         }
+
+        this._preloadDirBundle(this._root, pkg, true);
 
         // load mojitsDirs
         for (i = 0; i < this._appConfigStatic.mojitsDirs.length; i += 1) {
             path = this._appConfigStatic.mojitsDirs[i];
-            if ('/' !== path.charAt(0)) {
-                path = libpath.join(this._root, path);
-            }
-            libglob.globSync(path, {}, realDirs);
-        }
-        if (!realDirs.length) {
-            throw new Error('Failed to find any mojitsDirs matching ' +
-                this._appConfigStatic.mojitsDirs.join(', '));
-        }
-        for (i = 0; i < realDirs.length; i += 1) {
-            path = realDirs[i];
-            this._preloadDirMojits(true, path);
+            this._preloadDirMojits(path, pkg);
         }
 
         // load mojitDirs
-        if (this._appConfigStatic.mojitDirs &&
-                this._appConfigStatic.mojitDirs.length) {
-            realDirs = [];
+        if (this._appConfigStatic.mojitDirs) {
             for (i = 0; i < this._appConfigStatic.mojitDirs.length; i += 1) {
                 path = this._appConfigStatic.mojitDirs[i];
-                if ('/' !== path.charAt(0)) {
-                    path = libpath.join(this._root, path);
-                }
-                libglob.globSync(path, {}, realDirs);
-            }
-            if (!realDirs.length) {
-                throw new Error('Failed to find any mojitDirs matching ' +
-                    this._appConfigStatic.mojitDirs.join(', '));
-            }
-            for (i = 0; i < realDirs.length; i += 1) {
-                path = realDirs[i];
-                this._preloadDirMojit('mojit', true, path);
+                this._preloadDirMojit(path, pkg, path);
             }
         }
     },
 
 
-    /*
-     * preloads metadata for mojits in a directory
-     */
-    _preloadDirMojits: function(readConfig, fullpath) {
-        if (!this._libs.path.existsSync(fullpath)) {
-            return;
-        }
-        //logger.log('----------------------- preloadDirMojits(' + readConfig +
-        //    ') -- ' + fullpath);
-        var children = this._sortedReaddirSync(fullpath),
-            i,
-            childName,
-            childPath;
-
-        for (i = 0; i < children.length; i += 1) {
-            childName = children[i];
-            if ('.' === childName.substring(0, 1)) {
-                continue;
-            }
-            childPath = libpath.join(fullpath, childName);
-            this._preloadDirMojit('mojit', readConfig, childPath);
-        }
-    },
-
-
-    /*
-     * preloads metadata for resources in a directory which contains a single mojit
+    /**
+     * preloads metadata about resources in a package
+     * (but not subpackages in its node_modules/)
      *
-     * @param source {string} "fw", "app" or "mojit"
-     * @param readConfig {boolean} whether to read the config files in the mojit
-     * @param fullpath {string}
-     * @return {nothing} results stored in this object
+     * @method _preloadPackage
+     * @param info {object} metadata about the package
+     * @return {nothing} work down via other called methods
+     * @private
      */
-    _preloadDirMojit: function(source, readConfig, fullpath) {
-        if (!this._libs.path.existsSync(fullpath)) {
+    _preloadPackage: function(info) {
+        var dir,
+            pkg;
+        // FUTURE:  use info.inherit to scope mojit dependencies
+        /*
+        console.log('--PACKAGE-- ' + info.depth + ' ' + info.pkg.name + '@' + info.pkg.version
+                + ' \t' + (info.pkg.yahoo && info.pkg.yahoo.mojito && info.pkg.yahoo.mojito.type)
+                + ' \t[' + info.parents.join(',') + ']'
+        //      + ' \t-- ' + JSON.stringify(info.inherit)
+        );
+        */
+        pkg = {
+            name: info.pkg.name,
+            version: info.pkg.version
+        };
+        if (0 === info.depth) {
+            // the actual application is handled specially
+            this._preloadApp(pkg);
             return;
         }
-        //logger.log('----------------------- preloadDirMojit(' +
-        //    source + ',' + readConfig + ') -- ' + fullpath);
-        var packageJson,
-            definitionJson,
-            mojitType,
-            dest,
-            appConfig,
-            urlPrefix,
-            url;
-
-        if (readConfig && 'mojit' === source) {
-            packageJson = this._readMojitConfigFile(libpath.join(fullpath,
-                'package.json'), false);
-            mojitType = packageJson.name;
-
-            definitionJson = this._readMojitConfigFile(libpath.join(fullpath,
-                'definition.json'), true);
-            if (definitionJson.appLevel) {
-                source = 'app';
-            }
+        if (!info.pkg.yahoo || !info.pkg.yahoo.mojito) {
+            return;
         }
-        if (!mojitType) {
-            mojitType = libpath.basename(fullpath);
-        }
-        this._mojitPaths[mojitType] = fullpath;
-
-        switch (source) {
-        case 'fw':
-            dest = this._preload.fwMeta;
-            break;
-        case 'app':
-            dest = this._preload.appMeta;
+        switch (info.pkg.yahoo.mojito.type) {
+        case 'bundle':
+            dir = libpath.join(info.dir, info.pkg.yahoo.mojito.location);
+            this._preloadDirBundle(dir, pkg, false);
+            this._preloadDirMojits(libpath.join(dir, 'mojits'), pkg);
             break;
         case 'mojit':
-            if (!this._preload.mojitMeta[mojitType]) {
-                this._preload.mojitMeta[mojitType] = {};
-            }
-            dest = this._preload.mojitMeta[mojitType];
+            dir = libpath.join(info.dir, info.pkg.yahoo.mojito.location);
+            this._preloadDirMojit(dir, pkg, info.dir);
+            break;
+        default:
+            logger.log('Unknown package type "' + info.pkg.yahoo.mojito.type + '"', 'warn', NAME);
             break;
         }
-
-        // TODO: [Issue 109] refactor to return semantics.
-
-        if (readConfig && 'fw' !== source) {
-            if (!this._mojitoVersionMatch(packageJson, this._version)) {
-                logger.log('Mojito version mismatch: mojit skipped in "' +
-                    fullpath + '"', 'warn', NAME);
-                return;
-            }
-            // TODO:  this might benefit from passing mojitType to it
-            this._mojitPackageAsAsset(packageJson, fullpath);
-        }
-
-        if ('mojit' === source) {
-            // TODO: [Issue 109] make this more future-proof.
-            this._preloadFileController(dest, source, mojitType,
-                libpath.join(fullpath, 'controller.common.js'), fullpath);
-            this._preloadFileController(dest, source, mojitType,
-                libpath.join(fullpath, 'controller.client.js'), fullpath);
-            this._preloadFileController(dest, source, mojitType,
-                libpath.join(fullpath, 'controller.server.js'), fullpath);
-        }
-        if (readConfig) {
-            this._preloadFileConfig(dest, source, mojitType,
-                libpath.join(fullpath, 'definition.json'), 'definition');
-            this._preloadFileConfig(dest, source, mojitType,
-                libpath.join(fullpath, 'defaults.json'), 'defaults');
-        }
-
-        // TODO: [Issue 109] pass actual functions (instead of function names)
-        // TODO: [Issue 109] refactor:  first, use a method that returns all
-        // files in dir (with ext), then call _preloadFileX on them
-        this._preloadDir(dest, source, mojitType, libpath.join(fullpath,
-            'actions'), false, '_preloadFileAction');
-        this._preloadDir(dest, source, mojitType, libpath.join(fullpath,
-            'addons'), true, '_preloadFileAddon');
-        this._preloadDir(dest, source, mojitType, libpath.join(fullpath,
-            'assets'), true, '_preloadFileAsset');
-        this._preloadDir(dest, source, mojitType, libpath.join(fullpath,
-            'autoload'), true, '_preloadFileAutoload');
-        this._preloadDir(dest, source, mojitType, libpath.join(fullpath,
-            'binders'), true, '_preloadFileBinder');
-        this._preloadDir(dest, source, mojitType, libpath.join(fullpath,
-            'lang'), false, '_preloadFileLang');
-        this._preloadDir(dest, source, mojitType, libpath.join(fullpath,
-            'models'), false, '_preloadFileModel');
-        this._preloadDir(dest, source, mojitType, libpath.join(fullpath,
-            'views'), true, '_preloadFileView');
-        this._preloadDir(dest, source, mojitType, libpath.join(fullpath,
-            'specs'), false, '_preloadFileSpec');
-        this._preloadDir(dest, source, mojitType, libpath.join(fullpath,
-            'tests'), false, '_preloadFileAutoload');
-        this._preloadDir(dest, source, mojitType, libpath.join(fullpath,
-            'tests/models'), false, '_preloadFileAutoload');
-        this._preloadDir(dest, source, mojitType, libpath.join(fullpath,
-            'tests/binders'), false, '_preloadFileAutoload');
-
-        /*
-         * Here we are making a URL for the expanded "definition.json"
-         * The URL we make does not map to a real file, it is used by the tunnel
-         * to ID the and expand the actual "definition.json".
-         */
-        if ('mojit' === source) {
-
-            // TODO: [Issue 109] re-use logic from
-            // _calcStaticHandlerURL() for prefix (so that all options are
-            // supported)
-
-            appConfig = this._appConfigStatic.staticHandling || {};
-            urlPrefix = '/static';
-            if (typeof appConfig.prefix !== 'undefined') {
-                urlPrefix = appConfig.prefix ? '/' + appConfig.prefix : '';
-            }
-
-            // Add our definition to the Dynamic URLs list
-            url = urlPrefix + '/' + mojitType + '/definition.json';
-            this._dynamicURLs[url] = libpath.join(fullpath, 'definition.json');
-        }
     },
 
 
-    /*
-     * preloads metadata for resources in a directory
+    /**
+     * preloads metadata about resource in a directory
      *
-     * @param dest {object} where results shoulg go (passed to fileHandler)
-     * @param source {string} where the resource is coming from (passed to fileHandler)
-     * @param mojitType {string} name of mojit type (passed to fileHandler)
-     * @param fullpath {string} path of directory
-     * @param recurse {boolean} whether to recurse into subdirectories
-     * @param fileHandler {string} name of method on this object to call on each file
-     * @param root {string} when recursing, fullpath of first call (passed to fileHandler)
-     * @return {nothing} calls fileHandler to do the actual insteresting work
+     * @method _preloadDirBundle
+     * @param dir {string} directory path
+     * @param pkg {object} metadata (name and version) about the package
+     * @param loadConfig {boolean} whether to also preload metadata about the configuration files
+     * @return {nothing} work down via other called methods
+     * @private
      */
-    _preloadDir: function(dest, source, mojitType, fullpath, recurse,
-            fileHandler, root) {
-        if (!this._libs.path.existsSync(fullpath)) {
-            return;
-        }
-        //logger.log('----------------------- preloadDir(' + recurse + ',' +
-        //    fileHandler + ') -- ' + fullpath);
-        var children = this._sortedReaddirSync(fullpath),
-            i,
-            childName,
-            childPath,
-            childStat;
+    _preloadDirBundle: function(dir, pkg, loadConfig) {
+        var i,
+            res,
+            resources;
+        resources = this._findResourcesByConvention(dir, pkg, 'shared');
+        for (i = 0; i < resources.length; i += 1) {
+            res = resources[i];
+            switch (res.type) {
+            case 'config':
+                if (!loadConfig) {
+                    if ('package' !== res.name) {
+                        logger.log('config file "' + res.shortPath + '" not used here. skipping.', 'warn', NAME);
+                    }
+                    break;
+                }
+                this._preloadResource(res, null);
+                break;
 
-        if (!root) {
-            root = fullpath;
-        }
-        for (i = 0; i < children.length; i += 1) {
-            childName = children[i];
-            if ('.' === childName.substring(0, 1)) {
-                continue;
-            }
-            childPath = libpath.join(fullpath, childName);
-            childStat = this._libs.fs.statSync(childPath);
-            if (childStat.isFile()) {
-                this[fileHandler](dest, source, mojitType, childPath, root);
-            } else if (recurse && childStat.isDirectory()) {
-                this._preloadDir(dest, source, mojitType, childPath, recurse,
-                    fileHandler, root);
-            }
-        }
+            // app-level
+            case 'archetype':
+            case 'command':
+            case 'middleware':
+                this._preloadResource(res, null);
+                break;
+
+            // mojit-level
+            case 'action':
+            case 'addon':
+            case 'asset':
+            case 'binder':
+            case 'controller':
+            case 'model':
+            case 'spec':
+            case 'view':
+            case 'yui-lang':
+            case 'yui-module':
+                this._preloadResource(res, 'shared');
+                break;
+
+            default:
+                logger.log('unknown resource type "' + res.type + '". skipping ' + res.fsPath, 'warn', NAME);
+                break;
+            } // switch
+        } // for each resource
     },
 
 
-    /*
-     * preloads metadata for a resource which is an action
-     *
-     * @param dest {object} where to store the metadata of the resource
-     * @param source {string} "fw", "app", or "mojit"
-     * @param mojitType {string} name of mojit type, might be null
-     * @param fullpath {string} path to resource
-     * @param dir {string} base directory of resource type
-     * @return {nothing} results stored in this object
+    /**
+     * @method _parseResourceArchetype
+     * @param res {object} partial resource
+     * @return {object|null} parsed resource, or null if shouldn't be used
+     * @private
      */
-    _preloadFileAction: function(dest, source, mojitType, fullpath, dir) {
-        if (!this._libs.path.existsSync(fullpath)) {
+    _parseResourceArchetype: function(res, subtype) {
+        var dir,
+            ext,
+            file;
+
+        // archetypes don't support our ".affinity." or ".selector." filename syntax
+        dir = libpath.dirname(res.shortPath);
+        ext = libpath.extname(res.shortPath);
+        file = libpath.basename(res.shortPath, ext);
+
+        res.name = libpath.join(dir, file);
+        res.type = 'archetype';
+        res.subtype = subtype;
+        res.id = 'archetype-' + res.subtype + '-' + res.name;
+        return res;
+    },
+
+
+    /**
+     * @method _parseResourceCommand
+     * @param res {object} partial resource
+     * @return {object|null} parsed resource, or null if shouldn't be used
+     * @private
+     */
+    _parseResourceCommand: function(res) {
+        var dir,
+            ext,
+            file;
+
+        // commands don't support our ".affinity." or ".selector." filename syntax
+        dir = libpath.dirname(res.shortPath);
+        ext = libpath.extname(res.shortPath);
+        file = libpath.basename(res.shortPath, ext);
+
+        res.name = libpath.join(dir, file);
+        res.type = 'command';
+        res.id = 'command-' + res.name;
+        return res;
+    },
+
+
+    /**
+     * @method _parseResourceMiddleware
+     * @param res {object} partial resource
+     * @return {object|null} parsed resource, or null if shouldn't be used
+     * @private
+     */
+    _parseResourceMiddleware: function(res) {
+        var dir,
+            ext,
+            file;
+
+        // middleware doesn't support our ".affinity." or ".selector." filename syntax
+        dir = libpath.dirname(res.shortPath);
+        ext = libpath.extname(res.shortPath);
+        file = libpath.basename(res.shortPath, ext);
+
+        res.name = libpath.join(dir, file);
+        res.type = 'middleware';
+        res.id = 'middleware-' + res.name;
+        return res;
+    },
+
+
+    /**
+     * @method _parseResourceConfig
+     * @param res {object} partial resource
+     * @return {object|null} parsed resource, or null if shouldn't be used
+     * @private
+     */
+    _parseResourceConfig: function(res, mojitType) {
+        var dir,
+            ext,
+            file,
+            pathParts;
+
+        // configs don't support our ".affinity." or ".selector." filename syntax
+        dir = libpath.dirname(res.shortPath);
+        ext = libpath.extname(res.shortPath);
+        file = libpath.basename(res.shortPath, ext);
+        pathParts = {
+            affinity: new Affinity('server'),
+            contextKey: '*',
+            contextParts: {},
+            ext: ext
+        };
+
+        if ('.json' !== pathParts.ext) {
             return;
         }
-        if ('.js' !== libpath.extname(fullpath)) {
-            return;
-        }
-        //logger.log('----------------------- preloadFileActions -- ' +
-        //    fullpath);
-        var resid, res = {},
-            pathParts = this._parsePath(fullpath, 'server', dir);
         if (this._skipBadPath(pathParts)) {
             return;
         }
+        if (this._preload_routes[res.fsPath]) {
+            res.configType = 'routes';
+        }
+        res.name = libpath.join(dir, file);
+        res.type = 'config';
+        res.id = 'config-' + res.name;
+        res.pathParts = pathParts;
+        return res;
+    },
 
+
+    /**
+     * @method _parseResourceAction
+     * @param res {object} partial resource
+     * @return {object|null} parsed resource, or null if shouldn't be used
+     * @private
+     */
+    _parseResourceAction: function(res, mojitType) {
+        var pathParts = this._parsePath(res, 'server');
+        if ('.js' !== pathParts.ext) {
+            return;
+        }
+        if (this._skipBadPath(pathParts)) {
+            return;
+        }
+        res.name = libpath.join(libpath.dirname(res.shortPath), pathParts.shortFile);
         res.type = 'action';
-        res.fsPath = fullpath;
-        res.source = source;
-        res.name = pathParts.name;
+        res.id = 'action-' + res.name;
         this._precalcYuiModule(res);
         this._precalcStaticURL(res, mojitType);
-        resid = 'action-' + res.name;
-
-        this._preloadSetDest(dest, resid, res, pathParts);
+        res.pathParts = pathParts;
+        return res;
     },
 
 
-    /*
-     * preloads metadata for a resource which is an addon
-     *
-     * @param dest {object} where to store the metadata of the resource
-     * @param source {string} "fw", "app", or "mojit"
-     * @param mojitType {string} name of mojit type, might be null
-     * @param fullpath {string} path to resource
-     * @param dir {string} base directory of resource type
-     * @return {nothing} results stored in this object
+    /**
+     * @method _parseResourceAddon
+     * @param res {object} partial resource
+     * @return {object|null} parsed resource, or null if shouldn't be used
+     * @private
      */
-    _preloadFileAddon: function(dest, source, mojitType, fullpath, dir) {
-        if (!this._libs.path.existsSync(fullpath)) {
+    _parseResourceAddon: function(res, mojitType, subtype) {
+        var pathParts = this._parsePath(res, 'server');
+        if ('.js' !== pathParts.ext) {
             return;
         }
-        if ('.js' !== libpath.extname(fullpath)) {
-            return;
-        }
-        //logger.log('----------------------- preloadFileAddon -- ' + fullpath);
-        var resid,
-            res = {},
-            pathParts = this._parsePath(fullpath, 'server', dir);
         if (this._skipBadPath(pathParts)) {
             return;
         }
-
+        res.name = libpath.join(libpath.dirname(res.shortPath), pathParts.shortFile);
         res.type = 'addon';
-        res.addonType = libpath.dirname(pathParts.name);
-        res.fsPath = fullpath;
-        res.source = source;
-        res.name = libpath.basename(pathParts.name);
+        res.addonType = subtype;
+        res.id = 'addon-' + res.addonType + '-' + res.name;
         this._precalcYuiModule(res);
         this._precalcStaticURL(res, mojitType);
-        resid = 'addon-' + res.addonType + '-' + res.name;
-
-        this._preloadSetDest(dest, resid, res, pathParts);
+        res.pathParts = pathParts;
+        return res;
     },
 
 
-    /*
-     * preloads metadata for a resource which is an asset
-     *
-     * @param dest {object} where to store the metadata of the resource
-     * @param source {string} "fw", "app", or "mojit"
-     * @param mojitType {string} name of mojit type, might be null
-     * @param fullpath {string} path to resource
-     * @param dir {string} base directory of resource type
-     * @return {nothing} results stored in this object
+    /**
+     * @method _parseResourceAsset
+     * @param res {object} partial resource
+     * @return {object|null} parsed resource, or null if shouldn't be used
+     * @private
      */
-    _preloadFileAsset: function(dest, source, mojitType, fullpath, dir) {
-        if (!this._libs.path.existsSync(fullpath)) {
-            return;
-        }
-        //logger.log('----------------------- preloadFileAsset -- ' + fullpath);
-        var resid,
-            res = {},
-            pathParts = this._parsePath(fullpath, 'common', dir);
+    _parseResourceAsset: function(res, mojitType) {
+        var dir,
+            ext,
+            file,
+            fileParts,
+            pathParts;
 
-        // All assets are "common", and we want to support the
-        // shortcut of "assets/foo.iphone.css".
-        pathParts.affinity = 'common';
+        // binders don't support our ".affinity." filename syntax
+        dir = libpath.dirname(res.shortPath);
+        ext = libpath.extname(res.shortPath);
+        file = libpath.basename(res.shortPath, ext);
+        fileParts = file.split('.');
+
+        pathParts = {
+            affinity: new Affinity('common'),
+            contextKey: '*',
+            contextParts: {},
+            ext: ext
+        };
+        if (fileParts.length >= 2) {
+            pathParts.contextParts.device = fileParts.pop();
+            pathParts.contextKey = libqs.stringify(pathParts.contextParts);
+        }
+        pathParts.shortFile = fileParts.join('.');
         if (this._skipBadPath(pathParts)) {
             return;
         }
 
+        res.name = libpath.join(dir, pathParts.shortFile) + pathParts.ext;
         res.type = 'asset';
-        res.fsPath = fullpath;
-        res.source = source;
         res.assetType = pathParts.ext.substr(1);
-        res.name = pathParts.name;
-        res.relpath = pathParts.relpath;
+        res.id = 'asset-' + res.name;
         this._precalcStaticURL(res, mojitType);
-        resid = 'asset-' + res.assetType + '-' + res.name;
-
-        this._preloadSetDest(dest, resid, res, pathParts);
+        res.pathParts = pathParts;
+        return res;
     },
 
 
-    /*
-     * preloads metadata for a resource which is an "autoload"
-     *
-     * @param dest {object} where to store the metadata of the resource
-     * @param source {string} "fw", "app", or "mojit"
-     * @param mojitType {string} name of mojit type, might be null
-     * @param fullpath {string} path to resource
-     * @param dir {string} base directory of resource type
-     * @return {nothing} results stored in this object
+    /**
+     * @method _parseResourceBinder
+     * @param res {object} partial resource
+     * @return {object|null} parsed resource, or null if shouldn't be used
+     * @private
      */
-    _preloadFileAutoload: function(dest, source, mojitType, fullpath, dir) {
-        if (!this._libs.path.existsSync(fullpath)) {
+    _parseResourceBinder: function(res, mojitType) {
+        var dir,
+            ext,
+            file,
+            fileParts,
+            pathParts;
+
+        // binders don't support our ".affinity." filename syntax
+        dir = libpath.dirname(res.shortPath);
+        ext = libpath.extname(res.shortPath);
+        file = libpath.basename(res.shortPath, ext);
+        fileParts = file.split('.');
+
+        pathParts = {
+            affinity: new Affinity('client'),
+            contextKey: '*',
+            contextParts: {},
+            ext: ext
+        };
+        if (fileParts.length >= 2) {
+            pathParts.contextParts.device = fileParts.pop();
+            pathParts.contextKey = libqs.stringify(pathParts.contextParts);
+        }
+        pathParts.shortFile = fileParts.join('.');
+        if ('.js' !== pathParts.ext) {
             return;
         }
-        if ('.js' !== libpath.extname(fullpath)) {
+        if (this._skipBadPath(pathParts)) {
             return;
         }
-        //logger.log('----------------------- preloadFileAutoload -- ' +
-        //    fullpath);
-        var resid,
-            res = {},
-            pathParts = this._parsePath(fullpath, 'server', dir);
+
+        res.name = libpath.join(libpath.dirname(res.shortPath), pathParts.shortFile);
+        res.type = 'binder';
+        res.id = 'binder-' + res.name;
+        this._precalcYuiModule(res);
+        this._precalcStaticURL(res, mojitType);
+        res.pathParts = pathParts;
+        return res;
+    },
+
+
+    /**
+     * @method _parseResourceController
+     * @param res {object} partial resource
+     * @return {object|null} parsed resource, or null if shouldn't be used
+     * @private
+     */
+    _parseResourceController: function(res, mojitType) {
+        var pathParts = this._parsePath(res, 'server');
+        if ('.js' !== pathParts.ext) {
+            return;
+        }
+        if (this._skipBadPath(pathParts)) {
+            return;
+        }
+        res.name = 'controller';
+        res.type = 'controller';
+        res.id = 'controller';
+        this._precalcYuiModule(res);
+        this._precalcStaticURL(res, mojitType);
+        res.pathParts = pathParts;
+        return res;
+    },
+
+
+    /**
+     * @method _parseResourceModel
+     * @param res {object} partial resource
+     * @return {object|null} parsed resource, or null if shouldn't be used
+     * @private
+     */
+    _parseResourceModel: function(res, mojitType) {
+        var pathParts = this._parsePath(res, 'server');
+        if ('.js' !== pathParts.ext) {
+            return;
+        }
+        if (this._skipBadPath(pathParts)) {
+            return;
+        }
+        res.name = libpath.join(libpath.dirname(res.shortPath), pathParts.shortFile);
+        res.type = 'model';
+        res.id = 'model-' + res.name;
+        this._precalcYuiModule(res);
+        this._precalcStaticURL(res, mojitType);
+        res.pathParts = pathParts;
+        return res;
+    },
+
+
+    /**
+     * @method _parseResourceSpec
+     * @param res {object} partial resource
+     * @return {object|null} parsed resource, or null if shouldn't be used
+     * @private
+     */
+    _parseResourceSpec: function(res, mojitType) {
+        var dir,
+            ext,
+            file,
+            pathParts,
+            appConfig,
+            prefix;
+
+        // specs don't support our ".affinity." or ".selector." filename syntax
+        dir = libpath.dirname(res.shortPath);
+        ext = libpath.extname(res.shortPath);
+        file = libpath.basename(res.shortPath, ext);
+        pathParts = {
+            affinity: new Affinity('server'),
+            contextKey: '*',
+            contextParts: {},
+            ext: ext
+        };
+        pathParts.shortFile = file;
+        if ('.json' !== pathParts.ext) {
+            return;
+        }
+        if (this._skipBadPath(pathParts)) {
+            return;
+        }
+
+        res.name = libpath.join(libpath.dirname(res.shortPath), pathParts.shortFile);
+        res.type = 'spec';
+        res.id = 'spec-' + res.name;
+
+        appConfig = this._appConfigStatic.staticHandling || {};
+        prefix = '/static';
+        if (typeof appConfig.prefix !== 'undefined') {
+            prefix = appConfig.prefix ? '/' + appConfig.prefix : '';
+        }
+
+        // namespaced by mojitType
+        res.specName = mojitType;
+        if (res.name !== 'default') {
+            res.specName += ':' + res.name;
+        }
+
+        res.dynamicHandlerURL = prefix + '/' + mojitType + '/specs/' + res.shortPath;
+        return res;
+    },
+
+
+    /**
+     * @method _parseResourceView
+     * @param res {object} partial resource
+     * @return {object|null} parsed resource, or null if shouldn't be used
+     * @private
+     */
+    _parseResourceView: function(res, mojitType) {
+        var pathParts,
+            fileParts;
+        // views don't support our ".affinity." filename syntax
+        pathParts = {
+            affinity: new Affinity('common'),
+            contextKey: '*',
+            contextParts: {},
+            ext: libpath.extname(res.shortPath)
+        };
+        fileParts = libpath.basename(res.shortPath).split('.');
+        res.viewOutputFormat = fileParts.pop();
+        res.viewEngine = fileParts.pop();
+        if (fileParts.length >= 2) {
+            pathParts.contextParts.device = fileParts.pop();
+            pathParts.contextKey = libqs.stringify(pathParts.contextParts);
+        }
+        pathParts.shortFile = fileParts.join('.');
+
+        if (fileParts.length !== 1) {
+            logger.log('invalid view filename. skipping ' + res.fsPath, 'warn', NAME);
+            return;
+        }
+        if (this._skipBadPath(pathParts)) {
+            return;
+        }
+
+        res.name = libpath.join(libpath.dirname(res.shortPath), pathParts.shortFile);
+        res.type = 'view';
+        res.id = 'view-' + res.name;
+        this._precalcStaticURL(res, mojitType);
+        res.pathParts = pathParts;
+        return res;
+    },
+
+
+    /**
+     * @method _parseResourceYuiLang
+     * @param res {object} partial resource
+     * @return {object|null} parsed resource, or null if shouldn't be used
+     * @private
+     */
+    _parseResourceYuiLang: function(res, mojitType) {
+        var pathParts,
+            shortName;
+        // language bundles don't support our ".affinity." filename syntax
+        pathParts = {
+            affinity: new Affinity('common'),
+            contextKey: '*',
+            contextParts: {},
+            ext: libpath.extname(res.shortPath)
+        };
+        if ('.js' !== pathParts.ext) {
+            return;
+        }
+        if (this._skipBadPath(pathParts)) {
+            return;
+        }
+        pathParts.shortFile = libpath.basename(res.shortPath, pathParts.ext);
+        if (pathParts.shortFile === mojitType) {
+            res.langCode = '';
+        } else if (mojitType === pathParts.shortFile.substr(0, mojitType.length)) {
+            res.langCode = pathParts.shortFile.substr(mojitType.length + 1);
+        } else {
+            logger.log('invalid YUI lang file format. skipping ' + res.fsPath, 'error', NAME);
+            return;
+        }
+        if (res.langCode) {
+            pathParts.contextParts.lang = res.langCode;
+            pathParts.contextKey = libqs.stringify(pathParts.contextParts);
+        }
+
+        res.name = res.langCode;
+        res.type = 'yui-lang';
+        res.id = 'yui-lang-' + res.langCode;
+
+        if (!this._mojitLangs[mojitType]) {
+            this._mojitLangs[mojitType] = [];
+        }
+        if (res.langCode) {
+            this._mojitLangs[mojitType].push(res.langCode);
+        }
+
+        this._precalcYuiModule(res);
+        this._precalcStaticURL(res, mojitType);
+        res.pathParts = pathParts;
+        return res;
+    },
+
+
+    /**
+     * @method _parseResourceYuiModule
+     * @param res {object} partial resource
+     * @return {object|null} parsed resource, or null if shouldn't be used
+     * @private
+     */
+    _parseResourceYuiModule: function(res, mojitType) {
+        var pathParts = this._parsePath(res);
+        if ('.js' !== pathParts.ext) {
+            return;
+        }
+        if (this._skipBadPath(pathParts)) {
+            return;
+        }
 
         if (pathParts.affinity.type) {
             // This allows the app config to specify that some "client" affinity
@@ -1977,356 +2248,571 @@ ServerStore.prototype = {
         if ('none' === pathParts.affinity) {
             return;
         }
-        if (this._skipBadPath(pathParts)) {
-            return;
+
+        this._precalcYuiModule(res);
+        res.name = res.yuiModuleName;
+        res.type = 'yui-module';
+        res.id = 'yui-module-' + res.name;
+        this._precalcStaticURL(res, mojitType);
+        res.pathParts = pathParts;
+        return res;
+    },
+
+
+    /**
+     * preloads a directory containing many mojits
+     *
+     * @method _preloadDirMojits
+     * @param dir {string} directory path
+     * @param pkg {object} metadata (name and version) about the package
+     * @return {nothing} work down via other called methods
+     * @private
+     */
+    _preloadDirMojits: function(dir, pkg) {
+        var i,
+            realDirs,
+            children,
+            childName,
+            childPath;
+
+        if ('/' !== dir.charAt(0)) {
+            dir = libpath.join(this._root, dir);
         }
 
-        res.type = 'yui-module';
-        res.fsPath = fullpath;
-        res.source = source;
-        this._precalcYuiModule(res);
-        if (!res.yuiModuleName) {
-            if ('.js' === pathParts.ext) {
-                throw new Error('Expected YUI3 module in ' + fullpath);
+        // handle globbing
+        if (dir.indexOf('*') >= 0) {
+            realDirs = [];
+            libglob.globSync(dir, {}, realDirs);
+            if (!realDirs.length) {
+                logger.log('Failed to find any mojitsDirs matching ' + dir, 'error', NAME);
+                return;
+            }
+            for (i = 0; i < realDirs.length; i += 1) {
+                this._preloadDirMojits(realDirs[i], pkg);
             }
             return;
         }
-        this._precalcStaticURL(res, mojitType);
-        resid = 'yui-module-' + res.yuiModuleName;
 
-        this._preloadSetDest(dest, resid, res, pathParts);
+        if (!this._libs.path.existsSync(dir)) {
+            return;
+        }
+
+        children = this._sortedReaddirSync(dir);
+        for (i = 0; i < children.length; i += 1) {
+            childName = children[i];
+            if ('.' === childName.substring(0, 1)) {
+                continue;
+            }
+            childPath = libpath.join(dir, childName);
+            this._preloadDirMojit(childPath, pkg, childPath);
+        }
     },
 
 
-    /*
-     * preloads metadata for a resource which is a binder
+    /**
+     * preloads a directory that represents a single mojit
      *
-     * @param dest {object} where to store the metadata of the resource
-     * @param source {string} "fw", "app", or "mojit"
-     * @param mojitType {string} name of mojit type, might be null
-     * @param fullpath {string} path to resource
-     * @param dir {string} base directory of resource type
-     * @return {nothing} results stored in this object
+     * @method _preloadDirMojit
+     * @param dir {string} directory path
+     * @param pkg {object} metadata (name and version) about the package
+     * @param pkgDir {string} directory of the packaging for this mojit
+     * @return {nothing} work down via other called methods
+     * @private
      */
-    _preloadFileBinder: function(dest, source, mojitType, fullpath, dir) {
-        if (!this._libs.path.existsSync(fullpath)) {
-            return;
-        }
-        if ('.js' !== libpath.extname(fullpath)) {
-            return;
-        }
-        //logger.log('----------------------- preloadFileBinder -- ' +
-        //    fullpath);
-        var resid,
-            res = {},
-            pathParts = this._parsePath(fullpath, 'client', dir);
-        if (this._skipBadPath(pathParts)) {
-            return;
-        }
-
-        res.type = 'binder';
-        res.fsPath = fullpath;
-        res.source = source;
-        res.name = pathParts.name;
-        this._precalcYuiModule(res);
-        this._precalcStaticURL(res, mojitType);
-        resid = 'binder-' + res.name;
-
-        this._preloadSetDest(dest, resid, res, pathParts);
-    },
-
-
-    /*
-     * preloads metadata for a resource which is a configuration file
-     *
-     * @param dest {object} where to store the metadata of the resource
-     * @param source {string} "fw", "app", or "mojit"
-     * @param mojitType {string} name of mojit type, might be null
-     * @param fullpath {string} path to resource
-     * @param dir {string} base directory of resource type
-     * @return {nothing} results stored in this object
-     */
-    _preloadFileConfig: function(dest, source, mojitType, fullpath, type) {
-        if (!this._libs.path.existsSync(fullpath)) {
-            return;
-        }
-        //logger.log('----------------------- preloadFileConfig(' + type +
-        //    ') -- ' + fullpath);
-        var resid,
-            res = {},
-            pathParts = this._parsePath(fullpath, 'server', null);
-        if (this._skipBadPath(pathParts)) {
-            return;
-        }
-
-        res.type = 'config';
-        res.configType = type;
-        res.fsPath = fullpath;
-        res.source = source;
-        resid = 'config-' + type;
-        if ('routes' === type) {
-            resid += '-' + pathParts.name;
-        }
-
-        this._preloadSetDest(dest, resid, res, pathParts);
-    },
-
-
-    /*
-     * preloads metadata for a resource which is a controller
-     *
-     * @param dest {object} where to store the metadata of the resource
-     * @param source {string} "fw", "app", or "mojit"
-     * @param mojitType {string} name of mojit type, might be null
-     * @param fullpath {string} path to resource
-     * @param dir {string} base directory of resource type
-     * @return {nothing} results stored in this object
-     */
-    _preloadFileController: function(dest, source, mojitType, fullpath, dir) {
-        if (!this._libs.path.existsSync(fullpath)) {
-            return;
-        }
-        if ('.js' !== libpath.extname(fullpath)) {
-            return;
-        }
-        //logger.log('----------------------- preloadFileController -- ' +
-        //    fullpath);
-        var resid,
-            res = {},
-            pathParts = this._parsePath(fullpath, 'server', dir);
-        if (this._skipBadPath(pathParts)) {
-            return;
-        }
-
-        res.type = 'controller';
-        res.fsPath = fullpath;
-        res.source = source;
-        this._precalcYuiModule(res);
-        this._precalcStaticURL(res, mojitType);
-        resid = 'controller';
-
-        this._preloadSetDest(dest, resid, res, pathParts);
-    },
-
-
-    /*
-     * preloads metadata for a resource which is a language bundle
-     *
-     * @param dest {object} where to store the metadata of the resource
-     * @param source {string} "fw", "app", or "mojit"
-     * @param mojitType {string} name of mojit type, might be null
-     * @param fullpath {string} path to resource
-     * @param dir {string} base directory of resource type
-     * @return {nothing} results stored in this object
-     */
-    _preloadFileLang: function(dest, source, mojitType, fullpath, dir) {
-        if (!this._libs.path.existsSync(fullpath)) {
-            return;
-        }
-        if ('.js' !== libpath.extname(fullpath)) {
-            return;
-        }
-        //logger.log('----------------------- preloadFileLang -- ' + fullpath);
-        var resid,
-            res = {},
-            pathParts = {},
-            matches,
-            code;
-
-        // YUI-intl doesn't support our ".affinity." filename syntax.
-        pathParts.ext = libpath.extname(fullpath);
-        pathParts.shortpath = libpath.basename(fullpath, pathParts.ext);
-        if (this._skipBadPath(pathParts)) {
-            return;
-        }
-
-        // There is not a "lang" for the default language file
-        matches = pathParts.shortpath.match(/^([^_]+)(?:_([^_.]+))?$/) || [];
-
-        // TODO: [Issue 10] Check this as we could have names with
-        // underscores YUI-intl expects default language to have no code on the
-        // filename. (In practice it's 'en', but don't assume that here.)
-        code = matches[2] || '';
-
-        res.type = 'yui-lang';
-        res.fsPath = fullpath;
-        res.source = source;
-        res.langCode = code;
-        this._precalcYuiModule(res);
-        this._precalcStaticURL(res, mojitType);
-        resid = 'yui-lang-' + pathParts.shortpath;
-
-        // Check the mojitType has a "lang" entry
-        if (!this._mojitLangs[mojitType]) {
-            this._mojitLangs[mojitType] = [];
-        }
-
-        // If we have a "lang" code add it to the list
-        if (code) {
-            this._mojitLangs[mojitType].push(code);
-        }
-
-        pathParts.affinity = 'common';
-        pathParts.contextKey = 'lang=' + code;
-        pathParts.contextParts = {lang: code};
-        this._preloadSetDest(dest, resid, res, pathParts);
-    },
-
-
-    /*
-     * preloads metadata for a resource which is a model
-     *
-     * @param dest {object} where to store the metadata of the resource
-     * @param source {string} "fw", "app", or "mojit"
-     * @param mojitType {string} name of mojit type, might be null
-     * @param fullpath {string} path to resource
-     * @param dir {string} base directory of resource type
-     * @return {nothing} results stored in this object
-     */
-    _preloadFileModel: function(dest, source, mojitType, fullpath, dir) {
-        if (!this._libs.path.existsSync(fullpath)) {
-            return;
-        }
-        if ('.js' !== libpath.extname(fullpath)) {
-            return;
-        }
-        //logger.log('----------------------- preloadFileModel -- ' + fullpath);
-        var resid,
-            res = {},
-            pathParts = this._parsePath(fullpath, 'server', dir);
-        if (this._skipBadPath(pathParts)) {
-            return;
-        }
-
-        res.type = 'model';
-        res.fsPath = fullpath;
-        res.source = source;
-        res.name = pathParts.name;
-        this._precalcYuiModule(res);
-        this._precalcStaticURL(res, mojitType);
-        resid = 'model-' + res.yuiModuleName;
-
-        this._preloadSetDest(dest, resid, res, pathParts);
-    },
-
-
-    /*
-     * preloads metadata for a resource which is a mojit instance specification
-     *
-     * @param dest {object} where to store the metadata of the resource
-     * @param source {string} "fw", "app", or "mojit"
-     * @param mojitType {string} name of mojit type, might be null
-     * @param fullpath {string} path to resource
-     * @param dir {string} base directory of resource type
-     * @return {nothing} results stored in this object
-     */
-    _preloadFileSpec: function(dest, source, mojitType, fullpath, dir) {
-        var name,
-            url,
-            config,
+    _preloadDirMojit: function(dir, pkg, pkgDir) {
+        var i,
+            realDirs,
+            resources,
+            res,
+            mojitType,
+            packageJson,
+            definitionJson,
             appConfig,
-            prefix;
+            prefix,
+            url;
 
-        if (!this._libs.path.existsSync(fullpath)) {
+        if ('/' !== dir.charAt(0)) {
+            dir = libpath.join(this._root, dir);
+        }
+
+        // handle globbing
+        if (dir.indexOf('*') >= 0) {
+            realDirs = [];
+            libglob.globSync(dir, {}, realDirs);
+            if (!realDirs.length) {
+                logger.log('Failed to find any mojitDirs matching ' + dir, 'error', NAME);
+                return;
+            }
+            for (i = 0; i < realDirs.length; i += 1) {
+                this._preloadDirMojit(realDirs[i], pkg, pkgDir);
+            }
             return;
         }
 
-        appConfig = this._appConfigStatic.staticHandling || {};
-        prefix = '/static';
-        if (typeof appConfig.prefix !== 'undefined') {
-            prefix = appConfig.prefix ? '/' + appConfig.prefix : '';
+        if (!this._libs.path.existsSync(dir)) {
+            return;
         }
 
-        // TODO:  this might benefit from using _parsePath()
+        mojitType = libpath.basename(dir);
+        packageJson = this._readMojitConfigFile(libpath.join(pkgDir, 'package.json'), false);
+        if (packageJson) {
+            if (packageJson.name) {
+                mojitType = packageJson.name;
+            }
+            if (pkg.name !== 'mojito') {
+                // TODO:  deprecate.  NPM "engine" is better
+                if (!this._mojitoVersionMatch(packageJson, this._version)) {
+                    logger.log('Mojito version mismatch: mojit skipped in "' +
+                        dir + '"', 'warn', NAME);
+                    return;
+                }
 
-        // Set the URL of the spec
-        url = prefix + '/' + mojitType + '/specs/' + libpath.basename(fullpath);
+                this._mojitPackageAsAsset(dir, mojitType, packageJson);
+            }
+        }
+        this._mojitPaths[mojitType] = dir;
 
-        // Set the name to the mojit type (this is for namespacing)
-        name = mojitType;
-
-        // If the filename is not "default" add it to the spec name
-        if (libpath.basename(fullpath) !== 'default.json') {
-            name += ':' +
-                libpath.basename(fullpath).split('.').slice(0, -1).join('.');
+        definitionJson = this._readMojitConfigFile(libpath.join(dir, 'definition.json'), true);
+        if (definitionJson.appLevel) {
+            mojitType = 'shared';
         }
 
-        config = this._readConfigYCB({}, fullpath);
-
-        // Just incase this has not been made
-        if (!this._appConfigStatic.specs) {
-            this._appConfigStatic.specs = {};
+        if ('shared' !== mojitType) {
+            // TODO: [Issue 109] re-use logic from _precalcStaticURL() for
+            // prefix (so that all options are supported)
+            appConfig = this._appConfigStatic.staticHandling || {};
+            prefix = '/static';
+            if (typeof appConfig.prefix !== 'undefined') {
+                prefix = appConfig.prefix ? '/' + appConfig.prefix : '';
+            }
+            url = prefix + '/' + mojitType + '/definition.json';
+            this._dynamicURLs[url] = libpath.join(dir, 'definition.json');
         }
 
-        // Add our spec to the specs map
-        this._appConfigStatic.specs[name] = config;
+        resources = this._findResourcesByConvention(dir, pkg, mojitType);
+        for (i = 0; i < resources.length; i += 1) {
+            res = resources[i];
+            switch (res.type) {
+            // app-level
+            case 'archetype':
+            case 'command':
+            case 'middleware':
+                logger.log('app-level resources not allowed here. skipping ' + res.fsPath, 'warn', NAME);
+                this._preloadResource(res, mojitType);
+                break;
 
-        // Add our spec to the Dynamic URLs list
-        this._dynamicURLs[url] = fullpath;
+            // mojit-level
+            case 'action':
+            case 'addon':
+            case 'asset':
+            case 'binder':
+            case 'controller':
+            case 'model':
+            case 'spec':
+            case 'view':
+            case 'yui-lang':
+            case 'yui-module':
+                this._preloadResource(res, mojitType);
+                break;
+            case 'config':
+                if ('shared' !== mojitType) {
+                    this._preloadResource(res, mojitType);
+                }
+                break;
+
+            default:
+                logger.log('unknown resource type "' + res.type + '". skipping ' + res.fsPath, 'warn', NAME);
+                break;
+            } // switch
+        }
     },
 
 
-    /*
-     * preloads metadata for a resource which is a view
+    /**
+     * Finds resources based on our conventions
+     * -doesn't- load mojits or their contents.  That's done elsewhere.
      *
-     * @param dest {object} where to store the metadata of the resource
-     * @param source {string} "fw", "app", or "mojit"
-     * @param mojitType {string} name of mojit type, might be null
-     * @param fullpath {string} path to resource
-     * @param dir {string} base directory of resource type
-     * @return {nothing} results stored in this object
+     * actions/{name}.**.js
+     * addons/{subtype}/{name}.**.js
+     * archetypes/{subtype}/{name}/
+     * assets/{everything}
+     * binders/{name}.**.js
+     * commands/{name}.js
+     * controller.**.js
+     * lang/{name}.**.js
+     * middleware/{name}.js
+     * models/{name}.**.js
+     * views/{name}.**.{ext}
+     * yui_modules/{name}.**.js
+     *
+     * @method _findResourcesByConvention
+     * @param dir {string} directory from which to find resources
+     * @param pkg {object} metadata (name and version) about the package
+     * @param mojitType {string|null} name of mojit to which the resource belongs
+     * @return {array} list of resources
+     * @private
      */
-    _preloadFileView: function(dest, source, mojitType, fullpath, dir) {
-        if (!this._libs.path.existsSync(fullpath)) {
+    _findResourcesByConvention: function(dir, pkg, mojitType) {
+        var me = this,
+            resources = [];
+        //console.log('-- FIND RESOURCES BY CONVENTION -- ' + pkg.name + '@' + pkg.version + ' -- ' + mojitType);
+
+        this._walkDirRecursive(dir, function(error, subdir, file, isFile) {
+            var pathParts,
+                fileParts,
+                ext,
+                subtype,
+                res;
+
+            if ('node_modules' === file) {
+                return false;
+            }
+            if ('libs' === file) {
+                return false;
+            }
+            if ('tests' === file && 'test' !== me._appConfigStatic.env) {
+                return false;
+            }
+
+            pathParts = libpath.join(subdir, file).split('/');
+            if (!isFile) {
+
+                // mojits are loaded another way later
+                if ('.' === subdir && 'mojits' === file) {
+                    return false;
+                }
+
+                if (pathParts.length === 3 && 'archetypes' === pathParts[0]) {
+                    subtype = pathParts[1];
+                    res = {
+                        pkg: pkg,
+                        fsPath: libpath.join(dir, subdir, file),
+                        shortPath: pathParts.slice(2).join('/')
+                    };
+                    res = me._parseResourceArchetype(res, subtype);
+                    if (res) {
+                        resources.push(res);
+                    }
+                    // no need to recurse into the archetype at this time
+                    return false;
+                }
+
+                // otherwise, just recurse
+                return true;
+            }
+
+            fileParts = file.split('.');
+            ext = fileParts[fileParts.length - 1];
+
+            if ('.' === subdir && 'json' === ext) {
+                res = {
+                    pkg: pkg,
+                    fsPath: libpath.join(dir, subdir, file),
+                    shortPath: libpath.join(subdir, file)
+                };
+                res = me._parseResourceConfig(res, mojitType);
+                if (res) {
+                    resources.push(res);
+                }
+                return;
+            }
+
+            if (pathParts.length >= 2 && 'commands' === pathParts[0]) {
+                res = {
+                    pkg: pkg,
+                    fsPath: libpath.join(dir, subdir, file),
+                    shortPath: pathParts.slice(1).join('/')
+                };
+                res = me._parseResourceCommand(res);
+                if (res) {
+                    resources.push(res);
+                }
+                return;
+            }
+
+            if (pathParts.length >= 2 && 'middleware' === pathParts[0]) {
+                res = {
+                    pkg: pkg,
+                    fsPath: libpath.join(dir, subdir, file),
+                    shortPath: pathParts.slice(1).join('/')
+                };
+                res = me._parseResourceMiddleware(res);
+                if (res) {
+                    resources.push(res);
+                }
+                return;
+            }
+
+            if (pathParts.length >= 2 && 'actions' === pathParts[0]) {
+                res = {
+                    pkg: pkg,
+                    fsPath: libpath.join(dir, subdir, file),
+                    shortPath: pathParts.slice(1).join('/')
+                };
+                res = me._parseResourceAction(res, mojitType);
+                if (res) {
+                    resources.push(res);
+                }
+                return;
+            }
+
+            if (pathParts.length >= 3 && 'addons' === pathParts[0]) {
+                subtype = pathParts[1];
+                res = {
+                    pkg: pkg,
+                    fsPath: libpath.join(dir, subdir, file),
+                    shortPath: pathParts.slice(2).join('/')
+                };
+                res = me._parseResourceAddon(res, mojitType, subtype);
+                if (res) {
+                    resources.push(res);
+                }
+                return;
+            }
+
+            if (pathParts.length >= 2 && 'assets' === pathParts[0]) {
+                res = {
+                    pkg: pkg,
+                    fsPath: libpath.join(dir, subdir, file),
+                    shortPath: pathParts.slice(1).join('/')
+                };
+                res = me._parseResourceAsset(res, mojitType);
+                if (res) {
+                    resources.push(res);
+                }
+                return;
+            }
+
+            if (pathParts.length >= 2 && 'binders' === pathParts[0]) {
+                res = {
+                    pkg: pkg,
+                    fsPath: libpath.join(dir, subdir, file),
+                    shortPath: pathParts.slice(1).join('/')
+                };
+                res = me._parseResourceBinder(res, mojitType);
+                if (res) {
+                    resources.push(res);
+                }
+                return;
+            }
+
+            if ('.' === subdir && 'controller' === fileParts[0]) {
+                res = {
+                    pkg: pkg,
+                    fsPath: libpath.join(dir, subdir, file),
+                    shortPath: libpath.join(subdir, file)
+                };
+                res = me._parseResourceController(res, mojitType);
+                if (res) {
+                    resources.push(res);
+                }
+                return;
+            }
+
+            if (pathParts.length >= 2 && 'lang' === pathParts[0]) {
+                res = {
+                    pkg: pkg,
+                    fsPath: libpath.join(dir, subdir, file),
+                    shortPath: pathParts.slice(1).join('/')
+                };
+                res = me._parseResourceYuiLang(res, mojitType);
+                if (res) {
+                    resources.push(res);
+                }
+                return;
+            }
+
+            if (pathParts.length >= 2 && 'models' === pathParts[0]) {
+                res = {
+                    pkg: pkg,
+                    fsPath: libpath.join(dir, subdir, file),
+                    shortPath: pathParts.slice(1).join('/')
+                };
+                res = me._parseResourceModel(res, mojitType);
+                if (res) {
+                    resources.push(res);
+                }
+                return;
+            }
+
+            if (pathParts.length >= 2 && 'specs' === pathParts[0]) {
+                res = {
+                    pkg: pkg,
+                    fsPath: libpath.join(dir, subdir, file),
+                    shortPath: pathParts.slice(1).join('/')
+                };
+                res = me._parseResourceSpec(res, mojitType);
+                if (res) {
+                    resources.push(res);
+                }
+                return;
+            }
+
+            if (pathParts.length >= 2 && 'views' === pathParts[0]) {
+                res = {
+                    pkg: pkg,
+                    fsPath: libpath.join(dir, subdir, file),
+                    shortPath: pathParts.slice(1).join('/')
+                };
+                res = me._parseResourceView(res, mojitType);
+                if (res) {
+                    resources.push(res);
+                }
+                return;
+            }
+
+            if (pathParts.length >= 2 && ('yui_modules' === pathParts[0]
+                        || 'autoload' === pathParts[0]
+                        || 'tests' === pathParts[0])) {
+                res = {
+                    pkg: pkg,
+                    fsPath: libpath.join(dir, subdir, file),
+                    shortPath: pathParts.slice(1).join('/')
+                };
+                res = me._parseResourceYuiModule(res, mojitType);
+                if (res) {
+                    resources.push(res);
+                }
+                return;
+            }
+
+            // unknown file, just skip.  (this includes config files which are
+            // handled separately.)
             return;
-        }
-        //logger.log('----------------------- preloadFileView -- ' + fullpath);
-        var resid,
-            res = {},
-            parts,
-            pathParts = {affinity: 'common', contextKey: '*', contextParts: {}};
+        });
 
-        // views don't support our ".affinity." filename syntax.
-        pathParts.ext = libpath.extname(fullpath);
-        dir = libpath.join(dir, '/');
-        pathParts.relpath = fullpath.substr(dir.length);
-        pathParts.shortpath = libpath.basename(fullpath, pathParts.ext);
-        parts = pathParts.shortpath.split('.');
-        pathParts.viewEngine = parts.pop();
-        pathParts.name = libpath.join(libpath.dirname(pathParts.relpath),
-            parts.shift());
-        if (parts.length) {
-            pathParts.contextParts.device = parts.join('.');
-            pathParts.contextKey = libqs.stringify(pathParts.contextParts);
-        }
-        if (this._skipBadPath(pathParts)) {
-            return;
-        }
-
-        // Catch if the view has no engine i.e. "index.html" not "index.mu.html"
-        if (!pathParts.name || pathParts.shortpath === pathParts.viewEngine) {
-            logger.log('Mojit view not loaded at "' + fullpath + '"', 'warn',
-                NAME);
-            return;
-        }
-
-        res.type = 'view';
-        res.fsPath = fullpath;
-        res.source = source;
-        res.viewEngine = pathParts.viewEngine;
-        res.viewOutputFormat = pathParts.ext.substr(1);
-        res.name = pathParts.name;
-        this._precalcStaticURL(res, mojitType);
-        resid = 'view-' + pathParts.name;
-
-        this._preloadSetDest(dest, resid, res, pathParts);
+        return resources;
     },
 
 
-    /*
-     * Note: this MUST be called before _preloadFileSpec()
+    /**
+     * @method _parsePath
+     * @param res {object} partial resource
+     * @return {object} metadata: ext, shortFile, affinity, contextKey, and contextParts
+     * @private
+     */
+    _parsePath: function(res, defaultAffinity) {
+        var out = {},
+            fileParts,
+            device;
+
+        out.contextKey = '*';
+        out.contextParts = {};
+        out.affinity = defaultAffinity || 'server';
+        out.ext = libpath.extname(res.shortPath);
+
+        fileParts = libpath.basename(res.shortPath, out.ext).split('.');
+        if (fileParts.length >= 3) {
+            device = fileParts.pop();
+        }
+        if (fileParts.length >= 2) {
+            out.affinity = fileParts.pop();
+        }
+        out.shortFile = fileParts.join('.');
+
+        out.affinity = new Affinity(out.affinity);
+        if (device) {
+            out.contextParts.device = device;
+        }
+        if (!this._objectIsEmpty(out.contextParts)) {
+            out.contextKey = libqs.stringify(out.contextParts);
+        }
+        return out;
+    },
+
+
+    /**
+     * utility that registers the resource for later parts of the algorithm
      *
-     * generates URL's about each spec in application.json
+     * @method _preloadResource
+     * @param res {object} metadata about the resource
+     * @param mojitType {string} which mojit, if applicatable
+     * @return {nothing}
+     * @private
+     */
+    _preloadResource: function(res, mojitType) {
+        var dest,
+            config,
+            using,
+            skipping;
+
+        if ('spec' === res.type) {
+            config = this._readConfigYCB({}, res.fsPath);
+            if (!this._appConfigStatic.specs) {
+                this._appConfigStatic.specs = {};
+            }
+            this._appConfigStatic.specs[res.specName] = config;
+            this._dynamicURLs[res.dynamicHandlerURL] = res.fsPath;
+            return;
+        }
+
+        // non-contextualized resources
+        // (... which are most app-level resources)
+        if (!res.pathParts) {
+            this._appMetaNC[res.id] = res;
+            return;
+        }
+
+        if (!mojitType) {
+            dest = this._preload.appMeta;
+        } else if ('shared' === mojitType) {
+            res.sharedMojit = true;
+            dest = this._preload.sharedMeta;
+        } else {
+            if (!this._preload.mojitMeta[mojitType]) {
+                this._preload.mojitMeta[mojitType] = {};
+            }
+            dest = this._preload.mojitMeta[mojitType];
+        }
+
+        if (!dest[res.id]) {
+            dest[res.id] = {};
+        }
+        dest = dest[res.id];
+        if (!dest[res.pathParts.affinity]) {
+            dest[res.pathParts.affinity] = {};
+        }
+        dest = dest[res.pathParts.affinity];
+        if (!dest.contexts) {
+            dest.contexts = {};
+        }
+        if (dest[res.pathParts.contextKey]) {
+            using = 'from pkg ' + dest[res.pathParts.contextKey].pkg.name + '@' +
+                dest[res.pathParts.contextKey].pkg.version;
+            skipping = 'from pkg ' + res.pkg.name + '@' + res.pkg.version;
+            if (using === skipping) {
+                using = dest[res.pathParts.contextKey].shortPath;
+                skipping = res.shortPath;
+            }
+            if (using === skipping) {
+                using = dest[res.pathParts.contextKey].fsPath;
+                skipping = res.fsPath;
+            }
+            logger.log('ALREADY EXISTS: ' + res.type + ' ' + res.shortPath +
+                    (mojitType ? ' -- in mojit ' + mojitType : '') +
+                    ' -- using ' + using + ' -- skipping ' + skipping,
+                    'info', NAME);
+            return;
+        }
+        dest.contexts[res.pathParts.contextKey] = res.pathParts.contextParts;
+        dest[res.pathParts.contextKey] = res;
+        delete res.pathParts;
+
+        if (res.staticHandlerURL) {
+            this._staticURLs[res.staticHandlerURL] = res.staticHandlerFsPath;
+            delete res.staticHandlerFsPath;
+        }
+    },
+
+
+    /**
+     * Note: this MUST be called before _parseResourceSpec()
+     *
+     * Generates URL's about each spec in application.json
+     *
+     * @method _urlsForAppSpecs
+     * @return {nothing}
+     * @private
      */
     _urlsForAppSpecs: function() {
         var specs = this._appConfigStatic.specs || {},
@@ -2337,7 +2823,6 @@ ServerStore.prototype = {
 
         appConfig = this._appConfigStatic.staticHandling || {};
         prefix = '/static';
-
         if (typeof appConfig.prefix !== 'undefined') {
             prefix = appConfig.prefix ? '/' + appConfig.prefix : '';
         }
@@ -2353,9 +2838,14 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * prereads the configuration file, if possible
      * (configuration files in YCB format cannot be preread)
+     *
+     * @method _prereadConfigs
+     * @param src {object} contextualized resources
+     * @return {nothing}
+     * @private
      */
     _prereadConfigs: function(src) {
         var ctxKey,
@@ -2384,8 +2874,13 @@ ServerStore.prototype = {
     },
 
 
-    /*
-     * reads and parses a JSON file
+    /**
+     * Reads and parses a JSON file
+     *
+     * @method _readConfigJSON
+     * @param fullpath {string} path to JSON file
+     * @return {mixed} contents of JSON file
+     * @private
      */
     _readConfigJSON: function(fullpath) {
         //logger.log('_readConfigJSON(' + fullpath + ')');
@@ -2403,7 +2898,7 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * Create a lookup table for validating YCB dimensions and values. The
      * table looks like this:
      *
@@ -2418,8 +2913,10 @@ ServerStore.prototype = {
      * }
      * </pre>
      *
+     * @method _precalcValidYCBDimensions
      * @param dimensions {object} Top-level YCB "dimensions" object
      * @return object
+     * @private
      */
     _precalcValidYCBDimensions: function(dimensions) {
         var validDims = {},
@@ -2440,12 +2937,14 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * Flatten the keys in a nested structure into a single object. The first
      * argument is modified. All values are set to null.
      *
+     * @method _flattenYCBDimensions
      * @param keys {object} The accumulator for keys.
      * @param obj {object}
+     * @private
      */
     _flattenYCBDimension: function(keys, obj) {
         var name;
@@ -2461,11 +2960,13 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * Return a context that contains only valid dimensions and values.
      *
+     * @method _getValidYCBContext
      * @param ctx {object} runtime context
      * @return {object} filtered runtime context
+     * @private
      */
     _getValidYCBContext: function(ctx) {
         var validDims = this._validYCBDims,
@@ -2485,12 +2986,15 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * reads a configuration file that is in YCB format
+     *
+     * @method _readConfigYCB
      * @param ctx {object} runtime context
      * @param fullpath {string} path to the YCB file
      * @param isAppConfig {boolean} indicates whether the file being read is the application.json
      * @return {object} the contextualized configuration
+     * @private
      */
     _readConfigYCB: function(ctx, fullpath, isAppConfig) {
         var cacheKey,
@@ -2540,11 +3044,14 @@ ServerStore.prototype = {
     },
 
 
-    /*
-     * reads a configuration file for a mojit
+    /**
+     * Reads a configuration file for a mojit
+     *
+     * @method _readMojitConfigFile
      * @param path {string} path to the file
      * @param ycb {boolean} indicates whether the file should be read using the YCB library
      * @return {object} the configuration
+     * @private
      */
     _readMojitConfigFile: function(path, ycb) {
         //logger.log('_readMojitConfigFile(' + path + ',' + ycb + ')');
@@ -2569,46 +3076,51 @@ ServerStore.prototype = {
     },
 
 
-    /*
-     * Sets up the static handling so that the package.json file for the
-     * mojit can be served.  This is only done if the package.json file
-     * has defined yahoo.mojito.package or config.mojito.package to
-     * "public".
+    /** 
+     * Registers the mojit's package.json as a static resource
      *
-     * @param pack {object} contents of the mojit's package.json file
-     * @param path {string} the mojit's directory
-     * @return {nothing} results are added to this object
+     * @method _mojitPackageAsAsset
+     * @param dir {string} directory of mojit
+     * @param mojitType {string} name of mojit
+     * @param packageJson {object} contents of mojit's package.json
+     * @return {nothing}
+     * @private
      */
-    _mojitPackageAsAsset: function(pack, path) {
+    _mojitPackageAsAsset: function(dir, mojitType, packageJson) {
         var pkg,
-            packagePath,
             fakeResource;
 
-        pkg = (pack.yahoo && pack.yahoo.mojito &&
-                pack.yahoo.mojito['package']) ||
-            (pack.config && pack.config.mojito &&
-                pack.config.mojito['package']);
+        // FUTURE:  deprecate config.mojito in package.json
+        pkg = (packageJson.yahoo && packageJson.yahoo.mojito &&
+                packageJson.yahoo.mojito['package']) ||
+            (packageJson.config && packageJson.config.mojito &&
+                packageJson.config.mojito['package']);
 
         if (pkg === 'public') {
             // We have to check if the "package.json" files wants to do this
-            packagePath = libpath.join(path, 'package.json');
             fakeResource = {
                 type: 'package',
-                fsPath: packagePath
+                fsPath: libpath.join(dir, 'package.json'),
+                shortPath: 'package.json'
             };
-            this._precalcStaticURL(fakeResource, (pack.name ||
-                libpath.basename(path)));
+            this._precalcStaticURL(fakeResource, mojitType);
+            if (fakeResource.staticHandlerURL) {
+                this._staticURLs[fakeResource.staticHandlerURL] =
+                    fakeResource.staticHandlerFsPath;
+            }
         }
     },
 
 
-    /*
-     * checks to see if the version of Mojito specified in a mojit's
+    /**
+     * Checks to see if the version of Mojito specified in a mojit's
      * package.json matches the current verison of Mojito.
      *
+     * @method _mojitoVersionMatch
      * @param pack {object} contents of the mojit's package.json file
      * @param version {string} current version of mojito
      * @return {boolean} returns true if the mojit can be used
+     * @private
      */
     _mojitoVersionMatch: function(pack, version) {
         var packageVersion;
@@ -2636,8 +3148,8 @@ ServerStore.prototype = {
     },
 
 
-    /*
-     * takes the preloaded info and resolves ("cooks down") affinity, etc
+    /**
+     * Takes the preloaded info and resolves ("cooks down") affinity, etc.
      *
      * This function is a doozy.  This is where all the magic happens as far
      * as which version of each resource is used.  The results are stored in
@@ -2648,9 +3160,8 @@ ServerStore.prototype = {
      * We do that to have fast lookup during runtime.
      *
      * The algorithm chooses first from the most specific source:  mojit-
-     * specific has higher precedence than app-level, which has higher
-     * precedence than framework-provided.  Within each of those, the
-     * environment-specific version ("client" or "server") has higher
+     * specific has higher precedence than shared. Within each of those,
+     * the environment-specific version ("client" or "server") has higher
      * precedence than the "common" affinity.
      *
      * We do this for each context key (partial context).  We resolve
@@ -2659,6 +3170,10 @@ ServerStore.prototype = {
      *
      * (Half of the above algorithm is implemented here, and half in
      * _cookdownMerge() which is a utility for this method.)
+     *
+     * @method _cookdown
+     * @return {nothing}
+     * @private
      */
     _cookdown: function() {
         //logger.log('_cookdown()');
@@ -2692,13 +3207,8 @@ ServerStore.prototype = {
                 resids = {};
 
                 // need resids from all sources
-                for (resid in this._preload.fwMeta) {
-                    if (this._preload.fwMeta.hasOwnProperty(resid)) {
-                        resids[resid] = true;
-                    }
-                }
-                for (resid in this._preload.appMeta) {
-                    if (this._preload.appMeta.hasOwnProperty(resid)) {
+                for (resid in this._preload.sharedMeta) {
+                    if (this._preload.sharedMeta.hasOwnProperty(resid)) {
                         resids[resid] = true;
                     }
                 }
@@ -2714,11 +3224,7 @@ ServerStore.prototype = {
                             env = envs[i];
                             merged = this._cookdownMerge(env, [
                                 // ORDER IS IMPORTANT
-                                // source=fw -- lowest priority
-                                this._preload.fwMeta[resid],
-                                // source=app -- middle priority
-                                this._preload.appMeta[resid],
-                                // source=mojit -- highest priority
+                                this._preload.sharedMeta[resid],
                                 this._preload.mojitMeta[type][resid]
                             ]);
                             if (merged) {
@@ -2756,35 +3262,6 @@ ServerStore.prototype = {
             }
         } // foreach type
 
-        for (resid in this._preload.fwMeta) {
-            if (this._preload.fwMeta.hasOwnProperty(resid)) {
-                for (i = 0; i < envs.length; i += 1) {
-                    env = envs[i];
-                    merged = this._cookdownMerge(env,
-                        [this._preload.fwMeta[resid]]);
-                    if (merged) {
-                        if (!this._fwMeta[env]) {
-                            this._fwMeta[env] = {};
-                        }
-                        if (!this._fwMeta[env].contexts) {
-                            this._fwMeta[env].contexts = {};
-                        }
-                        for (ctxKey in merged.contexts) {
-                            if (merged.contexts.hasOwnProperty(ctxKey)) {
-                                this._fwMeta[env].contexts[ctxKey] =
-                                    merged.contexts[ctxKey];
-                                if (!this._fwMeta[env][ctxKey]) {
-                                    this._fwMeta[env][ctxKey] = {};
-                                }
-                                this._fwMeta[env][ctxKey][resid] =
-                                    merged[ctxKey];
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
         for (resid in this._preload.appMeta) {
             if (this._preload.appMeta.hasOwnProperty(resid)) {
                 for (i = 0; i < envs.length; i += 1) {
@@ -2813,19 +3290,52 @@ ServerStore.prototype = {
                 }
             }
         }
+
+        for (resid in this._preload.sharedMeta) {
+            if (this._preload.sharedMeta.hasOwnProperty(resid)) {
+                for (i = 0; i < envs.length; i += 1) {
+                    env = envs[i];
+                    merged = this._cookdownMerge(env,
+                        [this._preload.sharedMeta[resid]]);
+                    if (merged) {
+                        if (!this._sharedMeta[env]) {
+                            this._sharedMeta[env] = {};
+                        }
+                        if (!this._sharedMeta[env].contexts) {
+                            this._sharedMeta[env].contexts = {};
+                        }
+                        for (ctxKey in merged.contexts) {
+                            if (merged.contexts.hasOwnProperty(ctxKey)) {
+                                this._sharedMeta[env].contexts[ctxKey] =
+                                    merged.contexts[ctxKey];
+                                if (!this._sharedMeta[env][ctxKey]) {
+                                    this._sharedMeta[env][ctxKey] = {};
+                                }
+                                this._sharedMeta[env][ctxKey][resid] =
+                                    merged[ctxKey];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        delete this._preload_routes;
         delete this._preload;
     },
 
 
-    /*
+    /**
      * This is a utility for _cookdown().  See docs on that for details.
      *
      * The general idea is that we start with the lowest priority items
      * and let higher priority items clobber.
      *
+     * @method _cookdownMerge
      * @param env {string} "client" or "server"
      * @param srcs {array} ORDER MATTERS! list of resources to merge
-     * @return {DOING} DOING
+     * @return {TODO} TODO
+     * @private
      */
     _cookdownMerge: function(env, srcs) {
         var merged = { contexts: {} },
@@ -2873,9 +3383,13 @@ ServerStore.prototype = {
     },
 
 
-    /*
-     * calculates, at server start time, the YUI module dependencies
+    /**
+     * Calculates, at server start time, the YUI module dependencies
      * for mojit controllers and binders
+     *
+     * @method _precalcYuiDependencies
+     * @return {nothing}
+     * @private
      */
     _precalcYuiDependencies: function() {
         var e,
@@ -3100,21 +3614,22 @@ ServerStore.prototype = {
     },
 
 
-    // fills dest with:
+    // Fills dest with:
     //  .controller     resource for the controller
     //  .modules        hash yuiModuleName: {
     //                          fullpath: where to load the module from
     //                          requires: list of required modules
     //                      }
-    //  .moduleSources  hash yuiModuleName:source
     //  .required       hash yuiModuleName:true of modules required by the
     //                      source controller
     //  .viewEngines    hash name:yuiModuleName of view engines
     //
+    // @method _precalcYuiDependencies_getDepParts
     // @param env {string} "client" or "server"
     // @param source {object} list of resources
     // @param dest {object} where to add results
     // @return {nothing} results put in "dest" argument
+    // @private
     _precalcYuiDependencies_getDepParts: function(env, source, dest) {
         var resid,
             res,
@@ -3126,7 +3641,6 @@ ServerStore.prototype = {
         dest.required = dest.required || {};
         dest.viewEngines = dest.viewEngines || {};
         dest.modules = dest.modules || {};
-        dest.moduleSources = dest.moduleSources || {};
 
         // all mojits essentially have this dependency implicitly (even it not
         // given explicitly)
@@ -3149,7 +3663,7 @@ ServerStore.prototype = {
                     if ('server' === env && 'binder' === res.type) {
                         continue;
                     }
-                    if ('mojit' === res.source) {
+                    if (!res.sharedMojit) {
                         dest.required[res.yuiModuleName] = true;
                     }
                     dest.modules[res.yuiModuleName] = {
@@ -3158,7 +3672,6 @@ ServerStore.prototype = {
                                 res.staticHandlerURL :
                                 res.fsPath)
                     };
-                    dest.moduleSources[res.yuiModuleName] = res.source;
                     if (('controller' === res.type)) {
                         dest.controller = res;
                     }
@@ -3170,8 +3683,19 @@ ServerStore.prototype = {
     },
 
 
-    /*
-     * uses YUI Loader to sort a list of YUI modules
+    /**
+     * Uses YUI Loader to sort a list of YUI modules.
+     *
+     * @method _sortYUIModules
+     * @param ctx {object} runtime context
+     * @param env {string} runtime environment ("client" or "server")
+     * @param yuiConfig {object} configuration for YUI
+     * @param mojitType {string} name of mojit
+     * @param modules {object} YUI configuration for all modules
+     * @param required {object} lookup hash of modules that are required
+     * @return {object} list of load-order sorted module names, and object
+     *      listing paths used to load those modules
+     * @private
      */
     _sortYUIModules: function(ctx, env, yuiConfig, mojitType, modules,
             required) {
@@ -3237,12 +3761,14 @@ ServerStore.prototype = {
     },
 
 
-    /*
-     * calculates the static handling URL for a resource
+    /**
+     * Calculates the static handling URL for a resource.
      *
+     * @method _precalcStaticURL
      * @param res {object} metadata about the resource
      * @param mojitType {string} mojit type, can be undefined for non-mojit-specific resources
      * @return {nothing} new metadata added to the "res" argument
+     * @private
      */
     _precalcStaticURL: function(res, mojitType) {
         /* alternate approach which shows power of precalculating the URL and
@@ -3255,7 +3781,6 @@ ServerStore.prototype = {
             parts = [],
             path,
             i,
-            relpath,
             config = this._appConfigStatic.staticHandling || {},
             prefix = config.prefix,
             appName = config.appName || this._shortRoot,
@@ -3281,44 +3806,35 @@ ServerStore.prototype = {
 
         switch (res.type) {
         case 'action':
-            path = libpath.join('actions', libpath.basename(res.fsPath));
+            path = libpath.join('actions', res.shortPath);
             break;
         case 'addon':
-            i = res.fsPath.indexOf('/addons/');
-            relpath = res.fsPath.substr(i + 8);
-            path = libpath.join('addons', relpath);
+            path = libpath.join('addons', res.addonType, res.shortPath);
             break;
         case 'asset':
-            i = res.fsPath.indexOf('/assets/');
-            relpath = res.fsPath.substr(i + 8);
-            path = libpath.join('assets', relpath);
+            path = libpath.join('assets', res.shortPath);
             break;
         case 'binder':
-            i = res.fsPath.indexOf('/binders/');
-            relpath = res.fsPath.substr(i + 9);
-            path = libpath.join('binders', relpath);
+            path = libpath.join('binders', res.shortPath);
             break;
         case 'controller':
-            path = libpath.basename(res.fsPath);
+            path = res.shortPath;
             break;
         case 'model':
-            path = libpath.join('models', libpath.basename(res.fsPath));
+            path = libpath.join('models', res.shortPath);
             break;
         case 'view':
-            i = res.fsPath.indexOf('/views/');
-            relpath = res.fsPath.substr(i + 7);
-            path = libpath.join('views', relpath);
+            path = libpath.join('views', res.shortPath);
             break;
         case 'yui-lang':
-            path = libpath.join('lang', libpath.basename(res.fsPath));
+            path = libpath.join('lang', res.shortPath);
             break;
         case 'yui-module':
-            i = res.fsPath.indexOf('/autoload/');
-            relpath = res.fsPath.substr(i + 10);
-            path = libpath.join('autoload', relpath);
+            // FUTURE:  change this to 'yui_modules'
+            path = libpath.join('autoload', res.shortPath);
             break;
         case 'package':
-            path = libpath.basename(res.fsPath);
+            path = res.shortPath;
             break;
         default:
             return;
@@ -3332,18 +3848,20 @@ ServerStore.prototype = {
             rollupParts.push(prefix);
         }
 
-        if ('fw' === res.source) {
-            parts.push(frameworkName);
-            if (config.useRollups && res.yuiModuleName) {
-                // fw resources are put into app-level rollup
-                rollupParts.push(appName);
-                rollupFsPath = libpath.join(this._root, 'rollup.client.js');
-            }
-        } else if ('app' === res.source) {
-            parts.push(appName);
-            if (config.useRollups && res.yuiModuleName) {
-                rollupParts.push(appName);
-                rollupFsPath = libpath.join(this._root, 'rollup.client.js');
+        if ('shared' === mojitType) {
+            if (res.pkg && 'mojito' === res.pkg.name) {
+                parts.push(frameworkName);
+                if (config.useRollups && res.yuiModuleName) {
+                    // fw resources are put into app-level rollup
+                    rollupParts.push(appName);
+                    rollupFsPath = libpath.join(this._root, 'rollup.client.js');
+                }
+            } else {
+                parts.push(appName);
+                if (config.useRollups && res.yuiModuleName) {
+                    rollupParts.push(appName);
+                    rollupFsPath = libpath.join(this._root, 'rollup.client.js');
+                }
             }
         } else {
             parts.push(mojitType);
@@ -3367,21 +3885,23 @@ ServerStore.prototype = {
             res.rollupURL = '/' + libpath.join(rollupParts.join('/'),
                 'rollup.client.js');
             url = res.rollupURL;
-            this._staticURLs[url] = rollupFsPath;
+            res.staticHandlerFsPath = rollupFsPath;
         }
         if (!url) {
             url = '/' + libpath.join(parts.join('/'), path);
-            this._staticURLs[url] = res.fsPath;
+            res.staticHandlerFsPath = res.fsPath;
         }
         res.staticHandlerURL = url;
     },
 
 
-    /*
-     * attempt to gather YUI-module details
+    /**
+     * Attempt to gather YUI-module details.
      *
+     * @method _precalcYuiModule
      * @param res {object} metadata about the resource
      * @return {nothing} new metadata added to the "res" argument
+     * @private
      */
     _precalcYuiModule: function(res) {
         var file = this._libs.fs.readFileSync(res.fsPath, 'utf8'),
@@ -3424,13 +3944,15 @@ ServerStore.prototype = {
     },
 
 
-    /*
-     * reads one the configuration files for a mojit
+    /**
+     * Reads one the configuration files for a mojit
      *
+     * @method _getMojitConfig
      * @param env {string} "client" or "server"
      * @param ctx {object} runtime context
      * @param mojitType {string} name of mojit
      * @param name {string} config resource name, either "definition" or "defaults"
+     * @private
      */
     _getMojitConfig: function(env, ctx, mojitType, name) {
         //logger.log('_getMojitConfig('+env+','+mojitType+','+name+')');
@@ -3452,11 +3974,13 @@ ServerStore.prototype = {
     },
 
 
-    /*
-     * returns whether a runtime context matches a partial context
+    /**
+     * Returns whether a runtime context matches a partial context
      *
+     * @method _matchContext
      * @param ctx {object} runtime context
      * @param ctxParts {object} partial context
+     * @private
      */
     _matchContext: function(ctx, ctxParts) {
         var k;
@@ -3477,12 +4001,14 @@ ServerStore.prototype = {
     },
 
 
-    /*
-     * returns a list of resource metadata that match the context
+    /**
+     * Returns a list of resource metadata that match the context
      *
+     * @method _getResourceListForContext
      * @param src {object} list of contextualized resources, key is contextKey
      * @param ctx {object} context to match
      * @return {object} list of resources, key is resource ID
+     * @private
      */
     _getResourceListForContext: function(src, ctx) {
         var list = {},  // resid: resource
@@ -3515,13 +4041,15 @@ ServerStore.prototype = {
     },
 
 
-    /*
-     * returns a list of the language resources
+    /**
+     * Returns a list of the language resources
      * doesn't discriminate based on context:  returns all langs for all
      * contexts.
      *
+     * @method _getLangList
      * @param src {object} list of contextualized resources, key is contextKey
      * @return {object} list of language resources, key is resource ID
+     * @private
      */
     _getLangList: function(src) {
         var list = {},  // resid: res
@@ -3545,13 +4073,15 @@ ServerStore.prototype = {
     },
 
 
-    /*
-     * returns the metadata for a resource specific for a particular runtime context
+    /**
+     * Returns the metadata for a resource specific for a particular runtime context
      *
+     * @method _getContextualizedResource
      * @param src {object} list of contextualized resources, key is contextKey
      * @param ctx {object} context to match
      * @param resid {string} ID of resource to find
      * @return {object} resource metadata
+     * @private
      */
     _getContextualizedResource: function(src, ctx, resid) {
         var ctxKey,
@@ -3582,94 +4112,13 @@ ServerStore.prototype = {
     },
 
 
-    /*
-     * utility for the _preloadFile*() methods that sets the new resource metadata
-     * into a location consistent with the other parts of the algorithm
+    /**
+     * Indicates whether file should be skipped based on its path
      *
-     * @param dest {object} where to store the results
-     * @param resid {string} resource ID
-     * @param res {object} metadata about the resource
-     * @param pathParts {object} results of _parsePath(), or the equivalent
-     */
-    _preloadSetDest: function(dest, resid, res, pathParts) {
-        if (!dest[resid]) {
-            dest[resid] = {};
-        }
-        dest = dest[resid];
-        if (!dest[pathParts.affinity]) {
-            dest[pathParts.affinity] = {};
-        }
-        dest = dest[pathParts.affinity];
-        if (!dest.contexts) {
-            dest.contexts = {};
-        }
-        dest.contexts[pathParts.contextKey] = pathParts.contextParts;
-        dest[pathParts.contextKey] = res;
-    },
-
-
-    /*
-     * utility for the _preloadFile*() methods that takes a file path
-     * and returns metadata about it
-     *
-     * @param fullpath {string} full path to resource
-     * @param defaultAffinity {string} affinity to use if the resource filename doesn't specify one
-     * @param dir {string} base directory of resource type
-     */
-    _parsePath: function(fullpath, defaultAffinity, dir) {
-        var shortpath,
-            reldir,
-            parts,
-            outParts = [],
-            i,
-            part,
-            device,
-            affinity,
-            out = {
-                contextKey: '*',
-                contextParts: {},
-                affinity: defaultAffinity || 'server'
-            };
-
-        if (!dir) {
-            dir = libpath.dirname(fullpath);
-        }
-        dir = libpath.join(dir, '/');
-        out.relpath = fullpath.substr(dir.length);
-
-        // TODO: support strict {name}.{selector}?.{affinity}?.{ext} syntax.
-        out.ext = libpath.extname(fullpath);
-        shortpath = libpath.basename(out.relpath, out.ext);
-        reldir = libpath.dirname(out.relpath);
-
-        affinity = this._detectAffinityFromShortFilename(shortpath);
-        if (affinity) {
-            out.affinity = affinity;
-        }
-        device = this._detectDeviceFromShortFilename(shortpath,
-            out.contextParts.device);
-        if (device) {
-            out.contextParts.device = device;
-        }
-
-        outParts.push(this._extractRootNameFromShortFilename(shortpath));
-
-        if (!this._objectIsEmpty(out.contextParts)) {
-            out.contextKey = libqs.stringify(out.contextParts);
-        }
-
-        out.name = libpath.join(reldir, outParts.join('.'));
-        out.shortpath = libpath.join(reldir, shortpath);
-
-        return out;
-    },
-
-
-    /*
-     * indicates whether file should be skipped based on its path
-     * 
+     * @method _skipBadPath
      * @param pathParts {object} return value of _parsePath() (or the equivalent)
      * @return {boolean} true indicates that the file should be skipped
+     * @private
      */
     _skipBadPath: function(pathParts) {
         var ext = pathParts.ext.substring(1);
@@ -3680,14 +4129,16 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * Generate a report of syntax errors for JavaScript code. This is also
      * very useful to find syntax errors in JSON documents.
      *
+     * @method _reportJavaScriptSyntaxErrors
      * @param {string} js the JavaScript
      * @param {string} filename OPTIONAL. the name of the file containing the
      *     JavaScript
      * @return {string} if errors were found, a multi-line error report
+     * @private
      */
     _reportJavaScriptSyntaxErrors: function(js, filename) {
 
@@ -3766,44 +4217,13 @@ ServerStore.prototype = {
     },
 
 
-    /*
-     * finds the affinity in the filename
+    /**
+     * Returns the selector for the runtime context
      *
-     * @param name {string} filename
-     * @return {string|undefined} affinity found in the filename
-     */
-    _detectAffinityFromShortFilename: function(name) {
-        var affinity;
-
-        if (name.indexOf('.') >= 0) {
-            affinity = new Affinity(name.split('.').pop());
-        }
-        return affinity;
-    },
-
-
-    /*
-     * finds the device in the filename
-     *
-     * @param name {string} filename
-     * @return {string|undefined} device found in the filename
-     */
-    _detectDeviceFromShortFilename: function(name) {
-        // FUTURE: [Issue 86]real device detection
-        var device;
-
-        if (name.indexOf('iphone') > -1) {
-            device = 'iphone';
-        }
-        return device;
-    },
-
-
-    /*
-     * returns the selector for the runtime context
-     *
+     * @method _selectorFromContext
      * @param ctx {object} runtime context
      * @return {string|null} selector for context
+     * @private
      */
     _selectorFromContext: function(ctx) {
         if (ctx.device) {
@@ -3813,25 +4233,12 @@ ServerStore.prototype = {
     },
 
 
-    /*
-     * returns the short filename without the selector
-     *
-     * @param name {string} short filename
-     * @return {string} short filename without the selector
+    /**
+     * @method _objectIsEmpty
+     * @param o {object}
+     * @return {boolean} true if the object is empty
+     * @private
      */
-    _extractRootNameFromShortFilename: function(name) {
-        var parts;
-
-        if (name.indexOf('.') === -1) {
-            return name;
-        }
-        parts = name.split('.');
-        parts.pop();
-        return parts.join('.');
-    },
-
-
-    // returns true if the object is empty
     _objectIsEmpty: function(o) {
         if (!o) {
             return true;
@@ -3843,14 +4250,16 @@ ServerStore.prototype = {
     // from http://stackoverflow.com/questions/171251/
     // how-can-i-merge-properties-of-two-javascript-objects-dynamically/
     // 383245#383245
-    /*
+    /**
      * Recursively merge one object onto another
      *
+     * @method _mergeRecursive
      * @param dest {object} object to merge into
      * @param src {object} object to merge onto "dest"
      * @param matchType {boolean} controls whether a non-object in the src is
      *          allowed to clobber a non-object in the dest (if a different type)
      * @return {object} the modified "dest" object is also returned directly
+     * @private
      */
     _mergeRecursive: function(dest, src, typeMatch) {
         var p;
@@ -3878,7 +4287,12 @@ ServerStore.prototype = {
     },
 
 
-    // deep copies an object
+    /**
+     * @method _cloneObj
+     * @param o {mixed}
+     * @return {mixed} deep copy of argument
+     * @private
+     */
     _cloneObj: function(o) {
         var newO,
             i;
@@ -3908,18 +4322,70 @@ ServerStore.prototype = {
     },
 
 
-    /*
+    /**
      * A wrapper for fs.readdirSync() that guarantees ordering. The order in
      * which the file system is walked is significant within the resource
      * store, e.g., when looking up a matching context.
      *
+     * @method _sortedReaddirSync
      * @param path {string} directory to read
      * @return {array} files in the directory
+     * @private
      */
     _sortedReaddirSync: function(path) {
         var out = this._libs.fs.readdirSync(path);
         return out.sort();
+    },
+
+
+    /** 
+     * Recursively walks a directory
+     *
+     * @method _walkDirRecursive
+     * @param dir {string} directory to start at
+     * @param cb {function(error, subdir, name, isFile)} callback called for each file
+     * @param _subdir {string} INTERNAL argument, please ignore
+     * @return {nothing} value returned via callback
+     * @private
+     */
+    _walkDirRecursive: function(dir, cb, _subdir) {
+        var subdir,
+            fulldir,
+            children,
+            i,
+            childName,
+            childPath,
+            childFullPath,
+            childStat;
+
+        subdir = _subdir || '.';
+        fulldir = libpath.join(dir, subdir);
+        if (!this._libs.path.existsSync(fulldir)) {
+            return;
+        }
+
+        children = this._sortedReaddirSync(fulldir);
+        for (i = 0; i < children.length; i += 1) {
+            childName = children[i];
+            if ('.' === childName.substring(0, 1)) {
+                continue;
+            }
+            if ('node_modules' === childName) {
+                continue;
+            }
+            childPath = libpath.join(subdir, childName);
+            childFullPath = libpath.join(dir, childPath);
+            childStat = this._libs.fs.statSync(childFullPath);
+            if (childStat.isFile()) {
+                cb(null, subdir, childName, true);
+            } else if (childStat.isDirectory()) {
+                if (cb(null, subdir, childName, false)) {
+                    this._walkDirRecursive(dir, cb, childPath);
+                }
+            }
+        }
     }
+
 
 };
 

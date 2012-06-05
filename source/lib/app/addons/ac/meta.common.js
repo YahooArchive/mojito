@@ -39,6 +39,7 @@ YUI.add('mojito-meta-addon', function(Y, NAME) {
          * if you use the same key, you'll override previous data. Call this
          * within child mojits when you have some data you want to make
          * available for some reason to any parents up your hierarchy.
+         * @method store
          * @param {string} key The key used as the index value.
          * @param {object} val The value to store.
          */
@@ -52,6 +53,7 @@ YUI.add('mojito-meta-addon', function(Y, NAME) {
          * this function and provide a function, which will be called once the
          * children have been dispatched and all their meta data has been
          * merged.
+         * @method retrieve
          * @param {function} cb callback will be called with the stored merged
          *     object.
          * @param {object} [optional] scope scope of the callback.

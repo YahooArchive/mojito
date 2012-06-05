@@ -49,6 +49,7 @@ YUI.add('mojito-url-addon', function(Y, NAME) {
 
         /**
          * Generates a URL from the given parameters
+         * @method make
          * @param {string} base Base mojit defined at the root level of the
          *     Mojito application configuration.
          * @param {string} action Action reference, concatenated to the base
@@ -95,6 +96,7 @@ YUI.add('mojito-url-addon', function(Y, NAME) {
 
         /**
          * Finds the first matching route from the given URL
+         * @method find
          * @param {string} url the URL to find a route for.
          * @param {string} verb the HTTP method.
          */

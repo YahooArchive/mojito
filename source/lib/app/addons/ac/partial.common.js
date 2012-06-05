@@ -36,6 +36,7 @@ YUI.add('mojito-partial-addon', function(Y, NAME) {
          * This method renders the "data" provided into the "view" specified.
          * The "view" must be the name of one of the files in the current
          * Mojits "views" folder. Returns via the callback.
+         * @method render
          * @param {object} data The object to be rendered.
          * @param {string} view The view name to be used for rendering.
          * @param {function} cb callback signature is function(error, result).
@@ -87,6 +88,7 @@ YUI.add('mojito-partial-addon', function(Y, NAME) {
          *      <dt>file</dt><dd>&lt;object&gt; Map of key/value pairs.</dd>
          *     </dl></dd>
          * </dl>
+         * @method invoke
          * @param {string} action name of the action to invoke.
          * @param {object} options see above.
          * @param {function} cb callback function to be called on completion.
