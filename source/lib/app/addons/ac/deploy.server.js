@@ -85,6 +85,7 @@ YUI.add('mojito-deploy-addon', function(Y, NAME) {
                 contextClient,
                 appConfigClient,
                 yuiConfig = {},
+                fwConfig,
                 yuiModules,
                 loader,
                 yuiCombo,
@@ -172,6 +173,7 @@ YUI.add('mojito-deploy-addon', function(Y, NAME) {
                 yuiModules = ['yui'];
                 yuiJsUrlContains.yui = true;
                 if (useOnDemand) {
+                    fwConfig = store.store.getFrameworkConfig();
                     yuiModules.push('get');
                     yuiJsUrlContains.get = true;
                     yuiModules.push('loader-base');
@@ -180,10 +182,8 @@ YUI.add('mojito-deploy-addon', function(Y, NAME) {
                     yuiJsUrlContains['loader-rollup'] = true;
                     yuiModules.push('loader-yui3');
                     yuiJsUrlContains['loader-yui3'] = true;
-                    for (i = 0; i < store.store._fwConfig.
-                            ondemandBaseYuiModules.length; i += 1) {
-                        module =
-                            store.store._fwConfig.ondemandBaseYuiModules[i];
+                    for (i = 0; i < fwConfig.ondemandBaseYuiModules.length; i += 1) {
+                        module = fwConfig.ondemandBaseYuiModules[i];
                         yuiModules.push(module);
                         yuiJsUrlContains[module] = true;
                     }
