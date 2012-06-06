@@ -395,7 +395,7 @@ YUI.add('mojito-dispatcher', function(Y, NAME) {
 
             logger.log('Dispatcher created', 'debug', NAME);
 
-            appConfigStatic = store.getAppConfig({}, 'application');
+            appConfigStatic = store.getAppConfig({});
 
             appShareYUIInstance = (false !== appConfigStatic.shareYUIInstance);
             usePrecomputed = appConfigStatic.yui && (-1 !==

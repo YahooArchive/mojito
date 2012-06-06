@@ -130,8 +130,8 @@ YUI.add('mojito-resource-store-adapter', function(Y, NAME) {
         },
 
 
-        getAppConfig: function(context, name) {
-            return this.store.getAppConfig(context, name);
+        getAppConfig: function(context) {
+            return this.store.getAppConfig(context);
         },
 
 

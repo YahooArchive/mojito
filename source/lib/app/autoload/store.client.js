@@ -191,7 +191,7 @@ YUI.add('mojito-client-store', function(Y, NAME) {
         /*
          * TODO: REVIEW RE [Issue 78]
          */
-        getAppConfig: function(context, name) {
+        getAppConfig: function(context) {
             return this.appConfig;
         },
 

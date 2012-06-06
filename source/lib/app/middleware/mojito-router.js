@@ -52,7 +52,7 @@ Router.prototype = {
                 routes = store.getRoutes(context),
                 routeMaker = new RouteMakerClass(routes),
                 query = liburl.parse(req.url, true).query,
-                appConfig = store.getAppConfig(context, 'application'),
+                appConfig = store.getAppConfig(context),
                 url,
                 routeMatch;
 

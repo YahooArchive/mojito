@@ -164,7 +164,7 @@ function clearCache(key) {
  */
 function staticProvider(store, globalLogger) {
     logger = globalLogger;
-    var appConfig = store.getAppConfig(null, 'application'),
+    var appConfig = store.getAppConfig(null),
         options = appConfig.staticHandling || {},
         cache = options.cache,
         maxAge = options.maxAge;

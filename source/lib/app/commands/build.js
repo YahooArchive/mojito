@@ -166,8 +166,7 @@ exports.buildhtml5app = function(cmdOptions, store, config, destination,
 
     store.preload();
 
-    appConfig = store.getAppConfig(libqs.parse(cmdOptions.context),
-        'application');
+    appConfig = store.getAppConfig(libqs.parse(cmdOptions.context));
     tunnelPrefix = appConfig.tunnelPrefix || '/tunnel';
 
     console.log('Building a "' + type + '" of the Mojito application at "' +
