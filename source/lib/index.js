@@ -34,7 +34,6 @@ var MOJITO_MIDDLEWARE = [
 
 // TODO: [Issue 80] go back to connect?
 var express = require('express'),
-    ResourceStore = require('./store.server'),
     OutputHandler = require('./output-handler.server'),
     libpath = require('path');
 
@@ -47,18 +46,14 @@ global._mojito = {};
 
 // This configures YUI with both the Mojito framework and all the
 // YUI modules in the application.
-function configureYUI(YUI, store, load) {
+function configureYUI(Y, store, load) {
     var fw,
         app,
         module;
     fw = store.getYuiConfigFw('server', {});
+    Y.applyConfig(fw);
     app = store.getYuiConfigApp('server', {});
-    YUI.applyConfig({
-        groups: {
-            'mojito-fw': fw,
-            'mojito-app': app
-        }
-    });
+    Y.applyConfig(app);
     // also pre-load fw and app modules
     for (module in fw.modules) {
         if (fw.modules.hasOwnProperty(module)) {
@@ -127,14 +122,52 @@ MojitoServer.prototype = {
             options.context = {};
         }
 
-        store = new ResourceStore(options.dir);
+        // all logging that comes from YUI comes from here
+        // We need to do this early, since creating a Y instance appears to copy
+        // the function.
+        YUI.applyConfig({ logFn: function(msg, lvl, src) {
+                // translating YUI logs so they are categorized outside the rest
+                // of Mojito's log levels
+                var args = Array.prototype.slice.call(arguments);
+                if (!this.mojito || src === 'yui' || src === 'loader' ||
+                    src === 'get') {
+                    if ((!logger) && (!logConfig.yui)) {
+                        return;
+                    }
+                    args[1] = 'YUI-' + lvl.toUpperCase();
+                }
+                if (logger) {
+                    logger.log.apply(logger, args);
+                } else {
+                    console.log(serverLog.options.formatter(msg, lvl, src,
+                        new Date().getTime(), serverLog.options));
+                }
+            }
+        });
+
+        Y = YUI({ core: CORE_YUI_MODULES, useSync: true });
+
+        Y.applyConfig({
+            modules: {
+                'mojito-resource-store': {
+                    fullpath: libpath.join(__dirname, 'store.server.js')
+                }
+            }
+        });
+        Y.applyConfig({ useSync: true });
+        Y.use('mojito-resource-store');
+        store = new Y.mojito.ResourceStore({
+            root: options.dir,
+            context: options.context,
+            appConfig: options.appConfig
+        });
 
         // share the resource store as a property of the application instance
         // (useful for the Mojito CLI)
         app.store = store;
 
-        store.preload(options.context, options.appConfig);
-        appConfig = store.getAppConfig(null, 'application');
+        store.preload();
+        appConfig = store.getAppConfig(null);
 
         // TODO: extract function
         if (appConfig.log && appConfig.log.server) {
@@ -151,30 +184,6 @@ MojitoServer.prototype = {
             }
         }
 
-        configureYUI(YUI, store, CORE_MOJITO_MODULES);
-
-        // all logging that comes from YUI comes from here
-        // We need to do this early, since creating a Y instance appears to copy
-        // the function.
-        YUI.GlobalConfig.logFn = function(msg, lvl, src) {
-            // translating YUI logs so they are categorized outside the rest
-            // of Mojito's log levels
-            var args = Array.prototype.slice.call(arguments);
-            if (!this.mojito || src === 'yui' || src === 'loader' ||
-                    src === 'get') {
-                if ((!logger) && (!logConfig.yui)) {
-                    return;
-                }
-                args[1] = 'YUI-' + lvl.toUpperCase();
-            }
-            if (logger) {
-                logger.log.apply(logger, args);
-            } else {
-                console.log(serverLog.options.formatter(msg, lvl, src,
-                    new Date().getTime(), serverLog.options));
-            }
-        };
-
         // merge application log options over top defaults
         Object.keys(logConfig).forEach(function(k) {
             if (logConfig[k] !== undefined) {
@@ -182,15 +191,16 @@ MojitoServer.prototype = {
             }
         });
 
-        Y = YUI({ core: CORE_YUI_MODULES, useSync: true });
+        configureYUI(Y, store, CORE_MOJITO_MODULES);
 
         // Load logger early so that we can plug it in before the other loading
         // happens.
+        Y.applyConfig({ useSync: true });
         Y.use('mojito-logger');
         // TODO: extract function
         logger = new Y.mojito.Logger(serverLog.options);
-        store.setLogger(logger);
 
+        Y.applyConfig({ useSync: true });
         Y.use.apply(Y, CORE_MOJITO_MODULES);
         Y.applyConfig({ useSync: false });
 

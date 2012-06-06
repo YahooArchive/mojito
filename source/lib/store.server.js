@@ -174,6 +174,12 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
         },
 
 
+        // TODO DOCS
+        getFrameworkConfig: function() {
+            return this.cloneObj(this._fwConfig);
+        },
+
+
         /**
          * Returns a contextualized application configuration.
          * @method getAppConfig
@@ -364,9 +370,20 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 use;
 
             posl = JSON.stringify(this.selector.getListFromContext(ctx));
-            source = filter.mojit ? 
-                this._mojitResources[env][posl][filter.mojit] : 
-                this._appResources[env][posl];
+            if (filter.mojit) {
+                if (!this._mojitResources[env] ||
+                    !this._mojitResources[env][posl] ||
+                    !this._mojitResources[env][posl][filter.mojit]) {
+                    return [];
+                }
+                source = this._mojitResources[env][posl][filter.mojit];
+            } else {
+                if (!this._appResources[env] ||
+                    !this._appResources[env][posl]) {
+                    return [];
+                }
+                source = this._appResources[env][posl];
+            }
             // this is taken care of already, and will trip up mojit-level
             // resources that are actually shared
             delete filter.mojit;
@@ -386,6 +403,77 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 }
             }
             return out;
+        },
+
+
+        // TODO DOCS
+        listAllMojits: function() {
+            var mojitType,
+                list = [];
+            for (mojitType in this._mojitRVs) {
+                if (this._mojitRVs.hasOwnProperty(mojitType)) {
+                    if ('shared' !== mojitType) {
+                        list.push(mojitType);
+                    }
+                }
+            }
+            return list;
+        },
+
+
+        // TODO DOCS
+        // TODO -- move to yui addon
+        getYuiConfigFw: function(env, ctx) {
+            var r,
+                res,
+                ress,
+                modules = {};
+            ress = this.getResources(env, ctx, { mojit:'shared' });
+            for (r = 0; r < ress.length; r += 1) {
+                res = ress[r];
+                if (!res.yui || !res.yui.name) {
+                    continue;
+                }
+                if ('mojito' !== res.source.pkg.name) {
+                    continue;
+                }
+                modules[res.yui.name] = {
+                    fullpath: ('client' === env) ?
+                        res.staticHandlerURL :
+                        res.source.fs.fullPath,
+                    requires:
+                        (res.yui.meta && res.yui.meta.requires) || []
+                };
+            }
+            return { modules: modules };
+        },
+
+
+        // TODO DOCS
+        // TODO -- move to yui addon
+        getYuiConfigApp: function(env, ctx) {
+            var r,
+                res,
+                ress,
+                modules = {};
+            ress = this.getResources(env, ctx, { mojit:'shared' });
+            for (r = 0; r < ress.length; r += 1) {
+                res = ress[r];
+                if (!res.yui || !res.yui.name) {
+                    continue;
+                }
+                if ('mojito' === res.source.pkg.name) {
+                    continue;
+                }
+                modules[res.yui.name] = {
+                    fullpath: ('client' === env) ?
+                        res.staticHandlerURL :
+                        res.source.fs.fullPath,
+                    requires:
+                        (res.yui.meta && res.yui.meta.requires) || []
+                };
+            }
+            return { modules: modules };
         },
 
 
@@ -942,9 +1030,6 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                             this._mojitResources[env][poslKey] = {}
                         }
                         for (type in this._mojitRVs) {
-                            if ('shared' === type) {
-                                continue;
-                            }
                             if (this._mojitRVs.hasOwnProperty(type)) {
                                 this._mojitResources[env][poslKey][type] = 
                                     this._resolveVersions(affinities, selectors, sourceBase, [ this._mojitRVs.shared, this._mojitRVs[type] ]);
