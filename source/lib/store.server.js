@@ -143,12 +143,12 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             this._mojitResources = {};  // env: posl: mojitType: array of resources
 
             // We'll start with just our "config" addon.
-            this._yuiUseSync( {
+            this._yuiUseSync({
                 'addon-rs-config': {
-                    fullpath: libpath.join(__dirname, 'app/addons/rs/config.server.js'),
+                    fullpath: libpath.join(__dirname, 'app/addons/rs/config.server.js')
                 }
             });
-            this.plug(Y.mojito.addons.rs.config, { appRoot:this._config.root, mojitoRoot:mojitoRoot });
+            this.plug(Y.mojito.addons.rs.config, { appRoot: this._config.root, mojitoRoot: mojitoRoot });
 
             this._fwConfig = this.config.readConfigJSON(libpath.join(mojitoRoot, 'config.json'));
             this._appConfigStatic = this.getAppConfig({});
@@ -244,7 +244,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 this.unplug(name);
             }, this);
 
-            ress = this.getResourceVersions({type:'addon', subtype:'rs'});
+            ress = this.getResourceVersions({type: 'addon', subtype: 'rs'});
             for (r = 0; r < ress.length; r += 1) {
                 res = ress[r];
                 if ('rs' === res.subtype) {
@@ -258,7 +258,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             this._yuiUseSync(modules);
 
             Y.Object.each(Y.mojito.addons.rs, function(fn, name) {
-                this.plug(fn, { appRoot:this._config.root, mojitoRoot:mojitoRoot });
+                this.plug(fn, { appRoot: this._config.root, mojitoRoot: mojitoRoot });
             }, this);
         },
 
@@ -374,14 +374,14 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             posl = JSON.stringify(this.selector.getListFromContext(ctx));
             if (filter.mojit) {
                 if (!this._mojitResources[env] ||
-                    !this._mojitResources[env][posl] ||
-                    !this._mojitResources[env][posl][filter.mojit]) {
+                        !this._mojitResources[env][posl] ||
+                        !this._mojitResources[env][posl][filter.mojit]) {
                     return [];
                 }
                 source = this._mojitResources[env][posl][filter.mojit];
             } else {
                 if (!this._appResources[env] ||
-                    !this._appResources[env][posl]) {
+                        !this._appResources[env][posl]) {
                     return [];
                 }
                 source = this._appResources[env][posl];
@@ -430,7 +430,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 res,
                 ress,
                 modules = {};
-            ress = this.getResources(env, ctx, { mojit:'shared' });
+            ress = this.getResources(env, ctx, { mojit: 'shared' });
             for (r = 0; r < ress.length; r += 1) {
                 res = ress[r];
                 if (!res.yui || !res.yui.name) {
@@ -441,8 +441,8 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 }
                 modules[res.yui.name] = {
                     fullpath: ('client' === env) ?
-                        res.staticHandlerURL :
-                        res.source.fs.fullPath,
+                            res.staticHandlerURL :
+                            res.source.fs.fullPath,
                     requires:
                         (res.yui.meta && res.yui.meta.requires) || []
                 };
@@ -458,7 +458,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 res,
                 ress,
                 modules = {};
-            ress = this.getResources(env, ctx, { mojit:'shared' });
+            ress = this.getResources(env, ctx, { mojit: 'shared' });
             for (r = 0; r < ress.length; r += 1) {
                 res = ress[r];
                 if (!res.yui || !res.yui.name) {
@@ -469,8 +469,8 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 }
                 modules[res.yui.name] = {
                     fullpath: ('client' === env) ?
-                        res.staticHandlerURL :
-                        res.source.fs.fullPath,
+                            res.staticHandlerURL :
+                            res.source.fs.fullPath,
                     requires:
                         (res.yui.meta && res.yui.meta.requires) || []
                 };
@@ -478,13 +478,17 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             return { modules: modules };
         },
 
-        
+
         // TODO DOCS
         // TODO -- move to yui addon
         getYuiConfigAllMojits: function(env, ctx) {
-            var m, mojit, mojits;
-            var r, res, ress;
-            var modules = {};
+            var m,
+                mojit,
+                mojits,
+                r,
+                res,
+                ress,
+                modules = {};
             mojits = this.listAllMojits();
             for (m = 0; m < mojits.length; m += 1) {
                 mojit = mojits[m];
@@ -500,8 +504,8 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                     }
                     modules[res.yui.name] = {
                         fullpath: ('client' === env) ?
-                            res.staticHandlerURL :
-                            res.source.fs.fullPath,
+                                res.staticHandlerURL :
+                                res.source.fs.fullPath,
                         requires:
                             (res.yui.meta && res.yui.meta.requires) || []
                     };
@@ -808,7 +812,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             if (!fs.isFile && fs.subDirArray.length < 2 && 'archetypes' === fs.subDirArray[0]) {
                 return true;
             }
-            if (!fs.isFile && fs.subDirArray.length == 2 && 'archetypes' === fs.subDirArray[0]) {
+            if (!fs.isFile && fs.subDirArray.length === 2 && 'archetypes' === fs.subDirArray[0]) {
                 return {
                     type: 'archetype',
                     subtype: fs.subDirArray[1],
@@ -897,12 +901,10 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             }
 
             // mojit parts with format {name}.{affinity}.{selector}
-            if (
-                'action' === type || 
-                'addon' === type || 
-                'controller' === type ||
-                'model' === type
-            ) {
+            if ('action' === type ||
+                    'addon' === type ||
+                    'controller' === type ||
+                    'model' === type) {
                 res = {
                     source: source,
                     mojit: mojitType,
@@ -949,8 +951,8 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 }
                 res.name = libpath.join(fs.subDirArray.slice(1).join('/'), baseParts.join('.'));
                 res.id = [res.type, res.subtype, res.name].join('-');
-                    return res;
-                }
+                return res;
+            }
 
             // special case:  view
             if ('view' === type) {
@@ -1026,7 +1028,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 p;
 
             ctxs = this._listAllContexts();
-            for (var c = 0; c < ctxs.length; c++) {
+            for (c = 0; c < ctxs.length; c += 1) {
                 ctx = ctxs[c];
                 posl = this.selector.getListFromContext(ctx);
                 posls[JSON.stringify(posl)] = posl;
@@ -1052,20 +1054,20 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                         //console.log(affinities);
 
                         if (!this._appResources[env]) {
-                            this._appResources[env] = {}
+                            this._appResources[env] = {};
                         }
-                        this._appResources[env][poslKey] = 
+                        this._appResources[env][poslKey] =
                             this._resolveVersions(affinities, selectors, sourceBase, [ this._appRVs ]);
 
                         if (!this._mojitResources[env]) {
-                            this._mojitResources[env] = {}
+                            this._mojitResources[env] = {};
                         }
                         if (!this._mojitResources[env][poslKey]) {
-                            this._mojitResources[env][poslKey] = {}
+                            this._mojitResources[env][poslKey] = {};
                         }
                         for (type in this._mojitRVs) {
                             if (this._mojitRVs.hasOwnProperty(type)) {
-                                this._mojitResources[env][poslKey][type] = 
+                                this._mojitResources[env][poslKey][type] =
                                     this._resolveVersions(affinities, selectors, sourceBase, [ this._mojitRVs.shared, this._mojitRVs[type] ]);
                                 // TODO:  fire event that mojit has been resolved
                             }
@@ -1124,7 +1126,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             }
             for (resid in versions) {
                 if (versions.hasOwnProperty(resid)) {
-                    highest = Math.max.apply(Math, Object.keys(versions[resid]))
+                    highest = Math.max.apply(Math, Object.keys(versions[resid]));
                     //console.log('--DEBUG-- highest=' + highest + ' -- ' + resid);
                     out.push(versions[resid][highest]);
                 }
@@ -1141,10 +1143,18 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
          */
         _listAllContexts: function() {
             var dims = this.config.getDimensions(),
-                nctxs, c, ctxs = [],
-                dn, dname, dnames,
-                dv, dval, dvals,
-                e, each, mod,
+                nctxs,
+                c,
+                ctxs = [],
+                dn,
+                dname,
+                dnames,
+                dv,
+                dval,
+                dvals,
+                e,
+                each,
+                mod,
                 // only because we might want to change it at some point
                 // (not including it helps reduce the number of contexts)
                 SKIP_RUNTIME = true;
@@ -1154,7 +1164,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             dnames = Object.keys(dims);
 
             nctxs = 1;
-            for (dn = 0; dn < dnames.length; dn++) {
+            for (dn = 0; dn < dnames.length; dn += 1) {
                 dname = dnames[dn];
                 if (SKIP_RUNTIME && dname === 'runtime') {
                     continue;
@@ -1167,11 +1177,11 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 nctxs *= dvals.length;
             }
 
-            for (c = 0; c < nctxs; c++) {
+            for (c = 0; c < nctxs; c += 1) {
                 ctxs[c] = {};
             }
             mod = 1;
-            for (dn = 0; dn < dnames.length; dn++) {
+            for (dn = 0; dn < dnames.length; dn += 1) {
                 dname = dnames[dn];
                 if (SKIP_RUNTIME && dname === 'runtime') {
                     continue;
@@ -1182,10 +1192,10 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
 
                 e = each;
                 dv = 0;
-                for (c = 0; c < nctxs; --e, c++) {
+                for (c = 0; c < nctxs; e -= 1, c += 1) {
                     if (0 === e) {
                         e = each;
-                        dv++;
+                        dv += 1;
                         dv = dv % dvals.length;
                     }
                     dval = dvals[dv];
@@ -1208,7 +1218,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
         _flattenDims: function(dims) {
             var d, dim,
                 name, out = {};
-            for (d = 0; d < dims.length; d++) {
+            for (d = 0; d < dims.length; d += 1) {
                 dim = dims[d];
                 name = Object.keys(dim)[0];
                 out[name] = this._listKeys(dim[name]);

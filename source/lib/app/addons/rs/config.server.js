@@ -4,6 +4,9 @@
  * See the accompanying LICENSE file for terms.
  */
 
+/*jslint anon:true, sloppy:true, nomen:true*/
+/*global YUI*/
+
 YUI.add('addon-rs-config', function(Y, NAME) {
 
     var libfs = require('fs'),

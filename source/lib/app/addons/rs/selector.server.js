@@ -4,6 +4,9 @@
  * See the accompanying LICENSE file for terms.
  */
 
+/*jslint anon:true, sloppy:true, nomen:true*/
+/*global YUI*/
+
 YUI.add('addon-rs-selector', function(Y, NAME) {
 
     var libpath = require('path'),
@@ -40,11 +43,13 @@ YUI.add('addon-rs-selector', function(Y, NAME) {
 
 
         getListFromContext: function(ctx) {
-            var sels = ['*'];
-            var p, part, parts;
+            var sels = ['*'],
+                p,
+                part,
+                parts;
             // TODO:  use rs.config for this too
             parts = this._appConfigYCB.readNoMerge(ctx, {});
-            for (p = 0; p < parts.length; p++) {
+            for (p = 0; p < parts.length; p += 1) {
                 part = parts[p];
                 if (part.selector) {
                     sels.unshift(part.selector);

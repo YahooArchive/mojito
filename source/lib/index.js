@@ -126,24 +126,23 @@ MojitoServer.prototype = {
         // We need to do this early, since creating a Y instance appears to copy
         // the function.
         YUI.applyConfig({ logFn: function(msg, lvl, src) {
-                // translating YUI logs so they are categorized outside the rest
-                // of Mojito's log levels
-                var args = Array.prototype.slice.call(arguments);
-                if (!this.mojito || src === 'yui' || src === 'loader' ||
+            // translating YUI logs so they are categorized outside the rest
+            // of Mojito's log levels
+            var args = Array.prototype.slice.call(arguments);
+            if (!this.mojito || src === 'yui' || src === 'loader' ||
                     src === 'get') {
-                    if ((!logger) && (!logConfig.yui)) {
-                        return;
-                    }
-                    args[1] = 'YUI-' + lvl.toUpperCase();
+                if ((!logger) && (!logConfig.yui)) {
+                    return;
                 }
-                if (logger) {
-                    logger.log.apply(logger, args);
-                } else {
-                    console.log(serverLog.options.formatter(msg, lvl, src,
-                        new Date().getTime(), serverLog.options));
-                }
+                args[1] = 'YUI-' + lvl.toUpperCase();
             }
-        });
+            if (logger) {
+                logger.log.apply(logger, args);
+            } else {
+                console.log(serverLog.options.formatter(msg, lvl, src,
+                    new Date().getTime(), serverLog.options));
+            }
+        }});
 
         Y = YUI({ core: CORE_YUI_MODULES, useSync: true });
 

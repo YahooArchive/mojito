@@ -5,7 +5,7 @@
  */
 
 
-/*jslint anon:true, sloppy:true*/
+/*jslint anon:true, nomen:true, sloppy:true*/
 
 
 var fs = require('fs'),

@@ -4,6 +4,9 @@
  * See the accompanying LICENSE file for terms.
  */
 
+/*jslint anon:true, sloppy:true, nomen:true*/
+/*global YUI*/
+
 YUI.add('addon-rs-routes', function(Y, NAME) {
 
     var libpath = require('path'),
@@ -41,7 +44,6 @@ YUI.add('addon-rs-routes', function(Y, NAME) {
                 ress,
                 r,
                 res,
-                path,
                 routes;
 
             for (p = 0; p < routesFiles.length; p += 1) {
@@ -53,7 +55,7 @@ YUI.add('addon-rs-routes', function(Y, NAME) {
                 fixedPaths[path] = true;
             }
 
-            ress = this.rs.getResources(env, ctx, {type:'config'});
+            ress = this.rs.getResources(env, ctx, {type: 'config'});
             for (r = 0; r < ress.length; r += 1) {
                 res = ress[r];
                 if (fixedPaths[res.source.fs.fullPath]) {

@@ -4,6 +4,9 @@
  * See the accompanying LICENSE file for terms.
  */
 
+/*jslint anon:true, sloppy:true, nomen:true*/
+/*global YUI*/
+
 YUI.add('addon-rs-yui', function(Y, NAME) {
 
     var libfs = require('fs'),
@@ -81,7 +84,7 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
                 } else if (mojitType === fs.basename.substr(0, mojitType.length)) {
                     res.yui.lang = fs.basename.substr(mojitType.length + 1);
                 } else {
-                    logger.log('invalid YUI lang file format. skipping ' + fs.fullPath, 'error', NAME);
+                    Y.log('invalid YUI lang file format. skipping ' + fs.fullPath, 'error', NAME);
                 }
                 res.name = res.yui.lang;
                 res.id = [res.type, res.subtype, res.name].join('-');
@@ -89,7 +92,7 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
             }
 
             if ('yui-module' === type) {
-                baseParts = fs.basename.split('.'),
+                baseParts = fs.basename.split('.');
                 res = {
                     source: source,
                     mojit: mojitType,
