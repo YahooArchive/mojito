@@ -25,8 +25,6 @@ var pathlib = require('path'),
 
     fwTestsRoot = pathlib.join(targetMojitoPath, 'lib/tests'),
 
-    ResourceStore,
-
     resultsDir = 'artifacts/test',
     resultsFile = pathlib.join(resultsDir, 'result.xml'),
     coverageDir = pathlib.join(resultsDir, 'coverage'),
@@ -116,15 +114,10 @@ function collectRunResults(results) {
     }
 }
 
-function configureYUI(YUI, store, load) {
-    YUI.applyConfig({
-        useSync: true,
-        groups: {
-            'mojito-fw': store.getYuiConfigFw('server', {}),
-            'mojito-app': store.getYuiConfigApp('server', {}),
-            'mojito-mojits': store.getYuiConfigAllMojits('server,', {})
-        }
-    });
+function configureYUI(Y, store) {
+    Y.applyConfig(store.getYuiConfigFw('server', {}));
+    Y.applyConfig(store.getYuiConfigApp('server', {}));
+    Y.applyConfig(store.getYuiConfigAllMojits('server', {}));
 }
 
 
@@ -421,7 +414,7 @@ function processResults() {
 
 function executeTestsWithinY(tests, cb) {
 
-    var YUIInst,
+    var Y,
         suiteName = '';
 
     function handleEvent(event) {
@@ -471,14 +464,14 @@ function executeTestsWithinY(tests, cb) {
     TestRunner.clear();
 
     // create new YUI instance using tests and mojito
-    YUIInst = YUI({core: [
+    Y = YUI({core: [
         'get',
         'features',
         'intl-base',
         'mojito'
     ]});
 
-    YUIInst.use.apply(YUIInst, tests);
+    Y.use.apply(Y, tests);
 }
 
 
@@ -665,7 +658,8 @@ runTests = function(opts) {
         testModuleNames = ['mojito', 'mojito-test'];
 
     testRunner = function(testPath) {
-        var testConfigs,
+        var Y,
+            testConfigs,
             sourceConfigs;
 
         if (testType === 'mojit') {
@@ -688,13 +682,25 @@ runTests = function(opts) {
                 modules: testConfigs
             });
         } else {
-            ResourceStore = require(pathlib.join(targetMojitoPath,
-                'lib/store.server.js'));
-            store = new ResourceStore(testPath);
+            Y = YUI();
+            Y.applyConfig({
+                useSync: true,
+                modules: {
+                    'mojito-resource-store': {
+                        fullpath: pathlib.join(__dirname, '../../store.server.js')
+                    }
+                }
+            });
+            Y.use('mojito-resource-store');
+            store = new Y.mojito.ResourceStore({
+                root: testPath,
+                context: {},
+                appConfig: { env: 'test' }
+            });
 
-            store.preload({}, { env: 'test' });
+            store.preload();
 
-            configureYUI(YUI, store, testModuleNames);
+            configureYUI(YUI, store);
 
             if (testType === 'fw') {
                 testConfigs = store.getYuiConfigApp('server', {}).modules;

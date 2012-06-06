@@ -18,8 +18,7 @@
  */
 YUI.add('mojito-resource-store-adapter', function(Y, NAME) {
 
-    var APP_ROOT_PATH = '',
-        logger;
+    var logger;
 
 
     Y.mojito.ResourceStoreAdapter = {
@@ -36,13 +35,11 @@ YUI.add('mojito-resource-store-adapter', function(Y, NAME) {
 
             logger.log('resource store adapter init', 'mojito', NAME);
 
-            APP_ROOT_PATH = resourceStore._root;
-
             this.ENV = env;
             this.store = resourceStore;
 
-            this._root = resourceStore._root;
-            this._staticURLs = resourceStore._staticURLs;
+            this._root = this.store._config.root;
+            this._staticURLs = this.store._staticURLs;
 
             return this;
         },
@@ -126,7 +123,7 @@ YUI.add('mojito-resource-store-adapter', function(Y, NAME) {
 
 
         getAppPath: function() {
-            return APP_ROOT_PATH;
+            return this._root;
         },
 
 

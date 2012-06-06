@@ -46,7 +46,8 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
 
             if (fs.subDirArray.length >= 1 && ('autoload' === fs.subDirArray[0] || 'yui_modules' === fs.subDirArray[0])) {
                 return new Y.Do.AlterReturn(null, {
-                    type: 'yui-module'
+                    type: 'yui-module',
+                    skipSubdirParts: 1
                 });
             }
 

@@ -132,6 +132,8 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
 
         initializer: function(cfg) {
             this._config = cfg;
+            this._config.context = this._config.context || {};
+            this._config.appConfig = this._config.appConfig || {};
             this._jsonCache = {};   // fullPath: contents as JSON object
             this._ycbCache = {};    // fullPath: context: YCB config object
 
@@ -472,6 +474,38 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                     requires:
                         (res.yui.meta && res.yui.meta.requires) || []
                 };
+            }
+            return { modules: modules };
+        },
+
+        
+        // TODO DOCS
+        // TODO -- move to yui addon
+        getYuiConfigAllMojits: function(env, ctx) {
+            var m, mojit, mojits;
+            var r, res, ress;
+            var modules = {};
+            mojits = this.listAllMojits();
+            for (m = 0; m < mojits.length; m += 1) {
+                mojit = mojits[m];
+                ress = this.getResources(env, ctx, { mojit: mojit });
+                for (r = 0; r < ress.length; r += 1) {
+                    res = ress[r];
+                    if (!res.yui || !res.yui.name) {
+                        continue;
+                    }
+                    if (res.mojit !== mojit) {
+                        // generally only happens if res.mojit is 'shared'
+                        continue;
+                    }
+                    modules[res.yui.name] = {
+                        fullpath: ('client' === env) ?
+                            res.staticHandlerURL :
+                            res.source.fs.fullPath,
+                        requires:
+                            (res.yui.meta && res.yui.meta.requires) || []
+                    };
+                }
             }
             return { modules: modules };
         },
