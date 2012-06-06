@@ -386,7 +386,7 @@ YUI.add('mojito-mu', function(Y, NAME) {
 
             CACHE[tmpl] = obj.responseText;
 
-            queue = QUEUE_POOL[tmpl].splice(0);
+            queue = QUEUE_POOL[tmpl].slice(0);
             delete QUEUE_POOL[tmpl];
 
             for (i = 0, iC = queue.length; i < iC; i += 1) {
