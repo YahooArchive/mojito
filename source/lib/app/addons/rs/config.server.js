@@ -69,7 +69,7 @@ YUI.add('addon-rs-config', function(Y, NAME) {
                 }
                 this._jsonCache[fullPath] = json;
             }
-            return json;
+            return this.rs.cloneObj(json);
         },
 
 
