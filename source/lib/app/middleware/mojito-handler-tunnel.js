@@ -10,7 +10,8 @@
 
 var liburl = require('url'),
     logger,
-    RX_MULTI_SLASH_ALL = /\/+/g;
+    RX_MULTI_SLASH_ALL = /\/+/g,
+    Y = require('yui3').YUI().useSync('json-parse', 'json-stringify');
 
 
 function trimSlash(str) {
@@ -181,7 +182,7 @@ TunnelServer.prototype = {
         res.writeHead((code || 200), {
             'content-type': 'application/json; charset="utf-8"'
         });
-        res.end(JSON.stringify(data, null, 4));
+        res.end(Y.JSON.stringify(data, null, 4));
     }
 };
 

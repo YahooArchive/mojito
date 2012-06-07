@@ -27,10 +27,10 @@ YUI.add('Samuel', function(Y, NAME) {
                 expires: new Date(2035, 1, 1)
             };
             var paramString = "<ul>";
-            paramString = paramString + "<li>merged: " + JSON.stringify(merged) + "</li>";
-            paramString = paramString + "<li>body: " + JSON.stringify(body) + "</li>";
-            paramString = paramString + "<li>url: " + JSON.stringify(url) + "</li>";
-            paramString = paramString + "<li>route: " + JSON.stringify(route) + "</li>";
+            paramString = paramString + "<li>merged: " + Y.JSON.stringify(merged) + "</li>";
+            paramString = paramString + "<li>body: " + Y.JSON.stringify(body) + "</li>";
+            paramString = paramString + "<li>url: " + Y.JSON.stringify(url) + "</li>";
+            paramString = paramString + "<li>route: " + Y.JSON.stringify(route) + "</li>";
             paramString = paramString + "</ul>";
             ac.done({
                 message: "Hi, I'm a Samuel Mojit.",

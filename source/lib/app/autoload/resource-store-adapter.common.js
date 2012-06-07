@@ -104,7 +104,7 @@ YUI.add('mojito-resource-store-adapter', function(Y, NAME) {
                     if (!my.validate(base)) {
                         callback({
                             message: 'Instance was not valid.',
-                            stack: JSON.stringify(base, null, 4)
+                            stack: Y.JSON.stringify(base, null, 4)
                         });
                         return;
                     }
