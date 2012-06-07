@@ -1,0 +1,11 @@
+<h2>{{title}}</h2>
+<div id="{{mojit_view_id}}">
+{{#with ul}}
+  <h3>{{title}}</h3>
+{{/with}}
+  <ul>
+  {{#each view_engines}}
+    <li>{{this}}</li>
+  {{/each}}
+  </ul>
+</div>
