@@ -550,7 +550,9 @@ function instrumentDirectory(from, verbose, testType, callback) {
             dimFrom = pathlib.join(mojitoTmp, 'lib/dimensions.json'),
             dimTo = pathlib.join(mojitoInstrumentedDir, 'lib/dimensions.json'),
             libsFrom = pathlib.join(realPathFrom, 'lib/libs'),
-            libsTo = pathlib.join(mojitoInstrumentedDir, 'lib/libs');
+            libsTo = pathlib.join(mojitoInstrumentedDir, 'lib/libs'),
+            nodeModulesFrom = pathlib.join(realPathFrom, 'node_modules'),
+            nodeModulesTo = pathlib.join(mojitoInstrumentedDir, 'node_modules');
         if (verbose) {
             utils.log('stdout: ' + stdout);
             utils.log('stderr: ' + stderr);
@@ -569,6 +571,7 @@ function instrumentDirectory(from, verbose, testType, callback) {
                 }
                 // copy remaining non-js files into instrumented directory
                 copyExclude(libsFrom, libsTo, [/\.svn/]);
+                copyExclude(nodeModulesFrom, nodeModulesTo, [/\.svn/]);
                 copyExclude(testsFrom, testsTo, [/\.svn/]);
                 copyFile(packageFrom, packageTo);
                 copyFile(cfgFrom, cfgTo);
