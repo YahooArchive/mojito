@@ -16,6 +16,12 @@ Resource Store
 
 .. resource addon examples
 
+.. Notes:
+
+.. the new RS is uses the YUI Plugin mechanism to mix in the RS addons.  
+.. http://yuilibrary.com/yui/docs/plugin/
+.. redirect users to the yui docs on that topic
+
 
 Intro
 =====
