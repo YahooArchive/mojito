@@ -209,6 +209,192 @@ reads the config file pointed to by the resource
 Example
 ~~~~~~~
 
+.. code-block:: javascript
+
+   
+   YUI.add('addon-rs-config', function(Y, NAME) {
+   
+       var libfs = require('fs'),
+           libpath = require('path'),
+           libycb = require(libpath.join(__dirname, '../../../libs/ycb'));
+   
+       function RSAddonConfig() {
+           RSAddonConfig.superclass.constructor.apply(this, arguments);
+       }
+       RSAddonConfig.NS = 'config';
+       RSAddonConfig.ATTRS = {};
+   
+       Y.extend(RSAddonConfig, Y.Plugin.Base, {
+   
+           initializer: function(config) {
+               this.rs = config.host;
+               this.appRoot = config.appRoot;
+               this.mojitoRoot = config.mojitoRoot;
+               this.afterHostMethod('findResourceByConvention', this.findResourceByConvention, this);
+               this.beforeHostMethod('parseResource', this.parseResource, this);
+   
+               this._jsonCache = {};   // fullPath: contents as JSON object
+               this._ycbCache = {};    // fullPath: YCB config object
+               this._ycbDims = this._readYcbDimensions();
+           },
+   
+   
+           destructor: function() {
+               // TODO:  needed to break cycle so we don't leak memory?
+               this.rs = null;
+           },
+   
+   
+           getDimensions: function() {
+               return this.rs.cloneObj(this._ycbDims);
+           },
+   
+   
+           /**
+            * Reads and parses a JSON file
+            *
+            * @method readConfigJSON
+            * @param fullPath {string} path to JSON file
+            * @return {mixed} contents of JSON file
+            */
+           // TODO:  async interface
+           readConfigJSON: function(fullPath) {
+               var json,
+                   contents;
+               if (!libpath.existsSync(fullPath)) {
+                   return {};
+               }
+               json = this._jsonCache[fullPath];
+               if (!json) {
+                   try {
+                       contents = libfs.readFileSync(fullPath, 'utf-8');
+                       json = JSON.parse(contents);
+                   } catch (e) {
+                       throw new Error('Error parsing JSON file: ' + fullPath);
+                   }
+                   this._jsonCache[fullPath] = json;
+               }
+               return json;
+           },
+   
+   
+           /**
+            * reads a configuration file that is in YCB format
+            *
+            * @method readConfigYCB
+            * @param ctx {object} runtime context
+            * @param fullPath {string} path to the YCB file
+            * @return {object} the contextualized configuration
+            */
+           // TODO:  async interface
+           readConfigYCB: function(fullPath, ctx) {
+               var cacheKey,
+                   json,
+                   ycb;
+   
+               ctx = this.rs.mergeRecursive(this.rs.getStaticContext(), ctx);
+   
+               ycb = this._ycbCache[fullPath];
+               if (!ycb) {
+                   json = this.readConfigJSON(fullPath);
+                   json = this._ycbDims.concat(json);
+                   ycb = new libycb.Ycb(json);
+                   this._ycbCache[fullPath] = ycb;
+               }
+               return ycb.read(ctx, {});
+           },
+   
+   
+           findResourceByConvention: function(source, mojitType) {
+               var fs = source.fs,
+                   use = false;
+   
+               // we only care about files
+               if (!fs.isFile) {
+                   return;
+               }
+               // we don't care about files in subdirectories
+               if ('.' !== fs.subDir) {
+                   return;
+               }
+               // we only care about json files
+               if ('.json' !== fs.ext) {
+                   return;
+               }
+               // use package.json for the app and the mojit
+               if ('package' === fs.basename && 'bundle' !== fs.rootType) {
+                   use = true;
+               }
+               // use all configs in the application
+               if ('app' === fs.rootType) {
+                   use = true;
+               }
+               // use configs from non-shared mojit resources
+               if (mojitType && 'shared' !== mojitType) {
+                   use = true;
+               }
+               if (!use) {
+                   return;
+               }
+   
+               return new Y.Do.AlterReturn(null, {
+                   type: 'config'
+               });
+           },
+   
+   
+           parseResource: function(source, type, subtype, mojitType) {
+               var baseParts,
+                   res;
+   
+               if ('config' !== type) {
+                   return;
+               }
+   
+               baseParts = source.fs.basename.split('.');
+               res = {
+                   source: source,
+                   type: 'config',
+                   affinity: 'common',
+                   selector: '*'
+               };
+               if ('app' !== source.fs.rootType) {
+                   res.mojit = mojitType;
+               }
+               if (baseParts.length !== 1) {
+                   Y.log('invalid config filename. skipping ' + source.fs.fullPath, 'warn', NAME);
+                   return;
+               }
+               res.name = libpath.join(source.fs.subDir, baseParts.join('.'));
+               res.id = [res.type, res.subtype, res.name].join('-');
+               return new Y.Do.Halt(null, res);
+           },
+   
+   
+           /**
+            * Read the application's dimensions.json file for YCB processing. If not
+            * available, fall back to the framework's default dimensions.json.
+            *
+            * @method _readYcbDimensions
+            * @return {array} contents of the dimensions.json file
+            * @private
+            */
+           _readYcbDimensions: function() {
+               var path = libpath.join(this.appRoot, 'dimensions.json');
+               if (!libpath.existsSync(path)) {
+                   path = libpath.join(this.mojitoRoot, 'dimensions.json');
+               }
+               return this.readConfigJSON(path);
+           }
+   
+   
+       });
+       Y.namespace('mojito.addons.rs');
+       Y.mojito.addons.rs.config = RSAddonConfig;
+   
+   }, '0.0.1', { requires: ['plugin', 'oop']});
+
+
 
 Additional Addons
 -----------------
@@ -256,6 +442,75 @@ Requirements
 Example
 ~~~~~~~
 
+YUI.add('addon-rs-routes', function(Y, NAME) {
+
+    var libpath = require('path'),
+        libycb = require(libpath.join(__dirname, '../../../libs/ycb'));
+
+    function RSAddonRoutes() {
+        RSAddonRoutes.superclass.constructor.apply(this, arguments);
+    }
+    RSAddonRoutes.NS = 'routes';
+    RSAddonRoutes.DEPS = ['config'];
+    RSAddonRoutes.ATTRS = {};
+
+    Y.extend(RSAddonRoutes, Y.Plugin.Base, {
+
+        initializer: function(config) {
+            this.rs = config.host;
+            this.appRoot = config.appRoot;
+        },
+
+
+        destructor: function() {
+            // TODO:  needed to break cycle so we don't leak memory?
+            this.rs = null;
+        },
+
+
+        read: function(env, ctx, cb) {
+            ctx.runtime = env;
+            var appConfig = this.rs.getAppConfig(ctx),
+                routesFiles = appConfig.routesFiles,
+                p,
+                path,
+                fixedPaths = {},
+                out = {},
+                ress,
+                r,
+                res,
+                path,
+                routes;
+
+            for (p = 0; p < routesFiles.length; p += 1) {
+                path = routesFiles[p];
+                // relative paths are relative to the application
+                if ('/' !== path.charAt(1)) {
+                    path = libpath.join(this.appRoot, path);
+                }
+                fixedPaths[path] = true;
+            }
+
+            ress = this.rs.getResources(env, ctx, {type:'config'});
+            for (r = 0; r < ress.length; r += 1) {
+                res = ress[r];
+                if (fixedPaths[res.source.fs.fullPath]) {
+                    routes = this.rs.config.readConfigYCB(res.source.fs.fullPath, ctx);
+                    out = Y.merge(out, routes);
+                }
+            }
+
+            cb(null, out);
+        }
+
+
+    });
+    Y.namespace('mojito.addons.rs');
+    Y.mojito.addons.rs.routes = RSAddonRoutes;
+
+}, '0.0.1', { requires: ['plugin', 'oop']});
+
+
 staticHandler
 `````````````
 
@@ -275,6 +530,7 @@ provides a method for the static handler middleware to find the filesystem path 
 
 Example
 ~~~~~~~
+
 
 yui
 ```
@@ -302,6 +558,178 @@ calculates the YUI module dependencies for each binder
 Example
 ~~~~~~~
 
+.. code-block:: javascript
+
+   /*
+    * Copyright (c) 2012, Yahoo! Inc.  All rights reserved.
+    * Copyrights licensed under the New BSD License.
+    * See the accompanying LICENSE file for terms.
+    */
+   
+   YUI.add('addon-rs-yui', function(Y, NAME) {
+   
+       var libfs = require('fs'),
+           libpath = require('path'),
+           libvm = require('vm');
+   
+       function RSAddonYUI() {
+           RSAddonYUI.superclass.constructor.apply(this, arguments);
+       }
+       RSAddonYUI.NS = 'yui';
+       RSAddonYUI.ATTRS = {};
+  
+       Y.extend(RSAddonYUI, Y.Plugin.Base, {
+   
+           initializer: function(config) {
+               this.rs = config.host;
+               this.appRoot = config.appRoot;
+               this.mojitoRoot = config.mojitoRoot;
+               this.afterHostMethod('findResourceByConvention', this.findResourceByConvention, this);
+               this.beforeHostMethod('parseResource', this.parseResource, this);
+               this.beforeHostMethod('addResourceVersion', this.addResourceVersion, this);
+           },
+   
+   
+           destructor: function() {
+               // TODO:  needed to break cycle so we don't leak memory?
+               this.rs = null;
+           },
+   
+   
+           findResourceByConvention: function(source, mojitType) {
+               var fs = source.fs;
+   
+               if (!fs.isFile) {
+                   return;
+               }
+               if ('.js' !== fs.ext) {
+                   return;
+               }
+   
+               if (fs.subDirArray.length >= 1 && ('autoload' === fs.subDirArray[0] || 'yui_modules' === fs.subDirArray[0])) {
+                   return new Y.Do.AlterReturn(null, {
+                       type: 'yui-module',
+                       skipSubdirParts: 1
+                   });
+               }
+   
+               if (fs.subDirArray.length >= 1 && 'lang' === fs.subDirArray[0]) {
+                   return new Y.Do.AlterReturn(null, {
+                       type: 'yui-lang',
+                       skipSubdirParts: 1
+                   });
+               }
+           },
+   
+   
+           parseResource: function(source, type, subtype, mojitType) {
+               var fs = source.fs,
+                   baseParts,
+                   res;
+   
+               if ('yui-lang' === type) {
+                   res = {
+                       source: source,
+                       mojit: mojitType,
+                       type: 'yui-lang',
+                       affinity: 'common',
+                       selector: '*'
+                   };
+                   if (!res.yui) {
+                       res.yui = {};
+                   }
+                   if (fs.basename === mojitType) {
+                       res.yui.lang = '';
+                   } else if (mojitType === fs.basename.substr(0, mojitType.length)) {
+                       res.yui.lang = fs.basename.substr(mojitType.length + 1);
+                   } else {
+                       logger.log('invalid YUI lang file format. skipping ' + fs.fullPath, 'error', NAME);
+                   }
+                   res.name = res.yui.lang;
+                   res.id = [res.type, res.subtype, res.name].join('-');
+                   return new Y.Do.Halt(null, res);
+               }
+   
+               if ('yui-module' === type) {
+                   baseParts = fs.basename.split('.'),
+                   res = {
+                       source: source,
+                       mojit: mojitType,
+                       type: 'yui-module',
+                       affinity: 'server',
+                       selector: '*'
+                   };
+                   if (baseParts.length >= 3) {
+                       res.selector = baseParts.pop();
+                   }
+                   if (baseParts.length >= 2) {
+                       res.affinity = baseParts.pop();
+                   }
+                   if (baseParts.length !== 1) {
+                       Y.log('invalid yui-module filename. skipping ' + fs.fullPath, 'warn', NAME);
+                       return;
+                   }
+                   this._parseYUIModule(res);
+                   res.name = res.yui.name;
+                   res.id = [res.type, res.subtype, res.name].join('-');
+                   return new Y.Do.Halt(null, res);
+               }
+           },
+   
+   
+           addResourceVersion: function(res) {
+               if ('.js' !== res.source.fs.ext) {
+                   return;
+               }
+               if (res.yui && res.yui.name) {
+                   // work done already
+                   return;
+               }
+               // ASSUMPTION:  no app-level resources are YUI modules
+               if (!res.mojit) {
+                   return;
+               }
+               this._parseYUIModule(res);
+           },
+   
+   
+           _parseYUIModule: function(res) {
+               var file,
+                   ctx,
+                   yui = {};
+               file = libfs.readFileSync(res.source.fs.fullPath, 'utf8');
+               ctx = {
+                   console: {
+                       log: function() {}
+                   },
+                   window: {},
+                   document: {},
+                   YUI: {
+                       add: function(name, fn, version, meta) {
+                           yui.name = name;
+                           yui.version = version;
+                           yui.meta = meta || {};
+                       }
+                   }
+               };
+               try {
+                   libvm.runInNewContext(file, ctx, res.source.fs.fullPath);
+               } catch (e) {
+                   yui = null;
+                   Y.log(e.message + '\n' + e.stack, 'error', NAME);
+               }
+               if (yui) {
+                   res.yui = Y.merge(res.yui || {}, yui);
+               }
+           }
+   
+   
+       });
+       Y.namespace('mojito.addons.rs');
+       Y.mojito.addons.rs.yui = RSAddonYUI;
+   
+   }, '0.0.1', { requires: ['plugin', 'oop']});
+
 
 Creating Custom Addons
 ----------------------
@@ -314,6 +742,8 @@ Requirements
 
 Example
 ```````
+
+
 shaker
 ~~~~~~
 
