@@ -21,19 +21,66 @@ Resource Store
 .. the new RS is uses the YUI Plugin mechanism to mix in the RS addons.  
 .. http://yuilibrary.com/yui/docs/plugin/
 .. redirect users to the yui docs on that topic
+.. AOP: aspect-oriented programming or attribute oriented programming or something else?
+.. allow the resource store to have addons
+.. move most (all?) of the current resource store functionality into addons that ship with mojito
+.. Examples of how to use the resource store
 
 
 Intro
 =====
 
-allow the resource store to have addons
-move most (all?) of the current resource store functionality into addons that ship with mojito
+The resource store is the Mojito framework code that managers and keeps track of the resources in your Mojito applications.
+The resource store uses addons to do much of the work, which you can read about in `Resource Store Addons <>`_.
+The code for the resource store is a `YUI Base <http://yuilibrary.com/yui/docs/base/>`_, which enables plugins to be implemented as `YUI Plugin modules <http://yuilibrary.com/yui/docs/plugin/>`_.
+Being a YUI Base, the resource store also provides an event subsystem and a simple AOP substystem (methods ``beforeHostMethod`` and ``afterHostMethod``).
+
+
 
 What is a Mojito Resource?
 --------------------------
 
-Purpose
--------
+At the application level, resources include archetypes, commands, configuration files, and middleware. At the mojit level,
+resources include controllers, models, binders, configuration files, and views. Developers can also create their own types of
+resources.
+
+
+What Does the Resource Store Do?
+--------------------------------
+
+#. Load the resources from disk and resolving versions if any exist.
+#. Precalculate the YUI module dependencies of the resources.
+#. Expanding the specs (??) into full instances.
+#. Load and parse context configuration files.
+#. Load the routes files.
+#. Calculate static handler URLs.
+#. Calculate rollups and inline CSS.
+
+.. Don't think the following section is needed, but am leaving in doc for personal reference right now.
+
+General Process of Resource Store
+---------------------------------
+
+Understanding the workflow of the resource store will give help those who want to customize addons to write code and
+help others who don't plan on customizing addons to debug.
+
+- walk resource versions, gathering mojit-specific resources into mojits
+- precalculates ("resolves") which resource versions are used for each version of the mojit
+- also keeps track of app-level resources (archetypes, commands, config files, and middleware).
+- these are not versioned (no resolution needed)
+- these are not otherwise grouped together
+- provides methods for events, including those specialized for AOP
+- host for addons
+- explicitly uses these addons: selector, config
+- is a YUI Base, in part to enable plugins to be implemented as YUI Plugin modules
+   - also provides event subsystem
+   - also provides simple AOP subsystem (beforeHostMethod() and afterHostMethod())
+
+How Can Developers Use the Resource Store?
+------------------------------------------
+
+Developers can write addons for the resource store to have finer grain control over the management of resources
+or extend the functionality of the resource store. The resource store has 
 
 Allow developers to write resource store addons to do interesting things with resources
 
@@ -46,23 +93,7 @@ allow custom (app-author provided) context-to-selector mapping
 allow custom (app-author provided) resource types
 
 
-Benefits
---------
-
-- developers can customize certain core features of Mojito through resource store addons, such as routing, selector
-- developers can create new resource types
-
-
-How it Works?
--------------
-
-#. loading resources from disk, resolving versions (as described above)
-#. precalculating YUI module dependencies
-#. expanding the specs into full instances
-#. loading and parsing (via YCB) configuration files
-#. (slightly) special loading of the routes files
-#. calculating static handler URLs
-#. calculating rollups and inline CSS
+To see the code for the resource store, see the `store.server.js <https://github.com/yahoo/mojito/blob/develop/source/lib/store.server.js>`_.
 
 Resource Metadata
 =================
@@ -70,8 +101,14 @@ Resource Metadata
 Location
 --------
 
+
 Metadata Object
 ---------------
+
+.. need better descriptions
+.. default values
+.. required
+.. the table below is a rough approximation
 
 +------------------------+---------------+-----------+---------------+-------------------------------------------+
 | Property               | Data Type     | Required? | Default Value | Description                               |
@@ -111,6 +148,8 @@ Metadata Object
 Example
 -------
 
+.. need a real example
+
 .. code-block:: javascript
 
    {
@@ -133,34 +172,18 @@ Example
    }
 
 
-Resource Store Addons
-=====================
+Built-In Resource Store Addons
+==========================
 
 Intro
 -----
 
+Mojito comes with built-in resource store addons that are used by the resource store
+and the Mojito framework. These resource store addons are required by the resource store and 
+the Mojito framework, so particular care must be taken when creating custom versions of them. 
+This chapter takes a look at the built-in resource store addons, so you can better understand their use or 
+customize your own versions. 
 
-
-Requirements
-------------
-
-Core Addons
------------
-
-How They Work
-`````````````
-
-- walk resource versions, gathering mojit-specific resources into mojits
-- precalculates ("resolves") which resource versions are used for each version of the mojit
-- also keeps track of app-level resources (archetypes, commands, config files, and middleware).
-- these are not versioned (no resolution needed)
-- these are not otherwise grouped together
-- provides methods for events, including those specialized for AOP
-- host for addons
-- explicitly uses these addons: selector, config
-- is a YUI Base, in part to enable plugins to be implemented as YUI Plugin modules
-   - also provides event subsystem
-   - also provides simple AOP subsystem (beforeHostMethod() and afterHostMethod())
 
 selector
 ````````
@@ -184,6 +207,7 @@ Example
 
 config
 ``````
+
 Description
 ~~~~~~~~~~~
 
@@ -396,8 +420,7 @@ Example
 
 
 
-Additional Addons
------------------
+
 
 instance
 ````````
