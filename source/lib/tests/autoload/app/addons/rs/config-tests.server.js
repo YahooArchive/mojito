@@ -33,8 +33,28 @@ YUI.add('mojito-addon-rs-config-tests', function(Y, NAME) {
             return this._config.context || {};
         },
 
-        mergeRecursive: function(a, b) {
-            return Y.mix(a, b, true, [], 0, true);
+        mergeRecursive: function(dest, src, typeMatch) {
+            var p;
+            for (p in src) {
+                if (src.hasOwnProperty(p)) {
+                    // Property in destination object set; update its value.
+                    if (src[p] && src[p].constructor === Object) {
+                        if (!dest[p]) {
+                            dest[p] = {};
+                        }
+                        dest[p] = this.mergeRecursive(dest[p], src[p]);
+                    } else {
+                        if (dest[p] && typeMatch) {
+                            if (typeof dest[p] === typeof src[p]) {
+                                dest[p] = src[p];
+                            }
+                        } else {
+                            dest[p] = src[p];
+                        }
+                    }
+                }
+            }
+            return dest;
         },
 
         findResourceByConvention: function(source, mojitType) {
@@ -67,10 +87,6 @@ YUI.add('mojito-addon-rs-config-tests', function(Y, NAME) {
         }
         if (Y.Lang.isObject(x)) {
             A.isObject(x, msg || 'first arg should be an object');
-if (! Y.Lang.isObject(y)) {
-    console.log(x);
-    console.log(y);
-}
             A.isObject(y, msg || 'second arg should be an object');
             A.areSame(Object.keys(x).length, Object.keys(y).length, msg || 'object keys are different lengths');
             for (var i in x) {
@@ -213,14 +229,72 @@ if (! Y.Lang.isObject(y)) {
         },
 
 
-        'TODO: read JSON files': function() {
-            A.skip();
+        'read JSON files': function() {
+            var fixtures = libpath.join(__dirname, '../../../../fixtures/store');
+            var store = new MockRS({ root: fixtures });
+            store.plug(Y.mojito.addons.rs.config, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
+
+            var path = libpath.join(fixtures, 'application.json');
+            var have = store.config.readConfigJSON(path);
+            var want = readJSON(fixtures, 'application.json');
+            cmp(have, want);
         },
 
 
-        'TODO: read YCB files': function() {
-            A.skip();
+        'read YCB files': function() {
+            var fixtures = libpath.join(__dirname, '../../../../fixtures/store');
+            var store = new MockRS({ root: fixtures });
+            store.plug(Y.mojito.addons.rs.config, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
+
+            var path = libpath.join(fixtures, 'application.json');
+            var have = store.config.readConfigYCB(path, { runtime: 'server' });
+            var want = {
+                "mojitDirs": [
+                    "soloMojit"
+                ],
+                "staticHandling": {
+                    "useRollups": true
+                },
+                "testKey1": "testVal1-server",
+                "testKey2": "testVal2",
+                "testKey3": "testVal3",
+                "specs": {
+                    "test1": {
+                        "type": "test_mojit_1"
+                    }
+                },
+                "pathos": "portended"
+            };
+            cmp(have, want);
+        },
+
+
+        'malformed JSON for config file': function() {
+            var fixtures = libpath.join(__dirname, '../../../../fixtures/badfiles2');
+            var store = new MockRS({ root: fixtures });
+            store.plug(Y.mojito.addons.rs.config, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
+
+            var path = libpath.join(fixtures, 'routes.json');
+            try {
+                store.config.readConfigJSON(path);
+            }
+            catch (err) {
+                A.areSame('Error parsing JSON file:', err.message.substr(0, 24));
+            }
+        },
+
+
+        'JSON config file not YCB': function() {
+            var fixtures = libpath.join(__dirname, '../../../../fixtures/badfiles3');
+            var store = new MockRS({ root: fixtures });
+            store.plug(Y.mojito.addons.rs.config, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
+
+            var path = libpath.join(fixtures, 'routes.json');
+            var have = store.config.readConfigYCB(path, {});
+            var want = {};
+            cmp(have, want);
         }
+
         
     }));
     
