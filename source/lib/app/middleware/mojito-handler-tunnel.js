@@ -11,7 +11,8 @@
 var liburl = require('url'),
     logger,
     RX_MULTI_SLASH_ALL = /\/+/g,
-    Y = require('yui3').YUI().useSync('json-parse', 'json-stringify');
+    Y = require('yui').YUI({useSync: true}).use('json-parse', 'json-stringify');
+    Y.applyConfig({useSync: false});
 
 
 function trimSlash(str) {

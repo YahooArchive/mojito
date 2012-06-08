@@ -12,8 +12,8 @@
 
 var libpath = require('path'),
     libfs = require('fs'),
-    Y = require('yui3').YUI().useSync('json-parse', 'json-stringify');
-
+    Y = require('yui').YUI({useSync: true}).use('json-parse', 'json-stringify');
+    Y.applyConfig({useSync: false});
 
 function copy(x) {
     if (!x) {
