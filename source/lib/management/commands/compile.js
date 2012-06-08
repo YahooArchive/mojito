@@ -40,7 +40,8 @@ var path = require('path'),
     run,
     YuiModuleCacher,
     Y = require('yui').YUI({useSync: true}).use('json-parse', 'json-stringify');
-    Y.applyConfig({useSync: false});
+
+Y.applyConfig({useSync: false});
 
 
 usage = 'mojito compile {options} {type}\n' +

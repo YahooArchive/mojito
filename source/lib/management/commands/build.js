@@ -20,7 +20,8 @@ var libpath = require('path'),
     rmdirR,
     writeWebPagesToFiles,
     Y = require('yui').YUI({useSync: true}).use('json-parse', 'json-stringify');
-    Y.applyConfig({useSync: false});
+
+Y.applyConfig({useSync: false});
 
 /**
  * The usage string for this command.

@@ -13,7 +13,8 @@ var fs = require('fs'),
     utils = require('../utils'),
     usage = 'mojito version [app | mojit] [<name>]',
     Y = require('yui').YUI({useSync: true}).use('json-parse', 'json-stringify');
-    Y.applyConfig({useSync: false});
+
+Y.applyConfig({useSync: false});
 
 /*
  * Report the Mojito version, as obtained from the package.json file for the

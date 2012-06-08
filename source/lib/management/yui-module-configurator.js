@@ -16,7 +16,8 @@ var fs = require('fs'),
     updateModulesWithFile,
     isExcluded,
     Y = require('yui').YUI({useSync: true}).use('json-parse', 'json-stringify');
-    Y.applyConfig({useSync: false});
+
+Y.applyConfig({useSync: false});
 
 walkDir = function(dir, modules, excludes) {
     // console.log("Walking " + dir);

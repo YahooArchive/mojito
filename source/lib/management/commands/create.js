@@ -33,7 +33,8 @@ var utils = require('../utils'),
     ],
     usage,
     Y = require('yui').YUI({useSync: true}).use('json-parse', 'json-stringify');
-    Y.applyConfig({useSync: false});
+
+Y.applyConfig({useSync: false});
 
 usage = 'mojito create {type} [archetype] {name} [options]\n' +
     "\t- type: 'app', 'mojit', or 'project'\n" +

@@ -28,7 +28,8 @@ var tty = require('tty'),
     formatter,
     options,
     Y = require('yui').YUI({useSync: true}).use('json-parse', 'json-stringify');
-    Y.applyConfig({useSync: false});
+
+Y.applyConfig({useSync: false});
 
 writer = function(data) {
     var i;

@@ -12,7 +12,8 @@ var path = require('path'),
     utils = require('../utils'),
     fs = require('fs'),
     Y = require('yui').YUI({useSync: true}).use('json-parse', 'json-stringify');
-    Y.applyConfig({useSync: false});
+
+Y.applyConfig({useSync: false});
 
 
 /**
