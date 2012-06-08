@@ -60,9 +60,17 @@ YUI.add('mojito-rest-lib', function(Y, NAME) {
             // themselves to headers!
             var ioConfig = {
                 method: method,
-                data: params,
+                data: '',
                 on: {}
             };
+            if (params) {
+                if (Y.Lang.isObject(params)) {
+                    ioConfig.data = Y.QueryString.stringify(params);
+                }
+                else if (Y.Lang.isString(params)) {
+                    ioConfig.data = params;
+                }
+            }
             if (config) {
                 ioConfig.headers = config.headers;
                 ioConfig.timeout = config.timeout;
@@ -153,5 +161,6 @@ YUI.add('mojito-rest-lib', function(Y, NAME) {
 
 }, '0.1.0', {requires: [
     'io-base',
+    'querystring-stringify-simple',
     'mojito'
 ]});
