@@ -12,7 +12,8 @@ var logger,
     liburl = require('url'),
     RX_END_SLASHES = /\/+$/,
     NAME = 'UriRouter',
-    Y = require('yui3').YUI().useSync('json-parse', 'json-stringify');
+    Y = require('yui').YUI({useSync: true}).use('json-parse', 'json-stringify');
+    Y.applyConfig({useSync: false});
 
 
 function simpleMerge(to, from) {

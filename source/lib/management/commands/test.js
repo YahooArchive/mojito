@@ -53,7 +53,8 @@ var pathlib = require('path'),
     options,
     inputOptions,
     runTests,
-    Y = require('yui3').YUI().useSync('json-parse', 'json-stringify');
+    Y = require('yui').YUI({useSync: true}).use('json-parse', 'json-stringify');
+    Y.applyConfig({useSync: false});
 
 // OSX's /tmp directory is a symbolic link to /private/tmp, and we want to use
 // the real directory string
