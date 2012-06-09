@@ -263,6 +263,7 @@ YUI.add('mojito-addon-rs-config-tests', function(Y, NAME) {
                         "type": "test_mojit_1"
                     }
                 },
+                "selector": "shelves",
                 "pathos": "portended"
             };
             cmp(have, want);
