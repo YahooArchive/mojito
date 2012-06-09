@@ -516,6 +516,46 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
 
 
         /**
+         * Returns the routes configured in the application.
+         *
+         * @param ctx {object} the context
+         * @return {object} routes
+         */
+        getRoutes: function(ctx) {
+            var appConfig = this.getAppConfig(ctx),
+                routesFiles = appConfig.routesFiles,
+                p,
+                path,
+                fixedPaths = {},
+                out = {},
+                ress,
+                r,
+                res,
+                routes;
+
+            for (p = 0; p < routesFiles.length; p += 1) {
+                path = routesFiles[p];
+                // relative paths are relative to the application
+                if ('/' !== path.charAt(1)) {
+                    path = libpath.join(this._config.root, path);
+                }
+                fixedPaths[path] = true;
+            }
+
+            ress = this.getResources('server', ctx, {type: 'config'});
+            for (r = 0; r < ress.length; r += 1) {
+                res = ress[r];
+                if (fixedPaths[res.source.fs.fullPath]) {
+                    routes = this.config.readConfigYCB(res.source.fs.fullPath, ctx);
+                    out = Y.merge(out, routes);
+                }
+            }
+
+            return out;
+        },
+
+
+        /**
          * preloads metadata about resources in a package
          * (but not subpackages in its node_modules/)
          *

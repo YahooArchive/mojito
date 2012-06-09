@@ -599,6 +599,15 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
             A.isUndefined(config.testKey4, 'testKey4 gotten from the wrong context');
         },
 
+        'call getRoutes()': function() {
+            var store = new Y.mojito.ResourceStore({ root: fixtures });
+            store.preload();
+            var routes = store.getRoutes({});
+            A.isObject(routes, 'no routes at all');
+            A.isObject(routes.flickr_by_page, 'missing route flickr_by_page');
+            A.isObject(routes.flickr_base, 'missing route flickr_base');
+        },
+
         'call fileFromStaticHandlerURL()': function() {
             var store = new Y.mojito.ResourceStore({ root: fixtures });
             store.preload();
