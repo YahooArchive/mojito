@@ -11,7 +11,14 @@
 var fs = require('fs'),
     path = require('path'),
     utils = require('../utils'),
-    usage = 'mojito jslint [app | mojit] [<name>]';
+    usage = 'mojito jslint [app | mojit] [<name>]',
+    options = [
+        {
+            shortName: 'p',
+            longName: 'print',
+            hasValue: false
+        }
+    ];
 
 
 // ---------- Generic file system utilities ----------
@@ -119,6 +126,23 @@ function OutputFile(filename) {
             outstream = null;
         }
     };
+}
+
+
+/*
+ * A very simple class to allow writes to stdout.
+ */
+function OutputStdout(filename) {
+    var printedName = false;
+
+    this.write = function(s) {
+        if (!printedName) {
+            printedName = true;
+            process.stdout.write(filename + '\n');
+        }
+        process.stdout.write(s);
+    };
+    this.done = function() {};
 }
 
 
@@ -325,14 +349,24 @@ function processFiles(inDir, outDir, excludeMatcher) {
         rowdata = [];
 
     inDir = path.normalize(inDir);
-    outDir = path.normalize(outDir);
+    if (outDir) {
+        outDir = path.normalize(outDir);
+    }
 
     processDir(inDir,
         function(f) {
             var relname = f.replace(inDir, '').replace(/^\//, ''),
                 outname = relname.replace(/\.js$/, '.txt'),
-                out = new OutputFile(path.join(outDir, outname)),
-                errors = lintOneFile(f, out);
+                out,
+                errors;
+
+            if (!outDir) {
+                out = new OutputStdout(relname);
+            } else {
+                out = new OutputFile(path.join(outDir, outname))
+            }
+
+            errors = lintOneFile(f, out);
 
             if (errors > 0) {
                 rowdata.push({count: errors, text: relname, url: outname});
@@ -351,7 +385,7 @@ function processFiles(inDir, outDir, excludeMatcher) {
                 (s.isDirectory() || /\.js$/.test(p));
         });
 
-    if (totalErrors > 0) {
+    if (outDir && totalErrors > 0) {
         writePage(outDir, rowdata, totalErrors);
     }
 
@@ -369,7 +403,8 @@ function run(params, options) {
         inDir,
         outDir,
         failures,
-        errors;
+        errors,
+        print = options && options.print;
 
     // Process params to determine input and output locations.
     if (!params || params.length === 0) {
@@ -429,9 +464,14 @@ function run(params, options) {
         });
     }
 
+    // Set outDir to null if we just plan on printing to stdout
+    if (print) {
+        outDir = null;
+    }
+
     // Process the files with JSLint.
     errors = processFiles(inDir, outDir, utils.getExclusionMatcher(excludes));
-    if (errors) {
+    if (!print && errors) {
         console.log('Lint report: ' + path.normalize(outDir));
     }
     process.stdout.write(errors + ' errors found.\n', 'utf8',
@@ -450,6 +490,12 @@ function run(params, options) {
  * Standard usage string export.
  */
 exports.usage = usage;
+
+
+/**
+ * Standard options export.
+ */
+exports.options = options;
 
 
 /**
