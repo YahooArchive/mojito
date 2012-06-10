@@ -336,6 +336,9 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 use;
 
             source = filter.mojit ? this._mojitRVs[filter.mojit] : this._appRVs;
+            if (!source) {
+                return [];
+            }
             for (r = 0; r < source.length; r += 1) {
                 res = source[r];
                 use = true;
