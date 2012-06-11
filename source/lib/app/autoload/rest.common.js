@@ -27,16 +27,17 @@ YUI.add('mojito-rest-lib', function(Y, NAME) {
 
     ResponseObject.prototype = {
         getStatusCode: function() {
-            return this._resp.status;
+            return this._resp.statusCode;
         },
         getStatusMessage: function() {
-            return this._resp.statusText;
+            return this._resp.status;
         },
         getHeader: function() {
             return this._resp.getResponseHeader.apply(this._resp, arguments);
         },
         getHeaders: function() {
-            return this._resp.getAllResponseHeaders();
+            // caller expects object
+            return Y.clone(this._resp.headers, true);
         },
         getBody: function() {
             return this._resp.responseText;
@@ -60,13 +61,19 @@ YUI.add('mojito-rest-lib', function(Y, NAME) {
             // themselves to headers!
             var ioConfig = {
                 method: method,
-                data: '',
                 on: {}
             };
             if (params) {
                 if (Y.Lang.isObject(params)) {
-                    ioConfig.data = Y.QueryString.stringify(params);
-                } else if (Y.Lang.isString(params)) {
+                    params = Y.QueryString.stringify(params);
+                }
+                if ('GET' === method) {
+                    if (-1 === url.indexOf('?')) {
+                        url += '?' + params;
+                    } else {
+                        url += '&' + params;
+                    }
+                } else if ('POST' === method) {
                     ioConfig.data = params;
                 }
             }
