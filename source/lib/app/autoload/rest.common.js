@@ -60,13 +60,19 @@ YUI.add('mojito-rest-lib', function(Y, NAME) {
             // themselves to headers!
             var ioConfig = {
                 method: method,
-                data: '',
                 on: {}
             };
             if (params) {
                 if (Y.Lang.isObject(params)) {
-                    ioConfig.data = Y.QueryString.stringify(params);
-                } else if (Y.Lang.isString(params)) {
+                    params = Y.QueryString.stringify(params);
+                }
+                if ('GET' === method) {
+                    if (-1 === url.indexOf('?')) {
+                        url += '?' + params;
+                    } else {
+                        url += '&' + params;
+                    }
+                } else if ('POST' === method) {
                     ioConfig.data = params;
                 }
             }
