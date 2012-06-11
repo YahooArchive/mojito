@@ -28,6 +28,7 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
             this.afterHostMethod('findResourceByConvention', this.findResourceByConvention, this);
             this.beforeHostMethod('parseResource', this.parseResource, this);
             this.beforeHostMethod('addResourceVersion', this.addResourceVersion, this);
+            this.onHostEvent('getMojitTypeDetails', this.getMojitTypeDetails, this);
         },
 
 
@@ -131,6 +132,27 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
                 return;
             }
             this._parseYUIModule(res);
+        },
+
+
+        getMojitTypeDetails: function(evt) {
+            var dest = evt.mojit,
+                ress,
+                r,
+                res;
+            ress = this.rs.getResources(evt.args.env, evt.args.ctx, {mojit: evt.args.mojitType});
+            for (r = 0; r < ress.length; r += 1) {
+                res = ress[r];
+                if (res.type === 'binder') {
+                    if (!dest.views[res.name]) {
+                        dest.views[res.name] = {};
+                    }
+                    dest.views[res.name]['binder-module'] = res.yui.name;
+                }
+                if (res.type === 'controller') {
+                    dest['controller-module'] = res.yui.name;
+                }
+            }
         },
 
 

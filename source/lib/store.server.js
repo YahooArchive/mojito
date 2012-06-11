@@ -143,6 +143,10 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             this._appResources = {};    // env: posl: array of resources
             this._mojitResources = {};  // env: posl: mojitType: array of resources
 
+            // Y.Plugin AOP doesn't allow afterHostMethod() callbacks to
+            // modify the results, so we fire an event instead.
+            this.publish('getMojitTypeDetails', {emitFacade: true, preventable: false});
+
             // We'll start with just our "config" addon.
             this._yuiUseSync({
                 'addon-rs-config': {
@@ -350,6 +354,171 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 }
             }
             return list;
+        },
+
+
+        /**
+         * Returns, via callback, the fully expanded mojit instance specification.
+         *
+         * @method getSpec
+         * @param env {string} either "client" or "server"
+         * @param id {string} the ID of the spec to return
+         * @param ctx {object} the runtime context for the spec
+         * @param callback {function(err,spec)} callback used to return the results (or error)
+         * @return {nothing} results returned via the callback parameter
+         */
+        getSpec: function(env, id, ctx, callback) {
+            this.expandInstanceForEnv(env, {base: id}, ctx, function(err, obj) {
+                if (err) {
+                    callback(err);
+                    return;
+                }
+                if (env === 'client' && obj) {
+                    delete obj.assets;
+                }
+                callback(null, obj);
+            });
+        },
+
+
+        /**
+         * Returns, via callback, the details of the mojit type.
+         *
+         * @method getType
+         * @param env {string} either "client" or "server"
+         * @param type {string} the mojit type
+         * @param ctx {object} the runtime context for the type
+         * @param callback {function(err,spec)} callback used to return the results (or error)
+         * @return {nothing} results returned via the callback parameter
+         */
+        getType: function(env, type, ctx, callback) {
+            this.expandInstanceForEnv(env, {type: type}, ctx, function(err, obj) {
+                if (err) {
+                    callback(err);
+                    return;
+                }
+                if (env === 'client' && obj) {
+                    delete obj.assets;
+                }
+                callback(null, obj);
+            });
+        },
+
+
+        /**
+         * This just calls expandInstanceForEnv() with `env` set to `server`.
+         *
+         * @method expandInstance
+         * @param instance {map} partial instance to expand
+         * @param ctx {object} the context
+         * @param cb {function(err,instance)} callback used to return the results (or error)
+         * @return {nothing} results returned via the callback parameter
+         */
+        expandInstance: function(instance, ctx, cb) {
+            this.expandInstanceForEnv('server', instance, ctx, cb);
+            return;
+        },
+
+
+        /**
+         * Returns details about a mojit type.
+         *
+         * TODO DOCS:  use onHostMethod() and afterHostMethod() instead of AOP methods
+         *
+         * @method getMojitTypeDetails
+         * @param env {string} "client" or "server"
+         * @param ctx {object} the context
+         * @param mojitType {string} mojit type
+         * @param dest {object} object in which to place the results
+         * @return {object} returns the "dest" parameter, which has had details added to it
+         */
+        getMojitTypeDetails: function(env, ctx, mojitType, dest) {
+            //logger.log('getMojitTypeDetails('+env+',ctx,'+mojitType+')');
+            var ress,
+                r,
+                res,
+                engine,
+                engines = {},   // view engines
+                ctxKey,
+                module;
+
+            if (!dest) {
+                dest = {};
+            }
+
+            if (!dest.models) {
+                dest.models = {};
+            }
+            if (!dest.views) {
+                dest.views = {};
+            }
+
+            dest.definition = {};
+            dest.defaults = {};
+
+            ress = this.getResources(env, ctx, { mojit: mojitType });
+            for (r = 0; r < ress.length; r += 1) {
+                res = ress[r];
+
+                if (res.type === 'config') {
+                    if ('definition' === res.source.fs.basename) {
+                        dest.definition = this.config.readConfigYCB(res.source.fs.fullPath, ctx);
+                    }
+                    if ('defaults' === res.source.fs.basename) {
+                        dest.defaults = this.config.readConfigYCB(res.source.fs.fullPath, ctx);
+                    }
+                }
+
+                if (res.type === 'binder') {
+                    if (!dest.views[res.name]) {
+                        dest.views[res.name] = {};
+                    }
+                    if (env === 'client') {
+                        dest.views[res.name]['binder-path'] = res.url;
+                    } else {
+                        dest.views[res.name]['binder-path'] = res.source.fs.fullPath;
+                    }
+                }
+
+                if (res.type === 'controller') {
+                    // We need the YUI Module name of the contoller so we can
+                    // select a language for it
+                    if (env === 'client') {
+                        dest['controller-path'] = res.url;
+                    } else {
+                        dest['controller-path'] = res.source.fs.fullPath;
+                    }
+                }
+
+                if (res.type === 'model') {
+                    dest.models[res.name] = true;
+                }
+
+                if (res.type === 'view') {
+                    if (!dest.views[res.name]) {
+                        dest.views[res.name] = {};
+                    }
+                    if (env === 'client') {
+                        dest.views[res.name]['content-path'] = res.url;
+                    } else {
+                        dest.views[res.name]['content-path'] = res.source.fs.fullPath;
+                    }
+                    dest.views[res.name].engine = res.viewEngine;
+                    engines[res.viewEngine] = true;
+                }
+            }
+
+            // YUI AOP doesn't give plugins enough control, so use
+            // onHostMethod() and afterHostMethod().
+            this.fire('getMojitTypeDetails', {
+                args: {
+                    env: env,
+                    ctx: ctx,
+                    mojitType: mojitType
+                },
+                mojit: dest
+            });
+            return dest;
         },
 
 
@@ -880,7 +1049,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                     Y.log('invalid ' + type + ' filename. skipping ' + fs.fullPath, 'warn', NAME);
                     return;
                 }
-                res.name = libpath.join(fs.subDirArray.slice(1).join('/'), baseParts.join('.'));
+                res.name = libpath.join(fs.subDirArray.join('/'), baseParts.join('.'));
                 res.id = [res.type, res.subtype, res.name].join('-');
                 return res;
             }

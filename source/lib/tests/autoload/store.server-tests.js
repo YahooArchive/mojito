@@ -364,7 +364,7 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
 
             var instance = {type:'TestMojit2'};
             store.expandInstance(instance, {}, function(err, instance){
-                A.isNotUndefined(instance.controller);
+                A.isNotUndefined(instance['controller-path']);
                 A.areSame('/static/TestMojit2/assets', instance.assetsRoot);
                 A.isNotUndefined(instance.yui.config.modules.test_mojit_2);
             });
@@ -463,7 +463,7 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
             store.preload();
             var instance = { type: 'soloMojit' };
             store.expandInstance(instance, {}, function(err, instance) {
-                A.isNotUndefined(instance.controller);
+                A.isNotUndefined(instance['controller-path']);
             });
         },
 
@@ -778,7 +778,7 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
             var spec = { type: 'PagedFlickr' };
             var ctx = { device: 'iphone' };
             store.expandInstance(spec, ctx, function(err, instance) {
-                A.areSame(libpath.join(fixtures, 'mojits/PagedFlickr/controller.common.iphone.js'), instance.controller);
+                A.areSame(libpath.join(fixtures, 'mojits/PagedFlickr/controller.common.iphone.js'), instance['controller-path']);
             });
         },
 
@@ -878,7 +878,7 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
 
             var details = {};
             store.getMojitTypeDetails('server', {}, 'a', details);
-            A.isNotNull(details.controller.match(/a\/foo\/controller\.server\.js$/), 'controller should not be null');
+            A.isNotNull(details['controller-path'].match(/a\/foo\/controller\.server\.js$/), 'controller should not be null');
         },
 
         'find and parse resources by convention': function() {

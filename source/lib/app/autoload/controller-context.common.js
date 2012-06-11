@@ -40,7 +40,7 @@ YUI.add('mojito-controller-context', function(Y, NAME) {
                 // Y.mojito.controller for legacy, multi-instance.
                 // Y.mojito.controllers for shared instance
                 c = this.Y.mojito.controller ||
-                    this.Y.mojito.controllers[instance.controllerModuleName];
+                    this.Y.mojito.controllers[instance['controller-module']];
 
             if (!Y.Lang.isObject(c)) {
                 error = new Error('Mojit controller prototype is not an' +
@@ -78,8 +78,8 @@ YUI.add('mojito-controller-context', function(Y, NAME) {
 
             Y.Object.each(this.Y.mojito.models, function(model, modelName) {
 
-                if (!shareYUIInstance || (instance.modelYUIModuleNames &&
-                        instance.modelYUIModuleNames[modelName])) {
+                if (!shareYUIInstance || (instance.models &&
+                        instance.models[modelName])) {
 
                     // TODO: Why? There's no particular reason to inherit here.
                     var modelInstance = Y.mojito.util.heir(model);

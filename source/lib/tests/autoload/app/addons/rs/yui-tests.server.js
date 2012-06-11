@@ -21,6 +21,58 @@ YUI.add('mojito-addon-rs-yui-tests', function(Y, NAME) {
         initializer: function(cfg) {
             this._config = cfg || {};
             this.RVs = {};
+            this._mojitResources = {};  // env: ctx: mojitType: list of resources
+            this._appResources = {};    // env: ctx: list of resources
+            this._mojits = {};
+            this.publish('getMojitTypeDetails', {emitFacade: true, preventable: false});
+        },
+
+        listAllMojits: function() {
+            return Object.keys(this._mojits);
+        },
+
+        getResources: function(env, ctx, filter) {
+            var source,
+                out = [],
+                r,
+                res,
+                k,
+                use;
+
+            ctx = JSON.stringify(ctx);
+            if (filter.mojit) {
+                if (!this._mojitResources[env] ||
+                        !this._mojitResources[env][ctx] ||
+                        !this._mojitResources[env][ctx][filter.mojit]) {
+                    return [];
+                }
+                source = this._mojitResources[env][ctx][filter.mojit];
+            } else {
+                if (!this._appResources[env] ||
+                        !this._appResources[env][ctx]) {
+                    return [];
+                }
+                source = this._appResources[env][ctx];
+            }
+            // this is taken care of already, and will trip up mojit-level
+            // resources that are actually shared
+            delete filter.mojit;
+            for (r = 0; r < source.length; r += 1) {
+                res = source[r];
+                use = true;
+                for (k in filter) {
+                    if (filter.hasOwnProperty(k)) {
+                        if (res[k] !== filter[k]) {
+                            use = false;
+                            break;
+                        }
+                    }
+                }
+                if (use) {
+                    out.push(res);
+                }
+            }
+            return out;
         },
 
         findResourceByConvention: function(source, mojitType) {
@@ -33,6 +85,49 @@ YUI.add('mojito-addon-rs-yui-tests', function(Y, NAME) {
 
         addResourceVersion: function(res) {
             this.RVs[[res.affinity, res.selector, res.id].join('/')] = res;
+        },
+
+        _makeResource: function(env, ctx, mojit, type, name, yuiName) {
+            if (mojit && mojit !== 'shared') {
+                this._mojits[mojit] = true;
+            }
+            var res = {
+                source: {
+                    fs: {
+                        fullPath: 'path/for/' + type + '--' + name + '.common.ext',
+                        rootDir: 'path/for'
+                    },
+                    pkg: { name: 'testing' }
+                },
+                mojit: mojit,
+                type: type,
+                name: name,
+                id: type + '--' + name
+            }
+            if (yuiName) {
+                res.yui = { name: yuiName };
+            }
+            ctx = JSON.stringify(ctx);
+            if (mojit) {
+                if (!this._mojitResources[env]) {
+                    this._mojitResources[env] = {};
+                }
+                if (!this._mojitResources[env][ctx]) {
+                    this._mojitResources[env][ctx] = {};
+                }
+                if (!this._mojitResources[env][ctx][mojit]) {
+                    this._mojitResources[env][ctx][mojit] = [];
+                }
+                this._mojitResources[env][ctx][mojit].push(res);
+            } else {
+                if (!this._appResources[env]) {
+                    this._appResources[env] = {};
+                }
+                if (!this._appResources[env][ctx]) {
+                    this._appResources[env][ctx] = [];
+                }
+                this._appResources[env][ctx].push(res);
+            }
         }
 
     });
@@ -214,6 +309,31 @@ YUI.add('mojito-addon-rs-yui-tests', function(Y, NAME) {
             cmp(res.source, source);
             A.isNotUndefined(res.yui);
             A.areSame('X', res.yui.name);
+        },
+
+        
+        'augment getMojitTypeDetails': function() {
+            var fixtures = libpath.join(__dirname, '../../../../fixtures/store');
+            var store = new MockRS({ root: fixtures });
+            store.plug(Y.mojito.addons.rs.yui, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
+
+            store._makeResource('server', {}, 'Foo', 'binder', 'index', 'FooBinderIndex');
+            store._makeResource('server', {}, 'Foo', 'binder', 'list', 'FooBinderList');
+            store._makeResource('server', {}, 'Foo', 'controller', 'controller', 'FooController');
+            var mojit = { views: {} };
+            store.fire('getMojitTypeDetails', {
+                args: {
+                    env: 'server',
+                    ctx: {},
+                    mojitType: 'Foo'
+                },
+                mojit: mojit
+            });
+            A.isNotUndefined(mojit.views.index);
+            A.areSame('FooBinderIndex', mojit.views.index['binder-module']);
+            A.isNotUndefined(mojit.views.list);
+            A.areSame('FooBinderList', mojit.views.list['binder-module']);
+            A.areSame('FooController', mojit['controller-module']);
         }
 
 

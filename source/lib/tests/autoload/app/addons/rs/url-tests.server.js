@@ -26,6 +26,7 @@ YUI.add('mojito-addon-rs-url-tests', function(Y, NAME) {
             this._mojits = {};
             this._appRVs = [];
             this._mojitRVs = {};
+            this.publish('getMojitTypeDetails', {emitFacade: true, preventable: false});
         },
 
         getStaticAppConfig: function() {
@@ -67,7 +68,6 @@ YUI.add('mojito-addon-rs-url-tests', function(Y, NAME) {
 
         preloadResourceVersions: function() {
             // no-op
-            return true;
         },
 
         _makeResource: function(pkg, mojit, type, name, affinity, yuiName) {
@@ -278,6 +278,44 @@ YUI.add('mojito-addon-rs-url-tests', function(Y, NAME) {
             A.areSame('path/for/mojit--Y.common.ext/rollup.client.js', store._mojitRVs.Y[0].source.fs.rollupPath);
             A.areSame('/static/Y/not--yui.common.ext', store._mojitRVs.Y[1].url);
             A.isUndefined(store._mojitRVs.Y[1].source.fs.rollupPath);
+        },
+
+
+        'augment getMojitTypeDetails': function() {
+            var fixtures = libpath.join(__dirname, '../../../../fixtures/store');
+
+            var store = new MockRS({
+                root: fixtures,
+                appConfig: {}
+            });
+            store.plug(Y.mojito.addons.rs.url, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
+            var mojit = {};
+            store.fire('getMojitTypeDetails', {
+                args: {
+                    env: 'server',
+                    ctx: {},
+                    mojitType: 'Foo'
+                },
+                mojit: mojit
+            });
+            A.areSame('/static/Foo/assets', mojit.assetsRoot);
+
+            // honor empty prefix
+            store = new MockRS({
+                root: fixtures,
+                appConfig: { staticHandling: {prefix:''} }
+            });
+            store.plug(Y.mojito.addons.rs.url, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
+            mojit = {};
+            store.fire('getMojitTypeDetails', {
+                args: {
+                    env: 'server',
+                    ctx: {},
+                    mojitType: 'Foo'
+                },
+                mojit: mojit
+            });
+            A.areSame('/Foo/assets', mojit.assetsRoot);
         }
 
         

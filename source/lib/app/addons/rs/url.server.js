@@ -27,6 +27,7 @@ YUI.add('addon-rs-url', function(Y, NAME) {
             this.mojitoRoot = config.mojitoRoot;
             this.URLpaths = {};
             this.afterHostMethod('preloadResourceVersions', this.preloadResourceVersions, this);
+            this.onHostEvent('getMojitTypeDetails', this.getMojitTypeDetails, this);
 
             appConfig = this.rs.getStaticAppConfig();
             this.config = appConfig.staticHandling || {};
@@ -80,6 +81,16 @@ YUI.add('addon-rs-url', function(Y, NAME) {
                     this._calcResourceURL(res, mojitRes);
                 }
             }
+        },
+
+
+        getMojitTypeDetails: function(evt) {
+            var parts = [];
+            if (this.config.prefix) {
+                parts.push(this.config.prefix);
+            }
+            parts.push(evt.args.mojitType);
+            evt.mojit.assetsRoot = '/' + parts.join('/') + '/assets';
         },
 
 
