@@ -27,17 +27,16 @@ YUI.add('mojito-rest-lib', function(Y, NAME) {
 
     ResponseObject.prototype = {
         getStatusCode: function() {
-            return this._resp.statusCode;
+            return this._resp.status;
         },
         getStatusMessage: function() {
-            return this._resp.status;
+            return this._resp.statusText;
         },
         getHeader: function() {
             return this._resp.getResponseHeader.apply(this._resp, arguments);
         },
         getHeaders: function() {
-            // caller expects object
-            return Y.clone(this._resp.headers, true);
+            return this._resp.getAllResponseHeaders();
         },
         getBody: function() {
             return this._resp.responseText;
