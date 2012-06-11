@@ -72,7 +72,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
         mojitoRoot = __dirname,
 
         CONVENTION_SUBDIR_TYPES = {
-            // subdir: type
+            // subdir: resource type
             'actions':  'action',
             'binders':  'binder',
             'commands': 'command',
@@ -85,6 +85,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             'binder': true,
             'model': true
         },
+        // which addon subtypes are app-level
         ADDON_SUBTYPES_APPLEVEL = {
             'rs': true
         };
@@ -156,6 +157,10 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
         destructor: function() {},
 
 
+        //====================================================================
+        // PUBLIC METHODS
+
+
         /**
          * Returns the static (non-runtime-sensitive) context
          * @method getStaticContext
@@ -176,7 +181,11 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
         },
 
 
-        // TODO DOCS
+        /**
+         * Returns Mojito's built-in configuration.
+         * @method getFrameworkConfig
+         * @return {object} the configuration for mojito
+         */
         getFrameworkConfig: function() {
             return this.cloneObj(this._fwConfig);
         },
@@ -211,12 +220,12 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
 
 
         /**
-        * Preloads everything in the app, and as well pertinent parts of
-        * the framework.
-        *
-        * @method preload
-        * @return {nothing}
-        */
+         * Preloads everything in the app, and as well pertinent parts of
+         * the framework.
+         *
+         * @method preload
+         * @return {nothing}
+         */
         preload: function() {
             // We need to do an initial sweep to find the resource store addons.
             this.preloadResourceVersions();
@@ -229,101 +238,11 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
 
 
         /**
-         * Augments this resource store with addons that we know about.
-         * To find the addons, call `preloadResourceVersions()` first.
-         * @method loadAddons
-         * @return {nothing}
-         */
-        loadAddons: function() {
-            var modules = {},
-                ress,
-                r,
-                res;
-
-            Y.Object.each(Y.mojito.addons.rs, function(fn, name) {
-                this.unplug(name);
-            }, this);
-
-            ress = this.getResourceVersions({type: 'addon', subtype: 'rs'});
-            for (r = 0; r < ress.length; r += 1) {
-                res = ress[r];
-                if ('rs' === res.subtype) {
-                    // FUTURE:  ideally we shouldn't proscribe the YUI module name of RS addons
-                    // (We can/should introspect the file for the YUI module name.)
-                    modules['addon-rs-' + res.name] = {
-                        fullpath: res.source.fs.fullPath
-                    };
-                }
-            }
-            this._yuiUseSync(modules);
-
-            Y.Object.each(Y.mojito.addons.rs, function(fn, name) {
-                this.plug(fn, { appRoot: this._config.root, mojitoRoot: mojitoRoot });
-            }, this);
-        },
-
-
-        /**
-         * Preload metadata about all resource versions in the application (and Mojito framework)
-         *
-         * @method preloadResourceVersions
-         * @return {nothing} work down via other called methods
-         */
-        preloadResourceVersions: function() {
-            var me = this,
-                walker,
-                walkedMojito = false,
-                dir,
-                info;
-
-            this._appRVs = [];
-            this._mojitRVs = {};
-
-            walker = new libwalker.BreadthFirst(this._config.root);
-            walker.walk(function(err, info) {
-                if (err) {
-                    throw err;
-                }
-                if ('mojito' === info.pkg.name) {
-                    walkedMojito = true;
-                }
-                me._preloadPackage(info);
-            });
-
-            // user might not have installed mojito as a dependency of their
-            // application.  (they -should- have but might not have.)
-            // FUTURE:  instead walk -all- global packages?
-            if (!walkedMojito) {
-                dir = libpath.join(mojitoRoot, '..');
-                info = {
-                    depth: 999,
-                    parents: [],
-                    dir: dir
-                };
-                info.pkg = this.config.readConfigJSON(libpath.join(dir, 'package.json'));
-
-                // special case for weird packaging situations
-                if (!Object.keys(info.pkg).length) {
-                    info.dir = mojitoRoot;
-                    info.pkg = {
-                        name: 'mojito',
-                        version: '0.666.666',
-                        yahoo: {
-                            mojito: {
-                                type: 'bundle',
-                                location: 'app'
-                            }
-                        }
-                    };
-                }
-
-                this._preloadPackage(info);
-            }
-        },
-
-
-        /**
          * Returns a list of resource versions that match the filter.
+         * (To get the list of resource versions from all mojits, you'll need
+         * to call `listAllMojits()` and iterate over that list, calling this
+         * method with `mojit:` in the filter.)
+         *
          * @param filter {object} limit returned resource versions to only those whose keys/values match the filter
          * @return {array of objects} list of matching resource versions
          */
@@ -360,6 +279,10 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
 
         /**
          * Returns a list of resources that match the filter.
+         * (To get the list of resources from all mojits, you'll need to call
+         * `listAllMojits()` and iterate over that list, calling this method
+         * with `mojit:` in the filter.)
+         *
          * @param env {string} the runtime environment
          * @param ctx {object} the context
          * @param filter {object} limit returned resources to only those whose keys/values match the filter
@@ -411,7 +334,11 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
         },
 
 
-        // TODO DOCS
+        /**
+         * Returns a list of all mojits in the app, except for the "shared" mojit.
+         * @method listAllMojits
+         * @return {array} list of mojits
+         */
         listAllMojits: function() {
             var mojitType,
                 list = [];
@@ -559,227 +486,188 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
 
 
         /**
-         * preloads metadata about resources in a package
-         * (but not subpackages in its node_modules/)
+         * Recursively merge one object onto another.
+         * From http://stackoverflow.com/questions/171251/
+         * how-can-i-merge-properties-of-two-javascript-objects-dynamically/
+         * 383245#383245.
          *
-         * @private
-         * @method _preloadPackage
-         * @param info {object} metadata about the package
-         * @return {nothing} work down via other called methods
+         * @method mergeRecursive
+         * @param dest {object} object to merge into
+         * @param src {object} object to merge onto "dest"
+         * @param matchType {boolean} controls whether a non-object in the src is
+         *          allowed to clobber a non-object in the dest (if a different type)
+         * @return {object} the modified "dest" object is also returned directly
          */
-        _preloadPackage: function(info) {
-            var dir,
-                pkg;
-            // FUTURE:  use info.inherit to scope mojit dependencies
-            /*
-            console.log('--PACKAGE-- ' + info.depth + ' ' + info.pkg.name + '@' + info.pkg.version
-                    + ' \t' + (info.pkg.yahoo && info.pkg.yahoo.mojito && info.pkg.yahoo.mojito.type)
-                    + ' \t[' + info.parents.join(',') + ']'
-            //      + ' \t-- ' + JSON.stringify(info.inherit)
-            );
-            */
-            pkg = {
-                name: info.pkg.name,
-                version: info.pkg.version,
-                depth: info.depth
-            };
-            if (0 === info.depth) {
-                // the actual application is handled specially
-                this._preloadApp(pkg);
-                return;
+        mergeRecursive: function(dest, src, typeMatch) {
+            var p;
+            for (p in src) {
+                if (src.hasOwnProperty(p)) {
+                    // Property in destination object set; update its value.
+                    if (src[p] && src[p].constructor === Object) {
+                        if (!dest[p]) {
+                            dest[p] = {};
+                        }
+                        dest[p] = this.mergeRecursive(dest[p], src[p]);
+                    } else {
+                        if (dest[p] && typeMatch) {
+                            if (typeof dest[p] === typeof src[p]) {
+                                dest[p] = src[p];
+                            }
+                        } else {
+                            dest[p] = src[p];
+                        }
+                    }
+                }
             }
-            if (!info.pkg.yahoo || !info.pkg.yahoo.mojito) {
-                return;
-            }
-            switch (info.pkg.yahoo.mojito.type) {
-            case 'bundle':
-                dir = libpath.join(info.dir, info.pkg.yahoo.mojito.location);
-                this._preloadDirBundle(dir, pkg);
-                break;
-            case 'mojit':
-                dir = libpath.join(info.dir, info.pkg.yahoo.mojito.location);
-                this._preloadDirMojit(dir, 'pkg', pkg);
-                break;
-            default:
-                Y.log('Unknown package type "' + info.pkg.yahoo.mojito.type + '"', 'warn', NAME);
-                break;
-            }
+            return dest;
         },
 
 
         /**
-         * preloads metadata about resources in the application directory
-         * (but not node_modules/)
-         *
-         * @private
-         * @method _preloadApp
-         * @param pkg {object} metadata (name and version) about the app's package
-         * @return {nothing} work down via other called methods
+         * @method cloneObj
+         * @param o {mixed}
+         * @return {mixed} deep copy of argument
          */
-        _preloadApp: function(pkg) {
-            var ress,
-                r,
-                res,
-                list,
+        cloneObj: function(o) {
+            var newO,
                 i;
 
-            ress = this._findResourcesByConvention(this._config.root, 'app', pkg, 'shared');
-            for (r = 0; r < ress.length; r += 1) {
-                res = ress[r];
-                if ('mojit' !== res.type) {
-                    // ignore app-level mojits found by convention, since they'll be loaded below
-                    this.addResourceVersion(ress[r]);
+            if (typeof o !== 'object') {
+                return o;
+            }
+            if (!o) {
+                return o;
+            }
+
+            if ('[object Array]' === Object.prototype.toString.apply(o)) {
+                newO = [];
+                for (i = 0; i < o.length; i += 1) {
+                    newO[i] = this.cloneObj(o[i]);
+                }
+                return newO;
+            }
+
+            newO = {};
+            for (i in o) {
+                if (o.hasOwnProperty(i)) {
+                    newO[i] = this.cloneObj(o[i]);
                 }
             }
-
-            // load mojitsDirs
-            list = this._globList(this._config.root, this._appConfigStatic.mojitsDirs);
-            for (i = 0; i < list.length; i += 1) {
-                this._preloadDirMojits(list[i], 'app', pkg);
-            }
-
-            // load mojitDirs
-            list = this._globList(this._config.root, this._appConfigStatic.mojitDirs || []);
-            for (i = 0; i < list.length; i += 1) {
-                this._preloadDirMojit(list[i], 'app', pkg);
-            }
+            return newO;
         },
 
 
-        /**
-         * preloads metadata about resource in a directory
-         *
-         * @method _preloadDirBundle
-         * @param dir {string} directory path
-         * @param pkg {object} metadata (name and version) about the package
-         * @return {nothing} work down via other called methods
-         * @private
-         */
-        _preloadDirBundle: function(dir, pkg) {
-            var ress,
-                r,
-                res;
-            // FUTURE:  support configuration too
-
-            ress = this._findResourcesByConvention(dir, 'bundle', pkg, 'shared');
-            for (r = 0; r < ress.length; r += 1) {
-                res = ress[r];
-                this.addResourceVersion(res);
-            }
-            this._preloadDirMojits(libpath.join(dir, 'mojits'), 'bundle', pkg);
-        },
+        //====================================================================
+        // CALLBACK METHODS
+        // These are called at various points in the algorithm of public
+        // methods.  They are public so that they can be hooked into via AOP.
 
 
         /**
-         * preloads a directory containing many mojits
+         * Augments this resource store with addons that we know about.
+         * To find the addons, call `preloadResourceVersions()` first.
          *
-         * @private
-         * @method _preloadDirMojits
-         * @param dir {string} directory path
-         * @param dirType {string} type represented by the "dir" argument.  values are "app", "bundle", "pkg", or "mojit"
-         * @param pkg {object} metadata (name and version) about the package
-         * @return {nothing} work down via other called methods
-         */
-        _preloadDirMojits: function(dir, dirType, pkg) {
-            var i,
-                realDirs,
-                children,
-                childName,
-                childPath;
-
-            if ('/' !== dir.charAt(0)) {
-                dir = libpath.join(this._config.root, dir);
-            }
-
-            if (!libpath.existsSync(dir)) {
-                return;
-            }
-
-            children = this._sortedReaddirSync(dir);
-            for (i = 0; i < children.length; i += 1) {
-                childName = children[i];
-                if ('.' === childName.substring(0, 1)) {
-                    continue;
-                }
-                childPath = libpath.join(dir, childName);
-                this._preloadDirMojit(childPath, dirType, pkg);
-            }
-        },
-
-
-        /**
-         * preloads a directory that represents a single mojit
+         * You most often don't want to call this directly, but instead to hook
+         * into it using the AOP mechanism of `Y.Plugin.Base`:
+         * ```
+         * this.afterHostMethod('loadAddons', this._myLoadAddons, this);
+         * ```
          *
-         * @private
-         * @method _preloadDirMojit
-         * @param dir {string} directory path
-         * @param dirType {string} type represented by the "dir" argument.  values are "app", "bundle", "pkg", or "mojit"
-         * @param pkg {object} metadata (name and version) about the package
-         * @return {nothing} work down via other called methods
+         * @method loadAddons
+         * @return {nothing}
          */
-        _preloadDirMojit: function(dir, dirType, pkg) {
-            var mojitType,
-                packageJson,
-                definitionJson,
+        loadAddons: function() {
+            var modules = {},
                 ress,
                 r,
                 res;
 
-            if ('/' !== dir.charAt(0)) {
-                dir = libpath.join(this._config.root, dir);
-            }
+            Y.Object.each(Y.mojito.addons.rs, function(fn, name) {
+                this.unplug(name);
+            }, this);
 
-            if (!libpath.existsSync(dir)) {
-                return;
-            }
-
-            mojitType = libpath.basename(dir);
-            packageJson = this.config.readConfigJSON(libpath.join(dir, 'package.json'));
-            if (packageJson) {
-                if (packageJson.name) {
-                    mojitType = packageJson.name;
-                }
-                // FUTURE:  check NPM "engine"
-                // TODO:  register mojit's package.json as a static asset, in "static handler" plugin
-            }
-
-            definitionJson = this.config.readConfigYCB(libpath.join(dir, 'definition.json'), {});
-            if (definitionJson.appLevel) {
-                mojitType = 'shared';
-            }
-
-            res = {
-                source: {
-                    fs: {
-                        fullPath: dir,
-                        rootDir: dir,
-                        rootType: dirType,
-                        subDir: '.',
-                        subDirArray: ['.'],
-                        basename: libpath.basename(dir),
-                        isFile: false,
-                        ext: null
-                    },
-                    pkg: pkg
-                },
-                mojit: null,
-                type: 'mojit',
-                subtype: null,
-                name: mojitType,
-                id: 'mojit--' + mojitType,
-                affinity: 'common',
-                selector: '*'
-            };
-            this.addResourceVersion(res);
-
-            ress = this._findResourcesByConvention(dir, 'mojit', pkg, mojitType);
+            ress = this.getResourceVersions({type: 'addon', subtype: 'rs'});
             for (r = 0; r < ress.length; r += 1) {
                 res = ress[r];
-                // just in case, only add those resources that really do belong to us
-                if (res.mojit === mojitType) {
-                    this.addResourceVersion(res);
+                if ('rs' === res.subtype) {
+                    // FUTURE:  ideally we shouldn't proscribe the YUI module name of RS addons
+                    // (We can/should introspect the file for the YUI module name.)
+                    modules['addon-rs-' + res.name] = {
+                        fullpath: res.source.fs.fullPath
+                    };
                 }
-                // FUTURE:  else warn?
+            }
+            this._yuiUseSync(modules);
+
+            Y.Object.each(Y.mojito.addons.rs, function(fn, name) {
+                this.plug(fn, { appRoot: this._config.root, mojitoRoot: mojitoRoot });
+            }, this);
+        },
+
+
+        /**
+         * Preload metadata about all resource versions in the application
+         * (and Mojito framework).
+         *
+         *
+         * You most often don't want to call this directly, but instead to hook
+         * into it using the AOP mechanism of `Y.Plugin.Base`:
+         * ```
+         * this.afterHostMethod('preloadResourceVersions', this._myPreloadResourceVersions, this);
+         * ```
+         *
+         * @method preloadResourceVersions
+         * @return {nothing} work down via other called methods
+         */
+        preloadResourceVersions: function() {
+            var me = this,
+                walker,
+                walkedMojito = false,
+                dir,
+                info;
+
+            this._appRVs = [];
+            this._mojitRVs = {};
+
+            walker = new libwalker.BreadthFirst(this._config.root);
+            walker.walk(function(err, info) {
+                if (err) {
+                    throw err;
+                }
+                if ('mojito' === info.pkg.name) {
+                    walkedMojito = true;
+                }
+                me._preloadPackage(info);
+            });
+
+            // user might not have installed mojito as a dependency of their
+            // application.  (they -should- have but might not have.)
+            // FUTURE:  instead walk -all- global packages?
+            if (!walkedMojito) {
+                dir = libpath.join(mojitoRoot, '..');
+                info = {
+                    depth: 999,
+                    parents: [],
+                    dir: dir
+                };
+                info.pkg = this.config.readConfigJSON(libpath.join(dir, 'package.json'));
+
+                // special case for weird packaging situations
+                if (!Object.keys(info.pkg).length) {
+                    info.dir = mojitoRoot;
+                    info.pkg = {
+                        name: 'mojito',
+                        version: '0.666.666',
+                        yahoo: {
+                            mojito: {
+                                type: 'bundle',
+                                location: 'app'
+                            }
+                        }
+                    };
+                }
+
+                this._preloadPackage(info);
             }
         },
 
@@ -1121,6 +1009,237 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
         },
 
 
+        //====================================================================
+        // PRIVATE METHODS
+
+
+        /**
+         * preloads metadata about resources in a package
+         * (but not subpackages in its node_modules/)
+         *
+         * @private
+         * @method _preloadPackage
+         * @param info {object} metadata about the package
+         * @return {nothing} work down via other called methods
+         */
+        _preloadPackage: function(info) {
+            var dir,
+                pkg;
+            // FUTURE:  use info.inherit to scope mojit dependencies
+            /*
+            console.log('--PACKAGE-- ' + info.depth + ' ' + info.pkg.name + '@' + info.pkg.version
+                    + ' \t' + (info.pkg.yahoo && info.pkg.yahoo.mojito && info.pkg.yahoo.mojito.type)
+                    + ' \t[' + info.parents.join(',') + ']'
+            //      + ' \t-- ' + JSON.stringify(info.inherit)
+            );
+            */
+            pkg = {
+                name: info.pkg.name,
+                version: info.pkg.version,
+                depth: info.depth
+            };
+            if (0 === info.depth) {
+                // the actual application is handled specially
+                this._preloadApp(pkg);
+                return;
+            }
+            if (!info.pkg.yahoo || !info.pkg.yahoo.mojito) {
+                return;
+            }
+            switch (info.pkg.yahoo.mojito.type) {
+            case 'bundle':
+                dir = libpath.join(info.dir, info.pkg.yahoo.mojito.location);
+                this._preloadDirBundle(dir, pkg);
+                break;
+            case 'mojit':
+                dir = libpath.join(info.dir, info.pkg.yahoo.mojito.location);
+                this._preloadDirMojit(dir, 'pkg', pkg);
+                break;
+            default:
+                Y.log('Unknown package type "' + info.pkg.yahoo.mojito.type + '"', 'warn', NAME);
+                break;
+            }
+        },
+
+
+        /**
+         * preloads metadata about resources in the application directory
+         * (but not node_modules/)
+         *
+         * @private
+         * @method _preloadApp
+         * @param pkg {object} metadata (name and version) about the app's package
+         * @return {nothing} work down via other called methods
+         */
+        _preloadApp: function(pkg) {
+            var ress,
+                r,
+                res,
+                list,
+                i;
+
+            ress = this._findResourcesByConvention(this._config.root, 'app', pkg, 'shared');
+            for (r = 0; r < ress.length; r += 1) {
+                res = ress[r];
+                if ('mojit' !== res.type) {
+                    // ignore app-level mojits found by convention, since they'll be loaded below
+                    this.addResourceVersion(ress[r]);
+                }
+            }
+
+            // load mojitsDirs
+            list = this._globList(this._config.root, this._appConfigStatic.mojitsDirs);
+            for (i = 0; i < list.length; i += 1) {
+                this._preloadDirMojits(list[i], 'app', pkg);
+            }
+
+            // load mojitDirs
+            list = this._globList(this._config.root, this._appConfigStatic.mojitDirs || []);
+            for (i = 0; i < list.length; i += 1) {
+                this._preloadDirMojit(list[i], 'app', pkg);
+            }
+        },
+
+
+        /**
+         * preloads metadata about resource in a directory
+         *
+         * @method _preloadDirBundle
+         * @param dir {string} directory path
+         * @param pkg {object} metadata (name and version) about the package
+         * @return {nothing} work down via other called methods
+         * @private
+         */
+        _preloadDirBundle: function(dir, pkg) {
+            var ress,
+                r,
+                res;
+            // FUTURE:  support configuration too
+
+            ress = this._findResourcesByConvention(dir, 'bundle', pkg, 'shared');
+            for (r = 0; r < ress.length; r += 1) {
+                res = ress[r];
+                this.addResourceVersion(res);
+            }
+            this._preloadDirMojits(libpath.join(dir, 'mojits'), 'bundle', pkg);
+        },
+
+
+        /**
+         * preloads a directory containing many mojits
+         *
+         * @private
+         * @method _preloadDirMojits
+         * @param dir {string} directory path
+         * @param dirType {string} type represented by the "dir" argument.  values are "app", "bundle", "pkg", or "mojit"
+         * @param pkg {object} metadata (name and version) about the package
+         * @return {nothing} work down via other called methods
+         */
+        _preloadDirMojits: function(dir, dirType, pkg) {
+            var i,
+                realDirs,
+                children,
+                childName,
+                childPath;
+
+            if ('/' !== dir.charAt(0)) {
+                dir = libpath.join(this._config.root, dir);
+            }
+
+            if (!libpath.existsSync(dir)) {
+                return;
+            }
+
+            children = this._sortedReaddirSync(dir);
+            for (i = 0; i < children.length; i += 1) {
+                childName = children[i];
+                if ('.' === childName.substring(0, 1)) {
+                    continue;
+                }
+                childPath = libpath.join(dir, childName);
+                this._preloadDirMojit(childPath, dirType, pkg);
+            }
+        },
+
+
+        /**
+         * preloads a directory that represents a single mojit
+         *
+         * @private
+         * @method _preloadDirMojit
+         * @param dir {string} directory path
+         * @param dirType {string} type represented by the "dir" argument.  values are "app", "bundle", "pkg", or "mojit"
+         * @param pkg {object} metadata (name and version) about the package
+         * @return {nothing} work down via other called methods
+         */
+        _preloadDirMojit: function(dir, dirType, pkg) {
+            var mojitType,
+                packageJson,
+                definitionJson,
+                ress,
+                r,
+                res;
+
+            if ('/' !== dir.charAt(0)) {
+                dir = libpath.join(this._config.root, dir);
+            }
+
+            if (!libpath.existsSync(dir)) {
+                return;
+            }
+
+            mojitType = libpath.basename(dir);
+            packageJson = this.config.readConfigJSON(libpath.join(dir, 'package.json'));
+            if (packageJson) {
+                if (packageJson.name) {
+                    mojitType = packageJson.name;
+                }
+                // FUTURE:  check NPM "engine"
+                // TODO:  register mojit's package.json as a static asset, in "static handler" plugin
+            }
+
+            definitionJson = this.config.readConfigYCB(libpath.join(dir, 'definition.json'), {});
+            if (definitionJson.appLevel) {
+                mojitType = 'shared';
+            }
+
+            // the mojit itself is registered as an app-level resource
+            res = {
+                source: {
+                    fs: {
+                        fullPath: dir,
+                        rootDir: dir,
+                        rootType: dirType,
+                        subDir: '.',
+                        subDirArray: ['.'],
+                        basename: libpath.basename(dir),
+                        isFile: false,
+                        ext: null
+                    },
+                    pkg: pkg
+                },
+                mojit: null,
+                type: 'mojit',
+                subtype: null,
+                name: mojitType,
+                id: 'mojit--' + mojitType,
+                affinity: 'common',
+                selector: '*'
+            };
+            this.addResourceVersion(res);
+
+            ress = this._findResourcesByConvention(dir, 'mojit', pkg, mojitType);
+            for (r = 0; r < ress.length; r += 1) {
+                res = ress[r];
+                // just in case, only add those resources that really do belong to us
+                if (res.mojit === mojitType) {
+                    this.addResourceVersion(res);
+                }
+                // FUTURE:  else warn?
+            }
+        },
+
+
         /**
          * Resolves versions for a list of resources.
          * The priority is based on passed-in configuration.  See 
@@ -1153,7 +1272,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                     if (!affinities.hasOwnProperty(res.affinity)) {
                         continue;
                     }
-                    // TODO:  conditionally skip optional affinities
+                    // TODO:  conditionally skip "-optional" affinities
                     priority = (s * sourceBase) +
                         selectors[res.selector] + affinities[res.affinity];
                     //console.log('--DEBUG-- pri=' + priority + ' --'
@@ -1292,8 +1411,8 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
 
 
         /**
-         * Finds resources based on our conventions
-         * -doesn't- load mojits or their contents.  That's done elsewhere.
+         * Finds resources based on our conventions.
+         * -Doesn't- load mojits or their contents.  That's done elsewhere.
          *
          * @private
          * @method _findResourcesByConvention
@@ -1476,78 +1595,6 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             });
             Y.use.apply(Y, Object.keys(modules));
             Y.applyConfig({ useSync: false });
-        },
-
-
-        /**
-         * Recursively merge one object onto another.
-         * From http://stackoverflow.com/questions/171251/
-         * how-can-i-merge-properties-of-two-javascript-objects-dynamically/
-         * 383245#383245.
-         *
-         * @method mergeRecursive
-         * @param dest {object} object to merge into
-         * @param src {object} object to merge onto "dest"
-         * @param matchType {boolean} controls whether a non-object in the src is
-         *          allowed to clobber a non-object in the dest (if a different type)
-         * @return {object} the modified "dest" object is also returned directly
-         */
-        mergeRecursive: function(dest, src, typeMatch) {
-            var p;
-            for (p in src) {
-                if (src.hasOwnProperty(p)) {
-                    // Property in destination object set; update its value.
-                    if (src[p] && src[p].constructor === Object) {
-                        if (!dest[p]) {
-                            dest[p] = {};
-                        }
-                        dest[p] = this.mergeRecursive(dest[p], src[p]);
-                    } else {
-                        if (dest[p] && typeMatch) {
-                            if (typeof dest[p] === typeof src[p]) {
-                                dest[p] = src[p];
-                            }
-                        } else {
-                            dest[p] = src[p];
-                        }
-                    }
-                }
-            }
-            return dest;
-        },
-
-
-        /**
-         * @method cloneObj
-         * @param o {mixed}
-         * @return {mixed} deep copy of argument
-         */
-        cloneObj: function(o) {
-            var newO,
-                i;
-
-            if (typeof o !== 'object') {
-                return o;
-            }
-            if (!o) {
-                return o;
-            }
-
-            if ('[object Array]' === Object.prototype.toString.apply(o)) {
-                newO = [];
-                for (i = 0; i < o.length; i += 1) {
-                    newO[i] = this.cloneObj(o[i]);
-                }
-                return newO;
-            }
-
-            newO = {};
-            for (i in o) {
-                if (o.hasOwnProperty(i)) {
-                    newO[i] = this.cloneObj(o[i]);
-                }
-            }
-            return newO;
         }
 
 
