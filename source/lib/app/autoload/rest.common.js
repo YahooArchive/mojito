@@ -36,7 +36,8 @@ YUI.add('mojito-rest-lib', function(Y, NAME) {
             return this._resp.getResponseHeader.apply(this._resp, arguments);
         },
         getHeaders: function() {
-            return this._resp.getAllResponseHeaders();
+            // caller expects object
+            return Y.clone(this._resp.headers, true);
         },
         getBody: function() {
             return this._resp.responseText;
