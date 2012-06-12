@@ -4,146 +4,224 @@ Resource Store
 
 
 
-.. Questions:
+.. General Questions:
 
-.. Need definition for the resource store
+.. 1. Need formal definition for the resource store and resource.
 
-.. benefits?
+.. 2. What are the benefits of using the resource store?
 
-.. What is the location for the metadata? Is it a JSON config file like application.json
+.. 3. Should the title of this chapter be about what users can do with resource store? I'm not sure if developers
+.. will even read this chapter because they won't necessarily know what the resource store is.
 
-.. metadata object: required, data types, defaults, examples
+.. 4. Does AOP stand for aspect-oriented programming, attribute oriented programming, or something else?
 
-.. resource addon examples
 
-.. Notes:
-
-.. the new RS is uses the YUI Plugin mechanism to mix in the RS addons.  
-.. http://yuilibrary.com/yui/docs/plugin/
-.. redirect users to the yui docs on that topic
-.. AOP: aspect-oriented programming or attribute oriented programming or something else?
-.. allow the resource store to have addons
-.. move most (all?) of the current resource store functionality into addons that ship with mojito
-.. Examples of how to use the resource store
-
+.. _resource_store_intro:
 
 Intro
 =====
 
 The resource store is the Mojito framework code that managers and keeps track of the resources in your Mojito applications.
-The resource store uses addons to do much of the work, which you can read about in `Resource Store Addons <>`_.
+The resource store uses addons to do much of the work, which you can read about in `Built-In Resource Store Addons <resource_store-builtin_addons>`_.
 The code for the resource store is a `YUI Base <http://yuilibrary.com/yui/docs/base/>`_, which enables plugins to be implemented as `YUI Plugin modules <http://yuilibrary.com/yui/docs/plugin/>`_.
-Being a YUI Base, the resource store also provides an event subsystem and a simple AOP substystem (methods ``beforeHostMethod`` and ``afterHostMethod``).
+Being a YUI Base, the resource store also provides an event subsystem and a simple AOP subsystem (methods ``beforeHostMethod`` and ``afterHostMethod``).
 
 
+.. _intro-what:
 
 What is a Mojito Resource?
 --------------------------
 
 At the application level, resources include archetypes, commands, configuration files, and middleware. At the mojit level,
 resources include controllers, models, binders, configuration files, and views. Developers can also create their own types of
-resources.
+resources. See `Types of Resources <metadata_obj-types_resources>`_ for descriptions of the resource types.
 
 
-What Does the Resource Store Do?
---------------------------------
+.. _intro-do:
 
-#. Load the resources from disk and resolving versions if any exist.
-#. Precalculate the YUI module dependencies of the resources.
-#. Expanding the specs (??) into full instances.
-#. Load and parse context configuration files.
-#. Load the routes files.
-#. Calculate static handler URLs.
-#. Calculate rollups and inline CSS.
+How Does the Resource Store Work?
+----------------------------------
 
-.. Don't think the following section is needed, but am leaving in doc for personal reference right now.
+.. Questions:
 
-General Process of Resource Store
----------------------------------
+.. 1. What does 'host for addons' mean? (It's mentioned in the 'core' section of the twiki.)
 
 Understanding the workflow of the resource store will give help those who want to customize addons to write code and
-help others who don't plan on customizing addons to debug.
+help others who don't plan on customizing addons to debug. 
 
-- walk resource versions, gathering mojit-specific resources into mojits
-- precalculates ("resolves") which resource versions are used for each version of the mojit
-- also keeps track of app-level resources (archetypes, commands, config files, and middleware).
-- these are not versioned (no resolution needed)
-- these are not otherwise grouped together
-- provides methods for events, including those specialized for AOP
-- host for addons
-- explicitly uses these addons: selector, config
-- is a YUI Base, in part to enable plugins to be implemented as YUI Plugin modules
-   - also provides event subsystem
-   - also provides simple AOP subsystem (beforeHostMethod() and afterHostMethod())
+In short, the resource store walks through the application-level, 
+mojit-level, and npm module files (in that order) of a Mojito application, determines what type of resource each file is, 
+creates an instance of the resource, and then registers the instance.
+
+During this process, the resource store is also doing the following:
+
+- precalculating ("resolving") which resource versions are used for each version of the mojit.
+- keeping track of app-level resources (archetypes, commands, config files, and middleware).
+- providing methods for events, including those specialized for AOP.
+- explicitly using the addons `selector <intro-selector>`_ and `config <intro-config>`_
+
+
+To see the code for the resource store, see `store.server.js <https://github.com/yahoo/mojito/blob/develop/source/lib/store.server.js>`_ in
+the `Mojito GitHub repository <https://github.com/yahoo/mojito/>`_.
+
+
+.. _intro-use:
 
 How Can Developers Use the Resource Store?
 ------------------------------------------
 
+.. Questions:
+
+.. 1. Do we have any concrete or hypothesized examples of using AOP (still need to know what this is) on the resource store, creating resource
+.. types, or mapping contexts to selectors? 
+.. 2. Are there any other benefits for developers?
+
 Developers can write addons for the resource store to have finer grain control over the management of resources
-or extend the functionality of the resource store. The resource store has 
-
-Allow developers to write resource store addons to do interesting things with resources
-
-
-specifically, allow the application authors to write resource store addons to accomplish interesting things with resources
-
-provide a mechanism so that addons can use AOP on the resource store (including addons)
-provide a mechanism for other kinds of future-enabling extension points
-allow custom (app-author provided) context-to-selector mapping
-allow custom (app-author provided) resource types
+or extend the functionality of the resource store. As a developer, you can write custom addons to use AOP
+on the resource store, create resource types, and map contexts to selectors.
 
 
-To see the code for the resource store, see the `store.server.js <https://github.com/yahoo/mojito/blob/develop/source/lib/store.server.js>`_.
+.. _resource_store-metadata:
 
 Resource Metadata
 =================
 
+
+
+.. Questions:
+
+.. _metadata-location:
+
 Location
 --------
 
+.. What is the location for the metadata? Is it a JSON config file like application.json? If so, what is the file name?
+
+.. _metadata-obj:
 
 Metadata Object
 ---------------
 
-.. need better descriptions
-.. default values
-.. required
-.. the table below is a rough approximation
+.. Questions:
 
-+------------------------+---------------+-----------+---------------+-------------------------------------------+
-| Property               | Data Type     | Required? | Default Value | Description                               |
-+========================+===============+===========+===============+===========================================+
-| ``affinity``           | string        | --        | --            | "server", "client", or "common"           | 
-+------------------------+---------------+-----------+---------------+-------------------------------------------+
-| ``fs``                 | string        | --        | none          | filesystem details                        |
-+------------------------+---------------+-----------+---------------+-------------------------------------------+
-| ``id``                 | string        | yes       | none          | unique ID.  common to all versions of the |
-|                        |               |           |               | resource. (typically                      |
-|                        |               |           |               | {type}-{subtype}-{name})                  | 
-+------------------------+---------------+-----------+---------------+-------------------------------------------+
-| `` mojit``             | string        | --        | none          | which mojit this applies to, if any       | 
-|                        |               |           |               | ("shared" means the resource is available |
-|                        |               |           |               | to all mojits)                            | 
-+------------------------+---------------+-----------+---------------+-------------------------------------------+
-| ``name``               | string        | yes       | none          | // name.  common to all versions of the   |
-|                        |               |           |               | resource                                  | 
-+------------------------+---------------+-----------+---------------+-------------------------------------------+
-| `` pkg``               | string        | --        | none          | // packaging details                      | 
-+------------------------+---------------+-----------+---------------+-------------------------------------------+
-| `` source``            | string        | no        |               | When ``true``, the ``manifest``           |
-|                        |               |           |               | attribute is added to ``<html>``.         |
-+------------------------+---------------+-----------+---------------+-------------------------------------------+
-| ``staticHandlerURL``   | string        | yes       | none          | // path used to load the resource         | 
-|                        |               |           |               | onto the client                           |
-+------------------------+---------------+-----------+---------------+-------------------------------------------+
-| ``subtype``            | string        | no        | none          | // not all types have a subtype           | 
-+------------------------+---------------+-----------+---------------+-------------------------------------------+
-| ``type``               | string        | yes       | none          |                                           | 
-+------------------------+---------------+-----------+---------------+-------------------------------------------+
-| ``yui``                | string        | yes       | none          | // for resources that are YUI modules     | 
-+------------------------+---------------+-----------+---------------+-------------------------------------------+
+.. 0. Is the data type string for all of the properties?
+
+.. 1. Please review and improve descriptions. The twiki and source code didn't offer much info for some.
+
+.. 2. It would be nice to list default values, but if most properties don't have default values, then I could remove this column.
+
+.. 3. Need to know what properties are required.
+
+.. 4. The list of properties was taken from the twiki and the source code. I have added both sets of properties to the table,
+.. by I imagine some do not belong.
+
+.. 5. For ``configType``, what does it mean to specify a type of configuration? Do I need a section listing the types of configs w/ descriptions,
+.. like the "Types of Resources" section below?
+
+.. 6. Need a description for ``subtype`` and examples.
+
+.. 7. What are the Mojito subsystems that addons can be added to? 
+
+.. 8. Do we have a better description for ``name``? Any syntax convention, default values, or possible values?
+
+.. 9. How do you specify metadata such as the dependencies (``require``) and languages with ``yuiModuleMeta``?
 
 
+
+
++------------------------+---------------+-----------+---------------+---------------------------+---------------------------------------------+
+| Property               | Data Type     | Required? | Default Value | Possible Values           | Description                                 |
++========================+===============+===========+===============+===========================+=============================================+
+| ``addonType``          | string        | --        | --            |                           | Specifies the mojito subsystem to which the |
+|                        |               |           |               |                           | addon should be added and is required if    |
+|                        |               |           |               |                           | type if ``type=addon``.                     |
++------------------------+---------------+-----------+---------------+---------------------------+---------------------------------------------+
+| ``affinity``           | string        | --        | --            | ``server``, ``client``,   |                                             |
+|                        |               |           |               | ``common``                |                                             |
++------------------------+---------------+-----------+---------------+---------------------------+---------------------------------------------+
+| ``assetType``          | string        | --        | --            | ``css``, ``js``, ``png``, | Specifies the type of asset and is required |
+|                        |               |           |               | ``png``, ``swf``          | if ``type=asset``.                          |
++------------------------+---------------+-----------+---------------+---------------------------+---------------------------------------------+
+| ``configType``         | string        | --        | --            |                           | Specifies the type of configuration and is  |
+|                        |               |           |               |                           | required if ``type=config``.                | 
++------------------------+---------------+-----------+---------------+---------------------------+---------------------------------------------+
+| ``fsPath``             | string        | --        | none          |                           | The path on the filesystem to the resource. |                      
++------------------------+---------------+-----------+---------------+---------------------------+---------------------------------------------+
+| ``id``                 | string        | yes       | none          |                           | A unique ID that is common to all versions  | 
+|                        |               |           |               |                           | of the  resource. The ``id`` has the        |
+|                        |               |           |               |                           | following syntax convention:                |
+|                        |               |           |               |                           | ``{type}-{subtype}-{name}``                 | 
++------------------------+---------------+-----------+---------------+---------------------------+---------------------------------------------+
+| `` mojit``             | string        | --        | none          |                           | which mojit this applies to, if any         | 
+|                        |               |           |               |                           | ("shared" means the resource is available   |
+|                        |               |           |               |                           | to all mojits)                              | 
++------------------------+---------------+-----------+---------------+---------------------------+---------------------------------------------+
+| ``name``               | string        | yes       | none          |                           | // name.  common to all versions of the     |
+|                        |               |           |               |                           | resource                                    | 
++------------------------+---------------+-----------+---------------+---------------------------+---------------------------------------------+
+| `` pkg``               | string        | --        | none          |                           | // packaging details                        | 
++------------------------+---------------+-----------+---------------+---------------------------+---------------------------------------------+
+| `` source``            | string        | no        |               |                           | where the resource came from                |
+|                        |               |           |               |                           | (not shipped to client)                     |
++------------------------+---------------+-----------+---------------+---------------------------+---------------------------------------------+
+| ``staticHandlerURL``   | string        | no        | none          |                           | The path used to load the resource          | 
+|                        |               |           |               |                           | onto the client. Used only for resources    |
+|                        |               |           |               |                           | that can be deployed by reference to the    |
+|                        |               |           |               |                           | client.                                     |
++------------------------+---------------+-----------+---------------+---------------------------+---------------------------------------------+
+| ``subtype``            | string        | no        | none          |                           | // not all types have a subtype             | 
++------------------------+---------------+-----------+---------------+---------------------------+---------------------------------------------+
+| ``type``               | string        | yes       | none          | ``type=binder``           |                                             | 
++------------------------+---------------+-----------+---------------+---------------------------+---------------------------------------------+
+| ``viewEngine``         | string        | no        | none          | ``mu``, ``dust``          | Specifies the view engine being used        |
+|                        |               |           |               |                           | and is only used if ``type=view``.          | 
++------------------------+---------------+-----------+---------------+---------------------------+---------------------------------------------+
+| ``viewOutputFormat``   | string        | no        | none          | ``xml``, ``html``         | Specifies the view engine being used        |
+|                        |               |           |               |                           | and is only used if ``type=view``.          | 
++------------------------+---------------+-----------+---------------+---------------------------+---------------------------------------------+
+| ``yui``                | string        | no        | none          |                           | // for resources that are YUI modules       | 
++------------------------+---------------+-----------+---------------+---------------------------+---------------------------------------------+
+| ``yuiModuleMeta``      | string        | no        | none          |                           | Specifies the metadata, such dependencies,  |
+|                        |               |           |               |                           | languages, etc., for a YUI 3 module.        |
++------------------------+---------------+-----------+---------------+---------------------------+---------------------------------------------+
+| ``yuiModuleName``      | string        | no        | none          |                           | The name of any resource delivered as a     |
+|                        |               |           |               |                           | YUI 3 module. The ``type`` must be          |
+|                        |               |           |               |                           | ``yui-module``.                             |
++------------------------+---------------+-----------+---------------+---------------------------+---------------------------------------------+
+| ``yuiModuleVersion``   | string        | no        | none          |                           | The version of any resource delivered as a  |
+|                        |               |           |               |                           | YUI 3 module. The ``type`` must be          |
+|                        |               |           |               |                           | ``yui-module``.                             |
++------------------------+---------------+-----------+---------------+---------------------------+---------------------------------------------+
+| ``yuiSortedPaths``     | string        | no        | none          |                           | For any resource delivered as a YUI3 module,|
+|                        |               |           |               |                           | this is the list of YUI modules required by |
+|                        |               |           |               |                           | the module    with transitive dependencies  | 
+|                        |               |           |               |                           | resolved. The ``type`` must be              | 
+|                        |               |           |               |                           | ``yui-module``. 
++------------------------+---------------+-----------+---------------+---------------------------+---------------------------------------------+
+
+
+.. _metadata_obj-types_resources:
+
+Types of Resources
+``````````````````
+
+The ``type`` property of the metadata object can have any of the following values:
+
+- ``config``      - a piece of configuration, sometimes for another resource
+- ``controller``  - the controller for a mojit
+- ``model``       - a model for a mojit
+- ``view``        - a view for a mojit
+- ``binder``      - a binder for a mojit
+- ``action``      - an action to augment the controller
+- ``asset``       - an asset (css, js, image, etc.)
+- ``addon``       - an addon to the mojito system
+- ``spec``        - the configuration for a mojit instance
+- ``yui-lang``    - a YUI3 language bundle
+- ``yui-module``  - a YUI3 module (that isn't one of the above)
+
+
+
+.. _metadata-ex:
 
 Example
 -------
@@ -171,9 +249,13 @@ Example
      selector:
    }
 
+.. _resource_store-builtin_addons:
 
 Built-In Resource Store Addons
-==========================
+==============================
+
+
+.. _builtin_addons-intro:
 
 Intro
 -----
@@ -184,51 +266,109 @@ the Mojito framework, so particular care must be taken when creating custom vers
 This chapter takes a look at the built-in resource store addons, so you can better understand their use or 
 customize your own versions. 
 
+.. _intro-selector:
 
 selector
 ````````
 
-implements context-to-selector mapping
-place where user implements their custom implementation
-mojito ships with a default implementation, which the user can override
-
-returns a priority-orders list of selectors (aka POSL)
+.. _selector-desc:
 
 Description
 ~~~~~~~~~~~
 
+The ``selector`` addon maps contexts to selectors and then returns
+a priority-ordered list (POSL) of selectors. Developers can implement their custom implementation
+to override the built-in ``selector`` addon.
+
+.. _selector-reqs:
+
 Requirements
 ~~~~~~~~~~~~
-since this is used directly by the core, all implementations need to provide the following method:
+
+Because this is used directly by the the resource store, all implementations need to provide the following method:
+
+``getListFromContext(ctx)``
+
+
 getListFromContext(ctx)
+~~~~~~~~~~~~~~~~~~~~~~~
+
+.. Question: need description, spec, and example of ``ctx`` and return value.
+
+**Parameters:** 
+
+- ``ctx`` 
+
+**Return:** 
+
+.. _selector-ex:
 
 Example
 ~~~~~~~
 
+.. _intro-config:
+
 config
 ``````
+
+.. _config-desc:
 
 Description
 ~~~~~~~~~~~
 
-provides access to the contents of the configuration files
-defines new mojit-specific resource type: config (for the mojit's definition.json and defaults.json)
-defines new app-level resource type: config (for application.json, routes.json, dimensions.json, etc)
-mojito ships with a default implementation. it's not expected that users will write their own
+The ``config`` addon provides access to the contents of the configuration files and
+defines new mojit-level ``config`` resource types (for the mojit's ``definition.json`` and ``defaults.json``)
+and new app-level ``config`` resource types (for ``application.json``, ``routes.json``, ``dimensions.json``, etc.).
+Although developers can override the built-in ``config`` addon, it is not recommended.
 
-default implementation:
-preloadFile() registers config files as type:config resources
-listens for an event signifying the end of preload()
-preloads the contents of the json files
+.. Haven't decided whether to include this info:
+.. default implementation:
+.. preloadFile() registers config files as type:config resources
+.. listens for an event signifying the end of preload()
+.. preloads the contents of the json files
+
+.. _config-reqs:
 
 Requirements
 ~~~~~~~~~~~~
 
-since this is used directly by the core, all implementations need to provide the following methods:
-readYCBDimensions(cb)
-returns all the defined YCB dimensions
+Because this is used directly by the resource store, all implementations need to provide the following methods:
+
+- ``readYCBDimensions(cb)``
+- ``readResource(ctx, res, cb)``
+
 readResource(ctx, res, cb)
-reads the config file pointed to by the resource
+
+
+.. _config-ex:
+
+readYCBDimensions(cb)
+~~~~~~~~~~~~~~~~~~~~~
+
+.. Question: need description, spec, and example of ``cb`` and return value.
+
+Returns all the defined dimensions.
+
+**Parameters**
+
+- ``cb`` 
+
+**Return:** 
+
+readResource(ctx, res, cb)
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. Question: need description, spec, and example of ``ctx``, ``res``, ``cb`` and return value.
+
+Reads the config file pointed to by the resource.
+
+**Parameters**
+
+- ``ctx``
+- ``res``
+- ``cb``
+
+**Return:** 
 
 Example
 ~~~~~~~
@@ -420,35 +560,51 @@ Example
 
 
 
-
+.. _intro-instance:
 
 instance
 ````````
 
+.. _instance-desc:
+
 Description
 ~~~~~~~~~~~
 
-provides access to mojit details
-expands specs into full instances
-defines new app-level resource type: spec (found in mojits/*/specs/*.json)
-not used by resource store core, but critical to the mojito kernel
+The ``instance`` addon provides access to mojit details, expands specs into full instances, and
+defines new app-level ``spec`` resource types (found in ``mojits/*/specs/*.json``)
+The ``instance`` addon is not used by the resource store, but is critical to the Mojito framework.
+
+.. _instance-reqs:
 
 Requirements
 ~~~~~~~~~~~~
 
+Because this addon is critical to the Mojito framework, all implementations need to provide the following methods:
+
+- ``getMojitDetails(ctx, mojitType, cb)``
+- ``expandSpec(ctx, spec, cb)``
+
 mojito ships with a default implementation. it's not expected that users will write their own
-getMojitDetails(ctx, mojitType, cb)
+
 returns a single structure that contains all details needed by the mojito kernel
 this is made by aggregating information from all the resources in the mojit
-expandSpec(ctx, spec, cb)
+
 takes the spec and expands it into the full mojit instance data needed by the mojito kernel
+
+
+
+
+.. _instance-ex:
 
 Example
 ~~~~~~~
 
+.. _intro-routes:
 
 routes
 ``````
+
+.. _routes-desc:
 
 Description
 ~~~~~~~~~~~
@@ -458,9 +614,12 @@ not used by resource store core, but critical to the server-side mojito
 mojito ships with a default implementation. it's not expected that users will write their own
 provides a sugar method for reading all routes files, returning a single merged result
 
+.. _routes-reqs:
 
 Requirements
 ~~~~~~~~~~~~
+
+.. _routes-ex:
 
 Example
 ~~~~~~~
@@ -534,14 +693,19 @@ YUI.add('addon-rs-routes', function(Y, NAME) {
 }, '0.0.1', { requires: ['plugin', 'oop']});
 
 
+.. _intro-staticHandler:
+
 staticHandler
 `````````````
+
+.. _staticHandler-desc:
 
 Description
 ~~~~~~~~~~~
 calculates/manages the static handler URLs for resources
 not used by resource store core, but used by the static handler middleware
 
+.. _staticHandler-reqs:
 
 Requirements
 ~~~~~~~~~~~~
@@ -551,12 +715,17 @@ for affinity:client resources, sets staticHandlerURL to the static handler URL f
 the URL might be a rollup URL
 provides a method for the static handler middleware to find the filesystem path for a URL
 
+.. _staticHandler-ex:
+
 Example
 ~~~~~~~
 
+.. _intro-yui:
 
 yui
 ```
+
+.. _yui-desc:
 
 Description
 ~~~~~~~~~~~
@@ -566,6 +735,8 @@ defines new mojit-specific resource type: yui-module (found in autoload/ or yui_
 defines new mojit-specific resource type: yui-lang (found in lang/)
 precalculates YUI dependencies for mojit controllers and binders
 mojito ships with a default implementation. it's not expected that users will write their own
+
+.. _yui-reqs:
 
 Requirements
 ~~~~~~~~~~~~
@@ -577,6 +748,8 @@ if it's a resource implemented as a YUI module, gathers the YUI module metadata 
 after resolveMojit()
 calculates the YUI module dependencies for the controller
 calculates the YUI module dependencies for each binder
+
+.. _yui-ex:
 
 Example
 ~~~~~~~
@@ -754,21 +927,22 @@ Example
    }, '0.0.1', { requires: ['plugin', 'oop']});
 
 
-Creating Custom Addons
-----------------------
+
+Creating Custom Resource Store Addons
+=====================================
 
 General Process
-```````````````
+---------------
 
 Requirements
-````````````
+------------
 
 Example
-```````
+-------
 
 
 shaker
-~~~~~~
+``````
 
 not part of mojito, given here as an example
 
