@@ -3,7 +3,6 @@ Resource Store
 ==============
 
 
-
 .. General Questions:
 
 .. 1. Need formal definition for the resource store and resource.
@@ -89,6 +88,8 @@ Resource Metadata
 
 
 .. Questions:
+
+.. 1. 
 
 .. _metadata-location:
 
@@ -254,6 +255,7 @@ Example
 Built-In Resource Store Addons
 ==============================
 
+.. Note: Replace code examples with links to Mojito source once the resource store addons have been merged into master.
 
 .. _builtin_addons-intro:
 
@@ -313,6 +315,16 @@ config
 
 .. _config-desc:
 
+
+
+.. Haven't decided whether to include this info:
+.. default implementation:
+.. preloadFile() registers config files as type:config resources
+.. listens for an event signifying the end of preload()
+.. preloads the contents of the json files
+
+
+
 Description
 ~~~~~~~~~~~
 
@@ -321,11 +333,6 @@ defines new mojit-level ``config`` resource types (for the mojit's ``definition.
 and new app-level ``config`` resource types (for ``application.json``, ``routes.json``, ``dimensions.json``, etc.).
 Although developers can override the built-in ``config`` addon, it is not recommended.
 
-.. Haven't decided whether to include this info:
-.. default implementation:
-.. preloadFile() registers config files as type:config resources
-.. listens for an event signifying the end of preload()
-.. preloads the contents of the json files
 
 .. _config-reqs:
 
@@ -336,8 +343,6 @@ Because this is used directly by the resource store, all implementations need to
 
 - ``readYCBDimensions(cb)``
 - ``readResource(ctx, res, cb)``
-
-readResource(ctx, res, cb)
 
 
 .. _config-ex:
@@ -599,20 +604,32 @@ takes the spec and expands it into the full mojit instance data needed by the mo
 Example
 ~~~~~~~
 
+.. Need example
+
 .. _intro-routes:
 
 routes
 ``````
+.. Questions:
+
+.. 1. Is the sugar method ``getRoutes`` in ``store.server.js``?
+
+.. 2. To write a custom ``routes`` addon, are developers required to override ``getRoutes`` with their own version of the function?
+
+
 
 .. _routes-desc:
 
 Description
 ~~~~~~~~~~~
 
-provides access to the routes
-not used by resource store core, but critical to the server-side mojito
-mojito ships with a default implementation. it's not expected that users will write their own
-provides a sugar method for reading all routes files, returning a single merged result
+The ``routes`` addon provides access to the routes. Athough the addon is
+not used by resource store core, it is critical to the server-side Mojito
+mojito ships with a default implementation. The resource store has a method
+for returning all of the route files in a single merged result. Although
+you can create a custom ``routes`` addon, we recommend using the built-in ``routes``
+addon.
+
 
 .. _routes-reqs:
 
@@ -702,8 +719,9 @@ staticHandler
 
 Description
 ~~~~~~~~~~~
-calculates/manages the static handler URLs for resources
-not used by resource store core, but used by the static handler middleware
+
+The ``stackHandler`` addon calculates and manages the static handler URLs for resources.
+The addon is not used by resource store core, but used by the static handler middleware.
 
 .. _staticHandler-reqs:
 
@@ -930,6 +948,9 @@ Example
 
 Creating Custom Resource Store Addons
 =====================================
+
+Intro
+-----
 
 General Process
 ---------------
