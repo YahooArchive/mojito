@@ -550,6 +550,9 @@ YUI.add('mojito-client', function(Y, NAME) {
 
                 // Make sure viewIds's are not bound to more than once
                 if (me._mojits[viewId]) {
+                    Y.log('Not rebinding binder for ' + binderData.type +
+                          ' for DOM node ' + viewId, 'info', NAME);
+                    onBinderComplete();
                     return;
                 }
 
@@ -585,6 +588,16 @@ YUI.add('mojito-client', function(Y, NAME) {
                     // the page we have to "use()" any binder name we are given
                     // to have access to it.
                     Y.use(binderData.name, function(BY) {
+
+                        // Check again to make sure viewIds's are not bound
+                        // more than once, just in case they were bound during
+                        // the async fetch for the binder
+                        if (me._mojits[viewId]) {
+                            Y.log('Not rebinding binder for ' + binderData.type +
+                                  ' for DOM node ' + viewId, 'info', NAME);
+                            onBinderComplete();
+                            return;
+                        }
 
                         config = Y.mojito.util.copy(binderData.config);
 
