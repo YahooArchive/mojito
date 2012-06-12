@@ -51,7 +51,7 @@ YUI.add('addon-rs-selector', function(Y, NAME) {
             parts = this._appConfigYCB.readNoMerge(ctx, {});
             for (p = 0; p < parts.length; p += 1) {
                 part = parts[p];
-                if (part.selector) {
+                if (part.selector && this.rs.selectors[part.selector]) {
                     sels.unshift(part.selector);
                 }
             }

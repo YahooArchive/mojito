@@ -143,6 +143,10 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             this._appResources = {};    // env: posl: array of resources
             this._mojitResources = {};  // env: posl: mojitType: array of resources
 
+            // all selectors that are actually in the app
+            // hash: key is selector, value is just boolean true
+            this.selectors = {};
+
             // Y.Plugin AOP doesn't allow afterHostMethod() callbacks to
             // modify the results, so we fire an event instead.
             this.publish('getMojitTypeDetails', {emitFacade: true, preventable: false});
@@ -1096,6 +1100,9 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
          * @return {nothing}
          */
         addResourceVersion: function(res) {
+            if (res.selector) {
+                this.selectors[res.selector] = true;
+            }
             res.affinity = new Affinity(res.affinity);
             if (res.mojit) {
                 if (!this._mojitRVs[res.mojit]) {
