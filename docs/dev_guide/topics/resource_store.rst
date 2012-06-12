@@ -73,6 +73,7 @@ How Can Developers Use the Resource Store?
 
 .. 1. Do we have any concrete or hypothesized examples of using AOP (still need to know what this is) on the resource store, creating resource
 .. types, or mapping contexts to selectors? 
+
 .. 2. Are there any other benefits for developers?
 
 Developers can write addons for the resource store to have finer grain control over the management of resources
@@ -85,11 +86,17 @@ on the resource store, create resource types, and map contexts to selectors.
 Resource Metadata
 =================
 
+.. _metadata-intro:
 
+Intro
+-----
 
 .. Questions:
 
 .. 1. 
+
+The resource store uses metadata to find, load, parse, and create instances of resources. 
+
 
 .. _metadata-location:
 
@@ -116,92 +123,110 @@ Metadata Object
 .. 4. The list of properties was taken from the twiki and the source code. I have added both sets of properties to the table,
 .. by I imagine some do not belong.
 
-.. 5. For ``configType``, what does it mean to specify a type of configuration? Do I need a section listing the types of configs w/ descriptions,
-.. like the "Types of Resources" section below?
+.. 5. Need a description for ``subtype`` and examples.
 
-.. 6. Need a description for ``subtype`` and examples.
+.. 6. What are the Mojito subsystems that addons can be added to? 
 
-.. 7. What are the Mojito subsystems that addons can be added to? 
+.. 7. Do we have a better description for ``name``? Any syntax convention, default values, or possible values?
 
-.. 8. Do we have a better description for ``name``? Any syntax convention, default values, or possible values?
+.. 8. What "filesystem details" are given for ``fs``?
 
-.. 9. How do you specify metadata such as the dependencies (``require``) and languages with ``yuiModuleMeta``?
-
+.. 9. What "package details" are given for ``pkg``?
 
 
 
-+------------------------+---------------+-----------+---------------+---------------------------+---------------------------------------------+
-| Property               | Data Type     | Required? | Default Value | Possible Values           | Description                                 |
-+========================+===============+===========+===============+===========================+=============================================+
-| ``addonType``          | string        | --        | --            |                           | Specifies the mojito subsystem to which the |
-|                        |               |           |               |                           | addon should be added and is required if    |
-|                        |               |           |               |                           | type if ``type=addon``.                     |
-+------------------------+---------------+-----------+---------------+---------------------------+---------------------------------------------+
-| ``affinity``           | string        | --        | --            | ``server``, ``client``,   |                                             |
-|                        |               |           |               | ``common``                |                                             |
-+------------------------+---------------+-----------+---------------+---------------------------+---------------------------------------------+
-| ``assetType``          | string        | --        | --            | ``css``, ``js``, ``png``, | Specifies the type of asset and is required |
-|                        |               |           |               | ``png``, ``swf``          | if ``type=asset``.                          |
-+------------------------+---------------+-----------+---------------+---------------------------+---------------------------------------------+
-| ``configType``         | string        | --        | --            |                           | Specifies the type of configuration and is  |
-|                        |               |           |               |                           | required if ``type=config``.                | 
-+------------------------+---------------+-----------+---------------+---------------------------+---------------------------------------------+
-| ``fsPath``             | string        | --        | none          |                           | The path on the filesystem to the resource. |                      
-+------------------------+---------------+-----------+---------------+---------------------------+---------------------------------------------+
-| ``id``                 | string        | yes       | none          |                           | A unique ID that is common to all versions  | 
-|                        |               |           |               |                           | of the  resource. The ``id`` has the        |
-|                        |               |           |               |                           | following syntax convention:                |
-|                        |               |           |               |                           | ``{type}-{subtype}-{name}``                 | 
-+------------------------+---------------+-----------+---------------+---------------------------+---------------------------------------------+
-| `` mojit``             | string        | --        | none          |                           | which mojit this applies to, if any         | 
-|                        |               |           |               |                           | ("shared" means the resource is available   |
-|                        |               |           |               |                           | to all mojits)                              | 
-+------------------------+---------------+-----------+---------------+---------------------------+---------------------------------------------+
-| ``name``               | string        | yes       | none          |                           | // name.  common to all versions of the     |
-|                        |               |           |               |                           | resource                                    | 
-+------------------------+---------------+-----------+---------------+---------------------------+---------------------------------------------+
-| `` pkg``               | string        | --        | none          |                           | // packaging details                        | 
-+------------------------+---------------+-----------+---------------+---------------------------+---------------------------------------------+
-| `` source``            | string        | no        |               |                           | where the resource came from                |
-|                        |               |           |               |                           | (not shipped to client)                     |
-+------------------------+---------------+-----------+---------------+---------------------------+---------------------------------------------+
-| ``staticHandlerURL``   | string        | no        | none          |                           | The path used to load the resource          | 
-|                        |               |           |               |                           | onto the client. Used only for resources    |
-|                        |               |           |               |                           | that can be deployed by reference to the    |
-|                        |               |           |               |                           | client.                                     |
-+------------------------+---------------+-----------+---------------+---------------------------+---------------------------------------------+
-| ``subtype``            | string        | no        | none          |                           | // not all types have a subtype             | 
-+------------------------+---------------+-----------+---------------+---------------------------+---------------------------------------------+
-| ``type``               | string        | yes       | none          | ``type=binder``           |                                             | 
-+------------------------+---------------+-----------+---------------+---------------------------+---------------------------------------------+
-| ``viewEngine``         | string        | no        | none          | ``mu``, ``dust``          | Specifies the view engine being used        |
-|                        |               |           |               |                           | and is only used if ``type=view``.          | 
-+------------------------+---------------+-----------+---------------+---------------------------+---------------------------------------------+
-| ``viewOutputFormat``   | string        | no        | none          | ``xml``, ``html``         | Specifies the view engine being used        |
-|                        |               |           |               |                           | and is only used if ``type=view``.          | 
-+------------------------+---------------+-----------+---------------+---------------------------+---------------------------------------------+
-| ``yui``                | string        | no        | none          |                           | // for resources that are YUI modules       | 
-+------------------------+---------------+-----------+---------------+---------------------------+---------------------------------------------+
-| ``yuiModuleMeta``      | string        | no        | none          |                           | Specifies the metadata, such dependencies,  |
-|                        |               |           |               |                           | languages, etc., for a YUI 3 module.        |
-+------------------------+---------------+-----------+---------------+---------------------------+---------------------------------------------+
-| ``yuiModuleName``      | string        | no        | none          |                           | The name of any resource delivered as a     |
-|                        |               |           |               |                           | YUI 3 module. The ``type`` must be          |
-|                        |               |           |               |                           | ``yui-module``.                             |
-+------------------------+---------------+-----------+---------------+---------------------------+---------------------------------------------+
-| ``yuiModuleVersion``   | string        | no        | none          |                           | The version of any resource delivered as a  |
-|                        |               |           |               |                           | YUI 3 module. The ``type`` must be          |
-|                        |               |           |               |                           | ``yui-module``.                             |
-+------------------------+---------------+-----------+---------------+---------------------------+---------------------------------------------+
-| ``yuiSortedPaths``     | string        | no        | none          |                           | For any resource delivered as a YUI3 module,|
-|                        |               |           |               |                           | this is the list of YUI modules required by |
-|                        |               |           |               |                           | the module    with transitive dependencies  | 
-|                        |               |           |               |                           | resolved. The ``type`` must be              | 
-|                        |               |           |               |                           | ``yui-module``. 
-+------------------------+---------------+-----------+---------------+---------------------------+---------------------------------------------+
+
++------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
+| Property               | Data Type     | Required? | Default Value | Possible Values             | Description                                 |
++========================+===============+===========+===============+=============================+=============================================+
+| ``affinity``           | string        | --        | --            | ``server``, ``client``,     | The affinity of the resource, which         |
+|                        |               |           |               | ``common``                  | indicates where the resource will be used.  |
++------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
+| ``fs``                 | string        | yes       | none          | N/A                         |  // filesystem details ==> ??               |
++------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
+| ``id``                 | string        | yes       | none          | N/A                         | A unique ID that is common to all versions  | 
+|                        |               |           |               |                             | of the  resource. The ``id`` has the        |
+|                        |               |           |               |                             | following syntax convention:                |
+|                        |               |           |               |                             | ``{type}-{subtype}-{name}``                 | 
++------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
+| `` mojit``             | string        | no        | none          | ``shared``                  | The mojit, if any, that uses this resource  | 
+|                        |               |           |               |                             | The value ``"shared"`` means the resource   |
+|                        |               |           |               |                             | is available to all mojits.                 | 
++------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
+| ``name``               | string        | yes       | none          |                             | // name.  common to all versions of the     |
+|                        |               |           |               |                             | resource                                    | 
++------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
+| `` pkg``               | string        | --        | none          |                             | // packaging details                        | 
++------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
+| ``selector``           | string        | no        | "*"           |                             | The version of the resource, not to be      |
+|                        |               |           |               |                             | confused revisions that mark the change of  |
+|                        |               |           |               |                             | the resource over time. For example, a      |
+|                        |               |           |               |                             | resource could have a version for iPhones,  |
+|                        |               |           |               |                             | Android devices, fallbacks, etc.            |
++------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
+| `` source``            | string        | no        |               |                             | Specifies where the resource came from      |
+|                        |               |           |               |                             | (not shipped to client).                    |
++------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
+| ``staticHandlerURL``   | string        | no        | none          |                             | The path used to load the resource          | 
+|                        |               |           |               |                             | onto the client. Used only for resources    |
+|                        |               |           |               |                             | that can be deployed by reference to the    |
+|                        |               |           |               |                             | client.                                     |
++------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
+| ``subtype``            | string        | no        | none          | ``action``, ``binder``,     |                                             |
+|                        |               |           |               | ``command``, ``middleware`` |                                             |
+|                        |               |           |               | ``model``, ``view``         |                                             |
++------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
+| ``type``               | string        | yes       | none          | See `Types of Resources <ty |                                             | 
+|                        |               |           |               | pes_resources>`_.           |                                             |
++------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
+| ``yui``                | string        | no        | none          |                             | // for resources that are YUI modules       | 
++------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
+
+.. 
+   
+   Not sure where I got the following properties, but I'm reluctant to remove them until 
+   I have confirmation that they are unnecessary.
+
+   +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
+   | ``addonType``          | string        | --        | --            |                             | Specifies the mojito subsystem to which the |
+   |                        |               |           |               |                             | addon should be added and is required if    |
+   |                        |               |           |               |                             | type if ``type=addon``.                     |
+   +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
+   | ``assetType``          | string        | --        | --            | ``css``, ``js``, ``png``,   | Specifies the type of asset and is required |
+   |                        |               |           |               | ``png``, ``swf``            | if ``type=asset``.                          |
+   +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
+   | ``configType``         | string        | --        | --            |                             | Specifies the type of configuration and is  |
+   |                        |               |           |               |                             | required if ``type=config``.                | 
+   +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
+   | ``fsPath``             | string        | --        | none          |                             | The path on the filesystem to the resource. |     
+   | ``viewEngine``         | string        | no        | none          | ``mu``, ``dust``            | Specifies the view engine being used        |
+   |                        |               |           |               |                             | and is only used if ``type=view``.          | 
+   +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
+   | ``viewOutputFormat``   | string        | no        | none          | ``xml``, ``html``           | Specifies the view engine being used        |
+   |                        |               |           |               |                             | and is only used if ``type=view``.          | 
+   +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
+   | ``yuiModuleMeta``      | string        | no        | none          |                             | Specifies the metadata, such dependencies,  |
+   |                        |               |           |               |                             | languages, etc., for a YUI 3 module.        |
+   +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
+   | ``yuiModuleName``      | string        | no        | none          |                             | The name of any resource delivered as a     |
+   |                        |               |           |               |                             | YUI 3 module. The ``type`` must be          |
+   |                        |               |           |               |                             | ``yui-module``.                             |
+   +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
+   | ``yuiModuleVersion``   | string        | no        | none          |                             | The version of any resource delivered as a  |
+   |                        |               |           |               |                             | YUI 3 module. The ``type`` must be          |
+   |                        |               |           |               |                             | ``yui-module``.                             |
+   +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
+   | ``yuiSortedPaths``     | string        | no        | none          |                             | For any resource delivered as a YUI3 module,|
+   |                        |               |           |               |                             | this is the list of YUI modules required by |
+   |                        |               |           |               |                             | the module    with transitive dependencies  | 
+   |                        |               |           |               |                             | resolved. The ``type`` must be              | 
+   |                        |               |           |               |                             | ``yui-module``.                             |
+   +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
 
 
-.. _metadata_obj-types_resources:
+
+
+.. _types_resources:
 
 Types of Resources
 ``````````````````
@@ -952,26 +977,81 @@ Creating Custom Resource Store Addons
 Intro
 -----
 
+This section is intended only for those developers who need to override the built-in resource store
+addons or create new resource store addons. In general, we recommend that you use the built-in resource
+store addons.
+
 General Process
 ---------------
+
+.. Questions:
+
+.. Do these steps look accurate? (would like a little more detail)
+
+.. 1. Create file with metadata object.
+.. 2. Install Shaker with npm.
+.. 3. Create addon that uses Shaker.
+
 
 Requirements
 ------------
 
+.. Questions:
+
+.. 1. What are the requirements?  (configuration, functions, objects, namespaces, etc.)
+
 Example
 -------
 
-
-shaker
+Intro
 ``````
 
-not part of mojito, given here as an example
+In this example, you will learn how to create a resource store addon for 
+`Shaker <https://github.com/yahoo/mojito-shaker>`_, a static asset rollup manager for Mojito applications.
 
-tweaks the staticHandlerURL to something very sophisticated
-can be on CDN
-can be multi-mojit rollup
-listen for staticHandlerURL resource field change
-updates to sophisticated version
+
+We'll take you through creating the metadata object and the ``shaker`` resource store addon.
+You should be able to create your own resource store addons afterward and figure out how to
+customize (and override) one of the built-in resource store addons.
+
+Creating Metadata Object
+````````````````````````
+.. Questions:
+
+.. 1. Location and name of file containing ``metadata`` object?
+
+.. 2. The table of properties of the ``metadata`` object has to be completed first.
+
+.. 3. 
+
+Installing Shaker
+`````````````````
+
+.. Questions:
+
+.. 1. Should the ``package.json`` file specify ``shaker`` as a dependency? 
+
+.. 2. Is the instruction below correct and sufficient?
+
+
+From the application directory of your application, run the following command to install ``shaker`` into the ``node_modules`` directory:
+
+``$ npm install mojito-shaker``
+
+
+Writing Addon
+`````````````
+.. Questions:
+
+.. 1. Does the app-level resource store addon go in ``{app_dir}/addons/rs/``?
+.. 2. Any file naming context for the resource store addon?
+.. 3. Requirements that users should know for making their own resource store addons?
+.. 4. Need code and high-level explanation of what's going on as well as a brief breakdown of salient points.
+
+The ``shaker`` addon will listen for changes to the ``staticHandlerURL``
+resource field and then update ``staticHandlerURL`` and then update the ``staticHandlerURL`` so that static assets can come from
+a CDN and be part of a multi-mojit rollup. 
+
 
 
 
