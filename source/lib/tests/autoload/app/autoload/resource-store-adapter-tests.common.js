@@ -34,7 +34,7 @@ YUI.add('mojito-resource-store-adapter-tests', function(Y, NAME) {
             resourceStore.preload();
 
             store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
-            var config = store.getAppConfig(null, 'application');
+            var config = store.getAppConfig(null);
             A.isTrue(config.testKey1 === 'testVal1');
         },
 
