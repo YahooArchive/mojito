@@ -32,6 +32,11 @@
         "testKey4": "testVal4-client"
     },
     {
+        "settings": [ "device:iphone" ],
+
+        "selector": "iphone"
+    },
+    {
         "settings": [ "device:android" ],
 
         "selector": "droid"

@@ -132,29 +132,10 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
             var instance = {type:'test_mojit_1'};
             store.expandInstance(instance, {}, function(err, instance) {
                 A.areSame(4, Y.Object.keys(instance.models).length);
-                A.areSame(libpath.join(fixtures, 'models/flickr.common.js'), instance.models['flickr']);
-                A.areSame(libpath.join(fixtures, 'mojits/test_applevel/models/test_applevel.server.js'), instance.models['test_applevel']);
-                A.areSame(libpath.join(fixtures, 'mojits/test_mojit_1/models/test_1.server.js'), instance.models['test_1']);
-                A.areSame(libpath.join(fixtures, 'mojits/test_mojit_1/models/test_2.server.js'), instance.models['test_2']);
-
-                A.areSame(4, Y.Object.keys(instance.modelYUIModuleNames).length);
-                A.isTrue(instance.modelYUIModuleNames['ModelFlickr']);
-                A.isTrue(instance.modelYUIModuleNames['test_applevelModel']);
-                A.isTrue(instance.modelYUIModuleNames['test_mojit_1_model_test_1']);
-                A.isTrue(instance.modelYUIModuleNames['test_mojit_1_model_test_2']);
-            });
-        },
-
-        'server mojit instance actions': function() {
-            var store = new Y.mojito.ResourceStore({ root: fixtures });
-            store.preload();
-
-            var instance = {type:'test_mojit_1'};
-            store.expandInstance(instance, {}, function(err, instance) {
-                var actions = instance.actions.sort();
-                A.areSame(2, actions.length);
-                A.areSame(libpath.join(fixtures, 'mojits/test_mojit_1/actions/test_1.server.js'), actions[0]);
-                A.areSame(libpath.join(fixtures, 'mojits/test_mojit_1/actions/test_2.server.js'), actions[1]);
+                A.isTrue(instance.models['flickr']);
+                A.isTrue(instance.models['test_applevel']);
+                A.isTrue(instance.models['test_1']);
+                A.isTrue(instance.models['test_2']);
             });
         },
 
@@ -429,26 +410,6 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
             });
         },
 
-        'server mojit view index1.mu.html is loaded correctly': function(){
-            var store = new Y.mojito.ResourceStore({ root: fixtures });
-            store.preload();
-
-            var instance = {type:'TestMojit3'};
-            store.expandInstance(instance, {device:'forotheriphone'}, function(err, instance){
-                A.areSame('index1.forotheriphone.mu.html', instance.views.index1['content-path'].split('/').pop());
-            });
-        },
-
-        'server mojit view index1.iphone.mu.html is loaded correctly': function(){
-            var store = new Y.mojito.ResourceStore({ root: fixtures });
-            store.preload();
-
-            var instance = {type:'TestMojit3'};
-            store.expandInstance(instance, {device:'otheriphone'}, function(err, instance){
-                A.areSame('index1.otheriphone.mu.html', instance.views.index1['content-path'].split('/').pop());
-            });
-        },
-
         'app-level mojits': function() {
             var store = new Y.mojito.ResourceStore({ root: fixtures });
             store.preload();
@@ -582,16 +543,30 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
             store.preload();
             store.expandInstance(spec, {}, function(err, instance) {
                 A.isNotUndefined(err);
+                A.areSame('Unknown base of "nonexistant"', err.message);
                 A.isUndefined(instance);
             });
         },
 
         'getAppConfig() returns contextualized info': function() {
-            var store = new Y.mojito.ResourceStore({ root: fixtures }),
-                config,
-                context = { runtime: 'server' };
-            store.preload(context);
-            config = store.getAppConfig(null);
+            var context = { runtime: 'server' },
+                store = new Y.mojito.ResourceStore({ root: fixtures }),
+                config;
+            store.preload();
+            config = store.getAppConfig(context);
+            A.isObject(config);
+            A.areSame('testVal1-server', config.testKey1, 'testKey1 wasnt contextualized to the server');
+            A.areSame('testVal2', config.testKey2, 'testKey2 gotten from the wrong context');
+            A.areSame('portended', config.pathos, 'missing contextualized config');
+            A.isUndefined(config.testKey4, 'testKey4 gotten from the wrong context');
+        },
+
+        'static context is really static': function() {
+            var context = { runtime: 'server' },
+                store = new Y.mojito.ResourceStore({ root: fixtures, context: context }),
+                config;
+            store.preload();
+            config = store.getAppConfig();
             A.isObject(config);
             A.areSame('testVal1-server', config.testKey1, 'testKey1 wasnt contextualized to the server');
             A.areSame('testVal2', config.testKey2, 'testKey2 gotten from the wrong context');
@@ -648,32 +623,6 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
             AA.contains('TestMojit2', list);
             AA.contains('TestMojit3', list);
             AA.contains('soloMojit', list);
-        },
-
-        'call getAllMojits()': function() {
-            var store = new Y.mojito.ResourceStore({ root: fixtures });
-            store.preload();
-            var mojits = store.getAllMojits('server', {});
-            A.areSame(9, Object.keys(mojits).length, 'Found the wrong number of mojits');
-            A.isObject(mojits.DaliProxy);
-            // DaliProxy has no static assets
-            A.isUndefined(mojits.DaliProxy.assetsRoot);
-            A.isObject(mojits.HTMLFrameMojit);
-            // HTMLFrameMojit has no static assets
-            A.isUndefined(mojits.HTMLFrameMojit.assetsRoot);
-            A.isObject(mojits.LazyLoad);
-            A.isObject(mojits.inlinecss);
-            A.areSame('/static/inlinecss/assets', mojits.inlinecss.assetsRoot, "'/static/inlinecss/assets', mojits.inlinecss.assetsRoot");
-            A.isObject(mojits.rollups);
-            A.areSame('/static/rollups/assets', mojits.rollups.assetsRoot, "'/static/rollups/assets', mojits.rollups.assetsRoot");
-            A.isObject(mojits.test_mojit_1);
-            A.areSame('/static/test_mojit_1/assets', mojits.test_mojit_1.assetsRoot, "'/static/test_mojit_1/assets', mojits.test_mojit_1.assetsRoot");
-            A.isObject(mojits.TestMojit2);
-            A.areSame('/static/TestMojit2/assets', mojits.TestMojit2.assetsRoot, "'/static/TestMojit2/assets', mojits.TestMojit2.assetsRoot");
-            A.isObject(mojits.TestMojit3);
-            A.areSame('/static/TestMojit3/assets', mojits.TestMojit3.assetsRoot, "'/static/TestMojit3/assets', mojits.TestMojit3.assetsRoot");
-            A.isObject(mojits.soloMojit);
-            A.areSame('/static/soloMojit/assets', mojits.soloMojit.assetsRoot, "'/static/soloMojit/assets', mojits.soloMojit.assetsRoot");
         },
 
         'stuff with ctx{lang:}, in language fallback': function() {
@@ -843,8 +792,9 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
 
         '_skipBadPath() does just that': function() {
             var store = new Y.mojito.ResourceStore({ root: fixtures });
-            A.areSame(true, store._skipBadPath({ ext: '.js~' }));
-            A.areSame(false, store._skipBadPath({ ext: '.js' }));
+            A.isTrue(store._skipBadPath({ isFile: true, ext: '.js~' }), 'need to skip bad file naems');
+            A.isFalse(store._skipBadPath({ isFile: false, ext: '.js~' }), 'need to not-skip bad directory names');
+            A.isFalse(store._skipBadPath({ isFile: true, ext: '.js' }), 'need to not-skip good file names');
         },
 
         'load node_modules': function() {
@@ -886,8 +836,8 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
                 store = new Y.mojito.ResourceStore({ root: fixtures });
 
             // fake out some parts of preload(), which we're trying to avoid
-            store._fwConfig = store._readConfigJSON(libpath.join(mojitoRoot, 'config.json'));
-            store._appConfigStatic = store._readAppConfigStatic();
+            store._fwConfig = store.config.readConfigJSON(libpath.join(mojitoRoot, 'config.json'));
+            store._appConfigStatic = store.getStaticAppConfig();
 
             var dir = libpath.join(__dirname, '../fixtures/conventions');
             var pkg = { name: 'test', version: '6.6.6' };
@@ -899,7 +849,7 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
                 res = ress[r];
                 A.isNotUndefined(res.id, 'no resource id');
                 switch (res.id) {
-                    case 'action-x':
+                    case 'action--x':
                         A.areSame(pkg, res.pkg);
                         A.areSame('action', res.type);
                         A.areSame('x', res.name);
@@ -919,11 +869,11 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
                                 A.areSame('x', res.pathParts.shortFile);
                                 break;
                             default:
-                                A.fail('unknown resource ' + res.fsPath);
+                                A.fail('unknown resource ' + res.source.fs.fullPath);
                                 break;
                         }
                         break;
-                    case 'action-y/z':
+                    case 'action--y/z':
                         A.areSame(pkg, res.pkg);
                         A.areSame('action', res.type);
                         A.areSame('y/z', res.name);
@@ -955,7 +905,7 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
                                 A.areSame('x', res.pathParts.shortFile);
                                 break;
                             default:
-                                A.fail('unknown resource ' + res.fsPath);
+                                A.fail('unknown resource ' + res.source.fs.fullPath);
                                 break;
                         }
                         break;
@@ -966,7 +916,7 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
                         A.areSame('y', res.name);
                         A.areSame('y', res.shortPath);
                         break;
-                    case 'asset-x.css':
+                    case 'asset--x.css':
                         A.areSame(pkg, res.pkg);
                         A.areSame('asset', res.type);
                         A.areSame('css', res.assetType);
@@ -986,11 +936,11 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
                                 A.areSame('x', res.pathParts.shortFile);
                                 break;
                             default:
-                                A.fail('unknown resource ' + res.fsPath);
+                                A.fail('unknown resource ' + res.source.fs.fullPath);
                                 break;
                         }
                         break;
-                    case 'asset-y/z.css':
+                    case 'asset--y/z.css':
                         A.areSame(pkg, res.pkg);
                         A.areSame('asset', res.type);
                         A.areSame('css', res.assetType);
@@ -1010,11 +960,11 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
                                 A.areSame('z', res.pathParts.shortFile);
                                 break;
                             default:
-                                A.fail('unknown resource ' + res.fsPath);
+                                A.fail('unknown resource ' + res.source.fs.fullPath);
                                 break;
                         }
                         break;
-                    case 'binder-x':
+                    case 'binder--x':
                         A.areSame(pkg, res.pkg);
                         A.areSame('binder', res.type);
                         A.areSame('x', res.name);
@@ -1034,23 +984,23 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
                                 A.areSame('x', res.pathParts.shortFile);
                                 break;
                             default:
-                                A.fail('unknown resource ' + res.fsPath);
+                                A.fail('unknown resource ' + res.source.fs.fullPath);
                                 break;
                         }
                         break;
-                    case 'command-x':
+                    case 'command--x':
                         A.areSame(pkg, res.pkg);
                         A.areSame('command', res.type);
                         A.areSame('x', res.name);
                         A.areSame('x.js', res.shortPath);
                         break;
-                    case 'config-config':
+                    case 'config--config':
                         A.areSame(pkg, res.pkg);
                         A.areSame('config', res.type);
                         A.areSame('config', res.name);
                         A.areSame('config.json', res.shortPath);
                         break;
-                    case 'controller':
+                    case 'controller--controller':
                         A.areSame(pkg, res.pkg);
                         A.areSame('controller', res.type);
                         A.areSame('controller', res.name);
@@ -1070,31 +1020,31 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
                                 A.areSame('controller', res.pathParts.shortFile);
                                 break;
                             default:
-                                A.fail('unknown resource ' + res.fsPath);
+                                A.fail('unknown resource ' + res.source.fs.fullPath);
                                 break;
                         }
                         break;
-                    case 'middleware-x':
+                    case 'middleware--x':
                         A.areSame(pkg, res.pkg);
                         A.areSame('middleware', res.type);
                         A.areSame('x', res.name);
                         A.areSame('x.js', res.shortPath);
                         break;
-                    case 'spec-default':
+                    case 'spec--default':
                         A.areSame(pkg, res.pkg);
                         A.areSame('spec', res.type);
                         A.areSame('default', res.name);
                         A.areSame('testing', res.specName);
                         A.areSame('default.json', res.shortPath);
                         break;
-                    case 'spec-x':
+                    case 'spec--x':
                         A.areSame(pkg, res.pkg);
                         A.areSame('spec', res.type);
                         A.areSame('x', res.name);
                         A.areSame('testing:x', res.specName);
                         A.areSame('x.json', res.shortPath);
                         break;
-                    case 'view-x':
+                    case 'view--x':
                         A.areSame(pkg, res.pkg);
                         A.areSame('view', res.type);
                         A.areSame('x', res.name);
@@ -1115,7 +1065,7 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
                                 A.areSame('x', res.pathParts.shortFile);
                                 break;
                             default:
-                                A.fail('unknown resource ' + res.fsPath);
+                                A.fail('unknown resource ' + res.source.fs.fullPath);
                                 break;
                         }
                         break;
@@ -1186,7 +1136,7 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
                                 A.areSame('m', res.pathParts.shortFile);
                                 break;
                             default:
-                                A.fail('unknown resource ' + res.fsPath);
+                                A.fail('unknown resource ' + res.source.fs.fullPath);
                                 break;
                         }
                         break;
@@ -1210,7 +1160,7 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
                                 A.areSame('x', res.pathParts.shortFile);
                                 break;
                             default:
-                                A.fail('unknown resource ' + res.fsPath);
+                                A.fail('unknown resource ' + res.source.fs.fullPath);
                                 break;
                         }
                         break;
@@ -1234,7 +1184,7 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
                                 A.areSame('z', res.pathParts.shortFile);
                                 break;
                             default:
-                                A.fail('unknown resource ' + res.fsPath);
+                                A.fail('unknown resource ' + res.source.fs.fullPath);
                                 break;
                         }
                         break;

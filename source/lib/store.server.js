@@ -424,6 +424,40 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
         },
 
 
+        expandInstanceForEnv: function(env, instance, ctx, cb) {
+            var spec,
+                typeDetails,
+                config;
+
+            // TODO:  should this be done here, or somewhere else?
+            ctx.runtime = env;
+
+            try {
+                spec = this._expandSpec(ctx, instance);
+            } catch (err) {
+                return cb(err);
+            }
+            spec.config = spec.config || {};
+            spec.action = spec.action || 'index';
+            if (!spec.instanceId) {
+                spec.instanceId = Y.guid();
+            }
+
+            try {
+                this.getMojitTypeDetails(env, ctx, spec.type, spec);
+            } catch (err) {
+                return cb(err);
+            }
+            if (spec.defaults && spec.defaults.config) {
+                config = this.cloneObj(spec.defaults.config);
+                this.mergeRecursive(config, spec.config);
+                spec.config = config;
+            }
+
+            cb(null, spec);
+        },
+
+
         /**
          * Returns details about a mojit type.
          *
@@ -437,7 +471,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
          * @return {object} returns the "dest" parameter, which has had details added to it
          */
         getMojitTypeDetails: function(env, ctx, mojitType, dest) {
-            //logger.log('getMojitTypeDetails('+env+',ctx,'+mojitType+')');
+            //Y.log('getMojitTypeDetails('+env+', '+JSON.stringify(ctx)+', '+mojitType+')', 'debug', NAME);
             var ress,
                 r,
                 res,
@@ -450,6 +484,9 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 dest = {};
             }
 
+            if (!dest.assets) {
+                dest.assets = {};
+            }
             if (!dest.models) {
                 dest.models = {};
             }
@@ -473,10 +510,19 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                     }
                 }
 
+                if (res.type === 'asset') {
+                    if (env === 'client') {
+                        dest.assets[res.name + res.source.fs.ext] = res.url;
+                    } else {
+                        dest.assets[res.name + res.source.fs.ext] = res.source.fs.fullPath;
+                    }
+                }
+
                 if (res.type === 'binder') {
                     if (!dest.views[res.name]) {
                         dest.views[res.name] = {};
                     }
+                    dest.views[res.name]['binder-url'] = res.url;
                     if (env === 'client') {
                         dest.views[res.name]['binder-path'] = res.url;
                     } else {
@@ -1077,7 +1123,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                     Y.log('invalid view filename. skipping ' + fs.fullPath, 'warn', NAME);
                     return;
                 }
-                res.name = libpath.join(fs.subDirArray.slice(1).join('/'), baseParts.join('.'));
+                res.name = libpath.join(fs.subDirArray.join('/'), baseParts.join('.'));
                 res.id = [res.type, res.subtype, res.name].join('-');
                 return res;
             }
@@ -1187,6 +1233,23 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
 
         //====================================================================
         // PRIVATE METHODS
+
+
+        // TODO DOCS
+        _expandSpec: function(ctx, spec) {
+            if (!spec.base) {
+                return spec;
+            }
+            // The base will need to carry its ID with it.
+            spec.id = spec.base;
+            var appConfig = this.getAppConfig(ctx);
+            var base = appConfig.specs[spec.base];
+            if (!base) {
+                throw new Error('Unknown base of "' + spec.base + '"');
+            }
+            delete spec.base;
+            return this.mergeRecursive(this._expandSpec(ctx, base), spec);
+        },
 
 
         /**
