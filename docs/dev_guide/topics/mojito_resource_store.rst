@@ -41,9 +41,11 @@ Being a YUI Base, the resource store also provides an event subsystem and a simp
 What is a Mojito Resource?
 --------------------------
 
+A Mojito resource can be a unit of code or configuration that Mojito applications can include and use.
 At the application level, resources include archetypes, commands, configuration files, and middleware. At the mojit level,
 resources include controllers, models, binders, configuration files, and views. Developers can also create their own types of
-resources. See `Types of Resources <metadata_obj-types_resources>`_ for descriptions of the resource types.
+resources to fit the need of their applications. See `Types of Resources <metadata_obj-types_resources>`_ for descriptions of the 
+built-in resource types.
 
 
 .. _intro-do:
@@ -75,9 +77,7 @@ During this process, the resource store is also doing the following:
 - providing methods for events, including those specialized for AOP.
 - explicitly using the addons `selector <intro-selector>`_ and `config <intro-config>`_
 
-
-To see the code for the resource store, see `store.server.js <https://github.com/yahoo/mojito/blob/develop/source/lib/store.server.js>`_ in
-the `Mojito GitHub repository <https://github.com/yahoo/mojito/>`_.
+To see the code for the resource store, see `store.server.js <https://github.com/yahoo/mojito/blob/develop/source/lib/store.server.js>`_.
 
 
 .. _intro-use:
@@ -88,7 +88,7 @@ How Can Developers Use the Resource Store?
 .. Questions:
 
 .. 1. Do we have any concrete or hypothesized examples of using AOP (still need to know what this is) on the resource store, creating resource
-.. types, or mapping contexts to selectors? 
+.. types, or mapping contexts to selectors? Having a few of the most common use cases would be helpful.
 
 .. 2. Are there any other benefits for developers?
 
@@ -167,6 +167,8 @@ Metadata Object
 
 .. 9. What "package details" are given for ``pkg``?
 
+.. 10. Can you explain what the ``yui`` property does? Is it a Boolean that determines whether a resource is a YUI module or does it give info about the resource that is a YUI module?
+
 .. Answers:
 
 .. 0.
@@ -189,6 +191,8 @@ Metadata Object
 
 .. 9.
 
+.. 10.
+
 .. Please fill in or correct the rows for the 'Required?', 'Default Value', 'Possible Values', and 'Description' columns below.
 
 +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
@@ -208,10 +212,11 @@ Metadata Object
 |                        |               |           |               |                             | The value ``"shared"`` means the resource   |
 |                        |               |           |               |                             | is available to all mojits.                 | 
 +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
-| ``name``               | string        | yes       | none          |                             | // name.  common to all versions of the     |
-|                        |               |           |               |                             | resource                                    | 
+| ``name``               | string        | yes       | none          |                             | The name of the resource that is common to  |
+|                        |               |           |               |                             | all versions (i.e., iPhone/Android, etc.)   | 
+|                        |               |           |               |                             | of the resource.                            |
 +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
-| `` pkg``               | string        | --        | none          |                             | // packaging details                        | 
+| `` pkg``               | string        | --        | none          |                             | // packaging details ==> what details?      | 
 +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
 | ``selector``           | string        | no        | "*"           |                             | The version of the resource, not to be      |
 |                        |               |           |               |                             | confused revisions that mark the change of  |
@@ -234,7 +239,7 @@ Metadata Object
 | ``type``               | string        | yes       | none          | See `Types of Resources <ty |                                             | 
 |                        |               |           |               | pes_resources>`_.           |                                             |
 +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
-| ``yui``                | string        | no        | none          |                             | // for resources that are YUI modules       | 
+| ``yui``                | string        | no        | none          |                             | // for resources that are YUI modules ==??  | 
 +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
 
 .. 
@@ -361,15 +366,18 @@ Description
 ~~~~~~~~~~~
 
 The ``selector`` addon maps contexts to selectors and then returns
-a priority-ordered list (POSL) of selectors. Developers can implement their custom implementation
-to override the built-in ``selector`` addon.
+a priority-ordered list (POSL) of selectors. 
+
+**Who might want to customize their own version of the addon?** 
+
+Developers wanting to use heir own algorithm for creating the POSL or refine the mapping of contexts to selector.
 
 .. _selector-reqs:
 
 Requirements
 ~~~~~~~~~~~~
 
-Because this is used directly by the the resource store, all implementations need to provide the following method:
+Because the ``selector`` addon is used directly by the the resource store, all implementations need to provide the following method:
 
 ``getListFromContext(ctx)``
 
@@ -383,7 +391,7 @@ getListFromContext(ctx)
 
 **Parameters:** 
 
-- ``ctx`` 
+- ``ctx`` - The context that the application is running in. 
 
 **Return:** 
 
@@ -417,7 +425,12 @@ Description
 The ``config`` addon provides access to the contents of the configuration files and
 defines new mojit-level ``config`` resource types (for the mojit's ``definition.json`` and ``defaults.json``)
 and new app-level ``config`` resource types (for ``application.json``, ``routes.json``, ``dimensions.json``, etc.).
-Although developers can override the built-in ``config`` addon, it is not recommended.
+
+
+**Who might want to customize their own version of the addon?** 
+
+We do not recommend that developers create a customized ``config`` addon, but for those developers
+who want to create new types of configuration files, you might want to create your own ``config`` addon.
 
 
 .. _config-reqs:
@@ -444,7 +457,7 @@ Returns all the defined dimensions.
 
 **Parameters**
 
-- ``cb`` 
+- ``cb`` - The callback function that is passed the defined dimensions.
 
 **Return:** 
 
@@ -459,9 +472,9 @@ Reads the config file pointed to by the resource.
 
 **Parameters**
 
-- ``ctx``
-- ``res``
-- ``cb``
+- ``ctx`` - The context that the application is running in. 
+- ``res`` -
+- ``cb`` -
 
 **Return:** 
 
@@ -665,9 +678,21 @@ instance
 Description
 ~~~~~~~~~~~
 
+.. Questions:
+
+.. 1. Who might want to create a custom version of this addon and why?
+
+.. Answers:
+
+.. 1. 
+
 The ``instance`` addon provides access to mojit details, expands specs into full instances, and
 defines new app-level ``spec`` resource types (found in ``mojits/*/specs/*.json``)
 The ``instance`` addon is not used by the resource store, but is critical to the Mojito framework.
+
+**Who might want to customize their own version of the addon?** 
+
+
 
 .. _instance-reqs:
 
@@ -693,9 +718,9 @@ The structure is made by aggregating information from all the resources in the m
 
 **Parameters**
 
-- ``ctx``
-- ``mojitType``
-- ``cb``
+- ``ctx`` - The context that the application is running in. 
+- ``mojitType`` - The type of mojito for an instance that is defined in ``application.json``.
+- ``cb`` - 
 
 **Return:** 
 
@@ -734,10 +759,13 @@ Description
 The ``routes`` addon provides access to the routes. Although the addon is
 not used by resource store core, it is critical to the server-side Mojito
 mojito ships with a default implementation. The resource store has a method
-for returning all of the route files in a single merged result. Although
-you can create a custom ``routes`` addon, we recommend using the built-in ``routes``
-addon.
+for returning all of the route files in a single merged result. 
 
+**Who might want to customize their own version of the addon?** 
+
+We do not recommend that developers create a customized ``routes`` addon, but for those developers
+who want to process the routes or add additional metadata, creating a custom ``routes`` addon might be
+the solution.
 
 .. _routes-reqs:
 
@@ -841,6 +869,9 @@ The static handler URL can be a rollup URL.
 The ``staticHandler`` addon also provides a method for the static handler middleware to find the 
 filesystem path for a URL.
 
+**Who might want to customize their own version of the addon?** 
+
+
 .. _staticHandler-reqs:
 
 Requirements
@@ -885,7 +916,10 @@ The ``yui`` addon has the following functions:
 - defines new mojit-specific resource of type ``yui-lang`` that are found in ``lang/``.
 - precalculates YUI dependencies for mojit controllers and binders.
 
+**Who might want to customize their own version of the addon?** 
+
 The built-in ``yui`` addon will generally not need to be overridden with a custom version of the addon.
+
 
 .. _yui-reqs:
 
