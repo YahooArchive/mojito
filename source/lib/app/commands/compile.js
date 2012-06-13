@@ -111,7 +111,7 @@ run = function(params, options, callback) {
     // TODO: don't assign to a parameter.
     options = options || {};
 
-    utils.isMojitoApp(store._root, exports.usage, true);
+    utils.isMojitoApp(store._config.root, exports.usage, true);
 
     if (options.context) {
         // TODO: parseURL.

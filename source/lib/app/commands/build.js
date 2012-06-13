@@ -91,18 +91,18 @@ exports.run = function(params, options, callback) {
     if (params[1] && params[1][0] === '/') {
         destination = libpath.join(params[1]);
     } else if (params[1]) {
-        destination = libpath.join(store._root, params[1]);
+        destination = libpath.join(store._config.root, params[1]);
     } else {
-        destination = libpath.join(store._root, 'artifacts/builds', type);
+        destination = libpath.join(store._config.root, 'artifacts/builds', type);
     }
 
     // Are we in a Mojito App?
-    utils.isMojitoApp(store._root, exports.usage, true);
+    utils.isMojitoApp(store._config.root, exports.usage, true);
 
     // TODO:  probably should try to use store to read appConfig
     try {
-        appConfig = Y.JSON.parse(String(fs.readFileSync(libpath.join(store._root,
-            'application.json'))));
+        appConfig = Y.JSON.parse(String(fs.readFileSync(libpath.join(
+            store._config.root, 'application.json'))));
         appConfig = appConfig[0];
 
         // Is there a "builds" section for this "type" in the appConfig
@@ -172,7 +172,7 @@ exports.buildhtml5app = function(cmdOptions, store, config, destination,
     tunnelPrefix = appConfig.tunnelPrefix || '/tunnel';
 
     console.log('Building a "' + type + '" of the Mojito application at "' +
-        store._root + '"');
+        store._config.root + '"');
 
     console.log('...');
 

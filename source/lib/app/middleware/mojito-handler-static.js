@@ -200,7 +200,7 @@ function staticProvider(store, globalLogger) {
         filename = store.fileFromStaticHandlerURL(path);
         // TODO: [Issue 80] remove this for performance
         if ((!filename) && (path === '/favicon.ico')) {
-            filename = pa.join(store._root, 'assets', path);
+            filename = pa.join(store._config.root, 'assets', path);
         }
 
         if (!filename) {
