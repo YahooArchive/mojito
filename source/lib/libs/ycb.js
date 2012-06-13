@@ -8,8 +8,11 @@
 var VERSION = '2.0.0',
     DEFAULT = '*',
     SEPARATOR = '/',
-    SUBMATCH = /\$\$[a-zA-Z0-9.-_]*\$\$/;
+    SUBMATCH = /\$\$[a-zA-Z0-9.-_]*\$\$/,
+    Y = require('yui').YUI({useSync: true}).use('json-parse', 'json-stringify');
     
+Y.applyConfig({useSync: false});
+
 
 //---------------------------------------------------------------
 // OBJECT ORIENTED INTERFACE
@@ -40,11 +43,11 @@ Ycb.prototype = {
         lookupPaths = this._getLookupPaths(context);
 
         if (options.debug) {
-            console.log(JSON.stringify(context,null,4));
-            console.log(JSON.stringify(this.dimensions,null,4));
-            console.log(JSON.stringify(this.settings,null,4));
-            console.log(JSON.stringify(this.schema,null,4));
-            console.log(JSON.stringify(lookupPaths,null,4));
+            console.log(Y.JSON.stringify(context,null,4));
+            console.log(Y.JSON.stringify(this.dimensions,null,4));
+            console.log(Y.JSON.stringify(this.settings,null,4));
+            console.log(Y.JSON.stringify(this.schema,null,4));
+            console.log(Y.JSON.stringify(lookupPaths,null,4));
         }
 
         // Now we simply merge each macting settings section we find into the config
@@ -52,7 +55,7 @@ Ycb.prototype = {
             if (this.settings[lookupPaths[path]]) {
                 if (options.debug) {
                     console.log('----USING---- ' + lookupPaths[path]);
-                    console.log(JSON.stringify(this.settings[lookupPaths[path]],null,4));
+                    console.log(Y.JSON.stringify(this.settings[lookupPaths[path]],null,4));
                 }
                 config = objectMerge(this.settings[lookupPaths[path]], config);
             }
@@ -89,11 +92,11 @@ Ycb.prototype = {
         lookupPaths = this._getLookupPaths(context);
 
         if (options.debug) {
-            console.log(JSON.stringify(context,null,4));
-            console.log(JSON.stringify(this.dimensions,null,4));
-            console.log(JSON.stringify(this.settings,null,4));
-            console.log(JSON.stringify(this.schema,null,4));
-            console.log(JSON.stringify(lookupPaths,null,4));
+            console.log(Y.JSON.stringify(context,null,4));
+            console.log(Y.JSON.stringify(this.dimensions,null,4));
+            console.log(Y.JSON.stringify(this.settings,null,4));
+            console.log(Y.JSON.stringify(this.schema,null,4));
+            console.log(Y.JSON.stringify(lookupPaths,null,4));
         }
 
         // Now we simply merge each macting settings section we find into the config
@@ -101,7 +104,7 @@ Ycb.prototype = {
             if (this.settings[lookupPaths[path]]) {
                 if (options.debug) {
                     console.log('----USING---- ' + lookupPaths[path]);
-                    console.log(JSON.stringify(this.settings[lookupPaths[path]],null,4));
+                    console.log(Y.JSON.stringify(this.settings[lookupPaths[path]],null,4));
                 }
                 config.push(this.settings[lookupPaths[path]]);
             }
@@ -293,7 +296,7 @@ Ycb.prototype = {
                 if (!this.settings[key]) {
                     this.settings[key] = section;
                 } else {
-                    throw new Error("The settings group '"+JSON.stringify(context)+"' has already been added.");
+                    throw new Error("The settings group '"+Y.JSON.stringify(context)+"' has already been added.");
                 }
             }
         }

@@ -20,7 +20,6 @@ YUI.add('gallery-storage-lite', function (Y) {
 // -- Shorthand ----------------------------------------------------------------
 var d           = Y.config.doc,
     w           = Y.config.win,
-    JSON        = Y.JSON,
     StorageLite = Y.namespace('StorageLite'),
 
 // -- Private Constants --------------------------------------------------------
@@ -160,7 +159,7 @@ if (storageMode === MODE_HTML5 || storageMode === MODE_GECKO) {
         },
 
         setItem: function (key, value, json) {
-            storageDriver.setItem(key, json ? JSON.stringify(value) : value);
+            storageDriver.setItem(key, json ? Y.JSON.stringify(value) : value);
         }
     }, true);
 
@@ -177,7 +176,7 @@ if (storageMode === MODE_HTML5 || storageMode === MODE_GECKO) {
 
             getItem: function (key, json) {
                 try {
-                    return json ? JSON.parse(storageDriver.getItem(key)) :
+                    return json ? Y.JSON.parse(storageDriver.getItem(key)) :
                             storageDriver.getItem(key);
                 } catch (ex) {
                     return null;
@@ -202,7 +201,7 @@ if (storageMode === MODE_HTML5 || storageMode === MODE_GECKO) {
 
             getItem: function (key, json) {
                 try {
-                    return json ? JSON.parse(storageDriver[key].value) :
+                    return json ? Y.JSON.parse(storageDriver[key].value) :
                             storageDriver[key].value;
                 } catch (ex) {
                     return null;
@@ -259,7 +258,7 @@ if (storageMode === MODE_HTML5 || storageMode === MODE_GECKO) {
         Y.mix(StorageLite, {
             _save: function () {
                 storageDriver.transaction(function (t) {
-                    t.executeSql("REPLACE INTO " + DB_NAME + " (name, value) VALUES ('data', ?)", [JSON.stringify(data)]);
+                    t.executeSql("REPLACE INTO " + DB_NAME + " (name, value) VALUES ('data', ?)", [Y.JSON.stringify(data)]);
                 });
             }
         }, true);
@@ -269,7 +268,7 @@ if (storageMode === MODE_HTML5 || storageMode === MODE_GECKO) {
             t.executeSql("SELECT value FROM " + DB_NAME + " WHERE name = 'data'", [], function (t, results) {
                 if (results.rows.length) {
                     try {
-                        data = JSON.parse(results.rows.item(0).value);
+                        data = Y.JSON.parse(results.rows.item(0).value);
                     } catch (ex) {
                         data = {};
                     }
@@ -287,7 +286,7 @@ if (storageMode === MODE_HTML5 || storageMode === MODE_GECKO) {
 
         Y.mix(StorageLite, {
             _save: function () {
-                var _data = JSON.stringify(data);
+                var _data = Y.JSON.stringify(data);
 
                 try {
                     storageDriver.setAttribute(USERDATA_NAME, _data);
@@ -303,7 +302,7 @@ if (storageMode === MODE_HTML5 || storageMode === MODE_GECKO) {
             storageDriver.load(USERDATA_PATH);
 
             try {
-                data = JSON.parse(storageDriver.getAttribute(USERDATA_NAME) || '{}');
+                data = Y.JSON.parse(storageDriver.getAttribute(USERDATA_NAME) || '{}');
             } catch (ex) {
                 data = {};
             }

@@ -38,8 +38,8 @@ YUI.add('ClickLog-tests', function(Y) {
                 }
             };
             controller.index(ac);
-            A.areSame(JSON.stringify(expectedDone), JSON.stringify(gotDone));
-            A.areSame(JSON.stringify(expectedAddCss), JSON.stringify(gotAddCss));
+            A.areSame(Y.JSON.stringify(expectedDone), Y.JSON.stringify(gotDone));
+            A.areSame(Y.JSON.stringify(expectedAddCss), Y.JSON.stringify(gotAddCss));
         }
         
     }));

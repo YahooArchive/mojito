@@ -1,0 +1,10 @@
+[
+  {
+    "settings": [ "master" ],
+    "specs": {
+      "myMojit": {
+        "type": "myMojit"
+      }
+    }
+  }
+]
