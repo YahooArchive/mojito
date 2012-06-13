@@ -8,6 +8,7 @@ YUI.add('mojito-assets-addon-tests', function(Y, NAME) {
     var suite = new YUITest.TestSuite(NAME),
         addon,
         A = YUITest.Assert,
+        AA = YUITest.ArrayAssert,
         OA = YUITest.ObjectAssert;
     
     suite.add(new YUITest.TestCase({
@@ -174,19 +175,18 @@ YUI.add('mojito-assets-addon-tests', function(Y, NAME) {
             var b = addon.getAssets('bottom');
 
             A.isUndefined(b.bottom.css, 'should not have bottom css');
-            OA.areEqual([js1, js2], b.bottom.js, 'bad js values');
+            AA.itemsAreEqual([js1, js2], b.bottom.js, 'bad js values');
             A.isUndefined(t.top.js, 'should not have top js');
-            OA.areEqual([css1, css2], t.top.css, 'bad css values');
+            AA.itemsAreEqual([css1, css2], t.top.css, 'bad css values');
         },
 
         'assets mix properly': function() {
 
             addon.addJs('jsf1', 'top');
             addon.addJs('jsf2', 'top');
-            addon.addCss('cssf1');
 
-            addon.addJs('jsf1');
-            addon.addCss('cssf1', 'bottom');
+            addon.addCss('cssf1');      // css defaults to top
+            addon.addJs('jsf3');        // js defaults to bottom
 
             var to = {
                 top: {
@@ -194,7 +194,7 @@ YUI.add('mojito-assets-addon-tests', function(Y, NAME) {
                     css: ['csst1','csst2','csst3']
                 },
                 bottom: {
-                    js: ['jst1']
+                    js: ['jsb1']
                 }
             };
 
@@ -204,15 +204,56 @@ YUI.add('mojito-assets-addon-tests', function(Y, NAME) {
                     css: ['csst1','csst2','csst3','cssf1']
                 },
                 bottom: {
-                    js: ['jst1']
+                    js: ['jsb1', 'jsf3']
                 }
             };
 
             addon.mergeMetaInto({assets: to});
 
-            OA.areEqual(expected.top.js, to.top.js, 'bad top.js');
-            OA.areEqual(expected.top.css, to.top.css, 'bad top.css');
-            OA.areEqual(expected.bottom.js, to.bottom.js, 'bad bottom.js');
+            AA.itemsAreEqual(expected.top.js, to.top.js);
+            AA.itemsAreEqual(expected.top.css, to.top.css);
+            AA.itemsAreEqual(expected.bottom.js, to.bottom.js);
+            A.isUndefined(to.bottom.css, 'bad bottom.css');
+        },
+
+        'assets unique properly': function() {
+
+            // New values which should be added to the 'to' target.
+            addon.addJs('jsf1', 'top');
+            addon.addJs('jsf2', 'top');
+
+            addon.addCss('cssf1');      // css defaults to top
+            addon.addJs('jsf3');        // js defaults to bottom
+
+            // Duplicates of values in 'to', should be eliminated, not added.
+            addon.addJs('jsb1');
+            addon.addCss('csst1');
+
+            var to = {
+                top: {
+                    js: ['jst1','jst2'],
+                    css: ['csst1','csst2','csst3']
+                },
+                bottom: {
+                    js: ['jsb1']
+                }
+            };
+
+            var expected = {
+                top: {
+                    js: ['jst1','jst2','jsf1','jsf2'],
+                    css: ['csst1','csst2','csst3','cssf1']
+                },
+                bottom: {
+                    js: ['jsb1', 'jsf3']
+                }
+            };
+
+            addon.mergeMetaInto({assets: to});
+
+            AA.itemsAreEqual(expected.top.js, to.top.js);
+            AA.itemsAreEqual(expected.top.css, to.top.css);
+            AA.itemsAreEqual(expected.bottom.js, to.bottom.js);
             A.isUndefined(to.bottom.css, 'bad bottom.css');
         },
 
@@ -230,7 +271,7 @@ YUI.add('mojito-assets-addon-tests', function(Y, NAME) {
             A.isNotUndefined(results);
             var expected = { top: { blob: [ '<style type="text/css">\nfile-contents</style>\n' ] } };
             console.log(results);
-            A.areEqual(JSON.stringify(expected), JSON.stringify(results));
+            A.areEqual(Y.JSON.stringify(expected), Y.JSON.stringify(results));
         }
 
 

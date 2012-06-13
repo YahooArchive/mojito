@@ -26,8 +26,10 @@ var tty = require('tty'),
     colored,
     bland,
     formatter,
-    options;
+    options,
+    Y = require('yui').YUI({useSync: true}).use('json-parse', 'json-stringify');
 
+Y.applyConfig({useSync: false});
 
 writer = function(data) {
     var i;
@@ -61,7 +63,7 @@ colored = function(msg, lvl, source, timestamp, opts) {
         }
         msg = ('Error' + code + ': ' + msg.message + stack);
     } else if (typeof msg === 'object') {
-        msg = JSON.stringify(msg, null, 2);
+        msg = Y.JSON.stringify(msg, null, 2);
     } else {
         msg = msg ? msg.toString() : '';
     }
@@ -102,7 +104,7 @@ bland = function(msg, lvl, source, timestamp, opts) {
         }
         msg = ('Error' + code + ': ' + msg.message + stack);
     } else if (typeof msg === 'object') {
-        msg = JSON.stringify(msg, null, 2);
+        msg = Y.JSON.stringify(msg, null, 2);
     } else {
         msg = msg ? msg.toString() : '';
     }

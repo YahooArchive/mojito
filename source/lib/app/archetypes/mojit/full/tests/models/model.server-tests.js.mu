@@ -13,7 +13,7 @@ YUI.add('{{name}}Model-tests', function(Y) {
         name: '{{name}} model user tests',
         
         setUp: function() {
-            model = Y.mojito.models.{{name}};
+            model = Y.mojito.models.{{name}}ModelFoo;
         },
         tearDown: function() {
             model = null;
@@ -21,11 +21,11 @@ YUI.add('{{name}}Model-tests', function(Y) {
         
         'test mojit model': function() {
             A.isNotNull(model);
-            A.isFunction(model.getMessage);
+            A.isFunction(model.getData);
         }
         
     }));
     
     YUITest.TestRunner.add(suite);
     
-}, '0.0.1', {requires: ['mojito-test', '{{name}}Model']});
+}, '0.0.1', {requires: ['mojito-test', '{{name}}ModelFoo']});

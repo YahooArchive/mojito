@@ -183,12 +183,12 @@ YUI.add('mojito-rest-lib-tests', function(Y, NAME) {
             var io = Y.io;
             var ioCalled = false;
             Y.io = function(url, opts) {
-                A.areSame('params', opts.data, 'bad data to y.io');
+                A.areSame('/x/?params', url, 'params added to URL');
                 ioCalled = true;
             };
 
             // act
-            Y.mojito.lib.REST._doRequest('', '', 'params');
+            Y.mojito.lib.REST._doRequest('GET', '/x/', 'params');
 
             // assert
             A.isTrue(ioCalled, 'io never called');

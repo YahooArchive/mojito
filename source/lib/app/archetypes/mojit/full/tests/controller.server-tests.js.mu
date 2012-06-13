@@ -14,7 +14,7 @@ YUI.add('{{name}}-tests', function(Y) {
         name: '{{name}} user tests',
         
         setUp: function() {
-            controller = Y.mojito.controller;
+            controller = Y.mojito.controllers.{{name}};
         },
         tearDown: function() {
             controller = null;
@@ -26,10 +26,15 @@ YUI.add('{{name}}-tests', function(Y) {
             A.isFunction(controller.index);
             ac = {
                 models: {
-                    '{{name}}': {
-                        getMessage: function(cb) {
-                            cb(null, 'Mojito is working');
+                    '{{name}}ModelFoo': {
+                        getData: function(cb) {
+                            cb(null, 'Congrats!');
                         }
+                    }
+                },
+                assets: {
+                    addCss: function(css) {
+
                     }
                 },
                 done: function(data) {
@@ -38,8 +43,8 @@ YUI.add('{{name}}-tests', function(Y) {
             };
             controller.index(ac);
             expected = {
-                title: 'Congrats!',
-                message: 'Mojito is working.'
+                data: 'Congrats!',
+                status: 'Mojito is working.'
             };
             OA.areEqual(expected, results);
         }

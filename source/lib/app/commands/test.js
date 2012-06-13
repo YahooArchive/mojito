@@ -49,7 +49,10 @@ var pathlib = require('path'),
     usage,
     options,
     inputOptions,
-    runTests;
+    runTests,
+    Y = require('yui').YUI({useSync: true}).use('json-parse', 'json-stringify');
+
+Y.applyConfig({useSync: false});
 
 // OSX's /tmp directory is a symbolic link to /private/tmp, and we want to use
 // the real directory string
@@ -100,7 +103,7 @@ function collectRunResults(results) {
     if (inputOptions.coverage) {
         str = TestRunner.getCoverage(YUITest.CoverageFormat.JSON);
         try {
-            json = JSON.parse(str);
+            json = Y.JSON.parse(str);
         } catch (e) {
             // not expected to happen very often, so no effort to make it pretty
             console.log('------ERROR------');
@@ -379,7 +382,7 @@ function processResults() {
     consoleTestReport(collectedResults, collectedFailures);
 
     if (inputOptions.coverage) {
-        coverageResult = JSON.stringify(collectedCoverage);
+        coverageResult = Y.JSON.stringify(collectedCoverage);
         fs.writeFileSync(coverageFile, coverageResult, 'utf8');
         utils.log('Creating coverage report...');
         // generate coverage reports in html

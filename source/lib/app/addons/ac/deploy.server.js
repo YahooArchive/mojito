@@ -292,10 +292,10 @@ YUI.add('mojito-deploy-addon', function(Y, NAME) {
             }
 
             initializer = '<script type=\"text/javascript\" >\n' +
-                '    YUI_config = ' + JSON.stringify(yuiConfig) + ';\n' +
+                '    YUI_config = ' + Y.JSON.stringify(yuiConfig) + ';\n' +
                 '    YUI().use(' + initialModuleList + ', function(Y) {\n' +
                 '    window.YMojito = { client: new Y.mojito.Client(' +
-                JSON.stringify(clientConfig, null, 2) + ') };\n' +
+                Y.JSON.stringify(clientConfig, null, 2) + ') };\n' +
                 '        });\n' +
                 '</script>\n';
 
