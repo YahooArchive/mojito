@@ -19,6 +19,13 @@ YUI.add('mojito-addon-rs-selector-tests', function(Y, NAME) {
     Y.extend(MockRS, Y.Base, {
         initializer: function(cfg) {
             this._config = cfg || {};
+            this.selectors = {
+                'devdroid': true,
+                'droid': true,
+                'shelves': true,
+                'right': true,
+                '*': true
+            };
         },
         cloneObj: function(o) {
             return Y.clone(o);
