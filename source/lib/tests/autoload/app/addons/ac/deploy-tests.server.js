@@ -53,10 +53,12 @@ YUI.add('mojito-deploy-addon-tests', function(Y, NAME) {
                 store: {
                     getFrameworkConfig: function() {
                         return { ondemandBaseYuiModules:[] };
+                    },
+                    yui: {
+                        getConfigFw: function() { return {}; },
+                        getConfigApp: function() { return {}; }
                     }
                 },
-                getYuiConfigFw: function() { return {}; },
-                getYuiConfigApp: function() { return {}; },
                 fileFromStaticHandlerURL: function() {
                     return 'path';
                 }
@@ -137,10 +139,12 @@ YUI.add('mojito-deploy-addon-tests', function(Y, NAME) {
                 store: {
                     getFrameworkConfig: function() {
                         return { ondemandBaseYuiModules:[] };
+                    },
+                    yui: {
+                        getConfigFw: function() { return {}; },
+                        getConfigApp: function() { return {}; }
                     }
                 },
-                getYuiConfigFw: function() { return {}; },
-                getYuiConfigApp: function() { return {}; },
                 fileFromStaticHandlerURL: function() {
                     return 'path';
                 }
@@ -229,10 +233,12 @@ YUI.add('mojito-deploy-addon-tests', function(Y, NAME) {
                 store: {
                     getFrameworkConfig: function() {
                         return { ondemandBaseYuiModules:[] };
+                    },
+                    yui: {
+                        getConfigFw: function() { return {}; },
+                        getConfigApp: function() { return {}; }
                     }
                 },
-                getYuiConfigFw: function() { return {}; },
-                getYuiConfigApp: function() { return {}; },
                 fileFromStaticHandlerURL: function() {
                     return 'path';
                 }
@@ -312,10 +318,12 @@ YUI.add('mojito-deploy-addon-tests', function(Y, NAME) {
                 store: {
                     getFrameworkConfig: function() {
                         return { ondemandBaseYuiModules:[] };
+                    },
+                    yui: {
+                        getConfigFw: function() { return {}; },
+                        getConfigApp: function() { return {}; }
                     }
                 },
-                getYuiConfigFw: function() { return {}; },
-                getYuiConfigApp: function() { return {}; },
                 fileFromStaticHandlerURL: function() {
                     return 'path';
                 }
@@ -395,10 +403,12 @@ YUI.add('mojito-deploy-addon-tests', function(Y, NAME) {
                 store: {
                     getFrameworkConfig: function() {
                         return { ondemandBaseYuiModules:[] };
+                    },
+                    yui: {
+                        getConfigFw: function() { return {}; },
+                        getConfigApp: function() { return {}; }
                     }
                 },
-                getYuiConfigFw: function() { return {}; },
-                getYuiConfigApp: function() { return {}; },
                 fileFromStaticHandlerURL: function() {
                     return 'path';
                 }

@@ -110,10 +110,10 @@ run = function(params, options) {
     store = new ResourceStore(process.cwd());
     store.preload();
     if (options.framework) {
-        parseReqs(reqs, store.getYuiConfigFw(env, {}).modules);
+        parseReqs(reqs, store.yui.getConfigFw(env, {}).modules);
     }
-    parseReqs(reqs, store.getYuiConfigApp(env, {}).modules);
-    parseReqs(reqs, store.getYuiConfigAllMojits(env, {}).modules);
+    parseReqs(reqs, store.yui.getConfigApp(env, {}).modules);
+    parseReqs(reqs, store.yui.getConfigAllMojits(env, {}).modules);
 
     // generate graph
     resultsFile = libpath.join(resultsDir, 'yui.' + env + '.dot');

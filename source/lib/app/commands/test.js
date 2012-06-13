@@ -118,9 +118,9 @@ function collectRunResults(results) {
 }
 
 function configureYUI(Y, store) {
-    Y.applyConfig(store.getYuiConfigFw('server', {}));
-    Y.applyConfig(store.getYuiConfigApp('server', {}));
-    Y.applyConfig(store.getYuiConfigAllMojits('server', {}));
+    Y.applyConfig(store.yui.getConfigFw('server', {}));
+    Y.applyConfig(store.yui.getConfigApp('server', {}));
+    Y.applyConfig(store.yui.getConfigAllMojits('server', {}));
 }
 
 
@@ -706,11 +706,11 @@ runTests = function(opts) {
             configureYUI(YUI, store);
 
             if (testType === 'fw') {
-                testConfigs = store.getYuiConfigApp('server', {}).modules;
+                testConfigs = store.yui.getConfigApp('server', {}).modules;
             } else if (testType === 'app') {
                 testConfigs = merge(
-                    store.getYuiConfigApp('server', {}).modules,
-                    store.getYuiConfigAllMojits('server', {}).modules
+                    store.yui.getConfigApp('server', {}).modules,
+                    store.yui.getConfigAllMojits('server', {}).modules
                 );
             }
         }

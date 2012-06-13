@@ -50,9 +50,9 @@ function configureYUI(Y, store, load) {
     var fw,
         app,
         module;
-    fw = store.getYuiConfigFw('server', {});
+    fw = store.yui.getConfigFw('server', {});
     Y.applyConfig(fw);
-    app = store.getYuiConfigApp('server', {});
+    app = store.yui.getConfigApp('server', {});
     Y.applyConfig(app);
     // also pre-load fw and app modules
     for (module in fw.modules) {

@@ -445,8 +445,8 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
 
             try {
                 this.getMojitTypeDetails(env, ctx, spec.type, spec);
-            } catch (err) {
-                return cb(err);
+            } catch (err2) {
+                return cb(err2);
             }
             if (spec.defaults && spec.defaults.config) {
                 config = this.cloneObj(spec.defaults.config);
@@ -569,98 +569,6 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 mojit: dest
             });
             return dest;
-        },
-
-
-        // TODO DOCS
-        // TODO -- move to yui addon
-        getYuiConfigFw: function(env, ctx) {
-            var r,
-                res,
-                ress,
-                modules = {};
-            ress = this.getResources(env, ctx, { mojit: 'shared' });
-            for (r = 0; r < ress.length; r += 1) {
-                res = ress[r];
-                if (!res.yui || !res.yui.name) {
-                    continue;
-                }
-                if ('mojito' !== res.source.pkg.name) {
-                    continue;
-                }
-                modules[res.yui.name] = {
-                    fullpath: ('client' === env) ?
-                            res.staticHandlerURL :
-                            res.source.fs.fullPath,
-                    requires:
-                        (res.yui.meta && res.yui.meta.requires) || []
-                };
-            }
-            return { modules: modules };
-        },
-
-
-        // TODO DOCS
-        // TODO -- move to yui addon
-        getYuiConfigApp: function(env, ctx) {
-            var r,
-                res,
-                ress,
-                modules = {};
-            ress = this.getResources(env, ctx, { mojit: 'shared' });
-            for (r = 0; r < ress.length; r += 1) {
-                res = ress[r];
-                if (!res.yui || !res.yui.name) {
-                    continue;
-                }
-                if ('mojito' === res.source.pkg.name) {
-                    continue;
-                }
-                modules[res.yui.name] = {
-                    fullpath: ('client' === env) ?
-                            res.staticHandlerURL :
-                            res.source.fs.fullPath,
-                    requires:
-                        (res.yui.meta && res.yui.meta.requires) || []
-                };
-            }
-            return { modules: modules };
-        },
-
-
-        // TODO DOCS
-        // TODO -- move to yui addon
-        getYuiConfigAllMojits: function(env, ctx) {
-            var m,
-                mojit,
-                mojits,
-                r,
-                res,
-                ress,
-                modules = {};
-            mojits = this.listAllMojits();
-            for (m = 0; m < mojits.length; m += 1) {
-                mojit = mojits[m];
-                ress = this.getResources(env, ctx, { mojit: mojit });
-                for (r = 0; r < ress.length; r += 1) {
-                    res = ress[r];
-                    if (!res.yui || !res.yui.name) {
-                        continue;
-                    }
-                    if (res.mojit !== mojit) {
-                        // generally only happens if res.mojit is 'shared'
-                        continue;
-                    }
-                    modules[res.yui.name] = {
-                        fullpath: ('client' === env) ?
-                                res.staticHandlerURL :
-                                res.source.fs.fullPath,
-                        requires:
-                            (res.yui.meta && res.yui.meta.requires) || []
-                    };
-                }
-            }
-            return { modules: modules };
         },
 
 
@@ -1237,13 +1145,15 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
 
         // TODO DOCS
         _expandSpec: function(ctx, spec) {
+            var appConfig,
+                base;
             if (!spec.base) {
                 return spec;
             }
             // The base will need to carry its ID with it.
             spec.id = spec.base;
-            var appConfig = this.getAppConfig(ctx);
-            var base = appConfig.specs[spec.base];
+            appConfig = this.getAppConfig(ctx);
+            base = appConfig.specs[spec.base];
             if (!base) {
                 throw new Error('Unknown base of "' + spec.base + '"');
             }

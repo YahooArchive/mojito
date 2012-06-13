@@ -38,6 +38,95 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
         },
 
 
+        // TODO DOCS
+        getConfigFw: function(env, ctx) {
+            var r,
+                res,
+                ress,
+                modules = {};
+            ress = this.rs.getResources(env, ctx, { mojit: 'shared' });
+            for (r = 0; r < ress.length; r += 1) {
+                res = ress[r];
+                if (!res.yui || !res.yui.name) {
+                    continue;
+                }
+                if ('mojito' !== res.source.pkg.name) {
+                    continue;
+                }
+                modules[res.yui.name] = {
+                    fullpath: ('client' === env) ?
+                            res.url :
+                            res.source.fs.fullPath,
+                    requires:
+                        (res.yui.meta && res.yui.meta.requires) || []
+                };
+            }
+            return { modules: modules };
+        },
+
+
+        // TODO DOCS
+        getConfigApp: function(env, ctx) {
+            var r,
+                res,
+                ress,
+                modules = {};
+            ress = this.rs.getResources(env, ctx, { mojit: 'shared' });
+            for (r = 0; r < ress.length; r += 1) {
+                res = ress[r];
+                if (!res.yui || !res.yui.name) {
+                    continue;
+                }
+                if ('mojito' === res.source.pkg.name) {
+                    continue;
+                }
+                modules[res.yui.name] = {
+                    fullpath: ('client' === env) ?
+                            res.url :
+                            res.source.fs.fullPath,
+                    requires:
+                        (res.yui.meta && res.yui.meta.requires) || []
+                };
+            }
+            return { modules: modules };
+        },
+
+
+        // TODO DOCS
+        getConfigAllMojits: function(env, ctx) {
+            var m,
+                mojit,
+                mojits,
+                r,
+                res,
+                ress,
+                modules = {};
+            mojits = this.rs.listAllMojits();
+            for (m = 0; m < mojits.length; m += 1) {
+                mojit = mojits[m];
+                ress = this.rs.getResources(env, ctx, { mojit: mojit });
+                for (r = 0; r < ress.length; r += 1) {
+                    res = ress[r];
+                    if (!res.yui || !res.yui.name) {
+                        continue;
+                    }
+                    if (res.mojit !== mojit) {
+                        // generally only happens if res.mojit is 'shared'
+                        continue;
+                    }
+                    modules[res.yui.name] = {
+                        fullpath: ('client' === env) ?
+                                res.url :
+                                res.source.fs.fullPath,
+                        requires:
+                            (res.yui.meta && res.yui.meta.requires) || []
+                    };
+                }
+            }
+            return { modules: modules };
+        },
+
+
         findResourceByConvention: function(source, mojitType) {
             var fs = source.fs;
 

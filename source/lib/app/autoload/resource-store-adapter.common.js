@@ -188,24 +188,6 @@ YUI.add('mojito-resource-store-adapter', function(Y, NAME) {
         },
 
 
-        getYuiConfigAllMojits: function(env, ctx) {
-            //logger.log('getYuiConfigAllMojits', 'warn', NAME);
-            return this.store.getYuiConfigAllMojits(env, ctx);
-        },
-
-
-        getYuiConfigApp: function(env, ctx) {
-            //logger.log('getYuiConfigApp', 'warn', NAME);
-            return this.store.getYuiConfigApp(env, ctx);
-        },
-
-
-        getYuiConfigFw: function(env, ctx) {
-            //logger.log('getYuiConfigFw', 'warn', NAME);
-            return this.store.getYuiConfigFw(env, ctx);
-        },
-
-
         serializeClientStore: function(ctx, instances) {
             //logger.log('serializeClientStore', 'warn', NAME);
             return this.store.serializeClientStore(ctx, instances);
