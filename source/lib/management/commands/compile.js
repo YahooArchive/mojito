@@ -55,6 +55,8 @@ usage = 'mojito compile {options} {type}\n' +
     '\t  -e          :  short for --everything\n' +
     '\t --clean      :  clean up all compiled modules\n' +
     '\t  -c          :  short for --clean\n' +
+    '\t --core       :  compile only mojito core (only applies to rollups)\n' +
+    '\t  -o          :  short for --core\n' +
     '\t --verbose    :  for verbose output\n' +
     '\t  -v          :  short for --verbose\n' +
     '\t --port       :  if a server is started, specify the port\n' +
@@ -77,6 +79,11 @@ options = [
     {
         shortName: 'c',
         longName: 'clean',
+        hasValue: false
+    },
+    {
+        shortName: 'o',
+        longName: 'core',
         hasValue: false
     },
     {
@@ -428,7 +435,9 @@ compile.rollups = function(context, options, callback) {
         rollupBody = '';
         for (i = 0; i < rollup.srcs.length; i += 1) {
             src = rollup.srcs[i];
-            rollupBody += fs.readFileSync(src, 'utf-8');
+            if (!options['core'] || src.match(/\/mojito\//)) {
+                rollupBody += fs.readFileSync(src, 'utf-8');
+            }
         }
         fs.writeFileSync(rollup.dest, rollupBody, 'utf-8');
         if (options.verbose) {
@@ -437,7 +446,7 @@ compile.rollups = function(context, options, callback) {
         processed += 1;
     }
 
-    if (options.app) {
+    if (options.app || options.core) {
         rollup = store.getRollupsApp('client', context);
         rollOneUp(rollup);
         utils.log('All rollups have been ' +
