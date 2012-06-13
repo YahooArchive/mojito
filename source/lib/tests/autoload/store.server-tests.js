@@ -13,6 +13,32 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
         A = YUITest.Assert,
         AA = YUITest.ArrayAssert;
 
+
+    function cmp(x, y, msg) {
+        if (Y.Lang.isArray(x)) {
+            A.isArray(x, msg || 'first arg should be an array');
+            A.isArray(y, msg || 'second arg should be an array');
+            A.areSame(x.length, y.length, msg || 'arrays are different lengths');
+            for (var i = 0; i < x.length; i += 1) {
+                cmp(x[i], y[i], msg);
+            }
+            return;
+        }
+        if (Y.Lang.isObject(x)) {
+            A.isObject(x, msg || 'first arg should be an object');
+            A.isObject(y, msg || 'second arg should be an object');
+            A.areSame(Object.keys(x).length, Object.keys(y).length, msg || 'object keys are different lengths');
+            for (var i in x) {
+                if (x.hasOwnProperty(i)) {
+                    cmp(x[i], y[i], msg);
+                }
+            }
+            return;
+        }
+        A.areSame(x, y, msg || 'args should be the same');
+    }
+
+
     suite.add(new YUITest.TestCase({
 
         name: 'Store tests',
@@ -503,16 +529,23 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
             A.areEqual(2, found);
         },
 
-        'multi preload, and setLogger()': function() {
+        'multi preload': function() {
             var store = new Y.mojito.ResourceStore({ root: fixtures });
-            var logsBefore, logs = 0;
-            store.setLogger({ log: function() {
-                logs++;
-            } });
             store.preload();
-            logsBefore = logs;
+            var pre = {
+                appRVs: Y.clone(store._appRVs, true),
+                mojitRVs: Y.clone(store._mojitRVs, true),
+                appResources: Y.clone(store._appResources, true),
+                mojitResources: Y.clone(store._mojitResources, true)
+            };
             store.preload();
-            A.areSame(logsBefore, logs);
+            var post = {
+                appRVs: Y.clone(store._appRVs, true),
+                mojitRVs: Y.clone(store._mojitRVs, true),
+                appResources: Y.clone(store._appResources, true),
+                mojitResources: Y.clone(store._mojitResources, true)
+            };
+            cmp(post, pre);
         },
 
         'call getSpec()': function() {
