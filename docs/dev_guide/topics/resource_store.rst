@@ -15,6 +15,16 @@ Resource Store
 .. 4. Does AOP stand for aspect-oriented programming, attribute oriented programming, or something else?
 
 
+.. Answers:
+
+.. 1.
+
+.. 2.
+
+.. 3.
+
+.. 4.
+
 .. _resource_store_intro:
 
 Intro
@@ -45,11 +55,17 @@ How Does the Resource Store Work?
 
 .. 1. What does 'host for addons' mean? (It's mentioned in the 'core' section of the twiki.)
 
+.. Answers:
+
+.. 1.
+
+
+
 Understanding the workflow of the resource store will give help those who want to customize addons to write code and
 help others who don't plan on customizing addons to debug. 
 
 In short, the resource store walks through the application-level, 
-mojit-level, and npm module files (in that order) of a Mojito application, determines what type of resource each file is, 
+mojit-level, and ``npm`` module files (in that order) of a Mojito application, determines what type of resource each file is, 
 creates an instance of the resource, and then registers the instance.
 
 During this process, the resource store is also doing the following:
@@ -76,6 +92,13 @@ How Can Developers Use the Resource Store?
 
 .. 2. Are there any other benefits for developers?
 
+.. Answers:
+
+.. 1.
+
+.. 2.
+
+
 Developers can write addons for the resource store to have finer grain control over the management of resources
 or extend the functionality of the resource store. As a developer, you can write custom addons to use AOP
 on the resource store, create resource types, and map contexts to selectors.
@@ -93,6 +116,11 @@ Intro
 
 .. Questions:
 
+.. 1. Drew, based on your response to a question about the metadata, I'm not sure if developers define resource metadata. Do they, and if so, how
+..    do they define the metadata (in some config file?)?
+
+.. Answers:
+
 .. 1. 
 
 The resource store uses metadata to find, load, parse, and create instances of resources. 
@@ -103,7 +131,13 @@ The resource store uses metadata to find, load, parse, and create instances of r
 Location
 --------
 
-.. What is the location for the metadata? Is it a JSON config file like application.json? If so, what is the file name?
+.. Questions:
+
+.. 1. What is the location for the metadata? Is it a JSON config file like application.json? If so, what is the file name?
+
+.. Answers:
+
+.. 1.
 
 .. _metadata-obj:
 
@@ -133,8 +167,29 @@ Metadata Object
 
 .. 9. What "package details" are given for ``pkg``?
 
+.. Answers:
 
+.. 0.
 
+.. 1.
+
+.. 2.
+
+.. 3.
+
+.. 4.
+
+.. 5.
+
+.. 6.
+
+.. 7.
+
+.. 8.
+
+.. 9.
+
+.. Please fill in or correct the rows for the 'Required?', 'Default Value', 'Possible Values', and 'Description' columns below.
 
 +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
 | Property               | Data Type     | Required? | Default Value | Possible Values             | Description                                 |
@@ -252,7 +307,9 @@ The ``type`` property of the metadata object can have any of the following value
 Example
 -------
 
-.. need a real example
+.. Questions:
+
+.. 1. Do we have an example? 
 
 .. code-block:: javascript
 
@@ -320,7 +377,9 @@ Because this is used directly by the the resource store, all implementations nee
 getListFromContext(ctx)
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-.. Question: need description, spec, and example of ``ctx`` and return value.
+.. Question: 
+
+.. 1. Need description, spec, and example of ``ctx`` and return value.
 
 **Parameters:** 
 
@@ -341,8 +400,10 @@ config
 .. _config-desc:
 
 
+.. Questions:
 
-.. Haven't decided whether to include this info:
+.. 1. Should the following be included?
+
 .. default implementation:
 .. preloadFile() registers config files as type:config resources
 .. listens for an event signifying the end of preload()
@@ -375,7 +436,9 @@ Because this is used directly by the resource store, all implementations need to
 readYCBDimensions(cb)
 ~~~~~~~~~~~~~~~~~~~~~
 
-.. Question: need description, spec, and example of ``cb`` and return value.
+.. Question: 
+
+.. 1. Need description, spec, and example of ``cb`` and return value.
 
 Returns all the defined dimensions.
 
@@ -388,7 +451,9 @@ Returns all the defined dimensions.
 readResource(ctx, res, cb)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. Question: need description, spec, and example of ``ctx``, ``res``, ``cb`` and return value.
+.. Question: 
+
+.. 1. Need description, spec, and example of ``ctx``, ``res``, ``cb`` and return value.
 
 Reads the config file pointed to by the resource.
 
@@ -614,14 +679,25 @@ Because this addon is critical to the Mojito framework, all implementations need
 - ``getMojitDetails(ctx, mojitType, cb)``
 - ``expandSpec(ctx, spec, cb)``
 
-mojito ships with a default implementation. it's not expected that users will write their own
-
-returns a single structure that contains all details needed by the mojito kernel
-this is made by aggregating information from all the resources in the mojit
-
-takes the spec and expands it into the full mojit instance data needed by the mojito kernel
 
 
+getMojitDetails(ctx, mojitType, cb)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. Question: 
+
+.. 1. Need description, spec, and example of ``ctx``, ``mojitType``, ``cb`` and return value.
+
+Returns a single structure that contains all details needed by the Mojito kernel
+The structure is made by aggregating information from all the resources in the mojit.
+
+**Parameters**
+
+- ``ctx``
+- ``mojitType``
+- ``cb``
+
+**Return:** 
 
 
 .. _instance-ex:
@@ -629,26 +705,33 @@ takes the spec and expands it into the full mojit instance data needed by the mo
 Example
 ~~~~~~~
 
-.. Need example
+.. Question:
+
+.. 1. Need example.
 
 .. _intro-routes:
 
 routes
 ``````
+
 .. Questions:
 
 .. 1. Is the sugar method ``getRoutes`` in ``store.server.js``?
 
 .. 2. To write a custom ``routes`` addon, are developers required to override ``getRoutes`` with their own version of the function?
 
+.. Answers:
 
+.. 1.
+
+.. 2.
 
 .. _routes-desc:
 
 Description
 ~~~~~~~~~~~
 
-The ``routes`` addon provides access to the routes. Athough the addon is
+The ``routes`` addon provides access to the routes. Although the addon is
 not used by resource store core, it is critical to the server-side Mojito
 mojito ships with a default implementation. The resource store has a method
 for returning all of the route files in a single merged result. Although
@@ -660,6 +743,8 @@ addon.
 
 Requirements
 ~~~~~~~~~~~~
+
+None.
 
 .. _routes-ex:
 
@@ -747,16 +832,21 @@ Description
 
 The ``stackHandler`` addon calculates and manages the static handler URLs for resources.
 The addon is not used by resource store core, but used by the static handler middleware.
+Developers should not need to write their own custom version of the ``staticHandler`` addon.
+
+Before the method ``addResourceVersion`` is called in the resource store, resources
+with the ``client`` affinity set the ``staticHandlerURL`` property to the static handler URL.
+The static handler URL can be a rollup URL.
+
+The ``staticHandler`` addon also provides a method for the static handler middleware to find the 
+filesystem path for a URL.
 
 .. _staticHandler-reqs:
 
 Requirements
 ~~~~~~~~~~~~
 
-before addResourceVersion()
-for affinity:client resources, sets staticHandlerURL to the static handler URL for the resource
-the URL might be a rollup URL
-provides a method for the static handler middleware to find the filesystem path for a URL
+None.
 
 .. _staticHandler-ex:
 
@@ -773,24 +863,36 @@ yui
 Description
 ~~~~~~~~~~~
 
-detects which resources are YUI modules, gathering additional metadata
-defines new mojit-specific resource type: yui-module (found in autoload/ or yui_modules/)
-defines new mojit-specific resource type: yui-lang (found in lang/)
-precalculates YUI dependencies for mojit controllers and binders
-mojito ships with a default implementation. it's not expected that users will write their own
+.. Questions:
+
+.. 1. Should the following be included:
+
+.. 
+
+  after preloadFile()
+    if in autoload/ or yui_modules/ makes a type:yui-module resource
+    if in lang/ makes a type:yui-lang resource
+  before addResourceVersion()
+    if it's a resource implemented as a YUI module, gathers the YUI module metadata about it
+  after resolveMojit()
+    calculates the YUI module dependencies for the controller
+    calculates the YUI module dependencies for each binder
+
+The ``yui`` addon has the following functions:
+
+- detects which resources are YUI modules and gathers additional metadata.
+- defines new mojit-specific resource of type ``yui-module`` that are found in ``autoload/`` or ``yui_modules/``.
+- defines new mojit-specific resource ot type ``yui-lang`` that are found in ``lang/``.
+- precalculates YUI dependencies for mojit controllers and binders.
+
+The built-in ``yui`` addon will generally not need to be overridden with a custom version of the addon.
 
 .. _yui-reqs:
 
 Requirements
 ~~~~~~~~~~~~
-after preloadFile()
-if in autoload/ or yui_modules/ makes a type:yui-module resource
-if in lang/ makes a type:yui-lang resource
-before addResourceVersion()
-if it's a resource implemented as a YUI module, gathers the YUI module metadata about it
-after resolveMojit()
-calculates the YUI module dependencies for the controller
-calculates the YUI module dependencies for each binder
+
+None.
 
 .. _yui-ex:
 
@@ -1000,6 +1102,10 @@ Requirements
 
 .. 1. What are the requirements?  (configuration, functions, objects, namespaces, etc.)
 
+.. Answers:
+
+.. 1.
+
 Example
 -------
 
@@ -1022,7 +1128,10 @@ Creating Metadata Object
 
 .. 2. The table of properties of the ``metadata`` object has to be completed first.
 
-.. 3. 
+.. Answers:
+
+.. 1.
+
 
 Installing Shaker
 `````````````````
@@ -1032,6 +1141,12 @@ Installing Shaker
 .. 1. Should the ``package.json`` file specify ``shaker`` as a dependency? 
 
 .. 2. Is the instruction below correct and sufficient?
+
+.. Answers:
+
+.. 1.
+
+.. 2. 
 
 
 From the application directory of your application, run the following command to install ``shaker`` into the ``node_modules`` directory:
@@ -1044,9 +1159,23 @@ Writing Addon
 .. Questions:
 
 .. 1. Does the app-level resource store addon go in ``{app_dir}/addons/rs/``?
+
 .. 2. Any file naming context for the resource store addon?
+
 .. 3. Requirements that users should know for making their own resource store addons?
+
 .. 4. Need code and high-level explanation of what's going on as well as a brief breakdown of salient points.
+
+.. Answers:
+
+.. 1.
+
+.. 2. 
+
+.. 3.
+
+.. 4.
+
 
 The ``shaker`` addon will listen for changes to the ``staticHandlerURL``
 resource field and then update ``staticHandlerURL`` and then update the ``staticHandlerURL`` so that static assets can come from
