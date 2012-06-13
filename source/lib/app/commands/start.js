@@ -10,7 +10,7 @@
 
 var path = require('path'),
     utils = require(path.join(__dirname, '../../management/utils')),
-    fs = require('fs');
+    fs = require('fs'),
     Y = require('yui').YUI({useSync: true}).use('json-parse', 'json-stringify');
 
 Y.applyConfig({useSync: false});
