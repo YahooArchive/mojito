@@ -506,7 +506,7 @@ compile.views = function(context, options, callback) {
         ' views...');
 
     // Get all the Mojits
-    mojits = store.getAllMojits('server', context);
+    mojits = getAllMojits(store, 'server', context);
 
     if (options.mojit && !mojits[options.mojit]) {
         callback('Unknown "' + options.mojit + '"');
@@ -630,7 +630,7 @@ compile.json = function(context, options, callback) {
     store.preload();
 
     // Get all the Mojits
-    mojits = store.getAllMojits('server', context);
+    mojits = getAllMojits(store, 'server', context);
     mojitNames = Object.keys(mojits);
     total = mojitNames.length;
 
@@ -942,6 +942,22 @@ removeFile = function(file) {
     }
     return false;
 };
+
+
+// Returns details about all the mojits in the application.
+function getAllMojits(store, env, ctx)
+{
+    var details = {},
+        mojits,
+        m,
+        mojit;
+    mojits = store.listAllMojits();
+    for (m = 0; m < mojits.length; m += 1) {
+        mojit = mojits[m];
+        details[mojit] = store.getMojitTypeDetails(env, ctx, mojit);
+    }
+    return details;
+}
 
 
 /*
