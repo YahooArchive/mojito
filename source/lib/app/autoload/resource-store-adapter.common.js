@@ -231,5 +231,6 @@ YUI.add('mojito-resource-store-adapter', function(Y, NAME) {
     };
 
 }, '0.1.0', {requires: [
-    'mojito-util'
+    'mojito-util',
+    'json-stringify'
 ]});
