@@ -882,7 +882,7 @@ The ``yui`` addon has the following functions:
 
 - detects which resources are YUI modules and gathers additional metadata.
 - defines new mojit-specific resource of type ``yui-module`` that are found in ``autoload/`` or ``yui_modules/``.
-- defines new mojit-specific resource of type ``yui-lang`` that are found in ``lang/``.
+- defines new mojit-specific resource ot type ``yui-lang`` that are found in ``lang/``.
 - precalculates YUI dependencies for mojit controllers and binders.
 
 The built-in ``yui`` addon will generally not need to be overridden with a custom version of the addon.
