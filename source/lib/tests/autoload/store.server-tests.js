@@ -381,8 +381,8 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
             var store = new Y.mojito.ResourceStore({ root: fixtures });
             store.preload();
 
-            A.isTrue(typeof store._staticURLs['/static/test_mojit_4/package.json'] === 'undefined');
-            A.isTrue(typeof store._staticURLs['/static/TestMojit4/package.json'] === 'undefined');
+            A.isTrue(typeof store.url.getPathForURL('/static/test_mojit_4/package.json') === 'undefined');
+            A.isTrue(typeof store.url.getPathForURL('/static/TestMojit4/package.json') === 'undefined');
         },
 
         'server mojit is loaded because of package mojito version match': function(){
@@ -399,21 +399,21 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
             var store = new Y.mojito.ResourceStore({ root: fixtures });
             store.preload();
 
-            A.isTrue(typeof store._staticURLs['/static/TestMojit2/package.json'] === 'undefined');
+            A.isTrue(typeof store.url.getPathForURL('/static/TestMojit2/package.json') === 'undefined');
         },
 
         'server a mojits package.json file is publicly accessible': function(){
             var store = new Y.mojito.ResourceStore({ root: fixtures });
             store.preload();
 
-            A.isTrue(typeof store._staticURLs['/static/TestMojit3/package.json'] === 'string');
+            A.isTrue(typeof store.url.getPathForURL('/static/TestMojit3/package.json') === 'string');
         },
 
         'server a mojit is NOT loaded because it has a package.json file with no mojito config': function(){
             var store = new Y.mojito.ResourceStore({ root: fixtures });
             store.preload();
 
-            A.isTrue(typeof store._staticURLs['/static/TestMojit5/package.json'] === 'undefined');
+            A.isTrue(typeof store.url.getPathForURL('/static/TestMojit5/package.json') === 'undefined');
         },
 
         'server mojit view index.mu.html is loaded correctly': function(){
@@ -614,13 +614,6 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
             A.isObject(routes, 'no routes at all');
             A.isObject(routes.flickr_by_page, 'missing route flickr_by_page');
             A.isObject(routes.flickr_base, 'missing route flickr_base');
-        },
-
-        'call fileFromStaticHandlerURL()': function() {
-            var store = new Y.mojito.ResourceStore({ root: fixtures });
-            store.preload();
-            var fullpath = store.fileFromStaticHandlerURL('/static/TestMojit2/controller.server.js');
-            A.areSame(libpath.join(fixtures, 'mojits/test_mojit_2/controller.server.js'), fullpath);
         },
 
         'call serializeClientStore()': function() {

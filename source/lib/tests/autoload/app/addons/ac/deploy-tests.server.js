@@ -57,10 +57,12 @@ YUI.add('mojito-deploy-addon-tests', function(Y, NAME) {
                     yui: {
                         getConfigFw: function() { return {}; },
                         getConfigApp: function() { return {}; }
+                    },
+                    url: {
+                        getPathForURL: function() {
+                            return 'path';
+                        }
                     }
-                },
-                fileFromStaticHandlerURL: function() {
-                    return 'path';
                 }
             });
 
@@ -143,10 +145,12 @@ YUI.add('mojito-deploy-addon-tests', function(Y, NAME) {
                     yui: {
                         getConfigFw: function() { return {}; },
                         getConfigApp: function() { return {}; }
+                    },
+                    url: {
+                        getPathForURL: function() {
+                            return 'path';
+                        }
                     }
-                },
-                fileFromStaticHandlerURL: function() {
-                    return 'path';
                 }
             });
 
@@ -237,10 +241,12 @@ YUI.add('mojito-deploy-addon-tests', function(Y, NAME) {
                     yui: {
                         getConfigFw: function() { return {}; },
                         getConfigApp: function() { return {}; }
+                    },
+                    url: {
+                        getPathForURL: function() {
+                            return 'path';
+                        }
                     }
-                },
-                fileFromStaticHandlerURL: function() {
-                    return 'path';
                 }
             });
 
@@ -322,10 +328,12 @@ YUI.add('mojito-deploy-addon-tests', function(Y, NAME) {
                     yui: {
                         getConfigFw: function() { return {}; },
                         getConfigApp: function() { return {}; }
+                    },
+                    url: {
+                        getPathForURL: function() {
+                            return 'path';
+                        }
                     }
-                },
-                fileFromStaticHandlerURL: function() {
-                    return 'path';
                 }
             });
 
@@ -407,10 +415,12 @@ YUI.add('mojito-deploy-addon-tests', function(Y, NAME) {
                     yui: {
                         getConfigFw: function() { return {}; },
                         getConfigApp: function() { return {}; }
+                    },
+                    url: {
+                        getPathForURL: function() {
+                            return 'path';
+                        }
                     }
-                },
-                fileFromStaticHandlerURL: function() {
-                    return 'path';
                 }
             });
 

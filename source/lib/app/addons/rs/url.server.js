@@ -47,6 +47,18 @@ YUI.add('addon-rs-url', function(Y, NAME) {
         },
 
 
+        // TODO DOCS
+        getPathForURL: function(url) {
+            return this.URLpaths[url];
+        },
+
+
+        // TODO DOCS
+        getURLPaths: function() {
+            return Y.clone(this.URLpaths, true);
+        },
+
+
         preloadResourceVersions: function() {
             var mojits = this.rs.listAllMojits(),
                 m,

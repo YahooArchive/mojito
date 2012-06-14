@@ -215,65 +215,6 @@ YUI.add('mojito-resource-store-adapter-tests', function(Y, NAME) {
             });
         },
 
-        'server mojit is NOT loaded becuase of pacakge mojito version miss-match': function(){
-            var resourceStore,
-                store;
-
-            resourceStore = new Y.mojito.ResourceStore({ root: fixtures });
-            resourceStore.preload();
-
-            store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
-            A.isTrue(typeof store._staticURLs['/static/test_mojit_4/package.json'] === 'undefined');
-            A.isTrue(typeof store._staticURLs['/static/TestMojit4/package.json'] === 'undefined');
-        },
-
-        'server mojit is loaded becuase of pacakge mojito version match': function(){
-            var resourceStore,
-                store;
-
-            resourceStore = new Y.mojito.ResourceStore({ root: fixtures });
-            resourceStore.preload();
-
-            store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
-            var instance = {type:'TestMojit2'};
-            store.expandInstance(instance, {}, function(err, instance){
-                A.areSame('/static/TestMojit2/assets', instance.assetsRoot);
-            });
-        },
-
-        'server a mojits package.json file is NOT publicly accessible': function(){
-            var resourceStore,
-                store;
-
-            resourceStore = new Y.mojito.ResourceStore({ root: fixtures });
-            resourceStore.preload();
-
-            store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
-            A.isTrue(typeof store._staticURLs['/static/TestMojit2/package.json'] === 'undefined');
-        },
-
-        'server a mojits package.json file is publicly accessible': function(){
-            var resourceStore,
-                store;
-
-            resourceStore = new Y.mojito.ResourceStore({ root: fixtures });
-            resourceStore.preload();
-
-            store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
-            A.isTrue(typeof store._staticURLs['/static/TestMojit3/package.json'] === 'string');
-        },
-
-        'server a mojit is NOT loaded because it has a package.json file with no mojito config': function(){
-            var resourceStore,
-                store;
-
-            resourceStore = new Y.mojito.ResourceStore({ root: fixtures });
-            resourceStore.preload();
-
-            store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
-            A.isTrue(typeof store._staticURLs['/static/TestMojit5/package.json'] === 'undefined');
-        },
-
         'server mojit view index.mu.html is loaded correctly': function(){
             var resourceStore,
                 store;

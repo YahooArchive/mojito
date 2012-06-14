@@ -197,7 +197,7 @@ function staticProvider(store, globalLogger) {
 
         // Use the resource store as a URI "rewriter" here.
         // /favicon.ico is sent to ./my_app_folder/assets/favicon.ico
-        filename = store.fileFromStaticHandlerURL(path);
+        filename = store.yui.getPathForURL(path);
         // TODO: [Issue 80] remove this for performance
         if ((!filename) && (path === '/favicon.ico')) {
             filename = pa.join(store._config.root, 'assets', path);

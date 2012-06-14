@@ -148,6 +148,7 @@ exports.buildhtml5app = function(cmdOptions, store, config, destination,
         indexJs = "module.exports = require('express')." +
             "createServer(require('express')['static'](__dirname));",
         url,
+        storeURLs,
         urls = {}, // from: to
         app,
         context = '',
@@ -180,9 +181,10 @@ exports.buildhtml5app = function(cmdOptions, store, config, destination,
     manifest += 'CACHE:\n';
 
     // Copy all the files into the destination directory
-    for (url in store._staticURLs) {
-        if (store._staticURLs.hasOwnProperty(url)) {
-            from = store._staticURLs[url];  // filesystem path
+    storeURLs = store.url.getURLPaths();
+    for (url in storeURLs) {
+        if (storeURLs.hasOwnProperty(url)) {
+            from = storeURLs[url];  // filesystem path
             to = libpath.join(destination, url);
             extension = from.split('.').pop();
 

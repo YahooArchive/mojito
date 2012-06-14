@@ -231,6 +231,7 @@ compile.inlinecss = function(context, options, callback) {
             shortDest,
             i,
             url,
+            storeURLs,
             fs2url = {},
             srcKey,
             srcDir,
@@ -245,9 +246,10 @@ compile.inlinecss = function(context, options, callback) {
         mojitName = inline.mojitName;
 
         // need a reverse mapping
-        for (url in store._staticURLs) {
-            if (store._staticURLs.hasOwnProperty(url)) {
-                fs2url[store._staticURLs[url]] = url;
+        storeURLs = store.url.getURLPaths();
+        for (url in storeURLs) {
+            if (storeURLs.hasOwnProperty(url)) {
+                fs2url[storeURLs[url]] = url;
             }
         }
 

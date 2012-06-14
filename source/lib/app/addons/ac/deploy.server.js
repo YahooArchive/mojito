@@ -205,7 +205,7 @@ YUI.add('mojito-deploy-addon', function(Y, NAME) {
                                 path = binder.needs[module];
                                 // Anything we don't know about we'll assume is
                                 // a YUI library module.
-                                if (!store.fileFromStaticHandlerURL(path)) {
+                                if (!store.store.yui.getPathForURL(path)) {
                                     yuiModules.push(module);
                                     yuiJsUrlContains[module] = true;
                                 }
@@ -337,6 +337,7 @@ YUI.add('mojito-deploy-addon', function(Y, NAME) {
          */
         getScripts: function(embed) {
             var i,
+                path,
                 x,
                 assets = {},
                 blob = {
@@ -348,16 +349,14 @@ YUI.add('mojito-deploy-addon', function(Y, NAME) {
             // Walk over the scripts and check what we can do
             for (i in this.scripts) {
                 if (this.scripts.hasOwnProperty(i)) {
-                    if (embed && this.rs._staticURLs[i]) {
-                        //blob.content+= fs.readFileSync(this.rs._staticURLs[i],
-                        //      'utf8');
-                        //delete this.scripts[i];
+                    path = this.rs.store.url.getPathForURL[i];
+                    if (embed && path) {
                         this.scripts[i] = {
                             type: 'blob',
                             position: 'bottom',
                             content: '<script type="text/javascript">' +
-                                minify(fs.readFileSync(this.rs._staticURLs[i],
-                                    'utf8')) + '</script>'
+                                minify(fs.readFileSync(path, 'utf8')) +
+                                    '</script>'
                         };
                     } else {
                         this.scripts[i] = {

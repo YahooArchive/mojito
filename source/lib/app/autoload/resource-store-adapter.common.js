@@ -39,7 +39,6 @@ YUI.add('mojito-resource-store-adapter', function(Y, NAME) {
             this.store = resourceStore;
 
             this._root = this.store._config.root;
-            this._staticURLs = this.store._staticURLs;
 
             return this;
         },
@@ -197,12 +196,6 @@ YUI.add('mojito-resource-store-adapter', function(Y, NAME) {
         getMojitTypeDetails: function(env, ctx, mojitType, dest) {
             //logger.log('getMojitTypeDetails', 'warn', NAME);
             return this.store.getMojitTypeDetails(env, ctx, mojitType, dest);
-        },
-
-
-        fileFromStaticHandlerURL: function(url) {
-            //logger.log('fileFromStaticHandlerURL', 'warn', NAME);
-            return this.store.fileFromStaticHandlerURL(url);
         },
 
 

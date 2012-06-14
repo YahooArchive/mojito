@@ -131,28 +131,6 @@ YUI.add('mojito-addon-rs-url-tests', function(Y, NAME) {
     }
 
 
-    function makeSource(dir, dirType, subdir, file, isFile) {
-        var source = {
-            fs: {
-                fullPath: libpath.join(dir, subdir, file),
-                rootDir: dir,
-                rootType: dirType,
-                subDir: subdir,
-                subDirArray: subdir.split('/'),
-                isFile: isFile,
-                ext: libpath.extname(file)
-            },
-            pkg: {
-                name: 'unittest',
-                version: '999.666.999',
-                depth: 999
-            }
-        };
-        source.fs.basename = libpath.basename(file, source.fs.ext);
-        return source;
-    }
-
-
     suite.add(new YUITest.TestCase({
         
         name: 'url rs addon tests',
@@ -316,6 +294,36 @@ YUI.add('mojito-addon-rs-url-tests', function(Y, NAME) {
                 mojit: mojit
             });
             A.areSame('/Foo/assets', mojit.assetsRoot);
+        },
+
+
+        'resource URLs': function() {
+            var fixtures = libpath.join(__dirname, '../../../../fixtures/store');
+            var store = new MockRS({
+                root: fixtures,
+                appConfig: { staticHandling: {} }
+            });
+            store.plug(Y.mojito.addons.rs.url, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
+
+            store._makeResource('mojito', 'shared', 'x', 'y', 'common');
+            store._makeResource('orange', 'shared', 'x', 'y', 'common');
+            store._makeResource('orange', null, 'mojit', 'X', 'common');
+            store._makeResource('orange', 'X', 'x', 'y', 'common');
+            store._makeResource('orange', null, 'mojit', 'Y', 'common');
+            store._makeResource('orange', 'Y', 'x', 'y', 'common');
+            store.preloadResourceVersions();
+            A.areSame('path/for/x--y.common.ext', store.url.getPathForURL('/static/X/x--y.common.ext'));
+            A.areSame('path/for/x--y.common.ext', store.url.getPathForURL('/static/Y/x--y.common.ext'));
+            A.areSame('path/for/x--y.common.ext', store.url.getPathForURL('/static/mojito/x--y.common.ext'));
+            A.areSame('path/for/x--y.common.ext', store.url.getPathForURL('/static/store/x--y.common.ext'));
+            var have = store.url.getURLPaths();
+            var want = {
+                '/static/X/x--y.common.ext': 'path/for/x--y.common.ext',
+                '/static/Y/x--y.common.ext': 'path/for/x--y.common.ext',
+                '/static/mojito/x--y.common.ext': 'path/for/x--y.common.ext',
+                '/static/store/x--y.common.ext': 'path/for/x--y.common.ext'
+            };
+            cmp(have, want);
         }
 
         
