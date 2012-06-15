@@ -4,15 +4,15 @@
  * See the accompanying LICENSE file for terms.
  */
 YUI.add('mojito-mu-tests', function(Y, NAME) {
-    
+
     var suite = new YUITest.TestSuite(NAME),
         addon,
         A = YUITest.Assert,
         AA = YUITest.ArrayAssert,
         OA = YUITest.ObjectAssert;
-    
+
     suite.add(new YUITest.TestCase({
-        
+
         name: 'mojito-mu server tests',
 
         setUp: function() {
@@ -92,7 +92,7 @@ YUI.add('mojito-mu-tests', function(Y, NAME) {
         }
 
     }));
-    
+
     YUITest.TestRunner.add(suite);
-    
+
 }, '0.0.1', {requires: ['mojito-mu', 'mojito-output-adapter-addon']});
