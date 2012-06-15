@@ -257,6 +257,9 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
                 window: {},
                 document: {},
                 YUI: {
+                    ENV: {},
+                    config: {},
+                    use: function() {},
                     add: function(name, fn, version, meta) {
                         yui.name = name;
                         yui.version = version;
