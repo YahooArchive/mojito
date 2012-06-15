@@ -20,8 +20,9 @@ YUI.add('mojito-mu', function(Y, NAME) {
      * @class MuAdapterServer
      * @private
      */
-    function MuAdapter(viewId) {
+    function MuAdapter(viewId, options) {
         this.viewId = viewId;
+        this.options = options || {};
     }
 
 
@@ -39,13 +40,19 @@ YUI.add('mojito-mu', function(Y, NAME) {
          */
         render: function(data, mojitType, tmpl, adapter, meta, more) {
             var me = this,
+                buffer = '',
+                bufferOutput = (this.options.mu && this.options.mu.bufferOutput) || false,
                 handleRender = function(err, output) {
                     if (err) {
                         throw err;
                     }
 
                     output.addListener('data', function(c) {
-                        adapter.flush(c, meta);
+                        if (!bufferOutput) {
+                            adapter.flush(c, meta);
+                        } else {
+                            buffer += c;
+                        }
                     });
 
                     output.addListener('end', function() {
@@ -53,7 +60,14 @@ YUI.add('mojito-mu', function(Y, NAME) {
                             Y.log('render complete for view "' +
                                 me.viewId + '"',
                                 'mojito', 'qeperf');
-                            adapter.done('', meta);
+                            if (!bufferOutput) {
+                                buffer = '';
+                            }
+                            adapter.done(buffer, meta);
+                        } else {
+                            if (bufferOutput) {
+                                adapter.flush(buffer, meta);
+                            }
                         }
                     });
                 };

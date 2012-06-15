@@ -48,7 +48,8 @@ YUI.add('mojito-output-adapter-addon', function(Y, NAME) {
             mojitView,
             renderer = null,
             contentType,
-            contentPath;
+            contentPath,
+            viewEngineOptions = (instance.appConfig && instance.appConfig.viewEngine) || {};
 
         if (Y.Lang.isString(meta)) {
             // If the meta string is a serializer set it
@@ -197,7 +198,8 @@ YUI.add('mojito-output-adapter-addon', function(Y, NAME) {
 
             renderer = new Y.mojito.ViewRenderer(
                 mojitView.engine,
-                meta.view.id
+                meta.view.id,
+                viewEngineOptions
             );
             renderer.render(data, instance.type, contentPath, adapter,
                 meta, more);
