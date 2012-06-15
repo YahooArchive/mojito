@@ -78,6 +78,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             'commands': 'command',
             'middleware': 'middleware',
             'models':   'model',
+            'specs':    'spec',
             'views':    'view'
         },
         CONVENTION_SUBDIR_TYPE_IS_JS = {
@@ -433,7 +434,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             ctx.runtime = env;
 
             try {
-                spec = this._expandSpec(ctx, instance);
+                spec = this._expandSpec(env, ctx, instance);
             } catch (err) {
                 return cb(err);
             }
@@ -839,6 +840,9 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 if (CONVENTION_SUBDIR_TYPE_IS_JS[type] && '.js' !== fs.ext) {
                     return false;
                 }
+                if ('spec' === type && '.json' !== fs.ext) {
+                    return false;
+                }
                 return {
                     type: type,
                     skipSubdirParts: 1
@@ -1012,6 +1016,24 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 return res;
             }
 
+            // special case:  spec
+            if ('spec' === type) {
+                res = {
+                    source: source,
+                    mojit: mojitType,
+                    type: 'spec',
+                    affinity: 'common',
+                    selector: '*'
+                };
+                if (baseParts.length !== 1) {
+                    Y.log('invalid spec filename. skipping ' + source.fs.fullPath, 'warn', NAME);
+                    return;
+                }
+                res.name = libpath.join(source.fs.subDir, baseParts.join('.'));
+                res.id = [res.type, res.subtype, res.name].join('-');
+                return res;
+            }
+
             // special case:  view
             if ('view' === type) {
                 res = {
@@ -1144,21 +1166,39 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
 
 
         // TODO DOCS
-        _expandSpec: function(ctx, spec) {
+        _expandSpec: function(env, ctx, spec) {
             var appConfig,
-                base;
+                base,
+                idParts,
+                mojitType,
+                specName,
+                ress;
+
             if (!spec.base) {
                 return spec;
             }
+
             // The base will need to carry its ID with it.
             spec.id = spec.base;
             appConfig = this.getAppConfig(ctx);
             base = appConfig.specs[spec.base];
+
+            if (!base) {
+                // look in resources
+                idParts = spec.base.split(':');
+                mojitType = idParts.shift();
+                specName = idParts.join(':');
+                ress = this.getResources(env, ctx, {type: 'spec', mojit: mojitType, name: specName});
+                if (1 === ress.length) {
+                    base = this.config.readConfigYCB(ress[0].source.fs.fullPath, ctx);
+                }
+            }
             if (!base) {
                 throw new Error('Unknown base of "' + spec.base + '"');
             }
+
             delete spec.base;
-            return this.mergeRecursive(this._expandSpec(ctx, base), spec);
+            return this.mergeRecursive(this._expandSpec(env, ctx, base), spec);
         },
 
 
