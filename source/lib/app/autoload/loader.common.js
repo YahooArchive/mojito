@@ -31,7 +31,7 @@ YUI.add('mojito-loader', function(Y, NAME) {
 
             paths = paths || {};
             if (!Y.Object.size(paths)) {
-                cb(null);
+                cb();
                 return;
             }
 
@@ -50,7 +50,7 @@ YUI.add('mojito-loader', function(Y, NAME) {
             }
             scriptsToLoad = Y.Object.keys(scriptsToLoad);
             if (!scriptsToLoad.length) {
-                return cb(null);
+                return cb();
             }
 
             Y.log('loading ' + scriptsToLoad.join(', '), 'mojito', NAME);
@@ -59,23 +59,8 @@ YUI.add('mojito-loader', function(Y, NAME) {
                 async: true,
 
                 onSuccess: function() {
-                    var done = false;
-
-                    if (typeof window !== 'undefined') {
-                        // --- ON CLIENT
-                        done = true;
-                    } else {
-                        // --- ON SERVER
-                        loaded += 1;
-                        if (loaded === scriptsToLoad.length) {
-                            done = true;
-                        }
-                    }
-
-                    if (done) {
-                        Y.log('SUCCESS', 'mojito', NAME);
-                        cb(null);
-                    }
+                    Y.log('SUCCESS', 'mojito', NAME);
+                    cb();
                 },
 
                 onFailure: function() {

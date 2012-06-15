@@ -25,7 +25,7 @@ YUI.add('mojito-resource-store-adapter-tests', function(Y, NAME) {
 
             store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
 
-            //Y.log(JSON.stringify(store,null,4));
+            //Y.log(Y.JSON.stringify(store,null,4));
 
             A.isTrue(store.getAppPath() === fixtures);
         },

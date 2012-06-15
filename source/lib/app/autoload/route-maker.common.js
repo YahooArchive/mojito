@@ -28,7 +28,7 @@ YUI.add('mojito-route-maker', function(Y, NAME) {
         // console.log('============= resolving params for route ' +
         //     route.name);
         // console.log(params);
-        // console.log('requires: ' + JSON.stringify(route.requires));
+        // console.log('requires: ' + Y.JSON.stringify(route.requires));
         var tester = [];
 
         // we don't need to do anything if this route requires no params
@@ -293,7 +293,7 @@ YUI.add('mojito-route-maker', function(Y, NAME) {
                 return null;
             }
 
-            // logger.log('[UriRouter] found route: ' + JSON.stringify(route));
+            // logger.log('[UriRouter] found route: ' + Y.JSON.stringify(route));
 
             match = copy(route);
 
@@ -439,7 +439,7 @@ YUI.add('mojito-route-maker', function(Y, NAME) {
 
     Y.mojito.RouteMaker = Maker;
 
-}, '0.1.0', {requires: [
+}, '0.1.0', {  requires: [
     'querystring-stringify-simple',
     'querystring-parse',
     'mojito-util'

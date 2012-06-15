@@ -60,9 +60,22 @@ YUI.add('mojito-rest-lib', function(Y, NAME) {
             // themselves to headers!
             var ioConfig = {
                 method: method,
-                data: params,
                 on: {}
             };
+            if (params) {
+                if (Y.Lang.isObject(params)) {
+                    params = Y.QueryString.stringify(params);
+                }
+                if ('GET' === method) {
+                    if (-1 === url.indexOf('?')) {
+                        url += '?' + params;
+                    } else {
+                        url += '&' + params;
+                    }
+                } else if ('POST' === method) {
+                    ioConfig.data = params;
+                }
+            }
             if (config) {
                 ioConfig.headers = config.headers;
                 ioConfig.timeout = config.timeout;
@@ -152,6 +165,7 @@ YUI.add('mojito-rest-lib', function(Y, NAME) {
     };
 
 }, '0.1.0', {requires: [
-    'io',
+    'io-base',
+    'querystring-stringify-simple',
     'mojito'
 ]});

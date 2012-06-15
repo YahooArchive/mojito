@@ -65,7 +65,7 @@ YUI.add('mojito-client-store', function(Y, NAME) {
         var onComplete = function(id, obj) {
             CACHE[url] = {};
             try {
-                CACHE[url] = JSON.parse(obj.responseText);
+                CACHE[url] = Y.JSON.parse(obj.responseText);
             } catch (err) {
                 flushQueue(url, err);
                 return;

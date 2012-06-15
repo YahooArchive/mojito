@@ -14,8 +14,10 @@ var fs = require('fs'),
     utils = require('./utils'),
     walkDir,
     updateModulesWithFile,
-    isExcluded;
+    isExcluded,
+    Y = require('yui').YUI({useSync: true}).use('json-parse', 'json-stringify');
 
+Y.applyConfig({useSync: false});
 
 walkDir = function(dir, modules, excludes) {
     // console.log("Walking " + dir);
@@ -125,6 +127,6 @@ module.exports = function(dir, excludes) {
         walkDir(dir[i], modules, excludes);
     }
 
-    // console.log(JSON.stringify(modules));
+    // console.log(Y.JSON.stringify(modules));
     return modules;
 };

@@ -40,11 +40,11 @@ var libfs = require('fs'),
     // nodejs-yui3 has global state about which modules are loaded. Use
     // multiple require()'d instances as a wall to prevent cross-contamination
     // when using loader for dependency calculations.
-    utilYUI = require('yui3').YUI,
-    serverYUI = require('yui3').YUI,
-    clientYUI = require('yui3').YUI,
+    utilYUI = require('yui').YUI,
+    serverYUI = require('yui').YUI,
+    clientYUI = require('yui').YUI,
 
-    Y = utilYUI().useSync('intl'),
+    Y = utilYUI({ useSync: true }).use('intl', 'json-parse', 'json-stringify'),
 
     mojitoRoot = __dirname,
 
@@ -527,7 +527,7 @@ ServerStore.prototype = {
         var self = this,
             base,
             appConfig = this.getAppConfig(ctx, 'application'),
-            cacheKey = JSON.stringify(instance) + JSON.stringify(
+            cacheKey = Y.JSON.stringify(instance) + Y.JSON.stringify(
                 this._getValidYCBContext(ctx)
             ),
             cacheValue = this._expandInstanceCache[env][cacheKey];
@@ -1681,7 +1681,7 @@ ServerStore.prototype = {
         console.log('--PACKAGE-- ' + info.depth + ' ' + info.pkg.name + '@' + info.pkg.version
                 + ' \t' + (info.pkg.yahoo && info.pkg.yahoo.mojito && info.pkg.yahoo.mojito.type)
                 + ' \t[' + info.parents.join(',') + ']'
-        //      + ' \t-- ' + JSON.stringify(info.inherit)
+        //      + ' \t-- ' + Y.JSON.stringify(info.inherit)
         );
         */
         pkg = {
@@ -2888,7 +2888,7 @@ ServerStore.prototype = {
             contents = this._libs.fs.readFileSync(fullpath, 'utf-8');
 
         try {
-            json = JSON.parse(contents);
+            json = Y.JSON.parse(contents);
         } catch (e) {
             logger.log(this._reportJavaScriptSyntaxErrors(contents, fullpath),
                 'warn', NAME);
@@ -3007,7 +3007,7 @@ ServerStore.prototype = {
         ctx = this._getValidYCBContext(ctx);
 
         //cache key only needs to account for dynamic context
-        cacheKey = JSON.stringify(ctx);
+        cacheKey = Y.JSON.stringify(ctx);
 
         //logger.log('_readConfigYCB('+fullpath+')', 'mojito', NAME);
 
@@ -3066,7 +3066,7 @@ ServerStore.prototype = {
         }
         try {
             contents = this._libs.fs.readFileSync(path, 'utf-8');
-            json = JSON.parse(contents);
+            json = Y.JSON.parse(contents);
         } catch (e) {
             logger.log(this._reportJavaScriptSyntaxErrors(contents, path),
                 'warn', NAME);
@@ -3718,8 +3718,6 @@ ServerStore.prototype = {
         if ('client' === env) {
             // Use clientYUI to avoid cross-contamination with serverYUI
             YUI = clientYUI;
-            // GlobalConfig is needed on nodejs but is invalid on the client
-            delete YUI.GlobalConfig;
         }
 
         // We don't actually need the full list, just the base required modules.
@@ -3733,20 +3731,20 @@ ServerStore.prototype = {
             return { sorted: Object.keys(required), paths: sortedPaths };
         }
 
-        Y = YUI().useSync('loader-base');
-        loader = new Y.Loader({ lang: ctx.lang });
+        Y = YUI({ useSync: true }).use('loader-base');
+        Y.applyConfig({ useSync: false });
 
         // We need to clear YUI's cached dependencies, since there's no
         // guarantee that the previously calculated dependencies have been done
         // using the same context as this calculation.
         delete YUI.Env._renderedMods;
 
-        // This approach seems odd, but it's what the YUI Configurator is also
-        // doing.
+        //Use ignoreRegistered here instead of the old `delete YUI.Env._renderedMods` hack
+        loader = new Y.Loader({ lang: ctx.lang, ignoreRegistered: true });
+
+        //Only override the default if it's required
         if (yuiConfig && yuiConfig.base) {
             loader.base = yuiConfig.base;
-        } else {
-            loader.base = Y.Env.meta.base + Y.Env.meta.root;
         }
         loader.addGroup({modules: modules}, mojitType);
         loader.calculate({required: required});
@@ -3754,6 +3752,10 @@ ServerStore.prototype = {
             module = loader.sorted[j];
             info = loader.moduleInfo[module];
             if (info) {
+                // modules with "nodejs" in their name are tweaks on other modules
+                if ('client' === env && module.indexOf('nodejs') !== -1) {
+                    continue;
+                }
                 sortedPaths[module] = info.fullpath || loader._url(info.path);
             }
         }

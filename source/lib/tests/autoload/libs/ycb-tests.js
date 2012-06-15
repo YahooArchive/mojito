@@ -35,7 +35,7 @@ YUI.add('mojito-ycb-tests', function(Y, NAME) {
 
             flat = libycb._flattenDimension('', dims[0].dimensions[6]['lang']);
 
-            //Y.log(JSON.stringify(flat,null,4));
+            //Y.log(Y.JSON.stringify(flat,null,4));
 
             A.isTrue(flat['en'] === 'en');
             A.isTrue(flat['en/en_CA'] === 'en_CA');
@@ -50,7 +50,7 @@ YUI.add('mojito-ycb-tests', function(Y, NAME) {
 
             flat = libycb._flattenDimensions(dims[0].dimensions);
 
-            //Y.log(JSON.stringify(flat,null,4));
+            //Y.log(Y.JSON.stringify(flat,null,4));
 
             A.isTrue(flat['lang']['en'] === 'en');
             A.isTrue(flat['lang']['en/en_CA'] === 'en_CA');
@@ -71,7 +71,7 @@ YUI.add('mojito-ycb-tests', function(Y, NAME) {
 
             list = libycb._makeOrderedLookupList(dims[0].dimensions, context);
 
-            //Y.log(JSON.stringify(list,null,4));
+            //Y.log(Y.JSON.stringify(list,null,4));
 
             A.isTrue(list['environment'][0] === 'preproduction');
             A.isTrue(list['lang'][0] === 'fr_CA');
@@ -91,7 +91,7 @@ YUI.add('mojito-ycb-tests', function(Y, NAME) {
 
             path = libycb._getLookupPath(dims[0].dimensions, context);
 
-            //Y.log(JSON.stringify(paths,null,4));
+            //Y.log(Y.JSON.stringify(paths,null,4));
 
             A.isTrue(path === 'preproduction/*/*/*/*/*/fr_FR/ir/*/*/*');
         },
@@ -108,7 +108,7 @@ YUI.add('mojito-ycb-tests', function(Y, NAME) {
                 };
 
             paths = libycb._getLookupPaths(dims[0].dimensions, context);
-            //Y.log(JSON.stringify(paths,null,4));
+            //Y.log(Y.JSON.stringify(paths,null,4));
 
             expected = [
                 "*/*/*/*/*/*/*/*/*/*/*",
@@ -140,11 +140,11 @@ YUI.add('mojito-ycb-tests', function(Y, NAME) {
             bundle = readFixtureFile('dimensions.json')
                      .concat(readFixtureFile('simple-1.json')[0]);
 
-            //Y.log(JSON.stringify(bundle,null,4));
+            //Y.log(Y.JSON.stringify(bundle,null,4));
 
             ycb = libycb._processRawBundle(bundle);
 
-            //Y.log(JSON.stringify(ycb,null,4));
+            //Y.log(Y.JSON.stringify(ycb,null,4));
 
             A.isTrue(ycb.settings['*/*/*/*/*/*/*/*/*/*/*'].title_key === 'YRB_YAHOO');
             A.isTrue(typeof ycb.dimensions[7].region.us !== 'undefined');
@@ -158,7 +158,7 @@ YUI.add('mojito-ycb-tests', function(Y, NAME) {
                      .concat(readFixtureFile('simple-1.json'))
                      .concat(readFixtureFile('simple-2.json'));
 
-            //Y.log(JSON.stringify(bundle,null,4));
+            //Y.log(Y.JSON.stringify(bundle,null,4));
 
             // This should throw an error for us to trap
             try{
@@ -168,7 +168,7 @@ YUI.add('mojito-ycb-tests', function(Y, NAME) {
                 return;
             }
 
-            //Y.log(JSON.stringify(ycb,null,4));
+            //Y.log(Y.JSON.stringify(ycb,null,4));
 
             A.isTrue(false);
         },
@@ -181,11 +181,11 @@ YUI.add('mojito-ycb-tests', function(Y, NAME) {
                      .concat(readFixtureFile('simple-1.json'))
                      .concat(readFixtureFile('simple-3.json'));
 
-            //Y.log(JSON.stringify(bundle,null,4));
+            //Y.log(Y.JSON.stringify(bundle,null,4));
 
             ycb = libycb._processRawBundle(bundle);
 
-            //Y.log(JSON.stringify(ycb,null,4));
+            //Y.log(Y.JSON.stringify(ycb,null,4));
 
             A.isTrue(ycb.settings['*/*/*/*/*/*/*/*/*/*/*'].title_key === 'YRB_YAHOO');
             A.isTrue(ycb.settings['*/*/*/*/*/*/*/fr/*/*/*'].links.home === 'http://fr.yahoo.com');
@@ -199,11 +199,11 @@ YUI.add('mojito-ycb-tests', function(Y, NAME) {
 
             config = readFixtureFile('substitutions.json');
 
-            //Y.log(JSON.stringify(config,null,4));
+            //Y.log(Y.JSON.stringify(config,null,4));
 
             libycb._applySubstitutions(config);
 
-            //Y.log(JSON.stringify(config,null,4));
+            //Y.log(Y.JSON.stringify(config,null,4));
 
             A.isTrue(config.key0.key4 === 'The value of key0.key2 is value2');
             A.isTrue(config.key5.key4 === 'The value of key0.key2 is value2');
@@ -223,7 +223,7 @@ YUI.add('mojito-ycb-tests', function(Y, NAME) {
 
             ycb = libycb.read(bundle);
 
-            //Y.log(JSON.stringify(ycb,null,4));
+            //Y.log(Y.JSON.stringify(ycb,null,4));
 
             A.isTrue(ycb.title_key === 'YRB_YAHOO');
             A.isTrue(ycb.links.home === 'http://www.yahoo.com');
@@ -274,7 +274,7 @@ YUI.add('mojito-ycb-tests', function(Y, NAME) {
                 };
 
             ycb = libycb.read(bundle, context);
-            //Y.log(JSON.stringify(ycb,null,4));
+            //Y.log(Y.JSON.stringify(ycb,null,4));
 
             A.isTrue(ycb.title_key === 'YRB_YAHOO');
             A.isTrue(ycb.logo === 'yahoo_FR.png');
@@ -298,7 +298,7 @@ YUI.add('mojito-ycb-tests', function(Y, NAME) {
 
             ycb = libycb.read(bundle, context);
 
-            //Y.log(JSON.stringify(ycb,null,4));
+            //Y.log(Y.JSON.stringify(ycb,null,4));
 
             A.isTrue(ycb.title_key === 'YRB_YAHOO');
             A.isTrue(ycb.logo === 'yahoo_FR.png');
@@ -321,7 +321,7 @@ YUI.add('mojito-ycb-tests', function(Y, NAME) {
                 };
 
             ycb = libycb.read(bundle, context);
-            //Y.log(JSON.stringify(ycb,null,4));
+            //Y.log(Y.JSON.stringify(ycb,null,4));
 
             A.isTrue(ycb.title_key === 'YRB_YAHOO');
             A.isTrue(ycb.logo === 'yahoo_bt_GB.png');
@@ -366,7 +366,7 @@ YUI.add('mojito-ycb-tests', function(Y, NAME) {
         var path = require('path').join(__dirname, '../../', 'fixtures/ycb' , file),
             data = require('fs').readFileSync(path, 'utf8');
 
-        return JSON.parse(data);
+        return Y.JSON.parse(data);
     }
 
     YUITest.TestRunner.add(suite);

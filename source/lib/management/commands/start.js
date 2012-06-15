@@ -10,7 +10,10 @@
 
 var path = require('path'),
     utils = require('../utils'),
-    fs = require('fs');
+    fs = require('fs'),
+    Y = require('yui').YUI({useSync: true}).use('json-parse', 'json-stringify');
+
+Y.applyConfig({useSync: false});
 
 
 /**
@@ -82,7 +85,7 @@ exports.run = function(params, opts, callback) {
 
     try {
         // Are we in a Mojito App? Read the application.json config to find out.
-        appConfig = JSON.parse(fs.readFileSync(path.join(root,
+        appConfig = Y.JSON.parse(fs.readFileSync(path.join(root,
             'application.json'), 'utf8'));
         appConfig = appConfig[0];
     } catch (err) {
@@ -90,7 +93,7 @@ exports.run = function(params, opts, callback) {
     }
 
     try { // Read the package.json config
-        pack = JSON.parse(fs.readFileSync(path.join(root, 'package.json'),
+        pack = Y.JSON.parse(fs.readFileSync(path.join(root, 'package.json'),
             'utf8'));
     } catch (err2) {
         pack = {};

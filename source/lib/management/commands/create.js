@@ -31,8 +31,10 @@ var utils = require('../utils'),
         'var', 'volatile', 'void',
         'while', 'with'
     ],
-    usage;
+    usage,
+    Y = require('yui').YUI({useSync: true}).use('json-parse', 'json-stringify');
 
+Y.applyConfig({useSync: false});
 
 usage = 'mojito create {type} [archetype] {name} [options]\n' +
     "\t- type: 'app', 'mojit', or 'project'\n" +
@@ -102,7 +104,7 @@ var createProject = function(archetype, destdir, inputs, force, callback) {
     // Are we in a Mojito App? (We need the application.json file to make this
     // work)
     try {
-        config = JSON.parse(String(fs.readFileSync(path.join(process.cwd(),
+        config = Y.JSON.parse(String(fs.readFileSync(path.join(process.cwd(),
             'application.json'))));
         config = config[0];
     } catch (err) {

@@ -38,7 +38,10 @@ var path = require('path'),
     usage,
     options,
     run,
-    YuiModuleCacher;
+    YuiModuleCacher,
+    Y = require('yui').YUI({useSync: true}).use('json-parse', 'json-stringify');
+
+Y.applyConfig({useSync: false});
 
 
 usage = 'mojito compile {options} {type}\n' +
@@ -52,6 +55,8 @@ usage = 'mojito compile {options} {type}\n' +
     '\t  -e          :  short for --everything\n' +
     '\t --clean      :  clean up all compiled modules\n' +
     '\t  -c          :  short for --clean\n' +
+    '\t --core       :  compile only mojito core (only applies to rollups)\n' +
+    '\t  -o          :  short for --core\n' +
     '\t --verbose    :  for verbose output\n' +
     '\t  -v          :  short for --verbose\n' +
     '\t --port       :  if a server is started, specify the port\n' +
@@ -74,6 +79,11 @@ options = [
     {
         shortName: 'c',
         longName: 'clean',
+        hasValue: false
+    },
+    {
+        shortName: 'o',
+        longName: 'core',
         hasValue: false
     },
     {
@@ -425,7 +435,9 @@ compile.rollups = function(context, options, callback) {
         rollupBody = '';
         for (i = 0; i < rollup.srcs.length; i += 1) {
             src = rollup.srcs[i];
-            rollupBody += fs.readFileSync(src, 'utf-8');
+            if (!options['core'] || src.match(/\/mojito\//)) {
+                rollupBody += fs.readFileSync(src, 'utf-8');
+            }
         }
         fs.writeFileSync(rollup.dest, rollupBody, 'utf-8');
         if (options.verbose) {
@@ -434,7 +446,7 @@ compile.rollups = function(context, options, callback) {
         processed += 1;
     }
 
-    if (options.app) {
+    if (options.app || options.core) {
         rollup = store.getRollupsApp('client', context);
         rollOneUp(rollup);
         utils.log('All rollups have been ' +
@@ -489,7 +501,7 @@ compile.views = function(context, options, callback) {
         source,
         engine,
         mojitViews = {},
-        YUI = require('yui3').YUI;
+        YUI = require('yui').YUI;
 
     // there are no views in the app, so no need to do this
     if (options.app) {
@@ -516,7 +528,7 @@ compile.views = function(context, options, callback) {
             mojitNs = mojitName.replace(/\./g, '_'),
             yuiModuleCacheWriter,
             viewName,
-            Y;
+            MojY;
 
         if (options.remove) {
             if (removeFile(outputFilepath)) {
@@ -554,12 +566,13 @@ compile.views = function(context, options, callback) {
                         source = view['content-path'];
                         engine = view.engine;
                         yuiConfig = mojit.yui.config;
+                        yuiConfig.useSync = true;
 
-                        Y = YUI(yuiConfig).useSync('mojito-' + engine);
-                        renderer = new (Y.mojito.addons.viewEngines[engine])();
+                        MojY = YUI(yuiConfig).use('mojito-' + engine);
+                        renderer = new (MojY.mojito.addons.viewEngines[engine])();
 
                         if (typeof renderer.compiler === 'function') {
-                            renderedView = JSON.parse(
+                            renderedView = Y.JSON.parse(
                                 renderer.compiler(source).toString()
                             );
                             yuiModuleCacheWriter.createNamespace('compiled.' +
@@ -666,7 +679,7 @@ compile.json = function(context, options, callback) {
             }
             getContentFromUrl(app, specUrl, jsonOpts, function(spec) {
                 yuiModuleCacheWriter.createNamespace('compiled.' + mojitNs +
-                    '.specs').cache(specName, JSON.parse(spec));
+                    '.specs').cache(specName, Y.JSON.parse(spec));
                 processNextSpec(mojitName, yuiModuleCacheWriter, cb);
             });
         } else {
@@ -680,7 +693,7 @@ compile.json = function(context, options, callback) {
             var url = staticPrefix + mojitName + '/definition.json';
 
             getContentFromUrl(app, url, jsonOpts, function(definition) {
-                var defObj = JSON.parse(definition);
+                var defObj = Y.JSON.parse(definition);
 
                 ymcw.createNamespace('compiled.' +
                     mojitName.replace(/\./g, '_') + '.definitions').cache(
@@ -989,7 +1002,7 @@ YuiModuleCacher.prototype.dump = function() {
     Object.keys(namespaces).forEach(function(ns) {
         s += '    YUI.namespace("_mojito._cache.' + ns + '");\n';
         s += '    YUI._mojito._cache.' + ns + ' = ' +
-            JSON.stringify(namespaces[ns]._c) + ';\n';
+            Y.JSON.stringify(namespaces[ns]._c) + ';\n';
     });
     s += '});\n';
     return s;

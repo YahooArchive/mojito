@@ -70,7 +70,7 @@ YUI.add('mojito-mu', function(Y, NAME) {
 
 
         compiler: function(tmpl) {
-            return JSON.stringify(fs.readFileSync(tmpl, 'utf8'));
+            return Y.JSON.stringify(fs.readFileSync(tmpl, 'utf8'));
         }
     };
 

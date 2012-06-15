@@ -11,8 +11,8 @@ Mojito provides addons for accessing data from query string and routing paramete
 
 This section will provide an overview of the following addons that allow you to access data:
 
-- `Params addon <../../api/Params.common.html>`_
-- `Cookies addon <../../api/Cookie.client.html>`_
+- `Params addon <../../api/classes/Params.common.html>`_
+- `Cookies addon <../../api/classes/Cookie.server.html>`_
 
 To see examples using these addons to get data, see `Using Query Parameters <../code_exs/query_params.html>`_ and `Using Cookies <../code_exs/cookies.html>`_.
 

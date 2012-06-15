@@ -116,15 +116,15 @@ YUI.add('mojito-loader-tests', function(Y, NAME) {
             var got = loader.createYuiLibComboUrl(modules, filter);
             var expected = [
                 'http://yui.yahooapis.com/combo?' + 
-                '3.4.1/build/yui/yui-debug.js&' +
-                '3.4.1/build/yui-base/yui-base-debug.js&' + 
-                '3.4.1/build/collection/collection-debug.js&' +
-                '3.4.1/build/oop/oop-debug.js&' +
-                '3.4.1/build/features/features-debug.js&' +
-                '3.4.1/build/dom-core/dom-core-debug.js&' +
-                '3.4.1/build/dom-base/dom-base-debug.js&' +
-                '3.4.1/build/selector-native/selector-native-debug.js&' +
-                '3.4.1/build/selector-css2/selector-css2-debug.js'
+                Y.version + '/build/yui/yui-debug.js&' +
+                Y.version + '/build/yui-base/yui-base-debug.js&' + 
+                Y.version + '/build/collection/collection-debug.js&' +
+                Y.version + '/build/oop/oop-debug.js&' +
+                Y.version + '/build/features/features-debug.js&' +
+                Y.version + '/build/dom-core/dom-core-debug.js&' +
+                Y.version + '/build/dom-base/dom-base-debug.js&' +
+                Y.version + '/build/selector-native/selector-native-debug.js&' +
+                Y.version + '/build/selector-css2/selector-css2-debug.js'
             ];
             AA.itemsAreEqual(expected, got.js);
             A.isArray(got.css);

@@ -80,7 +80,7 @@ YUI.add('mojito-middleware-handler-tunnel-tests', function(Y, NAME) {
                             "id": "MojitA:orange"
                         };
                         endCalls++;
-                        Assert.areEqual(JSON.stringify(expected,null,4), data, 'should have gotten spec');
+                        Assert.areEqual(Y.JSON.stringify(expected,null,4), data, 'should have gotten spec');
                     }
 
                 };
@@ -112,7 +112,7 @@ YUI.add('mojito-middleware-handler-tunnel-tests', function(Y, NAME) {
                             "id": "MojitA:orange"
                         };
                         endCalls++;
-                        Assert.areEqual(JSON.stringify(expected,null,4), data, 'should have gotten spec');
+                        Assert.areEqual(Y.JSON.stringify(expected,null,4), data, 'should have gotten spec');
                     }
 
                 };
@@ -144,7 +144,7 @@ YUI.add('mojito-middleware-handler-tunnel-tests', function(Y, NAME) {
                             "type": "MojitA"
                         };
                         endCalls++;
-                        Assert.areEqual(JSON.stringify(expected,null,4), data, 'should have gotten spec');
+                        Assert.areEqual(Y.JSON.stringify(expected,null,4), data, 'should have gotten spec');
                     }
 
                 };
@@ -176,7 +176,7 @@ YUI.add('mojito-middleware-handler-tunnel-tests', function(Y, NAME) {
                             "type": "MojitA"
                         };
                         endCalls++;
-                        Assert.areEqual(JSON.stringify(expected,null,4), data, 'should have gotten spec');
+                        Assert.areEqual(Y.JSON.stringify(expected,null,4), data, 'should have gotten spec');
                     }
 
                 };
