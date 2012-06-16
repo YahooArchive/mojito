@@ -147,7 +147,7 @@ Mu.normalize = function Mu_normalize(context, name) {
         val = val.call(context);
     }
     
-    return typeof val === 'undefined' ? '' : val.toString();
+    return (null === val || typeof val === 'undefined') ? '' : val.toString();
 }
 
 /**
@@ -170,7 +170,7 @@ Mu.enumerable = function Mu_enumerable(context, val, fn) {
         val = val.call(context);
     }
     
-    if (typeof val === 'undefined') {
+    if (null === val || typeof val === 'undefined') {
         return '';
     }
     
@@ -181,9 +181,7 @@ Mu.enumerable = function Mu_enumerable(context, val, fn) {
     if (val instanceof Array) {
         var result = '';
         for (var i = 0, len = val.length; i < len; i++) {
-            var oproto = insertProto(val[i], context);
-            result += fn(val[i]);
-            oproto.__proto__ = baseProto;
+            result += Mu.enumerable(context, val[i], fn);
         }
         return result;
     }
