@@ -888,7 +888,12 @@ YUI.add('mojito-client', function(Y, NAME) {
             mp.invoke(mp._action, opts, function(err, data, meta) {
 
                 if (err) {
-                    throw new Error(err);
+                    if (typeof cb === 'function') {
+                        cb(new Error(err));
+                        return;
+                    } else {
+                        throw new Error(err);
+                    }
                 }
 
                 /*
