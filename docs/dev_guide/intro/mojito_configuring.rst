@@ -766,7 +766,7 @@ The table below describes the properties of the ``route`` object of  ``routes.js
 |                |                      |               | placeholders for the mojit instance and action         |
 |                |                      |               | that are substituted by the mojit instance and         |
 |                |                      |               | actions used in the ``call`` property.  See also       |
-|                |                      |               | :ref:`parameterized_paths`.
+|                |                      |               | :ref:`parameterized_paths`.                            |
 +----------------+----------------------+---------------+--------------------------------------------------------+
 | ``verbs``      | array of strings     | No            | The HTTP methods allowed on the route path defined     |
 |                |                      |               | by ``path``. For example, to allow HTTP GET and        |
@@ -881,7 +881,7 @@ Adding Routing Parameters
 You can configure a routing path to have routing parameters with the ``params`` property. Routing parameters are accessible from the ``ActionContext`` object using 
 the `Params addon <../../api/Params.common.html>`_.
 
-In the example ``routes.json`` below, routing parameters are added with a query string. To get the value for the routing parameter ``page`` from a controller, you 
+In the example ``routes.json`` below, routing parameters are added with an object. To get the value for the routing parameter ``page`` from a controller, you 
 would use ``ac.params.getFromRoute("page")``. 
 
 .. code-block:: javascript
@@ -898,8 +898,11 @@ would use ``ac.params.getFromRoute("page")``.
      }
    ]
    
-.. note::   **Deprecated**: The routing parameters can also be specified as a query string: ``"params": "page=1&log_request=true"``
-   
+
+.. admonition:: Deprecated
+
+   Specifying routing parameters as a query string, such as ``"params": "page=1&log_request=true"``, 
+   is still supported, but may not be in the future.
 
 .. _parameterized_paths:
 
