@@ -755,11 +755,11 @@ The table below describes the properties of the ``route`` object of  ``routes.js
 +----------------+----------------------+---------------+--------------------------------------------------------+
 | ``params``     | string               | No            | Query string parameters that developers can            |
 |                |                      |               | associate with a route path. The default value is an   | 
-|                |                      |               | empty string "". The query string parameters can be    |
-|                |                      |               | given as a string or as an object. For example, either |
-|                |                      |               | of the following could be used:                        |
-|                |                      |               | ``params: "name=Tom&age=23"``                          |
+|                |                      |               | empty string "". The query string parameters should    |
+|                |                      |               | be given an object:                                    |
 |                |                      |               | ``params: { "name": "Tom", "age": "23" }``             |
+|                |                      |               |                                                        |
+|                |                      |               | **Deprecated**:  ``params: "name=Tom&age=23"``         |
 +----------------+----------------------+---------------+--------------------------------------------------------+
 | ``path``       | string               | Yes           | The route path that is mapped to the action in the     |
 |                |                      |               | ``call`` property. The route path can have variable    |
@@ -828,7 +828,7 @@ In the ``routes.json`` below,  an anonymous instance of ``HelloMojit`` is made b
          "verbs": ["get"],
          "path": "/",
          "call": "@HelloMojit.index",
-         "params": "first_visit=true"
+         "params": { "first_visit": true }
        }
      }
    ]
@@ -882,7 +882,7 @@ You can configure a routing path to have routing parameters with the ``params`` 
 the `Params addon <../../api/Params.common.html>`_.
 
 In the example ``routes.json`` below, routing parameters are added with a query string. To get the value for the routing parameter ``page`` from a controller, you 
-would use ``ac.params.getFromRoute("page")``. The routing parameters can also be specified as an object: ``"params": { "page": 1, "log_request": true }``
+would use ``ac.params.getFromRoute("page")``. 
 
 .. code-block:: javascript
 
@@ -893,10 +893,12 @@ would use ``ac.params.getFromRoute("page")``. The routing parameters can also be
          "verb": ["get"],
          "path": "/*",
          "call": "foo-1.index",
-         "params": "page=1&log_request=true"
+         "params": { "page": 1, "log_request": true }
        }
      }
    ]
+   
+.. note::   **Deprecated**: The routing parameters can also be specified as a query string: ``"params": "page=1&log_request=true"``
    
 
 .. _parameterized_paths:
