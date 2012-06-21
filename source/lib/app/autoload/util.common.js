@@ -72,6 +72,86 @@ YUI.add('mojito-util', function(Y) {
         },
 
 
+        /**
+         * Unicode escapes the "Big 5" HTML characters (<, >, ', ", and &). Note
+         * that only strings are escaped by this routine. If you want to ensure
+         * that an entire object or array is escaped use the util.cleanse() call.
+         * @param {Object} obj The object to encode/escape.
+         */
+        unicodeEscape: function(obj) {
+
+            if (Y.Lang.isString(obj)) {
+                return obj.replace(/</g, '\\u003C').
+                    replace(/>/g, '\\u003E').
+                    replace(/&/g, '\\u0026').
+                    replace(/'/g, '\\u0027').
+                    replace(/"/g, '\\u0022');
+            }
+
+            return obj;
+        },
+
+
+        /**
+         * Cleanses string keys and values in an object, returning a new object
+         * whose strings are escaped using the escape function provided. The
+         * default escape function is the util.unicodeEscape function.
+         * @param {Object} obj The object to cleanse.
+         * @param {Function} escape The escape function to run. Default is
+         *     util.unicodeEscape.
+         * @return {Object} The cleansed object.
+         */
+        cleanse: function(obj, escape) {
+            var func,
+                clean,
+                len,
+                i;
+
+            // Confirm we got a valid escape function, or default properly.
+            if (escape) {
+                if (typeof escape === 'function') {
+                    func = escape;
+                } else {
+                    throw new Error('Invalid escape function: ' + escape);
+                }
+            }
+            func = func || this.unicodeEscape;
+
+            // How we proceed depends on what type of object we received. If we
+            // got a String or RegExp they're not strictly mutable, but we can
+            // quickly escape them and return. If we got an Object or Array
+            // we'll need to iterate, but in different ways since their content
+            // is found via different indexing models. If we got anything else
+            // we can just return it.
+
+            if (Y.Lang.isString(obj)) {
+                return func(obj);
+            }
+
+            if (Y.Lang.isArray(obj)) {
+                clean = [];
+                len = obj.length;
+                for (i = 0; i < len; i += 1) {
+                    clean.push(this.cleanse(obj[i], func));
+                }
+                return clean;
+            }
+
+            if (Y.Lang.isObject(obj)) {
+                clean = {};
+                for (i in obj) {
+                    if (obj.hasOwnProperty(i)) {
+                        clean[this.cleanse(i, func)] =
+                            this.cleanse(obj[i], func);
+                    }
+                }
+                return clean;
+            }
+
+            return obj;
+        },
+
+
         copy: function(obj) {
             var temp = null,
                 key = '';
