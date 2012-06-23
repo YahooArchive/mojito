@@ -163,13 +163,14 @@ YUI.add('mojito-client', function(Y, NAME) {
                 binder));
         }
 
-        // TODO: add all the event delegation majic here.
+        // TODO: add all the event delegation magic here.
         Y.log('Attached ' + handles.length + ' event delegates', 'debug', NAME);
         return handles;
     }
 
 
     // TODO: complete work to call this in the destroyMojitProxy function().
+    // this function is never called /iy
     function unbindNode(binder, handles) {
         var retainBinder = false;
 
