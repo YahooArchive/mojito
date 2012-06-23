@@ -20,13 +20,13 @@
       "verbs": ["get"],
       "path": "/example3",
       "call": "frame.example3",
-      "params": "from=routing&foo=bar&bar=foo"
+      "params": { "from": "routing", "foo": "bar", "bar": "foo" }
     },
     "example4": {
       "verbs": ["get", "post"],
       "path": "/example4",
       "call": "frame.example4",
-      "params": "from=routing&foo3=bar3"
+      "params": { "from": "routing", "foo3": "bar3" }
     }
   }
 ]

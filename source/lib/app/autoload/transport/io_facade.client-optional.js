@@ -123,9 +123,19 @@ YUI.add('io-facade', function(Y) {
 
             handleResponse: function(id, o, badcookie) {
                 var time = (new Date()) - txTimes[id],
-                    respData = Y.JSON.parse(o.responseText),
+                    respData,
+                    txId,
+                    callback;
+
+                try {
+                    respData = Y.JSON.parse(o.responseText);
                     txId = respData.resps[0].txId,
                     callback = cbs[txId];
+                } catch (e) {
+                    respData = e.message;
+                    txId = null;
+                    callback = null;
+                }
 
                 delete cbs[txId];
                 this.fire('transactionResponse', {
