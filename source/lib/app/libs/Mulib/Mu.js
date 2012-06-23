@@ -22,10 +22,10 @@ Mu.templateExtension = '';
  * 
  * run.js
  * 
- *     var sys = require('sys'),
+ *     var util = require('util'),
  *                Mu = require('./lib/mu');
  *     Mu.compile('myTemplate', function (compiled) {
- *         compiled({name: 'Jim'}).addListener('data', function (c) { sys.print(c) })
+ *         compiled({name: 'Jim'}).addListener('data', function (c) { util.print(c) })
  *     });
  * 
  * Running run.js will produce:
@@ -62,11 +62,11 @@ Mu.compile = function Mu_compile(filename, callback) {
  * 
  * @example
  * 
- * var sys = require('sys');
+ * var util = require('util');
  * var tmpl = "Hello {{> part}}. What is your {{name}}?";
  * var partials = {part: "World"};
  * var compiled = Mu.compileText(tmpl, partials);
- * compiled({name: 'Jim'}).addListener('data', function (c) { sys.puts(c); });
+ * compiled({name: 'Jim'}).addListener('data', function (c) { util.puts(c); });
  * 
  * @param {String} text The main template to compile.
  * @param {Object} partials The partials to expand when encountered. The object

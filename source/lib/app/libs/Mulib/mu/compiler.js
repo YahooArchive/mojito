@@ -1,4 +1,4 @@
-var sys = require('sys'),
+var util = require('util'),
         Path    = require('path'),
         Mu = require('../Mu');
 
@@ -74,7 +74,7 @@ function RenderEventEmitter(options) {
     this.closed = false;
     this.emittedEOF = false;
 }
-sys.inherits(RenderEventEmitter, process.EventEmitter);
+util.inherits(RenderEventEmitter, process.EventEmitter);
 
 mixin(RenderEventEmitter.prototype, {
     write: function (chunk) {
