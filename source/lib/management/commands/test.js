@@ -126,7 +126,7 @@ function configureYUI(YUI, store, load) {
         groups: {
             'mojito-fw': store.getYuiConfigFw('server', {}),
             'mojito-app': store.getYuiConfigApp('server', {}),
-            'mojito-mojits': store.getYuiConfigAllMojits('server,', {})
+            'mojito-mojits': store.getYuiConfigAllMojits('server', {})
         }
     });
 }
