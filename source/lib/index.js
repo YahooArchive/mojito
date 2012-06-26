@@ -106,6 +106,7 @@ MojitoServer.prototype = {
             middleware,
             m,
             midName,
+            midBase,
             midPath,
             midFactory,
             hasMojito,
@@ -303,7 +304,7 @@ MojitoServer.prototype = {
                     // We assume the middleware is a factory function
                     // and pass in the following config object when
                     // calling said function.
-                    // 
+                    //
                     // midConfig = {
                     //    Y: Y,
                     //    store: store,
@@ -317,7 +318,16 @@ MojitoServer.prototype = {
                 // specified by path
                 midPath = libpath.join(options.dir, midName);
                 //console.log("======== MIDDLEWARE user " + midPath);
-                app.use(require(midPath));
+                midBase = libpath.basename(midPath);
+                if (0 === midBase.indexOf('mojito-')) {
+                    // Same as above (case of Mojito's special middlewares)
+                    // Gives a user-provided middleware access to the YUI
+                    // instance, resource store, logger, context, etc.
+                    midFactory = require(midPath);
+                    app.use(midFactory(midConfig));
+                } else {
+                    app.use(require(midPath));
+                }
             }
         }
 

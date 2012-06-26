@@ -159,7 +159,7 @@ To set up and run ``configure_routing``:
           var methods = "";
           var name = "";
           var action = ac.action;
-          var path = ac.cookie.req.url;
+          var path = ac.http.getRequest().url;
           if(path==="/" && action==="index"){
             name = ac.app.routes.root_route.name;
             Object.keys(ac.app.routes.root_route.verbs).forEach(function(n) {

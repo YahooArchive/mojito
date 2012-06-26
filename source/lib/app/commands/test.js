@@ -121,6 +121,7 @@ function configureYUI(Y, store) {
     Y.applyConfig(store.yui.getConfigFw('server', {}));
     Y.applyConfig(store.yui.getConfigApp('server', {}));
     Y.applyConfig(store.yui.getConfigAllMojits('server', {}));
+    Y.applyConfig({useSync: true});
 }
 
 

@@ -66,7 +66,6 @@ YUI.add('mojito-deploy-addon', function(Y, NAME) {
             }
         },
 
-
         /**
          * Builds up the browser Mojito runtime.
          * @method constructMojitoClientRuntime
@@ -86,6 +85,8 @@ YUI.add('mojito-deploy-addon', function(Y, NAME) {
                 appConfigClient,
                 yuiConfig = {},
                 fwConfig,
+                yuiConfigEscaped,
+                yuiConfigStr,
                 yuiModules,
                 loader,
                 yuiCombo,
@@ -98,6 +99,8 @@ YUI.add('mojito-deploy-addon', function(Y, NAME) {
                 id,
                 instances = {},
                 clientConfig = {},
+                clientConfigEscaped,
+                clientConfigStr,
                 usePrecomputed,
                 useOnDemand,
                 initialModuleList,
@@ -291,11 +294,18 @@ YUI.add('mojito-deploy-addon', function(Y, NAME) {
                 initialModuleList = "'mojito-client'";
             }
 
-            initializer = '<script type=\"text/javascript\" >\n' +
-                '    YUI_config = ' + Y.JSON.stringify(yuiConfig) + ';\n' +
+            // Unicode escape the various strings in the config data to help
+            // fight against possible script injection attacks.
+            yuiConfigEscaped = Y.mojito.util.cleanse(yuiConfig);
+            yuiConfigStr = Y.JSON.stringify(yuiConfigEscaped);
+            clientConfigEscaped = Y.mojito.util.cleanse(clientConfig);
+            clientConfigStr = Y.JSON.stringify(clientConfigEscaped);
+
+            initializer = '<script type="text/javascript">\n' +
+                '    YUI_config = ' + yuiConfigStr + ';\n' +
                 '    YUI().use(' + initialModuleList + ', function(Y) {\n' +
                 '    window.YMojito = { client: new Y.mojito.Client(' +
-                Y.JSON.stringify(clientConfig, null, 2) + ') };\n' +
+                clientConfigStr + ') };\n' +
                 '        });\n' +
                 '</script>\n';
 
