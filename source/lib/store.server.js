@@ -89,6 +89,19 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
         // which addon subtypes are app-level
         ADDON_SUBTYPES_APPLEVEL = {
             'rs': true
+        },
+        DEFAULT_AFFINITIES = {
+            'action': 'server',
+            'addon': 'server',
+            'archetype': 'server',
+            'asset': 'common',
+            'binder': 'client',
+            'command': 'server',
+            'controller': 'server',
+            'middleware': 'server',
+            'model': 'server',
+            'spec': 'common',
+            'view': 'common'
         };
 
 
@@ -151,6 +164,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             // Y.Plugin AOP doesn't allow afterHostMethod() callbacks to
             // modify the results, so we fire an event instead.
             this.publish('getMojitTypeDetails', {emitFacade: true, preventable: false});
+            this.publish('mojitResourcesResolved', {emitFacade: true, preventable: false});
 
             // We'll start with just our "config" addon.
             this._yuiUseSync({
@@ -478,6 +492,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 res,
                 engine,
                 engines = {},   // view engines
+                posl = this.selector.getListFromContext(ctx),
                 ctxKey,
                 module;
 
@@ -565,6 +580,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 args: {
                     env: env,
                     ctx: ctx,
+                    posl: posl,
                     mojitType: mojitType
                 },
                 mojit: dest
@@ -955,7 +971,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                     type: type,
                     subtype: subtype,
                     name: fs.basename,
-                    affinity: 'server',
+                    affinity: DEFAULT_AFFINITIES[type],
                     selector: '*'
                 };
                 res.id = [res.type, res.subtype, res.name].join('-');
@@ -972,7 +988,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                     mojit: mojitType,
                     type: type,
                     subtype: subtype,
-                    affinity: 'server',
+                    affinity: DEFAULT_AFFINITIES[type],
                     selector: '*'
                 };
                 if (baseParts.length >= 3) {
@@ -985,7 +1001,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                     Y.log('invalid ' + type + ' filename. skipping ' + fs.fullPath, 'warn', NAME);
                     return;
                 }
-                res.name = libpath.join(fs.subDirArray.slice(1).join('/'), baseParts.join('.'));
+                res.name = libpath.join(fs.subDirArray.join('/'), baseParts.join('.'));
                 res.id = [res.type, res.subtype, res.name].join('-');
                 // special case
                 if ('addon' === type && ADDON_SUBTYPES_APPLEVEL[res.subtype]) {
@@ -1001,7 +1017,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                     mojit: mojitType,
                     type: type,
                     subtype: subtype,
-                    affinity: 'common',
+                    affinity: DEFAULT_AFFINITIES[type],
                     selector: '*'
                 };
                 if (baseParts.length >= 2) {
@@ -1022,7 +1038,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                     source: source,
                     mojit: mojitType,
                     type: 'spec',
-                    affinity: 'common',
+                    affinity: DEFAULT_AFFINITIES[type],
                     selector: '*'
                 };
                 if (baseParts.length !== 1) {
@@ -1043,7 +1059,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                     subtype: subtype,
                     viewOutputFormat: fs.ext.substr(1),
                     viewEngine: baseParts.pop(),
-                    affinity: 'common',
+                    affinity: DEFAULT_AFFINITIES[type],
                     selector: '*'
                 };
                 if (baseParts.length >= 2) {
@@ -1150,9 +1166,15 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                         }
                         for (type in this._mojitRVs) {
                             if (this._mojitRVs.hasOwnProperty(type)) {
-                                this._mojitResources[env][poslKey][type] =
-                                    this._resolveVersions(affinities, selectors, sourceBase, [ this._mojitRVs.shared, this._mojitRVs[type] ]);
-                                // TODO:  fire event that mojit has been resolved
+                                ress = this._resolveVersions(affinities, selectors, sourceBase, [ this._mojitRVs.shared, this._mojitRVs[type] ]);
+                                this._mojitResources[env][poslKey][type] = ress;
+                                // TODO DOCS:  document event
+                                this.fire('mojitResourcesResolved', {
+                                    env: env,
+                                    posl: posl,
+                                    mojit: type,
+                                    ress: ress
+                                });
                             }
                         }
                     }

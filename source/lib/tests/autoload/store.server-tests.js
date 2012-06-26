@@ -165,200 +165,6 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
             });
         },
 
-        'server mojit instance yui': function() {
-            var store = new Y.mojito.ResourceStore({ root: fixtures });
-            store.preload();
-
-            var instance = {type:'TestMojit2'};
-            store.expandInstance(instance, {}, function(err, instance) {
-                A.isNotUndefined(instance.yui);
-
-                A.isNotUndefined(instance.yui.config);
-                A.isNotUndefined(instance.yui.config.modules);
-                A.isNotUndefined(instance.yui.config.modules['test_mojit_2']);
-                A.areSame(libpath.join(fixtures, 'mojits/test_mojit_2/controller.server.js'), instance.yui.config.modules['test_mojit_2'].fullpath);
-                A.isNotUndefined(instance.yui.config.modules['mojito-mu']);
-                A.areSame(libpath.join(mojitoRoot, 'app/addons/view-engines/mu.server.js'), instance.yui.config.modules['mojito-mu'].fullpath);
-
-                A.isObject(instance.yui.langs);
-                A.areSame(2, Y.Object.keys(instance.yui.langs).length, 'wrong number of langs');
-                A.areSame('lang/test_mojit_2_en-US', instance.yui.langs['en-US']);
-                A.areSame('lang/test_mojit_2_de', instance.yui.langs['de']);
-
-                A.isArray(instance.yui.requires);
-                AA.contains('test_mojit_2', instance.yui.requires);
-                AA.doesNotContain('test_applevelModel', instance.yui.requires);
-                AA.doesNotContain('ModelFlickr', instance.yui.requires);
-                AA.contains('mojito-mu', instance.yui.requires);
-                AA.contains('mojito', instance.yui.requires);
-
-                A.isArray(instance.yui.sorted);
-                AA.contains('test_mojit_2', instance.yui.sorted);
-                AA.doesNotContain('test_applevelModel', instance.yui.sorted);
-                AA.doesNotContain('ModelFlickr', instance.yui.sorted);
-                AA.contains('mojito-mu', instance.yui.sorted);
-                AA.contains('mojito', instance.yui.sorted);
-
-                A.isObject(instance.yui.sortedPaths);
-                A.areSame(libpath.join(fixtures, 'mojits/test_mojit_2/controller.server.js'), instance.yui.sortedPaths['test_mojit_2']);
-                A.isUndefined(instance.yui.sortedPaths['test_applevelModel']);
-                A.isUndefined(instance.yui.sortedPaths['ModelFlickr']);
-                A.areSame(libpath.join(mojitoRoot, 'app/addons/view-engines/mu.server.js'), instance.yui.sortedPaths['mojito-mu']);
-                A.areSame(libpath.join(mojitoRoot, 'app/autoload/mojito.common.js'), instance.yui.sortedPaths['mojito']);
-            });
-
-        },
-
-        'server mojit instance yui - precomputed': function() {
-            var fixtures = libpath.join(__dirname, '../fixtures/precomputed');
-            var store = new Y.mojito.ResourceStore({ root: fixtures });
-            store.preload();
-
-            var instance = { type:'PagedFlickr' };
-            store.expandInstance(instance, {}, function(err, instance) {
-                A.isNotUndefined(instance.yui);
-
-                A.isArray(instance.yui.requires);
-                AA.contains('mojito', instance.yui.requires);
-                AA.contains('mojito-dispatcher', instance.yui.requires);
-                AA.contains('mojito-mu', instance.yui.requires);
-                AA.contains('PagedFlickr', instance.yui.requires);
-
-                A.isArray(instance.yui.sorted);
-                AA.contains('intl', instance.yui.sorted);
-                AA.contains('datatype-date-format', instance.yui.sorted);
-                AA.contains('mojito', instance.yui.sorted);
-                AA.contains('mojito-util', instance.yui.sorted);
-                AA.contains('mojito-intl-addon', instance.yui.sorted);
-                AA.contains('lang/PagedFlickr_de', instance.yui.sorted);
-                AA.contains('lang/PagedFlickr_en', instance.yui.sorted);
-                AA.contains('lang/PagedFlickr_en-US', instance.yui.sorted);
-                AA.contains('lang/datatype-date-format_de', instance.yui.sorted);
-                AA.contains('lang/datatype-date-format_en', instance.yui.sorted);
-                AA.contains('lang/datatype-date-format_en-US', instance.yui.sorted);
-
-                A.isObject(instance.yui.sortedPaths);
-                A.isNotUndefined(instance.yui.sortedPaths['intl']);
-                A.isNotUndefined(instance.yui.sortedPaths['datatype-date-format']);
-                A.isNotUndefined(instance.yui.sortedPaths['mojito']);
-                A.isNotUndefined(instance.yui.sortedPaths['mojito-util']);
-                A.isNotUndefined(instance.yui.sortedPaths['mojito-intl-addon']);
-                A.areSame(libpath.join(fixtures, 'mojits/PagedFlickr/controller.common.js'), instance.yui.sortedPaths['PagedFlickr']);
-                A.areSame(libpath.join(fixtures, 'mojits/PagedFlickr/lang/PagedFlickr_de.js'), instance.yui.sortedPaths['lang/PagedFlickr_de']);
-                A.areSame(libpath.join(fixtures, 'mojits/PagedFlickr/lang/PagedFlickr_en.js'), instance.yui.sortedPaths['lang/PagedFlickr_en']);
-                A.areSame(libpath.join(fixtures, 'mojits/PagedFlickr/lang/PagedFlickr_en-US.js'), instance.yui.sortedPaths['lang/PagedFlickr_en-US']);
-                A.isNotUndefined(instance.yui.sortedPaths['lang/datatype-date-format_de']);
-                A.isNotUndefined(instance.yui.sortedPaths['lang/datatype-date-format_en']);
-                A.isNotUndefined(instance.yui.sortedPaths['lang/datatype-date-format_en-US']);
-
-                A.isObject(instance.yui.langs);
-                A.areSame('lang/PagedFlickr_de', instance.yui.langs['de']);
-                A.areSame('lang/PagedFlickr_en', instance.yui.langs['en']);
-                A.areSame('lang/PagedFlickr_en-US', instance.yui.langs['en-US']);
-            });
-
-        },
-
-        'server mojit instance yui - ondemand': function() {
-            var fixtures = libpath.join(__dirname, '../fixtures/ondemand');
-            var store = new Y.mojito.ResourceStore({ root: fixtures });
-            store.preload();
-
-            var instance = { type:'PagedFlickr' };
-            store.expandInstance(instance, {}, function(err, instance) {
-                A.isNotUndefined(instance.yui);
-
-                A.isArray(instance.yui.requires);
-                AA.contains('mojito', instance.yui.requires);
-                AA.contains('mojito-dispatcher', instance.yui.requires);
-                AA.contains('mojito-controller-context', instance.yui.requires);
-                AA.contains('mojito-action-context', instance.yui.requires);
-                AA.contains('mojito-output-adapter-addon', instance.yui.requires);
-                AA.contains('mojito-deploy-addon', instance.yui.requires);
-                AA.contains('mojito-partial-addon', instance.yui.requires);
-                AA.contains('mojito-url-addon', instance.yui.requires);
-                AA.contains('mojito-mu', instance.yui.requires);
-                AA.contains('mojito-util', instance.yui.requires);
-                AA.contains('mojito-view-renderer', instance.yui.requires);
-                AA.contains('ModelFlickr', instance.yui.requires);
-                AA.contains('PagedFlickr', instance.yui.requires);
-                AA.contains('lang/PagedFlickr_de', instance.yui.requires);
-                AA.contains('lang/PagedFlickr_en', instance.yui.requires);
-                AA.contains('lang/PagedFlickr_en-US', instance.yui.requires);
-
-                A.isUndefined(instance.yui.sorted);
-                A.isUndefined(instance.yui.sortedPaths);
-
-                A.isObject(instance.yui.langs);
-                A.areSame('lang/PagedFlickr_de', instance.yui.langs['de']);
-                A.areSame('lang/PagedFlickr_en', instance.yui.langs['en']);
-                A.areSame('lang/PagedFlickr_en-US', instance.yui.langs['en-US']);
-            });
-
-        },
-
-        'server mojit instance yui - precomputed+ondemand': function() {
-            var fixtures = libpath.join(__dirname, '../fixtures/precomputed-ondemand');
-            var store = new Y.mojito.ResourceStore({ root: fixtures });
-            store.preload();
-
-            var instance = { type:'PagedFlickr' };
-            store.expandInstance(instance, {}, function(err, instance) {
-                A.isNotUndefined(instance.yui);
-
-                A.isArray(instance.yui.requires);
-                AA.contains('mojito', instance.yui.requires);
-                AA.contains('mojito-dispatcher', instance.yui.requires);
-                AA.contains('mojito-controller-context', instance.yui.requires);
-                AA.contains('mojito-action-context', instance.yui.requires);
-                AA.contains('mojito-output-adapter-addon', instance.yui.requires);
-                AA.contains('mojito-deploy-addon', instance.yui.requires);
-                AA.contains('mojito-partial-addon', instance.yui.requires);
-                AA.contains('mojito-url-addon', instance.yui.requires);
-                AA.contains('mojito-mu', instance.yui.requires);
-                AA.contains('mojito-util', instance.yui.requires);
-                AA.contains('mojito-view-renderer', instance.yui.requires);
-                AA.contains('ModelFlickr', instance.yui.requires);
-                AA.contains('PagedFlickr', instance.yui.requires);
-                AA.contains('lang/PagedFlickr_de', instance.yui.requires);
-                AA.contains('lang/PagedFlickr_en', instance.yui.requires);
-                AA.contains('lang/PagedFlickr_en-US', instance.yui.requires);
-
-                A.isArray(instance.yui.sorted);
-                AA.doesNotContain('intl', instance.yui.sorted);
-                AA.doesNotContain('datatype-date-format', instance.yui.sorted);
-                AA.contains('mojito', instance.yui.sorted);
-                AA.doesNotContain('mojito-util', instance.yui.sorted);
-                AA.doesNotContain('mojito-intl-addon', instance.yui.sorted);
-                AA.contains('lang/PagedFlickr_de', instance.yui.sorted);
-                AA.contains('lang/PagedFlickr_en', instance.yui.sorted);
-                AA.contains('lang/PagedFlickr_en-US', instance.yui.sorted);
-                AA.doesNotContain('lang/datatype-date-format_de', instance.yui.sorted);
-                AA.doesNotContain('lang/datatype-date-format_en', instance.yui.sorted);
-                AA.doesNotContain('lang/datatype-date-format_en-US', instance.yui.sorted);
-
-                A.isObject(instance.yui.sortedPaths);
-                A.isUndefined(instance.yui.sortedPaths['intl']);
-                A.isUndefined(instance.yui.sortedPaths['datatype-date-format']);
-                A.isNotUndefined(instance.yui.sortedPaths['mojito']);
-                A.isUndefined(instance.yui.sortedPaths['mojito-util']);
-                A.isUndefined(instance.yui.sortedPaths['mojito-intl-addon']);
-                A.areSame(libpath.join(fixtures, 'mojits/PagedFlickr/controller.common.js'), instance.yui.sortedPaths['PagedFlickr']);
-                A.areSame(libpath.join(fixtures, 'mojits/PagedFlickr/lang/PagedFlickr_de.js'), instance.yui.sortedPaths['lang/PagedFlickr_de']);
-                A.areSame(libpath.join(fixtures, 'mojits/PagedFlickr/lang/PagedFlickr_en.js'), instance.yui.sortedPaths['lang/PagedFlickr_en']);
-                A.areSame(libpath.join(fixtures, 'mojits/PagedFlickr/lang/PagedFlickr_en-US.js'), instance.yui.sortedPaths['lang/PagedFlickr_en-US']);
-                A.isUndefined(instance.yui.sortedPaths['lang/datatype-date-format_de']);
-                A.isUndefined(instance.yui.sortedPaths['lang/datatype-date-format_en']);
-                A.isUndefined(instance.yui.sortedPaths['lang/datatype-date-format_en-US']);
-
-                A.isObject(instance.yui.langs);
-                A.areSame('lang/PagedFlickr_de', instance.yui.langs['de']);
-                A.areSame('lang/PagedFlickr_en', instance.yui.langs['en']);
-                A.areSame('lang/PagedFlickr_en-US', instance.yui.langs['en-US']);
-            });
-
-        },
-
         'dynamic handling of mojit definition.json': function() {
             var store = new Y.mojito.ResourceStore({ root: fixtures });
             store.preload();
@@ -463,70 +269,6 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
             store.expandInstance(instance, context, function(err, instance) {
                 A.areEqual('bar', instance);
             });
-        },
-
-        'rollups mojits': function() {
-            var store = new Y.mojito.ResourceStore({ root: fixtures });
-            store.preload();
-
-            var rollups = store.getRollupsMojits('client', {});
-            // We'll just check test_mojit_1, so that this test doesn't break as others add mojits to the fixtures
-            var rollup = rollups['rollups'];
-            A.isNotUndefined(rollup);
-            A.areEqual(rollup.dest, libpath.join(fixtures,'mojits/rollups/rollup.client.js'), 'wrong dest');
-            A.areEqual(3, rollup.srcs.length, 'wrong number of sources');
-            rollup.srcs.sort();
-            A.areEqual(rollup.srcs[0], libpath.join(fixtures,'mojits/rollups/binders/index.js'));
-            A.areEqual(rollup.srcs[1], libpath.join(fixtures,'mojits/rollups/controller.common.js'));
-            A.areEqual(rollup.srcs[2], libpath.join(fixtures,'mojits/rollups/models/model.client.js'));
-        },
-
-        'rollups app': function() {
-            var store = new Y.mojito.ResourceStore({ root: fixtures });
-            store.preload();
-
-            var rollup = store.getRollupsApp('client', {});
-            A.isNotUndefined(rollup);
-            A.areEqual(rollup.dest, libpath.join(fixtures,'rollup.client.js'));
-            // Hmmm... since the rollups.src list contains a great deal of the
-            // Mojito framework YUI modules, and since those change often, it's
-            // a bit fragile to do a hard test for specific values.
-            // So, instead, we'll just test for a few things.
-            AA.contains(libpath.join(fixtures, 'models/flickr.common.js'), rollup.srcs);
-            AA.contains(libpath.join(mojitoRoot, 'app/autoload/mojito.common.js'), rollup.srcs);
-            AA.contains(libpath.join(mojitoRoot, 'app/autoload/mojito-client.client.js'), rollup.srcs);
-        },
-
-        'inline css mojits': function() {
-            var store = new Y.mojito.ResourceStore({ root: fixtures });
-            store.preload();
-
-            var inlines = store.getInlineCssMojits('client', {});
-            // We'll just check test_mojit_1, so that this test doesn't break as others add mojits to the fixtures
-            var found = 0;
-            Y.Array.each(inlines, function(inline) {
-                if (inline.mojitName !== 'inlinecss') {
-                    return;
-                }
-                ++found;
-                if (inline.context.device && 'iphone' === inline.context.device) {
-                    A.areEqual(inline.dest, libpath.join(fixtures,'mojits/inlinecss/autoload/compiled/inlinecss.iphone.common.js'));
-                    A.areEqual(inline.yuiModuleName, 'inlinecss/inlinecss');
-                    A.areEqual(3, Object.keys(inline.srcs).length);
-                    A.areEqual(inline.srcs['/static/inlinecss/assets/foo.css'], libpath.join(fixtures,'mojits/inlinecss/assets/foo.css'));
-                    A.areEqual(inline.srcs['/static/inlinecss/assets/bar.iphone.css'], libpath.join(fixtures,'mojits/inlinecss/assets/bar.iphone.css'));
-                    A.areEqual(inline.srcs['/static/inlinecss/assets/deeper/foo.css'], libpath.join(fixtures,'mojits/inlinecss/assets/deeper/foo.css'));
-                }
-                else {
-                    A.areEqual(inline.dest, libpath.join(fixtures,'mojits/inlinecss/autoload/compiled/inlinecss.common.js'));
-                    A.areEqual(inline.yuiModuleName, 'inlinecss/inlinecss');
-                    A.areEqual(3, Object.keys(inline.srcs).length);
-                    A.areEqual(inline.srcs['/static/inlinecss/assets/foo.css'], libpath.join(fixtures,'mojits/inlinecss/assets/foo.css'));
-                    A.areEqual(inline.srcs['/static/inlinecss/assets/bar.css'], libpath.join(fixtures,'mojits/inlinecss/assets/bar.css'));
-                    A.areEqual(inline.srcs['/static/inlinecss/assets/deeper/foo.css'], libpath.join(fixtures,'mojits/inlinecss/assets/deeper/foo.css'));
-                }
-            });
-            A.areEqual(2, found);
         },
 
         'multi preload': function() {
@@ -651,59 +393,6 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
             AA.contains('soloMojit', list);
         },
 
-        'stuff with ctx{lang:}, in language fallback': function() {
-            var fixtures = libpath.join(__dirname, '../fixtures/gsg5'),
-                store = new Y.mojito.ResourceStore({ root: fixtures }),
-                ctx, spec;
-            store.preload();
-
-            // first test
-            ctx = { lang: 'en-US' };
-            spec = { type: 'PagedFlickr' };
-            store.expandInstance(spec, ctx, function(err, instance) {
-                A.isNotUndefined(instance.yui.sortedPaths['lang/PagedFlickr_en-US'], 'en-US is undefined {lang:en-US}');
-                A.isNotUndefined(instance.yui.sortedPaths['lang/PagedFlickr_en'], 'en is undefined {lang:en-US}');
-
-                // second test
-                ctx = { lang: 'en' };
-                spec = { type: 'PagedFlickr' };
-                store.expandInstance(spec, ctx, function(err, instance) {
-                    A.isNotUndefined(instance.yui.sortedPaths['lang/PagedFlickr_en'], 'en is undefined {lang-en}');
-                    A.isNotUndefined(instance.yui.sortedPaths['lang/PagedFlickr_en-US'], 'en-US is undefined {lang:en}');
-
-                    // third test
-                    ctx = { lang: 'de-US' };
-                    spec = { type: 'PagedFlickr' };
-                    store.expandInstance(spec, ctx, function(err, instance) {
-                        A.isNotUndefined(instance.yui.sortedPaths['lang/PagedFlickr_de'], 'de is undefined {lang:de-US}');
-                        A.isNotUndefined(instance.yui.sortedPaths['lang/PagedFlickr_en-US'], 'en-US is undefined {lang:de-US}');
-
-                        // fourth test
-                        ctx = { lang: 'xy-ZU' };
-                        spec = { type: 'PagedFlickr' };
-                        store.expandInstance(spec, ctx, function(err, instance) {
-                            A.isTrue(
-                                Boolean(instance.yui.sortedPaths['lang/PagedFlickr_de']),
-                                 'de is undefined {lang:xy-ZU}'
-                            );
-                            A.isNotUndefined(instance.yui.sortedPaths['lang/PagedFlickr_en-US'], 'en-US is undefined {lang:xy-ZU}');
-
-                            // fifth test
-                            ctx = {};
-                            spec = { type: 'PagedFlickr' };
-                            store.expandInstance(spec, ctx, function(err, instance) {
-                                A.isTrue(
-                                    Boolean(instance.yui.sortedPaths['lang/PagedFlickr_de']),
-                                    'de is undefined {}'
-                                );
-                                A.isNotUndefined(instance.yui.sortedPaths['lang/PagedFlickr_en-US'], 'en-US is undefined {}');
-                            });
-                        });
-                    });
-                });
-            });
-        },
-
         'bad files': function() {
             var fixtures = libpath.join(__dirname, '../fixtures/badfiles'),
                 store = new Y.mojito.ResourceStore({ root: fixtures });
@@ -783,22 +472,6 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
             A.skip();
         },
 
-        'appConfig yui.base': function() {
-            var fixtures = libpath.join(__dirname, '../fixtures/gsg5-appConfig'),
-                store = new Y.mojito.ResourceStore({ root: fixtures });
-            store.preload();
-            var spec = { type: 'PagedFlickr' };
-            store.expandInstance(spec, {}, function(err, instance) {
-                A.areSame('/foo/', instance.yui.sortedPaths['oop'].substr(0, 5));
-                A.areSame('/foo/', instance.yui.sortedPaths['intl'].substr(0, 5));
-                A.areSame('/foo/', instance.yui.sortedPaths['jsonp'].substr(0, 5));
-                A.areSame('/foo/', instance.yui.sortedPaths['yql'].substr(0, 5));
-                A.areSame('/foo/', instance.yui.sortedPaths['querystring-parse'].substr(0, 5));
-                A.areSame('/foo/', instance.yui.sortedPaths['querystring-stringify'].substr(0, 5));
-                A.areSame('/foo/', instance.yui.sortedPaths['json-stringify'].substr(0, 5));
-            });
-        },
-
         'sortedReaddirSync() sorts the result of fs.readdirSync()': function() {
             var mockfs = Mock();
 
@@ -821,6 +494,7 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
             A.isTrue(store._skipBadPath({ isFile: true, ext: '.js~' }), 'need to skip bad file naems');
             A.isFalse(store._skipBadPath({ isFile: false, ext: '.js~' }), 'need to not-skip bad directory names');
             A.isFalse(store._skipBadPath({ isFile: true, ext: '.js' }), 'need to not-skip good file names');
+
         },
 
         'load node_modules': function() {
@@ -828,6 +502,7 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
                 store = new Y.mojito.ResourceStore({ root: fixtures });
             store.preload();
 
+            // TODO:  _mojitMeta is gone. query for resources directly instead
             if (!store._mojitMeta.server.a && !store._mojitMeta.server.aa && !store._mojitMeta.server.ba) {
                 // This happens when mojito is installed via npm, since npm
                 // won't install the node_modules/ directories in
@@ -868,7 +543,7 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
             var dir = libpath.join(__dirname, '../fixtures/conventions');
             var pkg = { name: 'test', version: '6.6.6' };
             var mojitType = 'testing';
-            var ress = store._findResourcesByConvention(dir, pkg, mojitType)
+            var ress = store._findResourcesByConvention(dir, 'app', pkg, mojitType)
 
             var r, res;
             for (r = 0; r < ress.length; r++) {
@@ -876,23 +551,21 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
                 A.isNotUndefined(res.id, 'no resource id');
                 switch (res.id) {
                     case 'action--x':
-                        A.areSame(pkg, res.pkg);
+                        A.areSame(pkg, res.source.pkg);
                         A.areSame('action', res.type);
                         A.areSame('x', res.name);
-                        A.areSame('action-x', res.yuiModuleName);
-                        switch (res.shortPath) {
-                            case 'x.common.js':
-                                A.areSame('*', res.pathParts.contextKey);
-                                A.areSame('common', res.pathParts.affinity.affinity);
-                                A.areSame('.js', res.pathParts.ext);
-                                A.areSame('x', res.pathParts.shortFile);
+                        switch (res.source.fs.basename) {
+                            case 'x.common':
+                                A.areSame('*', res.selector);
+                                A.areSame('common', res.affinity);
+                                A.areSame('.js', res.source.fs.ext);
+                                A.areSame('x', res.name);
                                 break;
-                            case 'x.common.iphone.js':
-                                A.areSame('device=iphone', res.pathParts.contextKey);
-                                A.areSame('iphone', res.pathParts.contextParts.device);
-                                A.areSame('common', res.pathParts.affinity.affinity);
-                                A.areSame('.js', res.pathParts.ext);
-                                A.areSame('x', res.pathParts.shortFile);
+                            case 'x.common.iphone':
+                                A.areSame('iphone', res.selector);
+                                A.areSame('common', res.affinity);
+                                A.areSame('.js', res.source.fs.ext);
+                                A.areSame('x', res.name);
                                 break;
                             default:
                                 A.fail('unknown resource ' + res.source.fs.fullPath);
@@ -900,35 +573,31 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
                         }
                         break;
                     case 'action--y/z':
-                        A.areSame(pkg, res.pkg);
+                        A.areSame(pkg, res.source.pkg);
                         A.areSame('action', res.type);
                         A.areSame('y/z', res.name);
-                        A.areSame('y/z.common.js', res.shortPath);
-                        A.areSame('action-y-z', res.yuiModuleName);
-                        A.areSame('*', res.pathParts.contextKey);
-                        A.areSame('common', res.pathParts.affinity.affinity);
-                        A.areSame('.js', res.pathParts.ext);
-                        A.areSame('z', res.pathParts.shortFile);
+                        A.areSame('*', res.selector);
+                        A.areSame('common', res.affinity);
+                        A.areSame('.js', res.source.fs.ext);
+                        A.areSame('z.common', res.source.fs.basename);
                         break;
                     case 'addon-a-x':
-                        A.areSame(pkg, res.pkg);
+                        A.areSame(pkg, res.source.pkg);
                         A.areSame('addon', res.type);
-                        A.areSame('a', res.addonType);
+                        A.areSame('a', res.subtype);
                         A.areSame('x', res.name);
-                        A.areSame('addon-a-x', res.yuiModuleName);
-                        switch (res.shortPath) {
-                            case 'x.common.js':
-                                A.areSame('*', res.pathParts.contextKey);
-                                A.areSame('common', res.pathParts.affinity.affinity);
-                                A.areSame('.js', res.pathParts.ext);
-                                A.areSame('x', res.pathParts.shortFile);
+                        switch (res.source.fs.basename) {
+                            case 'x.common':
+                                A.areSame('*', res.selector);
+                                A.areSame('common', res.affinity);
+                                A.areSame('.js', res.source.fs.ext);
+                                A.areSame('x', res.name);
                                 break;
-                            case 'x.common.iphone.js':
-                                A.areSame('device=iphone', res.pathParts.contextKey);
-                                A.areSame('iphone', res.pathParts.contextParts.device);
-                                A.areSame('common', res.pathParts.affinity.affinity);
-                                A.areSame('.js', res.pathParts.ext);
-                                A.areSame('x', res.pathParts.shortFile);
+                            case 'x.common.iphone':
+                                A.areSame('iphone', res.selector);
+                                A.areSame('common', res.affinity);
+                                A.areSame('.js', res.source.fs.ext);
+                                A.areSame('x', res.name);
                                 break;
                             default:
                                 A.fail('unknown resource ' + res.source.fs.fullPath);
@@ -936,54 +605,48 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
                         }
                         break;
                     case 'archetype-x-y':
-                        A.areSame(pkg, res.pkg);
+                        A.areSame(pkg, res.source.pkg);
                         A.areSame('archetype', res.type);
                         A.areSame('x', res.subtype);
                         A.areSame('y', res.name);
-                        A.areSame('y', res.shortPath);
+                        A.areSame('y', res.source.fs.basename);
                         break;
-                    case 'asset--x.css':
-                        A.areSame(pkg, res.pkg);
+                    case 'asset-css-x':
+                        A.areSame(pkg, res.source.pkg);
                         A.areSame('asset', res.type);
-                        A.areSame('css', res.assetType);
-                        A.areSame('x.css', res.name);
-                        switch (res.shortPath) {
-                            case 'x.css':
-                                A.areSame('*', res.pathParts.contextKey);
-                                A.areSame('common', res.pathParts.affinity.affinity);
-                                A.areSame('.css', res.pathParts.ext);
-                                A.areSame('x', res.pathParts.shortFile);
+                        A.areSame('css', res.subtype);
+                        A.areSame('x', res.name);
+                        switch (res.source.fs.basename) {
+                            case 'x':
+                                A.areSame('*', res.selector);
+                                A.areSame('common', res.affinity);
+                                A.areSame('.css', res.source.fs.ext);
                                 break;
-                            case 'x.iphone.css':
-                                A.areSame('device=iphone', res.pathParts.contextKey);
-                                A.areSame('iphone', res.pathParts.contextParts.device);
-                                A.areSame('common', res.pathParts.affinity.affinity);
-                                A.areSame('.css', res.pathParts.ext);
-                                A.areSame('x', res.pathParts.shortFile);
+                            case 'x.iphone':
+                                A.areSame('iphone', res.selector);
+                                A.areSame('common', res.affinity);
+                                A.areSame('.css', res.source.fs.ext);
                                 break;
                             default:
                                 A.fail('unknown resource ' + res.source.fs.fullPath);
                                 break;
                         }
                         break;
-                    case 'asset--y/z.css':
-                        A.areSame(pkg, res.pkg);
+                    case 'asset-css-y/z':
+                        A.areSame(pkg, res.source.pkg);
                         A.areSame('asset', res.type);
-                        A.areSame('css', res.assetType);
-                        A.areSame('y/z.css', res.name);
-                        switch (res.shortPath) {
-                            case 'y/z.css':
-                                A.areSame('*', res.pathParts.contextKey);
-                                A.areSame('common', res.pathParts.affinity.affinity);
-                                A.areSame('.css', res.pathParts.ext);
-                                A.areSame('z', res.pathParts.shortFile);
+                        A.areSame('css', res.subtype);
+                        A.areSame('y/z', res.name);
+                        switch (res.source.fs.basename) {
+                            case 'z':
+                                A.areSame('*', res.selector);
+                                A.areSame('common', res.affinity);
+                                A.areSame('.css', res.source.fs.ext);
                                 break;
-                            case 'y/z.android.css':
-                                A.areSame('device=android', res.pathParts.contextKey);
-                                A.areSame('android', res.pathParts.contextParts.device);
-                                A.areSame('common', res.pathParts.affinity.affinity);
-                                A.areSame('.css', res.pathParts.ext);
-                                A.areSame('z', res.pathParts.shortFile);
+                            case 'z.android':
+                                A.areSame('android', res.selector);
+                                A.areSame('common', res.affinity);
+                                A.areSame('.css', res.source.fs.ext);
                                 break;
                             default:
                                 A.fail('unknown resource ' + res.source.fs.fullPath);
@@ -991,23 +654,19 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
                         }
                         break;
                     case 'binder--x':
-                        A.areSame(pkg, res.pkg);
+                        A.areSame(pkg, res.source.pkg);
                         A.areSame('binder', res.type);
                         A.areSame('x', res.name);
-                        A.areSame('x', res.yuiModuleName);
-                        switch (res.shortPath) {
-                            case 'x.js':
-                                A.areSame('*', res.pathParts.contextKey);
-                                A.areSame('client', res.pathParts.affinity.affinity);
-                                A.areSame('.js', res.pathParts.ext);
-                                A.areSame('x', res.pathParts.shortFile);
+                        switch (res.source.fs.basename) {
+                            case 'x':
+                                A.areSame('*', res.selector);
+                                A.areSame('client', res.affinity);
+                                A.areSame('.js', res.source.fs.ext);
                                 break;
-                            case 'x.iphone.js':
-                                A.areSame('device=iphone', res.pathParts.contextKey);
-                                A.areSame('iphone', res.pathParts.contextParts.device);
-                                A.areSame('client', res.pathParts.affinity.affinity);
-                                A.areSame('.js', res.pathParts.ext);
-                                A.areSame('x', res.pathParts.shortFile);
+                            case 'x.iphone':
+                                A.areSame('iphone', res.selector);
+                                A.areSame('client', res.affinity);
+                                A.areSame('.js', res.source.fs.ext);
                                 break;
                             default:
                                 A.fail('unknown resource ' + res.source.fs.fullPath);
@@ -1015,35 +674,32 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
                         }
                         break;
                     case 'command--x':
-                        A.areSame(pkg, res.pkg);
+                        A.areSame(pkg, res.source.pkg);
                         A.areSame('command', res.type);
                         A.areSame('x', res.name);
-                        A.areSame('x.js', res.shortPath);
+                        A.areSame('x', res.source.fs.basename);
                         break;
                     case 'config--config':
-                        A.areSame(pkg, res.pkg);
+                        A.areSame(pkg, res.source.pkg);
                         A.areSame('config', res.type);
                         A.areSame('config', res.name);
-                        A.areSame('config.json', res.shortPath);
+                        A.areSame('config', res.source.fs.basename);
+                        A.areSame('.json', res.source.fs.ext);
                         break;
                     case 'controller--controller':
-                        A.areSame(pkg, res.pkg);
+                        A.areSame(pkg, res.source.pkg);
                         A.areSame('controller', res.type);
                         A.areSame('controller', res.name);
-                        A.areSame('controller', res.yuiModuleName);
-                        switch (res.shortPath) {
-                            case 'controller.common.js':
-                                A.areSame('*', res.pathParts.contextKey);
-                                A.areSame('common', res.pathParts.affinity.affinity);
-                                A.areSame('.js', res.pathParts.ext);
-                                A.areSame('controller', res.pathParts.shortFile);
+                        switch (res.source.fs.basename) {
+                            case 'controller.common':
+                                A.areSame('*', res.selector);
+                                A.areSame('common', res.affinity);
+                                A.areSame('.js', res.source.fs.ext);
                                 break;
-                            case 'controller.server.iphone.js':
-                                A.areSame('device=iphone', res.pathParts.contextKey);
-                                A.areSame('iphone', res.pathParts.contextParts.device);
-                                A.areSame('server', res.pathParts.affinity.affinity);
-                                A.areSame('.js', res.pathParts.ext);
-                                A.areSame('controller', res.pathParts.shortFile);
+                            case 'controller.server.iphone':
+                                A.areSame('iphone', res.selector);
+                                A.areSame('server', res.affinity);
+                                A.areSame('.js', res.source.fs.ext);
                                 break;
                             default:
                                 A.fail('unknown resource ' + res.source.fs.fullPath);
@@ -1051,176 +707,55 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
                         }
                         break;
                     case 'middleware--x':
-                        A.areSame(pkg, res.pkg);
+                        A.areSame(pkg, res.source.pkg);
                         A.areSame('middleware', res.type);
                         A.areSame('x', res.name);
-                        A.areSame('x.js', res.shortPath);
+                        A.areSame('x', res.source.fs.basename);
+                        A.areSame('.js', res.source.fs.ext);
                         break;
                     case 'spec--default':
-                        A.areSame(pkg, res.pkg);
+                        A.areSame(pkg, res.source.pkg);
                         A.areSame('spec', res.type);
                         A.areSame('default', res.name);
-                        A.areSame('testing', res.specName);
-                        A.areSame('default.json', res.shortPath);
+                        A.areSame('default', res.source.fs.basename);
+                        A.areSame('.json', res.source.fs.ext);
                         break;
                     case 'spec--x':
-                        A.areSame(pkg, res.pkg);
+                        A.areSame(pkg, res.source.pkg);
                         A.areSame('spec', res.type);
+                        A.areSame('testing', res.mojit);
                         A.areSame('x', res.name);
-                        A.areSame('testing:x', res.specName);
-                        A.areSame('x.json', res.shortPath);
+                        A.areSame('x', res.source.fs.basename);
+                        A.areSame('.json', res.source.fs.ext);
                         break;
                     case 'view--x':
-                        A.areSame(pkg, res.pkg);
+                        A.areSame(pkg, res.source.pkg);
                         A.areSame('view', res.type);
                         A.areSame('x', res.name);
                         A.areSame('html', res.viewOutputFormat);
                         A.areSame('mu', res.viewEngine);
-                        switch (res.shortPath) {
-                            case 'x.mu.html':
-                                A.areSame('*', res.pathParts.contextKey);
-                                A.areSame('common', res.pathParts.affinity.affinity);
-                                A.areSame('.html', res.pathParts.ext);
-                                A.areSame('x', res.pathParts.shortFile);
+                        switch (res.source.fs.basename) {
+                            case 'x.mu':
+                                A.areSame('*', res.selector);
+                                A.areSame('common', res.affinity);
+                                A.areSame('.html', res.source.fs.ext);
                                 break;
-                            case 'x.iphone.mu.html':
-                                A.areSame('device=iphone', res.pathParts.contextKey);
-                                A.areSame('iphone', res.pathParts.contextParts.device);
-                                A.areSame('common', res.pathParts.affinity.affinity);
-                                A.areSame('.html', res.pathParts.ext);
-                                A.areSame('x', res.pathParts.shortFile);
+                            case 'x.iphone.mu':
+                                A.areSame('iphone', res.selector);
+                                A.areSame('common', res.affinity);
+                                A.areSame('.html', res.source.fs.ext);
                                 break;
                             default:
                                 A.fail('unknown resource ' + res.source.fs.fullPath);
                                 break;
                         }
                         break;
-                    case 'yui-lang-':
-                        A.areSame(pkg, res.pkg);
-                        A.areSame('yui-lang', res.type);
-                        A.areSame('', res.name);
-                        A.areSame('', res.langCode);
-                        A.areSame('testing.js', res.shortPath);
-                        A.areSame('*', res.pathParts.contextKey);
-                        A.areSame('common', res.pathParts.affinity.affinity);
-                        A.areSame('.js', res.pathParts.ext);
-                        A.areSame('testing', res.pathParts.shortFile);
-                        break;
-                    case 'yui-lang-de':
-                        A.areSame(pkg, res.pkg);
-                        A.areSame('yui-lang', res.type);
-                        A.areSame('de', res.name);
-                        A.areSame('de', res.langCode);
-                        A.areSame('testing_de.js', res.shortPath);
-                        A.areSame('lang=de', res.pathParts.contextKey);
-                        A.areSame('de', res.pathParts.contextParts.lang);
-                        A.areSame('common', res.pathParts.affinity.affinity);
-                        A.areSame('.js', res.pathParts.ext);
-                        A.areSame('testing_de', res.pathParts.shortFile);
-                        break;
-                    case 'yui-lang-en':
-                        A.areSame(pkg, res.pkg);
-                        A.areSame('yui-lang', res.type);
-                        A.areSame('en', res.name);
-                        A.areSame('en', res.langCode);
-                        A.areSame('testing_en.js', res.shortPath);
-                        A.areSame('lang=en', res.pathParts.contextKey);
-                        A.areSame('en', res.pathParts.contextParts.lang);
-                        A.areSame('common', res.pathParts.affinity.affinity);
-                        A.areSame('.js', res.pathParts.ext);
-                        A.areSame('testing_en', res.pathParts.shortFile);
-                        break;
-                    case 'yui-lang-en-US':
-                        A.areSame(pkg, res.pkg);
-                        A.areSame('yui-lang', res.type);
-                        A.areSame('en-US', res.name);
-                        A.areSame('en-US', res.langCode);
-                        A.areSame('testing_en-US.js', res.shortPath);
-                        A.areSame('lang=en-US', res.pathParts.contextKey);
-                        A.areSame('en-US', res.pathParts.contextParts.lang);
-                        A.areSame('common', res.pathParts.affinity.affinity);
-                        A.areSame('.js', res.pathParts.ext);
-                        A.areSame('testing_en-US', res.pathParts.shortFile);
-                        break;
-                    case 'yui-module-m':
-                        A.areSame(pkg, res.pkg);
-                        A.areSame('yui-module', res.type);
-                        A.areSame('m', res.name);
-                        A.areSame('m', res.yuiModuleName);
-                        switch (res.shortPath) {
-                            case 'm.common.js':
-                                A.areSame('*', res.pathParts.contextKey);
-                                A.areSame('common', res.pathParts.affinity.affinity);
-                                A.areSame('.js', res.pathParts.ext);
-                                A.areSame('m', res.pathParts.shortFile);
-                                break;
-                            case 'm.common.iphone.js':
-                                A.areSame('device=iphone', res.pathParts.contextKey);
-                                A.areSame('iphone', res.pathParts.contextParts.device);
-                                A.areSame('common', res.pathParts.affinity.affinity);
-                                A.areSame('.js', res.pathParts.ext);
-                                A.areSame('m', res.pathParts.shortFile);
-                                break;
-                            default:
-                                A.fail('unknown resource ' + res.source.fs.fullPath);
-                                break;
-                        }
-                        break;
-                    case 'yui-module-x':
-                        A.areSame(pkg, res.pkg);
-                        A.areSame('yui-module', res.type);
-                        A.areSame('x', res.name);
-                        A.areSame('x', res.yuiModuleName);
-                        switch (res.shortPath) {
-                            case 'x.common.js':
-                                A.areSame('*', res.pathParts.contextKey);
-                                A.areSame('common', res.pathParts.affinity.affinity);
-                                A.areSame('.js', res.pathParts.ext);
-                                A.areSame('x', res.pathParts.shortFile);
-                                break;
-                            case 'x.common.iphone.js':
-                                A.areSame('device=iphone', res.pathParts.contextKey);
-                                A.areSame('iphone', res.pathParts.contextParts.device);
-                                A.areSame('common', res.pathParts.affinity.affinity);
-                                A.areSame('.js', res.pathParts.ext);
-                                A.areSame('x', res.pathParts.shortFile);
-                                break;
-                            default:
-                                A.fail('unknown resource ' + res.source.fs.fullPath);
-                                break;
-                        }
-                        break;
-                    case 'yui-module-z':
-                        A.areSame(pkg, res.pkg);
-                        A.areSame('yui-module', res.type);
-                        A.areSame('z', res.name);
-                        A.areSame('z', res.yuiModuleName);
-                        switch (res.shortPath) {
-                            case 'y/z.common.js':
-                                A.areSame('*', res.pathParts.contextKey);
-                                A.areSame('common', res.pathParts.affinity.affinity);
-                                A.areSame('.js', res.pathParts.ext);
-                                A.areSame('z', res.pathParts.shortFile);
-                                break;
-                            case 'y/z.common.android.js':
-                                A.areSame('device=android', res.pathParts.contextKey);
-                                A.areSame('android', res.pathParts.contextParts.device);
-                                A.areSame('common', res.pathParts.affinity.affinity);
-                                A.areSame('.js', res.pathParts.ext);
-                                A.areSame('z', res.pathParts.shortFile);
-                                break;
-                            default:
-                                A.fail('unknown resource ' + res.source.fs.fullPath);
-                                break;
-                        }
-                        break;
-
                     default:
                         A.fail('unknown resource ' + res.id);
                         break;
                 }
             }
-            A.areSame(31, ress.length, 'wrong number of resources');
+            A.areSame(21, ress.length, 'wrong number of resources');
         }
 
     }));

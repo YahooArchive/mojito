@@ -29,6 +29,17 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
             this.beforeHostMethod('parseResource', this.parseResource, this);
             this.beforeHostMethod('addResourceVersion', this.addResourceVersion, this);
             this.onHostEvent('getMojitTypeDetails', this.getMojitTypeDetails, this);
+            this.onHostEvent('mojitResourcesResolved', this.mojitResourcesResolved, this);
+            this.yuiConfig = this.rs.getStaticAppConfig().yui;
+
+            this.modules = {};          // env: poslKey: module: details
+            this.sortedModules = {};    // env: poslKey: lang: module: details
+
+            this.usePrecomputed = -1 !== this.yuiConfig.dependencyCalculations.indexOf('precomputed');
+            this.useOnDemand = -1 !== this.yuiConfig.dependencyCalculations.indexOf('ondemand');
+            if (!this.usePrecomputed) {
+                this.useOnDemand = true;
+            }
         },
 
 
@@ -226,10 +237,29 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
 
         getMojitTypeDetails: function(evt) {
             var dest = evt.mojit,
+                env = evt.args.env,
+                ctx = evt.args.ctx,
+                posl = evt.args.posl,
+                poslKey = JSON.stringify(posl),
+                mojitType = evt.args.mojitType,
                 ress,
                 r,
-                res;
-            ress = this.rs.getResources(evt.args.env, evt.args.ctx, {mojit: evt.args.mojitType});
+                res,
+                sorted;
+            //console.log('--------------------------------- getMojitTypeDetails -- ' + [env, ctx.lang, poslKey, mojitType].join(','));
+
+            if (!dest.yui) {
+                dest.yui = { config: {} };
+            }
+            if (!dest.yui.config) {
+                dest.yui.config = { module: {} };
+            }
+
+            if (this.modules[env] && this.modules[env][poslKey]) {
+                dest.yui.config.modules = this.modules[env][poslKey][mojitType];
+            }
+
+            ress = this.rs.getResources(evt.args.env, evt.args.ctx, {mojit: mojitType});
             for (r = 0; r < ress.length; r += 1) {
                 res = ress[r];
                 if (res.type === 'binder') {
@@ -237,14 +267,238 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
                         dest.views[res.name] = {};
                     }
                     dest.views[res.name]['binder-module'] = res.yui.name;
+                    sorted = this._getYUISorted('client', poslKey, ctx.lang, res.yui.name);
+                    if (sorted && sorted.paths) {
+                        dest.views[res.name]['binder-yui-sorted'] = this.rs.cloneObj(sorted.paths);
+                    }
                 }
                 if (res.type === 'controller') {
                     dest['controller-module'] = res.yui.name;
+                    sorted = this._getYUISorted(env, poslKey, ctx.lang, res.yui.name);
+                    if (sorted && sorted.sorted) {
+                        dest.yui.sorted = sorted.sorted.slice();
+                    }
+                    if (this.usePrecomputed && sorted && sorted.paths) {
+                        dest.yui.sortedPaths = this.rs.cloneObj(sorted.paths);
+                    }
                 }
             }
         },
 
 
+        mojitResourcesResolved: function(evt) {
+            var env = evt.env,
+                posl = evt.posl,
+                poslKey = JSON.stringify(posl),
+                mojit = evt.mojit,
+                ress = evt.ress,
+                r,
+                res,
+                langs = {},
+                l,
+                ll,
+                langName,
+                langNames,
+                viewEngineRequired = {},
+                modules = {},
+                binders = {},
+                controller,
+                controllerRequired = {},
+                required,
+                sorted,
+                binderName,
+                binder;
+            //console.log('--------------------------------- mojitResourcesResolved -- ' + [env, poslKey, mojit].join(','));
+
+            if ('shared' === mojit) {
+                return;
+            }
+
+            for (r = 0; r < ress.length; r += 1) {
+                res = ress[r];
+                if ('addon' === res.type && 'view-engines' === res.subtype) {
+                    viewEngineRequired[res.yui.name] = true;
+                }
+                if ('yui-lang' === res.type) {
+                    langs[res.name] = res;
+                }
+                if (res.yui && res.yui.name) {
+                    modules[res.yui.name] = {
+                        requires: res.yui.meta.requires,
+                        fullpath: (('client' === env) ? res.url : res.source.fs.fullPath)
+                    }
+                    if (res.mojit === mojit && res.type !== 'yui-lang') {
+                        controllerRequired[res.yui.name] = true;
+                    }
+                    if ('binder' === res.type) {
+                        binders[res.name] = res;
+                    }
+                    if ('controller' === res.type) {
+                        controller = res;
+                    }
+                }
+            }
+            if (modules['inlinecss/' + mojit]) {
+                // TODO:  does this polute something?  need to make a copy somewhere?
+                modules[controller.yui.module].requires.push('inlinecss/' + mojit);
+            }
+
+            if (!this.modules[env]) {
+                this.modules[env] = {};
+            }
+            if (!this.modules[env][poslKey]) {
+                this.modules[env][poslKey] = {};
+            }
+            this.modules[env][poslKey][mojit] = this.rs.cloneObj(modules);
+
+            // we always want to do calculations for no-lang
+            if (!langs['']) {
+                langs[''] = undefined;
+            }
+            langNames = Object.keys(langs);
+            for (l = 0; l < langNames.length; l += 1) {
+                langName = langNames[l];
+                lang = langs[langName];
+
+                if (controller) {
+                    required = Y.clone(controllerRequired, true);
+                    required['mojito-dispatcher'] = true;
+                    required[controller.yui.name] = true;
+                    if (lang && lang.yui) {
+                        required[lang.yui.name] = true;
+                    }
+                    else {
+                        for (ll in langs) {
+                            if (langs.hasOwnProperty(ll) && ll !== '') {
+                                lang = langs[ll];
+                                required[lang.yui.name] = true;
+                            }
+                        }
+                    }
+                    // we don't know which views will be used, so we need all view engines
+                    required = Y.merge(required, viewEngineRequired);
+                    sorted = this._sortYUIModules(langName, env, mojit, modules, required);
+                    this._setYUISorted(env, poslKey, langName, controller.yui.name, sorted);
+                }
+
+                if ('client' === env) {
+                    for (binderName in binders) {
+                        if (binders.hasOwnProperty(binderName)) {
+                            binder = binders[binderName];
+                            required = { 'mojito-client': true };
+                            required[binder.yui.name] = true;
+
+                            // view engines are needed to support mojitProxy.render()
+                            required = Y.merge(required, viewEngineRequired);
+
+                            sorted = this._sortYUIModules(langName, env, mojit, modules, required);
+                            this._setYUISorted(env, poslKey, langName, binder.yui.name, sorted);
+                        }
+                    }
+                }
+            } // for each lang
+        },
+
+
+        // TODO DOCS
+        _sortYUIModules: function(lang, env, mojit, modules, required) {
+            var Y,
+                loader,
+                m,
+                module,
+                info,
+                sortedPaths = {};
+
+            // We don't actually need the full list, just the required modules.
+            // YUI.Loader() will do the rest at runtime.
+            if (!this.usePrecomputed) {
+                for (module in required) {
+                    if (required.hasOwnProperty(module)) {
+                        sortedPaths[module] = modules[module].fullpath;
+                    }
+                }
+                return {
+                    sorted: Object.keys(sortedPaths),
+                    paths: sortedPaths
+                };
+            }
+
+            Y = YUI({ useSync: true }).use('loader-base');
+            Y.applyConfig({ useSync: false });
+
+            // We need to clear YUI's cached dependencies, since there's no
+            // guarantee that the previously calculated dependencies have been done
+            // using the same context as this calculation.
+            delete YUI.Env._renderedMods;
+
+            // Use ignoreRegistered here instead of the old `delete YUI.Env._renderedMods` hack
+            loader = new Y.Loader({ lang: lang, ignoreRegistered: true });
+            // Only override the default if it's required
+            if (this.yuiConfig && this.yuiConfig.base) {
+                loader.base = this.yuiConfig.base;
+            }
+
+            loader.addGroup({modules: modules}, mojit);
+            loader.calculate({required: required});
+
+            for (m = 0; m < loader.sorted.length; m += 1) {
+                module = loader.sorted[m];
+                info = loader.moduleInfo[module];
+                if (info) {
+                    // modules with "nodejs" in their name are tweaks on other modules
+                    if ('client' === env && module.indexOf('nodejs') !== -1) {
+                        continue;
+                    }
+                    sortedPaths[module] = info.fullpath || loader._url(info.path);
+                }
+            }
+            return {
+                sorted: loader.sorted,
+                paths: sortedPaths
+            };
+        },
+
+
+        // TODO DOCS
+        _setYUISorted: function(env, poslKey, lang, module, sorted) {
+            if (!this.sortedModules[env]) {
+                this.sortedModules[env] = {};
+            }
+            if (!this.sortedModules[env][poslKey]) {
+                this.sortedModules[env][poslKey] = {};
+            }
+            if (!this.sortedModules[env][poslKey][lang]) {
+                this.sortedModules[env][poslKey][lang] = {};
+            }
+            this.sortedModules[env][poslKey][lang][module] = sorted;
+        },
+
+
+        // TODO DOCS
+        _getYUISorted: function(env, poslKey, lang, module) {
+            lang = lang || '';
+            var parts = lang.split('-'),
+                p,
+                test;
+            if (!this.sortedModules[env]) {
+                return;
+            }
+            if (!this.sortedModules[env][poslKey]) {
+                return;
+            }
+            for (p = parts.length; p > 0; p -= 1) {
+                test = parts.slice(0, p).join('-');
+                if (this.sortedModules[env][poslKey][test] &&
+                    this.sortedModules[env][poslKey][test][module]) {
+                    return this.sortedModules[env][poslKey][test][module];
+                }
+            }
+            // fall back to "default language"
+            return this.sortedModules[env][poslKey][''][module];
+        },
+
+
+        // TODO DOCS
         _parseYUIModule: function(res) {
             var file,
                 ctx,

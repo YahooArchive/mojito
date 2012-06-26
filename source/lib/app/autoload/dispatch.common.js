@@ -216,9 +216,7 @@ YUI.add('mojito-dispatcher', function(Y, NAME) {
 
                     fixupInstanceLang(command.instance.type, command.context.lang, instance);
 
-                    moduleList = (usePrecomputed ?
-                            instance.yui.sorted :
-                            instance.yui.requires);
+                    moduleList = instance.yui.sorted;
                     // gotta copy this or else it pollutes the client runtime
                     mojitYuiModules = Y.mojito.util.copy(moduleList);
 
