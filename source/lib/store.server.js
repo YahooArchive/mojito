@@ -3611,6 +3611,19 @@ ServerStore.prototype = {
                 }
             } // foreach mojitType
         } // foreach env
+
+        // log warning if server mojit has dom dependency
+        Y.Object.each(this._mojitYuiRequired.server, function(val, mojit) {
+            var deps = (val['*'] && val['*'].join()) || '',
+                badre = /\b(dom-\w+|node-\w+|io-upload-iframe)/g,
+                isbad = deps.match(badre);
+
+            if (isbad) {
+                logger.log('your mojit "' + mojit + '" has a server affinity and these client-related deps: ' + isbad.join(', '), 'WARN', NAME);
+                logger.log('Mojito may be unable to start, unless you have provided server-side DOM/host-object suppport', 'WARN', NAME);
+            }
+        });
+
     },
 
 
