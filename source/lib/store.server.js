@@ -458,6 +458,9 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 spec.instanceId = Y.guid();
             }
 
+            spec.appConfig = this.getAppConfig(ctx);
+            delete spec.appConfig.specs;
+
             try {
                 this.getMojitTypeDetails(env, ctx, spec.type, spec);
             } catch (err2) {
@@ -1209,7 +1212,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 // look in resources
                 idParts = spec.base.split(':');
                 mojitType = idParts.shift();
-                specName = idParts.join(':');
+                specName = idParts.join(':') || 'default';
                 ress = this.getResources(env, ctx, {type: 'spec', mojit: mojitType, name: specName});
                 if (1 === ress.length) {
                     base = this.config.readConfigYCB(ress[0].source.fs.fullPath, ctx);

@@ -144,7 +144,8 @@ YUI.add('mojito-resource-store-adapter-tests', function(Y, NAME) {
             store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
             var instance = {type:'test_mojit_1'};
             store.expandInstance(instance, {}, function(err, instance){
-                A.isTrue(instance.actions.length === 2);
+                A.isNotUndefined(instance.yui.config.modules['test_mojit_1_actions_test_1']);
+                A.isNotUndefined(instance.yui.config.modules['test_mojit_1_actions_test_2']);
             });
         },
 
@@ -162,9 +163,9 @@ YUI.add('mojito-resource-store-adapter-tests', function(Y, NAME) {
                     testKey3: 'other'
                 }
             };
-            store.expandInstance(command, {}, function(err, instance){
-                A.isTrue(instance.appConfig.testKey2 === 'testVal2');
-                A.isTrue(instance.appConfig.testKey3 === 'other');
+            store.expandInstance(command, {}, function(err, instance) {
+                A.areSame('testVal2', instance.appConfig.testKey2);
+                A.areSame('other', instance.appConfig.testKey3);
             });
         },
 
@@ -209,7 +210,7 @@ YUI.add('mojito-resource-store-adapter-tests', function(Y, NAME) {
             store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
             var instance = {type:'TestMojit2'};
             store.expandInstance(instance, {}, function(err, instance){
-                A.isNotUndefined(instance.controller);
+                A.isNotUndefined(instance['controller-path']);
                 A.areSame('/static/TestMojit2/assets', instance.assetsRoot);
                 A.isNotUndefined(instance.yui.config.modules.test_mojit_2);
             });
@@ -240,34 +241,6 @@ YUI.add('mojito-resource-store-adapter-tests', function(Y, NAME) {
             var instance = {type:'TestMojit3'};
             store.expandInstance(instance, {device:'iphone'}, function(err, instance){
                 A.areSame('index.iphone.mu.html', instance.views.index['content-path'].split('/').pop());
-            });
-        },
-
-        'server mojit view index1.mu.html is loaded correctly': function(){
-            var resourceStore,
-                store;
-
-            resourceStore = new Y.mojito.ResourceStore({ root: fixtures });
-            resourceStore.preload();
-
-            store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
-            var instance = {type:'TestMojit3', action: 'index1'};
-            store.expandInstance(instance, {device:'forotheriphone'}, function(err, instance){
-                A.areSame('index1.forotheriphone.mu.html', instance.views.index1['content-path'].split('/').pop());
-            });
-        },
-
-        'server mojit view index1.iphone.mu.html is loaded correctly': function(){
-            var resourceStore,
-                store;
-
-            resourceStore = new Y.mojito.ResourceStore({ root: fixtures });
-            resourceStore.preload();
-
-            store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
-            var instance = {type:'TestMojit3', action: 'index1'};
-            store.expandInstance(instance, {device:'otheriphone'}, function(err, instance){
-                A.areSame('index1.otheriphone.mu.html', instance.views.index1['content-path'].split('/').pop());
             });
         },
 
