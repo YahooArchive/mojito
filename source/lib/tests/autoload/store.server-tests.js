@@ -265,7 +265,8 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
             store.preload();
             var instance = 'foo';
             var context = {};
-            store._expandInstanceCache.server[Y.JSON.stringify(instance)+Y.JSON.stringify(context)] = 'bar';
+            var key = Y.JSON.stringify(instance) + Y.JSON.stringify(context);
+            store._expandInstanceCache.server[key] = 'bar';
             store.expandInstance(instance, context, function(err, instance) {
                 A.areEqual('bar', instance);
             });

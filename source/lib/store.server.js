@@ -156,6 +156,10 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             this._mojitRVs  = {};   // mojitType: array of resource versions
             this._appResources = {};    // env: posl: array of resources
             this._mojitResources = {};  // env: posl: mojitType: array of resources
+            this._expandInstanceCache = {   // env: cacheKey: instance
+                client: {},
+                server: {}
+            };
 
             // all selectors that are actually in the app
             // hash: key is selector, value is just boolean true
@@ -440,9 +444,16 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
 
 
         expandInstanceForEnv: function(env, instance, ctx, cb) {
-            var spec,
+            var cacheKey = Y.JSON.stringify(instance) + Y.JSON.stringify(ctx),
+                cacheValue = this._expandInstanceCache[env][cacheKey],
+                spec,
                 typeDetails,
                 config;
+
+            if (cacheValue) {
+                cb(null, this.cloneObj(cacheValue));
+                return;
+            }
 
             // TODO:  should this be done here, or somewhere else?
             ctx.runtime = env;
@@ -472,6 +483,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 spec.config = config;
             }
 
+            this._expandInstanceCache[env][cacheKey] = this.cloneObj(spec);
             cb(null, spec);
         },
 
