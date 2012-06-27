@@ -315,7 +315,7 @@ YUI.add('mojito-addon-rs-yui-tests', function(Y, NAME) {
                 selector: '*'
             };
             store.addResourceVersion(res);
-            res = store.RVs['common/*/controller--controller'];
+            res = store.RVs['common/*' + '/controller--controller'];
             cmp(res.source, source);
             A.isNotUndefined(res.yui);
             A.areSame('X', res.yui.name);
@@ -496,7 +496,7 @@ YUI.add('mojito-addon-rs-yui-tests', function(Y, NAME) {
 
         'server mojit instance yui': function() {
             var fixtures = libpath.join(__dirname, '../../../../fixtures/store');
-            var store = new Y.mojito.ResourceStore({ root: fixtures });
+            var store = new Y.mojito.ResourceStore({ root: fixtures, mojitoRoot: mojitoRoot });
             store.preload();
 
             var instance = {type:'TestMojit2'};

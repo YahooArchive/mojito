@@ -149,6 +149,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             this._config = cfg;
             this._config.context = this._config.context || {};
             this._config.appConfig = this._config.appConfig || {};
+            this._config.mojitoRoot = this._config.mojitoRoot || mojitoRoot;
             this._jsonCache = {};   // fullPath: contents as JSON object
             this._ycbCache = {};    // fullPath: context: YCB config object
 
@@ -176,9 +177,9 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                     fullpath: libpath.join(__dirname, 'app/addons/rs/config.server.js')
                 }
             });
-            this.plug(Y.mojito.addons.rs.config, { appRoot: this._config.root, mojitoRoot: mojitoRoot });
+            this.plug(Y.mojito.addons.rs.config, { appRoot: this._config.root, mojitoRoot: this._config.mojitoRoot });
 
-            this._fwConfig = this.config.readConfigJSON(libpath.join(mojitoRoot, 'config.json'));
+            this._fwConfig = this.config.readConfigJSON(libpath.join(this._config.mojitoRoot, 'config.json'));
             this._appConfigStatic = this.getAppConfig({});
         },
         destructor: function() {},
@@ -759,7 +760,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             this._yuiUseSync(modules);
 
             Y.Object.each(Y.mojito.addons.rs, function(fn, name) {
-                this.plug(fn, { appRoot: this._config.root, mojitoRoot: mojitoRoot });
+                this.plug(fn, { appRoot: this._config.root, mojitoRoot: this._config.mojitoRoot });
             }, this);
         },
 
@@ -803,7 +804,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             // application.  (they -should- have but might not have.)
             // FUTURE:  instead walk -all- global packages?
             if (!walkedMojito) {
-                dir = libpath.join(mojitoRoot, '..');
+                dir = libpath.join(this._config.mojitoRoot, '..');
                 info = {
                     depth: 999,
                     parents: [],
@@ -813,7 +814,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
 
                 // special case for weird packaging situations
                 if (!Object.keys(info.pkg).length) {
-                    info.dir = mojitoRoot;
+                    info.dir = this._config.mojitoRoot;
                     info.pkg = {
                         name: 'mojito',
                         version: '0.666.666',
@@ -1837,5 +1838,6 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
 
 }, '0.0.1', { requires: [
     'base',
+    'json-stringify',
     'oop'
 ]});
