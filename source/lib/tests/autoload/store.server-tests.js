@@ -411,7 +411,7 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
                 store = new Y.mojito.ResourceStore({ root: fixtures });
             store.preload();
             var spec = { type: 'PagedFlickr' };
-            store.expandInstance(spec, {}, function(err, instance) {
+            store.expandInstanceForEnv('client', spec, {}, function(err, instance) {
                 A.isUndefined(instance.views.index['binder-yui-sorted']['breg'], 'breg');
                 A.isUndefined(instance.views.index['binder-yui-sorted']['dali-bean'], 'dali-bean');
                 A.isUndefined(instance.views.index['binder-yui-sorted']['dali-transport-base'], 'dali-transport-base');

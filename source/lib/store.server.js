@@ -1095,10 +1095,16 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
          * @return {nothing}
          */
         addResourceVersion: function(res) {
+            res.affinity = new Affinity(res.affinity);
+
+            if (this._appConfigStatic.deferAllOptionalAutoloads &&
+                'optional' === res.affinity.type) {
+                return;
+            }
+
             if (res.selector) {
                 this.selectors[res.selector] = true;
             }
-            res.affinity = new Affinity(res.affinity);
             if (res.mojit) {
                 if (!this._mojitRVs[res.mojit]) {
                     this._mojitRVs[res.mojit] = [];
@@ -1486,7 +1492,6 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                     if (!affinities.hasOwnProperty(res.affinity)) {
                         continue;
                     }
-                    // TODO:  conditionally skip "-optional" affinities
                     priority = (s * sourceBase) +
                         selectors[res.selector] + affinities[res.affinity];
                     //console.log('--DEBUG-- pri=' + priority + ' --'
