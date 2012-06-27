@@ -364,7 +364,7 @@ function processFiles(inDir, outDir, excludeMatcher) {
             if (!outDir) {
                 out = new OutputStdout(relname);
             } else {
-                out = new OutputFile(path.join(outDir, outname))
+                out = new OutputFile(path.join(outDir, outname));
             }
 
             errors = lintOneFile(f, out);

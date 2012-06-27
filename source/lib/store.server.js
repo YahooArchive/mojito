@@ -1098,7 +1098,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             res.affinity = new Affinity(res.affinity);
 
             if (this._appConfigStatic.deferAllOptionalAutoloads &&
-                'optional' === res.affinity.type) {
+                    'optional' === res.affinity.type) {
                 return;
             }
 

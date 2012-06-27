@@ -297,6 +297,7 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
                 langs = {},
                 l,
                 ll,
+                lang,
                 langName,
                 langNames,
                 viewEngineRequired = {},
@@ -326,7 +327,7 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
                     modules[res.yui.name] = {
                         requires: res.yui.meta.requires,
                         fullpath: (('client' === env) ? res.url : res.source.fs.fullPath)
-                    }
+                    };
                     if (res.mojit === mojit && res.type !== 'yui-lang') {
                         controllerRequired[res.yui.name] = true;
                     }
@@ -366,8 +367,7 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
                     required[controller.yui.name] = true;
                     if (lang && lang.yui) {
                         required[lang.yui.name] = true;
-                    }
-                    else {
+                    } else {
                         for (ll in langs) {
                             if (langs.hasOwnProperty(ll) && ll !== '') {
                                 lang = langs[ll];
@@ -489,7 +489,7 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
             for (p = parts.length; p > 0; p -= 1) {
                 test = parts.slice(0, p).join('-');
                 if (this.sortedModules[env][poslKey][test] &&
-                    this.sortedModules[env][poslKey][test][module]) {
+                        this.sortedModules[env][poslKey][test][module]) {
                     return this.sortedModules[env][poslKey][test][module];
                 }
             }

@@ -102,7 +102,9 @@ exports.run = function(params, options, callback) {
     // TODO:  probably should try to use store to read appConfig
     try {
         appConfig = Y.JSON.parse(String(fs.readFileSync(libpath.join(
-            store._config.root, 'application.json'))));
+            store._config.root,
+            'application.json'
+        ))));
         appConfig = appConfig[0];
 
         // Is there a "builds" section for this "type" in the appConfig

@@ -109,6 +109,21 @@ options = [
 ];
 
 
+// Returns details about all the mojits in the application.
+function getAllMojits(store, env, ctx) {
+    var details = {},
+        mojits,
+        m,
+        mojit;
+    mojits = store.listAllMojits();
+    for (m = 0; m < mojits.length; m += 1) {
+        mojit = mojits[m];
+        details[mojit] = store.getMojitTypeDetails(env, ctx, mojit);
+    }
+    return details;
+}
+
+
 run = function(params, options, callback) {
     var store = new ResourceStore(process.cwd()),
         displayResults,
@@ -437,7 +452,7 @@ compile.rollups = function(context, options, callback) {
         rollupBody = '';
         for (i = 0; i < rollup.srcs.length; i += 1) {
             src = rollup.srcs[i];
-            if (!options['core'] || src.match(/\/mojito\//)) {
+            if (!options.core || src.match(/\/mojito\//)) {
                 rollupBody += fs.readFileSync(src, 'utf-8');
             }
         }
@@ -953,22 +968,6 @@ removeFile = function(file) {
     }
     return false;
 };
-
-
-// Returns details about all the mojits in the application.
-function getAllMojits(store, env, ctx)
-{
-    var details = {},
-        mojits,
-        m,
-        mojit;
-    mojits = store.listAllMojits();
-    for (m = 0; m < mojits.length; m += 1) {
-        mojit = mojits[m];
-        details[mojit] = store.getMojitTypeDetails(env, ctx, mojit);
-    }
-    return details;
-}
 
 
 /*
