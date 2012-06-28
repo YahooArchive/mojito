@@ -62,11 +62,7 @@
  */
 YUI.add('mojito-resource-store', function(Y, NAME) {
 
-    var libfs = require('fs'),
-        libglob = require('./glob'),
-        libpath = require('path'),
-        libsemver = require('semver'),
-        libwalker = require('./package-walker.server'),
+    var libs = {};
 
         isNotAlphaNum = /[^a-zA-Z0-9]/,
 
@@ -106,6 +102,11 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             'view': 'common'
         };
 
+    libs.fs = require('fs');
+    libs.glob = require('./glob');
+    libs.path = require('path');
+    libs.semver = require('semver');
+    libs.walker = require('./package-walker.server');
 
 
     // The Affinity object is to manage the use of the affinity string in
@@ -148,12 +149,21 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
     Y.extend(ResourceStore, Y.Base, {
 
         initializer: function(cfg) {
+            var i;
+
             this._config = cfg;
             this._config.context = this._config.context || {};
             this._config.appConfig = this._config.appConfig || {};
             this._config.mojitoRoot = this._config.mojitoRoot || mojitoRoot;
             this._jsonCache = {};   // fullPath: contents as JSON object
             this._ycbCache = {};    // fullPath: context: YCB config object
+
+            this._libs = {};
+            for (i in libs) {
+                if (libs.hasOwnProperty(i)) {
+                    this._libs[i] = libs[i];
+                }
+            }
 
             this._appRVs    = [];   // array of resource versions
             this._mojitRVs  = {};   // mojitType: array of resource versions
@@ -176,12 +186,12 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             // We'll start with just our "config" addon.
             this._yuiUseSync({
                 'addon-rs-config': {
-                    fullpath: libpath.join(__dirname, 'app/addons/rs/config.server.js')
+                    fullpath: this._libs.path.join(__dirname, 'app/addons/rs/config.server.js')
                 }
             });
             this.plug(Y.mojito.addons.rs.config, { appRoot: this._config.root, mojitoRoot: this._config.mojitoRoot });
 
-            this._fwConfig = this.config.readConfigJSON(libpath.join(this._config.mojitoRoot, 'config.json'));
+            this._fwConfig = this.config.readConfigJSON(this._libs.path.join(this._config.mojitoRoot, 'config.json'));
             this._appConfigStatic = this.getAppConfig({});
         },
         destructor: function() {},
@@ -239,7 +249,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             appConfig = this.cloneObj(this._fwConfig.appConfigBase);
 
             // apply the read values from the file
-            ycb = this.config.readConfigYCB(libpath.join(this._config.root, 'application.json'), ctx);
+            ycb = this.config.readConfigYCB(this._libs.path.join(this._config.root, 'application.json'), ctx);
             this.mergeRecursive(appConfig, ycb);
 
             // apply the passed-in overrides
@@ -629,7 +639,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 path = routesFiles[p];
                 // relative paths are relative to the application
                 if ('/' !== path.charAt(1)) {
-                    path = libpath.join(this._config.root, path);
+                    path = this._libs.path.join(this._config.root, path);
                 }
                 fixedPaths[path] = true;
             }
@@ -791,7 +801,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             this._appRVs = [];
             this._mojitRVs = {};
 
-            walker = new libwalker.BreadthFirst(this._config.root);
+            walker = new this._libs.walker.BreadthFirst(this._config.root);
             walker.walk(function(err, info) {
                 if (err) {
                     throw err;
@@ -806,13 +816,13 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             // application.  (they -should- have but might not have.)
             // FUTURE:  instead walk -all- global packages?
             if (!walkedMojito) {
-                dir = libpath.join(this._config.mojitoRoot, '..');
+                dir = this._libs.path.join(this._config.mojitoRoot, '..');
                 info = {
                     depth: 999,
                     parents: [],
                     dir: dir
                 };
-                info.pkg = this.config.readConfigJSON(libpath.join(dir, 'package.json'));
+                info.pkg = this.config.readConfigJSON(this._libs.path.join(dir, 'package.json'));
 
                 if (Object.keys(info.pkg).length) {
                     mojitoVersion = info.pkg.version;
@@ -1021,7 +1031,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                     Y.log('invalid ' + type + ' filename. skipping ' + fs.fullPath, 'warn', NAME);
                     return;
                 }
-                res.name = libpath.join(fs.subDirArray.join('/'), baseParts.join('.'));
+                res.name = this._libs.path.join(fs.subDirArray.join('/'), baseParts.join('.'));
                 res.id = [res.type, res.subtype, res.name].join('-');
                 // special case
                 if ('addon' === type && ADDON_SUBTYPES_APPLEVEL[res.subtype]) {
@@ -1047,7 +1057,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                     Y.log('invalid ' + type + ' filename. skipping ' + fs.fullPath, 'warn', NAME);
                     return;
                 }
-                res.name = libpath.join(fs.subDirArray.join('/'), baseParts.join('.'));
+                res.name = this._libs.path.join(fs.subDirArray.join('/'), baseParts.join('.'));
                 res.id = [res.type, res.subtype, res.name].join('-');
                 return res;
             }
@@ -1065,7 +1075,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                     Y.log('invalid spec filename. skipping ' + source.fs.fullPath, 'warn', NAME);
                     return;
                 }
-                res.name = libpath.join(source.fs.subDir, baseParts.join('.'));
+                res.name = this._libs.path.join(source.fs.subDir, baseParts.join('.'));
                 res.id = [res.type, res.subtype, res.name].join('-');
                 return res;
             }
@@ -1089,7 +1099,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                     Y.log('invalid view filename. skipping ' + fs.fullPath, 'warn', NAME);
                     return;
                 }
-                res.name = libpath.join(fs.subDirArray.join('/'), baseParts.join('.'));
+                res.name = this._libs.path.join(fs.subDirArray.join('/'), baseParts.join('.'));
                 res.id = [res.type, res.subtype, res.name].join('-');
                 return res;
             }
@@ -1213,6 +1223,13 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
         // PRIVATE METHODS
 
 
+        // used for unit testing
+        // TODO DOCS
+        _mockLib: function(name, lib) {
+            this._libs[name] = lib;
+        },
+
+
         // TODO DOCS
         _expandSpec: function(env, ctx, spec) {
             var appConfig,
@@ -1285,11 +1302,11 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             }
             switch (info.pkg.yahoo.mojito.type) {
             case 'bundle':
-                dir = libpath.join(info.dir, info.pkg.yahoo.mojito.location);
+                dir = this._libs.path.join(info.dir, info.pkg.yahoo.mojito.location);
                 this._preloadDirBundle(dir, pkg);
                 break;
             case 'mojit':
-                dir = libpath.join(info.dir, info.pkg.yahoo.mojito.location);
+                dir = this._libs.path.join(info.dir, info.pkg.yahoo.mojito.location);
                 this._preloadDirMojit(dir, 'pkg', pkg);
                 break;
             default:
@@ -1358,7 +1375,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 res = ress[r];
                 this.addResourceVersion(res);
             }
-            this._preloadDirMojits(libpath.join(dir, 'mojits'), 'bundle', pkg);
+            this._preloadDirMojits(this._libs.path.join(dir, 'mojits'), 'bundle', pkg);
         },
 
 
@@ -1380,10 +1397,10 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 childPath;
 
             if ('/' !== dir.charAt(0)) {
-                dir = libpath.join(this._config.root, dir);
+                dir = this._libs.path.join(this._config.root, dir);
             }
 
-            if (!libpath.existsSync(dir)) {
+            if (!this._libs.path.existsSync(dir)) {
                 return;
             }
 
@@ -1393,7 +1410,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 if ('.' === childName.substring(0, 1)) {
                     continue;
                 }
-                childPath = libpath.join(dir, childName);
+                childPath = this._libs.path.join(dir, childName);
                 this._preloadDirMojit(childPath, dirType, pkg);
             }
         },
@@ -1418,22 +1435,22 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 res;
 
             if ('/' !== dir.charAt(0)) {
-                dir = libpath.join(this._config.root, dir);
+                dir = this._libs.path.join(this._config.root, dir);
             }
 
-            if (!libpath.existsSync(dir)) {
+            if (!this._libs.path.existsSync(dir)) {
                 return;
             }
 
-            mojitType = libpath.basename(dir);
-            packageJson = this.config.readConfigJSON(libpath.join(dir, 'package.json'));
+            mojitType = this._libs.path.basename(dir);
+            packageJson = this.config.readConfigJSON(this._libs.path.join(dir, 'package.json'));
             if (packageJson) {
                 if (packageJson.name) {
                     mojitType = packageJson.name;
                 }
 
                 if (packageJson.engines && packageJson.engines.mojito) {
-                    if(! libsemver.satisfies(mojitoVersion, packageJson.engines.mojito)) {
+                    if(! this._libs.semver.satisfies(mojitoVersion, packageJson.engines.mojito)) {
                         Y.log('skipping mojit because of version check ' + dir, 'warn', NAME);
                         return;
                     }
@@ -1442,7 +1459,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 // TODO:  register mojit's package.json as a static asset, in "static handler" plugin
             }
 
-            definitionJson = this.config.readConfigYCB(libpath.join(dir, 'definition.json'), {});
+            definitionJson = this.config.readConfigYCB(this._libs.path.join(dir, 'definition.json'), {});
             if (definitionJson.appLevel) {
                 mojitType = 'shared';
             }
@@ -1456,7 +1473,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                         rootType: dirType,
                         subDir: '.',
                         subDirArray: ['.'],
-                        basename: libpath.basename(dir),
+                        basename: this._libs.path.basename(dir),
                         isFile: false,
                         ext: null
                     },
@@ -1685,17 +1702,17 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
 
                 source = {
                     fs: {
-                        fullPath: libpath.join(dir, subdir, file),
+                        fullPath: me._libs.path.join(dir, subdir, file),
                         rootDir: dir,
                         rootType: dirType,
                         subDir: subdir,
                         subDirArray: subdir.split('/'),
                         isFile: isFile,
-                        ext: libpath.extname(file)
+                        ext: me._libs.path.extname(file)
                     },
                     pkg: pkg
                 };
-                source.fs.basename = libpath.basename(file, source.fs.ext);
+                source.fs.basename = me._libs.path.basename(file, source.fs.ext);
 
                 if (me._skipBadPath(source.fs)) {
                     return false;
@@ -1748,7 +1765,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
          * @return {array} files in the directory
          */
         _sortedReaddirSync: function(path) {
-            var out = libfs.readdirSync(path);
+            var out = this._libs.fs.readdirSync(path);
             return out.sort();
         },
 
@@ -1774,8 +1791,8 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 childStat;
 
             subdir = _subdir || '.';
-            fulldir = libpath.join(dir, subdir);
-            if (!libpath.existsSync(fulldir)) {
+            fulldir = this._libs.path.join(dir, subdir);
+            if (!this._libs.path.existsSync(fulldir)) {
                 return;
             }
 
@@ -1788,9 +1805,9 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 if ('node_modules' === childName) {
                     continue;
                 }
-                childPath = libpath.join(subdir, childName);
-                childFullPath = libpath.join(dir, childPath);
-                childStat = libfs.statSync(childFullPath);
+                childPath = this._libs.path.join(subdir, childName);
+                childFullPath = this._libs.path.join(dir, childPath);
+                childStat = this._libs.fs.statSync(childFullPath);
                 if (childStat.isFile()) {
                     cb(null, subdir, childName, true);
                 } else if (childStat.isDirectory()) {
@@ -1816,9 +1833,9 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             for (i = 0; i < list.length; i += 1) {
                 glob = list[i];
                 if ('/' !== glob.charAt(0)) {
-                    glob = libpath.join(prefix, glob);
+                    glob = this._libs.path.join(prefix, glob);
                 }
-                libglob.globSync(glob, {}, found);
+                this._libs.glob.globSync(glob, {}, found);
             }
             return found;
         },

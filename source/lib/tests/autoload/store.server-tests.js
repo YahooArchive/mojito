@@ -126,26 +126,24 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
             store.preload();
 
             var instance = {type:'test_mojit_1'};
-            store.expandInstance(instance, {}, function(err, instance) {
+            store.expandInstanceForEnv('client', instance, {}, function(err, instance) {
                 A.areSame(3, Y.Object.keys(instance.views).length);
 
                 A.isObject(instance.views['test_1']);
-                A.areSame(libpath.join(fixtures, 'mojits/test_mojit_1/views/test_1.mu.html'), instance.views['test_1']['content-path']);
+                A.areSame('/static/test_mojit_1/views/test_1.mu.html', instance.views['test_1']['content-path']);
                 A.areSame('mu', instance.views['test_1']['engine']);
-                A.areSame('/static/test_mojit_1/binders/test_1.js', instance.views['test_1']['binder-url']);
-                A.areSame(libpath.join(fixtures, 'mojits/test_mojit_1/binders/test_1.js'), instance.views['test_1']['binder-path']);
+                A.areSame('/static/test_mojit_1/binders/test_1.js', instance.views['test_1']['binder-path']);
                 A.areSame('test_mojit_1Bindertest_1', instance.views['test_1']['binder-module']);
                 A.isNotUndefined(instance.views['test_1']['binder-yui-sorted']['mojito-client']);
 
                 A.isObject(instance.views['test_2']);
-                A.areSame(libpath.join(fixtures, 'mojits/test_mojit_1/views/test_2.mu.html'), instance.views['test_2']['content-path']);
+                A.areSame('/static/test_mojit_1/views/test_2.mu.html', instance.views['test_2']['content-path']);
                 A.areSame('mu', instance.views['test_2']['engine']);
 
                 A.isObject(instance.views['subdir/test_1']);
-                A.areSame(libpath.join(fixtures, 'mojits/test_mojit_1/views/subdir/test_1.mu.html'), instance.views['subdir/test_1']['content-path']);
+                A.areSame('/static/test_mojit_1/views/subdir/test_1.mu.html', instance.views['subdir/test_1']['content-path']);
                 A.areSame('mu', instance.views['subdir/test_1']['engine']);
-                A.areSame('/static/test_mojit_1/binders/subdir/test_1.js', instance.views['subdir/test_1']['binder-url']);
-                A.areSame(libpath.join(fixtures, 'mojits/test_mojit_1/binders/subdir/test_1.js'), instance.views['subdir/test_1']['binder-path']);
+                A.areSame('/static/test_mojit_1/binders/subdir/test_1.js', instance.views['subdir/test_1']['binder-path']);
                 A.areSame('test_mojit_1Bindersubdir/test_1', instance.views['subdir/test_1']['binder-module']);
                 A.isNotUndefined(instance.views['subdir/test_1']['binder-yui-sorted']['mojito-client']);
             });
@@ -163,12 +161,6 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
                 A.isTrue(instance.models['test_1']);
                 A.isTrue(instance.models['test_2']);
             });
-        },
-
-        'dynamic handling of mojit definition.json': function() {
-            var store = new Y.mojito.ResourceStore({ root: fixtures });
-            store.preload();
-            A.areSame(libpath.join(fixtures, 'mojits/test_mojit_1/definition.json'), store._dynamicURLs['/static/test_mojit_1/definition.json']);
         },
 
         'server mojit type name can come from package.json': function() {
@@ -471,8 +463,8 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
                 returns: ['d', 'c', 'a', 'b']
             });
 
-// TODO -- store._libs = { fs: mockfs }
             var store = new Y.mojito.ResourceStore({ root: fixtures });
+            store._mockLib('fs', mockfs);
             var files = store._sortedReaddirSync('dir');
 
             AA.itemsAreSame(['a', 'b', 'c', 'd'], files);
