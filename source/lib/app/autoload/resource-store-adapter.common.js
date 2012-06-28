@@ -187,9 +187,9 @@ YUI.add('mojito-resource-store-adapter', function(Y, NAME) {
         },
 
 
-        serializeClientStore: function(ctx, instances) {
+        serializeClientStore: function(ctx) {
             //logger.log('serializeClientStore', 'warn', NAME);
-            return this.store.serializeClientStore(ctx, instances);
+            return this.store.serializeClientStore(ctx);
         },
 
 

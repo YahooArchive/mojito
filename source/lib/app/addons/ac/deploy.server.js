@@ -97,7 +97,6 @@ YUI.add('mojito-deploy-addon', function(Y, NAME) {
                 binder,
                 i,
                 id,
-                instances = {},
                 clientConfig = {},
                 clientConfigEscaped,
                 clientConfigStr,
@@ -137,8 +136,7 @@ YUI.add('mojito-deploy-addon', function(Y, NAME) {
                 yuiConfig.loaderPath = appConfigClient.yui.loader;
             }
 
-            clientConfig.store = store.serializeClientStore(contextClient,
-                instances);
+            clientConfig.store = store.serializeClientStore(contextClient);
 
             usePrecomputed = appConfigServer.yui &&
                 appConfigServer.yui.dependencyCalculations && (-1 !==

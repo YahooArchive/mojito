@@ -342,7 +342,7 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
         'call serializeClientStore()': function() {
             var store = new Y.mojito.ResourceStore({ root: fixtures });
             store.preload();
-            var client = store.serializeClientStore({}, []);
+            var client = store.serializeClientStore({});
             A.isObject(client, 'config is missing');
             A.isObject(client.appConfig, 'missing appConfig');
             A.areSame('/tunnel', client.appConfig.tunnelPrefix);
