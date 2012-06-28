@@ -183,7 +183,7 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
             });
         },
 
-        'server mojit is NOT loaded because of package mojito version miss-match': function(){
+        'server mojit is NOT loaded because of package mojito version mismatch': function(){
             var store = new Y.mojito.ResourceStore({ root: fixtures });
             store.preload();
 
@@ -201,28 +201,16 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
             });
         },
 
-        'server a mojits package.json file is NOT publicly accessible': function(){
+        'server a mojits package.json file is available as appropriate': function() {
             var store = new Y.mojito.ResourceStore({ root: fixtures });
             store.preload();
 
-            A.isTrue(typeof store.url.getPathForURL('/static/TestMojit2/package.json') === 'undefined');
+            A.isUndefined(store.url.getPathForURL('/static/TestMojit2/package.json'));
+            A.isNotUndefined(store.url.getPathForURL('/static/TestMojit3/package.json'));
+            A.isUndefined(store.url.getPathForURL('/static/TestMojit5/package.json'));
         },
 
-        'server a mojits package.json file is publicly accessible': function(){
-            var store = new Y.mojito.ResourceStore({ root: fixtures });
-            store.preload();
-
-            A.isTrue(typeof store.url.getPathForURL('/static/TestMojit3/package.json') === 'string');
-        },
-
-        'server a mojit is NOT loaded because it has a package.json file with no mojito config': function(){
-            var store = new Y.mojito.ResourceStore({ root: fixtures });
-            store.preload();
-
-            A.isTrue(typeof store.url.getPathForURL('/static/TestMojit5/package.json') === 'undefined');
-        },
-
-        'server mojit view index.mu.html is loaded correctly': function(){
+        'server mojit view index.mu.html is loaded correctly': function() {
             var store = new Y.mojito.ResourceStore({ root: fixtures });
             store.preload();
 
@@ -382,7 +370,7 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
             var store = new Y.mojito.ResourceStore({ root: fixtures });
             store.preload();
             var list = store.listAllMojits('server');
-            A.areSame(9, list.length, 'found the wrong number of mojits');
+            A.areSame(10, list.length, 'found the wrong number of mojits');
             AA.contains('DaliProxy', list);
             AA.contains('HTMLFrameMojit', list);
             AA.contains('LazyLoad', list);
@@ -391,6 +379,7 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
             AA.contains('test_mojit_1', list);
             AA.contains('TestMojit2', list);
             AA.contains('TestMojit3', list);
+            AA.contains('TestMojit5', list);
             AA.contains('soloMojit', list);
         },
 

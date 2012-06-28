@@ -65,11 +65,13 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
     var libfs = require('fs'),
         libglob = require('./glob'),
         libpath = require('path'),
+        libsemver = require('semver'),
         libwalker = require('./package-walker.server'),
 
         isNotAlphaNum = /[^a-zA-Z0-9]/,
 
         mojitoRoot = __dirname,
+        mojitoVersion = '0.666.666',    // special case for weird packaging situations
 
         CONVENTION_SUBDIR_TYPES = {
             // subdir: resource type
@@ -812,12 +814,14 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 };
                 info.pkg = this.config.readConfigJSON(libpath.join(dir, 'package.json'));
 
-                // special case for weird packaging situations
-                if (!Object.keys(info.pkg).length) {
+                if (Object.keys(info.pkg).length) {
+                    mojitoVersion = info.pkg.version;
+                } else {
+                    // special case for weird packaging situations
                     info.dir = this._config.mojitoRoot;
                     info.pkg = {
                         name: 'mojito',
-                        version: '0.666.666',
+                        version: mojitoVersion,
                         yahoo: {
                             mojito: {
                                 type: 'bundle',
@@ -1427,7 +1431,14 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 if (packageJson.name) {
                     mojitType = packageJson.name;
                 }
-                // FUTURE:  check NPM "engine"
+
+                if (packageJson.engines && packageJson.engines.mojito) {
+                    if(! libsemver.satisfies(mojitoVersion, packageJson.engines.mojito)) {
+                        Y.log('skipping mojit because of version check ' + dir, 'warn', NAME);
+                        return;
+                    }
+                }
+
                 // TODO:  register mojit's package.json as a static asset, in "static handler" plugin
             }
 

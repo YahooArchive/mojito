@@ -65,9 +65,11 @@ YUI.add('addon-rs-url', function(Y, NAME) {
                 mojit,
                 mojitRes,
                 mojitControllerRess,
+                packageJson,
                 ress,
                 r,
-                res;
+                res,
+                skip;
 
             mojits.push('shared');
             for (m = 0; m < mojits.length; m += 1) {
@@ -87,9 +89,35 @@ YUI.add('addon-rs-url', function(Y, NAME) {
                     }
                 }
 
+                if (mojitRes) {
+                    packageJson = libpath.join(mojitRes.source.fs.fullPath, 'package.json');
+                    packageJson = this.rs.config.readConfigJSON(packageJson);
+                }
+
                 ress = this.rs.getResourceVersions({mojit: mojit});
                 for (r = 0; r < ress.length; r += 1) {
                     res = ress[r];
+
+                    skip = false;
+                    if ('config' === res.type) {
+                        skip = true;
+                    }
+
+                    // This is mainly used during `mojito build html5app`.
+                    // In that situation, the user mainly doesn't want to
+                    // publish each mojit's package.json.  However, Livestand
+                    // did need to, so this feature allowed them to opt-in.
+                    if ('config--package' === res.id &&
+                            'public' === (packageJson.yahoo &&
+                            packageJson.yahoo.mojito &&
+                            packageJson.yahoo.mojito.package)) {
+                       skip = false;
+                    }
+
+                    if (skip) {
+                        continue;
+                    }
+
                     this._calcResourceURL(res, mojitRes);
                 }
             }
