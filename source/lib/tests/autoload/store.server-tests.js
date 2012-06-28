@@ -451,8 +451,7 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
                 store = new Y.mojito.ResourceStore({ root: fixtures });
             store.preload();
 
-            // TODO:  _mojitMeta is gone. query for resources directly instead
-            if (!store._mojitMeta.server.a && !store._mojitMeta.server.aa && !store._mojitMeta.server.ba) {
+            if (!store._mojitRVs.a && !store._mojitRVs.aa && !store._mojitRVs.ba) {
                 // This happens when mojito is installed via npm, since npm
                 // won't install the node_modules/ directories in
                 // tests/fixtures/packages.
@@ -460,24 +459,24 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
                 return;
             }
 
-            var m, mojits = ['a', 'aa', 'ba'];
-            var mojitType, mojitMeta;
+            var m, mojitType, mojits = ['a', 'aa', 'ba'];
+            var r, res, ress, found;
             for (m = 0; m < mojits.length; m += 1) {
                 mojitType = mojits[m];
-                mojitMeta = store._mojitMeta.server[mojitType];
-                A.isNotUndefined(mojitMeta, 'mojitMeta should be defined');
-                mojitMeta = mojitMeta['*'];
-                A.isNotUndefined(mojitMeta['yui-module-b'], 'yui-module-b should be defined');
-                A.isNotUndefined(mojitMeta['yui-module-ab'], 'yui-module-ab should be defined');
-                A.isNotUndefined(mojitMeta['yui-module-bb'], 'yui-module-bb should be defined');
-                A.isNotUndefined(mojitMeta['yui-module-cb'], 'yui-module-cb should be defined');
-                // tests that yahoo.mojito.location in package.json works
-                // (which mojito package itself uses)
-                A.isNotUndefined(mojitMeta['addon-ac-assets'], 'addon-ac-assets should be defined');
+
+                ress = store.getResources('server', {}, {mojit: mojitType});
+                found = 0;
+                for (r = 0; r < ress.length; r += 1) {
+                    res = ress[r];
+                    if (res.id === 'yui-module--b') { found += 1; }
+                    if (res.id === 'yui-module--ab') { found += 1; }
+                    if (res.id === 'yui-module--bb') { found += 1; }
+                    if (res.id === 'yui-module--cb') { found += 1; }
+                }
+                A.areSame(4, found, 'some child node_modules not loaded');
             }
 
-            var details = {};
-            store.getMojitTypeDetails('server', {}, 'a', details);
+            var details = store.getMojitTypeDetails('server', {}, 'a');
             A.isNotNull(details['controller-path'].match(/a\/foo\/controller\.server\.js$/), 'controller should not be null');
         },
 

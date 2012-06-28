@@ -1470,7 +1470,11 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 return;
             }
 
-            mojitType = this._libs.path.basename(dir);
+            if ('pkg' === dirType) {
+                mojitType = pkg.name;
+            } else {
+                mojitType = this._libs.path.basename(dir);
+            }
             packageJson = this.config.readConfigJSON(this._libs.path.join(dir, 'package.json'));
             if (packageJson) {
                 if (packageJson.name) {
