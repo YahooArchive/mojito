@@ -1168,6 +1168,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 posl = this.selector.getListFromContext(ctx);
                 posls[JSON.stringify(posl)] = posl;
             }
+            ctxs = []; // free a bunch of memory
 
             for (e = 0; e < envs.length; e += 1) {
                 env = envs[e];
