@@ -27,6 +27,9 @@ YUI.add('mojito-addon-rs-url-tests', function(Y, NAME) {
             this._appRVs = [];
             this._mojitRVs = {};
             this.publish('getMojitTypeDetails', {emitFacade: true, preventable: false});
+            this.config = {
+                readConfigJSON: function() { return {} }
+            };
         },
 
         getStaticAppConfig: function() {
