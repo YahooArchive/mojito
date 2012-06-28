@@ -8,6 +8,7 @@ YUI.add('mojito-resource-store-adapter-tests', function(Y, NAME) {
     var suite = new YUITest.TestSuite(NAME),
         path = require('path'),
         fixtures = path.join(__dirname, '../../../fixtures/store'),
+        resourceStore,
         dummyLog = {log: function() {}},
         A = YUITest.Assert;
 
@@ -15,37 +16,24 @@ YUI.add('mojito-resource-store-adapter-tests', function(Y, NAME) {
 
         name: 'Resource Store Adapter Tests',
 
-        'pre load': function() {
-            var resourceStore,
-                store;
-
+        init: function() {
             resourceStore = new Y.mojito.ResourceStore({ root: fixtures });
             resourceStore.preload();
+        },
 
-            store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
+        'pre load': function() {
+            var store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
             A.isTrue(store.getAppPath() === fixtures);
         },
 
         'server app config value': function() {
-            var resourceStore,
-                store;
-
-            resourceStore = new Y.mojito.ResourceStore({ root: fixtures });
-            resourceStore.preload();
-
-            store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
+            var store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
             var config = store.getAppConfig(null);
             A.isTrue(config.testKey1 === 'testVal1');
         },
 
         'server mojit config value': function() {
-            var resourceStore,
-                store;
-
-            resourceStore = new Y.mojito.ResourceStore({ root: fixtures });
-            resourceStore.preload();
-
-            store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
+            var store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
             var instance = {base:'test1'};
             store.expandInstance(instance, {}, function(err, instance){
                 A.isTrue(instance.id === 'test1');
@@ -55,13 +43,7 @@ YUI.add('mojito-resource-store-adapter-tests', function(Y, NAME) {
         },
 
         'server mojit config value via type': function() {
-            var resourceStore,
-                store;
-
-            resourceStore = new Y.mojito.ResourceStore({ root: fixtures });
-            resourceStore.preload();
-
-            store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
+            var store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
             var instance = {type:'test_mojit_1'};
             store.expandInstance(instance, {}, function(err, instance){
                 A.isTrue(instance.type === 'test_mojit_1');
@@ -71,13 +53,7 @@ YUI.add('mojito-resource-store-adapter-tests', function(Y, NAME) {
         },
 
         'server mojit config value via type & overrride': function() {
-            var resourceStore,
-                store;
-
-            resourceStore = new Y.mojito.ResourceStore({ root: fixtures });
-            resourceStore.preload();
-
-            store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
+            var store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
             var instance = {
                 type:'test_mojit_1',
                 config:{testKey4: 'other'}
@@ -90,13 +66,7 @@ YUI.add('mojito-resource-store-adapter-tests', function(Y, NAME) {
         },
 
         'server mojit config assets': function() {
-            var resourceStore,
-                store;
-
-            resourceStore = new Y.mojito.ResourceStore({ root: fixtures });
-            resourceStore.preload();
-
-            store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
+            var store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
             var instance = {type:'test_mojit_1'};
             store.expandInstance(instance, {}, function(err, instance){
                 A.isTrue(instance.assets['css/main.css'] !== undefined);
@@ -105,13 +75,7 @@ YUI.add('mojito-resource-store-adapter-tests', function(Y, NAME) {
         },
 
         'server mojit config views': function() {
-            var resourceStore,
-                store;
-
-            resourceStore = new Y.mojito.ResourceStore({ root: fixtures });
-            resourceStore.preload();
-
-            store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
+            var store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
             var instance = {type:'test_mojit_1'};
             store.expandInstance(instance, {}, function(err, instance){
                 A.isTrue(instance.views['test_1'] !== undefined);
@@ -120,13 +84,7 @@ YUI.add('mojito-resource-store-adapter-tests', function(Y, NAME) {
         },
 
         'server mojit config models': function() {
-            var resourceStore,
-                store;
-
-            resourceStore = new Y.mojito.ResourceStore({ root: fixtures });
-            resourceStore.preload();
-
-            store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
+            var store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
             var instance = {type:'test_mojit_1'};
             store.expandInstance(instance, {}, function(err, instance){
                 A.isTrue(instance.models['test_1'] !== undefined);
@@ -135,13 +93,7 @@ YUI.add('mojito-resource-store-adapter-tests', function(Y, NAME) {
         },
 
         'server mojit config actions': function() {
-            var resourceStore,
-                store;
-
-            resourceStore = new Y.mojito.ResourceStore({ root: fixtures });
-            resourceStore.preload();
-
-            store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
+            var store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
             var instance = {type:'test_mojit_1'};
             store.expandInstance(instance, {}, function(err, instance){
                 A.isNotUndefined(instance.yui.config.modules['test_mojit_1_actions_test_1']);
@@ -150,13 +102,7 @@ YUI.add('mojito-resource-store-adapter-tests', function(Y, NAME) {
         },
 
         'server mojit config appConfig': function() {
-            var resourceStore,
-                store;
-
-            resourceStore = new Y.mojito.ResourceStore({ root: fixtures });
-            resourceStore.preload();
-
-            store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
+            var store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
             var command = {
                 type:'test_mojit_1',
                 appConfig:{
@@ -182,13 +128,7 @@ YUI.add('mojito-resource-store-adapter-tests', function(Y, NAME) {
         },
 
         'server mojit instance definition override': function() {
-            var resourceStore,
-                store;
-
-            resourceStore = new Y.mojito.ResourceStore({ root: fixtures });
-            resourceStore.preload();
-
-            store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
+            var store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
             var command = {
                 type:'test_mojit_1',
                 models: {
@@ -201,13 +141,7 @@ YUI.add('mojito-resource-store-adapter-tests', function(Y, NAME) {
         },
 
         'server mojit type name can come from package.json': function() {
-            var resourceStore,
-                store;
-
-            resourceStore = new Y.mojito.ResourceStore({ root: fixtures });
-            resourceStore.preload();
-
-            store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
+            var store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
             var instance = {type:'TestMojit2'};
             store.expandInstance(instance, {}, function(err, instance){
                 A.isNotUndefined(instance['controller-path']);
@@ -217,13 +151,7 @@ YUI.add('mojito-resource-store-adapter-tests', function(Y, NAME) {
         },
 
         'server mojit view index.mu.html is loaded correctly': function(){
-            var resourceStore,
-                store;
-
-            resourceStore = new Y.mojito.ResourceStore({ root: fixtures });
-            resourceStore.preload();
-
-            store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
+            var store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
             var instance = {type:'TestMojit3'};
             store.expandInstance(instance, {}, function(err, instance){
                 A.areSame('index.mu.html', instance.views.index['content-path'].split('/').pop());
@@ -231,13 +159,7 @@ YUI.add('mojito-resource-store-adapter-tests', function(Y, NAME) {
         },
 
         'server mojit view index.iphone.mu.html is loaded correctly': function(){
-            var resourceStore,
-                store;
-
-            resourceStore = new Y.mojito.ResourceStore({ root: fixtures });
-            resourceStore.preload();
-
-            store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
+            var store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
             var instance = {type:'TestMojit3'};
             store.expandInstance(instance, {device:'iphone'}, function(err, instance){
                 A.areSame('index.iphone.mu.html', instance.views.index['content-path'].split('/').pop());
@@ -245,13 +167,7 @@ YUI.add('mojito-resource-store-adapter-tests', function(Y, NAME) {
         },
 
         'test getSpec() from specs dir': function(){
-            var resourceStore,
-                store;
-
-            resourceStore = new Y.mojito.ResourceStore({ root: fixtures });
-            resourceStore.preload();
-
-            store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
+            var store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
             store.getSpec('server', 'TestMojit2', {}, function(err, instance){
                 A.isTrue(instance.type === 'TestMojit2');
                 A.isTrue(instance.config.testKey1 === 'testVal1');
@@ -259,13 +175,7 @@ YUI.add('mojito-resource-store-adapter-tests', function(Y, NAME) {
         },
 
         'test getType()': function(){
-            var resourceStore,
-                store;
-
-            resourceStore = new Y.mojito.ResourceStore({ root: fixtures });
-            resourceStore.preload();
-
-            store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
+            var store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
             store.getType('server', 'test_mojit_1', {}, function(err, instance){
                 A.isTrue(instance.type === 'test_mojit_1');
                 A.isTrue(instance.config.testKey4 === 'testVal4');

@@ -7,8 +7,8 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
 
     var suite = new YUITest.TestSuite(NAME),
         libpath = require('path'),
-        fixtures = libpath.join(__dirname, '../fixtures/store'),
         mojitoRoot = libpath.join(__dirname, '../..'),
+        store,
         Mock = YUITest.Mock,
         A = YUITest.Assert,
         AA = YUITest.ArrayAssert;
@@ -41,37 +41,26 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
 
     suite.add(new YUITest.TestCase({
 
-        name: 'Store tests',
+        name: 'Store tests -- preload fixture "store"',
 
-        'pre load': function() {
-            var store = new Y.mojito.ResourceStore({ root: fixtures });
+        init: function() {
+            var fixtures = libpath.join(__dirname, '../fixtures/store');
+            store = new Y.mojito.ResourceStore({ root: fixtures });
             store.preload();
-
-            //Y.log(Y.JSON.stringify(store,null,4));
-            A.isTrue(store._config.root === fixtures);
         },
 
-        'pre load no application.json file': function() {
-            var fixtures = libpath.join(__dirname, '../fixtures/store_no_app_config'),
-                store = new Y.mojito.ResourceStore({ root: fixtures });
-            store.preload();
-
+        'pre load': function() {
+            var fixtures = libpath.join(__dirname, '../fixtures/store');
             //Y.log(Y.JSON.stringify(store,null,4));
             A.isTrue(store._config.root === fixtures);
         },
 
         'server app config value': function() {
-            var store = new Y.mojito.ResourceStore({ root: fixtures });
-            store.preload();
-
             var config = store.getAppConfig(null);
             A.isTrue(config.testKey1 === 'testVal1');
         },
 
         'server mojit config value': function() {
-            var store = new Y.mojito.ResourceStore({ root: fixtures });
-            store.preload();
-
             var instance = {base:'test1'};
             store.expandInstance(instance, {}, function(err, instance){
                 A.isTrue(instance.id === 'test1', 'wrong ID');
@@ -81,9 +70,6 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
         },
 
         'server mojit config value via type': function() {
-            var store = new Y.mojito.ResourceStore({ root: fixtures });
-            store.preload();
-
             var instance = {type:'test_mojit_1'};
             store.expandInstance(instance, {}, function(err, instance){
                 A.isTrue(instance.type === 'test_mojit_1', 'wrong ID');
@@ -93,9 +79,6 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
         },
 
         'server mojit config value via type & overrride': function() {
-            var store = new Y.mojito.ResourceStore({ root: fixtures });
-            store.preload();
-
             var instance = {
                 type:'test_mojit_1',
                 config:{testKey4: 'other'}
@@ -108,9 +91,7 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
         },
 
         'server mojit instance assets': function() {
-            var store = new Y.mojito.ResourceStore({ root: fixtures });
-            store.preload();
-
+            var fixtures = libpath.join(__dirname, '../fixtures/store');
             var instance = {type:'test_mojit_1'};
             store.expandInstance(instance, {}, function(err, instance) {
                 A.areSame('/static/test_mojit_1/assets', instance.assetsRoot);
@@ -122,9 +103,6 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
         },
 
         'server mojit instance views & binders': function() {
-            var store = new Y.mojito.ResourceStore({ root: fixtures });
-            store.preload();
-
             var instance = {type:'test_mojit_1'};
             store.expandInstanceForEnv('client', instance, {}, function(err, instance) {
                 A.areSame(3, Y.Object.keys(instance.views).length);
@@ -150,9 +128,6 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
         },
 
         'server mojit instance models': function() {
-            var store = new Y.mojito.ResourceStore({ root: fixtures });
-            store.preload();
-
             var instance = {type:'test_mojit_1'};
             store.expandInstance(instance, {}, function(err, instance) {
                 A.areSame(4, Y.Object.keys(instance.models).length);
@@ -164,9 +139,6 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
         },
 
         'server mojit type name can come from package.json': function() {
-            var store = new Y.mojito.ResourceStore({ root: fixtures });
-            store.preload();
-
             var instance = {type:'TestMojit2'};
             store.expandInstance(instance, {}, function(err, instance){
                 A.isNotUndefined(instance['controller-path']);
@@ -176,17 +148,11 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
         },
 
         'server mojit is NOT loaded because of package mojito version mismatch': function(){
-            var store = new Y.mojito.ResourceStore({ root: fixtures });
-            store.preload();
-
             A.isTrue(typeof store.url.getPathForURL('/static/test_mojit_4/package.json') === 'undefined');
             A.isTrue(typeof store.url.getPathForURL('/static/TestMojit4/package.json') === 'undefined');
         },
 
         'server mojit is loaded because of package mojito version match': function(){
-            var store = new Y.mojito.ResourceStore({ root: fixtures });
-            store.preload();
-
             var instance = {type:'TestMojit2'};
             store.expandInstance(instance, {}, function(err, instance){
                 A.areSame('/static/TestMojit2/assets', instance.assetsRoot);
@@ -194,18 +160,12 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
         },
 
         'server a mojits package.json file is available as appropriate': function() {
-            var store = new Y.mojito.ResourceStore({ root: fixtures });
-            store.preload();
-
             A.isUndefined(store.url.getPathForURL('/static/TestMojit2/package.json'));
             A.isNotUndefined(store.url.getPathForURL('/static/TestMojit3/package.json'));
             A.isUndefined(store.url.getPathForURL('/static/TestMojit5/package.json'));
         },
 
         'server mojit view index.mu.html is loaded correctly': function() {
-            var store = new Y.mojito.ResourceStore({ root: fixtures });
-            store.preload();
-
             var instance = {type:'TestMojit3'};
             store.expandInstance(instance, {}, function(err, instance){
                 A.areSame('index.mu.html', instance.views.index['content-path'].split('/').pop());
@@ -213,9 +173,6 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
         },
 
         'server mojit view index.iphone.mu.html is loaded correctly': function(){
-            var store = new Y.mojito.ResourceStore({ root: fixtures });
-            store.preload();
-
             var instance = {type:'TestMojit3'};
             store.expandInstance(instance, {device:'iphone'}, function(err, instance){
                 A.areSame('index.iphone.mu.html', instance.views.index['content-path'].split('/').pop());
@@ -223,8 +180,6 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
         },
 
         'app-level mojits': function() {
-            var store = new Y.mojito.ResourceStore({ root: fixtures });
-            store.preload();
             var instance = { type: 'test_mojit_1' };
             store.expandInstance(instance, {}, function(err, instance) {
                 A.isNotUndefined(instance.models.test_applevel);
@@ -232,8 +187,6 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
         },
 
         'mojitDirs setting': function() {
-            var store = new Y.mojito.ResourceStore({ root: fixtures });
-            store.preload();
             var instance = { type: 'soloMojit' };
             store.expandInstance(instance, {}, function(err, instance) {
                 A.isNotUndefined(instance['controller-path']);
@@ -241,8 +194,6 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
         },
 
         'expandInstance caching': function() {
-            var store = new Y.mojito.ResourceStore({ root: fixtures });
-            store.preload();
             var instance = 'foo';
             var context = {};
             var key = Y.JSON.stringify(instance) + Y.JSON.stringify(context);
@@ -253,8 +204,6 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
         },
 
         'multi preload': function() {
-            var store = new Y.mojito.ResourceStore({ root: fixtures });
-            store.preload();
             var pre = {
                 appRVs: Y.clone(store._appRVs, true),
                 mojitRVs: Y.clone(store._mojitRVs, true),
@@ -272,8 +221,6 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
         },
 
         'call getSpec()': function() {
-            var store = new Y.mojito.ResourceStore({ root: fixtures });
-            store.preload();
             store.getSpec('server', 'test1', {}, function(err, instance) {
                 A.areSame('test_mojit_1', instance.type);
                 A.areSame('test1', instance.id);
@@ -283,8 +230,6 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
         },
 
         'call getType()': function() {
-            var store = new Y.mojito.ResourceStore({ root: fixtures });
-            store.preload();
             store.getType('server', 'test_mojit_1', {}, function(err, instance) {
                 A.areSame('test_mojit_1', instance.type);
                 A.isUndefined(instance.id);
@@ -294,9 +239,7 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
         },
 
         'instance with base pointing to non-existant spec': function() {
-            var store = new Y.mojito.ResourceStore({ root: fixtures }),
-                spec = { base: 'nonexistant' };
-            store.preload();
+            var spec = { base: 'nonexistant' };
             store.expandInstance(spec, {}, function(err, instance) {
                 A.isNotUndefined(err);
                 A.areSame('Unknown base of "nonexistant"', err.message);
@@ -306,9 +249,7 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
 
         'getAppConfig() returns contextualized info': function() {
             var context = { runtime: 'server' },
-                store = new Y.mojito.ResourceStore({ root: fixtures }),
                 config;
-            store.preload();
             config = store.getAppConfig(context);
             A.isObject(config);
             A.areSame('testVal1-server', config.testKey1, 'testKey1 wasnt contextualized to the server');
@@ -317,22 +258,7 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
             A.isUndefined(config.testKey4, 'testKey4 gotten from the wrong context');
         },
 
-        'static context is really static': function() {
-            var context = { runtime: 'server' },
-                store = new Y.mojito.ResourceStore({ root: fixtures, context: context }),
-                config;
-            store.preload();
-            config = store.getAppConfig();
-            A.isObject(config);
-            A.areSame('testVal1-server', config.testKey1, 'testKey1 wasnt contextualized to the server');
-            A.areSame('testVal2', config.testKey2, 'testKey2 gotten from the wrong context');
-            A.areSame('portended', config.pathos, 'missing contextualized config');
-            A.isUndefined(config.testKey4, 'testKey4 gotten from the wrong context');
-        },
-
         'call getRoutes()': function() {
-            var store = new Y.mojito.ResourceStore({ root: fixtures });
-            store.preload();
             var routes = store.getRoutes({});
             A.isObject(routes, 'no routes at all');
             A.isObject(routes.flickr_by_page, 'missing route flickr_by_page');
@@ -340,8 +266,6 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
         },
 
         'call serializeClientStore()': function() {
-            var store = new Y.mojito.ResourceStore({ root: fixtures });
-            store.preload();
             var client = store.serializeClientStore({});
             A.isObject(client, 'config is missing');
             A.isObject(client.appConfig, 'missing appConfig');
@@ -359,8 +283,6 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
         },
 
         'call listAllMojits()': function() {
-            var store = new Y.mojito.ResourceStore({ root: fixtures });
-            store.preload();
             var list = store.listAllMojits('server');
             A.areSame(10, list.length, 'found the wrong number of mojits');
             AA.contains('DaliProxy', list);
@@ -375,23 +297,60 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
             AA.contains('soloMojit', list);
         },
 
-        'bad files': function() {
-            var fixtures = libpath.join(__dirname, '../fixtures/badfiles'),
-                store = new Y.mojito.ResourceStore({ root: fixtures });
+        'app with rollups': function() {
+            var spec = { type: 'rollups' };
+            store.expandInstanceForEnv('client', spec, {}, function(err, instance) {
+                A.areSame('/static/rollups/rollup.client.js', instance.yui.sortedPaths['rollups']);
+                A.areSame('/static/rollups/rollup.client.js', instance.yui.sortedPaths['rollupsBinderIndex']);
+                A.areSame('/static/rollups/rollup.client.js', instance.yui.sortedPaths['rollupsModelClient']);
+            });
+        }
+
+    }));
+
+
+    suite.add(new YUITest.TestCase({
+
+        name: 'Store tests -- preload fixture "gsg5"',
+
+        init: function() {
+            var fixtures = libpath.join(__dirname, '../fixtures/gsg5');
+            store = new Y.mojito.ResourceStore({ root: fixtures });
             store.preload();
-            var spec = { type: 'M' };
-            store.expandInstance(spec, {}, function(err, instance) {
-                A.isUndefined(instance.yui.sortedPaths['addon-ac-not']);
-                A.isUndefined(instance.yui.sortedPaths['MAutoloadNot']);
-                A.isUndefined(instance.yui.sortedPaths['MModelNot']);
-                A.isUndefined(instance.views['not']['binder-url']);
+        },
+
+        'controller with selector': function() {
+            var fixtures = libpath.join(__dirname, '../fixtures/gsg5');
+            var spec = { type: 'PagedFlickr' };
+            var ctx = { device: 'iphone' };
+            store.expandInstance(spec, ctx, function(err, instance) {
+                A.areSame(libpath.join(fixtures, 'mojits/PagedFlickr/controller.common.iphone.js'), instance['controller-path']);
             });
         },
 
-        'appConfig deferAllOptionalAutoloads': function() {
-            var fixtures = libpath.join(__dirname, '../fixtures/gsg5-appConfig'),
-                store = new Y.mojito.ResourceStore({ root: fixtures });
+        'binder with selector': function() {
+            var fixtures = libpath.join(__dirname, '../fixtures/gsg5');
+            var spec = { type: 'PagedFlickr' };
+            var ctx = { device: 'iphone' };
+            store.expandInstance(spec, ctx, function(err, instance) {
+                A.areSame(libpath.join(fixtures, 'mojits/PagedFlickr/views/index.iphone.mu.html'), instance.views.index['content-path']);
+            });
+        },
+
+    }));
+
+
+    suite.add(new YUITest.TestCase({
+
+        name: 'Store tests -- preload fixture "gsg5-appConfig"',
+
+        init: function() {
+            var fixtures = libpath.join(__dirname, '../fixtures/gsg5-appConfig');
+            store = new Y.mojito.ResourceStore({ root: fixtures });
             store.preload();
+        },
+
+        'appConfig deferAllOptionalAutoloads': function() {
             var spec = { type: 'PagedFlickr' };
             store.expandInstanceForEnv('client', spec, {}, function(err, instance) {
                 A.isUndefined(instance.views.index['binder-yui-sorted']['breg'], 'breg');
@@ -408,45 +367,52 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
         },
 
         'appConfig staticHandling.prefix': function() {
-            var fixtures = libpath.join(__dirname, '../fixtures/gsg5-appConfig'),
-                store = new Y.mojito.ResourceStore({ root: fixtures });
-            store.preload();
             var spec = { type: 'PagedFlickr' };
             store.expandInstance(spec, {}, function(err, instance) {
                 A.areSame('/PagedFlickr/assets', instance.assetsRoot);
             });
         },
 
-        'controller with selector': function() {
-            var fixtures = libpath.join(__dirname, '../fixtures/gsg5'),
-                store = new Y.mojito.ResourceStore({ root: fixtures });
+    }));
+
+
+    suite.add(new YUITest.TestCase({
+
+        name: 'Store tests -- misc',
+
+        'static context is really static': function() {
+            var fixtures = libpath.join(__dirname, '../fixtures/store'),
+                context = { runtime: 'server' },
+                store = new Y.mojito.ResourceStore({ root: fixtures, context: context }),
+                config;
             store.preload();
-            var spec = { type: 'PagedFlickr' };
-            var ctx = { device: 'iphone' };
-            store.expandInstance(spec, ctx, function(err, instance) {
-                A.areSame(libpath.join(fixtures, 'mojits/PagedFlickr/controller.common.iphone.js'), instance['controller-path']);
-            });
+            config = store.getAppConfig();
+            A.isObject(config);
+            A.areSame('testVal1-server', config.testKey1, 'testKey1 wasnt contextualized to the server');
+            A.areSame('testVal2', config.testKey2, 'testKey2 gotten from the wrong context');
+            A.areSame('portended', config.pathos, 'missing contextualized config');
+            A.isUndefined(config.testKey4, 'testKey4 gotten from the wrong context');
         },
 
-        'binder with selector': function() {
-            var fixtures = libpath.join(__dirname, '../fixtures/gsg5'),
+        'pre load no application.json file': function() {
+            var fixtures = libpath.join(__dirname, '../fixtures/store_no_app_config'),
                 store = new Y.mojito.ResourceStore({ root: fixtures });
             store.preload();
-            var spec = { type: 'PagedFlickr' };
-            var ctx = { device: 'iphone' };
-            store.expandInstance(spec, ctx, function(err, instance) {
-                A.areSame(libpath.join(fixtures, 'mojits/PagedFlickr/views/index.iphone.mu.html'), instance.views.index['content-path']);
-            });
+
+            //Y.log(Y.JSON.stringify(store,null,4));
+            A.isTrue(store._config.root === fixtures);
         },
 
-        'app with rollups': function() {
-            var store = new Y.mojito.ResourceStore({ root: fixtures });
+        'bad files': function() {
+            var fixtures = libpath.join(__dirname, '../fixtures/badfiles'),
+                store = new Y.mojito.ResourceStore({ root: fixtures });
             store.preload();
-            var spec = { type: 'rollups' };
-            store.expandInstanceForEnv('client', spec, {}, function(err, instance) {
-                A.areSame('/static/rollups/rollup.client.js', instance.yui.sortedPaths['rollups']);
-                A.areSame('/static/rollups/rollup.client.js', instance.yui.sortedPaths['rollupsBinderIndex']);
-                A.areSame('/static/rollups/rollup.client.js', instance.yui.sortedPaths['rollupsModelClient']);
+            var spec = { type: 'M' };
+            store.expandInstance(spec, {}, function(err, instance) {
+                A.isUndefined(instance.yui.sortedPaths['addon-ac-not']);
+                A.isUndefined(instance.yui.sortedPaths['MAutoloadNot']);
+                A.isUndefined(instance.yui.sortedPaths['MModelNot']);
+                A.isUndefined(instance.views['not']['binder-url']);
             });
         },
 
@@ -455,6 +421,7 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
         },
 
         'sortedReaddirSync() sorts the result of fs.readdirSync()': function() {
+            var fixtures = libpath.join(__dirname, '../fixtures/store');
             var mockfs = Mock();
 
             Mock.expect(mockfs, {
@@ -472,11 +439,11 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
         },
 
         '_skipBadPath() does just that': function() {
+            var fixtures = libpath.join(__dirname, '../fixtures/store');
             var store = new Y.mojito.ResourceStore({ root: fixtures });
             A.isTrue(store._skipBadPath({ isFile: true, ext: '.js~' }), 'need to skip bad file naems');
             A.isFalse(store._skipBadPath({ isFile: false, ext: '.js~' }), 'need to not-skip bad directory names');
             A.isFalse(store._skipBadPath({ isFile: true, ext: '.js' }), 'need to not-skip good file names');
-
         },
 
         'load node_modules': function() {
