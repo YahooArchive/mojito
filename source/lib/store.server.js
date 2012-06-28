@@ -62,7 +62,7 @@
  */
 YUI.add('mojito-resource-store', function(Y, NAME) {
 
-    var libs = {};
+    var libs = {},
 
         isNotAlphaNum = /[^a-zA-Z0-9]/,
 
@@ -1482,7 +1482,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 }
 
                 if (packageJson.engines && packageJson.engines.mojito) {
-                    if(! this._libs.semver.satisfies(mojitoVersion, packageJson.engines.mojito)) {
+                    if (!this._libs.semver.satisfies(mojitoVersion, packageJson.engines.mojito)) {
                         Y.log('skipping mojit because of version check ' + dir, 'warn', NAME);
                         return;
                     }

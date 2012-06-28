@@ -110,8 +110,8 @@ YUI.add('addon-rs-url', function(Y, NAME) {
                     if ('config--package' === res.id &&
                             'public' === (packageJson.yahoo &&
                             packageJson.yahoo.mojito &&
-                            packageJson.yahoo.mojito.package)) {
-                       skip = false;
+                            packageJson.yahoo.mojito['package'])) {
+                        skip = false;
                     }
 
                     if (skip) {
