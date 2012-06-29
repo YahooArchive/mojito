@@ -227,17 +227,17 @@ Metadata Object
 | `` source``            | string        | no        |               |                             | Specifies where the resource came from      |
 |                        |               |           |               |                             | (not shipped to client).                    |
 +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
-| ``staticHandlerURL``   | string        | no        | none          |                             | The path used to load the resource          | 
-|                        |               |           |               |                             | onto the client. Used only for resources    |
-|                        |               |           |               |                             | that can be deployed by reference to the    |
-|                        |               |           |               |                             | client.                                     |
-+------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
 | ``subtype``            | string        | no        | none          | ``action``, ``binder``,     |                                             |
 |                        |               |           |               | ``command``, ``middleware`` |                                             |
 |                        |               |           |               | ``model``, ``view``         |                                             |
 +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
 | ``type``               | string        | yes       | none          | See `Types of Resources <ty |                                             | 
 |                        |               |           |               | pes_resources>`_.           |                                             |
++------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
+| ``url``                | string        | no        | none          |                             | The path used to load the resource          | 
+|                        |               |           |               |                             | onto the client. Used only for resources    |
+|                        |               |           |               |                             | that can be deployed by reference to the    |
+|                        |               |           |               |                             | client.                                     |
 +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
 | ``yui``                | string        | no        | none          |                             | // for resources that are YUI modules ==??  | 
 +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
@@ -848,38 +848,38 @@ YUI.add('addon-rs-routes', function(Y, NAME) {
 }, '0.0.1', { requires: ['plugin', 'oop']});
 
 
-.. _intro-staticHandler:
+.. _url-intro:
 
-staticHandler
-`````````````
+url
+```
 
-.. _staticHandler-desc:
+.. _url-desc:
 
 Description
 ~~~~~~~~~~~
 
-The ``stackHandler`` addon calculates and manages the static handler URLs for resources.
+The ``url`` addon calculates and manages the static handler URLs for resources.
 The addon is not used by resource store core, but used by the static handler middleware.
-Developers should not need to write their own custom version of the ``staticHandler`` addon.
+Developers should not need to write their own custom version of the ``url`` addon.
 
 Before the method ``addResourceVersion`` is called in the resource store, resources
-with the ``client`` affinity set the ``staticHandlerURL`` property to the static handler URL.
+with the ``client`` affinity set the ``url`` property to the static handler URL.
 The static handler URL can be a rollup URL.
 
-The ``staticHandler`` addon also provides a method for the static handler middleware to find the 
+The ``url`` addon also provides a method for the static handler middleware to find the 
 filesystem path for a URL.
 
 **Who might want to customize their own version of the addon?** 
 
 
-.. _staticHandler-reqs:
+.. _url-reqs:
 
 Requirements
 ~~~~~~~~~~~~
 
 None.
 
-.. _staticHandler-ex:
+.. _url-ex:
 
 Example
 ~~~~~~~
