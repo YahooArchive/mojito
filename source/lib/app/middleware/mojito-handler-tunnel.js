@@ -152,6 +152,14 @@ TunnelServer.prototype = {
             requestData = data.reqs[0],
             command = requestData.data;
 
+
+        // when taking in the client context on the server side, we have to
+        // override the runtime, because the runtime switches from client to server
+        if (!command.context) {
+            command.context = {};
+        }
+        command.context.runtime = 'server';
+
         // all we need to do is expand the instance given within the RPC call
         // and attach it within a "tunnelCommand", which will be handled by
         // Mojito instead of looking up a route for it.
