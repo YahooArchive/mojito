@@ -20,33 +20,45 @@ var run,
     libpath = require('path'),
     libfs = require('fs'),
     libutils = require(libpath.join(__dirname, '../../management/utils')),
+    YUI = require('yui').YUI,
 
     MODE_ALL = parseInt('777', 8),
-
-    ResourceStore = require(libpath.join(__dirname, '../../store.server.js')),
 
     artifactsDir = 'artifacts',
     resultsDir = 'artifacts/gv';
 
 
-function parseReqs(dest, modules) {
-    var module,
-        info;
-
-    for (module in modules) {
-        if (modules.hasOwnProperty(module)) {
-            info = modules[module];
-            dest[module] = info.requires || [];
+function parseReqs(dest, ress, options) {
+    var r, res, ress;
+    var src;
+    for (r = 0; r < ress.length; r += 1) {
+        res = ress[r];
+        if (!res.yui || !res.yui.name) {
+            continue;
         }
+        if (('mojito' === res.source.pkg.name) && (!options.framework)) {
+            continue;
+        }
+        src = 'package ' + res.source.pkg.name;
+        if (res.mojit && 'shared' !== res.mojit) {
+            src = 'mojit ' + res.mojit;
+        }
+        if (!dest[src]) {
+            dest[src] = {};
+        }
+        dest[src][res.yui.name] = res.yui.meta.requires || [];
     }
 }
 
 
 function makeDepGraph(reqs, destFile) {
     var graph,
+        src,
         mod,
         i,
         req,
+        cluster = 0,
+        edges = '',
         graphAttrs;
 
     graph = 'digraph yui {\n';
@@ -54,15 +66,37 @@ function makeDepGraph(reqs, destFile) {
     graph += '    fontsize=11;\n';
     graph += '    node [shape=Mrecord,fontsize=11];\n';
     graph += '    edge [color=grey33,arrowsize=0.5,fontsize=8];\n';
+    graph += '\n';
 
-    for (mod in reqs) {
-        if (reqs.hasOwnProperty(mod)) {
-            for (i = 0; i < reqs[mod].length; i += 1) {
-                req = reqs[mod][i];
-                graph += '    "' + mod + '" -> "' + req + '";\n';
+    for (src in reqs) {
+        if (reqs.hasOwnProperty(src)) {
+            cluster++
+            graph += '    subgraph cluster' + cluster + ' {\n';
+            graph += '        label="' + src + '";\n';
+            graph += '        style="filled";\n';
+            graph += '        color="lightgrey";\n';
+            graph += '        node [style="filled",color="white"];\n';
+            for (mod in reqs[src]) {
+                if (reqs[src].hasOwnProperty(mod)) {
+                    graph += '        "' + mod + '";\n';
+                }
+            }
+            graph += '    };\n';
+
+            for (mod in reqs[src]) {
+                if (reqs[src].hasOwnProperty(mod)) {
+                    for (i = 0; i < reqs[src][mod].length; i += 1) {
+                        req = reqs[src][mod][i];
+                        edges += '    "' + mod + '" -> "' + req + '";\n';
+                    }
+                }
             }
         }
     }
+
+    graph += '\n';
+    graph += edges;
+    graph += '\n';
 
     graphAttrs = [
         'remincross=true',
@@ -88,6 +122,8 @@ function makeDepGraph(reqs, destFile) {
 run = function(params, options) {
     var env, store,
         reqs = {},
+        Y,
+        m, mojit, mojits,
         resultsFile;
 
     options = options || {};
@@ -106,14 +142,34 @@ run = function(params, options) {
         libfs.mkdirSync(resultsDir, MODE_ALL);
     }
 
+    Y = YUI();
+    Y.applyConfig({
+        useSync: true,
+        modules: {
+            'mojito-resource-store': {
+                fullpath: libpath.join(__dirname, '../../store.server.js')
+            }
+        }
+    });
+    Y.use('mojito-resource-store');
+
     // load details
-    store = new ResourceStore(process.cwd());
+    store = new Y.mojito.ResourceStore({
+        root: process.cwd(),
+        context: {}
+    });
     store.preload();
-    if (options.framework) {
-        parseReqs(reqs, store.yui.getConfigFw(env, {}).modules);
+
+    ress = store.getResources(env, {}, {});
+    parseReqs(reqs, ress, options);
+
+    mojits = store.listAllMojits();
+    mojits.push('shared');
+    for (m = 0; m < mojits.length; m += 1) {
+        mojit = mojits[m];
+        ress = store.getResources(env, {}, { mojit: mojit });
+        parseReqs(reqs, ress, options);
     }
-    parseReqs(reqs, store.yui.getConfigApp(env, {}).modules);
-    parseReqs(reqs, store.yui.getConfigAllMojits(env, {}).modules);
 
     // generate graph
     resultsFile = libpath.join(resultsDir, 'yui.' + env + '.dot');
