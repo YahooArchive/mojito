@@ -154,7 +154,7 @@ function OutputStdout(filename) {
  * and returning the number of errors encountered.
  */
 function lintOneFile(infile, outfile) {
-    var jslint = require('../fulljslint').jslint,
+    var jslint = require('../jslint').jslint,
         OPTS = {
             'continue': true, // Tolerate continue
             predef: [
