@@ -29,8 +29,9 @@ var run,
 
 
 function parseReqs(dest, ress, options) {
-    var r, res, ress;
-    var src;
+    var r,
+        res,
+        src;
     for (r = 0; r < ress.length; r += 1) {
         res = ress[r];
         if (!res.yui || !res.yui.name) {
@@ -70,7 +71,7 @@ function makeDepGraph(reqs, destFile) {
 
     for (src in reqs) {
         if (reqs.hasOwnProperty(src)) {
-            cluster++
+            cluster += 1;
             graph += '    subgraph cluster' + cluster + ' {\n';
             graph += '        label="' + src + '";\n';
             graph += '        style="filled";\n';
@@ -123,6 +124,7 @@ run = function(params, options) {
     var env, store,
         reqs = {},
         Y,
+        ress,
         m, mojit, mojits,
         resultsFile;
 

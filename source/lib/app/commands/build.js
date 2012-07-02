@@ -161,8 +161,12 @@ exports.buildhtml5app = function(cmdOptions, store, config, destination,
         appConfig,
         tunnelPrefix,
         dynamicURLs = {},
-        mr, mojitRes, mojitRess,
-        sr, specRes, specRess,
+        mr,
+        mojitRes,
+        mojitRess,
+        sr,
+        specRes,
+        specRess,
         id;
 
     if (cmdOptions.context) {
@@ -383,8 +387,8 @@ function attachManifest(root, relativePath, content, force) {
 
 function unEscape(txt) {
     txt = txt.replace(/(&[^;]+;)/g, function(all, ent) {
-        if ('&#x' === ent.substr(0,3)) {
-            return String.fromCharCode(parseInt(ent.substring(3, ent.length-1), 16))
+        if ('&#x' === ent.substr(0, 3)) {
+            return String.fromCharCode(parseInt(ent.substring(3, ent.length - 1), 16));
         }
         return ent;
     });
