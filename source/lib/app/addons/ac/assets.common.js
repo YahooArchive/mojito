@@ -48,7 +48,7 @@ YUI.add('mojito-assets-addon', function(Y, NAME) {
         namespace: 'assets',
 
         /**
-         * Method for adding a JS file to the page.
+         * Method for adding a CSS file to the page.
          * @method addCss
          * @param {string} link A URL (./local.css converts to
          *     /static/mojit_type/assets/local.css).
