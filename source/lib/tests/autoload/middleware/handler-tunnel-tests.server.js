@@ -8,7 +8,8 @@ YUI.add('mojito-middleware-handler-tunnel-tests', function(Y, NAME) {
     var Assert = YUITest.Assert,
         suite = new YUITest.TestSuite(NAME),
         path = require('path'),
-        factory = require(path.join(__dirname, '../../../app/middleware/mojito-handler-tunnel'));
+        factory = require(path.join(__dirname, '../../../app/middleware/mojito-handler-tunnel')),
+        expandedContext;
 
     suite.add(new YUITest.TestCase({
 
@@ -32,6 +33,10 @@ YUI.add('mojito-middleware-handler-tunnel-tests', function(Y, NAME) {
                             type: type,
                             ctx: ctx
                         });
+                    },
+                    expandInstance: function(instance, context, callback) {
+                        expandedContext = context;
+                        callback(null, instance);
                     }
                 },
                 globalLogger = null;
@@ -46,6 +51,7 @@ YUI.add('mojito-middleware-handler-tunnel-tests', function(Y, NAME) {
 
         tearDown: function() {
             this._handler = null;
+            expandedContext = null;
         },
 
         'handler calls next() when tunnel url or HTTP header not present': function() {
@@ -60,6 +66,64 @@ YUI.add('mojito-middleware-handler-tunnel-tests', function(Y, NAME) {
             });
 
             Assert.areEqual(1, callCount, 'next() handler should have been called');
+        },
+
+        'handler should override execution context to server (with /tunnel prefix)': function() {
+            var nextCalls = 0, writeCalls = 0, endCalls = 0,
+                req = {
+                    'url': '/tunnel',
+                    'method': 'POST',
+                    'body': {
+                        'reqs': [{
+                            'data': {
+                                'context': {
+                                    'runtime': 'client',
+                                    'myKey': 'myValue'
+                                }
+                            }
+                        }]
+                    }
+                },
+                res = {
+                };
+
+            this._handler(req, res, function() {
+                nextCalls++;
+            });
+
+            Assert.isObject(expandedContext, 'Expanded context should be an object');
+            Assert.areEqual('myValue', expandedContext.myKey, 'custom context property should have been preserved');
+            Assert.areEqual('server', expandedContext.runtime, 'context.runtime should have been set to "server"');
+
+            Assert.areEqual(1, nextCalls, 'next() handler should have been called');
+            Assert.areEqual(0, writeCalls, 'res.writeHead() should have been called');
+            Assert.areEqual(0, endCalls, 'res.end() should have been called');
+        },
+
+        'handler should set execution context to server (with /tunnel prefix)': function() {
+            var nextCalls = 0, writeCalls = 0, endCalls = 0,
+                req = { 
+                    'url': '/tunnel',
+                    'method': 'POST',
+                    'body': {
+                        'reqs': [{
+                            'data': {}
+                        }]
+                    }
+                },
+                res = {
+                };
+
+            this._handler(req, res, function() {
+                nextCalls++;
+            });
+
+            Assert.isObject(expandedContext, 'Expanded context should be an object');
+            Assert.areEqual('server', expandedContext.runtime, 'context.runtime should have been set to "server"');
+
+            Assert.areEqual(1, nextCalls, 'next() handler should have been called');
+            Assert.areEqual(0, writeCalls, 'res.writeHead() should have been called');
+            Assert.areEqual(0, endCalls, 'res.end() should have been called');
         },
 
         'handles specs (with /tunnel prefix)': function() {
