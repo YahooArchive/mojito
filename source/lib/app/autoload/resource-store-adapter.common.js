@@ -38,8 +38,6 @@ YUI.add('mojito-resource-store-adapter', function(Y, NAME) {
             this.ENV = env;
             this.store = resourceStore;
 
-            this._root = this.store._config.root;
-
             return this;
         },
 
@@ -122,7 +120,7 @@ YUI.add('mojito-resource-store-adapter', function(Y, NAME) {
 
 
         getAppPath: function() {
-            return this._root;
+            return this.store._config.root;
         },
 
 

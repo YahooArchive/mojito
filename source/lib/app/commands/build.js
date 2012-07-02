@@ -381,13 +381,19 @@ function attachManifest(root, relativePath, content, force) {
 }
 
 
-function unEscape(string) {
-    return string.replace(/(&[^;]+;)/g, function(all, ent) {
+function unEscape(txt) {
+    txt = txt.replace(/(&[^;]+;)/g, function(all, ent) {
         if ('&#x' === ent.substr(0,3)) {
             return String.fromCharCode(parseInt(ent.substring(3, ent.length-1), 16))
         }
         return ent;
     });
+    txt = txt.replace(/&lt;/g, '<');
+    txt = txt.replace(/&gt;/g, '>');
+    txt = txt.replace(/&quot;/g, '"');
+    txt = txt.replace(/&apos;/g, "'");
+    txt = txt.replace(/&amp;/g, '&');
+    return txt;
 }
 
 
