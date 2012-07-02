@@ -17,7 +17,7 @@ var utils = require('../utils'),
     dir_mojito = path.join(__dirname, '../../');
 
 
-usage = '\nmojito docs [type] [name]\n' +
+usage = '\nmojito docs [type] [name] [--server]\n' +
     '\t- type: \'mojito\', \'app\' or \'mojit\'\n' +
     '\t- name(required for type mojit): given name for creating' +
     ' documentation\n\n' +
@@ -26,25 +26,9 @@ usage = '\nmojito docs [type] [name]\n' +
     'application\'s documentation)\n' +
     'Example Usage: mojito docs mojit Bar\n' +
     '\t(creates directory \'artifacts/docs/mojits/Bar\' containing that' +
-    ' mojit\'s documentation)\n';
-
-
-var cmdLog = function(cmd, error, stdout, stderr, verbose) {
-
-    if (!verbose) {
-        return;
-    }
-
-    if (stdout) {
-        console.log('stdout: ' + stdout);
-    }
-    if (stderr) {
-        console.log('stderr: ' + stderr);
-    }
-    if (error !== null) {
-        console.log('FAILED ' + cmd + '\n' + 'error: ' + error);
-    }
-};
+    ' mojit\'s documentation)\n' +
+    '\nOptions\n' +
+    '\t--server Start YUIDoc server instead of writing the documentation to disk';
 
 
 
@@ -53,13 +37,11 @@ var cmdLog = function(cmd, error, stdout, stderr, verbose) {
  * See: http://yui.github.com/yuidoc/api/
  *      https://github.com/ryanmcgrath/wrench-js
  */
-var makeDocs = function(name, source, destination, excludes, verbose) {
+var makeDocs = function(name, source, destination, excludes, options) {
 
-    var cmd = '',
-        fail = false,
-        json,
+    var json,
         builder,
-        options;
+        docOptions;
 
     destination = path.join(destination,
         name.replace(/[^a-z0-9]/ig, '_').replace(/(_)\1+/g, '_'));
@@ -69,24 +51,29 @@ var makeDocs = function(name, source, destination, excludes, verbose) {
 
     excludes = excludes.concat(['.svn', '.git', 'CVS', 'node_modules']);
 
-    options = {
+    docOptions = {
         paths: [ source ],
         outdir: destination,
         exclude: excludes.join(),
-        name: name
+        name: name,
+        port: 3000,
+        external: false
     };
 
-    json = (new yuidocjs.YUIDoc(options)).run();
+    if (options.server) {
+        yuidocjs.Server.start(docOptions);
+    } else {
+        json = (new yuidocjs.YUIDoc(docOptions)).run();
+        builder = new yuidocjs.DocBuilder(docOptions, json);
 
-    builder = new yuidocjs.DocBuilder(options, json);
-
-    builder.compile(function() {
-        console.log('open ' + destination + '/index.html');
-    });
+        builder.compile(function() {
+            console.log('open ' + destination + '/index.html');
+        });
+    }
 };
 
 
-var makeMojitoDocs = function(name, verbose) {
+var makeMojitoDocs = function(name, options) {
 
     var source = dir_mojito,
         destination = path.join(process.cwd(), 'artifacts/docs'),
@@ -99,11 +86,11 @@ var makeMojitoDocs = function(name, verbose) {
             'tests'
         ];
 
-    makeDocs(name, source, destination, excludes, verbose);
+    makeDocs(name, source, destination, excludes, options);
 };
 
 
-var makeAppDocs = function(name, verbose) {
+var makeAppDocs = function(name, options) {
 
     var source = process.cwd(),
         destination = path.join(process.cwd(), 'artifacts/docs/'),
@@ -124,11 +111,11 @@ var makeAppDocs = function(name, verbose) {
         name = 'Mojito Application';
     }
 
-    makeDocs(name, source, destination, excludes, verbose);
+    makeDocs(name, source, destination, excludes, options);
 };
 
 
-var makeMojitDocs = function(name, verbose) {
+var makeMojitDocs = function(name, options) {
 
     var source = path.join(process.cwd(), 'mojits', name),
         destination = path.join(process.cwd(), 'artifacts/docs/mojits'),
@@ -147,7 +134,7 @@ var makeMojitDocs = function(name, verbose) {
         return;
     }
 
-    makeDocs(name, source, destination, excludes, verbose);
+    makeDocs(name, source, destination, excludes, options);
 };
 
 
@@ -166,13 +153,13 @@ function run(params, options, callback) {
 
     switch (type.toUpperCase()) {
     case 'MOJITO':
-        makeMojitoDocs('mojito', options.verbose);
+        makeMojitoDocs('mojito', options);
         break;
     case 'APP':
-        makeAppDocs(name, options.verbose);
+        makeAppDocs(name, options);
         break;
     case 'MOJIT':
-        makeMojitDocs(name, options.verbose);
+        makeMojitDocs(name, options);
         break;
     default:
         utils.error('Unknown type', exports.usage);
@@ -190,8 +177,8 @@ exports.usage = usage;
  * Standard options list export.
  */
 exports.options = [{
-    shortName: 'v',
-    longName: 'verbose',
+    shortName: 's',
+    longName: 'server',
     hasValue: false
 }];
 
