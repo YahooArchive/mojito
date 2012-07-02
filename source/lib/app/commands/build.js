@@ -17,7 +17,7 @@ var libpath = require('path'),
     rmdirR,
     writeWebPagesToFiles,
     YUI = require('yui').YUI,
-    Y = YUI({useSync: true}).use('json-parse', 'json-stringify');
+    Y = YUI({useSync: true}).use('json-parse', 'json-stringify', 'escape');
 
 Y.applyConfig({useSync: false});
 
@@ -113,6 +113,10 @@ exports.run = function(params, options, callback) {
     utils.isMojitoApp(cwd, exports.usage, true);
 
     appConfig = store.getStaticAppConfig();
+    // Is there a "builds" section for this "type" in the appConfig
+    if (appConfig.builds && appConfig.builds[type]) {
+        config = appConfig.builds[type];
+    }
 
     if (options.replace) {
         try {
@@ -377,6 +381,16 @@ function attachManifest(root, relativePath, content, force) {
 }
 
 
+function unEscape(string) {
+    return string.replace(/(&[^;]+;)/g, function(all, ent) {
+        if ('&#x' === ent.substr(0,3)) {
+            return String.fromCharCode(parseInt(ent.substring(3, ent.length-1), 16))
+        }
+        return ent;
+    });
+}
+
+
 /**
  * Changes server-relative paths to file-relative paths.
  *
@@ -397,11 +411,13 @@ function forceRelativePaths(root, relativePath, content, force) {
 
         content = content.replace(/(src|href)="([^"]+)"/g,
             function(all, name, val) {
-                var fixed = val;
-                if ('/' === val.charAt(0)) {
-                    fixed = libpath.join(pathTo(libpath.dirname(val), dirname),
-                        libpath.basename(val));
+                // FUTURE:  once the "/" aren't escaped, we can do this easier
+                var fixed = unEscape(val);
+                if ('/' === fixed.charAt(0)) {
+                    fixed = libpath.join(pathTo(libpath.dirname(fixed), dirname),
+                        libpath.basename(fixed));
                 }
+                fixed = Y.Escape.html(fixed);
                 return name + '="' + fixed + '"';
             });
     }
