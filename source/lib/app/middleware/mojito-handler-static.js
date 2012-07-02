@@ -164,7 +164,7 @@ function clearCache(key) {
  */
 function staticProvider(store, globalLogger) {
     logger = globalLogger;
-    var appConfig = store.getAppConfig(null),
+    var appConfig = store.getStaticAppConfig(),
         options = appConfig.staticHandling || {},
         cache = options.cache,
         maxAge = options.maxAge;
@@ -197,7 +197,7 @@ function staticProvider(store, globalLogger) {
 
         // Use the resource store as a URI "rewriter" here.
         // /favicon.ico is sent to ./my_app_folder/assets/favicon.ico
-        filename = store.yui.getPathForURL(path);
+        filename = store.url.getPathForURL(path);
         // TODO: [Issue 80] remove this for performance
         if ((!filename) && (path === '/favicon.ico')) {
             filename = pa.join(store._config.root, 'assets', path);

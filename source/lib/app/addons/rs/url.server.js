@@ -59,6 +59,19 @@ YUI.add('addon-rs-url', function(Y, NAME) {
         },
 
 
+        // utility for `build html5app` command
+        // TODO DOCS
+        getSpecURL: function(id) {
+            var urlParts = [];
+            if (this.config.prefix) {
+                urlParts.push(this.config.prefix);
+            }
+            urlParts.push(id);
+            urlParts.push('specs/default.json');
+            return '/' + urlParts.join('/');
+        },
+
+
         preloadResourceVersions: function() {
             var mojits = this.rs.listAllMojits(),
                 m,
@@ -75,6 +88,9 @@ YUI.add('addon-rs-url', function(Y, NAME) {
             for (m = 0; m < mojits.length; m += 1) {
                 mojit = mojits[m];
                 mojitRes = this.rs.getResourceVersions({id: 'mojit--' + mojit})[0];
+                if (mojitRes) {
+                    this._calcResourceURL(mojitRes, mojitRes);
+                }
 
                 // Server-only framework mojits like DaliProxy and HTMLFrameMojit
                 // should never have URLs associated with them.  This never used
@@ -125,12 +141,8 @@ YUI.add('addon-rs-url', function(Y, NAME) {
 
 
         getMojitTypeDetails: function(evt) {
-            var parts = [];
-            if (this.config.prefix) {
-                parts.push(this.config.prefix);
-            }
-            parts.push(evt.args.mojitType);
-            evt.mojit.assetsRoot = '/' + parts.join('/') + '/assets';
+            var ress = this.rs.getResources(evt.args.env, evt.args.ctx, {type: 'mojit', name: evt.args.mojitType});
+            evt.mojit.assetRoot = ress[0].url + '/assets';
         },
 
 
@@ -159,12 +171,21 @@ YUI.add('addon-rs-url', function(Y, NAME) {
                     rollupFsPath = libpath.join(this.appRoot, 'rollup.client.js');
                 }
             } else {
-                urlParts.push(res.mojit);
+                if ('mojit' === res.type) {
+                    urlParts.push(res.name);
+                } else {
+                    urlParts.push(res.mojit);
+                }
                 if (res.yui && res.yui.name) {
                     rollupParts.push(res.mojit);
                     rollupParts.push('rollup.client.js');
                     rollupFsPath = libpath.join(mojitRes.source.fs.fullPath, 'rollup.client.js');
                 }
+            }
+
+            if ('mojit' === res.type) {
+                res.url = '/' + urlParts.join('/');
+                return;
             }
 
             urlParts.push(relativePath);

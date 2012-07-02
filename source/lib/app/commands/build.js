@@ -12,14 +12,12 @@ var libpath = require('path'),
     utils = require(libpath.join(__dirname, '../../management/utils')),
     fs = require('fs'),
     libqs = require('querystring'),
-    ResourceStore = require(libpath.join(__dirname, '../..',
-        'store.server.js')
-        ),
     MODE_755 = parseInt('755', 8),
     mkdirP,
     rmdirR,
     writeWebPagesToFiles,
-    Y = require('yui').YUI({useSync: true}).use('json-parse', 'json-stringify');
+    YUI = require('yui').YUI,
+    Y = YUI({useSync: true}).use('json-parse', 'json-stringify');
 
 Y.applyConfig({useSync: false});
 
@@ -67,12 +65,27 @@ exports.options = [
  * @param {Function} callback Function to invoke on commmand completion.
  */
 exports.run = function(params, options, callback) {
-
-    var store = new ResourceStore(process.cwd()),
+    var store,
         type = 'html5app',
+        cwd = process.cwd(),
         destination,
         appConfig,
         config = {};
+
+    Y.applyConfig({
+        useSync: true,
+        modules: {
+            'mojito-resource-store': {
+                fullpath: libpath.join(__dirname, '../../store.server.js')
+            }
+        }
+    });
+    Y.use('mojito-resource-store');
+    Y.applyConfig({useSync: false});
+    store = new Y.mojito.ResourceStore({
+        root: cwd,
+        context: {}
+    });
 
     if (!params[0]) {
         params[0] = '';
@@ -91,29 +104,15 @@ exports.run = function(params, options, callback) {
     if (params[1] && params[1][0] === '/') {
         destination = libpath.join(params[1]);
     } else if (params[1]) {
-        destination = libpath.join(store._config.root, params[1]);
+        destination = libpath.join(cwd, params[1]);
     } else {
-        destination = libpath.join(store._config.root, 'artifacts/builds', type);
+        destination = libpath.join(cwd, 'artifacts/builds', type);
     }
 
     // Are we in a Mojito App?
-    utils.isMojitoApp(store._config.root, exports.usage, true);
+    utils.isMojitoApp(cwd, exports.usage, true);
 
-    // TODO:  probably should try to use store to read appConfig
-    try {
-        appConfig = Y.JSON.parse(String(fs.readFileSync(libpath.join(
-            store._config.root,
-            'application.json'
-        ))));
-        appConfig = appConfig[0];
-
-        // Is there a "builds" section for this "type" in the appConfig
-        if (appConfig.builds && appConfig.builds[type]) {
-            config = appConfig.builds[type];
-        }
-    } catch (err) {
-        // there is no application.json, but that is okay
-    }
+    appConfig = store.getStaticAppConfig();
 
     if (options.replace) {
         try {
@@ -154,8 +153,13 @@ exports.buildhtml5app = function(cmdOptions, store, config, destination,
         urls = {}, // from: to
         app,
         context = '',
+        contextObj = libqs.parse(cmdOptions.context),
         appConfig,
-        tunnelPrefix;
+        tunnelPrefix,
+        dynamicURLs = {},
+        mr, mojitRes, mojitRess,
+        sr, specRes, specRess,
+        id;
 
     if (cmdOptions.context) {
         context = '?' + cmdOptions.context;
@@ -171,7 +175,7 @@ exports.buildhtml5app = function(cmdOptions, store, config, destination,
 
     store.preload();
 
-    appConfig = store.getAppConfig(libqs.parse(cmdOptions.context));
+    appConfig = store.getAppConfig(contextObj);
     tunnelPrefix = appConfig.tunnelPrefix || '/tunnel';
 
     console.log('Building a "' + type + '" of the Mojito application at "' +
@@ -194,7 +198,7 @@ exports.buildhtml5app = function(cmdOptions, store, config, destination,
 
             manifest += url + '\n';
 
-            if (serverFiles[extension] !== undefined) {
+            if (serverFiles[extension]) {
                 urls[url + context] = url;
                 mkdirP(libpath.dirname(libpath.join(destination, url)),
                     MODE_755);
@@ -204,9 +208,32 @@ exports.buildhtml5app = function(cmdOptions, store, config, destination,
         }
     }
 
+    mojitRess = store.getResources('client', contextObj, {type: 'mojit'});
+    for (mr = 0; mr < mojitRess.length; mr += 1) {
+        mojitRes = mojitRess[mr];
+        if (!mojitRes.url) {
+            continue;
+        }
+        url = mojitRes.url + '/definition.json';
+        dynamicURLs[url] = true;
+
+        specRess = store.getResources('client', contextObj, {type: 'spec', mojit: mojitRes.name});
+        for (sr = 0; sr < specRess.length; sr += 1) {
+            specRes = specRess[sr];
+            dynamicURLs[specRes.url] = true;
+        }
+    }
+
+    for (id in appConfig.specs) {
+        if (appConfig.specs.hasOwnProperty(id)) {
+            url = store.url.getSpecURL(id);
+            dynamicURLs[url] = true;
+        }
+    }
+
     // Get all the dynamic URLs we have to call via the "tunnel"
-    for (url in store._dynamicURLs) {
-        if (store._dynamicURLs.hasOwnProperty(url)) {
+    for (url in dynamicURLs) {
+        if (dynamicURLs.hasOwnProperty(url)) {
             urls[tunnelPrefix + url + context] = url;
             mkdirP(libpath.dirname(libpath.join(destination, url)), MODE_755);
         }
