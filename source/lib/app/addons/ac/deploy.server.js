@@ -206,7 +206,7 @@ YUI.add('mojito-deploy-addon', function(Y, NAME) {
                                 path = binder.needs[module];
                                 // Anything we don't know about we'll assume is
                                 // a YUI library module.
-                                if (!store.store.yui.getPathForURL(path)) {
+                                if (!store.store.url.getPathForURL(path)) {
                                     yuiModules.push(module);
                                     yuiJsUrlContains[module] = true;
                                 }
@@ -237,10 +237,10 @@ YUI.add('mojito-deploy-addon', function(Y, NAME) {
             // fw & app scripts.
             if (useOnDemand) {
                 // add all framework-level and app-level code
-                this.addScripts('bottom', store.store.yui.getConfigFw('client',
-                    contextClient).modules);
-                this.addScripts('bottom', store.store.yui.getConfigApp('client',
-                    contextClient).modules);
+                this.addScripts('bottom', store.store.config.getConfigFw(
+                    'client', contextClient).modules);
+                this.addScripts('bottom', store.store.config.getConfigApp(
+                    'client', contextClient).modules);
             }
 
             // add binders' dependencies

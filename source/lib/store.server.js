@@ -93,7 +93,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             'addon': 'server',
             'archetype': 'server',
             'asset': 'common',
-            'binder': 'client',
+            'binder': 'common',     // need to be common so that binders meta-bubble
             'command': 'server',
             'controller': 'server',
             'middleware': 'server',
