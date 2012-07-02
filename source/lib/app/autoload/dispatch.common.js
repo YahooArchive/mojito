@@ -32,70 +32,6 @@ YUI.add('mojito-dispatcher', function(Y, NAME) {
         useOnDemand,
         appShareYUIInstance;
 
-
-    /**
-     * Modifies the YUI modules in the instance to point to the correct
-     * language.
-     *
-     * @method fixupInstanceLang
-     * @param {string} lang target language.
-     * @param {Object} instance mojit instance (results of expandInstance()).
-     * @private
-     */
-    function fixupInstanceLang(type, lang, instance) {
-        var fixedSorted = [],
-            fixedSortedPaths = {},
-            bestLang = Y.Intl.lookupBestLang(lang,
-                Y.Object.keys(instance.yui.langs)),
-            suffix = (bestLang) ? '_' + bestLang : '',
-            OK = {},
-            fixedMod,
-            fixedPath;
-
-        // hard fallbacks if no "root" bundle
-        if (!bestLang && !instance.yui.langs['']) {
-            if (instance.yui.langs.en) {
-                bestLang = 'en';
-                suffix = '_en';
-            }
-            if (!bestLang && instance.yui.langs['en-US']) {
-                bestLang = 'en-US';
-                suffix = '_en-US';
-            }
-        }
-
-        OK['lang/' + type + suffix] = true;
-        if (suffix) {
-            OK['lang/datatype-date-format' + suffix] = true;
-        } else {
-            // The "root" (no lang) version doesn't contain aggregates like %x.
-            OK['lang/datatype-date-format_en'] = true;
-        }
-
-        Y.Array.each(instance.yui.sorted, function(mod) {
-            if ('lang/' === mod.substring(0, 5)) {
-                if (OK[mod]) {
-                    fixedSorted.push(mod);
-                }
-            } else {
-                fixedSorted.push(mod);
-            }
-        });
-        Y.Object.each(instance.yui.sortedPaths, function(path, mod) {
-            if ('lang/' === mod.substring(0, 5)) {
-                if (OK[mod]) {
-                    fixedSortedPaths[mod] = path;
-                }
-            } else {
-                fixedSortedPaths[mod] = path;
-            }
-        });
-
-        instance.yui.sorted = fixedSorted;
-        instance.yui.sortedPaths = fixedSortedPaths;
-    }
-
-
     /* Optimization methods:
 
     ============ 1). YUI({bootstrap:false}).use('*')
@@ -213,8 +149,6 @@ YUI.add('mojito-dispatcher', function(Y, NAME) {
                 function runMojit() {
                     var moduleList,
                         mojitYuiModules;
-
-                    fixupInstanceLang(command.instance.type, command.context.lang, instance);
 
                     moduleList = instance.yui.sorted;
                     // gotta copy this or else it pollutes the client runtime
