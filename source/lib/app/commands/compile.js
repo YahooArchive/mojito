@@ -571,21 +571,32 @@ compile.views = function(context, options, callback) {
     libutils.log((options.remove ? 'Removing compiled' : 'Compiling') +
         ' views...');
 
-    // Get all the Mojits
-    mojits = getAllMojits(store, 'server', context);
-
-    if (options.mojit && !mojits[options.mojit]) {
-        callback('Unknown "' + options.mojit + '"');
-        return;
+    if (options.mojit) {
+        mojits = [ options.mojit ];
+    } else {
+        mojits = store.listAllMojits();
     }
 
-    // loop through all mojits one at a time, only once per mojit
-    Object.keys(mojits).forEach(function(mojitName) {
-        var outputFilepath = store._mojitPaths[mojitName] + compiledFilename,
+    Y.Array.each(mojits, function(mojitName) {
+        var mojitRes,
+            outputFilepath,
             mojitNs = mojitName.replace(/\./g, '_'),
             yuiModuleCacheWriter,
             viewName,
             MojY;
+
+        mojitRes = store.getResources('server', context, {type: 'mojit', name: mojitName});
+        if (!mojitRes || !mojitRes.length) {
+            callback('Unknown mojit "' + options.mojit + '"');
+        }
+        mojitRes = mojitRes[0];
+
+        outputFilepath = libpath.join(mojitRes.source.fs.fullPath, 'autoload/compiled/views.common.js');
+
+        if ('mojito' === mojitRes.source.pkg.name) {
+            // don't write framework-provided views into the framework directory
+            return;
+        }
 
         if (options.remove) {
             if (removeFile(outputFilepath)) {
@@ -597,17 +608,10 @@ compile.views = function(context, options, callback) {
             return;
         }
 
-        // Skip anything in the "lib/mojits" (open source) or
-        // "mojit/mojits" (ynodejs_mojito) directories as it's internal
-        if (outputFilepath.indexOf('lib/mojits') >= 0 ||
-                outputFilepath.indexOf('mojito/mojits') >= 0) {
-            return;
-        }
-
         yuiModuleCacheWriter = new YuiModuleCacheWriter('views/' + mojitName,
             outputFilepath, options);
 
-        mojit = mojits[mojitName];
+        mojit = store.getMojitTypeDetails('server', context, mojitName);
 
         if (mojit.views) {
             // Check each view for a template and engine

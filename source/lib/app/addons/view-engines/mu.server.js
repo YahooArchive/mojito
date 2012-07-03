@@ -76,4 +76,4 @@ YUI.add('mojito-mu', function(Y, NAME) {
 
     Y.namespace('mojito.addons.viewEngines').mu = MuAdapter;
 
-}, '0.1.0', {requires: []});
+}, '0.1.0', {requires: ['json-stringify']});
