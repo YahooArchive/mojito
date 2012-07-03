@@ -8,13 +8,9 @@
 /*jslint anon:true, sloppy:true, regexp:true, nomen:true*/
 
 
-var path = require('path'),
-    utils = require(path.join(__dirname, '../../management/utils')),
-    fs = require('fs'),
-
-    // Mojito Resource Store
-    ResourceStore = require(path.join(__dirname, '../..',
-        'store.server.js')),
+var libpath = require('path'),
+    libfs = require('fs'),
+    libutils = require(libpath.join(__dirname, '../../management/utils')),
 
     // private compilation function container
     compile = {},
@@ -123,9 +119,25 @@ function getAllMojits(store, env, ctx) {
     return details;
 }
 
+function makeStore(cfg) {
+    var store;
+    Y.applyConfig({
+        useSync: true,
+        modules: {
+            'mojito-resource-store': {
+                fullpath: libpath.join(__dirname, '../../store.server.js')
+            }
+        }
+    });
+    Y.use('mojito-resource-store');
+    store = new Y.mojito.ResourceStore(cfg);
+    Y.applyConfig({useSync: true});
+    return store;
+}
+
 
 run = function(params, options, callback) {
-    var store = new ResourceStore(process.cwd()),
+    var cwd = process.cwd(),
         displayResults,
         type,
         context = {};
@@ -133,7 +145,7 @@ run = function(params, options, callback) {
     // TODO: don't assign to a parameter.
     options = options || {};
 
-    utils.isMojitoApp(store._config.root, exports.usage, true);
+    libutils.isMojitoApp(cwd, exports.usage, true);
 
     if (options.context) {
         // TODO: parseURL.
@@ -141,11 +153,11 @@ run = function(params, options, callback) {
     }
 
     displayResults = function(err) {
-        utils.log('');
+        libutils.log('');
         msgs.forEach(function(msg) {
-            utils.log(msg);
+            libutils.log(msg);
         });
-        utils.log('');
+        libutils.log('');
         callback(err);
     };
 
@@ -161,11 +173,11 @@ run = function(params, options, callback) {
     compileType = type = params.shift();
 
     if (!type) {
-        utils.error('Please provide the type of compilation you want.',
+        libutils.error('Please provide the type of compilation you want.',
             exports.usage, true);
     }
     if (!compile[type]) {
-        utils.error("Unknown type '" + type + "'", exports.usage, true);
+        libutils.error("Unknown type '" + type + "'", exports.usage, true);
     }
 
     compile[type](context, options, displayResults);
@@ -205,14 +217,14 @@ compile.all = function(context, options, callback) {
             return callback();
         }
         if (options.verbose) {
-            utils.log('executing -- ' + action.toUpperCase() + ' --');
+            libutils.log('executing -- ' + action.toUpperCase() + ' --');
         }
         compile[action](context, options, function(err) {
             if (err) {
                 return callback(err);
             }
             if (options.verbose) {
-                utils.log('done -- ' + action.toUpperCase() + ' --\n\n');
+                libutils.log('done -- ' + action.toUpperCase() + ' --\n\n');
             }
             runOne();
         });
@@ -229,7 +241,7 @@ compile.all = function(context, options, callback) {
  * @return {object} The return value from any optional callback function.
  */
 compile.inlinecss = function(context, options, callback) {
-    var app = new utils.App({
+    var app = new libutils.App({
         port: options.port || 11111,
         verbose: options.verbose
     }),
@@ -241,7 +253,7 @@ compile.inlinecss = function(context, options, callback) {
         inlineNext;
 
     if (options.app) {
-        utils.warn('Creating app-level inline css not supported\n');
+        libutils.warn('Creating app-level inline css not supported\n');
         return callback();
     }
 
@@ -284,7 +296,7 @@ compile.inlinecss = function(context, options, callback) {
         if (options.remove) {
             if (removeFile(inline.dest)) {
                 if (options.verbose) {
-                    utils.log('Removed: ' + inline.dest);
+                    libutils.log('Removed: ' + inline.dest);
                 }
                 processed += 1;
                 // on to the next one
@@ -330,10 +342,10 @@ compile.inlinecss = function(context, options, callback) {
                     if ('data:' === url.substr(0, 5)) {
                         return whole;
                     }
-                    srcDir = path.dirname(inline.srcs[srcKey]);
-                    fs = path.join(srcDir, url);
+                    srcDir = libpath.dirname(inline.srcs[srcKey]);
+                    fs = libpath.join(srcDir, url);
                     if (!fs2url[fs]) {
-                        utils.warn('couldn\'t normalize url(' + url +
+                        libutils.warn('couldn\'t normalize url(' + url +
                             ')(' + fs + ') in ' + inline.srcs[srcKey]);
                         return whole;
                     }
@@ -374,19 +386,19 @@ compile.inlinecss = function(context, options, callback) {
         var store;
 
         if (err) {
-            utils.error(err);
+            libutils.error(err);
         } else {
             store = appInstance.store;
             inlines = store.getInlineCssMojits('client', context);
 
-            utils.log((options.remove ? 'Removing' : 'Creating') +
+            libutils.log((options.remove ? 'Removing' : 'Creating') +
                 ' inline css...');
 
             inlineNext(store, function(err) {
                 try {
                     app.close();
                 } catch (err2) {
-                    utils.warn('(app server was not running) ' + err2);
+                    libutils.warn('(app server was not running) ' + err2);
                 }
 
                 if (err) {
@@ -411,88 +423,115 @@ compile.inlinecss = function(context, options, callback) {
  */
 compile.rollups = function(context, options, callback) {
     var cwd = process.cwd(),
-        action = options.remove ? 'Removed' : 'Created',
+        store = makeStore({root: cwd, appConfig: { assumeRollups: true}}),
+        rollups = {},
         processed = 0,
-        store = new ResourceStore(cwd),
-        rollups,
-        rollup,
-        mojitName;
+        r,
+        res,
+        ress,
+        m,
+        mojit,
+        mojits,
+        mojitRes,
+        dest,
+        s,
+        src,
+        srcs,
+        shortDest,
+        rollupBody;
 
     store.preload();
 
-    utils.log((options.remove ? 'Removing' : 'Creating') + ' rollups...');
-
-    function rollOneUp(rollup) {
-        var i,
-            src,
-            rollupBody,
-            shortDest;
-
-        shortDest = rollup.dest;
-        if (cwd === shortDest.substr(0, cwd.length)) {
-            shortDest = shortDest.substr(cwd.length + 1);
-        }
-
-        if (options.remove) {
-            if (path.existsSync(rollup.dest)) {
-                try {
-                    fs.unlinkSync(rollup.dest);
-                } catch (err) {
-                    return callback(err);
-                }
-
-                if (options.verbose) {
-                    utils.log('Removed: ' + shortDest);
-                }
-                processed += 1;
-            }
-            return;
-        }
-
-        rollupBody = '';
-        for (i = 0; i < rollup.srcs.length; i += 1) {
-            src = rollup.srcs[i];
-            if (!options.core || src.match(/\/mojito\//)) {
-                rollupBody += fs.readFileSync(src, 'utf-8');
-            }
-        }
-        fs.writeFileSync(rollup.dest, rollupBody, 'utf-8');
-        if (options.verbose) {
-            utils.log('Rolled up: ' + shortDest);
-        }
-        processed += 1;
-    }
+    libutils.log((options.remove ? 'Removing' : 'Creating') + ' rollups...');
 
     if (options.app || options.core) {
-        rollup = store.getRollupsApp('client', context);
-        rollOneUp(rollup);
-        utils.log('All rollups have been ' +
-            (options.remove ? 'removed' : 'created') + '\n');
-        callback();
-        return;
+        // FUTURE:  rollup true-app-level resources somewhere?
+        mojits = [ 'shared' ];
+    } else {
+        mojits = store.listAllMojits();
+    }
+    if (options.mojit) {
+        mojits = [ options.mojit ];
     }
 
-    rollups = store.getRollupsMojits('client', context);
+    for (m = 0; m < mojits.length; m += 1) {
+        mojit = mojits[m];
 
-    if (options.mojit && !rollups[options.mojit]) {
-        callback('Unknown "' + options.mojit + '"');
-        return;
-    }
+        if ('shared' !== mojit) {
+            mojitRes = store.getResources('client', context, {type: 'mojit', name: mojit});
+            if (!mojitRes || !mojitRes.length) {
+                callback('Unknown "' + mojit + '"');
+                return;
+            }
+            mojitRes = mojitRes[0];
+            if ('mojito' === mojitRes.source.pkg.name) {
+                // don't write framework-provided rollups into the framework directory
+                continue;
+            }
+        }
 
-    for (mojitName in rollups) {
-        if (rollups.hasOwnProperty(mojitName)) {
-
-            // TODO: verify the logic inversion here.
-            //if (options['mojit'] && mojitName != options['mojit']) {continue};
-            if (!options.mojit || (mojitName === options.mojit)) {
-                rollup = rollups[mojitName];
-                rollOneUp(rollup);
+        ress = store.getResources('client', context, {mojit: mojit});
+        for (r = 0; r < ress.length; r += 1) {
+            res = ress[r];
+            if (res.mojit !== mojit) {
+                continue;
+            }
+            if (options.core && 'mojito' !== res.source.pkg.name) {
+                continue;
+            }
+            dest = res.source.fs.rollupPath;
+            if (dest) {
+                if (!rollups[dest]) {
+                    rollups[dest] = [];
+                }
+                rollups[dest].push(res.source.fs.fullPath);
+                continue;
             }
         }
     }
 
-    msgs.push(action + ' compiled rollup YUI modules for ' + processed +
-        ' mojits.');
+    for (dest in rollups) {
+        if (rollups.hasOwnProperty(dest)) {
+            srcs = rollups[dest];
+
+            shortDest = dest;
+            if (cwd === shortDest.substr(0, cwd.length)) {
+                shortDest = shortDest.substr(cwd.length + 1);
+            }
+
+            if (options.remove) {
+                if (libpath.existsSync(dest)) {
+                    try {
+                        libfs.unlinkSync(dest);
+                    } catch (err) {
+                        return callback(err);
+                    }
+                    if (options.verbose) {
+                        libutils.log('Removed: ' + shortDest);
+                    }
+                    processed += 1;
+                }
+                continue;
+            }
+
+            if (!srcs.length) {
+                continue;
+            }
+            rollupBody = '';
+            for (s = 0; s < srcs.length; s += 1) {
+                src = srcs[s];
+                rollupBody += libfs.readFileSync(src, 'utf-8');
+            }
+            libfs.writeFileSync(dest, rollupBody, 'utf-8');
+            if (options.verbose) {
+                libutils.log('Rolled up: ' + shortDest);
+            }
+            processed += 1;
+        }
+    }
+
+    msgs.push((options.remove ? 'Removed' : 'Created') +
+              ' compiled rollup YUI modules for ' + processed + ' mojits.');
     callback();
 };
 
@@ -505,7 +544,8 @@ compile.rollups = function(context, options, callback) {
  * @return {object} The return value from any optional callback function.
  */
 compile.views = function(context, options, callback) {
-    var store = new ResourceStore(process.cwd()),
+    var cwd = process.cwd(),
+        store = makeStore({root: cwd}),
         compiledFilename = '/autoload/compiled/views.common.js',
         mojits,
         yuiConfig,
@@ -522,13 +562,13 @@ compile.views = function(context, options, callback) {
 
     // there are no views in the app, so no need to do this
     if (options.app) {
-        utils.warn('Compiling app-level views not supported\n');
+        libutils.warn('Compiling app-level views not supported\n');
         return callback();
     }
 
     store.preload();
 
-    utils.log((options.remove ? 'Removing compiled' : 'Compiling') +
+    libutils.log((options.remove ? 'Removing compiled' : 'Compiling') +
         ' views...');
 
     // Get all the Mojits
@@ -550,7 +590,7 @@ compile.views = function(context, options, callback) {
         if (options.remove) {
             if (removeFile(outputFilepath)) {
                 if (options.verbose) {
-                    utils.log('Removed: ' + outputFilepath);
+                    libutils.log('Removed: ' + outputFilepath);
                 }
                 processed += 1;
             }
@@ -620,8 +660,9 @@ compile.views = function(context, options, callback) {
  * @return {object} The return value from any optional callback function.
  */
 compile.json = function(context, options, callback) {
-    var store = new ResourceStore(process.cwd()),
-        app = new utils.App({
+    var cwd = process.cwd(),
+        store = makeStore({root: cwd}),
+        app = new libutils.App({
             port: options.port || 11111,
             verbose: options.verbose,
             appConfig: {
@@ -649,7 +690,7 @@ compile.json = function(context, options, callback) {
 
     // there are no json configs in the app, so no need to do this
     if (options.app) {
-        utils.warn('Compiling app-level json not supported\n');
+        libutils.warn('Compiling app-level json not supported\n');
         return callback();
     }
 
@@ -680,7 +721,7 @@ compile.json = function(context, options, callback) {
         }
 
         if (options.verbose) {
-            utils.log('\tprocessing spec... ' + fullSpecName);
+            libutils.log('\tprocessing spec... ' + fullSpecName);
         }
 
         parts = fullSpecName.split(':');
@@ -692,7 +733,7 @@ compile.json = function(context, options, callback) {
             specUrl = '/' + mName + '/specs/' + specName + '.json';
 
             if (options.verbose) {
-                utils.log('found spec (' + specName + ') for ' + mName);
+                libutils.log('found spec (' + specName + ') for ' + mName);
             }
             getContentFromUrl(app, specUrl, jsonOpts, function(spec) {
                 yuiModuleCacheWriter.createNamespace('compiled.' + mojitNs +
@@ -741,7 +782,7 @@ compile.json = function(context, options, callback) {
          */
         setTimeout(function() {
             if (options.verbose) {
-                utils.log('looking for definition.json for ' + mojitName);
+                libutils.log('looking for definition.json for ' + mojitName);
             }
 
             var specsToPreload = [],
@@ -752,7 +793,7 @@ compile.json = function(context, options, callback) {
             if (Object.keys(definition).length > 0) {
                 if (definition.preload) {
                     if (options.verbose) {
-                        utils.log('processing preload mojits for ' + mojitName);
+                        libutils.log('processing preload mojits for ' + mojitName);
                     }
 
                     definition.preload.forEach(function(toPreload) {
@@ -768,9 +809,9 @@ compile.json = function(context, options, callback) {
                     });
 
                     if (options.verbose) {
-                        utils.log('processing the preload specs for ' +
+                        libutils.log('processing the preload specs for ' +
                             mojitName);
-                        utils.log(specsToPreload.join(', '));
+                        libutils.log(specsToPreload.join(', '));
                     }
 
                     specsToPreload.forEach(function(stp) {
@@ -807,7 +848,7 @@ compile.json = function(context, options, callback) {
         }
 
         if (options.verbose) {
-            utils.log('Processing mojit... ' + mojitName);
+            libutils.log('Processing mojit... ' + mojitName);
         }
         outputFilepath = store._mojitPaths[mojitName] + compiledFilename;
 
@@ -825,7 +866,7 @@ compile.json = function(context, options, callback) {
         if (outputFilepath.indexOf('lib/mojits') >= 0 ||
                 outputFilepath.indexOf('mojito/mojits') >= 0) {
             if (options.verbose) {
-                utils.log('skipping ' + outputFilepath);
+                libutils.log('skipping ' + outputFilepath);
             }
             return processNextMojit(store, cb);
         }
@@ -856,18 +897,18 @@ compile.json = function(context, options, callback) {
     // start up the server
     app.start(function(err, appInst) {
         if (err) {
-            utils.error(err);
+            libutils.error(err);
             return;
         }
 
-        utils.log((options.remove ? 'Removing compiled' : 'Compiling') +
+        libutils.log((options.remove ? 'Removing compiled' : 'Compiling') +
             ' json...');
 
         processNextMojit(store, function() {
             try {
                 app.close();
             } catch (err2) {
-                utils.info('(app server was not running) ' + err2);
+                libutils.info('(app server was not running) ' + err2);
             }
             msgs.push(action + ' compiled JSON YUI modules for ' + processed +
                 ' mojits.');
@@ -878,7 +919,7 @@ compile.json = function(context, options, callback) {
 
 
 clean = function(context, options, cb) {
-    utils.warn('Cleaning all compiled files!');
+    libutils.warn('Cleaning all compiled files!');
     options.remove = true;
     options.app = true;
     compile.all(context, options, function() {
@@ -899,12 +940,12 @@ everything = function(context, options, cb) {
 
 
 mkdirP = function(p, mode) {
-    var ps = path.normalize(p).split('/'),
+    var ps = libpath.normalize(p).split('/'),
         i;
 
     for (i = 0; i <= ps.length; i += 1) {
         try {
-            fs.mkdirSync(ps.slice(0, i).join('/'), mode);
+            libfs.mkdirSync(ps.slice(0, i).join('/'), mode);
         } catch (err) {
             // Dirty way to check dir
         }
@@ -913,23 +954,23 @@ mkdirP = function(p, mode) {
 
 
 rmdirR = function(path) {
-    var files = fs.readdirSync(path),
+    var files = libfs.readdirSync(path),
         i,
         currFile;
 
     /* Loop through and delete everything in the sub-tree after checking it */
     for (i = 0; i < files.length; i += 1) {
-        currFile = fs.statSync(path + '/' + files[i]);
+        currFile = libfs.statSync(path + '/' + files[i]);
 
         if (currFile.isDirectory()) {
             // Recursive function back to the beginning
             rmdirR(path + '/' + files[i]);
         } else if (currFile.isSymbolicLink()) {
             // Unlink symlinks
-            fs.unlinkSync(path + '/' + files[i]);
+            libfs.unlinkSync(path + '/' + files[i]);
         } else {
             // Assume it's a file - perhaps a try/catch belongs here?
-            fs.unlinkSync(path + '/' + files[i]);
+            libfs.unlinkSync(path + '/' + files[i]);
         }
     }
 
@@ -937,7 +978,7 @@ rmdirR = function(path) {
      * Now that we know everything in the sub-tree has been deleted,
      * we can delete the main directory. Huzzah for the shopkeep.
      */
-    return fs.rmdirSync(path);
+    return libfs.rmdirSync(path);
 };
 
 
@@ -948,8 +989,8 @@ getContentFromUrl = function(app, url, opts, callback) {
     }
     app.getWebPage(url, opts, function(err, url, content) {
         if (err) {
-            utils.error('FAILED to get ' + url);
-            utils.error(err);
+            libutils.error('FAILED to get ' + url);
+            libutils.error(err);
         } else {
             callback(content);
         }
@@ -958,9 +999,9 @@ getContentFromUrl = function(app, url, opts, callback) {
 
 
 removeFile = function(file) {
-    if (path.existsSync(file)) {
+    if (libpath.existsSync(file)) {
         try {
-            fs.unlinkSync(file);
+            libfs.unlinkSync(file);
         } catch (err) {
             return false;
         }
@@ -1041,7 +1082,7 @@ YuiModuleCacheWriter = function(name, file, options) {
 /**
  * Create a clean prototype instance.
  */
-YuiModuleCacheWriter.prototype = utils.heir(YuiModuleCacher.prototype);
+YuiModuleCacheWriter.prototype = libutils.heir(YuiModuleCacher.prototype);
 
 
 /**
@@ -1062,18 +1103,18 @@ YuiModuleCacheWriter.prototype.write = function() {
     // only write the file if there is something to write
     if (Object.keys(namespaces).length > 0) {
         try {
-            mkdirP(path.dirname(file), parseInt('755', 8));
+            mkdirP(libpath.dirname(file), parseInt('755', 8));
             if (this.opts.verbose) {
-                utils.log('writing file: ' + file);
+                libutils.log('writing file: ' + file);
             }
-            fs.writeFileSync(file, output, 'utf8');
+            libfs.writeFileSync(file, output, 'utf8');
             if (this.opts.verbose) {
-                utils.log('Created: ' + file);
+                libutils.log('Created: ' + file);
             }
             return true;
         } catch (err) {
-            utils.error('Error writing file: ' + file);
-            utils.error(err);
+            libutils.error('Error writing file: ' + file);
+            libutils.error(err);
             return false;
         }
     }
