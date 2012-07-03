@@ -413,10 +413,7 @@ config
 .. 1. Should the following be included?
 
 .. default implementation:
-.. preloadFile() registers config files as type:config resources
-.. listens for an event signifying the end of preload()
-.. preloads the contents of the json files
-
+.. ``findResourceByConvention()`` registers config files as ``type:config`` resources
 
 
 Description
@@ -440,14 +437,16 @@ Requirements
 
 Because this is used directly by the resource store, all implementations need to provide the following methods:
 
-- ``readYCBDimensions(cb)``
-- ``readResource(ctx, res, cb)``
+- ``getDimensions()``
+- ``readConfigJSON(path)``
+- ``readConfigYCB(path, ctx)``
 
 
-.. _config-ex:
 
-readYCBDimensions(cb)
-~~~~~~~~~~~~~~~~~~~~~
+.. _config-getDimensions:
+
+getDimensions()
+~~~~~~~~~~~~~~~
 
 .. Question: 
 
@@ -457,24 +456,39 @@ Returns all the defined dimensions.
 
 **Parameters**
 
-- ``cb`` - The callback function that is passed the defined dimensions.
+None
 
 **Return:** 
 
-readResource(ctx, res, cb)
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. _config-readConfigJSON:
 
-.. Question: 
+readConfigJSON(path)
+~~~~~~~~~~~~~~~~~~~~
 
-.. 1. Need description, spec, and example of ``ctx``, ``res``, ``cb`` and return value.
-
-Reads the config file pointed to by the resource.
+Reads the JSON configuration file.
 
 **Parameters**
 
-- ``ctx`` - The context that the application is running in. 
-- ``res`` -
-- ``cb`` -
+- ``path`` - The path to the JSON configuration file.
+
+
+**Return:** 
+
+.. _config-ex:
+
+readConfigYCB(path, ctx)
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Reads the context configuration file.
+
+.. Question: 
+
+.. 1. Need return value.
+
+**Parameters**
+
+- ``path`` - The path to the context configuration file.
+- ``ctx`` - The context configuration to read.
 
 **Return:** 
 
@@ -858,18 +872,22 @@ url
 Description
 ~~~~~~~~~~~
 
+.. Question:
+
+.. 1. Who might want to customize their own version of the addon? 
+
 The ``url`` addon calculates and manages the static handler URLs for resources.
 The addon is not used by resource store core, but used by the static handler middleware.
 Developers should not need to write their own custom version of the ``url`` addon.
 
-Before the method ``addResourceVersion`` is called in the resource store, resources
-with the ``client`` affinity set the ``url`` property to the static handler URL.
+After the method ``preloadResourceVersions`` sets ``res.url`` to the static handler URL
+for the resource, the method ``getMojitTypeDetails`` sets the mojit's ``assetsRoot``. 
 The static handler URL can be a rollup URL.
+
 
 The ``url`` addon also provides a method for the static handler middleware to find the 
 filesystem path for a URL.
 
-**Who might want to customize their own version of the addon?** 
 
 
 .. _url-reqs:
@@ -896,18 +914,20 @@ Description
 
 .. Questions:
 
-.. 1. Should the following be included:
+.. 1. Who might want to customize their own version of the addon? 
+.. 2. Should the following be included?
 
 .. 
 
-  after preloadFile()
-    if in autoload/ or yui_modules/ makes a type:yui-module resource
-    if in lang/ makes a type:yui-lang resource
+  after findResourceByConvention()
+     - detect ``yui-module`` and ``yui-lang`` resources.
   before addResourceVersion()
-    if it's a resource implemented as a YUI module, gathers the YUI module metadata about it
-  after resolveMojit()
-    calculates the YUI module dependencies for the controller
-    calculates the YUI module dependencies for each binder
+     - if it's a resource implemented as a YUI module, gathers the YUI module metadata about it
+  on mojitResourceResolved()
+     - calculates the YUI module dependencies for the controller
+     - calculates the YUI module dependencies for each binder
+  on getMojitTypeDetails()
+     - add dependency information to the mojit's details
 
 The ``yui`` addon has the following functions:
 
@@ -916,7 +936,6 @@ The ``yui`` addon has the following functions:
 - defines new mojit-specific resource of type ``yui-lang`` that are found in ``lang/``.
 - precalculates YUI dependencies for mojit controllers and binders.
 
-**Who might want to customize their own version of the addon?** 
 
 The built-in ``yui`` addon will generally not need to be overridden with a custom version of the addon.
 
