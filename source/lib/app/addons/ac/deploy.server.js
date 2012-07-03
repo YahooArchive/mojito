@@ -237,9 +237,9 @@ YUI.add('mojito-deploy-addon', function(Y, NAME) {
             // fw & app scripts.
             if (useOnDemand) {
                 // add all framework-level and app-level code
-                this.addScripts('bottom', store.store.config.getConfigFw('client',
+                this.addScripts('bottom', store.store.yui.getConfigFw('client',
                     contextClient).modules);
-                this.addScripts('bottom', store.store.config.getConfigApp('client',
+                this.addScripts('bottom', store.store.yui.getConfigApp('client',
                     contextClient).modules);
             }
 

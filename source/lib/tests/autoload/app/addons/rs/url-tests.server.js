@@ -269,6 +269,9 @@ YUI.add('mojito-addon-rs-url-tests', function(Y, NAME) {
                 root: fixtures,
                 appConfig: {}
             });
+            store.getResources = function() {
+                return [ { url: 'TEST' } ];
+            };
             store.plug(Y.mojito.addons.rs.url, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
             var mojit = {};
             store.fire('getMojitTypeDetails', {
@@ -279,24 +282,7 @@ YUI.add('mojito-addon-rs-url-tests', function(Y, NAME) {
                 },
                 mojit: mojit
             });
-            A.areSame('/static/Foo/assets', mojit.assetsRoot);
-
-            // honor empty prefix
-            store = new MockRS({
-                root: fixtures,
-                appConfig: { staticHandling: {prefix:''} }
-            });
-            store.plug(Y.mojito.addons.rs.url, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
-            mojit = {};
-            store.fire('getMojitTypeDetails', {
-                args: {
-                    env: 'server',
-                    ctx: {},
-                    mojitType: 'Foo'
-                },
-                mojit: mojit
-            });
-            A.areSame('/Foo/assets', mojit.assetsRoot);
+            A.areSame('TEST/assets', mojit.assetsRoot);
         },
 
 

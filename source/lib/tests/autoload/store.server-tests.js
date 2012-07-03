@@ -608,12 +608,12 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
                         switch (res.source.fs.basename) {
                             case 'x':
                                 A.areSame('*', res.selector);
-                                A.areSame('client', res.affinity);
+                                A.areSame('common', res.affinity);
                                 A.areSame('.js', res.source.fs.ext);
                                 break;
                             case 'x.iphone':
                                 A.areSame('iphone', res.selector);
-                                A.areSame('client', res.affinity);
+                                A.areSame('common', res.affinity);
                                 A.areSame('.js', res.source.fs.ext);
                                 break;
                             default:

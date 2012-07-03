@@ -23,6 +23,7 @@ YUI.add('mojito-deploy-addon-tests', function(Y, NAME) {
             addon = null;
         },
 
+
         'YUI_config uses application.json yui.config': function() {
 
             var realRouteMaker = Y.mojito.RouteMaker;
@@ -99,6 +100,7 @@ YUI.add('mojito-deploy-addon-tests', function(Y, NAME) {
             A.areSame('bar', config.foo, 'failed to base YUI_config on application.yui.config');
             A.areSame('klingon', config.lang, 'wrong lang used');
         },
+
 
         'honor yui.config.fetchCSS=false in application.json': function() {
 
@@ -195,6 +197,7 @@ YUI.add('mojito-deploy-addon-tests', function(Y, NAME) {
             A.areSame(1, counts['blob bottom'], 'wrong number of blob:bottom');
         },
 
+
         'dependencyCalculations precomputed': function() {
             var calledYuiModules;
             var realLoader = Y.mojito.Loader;
@@ -282,6 +285,7 @@ YUI.add('mojito-deploy-addon-tests', function(Y, NAME) {
             A.areSame("'*'", YUI_use);
         },
 
+
         'dependencyCalculations ondemand': function() {
             var calledYuiModules;
             var realLoader = Y.mojito.Loader;
@@ -368,6 +372,7 @@ YUI.add('mojito-deploy-addon-tests', function(Y, NAME) {
             AA.itemsAreEqual(['yui','get','loader-base','loader-rollup','loader-yui3'], calledYuiModules);
             A.areSame("'mojito-client'", YUI_use);
         },
+
 
         'dependencyCalculations precomputed+ondemand': function() {
             var calledYuiModules;

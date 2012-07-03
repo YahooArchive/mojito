@@ -142,7 +142,7 @@ YUI.add('addon-rs-url', function(Y, NAME) {
 
         getMojitTypeDetails: function(evt) {
             var ress = this.rs.getResources(evt.args.env, evt.args.ctx, {type: 'mojit', name: evt.args.mojitType});
-            evt.mojit.assetRoot = ress[0].url + '/assets';
+            evt.mojit.assetsRoot = ress[0].url + '/assets';
         },
 
 
