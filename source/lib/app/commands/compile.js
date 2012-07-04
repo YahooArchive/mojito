@@ -917,7 +917,7 @@ compile.json = function(context, options, callback) {
                         });
                 } else {
                 */
-                    processFullDefinition(mojitName, yuiModuleCacheWriter, cb);
+                processFullDefinition(mojitName, yuiModuleCacheWriter, cb);
                 /* see NOTE_1 above
                 }
                 */
@@ -979,8 +979,8 @@ compile.json = function(context, options, callback) {
         processDefinitionJSON(mojitRes, store, yuiModuleCacheWriter,
             function() {
                 // look for specs
-                var appConfig = store.getStaticAppConfig();
-                var specs = [];
+                var appConfig = store.getStaticAppConfig(),
+                    specs = [];
                 if (appConfig.specs) {
                     specs = Object.keys(store._appConfigStatic.specs);
                 }
