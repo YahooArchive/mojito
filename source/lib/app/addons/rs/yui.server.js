@@ -339,9 +339,8 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
                     }
                 }
             }
-            if (controller && modules['inlinecss/' + mojit]) {
-                // TODO:  does this polute something?  need to make a copy somewhere?
-                modules[controller.yui.name].requires.push('inlinecss/' + mojit);
+            if (controller && ('client' === env) && modules['inlinecss/' + mojit]) {
+                controller.yui.meta.requires.push('inlinecss/' + mojit);
             }
 
             if (!this.modules[env]) {
@@ -518,6 +517,9 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
                         yui.name = name;
                         yui.version = version;
                         yui.meta = meta || {};
+                        if (!yui.meta.requires) {
+                            yui.meta.requires = [];
+                        }
                     }
                 }
             };
