@@ -106,7 +106,7 @@ Router.prototype = {
             //and is never a string here. i.e. this assert always passes:
             //require('assert').ok(typeof routeMatch.param !== 'string');
             command.params = {
-                route: simpleMerge(routeMatch.query, routeMatch.param),
+                route: simpleMerge(routeMatch.query, routeMatch.params),
                 url: query || {},
                 body: req.body || {},
                 file: {} // FUTURE: add multi-part file data here
