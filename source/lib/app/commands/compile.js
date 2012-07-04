@@ -105,21 +105,6 @@ options = [
 ];
 
 
-// Returns details about all the mojits in the application.
-function getAllMojits(store, env, ctx) {
-    var details = {},
-        mojits,
-        m,
-        mojit;
-    mojits = store.listAllMojits();
-    for (m = 0; m < mojits.length; m += 1) {
-        mojit = mojits[m];
-        details[mojit] = store.getMojitTypeDetails(env, ctx, mojit);
-    }
-    return details;
-}
-
-
 /**
  * Returns details on how to make inline CSS for mojits.
  *
@@ -759,7 +744,7 @@ compile.json = function(context, options, callback) {
         processed = 0,
         total = 0,
         action = options.remove ? 'Removed' : 'Created',
-        compiledFilename = '/autoload/compiled/json.common.js',
+        compiledFilename = 'autoload/compiled/json.common.js',
         processNextMojit,
         processSpecs,
         processNextSpec,
@@ -780,10 +765,11 @@ compile.json = function(context, options, callback) {
 
     store.preload();
 
-    // Get all the Mojits
-    // TODO:  use store.listAllMojits() instead?
-    mojits = getAllMojits(store, 'server', context);
-    mojitNames = Object.keys(mojits);
+    if (options.mojit) {
+        mojitNames = [ options.mojit ];
+    } else {
+        mojitNames = store.listAllMojits();
+    }
     total = mojitNames.length;
 
     processSpecs = function(newSpecs, mojitName, store, yuiModuleCacheWriter,
@@ -815,6 +801,10 @@ compile.json = function(context, options, callback) {
         specName = parts[1] || 'default';
 
         if (!mojitName || mName === mojitName) {
+            /* NOTE_2:  During the resource store redesign, it was noticed
+             * that this branch is never called, which STRONGLY suggests that
+             * this feature was never used.
+             */
             specUrl = '/' + mName + '/specs/' + specName + '.json';
 
             if (options.verbose) {
@@ -830,14 +820,18 @@ compile.json = function(context, options, callback) {
         }
     };
 
-    processDefinitionJSON = function(mojitName, store, yuiModuleCacheWriter,
+    processDefinitionJSON = function(mojitRes, store, yuiModuleCacheWriter,
             cb) {
-        var processFullDefinition = function(mojitName, ymcw, cb) {
+        var mojitName = mojitRes.name,
+            processFullDefinition,
+            processPreloadDefinitions;
+
+        processFullDefinition = function(mojitName, ymcw, cb) {
+            // TODO:  probably want to use mojitRes.url instead
             var url = staticPrefix + mojitName + '/definition.json';
 
             getContentFromUrl(app, url, jsonOpts, function(definition) {
                 var defObj = Y.JSON.parse(definition);
-
                 ymcw.createNamespace('compiled.' +
                     mojitName.replace(/\./g, '_') + '.definitions').cache(
                     'definition',
@@ -845,20 +839,20 @@ compile.json = function(context, options, callback) {
                 );
                 cb();
             });
-        },
-            processPreloadDefinitions = function(mojitNames, ymcw, cb) {
-                var continuation = function() {
-                    if (mojitNames.length) {
-                        processFullDefinition(mojitNames.shift(), ymcw,
-                            continuation);
-                    } else {
-                        cb();
-                    }
-                };
-
-                processFullDefinition(mojitNames.shift(), ymcw,
-                    continuation);
+        };
+        processPreloadDefinitions = function(mojitNames, ymcw, cb) {
+            var continuation = function() {
+                if (mojitNames.length) {
+                    processFullDefinition(mojitNames.shift(), ymcw,
+                        continuation);
+                } else {
+                    cb();
+                }
             };
+
+            processFullDefinition(mojitNames.shift(), ymcw,
+                continuation);
+        };
 
         /*
          * The resource store doesn't respond well if you call
@@ -872,10 +866,18 @@ compile.json = function(context, options, callback) {
 
             var specsToPreload = [],
                 mojitNamesToPreload = [],
-                definition = store._getMojitConfig('server', {},
-                    mojitName, 'definition');
+                path,
+                definition;
+
+            path = libpath.join(mojitRes.source.fs.fullPath, 'definition.json');
+
+            // TODO:  use commandline context instead?
+            definition = store.config.readConfigYCB(path, {});
 
             if (Object.keys(definition).length > 0) {
+                /* NOTE_1:  During the resource store redesign, it was noticed
+                 * that the "toPreload" variable was never defined, which
+                 * STRONGLY suggests that this feature was never used.
                 if (definition.preload) {
                     if (options.verbose) {
                         libutils.log('processing preload mojits for ' + mojitName);
@@ -914,8 +916,11 @@ compile.json = function(context, options, callback) {
                                 });
                         });
                 } else {
+                */
                     processFullDefinition(mojitName, yuiModuleCacheWriter, cb);
+                /* see NOTE_1 above
                 }
+                */
             } else {
                 cb();
             }
@@ -924,6 +929,7 @@ compile.json = function(context, options, callback) {
 
     processNextMojit = function(store, cb) {
         var mojitName = mojitNames.shift(),
+            mojitRes,
             outputFilepath,
             theCloser,
             yuiModuleCacheWriter;
@@ -935,23 +941,25 @@ compile.json = function(context, options, callback) {
         if (options.verbose) {
             libutils.log('Processing mojit... ' + mojitName);
         }
-        outputFilepath = store._mojitPaths[mojitName] + compiledFilename;
 
         count += 1;
+
+        mojitRes = store.getResources('server', context, {type: 'mojit', name: mojitName});
+        if (!mojitRes || !mojitRes.length) {
+            return processNextMojit(store, cb);
+        }
+        mojitRes = mojitRes[0];
+
+        if ('mojito' === mojitRes.source.pkg.name) {
+            // don't write framework-provided json into the framework directory
+            return processNextMojit(store, cb);
+        }
+
+        outputFilepath = libpath.join(mojitRes.source.fs.fullPath, compiledFilename);
 
         if (options.remove) {
             if (removeFile(outputFilepath)) {
                 processed += 1;
-            }
-            return processNextMojit(store, cb);
-        }
-
-        // Skip anything in the "lib/mojits" (open source) or
-        // "mojit/mojits" (ynodejs_mojito) directories as it's internal
-        if (outputFilepath.indexOf('lib/mojits') >= 0 ||
-                outputFilepath.indexOf('mojito/mojits') >= 0) {
-            if (options.verbose) {
-                libutils.log('skipping ' + outputFilepath);
             }
             return processNextMojit(store, cb);
         }
@@ -967,14 +975,16 @@ compile.json = function(context, options, callback) {
         };
 
         // look for definitions
-        processDefinitionJSON(mojitName, store, yuiModuleCacheWriter,
+        // TODO:  really only need to do this after all the mojits are processed
+        processDefinitionJSON(mojitRes, store, yuiModuleCacheWriter,
             function() {
                 // look for specs
+                var appConfig = store.getStaticAppConfig();
                 var specs = [];
-                if (store._appConfigStatic.specs) {
+                if (appConfig.specs) {
                     specs = Object.keys(store._appConfigStatic.specs);
                 }
-                processSpecs(specs, mojitName, store, yuiModuleCacheWriter,
+                processSpecs(specs, mojitRes.name, store, yuiModuleCacheWriter,
                     theCloser);
             });
     };
