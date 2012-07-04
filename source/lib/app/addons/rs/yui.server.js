@@ -341,7 +341,7 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
             }
             if (controller && modules['inlinecss/' + mojit]) {
                 // TODO:  does this polute something?  need to make a copy somewhere?
-                modules[controller.yui.module].requires.push('inlinecss/' + mojit);
+                modules[controller.yui.name].requires.push('inlinecss/' + mojit);
             }
 
             if (!this.modules[env]) {

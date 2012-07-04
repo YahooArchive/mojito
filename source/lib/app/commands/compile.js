@@ -119,6 +119,84 @@ function getAllMojits(store, env, ctx) {
     return details;
 }
 
+
+/**
+ * Returns details on how to make inline CSS for mojits.
+ *
+ * This example comes from (a modified) GSG5.
+ * [ {
+ *      mojitName: 'FlickrDetail',
+ *      yuiModuleName: 'inlinecss/FlickrDetail',
+ *      dest: '/blah/mojits/FlickrDetail/autoload/compiled' +
+ *          '/css.iphone.client.js',
+ *      srcs: {
+ *          '/static/FlickrDetail/assets/index.css': true,
+ *          '/static/FlickrDetail/assets/message.css': true,
+ *   }
+ * ]
+ *
+ * @method getInlineCssMojits
+ * @param store {string} resource store
+ * @param env {string} "client" or "server"
+ * @param context {object} runtime context
+ * @return {array} object describing where to put the inline CSS file and what it should contain
+ */
+function getInlineCssMojits(store, env, context) {
+    var m,
+        mojit,
+        mojits,
+        mojitRes,
+        r,
+        res,
+        ress,
+        selector,
+        dest,
+        srcs,
+        inlines = [];
+
+    mojits = store.listAllMojits();
+    for (m = 0; m < mojits.length; m += 1) {
+        mojit = mojits[m];
+
+        mojitRes = store.getResources('client', context, {type: 'mojit', name: mojit});
+        mojitRes = mojitRes[0];
+        if ('mojito' === mojitRes.source.pkg.name) {
+            // don't write framework-provided inlinecss into the framework directory
+            continue;
+        }
+
+        // TODO:  This isn't quite right, since multiple contexts might map to
+        // posls with the same lead selector.
+        selector = store.selector.getListFromContext(context)[0];
+
+        srcs = [];
+        ress = store.getResources(env, context, {mojit: mojit});
+        for (r = 0; r < ress.length; r += 1) {
+            res = ress[r];
+            if (mojit !== res.mojit) {
+                continue;
+            }
+            if ((res.type === 'asset') && (res.subtype === 'css')) {
+                srcs[res.url] = true;
+            }
+        }
+        dest = 'autoload/compiled/inlinecss' + ('*' === selector ? '' : '.' +
+            selector) + '.' + env + '.js';
+        dest = libpath.join(mojitRes.source.fs.fullPath, dest);
+        if (Object.keys(srcs).length) {
+            inlines.push({
+                mojitName: mojit,
+                yuiModuleName: 'inlinecss/' + mojit,
+                dest: dest,
+                srcs: srcs
+            });
+        }
+    } // for each mojit
+
+    return inlines;
+}
+
+
 function makeStore(cfg) {
     var store;
     Y.applyConfig({
@@ -241,16 +319,18 @@ compile.all = function(context, options, callback) {
  * @return {object} The return value from any optional callback function.
  */
 compile.inlinecss = function(context, options, callback) {
-    var app = new libutils.App({
-        port: options.port || 11111,
-        verbose: options.verbose
-    }),
+    var app,
         action = options.remove ? 'Removed' : 'Created',
         processed = 0,
         cwd = process.cwd(),
         urlMatcher = /url\(([^)]+)\)/g,
         inlines,
         inlineNext;
+
+    app = new libutils.App({
+        port: options.port || 11111,
+        verbose: options.verbose
+    });
 
     if (options.app) {
         libutils.warn('Creating app-level inline css not supported\n');
@@ -389,7 +469,7 @@ compile.inlinecss = function(context, options, callback) {
             libutils.error(err);
         } else {
             store = appInstance.store;
-            inlines = store.getInlineCssMojits('client', context);
+            inlines = getInlineCssMojits(store, 'client', context);
 
             libutils.log((options.remove ? 'Removing' : 'Creating') +
                 ' inline css...');
@@ -701,6 +781,7 @@ compile.json = function(context, options, callback) {
     store.preload();
 
     // Get all the Mojits
+    // TODO:  use store.listAllMojits() instead?
     mojits = getAllMojits(store, 'server', context);
     mojitNames = Object.keys(mojits);
     total = mojitNames.length;
