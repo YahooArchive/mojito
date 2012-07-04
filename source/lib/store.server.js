@@ -1262,8 +1262,8 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
         _expandSpec: function(env, ctx, spec) {
             var appConfig,
                 base,
-                idParts,
-                mojitType,
+                specParts,
+                mojitName,
                 specName,
                 ress;
 
@@ -1278,10 +1278,10 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
 
             if (!base) {
                 // look in resources
-                idParts = spec.base.split(':');
-                mojitType = idParts.shift();
-                specName = idParts.join(':') || 'default';
-                ress = this.getResources(env, ctx, {type: 'spec', mojit: mojitType, name: specName});
+                specParts = spec.base.split(':');
+                mojitName = specParts.shift();
+                specName = specParts.join(':') || 'default';
+                ress = this.getResources(env, ctx, {type: 'spec', mojit: mojitName, name: specName});
                 if (1 === ress.length) {
                     base = this.config.readConfigYCB(ress[0].source.fs.fullPath, ctx);
                 }
