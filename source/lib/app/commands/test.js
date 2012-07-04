@@ -7,11 +7,12 @@
 
 /*jslint anon:true, sloppy:true, regexp:true, nomen:true*/
 
+
 var pathlib = require('path'),
     fs = require('fs'),
 
-    utils = require(pathlib.join(__dirname, '../../management/utils')),
-    ymc = require(pathlib.join(__dirname, '../../management/yui-module-configurator')),
+    utils = require('../../management/utils'),
+    ymc = require('../../management/yui-module-configurator'),
     exec = require('child_process').exec,
     copyExclude = utils.copyExclude,
     copyFile = utils.copyFile,
@@ -117,11 +118,15 @@ function collectRunResults(results) {
     }
 }
 
-function configureYUI(Y, store) {
-    Y.applyConfig(store.yui.getConfigFw('server', {}));
-    Y.applyConfig(store.yui.getConfigApp('server', {}));
-    Y.applyConfig(store.yui.getConfigAllMojits('server', {}));
-    Y.applyConfig({useSync: true});
+function configureYUI(YUI, store) {
+    YUI.applyConfig({
+        useSync: true,
+        groups: {
+            'mojito-fw': store.yui.getConfigFw('server', {}),
+            'mojito-app': store.yui.getConfigApp('server', {}),
+            'mojito-mojits': store.yui.getConfigAllMojits('server', {})
+        }
+    });
 }
 
 
@@ -418,7 +423,7 @@ function processResults() {
 
 function executeTestsWithinY(tests, cb) {
 
-    var Y,
+    var YUIInst,
         suiteName = '';
 
     function handleEvent(event) {
@@ -468,14 +473,14 @@ function executeTestsWithinY(tests, cb) {
     TestRunner.clear();
 
     // create new YUI instance using tests and mojito
-    Y = YUI({core: [
+    YUIInst = YUI({core: [
         'get',
         'features',
         'intl-base',
         'mojito'
     ]});
 
-    Y.use.apply(Y, tests);
+    YUIInst.use.apply(YUIInst, tests);
 }
 
 
@@ -662,7 +667,7 @@ runTests = function(opts) {
         testModuleNames = ['mojito', 'mojito-test'];
 
     testRunner = function(testPath) {
-        var Y,
+        var Ystore,
             testConfigs,
             sourceConfigs;
 
@@ -686,17 +691,17 @@ runTests = function(opts) {
                 modules: testConfigs
             });
         } else {
-            Y = YUI();
-            Y.applyConfig({
+            Ystore = YUI();
+            Ystore.applyConfig({
                 useSync: true,
                 modules: {
                     'mojito-resource-store': {
-                        fullpath: pathlib.join(__dirname, '../../store.server.js')
+                        fullpath: pathlib.join(targetMojitoPath, 'lib/store.server.js')
                     }
                 }
             });
-            Y.use('mojito-resource-store');
-            store = new Y.mojito.ResourceStore({
+            Ystore.use('mojito-resource-store');
+            store = new Ystore.mojito.ResourceStore({
                 root: testPath,
                 context: {},
                 appConfig: { env: 'test' }
