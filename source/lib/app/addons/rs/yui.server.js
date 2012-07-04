@@ -339,7 +339,7 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
                     }
                 }
             }
-            if (controller && ('client' === env) && modules['inlinecss/' + mojit]) {
+            if (controller && modules['inlinecss/' + mojit]) {
                 controller.yui.meta.requires.push('inlinecss/' + mojit);
             }
 

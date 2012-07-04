@@ -181,7 +181,7 @@ function getInlineCssMojits(store, env, context) {
             }
         }
         dest = 'autoload/compiled/inlinecss' + ('*' === selector ? '' : '.' +
-            selector) + '.' + env + '.js';
+            selector) + '.common.js';
         dest = libpath.join(mojitRes.source.fs.fullPath, dest);
         if (Object.keys(srcs).length) {
             inlines.push({
