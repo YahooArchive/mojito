@@ -328,7 +328,7 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
                         requires: res.yui.meta.requires,
                         fullpath: (('client' === env) ? res.url : res.source.fs.fullPath)
                     };
-                    if (res.mojit === mojit && res.type !== 'yui-lang') {
+                    if (res.mojit === mojit && res.type !== 'yui-lang' && res.type !== 'binder') {
                         controllerRequired[res.yui.name] = true;
                     }
                     if ('binder' === res.type) {
