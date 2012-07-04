@@ -301,7 +301,6 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
             var spec = { type: 'rollups' };
             store.expandInstanceForEnv('client', spec, {}, function(err, instance) {
                 A.areSame('/static/rollups/rollup.client.js', instance.yui.sortedPaths['rollups']);
-                A.areSame('/static/rollups/rollup.client.js', instance.yui.sortedPaths['rollupsBinderIndex']);
                 A.areSame('/static/rollups/rollup.client.js', instance.yui.sortedPaths['rollupsModelClient']);
             });
         }
