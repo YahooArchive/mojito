@@ -9,6 +9,9 @@
 /*global YUI*/
 
 
+/**
+ * @Module ViewEngines
+ */
 YUI.add('mojito-mu', function(Y, NAME) {
 
     var mu = YUI.require(__dirname + '/../../libs/Mulib/Mu'),

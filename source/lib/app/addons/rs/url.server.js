@@ -7,6 +7,15 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
 /*global YUI*/
 
+
+/**
+ * @module ResourceStoreAddon
+ */
+
+/**
+ * @class RSAddonUrl
+ * @extension ResourceStore.server
+ */
 YUI.add('addon-rs-url', function(Y, NAME) {
 
     var libfs = require('fs'),
@@ -47,20 +56,34 @@ YUI.add('addon-rs-url', function(Y, NAME) {
         },
 
 
-        // TODO DOCS
+        /**
+         * Returns the full filesystem path for a URL.
+         * This is primarily used by the static handler middleware.
+         * @method getPathForURL
+         * @param url {string} URL to lookup
+         * @return {string} path on disk which the URL points to
+         */
         getPathForURL: function(url) {
             return this.URLpaths[url];
         },
 
 
-        // TODO DOCS
+        /**
+         * This is primarily used by the commandline tools (`build` and `compile`).
+         * @method getURLPaths
+         * @return {object} all URLs and cooresponding paths
+         */
         getURLPaths: function() {
             return Y.clone(this.URLpaths, true);
         },
 
 
-        // utility for `build html5app` command
-        // TODO DOCS
+        /**
+         * This is primarily used by the commandline tool `build`.
+         * @method getSpecURL
+         * @param id {string} spec ID
+         * @return {string} static handler URL for the spec
+         */
         getSpecURL: function(id) {
             var urlParts = [];
             if (this.config.prefix) {
@@ -72,6 +95,12 @@ YUI.add('addon-rs-url', function(Y, NAME) {
         },
 
 
+        /**
+         * Using AOP, this is called after the ResourceStore's version.
+         * It computes the static handler URL for all resources in all the
+         * mojits (as well as the mojit itself).
+         * @method preloadResourceVersions
+         */
         preloadResourceVersions: function() {
             var mojits = this.rs.listAllMojits(),
                 m,
@@ -140,12 +169,25 @@ YUI.add('addon-rs-url', function(Y, NAME) {
         },
 
 
+        /**
+         * This is called when the ResourceStore fires this event.
+         * It calculates the `assetsRoot` for the mojit.
+         * @method getMojitTypeDetails
+         * @param evt {object}
+         */
         getMojitTypeDetails: function(evt) {
             var ress = this.rs.getResources(evt.args.env, evt.args.ctx, {type: 'mojit', name: evt.args.mojitType});
             evt.mojit.assetsRoot = ress[0].url + '/assets';
         },
 
 
+        /**
+         * Calculates the static handler URL for the resource.
+         * @private
+         * @method _calcResourceURL
+         * @param res {object} the resource for which to calculate the URL
+         * @param mojitRes {object} the resource for the mojit
+         */
         _calcResourceURL: function(res, mojitRes) {
             var fs = res.source.fs,
                 relativePath = fs.fullPath.substr(fs.rootDir.length + 1),

@@ -58,7 +58,6 @@
  * </dl>
  *
  * @module ResourceStore
- * @main
  */
 YUI.add('mojito-resource-store', function(Y, NAME) {
 
@@ -134,10 +133,10 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
      * @class ResourceStore.server
      * @constructor
      * @requires addon-rs-config, addon-rs-selector
-     * @param config {object}
-     *      @param root {string} directory to manage (usually the application directory)
-     *      @param context {object} static context
-     *      @param appConfig {object} overrides for `application.json`
+     * @param config {object} configuration for the store
+     *      @param config.root {string} directory to manage (usually the application directory)
+     *      @param config.context {object} static context
+     *      @param config.appConfig {object} overrides for `application.json`
      */
     function ResourceStore(config) {
         ResourceStore.superclass.constructor.apply(this, arguments);
@@ -264,7 +263,6 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
          * the framework.
          *
          * @method preload
-         * @return {nothing}
          */
         preload: function() {
             // We need to do an initial sweep to find the resource store addons.
@@ -283,6 +281,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
          * to call `listAllMojits()` and iterate over that list, calling this
          * method with `mojit:` in the filter.)
          *
+         * @method getResourceVersions
          * @param filter {object} limit returned resource versions to only those whose keys/values match the filter
          * @return {array of objects} list of matching resource versions
          */
@@ -323,7 +322,8 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
          * `listAllMojits()` and iterate over that list, calling this method
          * with `mojit:` in the filter.)
          *
-         * @param env {string} the runtime environment
+         * @method getResources
+         * @param env {string} the runtime environment (either `client` or `server`)
          * @param ctx {object} the context
          * @param filter {object} limit returned resources to only those whose keys/values match the filter
          * @return {array of objects} list of matching resources
@@ -396,12 +396,12 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
         /**
          * Returns, via callback, the fully expanded mojit instance specification.
          *
+         * @async
          * @method getSpec
-         * @param env {string} either "client" or "server"
+         * @param env {string} the runtime environment (either `client` or `server`)
          * @param id {string} the ID of the spec to return
          * @param ctx {object} the runtime context for the spec
          * @param callback {function(err,spec)} callback used to return the results (or error)
-         * @return {nothing} results returned via the callback parameter
          */
         getSpec: function(env, id, ctx, callback) {
             this.expandInstanceForEnv(env, {base: id}, ctx, function(err, obj) {
@@ -420,12 +420,12 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
         /**
          * Returns, via callback, the details of the mojit type.
          *
+         * @async
          * @method getType
-         * @param env {string} either "client" or "server"
+         * @param env {string} the runtime environment (either `client` or `server`)
          * @param type {string} the mojit type
          * @param ctx {object} the runtime context for the type
          * @param callback {function(err,spec)} callback used to return the results (or error)
-         * @return {nothing} results returned via the callback parameter
          */
         getType: function(env, type, ctx, callback) {
             this.expandInstanceForEnv(env, {type: type}, ctx, function(err, obj) {
@@ -442,13 +442,13 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
 
 
         /**
-         * This just calls expandInstanceForEnv() with `env` set to `server`.
+         * This just calls `expandInstanceForEnv()` with `env` set to `server`.
          *
+         * @async
          * @method expandInstance
          * @param instance {map} partial instance to expand
          * @param ctx {object} the context
          * @param cb {function(err,instance)} callback used to return the results (or error)
-         * @return {nothing} results returned via the callback parameter
          */
         expandInstance: function(instance, ctx, cb) {
             this.expandInstanceForEnv('server', instance, ctx, cb);
@@ -456,6 +456,14 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
         },
 
 
+        /**
+         * Expands the instance into all details necessary to dispatch the mojit.
+         * @method expandInstanceForEnv
+         * @param env {string} the runtime environment (either `client` or `server`)
+         * @param instance {object}
+         * @param ctx {object} the context
+         * @param cb {function(err,instance)} callback used to return the results (or error)
+         */
         expandInstanceForEnv: function(env, instance, ctx, cb) {
             var cacheKey = Y.JSON.stringify(instance) + Y.JSON.stringify(ctx),
                 cacheValue = this._expandInstanceCache[env][cacheKey],
@@ -504,14 +512,26 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
         /**
          * Returns details about a mojit type.
          *
-         * TODO DOCS:  use onHostMethod() and afterHostMethod() instead of AOP methods
+         * As the last step of execution, this fires the `getMojitTypeDetails`
+         * event so that Resource Store addons can augment the returned structure.
          *
          * @method getMojitTypeDetails
-         * @param env {string} "client" or "server"
+         * @param env {string} the runtime environment (either `client` or `server`)
          * @param ctx {object} the context
          * @param mojitType {string} mojit type
          * @param dest {object} object in which to place the results
          * @return {object} returns the "dest" parameter, which has had details added to it
+         */
+        /**
+         * Fired at the end of the `getMojitTypeDetails()` method to allow
+         * modification of the results.
+         * @event getMojitTypeDetails
+         * @param args {object} input arguments
+         *      @param args.env {string} the runtime environment (either `client` or `server`)
+         *      @param args.ctx {object} runtime context
+         *      @param args.posl {array} priority-ordered seletor list
+         *      @param args.mojitType {string} name of mojit
+         * @param mojit {object} the mojit type details
          */
         getMojitTypeDetails: function(env, ctx, mojitType, dest) {
             //Y.log('getMojitTypeDetails('+env+', '+JSON.stringify(ctx)+', '+mojitType+')', 'debug', NAME);
@@ -619,7 +639,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
 
         /**
          * Returns the routes configured in the application.
-         *
+         * @method getRoutes
          * @param ctx {object} the context
          * @return {object} routes
          */
@@ -659,14 +679,12 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
 
         /**
          * Recursively merge one object onto another.
-         * From http://stackoverflow.com/questions/171251/
-         * how-can-i-merge-properties-of-two-javascript-objects-dynamically/
-         * 383245#383245.
+         * [original implementation](http://stackoverflow.com/questions/171251/how-can-i-merge-properties-of-two-javascript-objects-dynamically/383245#383245)
          *
          * @method mergeRecursive
          * @param dest {object} object to merge into
          * @param src {object} object to merge onto "dest"
-         * @param matchType {boolean} controls whether a non-object in the src is
+         * @param typeMatch {boolean} controls whether a non-object in the src is
          *          allowed to clobber a non-object in the dest (if a different type)
          * @return {object} the modified "dest" object is also returned directly
          */
@@ -697,7 +715,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
 
         /**
          * @method cloneObj
-         * @param o {mixed}
+         * @param o {mixed} the object to clone
          * @return {mixed} deep copy of argument
          */
         cloneObj: function(o) {
@@ -741,12 +759,10 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
          *
          * You most often don't want to call this directly, but instead to hook
          * into it using the AOP mechanism of `Y.Plugin.Base`:
-         * ```
-         * this.afterHostMethod('loadAddons', this._myLoadAddons, this);
-         * ```
+         *
+         *     this.afterHostMethod('loadAddons', this._myLoadAddons, this);
          *
          * @method loadAddons
-         * @return {nothing}
          */
         loadAddons: function() {
             var modules = {},
@@ -781,15 +797,12 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
          * Preload metadata about all resource versions in the application
          * (and Mojito framework).
          *
-         *
          * You most often don't want to call this directly, but instead to hook
          * into it using the AOP mechanism of `Y.Plugin.Base`:
-         * ```
-         * this.afterHostMethod('preloadResourceVersions', this._myPreloadResourceVersions, this);
-         * ```
+         *
+         *     this.afterHostMethod('preloadResourceVersions', this._myPreloadResourceVersions, this);
          *
          * @method preloadResourceVersions
-         * @return {nothing} work down via other called methods
          */
         preloadResourceVersions: function() {
             var me = this,
@@ -850,9 +863,8 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
          * Called by the ResourceStore to decide if a file should be considered
          * a resource.  You most often don't want to call this directly, but
          * instead to hook into it using the AOP mechanism of `Y.Plugin.Base`:
-         * ```
-         * this.afterHostMethod('findResourceByConvention', this._myFindResourceByConvention, this);
-         * ```
+         *
+         *     this.afterHostMethod('findResourceByConvention', this._myFindResourceByConvention, this);
          *
          * Generally `findResourceByConvention()` and `parseResource()` are meant to work together.
          * This method figures out the type (and subtype) of a file, and `parseResource()` turns
@@ -865,10 +877,10 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
          *      True indicates that the directory contents should be scanned, while false
          *      indicates that the directory should be skipped.
          *      If the source does represent a resource, then an object with the following
-         *      fields should be returned;
-         *      @param type {string} type of the resource
-         *      @param subtype {string} optional subtype of the resource
-         *      @param skipSubdirParts {integer} number of path parts of `source.fs.subDir` to skip
+         *      fields should be returned:
+         *      type {string} type of the resource,
+         *      subtype {string} optional subtype of the resource,
+         *      skipSubdirParts {integer} number of path parts of `source.fs.subDir` to skip
          */
         findResourceByConvention: function(source, mojitType) {
             var fs = source.fs,
@@ -969,9 +981,8 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
          * Called by the ResourceStore to turn a file into a resource.
          * You most often don't want to call this directly, but instead to hook
          * into it using the AOP mechanism of `Y.Plugin.Base`:
-         * ```
-         * this.beforeHostMethod('parseResource', this._myParseResource, this);
-         * ```
+         *
+         *     this.beforeHostMethod('parseResource', this._myParseResource, this);
          *
          * Generally `findResourceByConvention()` and `parseResource()` are meant to work together.
          * `findResourceByConvention()` figures out the type (and subtype) of a file, and 
@@ -1113,13 +1124,11 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
          * Called by the ResourceStore to register a resource version.
          * You most often don't want to call this directly, but instead to hook
          * into it using the AOP mechanism of `Y.Plugin.Base`:
-         * ```
-         * this.beforeHostMethod('parseResource', this._myParseResource, this);
-         * ```
+         *
+         *     this.beforeHostMethod('parseResource', this._myParseResource, this);
          *
          * @method addResourceVersion
          * @param res {object} the resource version
-         * @return {nothing}
          */
         addResourceVersion: function(res) {
             res.affinity = new Affinity(res.affinity);
@@ -1152,8 +1161,15 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
          *      affinity (env or "common").
          *
          * @method resolveResourceVersions
-         * @return {nothing}
          */
+        /**
+            * Fired after the resources for a mojit have been resolved.
+            * @event mojitResourcesResolved
+            * @param env {string} the runtime environment (either `client` or `server`)
+            * @param posl {array} priority-ordered seletor list
+            * @param mojit {string} name of mojit
+            * @param ress {array} list of mojit metadata (for the `env` and `posl`)
+            */
         resolveResourceVersions: function() {
             var c, ctx, ctxs,
                 poslKey, posl, posls = {},
@@ -1205,7 +1221,6 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                             if (this._mojitRVs.hasOwnProperty(type)) {
                                 ress = this._resolveVersions(affinities, selectors, sourceBase, [ this._mojitRVs.shared, this._mojitRVs[type] ]);
                                 this._mojitResources[env][poslKey][type] = ress;
-                                // TODO DOCS:  document event
                                 this.fire('mojitResourcesResolved', {
                                     env: env,
                                     posl: posl,
@@ -1251,14 +1266,28 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
         // PRIVATE METHODS
 
 
-        // used for unit testing
-        // TODO DOCS
+        /**
+         * Used for unit testing.
+         * @private
+         * @method _mockLib
+         * @param name {string} name of library to mock out
+         * @param lib {mixed} library to mock out
+         */
         _mockLib: function(name, lib) {
             this._libs[name] = lib;
         },
 
 
-        // TODO DOCS
+        /**
+         * Applies spec inheritance by following the `base` and merging up the
+         * results.
+         * @private
+         * @method _expandSpec
+         * @param env {string} the runtime environment (either `client` or `server`)
+         * @param ctx {object} runtime context
+         * @param spec {object} spec to expand
+         * @return {object} expanded sped
+         */
         _expandSpec: function(env, ctx, spec) {
             var appConfig,
                 base,
@@ -1297,12 +1326,11 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
 
         /**
          * preloads metadata about resources in a package
-         * (but not subpackages in its node_modules/)
+         * (but not subpackages in its `node_modules/`)
          *
          * @private
          * @method _preloadPackage
          * @param info {object} metadata about the package
-         * @return {nothing} work down via other called methods
          */
         _preloadPackage: function(info) {
             var dir,
@@ -1346,12 +1374,11 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
 
         /**
          * preloads metadata about resources in the application directory
-         * (but not node_modules/)
+         * (but not `node_modules/`)
          *
          * @private
          * @method _preloadApp
          * @param pkg {object} metadata (name and version) about the app's package
-         * @return {nothing} work down via other called methods
          */
         _preloadApp: function(pkg) {
             var ress,
@@ -1384,12 +1411,11 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
 
 
         /**
-         * preloads metadata about resource in a directory
+         * preloads metadata about resources in a directory
          *
          * @method _preloadDirBundle
          * @param dir {string} directory path
          * @param pkg {object} metadata (name and version) about the package
-         * @return {nothing} work down via other called methods
          * @private
          */
         _preloadDirBundle: function(dir, pkg) {
@@ -1415,7 +1441,6 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
          * @param dir {string} directory path
          * @param dirType {string} type represented by the "dir" argument.  values are "app", "bundle", "pkg", or "mojit"
          * @param pkg {object} metadata (name and version) about the package
-         * @return {nothing} work down via other called methods
          */
         _preloadDirMojits: function(dir, dirType, pkg) {
             var i,
@@ -1452,7 +1477,6 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
          * @param dir {string} directory path
          * @param dirType {string} type represented by the "dir" argument.  values are "app", "bundle", "pkg", or "mojit"
          * @param pkg {object} metadata (name and version) about the package
-         * @return {nothing} work down via other called methods
          */
         _preloadDirMojit: function(dir, dirType, pkg) {
             var mojitType,
@@ -1535,14 +1559,14 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
 
         /**
          * Resolves versions for a list of resources.
-         * The priority is based on passed-in configuration.  See 
-         * resolveResourceVersions() for details.
+         * The priority is based on passed-in configuration.
+         * See `resolveResourceVersions()` for details.
          *
          * @private
          * @method _resolveVersions
          * @param affinities {object} lookup hash for priority adjustment for each affinity
          * @param selectors {object} lookup hash for priority adjustment for each selector
-         * @param sourceBase {int} multiplier for order in priority list
+         * @param sourceBase {int} multiplier for order in source list
          * @param srcs {array of arrays} resource versions to resolve
          * @return {array} list of resolved resources
          */
@@ -1791,8 +1815,8 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
 
 
         /**
-         * A wrapper for fs.readdirSync() that guarantees ordering. The order in
-         * which the file system is walked is significant within the resource
+         * A wrapper for `fs.readdirSync()` that guarantees ordering. The order
+         * in which the file system is walked is significant within the resource
          * store, e.g., when looking up a matching context.
          *
          * @private
@@ -1808,13 +1832,11 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
 
         /** 
          * Recursively walks a directory
-         *
          * @private
          * @method _walkDirRecursive
          * @param dir {string} directory to start at
          * @param cb {function(error, subdir, name, isFile)} callback called for each file
-         * @param _subdir {string} INTERNAL argument, please ignore
-         * @return {nothing} value returned via callback
+         * @param _subdir {string} INTERNAL argument for recursion, please ignore
          */
         _walkDirRecursive: function(dir, cb, _subdir) {
             var subdir,
@@ -1858,6 +1880,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
         /**
          * takes a list of globs and turns it into a list of matching paths
          * @private
+         * @method _globList
          * @param prefix {string} prefix for every path in the list
          * @param list {array} list of globs
          * @return {array} list of paths matching the globs
@@ -1882,7 +1905,6 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
          * @private
          * @method _yuiUseSync
          * @param modules {object} YUI module configuration information
-         * @return {nothing}
          */
         _yuiUseSync: function(modules) {
             Y.applyConfig({

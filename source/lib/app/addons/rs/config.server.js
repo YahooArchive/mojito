@@ -7,6 +7,19 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
 /*global YUI*/
 
+
+/**
+ * The <strong>Resource Store</strong> is a Y.Base -- a host for Y.Plugins.
+ * Each Addon provides additional functions through a namespace that is
+ * attached directly to the resource store.
+ * @module ResourceStoreAddon
+ */
+
+
+/**
+ * @class RSAddonConfig
+ * @extension ResourceStore.server
+ */
 YUI.add('addon-rs-config', function(Y, NAME) {
 
     var libfs = require('fs'),
@@ -40,14 +53,17 @@ YUI.add('addon-rs-config', function(Y, NAME) {
         },
 
 
+        /**
+         * @method getDimensions
+         * @return {object} the YCB dimentions structure for the app
+         */
         getDimensions: function() {
             return this.rs.cloneObj(this._ycbDims);
         },
 
 
         /**
-         * Reads and parses a JSON file
-         *
+         * Reads and parses a JSON file.
          * @method readConfigJSON
          * @param fullPath {string} path to JSON file
          * @return {mixed} contents of JSON file
@@ -74,8 +90,7 @@ YUI.add('addon-rs-config', function(Y, NAME) {
 
 
         /**
-         * reads a configuration file that is in YCB format
-         *
+         * Reads a configuration file that is in YCB format.
          * @method readConfigYCB
          * @param ctx {object} runtime context
          * @param fullPath {string} path to the YCB file
@@ -100,6 +115,13 @@ YUI.add('addon-rs-config', function(Y, NAME) {
         },
 
 
+        /**
+         * Using AOP, this is called after the ResourceStore's version.
+         * @method findResourceByConvention
+         * @param source {object} metadata about where the resource is located
+         * @param mojitType {string} name of mojit to which the resource likely belongs
+         * @return {object||null} for config file resources, returns metadata signifying that
+         */
         findResourceByConvention: function(source, mojitType) {
             var fs = source.fs,
                 use = false;
@@ -138,6 +160,15 @@ YUI.add('addon-rs-config', function(Y, NAME) {
         },
 
 
+        /**
+         * Using AOP, this is called before the ResourceStore's version.
+         * @method parseResource
+         * @param source {object} metadata about where the resource is located
+         * @param type {string} type of the resource
+         * @param subtype {string} subtype of the resource
+         * @param mojitType {string} name of mojit to which the resource likely belongs
+         * @return {object||null} for config file resources, returns the resource metadata
+         */
         parseResource: function(source, type, subtype, mojitType) {
             var baseParts,
                 res;
@@ -169,10 +200,9 @@ YUI.add('addon-rs-config', function(Y, NAME) {
         /**
          * Read the application's dimensions.json file for YCB processing. If not
          * available, fall back to the framework's default dimensions.json.
-         *
+         * @private
          * @method _readYcbDimensions
          * @return {array} contents of the dimensions.json file
-         * @private
          */
         _readYcbDimensions: function() {
             var path = libpath.join(this.appRoot, 'dimensions.json');

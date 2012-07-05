@@ -7,6 +7,16 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
 /*global YUI*/
 
+
+/**
+ * @module ResourceStoreAddon
+ */
+
+
+/**
+ * @class RSAddonYUI
+ * @extension ResourceStore.server
+ */
 YUI.add('addon-rs-yui', function(Y, NAME) {
 
     var libfs = require('fs'),
@@ -49,7 +59,14 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
         },
 
 
-        // TODO DOCS
+        /**
+         * Returns a datastructure which tells a YUI instance where to find
+         * the YUI modules that are part of the Mojito framework.
+         * @method getConfigFw
+         * @param env {string} runtime environment (either `client`, or `server`)
+         * @param ctx {object} runtime context
+         * @return {object} datastructure for configuring YUI
+         */
         getConfigFw: function(env, ctx) {
             var r,
                 res,
@@ -76,7 +93,14 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
         },
 
 
-        // TODO DOCS
+        /**
+         * Returns a datastructure which tells a YUI instance where to find
+         * the YUI modules that are app-level Mojito resources.
+         * @method getConfigApp
+         * @param env {string} runtime environment (either `client`, or `server`)
+         * @param ctx {object} runtime context
+         * @return {object} datastructure for configuring YUI
+         */
         getConfigApp: function(env, ctx) {
             var r,
                 res,
@@ -103,7 +127,14 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
         },
 
 
-        // TODO DOCS
+        /**
+         * Returns a datastructure which tells a YUI instance where to find
+         * the YUI modules that are in all the mojits.
+         * @method getConfigAllMojits
+         * @param env {string} runtime environment (either `client`, or `server`)
+         * @param ctx {object} runtime context
+         * @return {object} datastructure for configuring YUI
+         */
         getConfigAllMojits: function(env, ctx) {
             var m,
                 mojit,
@@ -138,6 +169,13 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
         },
 
 
+        /**
+         * Using AOP, this is called after the ResourceStore's version.
+         * @method findResourceByConvention
+         * @param source {object} metadata about where the resource is located
+         * @param mojitType {string} name of mojit to which the resource likely belongs
+         * @return {object||null} for yui modules or lang bundles, returns metadata signifying that
+         */
         findResourceByConvention: function(source, mojitType) {
             var fs = source.fs;
 
@@ -164,6 +202,15 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
         },
 
 
+        /**
+         * Using AOP, this is called before the ResourceStore's version.
+         * @method parseResource
+         * @param source {object} metadata about where the resource is located
+         * @param type {string} type of the resource
+         * @param subtype {string} subtype of the resource
+         * @param mojitType {string} name of mojit to which the resource likely belongs
+         * @return {object||null} for yui modules or lang bundles, returns the resource metadata
+         */
         parseResource: function(source, type, subtype, mojitType) {
             var fs = source.fs,
                 baseParts,
@@ -219,6 +266,13 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
         },
 
 
+        /**
+         * Using AOP, this is called before the ResourceStore's version.
+         * If the resource is a YUI module, augments the metadata with details
+         * about the YUI module.
+         * @method addResourceVersion
+         * @param res {object} resource version metadata
+         */
         addResourceVersion: function(res) {
             if ('.js' !== res.source.fs.ext) {
                 return;
@@ -235,6 +289,13 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
         },
 
 
+        /**
+         * This is called when the ResourceStore fires this event.
+         * It augments the mojit type details with the precomputed YUI module
+         * dependencies.
+         * @method getMojitTypeDetails
+         * @param evt {object}
+         */
         getMojitTypeDetails: function(evt) {
             var dest = evt.mojit,
                 env = evt.args.env,
@@ -286,6 +347,13 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
         },
 
 
+        /**
+         * This is called when the ResourceStore fires this event.
+         * It precomputes the YUI module dependencies, to be used later during
+         * getMojitTypeDetails.
+         * @method mojitResourcesResolved
+         * @param evt {object}
+         */
         mojitResourcesResolved: function(evt) {
             var env = evt.env,
                 posl = evt.posl,
@@ -399,7 +467,17 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
         },
 
 
-        // TODO DOCS
+        /**
+         * Precomputes a set of dependencies.
+         * @private
+         * @method _sortYUIModules
+         * @param lang {string} YUI language code
+         * @param env {string} runtime environment (either `client`, or `server`)
+         * @param mojit {string} name of the mojit
+         * @param modules {object} YUI module metadata
+         * @param required {object} lookup hash of YUI module names that are required
+         * @return {object} precomputed (and sorted) module dependencies
+         */
         _sortYUIModules: function(lang, env, mojit, modules, required) {
             var Y,
                 loader,
@@ -458,7 +536,16 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
         },
 
 
-        // TODO DOCS
+        /**
+         * Saves the precomputed YUI module dependencies for later.
+         * @private
+         * @method _setYUISorted
+         * @param env {string} runtime environment (either `client`, or `server`)
+         * @param poslKey {string} key (representing the POSL) under which to save the moduldes
+         * @param lang {string} YUI language code
+         * @param module {string} YUI module name for which the precomputed dependencies are for
+         * @param sorted {object} the precomputed dependencies
+         */
         _setYUISorted: function(env, poslKey, lang, module, sorted) {
             if (!this.sortedModules[env]) {
                 this.sortedModules[env] = {};
@@ -473,7 +560,16 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
         },
 
 
-        // TODO DOCS
+        /**
+         * Returns precomputed dependencies saved by _setYuiSorted.
+         * @private
+         * @method _setYUISorted
+         * @param env {string} runtime environment (either `client`, or `server`)
+         * @param poslKey {string} key (representing the POSL) under which to save the moduldes
+         * @param lang {string} YUI language code
+         * @param module {string} YUI module name for which the precomputed dependencies are for
+         * @return {object} the precomputed dependencies
+         */
         _getYUISorted: function(env, poslKey, lang, module) {
             lang = lang || '';
             var parts = lang.split('-'),
@@ -497,7 +593,13 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
         },
 
 
-        // TODO DOCS
+        /**
+         * If the resource is a YUI module, augments its metadata with metadata
+         * about the YUI module.
+         * @private
+         * @method _parseYUIModule
+         * @param res {object} resource metadata
+         */
         _parseYUIModule: function(res) {
             var file,
                 ctx,

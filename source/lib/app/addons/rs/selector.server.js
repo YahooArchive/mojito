@@ -7,6 +7,15 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
 /*global YUI*/
 
+
+/**
+ * @module ResourceStoreAddon
+ */
+
+/**
+ * @class RSAddonSelector
+ * @extension ResourceStore.server
+ */
 YUI.add('addon-rs-selector', function(Y, NAME) {
 
     var libpath = require('path'),
@@ -42,6 +51,12 @@ YUI.add('addon-rs-selector', function(Y, NAME) {
         },
 
 
+        /**
+         * Returns the priority-ordered selector list (POSL) for the context.
+         * @method getListForContext
+         * @param ctx {object} runtime context
+         * @return {array} priority-ordered selector list
+         */
         getListFromContext: function(ctx) {
             var sels = ['*'],
                 p,
