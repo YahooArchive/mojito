@@ -509,44 +509,39 @@ YUI.add('mojito-client', function(Y, NAME) {
                 }
 
                 // now that all binders have been initialized and accounted
-                // for, save & bind new MojitProxies + children refs
-                Y.Array.each(newMojitProxies, function(nmp) {
+                // for...
+
+                // first, we must create the MojitClient's state of the binders
+                // before binding, in case the binders' bind() function tries to
+                // do anything that includes children
+                Y.Array.each(newMojitProxies, function(item) {
+                    var proxy = item.proxy,
+                        children = item.children;
 
                     // 'me' here is the MojitoClient instance.
-                    var mojits = me._mojits,
-                        viewid = nmp.proxy.getId(),
-                        binder = nmp.proxy._binder,
-                        node = nmp.proxy._node,
-                        elem = nmp.proxy._element;
-
-                    mojits[viewid] = { // save
-                        proxy: nmp.proxy,
-                        children: nmp.children,
-                        handles: bindNode(binder, node, elem) // bind
+                    me._mojits[proxy._viewId] = {
+                        proxy: proxy,
+                        children: children
                     };
+                });
 
-                    recordBoundMojit(mojits, parentId, viewid, nmp.proxy.type);
+                // now we'll loop through again and do the binding, saving the
+                // handles
+                Y.Array.each(newMojitProxies, function(item) {
+                    var viewid = item.proxy.getId(),
+                        mojit = me._mojits[viewid],
+                        proxy = item.proxy;
 
-                    /*console.log(
-                        '• new mp: %o, proxy.type: %s, viewid: %s'
-                        , nmp
-                        , nmp.proxy.type
-                        , nmp.proxy._viewId
-                    );*/
+                    mojit.handles = bindNode(proxy._binder, proxy._node,
+                        proxy._element);
 
+                    recordBoundMojit(me._mojits, parentId, viewid, proxy.type);
                 });
 
                 Y.mojito.perf.mark('mojito', 'core_binders_resume');
                 me.resume();
                 Y.mojito.perf.mark('mojito', 'core_binders_end');
                 fireLifecycle('post-attach-binders', {});
-
-                // Y.Object.each(me._mojits, function (mojit, id) {
-                //     console.log(
-                //         '• id:%s type:%s'
-                //         , id
-                //         , mojit.proxy.type);
-                // });
             };
 
             // loop over the binder map, load, use, and instantiate them
