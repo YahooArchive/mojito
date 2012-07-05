@@ -801,7 +801,7 @@ compile.json = function(context, options, callback) {
         specName = parts[1] || 'default';
 
         if (!mojitName || mName === mojitName) {
-            /* NOTE_2:  During the resource store redesign, it was noticed
+            /* NOTE_1:  During the resource store redesign, it was noticed
              * that this branch is never called, which STRONGLY suggests that
              * this feature was never used.
              */
@@ -875,9 +875,6 @@ compile.json = function(context, options, callback) {
             definition = store.config.readConfigYCB(path, {});
 
             if (Object.keys(definition).length > 0) {
-                /* NOTE_1:  During the resource store redesign, it was noticed
-                 * that the "toPreload" variable was never defined, which
-                 * STRONGLY suggests that this feature was never used.
                 if (definition.preload) {
                     if (options.verbose) {
                         libutils.log('processing preload mojits for ' + mojitName);
@@ -887,7 +884,6 @@ compile.json = function(context, options, callback) {
                         Object.keys(store._appConfigStatic.specs).forEach(
                             function(fullSpecName) {
                                 var mName = fullSpecName.split(':').shift();
-
                                 if (mName === toPreload) {
                                     specsToPreload.push(fullSpecName);
                                 }
@@ -916,11 +912,8 @@ compile.json = function(context, options, callback) {
                                 });
                         });
                 } else {
-                */
-                processFullDefinition(mojitName, yuiModuleCacheWriter, cb);
-                /* see NOTE_1 above
+                    processFullDefinition(mojitName, yuiModuleCacheWriter, cb);
                 }
-                */
             } else {
                 cb();
             }
