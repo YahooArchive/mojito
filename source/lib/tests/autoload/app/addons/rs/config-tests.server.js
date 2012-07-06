@@ -57,11 +57,11 @@ YUI.add('mojito-addon-rs-config-tests', function(Y, NAME) {
             return dest;
         },
 
-        findResourceByConvention: function(source, mojitType) {
+        findResourceVersionByConvention: function(source, mojitType) {
             // no-op
         },
 
-        parseResource: function(source, type, subtype, mojitType) {
+        parseResourceVersion: function(source, type, subtype, mojitType) {
             // no-op
         }
 
@@ -152,49 +152,49 @@ YUI.add('mojito-addon-rs-config-tests', function(Y, NAME) {
 
             // skip non-json files
             var source = makeSource(fixtures, 'app', '.', 'server.js', true);
-            var have = store.findResourceByConvention(source, null);
+            var have = store.findResourceVersionByConvention(source, null);
             var want = undefined;
             cmp(have, want, 'skip non-json files');
 
             // include all json files in the app
             source = makeSource(fixtures, 'app', '.', 'x.json', true);
-            have = store.findResourceByConvention(source, null);
+            have = store.findResourceVersionByConvention(source, null);
             want = { type: 'config' };
             cmp(have, want, 'include all json files in the app');
 
             // ... explicitly including package.json
             source = makeSource(fixtures, 'app', '.', 'package.json', true);
-            have = store.findResourceByConvention(source, null);
+            have = store.findResourceVersionByConvention(source, null);
             want = { type: 'config' };
             cmp(have, want, 'include package.json in the app');
 
             // exclude all json files in a bundle
             source = makeSource(fixtures, 'bundle', '.', 'x.json', true);
-            have = store.findResourceByConvention(source, null);
+            have = store.findResourceVersionByConvention(source, null);
             want = undefined;
             cmp(have, want, 'exclude all json files in a bundle');
 
             // ... explicitly excluding package.json
             source = makeSource(fixtures, 'bundle', '.', 'package.json', true);
-            have = store.findResourceByConvention(source, null);
+            have = store.findResourceVersionByConvention(source, null);
             want = undefined;
             cmp(have, want, 'exclude package.json in a bundle');
 
             // include all json files in a mojit
             source = makeSource(fixtures, 'mojit', '.', 'x.json', true);
-            have = store.findResourceByConvention(source, 'foo');
+            have = store.findResourceVersionByConvention(source, 'foo');
             want = { type: 'config' };
             cmp(have, want, 'include all json files in a mojit');
 
             // ... except for the 'shared' mojit
             source = makeSource(fixtures, 'mojit', '.', 'x.json', true);
-            have = store.findResourceByConvention(source, 'shared');
+            have = store.findResourceVersionByConvention(source, 'shared');
             want = undefined;
             cmp(have, want, 'exclude all json files in the "shared" mojit');
 
             // ... explicitly including package.json
             source = makeSource(fixtures, 'mojit', '.', 'package.json', true);
-            have = store.findResourceByConvention(source, 'shared');
+            have = store.findResourceVersionByConvention(source, 'shared');
             want = { type: 'config' };
             cmp(have, want, 'include package.json in the "shared" mojit');
         },
@@ -206,7 +206,7 @@ YUI.add('mojito-addon-rs-config-tests', function(Y, NAME) {
             store.plug(Y.mojito.addons.rs.config, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
 
             var source = makeSource(fixtures, 'app', '.', 'application.json', true);
-            var res = store.parseResource(source, 'config');
+            var res = store.parseResourceVersion(source, 'config');
             A.isNotUndefined(res);
             cmp(res.source, source);
             A.areSame('config', res.type);
@@ -217,7 +217,7 @@ YUI.add('mojito-addon-rs-config-tests', function(Y, NAME) {
             A.isUndefined(res.mojit);
 
             source = makeSource(fixtures, 'mojit', '.', 'defaults.json', true);
-            res = store.parseResource(source, 'config', undefined, 'x');
+            res = store.parseResourceVersion(source, 'config', undefined, 'x');
             A.isNotUndefined(res);
             cmp(res.source, source);
             A.areSame('config', res.type);

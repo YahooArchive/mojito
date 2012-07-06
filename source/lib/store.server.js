@@ -173,8 +173,13 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 server: {}
             };
 
-            // all selectors that are actually in the app
-            // hash: key is selector, value is just boolean true
+            /**
+             * All selectors that are actually in the app.
+             * Key is selector, value is just boolean `true`.
+             * This won't be populated until `preloadResourceVersions()` is done.
+             * @property selectors
+             * @type Object
+             */
             this.selectors = {};
 
             // Y.Plugin AOP doesn't allow afterHostMethod() callbacks to
@@ -617,8 +622,8 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                     } else {
                         dest.views[res.name]['content-path'] = res.source.fs.fullPath;
                     }
-                    dest.views[res.name].engine = res.viewEngine;
-                    engines[res.viewEngine] = true;
+                    dest.views[res.name].engine = res.view.engine;
+                    engines[res.view.engine] = true;
                 }
             }
 
@@ -811,6 +816,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 dir,
                 info;
 
+            this.selectors = {};
             this._appRVs = [];
             this._mojitRVs = {};
 
@@ -864,13 +870,13 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
          * a resource.  You most often don't want to call this directly, but
          * instead to hook into it using the AOP mechanism of `Y.Plugin.Base`:
          *
-         *     this.afterHostMethod('findResourceByConvention', this._myFindResourceByConvention, this);
+         *     this.afterHostMethod('findResourceVersionByConvention', this._myFindResourceByConvention, this);
          *
-         * Generally `findResourceByConvention()` and `parseResource()` are meant to work together.
-         * This method figures out the type (and subtype) of a file, and `parseResource()` turns
+         * Generally `findResourceVersionByConvention()` and `parseResourceVersion()` are meant to work together.
+         * This method figures out the type (and subtype) of a file, and `parseResourceVersion()` turns
          * the file into an actual resource.
          *
-         * @method findResourceByConvention
+         * @method findResourceVersionByConvention
          * @param source {object} the same as the `source` part of a resource
          * @param mojitType {string} the name of the mojit
          * @return {boolean|object} If the source is a directory, a boolean can be returned.
@@ -882,7 +888,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
          *      subtype {string} optional subtype of the resource,
          *      skipSubdirParts {integer} number of path parts of `source.fs.subDir` to skip
          */
-        findResourceByConvention: function(source, mojitType) {
+        findResourceVersionByConvention: function(source, mojitType) {
             var fs = source.fs,
                 baseParts = fs.basename.split('.'),
                 type;
@@ -982,20 +988,20 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
          * You most often don't want to call this directly, but instead to hook
          * into it using the AOP mechanism of `Y.Plugin.Base`:
          *
-         *     this.beforeHostMethod('parseResource', this._myParseResource, this);
+         *     this.beforeHostMethod('parseResourceVersion', this._myParseResource, this);
          *
-         * Generally `findResourceByConvention()` and `parseResource()` are meant to work together.
-         * `findResourceByConvention()` figures out the type (and subtype) of a file, and 
+         * Generally `findResourceVersionByConvention()` and `parseResourceVersion()` are meant to work together.
+         * `findResourceVersionByConvention()` figures out the type (and subtype) of a file, and 
          * this method turns the file into an actual resource.
          *
-         * @method parseResource
+         * @method parseResourceVersion
          * @param source {object} the same as the `source` part of a resource
          * @param type {string} the resource type of the file
          * @param subtype {string} the optional resource subtype of the file
          * @param mojitType {string} the name of the mojit
          * @return {object|undefined} the resource version
          */
-        parseResource: function(source, type, subtype, mojitType) {
+        parseResourceVersion: function(source, type, subtype, mojitType) {
             var fs = source.fs,
                 baseParts = fs.basename.split('.'),
                 res;
@@ -1098,8 +1104,10 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                     mojit: mojitType,
                     type: type,
                     subtype: subtype,
-                    viewOutputFormat: fs.ext.substr(1),
-                    viewEngine: baseParts.pop(),
+                    view: {
+                        outputFormat: fs.ext.substr(1),
+                        engine: baseParts.pop()
+                    },
                     affinity: DEFAULT_AFFINITIES[type],
                     selector: '*'
                 };
@@ -1125,7 +1133,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
          * You most often don't want to call this directly, but instead to hook
          * into it using the AOP mechanism of `Y.Plugin.Base`:
          *
-         *     this.beforeHostMethod('parseResource', this._myParseResource, this);
+         *     this.beforeHostMethod('parseResourceVersion', this._myParseResource, this);
          *
          * @method addResourceVersion
          * @param res {object} the resource version
@@ -1167,8 +1175,8 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             * @event mojitResourcesResolved
             * @param env {string} the runtime environment (either `client` or `server`)
             * @param posl {array} priority-ordered seletor list
-            * @param mojit {string} name of mojit
-            * @param ress {array} list of mojit metadata (for the `env` and `posl`)
+            * @param mojit {string} name of the mojit
+            * @param ress {array} list of resources in the mojit (for the `env` and `posl`)
             */
         resolveResourceVersions: function() {
             var c, ctx, ctxs,
@@ -1288,6 +1296,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
          * @param spec {object} spec to expand
          * @return {object} expanded sped
          */
+        // FUTURE:  expose this to RS addons?
         _expandSpec: function(env, ctx, spec) {
             var appConfig,
                 base,
@@ -1778,13 +1787,13 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                     return false;
                 }
 
-                ret = me.findResourceByConvention(source, mojitType);
+                ret = me.findResourceVersionByConvention(source, mojitType);
                 if ('object' === typeof ret) {
                     if (ret.skipSubdirParts) {
                         source.fs.subDirArray = source.fs.subDirArray.slice(ret.skipSubdirParts);
                         source.fs.subDir = source.fs.subDirArray.join('/') || '.';
                     }
-                    res = me.parseResource(source, ret.type, ret.subtype, mojitType);
+                    res = me.parseResourceVersion(source, ret.type, ret.subtype, mojitType);
                     if ('object' === typeof res) {
                         ress.push(res);
                     }

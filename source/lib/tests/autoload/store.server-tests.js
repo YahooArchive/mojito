@@ -679,8 +679,8 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
                         A.areSame(pkg, res.source.pkg);
                         A.areSame('view', res.type);
                         A.areSame('x', res.name);
-                        A.areSame('html', res.viewOutputFormat);
-                        A.areSame('mu', res.viewEngine);
+                        A.areSame('html', res.view.outputFormat);
+                        A.areSame('mu', res.view.engine);
                         switch (res.source.fs.basename) {
                             case 'x.mu':
                                 A.areSame('*', res.selector);

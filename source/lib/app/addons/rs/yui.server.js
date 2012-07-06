@@ -35,8 +35,8 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
             this.rs = config.host;
             this.appRoot = config.appRoot;
             this.mojitoRoot = config.mojitoRoot;
-            this.afterHostMethod('findResourceByConvention', this.findResourceByConvention, this);
-            this.beforeHostMethod('parseResource', this.parseResource, this);
+            this.afterHostMethod('findResourceVersionByConvention', this.findResourceVersionByConvention, this);
+            this.beforeHostMethod('parseResourceVersion', this.parseResourceVersion, this);
             this.beforeHostMethod('addResourceVersion', this.addResourceVersion, this);
             this.onHostEvent('getMojitTypeDetails', this.getMojitTypeDetails, this);
             this.onHostEvent('mojitResourcesResolved', this.mojitResourcesResolved, this);
@@ -171,12 +171,12 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
 
         /**
          * Using AOP, this is called after the ResourceStore's version.
-         * @method findResourceByConvention
+         * @method findResourceVersionByConvention
          * @param source {object} metadata about where the resource is located
          * @param mojitType {string} name of mojit to which the resource likely belongs
          * @return {object||null} for yui modules or lang bundles, returns metadata signifying that
          */
-        findResourceByConvention: function(source, mojitType) {
+        findResourceVersionByConvention: function(source, mojitType) {
             var fs = source.fs;
 
             if (!fs.isFile) {
@@ -204,14 +204,14 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
 
         /**
          * Using AOP, this is called before the ResourceStore's version.
-         * @method parseResource
+         * @method parseResourceVersion
          * @param source {object} metadata about where the resource is located
          * @param type {string} type of the resource
          * @param subtype {string} subtype of the resource
          * @param mojitType {string} name of mojit to which the resource likely belongs
          * @return {object||null} for yui modules or lang bundles, returns the resource metadata
          */
-        parseResource: function(source, type, subtype, mojitType) {
+        parseResourceVersion: function(source, type, subtype, mojitType) {
             var fs = source.fs,
                 baseParts,
                 res;

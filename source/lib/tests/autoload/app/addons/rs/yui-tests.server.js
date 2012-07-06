@@ -85,11 +85,11 @@ YUI.add('mojito-addon-rs-yui-tests', function(Y, NAME) {
             return out;
         },
 
-        findResourceByConvention: function(source, mojitType) {
+        findResourceVersionByConvention: function(source, mojitType) {
             // no-op
         },
 
-        parseResource: function(source, type, subtype, mojitType) {
+        parseResourceVersion: function(source, type, subtype, mojitType) {
             // no-op
         },
 
@@ -200,27 +200,27 @@ YUI.add('mojito-addon-rs-yui-tests', function(Y, NAME) {
             store.plug(Y.mojito.addons.rs.yui, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
 
             var source = makeSource(fixtures, 'app', 'autoload', 'x.server.txt', true);
-            var have = store.findResourceByConvention(source, null);
+            var have = store.findResourceVersionByConvention(source, null);
             var want = undefined;
             cmp(have, want);
 
             source = makeSource(fixtures, 'app', 'blix', 'x.server.js', true);
-            have = store.findResourceByConvention(source, null);
+            have = store.findResourceVersionByConvention(source, null);
             want = undefined;
             cmp(have, want);
 
             source = makeSource(fixtures, 'app', 'autoload', 'x.server.js', true);
-            have = store.findResourceByConvention(source, null);
+            have = store.findResourceVersionByConvention(source, null);
             want = { type: 'yui-module', skipSubdirParts: 1 };
             cmp(have, want);
 
             source = makeSource(fixtures, 'app', 'yui_modules', 'x.server.js', true);
-            have = store.findResourceByConvention(source, null);
+            have = store.findResourceVersionByConvention(source, null);
             want = { type: 'yui-module', skipSubdirParts: 1 };
             cmp(have, want);
 
             source = makeSource(fixtures, 'app', 'lang', 'x.server.js', true);
-            have = store.findResourceByConvention(source, null);
+            have = store.findResourceVersionByConvention(source, null);
             want = { type: 'yui-lang', skipSubdirParts: 1 };
             cmp(have, want);
         },
@@ -232,7 +232,7 @@ YUI.add('mojito-addon-rs-yui-tests', function(Y, NAME) {
             store.plug(Y.mojito.addons.rs.yui, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
 
             var source = makeSource(fixtures, 'app', 'autoload', 'm.common.js', true);
-            var res = store.parseResource(source, 'yui-module');
+            var res = store.parseResourceVersion(source, 'yui-module');
             A.isNotUndefined(res);
             cmp(res.source, source);
             A.areSame('yui-module', res.type);
@@ -243,7 +243,7 @@ YUI.add('mojito-addon-rs-yui-tests', function(Y, NAME) {
             A.isUndefined(res.mojit);
 
             source = makeSource(fixtures, 'app', 'autoload', 'm.common.iphone.js', true);
-            res = store.parseResource(source, 'yui-module');
+            res = store.parseResourceVersion(source, 'yui-module');
             A.isNotUndefined(res);
             cmp(res.source, source);
             A.areSame('yui-module', res.type);
@@ -254,7 +254,7 @@ YUI.add('mojito-addon-rs-yui-tests', function(Y, NAME) {
             A.isUndefined(res.mojit);
 
             source = makeSource(fixtures, 'app', 'yui_modules', 'x.common.js', true);
-            res = store.parseResource(source, 'yui-module');
+            res = store.parseResourceVersion(source, 'yui-module');
             A.isNotUndefined(res);
             cmp(res.source, source);
             A.areSame('yui-module', res.type);
@@ -265,7 +265,7 @@ YUI.add('mojito-addon-rs-yui-tests', function(Y, NAME) {
             A.isUndefined(res.mojit);
 
             source = makeSource(fixtures, 'bundle', 'lang', 'testing.js', true);
-            res = store.parseResource(source, 'yui-lang', undefined, 'testing');
+            res = store.parseResourceVersion(source, 'yui-lang', undefined, 'testing');
             A.isNotUndefined(res);
             cmp(res.source, source);
             A.areSame('yui-lang', res.type);
@@ -276,7 +276,7 @@ YUI.add('mojito-addon-rs-yui-tests', function(Y, NAME) {
             A.areSame('testing', res.mojit);
 
             source = makeSource(fixtures, 'bundle', 'lang', 'testing_de.js', true);
-            res = store.parseResource(source, 'yui-lang', undefined, 'testing');
+            res = store.parseResourceVersion(source, 'yui-lang', undefined, 'testing');
             A.isNotUndefined(res);
             cmp(res.source, source);
             A.areSame('yui-lang', res.type);
@@ -287,7 +287,7 @@ YUI.add('mojito-addon-rs-yui-tests', function(Y, NAME) {
             A.areSame('testing', res.mojit);
 
             source = makeSource(fixtures, 'bundle', 'lang', 'testing_en-US.js', true);
-            res = store.parseResource(source, 'yui-lang', undefined, 'testing');
+            res = store.parseResourceVersion(source, 'yui-lang', undefined, 'testing');
             A.isNotUndefined(res);
             cmp(res.source, source);
             A.areSame('yui-lang', res.type);

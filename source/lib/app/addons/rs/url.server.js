@@ -102,7 +102,7 @@ YUI.add('addon-rs-url', function(Y, NAME) {
          * @method preloadResourceVersions
          */
         preloadResourceVersions: function() {
-            var mojits = this.rs.listAllMojits(),
+            var mojits,
                 m,
                 mojit,
                 mojitRes,
@@ -113,6 +113,7 @@ YUI.add('addon-rs-url', function(Y, NAME) {
                 res,
                 skip;
 
+            mojits = this.rs.listAllMojits(),
             mojits.push('shared');
             for (m = 0; m < mojits.length; m += 1) {
                 mojit = mojits[m];

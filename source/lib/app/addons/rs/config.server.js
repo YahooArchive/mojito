@@ -38,8 +38,8 @@ YUI.add('addon-rs-config', function(Y, NAME) {
             this.rs = config.host;
             this.appRoot = config.appRoot;
             this.mojitoRoot = config.mojitoRoot;
-            this.afterHostMethod('findResourceByConvention', this.findResourceByConvention, this);
-            this.beforeHostMethod('parseResource', this.parseResource, this);
+            this.afterHostMethod('findResourceVersionByConvention', this.findResourceVersionByConvention, this);
+            this.beforeHostMethod('parseResourceVersion', this.parseResourceVersion, this);
 
             this._jsonCache = {};   // fullPath: contents as JSON object
             this._ycbCache = {};    // fullPath: YCB config object
@@ -55,7 +55,7 @@ YUI.add('addon-rs-config', function(Y, NAME) {
 
         /**
          * @method getDimensions
-         * @return {object} the YCB dimentions structure for the app
+         * @return {object} the YCB dimensions structure for the app
          */
         getDimensions: function() {
             return this.rs.cloneObj(this._ycbDims);
@@ -117,12 +117,12 @@ YUI.add('addon-rs-config', function(Y, NAME) {
 
         /**
          * Using AOP, this is called after the ResourceStore's version.
-         * @method findResourceByConvention
+         * @method findResourceVersionByConvention
          * @param source {object} metadata about where the resource is located
          * @param mojitType {string} name of mojit to which the resource likely belongs
          * @return {object||null} for config file resources, returns metadata signifying that
          */
-        findResourceByConvention: function(source, mojitType) {
+        findResourceVersionByConvention: function(source, mojitType) {
             var fs = source.fs,
                 use = false;
 
@@ -162,14 +162,14 @@ YUI.add('addon-rs-config', function(Y, NAME) {
 
         /**
          * Using AOP, this is called before the ResourceStore's version.
-         * @method parseResource
+         * @method parseResourceVersion
          * @param source {object} metadata about where the resource is located
          * @param type {string} type of the resource
          * @param subtype {string} subtype of the resource
          * @param mojitType {string} name of mojit to which the resource likely belongs
          * @return {object||null} for config file resources, returns the resource metadata
          */
-        parseResource: function(source, type, subtype, mojitType) {
+        parseResourceVersion: function(source, type, subtype, mojitType) {
             var baseParts,
                 res;
 
