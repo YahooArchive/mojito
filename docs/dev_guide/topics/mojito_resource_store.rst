@@ -3,43 +3,51 @@ Resource Store
 ==============
 
 
-.. General Questions:
-
-.. 1. Need formal definition for the resource store and resource.
-
-.. 2. What are the benefits of using the resource store?
-
-.. 3. Should the title of this chapter be about what users can do with resource store? I'm not sure if developers
-.. will even read this chapter because they won't necessarily know what the resource store is.
-
-.. 4. Does AOP stand for aspect-oriented programming, attribute oriented programming, or something else?
-
-
-.. Answers:
-
-.. 1.
-
-.. 2.
-
-.. 3.
-
-.. 4.
-
 .. _resource_store_intro:
 
 Intro
 =====
 
-The resource store is the Mojito framework code that managers and keeps track of the resources in your Mojito applications.
-The resource store uses addons to do much of the work, which you can read about in `Built-In Resource Store Addons <resource_store-builtin_addons>`_.
-The code for the resource store is a `YUI Base <http://yuilibrary.com/yui/docs/base/>`_, which enables plugins to be implemented as `YUI Plugin modules <http://yuilibrary.com/yui/docs/plugin/>`_.
-Being a YUI Base, the resource store also provides an event subsystem and a simple AOP subsystem (methods ``beforeHostMethod`` and ``afterHostMethod``).
+The Resource Store (RS) is the Mojito substystem that manages metadata about the files in your Mojito applications.
+The Resource Store (RS) manages metadata about the files in the application.  Thus,
+it is responsible for finding and classifying code and configuration files.
 
+
+
+.. _intro-who:
+
+Who Needs to Know About the Resource Store?
+-------------------------------------------
+
+Most Mojito application developers will not need to know much about the resource store other than what it does. Advanced Mojito application developers who
+want to track new files types or modify information that the RS tracks through metadata.
+
+.. _intro-use:
+
+How Can the Resource Store Help Developers?
+-------------------------------------------
+
+Developers can write addons for the resource store to have finer grain control over the management of resources
+or extend the functionality of the resource store. As a developer, you can write custom addons to use AOP
+on the resource store, create resource types, and map contexts to selectors.
+
+Yes, if an advanced developer wants to write a Mojito commandline tool 
+to do interesting things with files/resources in the application.  For 
+example, all of our commandline tools (except `start`) use the resource 
+store.
+         
+Writing a RS addon lets a dev teach the RS how to track new file types, 
+augment the information that RS stores about file/code, or augment or 
+replace the information returned by RS.            
+         
 
 .. _intro-what:
 
-What is a Mojito Resource?
---------------------------
+What is a Resource?
+-------------------
+
+"A Mojito resource can be a unit of code or configuration that Mojito 
+applications can include and use."  
 
 A Mojito resource can be a unit of code or configuration that Mojito applications can include and use.
 At the application level, resources include archetypes, commands, configuration files, and middleware. At the mojit level,
@@ -47,21 +55,54 @@ resources include controllers, models, binders, configuration files, and views. 
 resources to fit the need of their applications. See `Types of Resources <metadata_obj-types_resources>`_ for descriptions of the 
 built-in resource types.
 
+.. From Drew's doc:
+
+Although, for Mojito, a "resource" is primarily something useful found on the filesystem,
+the RS primarily cares about the *metadata* about each file.  So, a "resource" in the RS
+is an object containing metadata.
+
+Since there can be multiple files which are all conceptually different versions of the
+same thing (think `views/index.mu.html` and `views/index.iphone.mu.html`), the RS defines
+"resource version" as the metadata about each file and "resource" as the metadata
+about the file chosen among the possible choices.
+
+The process of choosing which version of a resource to use is called "resolution" (or
+"resolving the resource").  This act is one of the primary responsibilities of the Resource Store.
+See "resolution and priorities" below.
+
+Some resources (and resource versions) are "mojit-level":  the resource is scoped to a mojit.
+Examples are controllers, views, and binders.
+
+Some resources (and resource versions) are "shared", which means that they are included in *all*
+mojits.  Most resource types that are "mojit-level" can also be shared.  Examples of mojit-level
+resource types that can't be shared are controllers, config files (such as `definition.json`), and
+YUI language bundles.
+
+Some resources are "app-level".  These resources are truly global to the application.
+Some example resource types are middleware, RS addons, architetypes, and commands.
+(As an implementation detail, the RS still tracks resource versions for these kinds of resources
+and then resolves those versions down to a chosen resource, even though there's only one version
+of each resource.  More work at server start, but less code to write and debug.)
+
+The RS primarily manages metadata about resources, so it calls the 
+metadata the "resource".  The "resource" is just a JS object containing 
+metadata.  The RS define certain keys with specific meanings.  RS addons 
+can add, remove, or modify those keys/values as they see fit.  (For 
+example, it is the yui RS addon that adds the "yui" key with metadata 
+about resources that are YUI modules.  The RS itself doesn't populate 
+the "yui" key of each resource.)   
 
 .. _intro-do:
 
 How Does the Resource Store Work?
 ----------------------------------
 
-.. Questions:
+Resource store addons 
 
-.. 1. What does 'host for addons' mean? (It's mentioned in the 'core' section of the twiki.)
+The code for the resource store is a `YUI Base <http://yuilibrary.com/yui/docs/base/>`_, which enables plugins to be implemented as `YUI Plugin modules <http://yuilibrary.com/yui/docs/plugin/>`_.
+Being a YUI Base, the resource store also provides an event subsystem and a simple aspect-oriented subsystem (methods ``beforeHostMethod`` and ``afterHostMethod``). 
 
-.. Answers:
-
-.. 1.
-
-
+Mojito addons 
 
 Understanding the workflow of the resource store will give help those who want to customize addons to write code and
 help others who don't plan on customizing addons to debug. 
@@ -80,29 +121,13 @@ During this process, the resource store is also doing the following:
 To see the code for the resource store, see `store.server.js <https://github.com/yahoo/mojito/blob/develop/source/lib/store.server.js>`_.
 
 
-.. _intro-use:
+Resource Store Addons
+=====================
 
-How Can Developers Use the Resource Store?
-------------------------------------------
+The resource store uses addons to do much of the work, which you can read about in `Built-In Resource Store Addons <resource_store-builtin_addons>`_.
 
-.. Questions:
-
-.. 1. Do we have any concrete or hypothesized examples of using AOP (still need to know what this is) on the resource store, creating resource
-.. types, or mapping contexts to selectors? Having a few of the most common use cases would be helpful.
-
-.. 2. Are there any other benefits for developers?
-
-.. Answers:
-
-.. 1.
-
-.. 2.
-
-
-Developers can write addons for the resource store to have finer grain control over the management of resources
-or extend the functionality of the resource store. As a developer, you can write custom addons to use AOP
-on the resource store, create resource types, and map contexts to selectors.
-
+Also, a RS "addon" is implemented using the YUI "plugin" mechanism. 
+"addon" is the Mojito terminology, and "plugin" is the YUI terminology.     
 
 .. _resource_store-metadata:
 
@@ -114,15 +139,6 @@ Resource Metadata
 Intro
 -----
 
-.. Questions:
-
-.. 1. Drew, based on your response to a question about the metadata, I'm not sure if developers define resource metadata. Do they, and if so, how
-..    do they define the metadata (in some config file?)?
-
-.. Answers:
-
-.. 1. 
-
 The resource store uses metadata to find, load, parse, and create instances of resources. 
 
 
@@ -131,13 +147,9 @@ The resource store uses metadata to find, load, parse, and create instances of r
 Location
 --------
 
-.. Questions:
-
-.. 1. What is the location for the metadata? Is it a JSON config file like application.json? If so, what is the file name?
-
-.. Answers:
-
-.. 1.
+The resource metadata is generated by code -- it has no representation 
+on the filesystem.  It is generate during `preload()`, either by the RS 
+itself or by RS addons.   
 
 .. _metadata-obj:
 
@@ -169,31 +181,15 @@ Metadata Object
 
 .. 10. Can you explain what the ``yui`` property does? Is it a Boolean that determines whether a resource is a YUI module or does it give info about the resource that is a YUI module?
 
-.. Answers:
 
-.. 0.
-
-.. 1.
-
-.. 2.
-
-.. 3.
-
-.. 4.
-
-.. 5.
-
-.. 6.
-
-.. 7.
-
-.. 8.
-
-.. 9.
-
-.. 10.
 
 .. Please fill in or correct the rows for the 'Required?', 'Default Value', 'Possible Values', and 'Description' columns below.
+
+ome values do have defaults, but it depends on the value of the "type" 
+key, and/or comes from the filename of the resource being represented. 
+For example, the "affinity" of views is "common" (since views are used 
+on both client and server), however the "affinity" for controllers comes 
+from the filename.        
 
 +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
 | Property               | Data Type     | Required? | Default Value | Possible Values             | Description                                 |
@@ -283,7 +279,13 @@ Metadata Object
    |                        |               |           |               |                             | ``yui-module``.                             |
    +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
 
-
+It doesn't make sense to have a default value.  The "name" is what 
+uniquely identifies the resource within type and subtype.  For example, 
+views/index.mu.html might have "type:view", empty subtype, and 
+"name:index".  The name should be the same for all -versions- of the 
+resource, so for example views/index.iphone.mu.html would have the exact 
+same type, subtype, and name as views/index.mu.html (only the "selector" 
+would be different).     
 
 
 .. _types_resources:
@@ -305,6 +307,15 @@ The ``type`` property of the metadata object can have any of the following value
 - ``yui-lang``    - a YUI3 language bundle
 - ``yui-module``  - a YUI3 module (that isn't one of the above)
 
+Subtypes
+````````
+
+Subtype is used for certain types, but not others.  For example, an 
+"type:addon" resource might have "subtype:ac" for AC addons, or 
+"subtype:view-engine" for view engines, or "subtype:rs" for RS addons. 
+For "type:archetype" the subtypes refers to the "type" described by 
+`mojito help create`.  So, you could have "subtype:app" or 
+"subtype:mojit".  (There might be more in the future!)       
 
 
 .. _metadata-ex:
@@ -337,14 +348,14 @@ Example
      selector:
    }
 
-.. _resource_store-builtin_addons:
+.. _resource_store-write_addons:
 
-Built-In Resource Store Addons
-==============================
+Writing RS Addons
+=================
 
 .. Note: Replace code examples with links to Mojito source once the resource store addons have been merged into master.
 
-.. _builtin_addons-intro:
+.. _write_addons-intro:
 
 Intro
 -----
@@ -354,6 +365,39 @@ and the Mojito framework. These resource store addons are required by the resour
 the Mojito framework, so particular care must be taken when creating custom versions of them. 
 This chapter takes a look at the built-in resource store addons, so you can better understand their use or 
 customize your own versions. 
+
+.. Link to API docs
+
+.. _resource_store-custom_addons:
+
+Creating Custom Versions of Built-In RS Addons
+----------------------------------------------
+
+This section is intended only for  developers who need to override the built-in resource store
+addons or create new resource store addons. In general, we recommend that you use the built-in resource
+store addons.
+
+>> I think we should, by default, -not- document these.  They have API
+>> docs, so the users (which remember are advanced devs) can look at that
+>> or their source code.  The two possible exceptions to that are the
+>> "selector" and "url" addons, which we expect some users might want to
+>> make replacements for.  Their replacements will need to follow the same
+>> API, so we should document that API.  This documentation is different
+>> than the API documentation for the addon itself.  That API doc says what
+>> that addon implementation -does-, but the RS API docs should outline
+>> what the RS -expects- the addon to do.  
+
+"In general, we recommend that
+>> you use the built-in versions of the "config" and "url" addons".  As
+>> mentioned before, we'll have to document the specific requirements for
+>> writing a replacement for the "selector" or "url" RS addons.  
+
+That's true for most of the RS addons, but not all, and it's just fine 
+if they write new addons.  So, perhaps "In general, we recommend that 
+you use the built-in versions of the "config" and "url" addons".  As 
+mentioned before, we'll have to document the specific requirements for 
+writing a replacement for the "selector" or "url" RS addons.
+                                                              
 
 .. _intro-selector:
 
@@ -400,466 +444,7 @@ getListFromContext(ctx)
 Example
 ~~~~~~~
 
-.. _intro-config:
 
-config
-``````
-
-.. _config-desc:
-
-
-.. Questions:
-
-.. 1. Should the following be included?
-
-.. default implementation:
-.. ``findResourceByConvention()`` registers config files as ``type:config`` resources
-
-
-Description
-~~~~~~~~~~~
-
-The ``config`` addon provides access to the contents of the configuration files and
-defines new mojit-level ``config`` resource types (for the mojit's ``definition.json`` and ``defaults.json``)
-and new app-level ``config`` resource types (for ``application.json``, ``routes.json``, ``dimensions.json``, etc.).
-
-
-**Who might want to customize their own version of the addon?** 
-
-We do not recommend that developers create a customized ``config`` addon, but for those developers
-who want to create new types of configuration files, you might want to create your own ``config`` addon.
-
-
-.. _config-reqs:
-
-Requirements
-~~~~~~~~~~~~
-
-Because this is used directly by the resource store, all implementations need to provide the following methods:
-
-- ``getDimensions()``
-- ``readConfigJSON(path)``
-- ``readConfigYCB(path, ctx)``
-
-
-
-.. _config-getDimensions:
-
-getDimensions()
-~~~~~~~~~~~~~~~
-
-.. Question: 
-
-.. 1. Need description, spec, and example of ``cb`` and return value.
-
-Returns all the defined dimensions.
-
-**Parameters**
-
-None
-
-**Return:** 
-
-.. _config-readConfigJSON:
-
-readConfigJSON(path)
-~~~~~~~~~~~~~~~~~~~~
-
-Reads the JSON configuration file.
-
-**Parameters**
-
-- ``path`` - The path to the JSON configuration file.
-
-
-**Return:** 
-
-.. _config-ex:
-
-readConfigYCB(path, ctx)
-~~~~~~~~~~~~~~~~~~~~~~~~
-
-Reads the context configuration file.
-
-.. Question: 
-
-.. 1. Need return value.
-
-**Parameters**
-
-- ``path`` - The path to the context configuration file.
-- ``ctx`` - The context configuration to read.
-
-**Return:** 
-
-Example
-~~~~~~~
-
-.. code-block:: javascript
-
-   
-   YUI.add('addon-rs-config', function(Y, NAME) {
-   
-       var libfs = require('fs'),
-           libpath = require('path'),
-           libycb = require(libpath.join(__dirname, '../../../libs/ycb'));
-   
-       function RSAddonConfig() {
-           RSAddonConfig.superclass.constructor.apply(this, arguments);
-       }
-       RSAddonConfig.NS = 'config';
-       RSAddonConfig.ATTRS = {};
-   
-       Y.extend(RSAddonConfig, Y.Plugin.Base, {
-   
-           initializer: function(config) {
-               this.rs = config.host;
-               this.appRoot = config.appRoot;
-               this.mojitoRoot = config.mojitoRoot;
-               this.afterHostMethod('findResourceByConvention', this.findResourceByConvention, this);
-               this.beforeHostMethod('parseResource', this.parseResource, this);
-   
-               this._jsonCache = {};   // fullPath: contents as JSON object
-               this._ycbCache = {};    // fullPath: YCB config object
-               this._ycbDims = this._readYcbDimensions();
-           },
-   
-   
-           destructor: function() {
-               // TODO:  needed to break cycle so we don't leak memory?
-               this.rs = null;
-           },
-   
-   
-           getDimensions: function() {
-               return this.rs.cloneObj(this._ycbDims);
-           },
-   
-   
-           /**
-            * Reads and parses a JSON file
-            *
-            * @method readConfigJSON
-            * @param fullPath {string} path to JSON file
-            * @return {mixed} contents of JSON file
-            */
-           // TODO:  async interface
-           readConfigJSON: function(fullPath) {
-               var json,
-                   contents;
-               if (!libpath.existsSync(fullPath)) {
-                   return {};
-               }
-               json = this._jsonCache[fullPath];
-               if (!json) {
-                   try {
-                       contents = libfs.readFileSync(fullPath, 'utf-8');
-                       json = JSON.parse(contents);
-                   } catch (e) {
-                       throw new Error('Error parsing JSON file: ' + fullPath);
-                   }
-                   this._jsonCache[fullPath] = json;
-               }
-               return json;
-           },
-   
-   
-           /**
-            * reads a configuration file that is in YCB format
-            *
-            * @method readConfigYCB
-            * @param ctx {object} runtime context
-            * @param fullPath {string} path to the YCB file
-            * @return {object} the contextualized configuration
-            */
-           // TODO:  async interface
-           readConfigYCB: function(fullPath, ctx) {
-               var cacheKey,
-                   json,
-                   ycb;
-   
-               ctx = this.rs.mergeRecursive(this.rs.getStaticContext(), ctx);
-   
-               ycb = this._ycbCache[fullPath];
-               if (!ycb) {
-                   json = this.readConfigJSON(fullPath);
-                   json = this._ycbDims.concat(json);
-                   ycb = new libycb.Ycb(json);
-                   this._ycbCache[fullPath] = ycb;
-               }
-               return ycb.read(ctx, {});
-           },
-   
-   
-           findResourceByConvention: function(source, mojitType) {
-               var fs = source.fs,
-                   use = false;
-   
-               // we only care about files
-               if (!fs.isFile) {
-                   return;
-               }
-               // we don't care about files in subdirectories
-               if ('.' !== fs.subDir) {
-                   return;
-               }
-               // we only care about json files
-               if ('.json' !== fs.ext) {
-                   return;
-               }
-               // use package.json for the app and the mojit
-               if ('package' === fs.basename && 'bundle' !== fs.rootType) {
-                   use = true;
-               }
-               // use all configs in the application
-               if ('app' === fs.rootType) {
-                   use = true;
-               }
-               // use configs from non-shared mojit resources
-               if (mojitType && 'shared' !== mojitType) {
-                   use = true;
-               }
-               if (!use) {
-                   return;
-               }
-   
-               return new Y.Do.AlterReturn(null, {
-                   type: 'config'
-               });
-           },
-   
-   
-           parseResource: function(source, type, subtype, mojitType) {
-               var baseParts,
-                   res;
-   
-               if ('config' !== type) {
-                   return;
-               }
-   
-               baseParts = source.fs.basename.split('.');
-               res = {
-                   source: source,
-                   type: 'config',
-                   affinity: 'common',
-                   selector: '*'
-               };
-               if ('app' !== source.fs.rootType) {
-                   res.mojit = mojitType;
-               }
-               if (baseParts.length !== 1) {
-                   Y.log('invalid config filename. skipping ' + source.fs.fullPath, 'warn', NAME);
-                   return;
-               }
-               res.name = libpath.join(source.fs.subDir, baseParts.join('.'));
-               res.id = [res.type, res.subtype, res.name].join('-');
-               return new Y.Do.Halt(null, res);
-           },
-   
-   
-           /**
-            * Read the application's dimensions.json file for YCB processing. If not
-            * available, fall back to the framework's default dimensions.json.
-            *
-            * @method _readYcbDimensions
-            * @return {array} contents of the dimensions.json file
-            * @private
-            */
-           _readYcbDimensions: function() {
-               var path = libpath.join(this.appRoot, 'dimensions.json');
-               if (!libpath.existsSync(path)) {
-                   path = libpath.join(this.mojitoRoot, 'dimensions.json');
-               }
-               return this.readConfigJSON(path);
-           }
-   
-   
-       });
-       Y.namespace('mojito.addons.rs');
-       Y.mojito.addons.rs.config = RSAddonConfig;
-   
-   }, '0.0.1', { requires: ['plugin', 'oop']});
-
-
-
-.. _intro-instance:
-
-instance
-````````
-
-.. _instance-desc:
-
-Description
-~~~~~~~~~~~
-
-.. Questions:
-
-.. 1. Who might want to create a custom version of this addon and why?
-
-.. Answers:
-
-.. 1. 
-
-The ``instance`` addon provides access to mojit details, expands specs into full instances, and
-defines new app-level ``spec`` resource types (found in ``mojits/*/specs/*.json``)
-The ``instance`` addon is not used by the resource store, but is critical to the Mojito framework.
-
-**Who might want to customize their own version of the addon?** 
-
-
-
-.. _instance-reqs:
-
-Requirements
-~~~~~~~~~~~~
-
-Because this addon is critical to the Mojito framework, all implementations need to provide the following methods:
-
-- ``getMojitDetails(ctx, mojitType, cb)``
-- ``expandSpec(ctx, spec, cb)``
-
-
-
-getMojitDetails(ctx, mojitType, cb)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. Question: 
-
-.. 1. Need description, spec, and example of ``ctx``, ``mojitType``, ``cb`` and return value.
-
-Returns a single structure that contains all details needed by the Mojito kernel
-The structure is made by aggregating information from all the resources in the mojit.
-
-**Parameters**
-
-- ``ctx`` - The context that the application is running in. 
-- ``mojitType`` - The type of mojito for an instance that is defined in ``application.json``.
-- ``cb`` - 
-
-**Return:** 
-
-
-.. _instance-ex:
-
-Example
-~~~~~~~
-
-.. Question:
-
-.. 1. Need example.
-
-.. _intro-routes:
-
-routes
-``````
-
-.. Questions:
-
-.. 1. Is the sugar method ``getRoutes`` in ``store.server.js``?
-
-.. 2. To write a custom ``routes`` addon, are developers required to override ``getRoutes`` with their own version of the function?
-
-.. Answers:
-
-.. 1.
-
-.. 2.
-
-.. _routes-desc:
-
-Description
-~~~~~~~~~~~
-
-The ``routes`` addon provides access to the routes. Although the addon is
-not used by resource store core, it is critical to the server-side Mojito
-mojito ships with a default implementation. The resource store has a method
-for returning all of the route files in a single merged result. 
-
-**Who might want to customize their own version of the addon?** 
-
-We do not recommend that developers create a customized ``routes`` addon, but for those developers
-who want to process the routes or add additional metadata, creating a custom ``routes`` addon might be
-the solution.
-
-.. _routes-reqs:
-
-Requirements
-~~~~~~~~~~~~
-
-None.
-
-.. _routes-ex:
-
-Example
-~~~~~~~
-
-YUI.add('addon-rs-routes', function(Y, NAME) {
-
-    var libpath = require('path'),
-        libycb = require(libpath.join(__dirname, '../../../libs/ycb'));
-
-    function RSAddonRoutes() {
-        RSAddonRoutes.superclass.constructor.apply(this, arguments);
-    }
-    RSAddonRoutes.NS = 'routes';
-    RSAddonRoutes.DEPS = ['config'];
-    RSAddonRoutes.ATTRS = {};
-
-    Y.extend(RSAddonRoutes, Y.Plugin.Base, {
-
-        initializer: function(config) {
-            this.rs = config.host;
-            this.appRoot = config.appRoot;
-        },
-
-
-        destructor: function() {
-            // TODO:  needed to break cycle so we don't leak memory?
-            this.rs = null;
-        },
-
-
-        read: function(env, ctx, cb) {
-            ctx.runtime = env;
-            var appConfig = this.rs.getAppConfig(ctx),
-                routesFiles = appConfig.routesFiles,
-                p,
-                path,
-                fixedPaths = {},
-                out = {},
-                ress,
-                r,
-                res,
-                path,
-                routes;
-
-            for (p = 0; p < routesFiles.length; p += 1) {
-                path = routesFiles[p];
-                // relative paths are relative to the application
-                if ('/' !== path.charAt(1)) {
-                    path = libpath.join(this.appRoot, path);
-                }
-                fixedPaths[path] = true;
-            }
-
-            ress = this.rs.getResources(env, ctx, {type:'config'});
-            for (r = 0; r < ress.length; r += 1) {
-                res = ress[r];
-                if (fixedPaths[res.source.fs.fullPath]) {
-                    routes = this.rs.config.readConfigYCB(res.source.fs.fullPath, ctx);
-                    out = Y.merge(out, routes);
-                }
-            }
-
-            cb(null, out);
-        }
-
-
-    });
-    Y.namespace('mojito.addons.rs');
-    Y.mojito.addons.rs.routes = RSAddonRoutes;
-
-}, '0.0.1', { requires: ['plugin', 'oop']});
 
 
 .. _url-intro:
@@ -888,6 +473,14 @@ The static handler URL can be a rollup URL.
 The ``url`` addon also provides a method for the static handler middleware to find the 
 filesystem path for a URL.
 
+ 
+
+Any property which wants to have control over the static handler URLs of 
+the resources, including potentially serving resources from a CDN.  Such 
+a property will hopefully use Shaker, so in fact the Shaker team would 
+need to know how to write a "url" RS addon.  Some other properties might 
+want to do some extra fancy/custom things (besides what Shaker does) so 
+they might want to write a "url" RS addon.  
 
 
 .. _url-reqs:
@@ -902,250 +495,22 @@ None.
 Example
 ~~~~~~~
 
-.. _intro-yui:
-
-yui
-```
-
-.. _yui-desc:
-
-Description
-~~~~~~~~~~~
-
-.. Questions:
-
-.. 1. Who might want to customize their own version of the addon? 
-.. 2. Should the following be included?
-
-.. 
-
-  after findResourceByConvention()
-     - detect ``yui-module`` and ``yui-lang`` resources.
-  before addResourceVersion()
-     - if it's a resource implemented as a YUI module, gathers the YUI module metadata about it
-  on mojitResourceResolved()
-     - calculates the YUI module dependencies for the controller
-     - calculates the YUI module dependencies for each binder
-  on getMojitTypeDetails()
-     - add dependency information to the mojit's details
-
-The ``yui`` addon has the following functions:
-
-- detects which resources are YUI modules and gathers additional metadata.
-- defines new mojit-specific resource of type ``yui-module`` that are found in ``autoload/`` or ``yui_modules/``.
-- defines new mojit-specific resource of type ``yui-lang`` that are found in ``lang/``.
-- precalculates YUI dependencies for mojit controllers and binders.
-
-
-The built-in ``yui`` addon will generally not need to be overridden with a custom version of the addon.
-
-
-.. _yui-reqs:
-
-Requirements
-~~~~~~~~~~~~
-
-None.
-
-.. _yui-ex:
-
-Example
-~~~~~~~
-
-.. code-block:: javascript
-
-   /*
-    * Copyright (c) 2012, Yahoo! Inc.  All rights reserved.
-    * Copyrights licensed under the New BSD License.
-    * See the accompanying LICENSE file for terms.
-    */
-   
-   YUI.add('addon-rs-yui', function(Y, NAME) {
-   
-       var libfs = require('fs'),
-           libpath = require('path'),
-           libvm = require('vm');
-   
-       function RSAddonYUI() {
-           RSAddonYUI.superclass.constructor.apply(this, arguments);
-       }
-       RSAddonYUI.NS = 'yui';
-       RSAddonYUI.ATTRS = {};
-  
-       Y.extend(RSAddonYUI, Y.Plugin.Base, {
-   
-           initializer: function(config) {
-               this.rs = config.host;
-               this.appRoot = config.appRoot;
-               this.mojitoRoot = config.mojitoRoot;
-               this.afterHostMethod('findResourceByConvention', this.findResourceByConvention, this);
-               this.beforeHostMethod('parseResource', this.parseResource, this);
-               this.beforeHostMethod('addResourceVersion', this.addResourceVersion, this);
-           },
-   
-   
-           destructor: function() {
-               // TODO:  needed to break cycle so we don't leak memory?
-               this.rs = null;
-           },
-   
-   
-           findResourceByConvention: function(source, mojitType) {
-               var fs = source.fs;
-   
-               if (!fs.isFile) {
-                   return;
-               }
-               if ('.js' !== fs.ext) {
-                   return;
-               }
-   
-               if (fs.subDirArray.length >= 1 && ('autoload' === fs.subDirArray[0] || 'yui_modules' === fs.subDirArray[0])) {
-                   return new Y.Do.AlterReturn(null, {
-                       type: 'yui-module',
-                       skipSubdirParts: 1
-                   });
-               }
-   
-               if (fs.subDirArray.length >= 1 && 'lang' === fs.subDirArray[0]) {
-                   return new Y.Do.AlterReturn(null, {
-                       type: 'yui-lang',
-                       skipSubdirParts: 1
-                   });
-               }
-           },
-   
-   
-           parseResource: function(source, type, subtype, mojitType) {
-               var fs = source.fs,
-                   baseParts,
-                   res;
-   
-               if ('yui-lang' === type) {
-                   res = {
-                       source: source,
-                       mojit: mojitType,
-                       type: 'yui-lang',
-                       affinity: 'common',
-                       selector: '*'
-                   };
-                   if (!res.yui) {
-                       res.yui = {};
-                   }
-                   if (fs.basename === mojitType) {
-                       res.yui.lang = '';
-                   } else if (mojitType === fs.basename.substr(0, mojitType.length)) {
-                       res.yui.lang = fs.basename.substr(mojitType.length + 1);
-                   } else {
-                       logger.log('invalid YUI lang file format. skipping ' + fs.fullPath, 'error', NAME);
-                   }
-                   res.name = res.yui.lang;
-                   res.id = [res.type, res.subtype, res.name].join('-');
-                   return new Y.Do.Halt(null, res);
-               }
-   
-               if ('yui-module' === type) {
-                   baseParts = fs.basename.split('.'),
-                   res = {
-                       source: source,
-                       mojit: mojitType,
-                       type: 'yui-module',
-                       affinity: 'server',
-                       selector: '*'
-                   };
-                   if (baseParts.length >= 3) {
-                       res.selector = baseParts.pop();
-                   }
-                   if (baseParts.length >= 2) {
-                       res.affinity = baseParts.pop();
-                   }
-                   if (baseParts.length !== 1) {
-                       Y.log('invalid yui-module filename. skipping ' + fs.fullPath, 'warn', NAME);
-                       return;
-                   }
-                   this._parseYUIModule(res);
-                   res.name = res.yui.name;
-                   res.id = [res.type, res.subtype, res.name].join('-');
-                   return new Y.Do.Halt(null, res);
-               }
-           },
-   
-   
-           addResourceVersion: function(res) {
-               if ('.js' !== res.source.fs.ext) {
-                   return;
-               }
-               if (res.yui && res.yui.name) {
-                   // work done already
-                   return;
-               }
-               // ASSUMPTION:  no app-level resources are YUI modules
-               if (!res.mojit) {
-                   return;
-               }
-               this._parseYUIModule(res);
-           },
-   
-   
-           _parseYUIModule: function(res) {
-               var file,
-                   ctx,
-                   yui = {};
-               file = libfs.readFileSync(res.source.fs.fullPath, 'utf8');
-               ctx = {
-                   console: {
-                       log: function() {}
-                   },
-                   window: {},
-                   document: {},
-                   YUI: {
-                       add: function(name, fn, version, meta) {
-                           yui.name = name;
-                           yui.version = version;
-                           yui.meta = meta || {};
-                       }
-                   }
-               };
-               try {
-                   libvm.runInNewContext(file, ctx, res.source.fs.fullPath);
-               } catch (e) {
-                   yui = null;
-                   Y.log(e.message + '\n' + e.stack, 'error', NAME);
-               }
-               if (yui) {
-                   res.yui = Y.merge(res.yui || {}, yui);
-               }
-           }
-   
-   
-       });
-       Y.namespace('mojito.addons.rs');
-       Y.mojito.addons.rs.yui = RSAddonYUI;
-   
-   }, '0.0.1', { requires: ['plugin', 'oop']});
 
 
 
-Creating Custom Resource Store Addons
-=====================================
+
+Creating Your Own Resource Store Addons
+---------------------------------------
 
 Intro
 -----
 
-This section is intended only for those developers who need to override the built-in resource store
-addons or create new resource store addons. In general, we recommend that you use the built-in resource
-store addons.
+
 
 General Process
 ---------------
 
-.. Questions:
-
-.. Do these steps look accurate? (would like a little more detail)
-
-.. 1. Create file with metadata object.
-.. 2. Install Shaker with npm.
-.. 3. Create addon that uses Shaker.
+.. Use Drew's skeleton doc
 
 
 Requirements
@@ -1165,46 +530,17 @@ Example
 Intro
 ``````
 
-In this example, you will learn how to create a resource store addon for 
-`Shaker <https://github.com/yahoo/mojito-shaker>`_, a static asset rollup manager for Mojito applications.
+In this example, you will learn how to create a resource store addon to do ...
 
 
-We'll take you through creating the metadata object and the ``shaker`` resource store addon.
+We'll take you through creating the metadata object and the ... resource store addon.
 You should be able to create your own resource store addons afterward and figure out how to
 customize (and override) one of the built-in resource store addons.
 
 Creating Metadata Object
 ````````````````````````
-.. Questions:
-
-.. 1. Location and name of file containing ``metadata`` object?
-
-.. 2. The table of properties of the ``metadata`` object has to be completed first.
-
-.. Answers:
-
-.. 1.
 
 
-Installing Shaker
-`````````````````
-
-.. Questions:
-
-.. 1. Should the ``package.json`` file specify ``shaker`` as a dependency? 
-
-.. 2. Is the instruction below correct and sufficient?
-
-.. Answers:
-
-.. 1.
-
-.. 2. 
-
-
-From the application directory of your application, run the following command to install ``shaker`` into the ``node_modules`` directory:
-
-``$ npm install mojito-shaker``
 
 
 Writing Addon
@@ -1230,10 +566,7 @@ Writing Addon
 .. 4.
 
 
-The ``shaker`` addon will listen for changes to the ``staticHandlerURL``
-resource field and then update ``staticHandlerURL`` and then update the ``staticHandlerURL`` so that static assets can come from
-a CDN and be part of a multi-mojit rollup. 
-
+The ... addon will ...
 
 
 
