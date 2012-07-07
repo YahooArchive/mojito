@@ -678,6 +678,9 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 }
             }
 
+            if (!Object.keys(out).length) {
+                return this._fwConfig.defaultRoutes;
+            }
             return out;
         },
 

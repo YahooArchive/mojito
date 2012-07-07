@@ -402,6 +402,15 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
             A.isTrue(store._config.root === fixtures);
         },
 
+        'default routes': function() {
+            var fixtures = libpath.join(__dirname, '../fixtures/store_no_app_config'),
+                store = new Y.mojito.ResourceStore({ root: fixtures });
+            store.preload();
+
+            var have = store.getRoutes();
+            A.isObject(have._default_path);
+        },
+
         'bad files': function() {
             var fixtures = libpath.join(__dirname, '../fixtures/badfiles'),
                 store = new Y.mojito.ResourceStore({ root: fixtures });
