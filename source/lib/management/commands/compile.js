@@ -417,7 +417,7 @@ compile.rollups = function(context, options, callback) {
         }
 
         if (options.remove) {
-            if (path.existsSync(rollup.dest)) {
+            if (fs.existsSync(rollup.dest)) {
                 try {
                     fs.unlinkSync(rollup.dest);
                 } catch (err) {
@@ -941,7 +941,7 @@ getContentFromUrl = function(app, url, opts, callback) {
 
 
 removeFile = function(file) {
-    if (path.existsSync(file)) {
+    if (fs.existsSync(file)) {
         try {
             fs.unlinkSync(file);
         } catch (err) {

@@ -99,10 +99,10 @@ run = function(params, options) {
     }
 
     // make results dir
-    if (!libpath.existsSync(artifactsDir)) {
+    if (!libfs.existsSync(artifactsDir)) {
         libfs.mkdirSync(artifactsDir, MODE_ALL);
     }
-    if (!libpath.existsSync(resultsDir)) {
+    if (!libfs.existsSync(resultsDir)) {
         libfs.mkdirSync(resultsDir, MODE_ALL);
     }
 
