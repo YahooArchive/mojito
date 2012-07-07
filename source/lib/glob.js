@@ -67,7 +67,7 @@ function globSync(pattern, flags, list) {
                                     stat = libfs.statSync(base + sub);
                                     if (stat.isDirectory()) {
                                         if ((parts.length !== 1) ||
-                                                (libpath.existsSync(
+                                                (libfs.existsSync(
                                                     base + sub + parts[0]
                                                 ))) {
                                             todo.push(base +

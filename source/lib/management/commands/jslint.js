@@ -31,7 +31,7 @@ var fs = require('fs'),
 function mkdirsSync(dir, mode) {
     var modeDefault = parseInt('755', 8); // Avoid octal per JSLint
 
-    if (path.existsSync(dir)) {
+    if (fs.existsSync(dir)) {
         return;
     }
     mode = mode || modeDefault;
@@ -267,12 +267,12 @@ function getAppDir(appName) {
     // If appName was not supplied, see if we're in an app.
     if (!appName) {
         file = path.join(cwd, 'server.js');
-        return (path.existsSync(file) ? cwd : null);
+        return (fs.existsSync(file) ? cwd : null);
     }
 
     // Look for the app where we are.
     dir = path.join(cwd, appName);
-    if (path.existsSync(dir)) {
+    if (fs.existsSync(dir)) {
         stat = fs.statSync(dir);
         if (stat.isDirectory()) {
             return dir;

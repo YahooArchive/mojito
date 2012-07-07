@@ -309,7 +309,7 @@ function copyUsingMatcher(src, dest, excludeMatcher) {
     //console.log('copying ' + src + ' to ' + dest);
     /* check if source path exists */
 
-    if (!path.existsSync(src)) {
+    if (!fs.existsSync(src)) {
         throw new Error(src + ' does not exist');
     }
 
@@ -326,7 +326,7 @@ function copyUsingMatcher(src, dest, excludeMatcher) {
 
     /* check if destination directory exists */
 
-    if (!path.existsSync(dest)) {
+    if (!fs.existsSync(dest)) {
         fs.mkdirSync(dest, parseInt('755', 8));
     }
 
@@ -378,7 +378,7 @@ function removeDir(src) {
         count;
 
     /* check if source path exists */
-    if (!path.existsSync(src)) {
+    if (!fs.existsSync(src)) {
         return;
     }
 
@@ -444,7 +444,7 @@ function isMojitoApp(dir, usage, die) {
 
         if (isMojito) { return; }
         filepath = path.join(dir, file);
-        if (path.existsSync(filepath)) {
+        if (fs.existsSync(filepath)) {
             contents = fs.readFileSync(filepath, 'utf-8');
             isMojito = requiresMojito.test(contents);
         }
