@@ -9,9 +9,7 @@ Intro
 =====
 
 The Resource Store (RS) is the Mojito substystem that manages metadata about the files in your Mojito applications.
-The Resource Store (RS) manages metadata about the files in the application.  Thus,
-it is responsible for finding and classifying code and configuration files.
-
+The RS manages metadata about the files in the application. Thus, it is responsible for finding and classifying code and configuration files.
 
 
 .. _intro-who:
@@ -19,115 +17,122 @@ it is responsible for finding and classifying code and configuration files.
 Who Needs to Know About the Resource Store?
 -------------------------------------------
 
-Most Mojito application developers will not need to know much about the resource store other than what it does. Advanced Mojito application developers who
-want to track new files types or modify information that the RS tracks through metadata.
+Most Mojito application developers will not need to know much about the resource store, but advanced Mojito application developers who
+want to have finer grain control over the management of resources
+or extend the functionality of the resource store should read this documentation.
+
+.. track new files types or modify information that the RS tracks through metadata can write their own RS addons.
 
 .. _intro-use:
 
 How Can the Resource Store Help Developers?
 -------------------------------------------
 
-Developers can write addons for the resource store to have finer grain control over the management of resources
-or extend the functionality of the resource store. As a developer, you can write custom addons to use AOP
-on the resource store, create resource types, and map contexts to selectors.
+You can write custom RS addons to use the aspect-oriented features of
+the resource store, to create resource types, and to map contexts to selectors.
 
-Yes, if an advanced developer wants to write a Mojito commandline tool 
-to do interesting things with files/resources in the application.  For 
-example, all of our commandline tools (except `start`) use the resource 
-store.
-         
-Writing a RS addon lets a dev teach the RS how to track new file types, 
-augment the information that RS stores about file/code, or augment or 
-replace the information returned by RS.            
+For example, you could write your own RS addon so that the Mojito command-line
+tool will create files and resources for your application. The Mojito command-line
+tool uses the RS for all the commands except ``start``. 
+
+You can also write custom versions of built-in RS addons to modify how the resource store works. You custom addon could track new file types, 
+augment the information that RS stores about files or code, or augment/replace the information returned by RS.            
          
 
-.. _intro-what:
+.. _intro-do:
+
+
+
+
+.. _rs-resources:
+
+Resources
+=========
+
+.. _resources-what:
 
 What is a Resource?
 -------------------
 
-"A Mojito resource can be a unit of code or configuration that Mojito 
-applications can include and use."  
+To Mojito
+`````````
 
-A Mojito resource can be a unit of code or configuration that Mojito applications can include and use.
-At the application level, resources include archetypes, commands, configuration files, and middleware. At the mojit level,
-resources include controllers, models, binders, configuration files, and views. Developers can also create their own types of
-resources to fit the need of their applications. See `Types of Resources <metadata_obj-types_resources>`_ for descriptions of the 
-built-in resource types.
+The Mojito framework primarely views a **resource** as something useful found on the filesystem.
 
-.. From Drew's doc:
 
-Although, for Mojito, a "resource" is primarily something useful found on the filesystem,
-the RS primarily cares about the *metadata* about each file.  So, a "resource" in the RS
-is an object containing metadata.
 
-Since there can be multiple files which are all conceptually different versions of the
-same thing (think `views/index.mu.html` and `views/index.iphone.mu.html`), the RS defines
-"resource version" as the metadata about each file and "resource" as the metadata
-about the file chosen among the possible choices.
+To the Resource Store
+`````````````````````
 
-The process of choosing which version of a resource to use is called "resolution" (or
-"resolving the resource").  This act is one of the primary responsibilities of the Resource Store.
-See "resolution and priorities" below.
-
-Some resources (and resource versions) are "mojit-level":  the resource is scoped to a mojit.
-Examples are controllers, views, and binders.
-
-Some resources (and resource versions) are "shared", which means that they are included in *all*
-mojits.  Most resource types that are "mojit-level" can also be shared.  Examples of mojit-level
-resource types that can't be shared are controllers, config files (such as `definition.json`), and
-YUI language bundles.
-
-Some resources are "app-level".  These resources are truly global to the application.
-Some example resource types are middleware, RS addons, architetypes, and commands.
-(As an implementation detail, the RS still tracks resource versions for these kinds of resources
-and then resolves those versions down to a chosen resource, even though there's only one version
-of each resource.  More work at server start, but less code to write and debug.)
-
-The RS primarily manages metadata about resources, so it calls the 
-metadata the "resource".  The "resource" is just a JS object containing 
+The RS primarily cares about the *metadata* about each resource
+The RS uses metadata resources, so it calls the 
+metadata the "resource".  The "resource" is just a JavaScript object containing 
 metadata.  The RS define certain keys with specific meanings.  RS addons 
 can add, remove, or modify those keys/values as they see fit.  (For 
 example, it is the yui RS addon that adds the "yui" key with metadata 
 about resources that are YUI modules.  The RS itself doesn't populate 
 the "yui" key of each resource.)   
 
-.. _intro-do:
 
-How Does the Resource Store Work?
-----------------------------------
+.. _resources-versions:
 
-Resource store addons 
+Resource Versions
+-----------------
 
-The code for the resource store is a `YUI Base <http://yuilibrary.com/yui/docs/base/>`_, which enables plugins to be implemented as `YUI Plugin modules <http://yuilibrary.com/yui/docs/plugin/>`_.
-Being a YUI Base, the resource store also provides an event subsystem and a simple aspect-oriented subsystem (methods ``beforeHostMethod`` and ``afterHostMethod``). 
+Since there can be multiple files which are all conceptually different versions of the
+same thing (think ``views/index.mu.html`` and ``views/index.iphone.mu.html``), the RS defines
+"resource version" as the metadata about each file and "resource" as the metadata
+about the file chosen among the possible choices.
 
-Mojito addons 
+The process of choosing which version of a resource to use is called *resolution* (or
+"resolving the resource").  This act is one of the primary responsibilities of the Resource Store.
 
-Understanding the workflow of the resource store will give help those who want to customize addons to write code and
-help others who don't plan on customizing addons to debug. 
-
-In short, the resource store walks through the application-level, 
-mojit-level, and ``npm`` module files (in that order) of a Mojito application, determines what type of resource each file is, 
-creates an instance of the resource, and then registers the instance.
-
-During this process, the resource store is also doing the following:
-
-- precalculating ("resolving") which resource versions are used for each version of the mojit.
-- keeping track of app-level resources (archetypes, commands, config files, and middleware).
-- providing methods for events, including those specialized for AOP.
-- explicitly using the addons `selector <intro-selector>`_ and `config <intro-config>`_
-
-To see the code for the resource store, see `store.server.js <https://github.com/yahoo/mojito/blob/develop/source/lib/store.server.js>`_.
+See "resolution and priorities" below.
 
 
-Resource Store Addons
-=====================
+Resource Scope
+--------------
 
-The resource store uses addons to do much of the work, which you can read about in `Built-In Resource Store Addons <resource_store-builtin_addons>`_.
+.. _resources-application:
 
-Also, a RS "addon" is implemented using the YUI "plugin" mechanism. 
-"addon" is the Mojito terminology, and "plugin" is the YUI terminology.     
+Application-Level Resources
+```````````````````````````
+
+Application-level resources are truly global to the application.
+Some example resource types are middleware, RS addons, architetypes, and commands.
+(As an implementation detail, the RS still tracks resource versions for these kinds of resources
+and then resolves those versions down to a chosen resource, even though there's only one version
+of each resource.  More work at server start, but less code to write and debug.)
+At the application level, resources include archetypes, commands, configuration files, and middleware. 
+
+.. _resources-mojit:
+
+Mojit-Level Resources
+`````````````````````
+
+At the mojit level, resources include controllers, models, binders, configuration files, and views. 
+These resources are limited in scope to a mojit.
+
+.. _resources-shared:
+
+Shared Resources
+````````````````
+
+Some resources (and resource versions) are *shared*, meaning that they are included in **all**
+mojits.  Most resource types that are mojit level can also be shared.  Examples of mojit-level
+resource types that can't be shared are controllers, configuration files (such as ``definition.json``), and
+YUI language bundles.
+
+.. _resources-types:
+
+Resource Types
+--------------
+
+The resource type is defined by the ``type`` property in the metadata for a given resource.
+See `Types of Resources <metadata_obj-types_resources>`_ for descriptions of the built-in resource types.
+Developers can also create their own types of resources to fit the need of their applications. 
+
+
 
 .. _resource_store-metadata:
 
@@ -139,47 +144,15 @@ Resource Metadata
 Intro
 -----
 
-The resource store uses metadata to find, load, parse, and create instances of resources. 
-
-
-.. _metadata-location:
-
-Location
---------
-
-The resource metadata is generated by code -- it has no representation 
+The resource store uses metadata to find, load, parse, and create instances of resources. The resource metadata is generated by code -- it has no representation 
 on the filesystem.  It is generate during `preload()`, either by the RS 
 itself or by RS addons.   
+
 
 .. _metadata-obj:
 
 Metadata Object
 ---------------
-
-.. Questions:
-
-.. 0. Is the data type string for all of the properties?
-
-.. 1. Please review and improve descriptions. The twiki and source code didn't offer much info for some.
-
-.. 2. It would be nice to list default values, but if most properties don't have default values, then I could remove this column.
-
-.. 3. Need to know what properties are required.
-
-.. 4. The list of properties was taken from the twiki and the source code. I have added both sets of properties to the table,
-.. by I imagine some do not belong.
-
-.. 5. Need a description for ``subtype`` and examples.
-
-.. 6. What are the Mojito subsystems that addons can be added to? 
-
-.. 7. Do we have a better description for ``name``? Any syntax convention, default values, or possible values?
-
-.. 8. What "filesystem details" are given for ``fs``?
-
-.. 9. What "package details" are given for ``pkg``?
-
-.. 10. Can you explain what the ``yui`` property does? Is it a Boolean that determines whether a resource is a YUI module or does it give info about the resource that is a YUI module?
 
 
 
@@ -238,46 +211,6 @@ from the filename.
 | ``yui``                | string        | no        | none          |                             | // for resources that are YUI modules ==??  | 
 +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
 
-.. 
-   
-   Not sure where I got the following properties, but I'm reluctant to remove them until 
-   I have confirmation that they are unnecessary.
-
-   +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
-   | ``addonType``          | string        | --        | --            |                             | Specifies the mojito subsystem to which the |
-   |                        |               |           |               |                             | addon should be added and is required if    |
-   |                        |               |           |               |                             | type if ``type=addon``.                     |
-   +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
-   | ``assetType``          | string        | --        | --            | ``css``, ``js``, ``png``,   | Specifies the type of asset and is required |
-   |                        |               |           |               | ``png``, ``swf``            | if ``type=asset``.                          |
-   +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
-   | ``configType``         | string        | --        | --            |                             | Specifies the type of configuration and is  |
-   |                        |               |           |               |                             | required if ``type=config``.                | 
-   +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
-   | ``fsPath``             | string        | --        | none          |                             | The path on the filesystem to the resource. |     
-   | ``viewEngine``         | string        | no        | none          | ``mu``, ``dust``            | Specifies the view engine being used        |
-   |                        |               |           |               |                             | and is only used if ``type=view``.          | 
-   +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
-   | ``viewOutputFormat``   | string        | no        | none          | ``xml``, ``html``           | Specifies the view engine being used        |
-   |                        |               |           |               |                             | and is only used if ``type=view``.          | 
-   +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
-   | ``yuiModuleMeta``      | string        | no        | none          |                             | Specifies the metadata, such dependencies,  |
-   |                        |               |           |               |                             | languages, etc., for a YUI 3 module.        |
-   +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
-   | ``yuiModuleName``      | string        | no        | none          |                             | The name of any resource delivered as a     |
-   |                        |               |           |               |                             | YUI 3 module. The ``type`` must be          |
-   |                        |               |           |               |                             | ``yui-module``.                             |
-   +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
-   | ``yuiModuleVersion``   | string        | no        | none          |                             | The version of any resource delivered as a  |
-   |                        |               |           |               |                             | YUI 3 module. The ``type`` must be          |
-   |                        |               |           |               |                             | ``yui-module``.                             |
-   +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
-   | ``yuiSortedPaths``     | string        | no        | none          |                             | For any resource delivered as a YUI3 module,|
-   |                        |               |           |               |                             | this is the list of YUI modules required by |
-   |                        |               |           |               |                             | the module    with transitive dependencies  | 
-   |                        |               |           |               |                             | resolved. The ``type`` must be              | 
-   |                        |               |           |               |                             | ``yui-module``.                             |
-   +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
 
 It doesn't make sense to have a default value.  The "name" is what 
 uniquely identifies the resource within type and subtype.  For example, 
@@ -323,81 +256,209 @@ For "type:archetype" the subtypes refers to the "type" described by
 Example
 -------
 
-.. Questions:
-
-.. 1. Do we have an example? 
 
 .. code-block:: javascript
 
    {
-     source:     // where the resource came from (not shipped to client)
-     fs:     // filesystem details
-     pkg:    // packaging details
-     mojit:      // which mojit this applies to, if any ("shared" means the resource is available to all mojits)
-     type:
-     subtype:    // not all types have a subtype
-     name:       // name.  common to all versions of the resource
-     id:         // unique ID.  common to all versions of the resource. (typically {type}-{subtype}-{name})
-     staticHandlerURL: // path used to load the resource onto the client
-     yui:        // for resources that are YUI modules
+     "source": {
+       "fs": {
+         "fullPath": "/Users/folta/work/yahoo/mojito/github-drewfish/examples/getting-started-guide/part4/paged-yql/mojits/PagedFlickr/views/index.mu.html",
+         "rootDir": "/Users/folta/work/yahoo/mojito/github-drewfish/examples/getting-started-guide/part4/paged-yql/mojits/PagedFlickr",
+         "rootType": "mojit",
+         "subDir": ".",
+         "subDirArray": [],
+         "isFile": true,
+         "ext": ".html",
+         "basename": "index.mu"
+       },
+       "pkg": {
+         "name": "paged-yql",
+         "version": "0.1.0",
+         "depth": 0
+       }
+     },
+     "type": "view",
+     "name": "index",
+     "id": "view--index",
+     "mojit": "PagedFlickr",
+     "affinity": "common",
+     "selector": "iphone",
+     "viewOutputFormat": "html",
+     "viewEngine": "mu",
+     "url": "/static/PagedFlickr/views/index.mu.html"
+   } 
+   
 
-     // these are only used in the metadata for each resource version.  the metadata
-     // for resolved resources won't have these, since they're intrinsically part of
-     // the resolved resource.
-     affinity:   // "server", "client", or "common"
-     selector:
-   }
+
+.. _resource_store-how:
+
+How Does the Resource Store Work?
+=================================
+
+Understanding the workflow of the resource store will give help those who want to customize addons to write code and
+help others who don't plan on customizing addons to debug. 
+
+In short, the resource store walks through the application-level, 
+mojit-level, and ``npm`` module files (in that order) of a Mojito application, determines what type of resource each file is, 
+creates an instance of the resource, and then registers the instance.
+
+During this process, the resource store is also doing the following:
+
+- precalculating ("resolving") which resource versions are used for each version of the mojit.
+- keeping track of app-level resources (archetypes, commands, config files, and middleware).
+- providing methods for events, including those specialized for AOP.
+- explicitly using the addons `selector <intro-selector>`_ and `config <intro-config>`_
+
+To see the code for the resource store, see `store.server.js <https://github.com/yahoo/mojito/blob/develop/source/lib/store.server.js>`_.
+
+
+Walking the Filesystem
+----------------------
+
+Resource versions are discovered by the RS at server-start time.  (Mojito server calls the
+`preload()` method of the RS.)
+
+This is done by walking all the files in the application, excluding the ``node_modules`` directory.
+
+Then, all files in the packages in `node_modules/` are walked.  The packages are walked in
+breadth-first fassion, so that "shallower" packages have precedence above "deeper" ones.
+(Not all the packages are used, of course, only those that have declared themselves as extensions
+to Mojito.)
+
+(Then, if Mojito wasn't found in `node_modules/`, the globally-installed version of Mojito is walked.)
+
+After all that, the RS knows about all the resource versions.  Then it resolves those versions
+into the resources as described below.  That still happens as part of `preload()`.
+
+Resolution and Priorities
+-------------------------
+
+The act of resolving the resource versions is really just resolving the affinities and selectors.
+
+For example, the application might have the following:
+
+* `controller.common.js`
+* `controller.common.iphone.js`
+* `controller.server.js`
+* `controller.server.phone.js`
+
+The order of the selectors is defined by a "POSL": priority-ordered selector list.  The POSL depends on
+the runtime context.  In our example, the POSL for context `{device:browser}` might be `['*']` but for
+context `{device:iphone}` might be `['iphone','*']`.
+
+(We need to use a (prioritized) list of selectors instead of just a "selector that matches the context"
+because not all versions might exist for all selectors.  In the example above, if
+`controller.server.iphone.js` didn't exist we should still do the right thing for context `{device:iphone}`.)
+
+As well, the choice depends on the affinity.  If we're resolving versions for the server, versions with
+`affinity:server` will have higher priority than `affinity:common`, and `affinity:client` will be completely
+ignored.
+
+The final consideration for priority is the "source".  Mojit-level versions have higher priority than
+shared versions.  For example, imagine an application with the following:
+
+* `mojits/Foo/models/bar.common.js`
+* `models/bar.common.js`
+
+In this case the second resource is shared with all mojits.  However, the mojit `Foo` has defined its own
+version of the same resource (id `model--bar`), and so that should have higher priority than the shared one.
+
+Finally, there's a relationship between the different types of priority.
+
+1. The source has highest priority.
+1. The selector has next highest priority.
+1. The affinity has least highest priority.
+
+That means that if there exists, for example, both a `controller.server.js` and `controller.common.iphone.js`,
+for the server and context `{device:iphone}` the second version will be used, since its selector is a higher
+priority match than its affinity.
+
+
+All this is precalculated for each resource, for each possible runtime configuration (client or server, and
+every possible runtime context).
+
+Getting Data from the Resource Store
+------------------------------------
+
+Besides the standard ways that Mojito uses the resource store, there are generic interfaces to getting
+resources and resource versions from the RS.
+
+* `getResourceVersions(filter)`
+* `getResources(env, ctx, filter)`
+
+The APIs are intentially similar.  Both return an array of resources, and the `filter` argument
+can be used to restrict the returned resources (or versions).  It is an object, all of whose
+keys and values must match the returned resources (or versions).  Think of it as a "template"
+or "partial resource" which all resources must match.  For example, a filter of `{type:'view'}`
+will return all the views.
+
+For mojit-level resources or resource versions, specify the mojit name in the filter.  For example
+filter `{mojit:'Foo'}` will return all resources (or versions) in the `Foo` mojit.
+**Note** that, because of the resolution process, the resources returned for filter `{mojit:'Foo'}`
+might contain shared resources.
+
+To get mojit-level resources (or versions) from multiple mojits, you'll have to call
+`getResourceVersions()` or `getResources()` for each mojit.  You can call `listAllMojits()` to
+get the list of all mojits.
+
+
+
+
+Resource store addons 
+
+The code for the resource store is a `YUI Base <http://yuilibrary.com/yui/docs/base/>`_, which enables plugins to be implemented as `YUI Plugin modules <http://yuilibrary.com/yui/docs/plugin/>`_.
+Being a YUI Base, the resource store also provides an event subsystem and a simple aspect-oriented subsystem (methods ``beforeHostMethod`` and ``afterHostMethod``). 
+
+Mojito addons 
 
 .. _resource_store-write_addons:
 
-Writing RS Addons
-=================
 
-.. Note: Replace code examples with links to Mojito source once the resource store addons have been merged into master.
+.. _resource_store-addons:
 
-.. _write_addons-intro:
+Resource Store Built-In Addons
+==============================
 
 Intro
 -----
 
 Mojito comes with built-in resource store addons that are used by the resource store
 and the Mojito framework. These resource store addons are required by the resource store and 
-the Mojito framework, so particular care must be taken when creating custom versions of them. 
-This chapter takes a look at the built-in resource store addons, so you can better understand their use or 
-customize your own versions. 
+the Mojito framework. In general,  so particular care must be taken when creating custom versions of them. 
 
-.. Link to API docs
+The RS comes with the following four built-in addons:  
+
+- ``config``
+   - registers new resource type ``config`` found in ``.json`` files
+   - provides API for reading both context and straight-JSON files
+   - also provides sugar for reading the application's dimensions
+- ``selector``
+   - decides the priority-ordered list (POSL) to use for a context
+   - default implementation looks for ``selector`` in ``application.json``. Because ``application.json`` is a context configuration file, the ``selector`` can be contextualized there.
+- ``url``
+   - calculates the static handler URL for appropriate resources (and resource versions)
+   - URL is stored in the ``url`` key of the resource
+   - also calculates the asset URL base for each mojit
+- ``yui``
+   - registers new resource type ``yui-module`` found in ``autoload`` or ``yui_modules``
+   - registers new resource type ``yui-lang`` found in ``lang``
+   - calculates the ``yui`` metadata for resource versions which are YUI modules
+   - when resources are resolved for each version of each mojit, precalculates cooresponding YUI module dependencies
+   - when Mojito queries the RS for details of a mojit (`getMojitTypeDetails()`) appends the precalculated YUI module dependencies for the controller and binders
+   - provides methods used by Mojito to configure its YUI instances
+  
 
 .. _resource_store-custom_addons:
 
 Creating Custom Versions of Built-In RS Addons
 ----------------------------------------------
 
-This section is intended only for  developers who need to override the built-in resource store
-addons or create new resource store addons. In general, we recommend that you use the built-in resource
-store addons.
+We will be examing the ``selector`` and ``url`` addons to help you create custom versions of those addons.
+In general, because we do not recommend that you create custom versions of the ``config`` or ``yui`` addons, 
+we will not be looking at those addons. Also, this documentation explains what the RS expects the addon to do,
+so you can create your own version of the addons. To learn what a RS addon does, please refer to the
+`ResourceStore.server Class <http://developer.yahoo.com/cocktails/mojito/api/classes/ResourceStore.server.html>`_ in the API documentation.
 
->> I think we should, by default, -not- document these.  They have API
->> docs, so the users (which remember are advanced devs) can look at that
->> or their source code.  The two possible exceptions to that are the
->> "selector" and "url" addons, which we expect some users might want to
->> make replacements for.  Their replacements will need to follow the same
->> API, so we should document that API.  This documentation is different
->> than the API documentation for the addon itself.  That API doc says what
->> that addon implementation -does-, but the RS API docs should outline
->> what the RS -expects- the addon to do.  
-
-"In general, we recommend that
->> you use the built-in versions of the "config" and "url" addons".  As
->> mentioned before, we'll have to document the specific requirements for
->> writing a replacement for the "selector" or "url" RS addons.  
-
-That's true for most of the RS addons, but not all, and it's just fine 
-if they write new addons.  So, perhaps "In general, we recommend that 
-you use the built-in versions of the "config" and "url" addons".  As 
-mentioned before, we'll have to document the specific requirements for 
-writing a replacement for the "selector" or "url" RS addons.
-                                                              
 
 .. _intro-selector:
 
@@ -409,12 +470,10 @@ selector
 Description
 ~~~~~~~~~~~
 
-The ``selector`` addon maps contexts to selectors and then returns
-a priority-ordered list (POSL) of selectors. 
+If you wish to use a different algorithm for to determine the selectors to use,
+you can implement your own version of this RS addon.  It'll need to go in
+``addons/rs/selector.server.js`` in your application.  
 
-**Who might want to customize their own version of the addon?** 
-
-Developers wanting to use heir own algorithm for creating the POSL or refine the mapping of contexts to selector.
 
 .. _selector-reqs:
 
@@ -423,29 +482,26 @@ Requirements
 
 Because the ``selector`` addon is used directly by the the resource store, all implementations need to provide the following method:
 
-``getListFromContext(ctx)``
+- ``getListFromContext(ctx)``
 
+.. _selector-getListFromContext:
 
 getListFromContext(ctx)
 ~~~~~~~~~~~~~~~~~~~~~~~
-
-.. Question: 
-
-.. 1. Need description, spec, and example of ``ctx`` and return value.
+Returns the priority-ordered selector list (POSL) for the context.
 
 **Parameters:** 
 
-- ``ctx`` - The context that the application is running in. 
+- ``ctx <String>`` - The context that the application is running in. 
 
 **Return:** 
+
+``<Array>``
 
 .. _selector-ex:
 
 Example
 ~~~~~~~
-
-
-
 
 .. _url-intro:
 
@@ -457,30 +513,20 @@ url
 Description
 ~~~~~~~~~~~
 
-.. Question:
-
-.. 1. Who might want to customize their own version of the addon? 
 
 The ``url`` addon calculates and manages the static handler URLs for resources.
 The addon is not used by resource store core, but used by the static handler middleware.
-Developers should not need to write their own custom version of the ``url`` addon.
+
+If you wish to use a different algorithm to determine the URLs, you can
+implement your own version of this RS addon.  It'll need to go in
+``addons/rs/url.server.js`` in your application.
 
 After the method ``preloadResourceVersions`` sets ``res.url`` to the static handler URL
 for the resource, the method ``getMojitTypeDetails`` sets the mojit's ``assetsRoot``. 
 The static handler URL can be a rollup URL.
 
-
 The ``url`` addon also provides a method for the static handler middleware to find the 
 filesystem path for a URL.
-
- 
-
-Any property which wants to have control over the static handler URLs of 
-the resources, including potentially serving resources from a CDN.  Such 
-a property will hopefully use Shaker, so in fact the Shaker team would 
-need to know how to write a "url" RS addon.  Some other properties might 
-want to do some extra fancy/custom things (besides what Shaker does) so 
-they might want to write a "url" RS addon.  
 
 
 .. _url-reqs:
@@ -488,7 +534,61 @@ they might want to write a "url" RS addon.
 Requirements
 ~~~~~~~~~~~~
 
+The ``selector`` addon is required to have the following methods (see details for the methods in below sections):
+
+- ``getPathForURL(url)``
+- ``getSpecURL(id)``
+- ``getURLPaths()``
+- 
+
+Your addon will also be required to do the following:
+
+- Add the ``url`` metadatum to resource versions; this is where your addon will set the calculated value (using ``beforeHostMethod('addResourceVersion')``).
+- Add ``assetsRoot`` to the results of ``getMojitTypeDetails()``, which is done with ``onHostEvent('getMojitTypeDetails')``; ``assetsRoot`` is the common prefix for all assets in the mojit. The built-in addon makes something like ``/static/Foo/assets`` for the ``Foo`` mojit.
+
+.. _url-getPathForURL:
+
+getPathForURL(url)
+``````````````````
+This method is called by the static handler middleware. Returns the full filesystem path for the URL.
+
+**Parameters:** 
+
+- ``url <String>`` - The URL that was previously generated.
+
+**Return:** 
+
+``<String>`` 
+
+.. _url-getSpecURL:
+
+getSpecURL(id)
+``````````````
+Returns the URL for the spec.
+
+**Parameters:** 
+
+- ``id <String>`` - the spec ID.
+
+**Return:** 
+
+``<String>`` 
+
+.. _url-getSpecURL:
+
+getURLPaths()
+`````````````
+Returns an object whose keys are all URLs and whose values are the cooresponding filesystem paths.
+
+**Parameters:** 
+
 None.
+
+**Return:** 
+
+``<Object>`` 
+
+
 
 .. _url-ex:
 
@@ -498,75 +598,135 @@ Example
 
 
 
-
 Creating Your Own Resource Store Addons
----------------------------------------
+=======================================
 
 Intro
 -----
 
+In this section, we will discuss the key methods, events, and give a simple example of a custom RS addon.
+You should be able to create your own custom RS addons afterward.
+
+Anatomy of a RS Addon
+---------------------
+
+The resource store addons are implemented using the `YUI Plugin <http://yuilibrary.com/yui/docs/plugin/>`_ mechanism. In essence, a Mojito addon is a YUI plugin. 
+The skeleton of the addon will be the same as a YUI Plugin. 
+
+Key Methods
+~~~~~~~~~~~
+
+initialize(config)
+``````````````````
+
+**Parameters:**
+
+- ``config <Object>`` - contains the following: 
+   - ``host <Object>`` - contains the resource store.
+   - ``appRoot <String>`` - the directory of the application.
+   - ``mojitoRoot <String>`` - the directory of the Mojito framework code.
+      
+**Return:**
+
+None.
+
+preload()
+`````````
+
+    * addons are loaded during this method, so it's not possible to hook in before this
+    * during this, `preloadResourceVersions()` and `resolveResourceVersions()` are called
+    * it *is* possible to hookin afterwards via `afterHostMethod('preload', ...)`
+
+**Parameters:**
+
+**Return:**
+
+preloadResourceVersions()
+`````````````````````````
+    * this is when the RS walks the filesystem
+    * before this, not much is known, though the static app config is available (via `getStaticAppConfig()`)
+    * during this, the following host methods happen:  `findResourceVersionByConvention()`, `parseResourceVersion()`, and `addResourceVersion()`
+    * after this
+        * all the resource versions have been loaded and are available via `getResourceVersions()`
+        * the RS has a `selectors` object whose keys are all selectors actually in the app.  the values are just `true`.
 
 
-General Process
----------------
+**Parameters:**
 
-.. Use Drew's skeleton doc
+**Return:**
+
+findResourceVersionByConvention()
+`````````````````````````````````
+
+    * called on each directory or file being walked
+    * used to decide if the path is a resource version
+    * return value is a bit tricky, so read API docs carefully (and ask questions if not clear)
+    * typically, hook into this via `afterHostMethod()` to register your own resource version types
+    * this should work together with your own version of `parseResourceVersion()`
+
+**Parameters:**
+
+**Return:**
+
+parseResourceVersion()
+``````````````````````
+
+    * called to create an actual resource version
+    * typically, hook into this via `beforeHostMethod()` to create your own resource versions
+    * this should work together with your own version of `findResourceVersionByConvention()`
+
+**Parameters:**
+
+**Return:**
+    
+addResourceVersion()
+````````````````````
+
+   * called to save the resource version into the RS
+   * typically, if you want to modify/augment an existing resource version, hook into this via `beforeHostMethod()`
+
+**Parameters:**
+
+**Return:**
 
 
-Requirements
-------------
+resolveResourceVersions()
+`````````````````````````
 
-.. Questions:
+    * called to resolve the resource versions down into resources
+    * during this, the `mojitResourcesResolved` event is called
+    * after this, all resource versions have been resolved
+    
+**Parameters:**
 
-.. 1. What are the requirements?  (configuration, functions, objects, namespaces, etc.)
+**Return:**
 
-.. Answers:
+serializeClientStore()
+``````````````````````
 
-.. 1.
+called during runtime as Mojito creates the configuration for the client-side Mojito
+
+**Parameters:**
+
+**Return:**
+        
+
+Key Events
+~~~~~~~~~~
+
+mojitResourcesResolved
+``````````````````````
+Called when the resources in a mojit are resolved.
+
+getMojitTypeDetails
+```````````````````
+Called during runtime as Mojito creates an "instance" used to dispatch a mojit.
+
 
 Example
 -------
 
-Intro
-``````
 
-In this example, you will learn how to create a resource store addon to do ...
-
-
-We'll take you through creating the metadata object and the ... resource store addon.
-You should be able to create your own resource store addons afterward and figure out how to
-customize (and override) one of the built-in resource store addons.
-
-Creating Metadata Object
-````````````````````````
-
-
-
-
-Writing Addon
-`````````````
-.. Questions:
-
-.. 1. Does the app-level resource store addon go in ``{app_dir}/addons/rs/``?
-
-.. 2. Any file naming context for the resource store addon?
-
-.. 3. Requirements that users should know for making their own resource store addons?
-
-.. 4. Need code and high-level explanation of what's going on as well as a brief breakdown of salient points.
-
-.. Answers:
-
-.. 1.
-
-.. 2. 
-
-.. 3.
-
-.. 4.
-
-
-The ... addon will ...
 
 
 
