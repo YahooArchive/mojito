@@ -148,8 +148,9 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
         },
 
         'server mojit is NOT loaded because of package mojito version mismatch': function(){
-            A.isTrue(typeof store.url.getPathForURL('/static/test_mojit_4/package.json') === 'undefined');
-            A.isTrue(typeof store.url.getPathForURL('/static/TestMojit4/package.json') === 'undefined');
+            var urls = store.getAllURLs();
+            A.isUndefined(urls['/static/test_mojit_4/package.json']);
+            A.isUndefined(urls['/static/TestMojit4/package.json']);
         },
 
         'server mojit is loaded because of package mojito version match': function(){
@@ -160,9 +161,10 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
         },
 
         'server a mojits package.json file is available as appropriate': function() {
-            A.isUndefined(store.url.getPathForURL('/static/TestMojit2/package.json'));
-            A.isNotUndefined(store.url.getPathForURL('/static/TestMojit3/package.json'));
-            A.isUndefined(store.url.getPathForURL('/static/TestMojit5/package.json'));
+            var urls = store.getAllURLs();
+            A.isUndefined(urls['/static/TestMojit2/package.json']);
+            A.isNotUndefined(urls['/static/TestMojit3/package.json']);
+            A.isUndefined(urls['/static/TestMojit5/package.json']);
         },
 
         'server mojit view index.mu.html is loaded correctly': function() {

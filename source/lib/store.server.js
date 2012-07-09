@@ -686,6 +686,43 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
 
 
         /**
+         * Sugar method that returns all "url" metadata of all resources.
+         * @method getAllURLs
+         * @return {object} for all resources with a "url" metadatum, the key is
+         * that URL and the value the filesystem path
+         */
+        getAllURLs: function() {
+            var r,
+                res,
+                ress,
+                m,
+                mojit,
+                mojits,
+                urls = {};
+            ress = this.getResourceVersions({});
+            for (r = 0; r < ress.length; r += 1) {
+                res = ress[r];
+                if (res.url) {
+                    urls[res.url] = res.source.fs.fullPath;
+                }
+            }
+            mojits = this.listAllMojits();
+            mojits.push('shared');
+            for (m = 0; m < mojits.length; m += 1) {
+                mojit = mojits[m];
+                ress = this.getResourceVersions({mojit: mojit});
+                for (r = 0; r < ress.length; r += 1) {
+                    res = ress[r];
+                    if (res.url) {
+                        urls[res.url] = res.source.fs.fullPath;
+                    }
+                }
+            }
+            return urls;
+        },
+
+
+        /**
          * Recursively merge one object onto another.
          * [original implementation](http://stackoverflow.com/questions/171251/how-can-i-merge-properties-of-two-javascript-objects-dynamically/383245#383245)
          *

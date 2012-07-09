@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2011-2012, Yahoo! Inc.  All rights reserved.
+ * Copyright (c) 2012, Yahoo! Inc.  All rights reserved.
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
 YUI.add('mojito-addon-rs-url-tests', function(Y, NAME) {
-    
+
     var suite = new YUITest.TestSuite(NAME),
         libfs = require('fs'),
         libpath = require('path'),
@@ -135,9 +135,9 @@ YUI.add('mojito-addon-rs-url-tests', function(Y, NAME) {
 
 
     suite.add(new YUITest.TestCase({
-        
+
         name: 'url rs addon tests',
-        
+
         'skip mojito-provided server-only mojits': function() {
             var fixtures = libpath.join(__dirname, '../../../../fixtures/store');
             var store = new MockRS({
@@ -283,41 +283,11 @@ YUI.add('mojito-addon-rs-url-tests', function(Y, NAME) {
                 mojit: mojit
             });
             A.areSame('TEST/assets', mojit.assetsRoot);
-        },
-
-
-        'resource URLs': function() {
-            var fixtures = libpath.join(__dirname, '../../../../fixtures/store');
-            var store = new MockRS({
-                root: fixtures,
-                appConfig: { staticHandling: {} }
-            });
-            store.plug(Y.mojito.addons.rs.url, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
-
-            store._makeResource('mojito', 'shared', 'x', 'y', 'common');
-            store._makeResource('orange', 'shared', 'x', 'y', 'common');
-            store._makeResource('orange', null, 'mojit', 'X', 'common');
-            store._makeResource('orange', 'X', 'x', 'y', 'common');
-            store._makeResource('orange', null, 'mojit', 'Y', 'common');
-            store._makeResource('orange', 'Y', 'x', 'y', 'common');
-            store.preloadResourceVersions();
-            A.areSame('path/for/x--y.common.ext', store.url.getPathForURL('/static/X/x--y.common.ext'));
-            A.areSame('path/for/x--y.common.ext', store.url.getPathForURL('/static/Y/x--y.common.ext'));
-            A.areSame('path/for/x--y.common.ext', store.url.getPathForURL('/static/mojito/x--y.common.ext'));
-            A.areSame('path/for/x--y.common.ext', store.url.getPathForURL('/static/store/x--y.common.ext'));
-            var have = store.url.getURLPaths();
-            var want = {
-                '/static/X/x--y.common.ext': 'path/for/x--y.common.ext',
-                '/static/Y/x--y.common.ext': 'path/for/x--y.common.ext',
-                '/static/mojito/x--y.common.ext': 'path/for/x--y.common.ext',
-                '/static/store/x--y.common.ext': 'path/for/x--y.common.ext'
-            };
-            cmp(have, want);
         }
 
-        
+
     }));
-    
+
     YUITest.TestRunner.add(suite);
-    
+
 }, '0.0.1', {requires: ['base', 'oop', 'addon-rs-url']});

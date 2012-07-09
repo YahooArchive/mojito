@@ -108,7 +108,8 @@ YUI.add('mojito-deploy-addon', function(Y, NAME) {
                 type,
                 module,
                 path,
-                pathToRoot;
+                pathToRoot,
+                urls;
 
             contextClient = Y.mojito.util.copy(contextServer);
             contextClient.runtime = 'client';
@@ -151,6 +152,8 @@ YUI.add('mojito-deploy-addon', function(Y, NAME) {
             if (!usePrecomputed) {
                 useOnDemand = true;
             }
+
+            urls = store.store.getAllURLs();
 
             // Set the YUI URL to use on the client (This has to be done
             // before any other scripts are added)
@@ -206,7 +209,7 @@ YUI.add('mojito-deploy-addon', function(Y, NAME) {
                                 path = binder.needs[module];
                                 // Anything we don't know about we'll assume is
                                 // a YUI library module.
-                                if (!store.store.url.getPathForURL(path)) {
+                                if (!urls[path]) {
                                     yuiModules.push(module);
                                     yuiJsUrlContains[module] = true;
                                 }
@@ -309,7 +312,7 @@ YUI.add('mojito-deploy-addon', function(Y, NAME) {
 
             // Add all the scripts we have collected
             assetHandler.addAssets(
-                this.getScripts(appConfigServer.embedJsFilesInHtmlFrame)
+                this.getScripts(appConfigServer.embedJsFilesInHtmlFrame, urls)
             );
             // Add the boot script
             assetHandler.addAsset('blob', 'bottom', initializer);
@@ -341,9 +344,10 @@ YUI.add('mojito-deploy-addon', function(Y, NAME) {
          * @private
          * @param {bool} embed Should returned scripts be embedded in script
          *     tags.
+         * @param {object} urls mapping of URLs to filesystem paths
          * @return {object} An object containing script descriptors.
          */
-        getScripts: function(embed) {
+        getScripts: function(embed, urls) {
             var i,
                 path,
                 x,
@@ -357,7 +361,7 @@ YUI.add('mojito-deploy-addon', function(Y, NAME) {
             // Walk over the scripts and check what we can do
             for (i in this.scripts) {
                 if (this.scripts.hasOwnProperty(i)) {
-                    path = this.rs.store.url.getPathForURL[i];
+                    path = urls[i];
                     if (embed && path) {
                         this.scripts[i] = {
                             type: 'blob',

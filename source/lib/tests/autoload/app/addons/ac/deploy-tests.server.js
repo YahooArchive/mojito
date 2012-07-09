@@ -52,17 +52,13 @@ YUI.add('mojito-deploy-addon-tests', function(Y, NAME) {
                     return 'clientstore';
                 },
                 store: {
+                    getAllURLs: function() { return {}; },
                     getFrameworkConfig: function() {
                         return { ondemandBaseYuiModules:[] };
                     },
                     yui: {
                         getConfigFw: function() { return {}; },
                         getConfigApp: function() { return {}; }
-                    },
-                    url: {
-                        getPathForURL: function() {
-                            return 'path';
-                        }
                     }
                 }
             });
@@ -141,17 +137,13 @@ YUI.add('mojito-deploy-addon-tests', function(Y, NAME) {
                     return 'clientstore';
                 },
                 store: {
+                    getAllURLs: function() { return {}; },
                     getFrameworkConfig: function() {
                         return { ondemandBaseYuiModules:[] };
                     },
                     yui: {
                         getConfigFw: function() { return {}; },
                         getConfigApp: function() { return {}; }
-                    },
-                    url: {
-                        getPathForURL: function() {
-                            return 'path';
-                        }
                     }
                 }
             });
@@ -238,17 +230,13 @@ YUI.add('mojito-deploy-addon-tests', function(Y, NAME) {
                     return 'clientstore';
                 },
                 store: {
+                    getAllURLs: function() { return {}; },
                     getFrameworkConfig: function() {
                         return { ondemandBaseYuiModules:[] };
                     },
                     yui: {
                         getConfigFw: function() { return {}; },
                         getConfigApp: function() { return {}; }
-                    },
-                    url: {
-                        getPathForURL: function() {
-                            return 'path';
-                        }
                     }
                 }
             });
@@ -326,17 +314,13 @@ YUI.add('mojito-deploy-addon-tests', function(Y, NAME) {
                     return 'clientstore';
                 },
                 store: {
+                    getAllURLs: function() { return {}; },
                     getFrameworkConfig: function() {
                         return { ondemandBaseYuiModules:[] };
                     },
                     yui: {
                         getConfigFw: function() { return {}; },
                         getConfigApp: function() { return {}; }
-                    },
-                    url: {
-                        getPathForURL: function() {
-                            return 'path';
-                        }
                     }
                 }
             });
@@ -414,17 +398,13 @@ YUI.add('mojito-deploy-addon-tests', function(Y, NAME) {
                     return 'clientstore';
                 },
                 store: {
+                    getAllURLs: function() { return {}; },
                     getFrameworkConfig: function() {
                         return { ondemandBaseYuiModules:[] };
                     },
                     yui: {
                         getConfigFw: function() { return {}; },
                         getConfigApp: function() { return {}; }
-                    },
-                    url: {
-                        getPathForURL: function() {
-                            return 'path';
-                        }
                     }
                 }
             });

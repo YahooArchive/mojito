@@ -57,28 +57,6 @@ YUI.add('addon-rs-url', function(Y, NAME) {
 
 
         /**
-         * Returns the full filesystem path for a URL.
-         * This is primarily used by the static handler middleware.
-         * @method getPathForURL
-         * @param url {string} URL to lookup
-         * @return {string} path on disk which the URL points to
-         */
-        getPathForURL: function(url) {
-            return this.URLpaths[url];
-        },
-
-
-        /**
-         * This is primarily used by the commandline tools (`build` and `compile`).
-         * @method getURLPaths
-         * @return {object} all URLs and cooresponding paths
-         */
-        getURLPaths: function() {
-            return Y.clone(this.URLpaths, true);
-        },
-
-
-        /**
          * This is primarily used by the commandline tool `build`.
          * @method getSpecURL
          * @param id {string} spec ID

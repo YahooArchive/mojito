@@ -345,7 +345,7 @@ compile.inlinecss = function(context, options, callback) {
         mojitName = inline.mojitName;
 
         // need a reverse mapping
-        storeURLs = store.url.getURLPaths();
+        storeURLs = store.getAllURLs();
         for (url in storeURLs) {
             if (storeURLs.hasOwnProperty(url)) {
                 fs2url[storeURLs[url]] = url;

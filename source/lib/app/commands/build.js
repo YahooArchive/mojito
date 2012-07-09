@@ -195,7 +195,7 @@ exports.buildhtml5app = function(cmdOptions, store, config, destination,
     manifest += 'CACHE:\n';
 
     // Copy all the files into the destination directory
-    storeURLs = store.url.getURLPaths();
+    storeURLs = store.getAllURLs();
     for (url in storeURLs) {
         if (storeURLs.hasOwnProperty(url)) {
             from = storeURLs[url];  // filesystem path

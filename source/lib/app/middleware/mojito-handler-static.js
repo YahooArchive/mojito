@@ -167,7 +167,8 @@ function staticProvider(store, globalLogger) {
     var appConfig = store.getStaticAppConfig(),
         options = appConfig.staticHandling || {},
         cache = options.cache,
-        maxAge = options.maxAge;
+        maxAge = options.maxAge,
+        urls = store.getAllURLs();
 
     if (cache && !maxAge) {
         maxAge = cache;
@@ -197,7 +198,7 @@ function staticProvider(store, globalLogger) {
 
         // Use the resource store as a URI "rewriter" here.
         // /favicon.ico is sent to ./my_app_folder/assets/favicon.ico
-        filename = store.url.getPathForURL(path);
+        filename = urls[path];
         // TODO: [Issue 80] remove this for performance
         if ((!filename) && (path === '/favicon.ico')) {
             filename = pa.join(store._config.root, 'assets', path);
