@@ -699,13 +699,6 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 mojit,
                 mojits,
                 urls = {};
-            ress = this.getResourceVersions({});
-            for (r = 0; r < ress.length; r += 1) {
-                res = ress[r];
-                if (res.url) {
-                    urls[res.url] = res.source.fs.fullPath;
-                }
-            }
             mojits = this.listAllMojits();
             mojits.push('shared');
             for (m = 0; m < mojits.length; m += 1) {

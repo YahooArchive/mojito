@@ -57,23 +57,6 @@ YUI.add('addon-rs-url', function(Y, NAME) {
 
 
         /**
-         * This is primarily used by the commandline tool `build`.
-         * @method getSpecURL
-         * @param id {string} spec ID
-         * @return {string} static handler URL for the spec
-         */
-        getSpecURL: function(id) {
-            var urlParts = [];
-            if (this.config.prefix) {
-                urlParts.push(this.config.prefix);
-            }
-            urlParts.push(id);
-            urlParts.push('specs/default.json');
-            return '/' + urlParts.join('/');
-        },
-
-
-        /**
          * Using AOP, this is called after the ResourceStore's version.
          * It computes the static handler URL for all resources in all the
          * mojits (as well as the mojit itself).

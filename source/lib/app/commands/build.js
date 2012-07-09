@@ -13,6 +13,7 @@ var libpath = require('path'),
     fs = require('fs'),
     libqs = require('querystring'),
     MODE_755 = parseInt('755', 8),
+    getSpecURL,
     mkdirP,
     rmdirR,
     writeWebPagesToFiles,
@@ -234,7 +235,7 @@ exports.buildhtml5app = function(cmdOptions, store, config, destination,
 
     for (id in appConfig.specs) {
         if (appConfig.specs.hasOwnProperty(id)) {
-            url = store.url.getSpecURL(id);
+            url = getSpecURL(appConfig, id);
             dynamicURLs[url] = true;
         }
     }
@@ -262,6 +263,24 @@ exports.buildhtml5app = function(cmdOptions, store, config, destination,
 
     // Now use the server to generate some of the files
     writeWebPagesToFiles(type, store, destination, urls, config, callback);
+};
+
+
+getSpecURL = function(appConfig, id) {
+    var prefix = '/static',
+        parts = id.split(':'),
+        typeName = parts[0],
+        specName = parts[1] || 'default',
+        ns = typeName.replace(/\./g, '_'),
+        url;
+
+    if (appConfig && appConfig.staticHandling &&
+            appConfig.staticHandling.hasOwnProperty('prefix')) {
+        staticPrefix = (appConfig.staticHandling.prefix ? '/' +
+            appConfig.staticHandling.prefix : '');
+    }
+    url = prefix + '/' + typeName + '/specs/' + specName + '.json';
+    return url;
 };
 
 
