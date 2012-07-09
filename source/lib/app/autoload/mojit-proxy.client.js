@@ -296,7 +296,10 @@ YUI.add('mojito-mojit-proxy', function(Y, NAME) {
          *     the dom.
          */
         destroyChild: function(id, retainNode) {
-            var slot, doomed, children = this.getChildren(), child = children[id];
+            var slot,
+                doomed, // viewid/dom id
+                children = this.getChildren(),
+                child = children[id];
 
             if (child) {
                 doomed = child.viewId;
@@ -306,6 +309,7 @@ YUI.add('mojito-mojit-proxy', function(Y, NAME) {
                 for (slot in children) {
                     if (children.hasOwnProperty(slot) && children[slot].viewId === id) {
                         doomed = id;
+                        break;
                     }
                 }
             }
@@ -332,10 +336,12 @@ YUI.add('mojito-mojit-proxy', function(Y, NAME) {
          *     the dom.
          */
         destroyChildren: function(retainNode) {
-            var my = this;
-            Y.Object.each(this.getChildren(), function(child, childId) {
-                my.destroyChild(childId, retainNode);
-            });
+            var children = this.getChildren(), child;
+            for (child in children) {
+                if (children.hasOwnProperty(child)) {
+                    this.destroyChild(child, retainNode);
+                }
+            }
         },
 
 

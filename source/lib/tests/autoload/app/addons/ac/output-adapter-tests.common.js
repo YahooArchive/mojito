@@ -39,7 +39,7 @@ YUI.add('mojito-output-adapter-addon-tests', function(Y, NAME) {
                     doneCalled = true;
                     A.areSame('hi',data, 'bad string to done');
                     A.areSame(1, ct.length, "should be only one content-type header");
-                    A.areSame('text/plain; charset="utf-8"', ct[0]);
+                    A.areSame('text/plain; charset=utf-8', ct[0]);
                 }
             };
             var instance = {views: {}};
@@ -90,7 +90,7 @@ YUI.add('mojito-output-adapter-addon-tests', function(Y, NAME) {
                     doneCalled = true;
                     A.areSame(Y.JSON.stringify(json), data, 'bad string to done');
                     A.areSame(1, ct.length, "should be only one content-type header");
-                    A.areSame('application/json; charset="utf-8"', ct[0]);
+                    A.areSame('application/json; charset=utf-8', ct[0]);
                 }
             };
             ac.command = {instance: {views: {}}};
@@ -112,7 +112,7 @@ YUI.add('mojito-output-adapter-addon-tests', function(Y, NAME) {
                     doneCalled = true;
                     A.areSame('<xml><hi>there</hi></xml>', data, 'bad string to done');
                     A.areSame(1, ct.length, "should be only one content-type header");
-                    A.areSame('application/xml; charset="utf-8"', ct[0]);
+                    A.areSame('application/xml; charset=utf-8', ct[0]);
                 }
             };
             ac.command = {instance: {views: {}}};
