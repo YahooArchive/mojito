@@ -276,7 +276,7 @@ getSpecURL = function(appConfig, id) {
 
     if (appConfig && appConfig.staticHandling &&
             appConfig.staticHandling.hasOwnProperty('prefix')) {
-        staticPrefix = (appConfig.staticHandling.prefix ? '/' +
+        prefix = (appConfig.staticHandling.prefix ? '/' +
             appConfig.staticHandling.prefix : '');
     }
     url = prefix + '/' + typeName + '/specs/' + specName + '.json';
