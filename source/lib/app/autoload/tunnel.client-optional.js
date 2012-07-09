@@ -55,7 +55,7 @@ YUI.add('mojito-tunnel-client', function(Y, NAME) {
                     adapter.done(resp.html, resp.data.meta);
                 },
 
-                failure: function() {
+                failure: function(resp) {
                     Y.log('rpc failure!', 'warn', NAME);
                     adapter.error(resp.html);
                 }
