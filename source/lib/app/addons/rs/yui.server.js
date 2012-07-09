@@ -186,7 +186,9 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
                 return;
             }
 
-            if (fs.subDirArray.length >= 1 && ('autoload' === fs.subDirArray[0] || 'yui_modules' === fs.subDirArray[0])) {
+            if (fs.subDirArray.length >= 1 && ('autoload' === fs.subDirArray[0]
+                    || 'yui_modules' === fs.subDirArray[0]
+                    || 'tests' === fs.subDirArray[0])) {
                 return new Y.Do.AlterReturn(null, {
                     type: 'yui-module',
                     skipSubdirParts: 1
