@@ -113,7 +113,7 @@ YUI.add('addon-rs-url', function(Y, NAME) {
                 res,
                 skip;
 
-            mojits = this.rs.listAllMojits(),
+            mojits = this.rs.listAllMojits();
             mojits.push('shared');
             for (m = 0; m < mojits.length; m += 1) {
                 mojit = mojits[m];
@@ -195,6 +195,11 @@ YUI.add('addon-rs-url', function(Y, NAME) {
                 urlParts = [],
                 rollupParts = [],
                 rollupFsPath;
+
+            // Don't clobber a URL calculated by another RS addon.
+            if (res.hasOwnProperty('url')) {
+                return;
+            }
 
             if (this.config.prefix) {
                 urlParts.push(this.config.prefix);
