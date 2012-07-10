@@ -1,5 +1,4 @@
 
-
 =========================================
 Tutorial: Creating Your First Application
 =========================================
@@ -122,49 +121,48 @@ You will now modify the controller, so that the ``index`` function called in the
 
    .. code-block:: javascript
 
-   YUI.add('HelloMojit', function(Y, NAME) {
+      YUI.add('HelloMojit', function(Y, NAME) {
 
-   /**
-    * The HelloMojit module.
-    *
-    * @module HelloMojit
-    */
+        /**
+        * The HelloMojit module.
+        *
+        * @module HelloMojit
+        **/
 
-       /**
+        /**
         * Constructor for the Controller class.
         *
         * @class Controller
         * @constructor
         */
-       Y.mojito.controllers[NAME] = {
+        Y.mojito.controllers[NAME] = {
 
-           init: function(config) {
-               this.config = config;
-           },
+          init: function(config) {
+            this.config = config;
+          },
 
-           /**
-            * Method corresponding to the 'index' action.
-            *
-            * @param ac {Object} The ActionContext that provides access
-            *        to the Mojito API.
-            */
-           index: function(ac) {
-               ac.models.HelloMojitModelFoo.getData(function(err, data) {
-                   if (err) {
-                       ac.error(err);
-                       return;
-                   }
-                   ac.assets.addCss('./index.css');
-                   ac.done({
-                       status: 'Hello World!',
-                       data: data
-                   });
-               });
-           }
+          /**
+          * Method corresponding to the 'index' action.
+          *
+          * @param ac {Object} The ActionContext that provides access
+          *        to the Mojito API.
+          **/
+          index: function(ac) {
+            ac.models.HelloMojitModelFoo.getData(function(err, data) {
+              if (err) {
+                ac.error(err);
+                return;
+              }
+              ac.assets.addCss('./index.css');
+              ac.done({
+                status: 'Hello World!',
+                data: data
+              });
+            });
+          }
+        };
 
-       };
-
-   }, '0.0.1', {requires: ['mojito', 'HelloMojitModelFoo']});
+      }, '0.0.1', {requires: ['mojito', 'HelloMojitModelFoo']});
 
    As you can see the "controllers" are just an array of JavaScript objects, and the "action" is just a method called on the controller object. 
    The result of the method are communicated back to Mojito through the ``actionContext`` object. 
@@ -175,13 +173,13 @@ You will now modify the controller, so that the ``index`` function called in the
 
    .. code-block:: javascript
 
-   YUI.add('HelloMojit-tests', function(Y) {
+      YUI.add('HelloMojit-tests', function(Y) {
 
-       var suite = new YUITest.TestSuite('HelloMojit-tests'),
+         var suite = new YUITest.TestSuite('HelloMojit-tests'),
            controller = null,
            A = YUITest.Assert;
 
-       suite.add(new YUITest.TestCase({
+         suite.add(new YUITest.TestCase({
 
            name: 'HelloMojit user tests',
 
@@ -226,11 +224,11 @@ You will now modify the controller, so that the ``index`` function called in the
 
            }
 
-       }));
+         }));
 
-       YUITest.TestRunner.add(suite);
+        YUITest.TestRunner.add(suite);
 
-   }, '0.0.1', {requires: ['mojito-test', 'HelloMojit']});
+      }, '0.0.1', {requires: ['mojito-test', 'HelloMojit']});
 
    Mojito has the unit test given in ``controller.server-tests.js`` confirms that the output from the action index is the same as the 
    string given in the assert statement.
