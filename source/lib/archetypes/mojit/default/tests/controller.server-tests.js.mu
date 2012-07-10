@@ -49,8 +49,10 @@ YUI.add('{{name}}-tests', function(Y) {
             A.areSame('./index.css', assetsResults);
             A.isObject(doneResults);
             A.areSame('Mojito is working.', doneResults.status);
-            A.areSame(modelData, doneResults.data);
-
+            A.isObject(doneResults.data);
+            A.isTrue(doneResults.data.hasOwnProperty('x'));
+            A.areEqual('y', doneResults.data['x']);
+            
         }
         
     }));
