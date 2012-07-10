@@ -10,8 +10,8 @@ Resource Store
 
 .. _rs-intro:
 
-Intro
-=====
+Overview
+========
 
 The Resource Store (RS) is the Mojito subsystem that manages metadata about the files in your 
 Mojito applications. The |RS| manages metadata about the files in the application. Thus, it is 
@@ -69,14 +69,13 @@ The Mojito framework primarily views a **resource** as something useful found on
 To the Resource Store
 `````````````````````
 
-The |RS| primarily cares about the *metadata* about each resource
-The |RS| uses metadata resources, so it calls the 
-metadata the "resource".  The "resource" is just a JavaScript object containing 
-metadata.  The |RS| define certain keys with specific meanings.  |RS| addons 
-can add, remove, or modify those keys/values as they see fit.  (For 
-example, it is the yui |RS| addon that adds the ``yui`` key with metadata 
+The |RS| primarily cares about the *metadata* about each resource, so it calls the 
+metadata the *resource".  To the |RS|, the **resource** is just a JavaScript object containing 
+metadata.  The |RS| defines certain keys with specific meanings.  The |RS| addons 
+can add, remove, or modify those keys/values as they see fit.  For 
+example, the yui |RS| addon adds the ``yui`` key with metadata 
 about resources that are YUI modules.  The |RS| itself doesn't populate 
-the ``yui`` key of each resource.)   
+the ``yui`` key of each resource.
 
 
 .. _resources-versions:
@@ -86,13 +85,14 @@ Resource Versions
 
 Because there can be multiple files which are all conceptually different versions of the
 same thing (think ``views/index.mu.html`` and ``views/index.iphone.mu.html``), the |RS| defines
-"resource version" as the metadata about each file and "resource" as the metadata
+**resource version** as the metadata about each file and **resource** as the metadata
 about the file chosen among the possible choices.
 
 The process of choosing which version of a resource to use is called *resolution* (or
 "resolving the resource").  This act is one of the primary responsibilities of the |RS|.
 
-See "resolution and priorities" below.
+See `Resolution and Priorities <how-resolution>`_ to learn how the |RS| resolves 
+different versions of the same resource.
 
 .. _resources-scope:
 
@@ -343,7 +343,8 @@ During this process, the resource store is also doing the following:
 - providing methods for events, including those specialized for AOP.
 - explicitly using the addons `selector <intro-selector>`_ and `config <intro-config>`_
 
-To see the code for the resource store, see `store.server.js <https://github.com/yahoo/mojito/blob/develop/source/lib/store.server.js>`_.
+To see the code for the resource store, 
+see `store.server.js <https://github.com/yahoo/mojito/blob/develop/source/lib/store.server.js>`_.
 
 .. _how-walk_fs:
 
@@ -444,7 +445,6 @@ might contain shared resources.
 To get mojit-level resources (or versions) from multiple mojits, you'll have to call
 the method ``getResourceVersions` or ``getResources`` for each mojit.  You can call 
 ``listAllMojits`` to get the list of all mojits.
-
 
 
 .. _resource_store-addons:
@@ -632,30 +632,40 @@ None.
 ``<Object>`` 
 
 
-
 .. _url-ex:
 
 Example
 ~~~~~~~
 
+.. _rs-creating_rs_addons:
 
 Creating Your Own Resource Store Addons
 =======================================
+
+.. _creating_rs_addons-intro:
 
 Intro
 -----
 
 In this section, we will discuss the key methods, events, and give a simple example of a custom 
-|RS| addon. You should be able to create your own custom |RS| addons afterward.
+|RS| addon. You should be able to create your own custom |RS| addons afterward. 
+
+.. _creating_rs_addons-anatomy:
 
 Anatomy of a |RS| Addon
----------------------
+-----------------------
 
 The resource store addons are implemented using the _|YUIPlugin| mechanism. In essence, a Mojito 
 addon is a YUI plugin, so the skeleton of a |RS| addon will be the same as a YUI Plugin. 
 
+See the |RCS|_ for the parameters and return values for the |RS| methods.
+
+.. _anatomy-key_methods:
+
 Key Methods
 ~~~~~~~~~~~
+
+.. _key_methods-initialize:
 
 initialize(config)
 ``````````````````
@@ -667,9 +677,7 @@ initialize(config)
 - ``appRoot <String>`` - the directory of the application.
 - ``mojitoRoot <String>`` - the directory of the Mojito framework code.
       
-**Return:**
-
-None.
+.. _key_methods-preload:
 
 preload()
 `````````
@@ -680,97 +688,104 @@ preload()
   called.
 - After ``preload`` has been called, you can hook in with ``afterHostMethod('preload', ...)``.
 
-**Parameters:**
-
-**Return:**
+.. _key_methods-preloadResourceVersions:
 
 preloadResourceVersions()
 `````````````````````````
-- The |RS| walks the filesystem in this method.
-- Before ``preloadResourceVersions`` is called, not much is known, though the static application configuration is available using the method ``getStaticAppConfig``.
-- Within the ``preloadResourceVersions`` method, the following host methods are called:  ``findResourceVersionByConvention``, ``parseResourceVersion``, and ``addResourceVersion``
-- After ``preloadResourceVersions`` has been called:
-   - All the resource versions have been loaded and are available through the method ``getResourceVersions``.
-   - The |RS| has ``selectors`` object whose keys are all selectors in the application.  The values for the keys are just ``true``.
+
+The |RS| walks the filesystem in this method. Before ``preloadResourceVersions`` is called, not 
+much is known, though the static application configuration is available using the 
+method ``getStaticAppConfig``.
+
+Within the ``preloadResourceVersions`` method, the following host methods are called:  
+- ``findResourceVersionByConvention``
+- ``parseResourceVersion``
+- ``addResourceVersion``
+
+After ``preloadResourceVersions`` has been called:
+   - All the resource versions have been loaded and are available through the method 
+     ``getResourceVersions``.
+   - The |RS| has ``selectors`` object whose keys are all selectors in the application. 
+     The values for the keys are just ``true``.
 
 
-**Parameters:**
-
-**Return:**
+.. _key_methods-findResourceVersionByConvention:
 
 findResourceVersionByConvention()
 `````````````````````````````````
+This method is called on each directory or file being walked and is used to decide if the 
+path is a resource version. The return value can be a bit confusing, so read API docs carefully 
+and feel free to post any questions that you have to the 
+`Yahoo! Mojito Forum <http://developer.yahoo.com/forum/Yahoo-Mojito/>`_.
 
-    * called on each directory or file being walked
-    * used to decide if the path is a resource version
-    * return value is a bit tricky, so read API docs carefully (and ask questions if not clear)
-    * typically, hook into this via `afterHostMethod()` to register your own resource version types
-    * this should work together with your own version of `parseResourceVersion()`
-
-**Parameters:**
-
-**Return:**
+Typically, you would hook into this method with the ``afterHostMethod()`` method to register your 
+own resource version types. This method should work together with your 
+own version of the ``parseResourceVersion`` method.
+    
+.. _key_methods-parseResourceVersion:
 
 parseResourceVersion()
 ``````````````````````
 
-    * called to create an actual resource version
-    * typically, hook into this via `beforeHostMethod()` to create your own resource versions
-    * this should work together with your own version of `findResourceVersionByConvention()`
+This method creates an actual resource version.
 
-**Parameters:**
+Typically, you would hook into this method with the `beforeHostMethod()` method to create 
+your own resource versions. This should work together with your own version 
+of the ``findResourceVersionByConvention`` method.
 
-**Return:**
+.. _key_methods-addResourceVersion:
     
 addResourceVersion()
 ````````````````````
+This method is called to save the resource version into the |RS|.
+Typically, if you want to modify/augment an existing resource version, hook into this with the
+``beforeHostMethod`` method.
 
-   * called to save the resource version into the |RS|
-   * typically, if you want to modify/augment an existing resource version, hook into this via `beforeHostMethod()`
 
-**Parameters:**
-
-**Return:**
-
+.. _key_methods-resolveResourceVersions:
 
 resolveResourceVersions()
 `````````````````````````
 
-    * called to resolve the resource versions down into resources
-    * during this, the `mojitResourcesResolved` event is called
-    * after this, all resource versions have been resolved
+This method resolves the resource versions into resources.
+As a resource version is resolved, the ``mojitResourcesResolved`` event is called
+After the method has been executed, all resource versions have been resolved.
     
-**Parameters:**
-
-**Return:**
+.. _key_methods-serializeClientStore:
 
 serializeClientStore()
 ``````````````````````
 
-called during runtime as Mojito creates the configuration for the client-side Mojito
+This method is called during runtime as Mojito creates the configuration for the client-side 
+Mojito.
 
-**Parameters:**
 
-**Return:**
-        
+.. _anatomy-key_events:
 
 Key Events
 ~~~~~~~~~~
 
+.. _key_events-mojitResourcesResolved:
+
 mojitResourcesResolved
 ``````````````````````
-Called when the resources in a mojit are resolved.
+This event is called when the resources in a mojit are resolved.
+
+.. _key_events-getMojitTypeDetails:
 
 getMojitTypeDetails
 ```````````````````
-Called during runtime as Mojito creates an "instance" used to dispatch a mojit.
+This event is called during runtime as Mojito creates an "instance" used to dispatch a mojit.
 
+.. _creating_rs_addons-ex:
 
 Example
 -------
 
+.. _creating_rs_addons_ex-rs_addon:
+
 |RS| Addon
-````````
+``````````
 
 The following |RS| addon registers the new resource type ``text`` for text files.
 
@@ -779,74 +794,69 @@ The following |RS| addon registers the new resource type ``text`` for text files
 .. code-block:: javascript
 
 
-YUI.add('addon-rs-text', function(Y, NAME) {
+   YUI.add('addon-rs-text', function(Y, NAME) {
 
-    var libpath = require('path');
+     var libpath = require('path');
 
+     function RSddonText() {
+       RSAddonText.superclass.constructor.apply(this, arguments);
+     },
+     RSAddonText.NS = 'text';
+     RSAddonText.ATT|RS| = {};
 
-    function |RS|AddonText() {
-        |RS|AddonText.superclass.constructor.apply(this, arguments);
-    }
-    |RS|AddonText.NS = 'text';
-    |RS|AddonText.ATT|RS| = {};
+     Y.extend(RSAddonText, Y.Plugin.Base, {
 
-    Y.extend(|RS|AddonText, Y.Plugin.Base, {
+       initializer: function(config) {
+         this.rs = config.host;
+         this.appRoot = config.appRoot;
+         this.mojitoRoot = config.mojitoRoot;
+         this.afterHostMethod('findResourceVersionByConvention', this.findResourceVersionByConvention, this);
+         this.beforeHostMethod('parseResourceVersion', this.parseResourceVersion, this);
+       },
 
-        initializer: function(config) {
-            this.rs = config.host;
-            this.appRoot = config.appRoot;
-            this.mojitoRoot = config.mojitoRoot;
-            this.afterHostMethod('findResourceVersionByConvention', this.findResourceVersionByConvention, this);
-            this.beforeHostMethod('parseResourceVersion', this.parseResourceVersion, this);
-        },
+       destructor: function() {
+         // TODO:  needed to break cycle so we don't leak memory?
+         this.rs = null;
+       },
 
+       /**
+       * Using AOP, this is called after the ResourceStore's version.
+       * @method findResourceVersionByConvention
+       * @param source {object} metadata about where the resource is located
+       * @param mojitType {string} name of mojit to which the resource likely belongs
+       * @return {object||null} for config file resources, returns metadata signifying that
+       */
+       findResourceVersionByConvention: function(source, mojitType) {
+         // We only care about files
+         if (!source.fs.isFile) {
+           return;
+         }
 
-        destructor: function() {
-            // TODO:  needed to break cycle so we don't leak memory?
-            this.rs = null;
-        },
+         // We only care about txt files
+         if ('.txt' !== source.fs.ext) {
+           return;
+         }
+         
+         return new Y.Do.AlterReturn(null, {
+           type: 'text'
+         });
+       },
 
-
-        /**
-        * Using AOP, this is called after the ResourceStore's version.
-        * @method findResourceVersionByConvention
-        * @param source {object} metadata about where the resource is located
-        * @param mojitType {string} name of mojit to which the resource likely belongs
-        * @return {object||null} for config file resources, returns metadata signifying that
-        */
-        findResourceVersionByConvention: function(source, mojitType) {
-          // we only care about files
-          if (!source.fs.isFile) {
-                return;
-          }
-
-          // we only care about txt files
-          if ('.txt' !== source.fs.ext) {
-            return;
-          }
-
-          return new Y.Do.AlterReturn(null, {
-                type: 'text'
-          });
-        },
-
-
-        /**
-        * Using AOP, this is called before the ResourceStore's version.
-        * @method parseResourceVersion
-        * @param source {object} metadata about where the resource is located
-        * @param type {string} type of the resource
-        * @param subtype {string} subtype of the resource
-        * @param mojitType {string} name of mojit to which the resource likely belongs
-        * @return {object||null} for config file resources, returns the resource metadata
-        */
+       /**
+       * Using AOP, this is called before the ResourceStore's version.
+       * @method parseResourceVersion
+       * @param source {object} metadata about where the resource is located
+       * @param type {string} type of the resource
+       * @param subtype {string} subtype of the resource
+       * @param mojitType {string} name of mojit to which the resource likely belongs
+       * @return {object||null} for config file resources, returns the resource metadata
+       */
        parseResourceVersion: function(source, type, subtype, mojitType) {
-            var res;
+         var res;
 
          if ('text' !== type) {
            return;
          }
-
          res = {
            source: source,
            type: 'text',
@@ -866,6 +876,7 @@ YUI.add('addon-rs-text', function(Y, NAME) {
 
    }, '0.0.1', { requires: ['plugin', 'oop']});
 
+.. _creating_rs_addons_ex-text_addon:
 
 Text Addon
 ``````````
@@ -914,6 +925,8 @@ The Text Addon provides accessors so that that controller can access resources o
      Y.mojito.addons.ac.text = Addon;
      }, '0.1.0', {requires: ['mojito']}
    );
+   
+.. _creating_rs_addons_ex-controller:   
 
 Controller
 ``````````
