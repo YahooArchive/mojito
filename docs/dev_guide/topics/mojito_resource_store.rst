@@ -39,11 +39,6 @@ You can also write custom versions of built-in RS addons to modify how the resou
 augment the information that RS stores about files or code, or augment/replace the information returned by RS.            
          
 
-.. _intro-do:
-
-
-
-
 .. _rs-resources:
 
 Resources
@@ -170,7 +165,7 @@ from the filename.
 | ``affinity``           | string        | --        | --            | ``server``, ``client``,     | The affinity of the resource, which         |
 |                        |               |           |               | ``common``                  | indicates where the resource will be used.  |
 +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
-| ``fs``                 | string        | yes       | none          | N/A                         |  // filesystem details ==> ??               |
+| ``fs``                 | string        | yes       | none          | N/A                         |              |
 +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
 | ``id``                 | string        | yes       | none          | N/A                         | A unique ID that is common to all versions  | 
 |                        |               |           |               |                             | of the  resource. The ``id`` has the        |
@@ -183,7 +178,9 @@ from the filename.
 +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
 | ``name``               | string        | yes       | none          |                             | The name of the resource that is common to  |
 |                        |               |           |               |                             | all versions (i.e., iPhone/Android, etc.)   | 
-|                        |               |           |               |                             | of the resource.                            |
+|                        |               |           |               |                             | of the resource. Example: the name for      |
+|                        |               |           |               |                             | for the resources ``index.iphone.mu.html``  |
+|                        |               |           |               |                             | and ``index.mu.html`` is ``index``.         |
 +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
 | `` pkg``               | string        | --        | none          |                             | // packaging details ==> what details?      | 
 +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
@@ -193,12 +190,14 @@ from the filename.
 |                        |               |           |               |                             | resource could have a version for iPhones,  |
 |                        |               |           |               |                             | Android devices, fallbacks, etc.            |
 +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
-| `` source``            | string        | no        |               |                             | Specifies where the resource came from      |
-|                        |               |           |               |                             | (not shipped to client).                    |
+| ``source``             | object        | yes       |               |                             | Specifies where the resource came from      |
+|                        |               |           |               |                             | (not shipped to client). See `source Object |
+|                        |               |           |               |                             | <src_obj>`_ for details.                    |
 +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
-| ``subtype``            | string        | no        | none          | ``action``, ``binder``,     |                                             |
-|                        |               |           |               | ``command``, ``middleware`` |                                             |
-|                        |               |           |               | ``model``, ``view``         |                                             |
+| ``subtype``            | string        | no        | none          | ``action``, ``binder``,     | Some resource types have multiple subtypes  |
+|                        |               |           |               | ``command``, ``middleware`` | that can be specified with ``subtype``. See |
+|                        |               |           |               | ``model``, ``view``         | `Subtypes <subtypes_resources>`_ for more   |
+|                        |               |           |               |                             | information.                                |   
 +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
 | ``type``               | string        | yes       | none          | See `Types of Resources <ty |                                             | 
 |                        |               |           |               | pes_resources>`_.           |                                             |
@@ -208,23 +207,44 @@ from the filename.
 |                        |               |           |               |                             | that can be deployed by reference to the    |
 |                        |               |           |               |                             | client.                                     |
 +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
-| ``yui``                | string        | no        | none          |                             | // for resources that are YUI modules ==??  | 
+| ``yui``                | object        | no        | none          |                             | // for resources that are YUI modules ==??  | 
 +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
 
+.. _src_obj:
 
-It doesn't make sense to have a default value.  The "name" is what 
-uniquely identifies the resource within type and subtype.  For example, 
-views/index.mu.html might have "type:view", empty subtype, and 
-"name:index".  The name should be the same for all -versions- of the 
-resource, so for example views/index.iphone.mu.html would have the exact 
-same type, subtype, and name as views/index.mu.html (only the "selector" 
-would be different).     
+source Object
+`````````````
+
++------------------------+---------------+-----------+---------------+-------------------------------+---------------------------------------------+
+| Property               | Data Type     | Required? | Default Value | Possible Values               | Description                                 |
++========================+===============+===========+===============+===============================+=============================================+
+| ``fs``                 | string        | yes       | none          | N/A                           | // filesystem details ==> ??                |
++------------------------+---------------+-----------+---------------+-------------------------------+---------------------------------------------+
+| ``pkg``                | array         | yes       | none          | N/A                           | // packaging details ==> what details?      |
++------------------------+---------------+-----------+---------------+-------------------------------+---------------------------------------------+
+
+yui Object
+``````````
+
+The ``yui`` property of the metadata object is created by the ``yui`` resource store addon, and therefore, the ``yui`` property can 
+be any data type. In general, the ``yui`` property is an object containing metadata about YUI modules. The following table lists
+the typical properties that are part of the ``yui`` object. You can think of the ``yui`` object as a container for
+ the arguments to the ``YUI.add`` method that is used to register reusable YUI modules.
+
++------------------------+---------------+-----------+---------------+-------------------------------+---------------------------------------------+
+| Property               | Data Type     | Required? | Default Value | Possible Values               | Description                                 |
++========================+===============+===========+===============+===============================+=============================================+
+| ``name``               | string        | yes       | none          | "scroll"                      | The name of the YUI module.                 |
++------------------------+---------------+-----------+---------------+-------------------------------+---------------------------------------------+
+| ``meta.requires``      | array         | yes       | none          | ``["scroll","node","cache"]`` | Contains a list of YUI modules required by  |
+|                        |               |           |               |                               | this resource.                              |
++------------------------+---------------+-----------+---------------+-------------------------------+---------------------------------------------+
 
 
 .. _types_resources:
 
 Types of Resources
-``````````````````
+------------------
 
 The ``type`` property of the metadata object can have any of the following values:
 
@@ -240,12 +260,15 @@ The ``type`` property of the metadata object can have any of the following value
 - ``yui-lang``    - a YUI3 language bundle
 - ``yui-module``  - a YUI3 module (that isn't one of the above)
 
+.. _subtypes_resources:
+
 Subtypes
 ````````
 
-Subtype is used for certain types, but not others.  For example, an 
-"type:addon" resource might have "subtype:ac" for AC addons, or 
-"subtype:view-engine" for view engines, or "subtype:rs" for RS addons. 
+You can use a subtype to specify types of a ``type``. For example, a 
+resource of ``type:addon`` might have subtypes, such as ``subtype:ac`` for AC addons,  
+``subtype:view-engine`` for view engines, or ``subtype:rs`` for RS addons. 
+
 For "type:archetype" the subtypes refers to the "type" described by 
 `mojito help create`.  So, you could have "subtype:app" or 
 "subtype:mojit".  (There might be more in the future!)       
@@ -290,6 +313,8 @@ Example
    
 
 
+.. Note: Drew is thinking of change "viewOutputFormat" and "viewEngine" to go under a "view" sub-object.  I'll let you know if I make that change.    
+
 .. _resource_store-how:
 
 How Does the Resource Store Work?
@@ -300,7 +325,7 @@ help others who don't plan on customizing addons to debug.
 
 In short, the resource store walks through the application-level, 
 mojit-level, and ``npm`` module files (in that order) of a Mojito application, determines what type of resource each file is, 
-creates an instance of the resource, and then registers the instance.
+creates metadata about the resource, and then registers the resource.
 
 During this process, the resource store is also doing the following:
 
@@ -316,19 +341,19 @@ Walking the Filesystem
 ----------------------
 
 Resource versions are discovered by the RS at server-start time.  (Mojito server calls the
-`preload()` method of the RS.)
+``preload`` method of the RS.)
 
 This is done by walking all the files in the application, excluding the ``node_modules`` directory.
 
-Then, all files in the packages in `node_modules/` are walked.  The packages are walked in
-breadth-first fassion, so that "shallower" packages have precedence above "deeper" ones.
+Then, all files in the packages in `node_modules` are walked.  The packages are walked in
+breadth-first fashion, so that *shallower* packages have precedence above *deeper* ones.
 (Not all the packages are used, of course, only those that have declared themselves as extensions
 to Mojito.)
 
-(Then, if Mojito wasn't found in `node_modules/`, the globally-installed version of Mojito is walked.)
+(Then, if Mojito wasn't found in ``node_modules``, the globally-installed version of Mojito is walked.)
 
 After all that, the RS knows about all the resource versions.  Then it resolves those versions
-into the resources as described below.  That still happens as part of `preload()`.
+into the resources as described below.  That still happens as part of ``preload``.
 
 Resolution and Priorities
 -------------------------
@@ -337,40 +362,40 @@ The act of resolving the resource versions is really just resolving the affiniti
 
 For example, the application might have the following:
 
-* `controller.common.js`
-* `controller.common.iphone.js`
-* `controller.server.js`
-* `controller.server.phone.js`
+- ``controller.common.js``
+- ``controller.common.iphone.js``
+- ``controller.server.js``
+- ``controller.server.phone.js``
 
-The order of the selectors is defined by a "POSL": priority-ordered selector list.  The POSL depends on
-the runtime context.  In our example, the POSL for context `{device:browser}` might be `['*']` but for
-context `{device:iphone}` might be `['iphone','*']`.
+The order of the selectors is defined by a **priority-ordered selector list (POSL)**.  The POSL depends on
+the runtime context.  In our example, the POSL for context ``{device:browser}`` might be ``['*']`` but for
+context ``{device:iphone}`` might be ``['iphone','*']``.
 
 (We need to use a (prioritized) list of selectors instead of just a "selector that matches the context"
 because not all versions might exist for all selectors.  In the example above, if
-`controller.server.iphone.js` didn't exist we should still do the right thing for context `{device:iphone}`.)
+``controller.server.iphone.js`` didn't exist we should still do the right thing for context ``{device:iphone}``.)
 
-As well, the choice depends on the affinity.  If we're resolving versions for the server, versions with
-`affinity:server` will have higher priority than `affinity:common`, and `affinity:client` will be completely
+The choice depends on the **affinity** as well.  If we're resolving versions for the server, versions with
+``affinity:server`` will have higher priority than ``affinity:common``, and ``affinity:client`` will be completely
 ignored.
 
-The final consideration for priority is the "source".  Mojit-level versions have higher priority than
+The final consideration for priority is the **source**.  Mojit-level versions have higher priority than
 shared versions.  For example, imagine an application with the following:
 
-* `mojits/Foo/models/bar.common.js`
-* `models/bar.common.js`
+- ``mojits/Foo/models/bar.common.js``
+- ``models/bar.common.js``
 
-In this case the second resource is shared with all mojits.  However, the mojit `Foo` has defined its own
-version of the same resource (id `model--bar`), and so that should have higher priority than the shared one.
+In this case, the second resource is shared with all mojits.  However, the mojit ``Foo`` has defined its own
+version of the same resource (id ``model--bar``), and so that should have higher priority than the shared one.
 
-Finally, there's a relationship between the different types of priority.
+Finally, there's a **relationship** between the different types of priority.
 
-1. The source has highest priority.
-1. The selector has next highest priority.
-1. The affinity has least highest priority.
+#. The source has the highest priority.
+#. The selector has the next highest priority.
+#. The affinity has the least highest priority.
 
-That means that if there exists, for example, both a `controller.server.js` and `controller.common.iphone.js`,
-for the server and context `{device:iphone}` the second version will be used, since its selector is a higher
+That means that if there exists, for example, both a ``controller.server.js`` and ``controller.common.iphone.js``,
+for the server and context ``{device:iphone}``, the second version will be used because its selector is a higher
 priority match than its affinity.
 
 
@@ -380,38 +405,28 @@ every possible runtime context).
 Getting Data from the Resource Store
 ------------------------------------
 
-Besides the standard ways that Mojito uses the resource store, there are generic interfaces to getting
+Besides the standard ways that Mojito uses the resource store, there are generic interfaces for getting
 resources and resource versions from the RS.
 
-* `getResourceVersions(filter)`
-* `getResources(env, ctx, filter)`
+- ``getResourceVersions(filter)``
+- ``getResources(env, ctx, filter)``
 
-The APIs are intentially similar.  Both return an array of resources, and the `filter` argument
+The APIs are intentially similar.  Both return an array of resources, and the ``filter`` argument
 can be used to restrict the returned resources (or versions).  It is an object, all of whose
-keys and values must match the returned resources (or versions).  Think of it as a "template"
-or "partial resource" which all resources must match.  For example, a filter of `{type:'view'}`
+keys and values must match the returned resources (or versions).  Think of it as a *template*
+or *partial resource* that all resources must match. For example, a filter of ``{type:'view'}``
 will return all the views.
 
-For mojit-level resources or resource versions, specify the mojit name in the filter.  For example
-filter `{mojit:'Foo'}` will return all resources (or versions) in the `Foo` mojit.
-**Note** that, because of the resolution process, the resources returned for filter `{mojit:'Foo'}`
+For mojit-level resources or resource versions, specify the mojit name in the filter.  For example,
+filter ``{mojit:'Foo'}`` will return all resources (or versions) in the ``Foo`` mojit.
+
+.. note:: Because of the resolution process, the resources returned for filter ``{mojit:'Foo'}``
 might contain shared resources.
 
 To get mojit-level resources (or versions) from multiple mojits, you'll have to call
-`getResourceVersions()` or `getResources()` for each mojit.  You can call `listAllMojits()` to
+the method ``getResourceVersions` or ``getResources`` for each mojit.  You can call ``listAllMojits`` to
 get the list of all mojits.
 
-
-
-
-Resource store addons 
-
-The code for the resource store is a `YUI Base <http://yuilibrary.com/yui/docs/base/>`_, which enables plugins to be implemented as `YUI Plugin modules <http://yuilibrary.com/yui/docs/plugin/>`_.
-Being a YUI Base, the resource store also provides an event subsystem and a simple aspect-oriented subsystem (methods ``beforeHostMethod`` and ``afterHostMethod``). 
-
-Mojito addons 
-
-.. _resource_store-write_addons:
 
 
 .. _resource_store-addons:
@@ -444,7 +459,7 @@ The RS comes with the following four built-in addons:
    - registers new resource type ``yui-lang`` found in ``lang``
    - calculates the ``yui`` metadata for resource versions which are YUI modules
    - when resources are resolved for each version of each mojit, precalculates cooresponding YUI module dependencies
-   - when Mojito queries the RS for details of a mojit (`getMojitTypeDetails()`) appends the precalculated YUI module dependencies for the controller and binders
+   - when Mojito queries the RS for details of a mojit (``getMojitTypeDetails`` method) appends the precalculated YUI module dependencies for the controller and binders
    - provides methods used by Mojito to configure its YUI instances
   
 
@@ -726,10 +741,182 @@ Called during runtime as Mojito creates an "instance" used to dispatch a mojit.
 Example
 -------
 
+RS Addon
+````````
+
+The following RS addon registers the new resource type ``text`` for text files.
+
+``addons/rs/text.server.js``
+
+.. code-block:: javascript
 
 
+YUI.add('addon-rs-text', function(Y, NAME) {
+
+    var libpath = require('path');
 
 
+    function RSAddonText() {
+        RSAddonText.superclass.constructor.apply(this, arguments);
+    }
+    RSAddonText.NS = 'text';
+    RSAddonText.ATTRS = {};
+
+    Y.extend(RSAddonText, Y.Plugin.Base, {
+
+        initializer: function(config) {
+            this.rs = config.host;
+            this.appRoot = config.appRoot;
+            this.mojitoRoot = config.mojitoRoot;
+            this.afterHostMethod('findResourceVersionByConvention', this.findResourceVersionByConvention, this);
+            this.beforeHostMethod('parseResourceVersion', this.parseResourceVersion, this);
+        },
 
 
+        destructor: function() {
+            // TODO:  needed to break cycle so we don't leak memory?
+            this.rs = null;
+        },
 
+
+        /**
+        * Using AOP, this is called after the ResourceStore's version.
+        * @method findResourceVersionByConvention
+        * @param source {object} metadata about where the resource is located
+        * @param mojitType {string} name of mojit to which the resource likely belongs
+        * @return {object||null} for config file resources, returns metadata signifying that
+        */
+        findResourceVersionByConvention: function(source, mojitType) {
+          // we only care about files
+          if (!source.fs.isFile) {
+                return;
+          }
+
+          // we only care about txt files
+          if ('.txt' !== source.fs.ext) {
+            return;
+          }
+
+          return new Y.Do.AlterReturn(null, {
+                type: 'text'
+          });
+        },
+
+
+        /**
+        * Using AOP, this is called before the ResourceStore's version.
+        * @method parseResourceVersion
+        * @param source {object} metadata about where the resource is located
+        * @param type {string} type of the resource
+        * @param subtype {string} subtype of the resource
+        * @param mojitType {string} name of mojit to which the resource likely belongs
+        * @return {object||null} for config file resources, returns the resource metadata
+        */
+       parseResourceVersion: function(source, type, subtype, mojitType) {
+            var res;
+
+         if ('text' !== type) {
+           return;
+         }
+
+         res = {
+           source: source,
+           type: 'text',
+           affinity: 'server',
+           selector: '*'
+         };
+         if ('app' !== source.fs.rootType) {
+           res.mojit = mojitType;
+         }
+         res.name = libpath.join(source.fs.subDir, source.fs.basename);
+         res.id = [res.type, res.subtype, res.name].join('-');
+         return new Y.Do.Halt(null, res);
+       }
+     });
+     Y.namespace('mojito.addons.rs');
+     Y.mojito.addons.rs.text = RSAddonText;
+
+   }, '0.0.1', { requires: ['plugin', 'oop']});
+
+
+Text Addon
+``````````
+
+The Text Addon provides accessors so that that controller can access resources of type ``text``.
+
+``addons/ac/text.server.js``
+
+.. code-block:: javascript
+
+
+   YUI.add('addon-ac-text', function(Y, NAME) {
+
+     var libfs = require('fs');
+
+     function Addon(command, adapter, ac) {
+       this._ctx = ac.command.context;
+     }
+     Addon.prototype = {
+     
+       namespace: 'text',
+
+       setStore: function(store) {
+         this._store = store;
+       },
+       list: function() {
+         var r, res, ress, list = [];
+         ress = this._store.store.getResources('server', this._ctx, {type:'text'});
+         for (r = 0; r < ress.length; r += 1) {
+           res = ress[r];
+           list.push(res.name);
+         }
+         return list;
+       },
+       read: function(name, cb) {
+         var ress;
+         ress = this._store.store.getResources('server', this._ctx, {type:'text', name:name});
+         if (!ress || 1 !== ress.length) {
+           cb(new Error('Unknown text file ' + name));
+         }
+         libfs.readFile(ress[0].source.fs.fullPath, 'utf-8', function(err, body) {
+           cb(err, body);
+         });
+       }
+     };
+     Y.mojito.addons.ac.text = Addon;
+     }, '0.1.0', {requires: ['mojito']}
+   );
+
+Controller
+``````````
+
+``mojits/Viewer/controller.server.js``
+
+
+.. code-block:: javascript
+
+   YUI.add('Viewer', function(Y, NAME) {
+   
+     Y.mojito.controllers[NAME] = {
+
+       init: function(config) {
+         this.config = config;
+       },
+
+       index: function(ac) {
+         var chosen; // TODO:  use form input to choose a text file
+         if (!chosen) {
+           var list;
+           list = ac.text.list();
+           chosen = list[0];
+         }
+         ac.assets.addCss('./index.css');
+         ac.text.read(chosen, function(err, body) {
+           if (err) {
+             return ac.error(err);
+           }
+           ac.done({body: body});
+         });
+       }
+     };
+   }, '1.0.1', {requires: ['mojito', 'addon-ac-text']});
