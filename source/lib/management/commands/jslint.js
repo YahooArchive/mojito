@@ -11,7 +11,10 @@
 var fs = require('fs'),
     path = require('path'),
     utils = require('../utils'),
-    usage = 'mojito jslint [app | mojit] [<name>]',
+    usage = 'mojito jslint [app | mojit] [<name>] {options}\n' +
+            '\nOPTIONS: \n' +
+            '\t  --print      :  print results to stdout \n' +
+            '\t   -p          :  short for --print\n',
     options = [
         {
             shortName: 'p',
