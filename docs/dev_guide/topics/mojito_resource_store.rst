@@ -1009,6 +1009,5 @@ Controller
 .. Have "viewOutputFormat" and "viewEngine" been put under a "view"?
 .. Do we have any simple examples for the ``selector`` and ``url`` addons?
 .. I'm don't quite understand what "hook in" means in the following sentence:
-   .. Addons are loaded during this method, so it's not possible to hook in before ``preload`` is 
-called.
+   .. Addons are loaded during this method, so it's not possible to hook in before ``preload`` is called.
 .. Does the ``affinity`` property of the metadata object have a default value?
