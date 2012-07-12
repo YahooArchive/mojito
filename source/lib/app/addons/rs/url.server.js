@@ -34,7 +34,6 @@ YUI.add('addon-rs-url', function(Y, NAME) {
             this.rs = config.host;
             this.appRoot = config.appRoot;
             this.mojitoRoot = config.mojitoRoot;
-            this.URLpaths = {};
             this.afterHostMethod('preloadResourceVersions', this.preloadResourceVersions, this);
             this.onHostEvent('getMojitTypeDetails', this.getMojitTypeDetails, this);
 
@@ -201,11 +200,9 @@ YUI.add('addon-rs-url', function(Y, NAME) {
 
             if (rollupFsPath && (this.assumeRollups || libpath.existsSync(rollupFsPath))) {
                 res.url = '/' + rollupParts.join('/');
-                this.URLpaths[res.url] = rollupFsPath;
                 fs.rollupPath = rollupFsPath;
             } else {
                 res.url = '/' + urlParts.join('/');
-                this.URLpaths[res.url] = fs.fullPath;
             }
         }
 

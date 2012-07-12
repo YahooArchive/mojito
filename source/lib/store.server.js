@@ -707,7 +707,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 for (r = 0; r < ress.length; r += 1) {
                     res = ress[r];
                     if (res.url) {
-                        urls[res.url] = res.source.fs.fullPath;
+                        urls[res.url] = res.source.fs.rollupPath || res.source.fs.fullPath;
                     }
                 }
             }

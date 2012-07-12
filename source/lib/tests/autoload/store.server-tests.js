@@ -300,10 +300,13 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
         },
 
         'app with rollups': function() {
+            var fixtures = libpath.join(__dirname, '../fixtures/store');
             var spec = { type: 'rollups' };
             store.expandInstanceForEnv('client', spec, {}, function(err, instance) {
                 A.areSame('/static/rollups/rollup.client.js', instance.yui.sortedPaths['rollups']);
                 A.areSame('/static/rollups/rollup.client.js', instance.yui.sortedPaths['rollupsModelClient']);
+                var urls = store.getAllURLs();
+                A.areSame(libpath.join(fixtures, 'mojits/rollups/rollup.client.js'), urls['/static/rollups/rollup.client.js']);
             });
         }
 
