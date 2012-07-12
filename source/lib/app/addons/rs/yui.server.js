@@ -287,6 +287,9 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
             if (!res.mojit) {
                 return;
             }
+            if ('asset' === res.type) {
+                return;
+            }
             this._parseYUIModule(res);
         },
 

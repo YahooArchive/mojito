@@ -319,6 +319,21 @@ YUI.add('mojito-addon-rs-yui-tests', function(Y, NAME) {
             cmp(res.source, source);
             A.isNotUndefined(res.yui);
             A.areSame('X', res.yui.name);
+
+            source = makeSource(fixtures+'/mojits/X', 'mojit', 'assets', 'foo.common.js', true);
+            res = {
+                source: source,
+                mojit: 'X',
+                type: 'asset',
+                name: 'foo',
+                id: 'asset-js-foo',
+                affinity: 'common',
+                selector: '*'
+            };
+            store.addResourceVersion(res);
+            res = store.RVs['common/*' + '/asset-js-foo'];
+            cmp(res.source, source);
+            A.isUndefined(res.yui);
         },
 
         
