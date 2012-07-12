@@ -7,7 +7,7 @@ Resource Store
 .. _rs-intro:
 
 Overview
-########
+========
 
 The Resource Store (RS) is the Mojito subsystem that manages metadata about the files in your 
 Mojito applications. Thus, it is 
@@ -46,7 +46,7 @@ code, or augment/replace the information returned by the |RS|.
 .. _rs-resources:
 
 Resources
-#########
+=========
 
 .. _resources-what:
 
@@ -56,14 +56,14 @@ What is a Resource?
 .. _what-to_mojito:
 
 To Mojito
-`````````
+#########
 
 The Mojito framework primarily views a **resource** as something useful found on the filesystem.
 
 .. _what-to_rs:
 
 To the Resource Store
-`````````````````````
+#####################
 
 The |RS| primarily cares about the *metadata* about each resource, so it sees the 
 metadata as the *resource*.  To the |RS|, the **resource** is just a JavaScript object containing 
@@ -98,7 +98,7 @@ Resource Scope
 .. _scope-application:
 
 Application-Level Resources
-```````````````````````````
+###########################
 
 Application-level resources are truly global to the application.
 At the application level, resources include archetypes, commands, configuration files, and 
@@ -138,7 +138,7 @@ applications.
 .. _rs-metadata:
 
 Resource Metadata
-#################
+=================
 
 .. _metadata-intro:
 
@@ -183,7 +183,7 @@ from the file name.
 |                        |               |           |               |                             | following syntax convention:                |
 |                        |               |           |               |                             | ``{type}-{subtype}-{name}``                 | 
 +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
-| `` mojit``             | string        | no        | none          | N/A                         | The mojit, if any, that uses this resource  | 
+| ``mojit``              | string        | no        | none          | N/A                         | The mojit, if any, that uses this resource  | 
 |                        |               |           |               |                             | The value ``"shared"`` means the resource   |
 |                        |               |           |               |                             | is available to all mojits.                 | 
 +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
@@ -212,7 +212,7 @@ from the file name.
 .. _src_obj:
 
 source Object
-`````````````
+#############
 
 +------------------------+---------------+-----------+---------------+-------------------------------+---------------------------------------------+
 | Property               | Data Type     | Required? | Default Value | Possible Values               | Description                                 |
@@ -225,7 +225,7 @@ source Object
 .. _yui_obj:
 
 yui Object
-``````````
+##########
 
 The ``yui`` property of the metadata object is created by the ``yui`` resource store addon. The
 ``yui`` property can be any data type, but in general, it is an object 
@@ -265,7 +265,7 @@ The ``type`` property of the metadata object can have any of the following value
 .. _types-subtypes:
 
 Subtypes
-````````
+########
 
 You can use a subtype to specify types of a ``type``. For example, a 
 resource of ``type:addon`` might have subtypes, such as ``subtype:ac`` for AC addons,  
@@ -331,7 +331,7 @@ Example
 .. _rs-how:
 
 How Does the Resource Store Work?
-#################################
+=================================
 
 Understanding the workflow of the resource store will give help those who want to customize addons 
 to write code and help others who don't plan on customizing addons to debug. 
@@ -365,7 +365,7 @@ are used, of course; only those that have declared themselves as extensions to M
 if Mojito wasn't found in ``node_modules``, the globally-installed version of Mojito is walked.
 
 After all that, the |RS| knows about all the resource versions.  Then it resolves those versions
-into the resources as described in `Resolution and Priorities <how_resolution>`_.  
+into the resources as described in `Resolution and Priorities <how-resolution>`_.  
 
 .. _how-resolution:
 
@@ -380,7 +380,7 @@ and selectors determine different versions of a resource.
 .. _resolution-selectors:
 
 Selectors
-`````````
+#########
 
 The order of the selectors is defined by a **priority-ordered selector list (POSL)**.  The POSL 
 depends on the runtime context. 
@@ -402,7 +402,7 @@ context" because not all versions might exist for all selectors.  In the example
 .. _resolution-affinities:
 
 Affinities
-```````````
+##########
 
 The choice of a resource version depends on the **affinity** as well. If we're resolving versions 
 for the server, versions with ``affinity:server`` will have higher priority than 
@@ -411,7 +411,7 @@ for the server, versions with ``affinity:server`` will have higher priority than
 .. _resolution-sources:
 
 Sources
-```````
+#######
 
 The final consideration for priority is the **source**. Mojit-level versions have higher priority 
 than shared versions.  Let's take a different application with the following resources:
@@ -426,7 +426,8 @@ priority than the shared one.
 .. _resolution-relationships:
 
 Relationships
-`````````````
+#############
+
 Finally, there's a **relationship** between the different types of priority.
 
 #. The source has the highest priority.
@@ -463,7 +464,7 @@ For mojit-level resources or resource versions, specify the mojit name in the fi
 filter ``{mojit:'Foo'}`` will return all resources (or versions) in the ``Foo`` mojit.
 
 .. note:: Because of the resolution process, the resources returned for filter ``{mojit:'Foo'}``
-might contain shared resources.
+          might contain shared resources.
 
 To get mojit-level resources (or versions) from multiple mojits, you'll have to call
 the method ``getResourceVersions`` or ``getResources`` for each mojit.  You can call 
@@ -473,7 +474,7 @@ the method ``getResourceVersions`` or ``getResources`` for each mojit.  You can 
 .. _resource_store-addons:
 
 Resource Store Built-In Addons
-##############################
+==============================
 
 Intro
 -----
@@ -525,12 +526,12 @@ To learn what a |RS| built-in addons do, please refer to the |RSC|_ in the API d
 .. _intro-selector:
 
 selector
-````````
+########
 
 .. _selector-desc:
 
 Description
-~~~~~~~~~~~
+```````````
 
 If you wish to use a different algorithm for to determine the selectors to use,
 you can implement your own version of this |RS| addon.  It will need to go in the file
@@ -540,7 +541,7 @@ you can implement your own version of this |RS| addon.  It will need to go in th
 .. _selector-reqs:
 
 Requirements
-~~~~~~~~~~~~
+````````````
 
 Because the ``selector`` addon is used directly by the the resource store, all implementations 
 need to provide the following method:
@@ -550,7 +551,8 @@ need to provide the following method:
 .. _selector-getListFromContext:
 
 getListFromContext(ctx)
-~~~~~~~~~~~~~~~~~~~~~~~
+```````````````````````
+
 Returns the priority-ordered selector list (POSL) for the context.
 
 **Parameters:** 
@@ -564,17 +566,17 @@ Returns the priority-ordered selector list (POSL) for the context.
 .. _selector-ex:
 
 Example
-~~~~~~~
+```````
 
 .. _url-intro:
 
 url
-```
+###
 
 .. _url-desc:
 
 Description
-~~~~~~~~~~~
+```````````
 
 The ``url`` addon calculates and manages the static handler URLs for resources.
 The addon is not used by resource store core, but used by the static handler middleware.
@@ -594,7 +596,7 @@ filesystem path for a URL.
 .. _url-reqs:
 
 Requirements
-~~~~~~~~~~~~
+````````````
 
 The ``selector`` addon is required to have the following methods (see details for the methods in 
 below sections):
@@ -641,7 +643,7 @@ Returns the URL for the spec.
 
 ``<String>`` 
 
-.. _url-getSpecURL:
+.. _url-getURLPaths:
 
 getURLPaths()
 `````````````
@@ -659,12 +661,12 @@ None.
 .. _url-ex:
 
 Example
-~~~~~~~
+```````
 
 .. _rs-creating_rs_addons:
 
 Creating Your Own Resource Store Addons
-#######################################
+=======================================
 
 .. _creating_rs_addons-intro:
 
@@ -682,12 +684,12 @@ Anatomy of a |RS| Addon
 The resource store addons are implemented using the _|YUIPlugin| mechanism. In essence, a Mojito 
 addon is a YUI plugin, so the skeleton of a |RS| addon will be the same as a YUI Plugin. 
 
-See the |RCS|_ for the parameters and return values for the |RS| methods.
+See the _|RCS| for the parameters and return values for the |RS| methods.
 
 .. _anatomy-key_methods:
 
 Key Methods
-~~~~~~~~~~~
+###########
 
 .. _key_methods-initialize:
 
@@ -741,6 +743,7 @@ After ``preloadResourceVersions`` has been called:
 
 findResourceVersionByConvention()
 `````````````````````````````````
+
 This method is called on each directory or file being walked and is used to decide if the 
 path is a resource version. The return value can be a bit confusing, so read API docs carefully 
 and feel free to post any questions that you have to the 
@@ -765,6 +768,7 @@ of the ``findResourceVersionByConvention`` method.
     
 addResourceVersion()
 ````````````````````
+
 This method is called to save the resource version into the |RS|.
 Typically, if you want to modify/augment an existing resource version, hook into this with the
 ``beforeHostMethod`` method.
@@ -791,18 +795,20 @@ Mojito.
 .. _anatomy-key_events:
 
 Key Events
-~~~~~~~~~~
+##########
 
 .. _key_events-mojitResourcesResolved:
 
 mojitResourcesResolved
 ``````````````````````
+
 This event is called when the resources in a mojit are resolved.
 
 .. _key_events-getMojitTypeDetails:
 
 getMojitTypeDetails
 ```````````````````
+
 This event is called during runtime as Mojito creates an "instance" used to dispatch a mojit.
 
 .. _creating_rs_addons-ex:
@@ -813,7 +819,7 @@ Example
 .. _creating_rs_addons_ex-rs_addon:
 
 |RS| Addon
-``````````
+##########
 
 The following |RS| addon registers the new resource type ``text`` for text files.
 
@@ -907,7 +913,7 @@ The following |RS| addon registers the new resource type ``text`` for text files
 .. _creating_rs_addons_ex-text_addon:
 
 Text Addon
-``````````
+##########
 
 The Text Addon provides accessors so that the controller can access resources of type ``text``.
 You could use this example addon as a model for writing an addon that allows a controller
@@ -959,7 +965,7 @@ to access other resource types such as ``xml`` or ``yaml``.
 .. _creating_rs_addons_ex-controller:   
 
 Controller
-``````````
+##########
 
 ``mojits/Viewer/controller.server.js``
 
@@ -992,3 +998,11 @@ Controller
      };
    }, '1.0.1', {requires: ['mojito', 'addon-ac-text']});
    
+   
+
+.. |RS| replace:: Resource Store
+.. |RSC| replace:: ResourceStore.server Class
+.. _RSC: http://developer.yahoo.com/cocktails/mojito/api/classes/ResourceStore.server.html
+.. |YUIPlugin| replace:: YUI Plugin
+.. _YUIPlugin: http://yuilibrary.com/yui/docs/plugin/
+                                                                 
