@@ -15,6 +15,11 @@ Resource Store
 .. Details about ``fs`` and ``pkg``
 .. More complete overview.
 .. Have "viewOutputFormat" and "viewEngine" been put under a "view"?
+.. Do we have any simple examples for the ``selector`` and ``url`` addons?
+.. I'm don't quite understand what "hook in" means in the following sentence:
+   .. Addons are loaded during this method, so it's not possible to hook in before ``preload`` is 
+called.
+.. Does the ``affinity`` property of the metadata object have a default value?
 
 .. _rs-intro:
 
@@ -176,8 +181,19 @@ from the file name.
 +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
 | Property               | Data Type     | Required? | Default Value | Possible Values             | Description                                 |
 +========================+===============+===========+===============+=============================+=============================================+
-| ``affinity``           | string        | --        | --            | ``server``, ``client``,     | The affinity of the resource, which         |
-|                        |               |           |               | ``common``                  | indicates where the resource will be used.  |
+| ``type``               | string        | yes       | none          | See `Types of Resources <ty | Specifies the type of resource.             | 
+|                        |               |           |               | pes_resources>`_.           |                                             |
++------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
+| ``subtype``            | string        | no        | none          | ``action``, ``binder``,     | Some resource types have multiple subtypes  |
+|                        |               |           |               | ``command``, ``middleware`` | that can be specified with ``subtype``. See |
+|                        |               |           |               | ``model``, ``view``         | `Subtypes <subtypes_resources>`_ for more   |
+|                        |               |           |               |                             | information.                                |   
++------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
+| ``name``               | string        | yes       | none          | N/A                         | The name of the resource that is common to  |
+|                        |               |           |               |                             | all versions (i.e., iPhone/Android, etc.)   | 
+|                        |               |           |               |                             | of the resource. Example: the name for      |
+|                        |               |           |               |                             | for the resources ``index.iphone.mu.html``  |
+|                        |               |           |               |                             | and ``index.mu.html`` is ``index``.         |
 +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
 | ``id``                 | string        | yes       | none          | N/A                         | A unique ID that is common to all versions  | 
 |                        |               |           |               |                             | of the  resource. The ``id`` has the        |
@@ -188,11 +204,8 @@ from the file name.
 |                        |               |           |               |                             | The value ``"shared"`` means the resource   |
 |                        |               |           |               |                             | is available to all mojits.                 | 
 +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
-| ``name``               | string        | yes       | none          | N/A                         | The name of the resource that is common to  |
-|                        |               |           |               |                             | all versions (i.e., iPhone/Android, etc.)   | 
-|                        |               |           |               |                             | of the resource. Example: the name for      |
-|                        |               |           |               |                             | for the resources ``index.iphone.mu.html``  |
-|                        |               |           |               |                             | and ``index.mu.html`` is ``index``.         |
+| ``affinity``           | string        | yes       | --            | ``server``, ``client``,     | The affinity of the resource, which         |
+|                        |               |           |               | ``common``                  | indicates where the resource will be used.  |
 +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
 | ``selector``           | string        | no        | "*"           | N/A                         | The version of the resource, not to be      |
 |                        |               |           |               |                             | confused revisions that mark the change of  |
@@ -200,17 +213,9 @@ from the file name.
 |                        |               |           |               |                             | resource could have a version for iPhones,  |
 |                        |               |           |               |                             | Android devices, fallbacks, etc.            |
 +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
-| ``source``             | object        | yes       |               | N/A                         | Specifies where the resource came from      |
+| ``source``             | object        | yes       | none          | N/A                         | Specifies where the resource came from      |
 |                        |               |           |               |                             | (not shipped to client). See `source Object |
 |                        |               |           |               |                             | <src_obj>`_ for details.                    |
-+------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
-| ``subtype``            | string        | no        | none          | ``action``, ``binder``,     | Some resource types have multiple subtypes  |
-|                        |               |           |               | ``command``, ``middleware`` | that can be specified with ``subtype``. See |
-|                        |               |           |               | ``model``, ``view``         | `Subtypes <subtypes_resources>`_ for more   |
-|                        |               |           |               |                             | information.                                |   
-+------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
-| ``type``               | string        | yes       | none          | See `Types of Resources <ty | Specifies the type of resource.             | 
-|                        |               |           |               | pes_resources>`_.           |                                             |
 +------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
 | ``url``                | string        | no        | none          | N/A                         | The path used to load the resource          | 
 |                        |               |           |               |                             | onto the client. Used only for resources    |
@@ -358,7 +363,7 @@ During this process, the resource store also does the following:
 - keeps track of application-level resources (archetypes, commands, config files, and middleware).
 - provides methods for events, including those specialized for 
   `aspect-orient programming (AOP) <http://en.wikipedia.org/wiki/Aspect-oriented_programming>`_.
-- explicitly uses the addons `selector <intro-selector>`_ and `config <intro-config>`_
+- explicitly uses the addons `selector <intro-selector>`_ and `config <intro-config>`_.
 
 In the following sections, we'll look at the process in a little more details. To see the code for 
 the resource store, see the `store.server.js <https://github.com/yahoo/mojito/blob/develop/source/lib/store.server.js>`_
@@ -545,8 +550,8 @@ Description
 ~~~~~~~~~~~
 
 If you wish to use a different algorithm for to determine the selectors to use,
-you can implement your own version of this |RS| addon.  It'll need to go in
-``addons/rs/selector.server.js`` in your application.  
+you can implement your own version of this |RS| addon.  It will need to go in the file
+``addons/rs/selector.server.js`` of your application.  
 
 
 .. _selector-reqs:
@@ -718,11 +723,15 @@ initialize(config)
 preload()
 `````````
 
-- Addons are loaded during this method, so it's not possible to hook in before ``preload`` is 
-  called.
-- During preload, the methods ``preloadResourceVersions`` and ``resolveResourceVersions`` are 
-  called.
-- After ``preload`` has been called, you can hook in with ``afterHostMethod('preload', ...)``.
+Addons are loaded during this method, so it's not possible to hook in before ``preload`` is 
+called. 
+
+Within the ``preload`` method, the following host methods are called:
+- `preloadResourceVersions <key_methods-preloadResourceVersions>`_ and
+- `resolveResourceVersions <key_methods-resolveResourceVersions>`_.  
+
+After ``preload`` has finished executing, you can hook in 
+with ``afterHostMethod('preload', ...)``.
 
 .. _key_methods-preloadResourceVersions:
 
@@ -735,8 +744,8 @@ method ``getStaticAppConfig``.
 
 Within the ``preloadResourceVersions`` method, the following host methods are called:  
 - ``findResourceVersionByConvention``
-- ``parseResourceVersion``
-- ``addResourceVersion``
+- `parseResourceVersion <key_methods-parseResourceVersion>`_
+- `addResourceVersion <key_methods-addResourceVersion>`_
 
 After ``preloadResourceVersions`` has been called:
    - All the resource versions have been loaded and are available through the method 
@@ -917,7 +926,9 @@ The following |RS| addon registers the new resource type ``text`` for text files
 Text Addon
 ``````````
 
-The Text Addon provides accessors so that that controller can access resources of type ``text``.
+The Text Addon provides accessors so that the controller can access resources of type ``text``.
+You could use this example addon as a model for writing an addon that allows a controller
+to access other resource types such as ``xml`` or ``yaml``.
 
 ``addons/ac/text.server.js``
 
