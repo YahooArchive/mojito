@@ -7,7 +7,7 @@ Resource Store
 .. _rs-intro:
 
 Overview
-========
+########
 
 The Resource Store (RS) is the Mojito subsystem that manages metadata about the files in your 
 Mojito applications. Thus, it is 
@@ -46,7 +46,7 @@ code, or augment/replace the information returned by the |RS|.
 .. _rs-resources:
 
 Resources
-=========
+#########
 
 .. _resources-what:
 
@@ -138,7 +138,7 @@ applications.
 .. _rs-metadata:
 
 Resource Metadata
-=================
+#################
 
 .. _metadata-intro:
 
@@ -331,7 +331,7 @@ Example
 .. _rs-how:
 
 How Does the Resource Store Work?
-=================================
+#################################
 
 Understanding the workflow of the resource store will give help those who want to customize addons 
 to write code and help others who don't plan on customizing addons to debug. 
@@ -473,7 +473,7 @@ the method ``getResourceVersions`` or ``getResources`` for each mojit.  You can 
 .. _resource_store-addons:
 
 Resource Store Built-In Addons
-==============================
+##############################
 
 Intro
 -----
@@ -664,7 +664,7 @@ Example
 .. _rs-creating_rs_addons:
 
 Creating Your Own Resource Store Addons
-=======================================
+#######################################
 
 .. _creating_rs_addons-intro:
 
