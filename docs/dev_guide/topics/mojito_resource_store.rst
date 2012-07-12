@@ -970,7 +970,7 @@ Controller
 ``mojits/Viewer/controller.server.js``
 
 
-.. code-block:: javascript
+.. code:: javascript
 
    YUI.add('Viewer', function(Y, NAME) {
    
