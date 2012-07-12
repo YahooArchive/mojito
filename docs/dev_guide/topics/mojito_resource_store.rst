@@ -992,22 +992,3 @@ Controller
      };
    }, '1.0.1', {requires: ['mojito', 'addon-ac-text']});
    
-   
- 
-.. |RS| replace:: Resource Store
-.. |RSC| replace:: ResourceStore.server Class
-.. _RSC: http://developer.yahoo.com/cocktails/mojito/api/classes/ResourceStore.server.html
-.. |YUIPlugin| replace:: YUI Plugin
-.. _|YUIPlugin| http://yuilibrary.com/yui/docs/plugin/
-
-
-.. Questions/Needed Info
-
-.. Formal definition about selectors.
-.. Details about ``fs`` and ``pkg``
-.. More complete overview.
-.. Have "viewOutputFormat" and "viewEngine" been put under a "view"?
-.. Do we have any simple examples for the ``selector`` and ``url`` addons?
-.. I'm don't quite understand what "hook in" means in the following sentence:
-   .. Addons are loaded during this method, so it's not possible to hook in before ``preload`` is called.
-.. Does the ``affinity`` property of the metadata object have a default value?
