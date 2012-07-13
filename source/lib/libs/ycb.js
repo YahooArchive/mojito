@@ -169,7 +169,7 @@ Ycb.prototype = {
                                     }
                                 }
                             } else {
-                                config[key] = 'error';
+                                config[key] = '--YCB-SUBSTITUTION-ERROR--';
                             }
                         }
                     }
@@ -207,7 +207,7 @@ Ycb.prototype = {
 
     /*
      * @private
-     * @method _getContextPath
+     * @method _getLookupPaths
      * @param context {object} Key/Value list
      * @result {string}
      */
@@ -219,7 +219,7 @@ Ycb.prototype = {
             current = lookupList.length-1,
             combination = [];
 
-        // This is our combination that we will tubmle over
+        // This is our combination that we will tumble over
         for (pos = 0; pos < lookupList.length; pos += 1) {
             combination.push({
                 current: 0,
@@ -292,7 +292,7 @@ Ycb.prototype = {
                 key = this._getLookupPath(context);
 
                 // Add the section to the settings list with it's full key
-// IMY Bug 5439377 configuration does not accept neither null nor false values?
+                // IMY Bug 5439377 configuration does not accept neither null nor false values?
                 if (!this.settings[key]) {
                     this.settings[key] = section;
                 } else {
@@ -352,6 +352,7 @@ Ycb.prototype = {
         var pos,
             name,
             path,
+            value,
             chains = {};
 
         for (pos = 0; pos < this.dimensions.length; pos += 1) {
@@ -365,7 +366,7 @@ Ycb.prototype = {
                     }
                     if (chains[name]) {
                         // Convert to an ordered list
-                        chains[name] = reverseList(chains[name].split(SEPARATOR)).concat(DEFAULT);
+                        chains[name] = chains[name].split(SEPARATOR).reverse().concat(DEFAULT);
                     } else{
                         // If there was no match set to default
                         chains[name] = [DEFAULT];
@@ -484,17 +485,6 @@ module.exports = {
 
 //---------------------------------------------------------------
 // UTILITY FUNCTIONS
-
-function reverseList(from) {
-    var to = [],
-        pos = from.length;
-
-    while (pos) {
-        to.push(from[--pos]);
-    }
-    return to;
-}
-
 
 function objectToList(from) {
     var to = [],
