@@ -5,6 +5,9 @@
  */
 
 
+/*jslint anon:true, sloppy:true, nomen:true*/
+
+
 var VERSION = '2.0.0',
     DEFAULT = '*',
     SEPARATOR = '/',
