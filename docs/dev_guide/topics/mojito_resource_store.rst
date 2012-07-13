@@ -87,7 +87,7 @@ about the file chosen among the possible choices.
 The process of choosing which version of a resource to use is called *resolution* (or
 "resolving the resource").  This act is one of the primary responsibilities of the |RS|.
 
-See `Resolution and Priorities <how-resolution>`_ to learn how the |RS| resolves 
+See :ref:`Resolution and Priorities <how-resolution>` to learn how the |RS| resolves 
 different versions of the same resource.
 
 .. _resources-scope:
@@ -129,7 +129,7 @@ Resource Types
 --------------
 
 The resource type is defined by the ``type`` property in the metadata for a given resource.
-See `Types of Resources <metadata_obj-types_resources>`_ for descriptions of the resource 
+See :ref:`Types of Resources <metadata_obj-types_resources>` for descriptions of the resource 
 types. Developers can also create their own types of resources to fit the need of their 
 applications. 
 
@@ -161,53 +161,54 @@ For example, the affinity of views is ``common`` (because views are used
 on both client and server); however, the affinity for controllers comes 
 from the file name.        
 
-+------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
-| Property               | Data Type     | Required? | Default Value | Possible Values             | Description                                 |
-+========================+===============+===========+===============+=============================+=============================================+
-| ``type``               | string        | yes       | none          | See `Types of Resources <ty | Specifies the type of resource.             | 
-|                        |               |           |               | pes_resources>`_.           |                                             |
-+------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
-| ``subtype``            | string        | no        | none          | ``action``, ``binder``,     | Some resource types have multiple subtypes  |
-|                        |               |           |               | ``command``, ``middleware`` | that can be specified with ``subtype``. See |
-|                        |               |           |               | ``model``, ``view``         | `Subtypes <subtypes_resources>`_ for more   |
-|                        |               |           |               |                             | information.                                |   
-+------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
-| ``name``               | string        | yes       | none          | N/A                         | The name of the resource that is common to  |
-|                        |               |           |               |                             | all versions (i.e., iPhone/Android, etc.)   | 
-|                        |               |           |               |                             | of the resource. Example: the name for      |
-|                        |               |           |               |                             | for the resources ``index.iphone.mu.html``  |
-|                        |               |           |               |                             | and ``index.mu.html`` is ``index``.         |
-+------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
-| ``id``                 | string        | yes       | none          | N/A                         | A unique ID that is common to all versions  | 
-|                        |               |           |               |                             | of the  resource. The ``id`` has the        |
-|                        |               |           |               |                             | following syntax convention:                |
-|                        |               |           |               |                             | ``{type}-{subtype}-{name}``                 | 
-+------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
-| ``mojit``              | string        | no        | none          | N/A                         | The mojit, if any, that uses this resource  | 
-|                        |               |           |               |                             | The value ``"shared"`` means the resource   |
-|                        |               |           |               |                             | is available to all mojits.                 | 
-+------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
-| ``affinity``           | string        | yes       | --            | ``server``, ``client``,     | The affinity of the resource, which         |
-|                        |               |           |               | ``common``                  | indicates where the resource will be used.  |
-+------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
-| ``selector``           | string        | no        | "*"           | N/A                         | The version of the resource, not to be      |
-|                        |               |           |               |                             | confused revisions that mark the change of  |
-|                        |               |           |               |                             | the resource over time. For example, a      |
-|                        |               |           |               |                             | resource could have a version for iPhones,  |
-|                        |               |           |               |                             | Android devices, fallbacks, etc.            |
-+------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
-| ``source``             | object        | yes       | none          | N/A                         | Specifies where the resource came from      |
-|                        |               |           |               |                             | (not shipped to client). See `source Object |
-|                        |               |           |               |                             | <src_obj>`_ for details.                    |
-+------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
-| ``url``                | string        | no        | none          | N/A                         | The path used to load the resource          | 
-|                        |               |           |               |                             | onto the client. Used only for resources    |
-|                        |               |           |               |                             | that can be deployed by reference to the    |
-|                        |               |           |               |                             | client.                                     |
-+------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
-| ``yui``                | object        | no        | none          | N/A                         | The metadata about YUI modules. See the     |
-|                        |               |           |               |                             | `yui Object <yui_obj>`_ for more details.   |
-+------------------------+---------------+-----------+---------------+-----------------------------+---------------------------------------------+
++------------------------+---------------+-----------+---------------+------------------------------+---------------------------------------------+
+| Property               | Data Type     | Required? | Default Value | Possible Values              | Description                                 |
++========================+===============+===========+===============+==============================+=============================================+
+| ``type``               | string        | yes       | none          | See :ref:`Types of Resources | Specifies the type of resource.             | 
+|                        |               |           |               | <types_resources>`.          |                                             |
++------------------------+---------------+-----------+---------------+------------------------------+---------------------------------------------+
+| ``subtype``            | string        | no        | none          | ``action``, ``binder``,      | Some resource types have multiple subtypes  |
+|                        |               |           |               | ``command``, ``middleware``  | that can be specified with ``subtype``. See |
+|                        |               |           |               | ``model``, ``view``          | :ref:`Subtypes <types-subtypes>` for        |
+|                        |               |           |               |                              | more information.                           |   
++------------------------+---------------+-----------+---------------+------------------------------+---------------------------------------------+
+| ``name``               | string        | yes       | none          | N/A                          | The name of the resource that is common to  |
+|                        |               |           |               |                              | all versions (i.e., iPhone/Android, etc.)   | 
+|                        |               |           |               |                              | of the resource. Example: the name for      |
+|                        |               |           |               |                              | for the resources ``index.iphone.mu.html``  |
+|                        |               |           |               |                              | and ``index.mu.html`` is ``index``.         |
++------------------------+---------------+-----------+---------------+------------------------------+---------------------------------------------+
+| ``id``                 | string        | yes       | none          | N/A                          | A unique ID that is common to all versions  | 
+|                        |               |           |               |                              | of the  resource. The ``id`` has the        |
+|                        |               |           |               |                              | following syntax convention:                |
+|                        |               |           |               |                              | ``{type}-{subtype}-{name}``                 | 
++------------------------+---------------+-----------+---------------+------------------------------+---------------------------------------------+
+| ``mojit``              | string        | no        | none          | N/A                          | The mojit, if any, that uses this resource  | 
+|                        |               |           |               |                              | The value ``"shared"`` means the resource   |
+|                        |               |           |               |                              | is available to all mojits.                 | 
++------------------------+---------------+-----------+---------------+------------------------------+---------------------------------------------+
+| ``affinity``           | string        | yes       | --            | ``server``, ``client``,      | The affinity of the resource, which         |
+|                        |               |           |               | ``common``                   | indicates where the resource will be used.  |
++------------------------+---------------+-----------+---------------+------------------------------+---------------------------------------------+
+| ``selector``           | string        | no        | "*"           | N/A                          | The version of the resource, not to be      |
+|                        |               |           |               |                              | confused revisions that mark the change of  |
+|                        |               |           |               |                              | the resource over time. For example, a      |
+|                        |               |           |               |                              | resource could have a version for iPhones,  |
+|                        |               |           |               |                              | Android devices, fallbacks, etc.            |
++------------------------+---------------+-----------+---------------+------------------------------+---------------------------------------------+
+| ``source``             | object        | yes       | none          | N/A                          | Specifies where the resource came from      |
+|                        |               |           |               |                              | (not shipped to client). See :ref:`source   |
+|                        |               |           |               |                              | Object <src_obj>` for details.              |
++------------------------+---------------+-----------+---------------+------------------------------+---------------------------------------------+
+| ``url``                | string        | no        | none          | N/A                          | The path used to load the resource          | 
+|                        |               |           |               |                              | onto the client. Used only for resources    |
+|                        |               |           |               |                              | that can be deployed by reference to the    |
+|                        |               |           |               |                              | client.                                     |
++------------------------+---------------+-----------+---------------+------------------------------+---------------------------------------------+
+| ``yui``                | object        | no        | none          | N/A                          | The metadata about YUI modules. See the     |
+|                        |               |           |               |                              | :ref:`yui Object <yui_obj>` for more        |
+|                        |               |           |               |                              | details.                                    |
++------------------------+---------------+-----------+---------------+------------------------------+---------------------------------------------+
 
 .. _src_obj:
 
@@ -346,7 +347,7 @@ During this process, the resource store also does the following:
 - keeps track of application-level resources (archetypes, commands, config files, and middleware).
 - provides methods for events, including those specialized for 
   `aspect-orient programming (AOP) <http://en.wikipedia.org/wiki/Aspect-oriented_programming>`_.
-- explicitly uses the addons `selector <intro-selector>`_ and `config <intro-config>`_.
+- explicitly uses the addons :ref:`selector <intro-selector>` and :ref:`config <intro-config>`.
 
 In the following sections, we'll look at the process in a little more details. To see the code for 
 the resource store, see the `store.server.js <https://github.com/yahoo/mojito/blob/develop/source/lib/store.server.js>`_
@@ -365,7 +366,7 @@ are used, of course; only those that have declared themselves as extensions to M
 if Mojito wasn't found in ``node_modules``, the globally-installed version of Mojito is walked.
 
 After all that, the |RS| knows about all the resource versions.  Then it resolves those versions
-into the resources as described in `Resolution and Priorities <how-resolution>`_.  
+into the resources as described in :ref:`Resolution and Priorities <how-resolution>`.  
 
 .. _how-resolution:
 
@@ -374,7 +375,7 @@ Resolution and Priorities
 
 The resolving of resource version happens in the |RS| ``preload`` method as well.
 The act of resolving the resource versions is really just resolving the affinities and selectors.
-See `Resource Versions <metatdata-versions>`_ for a brief explanation about how affinities
+See :ref:`Resource Versions <metatdata-versions>` for a brief explanation about how affinities
 and selectors determine different versions of a resource.
 
 .. _resolution-selectors:
@@ -712,8 +713,8 @@ Addons are loaded during this method, so it's not possible to hook in before ``p
 called. 
 
 Within the ``preload`` method, the following host methods are called:
-- `preloadResourceVersions <key_methods-preloadResourceVersions>`_ and
-- `resolveResourceVersions <key_methods-resolveResourceVersions>`_.  
+- :ref:`preloadResourceVersions <key_methods-preloadResourceVersions>`
+- :ref:`resolveResourceVersions <key_methods-resolveResourceVersions>` 
 
 After ``preload`` has finished executing, you can hook in 
 with ``afterHostMethod('preload', ...)``.
@@ -729,8 +730,8 @@ method ``getStaticAppConfig``.
 
 Within the ``preloadResourceVersions`` method, the following host methods are called:  
 - ``findResourceVersionByConvention``
-- `parseResourceVersion <key_methods-parseResourceVersion>`_
-- `addResourceVersion <key_methods-addResourceVersion>`_
+- :ref:`parseResourceVersion <key_methods-parseResourceVersion>`
+- :ref:`addResourceVersion <key_methods-addResourceVersion>`
 
 After ``preloadResourceVersions`` has been called:
    - All the resource versions have been loaded and are available through the method 
@@ -970,7 +971,7 @@ Controller
 ``mojits/Viewer/controller.server.js``
 
 
-.. code:: javascript
+.. code-block:: javascript
 
    YUI.add('Viewer', function(Y, NAME) {
    
