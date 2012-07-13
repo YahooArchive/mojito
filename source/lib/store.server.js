@@ -1795,7 +1795,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 if ('node_modules' === file) {
                     return false;
                 }
-                if ('libs' === file) {
+                if ('libs' === file && 'test' !== me._appConfigStatic.env) {
                     return false;
                 }
                 if ('tests' === file && 'test' !== me._appConfigStatic.env) {
