@@ -131,7 +131,7 @@ Resource Types
 --------------
 
 The resource type is defined by the ``type`` property in the metadata for a given resource.
-See :ref:`Types of Resources <metadata_obj-types_resources>` for descriptions of the resource 
+See :ref:`Types of Resources <metadata-types>` for descriptions of the resource 
 types. Developers can also create their own types of resources to fit the need of their 
 applications. 
 
@@ -229,7 +229,7 @@ source Object
 +========================+===============+===========+===============+===============================+=============================================+
 | ``fs``                 | string        | yes       | none          | N/A                           | See :ref:`fs Object <fs_obj>`.              |
 +------------------------+---------------+-----------+---------------+-------------------------------+---------------------------------------------+
-| ``pkg``                | array         | yes       | none          | N/A                           | See :ref:`pkg Object <pkg_obj>`_.           |
+| ``pkg``                | array         | yes       | none          | N/A                           | See :ref:`pkg Object <pkg_obj>`.            |
 +------------------------+---------------+-----------+---------------+-------------------------------+---------------------------------------------+
 
 .. _fs_obj:
@@ -252,8 +252,8 @@ fs Object
 +------------------------+---------------+-----------+---------------+-------------------------------+---------------------------------------------+
 | ``rootDir``            | string        | yes       | none          | N/A                           |                                             |
 +------------------------+---------------+-----------+---------------+-------------------------------+---------------------------------------------+
-| ``rootType``           | string        | yes       | none          | See :ref:`Typs of Resources   |                                             | 
-|                        |               |           |               | <metadata-types>`_.|          |                                             |
+| ``rootType``           | string        | yes       | none          | See :ref:`Types of Resources  |                                             | 
+|                        |               |           |               | <metadata-types>`.            |                                             |
 +------------------------+---------------+-----------+---------------+-------------------------------+---------------------------------------------+
 | ``subDir``             | string        | yes       | none          | N/A                           |                                             |
 +------------------------+---------------+-----------+---------------+-------------------------------+---------------------------------------------+
@@ -283,7 +283,7 @@ pkg Object
 yui Object
 ##########
 
-The ``yui`` property of the metadata object is created by the ``yui`` resource store addon. The
+The ``yui`` property of the metadata object is created by the ``yui``|RS| addon. The
 ``yui`` property can be any data type, but in general, it is an object 
 containing metadata about YUI modules. The following table lists the typical properties that are 
 part of the ``yui`` object. You can think of the ``yui`` object as a container for the arguments to 
@@ -390,7 +390,10 @@ How Does the Resource Store Work?
 =================================
 
 Understanding the workflow of the resource store will give help those who want to customize addons 
-to write code and help others who don't plan on customizing addons to debug. 
+to write code and others who don't plan on customizing addons to debug. 
+
+Overview
+--------
 
 In short, the resource store walks through the application-level, 
 mojit-level, and ``npm`` module files (in that order) of a Mojito application, determines what type 
@@ -405,8 +408,7 @@ During this process, the resource store also does the following:
 - explicitly uses the addons :ref:`selector <intro-selector>` and :ref:`config <intro-config>`.
 
 In the following sections, we'll look at the process in a little more details. To see the code for 
-the resource store, see the `store.server.js <https://github.com/yahoo/mojito/blob/develop/source/lib/store.server.js>`_
-file.
+the resource store, see the |SS|_ file.
 
 .. _how-walk_fs:
 
@@ -415,9 +417,9 @@ Walking the Filesystem
 
 Resource versions are discovered by the |RS| at server-start time. The |RS| method ``preload``
 first walks all the files in the application, excluding the ``node_modules`` directory. Next, all 
-the files in the packages in `node_modules` are walked.  The packages are walked in breadth-first 
-fashion, so that *shallower* packages have precedence above *deeper* ones. (Not all the packages 
-are used, of course; only those that have declared themselves as extensions to Mojito.) Finally, 
+the files in the packages in ``node_modules`` are walked.  The packages are walked in breadth-first 
+fashion, so that *shallower* packages have precedence over *deeper* ones. (Not all the packages 
+are used: only those that have declared themselves as extensions to Mojito.) Finally, 
 if Mojito wasn't found in ``node_modules``, the globally-installed version of Mojito is walked.
 
 After all that, the |RS| knows about all the resource versions.  Then it resolves those versions
@@ -496,8 +498,7 @@ will be used because its selector is a higher priority match than its affinity.
 
 
 All this is pre-calculated for each resource, for each possible runtime configuration (client or 
-server, and
-every possible runtime context).
+server, and every possible runtime context).
 
 .. _how-get_data:
 
@@ -527,10 +528,12 @@ the method ``getResourceVersions`` or ``getResources`` for each mojit.  You can 
 ``listAllMojits`` to get a list of all mojits.
 
 
-.. _resource_store-addons:
+.. _rs-addons:
 
 Resource Store Built-In Addons
 ==============================
+
+.. _addons-intro:
 
 Intro
 -----
@@ -543,7 +546,7 @@ of them.
 The |RS| comes with the following four built-in addons:  
 
 - ``config``
-   - registers new resource type ``config`` found in ``.json`` files
+   - registers new resource type ``config`` found in JSON configuration files
    - provides an API for reading both context and straight-JSON files
    - provides sugar for reading the application's dimensions
 - ``selector``
@@ -567,7 +570,7 @@ The |RS| comes with the following four built-in addons:
    - provides methods used by Mojito to configure its YUI instances
   
 
-.. _resource_store-custom_addons:
+.. _addons-custom:
 
 Creating Custom Versions of Built-In |RS| Addons
 ------------------------------------------------
@@ -579,7 +582,7 @@ explains what the |RS| expects the addon to do, so you can create your own versi
 To learn what a |RS| built-in addons do, please refer to the |RSC|_ in the API documentation.
 
 
-.. _intro-selector:
+.. _custom-selector:
 
 selector
 ########
@@ -730,7 +733,8 @@ Intro
 -----
 
 In this section, we will discuss the key methods, events, and give a simple example of a custom 
-|RS| addon. You should be able to create your own custom |RS| addons afterward. 
+|RS| addon. By using the provided example as a model and referring to the |RSC|_ in the API 
+documentation, you should be able to create your own custom |RS| addons. 
 
 .. _creating_rs_addons-anatomy:
 
@@ -740,7 +744,7 @@ Anatomy of a |RS| Addon
 The resource store addons are implemented using the _|YUIPlugin| mechanism. In essence, a Mojito 
 addon is a YUI plugin, so the skeleton of a |RS| addon will be the same as a YUI Plugin. 
 
-See the _|RCS| for the parameters and return values for the |RS| methods.
+See the |RSC|_ for the parameters and return values for the |RS| methods.
 
 .. _anatomy-key_methods:
 
@@ -768,6 +772,7 @@ Addons are loaded during this method, so it's not possible to hook in before ``p
 called. 
 
 Within the ``preload`` method, the following host methods are called:
+
 - :ref:`preloadResourceVersions <key_methods-preloadResourceVersions>`
 - :ref:`resolveResourceVersions <key_methods-resolveResourceVersions>` 
 
@@ -784,6 +789,7 @@ much is known, though the static application configuration is available using th
 method ``getStaticAppConfig``.
 
 Within the ``preloadResourceVersions`` method, the following host methods are called:  
+
 - ``findResourceVersionByConvention``
 - :ref:`parseResourceVersion <key_methods-parseResourceVersion>`
 - :ref:`addResourceVersion <key_methods-addResourceVersion>`
@@ -1061,4 +1067,5 @@ Controller
 .. _RSC: http://developer.yahoo.com/cocktails/mojito/api/classes/ResourceStore.server.html
 .. |YUIPlugin| replace:: YUI Plugin
 .. _YUIPlugin: http://yuilibrary.com/yui/docs/plugin/
-                                                                 
+.. |SS| replace:: server.store.js
+.. _SS: https://github.com/yahoo/mojito/blob/develop/source/lib/store.server.js                                                                 
