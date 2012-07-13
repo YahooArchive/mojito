@@ -2,8 +2,6 @@
 Resource Store
 ==============
 
-
-
 .. _rs-intro:
 
 Overview
