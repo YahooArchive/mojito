@@ -342,7 +342,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 k,
                 use;
 
-            posl = JSON.stringify(this.selector.getListFromContext(ctx));
+            posl = JSON.stringify(this.selector.getPOSLFromContext(ctx));
             if (filter.mojit) {
                 if (!this._mojitResources[env] ||
                         !this._mojitResources[env][posl] ||
@@ -545,7 +545,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 res,
                 engine,
                 engines = {},   // view engines
-                posl = this.selector.getListFromContext(ctx),
+                posl = this.selector.getPOSLFromContext(ctx),
                 ctxKey,
                 module;
 
@@ -1222,7 +1222,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             ctxs = this._listAllContexts();
             for (c = 0; c < ctxs.length; c += 1) {
                 ctx = ctxs[c];
-                posl = this.selector.getListFromContext(ctx);
+                posl = this.selector.getPOSLFromContext(ctx);
                 posls[JSON.stringify(posl)] = posl;
             }
             ctxs = []; // free a bunch of memory

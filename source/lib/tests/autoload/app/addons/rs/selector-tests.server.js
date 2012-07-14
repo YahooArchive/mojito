@@ -69,31 +69,31 @@ YUI.add('mojito-addon-rs-selector-tests', function(Y, NAME) {
             store.plug(Y.mojito.addons.rs.config, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
             store.plug(Y.mojito.addons.rs.selector, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
 
-            var have = store.selector.getListFromContext({});
+            var have = store.selector.getPOSLFromContext({});
             var want = ['*'];
             cmp(have, want);
 
-            var have = store.selector.getListFromContext({runtime:'client'});
+            var have = store.selector.getPOSLFromContext({runtime:'client'});
             var want = ['right', '*'];
             cmp(have, want);
 
-            var have = store.selector.getListFromContext({runtime:'server'});
+            var have = store.selector.getPOSLFromContext({runtime:'server'});
             var want = ['shelves', '*'];
             cmp(have, want);
 
-            var have = store.selector.getListFromContext({device:'android'});
+            var have = store.selector.getPOSLFromContext({device:'android'});
             var want = ['droid', '*'];
             cmp(have, want);
 
-            var have = store.selector.getListFromContext({runtime:'server', device:'android'});
+            var have = store.selector.getPOSLFromContext({runtime:'server', device:'android'});
             var want = ['shelves', 'droid', '*'];
             cmp(have, want);
 
-            var have = store.selector.getListFromContext({device:'android', environment:'dev'});
+            var have = store.selector.getPOSLFromContext({device:'android', environment:'dev'});
             var want = ['devdroid', 'droid', '*'];
             cmp(have, want);
 
-            var have = store.selector.getListFromContext({runtime:'server', device:'android', environment:'dev'});
+            var have = store.selector.getPOSLFromContext({runtime:'server', device:'android', environment:'dev'});
             var want = ['shelves', 'devdroid', 'droid', '*'];
             cmp(have, want);
         }

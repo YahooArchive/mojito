@@ -152,7 +152,7 @@ function getInlineCssMojits(store, env, context) {
 
         // TODO:  This isn't quite right, since multiple contexts might map to
         // posls with the same lead selector.
-        selector = store.selector.getListFromContext(context)[0];
+        selector = store.selector.getPOSLFromContext(context)[0];
 
         srcs = [];
         ress = store.getResources(env, context, {mojit: mojit});
