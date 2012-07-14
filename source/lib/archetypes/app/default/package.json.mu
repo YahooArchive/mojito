@@ -19,6 +19,6 @@
         "node": ">= 0.4.2 < 0.5.0"
     },
     "scripts": {
-        "start": "mojito start"
+        "start": "server.js"
     }
 }

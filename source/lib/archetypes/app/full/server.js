@@ -9,6 +9,7 @@
 
 
 /**
- * Returns a new Mojito server instance.
+ * Starts a new Mojito server instance.
  */
-module.exports = require('mojito').createServer();
+var mojito = require('mojito');
+new mojito.constructor().createServer().listen(80);
