@@ -67,7 +67,7 @@ YUI.add('mojito-ycb-tests', function(Y, NAME) {
                 'environment': 'preproduction',
                 'lang': 'fr_CA'
             };
-            list = ycb._makeOrderedLookupList(context);
+            list = ycb._makeOrderedLookupList(context, {useAllDimensions: true});
 
             A.areSame('preproduction', list['environment'][0]);
             A.areSame('*', list['environment'][1]);
@@ -90,7 +90,7 @@ YUI.add('mojito-ycb-tests', function(Y, NAME) {
                 'environment': 'preproduction',
                 'lang': 'fr_FR'
             };
-            path = ycb._getLookupPath(context);
+            path = ycb._getLookupPath(context, {useAllDimensions: true});
 
             A.areSame('preproduction/*/*/*/*/*/fr_FR/ir/*/*/*', path);
         },
@@ -105,7 +105,7 @@ YUI.add('mojito-ycb-tests', function(Y, NAME) {
                 'environment': 'preproduction',
                 'lang': 'fr_FR'
             };
-            paths = ycb._getLookupPaths(context);
+            paths = ycb._getLookupPaths(context, {useAllDimensions: true});
 
             expected = [
                 "*/*/*/*/*/*/*/*/*/*/*",
@@ -226,7 +226,7 @@ YUI.add('mojito-ycb-tests', function(Y, NAME) {
         },
 
 
-        'test if we can use a simple config with dimensions and conext IR': function() {
+        'test if we can use a simple config with dimensions and context IR': function() {
             var bundle, context, config;
             bundle = readFixtureFile('dimensions.json')
                      .concat(readFixtureFile('simple-1.json'))
@@ -245,7 +245,7 @@ YUI.add('mojito-ycb-tests', function(Y, NAME) {
         },
 
 
-        'test if we can use a simple config with dimensions and conext FR': function() {
+        'test if we can use a simple config with dimensions and context FR': function() {
             var bundle, context, config;
             bundle = readFixtureFile('dimensions.json')
                      .concat(readFixtureFile('simple-1.json'))
@@ -264,7 +264,7 @@ YUI.add('mojito-ycb-tests', function(Y, NAME) {
         },
 
 
-        'test if we can use a simple config with dimensions and conext GB & BT': function() {
+        'test if we can use a simple config with dimensions and context GB & BT': function() {
             var bundle, context, config;
             bundle = readFixtureFile('dimensions.json')
                      .concat(readFixtureFile('simple-1.json'))
@@ -307,6 +307,46 @@ YUI.add('mojito-ycb-tests', function(Y, NAME) {
             A.areEqual(config.undef, foo.undef);
             A.isTrue('zero' in config);
             A.areEqual(config.zero, foo.zero);
+        },
+
+
+        'skip unused dimensions': function() {
+            var bundle, ycb;
+            bundle = readFixtureFile('dimensions.json')
+                     .concat(readFixtureFile('simple-1.json'))
+                     .concat(readFixtureFile('simple-3.json'));
+            ycb = new libycb.Ycb(bundle);
+
+            A.areSame(3, Object.keys(ycb.dimsUsed).length);
+            A.isNotUndefined(ycb.dimsUsed.region);
+            A.areSame(3, Object.keys(ycb.dimsUsed.region).length);
+            A.isTrue(ycb.dimsUsed.region.ca);
+            A.isTrue(ycb.dimsUsed.region.gb);
+            A.isTrue(ycb.dimsUsed.region.fr);
+            A.areSame(1, Object.keys(ycb.dimsUsed.lang).length);
+            A.isTrue(ycb.dimsUsed.lang.fr);
+            A.areSame(2, Object.keys(ycb.dimsUsed.flavor).length);
+            A.isTrue(ycb.dimsUsed.flavor.att);
+            A.isTrue(ycb.dimsUsed.flavor.bt);
+
+            var context = {
+                'region': 'ir',
+                'environment': 'preproduction',
+                'lang': 'fr_FR'
+            };
+            var paths = ycb._getLookupPaths(context, {});
+            var expected = [
+                '*/*/*/*/*/*/*/*/*/*/*',
+                '*/*/*/*/*/*/*/gb/*/*/*',
+                '*/*/*/*/*/*/*/ir/*/*/*',
+                '*/*/*/*/*/*/fr/*/*/*/*',
+                '*/*/*/*/*/*/fr/gb/*/*/*',
+                '*/*/*/*/*/*/fr/ir/*/*/*',
+                '*/*/*/*/*/*/fr_FR/*/*/*/*',
+                '*/*/*/*/*/*/fr_FR/gb/*/*/*',
+                '*/*/*/*/*/*/fr_FR/ir/*/*/*'
+            ];
+            AA.itemsAreEqual(expected, paths);
         }
 
 

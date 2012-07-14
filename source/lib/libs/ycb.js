@@ -13,18 +13,20 @@ var VERSION = '2.0.0',
     SEPARATOR = '/',
     SUBMATCH = /\$\$[a-zA-Z0-9.-_]*\$\$/,
     Y = require('yui').YUI({useSync: true}).use('json-parse', 'json-stringify');
-    
+
 Y.applyConfig({useSync: false});
 
 
 //---------------------------------------------------------------
 // OBJECT ORIENTED INTERFACE
 
-function Ycb(bundle) {
+function Ycb(bundle, options) {
+    this.options = options || {};
     this.dimensions = {};
     this.settings = {};
     this.schema = {};
-    this._processRawBundle(bundle);
+    this.dimsUsed = {}; // dim name: value: true
+    this._processRawBundle(bundle, this.options);
 }
 Ycb.prototype = {
 
@@ -40,17 +42,17 @@ Ycb.prototype = {
             path,
             config = {};
 
-        if (!context) {
-            context = {};
-        }
-        lookupPaths = this._getLookupPaths(context);
+        context = context || {};
+        options = objectMerge(this.options, options || {});
+
+        lookupPaths = this._getLookupPaths(context, options);
 
         if (options.debug) {
-            console.log(Y.JSON.stringify(context,null,4));
-            console.log(Y.JSON.stringify(this.dimensions,null,4));
-            console.log(Y.JSON.stringify(this.settings,null,4));
-            console.log(Y.JSON.stringify(this.schema,null,4));
-            console.log(Y.JSON.stringify(lookupPaths,null,4));
+            console.log(Y.JSON.stringify(context, null, 4));
+            console.log(Y.JSON.stringify(this.dimensions, null, 4));
+            console.log(Y.JSON.stringify(this.settings, null, 4));
+            console.log(Y.JSON.stringify(this.schema, null, 4));
+            console.log(Y.JSON.stringify(lookupPaths, null, 4));
         }
 
         // Now we simply merge each macting settings section we find into the config
@@ -58,7 +60,7 @@ Ycb.prototype = {
             if (this.settings[lookupPaths[path]]) {
                 if (options.debug) {
                     console.log('----USING---- ' + lookupPaths[path]);
-                    console.log(Y.JSON.stringify(this.settings[lookupPaths[path]],null,4));
+                    console.log(Y.JSON.stringify(this.settings[lookupPaths[path]], null, 4));
                 }
                 config = objectMerge(this.settings[lookupPaths[path]], config);
             }
@@ -88,18 +90,16 @@ Ycb.prototype = {
             path,
             config = [];
 
-        if (!context) {
-            context = {};
-        }
+        context = context || {};
 
-        lookupPaths = this._getLookupPaths(context);
+        lookupPaths = this._getLookupPaths(context, options);
 
         if (options.debug) {
-            console.log(Y.JSON.stringify(context,null,4));
-            console.log(Y.JSON.stringify(this.dimensions,null,4));
-            console.log(Y.JSON.stringify(this.settings,null,4));
-            console.log(Y.JSON.stringify(this.schema,null,4));
-            console.log(Y.JSON.stringify(lookupPaths,null,4));
+            console.log(Y.JSON.stringify(context, null, 4));
+            console.log(Y.JSON.stringify(this.dimensions, null, 4));
+            console.log(Y.JSON.stringify(this.settings, null, 4));
+            console.log(Y.JSON.stringify(this.schema, null, 4));
+            console.log(Y.JSON.stringify(lookupPaths, null, 4));
         }
 
         // Now we simply merge each macting settings section we find into the config
@@ -107,7 +107,7 @@ Ycb.prototype = {
             if (this.settings[lookupPaths[path]]) {
                 if (options.debug) {
                     console.log('----USING---- ' + lookupPaths[path]);
-                    console.log(Y.JSON.stringify(this.settings[lookupPaths[path]],null,4));
+                    console.log(Y.JSON.stringify(this.settings[lookupPaths[path]], null, 4));
                 }
                 config.push(this.settings[lookupPaths[path]]);
             }
@@ -132,13 +132,8 @@ Ycb.prototype = {
             find,
             item;
 
-        if (!base) {
-            base = config;
-        }
-
-        if (!parent) {
-            parent = {ref: config, key: null};
-        }
+        base = base || config;
+        parent = parent || {ref: config, key: null};
 
         for (key in config) {
             if (config.hasOwnProperty(key)) {
@@ -212,10 +207,11 @@ Ycb.prototype = {
      * @private
      * @method _getLookupPaths
      * @param context {object} Key/Value list
+     * @param options {object} runtime options
      * @result {string}
      */
-    _getLookupPaths: function(context) {
-        var lookupList = objectToList(this._makeOrderedLookupList(context)),
+    _getLookupPaths: function(context, options) {
+        var lookupList = Y.Object.values(this._makeOrderedLookupList(context, options)),
             path = [],
             paths = [],
             pos,
@@ -264,9 +260,10 @@ Ycb.prototype = {
      * @private
      * @method _processRawBundle
      * @param bundle {object}
+     * @param options {object}
      * @return {nothing}
      */
-    _processRawBundle: function(bundle) {
+    _processRawBundle: function(bundle, options) {
         var pos,
             section,
             part,
@@ -286,13 +283,19 @@ Ycb.prototype = {
                 context = {};
                 for (part = 0; part < section.settings.length; part += 1) {
                     kv = section.settings[part].split(':');
+                    if ('master' !== section.settings[0]) {
+                        if (!this.dimsUsed[kv[0]]) {
+                            this.dimsUsed[kv[0]] = {};
+                        }
+                        this.dimsUsed[kv[0]][kv[1]] = true;
+                    }
                     context[kv[0]] = kv[1];
                 }
                 // Remove the settings key now we are done with it
                 delete section.settings;
 
                 // Build the full context path
-                key = this._getLookupPath(context);
+                key = this._getLookupPath(context, options);
 
                 // Add the section to the settings list with it's full key
                 // IMY Bug 5439377 configuration does not accept neither null nor false values?
@@ -310,10 +313,11 @@ Ycb.prototype = {
      * @private
      * @method _getContextPath
      * @param context {object} Key/Value list
+     * @param options {object}
      * @result {string}
      */
-    _getLookupPath: function(context) {
-        var lookupList = this._makeOrderedLookupList(context),
+    _getLookupPath: function(context, options) {
+        var lookupList = this._makeOrderedLookupList(context, options),
             name,
             list,
             lookup = {},
@@ -348,22 +352,35 @@ Ycb.prototype = {
     /*
      * @private
      * @method _makeOrderedLookupList
-     * @param {object} context Key/Value list
+     * @param context {object} Key/Value list
+     * @param options {object}
      * @result {object} list of lists
      */
-    _makeOrderedLookupList: function(context) {
+    _makeOrderedLookupList: function(context, options) {
         var pos,
             name,
             path,
             value,
+            used,
             chains = {};
 
         for (pos = 0; pos < this.dimensions.length; pos += 1) {
             for (name in this.dimensions[pos]) {
                 if (this.dimensions[pos].hasOwnProperty(name)) {
                     for (path in this._dimensionPaths[name]) {
-                        if (this._dimensionPaths[name].hasOwnProperty(path) &&
-                            this._dimensionPaths[name][path] === context[name]) {
+                        if (!this._dimensionPaths[name].hasOwnProperty(path)) {
+                            continue;
+                        }
+                        value = this._dimensionPaths[name][path];
+                        used = options.useAllDimensions || false;
+                        if (!options.useAllDimensions) {
+                            Y.Array.forEach(path.split(SEPARATOR), function (part) {
+                                if ((this.dimsUsed[name] && this.dimsUsed[name][part])) {
+                                    used = true;
+                                }
+                            }, this);
+                        }
+                        if (used && value === context[name]) {
                             chains[name] = path;
                         }
                     }
@@ -394,9 +411,7 @@ Ycb.prototype = {
             newPrefix,
             nextDimension;
 
-        if (!build) {
-            build = {};
-        }
+        build = build || {};
         if (typeof dimension === 'object') {
             for (key in dimension) {
                 if (dimension.hasOwnProperty(key)) {
@@ -451,9 +466,9 @@ module.exports = {
      * Processes an Object representing a YCB 2.0 Bundle as defined in the spec.
      *
      * @method read
-     * @param {object} context
-     * @param {boolean} validate
-     * @param {boolean} debug
+     * @param context {object}
+     * @param validate {boolean}
+     * @param debug {boolean}
      * @return {object}
      */
     read: function(bundle, context, validate, debug) {
@@ -471,8 +486,8 @@ module.exports = {
      *
      * @method readNoMerge
      * @param context {object}
-     * @param {boolean} validate
-     * @param {boolean} debug
+     * @param validate {boolean}
+     * @param debug {boolean}
      * @return {array of objects}
      */
     readNoMerge: function(bundle, context, validate, debug) {
@@ -488,21 +503,6 @@ module.exports = {
 
 //---------------------------------------------------------------
 // UTILITY FUNCTIONS
-
-function objectToList(from) {
-    var to = [],
-        pos = 0,
-        key = '';
-
-    for (key in from) {
-        if (from.hasOwnProperty(key)) {
-            to[pos] = from[key];
-            pos++;
-        }
-    }
-    return to;
-}
-
 
 function objectMerge(from, to) {
     var key;
