@@ -47,7 +47,64 @@ YUI.add('HTMLFrameMojit', function(Y, NAME) {
 
         return data;
     };
+    var renderMetaTagAttributes = function(arrayMeta) {
+        //if application.json contains
+        // "specs": {
+        //     "frame": {
+        //         "type": "HTMLFrameMojit",
+        //         "config": {
+        //             "title": "Hello App",
+        //------->     "meta": [{
+        //                 "name": "hello",
+        //                 "content": "hi"
+        //             }],
+        //             ...
+        //this function returns 
+        // [
+        //     {
+        //         "attributes": [
+        //             {
+        //                 "name": "name",
+        //                 "value": "hello"
+        //             },
+        //             {
+        //                 "name": "content",
+        //                 "value": "hi"
+        //             }
+        //         ]
+        //     }
+        // ]
 
+        var i = 0,
+        metaLen, metaTags = [],
+        attributeObj,
+        getAttributes = function (obj) {
+            var attrs = [],
+                name;
+            for (name in obj) {
+                if (obj.hasOwnProperty(name)) {
+                    attrs.push({
+                        "name": name,
+                        "value": obj[name],
+                    });
+                }
+            }
+            return attrs;
+        };
+
+        if (!Array.isArray(arrayMeta)) {
+            return undefined;
+        }
+
+        metaLen = arrayMeta.length;
+        for (i = 0; i < metaLen; i++) {
+            attributeObj = arrayMeta[i];
+            metaTags.push({
+                "attributes": getAttributes(attributeObj)
+            })
+        }
+        return metaTags;
+    };
 
     Y.mojito.controllers[NAME] = {
 
@@ -92,6 +149,10 @@ YUI.add('HTMLFrameMojit', function(Y, NAME) {
                 data.title = ac.config.get('title') ||
                     'Powered by Mojito ' + Y.mojito.version;
                 data.mojito_version = Y.mojito.version;
+
+                //set meta tags from app config
+                data.meta = renderMetaTagAttributes(ac.config.get('meta'));
+
 
                 // Add all the assets we have been given to our local store
                 ac.assets.addAssets(meta.assets);
