@@ -12,7 +12,7 @@ var VERSION = '2.0.0',
     DEFAULT = '*',
     SEPARATOR = '/',
     SUBMATCH = /\$\$[a-zA-Z0-9.-_]*\$\$/,
-    Y = require('yui').YUI({useSync: true}).use('json-parse', 'json-stringify');
+    Y = require('yui').YUI({useSync: true}).use('json-parse', 'json-stringify', 'oop');
 
 Y.applyConfig({useSync: false});
 
@@ -29,6 +29,39 @@ function Ycb(bundle, options) {
     this._processRawBundle(bundle, this.options);
 }
 Ycb.prototype = {
+
+
+    /**
+     * @method getDimensions
+     * @return {object} the dimensions
+     */
+    getDimensions: function() {
+        return Y.clone(this.dimensions, true);
+    },
+
+
+    /**
+     * Iterates over all the setting sections in the YCB file, calling the
+     * callback for each section.
+     * @method walkSettings
+     * @param callback {function(settings, config)}
+     * @param callback.settings {object} the condition under which section will be used
+     * @param callback.config {object} the configuration in the section
+     * @param callback.return {boolean} if the callback returns false, then walking is stopped
+     * @return {nothing} results returned via callback
+     */
+    walkSettings: function(callback) {
+        var path,
+            context;
+        for (path in this.settings) {
+            if (this.settings.hasOwnProperty(path)) {
+                context = this._getContextFromLookupPath(path);
+                if (!callback(context, this.settings[path])) {
+                    break;
+                }
+            }
+        }
+    },
 
 
     /**
@@ -346,6 +379,32 @@ Ycb.prototype = {
             }
         }
         return path.join(SEPARATOR);
+    },
+
+
+    /**
+     * @private
+     * @method _getContextFromLookupPath
+     * @param path {string} the path
+     * @return {object} the cooresponding context (really a partial context)
+     */
+    _getContextFromLookupPath: function(path) {
+        var parts = path.split(SEPARATOR),
+            p,
+            part,
+            dimName,
+            ctx = {};
+        for (p = 0; p < this.dimensions.length; p += 1) {
+            part = parts[p];
+            if ('*' === part) {
+                continue;
+            }
+            // Having more than one key in the dimensions structure is against
+            // the YCB spec.
+            dimName = Object.keys(this.dimensions[p])[0];
+            ctx[dimName] = part;
+        }
+        return ctx;
     },
 
 

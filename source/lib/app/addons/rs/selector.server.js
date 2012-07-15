@@ -52,6 +52,28 @@ YUI.add('addon-rs-selector', function(Y, NAME) {
 
 
         /**
+         * Returns a list of all priority-ordered selector lists (POSLs).
+         * @method getAllPOSLs
+         * @return {array} list of priority-ordered selector lists
+         */
+        getAllPOSLs: function() {
+            var c,
+                ctx,
+                ctxs,
+                posl,
+                posls = {};
+            ctxs = this._listUsedContexts();
+            for (c = 0; c < ctxs.length; c += 1) {
+                ctx = ctxs[c];
+                posl = this.getPOSLFromContext(ctx);
+                posls[JSON.stringify(posl)] = posl;
+            }
+            ctxs = []; // free a bunch of memory
+            return Y.Object.values(posls);
+        },
+
+
+        /**
          * Returns the priority-ordered selector list (POSL) for the context.
          * @method getPOSLFromContext
          * @param ctx {object} runtime context
@@ -71,6 +93,91 @@ YUI.add('addon-rs-selector', function(Y, NAME) {
                 }
             }
             return sels;
+        },
+
+
+        /**
+         * @private
+         * @method _listUsedDimensions
+         * @return {array} list of dimensions and values
+         * (values have no structure)
+         */
+        _listUsedDimensions: function() {
+            var ctxs = [],
+                ctxValues = {}; // dimName: value: true
+            this._appConfigYCB.walkSettings(function(settings, config) {
+                Y.Object.each(settings, function(val, name) {
+                    if (!ctxValues[name]) {
+                        ctxValues[name] = {};
+                    }
+                    ctxValues[name][val] = true;
+                });
+                return true;
+            });
+            Y.Object.each(ctxValues, function(vals, name) {
+                ctxs[name] = Object.keys(vals);
+            });
+            return ctxs;
+        },
+
+
+        /**
+         * Generates a list of contexts to which application.json is sensitive.
+         * @private
+         * @method _listUsedContexts
+         * @return {array of objects} all contexts in application.json
+         */
+        _listUsedContexts: function() {
+            var dims = this._listUsedDimensions(),
+                nctxs,
+                c,
+                ctxs = [],
+                dn,
+                dname,
+                dnames = Object.keys(dims),
+                dv,
+                dval,
+                dvals,
+                e,
+                each,
+                mod;
+
+            nctxs = 1;
+            for (dn = 0; dn < dnames.length; dn += 1) {
+                dname = dnames[dn];
+                dvals = dims[dname];
+                if (dname !== 'runtime') {
+                    // we never have indeterminant runtime
+                    dvals.push('*');
+                }
+                nctxs *= dvals.length;
+            }
+
+            for (c = 0; c < nctxs; c += 1) {
+                ctxs[c] = {};
+            }
+            mod = 1;
+            for (dn = 0; dn < dnames.length; dn += 1) {
+                dname = dnames[dn];
+                dvals = dims[dname];
+                mod *= dvals.length;
+                each = nctxs / mod;
+
+                e = each;
+                dv = 0;
+                for (c = 0; c < nctxs; e -= 1, c += 1) {
+                    if (0 === e) {
+                        e = each;
+                        dv += 1;
+                        dv = dv % dvals.length;
+                    }
+                    dval = dvals[dv];
+                    if ('*' !== dval) {
+                        ctxs[c][dname] = dval;
+                    }
+                }
+            }
+            return ctxs;
         }
 
 

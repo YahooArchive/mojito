@@ -96,6 +96,25 @@ YUI.add('mojito-addon-rs-selector-tests', function(Y, NAME) {
             var have = store.selector.getPOSLFromContext({runtime:'server', device:'android', environment:'dev'});
             var want = ['shelves', 'devdroid', 'droid', '*'];
             cmp(have, want);
+        },
+
+
+        'get all posls': function() {
+            var fixtures = libpath.join(__dirname, '../../../../fixtures/store');
+            var store = new MockRS({ root: fixtures });
+            store.plug(Y.mojito.addons.rs.config, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
+            store.plug(Y.mojito.addons.rs.selector, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
+
+            var have = store.selector.getAllPOSLs();
+            var want = [
+                [ 'shelves', '*' ],
+                [ 'shelves', 'devdroid', 'droid', '*' ],
+                [ 'shelves', 'droid', '*' ],
+                [ 'right', '*' ],
+                [ 'right', 'devdroid', 'droid', '*' ],
+                [ 'right', 'droid', '*' ]
+            ];
+            cmp(want, have);
         }
 
         

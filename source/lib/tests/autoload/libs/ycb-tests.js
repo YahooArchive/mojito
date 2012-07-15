@@ -20,6 +20,31 @@ YUI.add('mojito-ycb-tests', function(Y, NAME) {
     }
 
 
+    function cmp(x, y, msg) {
+        if (Y.Lang.isArray(x)) {
+            A.isArray(x, msg || 'first arg should be an array');
+            A.isArray(y, msg || 'second arg should be an array');
+            A.areSame(x.length, y.length, msg || 'arrays are different lengths');
+            for (var i = 0; i < x.length; i += 1) {
+                cmp(x[i], y[i], msg);
+            }
+            return;
+        }
+        if (Y.Lang.isObject(x)) {
+            A.isObject(x, msg || 'first arg should be an object');
+            A.isObject(y, msg || 'second arg should be an object');
+            A.areSame(Object.keys(x).length, Object.keys(y).length, msg || 'object keys are different lengths');
+            for (var i in x) {
+                if (x.hasOwnProperty(i)) {
+                    cmp(x[i], y[i], msg);
+                }
+            }
+            return;
+        }
+        A.areSame(x, y, msg || 'args should be the same');
+    }
+
+
     suite.add(new YUITest.TestCase({
 
         name: 'ycb',
@@ -347,6 +372,38 @@ YUI.add('mojito-ycb-tests', function(Y, NAME) {
                 '*/*/*/*/*/*/fr_FR/ir/*/*/*'
             ];
             AA.itemsAreEqual(expected, paths);
+        },
+
+
+        'get dimensions': function() {
+            var bundle, ycb;
+            bundle = readFixtureFile('dimensions.json');
+            ycb = new libycb.Ycb(Y.clone(bundle, true));
+            cmp(bundle[0].dimensions, ycb.getDimensions());
+        },
+
+
+        'walk settings': function() {
+            var bundle, ycb;
+            bundle = readFixtureFile('dimensions.json')
+                     .concat(readFixtureFile('simple-1.json'))
+                     .concat(readFixtureFile('simple-3.json'));
+            ycb = new libycb.Ycb(bundle);
+            var ctxs = {};
+            ycb.walkSettings(function(settings, config) {
+                ctxs[JSON.stringify(settings)] = true;
+                return true;
+            });
+            A.areSame(9, Object.keys(ctxs).length);
+            A.isTrue(ctxs['{}']);
+            A.isTrue(ctxs['{"region":"ca"}']);
+            A.isTrue(ctxs['{"region":"gb"}']);
+            A.isTrue(ctxs['{"lang":"fr"}']);
+            A.isTrue(ctxs['{"region":"fr"}']);
+            A.isTrue(ctxs['{"flavor":"att"}']);
+            A.isTrue(ctxs['{"region":"ca","flavor":"att"}']);
+            A.isTrue(ctxs['{"region":"gb","flavor":"bt"}']);
+            A.isTrue(ctxs['{"region":"fr","flavor":"bt"}']);
         }
 
 
@@ -355,4 +412,4 @@ YUI.add('mojito-ycb-tests', function(Y, NAME) {
 
     YUITest.TestRunner.add(suite);
 
-}, '0.0.1', {requires: ['json']});
+}, '0.0.1', {requires: ['json', 'oop']});

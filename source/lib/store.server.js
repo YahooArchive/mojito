@@ -549,6 +549,10 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 ctxKey,
                 module;
 
+            if ('shared' === mojitType) {
+                throw new Error('Mojit name "shared" is special and isn\'t a real mojit.');
+            }
+
             if (!dest) {
                 dest = {};
             }
@@ -1212,20 +1216,13 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             * @param ress {array} list of resources in the mojit (for the `env` and `posl`)
             */
         resolveResourceVersions: function() {
-            var c, ctx, ctxs,
-                poslKey, posl, posls = {},
+            var p, poslKey, posl, posls = {},
                 e, env, envs = [ 'client', 'server' ],
                 affinities, selectors, sourceBase,
                 type, ress,
-                p;
+                s;
 
-            ctxs = this._listAllContexts();
-            for (c = 0; c < ctxs.length; c += 1) {
-                ctx = ctxs[c];
-                posl = this.selector.getPOSLFromContext(ctx);
-                posls[JSON.stringify(posl)] = posl;
-            }
-            ctxs = []; // free a bunch of memory
+            posls = this.selector.getAllPOSLs();
 
             for (e = 0; e < envs.length; e += 1) {
                 env = envs[e];
@@ -1234,41 +1231,40 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 affinities[env] = 1;
                 affinities.common = 0;
 
-                for (poslKey in posls) {
-                    if (posls.hasOwnProperty(poslKey)) {
-                        posl = posls[poslKey];
-                        selectors = {}; // selector:  priority modifier
-                        for (p = 0; p < posl.length; p += 1) {
-                            selectors[posl[p]] = (posl.length - p - 1) * 2;
-                        }
-                        sourceBase = posl.length * 2;
-                        //console.log('-- source base ' + sourceBase);
-                        //console.log(selectors);
-                        //console.log(affinities);
+                for (p = 0; p < posls.length; p += 1) {
+                    posl = posls[p];
+                    poslKey = Y.JSON.stringify(posl);
+                    selectors = {}; // selector:  priority modifier
+                    for (s = 0; s < posl.length; s += 1) {
+                        selectors[posl[s]] = (posl.length - s - 1) * 2;
+                    }
+                    sourceBase = posl.length * 2;
+                    //console.log('-- source base ' + sourceBase);
+                    //console.log(selectors);
+                    //console.log(affinities);
 
-                        if (!this._appResources[env]) {
-                            this._appResources[env] = {};
-                        }
-                        this._appResources[env][poslKey] =
-                            this._resolveVersions(affinities, selectors, sourceBase, [ this._appRVs ]);
+                    if (!this._appResources[env]) {
+                        this._appResources[env] = {};
+                    }
+                    this._appResources[env][poslKey] =
+                        this._resolveVersions(affinities, selectors, sourceBase, [ this._appRVs ]);
 
-                        if (!this._mojitResources[env]) {
-                            this._mojitResources[env] = {};
-                        }
-                        if (!this._mojitResources[env][poslKey]) {
-                            this._mojitResources[env][poslKey] = {};
-                        }
-                        for (type in this._mojitRVs) {
-                            if (this._mojitRVs.hasOwnProperty(type)) {
-                                ress = this._resolveVersions(affinities, selectors, sourceBase, [ this._mojitRVs.shared, this._mojitRVs[type] ]);
-                                this._mojitResources[env][poslKey][type] = ress;
-                                this.fire('mojitResourcesResolved', {
-                                    env: env,
-                                    posl: posl,
-                                    mojit: type,
-                                    ress: ress
-                                });
-                            }
+                    if (!this._mojitResources[env]) {
+                        this._mojitResources[env] = {};
+                    }
+                    if (!this._mojitResources[env][poslKey]) {
+                        this._mojitResources[env][poslKey] = {};
+                    }
+                    for (type in this._mojitRVs) {
+                        if (this._mojitRVs.hasOwnProperty(type)) {
+                            ress = this._resolveVersions(affinities, selectors, sourceBase, [ this._mojitRVs.shared, this._mojitRVs[type] ]);
+                            this._mojitResources[env][poslKey][type] = ress;
+                            this.fire('mojitResourcesResolved', {
+                                env: env,
+                                posl: posl,
+                                mojit: type,
+                                ress: ress
+                            });
                         }
                     }
                 }
@@ -1577,9 +1573,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                     },
                     pkg: pkg
                 },
-                mojit: null,
                 type: 'mojit',
-                subtype: null,
                 name: mojitType,
                 id: 'mojit--' + mojitType,
                 affinity: 'common',
@@ -1656,119 +1650,6 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 }
             }
             return out;
-        },
-
-
-        /**
-         * Generates a list of all possible context (which is a lot!).
-         * @private
-         * @method _listAllContext
-         * @return {array of objects} all possible contexts
-         */
-        _listAllContexts: function() {
-            var dims = this.config.getDimensions(),
-                nctxs,
-                c,
-                ctxs = [],
-                dn,
-                dname,
-                dnames,
-                dv,
-                dval,
-                dvals,
-                e,
-                each,
-                mod,
-                // only because we might want to change it at some point
-                // (not including it helps reduce the number of contexts)
-                SKIP_RUNTIME = true;
-
-            dims = dims[0].dimensions;
-            dims = this._flattenDims(dims);
-            dnames = Object.keys(dims);
-
-            nctxs = 1;
-            for (dn = 0; dn < dnames.length; dn += 1) {
-                dname = dnames[dn];
-                if (SKIP_RUNTIME && dname === 'runtime') {
-                    continue;
-                }
-                dvals = dims[dname];
-                if (dname !== 'runtime') {
-                    // we never have indeterminant runtime
-                    dvals.push('*');
-                }
-                nctxs *= dvals.length;
-            }
-
-            for (c = 0; c < nctxs; c += 1) {
-                ctxs[c] = {};
-            }
-            mod = 1;
-            for (dn = 0; dn < dnames.length; dn += 1) {
-                dname = dnames[dn];
-                if (SKIP_RUNTIME && dname === 'runtime') {
-                    continue;
-                }
-                dvals = dims[dname];
-                mod *= dvals.length;
-                each = nctxs / mod;
-
-                e = each;
-                dv = 0;
-                for (c = 0; c < nctxs; e -= 1, c += 1) {
-                    if (0 === e) {
-                        e = each;
-                        dv += 1;
-                        dv = dv % dvals.length;
-                    }
-                    dval = dvals[dv];
-                    if ('*' !== dval) {
-                        ctxs[c][dname] = dval;
-                    }
-                }
-            }
-            return ctxs;
-        },
-
-
-        /**
-         * Flattens dimensions so that the structure of the dimension values doesn't matter.
-         * @private
-         * @method _flattenDims
-         * @param dims {object} dimensions structure
-         * @return {object}
-         */
-        _flattenDims: function(dims) {
-            var d, dim,
-                name, out = {};
-            for (d = 0; d < dims.length; d += 1) {
-                dim = dims[d];
-                name = Object.keys(dim)[0];
-                out[name] = this._listKeys(dim[name]);
-            }
-            return out;
-        },
-
-
-        /**
-         * Recursively finds all keys for the object (plus child objects).
-         * @private
-         * @method _listKeys
-         * @param obj {object}
-         * @return {array} list of all keys in the object (no matter how deep)
-         */
-        _listKeys: function(obj) {
-            var k, keys = [];
-            for (k in obj) {
-                if (obj.hasOwnProperty(k)) {
-                    keys.push(k);
-                    if ('object' === typeof obj[k]) {
-                        keys = keys.concat(this._listKeys(obj[k]));
-                    }
-                }
-            }
-            return keys;
         },
 
 
