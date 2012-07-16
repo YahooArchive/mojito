@@ -5,37 +5,38 @@
  */
 YUI.add('mojito-ycb-tests', function(Y, NAME) {
 
-    var libycb = require(__dirname + '/../../../libs/ycb.js'),
+    var libpath = require('path'),
+        libfs = require('fs'),
+        libycb = require(libpath.join(__dirname, '../../../libs/ycb.js')),
         suite = new YUITest.TestSuite(NAME),
         A = YUITest.Assert,
-        OA = YUITest.ObjectAssert,
         AA = YUITest.ArrayAssert;
+
+
+    function readFixtureFile(file){
+        var path = libpath.join(__dirname, '../../', 'fixtures/ycb' , file);
+        var data = libfs.readFileSync(path, 'utf8');
+        return Y.JSON.parse(data);
+    }
+
 
     suite.add(new YUITest.TestCase({
 
         name: 'ycb',
 
-        setUp: function() {
+        setUp: function() {},
 
-        },
+        tearDown: function() {},
 
-        tearDown: function() {
-
-        },
 
         'test if we can use the module': function() {
-
             A.isTrue(libycb.version === '2.0.0');
         },
 
+
         'test _flattenDimension': function() {
-
             var dims = readFixtureFile('dimensions.json'),
-                flat;
-
-            flat = libycb._flattenDimension('', dims[0].dimensions[6]['lang']);
-
-            //Y.log(Y.JSON.stringify(flat,null,4));
+                flat = libycb._flattenDimension('', dims[0].dimensions[6]['lang']);
 
             A.isTrue(flat['en'] === 'en');
             A.isTrue(flat['en/en_CA'] === 'en_CA');
@@ -43,14 +44,10 @@ YUI.add('mojito-ycb-tests', function(Y, NAME) {
             A.isTrue(flat['fr/fr_FR/fr_CA'] === 'fr_CA');
         },
 
+
         'test _flattenDimensions': function() {
-
             var dims = readFixtureFile('dimensions.json'),
-                flat;
-
-            flat = libycb._flattenDimensions(dims[0].dimensions);
-
-            //Y.log(Y.JSON.stringify(flat,null,4));
+                flat = libycb._flattenDimensions(dims[0].dimensions);
 
             A.isTrue(flat['lang']['en'] === 'en');
             A.isTrue(flat['lang']['en/en_CA'] === 'en_CA');
@@ -58,57 +55,46 @@ YUI.add('mojito-ycb-tests', function(Y, NAME) {
             A.isTrue(flat['lang']['fr/fr_FR/fr_CA'] === 'fr_CA');
         },
 
-        'test _makeOrderedLookupList': function() {
 
+        'test _makeOrderedLookupList': function() {
             var dims = readFixtureFile('dimensions.json'),
                 context, list;
-
             context = {
-                    'region': 'ir',
-                    'environment': 'preproduction',
-                    'lang': 'fr_CA'
-                };
-
+                'region': 'ir',
+                'environment': 'preproduction',
+                'lang': 'fr_CA'
+            };
             list = libycb._makeOrderedLookupList(dims[0].dimensions, context);
-
-            //Y.log(Y.JSON.stringify(list,null,4));
 
             A.isTrue(list['environment'][0] === 'preproduction');
             A.isTrue(list['lang'][0] === 'fr_CA');
             A.isTrue(list['region'][0] === 'ir');
         },
 
-        'test _getLookupPath': function() {
 
+        'test _getLookupPath': function() {
             var dims = readFixtureFile('dimensions.json'),
                 context, path;
-
             context = {
-                    'region': 'ir',
-                    'environment': 'preproduction',
-                    'lang': 'fr_FR'
-                };
-
+                'region': 'ir',
+                'environment': 'preproduction',
+                'lang': 'fr_FR'
+            };
             path = libycb._getLookupPath(dims[0].dimensions, context);
-
-            //Y.log(Y.JSON.stringify(paths,null,4));
 
             A.isTrue(path === 'preproduction/*/*/*/*/*/fr_FR/ir/*/*/*');
         },
 
-        'test _getLookupPaths': function() {
 
+        'test _getLookupPaths': function() {
             var dims = readFixtureFile('dimensions.json'),
                 context, paths, expected;
-
             context = {
-                    'region': 'ir',
-                    'environment': 'preproduction',
-                    'lang': 'fr_FR'
-                };
-
+                'region': 'ir',
+                'environment': 'preproduction',
+                'lang': 'fr_FR'
+            };
             paths = libycb._getLookupPaths(dims[0].dimensions, context);
-            //Y.log(Y.JSON.stringify(paths,null,4));
 
             expected = [
                 "*/*/*/*/*/*/*/*/*/*/*",
@@ -133,59 +119,41 @@ YUI.add('mojito-ycb-tests', function(Y, NAME) {
             AA.itemsAreEqual(expected, paths);
         },
 
+
         'test _processRawBundle': function() {
-
             var bundle, ycb;
-
             bundle = readFixtureFile('dimensions.json')
                      .concat(readFixtureFile('simple-1.json')[0]);
-
-            //Y.log(Y.JSON.stringify(bundle,null,4));
-
             ycb = libycb._processRawBundle(bundle);
-
-            //Y.log(Y.JSON.stringify(ycb,null,4));
 
             A.isTrue(ycb.settings['*/*/*/*/*/*/*/*/*/*/*'].title_key === 'YRB_YAHOO');
             A.isTrue(typeof ycb.dimensions[7].region.us !== 'undefined');
         },
 
+
         'test _processRawBundle with dupe error': function() {
-
             var bundle, ycb;
-
             bundle = readFixtureFile('dimensions.json')
                      .concat(readFixtureFile('simple-1.json'))
                      .concat(readFixtureFile('simple-2.json'));
 
-            //Y.log(Y.JSON.stringify(bundle,null,4));
-
             // This should throw an error for us to trap
-            try{
+            try {
                 ycb = libycb._processRawBundle(bundle);
-            }catch(err){
+            } catch(err) {
                 A.isTrue(true);
                 return;
             }
-
-            //Y.log(Y.JSON.stringify(ycb,null,4));
-
             A.isTrue(false);
         },
 
+
         'test _processRawBundle with many settings': function() {
-
             var bundle, ycb;
-
             bundle = readFixtureFile('dimensions.json')
                      .concat(readFixtureFile('simple-1.json'))
                      .concat(readFixtureFile('simple-3.json'));
-
-            //Y.log(Y.JSON.stringify(bundle,null,4));
-
             ycb = libycb._processRawBundle(bundle);
-
-            //Y.log(Y.JSON.stringify(ycb,null,4));
 
             A.isTrue(ycb.settings['*/*/*/*/*/*/*/*/*/*/*'].title_key === 'YRB_YAHOO');
             A.isTrue(ycb.settings['*/*/*/*/*/*/*/fr/*/*/*'].links.home === 'http://fr.yahoo.com');
@@ -193,17 +161,11 @@ YUI.add('mojito-ycb-tests', function(Y, NAME) {
             A.isTrue(typeof ycb.dimensions[7].region.us !== 'undefined');
         },
 
+
         'test _applySubstitutions': function() {
-
             var config, ycb;
-
             config = readFixtureFile('substitutions.json');
-
-            //Y.log(Y.JSON.stringify(config,null,4));
-
             libycb._applySubstitutions(config);
-
-            //Y.log(Y.JSON.stringify(config,null,4));
 
             A.isTrue(config.key0.key4 === 'The value of key0.key2 is value2');
             A.isTrue(config.key5.key4 === 'The value of key0.key2 is value2');
@@ -215,43 +177,35 @@ YUI.add('mojito-ycb-tests', function(Y, NAME) {
             A.isTrue(config.key8.key4 === 'The value of key0.key2 is value2');
         },
 
+
         'test if we can use a simple config': function() {
-
             var bundle, ycb;
-
             bundle = readFixtureFile('simple-1.json');
-
             ycb = libycb.read(bundle);
-
-            //Y.log(Y.JSON.stringify(ycb,null,4));
 
             A.isTrue(ycb.title_key === 'YRB_YAHOO');
             A.isTrue(ycb.links.home === 'http://www.yahoo.com');
             A.isTrue(ycb.links.mail === 'http://mail.yahoo.com');
         },
+
 
         'test if we can use a simple config with dimensions': function() {
-
             var bundle, ycb;
-
             bundle = readFixtureFile('dimensions.json')
                      .concat(readFixtureFile('simple-1.json'));
-
             ycb = libycb.read(bundle);
 
             A.isTrue(ycb.title_key === 'YRB_YAHOO');
             A.isTrue(ycb.links.home === 'http://www.yahoo.com');
             A.isTrue(ycb.links.mail === 'http://mail.yahoo.com');
         },
+
 
         'test if we can use a simple config with dimensions and extra settings': function() {
-
             var bundle, ycb;
-
             bundle = readFixtureFile('dimensions.json')
                      .concat(readFixtureFile('simple-1.json'))
                      .concat(readFixtureFile('simple-3.json'));
-
             ycb = libycb.read(bundle);
 
             A.isTrue(ycb.title_key === 'YRB_YAHOO');
@@ -259,22 +213,18 @@ YUI.add('mojito-ycb-tests', function(Y, NAME) {
             A.isTrue(ycb.links.mail === 'http://mail.yahoo.com');
         },
 
+
         'test if we can use a simple config with dimensions and conext IR': function() {
-
             var bundle, context, ycb;
-
             bundle = readFixtureFile('dimensions.json')
                      .concat(readFixtureFile('simple-1.json'))
                      .concat(readFixtureFile('simple-3.json'));
-
             context = {
                     'region': 'ir',
                     'environment': 'preproduction',
                     'lang': 'fr_FR'
                 };
-
             ycb = libycb.read(bundle, context);
-            //Y.log(Y.JSON.stringify(ycb,null,4));
 
             A.isTrue(ycb.title_key === 'YRB_YAHOO');
             A.isTrue(ycb.logo === 'yahoo_FR.png');
@@ -282,23 +232,18 @@ YUI.add('mojito-ycb-tests', function(Y, NAME) {
             A.isTrue(ycb.links.mail === 'http://gb.mail.yahoo.com');
         },
 
+
         'test if we can use a simple config with dimensions and conext FR': function() {
-
             var bundle, context, ycb;
-
             bundle = readFixtureFile('dimensions.json')
                      .concat(readFixtureFile('simple-1.json'))
                      .concat(readFixtureFile('simple-3.json'));
-
             context = {
-                    'region': 'fr',
-                    'environment': 'preproduction',
-                    'lang': 'fr_FR'
-                };
-
+                'region': 'fr',
+                'environment': 'preproduction',
+                'lang': 'fr_FR'
+            };
             ycb = libycb.read(bundle, context);
-
-            //Y.log(Y.JSON.stringify(ycb,null,4));
 
             A.isTrue(ycb.title_key === 'YRB_YAHOO');
             A.isTrue(ycb.logo === 'yahoo_FR.png');
@@ -306,28 +251,25 @@ YUI.add('mojito-ycb-tests', function(Y, NAME) {
             A.isTrue(ycb.links.mail === 'http://fr.mail.yahoo.com');
         },
 
+
         'test if we can use a simple config with dimensions and conext GB & BT': function() {
-
             var bundle, context, ycb;
-
             bundle = readFixtureFile('dimensions.json')
                      .concat(readFixtureFile('simple-1.json'))
                      .concat(readFixtureFile('simple-3.json'));
-
             context = {
-                    'region': 'gb',
-                    'environment': 'preproduction',
-                    'flavor': 'bt'
-                };
-
+                'region': 'gb',
+                'environment': 'preproduction',
+                'flavor': 'bt'
+            };
             ycb = libycb.read(bundle, context);
-            //Y.log(Y.JSON.stringify(ycb,null,4));
 
             A.isTrue(ycb.title_key === 'YRB_YAHOO');
             A.isTrue(ycb.logo === 'yahoo_bt_GB.png');
             A.isTrue(ycb.links.home === 'http://gb.yahoo.com');
             A.isTrue(ycb.links.mail === 'http://gb.mail.yahoo.com');
         },
+
 
         'test ycb accepts falsey config values': function() {
             var bundle,
@@ -344,31 +286,21 @@ YUI.add('mojito-ycb-tests', function(Y, NAME) {
                 };
 
             bundle = readFixtureFile('dimensions.json').concat([foo]);
-
             ycb = libycb.read(bundle);
 
             A.areEqual(ycb['data-url'], foo['data-url']);
-
             A.isTrue('false_ok' in ycb);
             A.areEqual(ycb.false_ok, foo.false_ok);
-
             A.isTrue('undef' in ycb);
             A.areEqual(ycb.undef, foo.undef);
-
             A.isTrue('zero' in ycb);
             A.areEqual(ycb.zero, foo.zero);
         }
 
+
     }));
 
-    function readFixtureFile(file){
-
-        var path = require('path').join(__dirname, '../../', 'fixtures/ycb' , file),
-            data = require('fs').readFileSync(path, 'utf8');
-
-        return Y.JSON.parse(data);
-    }
 
     YUITest.TestRunner.add(suite);
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['json']});
