@@ -692,9 +692,8 @@ YUI.add('mojito-client', function(Y, NAME) {
                 command.instance, this.context, function(err, details) {
 
                     // if there is a controller in the client type details, that
-                    // means the controller exists here "cast details.controller
-                    // to Boolean" ;)
-                    var existsOnClient = Boolean(details.controller);
+                    // means the controller exists here
+                    var existsOnClient = Boolean(details['controller-module']);
 
                     command.context = my.context;
 
