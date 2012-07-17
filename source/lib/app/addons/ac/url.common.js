@@ -70,7 +70,7 @@ YUI.add('mojito-url-addon', function(Y, NAME) {
                 query = query + '?' + routeParams;
             }
 
-            url = this._getRouteMaker().make(query, verb);
+            url = this.getRouteMaker().make(query, verb);
 
             if (urlParams) {
                 urlParams = objectToQueryStr(urlParams, true);
@@ -112,14 +112,14 @@ YUI.add('mojito-url-addon', function(Y, NAME) {
                 url = url.slice(0, url.indexOf('?'));
             }
 
-            return this._getRouteMaker().find(url, verb);
+            return this.getRouteMaker().find(url, verb);
         },
 
-        _getRouteMaker: function() {
-            if (!this._maker) {
-                this._maker = new Y.mojito.RouteMaker(this.routeConfig);
+        getRouteMaker: function() {
+            if (!this.maker) {
+                this.maker = new Y.mojito.RouteMaker(this.routeConfig);
             }
-            return this._maker;
+            return this.maker;
         }
     };
 
