@@ -23,6 +23,7 @@ YUI.add('RoutingMojit', function(Y, NAME) {
     var action = ac.action;
     var path = ac.http.getRequest().url;
     if(action==="index" && path==="/"){
+      ac.url.getRouteMaker();
       name = ac.app.routes.root_route.name;
       Object.keys(ac.app.routes.root_route.verbs).forEach(function(n) {
         methods += n + ", ";
@@ -44,4 +45,4 @@ YUI.add('RoutingMojit', function(Y, NAME) {
       "methods": methods.replace(/, $/,"")
     }; 
   }
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito-url-addon']});
