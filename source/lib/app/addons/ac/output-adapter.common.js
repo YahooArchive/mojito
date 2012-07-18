@@ -189,7 +189,6 @@ YUI.add('mojito-output-adapter-addon', function(Y, NAME) {
                 (instance.id || '@' + instance.type) + '"', 'info', NAME);
 
             contentPath = mojitView['content-path'];
-
             // this is mainly used by html5app
             if (this.app.config.pathToRoot) {
                 contentPath = this.app.config.pathToRoot + contentPath;
