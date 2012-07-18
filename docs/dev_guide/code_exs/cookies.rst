@@ -15,7 +15,7 @@ This example shows how to read and write cookies in a Mojito application.
 
 The following topics will be covered:
 
-- using the `Params addon <../../api/Params.common.html>`_ from the ``actionContext`` object
+- using the `Params addon <../../api/classes/Params.common.html>`_ from the ``actionContext`` object
 - getting and setting cookies from the mojit controller
 - using the `Cookie addon <../../api/Cookie.server.html>`_ and the `YUI Cookie module <http://developer.yahoo.com/yui/3/cookie/>`_ to get and set cookies
 
