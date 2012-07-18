@@ -442,7 +442,7 @@ Views
 
     Mojito does not support Mustache partials, but you do have the following options for rendering data through a template:
       * use a child mojit instead of a view partial 
-      * render data from a binder through a specific template with the `render <../../api/Y.mojito.MojitProxy.html#method_render>`_ method. 
+      * render data from a binder through a specific template with the `render <../../api/classes/MojitProxy.html#method_render>`_ method. 
       * render data from the controller using `ac.partial.render <../../api/Y.mojito.lib.Partial.common.html#method_render>`_.     
   
     Not clear what view partials are? See `view partial <../reference/glossary.html#view-partial>`_ in the `Mojito: Glossary <../reference/glossary.html>`_.
