@@ -30,7 +30,7 @@ In the following screenshot, you see the HTML page that was rendered from the vi
    :width: 226px
 
 In Mojito applications, the controller is responsible for passing data to the view template. From the below code snippet taken from ``controller.server.js``, you see the ``index`` function 
-creating a ``data`` object and passing it to the ``done`` method. The ``done`` method called on ``ac``, the `ActionContext <../../api/Y.mojito.ActionContext.html>`_ object, sends the ``data`` object to the view template ``index.mu.html``.
+creating a ``data`` object and passing it to the ``done`` method. The ``done`` method called on ``ac``, the `ActionContext <../../api/classes/ActionContext.html>`_ object, sends the ``data`` object to the view template ``index.mu.html``.
 
 .. code-block:: javascript
 
