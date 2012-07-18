@@ -17,7 +17,7 @@ The following topics will be covered:
 
 - structuring your mojits for intercommunication
 - implementing binders for each mojit to listen to and trigger events
-- using the `Composite addon <../../api/Composite.common.html>`_ to execute code in child mojits
+- using the `Composite addon <../../api/classes/Composite.common.html>`_ to execute code in child mojits
 
 Implementation Notes
 ####################
