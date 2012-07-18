@@ -98,7 +98,9 @@ YUI({
         "test invoke without options": function () {
             var mojitProxyConfig = this.mojitProxyConfig,
                 mojitProxy = this.mojitProxy;
+
             mojitProxy._client = Y.Mock();
+            mojitProxy.query = {}; // Avoid window calls
 
             Y.Mock.expect(mojitProxy._client, {
                 method: 'executeAction',
@@ -121,7 +123,9 @@ YUI({
         "test invoke with options": function () {
             var mojitProxy = this.mojitProxy,
                 mojitProxyConfig = this.mojitProxyConfig;
+
             mojitProxy._client = Y.Mock();
+            mojitProxy.query = {}; // Avoid window calls
 
             Y.Mock.expect(mojitProxy._client, {
                 method: 'executeAction',

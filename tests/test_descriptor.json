@@ -4,7 +4,7 @@
 
         "name" : "unit",
 
-        "commonlib" : "../source/lib/app/autoload/mojito.common.js,../source/lib/app/autoload/perf.server.js,../source/lib/app/autoload/mojit-proxy.client.js,../source/lib/app/autoload/util.common.js",
+        "commonlib" : "../source/lib/app/autoload/mojito.common.js,../source/lib/app/autoload/perf.server.js,../source/lib/app/autoload/util.common.js",
 
         "config" :{
             "baseUrl" : "http://localhost:4459",
@@ -15,6 +15,7 @@
 
             "mojit-proxy" : {
                 "params" : {
+                    "lib" : "../source/lib/app/autoload/mojit-proxy.client.js",
                     "test" : "./unit/app/autoload/mojit-proxy-tests.client.js"
                 },
                 "group" : "unit"
