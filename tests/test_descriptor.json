@@ -1,0 +1,31 @@
+[
+    {
+        "settings": [ "master" ],
+
+        "name" : "unit",
+
+        "commonlib" : "../source/lib/app/autoload/mojito.common.js,../source/lib/app/autoload/perf.server.js,../source/lib/app/autoload/mojit-proxy.client.js,../source/lib/app/autoload/util.common.js",
+
+        "config" :{
+            "baseUrl" : "http://localhost:4459",
+            "defaultAppSeed": "http://yui.yahooapis.com/3.5.1/build/yui/yui-min.js"
+        },
+
+        "dataprovider" : {
+
+            "mojit-proxy" : {
+                "params" : {
+                    "test" : "./unit/app/autoload/mojit-proxy-tests.client.js"
+                },
+                "group" : "unit"
+            }
+
+        }
+
+    },
+
+    {
+        "settings": [ "environment:development" ]
+    }
+
+]
