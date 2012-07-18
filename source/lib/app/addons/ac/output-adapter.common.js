@@ -191,9 +191,14 @@ YUI.add('mojito-output-adapter-addon', function(Y, NAME) {
             contentPath = mojitView['content-path'];
 
             /*
-             * This is mainly used by html5app?
+             * This is mainly used by the build step "html5app" (is this true)?
              *
              * Only apply the "pathToRoot" if the "contentPath" is not relative.
+             * This is tested by checking if the first char of "contentPath" is
+             * a period i.e.
+             * 
+             *  ./path/to/template.mu.html
+             *  ../path/to/template.hb.html
              */
             if (this.app.config.pathToRoot && contentPath[0] !== '.') {
                 contentPath = this.app.config.pathToRoot + contentPath;
