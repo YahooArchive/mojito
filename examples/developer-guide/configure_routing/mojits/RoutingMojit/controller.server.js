@@ -22,8 +22,8 @@ YUI.add('RoutingMojit', function(Y, NAME) {
     var name=""; 
     var action = ac.action;
     var path = ac.http.getRequest().url;
+    ac.url.getRouteMaker();
     if(action==="index" && path==="/"){
-      ac.url.getRouteMaker();
       name = ac.app.routes.root_route.name;
       Object.keys(ac.app.routes.root_route.verbs).forEach(function(n) {
         methods += n + ", ";
