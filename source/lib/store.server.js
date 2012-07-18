@@ -801,7 +801,7 @@ ServerStore.prototype = {
      * Returns the YUI configuration object which tells YUI about the
      * YUI modules in the application (which aren't part of a mojit).
      *
-     * @method getYiConfigApp
+     * @method getYuiConfigApp
      * @param env {string} "client" or "server"
      * @param ctx {object} runtime context for YUI configuration
      * @return {object} YUI configuration for the app-level modules
