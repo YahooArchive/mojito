@@ -85,7 +85,7 @@ YUI.add('mojito-resource-store-adapter', function(Y, NAME) {
                 // Here we get either the a spec or a type
                 source.func(env, source.name, context, function(err, data) {
                     if (err) {
-                        callback(err);
+                        callback(err, {});
                         return;
                     }
 
@@ -104,8 +104,8 @@ YUI.add('mojito-resource-store-adapter', function(Y, NAME) {
                     if (!my.validate(base)) {
                         callback({
                             message: 'Instance was not valid.',
-                            stack: JSON.stringify(base, null, 4)
-                        });
+                            stack: Y.JSON.stringify(base, null, 4)
+                        }, {});
                         return;
                     }
 
