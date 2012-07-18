@@ -199,7 +199,6 @@ YUI.add('mojito-output-adapter-addon', function(Y, NAME) {
                 contentPath = this.app.config.pathToRoot + contentPath;
             }
 
-
             renderer = new Y.mojito.ViewRenderer(
                 mojitView.engine,
                 meta.view.id
