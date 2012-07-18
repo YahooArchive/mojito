@@ -26,7 +26,7 @@ the two methods do have some distinct differences, which are discussed in `Shoul
 ac.composite.execute
 --------------------
 
-The `Composite addon <../../api/Composite.common.html>`_ includes the ``execute`` method that allows parents to run  
+The `Composite addon <../../api/classes/Composite.common.html>`_ includes the ``execute`` method that allows parents to run  
 one or more dynamically defined children mojits by passing the ``children`` object. The ``execute`` method is different than the ``done`` method
 of the ``Composite`` addon in that the ``done`` method runs child mojit instances that are defined in ``application.json``.
 See `Composite Mojits <./mojito_composite_mojits.html>`_ to learn how to use the ``done`` method of the ``Composite`` addon.
