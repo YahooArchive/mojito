@@ -13,23 +13,25 @@
  * Test suite for the mojito-client.client.js file functionality.
  */
 YUI({useBrowserConsole: true}).use(
-    'mojito-client', 'test', function(Y, NAME) {
+    'mojito-client',
+    'test',
+    function(Y, NAME) {
 
-    var suite = new Y.Test.Suite("mojito-client.client tests");
-    var A = Y.Assert;
+        var suite = new Y.Test.Suite("mojito-client.client tests"),
+            A = Y.Assert;
 
-    suite.add(new Y.Test.Case({
+        suite.add(new Y.Test.Case({
 
-        setUp: function() {
-            this.mojitoClient = new Y.mojito.Client();
-        },
+            setUp: function() {
+                this.mojitoClient = new Y.mojito.Client();
+            },
 
-        "test constructor": function() {
-            var client = this.mojitoClient;
-            A.isObject(client);
-        }
+            "test constructor": function() {
+                var client = this.mojitoClient;
+                A.isObject(client);
+            }
+        }));
 
-    }));
-
-    Y.Test.Runner.add(suite);
-});
+        Y.Test.Runner.add(suite);
+    }
+);
