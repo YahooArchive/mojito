@@ -41,6 +41,25 @@ Screencasts/Videos
 | ://video.yahoo.com/yahoonet-24189541/yodel-2469732     | enhancement                                            | application locally, to the cloud, and to a mobile     |                                                        |
 | 8/cocktails-in-action-27127763.html>`_                 |                                                        | device.                                                |                                                        |
 +--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+
+| `Expanding Yahoo! Axis Across 3 Screens <http://www.yo | Axis, Cocktails, YUI, Mojito, Shaker, Node.js,         | The talk covers the Mojito-based implementation of     | Caridy Patino                                          |
+| utube.com/watch?v=oNki-D0lCsM&list=UUTHcgWOTU6gPje1g_U | Express, HTML5, optimization, adaptation, multiple     | Axis, the "Reuse-Reduce-Replace" software philosophy,  |                                                        |
+| 29tfQ&index=1&feature=plcp>`_                          | runtimes, application context, device connectivity     | and the notions of optimization and adaptation.        |                                                        |
++--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+
+| `YUI Open Hours: Yahoo! Axis: Mojito <http://www.youtu | Mojito, YUI plugins,  code reuse,                      | Yahoo! engineers Caridy Patiño and Eugene Kashida      | Caridy Patino, Eugene Kashida                          |
+| be.com/watch?v=vIvFbJo1Fj8&list=UUTHcgWOTU6gPje1g_U29t | Y.CL (communication layer)                             | discuss what Y! Axis is and the architecture decisions |                                                        |
+| fQ&index=5&feature=plc>`_                              |                                                        | that were made, such as hybrid vs native vs web.       |                                                        |
++--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+
+| `YUI Open Hours: Yahoo! Axis Part 2: Mojito <http://ww | Mojito, app/routing/context configurations, models,    | Yahoo! engineer Caridy Patiño discusses how Y! Axis    | Caridy Patino                                          |
+| w.youtube.com/watch?v=1T5KMozs6Sc&list=UUTHcgWOTU6gPj  | binders, dimensions                                    | uses some of the advanced configuration features of    |                                                        |
+| e1g_U29tfQ&index=4&feature=plcp>`_                     |                                                        | Mojito.                                                |                                                        |
++--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+
+| `YUI Open Hours: Mojito <http://www.youtube.com/watch? | Mojito, YUI, YQL, mojits, assets, Shaker, affinities,  | Yahoo! engineers Fabian Frank and Diego Ferreiro show  | Fabian Frank, Diego Ferreiro                           |
+| v=Odn3uXahSfs&list=UUTHcgWOTU6gPje1g_U29tfQ&index=2    | app/routing configuration, deploying app to client,    | how to get started using Mojito and create a basic     |                                                        |
+| &feature=plcp>`_                                       | ActionContext object, mojitProxy object, binders       | Mojito app.                                            |                                                        |
+|                                                        | testing, JSLint, creating documentation                |                                                        |                                                        |
++--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+
+
+
 
 
 Community
