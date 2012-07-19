@@ -33,21 +33,14 @@ YUI.add('addon-rs-selector', function(Y, NAME) {
         initializer: function(config) {
             var dims,
                 json;
-            this.rs = config.host;
             this.appRoot = config.appRoot;
             this.mojitoRoot = config.mojitoRoot;
 
-            dims = this.rs.config.getDimensions();
-            json = this.rs.config.readConfigJSON(libpath.join(this.appRoot, 'application.json'));
+            dims = config.host.config.getDimensions();
+            json = config.host.config.readConfigJSON(libpath.join(this.appRoot, 'application.json'));
             json = dims.concat(json);
             // TODO:  use rs.config for this too
             this._appConfigYCB = new libycb.Ycb(json);
-        },
-
-
-        destructor: function() {
-            // TODO:  needed to break cycle so we don't leak memory?
-            this.rs = null;
         },
 
 
@@ -80,12 +73,13 @@ YUI.add('addon-rs-selector', function(Y, NAME) {
          * @return {array} priority-ordered selector list
          */
         getPOSLFromContext: function(ctx) {
-            var sels = ['*'],
+            var store = this.get('host'),
+                sels = ['*'],
                 p,
                 part,
                 parts;
 
-            if (!this.rs.isValidContext(ctx)) {
+            if (!store.isValidContext(ctx)) {
                 throw new Error('INVALID context ' + Y.JSON.stringify(ctx));
             }
 
@@ -93,7 +87,7 @@ YUI.add('addon-rs-selector', function(Y, NAME) {
             parts = this._appConfigYCB.readNoMerge(ctx, {});
             for (p = 0; p < parts.length; p += 1) {
                 part = parts[p];
-                if (part.selector && this.rs.selectors[part.selector]) {
+                if (part.selector && store.selectors[part.selector]) {
                     sels.unshift(part.selector);
                 }
             }

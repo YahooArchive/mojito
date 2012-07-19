@@ -35,7 +35,6 @@ YUI.add('addon-rs-config', function(Y, NAME) {
     Y.extend(RSAddonConfig, Y.Plugin.Base, {
 
         initializer: function(config) {
-            this.rs = config.host;
             this.appRoot = config.appRoot;
             this.mojitoRoot = config.mojitoRoot;
             this.afterHostMethod('findResourceVersionByConvention', this.findResourceVersionByConvention, this);
@@ -47,18 +46,12 @@ YUI.add('addon-rs-config', function(Y, NAME) {
         },
 
 
-        destructor: function() {
-            // TODO:  needed to break cycle so we don't leak memory?
-            this.rs = null;
-        },
-
-
         /**
          * @method getDimensions
          * @return {object} the YCB dimensions structure for the app
          */
         getDimensions: function() {
-            return this.rs.cloneObj(this._ycbDims);
+            return this.get('host').cloneObj(this._ycbDims);
         },
 
 
@@ -85,7 +78,7 @@ YUI.add('addon-rs-config', function(Y, NAME) {
                 }
                 this._jsonCache[fullPath] = json;
             }
-            return this.rs.cloneObj(json);
+            return this.get('host').cloneObj(json);
         },
 
 
@@ -98,15 +91,16 @@ YUI.add('addon-rs-config', function(Y, NAME) {
          */
         // TODO:  async interface
         readConfigYCB: function(fullPath, ctx) {
-            var cacheKey,
+            var store = this.get('host'),
+                cacheKey,
                 json,
                 ycb;
 
-            if (!this.rs.isValidContext(ctx)) {
+            if (!store.isValidContext(ctx)) {
                 throw new Error('INVALID context ' + Y.JSON.stringify(ctx));
             }
 
-            ctx = this.rs.mergeRecursive(this.rs.getStaticContext(), ctx);
+            ctx = store.mergeRecursive(store.getStaticContext(), ctx);
 
             ycb = this._ycbCache[fullPath];
             if (!ycb) {

@@ -31,13 +31,12 @@ YUI.add('addon-rs-url', function(Y, NAME) {
 
         initializer: function(config) {
             var appConfig;
-            this.rs = config.host;
             this.appRoot = config.appRoot;
             this.mojitoRoot = config.mojitoRoot;
             this.afterHostMethod('preloadResourceVersions', this.preloadResourceVersions, this);
             this.onHostEvent('getMojitTypeDetails', this.getMojitTypeDetails, this);
 
-            appConfig = this.rs.getStaticAppConfig();
+            appConfig = config.host.getStaticAppConfig();
             this.config = appConfig.staticHandling || {};
             this.config.appName = this.config.appName || libpath.basename(this.appRoot);
             this.config.frameworkName = this.config.frameworkName || 'mojito';
@@ -49,12 +48,6 @@ YUI.add('addon-rs-url', function(Y, NAME) {
         },
 
 
-        destructor: function() {
-            // TODO:  needed to break cycle so we don't leak memory?
-            this.rs = null;
-        },
-
-
         /**
          * Using AOP, this is called after the ResourceStore's version.
          * It computes the static handler URL for all resources in all the
@@ -62,7 +55,8 @@ YUI.add('addon-rs-url', function(Y, NAME) {
          * @method preloadResourceVersions
          */
         preloadResourceVersions: function() {
-            var mojits,
+            var store = this.get('host'),
+                mojits,
                 m,
                 mojit,
                 mojitRes,
@@ -73,11 +67,11 @@ YUI.add('addon-rs-url', function(Y, NAME) {
                 res,
                 skip;
 
-            mojits = this.rs.listAllMojits();
+            mojits = store.listAllMojits();
             mojits.push('shared');
             for (m = 0; m < mojits.length; m += 1) {
                 mojit = mojits[m];
-                mojitRes = this.rs.getResourceVersions({id: 'mojit--' + mojit})[0];
+                mojitRes = store.getResourceVersions({id: 'mojit--' + mojit})[0];
                 if (mojitRes) {
                     this._calcResourceURL(mojitRes, mojitRes);
                 }
@@ -88,7 +82,7 @@ YUI.add('addon-rs-url', function(Y, NAME) {
                 // preload JSON specs for specific mojits during the compile step
                 // (`mojito compile json`) for Livestand.
                 if ('shared' !== mojit && 'mojito' === mojitRes.source.pkg.name) {
-                    mojitControllerRess = this.rs.getResourceVersions({mojit: mojit, id: 'controller--controller'});
+                    mojitControllerRess = store.getResourceVersions({mojit: mojit, id: 'controller--controller'});
                     if (mojitControllerRess.length === 1 &&
                             mojitControllerRess[0].affinity.affinity === 'server') {
                         continue;
@@ -97,10 +91,10 @@ YUI.add('addon-rs-url', function(Y, NAME) {
 
                 if (mojitRes) {
                     packageJson = libpath.join(mojitRes.source.fs.fullPath, 'package.json');
-                    packageJson = this.rs.config.readConfigJSON(packageJson);
+                    packageJson = store.config.readConfigJSON(packageJson);
                 }
 
-                ress = this.rs.getResourceVersions({mojit: mojit});
+                ress = store.getResourceVersions({mojit: mojit});
                 for (r = 0; r < ress.length; r += 1) {
                     res = ress[r];
 
@@ -137,7 +131,7 @@ YUI.add('addon-rs-url', function(Y, NAME) {
          * @param evt {object}
          */
         getMojitTypeDetails: function(evt) {
-            var ress = this.rs.getResources(evt.args.env, evt.args.ctx, {type: 'mojit', name: evt.args.mojitType});
+            var ress = this.get('host').getResources(evt.args.env, evt.args.ctx, {type: 'mojit', name: evt.args.mojitType});
             evt.mojit.assetsRoot = ress[0].url + '/assets';
         },
 

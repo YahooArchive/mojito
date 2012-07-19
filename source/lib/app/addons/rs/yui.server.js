@@ -32,7 +32,6 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
     Y.extend(RSAddonYUI, Y.Plugin.Base, {
 
         initializer: function(config) {
-            this.rs = config.host;
             this.appRoot = config.appRoot;
             this.mojitoRoot = config.mojitoRoot;
             this.afterHostMethod('findResourceVersionByConvention', this.findResourceVersionByConvention, this);
@@ -40,7 +39,7 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
             this.beforeHostMethod('addResourceVersion', this.addResourceVersion, this);
             this.onHostEvent('getMojitTypeDetails', this.getMojitTypeDetails, this);
             this.onHostEvent('mojitResourcesResolved', this.mojitResourcesResolved, this);
-            this.yuiConfig = this.rs.getStaticAppConfig().yui;
+            this.yuiConfig = config.host.getStaticAppConfig().yui;
 
             this.modules = {};          // env: poslKey: module: details
             this.sortedModules = {};    // env: poslKey: lang: module: details
@@ -50,12 +49,6 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
             if (!this.usePrecomputed) {
                 this.useOnDemand = true;
             }
-        },
-
-
-        destructor: function() {
-            // TODO:  needed to break cycle so we don't leak memory?
-            this.rs = null;
         },
 
 
@@ -72,7 +65,7 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
                 res,
                 ress,
                 modules = {};
-            ress = this.rs.getResources(env, ctx, { mojit: 'shared' });
+            ress = this.get('host').getResources(env, ctx, { mojit: 'shared' });
             for (r = 0; r < ress.length; r += 1) {
                 res = ress[r];
                 if (!res.yui || !res.yui.name) {
@@ -106,7 +99,7 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
                 res,
                 ress,
                 modules = {};
-            ress = this.rs.getResources(env, ctx, { mojit: 'shared' });
+            ress = this.get('host').getResources(env, ctx, { mojit: 'shared' });
             for (r = 0; r < ress.length; r += 1) {
                 res = ress[r];
                 if (!res.yui || !res.yui.name) {
@@ -136,17 +129,18 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
          * @return {object} datastructure for configuring YUI
          */
         getConfigAllMojits: function(env, ctx) {
-            var m,
+            var store = this.get('host'),
+                m,
                 mojit,
                 mojits,
                 r,
                 res,
                 ress,
                 modules = {};
-            mojits = this.rs.listAllMojits();
+            mojits = store.listAllMojits();
             for (m = 0; m < mojits.length; m += 1) {
                 mojit = mojits[m];
-                ress = this.rs.getResources(env, ctx, { mojit: mojit });
+                ress = store.getResources(env, ctx, { mojit: mojit });
                 for (r = 0; r < ress.length; r += 1) {
                     res = ress[r];
                     if (!res.yui || !res.yui.name) {
@@ -302,7 +296,8 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
          * @param evt {object}
          */
         getMojitTypeDetails: function(evt) {
-            var dest = evt.mojit,
+            var store = this.get('host'),
+                dest = evt.mojit,
                 env = evt.args.env,
                 ctx = evt.args.ctx,
                 posl = evt.args.posl,
@@ -325,7 +320,7 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
                 dest.yui.config.modules = this.modules[env][poslKey][mojitType];
             }
 
-            ress = this.rs.getResources(evt.args.env, evt.args.ctx, {mojit: mojitType});
+            ress = store.getResources(evt.args.env, evt.args.ctx, {mojit: mojitType});
             for (r = 0; r < ress.length; r += 1) {
                 res = ress[r];
                 if (res.type === 'binder') {
@@ -335,7 +330,7 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
                     dest.views[res.name]['binder-module'] = res.yui.name;
                     sorted = this._getYUISorted('client', poslKey, ctx.lang, res.yui.name);
                     if (sorted && sorted.paths) {
-                        dest.views[res.name]['binder-yui-sorted'] = this.rs.cloneObj(sorted.paths);
+                        dest.views[res.name]['binder-yui-sorted'] = store.cloneObj(sorted.paths);
                     }
                 }
                 if (res.type === 'controller') {
@@ -345,7 +340,7 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
                         dest.yui.sorted = sorted.sorted.slice();
                     }
                     if (this.usePrecomputed && sorted && sorted.paths) {
-                        dest.yui.sortedPaths = this.rs.cloneObj(sorted.paths);
+                        dest.yui.sortedPaths = store.cloneObj(sorted.paths);
                     }
                 }
             }
@@ -422,7 +417,7 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
             if (!this.modules[env][poslKey]) {
                 this.modules[env][poslKey] = {};
             }
-            this.modules[env][poslKey][mojit] = this.rs.cloneObj(modules);
+            this.modules[env][poslKey][mojit] = this.get('host').cloneObj(modules);
 
             // we always want to do calculations for no-lang
             if (!langs['']) {
