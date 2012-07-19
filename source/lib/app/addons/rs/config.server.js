@@ -96,11 +96,11 @@ YUI.add('addon-rs-config', function(Y, NAME) {
                 json,
                 ycb;
 
+            ctx = store.mergeRecursive(store.getStaticContext(), ctx);
+
             if (!store.isValidContext(ctx)) {
                 throw new Error('INVALID context ' + Y.JSON.stringify(ctx));
             }
-
-            ctx = store.mergeRecursive(store.getStaticContext(), ctx);
 
             ycb = this._ycbCache[fullPath];
             if (!ycb) {

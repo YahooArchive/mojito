@@ -195,12 +195,12 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             });
             this.plug(Y.mojito.addons.rs.config, { appRoot: this._config.root, mojitoRoot: this._config.mojitoRoot });
 
-            this._fwConfig = this.config.readConfigJSON(this._libs.path.join(this._config.mojitoRoot, 'config.json'));
-            this._appConfigStatic = this.getAppConfig({});
             this._validDims = this._parseValidDims(this.config.getDimensions());
             if (!this.isValidContext(this._config.context)) {
                 throw new Error('INVALID context ' + Y.JSON.stringify(this._config.context));
             }
+            this._fwConfig = this.config.readConfigJSON(this._libs.path.join(this._config.mojitoRoot, 'config.json'));
+            this._appConfigStatic = this.getAppConfig({});
         },
         destructor: function() {},
 
@@ -1377,9 +1377,12 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             }
             for (d = 0; d < dims[0].dimensions.length; d += 1) {
                 dim = dims[0].dimensions[d];
-                dimName = Object.keys(dim)[0];
-                out[dimName] = {};
-                grabKeys(dimName, dim[dimName]);
+                for (dimName in dim) {
+                    if (dim.hasOwnProperty(dimName)) {
+                        out[dimName] = {};
+                        grabKeys(dimName, dim[dimName]);
+                    }
+                }
             }
             return out;
         },
