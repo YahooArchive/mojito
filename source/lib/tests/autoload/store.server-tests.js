@@ -56,13 +56,59 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
         },
 
         'valid context': function() {
-            A.isTrue(store.isValidContext({}), '{} should be valid');
-            A.isTrue(store.isValidContext({device:'iphone'}), '{device:iphone} should be valid');
-            A.isTrue(store.isValidContext({device:'iphone',lang:'en'}), '{device:iphone,lang:en} should be valid');
-            A.isTrue(store.isValidContext({device:'iphone',runtime:'common'}), '{device:iphone,runtime:common} should be valid');
-            A.isFalse(store.isValidContext({device:'blender'}), '{device:blender} should be invalid');
-            A.isFalse(store.isValidContext({device:'iphone',texture:'corrugated'}), '{device:iphone,texture:corrugated} should be invalid');
-            A.isFalse(store.isValidContext({device:'iphone',runtime:'kite'}), '{device:iphone,runtime:kite} should be invalid');
+            var success;
+
+            try {
+                store.validateContext({});
+            } catch(e) {
+                A.fail('{} should be valid');
+            }
+
+            try {
+                store.validateContext({device:'iphone'});
+            } catch(e) {
+                A.fail('{device:iphone} should be valid');
+            }
+
+            try {
+                store.validateContext({device:'iphone',lang:'en'});
+            } catch(e) {
+                A.fail('{device:iphone,lang:en} should be valid');
+            }
+
+            try {
+                store.validateContext({device:'iphone',runtime:'common'});
+            } catch(e) {
+                A.fail('{device:iphone,runtime:common} should be valid');
+            }
+
+            try {
+                success = undefined;
+                store.validateContext({device:'blender'});
+                success = true;
+            } catch(e) {
+                success = false;
+            }
+            A.isFalse(success, '{device:blender} should be invalid');
+
+            try {
+                success = undefined;
+                store.validateContext({device:'iphone',texture:'corrugated'});
+                success = true;
+            } catch(e) {
+                success = false;
+            }
+            A.isFalse(success, '{device:iphone,texture:corrugated} should be invalid');
+
+            try {
+                success = undefined;
+                store.validateContext({device:'iphone',runtime:'kite'});
+                success = true;
+            } catch(e) {
+                success = false;
+            }
+            A.isFalse(success, '{device:iphone,runtime:kite} should be invalid');
+
         },
 
         'server app config value': function() {

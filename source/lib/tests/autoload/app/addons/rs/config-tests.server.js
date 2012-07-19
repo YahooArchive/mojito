@@ -25,8 +25,7 @@ YUI.add('mojito-addon-rs-config-tests', function(Y, NAME) {
             this._config = cfg || {};
         },
 
-        isValidContext: function() {
-            return true;
+        validateContext: function() {
         },
 
         cloneObj: function(o) {

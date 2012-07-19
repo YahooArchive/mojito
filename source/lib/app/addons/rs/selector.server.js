@@ -79,9 +79,7 @@ YUI.add('addon-rs-selector', function(Y, NAME) {
                 part,
                 parts;
 
-            if (!store.isValidContext(ctx)) {
-                throw new Error('INVALID context ' + Y.JSON.stringify(ctx));
-            }
+            store.validateContext(ctx);
 
             // TODO:  use rs.config for this too
             parts = this._appConfigYCB.readNoMerge(ctx, {});

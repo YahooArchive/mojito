@@ -27,7 +27,7 @@ YUI.add('mojito-addon-rs-selector-tests', function(Y, NAME) {
                 '*': true
             };
         },
-        isValidContext: function() { return true; },
+        validateContext: function() {},
         cloneObj: function(o) {
             return Y.clone(o);
         }

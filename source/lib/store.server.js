@@ -196,9 +196,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             this.plug(Y.mojito.addons.rs.config, { appRoot: this._config.root, mojitoRoot: this._config.mojitoRoot });
 
             this._validDims = this._parseValidDims(this.config.getDimensions());
-            if (!this.isValidContext(this._config.context)) {
-                throw new Error('INVALID context ' + Y.JSON.stringify(this._config.context));
-            }
+            this.validateContext(this._config.context);
             this._fwConfig = this.config.readConfigJSON(this._libs.path.join(this._config.mojitoRoot, 'config.json'));
             this._appConfigStatic = this.getAppConfig({});
         },
@@ -210,16 +208,27 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
 
 
         /**
-         * @method isValidContext
+         * Validates the context, and throws an exception if it isn't.
+         * @method validateContext
          * @param ctx {object} the context
-         * @return {boolean} whether context is valid according to dimensions.json or not
+         * @return {nothing} if this method returns at all then the context is valid
          */
-        isValidContext: function(ctx) {
+        validateContext: function(ctx) {
             var k;
             for (k in ctx) {
                 if (ctx.hasOwnProperty(k)) {
-                    if (!this._validDims[k] || !this._validDims[k][ctx[k]]) {
-                        return false;
+                    if (!ctx[k]) {
+                        continue;
+                    }
+                    if ('langs' === k) {
+                        // pseudo-context variable created by our middleware
+                        continue;
+                    }
+                    if (!this._validDims[k]) {
+                        throw new Error('INVALID dimension key "' + k + '"');
+                    }
+                    if (!this._validDims[k][ctx[k]]) {
+                        throw new Error('INVALID dimension value "' + ctx[k] + '" for key "' + k + '"');
                     }
                 }
             }
@@ -267,9 +276,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             var appConfig,
                 ycb;
 
-            if (!this.isValidContext(ctx)) {
-                throw new Error('INVALID context ' + Y.JSON.stringify(ctx));
-            }
+            this.validateContext(ctx);
 
             if (this._appConfigStatic && (!ctx || !Object.keys(ctx).length)) {
                 return this.cloneObj(this._appConfigStatic);
@@ -368,9 +375,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 k,
                 use;
 
-            if (!this.isValidContext(ctx)) {
-                throw new Error('INVALID context ' + Y.JSON.stringify(ctx));
-            }
+            this.validateContext(ctx);
 
             posl = JSON.stringify(this.selector.getPOSLFromContext(ctx));
             if (filter.mojit) {
@@ -506,9 +511,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 typeDetails,
                 config;
 
-            if (!this.isValidContext(ctx)) {
-                throw new Error('INVALID context ' + Y.JSON.stringify(ctx));
-            }
+            this.validateContext(ctx);
 
             if (cacheValue) {
                 cb(null, this.cloneObj(cacheValue));
@@ -583,9 +586,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 ctxKey,
                 module;
 
-            if (!this.isValidContext(ctx)) {
-                throw new Error('INVALID context ' + Y.JSON.stringify(ctx));
-            }
+            this.validateContext(ctx);
 
             if ('shared' === mojitType) {
                 throw new Error('Mojit name "shared" is special and isn\'t a real mojit.');
