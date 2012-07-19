@@ -15,7 +15,7 @@ This example shows how to access query parameters from the URL, the POST body, a
 
 The following topics will be covered:
 
-- using the `Params addon <../../api/Params.common.html>`_ to access parameters
+- using the `Params addon <../../api/classes/Params.common.html>`_ to access parameters
 - setting and getting parameters from your route configuration
 
 Implementation Notes
@@ -169,7 +169,7 @@ return the value "routing" from the parameters set in the ``routes.json`` shown 
      }
    ...
 
-For more information, see the `Params addon <../../api/Params.common.html>`_ in the Mojito API documentation.
+For more information, see the `Params addon <../../api/classes/Params.common.html>`_ in the Mojito API documentation.
 
 Setting Up this Example
 #######################

@@ -215,7 +215,7 @@ General
 
     Yes, the Mojito API has the ``ActionContext`` addon ``Http.server`` that has methods for getting the ``request`` and ``response`` instances of the 
     Node.js classes ``http.ServerRequest`` and ``http.ServerResponse``. From the ``ActionContext`` object ``ac`` shown below, you call 
-    ``http.getRequest`` and ``http.getResponse`` to get the ``request`` and ``response`` instances. See `Class Http.server <../../api/Http.server.html>`_
+    ``http.getRequest`` and ``http.getResponse`` to get the ``request`` and ``response`` instances. See `Class Http.server <../../api/classes/Http.server.html>`_
     for more information.
     
     .. code-block:: javascript
@@ -230,7 +230,7 @@ General
 .. topic:: **Is it possible to access HTTP headers from a Mojito application?**
 
     Yes, the Mojito API has the ``ActionContext`` addon ``Http.server`` that allows you to get, set, and add HTTP headers. See 
-    `Class Http.server <../../api/Http.server.html>`_ for the available methods.
+    `Class Http.server <../../api/classes/Http.server.html>`_ for the available methods.
   
 
 Mojits
@@ -248,7 +248,7 @@ Mojits
 .. topic:: **Can mojits have child mojits?** 
 
     Yes, you can configure your application to have mojits that have one or more child mojits. The parent mojit can execute the child
-    mojits using the `Composite addon <../../api/Composite.common.html>`_. See `Configuring Applications to Have Multiple Mojit <../topics/intro/mojito_configuring.html#configuring-applications-to-have-multiple-mojits>`_ 
+    mojits using the `Composite addon <../../api/classes/Composite.common.html>`_. See `Configuring Applications to Have Multiple Mojit <../intro/mojito_configuring.html#configuring-applications-to-have-multiple-mojits>`_ 
     and `Composite Mojits <../topics/mojito_composite_mojits.html#composite-mojits>`_. 
 
     You can also use framework mojits, such as `HTMLFrameMojit <../topics/mojito_framework_mojits.html#htmlframemojit>`_ that can execute one or more child mojits.       
@@ -394,10 +394,10 @@ Data
 
     Currently the only way to do this is to pass data to the children in either the children config or parameters.
     If you use ``ac.composite.execute`` you can create/modify the children configuration in code before calling ``ac.composite.execute`` .
-    See `ac.composite.execute <../../api/Composite.common.html#method_execute>`_ for more information.
+    See `ac.composite.execute <../../api/classes/Composite.common.html#method_execute>`_ for more information.
 
     If you want to pass the data to the children in the parameters, you can do that with the ``ac._dispatch`` function.
-    See `ac._dispatch <../../api/ActionContext.html#method_dispatch>`_ for more information.
+    See `ac._dispatch <../../api/classes/ActionContext.html#method__dispatch>`_ for more information.
 
 Binders
 -------
@@ -422,7 +422,7 @@ CSS/JavaScript Assets
 
     You define the location of application-level or mojit-level assets in the ``application.json`` file. Once the location 
     of your assets has been configured, you can statically add the path to the assets in your view template. You can
-    also add assets to your view using the `Assets addon <../../api/Assets.common.html>`_ if your application is using the ``HTMLFrameMojit``.
+    also add assets to your view using the `Assets addon <../../api/classes/Assets.common.html>`_ if your application is using the ``HTMLFrameMojit``.
     See the `Assets <../topics/mojito_assets.html>`_ documentation for implementation details.
     
 ------------
@@ -430,7 +430,7 @@ CSS/JavaScript Assets
 .. _moj_dyn_assets:
 .. topic:: **How are assets dynamically added to views?**
 
-    The `Assets addon <../../api/Assets.common.html>`_ allow you to dynamically add to your view. You need to use the ``HTMLFrameMojit``, however,
+    The `Assets addon <../../api/classes/Assets.common.html>`_ allow you to dynamically add to your view. You need to use the ``HTMLFrameMojit``, however,
     to use the ``Assets addon``. See `Using the Assets Addon <../topics/mojito_assets.html#using-the-assets-addon>`_ for more information.
 
 
@@ -442,8 +442,8 @@ Views
 
     Mojito does not support Mustache partials, but you do have the following options for rendering data through a template:
       * use a child mojit instead of a view partial 
-      * render data from a binder through a specific template with the `render <../../api/Y.mojito.MojitProxy.html#method_render>`_ method. 
-      * render data from the controller using `ac.partial.render <../../api/Y.mojito.lib.Partial.common.html#method_render>`_.     
+      * render data from a binder through a specific template with the `render <../../api/classes/MojitProxy.html#method_render>`_ method. 
+      * render data from the controller using `ac.partial.render <../../api/classes/Partial.common.html#method_render`_.     
   
     Not clear what view partials are? See `view partial <../reference/glossary.html#view-partial>`_ in the `Mojito: Glossary <../reference/glossary.html>`_.
 
@@ -467,7 +467,7 @@ Views
     To refresh a view, you need to deploy a binder on the client. From the ``mojitProxy`` object of the binder, you can call the ``refreshView`` method to render 
     a new DOM node for the current mojit and its children, as well as reattach all of the existing binders to their new nodes within the new markup. Because all binder 
     instances are retained, state can be stored within a binder's scope. See `Refreshing Views <../intro/mojito_binders.html#refreshing-views>`_ and the 
-    `MojitProxy Class <../../api/MojitProxy.html>`_ in the Mojito API documentation for more information.
+    `MojitProxy Class <../../api/classes/MojitProxy.html>`_ in the Mojito API documentation for more information.
 
 ------------
 

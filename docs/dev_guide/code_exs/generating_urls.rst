@@ -16,7 +16,7 @@ This example shows you a way to generate URLs to a particular view independent o
 The following topics will be covered:
 
 - configuring routing paths to call actions from mojit instances
-- creating a URL in the mojit controller with the `Url addon <../../api/Url.common.html>`_
+- creating a URL in the mojit controller with the `Url addon <../../api/classes/Url.common.html>`_
 
 Implementation Notes
 ####################
