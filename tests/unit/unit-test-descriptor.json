@@ -1,0 +1,29 @@
+[
+    {
+        "settings": [ "master" ],
+        "name" : "mojito-unit-tests",
+        "config" : {
+        },
+        "dataprovider" : {
+            "mojito-client.client" : {
+                "params" : {
+                    "page": "../base/mojito-test.html",
+                    "lib": "../../source/lib/app/autoload/mojito-client.client.js",
+                    "test" : "./lib/app/autoload/test-mojito-client.client.js"
+                }, 
+                "group" : "fw"
+            },
+            "mojit-proxy.client" : {
+                "params" : {
+                    "page": "../base/mojito-test.html",
+                    "lib": "../../source/lib/app/autoload/mojit-proxy.client.js",
+                    "test" : "./lib/app/autoload/test-mojit-proxy.client.js"
+                }, 
+                "group" : "fw,unit"
+            }
+        }
+    },
+    {
+        "settings": [ "environment:development" ]
+    }
+]
