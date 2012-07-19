@@ -55,7 +55,7 @@ Screencasts/Videos
 +--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+
 | `YUI Open Hours: Mojito <http://www.youtube.com/watch? | Mojito, YUI, YQL, mojits, assets, Shaker, affinities,  | Yahoo! engineers Fabian Frank and Diego Ferreiro show  | Fabian Frank, Diego Ferreiro                           |
 | v=Odn3uXahSfs&list=UUTHcgWOTU6gPje1g_U29tfQ&index=2    | app/routing configuration, deploying app to client,    | how to get started using Mojito and create a basic     |                                                        |
-| &feature=plcp>`_                                       | ActionContext object, mojitProxy object, binders       | Mojito app.                                            |                                                        |
+| &feature=plcp>`_                                       | ActionContext object, mojitProxy object, binders,      | Mojito app.                                            |                                                        |
 |                                                        | testing, JSLint, creating documentation                |                                                        |                                                        |
 +--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+
 
