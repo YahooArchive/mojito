@@ -662,21 +662,21 @@ YUI.add('mojito-addon-rs-yui-tests', function(Y, NAME) {
                     A.isUndefined(instance.yui.sortedPaths['lang/PagedFlickr_en-US'], 'en-US is not undefined {lang:en}');
 
                     // third test
-                    ctx = { lang: 'de-US' };
+                    ctx = { lang: 'de-AT' };
                     spec = { type: 'PagedFlickr' };
                     store.expandInstance(spec, ctx, function(err, instance) {
-                        A.isNotUndefined(instance.yui.sortedPaths['lang/PagedFlickr_de'], 'de is undefined {lang:de-US}');
-                        A.isUndefined(instance.yui.sortedPaths['lang/PagedFlickr_en-US'], 'en-US is not undefined {lang:de-US}');
+                        A.isNotUndefined(instance.yui.sortedPaths['lang/PagedFlickr_de'], 'de is undefined {lang:de-AT}');
+                        A.isUndefined(instance.yui.sortedPaths['lang/PagedFlickr_en-US'], 'en-US is not undefined {lang:de-AT}');
 
                         // fourth test
-                        ctx = { lang: 'xy-ZU' };
+                        ctx = { lang: 'tr-TR' };
                         spec = { type: 'PagedFlickr' };
                         store.expandInstance(spec, ctx, function(err, instance) {
                             A.isTrue(
                                 Boolean(instance.yui.sortedPaths['lang/PagedFlickr_de']),
-                                 'de is undefined {lang:xy-ZU}'
+                                 'de is undefined {lang:tr-TR}'
                             );
-                            A.isNotUndefined(instance.yui.sortedPaths['lang/PagedFlickr_en-US'], 'en-US is undefined {lang:xy-ZU}');
+                            A.isNotUndefined(instance.yui.sortedPaths['lang/PagedFlickr_en-US'], 'en-US is undefined {lang:tr-TR}');
 
                             // fifth test
                             ctx = {};

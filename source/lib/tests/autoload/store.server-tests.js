@@ -55,6 +55,16 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
             A.isTrue(store._config.root === fixtures);
         },
 
+        'valid context': function() {
+            A.isTrue(store.isValidContext({}), '{} should be valid');
+            A.isTrue(store.isValidContext({device:'iphone'}), '{device:iphone} should be valid');
+            A.isTrue(store.isValidContext({device:'iphone',lang:'en'}), '{device:iphone,lang:en} should be valid');
+            A.isTrue(store.isValidContext({device:'iphone',runtime:'common'}), '{device:iphone,runtime:common} should be valid');
+            A.isFalse(store.isValidContext({device:'blender'}), '{device:blender} should be invalid');
+            A.isFalse(store.isValidContext({device:'iphone',texture:'corrugated'}), '{device:iphone,texture:corrugated} should be invalid');
+            A.isFalse(store.isValidContext({device:'iphone',runtime:'kite'}), '{device:iphone,runtime:kite} should be invalid');
+        },
+
         'server app config value': function() {
             var config = store.getAppConfig(null);
             A.isTrue(config.testKey1 === 'testVal1');

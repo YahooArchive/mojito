@@ -102,6 +102,10 @@ YUI.add('addon-rs-config', function(Y, NAME) {
                 json,
                 ycb;
 
+            if (!this.rs.isValidContext(ctx)) {
+                throw new Error('INVALID context ' + Y.JSON.stringify(ctx));
+            }
+
             ctx = this.rs.mergeRecursive(this.rs.getStaticContext(), ctx);
 
             ycb = this._ycbCache[fullPath];

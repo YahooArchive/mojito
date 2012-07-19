@@ -197,12 +197,34 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
 
             this._fwConfig = this.config.readConfigJSON(this._libs.path.join(this._config.mojitoRoot, 'config.json'));
             this._appConfigStatic = this.getAppConfig({});
+            this._validDims = this._parseValidDims(this.config.getDimensions());
+            if (!this.isValidContext(this._config.context)) {
+                throw new Error('INVALID context ' + Y.JSON.stringify(this._config.context));
+            }
         },
         destructor: function() {},
 
 
         //====================================================================
         // PUBLIC METHODS
+
+
+        /**
+         * @method isValidContext
+         * @param ctx {object} the context
+         * @return {boolean} whether context is valid according to dimensions.json or not
+         */
+        isValidContext: function(ctx) {
+            var k;
+            for (k in ctx) {
+                if (ctx.hasOwnProperty(k)) {
+                    if (!this._validDims[k] || !this._validDims[k][ctx[k]]) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        },
 
 
         /**
@@ -244,6 +266,10 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
         getAppConfig: function(ctx) {
             var appConfig,
                 ycb;
+
+            if (!this.isValidContext(ctx)) {
+                throw new Error('INVALID context ' + Y.JSON.stringify(ctx));
+            }
 
             if (this._appConfigStatic && (!ctx || !Object.keys(ctx).length)) {
                 return this.cloneObj(this._appConfigStatic);
@@ -341,6 +367,10 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 res,
                 k,
                 use;
+
+            if (!this.isValidContext(ctx)) {
+                throw new Error('INVALID context ' + Y.JSON.stringify(ctx));
+            }
 
             posl = JSON.stringify(this.selector.getPOSLFromContext(ctx));
             if (filter.mojit) {
@@ -476,6 +506,10 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 typeDetails,
                 config;
 
+            if (!this.isValidContext(ctx)) {
+                throw new Error('INVALID context ' + Y.JSON.stringify(ctx));
+            }
+
             if (cacheValue) {
                 cb(null, this.cloneObj(cacheValue));
                 return;
@@ -548,6 +582,10 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 posl = this.selector.getPOSLFromContext(ctx),
                 ctxKey,
                 module;
+
+            if (!this.isValidContext(ctx)) {
+                throw new Error('INVALID context ' + Y.JSON.stringify(ctx));
+            }
 
             if ('shared' === mojitType) {
                 throw new Error('Mojit name "shared" is special and isn\'t a real mojit.');
@@ -1312,6 +1350,38 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
          */
         _mockLib: function(name, lib) {
             this._libs[name] = lib;
+        },
+
+
+        /**
+         * @private
+         * @method @parseValidDims
+         * @param dims {object} contents of dimensions.json
+         * @return {object} lookup hash for dimension keys and values
+         */
+        _parseValidDims: function(dims) {
+            var d,
+                dim,
+                dimName,
+                out = {};
+            function grabKeys(dimName, o) {
+                var k;
+                for (k in o) {
+                    if (o.hasOwnProperty(k)) {
+                        out[dimName][k] = true;
+                        if (Y.Lang.isObject(o[k])) {
+                            grabKeys(dimName, o[k]);
+                        }
+                    }
+                }
+            }
+            for (d = 0; d < dims[0].dimensions.length; d += 1) {
+                dim = dims[0].dimensions[d];
+                dimName = Object.keys(dim)[0];
+                out[dimName] = {};
+                grabKeys(dimName, dim[dimName]);
+            }
+            return out;
         },
 
 
