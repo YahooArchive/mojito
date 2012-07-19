@@ -395,6 +395,7 @@ YUI.add('mojito-mojit-proxy', function(Y, NAME) {
     Y.mojito.MojitProxy = MojitProxy;
 
 }, '0.1.0', {requires: [
+    'mojito',
     'mojito-util',
     'querystring'
 ]});
