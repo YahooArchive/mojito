@@ -19,7 +19,7 @@ General
 * :ref:`Can Mojito make runtime decisions to run client-side or server-side code? <moj_run_client_server>`
 * :ref:`Can Mojito applications access the 'request' or 'response' instances of the Node.js classes 'http.ServerRequest' and 'http.ServerResponse'? <moj_req_res_instances>`
 * :ref:`Is it possible to access headers from a Mojito application? <moj_access_headers>`
-* :ref:`Can Mojito be started with Node.js instead of using "mojito start" <moj_node_start>`
+* :ref:`Can Mojito be started with Node.js instead of using "mojito start"? <moj_node_start>`
 
 Mojits
 ------
@@ -243,7 +243,7 @@ General
        $ node --debug `which mojito` start
     
     
-    You can also specify the path to start a locally installed version of Mojito::
+    Or you could specify the path to start a locally installed version of Mojito::
     
        $ node --debug node_modules/mojito/bin/mojito start
     
