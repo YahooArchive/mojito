@@ -10,15 +10,12 @@
 
 // TODO:
 //  * include YUI internal structure (but not edges/dependencies)
-//  * --trace=foo to trace all transitive dependencies on module "foo"
 //  * [warning][server] trace anything that leads to a YUI module that uses the DOM
+//  * also draw meta.optional edges
 //  * color-code or shape-code module types (from yui, mojito fw, app-level,
 //    mojits, affinity)
 
 var run,
-    usage,
-    options,
-
     libpath = require('path'),
     libfs = require('fs'),
     libutils = require(libpath.join(__dirname, '../../management/utils')),
@@ -33,7 +30,7 @@ var run,
 
 
 function gvQuote(str) {
-    str = str.replace(/"/g, '\\"');
+    str = str.toString().replace(/"/g, '\\"');
     return '"' + str + '"';
 }
 
@@ -288,7 +285,7 @@ Graph.prototype = {
 };
 
 
-function parseRess(graph, ress, options) {
+function parseResources(graph, ress, options) {
     var r,
         res,
         subgraph, subgraphName,
@@ -296,6 +293,7 @@ function parseRess(graph, ress, options) {
         head, headName,
         edge,
         rs, reqs;
+
     for (r = 0; r < ress.length; r += 1) {
         res = ress[r];
 
@@ -353,6 +351,39 @@ function parseRess(graph, ress, options) {
 }
 
 
+function trace(graph, options) {
+    var doneNodes = {}, // name: true
+        todoNodes = [],
+        headName, head,
+        edges = {}; // headName: [ Edge ]
+
+    // TODO:  detect if options.trace doesn't exist in graph
+    todoNodes.push(options.trace);
+
+    Y.Object.each(graph._edges, function(edge) {
+        if (!edges[edge.head]) {
+            edges[edge.head] = [];
+        }
+        edges[edge.head].push(edge);
+    });
+
+    while (todoNodes.length) {
+        headName = todoNodes.shift();
+        if (doneNodes[headName]) {
+            continue;
+        }
+        head = graph.getNode(headName);
+        head.attrs.trace = true;
+        doneNodes[headName] = true;
+
+        Y.Array.each(edges[headName], function(edge) {
+            edge.attrs.trace = true;
+            todoNodes.push(edge.tail);
+        });
+    }
+}
+
+
 run = function(params, options) {
     var env, store,
         graph,
@@ -404,8 +435,8 @@ run = function(params, options) {
     graph.styles.all.rankdir = 'LR';
     graph.styles.all.fontsize = '11';
     graph.styles.node.fontsize = '11';
-    graph.styles.node.shape = 'Mrecord';
-    graph.styles.node.style = 'filled';
+    graph.styles.node.shape = 'rectangle';
+    graph.styles.node.style = 'filled,rounded';
     graph.styles.node.fillcolor = 'white';
     graph.styles.edge.color = 'grey33';
     graph.styles.edge.arrowsize = '0.5';
@@ -427,14 +458,18 @@ run = function(params, options) {
     graph.style.start = 'self';         // FDP,NEATO --
 
     ress = store.getResources(env, {}, {});
-    parseRess(graph, ress, options);
+    parseResources(graph, ress, options);
 
     mojits = store.listAllMojits();
     mojits.push('shared');
     for (m = 0; m < mojits.length; m += 1) {
         mojit = mojits[m];
         ress = store.getResources(env, {}, { mojit: mojit });
-        parseRess(graph, ress, options);
+        parseResources(graph, ress, options);
+    }
+
+    if (options.trace) {
+        trace(graph, options);
     }
 
     // generate graph
@@ -445,6 +480,22 @@ run = function(params, options) {
             //if (node.attrs.affinity) {
             //    node.style.label += ' (' + node.attrs.affinity.affinity + ')';
             //}
+            if (node.attrs.trace) {
+                node.style.penwidth = 1.5;
+                node.style.color = '#CC0000';
+                node.style.fillcolor = '#FFDDDD';
+                if (node.name === options.trace) {
+                    node.style.peripheries = 2;
+                }
+            }
+            return true;
+        },
+
+        edge: function(edge) {
+            if (edge.attrs.trace) {
+                edge.style.penwidth = 1.5;
+                edge.style.color = '#CC0000';
+            }
             return true;
         },
 
@@ -476,7 +527,10 @@ run = function(params, options) {
 };
 
 
-usage = 'mojito gv   // generates a GraphViz[1] file' +
+/**
+ * Standard usage string export.
+ */
+exports.usage = 'mojito gv   // generates a GraphViz[1] file' +
     ' describing the dependencies\n' +
     '            // between the YUI modules\n' +
     '\n' +
@@ -487,11 +541,16 @@ usage = 'mojito gv   // generates a GraphViz[1] file' +
     '\t          -f:  short for --framework\n' +
     '\t --lang:  also show language bundles\n' +
     '\t     -l:  short for --lang\n' +
+    '\t --trace target:  hightlight all modules leading to the target\n' +
+    '\t      -t target:  short for --trace\n' +
     '\n' +
     '[1] http://en.wikipedia.org/wiki/Graphviz\n';
 
 
-options = [
+/**
+ * Standard options list export.
+ */
+exports.options = [
     {
         longName: 'framework',
         shortName: 'f',
@@ -506,23 +565,18 @@ options = [
         longName: 'lang',
         shortName: 'l',
         hasValue: false
+    },
+    {
+        longName: 'trace',
+        shortName: 't',
+        hasValue: true
     }
 ];
-
-
-/**
- * Standard usage string export.
- */
-exports.usage = usage;
-
-
-/**
- * Standard options list export.
- */
-exports.options = options;
 
 
 /**
  * Standard run method hook export.
  */
 exports.run = run;
+
+
