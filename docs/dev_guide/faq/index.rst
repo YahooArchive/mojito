@@ -238,7 +238,7 @@ General
 .. _moj_node_start:
 .. topic:: **Can Mojito be started with Node.js instead of using "mojito start"?**
 
-    Yes. Although there are is not a standard way for starting Mojito with Node.js, you could do the following::
+    Yes. Although there is not a standard way for starting Mojito with Node.js, you could do the following::
     
        $ node --debug `which mojito` start
     
