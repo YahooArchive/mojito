@@ -493,8 +493,8 @@ run = function(params, options) {
 
         edge: function(edge) {
             if (edge.attrs.trace) {
-                edge.style.penwidth = 1.5;
-                edge.style.color = '#CC0000';
+                edge.style.penwidth = 1.1;
+                edge.style.color = '#AA4444';
             }
             return true;
         },
