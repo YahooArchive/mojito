@@ -28,6 +28,14 @@
                     "test" : "./lib/app/autoload/test-output-handler.client.js"
                 },
                 "group" : "fw,unit"
+            },
+            "tunnel.client" : {
+                "params" : {
+                    "page": "../base/mojito-test.html",
+                    "lib": "../../source/lib/app/autoload/tunnel.client-optional.js",
+                    "test" : "./lib/app/autoload/test-tunnel.client-optional.js"
+                },
+                "group" : "fw,unit"
             }
         }
     },
