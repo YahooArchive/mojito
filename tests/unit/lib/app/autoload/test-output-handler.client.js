@@ -158,6 +158,7 @@ YUI({useBrowserConsole: true}).use(
                 };
                 outputHandler.done(inputData, inputMeta);
                 Y.Assert.isObject(Y.one('#blobTest'));
+                Y.Mock.verify(Y.Get);
             },
 
             "test error": function () {
