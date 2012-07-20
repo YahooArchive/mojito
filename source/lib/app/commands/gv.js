@@ -483,6 +483,7 @@ run = function(params, options) {
             if (node.attrs.trace) {
                 node.style.penwidth = 1.5;
                 node.style.color = '#CC0000';
+                node.style.fontcolor = '#AA0000';
                 node.style.fillcolor = '#FFDDDD';
                 if (node.name === options.trace) {
                     node.style.peripheries = 2;
