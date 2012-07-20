@@ -72,6 +72,86 @@ YUI.add('mojito-util', function(Y) {
         },
 
 
+        /**
+         * Unicode escapes the "Big 5" HTML characters (<, >, ', ", and &). Note
+         * that only strings are escaped by this routine. If you want to ensure
+         * that an entire object or array is escaped use the util.cleanse() call.
+         * @param {Object} obj The object to encode/escape.
+         */
+        unicodeEscape: function(obj) {
+
+            if (Y.Lang.isString(obj)) {
+                return obj.replace(/</g, '\\u003C').
+                    replace(/>/g, '\\u003E').
+                    replace(/&/g, '\\u0026').
+                    replace(/'/g, '\\u0027').
+                    replace(/"/g, '\\u0022');
+            }
+
+            return obj;
+        },
+
+
+        /**
+         * Cleanses string keys and values in an object, returning a new object
+         * whose strings are escaped using the escape function provided. The
+         * default escape function is the util.unicodeEscape function.
+         * @param {Object} obj The object to cleanse.
+         * @param {Function} escape The escape function to run. Default is
+         *     util.unicodeEscape.
+         * @return {Object} The cleansed object.
+         */
+        cleanse: function(obj, escape) {
+            var func,
+                clean,
+                len,
+                i;
+
+            // Confirm we got a valid escape function, or default properly.
+            if (escape) {
+                if (typeof escape === 'function') {
+                    func = escape;
+                } else {
+                    throw new Error('Invalid escape function: ' + escape);
+                }
+            }
+            func = func || this.unicodeEscape;
+
+            // How we proceed depends on what type of object we received. If we
+            // got a String or RegExp they're not strictly mutable, but we can
+            // quickly escape them and return. If we got an Object or Array
+            // we'll need to iterate, but in different ways since their content
+            // is found via different indexing models. If we got anything else
+            // we can just return it.
+
+            if (Y.Lang.isString(obj)) {
+                return func(obj);
+            }
+
+            if (Y.Lang.isArray(obj)) {
+                clean = [];
+                len = obj.length;
+                for (i = 0; i < len; i += 1) {
+                    clean.push(this.cleanse(obj[i], func));
+                }
+                return clean;
+            }
+
+            if (Y.Lang.isObject(obj)) {
+                clean = {};
+                for (i in obj) {
+                    if (obj.hasOwnProperty(i)) {
+                        clean[this.cleanse(i, func)] =
+                            this.cleanse(obj[i], func);
+                    }
+                }
+                return clean;
+            }
+
+            return obj;
+        },
+
+
         copy: function(obj) {
             var temp = null,
                 key = '';
@@ -91,6 +171,76 @@ YUI.add('mojito-util', function(Y) {
             function F() {}
             F.prototype = o;
             return new F();
+        },
+
+
+        /**
+         * Recursively merge properties of two objects
+         * @method mergeRecursive
+         * @param {object} dest The destination object.
+         * @param {object} src The source object.
+         * @param {boolean} typeMatch Only replace if src and dest types are
+         *     the same type if true.
+         */
+        mergeRecursive: function(dest, src, typeMatch) {
+            var p,
+                arr;
+
+            if (Y.Lang.isArray(src)) {
+                if (!Y.Lang.isArray(dest)) {
+                    throw new Error('Type mismatch for object merge.');
+                }
+
+                // Not particularly performant, but we need to avoid duplicates
+                // as much as possible. Unfortunately, the YUI unique calls
+                // don't have an option to work in-place so we have even more
+                // overhead here :(.
+
+                // copy destination array.
+                arr = dest.slice(0);
+
+                // unroll src elements into our copy via apply.
+                arr.push.apply(arr, src);
+
+                // unique the src and destination items.
+                arr = Y.Array.unique(arr);
+
+                // truncate destination and unroll uniqued elements into it.
+                dest.length = 0;
+                dest.push.apply(dest, arr);
+            } else {
+                for (p in src) {
+                    if (src.hasOwnProperty(p)) {
+                        // Property in destination object set; update its value.
+                        // TODO: lousy test. Constructor matches don't always work.
+                        if (src[p] && src[p].constructor === Object) {
+                            if (!dest[p]) {
+                                dest[p] = {};
+                            }
+                            dest[p] = this.mergeRecursive(dest[p], src[p]);
+                        } else {
+                            if (dest[p] && typeMatch) {
+                                if (typeof dest[p] === typeof src[p]) {
+                                    dest[p] = src[p];
+                                }
+                            } else if (typeof src[p] !== 'undefined') {
+                                // only copy values that are not undefined, null and
+                                // falsey values should be copied
+                                // for null sources, we only want to copy over
+                                // values that are undefined
+                                if (src[p] === null) {
+                                    if (typeof dest[p] === 'undefined') {
+                                        dest[p] = src[p];
+                                    }
+                                } else {
+                                    dest[p] = src[p];
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return dest;
         },
 
 
@@ -115,7 +265,7 @@ YUI.add('mojito-util', function(Y) {
                         fv = from[k];
                         tv = to[k];
                         if (!tv) {
-                            // Y.log('replacing ' + k);
+                            // Y.log('adding ' + k);
                             to[k] = fv;
                         } else if (Y.Lang.isArray(fv)) {
                             // Y.log('from array ' + k);
@@ -123,14 +273,27 @@ YUI.add('mojito-util', function(Y) {
                                 throw new Error('Meta merge error.' +
                                     ' Type mismatch between mojit metas.');
                             }
+                            // Largely used for content-type, but could be other
+                            // key values in the future.
                             if (shouldAutoClobber(k)) {
                                 if (isAtomic(k)) {
+                                    // Note the choice to use the last item of
+                                    // the inbound array, not the first.
+                                    // Y.log('atomizing ' + k);
                                     to[k] = [fv[fv.length - 1]];
                                 } else {
+                                    // Not "atomic" but clobbering means we'll
+                                    // completely replace any existing array
+                                    // value in the slot.
+                                    // Y.log('clobbering ' + k);
                                     to[k] = fv;
                                 }
                             } else {
-                                tv.push.apply(tv, fv);
+                                // A simple push() here would work, but it
+                                // doesn't unique the values so it may cause an
+                                // array to grow without bounds over time even
+                                // when no truly new content is added.
+                                Y.mojito.util.mergeRecursive(tv, fv);
                             }
                         } else if (Y.Lang.isObject(fv)) {
                             // Y.log('from object ' + k);
@@ -153,51 +316,6 @@ YUI.add('mojito-util', function(Y) {
                 }
             }
             return to;
-        },
-
-
-        /**
-         * Recursively merge properties of two objects
-         * @method mergeRecursive
-         * @param {object} dest The destination object.
-         * @param {object} src The source object.
-         * @param {boolean} typeMatch Only replace if src and dest types are
-         *     the same type if true.
-         */
-        mergeRecursive: function(dest, src, typeMatch) {
-            var p;
-
-            for (p in src) {
-                if (src.hasOwnProperty(p)) {
-                    // Property in destination object set; update its value.
-                    // TODO: lousy test. Constructor matches don't always work.
-                    if (src[p] && src[p].constructor === Object) {
-                        if (!dest[p]) {
-                            dest[p] = {};
-                        }
-                        dest[p] = this.mergeRecursive(dest[p], src[p]);
-                    } else {
-                        if (dest[p] && typeMatch) {
-                            if (typeof dest[p] === typeof src[p]) {
-                                dest[p] = src[p];
-                            }
-                        } else if (typeof src[p] !== 'undefined') {
-                            // only copy values that are not undefined, null and
-                            // falsey values should be copied
-                            // for null sources, we only want to copy over
-                            // values that are undefined
-                            if (src[p] === null) {
-                                if (typeof dest[p] === 'undefined') {
-                                    dest[p] = src[p];
-                                }
-                            } else {
-                                dest[p] = src[p];
-                            }
-                        }
-                    }
-                }
-            }
-            return dest;
         },
 
 
@@ -230,5 +348,6 @@ YUI.add('mojito-util', function(Y) {
     };
 
 }, '0.1.0', {requires: [
+    'array-extras',
     'mojito'
 ]});

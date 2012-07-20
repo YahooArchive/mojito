@@ -7,7 +7,7 @@ YUI.add('{{name}}-tests', function(Y) {
     var suite = new YUITest.TestSuite('{{name}}-tests'),
         controller = null,
         A = YUITest.Assert;
-    
+
     suite.add(new YUITest.TestCase({
         
         name: '{{name}} user tests',
@@ -49,8 +49,10 @@ YUI.add('{{name}}-tests', function(Y) {
             A.areSame('./index.css', assetsResults);
             A.isObject(doneResults);
             A.areSame('Mojito is working.', doneResults.status);
-            A.areSame('{"x":"y"}', doneResults.data);
-
+            A.isObject(doneResults.data);
+            A.isTrue(doneResults.data.hasOwnProperty('x'));
+            A.areEqual('y', doneResults.data['x']);
+            
         }
         
     }));

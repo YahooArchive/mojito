@@ -129,19 +129,17 @@ both HTTP GET and POST calls. Storing parameters in your routing configuration a
          "verbs": ["get"],
          "path": "/example3",
          "call": "frame.example3",
-         "params": "from=routing&foo=bar&bar=foo"
+         "params": { "from": "routing", "foo": "bar", "bar": "foo" }
        },
        "example4": {
          "verbs": ["get", "post"],
          "path": "/example4",
          "call": "frame.example4",
-         "params": "from=routing&foo3=bar3"
+         "params": { "from": "routing", "foo3": "bar3" }
        }
      }
    ]
    
-The query string parameters stored in the ``params`` property can be specified in an object as well. For example, the ``params`` property for ``example4`` routing object could
-also be specified in the following way: ``"params": { "from": "routing", "foo3": "bar3" }``
 
 In the ``example4`` function below, you find the parameters catch-all method ``params.getFromMerged``. Using ``params.getFromMerged``, you can get the query string parameters, the POST body parameters, 
 and the parameters set in ``routes.json`` at one time. You can also get a specific parameter by passing a key to ``params.getFromMerged(key)``. For example, ``params.getFromMerged("from")`` would 
@@ -229,13 +227,13 @@ To set up and run ``using_parameters``:
             "verbs": ["get"],
             "path": "/example3",
             "call": "frame.example3",
-            "params": "from=routing&foo=bar&bar=foo"
+            "params": { "from": "routing", "foo": "bar", "bar": "foo" }
           },
           "example4": {
             "verbs": ["get", "post"],
             "path": "/example4",
             "call": "frame.example4",
-            "params": "from=routing&foo3=bar3"
+            "params": { "from": "routing", "foo3": "bar3" }
           }
         }
       ]

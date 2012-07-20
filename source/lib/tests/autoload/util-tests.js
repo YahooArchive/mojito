@@ -7,12 +7,96 @@ YUI.add('mojito-util-tests', function(Y, NAME) {
     
     var suite = new YUITest.TestSuite(NAME),
         A = YUITest.Assert,
+        AA = YUITest.ArrayAssert,
         OA = YUITest.ObjectAssert;
     
     suite.add(new YUITest.TestCase({
         
         name: 'others',
 
+        'unicodeEscape cleanses a string': function() {
+            A.areSame(
+                '\\u003Cscript\\u003Ealert(\\u0022hi, i\\u0027m a squid \\u0026 a happy one!\\u0022)\\u003C/script\\u003E',
+                Y.mojito.util.cleanse(
+                    '<script>alert("hi, i\'m a squid & a happy one!")</script>'));
+        },
+
+        'cleanse cleanses a string': function() {
+            A.areSame(
+                '\\u003Cscript\\u003Ealert(\\u0022hi, i\\u0027m a squid \\u0026 a happy one!\\u0022)\\u003C/script\\u003E',
+                Y.mojito.util.cleanse(
+                    '<script>alert("hi, i\'m a squid & a happy one!")</script>'));
+        },
+
+        'cleanse cleanses an empty array': function() {
+            var a = [];
+            AA.itemsAreEqual(a, Y.mojito.util.cleanse(a),
+                'Empty array should cleanse properly as empty array.');
+        },
+        
+        'cleanse cleanses an array with single array child': function() {
+            var a = [[]];
+            // AA.itemsAreEqual is brain-damaged and doesn't maintain Array
+            // semantics for content checks so we hack around it with JSON.
+            A.areSame(Y.JSON.stringify(a),
+                Y.JSON.stringify(Y.mojito.util.cleanse(a)),
+                'Array with single (empty) array child should cleanse properly.');
+        },
+
+        'cleanse cleanses an array': function() {
+            var a1, 
+                a2;
+
+            a1 = ['<script>I\'m a hack attempt</script>'];
+            a2 = ['\\u003Cscript\\u003EI\\u0027m a hack attempt\\u003C/script\\u003E'];
+            AA.itemsAreEqual(a2, Y.mojito.util.cleanse(a1),
+                'array cleanse should work');
+        },
+
+        'cleanse cleanses an object': function() {
+            var o1, 
+                o2;
+
+            o1 = {'key': '<script>I\'m a hack attempt</script>'};
+            o2 = {'key': 
+                '\\u003Cscript\\u003EI\\u0027m a hack attempt\\u003C/script\\u003E'};
+
+            OA.areEqual(o2, Y.mojito.util.cleanse(o1),
+                'object cleanse should work');
+        },
+
+        'cleanse cleanses a nested array': function() {
+            var a1, 
+                a2;
+
+            a1 = [['<script>I\'m a hack attempt</script>']];
+            a2 = [['\\u003Cscript\\u003EI\\u0027m a hack attempt\\u003C/script\\u003E']];
+            AA.itemsAreEqual(a2[0], Y.mojito.util.cleanse(a1)[0],
+                'nested array cleanse should work');
+        },
+
+        'cleanse cleanses a nested object': function() {
+            var a1, 
+                a2;
+
+            a1 = [{'key': '<script>I\'m a hack attempt</script>'}];
+            a2 = [{'key': 
+                '\\u003Cscript\\u003EI\\u0027m a hack attempt\\u003C/script\\u003E'}];
+
+            OA.areEqual(a2[0], Y.mojito.util.cleanse(a1)[0],
+                'object cleanse should work');
+        },
+
+        'cleanse ignores numbers, booleans, etc.': function() {
+            var a1, 
+                a2;
+       
+            a1 = [1, true, 'blah']; 
+            a2 = [1, true, 'blah'];
+
+            AA.itemsAreEqual(a2, Y.mojito.util.cleanse(a1));
+        },
+        
         'copy() deep copies an object': function() {
             var obj = {
                     inner: {
@@ -88,6 +172,8 @@ YUI.add('mojito-util-tests', function(Y, NAME) {
             };
             var result = Y.mojito.util.metaMerge(to, from);
             OA.areEqual(from, result, "result should be same as from");
+            AA.itemsAreEqual(from.arr, result.arr,
+                "result array items should equal from array items");
         },
 
         'metaMerge copies "from" properties into "to" objects': function() {
@@ -101,7 +187,8 @@ YUI.add('mojito-util-tests', function(Y, NAME) {
                 a: { one: 1, two: 2 }
             };
             var result = Y.mojito.util.metaMerge(to, from);
-            OA.areEqual(expected.a, result.a, "result should have objects merged");
+            OA.areEqual(expected.a, result.a,
+                "result should have objects merged");
         },
 
         'metaMerge copies "from" properties into "to" objects (DEEP)': function() {
@@ -132,7 +219,7 @@ YUI.add('mojito-util-tests', function(Y, NAME) {
             var result = Y.mojito.util.metaMerge(to, from);
             console.log(result);
             OA.areEqual(expected.a.b, result.a.b, "result should have objects merged (a.b)");
-            OA.areEqual(expected.a.c, result.a.c, "result should have objects merged (a.c)");
+            A.areSame(expected.a.c, result.a.c, "result should have objects merged (a.c)");
         },
 
         'metaMerge does not overwrite "from" properties into "to" objects (DEEP)': function() {
@@ -166,7 +253,44 @@ YUI.add('mojito-util-tests', function(Y, NAME) {
                 arr: [1,2,3,'hello', 'world']
             };
             var result = Y.mojito.util.metaMerge(to, from);
-            OA.areEqual(expected.arr, result.arr, "result array should have added elements");
+            AA.itemsAreEqual(expected.arr, result.arr,
+                "result array should have added elements");
+        },
+
+        'metaMerge uniques arrays': function() {
+            var to = {
+                arr: [1, 2, 3, 'hello']
+            };
+            var from = {
+                arr: ['hello', 'world']
+            };
+            var expected = {
+                arr: [1,2,3,'hello', 'world']
+            };
+            var result = Y.mojito.util.metaMerge(to, from);
+            AA.itemsAreEqual(expected.arr, result.arr,
+                "result array should have merged and uniqued array elements");
+        },
+
+        'metaMerge uniques nested arrays': function() {
+            var to = {
+                arrContainer: {
+                    arr: [1, 2, 3, 'hello']
+                }
+            };
+            var from = {
+                arrContainer: {
+                    arr: ['hello', 'world']
+                }
+            };
+            var expected = {
+                arrContainer: {
+                    arr: [1,2,3,'hello', 'world']
+                }
+            };
+            var result = Y.mojito.util.metaMerge(to, from);
+            AA.itemsAreEqual(expected.arrContainer.arr, result.arrContainer.arr,
+                "result array should have merged and uniqued nested array elements");
         },
 
         'metaMerge overwrites content-type values': function() {
@@ -180,7 +304,7 @@ YUI.add('mojito-util-tests', function(Y, NAME) {
                 'content-type': ['bar']
             };
             var result = Y.mojito.util.metaMerge(to, from);
-            OA.areEqual(expected['content-type'], result['content-type'], "result array should have been overridden");
+            AA.itemsAreEqual(expected['content-type'], result['content-type'], "result array should have been overridden");
         },
 
         'metaMerge only uses the last content-type value': function() {
@@ -208,7 +332,7 @@ YUI.add('mojito-util-tests', function(Y, NAME) {
                 view: 'foo'
             };
             var result = Y.mojito.util.metaMerge(to, from);
-            OA.areEqual(expected.view, result.view, "meta view data should be retained");
+            A.areSame(expected.view, result.view, "meta view data should be retained");
         },
 
         'TODO: metaMerge sees content-type as case insensitive': function() {

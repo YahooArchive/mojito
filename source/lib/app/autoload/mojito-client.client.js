@@ -163,13 +163,14 @@ YUI.add('mojito-client', function(Y, NAME) {
                 binder));
         }
 
-        // TODO: add all the event delegation majic here.
+        // TODO: add all the event delegation magic here.
         Y.log('Attached ' + handles.length + ' event delegates', 'debug', NAME);
         return handles;
     }
 
 
     // TODO: complete work to call this in the destroyMojitProxy function().
+    // this function is never called /iy
     function unbindNode(binder, handles) {
         var retainBinder = false;
 
@@ -206,6 +207,20 @@ YUI.add('mojito-client', function(Y, NAME) {
             }
         });
         return p;
+    }
+
+
+    function recordBoundMojit(mojits, parentid, newid, type) {
+        if (parentid && mojits[parentid]) {
+            if (!mojits[parentid].children) {
+                mojits[parentid].children = {};
+            }
+            mojits[parentid].children[newid] = {
+                type: type,
+                viewId: newid
+            };
+            //console.log('recorded %s child of %s', newid, parentid);
+        }
     }
 
 
@@ -513,32 +528,16 @@ YUI.add('mojito-client', function(Y, NAME) {
                 // now we'll loop through again and do the binding, saving the
                 // handles
                 Y.Array.each(newMojitProxies, function(item) {
-                    var mojit = me._mojits[item.proxy.getId()],
+                    var viewid = item.proxy.getId(),
+                        mojit = me._mojits[viewid],
                         proxy = item.proxy;
 
                     mojit.handles = bindNode(proxy._binder, proxy._node,
                         proxy._element);
+
+                    recordBoundMojit(me._mojits, parentId, viewid, proxy.type);
                 });
 
-                // if there is a parent to add a child to (and a topmost child
-                // to add to the parent), add new top level child to parent that
-                // dispatched it
-                if (parentId && topLevelMojitViewId) {
-                    parent = me._mojits[parentId];
-                    topLevelMojitObj = binderMap[topLevelMojitViewId];
-                    // this is just a shallow representation of the child, not
-                    // the proxy object itself. but it is enough to look up the
-                    // proxy when necessary.
-                    if (parent && topLevelMojitObj) {
-                        if (!parent.children) {
-                            parent.children = {};
-                        }
-                        parent.children[topLevelMojitViewId] = {
-                            type: topLevelMojitObj.type,
-                            viewId: topLevelMojitViewId
-                        };
-                    }
-                }
                 Y.mojito.perf.mark('mojito', 'core_binders_resume');
                 me.resume();
                 Y.mojito.perf.mark('mojito', 'core_binders_end');
@@ -550,6 +549,9 @@ YUI.add('mojito-client', function(Y, NAME) {
 
                 // Make sure viewIds's are not bound to more than once
                 if (me._mojits[viewId]) {
+                    Y.log('Not rebinding binder for ' + binderData.type +
+                          ' for DOM node ' + viewId, 'info', NAME);
+                    onBinderComplete();
                     return;
                 }
 
@@ -585,6 +587,16 @@ YUI.add('mojito-client', function(Y, NAME) {
                     // the page we have to "use()" any binder name we are given
                     // to have access to it.
                     Y.use(binderData.name, function(BY) {
+
+                        // Check again to make sure viewIds's are not bound
+                        // more than once, just in case they were bound during
+                        // the async fetch for the binder
+                        if (me._mojits[viewId]) {
+                            Y.log('Not rebinding binder for ' + binderData.type +
+                                  ' for DOM node ' + viewId, 'info', NAME);
+                            onBinderComplete();
+                            return;
+                        }
 
                         config = Y.mojito.util.copy(binderData.config);
 
@@ -889,7 +901,12 @@ YUI.add('mojito-client', function(Y, NAME) {
             mp.invoke(mp._action, opts, function(err, data, meta) {
 
                 if (err) {
-                    throw new Error(err);
+                    if (typeof cb === 'function') {
+                        cb(new Error(err));
+                        return;
+                    } else {
+                        throw new Error(err);
+                    }
                 }
 
                 /*

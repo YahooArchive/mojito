@@ -18,7 +18,7 @@ Action Context
 
    The Action Context is an essential element of the Mojito framework that gives you access to the frameworks features from within a controller function. 
    See `Action Context <../api_overview/mojito_action_context.html>`_ in the `Mojito API Overview <../api_overview/>`_ 
-   and the `Class Y.mojito.ActionContext <../../api/Y.mojito.ActionContext.html>`_ in the `Mojito API documentation <../../api/>`_
+   and the `ActionContext Class <../../api/classes/ActionContext.html>`_ in the `Mojito API documentation <../../api/>`_
    for more detailed information.
 
 addon
@@ -82,7 +82,7 @@ mojitProxy
 ----------
 
    The proxy object given to binders that allows them to interact with the mojit it represents as well as with other mojits on the page.
-   See the `mojitProxy Object <../intro/mojito_binders.html#mojitproxy-object>`_ and the `Class Y.mojito.MojitProxy <../../api/Y.mojito.MojitProxy.html>`_
+   See the `mojitProxy Object <../intro/mojito_binders.html#mojitproxy-object>`_ and the `MojitProxy Class <../../api/classes/MojitProxy.html>`_
    for more information.
    
 Mojito

@@ -44,7 +44,7 @@ var libfs = require('fs'),
     serverYUI = require('yui').YUI,
     clientYUI = require('yui').YUI,
 
-    Y = utilYUI({ useSync: true }).use('intl'),
+    Y = utilYUI({ useSync: true }).use('intl', 'json-parse', 'json-stringify'),
 
     mojitoRoot = __dirname,
 
@@ -527,7 +527,7 @@ ServerStore.prototype = {
         var self = this,
             base,
             appConfig = this.getAppConfig(ctx, 'application'),
-            cacheKey = JSON.stringify(instance) + JSON.stringify(
+            cacheKey = Y.JSON.stringify(instance) + Y.JSON.stringify(
                 this._getValidYCBContext(ctx)
             ),
             cacheValue = this._expandInstanceCache[env][cacheKey];
@@ -1681,7 +1681,7 @@ ServerStore.prototype = {
         console.log('--PACKAGE-- ' + info.depth + ' ' + info.pkg.name + '@' + info.pkg.version
                 + ' \t' + (info.pkg.yahoo && info.pkg.yahoo.mojito && info.pkg.yahoo.mojito.type)
                 + ' \t[' + info.parents.join(',') + ']'
-        //      + ' \t-- ' + JSON.stringify(info.inherit)
+        //      + ' \t-- ' + Y.JSON.stringify(info.inherit)
         );
         */
         pkg = {
@@ -2888,7 +2888,7 @@ ServerStore.prototype = {
             contents = this._libs.fs.readFileSync(fullpath, 'utf-8');
 
         try {
-            json = JSON.parse(contents);
+            json = Y.JSON.parse(contents);
         } catch (e) {
             logger.log(this._reportJavaScriptSyntaxErrors(contents, fullpath),
                 'warn', NAME);
@@ -3007,7 +3007,7 @@ ServerStore.prototype = {
         ctx = this._getValidYCBContext(ctx);
 
         //cache key only needs to account for dynamic context
-        cacheKey = JSON.stringify(ctx);
+        cacheKey = Y.JSON.stringify(ctx);
 
         //logger.log('_readConfigYCB('+fullpath+')', 'mojito', NAME);
 
@@ -3066,7 +3066,7 @@ ServerStore.prototype = {
         }
         try {
             contents = this._libs.fs.readFileSync(path, 'utf-8');
-            json = JSON.parse(contents);
+            json = Y.JSON.parse(contents);
         } catch (e) {
             logger.log(this._reportJavaScriptSyntaxErrors(contents, path),
                 'warn', NAME);
@@ -3611,6 +3611,19 @@ ServerStore.prototype = {
                 }
             } // foreach mojitType
         } // foreach env
+
+        // log warning if server mojit has dom dependency
+        Y.Object.each(this._mojitYuiRequired.server, function(val, mojit) {
+            var deps = (val['*'] && val['*'].join()) || '',
+                badre = /\b(dom-\w+|node-\w+|io-upload-iframe)/g,
+                isbad = deps.match(badre);
+
+            if (isbad) {
+                logger.log('your mojit "' + mojit + '" has a server affinity and these client-related deps: ' + isbad.join(', '), 'WARN', NAME);
+                logger.log('Mojito may be unable to start, unless you have provided server-side DOM/host-object suppport', 'WARN', NAME);
+            }
+        });
+
     },
 
 
@@ -3752,6 +3765,10 @@ ServerStore.prototype = {
             module = loader.sorted[j];
             info = loader.moduleInfo[module];
             if (info) {
+                // modules with "nodejs" in their name are tweaks on other modules
+                if ('client' === env && module.indexOf('nodejs') !== -1) {
+                    continue;
+                }
                 sortedPaths[module] = info.fullpath || loader._url(info.path);
             }
         }
