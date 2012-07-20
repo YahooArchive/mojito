@@ -1718,8 +1718,6 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                     highest = Math.max.apply(Math, Object.keys(versions[resid]));
                     //console.log('--DEBUG-- highest=' + highest + ' -- ' + resid);
                     chosen = this.cloneObj(versions[resid][highest]);
-                    delete chosen.selector;
-                    delete chosen.affinity;
                     out.push(chosen);
                 }
             }
