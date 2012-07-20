@@ -73,6 +73,73 @@ YUI.add('mojito-tunnel-client', function(Y, NAME) {
     return function() {};
 });
 
+
+/******* DALI ********/
+
+/*
+ */
+YUI.add('breg', function(Y, NAME) {
+    Y.namespace('Dali').beanRegistry = {
+        registerBean: function (name, obj) {
+            if (!this.beans) {
+                this.beans = {};
+            }
+            this.beans[name] = obj;
+        },
+        getBean: function (name) {
+            return this.beans[name];
+        },
+        doInjection: function () {
+            this.isInjected = true;
+        }
+    };
+});
+
+/*
+ */
+YUI.add('dali-transport-base', function(Y, NAME) {
+    return function() {};
+});
+
+/*
+ */
+YUI.add('request-handler', function(Y, NAME) {
+    return function() {};
+});
+
+/*
+ */
+YUI.add('simple-request-formatter', function(Y, NAME) {
+    return function() {};
+});
+
+/*
+ */
+YUI.add('requestor', function(Y, NAME) {
+    return function() {};
+});
+
+/*
+ */
+YUI.add('io-facade', function(Y, NAME) {
+    return function() {};
+});
+
+/*
+ */
+YUI.add('response-formatter', function(Y, NAME) {
+    return function() {};
+});
+
+/*
+ */
+YUI.add('response-processor', function(Y, NAME) {
+    return function() {};
+});
+
+/******* END DALI ********/
+
+
 /*
  */
 YUI.add('mojito-util', function(Y, NAME) {
