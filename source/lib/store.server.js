@@ -1862,7 +1862,12 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 }
                 childPath = this._libs.path.join(subdir, childName);
                 childFullPath = this._libs.path.join(dir, childPath);
-                childStat = this._libs.fs.statSync(childFullPath);
+                try {
+                    childStat = this._libs.fs.statSync(childFullPath);
+                } catch(e) {
+                    Y.log('invalid file. skipping ' + childFullPath, 'warn', NAME);
+                    continue;
+                }
                 if (childStat.isFile()) {
                     cb(null, subdir, childName, true);
                 } else if (childStat.isDirectory()) {
