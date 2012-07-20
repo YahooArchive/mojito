@@ -40,6 +40,12 @@ function parseReqs(dest, ress, options) {
         if (('mojito' === res.source.pkg.name) && (!options.framework)) {
             continue;
         }
+        if ('binder' === res.type && !options.client) {
+            continue;
+        }
+        if ('yui-lang' === res.type && !options.lang) {
+            continue;
+        }
         src = 'package ' + res.source.pkg.name;
         if (res.mojit && 'shared' !== res.mojit) {
             src = 'mojit ' + res.mojit;
@@ -52,7 +58,7 @@ function parseReqs(dest, ress, options) {
 }
 
 
-function makeDepGraph(reqs, destFile) {
+function makeDepGraph(title, reqs, destFile) {
     var graph,
         src,
         mod,
@@ -62,7 +68,7 @@ function makeDepGraph(reqs, destFile) {
         edges = '',
         graphAttrs;
 
-    graph = 'digraph yui {\n';
+    graph = 'digraph "' + title + '" {\n';
     graph += '    rankdir="LR";\n';
     graph += '    fontsize=11;\n';
     graph += '    node [shape=Mrecord,fontsize=11];\n';
@@ -76,7 +82,7 @@ function makeDepGraph(reqs, destFile) {
             graph += '        label="' + src + '";\n';
             graph += '        style="filled";\n';
             graph += '        color="lightgrey";\n';
-            graph += '        node [style="filled",color="white"];\n';
+            graph += '        node [style="filled",fillcolor="white"];\n';
             for (mod in reqs[src]) {
                 if (reqs[src].hasOwnProperty(mod)) {
                     graph += '        "' + mod + '";\n';
@@ -126,6 +132,8 @@ run = function(params, options) {
         Y,
         ress,
         m, mojit, mojits,
+        appConfigRes,
+        title,
         resultsFile;
 
     options = options || {};
@@ -173,9 +181,12 @@ run = function(params, options) {
         parseReqs(reqs, ress, options);
     }
 
+    appConfigRes = store.getResources('server', {}, {id:'config--application'})[0];
+    title = [appConfigRes.source.pkg.name, appConfigRes.source.pkg.version, env].join(' ');
+
     // generate graph
     resultsFile = libpath.join(resultsDir, 'yui.' + env + '.dot');
-    makeDepGraph(reqs, resultsFile);
+    makeDepGraph(title, reqs, resultsFile);
 
     console.log('Dotfile generated.' +
         ' To turn it into a graph, run the following:');
@@ -193,6 +204,8 @@ usage = 'mojito gv   // generates a GraphViz[1] file' +
     '\t       -c:  short for --client\n' +
     '\t --framework:  include framework (Mojito) modules\n' +
     '\t          -f:  short for --framework\n' +
+    '\t --lang:  also show language bundles\n' +
+    '\t     -l:  short for --lang\n' +
     '\n' +
     '[1] http://en.wikipedia.org/wiki/Graphviz\n';
 
@@ -206,6 +219,11 @@ options = [
     {
         longName: 'client',
         shortName: 'c',
+        hasValue: false
+    },
+    {
+        longName: 'lang',
+        shortName: 'l',
         hasValue: false
     }
 ];
