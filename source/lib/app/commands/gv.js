@@ -9,9 +9,11 @@
 
 
 // TODO:
-//  color-code or shape-code module types (from yui, mojito fw, app-level,
-//  mojits) use store.getAppLevelYuiModules() to de-stress (or not draw)
-//  modules that aren't used by the app.
+//  * include YUI internal structure (but not edges/dependencies)
+//  * --trace=foo to trace all transitive dependencies on module "foo"
+//  * [warning][server] trace anything that leads to a YUI module that uses the DOM
+//  * color-code or shape-code module types (from yui, mojito fw, app-level,
+//    mojits, affinity)
 
 var run,
     usage,
@@ -21,6 +23,7 @@ var run,
     libfs = require('fs'),
     libutils = require(libpath.join(__dirname, '../../management/utils')),
     YUI = require('yui').YUI,
+    Y = YUI(),
 
     MODE_ALL = parseInt('777', 8),
 
@@ -28,113 +31,336 @@ var run,
     resultsDir = 'artifacts/gv';
 
 
-function parseReqs(dest, ress, options) {
+
+function gvQuote(str) {
+    str = str.replace(/"/g, '\\"');
+    return '"' + str + '"';
+}
+
+
+function gvStyle(style, nopad) {
+    var pairs = [];
+    Y.Object.each(style, function(v, k) {
+        pairs.push(k + '=' + gvQuote(v));
+    });
+    if (!pairs.length) {
+        return '';
+    }
+    return (nopad ? '' : ' ') + '[' + pairs.join(',') + ']';
+}
+
+
+function Node(name) {
+    this.name = name;
+    this.attrs = {};    // arbitrary user-defined attributes
+    this.style = {};    // graphviz style attributes
+}
+
+function Edge(tail, head, directed) {
+    this.tail = tail;
+    this.head = head;
+    this.directed = directed || false;
+    this.attrs = {};    // arbitrary user-defined attributes
+    this.style = {};    // graphviz style attributes
+}
+
+function Graph(name) {
+    this.name = name;
+    this.type = 'graph';// top-level:  graph | digraph
+                        // subgraph:  group | subgraph | cluster
+    this.title = name;  // title can be different than name
+                        // (name is used as the identifier)
+                        // (for .type===cluster you might want to set .style.label)
+    this.attrs = {};    // arbitrary user-defined attributes
+    this.style = {};    // graphviz style attributes for the Graph itself
+    this.styles = {     // type: default graphviz style attributes
+        node: {},           // ... for nodes
+        edge: {},           // ... for nodes
+        graph: {},          // ... for nodes
+        all: {}             // ... for everything
+    };
+    this._nodes = {};       // id: Node
+    this._edges = {};       // id: Edge
+    this._subgraphs = {};   // id: Graph
+}
+Graph.prototype = {
+
+    // finds the node, no matter how deeply nested
+    // creates the node if it doesn't already exist
+    // @param name {string} name of node
+    getNode: function(name) {
+        var node;
+        this._find('_nodes', name, function(parent, found) {
+            node = found;
+        });
+        if (!node) {
+            node = new Node(name);
+            this._nodes[name] = node;
+        }
+        return node;
+    },
+
+    // finds the edge, no matter how deeply nested
+    // creates the edge if it doesn't already exist
+    // @param tail {string} name of tail node
+    // @param head {string} name of head node
+    getEdge: function(tail, head, directed) {
+        var id = this._makeEdgeID(tail, head, directed);
+        var edge;
+        this._find('_edges', id, function(parent, found) {
+            edge = found;
+        });
+        if (!edge) {
+            edge = new Edge(tail, head, directed);
+            this._edges[id] = edge;
+        }
+        return edge;
+    },
+
+    // finds the subgraph, no matter how deeply nested
+    // creates the subgraph if it doesn't already exist
+    // @param name {string} name of subgraph
+    // @return {Graph} found subgraph
+    getSubgraph: function(name) {
+        var subgraph;
+        this._find('_subgraphs', name, function(parent, found) {
+            subgraph = found;
+        });
+        if (!subgraph) {
+            subgraph = new Graph(name);
+            this._subgraphs[name] = subgraph;
+        }
+        return subgraph;
+    },
+
+    // moves the node from existing subgraph to the one speciefied
+    // @param node {string} name of node to move
+    // @param parent {string} name of new parent parent
+    moveNodeToSubgraph: function(node, parent) {
+        var found;
+        this._find('_nodes', node, function(foundParent, foundItem) {
+            delete foundParent._nodes[node];
+            found = foundItem;
+        });
+        if (!found) {
+            found = new Node(node);
+        }
+        this.getSubgraph(parent)._nodes[node] = found;
+    },
+
+    // arranges for child subgraph to be drawn inside parent subgraph
+    // @param child {string} child subgraph name
+    // @param parent {string} parent subgraph name
+    moveSubgraphToSubgraph: function(child, parent) {
+        var found;
+        this._find('_subgraphs', child, function(foundParent, foundItem) {
+            delete foundParent._subgraphs[child];
+            found = foundItem;
+        });
+        if (!found) {
+            found = new Graph(child);
+        }
+        this.getSubgraph(parent)._subgraphs[node] = found;
+    },
+
+    // if a filter returns false, that node/edge/subgraph is skipped
+    // @param filters {object} callbacks to det
+    // @param filters.node {function(Node)}
+    // @param filters.edge {function(Edge)}
+    // @param filters.subgraph {function(Graph)}
+    // @param _ctx {object} [private] graph drawing context, for recursion
+    // @return {string} graphviz DOT notation
+    render: function(filters, _ctx) {
+        _ctx = _ctx || {depth: 0, count: 0};
+        _ctx.count += 1;
+        var out = '', section;
+        var indent = Array(_ctx.depth + 1).join('    ');
+
+        if ('group' === this.type) {
+            out += indent + '{\n';
+        } else if ('cluster' === this.type) {
+            out += indent + 'subgraph ' + gvQuote('cluster_' + _ctx.count) + ' {\n';
+        } else {
+            out += indent + this.type + ' ' + gvQuote(this.title) + ' {\n';
+        }
+
+        section = '';
+        if (Object.keys(this.styles.all).length) {
+            Y.Object.each(this.styles.all, function(v, k) {
+                section += indent + '    ' + k + '=' + gvQuote(v) + ';\n';
+            });
+        }
+        if (Object.keys(this.styles.node).length) {
+            section += indent + '    node' + gvStyle(this.styles.node) + ';\n';
+        }
+        if (Object.keys(this.styles.edge).length) {
+            section += indent + '    edge' + gvStyle(this.styles.edge) + ';\n';
+        }
+        if (Object.keys(this.styles.graph).length) {
+            section += indent + '    graph' + gvStyle(this.styles.graph) + ';\n';
+        }
+        if (section) {
+            out += indent + '    // defaults\n';
+            out += section;
+            out += '\n';
+        }
+
+        section = '';
+        this._filter(this._nodes, filters.node, function(key, val) {
+            section += indent + '    ' + gvQuote(val.name) + gvStyle(val.style) + ';\n';
+        });
+        if (section) {
+            out += indent + '    // nodes\n';
+            out += section;
+            out += '\n';
+        }
+
+        section = '';
+        this._filter(this._edges, filters.edge, function(key, val) {
+            section += indent + '    ' + gvQuote(val.tail) +
+                ' ' + (val.directed ? '->' : '--') + ' ' +
+                gvQuote(val.head) + gvStyle(val.style) + ';\n';
+        });
+        if (section) {
+            out += indent + '    // edges\n';
+            out += section;
+            out += '\n';
+        }
+
+        section = '';
+        this._filter(this._subgraphs, filters.subgraph, function(key, val) {
+            var c = { depth: _ctx.depth + 1, count: _ctx.count };
+            section += val.render(filters, c);
+            _ctx.count = c.count;
+        });
+        if (section) {
+            out += indent + '    // subgraphs\n';
+            out += section;
+            out += '\n';
+        }
+
+        section = '';
+        Y.Object.each(this.style, function(v, k) {
+            section += indent + '    ' + k + '=' + gvQuote(v) + ';\n';
+        });
+        if (section) {
+            out += indent + '    // this graph\n';
+            out += section;
+        }
+        out += indent + '};\n';
+        return out;
+    },
+
+    _find: function(source, target, cb) {
+        var id, subgraph;
+        if (source) {
+            for (id in this[source]) {
+                if (this[source].hasOwnProperty(id) && id === target) {
+                    cb(this, this[source][id]);
+                    return true;
+                }
+            }
+        }
+        for (id in this._subgraphs) {
+            if (this._subgraphs.hasOwnProperty(id)) {
+                subgraph = this._subgraphs[id];
+                if (subgraph._find(source, target, cb)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    },
+
+    _filter: function(obj, filter, cb) {
+        Y.Object.each(obj, function(val, key) {
+            if (filter && !filter(val)) {
+                return;
+            }
+            cb(key, val);
+        });
+    },
+
+    _makeEdgeID: function(tail, head, directed) {
+        return [tail, directed, head].join(',');
+    }
+
+};
+
+
+function parseRess(graph, ress, options) {
     var r,
         res,
-        src;
+        subgraph, subgraphName,
+        tail, tailName,
+        head, headName,
+        edge,
+        rs, reqs;
     for (r = 0; r < ress.length; r += 1) {
         res = ress[r];
+
         if (!res.yui || !res.yui.name) {
-            continue;
-        }
-        if (('mojito' === res.source.pkg.name) && (!options.framework)) {
-            continue;
-        }
-        if ('binder' === res.type && !options.client) {
             continue;
         }
         if ('yui-lang' === res.type && !options.lang) {
             continue;
         }
-        src = 'package ' + res.source.pkg.name;
+        if ('binder' === res.type && !options.client) {
+            continue;
+        }
+
+        // The idea here is that we -do- want to collect information about
+        // every module, so that we know which subgraph to draw it in.
+        // Later (during the render filters) we'll drop those that aren't
+        // of particular interest.
+
+        tailName = res.yui.name;
+
+        subgraphName = 'package ' + res.source.pkg.name + '@' + res.source.pkg.version;
         if (res.mojit && 'shared' !== res.mojit) {
-            src = 'mojit ' + res.mojit;
+            subgraphName = 'mojit ' + res.mojit;
         }
-        if (!dest[src]) {
-            dest[src] = {};
+
+        // create subgraph and node for -everything- (we'll filter later)
+        subgraph = graph.getSubgraph(subgraphName);
+        subgraph.type = 'cluster';
+        subgraph.style.label = subgraphName;
+        subgraph.attrs.pkg = res.source.pkg;
+
+        tail = graph.getNode(tailName);
+        graph.moveNodeToSubgraph(tailName, subgraphName);
+        // TODO:  This might be handy to style different types differently.
+        //['type', 'subtype', 'affinity'].forEach(function(k) {
+        //    tail.attrs[k] = res[k];
+        //});
+        
+        if ('mojito' === res.source.pkg.name && !options.framework) {
+            // TODO:  I think this might have a bug where overriding HTMLFrameMojit ress
+            // leads to a sparse local "mojit HTMLFrameMojit" subgraph
+            subgraph.attrs.sparse = true;
+            continue;
         }
-        dest[src][res.yui.name] = res.yui.meta.requires || [];
-    }
-}
 
-
-function makeDepGraph(title, reqs, destFile) {
-    var graph,
-        src,
-        mod,
-        i,
-        req,
-        cluster = 0,
-        edges = '',
-        graphAttrs;
-
-    graph = 'digraph "' + title + '" {\n';
-    graph += '    rankdir="LR";\n';
-    graph += '    fontsize=11;\n';
-    graph += '    node [shape=Mrecord,fontsize=11];\n';
-    graph += '    edge [color=grey33,arrowsize=0.5,fontsize=8];\n';
-    graph += '\n';
-
-    for (src in reqs) {
-        if (reqs.hasOwnProperty(src)) {
-            cluster += 1;
-            graph += '    subgraph cluster' + cluster + ' {\n';
-            graph += '        label="' + src + '";\n';
-            graph += '        style="filled";\n';
-            graph += '        color="lightgrey";\n';
-            graph += '        node [style="filled",fillcolor="white"];\n';
-            for (mod in reqs[src]) {
-                if (reqs[src].hasOwnProperty(mod)) {
-                    graph += '        "' + mod + '";\n';
-                }
-            }
-            graph += '    };\n';
-
-            for (mod in reqs[src]) {
-                if (reqs[src].hasOwnProperty(mod)) {
-                    for (i = 0; i < reqs[src][mod].length; i += 1) {
-                        req = reqs[src][mod][i];
-                        edges += '    "' + mod + '" -> "' + req + '";\n';
-                    }
-                }
-            }
+        reqs = res.yui.meta.requires || [];
+        for (rs = 0; rs < reqs.length; rs += 1) {
+            headName = reqs[rs];
+            edge = graph.getEdge(tailName, headName, true);
+            tail.attrs.hasEdge = true;
+            head = graph.getNode(headName);
+            head.attrs.hasEdge = true;
         }
     }
-
-    graph += '\n';
-    graph += edges;
-    graph += '\n';
-
-    graphAttrs = [
-        'remincross=true',
-        //      'rankdir=LR',
-        'ranksep=1.5',
-        'clusterrank=local',
-        'model=circuit',
-        'overlap=false',
-        'splines=compound',
-        //      'pack=true',
-        //      'packmode=clust',
-        //      'concentrate=true',   // sometimes causes crash/coredump
-        //      'start=self',
-        'compound=true'
-    ];
-    graph += '    graph [' + graphAttrs.join(',') + '];\n';
-    graph += '}\n';
-
-    libfs.writeFileSync(destFile, graph, 'utf-8');
 }
 
 
 run = function(params, options) {
     var env, store,
-        reqs = {},
-        Y,
+        graph,
         ress,
         m, mojit, mojits,
         appConfigRes,
-        title,
-        resultsFile;
+        contents,
+        file;
 
     options = options || {};
     env = options.client ? 'client' : 'server';
@@ -152,7 +378,6 @@ run = function(params, options) {
         libfs.mkdirSync(resultsDir, MODE_ALL);
     }
 
-    Y = YUI();
     Y.applyConfig({
         useSync: true,
         modules: {
@@ -170,27 +395,83 @@ run = function(params, options) {
     });
     store.preload();
 
+    appConfigRes = store.getResources('server', {}, {id:'config--application'})[0];
+    title = appConfigRes.source.pkg.name + '@' + appConfigRes.source.pkg.version + ' ' + env;
+    graph = new Graph(title);
+    graph.type = 'digraph';
+    graph.attrs.pkg = appConfigRes.source.pkg;
+
+    graph.styles.all.rankdir = 'LR';
+    graph.styles.all.fontsize = '11';
+    graph.styles.node.fontsize = '11';
+    graph.styles.node.shape = 'Mrecord';
+    graph.styles.node.style = 'filled';
+    graph.styles.node.fillcolor = 'white';
+    graph.styles.edge.color = 'grey33';
+    graph.styles.edge.arrowsize = '0.5';
+    graph.styles.edge.fontsize = '8';
+    graph.styles.graph.style = 'filled';
+    graph.styles.graph.color = 'lightgrey';
+
+    graph.style.clusterrank = 'local';  // DOT -- special handling for clusters
+    graph.style.compound = 'true';      // allow edges between clusters (also requires edge[lhead,ltail])
+//  graph.style.concentrate = 'true';   // SOMETIMES CRASHES -- reduce number of edges
+    graph.style.model = 'circuit';      // NEATO --
+    graph.style.overlap = 'false';      // DOT --
+//  graph.style.pack = 'true';
+//  graph.style.packmode = 'clust';
+//  graph.style.rankdir = 'LR';         // DOT -- direction of graph
+    graph.style.ranksep = '1.5';        // TWOPI,DOT -- space between ranks
+    graph.style.remincross = 'true';    // DOT -- if clusters, rerun cross minimization
+    graph.style.splines = 'polyline';   // how to draw edges
+    graph.style.start = 'self';         // FDP,NEATO --
+
     ress = store.getResources(env, {}, {});
-    parseReqs(reqs, ress, options);
+    parseRess(graph, ress, options);
 
     mojits = store.listAllMojits();
     mojits.push('shared');
     for (m = 0; m < mojits.length; m += 1) {
         mojit = mojits[m];
         ress = store.getResources(env, {}, { mojit: mojit });
-        parseReqs(reqs, ress, options);
+        parseRess(graph, ress, options);
     }
 
-    appConfigRes = store.getResources('server', {}, {id:'config--application'})[0];
-    title = [appConfigRes.source.pkg.name, appConfigRes.source.pkg.version, env].join(' ');
-
     // generate graph
-    resultsFile = libpath.join(resultsDir, 'yui.' + env + '.dot');
-    makeDepGraph(title, reqs, resultsFile);
+    contents = graph.render({
+        node: function(node) {
+            // TODO:  tweak each node style somehow
+            //node.style.label = node.name;
+            //if (node.attrs.affinity) {
+            //    node.style.label += ' (' + node.attrs.affinity.affinity + ')';
+            //}
+            return true;
+        },
+
+        subgraph: function(subgraph) {
+            if (subgraph.attrs.sparse) {
+                var doomed = [];
+                Y.Object.each(subgraph._nodes, function(node) {
+                    if (!node.attrs.hasEdge) {
+                        doomed.push(node.name);
+                    }
+                });
+                Y.Array.each(doomed, function(name) {
+                    delete subgraph._nodes[name];
+                });
+                if (!Object.keys(subgraph._nodes).length) {
+                    return false;
+                }
+            }
+            return true;
+        }
+    });
+    file = libpath.join(resultsDir, 'yui.' + env + '.dot');
+    libfs.writeFileSync(file, contents, 'utf-8');
 
     console.log('Dotfile generated.' +
         ' To turn it into a graph, run the following:');
-    console.log('$ dot -Tgif ' + resultsFile + ' > ' +
+    console.log('$ dot -Tgif ' + file + ' > ' +
         libpath.join(resultsDir, 'yui.' + env + '.gif'));
 };
 
