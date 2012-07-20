@@ -18,7 +18,15 @@
                     "page": "../base/mojito-test.html",
                     "lib": "../../source/lib/app/autoload/mojit-proxy.client.js",
                     "test" : "./lib/app/autoload/test-mojit-proxy.client.js"
-                }, 
+                },
+                "group" : "fw,unit"
+            },
+            "output-handler.client" : {
+                "params" : {
+                    "page": "../base/mojito-test.html",
+                    "lib": "../../source/lib/app/autoload/output-handler.client.js",
+                    "test" : "./lib/app/autoload/test-output-handler.client.js"
+                },
                 "group" : "fw,unit"
             }
         }
