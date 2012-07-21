@@ -17,13 +17,23 @@ The following sections provide supplementary material about Mojito:
 Presentations/Slidecasts
 ########################
 
-+--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+---------------+
-| Title                                                  | Topics Covered                                         | Description                                            | Presenter     |
-+========================================================+========================================================+========================================================+===============+
-| `Mojito: Tale of Two Runtimes                          | basic architecture of Mojito, mojits, MVC in           | Provides a quick overview of Mojito and its core       | Matt Taylor   |
-| <http://www.slideshare.net/rhyolight/mojito-           | Mojito, ActionContext object, addons, binders,         | components.                                            |               |
-| sl-2011>`_                                             | client/server execution                                |                                                        |               |
-+--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+---------------+
++--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+----------------------+
+| Title                                                  | Topics Covered                                         | Description                                            | Presenter            |
++========================================================+========================================================+========================================================+======================+
+| `Mojito: Tale of Two Runtimes                          | basic architecture of Mojito, mojits, MVC in           | Provides a quick overview of Mojito and its core       | Matt Taylor          |
+| <http://www.slideshare.net/rhyolight/mojito-           | Mojito, ActionContext object, addons, binders,         | components.                                            |                      |
+| sl-2011>`_                                             | client/server execution                                |                                                        |                      |
++--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+----------------------+
+| `JS Conf 2012 - Bruno Fernandez-Ruiz                   | device connectivity, network latency, progressive      | Discusses how Mojito can solve the problem of serving  | Bruno Fernandez-Ruiz |
+| <http://blip.tv/file/6125446>`_                        | enhancement, JavaScript on client/server, YUI3,        | content to different devices, handle connectivity      |                      |
+|                                                        | client/server runtimes, Mojito MVC, ActionContext API, | issues, reduce code duplication, and                   |                      |
+|                                                        | Mojito library, mojits, binders                        | enables progressive enhancement.                       |                      |
++--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+----------------------+
+| `Your Stuff Runs on Both Sides                         | See above.                                             | The slides that accompany the talk given by            | Bruno Fernandez-Ruiz |
+| <http://olympum.github.com/decks/2012-your-stuff-runs  |                                                        | Bruno Fernandez-Ruiz at JS Conf 2012. See              |                      |
+| -on-both-sides>`_                                      |                                                        | **JS Conf 2012 - Bruno Fernandez-Ruiz** above to       |                      |
+|                                                        |                                                        | see the presentation.                                  |                      |
++--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+----------------------+
 
 .. _additional_resources-screencasts:
 
