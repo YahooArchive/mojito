@@ -323,7 +323,6 @@ function parseResources(graph, ress, options) {
         subgraph = graph.getSubgraph(subgraphName);
         subgraph.type = 'cluster';
         subgraph.style.label = subgraphName;
-        subgraph.attrs.pkg = res.source.pkg;
 
         tail = graph.getNode(tailName);
         graph.moveNodeToSubgraph(tailName, subgraphName);
@@ -331,10 +330,9 @@ function parseResources(graph, ress, options) {
         //['type', 'subtype', 'affinity'].forEach(function(k) {
         //    tail.attrs[k] = res[k];
         //});
+        tail.attrs.pkg = res.source.pkg;
         
         if ('mojito' === res.source.pkg.name && !options.framework) {
-            // TODO:  I think this might have a bug where overriding HTMLFrameMojit ress
-            // leads to a sparse local "mojit HTMLFrameMojit" subgraph
             subgraph.attrs.sparse = true;
             continue;
         }
@@ -430,7 +428,6 @@ run = function(params, options) {
     title = appConfigRes.source.pkg.name + '@' + appConfigRes.source.pkg.version + ' ' + env;
     graph = new Graph(title);
     graph.type = 'digraph';
-    graph.attrs.pkg = appConfigRes.source.pkg;
 
     graph.styles.all.rankdir = 'LR';
     graph.styles.all.fontsize = '11';
@@ -504,7 +501,8 @@ run = function(params, options) {
             if (subgraph.attrs.sparse) {
                 var doomed = [];
                 Y.Object.each(subgraph._nodes, function(node) {
-                    if (!node.attrs.hasEdge) {
+                    // always draw nodes found in the application
+                    if ('mojito' === node.attrs.pkg.name && !node.attrs.hasEdge) {
                         doomed.push(node.name);
                     }
                 });
