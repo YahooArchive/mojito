@@ -10,7 +10,7 @@ YUI.add('mojito-output-handler-tests', function(Y, NAME) {
         OutputHandler = require(path.join(__dirname, '../../output-handler.server')),
         A = YUITest.Assert,
         OA = YUITest.ObjectAssert;
-    
+
     suite.add(new YUITest.TestCase({
         
         name: 'Server output handling tests',
@@ -69,25 +69,60 @@ YUI.add('mojito-output-handler-tests', function(Y, NAME) {
             A.isTrue(writeCalled, 'write never called');
         },
 
-        'test error call with reasonPhrase and status code': function () {
-            var headWritten = false;
-            var writeCalled = false;
-            var nextCalled = false;
-
-            var oh = new OutputHandler(null, {
-                writeHead: function(code, statusPhrase, headers) {
-                    headWritten = true;
-                    A.areSame(501, code, 'bad status code');
-                    A.areSame('Help me, Obi-Wan Kenobi.', statusPhrase, 'bad reason phrase');
-                    OA.areEqual({'content-type':'text/html'}, headers, 'bad headers');
-                },
-                end: function(data) {
-                    writeCalled = true;
-                    A.areSame('<html><body><h1>Error: 501</h1><p>Error details are not available.</p></body></html>', data);
+        'test done call with http status code and reasonPhrase': function() {
+            var readMetaCall,
+                writeHeadersCall,
+                writeCalled,
+                oh = new OutputHandler(null, {
+                    writeHead: function(code, statusPhrase, headers) {
+                        headWritten = true;
+                        A.areSame(210, code, 'bad status code');
+                        A.areSame('Yeah, but this time I\'ve got the money.', statusPhrase, 'bad reason phrase');
+                        OA.areEqual({'content-type':'text/html'}, headers, 'bad headers');
+                    },
+                    write: function() {
+                        A.fail('done should call end(), not write()');
+                    },
+                    end: function(data) {
+                        writeCalled = true;
+                        A.areSame('data', data);
+                    }
+                }, null);
+            oh.setLogger({log: function() {}});
+            
+            oh.done('data', {
+                'http': {
+                    'code': 210,
+                    'reasonPhrase': 'Yeah, but this time I\'ve got the money.',
+                    'headers': {
+                        'content-type':'text/html'
+                    }
                 }
-            }, function() {
-                nextCalled = true;
             });
+
+            A.isTrue(headWritten, 'headers never written');
+            A.isTrue(writeCalled, 'write never called');
+        },
+
+        'test error call with http status code and reasonPhrase': function () {
+            var headWritten = false,
+                writeCalled = false,
+                nextCalled = false,
+
+                oh = new OutputHandler(null, {
+                    writeHead: function(code, statusPhrase, headers) {
+                        headWritten = true;
+                        A.areSame(501, code, 'bad status code');
+                        A.areSame('Help me, Obi-Wan Kenobi.', statusPhrase, 'bad reason phrase');
+                        OA.areEqual({'content-type':'text/html'}, headers, 'bad headers');
+                    },
+                    end: function(data) {
+                        writeCalled = true;
+                        A.areSame('<html><body><h1>Error: 501</h1><p>Error details are not available.</p></body></html>', data);
+                    }
+                }, function() {
+                    nextCalled = true;
+                });
             oh.setLogger({log: function() {}});
 
             oh.error({
