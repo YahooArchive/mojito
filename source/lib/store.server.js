@@ -1710,7 +1710,9 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                     if (!versions[res.id]) {
                         versions[res.id] = {};
                     }
-                    versions[res.id][priority] = res;
+                    if (!versions[res.id][priority]) {
+                        versions[res.id][priority] = res;
+                    }
                 }
             }
             for (resid in versions) {

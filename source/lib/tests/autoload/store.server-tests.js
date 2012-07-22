@@ -364,6 +364,13 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
                 var urls = store.getAllURLs();
                 A.areSame(libpath.join(fixtures, 'mojits/rollups/rollup.client.js'), urls['/static/rollups/rollup.client.js']);
             });
+        },
+
+        'app resource overrides framework resource': function() {
+            var fixtures = libpath.join(__dirname, '../fixtures/store'),
+                ress;
+            ress = store.getResources('server', {}, {mojit: 'HTMLFrameMojit', type: 'controller'});
+            A.areSame(libpath.join(fixtures, 'mojits/HTMLFrameMojit/controller.server.js'), ress[0].source.fs.fullPath);
         }
 
     }));
