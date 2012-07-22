@@ -12,4 +12,4 @@
  * Starts a new Mojito server instance.
  */
 var mojito = require('mojito');
-new mojito.constructor().createServer().listen(80);
+new mojito.constructor().createServer().listen(process.env.PORT || 8666);
