@@ -47,7 +47,11 @@ YUI.add('mojito-action-context', function(Y, NAME) {
      * @param {Error} err A normal JavaScript Error object is expected, but you
      *     may add a "code" property to the error if you want the framework to
      *     report a certain HTTP status code for the error. For example, if the
-     *     status code is 404, Mojito will generate a 404 page.
+     *     status code is 404, Mojito will generate a 404 page. Additionally you
+     *     might provide a reasonPhrase property, to override the default humran
+     *     readable description for this status code with one specific to your
+     *     application. For example for the status code 404 you could provide
+     *     "This does not exist in my app".
      */
 
     /**

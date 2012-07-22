@@ -69,6 +69,37 @@ YUI.add('mojito-output-handler-tests', function(Y, NAME) {
             A.isTrue(writeCalled, 'write never called');
         },
 
+        'test error call with reasonPhrase and status code': function () {
+            var headWritten = false;
+            var writeCalled = false;
+            var nextCalled = false;
+
+            var oh = new OutputHandler(null, {
+                writeHead: function(code, statusPhrase, headers) {
+                    headWritten = true;
+                    A.areSame(501, code, 'bad status code');
+                    A.areSame('Help me, Obi-Wan Kenobi.', statusPhrase, 'bad reason phrase');
+                    OA.areEqual({'content-type':'text/html'}, headers, 'bad headers');
+                },
+                end: function(data) {
+                    writeCalled = true;
+                    A.areSame('<html><body><h1>Error: 501</h1><p>Error details are not available.</p></body></html>', data);
+                }
+            }, function() {
+                nextCalled = true;
+            });
+            oh.setLogger({log: function() {}});
+
+            oh.error({
+                'code': 501,
+                'reasonPhrase': 'Help me, Obi-Wan Kenobi.'
+            });
+
+            A.isTrue(headWritten, 'headers never written');
+            A.isTrue(writeCalled, 'write never called');
+            A.isFalse(nextCalled, 'next() should not be called on error()');
+        },
+
         'TODO: error call': function() {
             // TODO: [Issue 99] this is deferred until we get build environments working
             A.skip();
