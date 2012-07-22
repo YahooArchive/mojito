@@ -320,7 +320,7 @@ To get all of the GET, POST, and routing parameters, call ``getFromMerged`` or `
 Cookies
 =======
 
-The `Cookies addon <../../api/Cookie.client.html>`_ offers methods for reading and writing cookies. The API of the Cookie addon is the same as 
+The `Cookies addon <../../api/classes/Cookie.server.html>`_ offers methods for reading and writing cookies. The API of the Cookie addon is the same as 
 the `YUI 3 Cookie Utility <http://yuilibrary.com/yui/docs/api/classes/Cookie.html>`_. For a code example showing how to use the Cookies addon, 
 see `Using Cookies <../code_exs/cookies.html>`_.
 

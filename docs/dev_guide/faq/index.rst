@@ -19,6 +19,7 @@ General
 * :ref:`Can Mojito make runtime decisions to run client-side or server-side code? <moj_run_client_server>`
 * :ref:`Can Mojito applications access the 'request' or 'response' instances of the Node.js classes 'http.ServerRequest' and 'http.ServerResponse'? <moj_req_res_instances>`
 * :ref:`Is it possible to access headers from a Mojito application? <moj_access_headers>`
+* :ref:`Can Mojito be started with Node.js instead of using "mojito start"? <moj_node_start>`
 
 Mojits
 ------
@@ -152,7 +153,7 @@ General
     #. Refresh the page to view the modified application.
     
     **Note**: ``supervisor`` will only update files with extensions ``node`` or ``js`` by default. To have 
-    ``supervisor`` watch files with other exentsions, use the option ``-e`` or ``--extensions``: ``$ supervisor -e js,json,html -x path/to/mojito start``
+    ``supervisor`` watch files with other extensions, use the option ``-e`` or ``--extensions``: ``$ supervisor -e js,json,html -x path/to/mojito start``
 
 ------------    
     
@@ -231,7 +232,22 @@ General
 
     Yes, the Mojito API has the ``ActionContext`` addon ``Http.server`` that allows you to get, set, and add HTTP headers. See 
     `Class Http.server <../../api/classes/Http.server.html>`_ for the available methods.
-  
+
+------------    
+    
+.. _moj_node_start:
+.. topic:: **Can Mojito be started with Node.js instead of using "mojito start"?**
+
+    Yes. Although there is not a standard way for starting Mojito with Node.js, you could do the following::
+    
+       $ node --debug `which mojito` start
+    
+    
+    Or you could specify the path to start a locally installed version of Mojito::
+    
+       $ node --debug node_modules/mojito/bin/mojito start
+    
+    
 
 Mojits
 ------
