@@ -1864,7 +1864,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 childFullPath = this._libs.path.join(dir, childPath);
                 try {
                     childStat = this._libs.fs.statSync(childFullPath);
-                } catch(e) {
+                } catch (e) {
                     Y.log('invalid file. skipping ' + childFullPath, 'warn', NAME);
                     continue;
                 }

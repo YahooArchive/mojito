@@ -102,8 +102,8 @@ Graph.prototype = {
     // @param tail {string} name of tail node
     // @param head {string} name of head node
     getEdge: function(tail, head, directed) {
-        var id = this._makeEdgeID(tail, head, directed);
-        var edge;
+        var id = this._makeEdgeID(tail, head, directed),
+            edge;
         this._find('_edges', id, function(parent, found) {
             edge = found;
         });
@@ -157,7 +157,7 @@ Graph.prototype = {
         if (!found) {
             found = new Graph(child);
         }
-        this.getSubgraph(parent)._subgraphs[node] = found;
+        this.getSubgraph(parent)._subgraphs[child] = found;
     },
 
     // if a filter returns false, that node/edge/subgraph is skipped
@@ -170,8 +170,16 @@ Graph.prototype = {
     render: function(filters, _ctx) {
         _ctx = _ctx || {depth: 0, count: 0};
         _ctx.count += 1;
-        var out = '', section;
-        var indent = Array(_ctx.depth + 1).join('    ');
+        var out = '',
+            section,
+            i,
+            indent = '';
+
+        // I would just do the following, but jslint is overly strict.
+        // indent = new Array(_ctx.depth + 1).join('    ');
+        for (i = 0; i < _ctx.depth; i += 1) {
+            indent += '    ';
+        }
 
         if ('group' === this.type) {
             out += indent + '{\n';
@@ -288,11 +296,15 @@ Graph.prototype = {
 function parseResources(graph, ress, options) {
     var r,
         res,
-        subgraph, subgraphName,
-        tail, tailName,
-        head, headName,
+        subgraph,
+        subgraphName,
+        tail,
+        tailName,
+        head,
+        headName,
         edge,
-        rs, reqs;
+        rs,
+        reqs;
 
     for (r = 0; r < ress.length; r += 1) {
         res = ress[r];
@@ -331,7 +343,7 @@ function parseResources(graph, ress, options) {
         //    tail.attrs[k] = res[k];
         //});
         tail.attrs.pkg = res.source.pkg;
-        
+
         if ('mojito' === res.source.pkg.name && !options.framework) {
             subgraph.attrs.sparse = true;
             continue;
@@ -352,7 +364,10 @@ function parseResources(graph, ress, options) {
 function trace(graph, options) {
     var doneNodes = {}, // name: true
         todoNodes = [],
-        headName, head,
+        headName,
+        head,
+        e,
+        edge,
         edges = {}; // headName: [ Edge ]
 
     // TODO:  detect if options.trace doesn't exist in graph
@@ -374,19 +389,24 @@ function trace(graph, options) {
         head.attrs.trace = true;
         doneNodes[headName] = true;
 
-        Y.Array.each(edges[headName], function(edge) {
+        for (e = 0; e < edges[headName].length; e += 1) {
+            edge = edges[headName][e];
             edge.attrs.trace = true;
             todoNodes.push(edge.tail);
-        });
+        }
     }
 }
 
 
 run = function(params, options) {
-    var env, store,
+    var env,
+        store,
+        title,
         graph,
         ress,
-        m, mojit, mojits,
+        m,
+        mojit,
+        mojits,
         appConfigRes,
         contents,
         file;
@@ -424,7 +444,7 @@ run = function(params, options) {
     });
     store.preload();
 
-    appConfigRes = store.getResources('server', {}, {id:'config--application'})[0];
+    appConfigRes = store.getResources('server', {}, {id: 'config--application'})[0];
     title = appConfigRes.source.pkg.name + '@' + appConfigRes.source.pkg.version + ' ' + env;
     graph = new Graph(title);
     graph.type = 'digraph';
