@@ -4159,7 +4159,7 @@ ServerStore.prototype = {
 
         // use a really lenient JSLINT to find syntax errors
 
-        var jslint = require('./management/fulljslint').jslint,
+        var jslint = require('./management/jslint').jslint,
             opts = {
                 // turn off all the usual checks
                 devel: true,
