@@ -11,7 +11,7 @@
                     "lib": "../../source/lib/app/autoload/mojito-client.client.js",
                     "test" : "./lib/app/autoload/test-mojito-client.client.js"
                 }, 
-                "group" : "fw"
+                "group" : "fw,unit,client"
             },
             "mojit-proxy.client" : {
                 "params" : {

@@ -6,7 +6,7 @@
 
 
 /*jslint anon:true, sloppy:true, nomen:true, node:true*/
-/*global YUI,YUITest*/
+/*global YUI*/
 
 
 /*
@@ -163,17 +163,17 @@ YUI.add('mojito-test', function(Y, NAME) {
 
     function EasyMock() {
 
-        var mock = YUITest.Mock();
+        var mock = Y.Test.Mock();
 
         mock.expect = function() {
             Y.Array.each(arguments, function(expectation) {
-                YUITest.Mock.expect(mock, expectation);
+                Y.Test.Mock.expect(mock, expectation);
             });
             return mock;
         };
 
         mock.verify = function() {
-            YUITest.Mock.verify(mock);
+            Y.Test.Mock.verify(mock);
         };
 
         return mock;
@@ -206,7 +206,7 @@ YUI.add('mojito-test', function(Y, NAME) {
 
 
     function MockActionContext(opts) {
-        var mock = YUITest.Mock();
+        var mock = Y.Test.Mock();
 
         opts = opts || {};
         mock._addons = [];
@@ -237,7 +237,7 @@ YUI.add('mojito-test', function(Y, NAME) {
 
         mock.expect = function() {
             Y.Array.each(arguments, function(expectation) {
-                YUITest.Mock.expect(mock, expectation);
+                Y.Test.Mock.expect(mock, expectation);
             });
             return mock;
         };
@@ -246,7 +246,7 @@ YUI.add('mojito-test', function(Y, NAME) {
                 j,
                 mockAddon;
 
-            YUITest.Mock.verify(mock);
+            Y.Test.Mock.verify(mock);
             for (i = 0; i < mock._addons.length; i += 1) {
                 mockAddon = mock[mock._addons[i]];
                 mockAddon.verify();
