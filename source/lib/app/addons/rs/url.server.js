@@ -186,7 +186,9 @@ YUI.add('addon-rs-url', function(Y, NAME) {
             }
 
             if ('mojit' === res.type) {
-                res.url = '/' + urlParts.join('/');
+                if ('shared' !== res.name) {
+                    res.url = '/' + urlParts.join('/');
+                }
                 return;
             }
 
