@@ -145,12 +145,11 @@ Articles
 		  <td>2012-04-02</td>
 		  <td><a class="ulink" href="http://pro.gigaom.com/author/ryanlawler/" target="_top">Ryan Lawler</a></td>
 		</tr>
-
 		<tr>
 		  <td><a class="ulink" href="http://thenextweb.com/dd/2012/04/02/yahoo-open-sources-javascript-framework-mojito-for-cross-platform-development/" target="_top">Yahoo! Open Sources JavaScript Framework Mojito for Cross-Platform Development</a></td>
 		  <td><a class="ulink" href="http://thenextweb.com/" target="_top">The Next Web</a></td>
 		  <td>2012-04-02</td>
-		  <td<a href="http://thenextweb.com/author/thatdrew/" class="ulink">Drew Olanoff</td>
+		  <td><a href="http://thenextweb.com/author/thatdrew/" class="ulink">Drew Olanoff</a></td>
 		</tr>
 		<tr>
 		  <td><a class="ulink" href="http://venturebeat.com/2012/04/02/yahoo-node-open-source-mojito/" target="_top">Yahoo Dives Deeper Down the Node.js Rabbit Hole With Open-Source Mojito</a></td>
@@ -162,22 +161,22 @@ Articles
 		  <td><a class="ulink" href="http://www.theverge.com/2012/4/2/2920315/yahoo-mojito-web-framework-open-source" target="_top">Yahoo Makes Mojito Web App Tool Open Source</a></td>
 		  <td><a class="ulink" href="http://theverge.com/" target="_top">The Verge</a></td>
 		  <td>2012-04-02</td>
-		  <td<a href="http://about.me/andrewwebster" class="ulink">Andrew Webster</td>
+		  <td><a href="http://about.me/andrewwebster" class="ulink">Andrew Webster</a></td>
 		</tr>
 		<tr>
 		  <td><a class="ulink" href="http://www.webpronews.com/yahoos-mojito-going-open-source-2012-04" target="_top">Yahoo!’s Mojito Going Open Source</a></td>
 		  <td><a class="ulink" href="http://www.webpronews.com/" target="_top">WebProNews</a></td>
 		  <td>2012-04-02</td>
-		  <td<a href="http://www.webpronews.com/author/zach-walton" class="ulink">Zach Walton</td>
+		  <td><a href="http://www.webpronews.com/author/zach-walton" class="ulink">Zach Walton</a></td>
 		</tr>	
 		<tr>
 		  <td><a class="ulink" href="http://www.wired.com/wiredenterprise/2012/04/yahoo-open-sources-mojito/" target="_top">Yahoo Open Sources Its Apple App Store Killer</a></td>
 		  <td><a class="ulink" href="http://www.wired.com" target="_top">Wired</a></td>
 		  <td>2012-04-02</td>
-		  <td<a href="http://www.wired.com/cloudline/members/cademetz/">Cade Metz</td>
+		  <td><a href="http://www.wired.com/cloudline/members/cademetz/">Cade Metz</a></td>
 		</tr>		  
 	    <tr>
-	      <td><a class="ulink" href="http://cnet.co/FPVLPT" target="_top">Why ambitious developers need more than just HTML5</a></td>
+	      <td><a class="ulink" href="http://cnet.co/FPVLPT" target="_top">Why Ambitious Developers Need More Than Just HTML5</a></td>
 	       <td><a class="ulink" href="http://news.cnet.com/" target="_top">CNET News</a></td>
 	       <td>2012-03-01</td>
 	       <td>Bruno Fernandez-Ruiz</td>
@@ -195,7 +194,7 @@ Articles
 		  <td><a class="ulink" href="http://jolieodell.com/" target="_top">Jolie O'Dell</a></td>
 		</tr>		    
 		<tr>
-		  <td><a class="ulink" href="http://www.infoq.com/news/2011/11/cocktails-with-mojito-manhattan" target="_top">Yahoo! Cocktails with Mojito JavaScript Framework and Manhattan Cloud</a></td>
+		  <td><a class="ulink" href="http://www.infoq.com/news/2011/11/cocktails-with-mojito-manhattan" target="_top">Yahoo! Cocktails With Mojito JavaScript Framework and Manhattan Cloud</a></td>
 		  <td><a class="ulink" href="http://www.infoq.com/" target="_top">InfoQ</a></td>
 		  <td>2011-11-08</td>
 		  <td><a class="ulink" href="http://www.infoq.com/author/Bienvenido-David-III;jsessionid=682E88EF70DD154CF842A31A47A02327" target="_top">David Bienvenido, III</a></td>
@@ -222,7 +221,7 @@ Articles
 		  <td><a class="ulink" href="http://www.wired.com/wiredenterprise/2011/11/yahoos-manhattan/" target="_top">Yahoo’s ‘Manhattan’ To Rescue Web From the iPad</a></td>
 		  <td><a class="ulink" href="http://www.wired.com" target="_top">Wired</a></td>
 		  <td>2011-11-02</td>
-		  <td<a href="http://www.wired.com/cloudline/members/cademetz/">Cade Metz</td>
+		  <td><a href="http://www.wired.com/cloudline/members/cademetz/">Cade Metz</a></td>
 		</tr>
 	  </tbody>
 	</table>
