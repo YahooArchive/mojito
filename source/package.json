@@ -37,9 +37,7 @@
         "type": "git",
         "url": "git://github.com/yahoo/mojito.git"
     },
-    "bugs": {
-        "url": "https://github.com/yahoo/mojito/issues"
-    },
+    "bugs": "https://github.com/yahoo/mojito/issues",
     "scripts": {
         "start": "mojito start",
         "test": "mojito test"
