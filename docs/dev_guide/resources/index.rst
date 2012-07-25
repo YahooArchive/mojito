@@ -78,7 +78,7 @@ Community
 Developer Forums
 ================
 
-`YDN: Mojito Forum <http://developer.yahoo.com/forum/Sports>`_
+`YDN: Mojito Forum <http://developer.yahoo.com/forum/Yahoo-Mojito/>`_
 
 Twitter
 =======
