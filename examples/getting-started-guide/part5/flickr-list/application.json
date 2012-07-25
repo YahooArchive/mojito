@@ -50,5 +50,6 @@
                 "type": "FlickrDetail"
             }
         }
-    }
+    },
+    { "settings": [ "device:iphone" ], "selector": "iphone" }
 ]
