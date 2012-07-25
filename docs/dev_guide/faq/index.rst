@@ -250,46 +250,68 @@ General
 
 ------------
 
+
+.. Questions:
+
+.. What versions of Mojito precisely support the YUI Node Utility?
+.. 
+
 .. _moj_optimize_performance:
 .. topic:: **How can I improve the performance of my Mojito application?**
 
+    The following sections offer some ideas about how to improve the performance of your 
+    Mojito application, but are by no means exhaustive. You should also review online articles 
+    about improving Node.js performance, such as `Blazing fast node.js: 10 performance tips from 
+    LinkedIn Mobile <http://bit.ly/uFyio2>`_ written by software engineer Shravya Garlapati.
+
     **Avoid the DOM on the Server**
     
-    DO NOT USE Y.Node.create (or node utility on server side at all). If you have to parse HTML, 
-    use htmlparser package. Node utility is not only supported on newer versions of Mojito but it 
-    also contains some memory leak problems. Memory leak will result in low RPS and server restarts.
+    Do not use the `YUI Node Utility <http://yuilibrary.com/yui/docs/node/>`_ (or any node utility 
+    on server side). The YUI Node Utility is only supported in Mojito 0.3.26 and higher, and it 
+    causes some memory leak problems. The memory leaks will result in a low RPS and 
+    server restarts. If you must parse HTML on the server, use the 
+    `htmlparser package <http://search.npmjs.org/#/htmlparser>`_.  
     
     **Don't Add User Data to ac.context**
     
-    The "mojito context" is "a small set of well-defined keys/values that define the runtime 
-    environment under which a mojit runs". Please don't add custom values to ac.context per user, 
-    it's key/values are a used as a cache key, and modifying these per user will cause the cache to 
-    grow quickly.
+    The ``context`` property of the ``ActionContext`` object contains a small set of 
+    key/value pairs that define the run-time environment under which a mojit runs. These key/value 
+    pairs are used as a cache key. Adding your own key/values to ``ac.context`` will cause 
+    the cache to bloat.
     
     **Rollup/Minify Assets** 
     
-    - Shaker is a static asset rollup manager for Mojito applications (recommended)
-    - "useRollups: true" in application.json to roll up static assets::
-
-         "staticHandling": {
-           "useRollups": true
-         }
-    - Version Manifest can do minification at build time (but not combo handling). You can try if 
-      it fills your needs, see VersionManifest.
+    Rolling up and minifying assets will reduce the number of network calls and improve load time.
+    For rolling up assets, we recommend that you use 
+    `Shaker <https://github.com/yahoo/mojito-shaker>`_, which is a static asset rollup manager. To 
+    configure rollups in a Mojito application, set the ``useRollups`` property in the
+    ``application.json`` file to ``true`` as shown below::
+   
+      "staticHandling": {
+        "useRollups": true
+      }
+    
+    For minification, we recommend `YUI Compressor 
+    <http://yuilibrary.com/download/yuicompressor/>`_ or a npm module such as 
+    `UglifyJS <https://github.com/mishoo/UglifyJS>`_. 
+    
     
     **Share the YUI Instance**
     
-    Set each server side mojit's config to "shareYUIinstance" : "true" for better performance. 
-    check out more information about the 
-    flag: http://developer.yahoo.com/cocktails/mojito/docs/intro/mojito_configuring.html
+    Mojito creates new YUI instances for each mojit, but you can configure your application,
+    so that your server-side mojits share one YUI instances to improve performance. 
+    
+    To configure your application so that server-side mojits share the same YUI instance,
+    set the property ``shareYUIinstance`` to ``true`` in ``application.json``. 
+    See the `configuration Object <http://../intro/mojito_configuring.html#configuration-object>`_
+    for more information about the ``shareYUIInstance`` property.
     
     **Use Lazy Loading**
     
-    Client side: Don't forget to LAZY LOAD your assets. 
-    Use http://yuilibrary.com/yui/docs/imageloader/ as much as you can.
-    Redner on client side - performance tips from Linkedin engineering
-    
-    
+    From the client, you Mojito application should lazy load assets as often as possible.
+    For example, the `YUI ImageLoader Utility <http://yuilibrary.com/yui/docs/imageloader/>`_ 
+    can be used to help you lazy load images. You can even lazy load an mojit from the client
+    using the `LazyLoadMojit <../topics/mojito_framework_mojits.html#lazyloadmojit>`_.
    
     
 
