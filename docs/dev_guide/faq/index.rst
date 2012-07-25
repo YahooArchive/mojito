@@ -254,7 +254,7 @@ General
 .. Questions:
 
 .. What versions of Mojito precisely support the YUI Node Utility?
-.. 
+
 
 .. _moj_optimize_performance:
 .. topic:: **How can I improve the performance of my Mojito application?**
