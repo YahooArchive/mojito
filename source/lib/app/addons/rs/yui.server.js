@@ -479,8 +479,7 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
          * @return {object} precomputed (and sorted) module dependencies
          */
         _sortYUIModules: function(lang, env, mojit, modules, required) {
-            var Y,
-                loader,
+            var loader,
                 m,
                 module,
                 info,
@@ -499,9 +498,6 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
                     paths: sortedPaths
                 };
             }
-
-            Y = YUI({ useSync: true }).use('loader-base');
-            Y.applyConfig({ useSync: false });
 
             // We need to clear YUI's cached dependencies, since there's no
             // guarantee that the previously calculated dependencies have been done
@@ -641,4 +637,4 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
     Y.namespace('mojito.addons.rs');
     Y.mojito.addons.rs.yui = RSAddonYUI;
 
-}, '0.0.1', { requires: ['plugin', 'oop']});
+}, '0.0.1', { requires: ['plugin', 'oop', 'loader-base']});
