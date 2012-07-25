@@ -20,6 +20,7 @@ General
 * :ref:`Can Mojito applications access the 'request' or 'response' instances of the Node.js classes 'http.ServerRequest' and 'http.ServerResponse'? <moj_req_res_instances>`
 * :ref:`Is it possible to access headers from a Mojito application? <moj_access_headers>`
 * :ref:`Can Mojito be started with Node.js instead of using "mojito start"? <moj_node_start>`
+* :ref:`How can I improve the performance of my Mojito application? <moj_optimize_performance>`
 
 Mojits
 ------
@@ -246,7 +247,50 @@ General
     Or you could specify the path to start a locally installed version of Mojito::
     
        $ node --debug node_modules/mojito/bin/mojito start
+
+------------
+
+.. _moj_optimize_performance:
+.. topic:: **How can I improve the performance of my Mojito application?**
+
+    **Avoid the DOM on the Server**
     
+    DO NOT USE Y.Node.create (or node utility on server side at all). If you have to parse HTML, 
+    use htmlparser package. Node utility is not only supported on newer versions of Mojito but it 
+    also contains some memory leak problems. Memory leak will result in low RPS and server restarts.
+    
+    **Don't Add User Data to ac.context**
+    
+    The "mojito context" is "a small set of well-defined keys/values that define the runtime 
+    environment under which a mojit runs". Please don't add custom values to ac.context per user, 
+    it's key/values are a used as a cache key, and modifying these per user will cause the cache to 
+    grow quickly.
+    
+    **Rollup/Minify Assets** 
+    
+    - Shaker is a static asset rollup manager for Mojito applications (recommended)
+    - "useRollups: true" in application.json to roll up static assets::
+
+         "staticHandling": {
+           "useRollups": true
+         }
+    - Version Manifest can do minification at build time (but not combo handling). You can try if 
+      it fills your needs, see VersionManifest.
+    
+    **Share the YUI Instance**
+    
+    Set each server side mojit's config to "shareYUIinstance" : "true" for better performance. 
+    check out more information about the 
+    flag: http://developer.yahoo.com/cocktails/mojito/docs/intro/mojito_configuring.html
+    
+    **Use Lazy Loading**
+    
+    Client side: Don't forget to LAZY LOAD your assets. 
+    Use http://yuilibrary.com/yui/docs/imageloader/ as much as you can.
+    Redner on client side - performance tips from Linkedin engineering
+    
+    
+   
     
 
 Mojits
