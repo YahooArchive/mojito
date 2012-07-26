@@ -26,7 +26,7 @@
  * Module dependencies.
  */
 var fs = require('fs'),
-    mime = require('../../libs/mime'),
+    mime = require('mime'),
     pa = require('path'),
     parseUrl = require('url').parse,
     logger,
