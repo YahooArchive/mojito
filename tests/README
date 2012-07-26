@@ -24,8 +24,7 @@ Test Descriptors
 Arrow uses test descriptor files in JSON format to describe unit tests and their
 parameters. For Mojito we leverage a top-level descriptor file in each of the
 unit and func subdirectories which contains references to all the tests within
-that subdirectory. The unit/unit-test-descriptor.json file is a good example, a
-portion of which is shown below.
+that subdirectory. A portion of a test_descriptor file is shown below.
 
 [
     {
@@ -163,14 +162,15 @@ $ java -Dwebdriver.firefox.profile=default -jar /usr/local/src/selenium/selenium
 
 Once the two server processes are running it's recommended that you open a
 browser on the WebDriver hub and create a session you can reuse. Navigate your
-browser (Firefox is a good choice here) to http://localhost:4444/wd and create a
-session. Use Firefox as the browser for best results (and so you can leverage
-FireBug to help debug your tests as needed).
+browser (Firefox is a good choice here) to http://localhost:4444/wd/hub and
+create a session. Use Firefox as the browser for best results (and so you can
+leverage FireBug to help debug your tests as needed).
 
 With a session running enter the following command, substituting the specific
 descriptor file name you prefer:
 
-arrow --driver=selenium --reuseSession=true ./unit/test-mojito-client-descriptor.json
+arrow --driver=selenium --reuseSession=true
+     ./unit/lib/app/addons/ac/test_descriptor.json
 
 If you want to test only framework tests you can add --group=fw to the command.
 
