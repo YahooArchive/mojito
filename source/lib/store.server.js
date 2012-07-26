@@ -716,7 +716,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             for (r = 0; r < ress.length; r += 1) {
                 res = ress[r];
                 if (fixedPaths[res.source.fs.fullPath]) {
-                    routes = this.config.readConfigYCB(res.source.fs.fullPath, ctx);
+                    routes = this.cloneObj(this.config.readConfigYCB(res.source.fs.fullPath, ctx));
                     out = Y.merge(out, routes);
                 }
             }
