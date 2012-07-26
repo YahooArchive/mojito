@@ -24,8 +24,7 @@ Test Descriptors
 Arrow uses test descriptor files in JSON format to describe unit tests and their
 parameters. For Mojito we leverage a top-level descriptor file in each of the
 unit and func subdirectories which contains references to all the tests within
-that subdirectory. The unit/unit-test-descriptor.json file is a good example, a
-portion of which is shown below.
+that subdirectory. A portion of a test_descriptor file is shown below.
 
 [
     {
@@ -170,7 +169,8 @@ leverage FireBug to help debug your tests as needed).
 With a session running enter the following command, substituting the specific
 descriptor file name you prefer:
 
-arrow --driver=selenium --reuseSession=true ./unit/unit-test-descriptor.json
+arrow --driver=selenium --reuseSession=true
+     ./unit/lib/app/addons/ac/test_descriptor.json
 
 If you want to test only framework tests you can add --group=fw to the command.
 
