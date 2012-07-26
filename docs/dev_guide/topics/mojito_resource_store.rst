@@ -213,7 +213,7 @@ Metadata Object
 
 .. admonition:: Note About Default Values
 
-   Some values for the properties of the metadata object do have defaults, but it depends on 
+   Some values for the properties of the metata object do have defaults, but it depends on 
    the value of the ``type`` property and/or comes from the file name of the resource being 
    represented. For example, the affinity of views is ``common`` (because views are used 
    on both client and server); however, the affinity for controllers comes 
@@ -283,7 +283,7 @@ pkg Object
 yui Object
 ##########
 
-The ``yui`` property of the metadata object is created by the ``yui``|RS| addon. The
+The ``yui`` property of the metadata object is created by the ``yui`` |RS| addon. The
 ``yui`` property can be any data type, but in general, it is an object 
 containing metadata about YUI modules. The following table lists the typical properties that are 
 part of the ``yui`` object. You can think of the ``yui`` object as a container for the arguments to 
@@ -605,20 +605,24 @@ Requirements
 Because the ``selector`` addon is used directly by the the resource store, all implementations 
 need to provide the following method:
 
-- :js:func:`getListFromContext`
+- :js:func:`getPOSLFromContext(ctx)`
 
 .. _selector-methods:
 
 Methods
 ```````
 
-.. js:function:: getListFromContext(ctx)
+.. js:function:: getPOSLFromContext(ctx)
 
     Returns the priority-ordered selector list (POSL) for the context.
 
     :param String ctx: The context that the application is running in. 
     :returns: Array
 
+
+.. js:function:: getAllPOSLs()
+
+    Returns all POSLs in the application.
 
 .. _selector-ex:
 
