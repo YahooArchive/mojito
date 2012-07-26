@@ -163,14 +163,14 @@ $ java -Dwebdriver.firefox.profile=default -jar /usr/local/src/selenium/selenium
 
 Once the two server processes are running it's recommended that you open a
 browser on the WebDriver hub and create a session you can reuse. Navigate your
-browser (Firefox is a good choice here) to http://localhost:4444/wd and create a
-session. Use Firefox as the browser for best results (and so you can leverage
-FireBug to help debug your tests as needed).
+browser (Firefox is a good choice here) to http://localhost:4444/wd/hub and
+create a session. Use Firefox as the browser for best results (and so you can
+leverage FireBug to help debug your tests as needed).
 
 With a session running enter the following command, substituting the specific
 descriptor file name you prefer:
 
-arrow --driver=selenium --reuseSession=true ./unit/test-mojito-client-descriptor.json
+arrow --driver=selenium --reuseSession=true ./unit/unit-test-descriptor.json
 
 If you want to test only framework tests you can add --group=fw to the command.
 
