@@ -28,19 +28,6 @@ Create a mojit:
 
     $ mojito create mojit HelloMojit
 
-Edit application.json to configure mojit so that it looks like:
-
-    [
-        {
-            "settings": [ "master" ],
-            "specs": {
-                "hello": {
-                    "type": "HelloMojit"
-                }
-            }
-        }
-    ]
-
 Start the server:
 
     $ mojito start
@@ -48,6 +35,14 @@ Start the server:
 Go to URL:
 
     http://localhost:8666/@HelloMojit/index
+
+Run Unit Tests:
+
+    $ mojito test app .
+
+Generate documentation:
+
+    $ mojito docs app hello
 
 ## Documentation
 
