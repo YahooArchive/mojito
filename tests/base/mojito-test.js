@@ -21,6 +21,13 @@ YUI.add('mojito', function(Y, NAME) {
 
 /*
  */
+YUI.add('mojito-meta-addon', function(Y, NAME) {
+    Y.namespace('mojito.addons.ac');
+    return function() {};
+});
+
+/*
+ */
 YUI.add('mojito-client-store', function(Y, NAME) {
     return function() {};
 });
