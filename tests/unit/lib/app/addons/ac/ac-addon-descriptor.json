@@ -1,0 +1,21 @@
+[
+    {
+        "settings": [ "master" ],
+        "name" : "ac-addon-unit-tests",
+        "config" : {
+        },
+        "dataprovider" : {
+            "analytics.common" : {
+                "params" : {
+                    "page": "../../../../../base/mojito-test.html",
+                    "lib": "../../../../../../source/lib/app/addons/ac/analytics.common.js",
+                    "test" : "./test-analytics.common.js"
+                },
+                "group" : "fw,client,server"
+            }
+        }
+    },
+    {
+        "settings": [ "environment:development" ]
+    }
+]
