@@ -277,7 +277,13 @@ General
     The ``context`` property of the ``ActionContext`` object contains a small set of 
     key/value pairs that define the run-time environment under which a mojit runs. These key/value 
     pairs are used as a cache key. Adding your own key/values to ``ac.context`` will cause 
-    the cache to bloat.
+    the cache to bloat. As an alternative, you can pass data from 
+    parents mojits to their children using the 
+    `Composite addon <../../api/classes/Composite.common.html>`_ or the 
+    `_dispatch <../../../api/classes/ActionContext.html#method__dispatch>`_ method. See 
+    `Composite Mojits <../topics/mojito_composite_mojits.html>`_ and 
+    `Running Dynamically Defined Mojit Instances <../topics/mojito_run_dyn_defined_mojits.html>`_
+    for implementation details.
     
     **Rollup/Minify Assets** 
     
@@ -300,19 +306,9 @@ General
     `UglifyJS <https://github.com/mishoo/UglifyJS>`_. 
     
     
-    **Share the YUI Instance**
-    
-    Mojito creates new YUI instances for each mojit, but you can configure your application,
-    so that your side mojits share one YUI instances to improve performance. 
-    
-    To configure your application so that side mojits share the same YUI instance,
-    set the property ``shareYUIinstance`` to ``true`` in ``application.json``. 
-    See the `configuration Object <http://../intro/mojito_configuring.html#configuration-object>`_
-    for more information about the ``shareYUIInstance`` property.
-    
     **Use Lazy Loading**
     
-    From the client, you Mojito application should lazy load assets as often as possible.
+    From the client, your Mojito application should lazy load assets as often as possible.
     For example, the `YUI ImageLoader Utility <http://yuilibrary.com/yui/docs/imageloader/>`_ 
     can be used to help you lazy load images. You can even lazy load a mojit from the client
     using the `LazyLoadMojit <../topics/mojito_framework_mojits.html#lazyloadmojit>`_.
