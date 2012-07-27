@@ -28,6 +28,20 @@ YUI.add('mojito-meta-addon', function(Y, NAME) {
 
 /*
  */
+YUI.add('mojito-composite-addon', function(Y, NAME) {
+    Y.namespace('mojito.addons.ac');
+    return function() {};
+});
+
+/*
+ */
+YUI.add('mojito-params-addon', function(Y, NAME) {
+    Y.namespace('mojito.addons.ac');
+    return function() {};
+});
+
+/*
+ */
 YUI.add('mojito-client-store', function(Y, NAME) {
     return function() {};
 });
@@ -156,6 +170,13 @@ YUI.add('mojito-util', function(Y, NAME) {
         // may be possible.
         copy: function(obj) {
             return obj;
+        },
+
+        // TODO: this is an extremely simplified version of the function, but meets
+        // the demands of the current tests. If we find ourselves writing tests that require
+        // more advanced use cases, we should make this function meet those needs.
+        metaMerge: function (to, from) {
+            return Y.merge(from, to);
         }
     };
 
