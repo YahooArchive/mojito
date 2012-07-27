@@ -56,7 +56,8 @@ Ycb.prototype = {
         for (path in this.settings) {
             if (this.settings.hasOwnProperty(path)) {
                 context = this._getContextFromLookupPath(path);
-                if (!callback(context, this.settings[path])) {
+                // clone, so that noone mutates us
+                if (!callback(context, Y.clone(this.settings[path], true))) {
                     break;
                 }
             }
@@ -95,7 +96,8 @@ Ycb.prototype = {
                     console.log('----USING---- ' + lookupPaths[path]);
                     console.log(Y.JSON.stringify(this.settings[lookupPaths[path]], null, 4));
                 }
-                config = objectMerge(this.settings[lookupPaths[path]], config);
+                // merge a copy so that we don't modify the source
+                config = objectMerge(Y.clone(this.settings[lookupPaths[path]], true), config);
             }
         }
 
