@@ -14,9 +14,47 @@ var fs = require('fs'),
     path = require('path'),
     http = require('http'),
     tty = require('tty'),
+    spawn = require('child_process').spawn;
     mojito = require('../index.js'),
+    httpProxy = require('http-proxy'),
     archetypes_dir = path.join(__dirname, '/../archetypes'),
     isatty = tty.isatty(1) && tty.isatty(2);
+
+var _ = require('../libs/underscore.js');
+var server_handle;
+var request_queue = [];
+
+// status to monitor code change.
+var Status = {
+    running: false, // is server running now?
+    crashing: false, // does server crash whenever we start it?
+    listening: false, // do we expect the server to be listening now.
+    counter: 0, // how many crashes in rapid succession
+
+    reset: function () {
+        this.crashing = false;
+        this.counter = 0;
+    },
+
+    hard_crashed: function () {
+        log("Your application is crashing. Waiting for file change.");
+        this.crashing = true;
+    },
+
+    soft_crashed: function () {
+        if (this.counter === 0)
+            setTimeout(function () {
+                this.counter = 0;
+            }, 2000);
+
+        this.counter++;
+
+        if (this.counter > 2) {
+            Status.hard_crashed();
+        }
+    }
+};
+var watcher;
 
 
 if (!isatty) {
@@ -471,6 +509,360 @@ function App(options) {
 
 
 App.prototype = {
+
+
+    proxy_start: function(cb) {
+
+        var start_proxy = function (options, callback) {
+            callback = callback || function () {
+            };
+
+            var _options = options || {};
+            var outer_port = _options.port || 8666;
+            var inner_port = Number(outer_port) + 1;
+
+            var p = httpProxy.createServer(function (req, res, proxy) {
+                if (Status.crashing) {
+                    // sad face. send error logs.
+                    // XXX formatting! text/plain is bad
+                    res.writeHead(200, {'Content-Type':'text/plain'});
+
+                    res.write("Your app is crashing. Here's the latest log.\n\n");
+
+                    _.each(server_log, function (log) {
+                        _.each(log, function (val, key) {
+                            if (val)
+                                res.write(val);
+                            // deal with mixed line endings! XXX
+                            if (key !== 'stdout' && key !== 'stderr')
+                                res.write("\n");
+                        });
+                    });
+
+                    res.end();
+                } else if (Status.listening) {
+                    // server is listening. things are hunky dory!
+                    proxy.proxyRequest(req, res, {
+                        host:'127.0.0.1', port:inner_port
+                    });
+                } else {
+                    // Not listening yet. Queue up request.
+                    var buffer = httpProxy.buffer(req);
+                    request_queue.push(function () {
+                        proxy.proxyRequest(req, res, {
+                            host:'127.0.0.1', port:inner_port,
+                            buffer:buffer
+                        });
+                    });
+                }
+            });
+
+            // Proxy websocket requests using same buffering logic as for regular HTTP requests
+            p.on('upgrade', function (req, socket, head) {
+                if (Status.listening) {
+                    // server is listening. things are hunky dory!
+                    p.proxy.proxyWebSocketRequest(req, socket, head, {
+                        host:'127.0.0.1', port:inner_port
+                    });
+                } else {
+                    // Not listening yet. Queue up request.
+                    var buffer = httpProxy.buffer(req);
+                    request_queue.push(function () {
+                        p.proxy.proxyWebSocketRequest(req, socket, head, {
+                            host:'127.0.0.1', port:inner_port,
+                            buffer:buffer
+                        });
+                    });
+                }
+            });
+
+            p.on('error', function (err) {
+                if (err.code == 'EADDRINUSE') {
+                    error("Can't listen on port " + outer_port
+                        + ". Perhaps another Proxy is running?\n");
+                    error("\n");
+                    error(" If something else is using port " + outer_port + ", you can\n");
+                    error("specify an alternative port.\n");
+                } else {
+                    error(err + "\n");
+                }
+
+                process.exit(1);
+            });
+
+            // don't spin forever if the app doesn't respond. instead return an
+            // error immediately. This shouldn't happen much since we try to not
+            // send requests if the app is down.
+            p.proxy.on('proxyError', function (err, req, res) {
+                res.writeHead(503, {
+                    'Content-Type':'text/plain'
+                });
+                res.end('Unexpected error.');
+            });
+
+            p.listen(outer_port);
+            callback(options);
+        };
+
+        var start_server = function (options,on_exit_callback, on_listen_callback) {
+            // environment
+            var param = [];
+            var context;
+            var Mojito_Port = Number(options.port) +1;
+
+            param.push('start');
+            param.push(Mojito_Port)
+
+            if (options.context) {
+                param.push('--context');
+                for (var index in options.context) {
+                    context += index + ':' + options.context[index] + ',';
+                }
+                context = context.slice(0, context.length - 1);
+                param.push(context);
+            }
+
+
+            /*var proc = spawn(process.execPath,
+                [path.join(__dirname, 'cli.js'), param],
+                {env:env});*/
+            var Mojito_Path = path.join(__dirname, '../../bin/mojito');
+
+            var proc = spawn(Mojito_Path,param);
+            // XXX deal with test server logging differently?!
+
+            proc.stdout.setEncoding('utf8');
+            proc.stdout.on('data', function (data) {
+                if (!data) return;
+
+                // string must match server.js
+                if (data.match(/✔ 	Mojito started/)) {
+                    on_listen_callback && on_listen_callback();
+                    log(data);
+                } else {
+                    log(data);
+                }
+            });
+
+            proc.stderr.setEncoding('utf8');
+            proc.stderr.on('data', function (data) {
+                data && error(data);
+            });
+
+            proc.on('exit', function (code, signal) {
+                if (signal) {
+                    log('Exited from signal: ' + signal);
+                } else {
+                    log('Exited with code: ' + code);
+                }
+
+                on_exit_callback();
+            });
+
+            // this happens sometimes when we write a keepalive after the app is
+            // dead. If we don't register a handler, we get a top level exception
+            // and the whole app dies.
+            // http://stackoverflow.com/questions/2893458/uncatchable-errors-in-node-js
+            proc.stdin.on('error', function () {
+            });
+
+            // Keepalive so server can detect when we die
+            var timer = setInterval(function () {
+                try {
+                    if (proc && proc.pid && proc.stdin && proc.stdin.write)
+                        proc.stdin.write('k');
+                } catch (e) {
+                    // do nothing. this fails when the process dies.
+                }
+            }, 2000);
+
+            return {
+                proc:proc,
+                timer:timer
+            };
+        };
+        var kill_server = function (handle) {
+            if (handle.proc.pid) {
+                handle.proc.removeAllListeners('exit');
+                handle.proc.kill();
+            }
+            clearInterval(handle.timer);
+        };
+
+        var DependencyWatcher = function (app_dir,options, on_change) {
+            var self = this;
+
+            self.app_dir = app_dir;
+            self.on_change = on_change;
+            self.watches = {}; // path => unwatch function with no arguments
+            self.last_contents = {}; // path => last contents (array of filenames)
+            self.mtimes = {}; // path => last seen mtime
+
+            // If a file is under a source_dir, and has one of the
+            // source_extensions, then it's interesting.
+            self.source_dirs = [self.app_dir];
+            self.source_extensions = ['.css', '.js', '.html'];
+            self.options = options;
+
+            // Start monitoring
+            _.each(self.source_dirs, _.bind(self._scan, self, true));
+
+        };
+
+        DependencyWatcher.prototype = {
+            // stop monitoring
+            destroy:function () {
+                var self = this;
+                self.on_change = function () {
+                };
+                for (var filepath in self.watches)
+                    self.watches[filepath](); // unwatch
+                self.watches = {};
+            },
+
+            // initial is true on the initial scan, to suppress notifications
+            _scan:function (initial, filepath) {
+                var self = this;
+                try {
+                    var stats = fs.lstatSync(filepath)
+                } catch (e) {
+                    // doesn't exist -- leave stats undefined
+                }
+
+                // '+' is necessary to coerce the mtimes from date objects to ints
+                // (unix times) so they can be conveniently tested for equality
+                if (stats && +stats.mtime === +self.mtimes[filepath])
+                // We already know about this file and it hasn't actually
+                // changed. Probably its atime changed.
+                    return;
+
+                // If an interesting file has changed, fire!
+                var is_interesting = self._is_interesting(filepath);
+                if (!initial && is_interesting) {
+                    self.on_change(this.options);
+                    self.destroy();
+                    return;
+                }
+
+                if (!stats) {
+                    // A directory (or an uninteresting file) was removed
+                    var unwatch = self.watches[filepath];
+                    unwatch && unwatch();
+                    delete self.watches[filepath];
+                    delete self.last_contents[filepath];
+                    delete self.mtimes[filepath];
+                    return;
+                }
+
+                // If we're seeing this file or directory for the first time,
+                // monitor it if necessary
+                if (!(filepath in self.watches) && (filepath.indexOf('/.')<0) &&
+                    (is_interesting || stats.isDirectory())) {
+                    if (!stats.isDirectory()) {
+                        // Intentionally not using fs.watch since it doesn't play well with
+                        // vim (https://github.com/joyent/node/issues/3172)
+                        log('---------watch file---------'+filepath);
+                        fs.watchFile(filepath, {interval:500}, // poll a lot!
+                            _.bind(self._scan, self, false, filepath));
+                        self.watches[filepath] = function () {
+                            fs.unwatchFile(filepath);
+                        };
+                    } else {
+                        // fs.watchFile doesn't work for directories (as tested on ubuntu)
+                        log('---------watch file---------'+filepath);
+                        var watch = fs.watch(filepath, {interval:500}, // poll a lot!
+                            _.bind(self._scan, self, false, filepath));
+                        self.watches[filepath] = function () {
+                            watch.close();
+                        };
+                    }
+                    self.mtimes[filepath] = stats.mtime;
+                }
+
+                // If a directory, recurse into any new files it contains. (We
+                // don't need to check for removed files here, since if we care
+                // about a file, we'll already be monitoring it)
+                if (stats.isDirectory()) {
+                    var old_contents = self.last_contents[filepath] || [];
+                    var new_contents = fs.readdirSync(filepath);
+                    var added = _.difference(new_contents, old_contents);
+
+                    self.last_contents[filepath] = new_contents;
+                    _.each(added, function (child) {
+                        self._scan(initial, path.join(filepath, child));
+                    });
+                }
+            },
+            // Should we fire if this file changes?
+            _is_interesting:function (filepath) {
+                var self = this;
+
+                var in_any_dir = function (dirs) {
+                    return _.any(dirs, function (dir) {
+                        return filepath.slice(0, dir.length) === dir;
+                    });
+                };
+
+                // Source files
+                if (in_any_dir(self.source_dirs) &&
+                    _.indexOf(self.source_extensions, path.extname(filepath)) !== -1)
+                    return true;
+
+                return false;
+            }
+
+        };
+
+
+        var start_watching = function (options) {
+
+            log('------------Launch Dependency watcher---------------');
+            watcher = new DependencyWatcher(process.cwd(), options,function (options) {
+                if (Status.crashing)
+                    log("=> Modified -- restarting.");
+                Status.reset();
+                restart_server(options);
+            });
+
+        };
+
+        var restart_server = function (options) {
+            Status.running = false;
+            Status.listening = false;
+            if (server_handle)
+                kill_server(server_handle);
+
+            start_watching(options);
+            Status.running = true;
+            server_handle = start_server(options,function () {
+                // on server exit
+                Status.running = false;
+                Status.listening = false;
+                Status.soft_crashed();
+                if (!Status.crashing)
+                    restart_server(options);
+            }, function () {
+                // on listen
+                Status.listening = true;
+                _.each(request_queue, function (f) {
+                    f();
+                });
+                request_queue = [];
+            }
+            )};
+
+        try {
+
+            start_proxy(this._options, function (options) {
+                restart_server(options);
+            });
+            cb(null);
+        } catch (err) {
+            cb(err);
+        }
+
+
+    },
 
     start: function(cb) {
         var app;

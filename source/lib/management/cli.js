@@ -8,7 +8,7 @@
 /*jslint anon:true, sloppy:true*/
 
 var utils = require('./utils');
-
+util = require('util');
 /*
  * A command is expected to export the following:
  *   run     - The function that executes the command. The signature is:
@@ -95,6 +95,7 @@ function main() {
         command,
         argInfo;
 
+
     try {
         command = require('mojito-cli-cmd-' + commandName);
     } catch (e) {
@@ -112,6 +113,7 @@ function main() {
     } else {
         argInfo = parseArgs(args, command.options);
     }
+
 
     if (argInfo.errors && argInfo.errors.length > 0) {
         argInfo.errors.forEach(function(e) {

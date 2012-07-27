@@ -8,6 +8,7 @@
 /*jslint anon:true, sloppy:true*/
 
 
+
 var path = require('path'),
     utils = require('../utils'),
     fs = require('fs'),
@@ -52,6 +53,8 @@ exports.usage = '\nmojito start [port]\n' +
     '\t  configuration mechanism. If one is not found there, port 8666 is' +
     ' used.\n' +
     '\nOptions\n' +
+    '\n--live (optional)\n' +
+    '    Will enable live edit.' +
     '\t--context  A comma-separated list of key:value pairs that define the' +
     ' base\n' +
     '\t           context used to read configuration files\n';
@@ -65,6 +68,11 @@ exports.options = [
         longName: 'context',
         shortName: null,
         hasValue: true
+    },
+    {
+        longName: 'live',
+        shortName: 'l',
+        hasValue: false
     }
 ];
 
@@ -105,17 +113,40 @@ exports.run = function(params, opts, callback) {
     }
 
     app = new utils.App(options);
-    app.start(function(err) {
-        if (err) {
-            utils.error('There was an error starting the application:\n');
-            utils.error(err);
+
+
+    if (inputOptions.live){
+
+        app.proxy_start(function(err){
+            if(err) {
+                utils.error('There was an error starting the proxy server:');
+                utils.error(err);
+                console.log('\n');
+                utils.error('Proxy was not started!\n', null, true);
+                return;
+            }
             console.log('\n');
-            utils.error('Mojito was not started!\n', null, true);
-            return;
-        }
-        console.log('\n');
-        utils.success('\tMojito started' +
-            (pack.name ? ' \'' + pack.name + '\'' : '') +
-            ' on http://localhost:' + options.port + '/\n');
-    });
+            utils.success('\tProxy started on http://localhost:' + options.port + '/\n');
+
+        });
+
+    }else
+    {
+        app.start(function(err) {
+            if (err) {
+                utils.error('There was an error starting the application:\n');
+                utils.error(err);
+                console.log('\n');
+                utils.error('Mojito was not started!\n', null, true);
+                return;
+            }
+            console.log('\n');
+            utils.success('\tMojito started' +
+                (pack.name ? ' \'' + pack.name + '\'' : '') +
+                ' on http://localhost:' + options.port + '/\n');
+        });
+
+    }
+
+
 };
