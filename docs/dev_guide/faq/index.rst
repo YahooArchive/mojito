@@ -278,7 +278,7 @@ General
     key/value pairs that define the run-time environment under which a mojit runs. These key/value 
     pairs are used as a cache key. Adding your own key/values to ``ac.context`` will cause 
     the cache to bloat. As an alternative, you can pass data from 
-    parents mojits to their children using the 
+    parent mojits to their children using the 
     `Composite addon <../../api/classes/Composite.common.html>`_ or the 
     `_dispatch <../../../api/classes/ActionContext.html#method__dispatch>`_ method. See 
     `Composite Mojits <../topics/mojito_composite_mojits.html>`_ and 
@@ -302,7 +302,7 @@ General
     the `Compile System <../reference/mojito_cmdline.html#compile-system>`_ to learn how.
     
     For **minification**, we recommend Shaker again. Other choices could be `YUI Compressor 
-    <http://yuilibrary.com/download/yuicompressor/>`_ or a npm module such as 
+    <http://yuilibrary.com/download/yuicompressor/>`_ or an npm module such as 
     `UglifyJS <https://github.com/mishoo/UglifyJS>`_. 
     
     
