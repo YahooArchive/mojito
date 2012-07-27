@@ -322,9 +322,11 @@ yui Object
 
 The ``yui`` property of the metadata object is created by the ``yui`` |RS| addon. The
 ``yui`` property can be any data type, but in general, it is an object 
-containing metadata about YUI modules. The following table lists the typical properties that are 
-part of the ``yui`` object. You can think of the ``yui`` object as a container for the arguments to 
-the ``YUI.add`` method that is used to register reusable YUI modules.
+containing metadata about YUI modules.  You can think of the ``yui`` object as a container for the 
+arguments to the ``YUI.add`` method that is used to register reusable YUI modules.
+
+The following table lists the typical properties that are 
+part of the ``yui`` object.
 
 +------------------------+---------------+-----------+---------------+-------------------------------+---------------------------------------------+
 | Property               | Data Type     | Required? | Default Value | Example Values                | Description                                 |
@@ -348,7 +350,6 @@ The ``type`` property of the metadata object can have any of the following value
 - ``model``       - a model for a mojit
 - ``view``        - a view for a mojit
 - ``binder``      - a binder for a mojit
-- ``action``      - an action to augment the controller
 - ``asset``       - an asset (css, js, image, etc.)
 - ``addon``       - an addon to the mojito system
 - ``spec``        - the configuration for a mojit instance
@@ -365,7 +366,7 @@ resource of ``type:addon`` might have subtypes, such as ``subtype:ac`` for AC ad
 ``subtype:view-engine`` for view engines, or ``subtype:rs`` for |RS| addons. 
 
 For ``type:archetype``, the subtypes refers to the ``type`` described in the output from 
-the command ``mojito help create``.  So, you could have ``subtype:app``, ``subtype:project``, or 
+the command ``mojito help create``.  So, you could have ``subtype:app``,  or 
 ``subtype:mojit``.  (There may be more in the future!)       
 
 .. _metatdata-versions:
@@ -374,10 +375,12 @@ Resource Versions
 -----------------
 
 Resources can have many versions that are identified by the ``selector`` property of the
-metadata object. The selector is defined by the user and indicates the version of the resource.
-For example, developer might decide to use the selector ``selector: iphone`` for the iPhone version 
-and ``selector: android`` for the Android version of a resource. Using these two selectors, you 
-could have the following two versions of the ``index`` resource of type ``view``:
+metadata object and the affinity. The selector is defined by the user and indicates the version of 
+the resource and the affinity is defined by the resource itself.
+
+For example, developer might decide to use the selector ``selector: iphone`` for the 
+iPhone version  and ``selector: android`` for the Android version of a resource. Using these two 
+selectors, you could have the following two versions of the ``index`` resource of type ``view``:
 
 - ``index.iphone.mu.html``
 - ``index.android.mu.html``
@@ -394,8 +397,8 @@ Example
    {
      "source": {
        "fs": {
-         "fullPath": "/Users/folta/work/yahoo/mojito/github-drewfish/examples/getting-started-guide/part4/paged-yql/mojits/PagedFlickr/views/index.mu.html",
-         "rootDir": "/Users/folta/work/yahoo/mojito/github-drewfish/examples/getting-started-guide/part4/paged-yql/mojits/PagedFlickr",
+         "fullPath": /"home/me/github-mojito/examples/getting-started-guide/part4/paged-yql/mojits/PagedFlickr/views/index.mu.html",
+         "rootDir": "/home/me/github-mojito/yahoo/mojito/github-drewfish/examples/getting-started-guide/part4/paged-yql/mojits/PagedFlickr",
          "rootType": "mojit",
          "subDir": ".",
          "subDirArray": [],
@@ -426,8 +429,8 @@ Example
 How Does the Resource Store Work?
 =================================
 
-Understanding the workflow of the resource store will give help those who want to customize addons 
-to write code and others who don't plan on customizing addons to debug. 
+Understanding the |RS| will allow you to customize addons and debug your application.
+
 
 Overview
 --------
@@ -438,9 +441,9 @@ of resource each file is, creates metadata about the resource, and then register
 
 During this process, the resource store also does the following:
 
-- pre-calculates ("resolving") which resource versions are used for each version of the mojit.
-- keeps track of application-level resources (archetypes, commands, config files, and middleware).
-- provides methods for events, including those specialized for 
+- pre-calculates ("resolves") which resource versions are used for each version of the mojit.
+- also keeps track of application-level resources (archetypes, commands, config files, and middleware).
+- provides methods and events, including those specialized for 
   `aspect-orient programming (AOP) <http://en.wikipedia.org/wiki/Aspect-oriented_programming>`_.
 - explicitly uses the addons :ref:`selector <intro-selector>` and :ref:`config <intro-config>`.
 
@@ -535,7 +538,7 @@ will be used because its selector is a higher priority match than its affinity.
 
 
 All this is pre-calculated for each resource, for each possible runtime configuration (client or 
-server, and every possible runtime context).
+server, and every appropriate runtime context).
 
 .. _how-get_data:
 
@@ -564,188 +567,6 @@ To get mojit-level resources (or versions) from multiple mojits, you'll have to 
 the method ``getResourceVersions`` or ``getResources`` for each mojit.  You can call 
 ``listAllMojits`` to get a list of all mojits.
 
-
-.. _rs-addons:
-
-Resource Store Built-In Addons
-==============================
-
-.. _addons-intro:
-
-Intro
------
-
-Mojito comes with built-in resource store addons that are used by the |RS|
-and the Mojito framework. These resource store addons are required by the |RS| and 
-the Mojito framework. Thus, particular care must be taken when creating custom versions 
-of them. 
-
-The |RS| comes with the following four built-in addons:  
-
-- ``config``
-   - registers new resource type ``config`` found in JSON configuration files
-   - provides an API for reading both context and straight-JSON files
-   - provides sugar for reading the application's dimensions
-- ``selector``
-   - decides the priority-ordered list (POSL) to use for a context
-   - looks (default implementation) for ``selector`` in ``application.json``. Because 
-     ``application.json`` is a context configuration file, the ``selector`` can be contextualized 
-     there.
-- ``url``
-   - calculates the static handler URL for appropriate resources (and resource versions)
-   - stores the URL in the ``url`` key of the resource
-   - calculates the asset URL base for each mojit
-- ``yui``
-   - registers new resource type ``yui-module`` found in the directories ``autoload`` 
-     or ``yui_modules``
-   - registers new resource type ``yui-lang`` found in the ``lang`` directory
-   - calculates the ``yui`` metadata for resource versions that are YUI modules
-   - pre-calculates corresponding YUI module dependencies when resources are resolved
-     for each version of each mojit 
-   - appends the pre-calculated YUI module dependencies for the controller and binders when 
-     Mojito queries the |RS| for the details of a mojit (``getMojitTypeDetails`` method) 
-   - provides methods used by Mojito to configure its YUI instances
-  
-
-.. _addons-custom:
-
-Creating Custom Versions of Built-In |RS| Addons
-------------------------------------------------
-
-We will be examining the ``selector`` and ``url`` addons to help you create custom versions of 
-those addons. We do not recommend that you create custom versions of the 
-``config`` or ``yui`` addons, so we will not be looking at those addons. Also, this documentation 
-explains what the |RS| expects the addon to do, so you can create your own version of the addons. 
-To learn what a |RS| built-in addons do, please refer to the |RSC|_ in the API documentation.
-
-
-.. _custom-selector:
-
-selector
-########
-
-.. _selector-desc:
-
-Description
-```````````
-
-If you wish to use a different algorithm for to determine the selectors to use,
-you can implement your own version of this |RS| addon.  It will need to go in the file
-``addons/rs/selector.server.js`` of your application.  
-
-
-.. _selector-reqs:
-
-Requirements
-````````````
-
-Because the ``selector`` addon is used directly by the the resource store, all implementations 
-need to provide the following method:
-
-- :js:func:`getPOSLFromContext(ctx)`
-
-.. _selector-methods:
-
-Methods
-```````
-
-.. js:function:: getPOSLFromContext(ctx)
-
-    Returns the priority-ordered selector list (POSL) for the context.
-
-    :param String ctx: The context that the application is running in. 
-    :returns: Array
-
-
-.. js:function:: getAllPOSLs()
-
-    Returns all POSLs in the application.
-
-.. _selector-ex:
-
-Example
-```````
-
-.. _url-intro:
-
-url
-###
-
-.. _url-desc:
-
-Description
-```````````
-
-The ``url`` addon calculates and manages the static handler URLs for resources.
-The addon is not used by resource store core, but used by the static handler middleware.
-
-If you wish to use a different algorithm to determine the URLs, you can
-implement your own version of this |RS| addon.  It'll need to go in
-``addons/rs/url.server.js`` in your application.
-
-After the method ``preloadResourceVersions`` sets ``res.url`` to the static handler URL
-for the resource, the method ``getMojitTypeDetails`` sets the mojit's ``assetsRoot``. 
-The static handler URL can be a rollup URL.
-
-The ``url`` addon also provides a method for the static handler middleware to find the 
-filesystem path for a URL.
-
-
-.. _url-reqs:
-
-Requirements
-````````````
-
-The ``selector`` addon is required to have the following methods (see details for the methods in 
-below sections):
-
-- :js:func:`getPathForURL`
-- :js:func:`getSpecURL`
-- :js:func:`getURLPaths`
-
-Your addon will also be required to do the following:
-
-- Add the ``url`` metadatum to resource versions; this is where your addon will set the calculated 
-  value (using ``beforeHostMethod('addResourceVersion')``).
-- Add ``assetsRoot`` to the results of the method ``getMojitTypeDetails`, which is done with 
-  ``onHostEvent('getMojitTypeDetails')``; ``assetsRoot`` is the common prefix for all assets in the 
-  mojit. The built-in addon makes something like ``/static/Foo/assets`` for the ``Foo`` mojit.
-
-.. _url-methods:
-
-Methods
-```````
-
-.. js:function:: getPathForURL(url)
-
-    This method is called by the static handler middleware. Returns the full filesystem path 
-    for the URL.
-    
-    :param String url: The URL that was previously generated.
-    :returns: String
-
-
-.. js:function:: getSpecURL(id)
-
-    Returns the URL for the spec.
-    
-    :param String id: The spec ID.
-    :returns: String
-
-
-.. js:function:: getURLPaths()
-
-    Returns an object whose keys are all URLs and whose values are the corresponding filesystem 
-    paths.
-
-    :returns: Object
-
-
-
-.. _url-ex:
-
-Example
-```````
 
 .. _rs-creating_rs_addons:
 
@@ -780,8 +601,10 @@ Key Methods
 
 .. js:function:: initialize(config)
 
-    Sets the paths to find the application, mojito, and |RS| files. Within the ``preload`` method, 
-    the following host methods are called:
+    This method sets the paths to find the application, Mojito, and |RS| files. Addons should hook  
+    into |RS| methods (using AOP) or events fired by the |RS| in this method. 
+    
+    The following host methods are called:
        
        - :js:func:`preloadResourceVersions`
        - :js:func:`resolveResourceVersions` 
@@ -791,9 +614,6 @@ Key Methods
     
     :param Object config: Contains configuration information with the following properties:     
 
-       - .. js:attribute:: config.host 
-            
-           (*Object*) -- contains the resource store.
        - .. js:attribute:: config.appRoot
        
            (*String*) -- contains the the directory of the application. 
@@ -864,7 +684,12 @@ Key Methods
     This method is called during runtime as Mojito creates the configuration for the client-side 
     Mojito.
 
+Accessing the Resource Store
+````````````````````````````
 
+To access the |RS|, you call ``this.get('host')``. The method returns an object containing the 
+|RS|.
+   
 .. _anatomy-key_events:
 
 Key Events
@@ -914,7 +739,6 @@ The following |RS| addon registers the new resource type ``text`` for text files
      Y.extend(RSAddonText, Y.Plugin.Base, {
 
        initializer: function(config) {
-         this.rs = config.host;
          this.appRoot = config.appRoot;
          this.mojitoRoot = config.mojitoRoot;
          this.afterHostMethod('findResourceVersionByConvention', this.findResourceVersionByConvention, this);
@@ -923,7 +747,6 @@ The following |RS| addon registers the new resource type ``text`` for text files
 
        destructor: function() {
          // TODO:  needed to break cycle so we don't leak memory?
-         this.rs = null;
        },
 
        /**
@@ -985,8 +808,8 @@ The following |RS| addon registers the new resource type ``text`` for text files
 
 .. _creating_rs_addons_ex-text_addon:
 
-Text Addon
-##########
+Text ActionContext Addon
+########################
 
 The Text Addon provides accessors so that the controller can access resources of type ``text``.
 You could use this example addon as a model for writing an addon that allows a controller
@@ -1071,6 +894,140 @@ Controller
      };
    }, '1.0.1', {requires: ['mojito', 'addon-ac-text']});
    
+
+.. _rs-addons:
+
+Resource Store Built-In Addons
+==============================
+
+.. _addons-intro:
+
+Intro
+-----
+
+Mojito comes with built-in resource store addons that are used by the |RS|
+and the Mojito framework. These resource store addons are required by the |RS| and 
+the Mojito framework. Thus, particular care must be taken when creating custom versions 
+of them. 
+
+The |RS| comes with the following four built-in addons:  
+
+- ``config``
+   - registers new resource type ``config`` found in JSON configuration files
+   - provides an API for reading both context and straight-JSON files
+   - provides sugar for reading the application's dimensions
+- ``selector``
+   - decides the priority-ordered list (POSL) to use for a context
+   - looks  for ``selector`` in ``application.json``. Because 
+     ``application.json`` is a context configuration file, the ``selector`` can be contextualized 
+     there.
+- ``url``
+   - calculates the static handler URL for appropriate resources (and resource versions)
+   - stores the URL in the ``url`` key of the resource
+   - calculates the asset URL base for each mojit
+- ``yui``
+   - registers new resource type ``yui-module`` found in the directories ``autoload`` 
+     or ``yui_modules``
+   - registers new resource type ``yui-lang`` found in the ``lang`` directory
+   - calculates the ``yui`` metadata for resource versions that are YUI modules
+   - pre-calculates corresponding YUI module dependencies when resources are resolved
+     for each version of each mojit 
+   - appends the pre-calculated YUI module dependencies for the controller and binders when 
+     Mojito queries the |RS| for the details of a mojit (``getMojitTypeDetails`` method) 
+   - provides methods used by Mojito to configure its YUI instances
+  
+
+.. _addons-custom:
+
+Creating Custom Versions of Built-In |RS| Addons
+------------------------------------------------
+
+We will be examining the ``selector`` and ``url`` addons to help you create custom versions of 
+those addons. We do not recommend that you create custom versions of the 
+``config`` or ``yui`` addons, so we will not be looking at those addons. Also, this documentation 
+explains what the |RS| expects the addon to do, so you can create your own version of the addons. 
+To learn what a |RS| built-in addons do, please refer to the |RSC|_ in the API documentation.
+
+
+.. _custom-selector:
+
+selector
+########
+
+.. _selector-desc:
+
+Description
+```````````
+
+If you wish to use a different algorithm for to determine the selectors to use,
+you can implement your own version of this |RS| addon.  It will need to go in the file
+``addons/rs/selector.server.js`` of your application.  
+
+
+.. _selector-reqs:
+
+Requirements
+````````````
+
+Because the ``selector`` addon is used directly by the the resource store, all implementations 
+need to provide the following method:
+
+- :js:func:`getPOSLFromContext(ctx)`
+
+.. _selector-methods:
+
+Methods
+```````
+
+.. js:function:: getPOSLFromContext(ctx)
+
+    Returns the priority-ordered selector list (POSL) for the context.
+
+    :param String ctx: The context that the application is running in. 
+    :returns: Array
+
+
+.. js:function:: getAllPOSLs()
+
+    Returns all POSLs in the application.
+
+
+.. _url-intro:
+
+url
+###
+
+.. _url-desc:
+
+Description
+```````````
+
+The ``url`` addon calculates and manages the static handler URLs for resources.
+The addon is not used by resource store core, but used by the static handler middleware.
+
+If you wish to use a different algorithm to determine the URLs, you can
+implement your own version of this |RS| addon.  It'll need to go in
+``addons/rs/url.server.js`` in your application.
+
+After the method ``preloadResourceVersions`` sets ``res.url`` to the static handler URL
+for the resource, the method ``getMojitTypeDetails`` sets the mojit's ``assetsRoot``. 
+The static handler URL can be a rollup URL.
+
+
+.. _url-reqs:
+
+Requirements
+````````````
+
+Your addon is required to do the following:
+
+- Set the ``url`` property in the resource ``metadata`` object.
+
+
+
+
+
+
    
 
 .. |RS| replace:: Resource Store
