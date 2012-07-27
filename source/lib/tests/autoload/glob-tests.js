@@ -6,7 +6,7 @@
 YUI.add('mojito-glob-tests', function(Y, NAME) {
 
     var path = require('path'),
-        glob = require(path.join(__dirname, '../../glob.js')),
+        glob = require('glob'),
         suite = new YUITest.TestSuite(NAME),
         A = YUITest.Assert,
         AA = YUITest.ArrayAssert,
@@ -22,29 +22,29 @@ YUI.add('mojito-glob-tests', function(Y, NAME) {
 
     suite.add(new YUITest.TestCase({
 
-        name: 'globSync()',
+        name: 'sync()',
 
         'with non-glob': function() {
-            var got = [],
+            var got,
                 want = [ 'm1.json' ];
-            glob.globSync(baseDir + 'm1.json', {}, got);
+            got = glob.sync(baseDir + 'm1.json', {cwd: __dirname});
             AA.itemsAreEqual(prefixList(baseDir,want), got);
         },
 
         'simple glob at end': function() {
-            var got = [],
+            var got,
                 want = [ 
                     'a1/a2',
                     'a1/b2',
                     'a1/c2',
                     'a1/m2.json'
                 ];
-            glob.globSync(baseDir + 'a1/*', {}, got);
+            got = glob.sync(baseDir + 'a1/*', {});
             AA.itemsAreEqual(prefixList(baseDir,want).sort(), got.sort());
         },
 
         'multiple levels': function() {
-            var got = [],
+            var got,
                 want = [ 
                     'a1/a2/a3',
                     'a1/a2/b3',
@@ -54,12 +54,12 @@ YUI.add('mojito-glob-tests', function(Y, NAME) {
                     'c1/a2/a3',
                     'c1/a2/m3.json'
                 ];
-            glob.globSync(baseDir + '*/a2/*', {}, got);
+            got = glob.sync(baseDir + '*/a2/*', {});
             AA.itemsAreEqual(prefixList(baseDir,want).sort(), got.sort());
         },
 
         'multiple concurrent levels': function() {
-            var got = [],
+            var got,
                 want = [ 
                     'a1/a2/a3/m4.json',
                     'a1/a2/b3/m4.json',
@@ -68,31 +68,36 @@ YUI.add('mojito-glob-tests', function(Y, NAME) {
                     'a1/c2/a3/m4.json',
                     'a1/c2/b3/m4.json'
                 ];
-            glob.globSync(baseDir + 'a1/*/*/m4.json', {}, got);
+            got = glob.sync(baseDir + 'a1/*/*/m4.json', {});
             AA.itemsAreEqual(prefixList(baseDir,want).sort(), got.sort());
         },
 
         'glob in middle only matches directory': function() {
-            var got = [],
+            var got,
                 want = [ 
                     'a1/a2/m3.json',
                     'a1/b2/m3.json'
                 ];
-            glob.globSync(baseDir + 'a1/*/m3.json', {}, got);
+            got = glob.sync(baseDir + 'a1/*/m3.json', {});
             AA.itemsAreEqual(prefixList(baseDir,want).sort(), got.sort());
         },
 
         'no matches': function() {
-            var got = [],
+            var got,
                 want = [];
-            glob.globSync(baseDir + 'does/*/not/*/exist.json', {}, got);
+            got = glob.sync(baseDir + 'does/*/not/*/exist.json', {});
             AA.itemsAreEqual(prefixList(baseDir,want).sort(), got.sort());
         },
 
-        'double-star not support': function() {
-            var got = [],
-                want = [];
-            glob.globSync(baseDir + 'a1/**/m4.json', {}, got);
+        'double-star is supported': function() {
+            var got,
+                want = ['a1/a2/a3/m4.json',
+                    'a1/a2/b3/m4.json',
+                    'a1/b2/a3/m4.json',
+                    'a1/b2/b3/m4.json',
+                    'a1/c2/a3/m4.json',
+                    'a1/c2/b3/m4.json'];
+            got = glob.sync(baseDir + 'a1/**/m4.json', {});
             AA.itemsAreEqual(prefixList(baseDir,want.sort()), got.sort());
         }
 
