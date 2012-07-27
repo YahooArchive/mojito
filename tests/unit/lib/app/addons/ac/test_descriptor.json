@@ -22,6 +22,14 @@
                     "test" : "./test-composite.common.js"
                 },
                 "group" : "fw,client,server"
+            },
+            "config.common" : {
+                "params" : {
+                    "page": "$$config.base$$/mojito-test.html",
+                    "lib": "$$config.lib$$/app/addons/ac/config.common.js",
+                    "test" : "./test-config.common.js"
+                },
+                "group" : "fw,client,server"
             }
         }
     },
