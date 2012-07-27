@@ -267,7 +267,7 @@ General
     **Avoid the DOM on the Server**
     
     Do not use the `YUI Node Utility <http://yuilibrary.com/yui/docs/node/>`_ (or any node utility 
-    on server side). The YUI Node Utility is only supported in Mojito 0.3.26 and higher, and it 
+    on server side). The YUI Node Utility is only supported in Mojito 0.3.27 and higher, and it 
     causes some memory leak problems. The memory leaks will result in a low RPS and 
     server restarts. If you must parse HTML on the server, use the 
     `htmlparser package <http://search.npmjs.org/#/htmlparser>`_.  
@@ -282,16 +282,20 @@ General
     **Rollup/Minify Assets** 
     
     Rolling up and minifying assets will reduce the number of network calls and improve load time.
-    For rolling up assets, we recommend that you use 
-    `Shaker <https://github.com/yahoo/mojito-shaker>`_, which is a static asset rollup manager. To 
-    configure rollups in a Mojito application, set the ``useRollups`` property in the
-    ``application.json`` file to ``true`` as shown below::
+    For **rolling up assets**, we recommend that you use 
+    `Shaker <https://github.com/yahoo/mojito-shaker>`_, which is a static asset rollup manager. 
+    
+    Mojito also allows you to configure your app to use rollups by setting the 
+    ``useRollups`` property in the ``application.json`` file to ``true`` as shown below::
    
       "staticHandling": {
         "useRollups": true
       }
     
-    For minification, we recommend `YUI Compressor 
+    You can also compile rollups, inline CSS, or views using the Mojito command-line utility. See 
+    the `Compile System <../reference/mojito_cmdline.html#compile-system>`_ to learn how.
+    
+    For **minification**, we recommend Shaker again. Other choices could be `YUI Compressor 
     <http://yuilibrary.com/download/yuicompressor/>`_ or a npm module such as 
     `UglifyJS <https://github.com/mishoo/UglifyJS>`_. 
     
@@ -299,9 +303,9 @@ General
     **Share the YUI Instance**
     
     Mojito creates new YUI instances for each mojit, but you can configure your application,
-    so that your server-side mojits share one YUI instances to improve performance. 
+    so that your side mojits share one YUI instances to improve performance. 
     
-    To configure your application so that server-side mojits share the same YUI instance,
+    To configure your application so that side mojits share the same YUI instance,
     set the property ``shareYUIinstance`` to ``true`` in ``application.json``. 
     See the `configuration Object <http://../intro/mojito_configuring.html#configuration-object>`_
     for more information about the ``shareYUIInstance`` property.
@@ -310,7 +314,7 @@ General
     
     From the client, you Mojito application should lazy load assets as often as possible.
     For example, the `YUI ImageLoader Utility <http://yuilibrary.com/yui/docs/imageloader/>`_ 
-    can be used to help you lazy load images. You can even lazy load an mojit from the client
+    can be used to help you lazy load images. You can even lazy load a mojit from the client
     using the `LazyLoadMojit <../topics/mojito_framework_mojits.html#lazyloadmojit>`_.
    
     
