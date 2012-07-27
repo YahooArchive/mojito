@@ -263,27 +263,27 @@ General
     Mojito application, but are by no means exhaustive. You should also review online articles 
     about improving Node.js performance, such as `Blazing fast node.js: 10 performance tips from 
     LinkedIn Mobile <http://bit.ly/uFyio2>`_ written by software engineer Shravya Garlapati.
-
-    **Avoid the DOM on the Server**
-    
-    Do not use the `YUI Node Utility <http://yuilibrary.com/yui/docs/node/>`_ (or any node utility 
-    on server side). The YUI Node Utility is only supported in Mojito 0.3.27 and higher, and it 
-    causes some memory leak problems. The memory leaks will result in a low RPS and 
-    server restarts. If you must parse HTML on the server, use the 
-    `htmlparser package <http://search.npmjs.org/#/htmlparser>`_.  
     
     **Don't Add User Data to ac.context**
     
     The ``context`` property of the ``ActionContext`` object contains a small set of 
     key/value pairs that define the run-time environment under which a mojit runs. These key/value 
     pairs are used as a cache key. Adding your own key/values to ``ac.context`` will cause 
-    the cache to bloat. As an alternative, you can pass data from 
-    parent mojits to their children using the 
-    `Composite addon <../../api/classes/Composite.common.html>`_ or the 
-    `_dispatch <../../../api/classes/ActionContext.html#method__dispatch>`_ method. See 
-    `Composite Mojits <../topics/mojito_composite_mojits.html>`_ and 
-    `Running Dynamically Defined Mojit Instances <../topics/mojito_run_dyn_defined_mojits.html>`_
-    for implementation details.
+    the cache to bloat. 
+    
+    As an alternative, you can share data using the following methods:
+    
+       * Parent mojits can share data with the child mojits by attaching data to the ``ActionContext`` 
+         object in the parent mojit's controller. For example, in the parent mojit, you could add 
+         an object to ``ac.params.body`` that the children can then access with 
+         ``ac.params.body['{obj_name}']``.
+       * From the server and before mojits are executed, middleware can be used to share
+         information about static handling and routing.
+       * Assets and data can be shared through the 
+         `view template <reference/glossary.html#view-template>`_ of a parent mojit or through a 
+         frame mojit such as 
+         `HTMLFrameMojit <../topics/mojito_framework_mojits.html#htmlframemojit>`_ that creates
+         a parent view template.
     
     **Rollup/Minify Assets** 
     
@@ -523,9 +523,10 @@ Views
 .. topic:: **Does Mojito support view partials?**
 
     Mojito does not support Mustache partials, but you do have the following options for rendering data through a template:
-      * use a child mojit instead of a view partial 
-      * render data from a binder through a specific template with the `render <../../api/classes/MojitProxy.html#method_render>`_ method. 
-      * render data from the controller using `ac.partial.render <../../api/classes/Partial.common.html#method_render`_.     
+    
+       * use a child mojit instead of a view partial 
+       * render data from a binder through a specific template with the `render <../../api/classes/MojitProxy.html#method_render>`_ method. 
+       * render data from the controller using `ac.partial.render <../../api/classes/Partial.common.html#method_render>`_.     
   
     Not clear what view partials are? See `view partial <../reference/glossary.html#view-partial>`_ in the `Mojito: Glossary <../reference/glossary.html>`_.
 
