@@ -14,6 +14,14 @@
                     "test" : "./test-analytics.common.js"
                 },
                 "group" : "fw,client,server"
+            },
+            "composite.common" : {
+                "params" : {
+                    "page": "$$config.base$$/mojito-test.html",
+                    "lib": "$$config.lib$$/app/addons/ac/composite.common.js",
+                    "test" : "./test-composite.common.js"
+                },
+                "group" : "fw,client,server"
             }
         }
     },
