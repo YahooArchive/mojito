@@ -238,5 +238,6 @@ YUI.add('mojito-assets-addon', function(Y, NAME) {
     Y.mojito.addons.ac.assets = AssetsAcAddon;
 
 }, '0.1.0', {requires: [
+    'mojito',
     'mojito-util'
 ]});
