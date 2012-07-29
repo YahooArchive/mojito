@@ -214,7 +214,11 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
          * @return {nothing} if this method returns at all then the context is valid
          */
         validateContext: function(ctx) {
-            var k;
+            var k,
+                parts,
+                p,
+                test,
+                found;
             for (k in ctx) {
                 if (ctx.hasOwnProperty(k)) {
                     if (!ctx[k]) {
@@ -226,6 +230,22 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                     }
                     if (!this._validDims[k]) {
                         throw new Error('INVALID dimension key "' + k + '"');
+                    }
+                    // we need to support language fallbacks
+                    if ('lang' === k) {
+                        found = false;
+                        parts = ctx[k].split('-');
+                        for (p = parts.length; p > 0; p -= 1) {
+                            test = parts.slice(0, p).join('-');
+                            if (this._validDims[k][test]) {
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found) {
+                            throw new Error('INVALID dimension value "' + ctx[k] + '" for key "' + k + '"');
+                        }
+                        continue;
                     }
                     if (!this._validDims[k][ctx[k]]) {
                         throw new Error('INVALID dimension value "' + ctx[k] + '" for key "' + k + '"');
