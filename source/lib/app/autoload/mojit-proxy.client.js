@@ -170,6 +170,8 @@ YUI.add('mojito-mojit-proxy', function(Y, NAME) {
         invoke: function(action, options, cb) {
             var callback, command, instance;
 
+            options = options || {};
+
             // If there are no options use it as the callback
             if ('function' === typeof options) {
                 callback = options;
@@ -393,5 +395,7 @@ YUI.add('mojito-mojit-proxy', function(Y, NAME) {
     Y.mojito.MojitProxy = MojitProxy;
 
 }, '0.1.0', {requires: [
-    'mojito-util'
+    'mojito',
+    'mojito-util',
+    'querystring'
 ]});
