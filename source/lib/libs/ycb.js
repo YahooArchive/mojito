@@ -144,7 +144,7 @@ Ycb.prototype = {
                     console.log('----USING---- ' + lookupPaths[path]);
                     console.log(Y.JSON.stringify(this.settings[lookupPaths[path]], null, 4));
                 }
-                config.push(this.settings[lookupPaths[path]]);
+                config.push(Y.clone(this.settings[lookupPaths[path]], true));
             }
         }
         return config;
