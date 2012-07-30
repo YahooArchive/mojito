@@ -17,67 +17,72 @@
  */
 YUI.add('mojito', function(Y, NAME) {
     Y.namespace('mojito');
+    Y.namespace('mojito.addons.ac');
 });
 
 /*
  */
 YUI.add('mojito-meta-addon', function(Y, NAME) {
-    Y.namespace('mojito.addons.ac');
-    return function() {};
+});
+
+/*
+ */
+YUI.add('mojito-composite-addon', function(Y, NAME) {
+});
+
+/*
+ */
+YUI.add('mojito-params-addon', function(Y, NAME) {
+});
+
+/*
+ */
+YUI.add('mojito-config-addon', function(Y, NAME) {
 });
 
 /*
  */
 YUI.add('mojito-client-store', function(Y, NAME) {
-    return function() {};
 });
 
 /*
  */
 YUI.add('mojito-dispatcher', function(Y, NAME) {
-    return function() {};
 });
 
 /*
  */
 YUI.add('mojito-loader', function(Y, NAME) {
-    return function() {};
 });
 
 /*
  */
 YUI.add('mojito-logger', function(Y, NAME) {
-    return function() {};
 });
 
 /*
  */
 YUI.add('mojito-mojit-proxy', function(Y, NAME) {
-    return function() {};
 });
 
 /*
  */
 YUI.add('mojito-output-handler', function(Y, NAME) {
-    return function() {};
 });
 
 /*
  */
 YUI.add('mojito-resource-store-adapter', function(Y, NAME) {
-    return function() {};
 });
 
 /*
  */
 YUI.add('mojito-route-maker', function(Y, NAME) {
-    return function() {};
 });
 
 /*
  */
 YUI.add('mojito-tunnel-client', function(Y, NAME) {
-    return function() {};
 });
 
 
@@ -105,43 +110,36 @@ YUI.add('breg', function(Y, NAME) {
 /*
  */
 YUI.add('dali-transport-base', function(Y, NAME) {
-    return function() {};
 });
 
 /*
  */
 YUI.add('request-handler', function(Y, NAME) {
-    return function() {};
 });
 
 /*
  */
 YUI.add('simple-request-formatter', function(Y, NAME) {
-    return function() {};
 });
 
 /*
  */
 YUI.add('requestor', function(Y, NAME) {
-    return function() {};
 });
 
 /*
  */
 YUI.add('io-facade', function(Y, NAME) {
-    return function() {};
 });
 
 /*
  */
 YUI.add('response-formatter', function(Y, NAME) {
-    return function() {};
 });
 
 /*
  */
 YUI.add('response-processor', function(Y, NAME) {
-    return function() {};
 });
 
 /******* END DALI ********/
@@ -156,6 +154,13 @@ YUI.add('mojito-util', function(Y, NAME) {
         // may be possible.
         copy: function(obj) {
             return obj;
+        },
+
+        // TODO: this is an extremely simplified version of the function, but meets
+        // the demands of the current tests. If we find ourselves writing tests that require
+        // more advanced use cases, we should make this function meet those needs.
+        metaMerge: function (to, from) {
+            return Y.merge(from, to);
         }
     };
 

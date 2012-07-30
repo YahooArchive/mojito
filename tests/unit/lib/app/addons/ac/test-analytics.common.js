@@ -32,10 +32,6 @@ YUI().use('mojito-analytics-addon', 'test', function(Y) {
             //  addon to be Y.mojito.util.metaMerge). It will *NOT*
             //  overlay values.
 
-            addon.mergeFunction = function (to, from) {
-                return Y.merge(from, to);
-            };
-
             mockAc.meta = Y.Mock();
 
             Y.Mock.expect(mockAc.meta, {
@@ -122,10 +118,6 @@ YUI().use('mojito-analytics-addon', 'test', function(Y) {
                 mockAc = {},
                 retrieved,
                 addon = new Y.mojito.addons.ac.analytics(null, null, mockAc);
-
-            addon.mergeFunction = function (to, from) {
-                return Y.merge(from, to);
-            };
 
             mockAc.meta = Y.Mock();
 
