@@ -251,10 +251,6 @@ General
 ------------
 
 
-.. Questions:
-
-.. What versions of Mojito precisely support the YUI Node Utility?
-
 
 .. _moj_optimize_performance:
 .. topic:: **How can I improve the performance of my Mojito application?**
@@ -275,8 +271,8 @@ General
     
        * Parent mojits can share data with the child mojits by attaching data to the ``ActionContext`` 
          object in the parent mojit's controller. For example, in the parent mojit, you could add 
-         an object to ``ac.params.body`` that the children can then access with 
-         ``ac.params.body['{obj_name}']``.
+         an object to ``ac.composite.command.params.body`` that the children can then access with 
+         ``ac.composite.command.params.body['{obj_name}']``.
        * From the server and before mojits are executed, middleware can be used to share
          information about static handling and routing.
        * Assets and data can be shared through the 
