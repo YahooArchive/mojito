@@ -30,6 +30,14 @@
                     "test" : "./test-config.common.js"
                 },
                 "group" : "fw,client,server"
+            },
+            "assets.common": {
+                "params" : {
+                    "page": "$$config.base$$/mojito-test.html",
+                    "lib": "$$config.lib$$/app/addons/ac/assets.common.js",
+                    "test" : "./test-assets.common.js"
+                },
+                "group" : "fw,client,server"
             }
         }
     },
