@@ -16,9 +16,9 @@
         "mojito": ">= 0.1.0"
     },
     "engines": {
-        "node": ">= 0.4.2 < 0.5.0"
+        "node": "0.6.x"
     },
     "scripts": {
-        "start": "mojito start"
+        "start": "server.js"
     }
 }
