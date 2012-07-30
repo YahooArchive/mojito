@@ -26,7 +26,6 @@ YUI.add('addon-rs-selector', function(Y, NAME) {
     }
     RSAddonSelector.NS = 'selector';
     RSAddonSelector.DEPS = ['config'];
-    RSAddonSelector.ATTRS = {};
 
     Y.extend(RSAddonSelector, Y.Plugin.Base, {
 

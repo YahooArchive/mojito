@@ -25,7 +25,6 @@ YUI.add('addon-rs-url', function(Y, NAME) {
         RSAddonUrl.superclass.constructor.apply(this, arguments);
     }
     RSAddonUrl.NS = 'url';
-    RSAddonUrl.ATTRS = {};
 
     Y.extend(RSAddonUrl, Y.Plugin.Base, {
 

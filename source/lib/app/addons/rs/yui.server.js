@@ -27,7 +27,6 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
         RSAddonYUI.superclass.constructor.apply(this, arguments);
     }
     RSAddonYUI.NS = 'yui';
-    RSAddonYUI.ATTRS = {};
 
     Y.extend(RSAddonYUI, Y.Plugin.Base, {
 

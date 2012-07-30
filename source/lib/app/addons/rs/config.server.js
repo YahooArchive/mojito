@@ -31,7 +31,6 @@ YUI.add('addon-rs-config', function(Y, NAME) {
         RSAddonConfig.superclass.constructor.apply(this, arguments);
     }
     RSAddonConfig.NS = 'config';
-    RSAddonConfig.ATTRS = {};
 
     Y.extend(RSAddonConfig, Y.Plugin.Base, {
 
