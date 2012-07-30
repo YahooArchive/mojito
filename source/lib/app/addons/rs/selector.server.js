@@ -66,7 +66,7 @@ YUI.add('addon-rs-selector', function(Y, NAME) {
                 posl = this.getPOSLFromContext(ctx);
                 posls[Y.JSON.stringify(posl)] = posl;
             }
-            ctxs = []; // free a bunch of memory
+            ctxs = null; // free a bunch of memory
             return Y.Object.values(posls);
         },
 
