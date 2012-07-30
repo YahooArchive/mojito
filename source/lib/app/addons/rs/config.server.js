@@ -79,7 +79,7 @@ YUI.add('addon-rs-config', function(Y, NAME) {
             if (!json) {
                 try {
                     contents = libfs.readFileSync(fullPath, 'utf-8');
-                    json = JSON.parse(contents);
+                    json = Y.JSON.parse(contents);
                 } catch (e) {
                     throw new Error('Error parsing JSON file: ' + fullPath);
                 }
@@ -220,4 +220,4 @@ YUI.add('addon-rs-config', function(Y, NAME) {
     Y.namespace('mojito.addons.rs');
     Y.mojito.addons.rs.config = RSAddonConfig;
 
-}, '0.0.1', { requires: ['plugin', 'oop']});
+}, '0.0.1', { requires: ['plugin', 'oop', 'json-parse']});

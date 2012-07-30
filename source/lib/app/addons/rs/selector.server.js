@@ -64,7 +64,7 @@ YUI.add('addon-rs-selector', function(Y, NAME) {
             for (c = 0; c < ctxs.length; c += 1) {
                 ctx = ctxs[c];
                 posl = this.getPOSLFromContext(ctx);
-                posls[JSON.stringify(posl)] = posl;
+                posls[Y.JSON.stringify(posl)] = posl;
             }
             ctxs = []; // free a bunch of memory
             return Y.Object.values(posls);
@@ -189,4 +189,4 @@ YUI.add('addon-rs-selector', function(Y, NAME) {
     Y.namespace('mojito.addons.rs');
     Y.mojito.addons.rs.selector = RSAddonSelector;
 
-}, '0.0.1', { requires: ['plugin', 'oop']});
+}, '0.0.1', { requires: ['plugin', 'oop', 'json-stringify']});

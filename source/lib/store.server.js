@@ -404,7 +404,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
 
             this.validateContext(ctx);
 
-            posl = JSON.stringify(this.selector.getPOSLFromContext(ctx));
+            posl = Y.JSON.stringify(this.selector.getPOSLFromContext(ctx));
             if (filter.mojit) {
                 if (!this._mojitResources[env] ||
                         !this._mojitResources[env][posl] ||
@@ -1451,7 +1451,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             console.log('--PACKAGE-- ' + info.depth + ' ' + info.pkg.name + '@' + info.pkg.version
                     + ' \t' + (info.pkg.yahoo && info.pkg.yahoo.mojito && info.pkg.yahoo.mojito.type)
                     + ' \t[' + info.parents.join(',') + ']'
-            //      + ' \t-- ' + JSON.stringify(info.inherit)
+            //      + ' \t-- ' + Y.JSON.stringify(info.inherit)
             );
             */
             pkg = {

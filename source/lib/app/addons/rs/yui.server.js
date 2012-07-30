@@ -308,7 +308,7 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
                 env = evt.args.env,
                 ctx = evt.args.ctx,
                 posl = evt.args.posl,
-                poslKey = JSON.stringify(posl),
+                poslKey = Y.JSON.stringify(posl),
                 mojitType = evt.args.mojitType,
                 ress,
                 r,
@@ -365,7 +365,7 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
         mojitResourcesResolved: function(evt) {
             var env = evt.env,
                 posl = evt.posl,
-                poslKey = JSON.stringify(posl),
+                poslKey = Y.JSON.stringify(posl),
                 mojit = evt.mojit,
                 ress = evt.ress,
                 r,
@@ -647,4 +647,4 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
     Y.namespace('mojito.addons.rs');
     Y.mojito.addons.rs.yui = RSAddonYUI;
 
-}, '0.0.1', { requires: ['plugin', 'oop', 'loader-base']});
+}, '0.0.1', { requires: ['plugin', 'oop', 'loader-base', 'json-stringify']});
