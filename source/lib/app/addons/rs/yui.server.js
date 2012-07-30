@@ -337,7 +337,7 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
                     dest.views[res.name]['binder-module'] = res.yui.name;
                     sorted = this._getYUISorted('client', poslKey, ctx.lang, res.yui.name);
                     if (sorted && sorted.paths) {
-                        dest.views[res.name]['binder-yui-sorted'] = store.cloneObj(sorted.paths);
+                        dest.views[res.name]['binder-yui-sorted'] = Y.clone(sorted.paths, true);
                     }
                 }
                 if (res.type === 'controller') {
@@ -347,7 +347,7 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
                         dest.yui.sorted = sorted.sorted.slice();
                     }
                     if (this.usePrecomputed && sorted && sorted.paths) {
-                        dest.yui.sortedPaths = store.cloneObj(sorted.paths);
+                        dest.yui.sortedPaths = Y.clone(sorted.paths, true);
                     }
                 }
             }
@@ -425,7 +425,7 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
             if (!this.modules[env][poslKey]) {
                 this.modules[env][poslKey] = {};
             }
-            this.modules[env][poslKey][mojit] = this.get('host').cloneObj(modules);
+            this.modules[env][poslKey][mojit] = Y.clone(modules, true);
 
             // we always want to do calculations for no-lang
             if (!langs['']) {

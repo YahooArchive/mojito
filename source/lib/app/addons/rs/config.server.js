@@ -58,7 +58,7 @@ YUI.add('addon-rs-config', function(Y, NAME) {
          * @return {object} the YCB dimensions structure for the app
          */
         getDimensions: function() {
-            return this.get('host').cloneObj(this._ycbDims);
+            return Y.clone(this._ycbDims, true);
         },
 
 
@@ -85,7 +85,7 @@ YUI.add('addon-rs-config', function(Y, NAME) {
                 }
                 this._jsonCache[fullPath] = json;
             }
-            return this.get('host').cloneObj(json);
+            return Y.clone(json, true);
         },
 
 

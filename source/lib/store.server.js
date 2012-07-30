@@ -268,7 +268,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
          * @return {object} the context
          */
         getStaticContext: function() {
-            return this.cloneObj(this._config.context);
+            return Y.clone(this._config.context, true);
         },
 
 
@@ -278,7 +278,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
          * @return {object} the configuration from applications.json
          */
         getStaticAppConfig: function() {
-            return this.cloneObj(this._appConfigStatic);
+            return Y.clone(this._appConfigStatic, true);
         },
 
 
@@ -288,7 +288,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
          * @return {object} the configuration for mojito
          */
         getFrameworkConfig: function() {
-            return this.cloneObj(this._fwConfig);
+            return Y.clone(this._fwConfig, true);
         },
 
 
@@ -305,18 +305,18 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             this.validateContext(ctx);
 
             if (this._appConfigStatic && (!ctx || !Object.keys(ctx).length)) {
-                return this.cloneObj(this._appConfigStatic);
+                return Y.clone(this._appConfigStatic, true);
             }
 
             // start with the base
-            appConfig = this.cloneObj(this._fwConfig.appConfigBase);
+            appConfig = Y.clone(this._fwConfig.appConfigBase, true);
 
             // apply the read values from the file
             ycb = this.config.readConfigYCB(this._libs.path.join(this._config.root, 'application.json'), ctx);
             this.mergeRecursive(appConfig, ycb);
 
             // apply the passed-in overrides
-            this.mergeRecursive(appConfig, this.cloneObj(this._config.appConfig));
+            this.mergeRecursive(appConfig, Y.clone(this._config.appConfig, true));
 
             return appConfig;
         },
@@ -541,7 +541,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             this.validateContext(ctx);
 
             if (cacheValue) {
-                cb(null, this.cloneObj(cacheValue));
+                cb(null, Y.clone(cacheValue, true));
                 return;
             }
 
@@ -568,12 +568,12 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 return cb(err2);
             }
             if (spec.defaults && spec.defaults.config) {
-                config = this.cloneObj(spec.defaults.config);
+                config = Y.clone(spec.defaults.config, true);
                 this.mergeRecursive(config, spec.config);
                 spec.config = config;
             }
 
-            this._expandInstanceCache[env][cacheKey] = this.cloneObj(spec);
+            this._expandInstanceCache[env][cacheKey] = Y.clone(spec, true);
             cb(null, spec);
         },
 
@@ -743,7 +743,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             for (r = 0; r < ress.length; r += 1) {
                 res = ress[r];
                 if (fixedPaths[res.source.fs.fullPath]) {
-                    routes = this.cloneObj(this.config.readConfigYCB(res.source.fs.fullPath, ctx));
+                    routes = Y.clone(this.config.readConfigYCB(res.source.fs.fullPath, ctx), true);
                     out = Y.merge(out, routes);
                 }
             }
@@ -818,41 +818,6 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 }
             }
             return dest;
-        },
-
-
-        /**
-         * Makes a deep copy of the object.
-         * @method cloneObj
-         * @param {object} o the object to clone
-         * @return {object} deep copy of argument
-         */
-        cloneObj: function(o) {
-            var newO,
-                i;
-
-            if (typeof o !== 'object') {
-                return o;
-            }
-            if (!o) {
-                return o;
-            }
-
-            if ('[object Array]' === Object.prototype.toString.apply(o)) {
-                newO = [];
-                for (i = 0; i < o.length; i += 1) {
-                    newO[i] = this.cloneObj(o[i]);
-                }
-                return newO;
-            }
-
-            newO = {};
-            for (i in o) {
-                if (o.hasOwnProperty(i)) {
-                    newO[i] = this.cloneObj(o[i]);
-                }
-            }
-            return newO;
         },
 
 
@@ -1757,7 +1722,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 if (versions.hasOwnProperty(resid)) {
                     highest = Math.max.apply(Math, Object.keys(versions[resid]));
                     //console.log('--DEBUG-- highest=' + highest + ' -- ' + resid);
-                    chosen = this.cloneObj(versions[resid][highest]);
+                    chosen = Y.clone(versions[resid][highest], true);
                     out.push(chosen);
                 }
             }
