@@ -9,7 +9,7 @@ Prerequisites
 
 **System:** Unix-based system.
 
-**Software:** C++ compiler, `Node.js v0.4.5 or higher <http://nodejs.org/#download>`_, `npm <http://npmjs.org/>`_
+**Software:** C++ compiler, `Node.js (>= 0.4.0 < 0.7) <http://nodejs.org/`_, `npm (>1.0.0) <http://npmjs.org/>`_
 
 Installation Steps
 ##################
