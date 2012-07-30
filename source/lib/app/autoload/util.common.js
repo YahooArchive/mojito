@@ -46,7 +46,7 @@ YUI.add('mojito-util', function(Y) {
     }
 
 
-    Y.mojito.util = {
+    Y.namespace('mojito').util = {
 
         array: {
 

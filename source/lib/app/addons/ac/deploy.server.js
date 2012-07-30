@@ -402,7 +402,7 @@ YUI.add('mojito-deploy-addon', function(Y, NAME) {
         }
     };
 
-    Y.mojito.addons.ac.deploy = Addon;
+    Y.namespace('mojito.addons.ac').deploy = Addon;
 
 }, '0.1.0', {requires: [
     'mojito-loader',

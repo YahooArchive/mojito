@@ -4,7 +4,7 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
 YUI.add('{{name}}', function(Y, NAME) {
 
-    Y.mojito.controllers[NAME] = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         index: function(ac) {
             ac.done('Mojito is working.');
