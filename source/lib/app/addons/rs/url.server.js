@@ -68,6 +68,7 @@ YUI.add('addon-rs-url', function(Y, NAME) {
                 mojitRes,
                 mojitControllerRess,
                 packageJson,
+                mojitIsPublic,
                 ress,
                 r,
                 res,
@@ -95,9 +96,15 @@ YUI.add('addon-rs-url', function(Y, NAME) {
                     }
                 }
 
+                mojitIsPublic = false;
                 if (mojitRes) {
                     packageJson = libpath.join(mojitRes.source.fs.fullPath, 'package.json');
                     packageJson = store.config.readConfigJSON(packageJson);
+                    if ('public' === (packageJson.yahoo &&
+                                      packageJson.yahoo.mojito &&
+                                      packageJson.yahoo.mojito['package'])) {
+                        mojitIsPublic = true;
+                    }
                 }
 
                 ress = store.getResourceVersions({mojit: mojit});
@@ -113,10 +120,7 @@ YUI.add('addon-rs-url', function(Y, NAME) {
                     // In that situation, the user mainly doesn't want to
                     // publish each mojit's package.json.  However, Livestand
                     // did need to, so this feature allowed them to opt-in.
-                    if ('config--package' === res.id &&
-                            'public' === (packageJson.yahoo &&
-                            packageJson.yahoo.mojito &&
-                            packageJson.yahoo.mojito['package'])) {
+                    if ('config--package' === res.id && mojitIsPublic) {
                         skip = false;
                     }
 
