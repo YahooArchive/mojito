@@ -24,6 +24,7 @@ YUI.add('addon-rs-config', function(Y, NAME) {
 
     var libfs = require('fs'),
         libpath = require('path'),
+        // TODO:  move YCB into a node module
         libycb = require(libpath.join(__dirname, '../../../libs/ycb'));
 
     function RSAddonConfig() {
@@ -66,7 +67,7 @@ YUI.add('addon-rs-config', function(Y, NAME) {
          * Reads and parses a JSON file.
          * @method readConfigJSON
          * @param {string} fullPath path to JSON file
-         * @return {mixed} contents of JSON file
+         * @return {user-defined} contents of JSON file
          */
         // TODO:  async interface
         readConfigJSON: function(fullPath) {

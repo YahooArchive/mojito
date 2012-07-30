@@ -344,7 +344,9 @@ YUI.add('mojito-deploy-addon', function(Y, NAME) {
          * @private
          * @param {bool} embed Should returned scripts be embedded in script
          *     tags.
-         * @param {object} urls mapping of URLs to filesystem paths
+         * @param {object} urls Mapping of URLs to filesystem paths.  The keys
+         *      are the URLs, and the values are the cooresponding filesystem
+         *      paths.
          * @return {object} An object containing script descriptors.
          */
         getScripts: function(embed, urls) {

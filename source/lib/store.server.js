@@ -824,8 +824,8 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
         /**
          * Makes a deep copy of the object.
          * @method cloneObj
-         * @param {mixed} o the object to clone
-         * @return {mixed} deep copy of argument
+         * @param {object} o the object to clone
+         * @return {object} deep copy of argument
          */
         cloneObj: function(o) {
             var newO,
@@ -1379,7 +1379,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
          * @private
          * @method _mockLib
          * @param {string} name name of library to mock out
-         * @param {mixed} lib library to mock out
+         * @param {situation-dependent} lib library to mock out
          * @return {nothing}
          */
         _mockLib: function(name, lib) {

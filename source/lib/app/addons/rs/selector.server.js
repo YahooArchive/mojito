@@ -100,6 +100,8 @@ YUI.add('addon-rs-selector', function(Y, NAME) {
 
 
         /**
+         * Returns the a list of dimensions that are actually used in the
+         * application.json file.
          * @private
          * @method _listUsedDimensions
          * @return {array} list of dimensions and values
