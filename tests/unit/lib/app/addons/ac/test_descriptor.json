@@ -30,6 +30,14 @@
                     "test" : "./test-config.common.js"
                 },
                 "group" : "fw,client,server"
+            },
+            "cookie.client" : {
+                "params" : {
+                    "page": "$$config.base$$/mojito-test.html",
+                    "lib": "$$config.lib$$/app/addons/ac/cookie.client.js",
+                    "test" : "./test-cookie.client.js"
+                },
+                "group" : "fw,client"
             }
         }
     },
