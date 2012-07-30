@@ -34,6 +34,12 @@ YUI.add('addon-rs-config', function(Y, NAME) {
 
     Y.extend(RSAddonConfig, Y.Plugin.Base, {
 
+        /**
+         * This methods is part of Y.Plugin.Base.  See documentation for that for details.
+         * @method initializer
+         * @param {object} config Configuration object as per Y.Plugin.Base
+         * @return {nothing}
+         */
         initializer: function(config) {
             this.appRoot = config.appRoot;
             this.mojitoRoot = config.mojitoRoot;
@@ -47,6 +53,7 @@ YUI.add('addon-rs-config', function(Y, NAME) {
 
 
         /**
+         * Returns the YCB dimensions for the application.
          * @method getDimensions
          * @return {object} the YCB dimensions structure for the app
          */
@@ -58,7 +65,7 @@ YUI.add('addon-rs-config', function(Y, NAME) {
         /**
          * Reads and parses a JSON file.
          * @method readConfigJSON
-         * @param fullPath {string} path to JSON file
+         * @param {string} fullPath path to JSON file
          * @return {mixed} contents of JSON file
          */
         // TODO:  async interface
@@ -85,8 +92,8 @@ YUI.add('addon-rs-config', function(Y, NAME) {
         /**
          * Reads a configuration file that is in YCB format.
          * @method readConfigYCB
-         * @param ctx {object} runtime context
-         * @param fullPath {string} path to the YCB file
+         * @param {object} ctx runtime context
+         * @param {string} fullPath path to the YCB file
          * @return {object} the contextualized configuration
          */
         // TODO:  async interface
@@ -114,8 +121,8 @@ YUI.add('addon-rs-config', function(Y, NAME) {
         /**
          * Using AOP, this is called after the ResourceStore's version.
          * @method findResourceVersionByConvention
-         * @param source {object} metadata about where the resource is located
-         * @param mojitType {string} name of mojit to which the resource likely belongs
+         * @param {object} source metadata about where the resource is located
+         * @param {string} mojitType name of mojit to which the resource likely belongs
          * @return {object||null} for config file resources, returns metadata signifying that
          */
         findResourceVersionByConvention: function(source, mojitType) {
@@ -159,10 +166,10 @@ YUI.add('addon-rs-config', function(Y, NAME) {
         /**
          * Using AOP, this is called before the ResourceStore's version.
          * @method parseResourceVersion
-         * @param source {object} metadata about where the resource is located
-         * @param type {string} type of the resource
-         * @param subtype {string} subtype of the resource
-         * @param mojitType {string} name of mojit to which the resource likely belongs
+         * @param {object} source metadata about where the resource is located
+         * @param {string} type type of the resource
+         * @param {string} subtype subtype of the resource
+         * @param {string} mojitType name of mojit to which the resource likely belongs
          * @return {object||null} for config file resources, returns the resource metadata
          */
         parseResourceVersion: function(source, type, subtype, mojitType) {

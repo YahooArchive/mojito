@@ -29,6 +29,12 @@ YUI.add('addon-rs-url', function(Y, NAME) {
 
     Y.extend(RSAddonUrl, Y.Plugin.Base, {
 
+        /**
+         * This methods is part of Y.Plugin.Base.  See documentation for that for details.
+         * @method initializer
+         * @param {object} config Configuration object as per Y.Plugin.Base
+         * @return {nothing}
+         */
         initializer: function(config) {
             var appConfig;
             this.appRoot = config.appRoot;
@@ -53,6 +59,7 @@ YUI.add('addon-rs-url', function(Y, NAME) {
          * It computes the static handler URL for all resources in all the
          * mojits (as well as the mojit itself).
          * @method preloadResourceVersions
+         * @return {nothing}
          */
         preloadResourceVersions: function() {
             var store = this.get('host'),
@@ -128,7 +135,8 @@ YUI.add('addon-rs-url', function(Y, NAME) {
          * This is called when the ResourceStore fires this event.
          * It calculates the `assetsRoot` for the mojit.
          * @method getMojitTypeDetails
-         * @param evt {object}
+         * @param {object} evt The fired event
+         * @return {nothing}
          */
         getMojitTypeDetails: function(evt) {
             var ress = this.get('host').getResources(evt.args.env, evt.args.ctx, {type: 'mojit', name: evt.args.mojitType});
@@ -140,8 +148,9 @@ YUI.add('addon-rs-url', function(Y, NAME) {
          * Calculates the static handler URL for the resource.
          * @private
          * @method _calcResourceURL
-         * @param res {object} the resource for which to calculate the URL
-         * @param mojitRes {object} the resource for the mojit
+         * @param {object} res the resource for which to calculate the URL
+         * @param {object} mojitRes the resource for the mojit
+         * @return {nothing}
          */
         _calcResourceURL: function(res, mojitRes) {
             var fs = res.source.fs,

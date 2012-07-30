@@ -30,6 +30,12 @@ YUI.add('addon-rs-selector', function(Y, NAME) {
 
     Y.extend(RSAddonSelector, Y.Plugin.Base, {
 
+        /**
+         * This methods is part of Y.Plugin.Base.  See documentation for that for details.
+         * @method initializer
+         * @param {object} config Configuration object as per Y.Plugin.Base
+         * @return {nothing}
+         */
         initializer: function(config) {
             var dims,
                 json;
@@ -69,7 +75,7 @@ YUI.add('addon-rs-selector', function(Y, NAME) {
         /**
          * Returns the priority-ordered selector list (POSL) for the context.
          * @method getPOSLFromContext
-         * @param ctx {object} runtime context
+         * @param {object} ctx runtime context
          * @return {array} priority-ordered selector list
          */
         getPOSLFromContext: function(ctx) {
@@ -97,7 +103,7 @@ YUI.add('addon-rs-selector', function(Y, NAME) {
          * @private
          * @method _listUsedDimensions
          * @return {array} list of dimensions and values
-         * (values have no structure)
+         *     (values have no structure)
          */
         _listUsedDimensions: function() {
             var ctxs = [],
