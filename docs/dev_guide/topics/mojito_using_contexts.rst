@@ -394,7 +394,7 @@ Dynamically Changing Configurations
 You may dynamically change the configurations for any context by having a parent mojit execute a child mojit with new configurations. This is different than getting 
 different configurations by requesting a new context or specifying a different base context. Regardless of the context being used, you can use the same context and change 
 the configurations by executing a child mojit with new configurations. The parent mojit uses the ``execute`` method of the 
-`Composite addon <../../api/Composite.common.html>`_ to execute the child mojit. 
+`Composite addon <../../api/classes/Composite.common.html>`_ to execute the child mojit. 
 Let's look at an example to see how it works.
 
 In the example controller below, if the ``child`` parameter is found in the routing, query string, or request body, a child instance with its own configuration is executed, allowing the application to add new or change configurations of the current context.

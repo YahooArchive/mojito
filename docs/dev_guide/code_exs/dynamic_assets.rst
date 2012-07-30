@@ -74,7 +74,7 @@ that contains the ``context`` object:
      ...
    }
 
-To dynamically add CSS and meta data from the controller, you use methods from the `Assets addon <../../api/Assets.common.html>`_. 
+To dynamically add CSS and meta data from the controller, you use methods from the `Assets addon <../../api/classes/Assets.common.html>`_. 
 In the ``controller.server.js`` below, the ``index`` function determines the calling device using the ``context`` object seen above. 
 To add metadata for the iPhone, the ``addBlob`` method is called from the ``Assets`` addon. 
 The appropriate CSS file is dynamically attached to the view template with ``ac.assets.addCss``.

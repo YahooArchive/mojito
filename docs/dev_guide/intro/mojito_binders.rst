@@ -1,5 +1,4 @@
 
-
 ==============
 Mojito Binders
 ==============
@@ -15,7 +14,7 @@ Each mojit you create can have some specific code called binders that is only de
 
 A mojit may have zero, one, or many binders within the ``binders`` directory. Each binder will be deployed to the browser along with the rest of the mojit code, 
 where the client-side Mojito runtime will call it appropriately. The view used to generate output determines which binder is used. Thus, if the ``simple`` view is used,
-the binder ``simple.js`` is used. This can be overridden by setting  ``view.binder`` in the ``meta`` argument to `ac.done <../../api/Y.mojito.ActionContext.html#method_done>`_. 
+the binder ``simple.js`` is used. This can be overridden by setting  ``view.binder`` in the ``meta`` argument to `ac.done <../../api/classes/ActionContext.html#method_done>`_. 
 If no binder matches the view, then no binder is used.
 
 Anatomy of the Binder
@@ -169,7 +168,7 @@ The code snippet below uses the ``destroyChild`` method to remove the child node
 Class MojitProxy
 ================
 
-See the `Class MojitProxy <../../api/Y.mojito.MojitProxy.html>`_ in the Mojito API Reference.
+See the `Class MojitProxy <../../api/classes/MojitProxy.html>`_ in the Mojito API Reference.
 
 Binder Examples
 ###############

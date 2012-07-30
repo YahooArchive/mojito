@@ -10,7 +10,7 @@
 
 
 var libfs = require('fs'),
-    libglob = require('./glob'),
+    libglob = require('glob'),
     libpath = require('path'),
     libqs = require('querystring'),
     libvm = require('vm'),
@@ -801,7 +801,7 @@ ServerStore.prototype = {
      * Returns the YUI configuration object which tells YUI about the
      * YUI modules in the application (which aren't part of a mojit).
      *
-     * @method getYiConfigApp
+     * @method getYuiConfigApp
      * @param env {string} "client" or "server"
      * @param ctx {object} runtime context for YUI configuration
      * @return {object} YUI configuration for the app-level modules
@@ -2281,8 +2281,7 @@ ServerStore.prototype = {
 
         // handle globbing
         if (dir.indexOf('*') >= 0) {
-            realDirs = [];
-            libglob.globSync(dir, {}, realDirs);
+            realDirs = libglob.sync(dir, {});
             if (!realDirs.length) {
                 logger.log('Failed to find any mojitsDirs matching ' + dir, 'error', NAME);
                 return;
@@ -2337,8 +2336,7 @@ ServerStore.prototype = {
 
         // handle globbing
         if (dir.indexOf('*') >= 0) {
-            realDirs = [];
-            libglob.globSync(dir, {}, realDirs);
+            realDirs = libglob.sync(dir, {});
             if (!realDirs.length) {
                 logger.log('Failed to find any mojitDirs matching ' + dir, 'error', NAME);
                 return;
