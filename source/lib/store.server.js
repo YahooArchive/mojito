@@ -102,7 +102,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
         };
 
     libs.fs = require('fs');
-    libs.glob = require('./glob');
+    libs.glob = require('glob');
     libs.path = require('path');
     libs.semver = require('semver');
     libs.walker = require('./package-walker.server');
@@ -1916,7 +1916,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 if ('/' !== glob.charAt(0)) {
                     glob = this._libs.path.join(prefix, glob);
                 }
-                this._libs.glob.globSync(glob, {}, found);
+                found = found.concat(this._libs.glob.sync(glob, {}));
             }
             return found;
         },
