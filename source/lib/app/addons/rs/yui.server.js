@@ -467,6 +467,7 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
                 };
             }
 
+            // HACK
             // We need to clear YUI's cached dependencies, since there's no
             // guarantee that the previously calculated dependencies have been done
             // using the same context as this calculation.
