@@ -9,18 +9,15 @@
 
 
 var utils = require('../utils'),
-    fs = require('fs'),
     path = require('path'),
     exec = require('child_process').exec,
-    copyExclude = require('../utils').copyExclude,
+    wrench = require('wrench'),
+    yuidocjs = require('yuidocjs'),
     usage,
-    dir_mojito = path.join(__dirname, '../../'),
-    dir_yuidoc = path.join(dir_mojito, 'libs/yuidoc'),
-    dir_template = path.join(dir_yuidoc, 'template'),
-    cmd_yuidoc = path.join(dir_yuidoc, '/bin/yuidoc.py');
+    dir_mojito = path.join(__dirname, '../../');
 
 
-usage = '\nmojito docs [type] [name]\n' +
+usage = '\nmojito docs [type] [name] [--server]\n' +
     '\t- type: \'mojito\', \'app\' or \'mojit\'\n' +
     '\t- name(required for type mojit): given name for creating' +
     ' documentation\n\n' +
@@ -29,128 +26,83 @@ usage = '\nmojito docs [type] [name]\n' +
     'application\'s documentation)\n' +
     'Example Usage: mojito docs mojit Bar\n' +
     '\t(creates directory \'artifacts/docs/mojits/Bar\' containing that' +
-    ' mojit\'s documentation)\n';
+    ' mojit\'s documentation)\n' +
+    '\nOptions\n' +
+    '\t--server Start YUIDoc server instead of writing the documentation to disk';
 
 
-var cmdLog = function(cmd, error, stdout, stderr, verbose) {
 
-    if (!verbose) {
-        return;
-    }
+/**
+ * Cleanup destination folder and generate the requested docs using yuidocjs.
+ * See: http://yui.github.com/yuidoc/api/
+ *      https://github.com/ryanmcgrath/wrench-js
+ */
+var makeDocs = function(name, source, destination, excludes, options) {
 
-    if (stdout) {
-        console.log('stdout: ' + stdout);
-    }
-    if (stderr) {
-        console.log('stderr: ' + stderr);
-    }
-    if (error !== null) {
-        console.log('FAILED ' + cmd + '\n' + 'error: ' + error);
-    }
-};
-
-
-// TODO: [Issue 64] don't make unecessary calls to the shell.
-var makeDocs = function(name, source, destination, excludes, verbose) {
-
-    var cmd = '',
-        fail = false;
+    var json,
+        builder,
+        docOptions;
 
     destination = path.join(destination,
         name.replace(/[^a-z0-9]/ig, '_').replace(/(_)\1+/g, '_'));
 
-    cmd = 'rm -rf ' + destination + '&& mkdir -p ' + destination;
+    wrench.rmdirSyncRecursive(destination, true);
+    wrench.mkdirSyncRecursive(destination, '0744');
 
-    excludes = excludes.concat([/\/\.svn$/, /\/\.git$/, /\/CVS$/]);
+    excludes = excludes.concat(['.svn', '.git', 'CVS', 'node_modules']);
 
-    exec(cmd, function(error, stdout, stderr) {
+    docOptions = {
+        paths: [ source ],
+        outdir: destination,
+        exclude: excludes.join(),
+        name: name,
+        port: 3000,
+        external: false
+    };
 
-        cmdLog(cmd, error, stdout, stderr, verbose);
+    if (options.server) {
+        yuidocjs.Server.start(docOptions);
+    } else {
+        json = (new yuidocjs.YUIDoc(docOptions)).run();
+        builder = new yuidocjs.DocBuilder(docOptions, json);
 
-        if (error) {
-            fail = true;
-        }
-
-        copyExclude(source, destination + '-yuidoc-src', excludes);
-
-        cmd = cmd_yuidoc + ' ' +
-            destination + '-yuidoc-src' +
-            ' --parseroutdir=' + destination + '-yuidoc-src-parsed' +
-            ' --outputdir=' + destination +
-            ' --template=' + dir_template +
-            ' --project=' + name +
-            ' --version=' + '0.1.0' +
-            ' --yuiversion=3';
-
-        exec(cmd, function(error, stdout, stderr) {
-
-            cmdLog(cmd, error, stdout, stderr, verbose);
-
-            if (error) {
-                fail = true;
-            }
-
-            cmd = 'rm -rf ' + destination + '-yuidoc-src' +
-                '&& rm -rf ' + destination + '-yuidoc-src-parsed' +
-                '&& rm -rf ' + destination + '/.svn*' +
-                '&& rm -rf ' + destination + '/assets/.svn*';
-
-            exec(cmd, function(error, stdout, stderr) {
-
-                cmdLog(cmd, error, stdout, stderr, verbose);
-
-                if (error) {
-                    fail = true;
-                }
-
-                if (fail) {
-                    if (verbose) {
-                        utils.error('There was an error.');
-                    } else {
-                        utils.error('There was an error. Run with --verbose' +
-                            ' option for more information.');
-                    }
-                } else {
-                    console.log('open ' + destination + '/index.html');
-                }
-            });
+        builder.compile(function() {
+            console.log('open ' + destination + '/index.html');
         });
-    });
+    }
 };
 
 
-var makeMojitoDocs = function(name, verbose) {
+var makeMojitoDocs = function(name, options) {
 
     var source = dir_mojito,
         destination = path.join(process.cwd(), 'artifacts/docs'),
         excludes = [
-            /\/archetypes$/,
-            /\/artifacts$/,
-            /\/libs$/,
-            /\/management$/,
-            /\/middleware$/,
-            /\/node_modules$/,
-            /\/tests$/
+            'archetypes',
+            'artifacts',
+            'libs',
+            'management',
+            'middleware',
+            'tests'
         ];
 
-    makeDocs(name, source, destination, excludes, verbose);
+    makeDocs(name, source, destination, excludes, options);
 };
 
 
-var makeAppDocs = function(name, verbose) {
+var makeAppDocs = function(name, options) {
 
     var source = process.cwd(),
         destination = path.join(process.cwd(), 'artifacts/docs/'),
         excludes = [
-            /\/lang$/,
-            /\/lib$/,
-            /\/assets$/,
-            /\/tests$/,
-            /\/artifacts$/,
-            /\/index\.js$/,
-            /\/node_modules$/,
-            /\/server\.js$/,
-            /\/start\.js$/
+            'lang',
+            'lib',
+            'assets',
+            'tests',
+            'artifacts',
+            'index.js',
+            'server.js',
+            'start.js'
         ];
 
     utils.isMojitoApp(process.cwd(), exports.usage);
@@ -159,21 +111,20 @@ var makeAppDocs = function(name, verbose) {
         name = 'Mojito Application';
     }
 
-    makeDocs(name, source, destination, excludes, verbose);
+    makeDocs(name, source, destination, excludes, options);
 };
 
 
-var makeMojitDocs = function(name, verbose) {
+var makeMojitDocs = function(name, options) {
 
     var source = path.join(process.cwd(), 'mojits', name),
         destination = path.join(process.cwd(), 'artifacts/docs/mojits'),
         excludes = [
-            /\/lang$/,
-            /\/lib$/,
-            /\/assets$/,
-            /\/node_modules$/,
-            /\/tests$/,
-            /\/artifacts$/
+            'lang',
+            'lib',
+            'assets',
+            'tests',
+            'artifacts'
         ];
 
     utils.isMojitoApp(process.cwd(), exports.usage);
@@ -183,7 +134,7 @@ var makeMojitDocs = function(name, verbose) {
         return;
     }
 
-    makeDocs(name, source, destination, excludes, verbose);
+    makeDocs(name, source, destination, excludes, options);
 };
 
 
@@ -202,13 +153,13 @@ function run(params, options, callback) {
 
     switch (type.toUpperCase()) {
     case 'MOJITO':
-        makeMojitoDocs('mojito', options.verbose);
+        makeMojitoDocs('mojito', options);
         break;
     case 'APP':
-        makeAppDocs(name, options.verbose);
+        makeAppDocs(name, options);
         break;
     case 'MOJIT':
-        makeMojitDocs(name, options.verbose);
+        makeMojitDocs(name, options);
         break;
     default:
         utils.error('Unknown type', exports.usage);
@@ -226,8 +177,8 @@ exports.usage = usage;
  * Standard options list export.
  */
 exports.options = [{
-    shortName: 'v',
-    longName: 'verbose',
+    shortName: 's',
+    longName: 'server',
     hasValue: false
 }];
 
