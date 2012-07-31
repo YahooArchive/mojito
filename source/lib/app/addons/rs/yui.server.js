@@ -47,8 +47,8 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
             this.afterHostMethod('findResourceVersionByConvention', this.findResourceVersionByConvention, this);
             this.beforeHostMethod('parseResourceVersion', this.parseResourceVersion, this);
             this.beforeHostMethod('addResourceVersion', this.addResourceVersion, this);
-            this.onHostEvent('getMojitTypeDetails', this.getMojitTypeDetails, this);
-            this.onHostEvent('mojitResourcesResolved', this.mojitResourcesResolved, this);
+            this.onHostEvent('getMojitTypeDetails', this.onGetMojitTypeDetails, this);
+            this.onHostEvent('mojitResourcesResolved', this.onMojitResourcesResolved, this);
             this.yuiConfig = config.host.getStaticAppConfig().yui;
 
             this.modules = {};          // env: poslKey: module: details
@@ -258,11 +258,11 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
          * This is called when the ResourceStore fires this event.
          * It augments the mojit type details with the precomputed YUI module
          * dependencies.
-         * @method getMojitTypeDetails
+         * @method onGetMojitTypeDetails
          * @param {object} evt The fired event.
          * @return {nothing}
          */
-        getMojitTypeDetails: function(evt) {
+        onGetMojitTypeDetails: function(evt) {
             var store = this.get('host'),
                 dest = evt.mojit,
                 env = evt.args.env,
@@ -274,7 +274,7 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
                 r,
                 res,
                 sorted;
-            //console.log('--------------------------------- getMojitTypeDetails -- ' + [env, ctx.lang, poslKey, mojitType].join(','));
+            //console.log('--------------------------------- onGetMojitTypeDetails -- ' + [env, ctx.lang, poslKey, mojitType].join(','));
 
             if (!dest.yui) {
                 dest.yui = { config: {} };
@@ -317,12 +317,12 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
         /**
          * This is called when the ResourceStore fires this event.
          * It precomputes the YUI module dependencies, to be used later during
-         * getMojitTypeDetails.
-         * @method mojitResourcesResolved
+         * onGetMojitTypeDetails.
+         * @method onMojitResourcesResolved
          * @param {object} evt The fired event
          * @return {nothing}
          */
-        mojitResourcesResolved: function(evt) {
+        onMojitResourcesResolved: function(evt) {
             var env = evt.env,
                 posl = evt.posl,
                 poslKey = Y.JSON.stringify(posl),
@@ -345,7 +345,7 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
                 sorted,
                 binderName,
                 binder;
-            //console.log('--------------------------------- mojitResourcesResolved -- ' + [env, poslKey, mojit].join(','));
+            //console.log('--------------------------------- onMojitResourcesResolved -- ' + [env, poslKey, mojit].join(','));
 
             if ('shared' === mojit) {
                 return;

@@ -39,7 +39,7 @@ YUI.add('addon-rs-url', function(Y, NAME) {
             this.appRoot = config.appRoot;
             this.mojitoRoot = config.mojitoRoot;
             this.afterHostMethod('preloadResourceVersions', this.preloadResourceVersions, this);
-            this.onHostEvent('getMojitTypeDetails', this.getMojitTypeDetails, this);
+            this.onHostEvent('getMojitTypeDetails', this.onGetMojitTypeDetails, this);
 
             appConfig = config.host.getStaticAppConfig();
             this.config = appConfig.staticHandling || {};
@@ -137,11 +137,11 @@ YUI.add('addon-rs-url', function(Y, NAME) {
         /**
          * This is called when the ResourceStore fires this event.
          * It calculates the `assetsRoot` for the mojit.
-         * @method getMojitTypeDetails
+         * @method onGetMojitTypeDetails
          * @param {object} evt The fired event
          * @return {nothing}
          */
-        getMojitTypeDetails: function(evt) {
+        onGetMojitTypeDetails: function(evt) {
             var ress = this.get('host').getResources(evt.args.env, evt.args.ctx, {type: 'mojit', name: evt.args.mojitType});
             evt.mojit.assetsRoot = ress[0].url + '/assets';
         },
