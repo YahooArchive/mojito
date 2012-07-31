@@ -295,14 +295,14 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
                         dest.views[res.name] = {};
                     }
                     dest.views[res.name]['binder-module'] = res.yui.name;
-                    sorted = this._getYUISorted('client', poslKey, ctx.lang, res.yui.name);
+                    sorted = this._getYUIDependencies('client', poslKey, ctx.lang, res.yui.name);
                     if (sorted && sorted.paths) {
                         dest.views[res.name]['binder-yui-sorted'] = Y.clone(sorted.paths, true);
                     }
                 }
                 if (res.type === 'controller') {
                     dest['controller-module'] = res.yui.name;
-                    sorted = this._getYUISorted(env, poslKey, ctx.lang, res.yui.name);
+                    sorted = this._getYUIDependencies(env, poslKey, ctx.lang, res.yui.name);
                     if (sorted && sorted.sorted) {
                         dest.yui.sorted = sorted.sorted.slice();
                     }
@@ -412,8 +412,8 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
                     }
                     // we don't know which views will be used, so we need all view engines
                     required = Y.merge(required, viewEngineRequired);
-                    sorted = this._sortYUIModules(langName, env, mojit, modules, required);
-                    this._setYUISorted(env, poslKey, langName, controller.yui.name, sorted);
+                    sorted = this._precomputeYUIDependencies(langName, env, mojit, modules, required);
+                    this._setYUIDependencies(env, poslKey, langName, controller.yui.name, sorted);
                 }
 
                 if ('client' === env) {
@@ -426,8 +426,8 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
                             // view engines are needed to support mojitProxy.render()
                             required = Y.merge(required, viewEngineRequired);
 
-                            sorted = this._sortYUIModules(langName, env, mojit, modules, required);
-                            this._setYUISorted(env, poslKey, langName, binder.yui.name, sorted);
+                            sorted = this._precomputeYUIDependencies(langName, env, mojit, modules, required);
+                            this._setYUIDependencies(env, poslKey, langName, binder.yui.name, sorted);
                         }
                     }
                 }
@@ -438,7 +438,7 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
         /**
          * Precomputes a set of dependencies.
          * @private
-         * @method _sortYUIModules
+         * @method _precomputeYUIDependencies
          * @param {string} lang YUI language code
          * @param {string} env runtime environment (either `client`, or `server`)
          * @param {string} mojit name of the mojit
@@ -446,7 +446,7 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
          * @param {object} required lookup hash of YUI module names that are required
          * @return {object} precomputed (and sorted) module dependencies
          */
-        _sortYUIModules: function(lang, env, mojit, modules, required) {
+        _precomputeYUIDependencies: function(lang, env, mojit, modules, required) {
             var loader,
                 m,
                 module,
@@ -503,7 +503,7 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
         /**
          * Saves the precomputed YUI module dependencies for later.
          * @private
-         * @method _setYUISorted
+         * @method _setYUIDependencies
          * @param {string} env runtime environment (either `client`, or `server`)
          * @param {string} poslKey key (representing the POSL) under which to save the moduldes
          * @param {string} lang YUI language code
@@ -511,7 +511,7 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
          * @param {object} sorted the precomputed dependencies
          * @return {nothing}
          */
-        _setYUISorted: function(env, poslKey, lang, module, sorted) {
+        _setYUIDependencies: function(env, poslKey, lang, module, sorted) {
             if (!this.sortedModules[env]) {
                 this.sortedModules[env] = {};
             }
@@ -528,14 +528,14 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
         /**
          * Returns precomputed dependencies saved by _setYuiSorted.
          * @private
-         * @method _setYUISorted
+         * @method _getYUIDependencies
          * @param {string} env runtime environment (either `client`, or `server`)
          * @param {string} poslKey key (representing the POSL) under which to save the moduldes
          * @param {string} lang YUI language code
          * @param {string} module YUI module name for which the precomputed dependencies are for
          * @return {object} the precomputed dependencies
          */
-        _getYUISorted: function(env, poslKey, lang, module) {
+        _getYUIDependencies: function(env, poslKey, lang, module) {
             lang = lang || '';
             var parts = lang.split('-'),
                 p,
