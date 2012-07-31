@@ -186,7 +186,8 @@ YUI.add('mojito-action-context', function(Y, NAME) {
 
     /**
      * Mixes all the Action Context addons into the Action Context
-     * @attachActionContextAddons
+     * @private
+     * @method attachActionContextAddons
      * @param {Array} addons The action context addons.
      * @param {object} command The command object.
      * @param {object} adapter The output adapter.
