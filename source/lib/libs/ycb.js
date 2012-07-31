@@ -32,6 +32,7 @@ Ycb.prototype = {
 
 
     /**
+     * Returns the dimensions in the YCB file.
      * @method getDimensions
      * @return {object} the dimensions
      */
@@ -66,6 +67,7 @@ Ycb.prototype = {
 
 
     /**
+     * Read the file.
      * @method read
      * @param context {object}
      * @param options {object}
@@ -238,12 +240,12 @@ Ycb.prototype = {
     },
 
 
-    /*
+    /**
      * @private
      * @method _getLookupPaths
      * @param context {object} Key/Value list
      * @param options {object} runtime options
-     * @result {string}
+     * @return {Array}
      */
     _getLookupPaths: function(context, options) {
         var lookupList = Y.Object.values(this._makeOrderedLookupList(context, options)),
@@ -349,7 +351,7 @@ Ycb.prototype = {
      * @method _getContextPath
      * @param context {object} Key/Value list
      * @param options {object}
-     * @result {string}
+     * @return {string}
      */
     _getLookupPath: function(context, options) {
         var lookupList = this._makeOrderedLookupList(context, options),
@@ -410,12 +412,12 @@ Ycb.prototype = {
     },
 
 
-    /*
+    /**
      * @private
      * @method _makeOrderedLookupList
      * @param context {object} Key/Value list
      * @param options {object}
-     * @result {object} list of lists
+     * @return {object} list of lists
      */
     _makeOrderedLookupList: function(context, options) {
         var pos,
@@ -465,7 +467,7 @@ Ycb.prototype = {
      * @param prefix {string}
      * @param dimension {object} A single YCB dimension structured object
      * @param build {string}
-     * @result {object} k/v map
+     * @return {object} k/v map
      */
     _flattenDimension: function(prefix, dimension, build) {
         var key,
@@ -492,7 +494,7 @@ Ycb.prototype = {
     /**
      * @private
      * @method _flattenDimensions
-     * @result {nothing}
+     * @return {nothing}
      */
     _flattenDimensions: function() {
         var pos,

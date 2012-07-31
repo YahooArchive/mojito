@@ -21,7 +21,12 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
 
     var libfs = require('fs'),
         libpath = require('path'),
-        libvm = require('vm');
+        libvm = require('vm'),
+        MODULE_SUBDIRS = {
+            autoload: true,
+            tests: true,
+            yui_modules: true
+        };
 
     function RSAddonYUI() {
         RSAddonYUI.superclass.constructor.apply(this, arguments);
@@ -142,9 +147,7 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
                 return;
             }
 
-            if (fs.subDirArray.length >= 1 && ('autoload' === fs.subDirArray[0]
-                    || 'yui_modules' === fs.subDirArray[0]
-                    || 'tests' === fs.subDirArray[0])) {
+            if (fs.subDirArray.length >= 1 && MODULE_SUBDIRS[fs.subDirArray[0]]) {
                 return new Y.Do.AlterReturn(null, {
                     type: 'yui-module',
                     skipSubdirParts: 1
@@ -284,7 +287,7 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
                 dest.yui.config.modules = this.modules[env][poslKey][mojitType];
             }
 
-            ress = store.getResources(evt.args.env, evt.args.ctx, {mojit: mojitType});
+            ress = store.getResources(env, ctx, {mojit: mojitType});
             for (r = 0; r < ress.length; r += 1) {
                 res = ress[r];
                 if (res.type === 'binder') {

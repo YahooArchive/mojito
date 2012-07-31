@@ -74,7 +74,7 @@ YUI.add('mojito-addon-rs-config-tests', function(Y, NAME) {
     function readJSON(dir, file) {
         var path = libpath.join(dir, file);
         var contents = libfs.readFileSync(path, 'utf-8');
-        return JSON.parse(contents);
+        return Y.JSON.parse(contents);
     }
 
 
@@ -304,4 +304,4 @@ YUI.add('mojito-addon-rs-config-tests', function(Y, NAME) {
     
     YUITest.TestRunner.add(suite);
     
-}, '0.0.1', {requires: ['base', 'oop', 'addon-rs-config']});
+}, '0.0.1', {requires: ['base', 'oop', 'addon-rs-config', 'json-parse']});

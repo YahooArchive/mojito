@@ -49,7 +49,7 @@ YUI.add('mojito-addon-rs-yui-tests', function(Y, NAME) {
                 k,
                 use;
 
-            ctx = JSON.stringify(ctx);
+            ctx = Y.JSON.stringify(ctx);
             if (filter.mojit) {
                 if (!this._mojitResources[env] ||
                         !this._mojitResources[env][ctx] ||
@@ -117,7 +117,7 @@ YUI.add('mojito-addon-rs-yui-tests', function(Y, NAME) {
             if (yuiName) {
                 res.yui = { name: yuiName };
             }
-            ctx = JSON.stringify(ctx);
+            ctx = Y.JSON.stringify(ctx);
             if (mojit) {
                 if (!this._mojitResources[env]) {
                     this._mojitResources[env] = {};
@@ -766,5 +766,6 @@ YUI.add('mojito-addon-rs-yui-tests', function(Y, NAME) {
     'base',
     'oop',
     'mojito-resource-store',
-    'addon-rs-yui'
+    'addon-rs-yui',
+    'json-stringify'
 ]});
