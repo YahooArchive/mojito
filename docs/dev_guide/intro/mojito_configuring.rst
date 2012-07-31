@@ -131,6 +131,9 @@ configuration Object
 | ``tunnelPrefix``                                       | string               | "/tunnel/"        | The URL prefix for the communication tunnel            |
 |                                                        |                      |                   | from the client back to the server.                    |
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
+| ``tunnelTimeout``                                      | number               | 30000             | The timeout in milliseconds for the communication      |
+|                                                        |                      |                   | tunnel from the client back to the server.             |
++--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
 | `yui <#yui-obj>`_                                      | object               | N/A               | When Mojito is deployed to client, the                 |
 |                                                        |                      |                   | :ref:`yui_obj` specifies where                         |
 |                                                        |                      |                   | and how to obtain YUI 3.                               |
