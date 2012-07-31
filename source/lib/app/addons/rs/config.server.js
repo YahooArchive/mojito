@@ -181,6 +181,10 @@ YUI.add('addon-rs-config', function(Y, NAME) {
             }
 
             baseParts = source.fs.basename.split('.');
+            if (baseParts.length !== 1) {
+                Y.log('invalid config filename. skipping ' + source.fs.fullPath, 'warn', NAME);
+                return;
+            }
             res = {
                 source: source,
                 type: 'config',
@@ -189,10 +193,6 @@ YUI.add('addon-rs-config', function(Y, NAME) {
             };
             if ('app' !== source.fs.rootType) {
                 res.mojit = mojitType;
-            }
-            if (baseParts.length !== 1) {
-                Y.log('invalid config filename. skipping ' + source.fs.fullPath, 'warn', NAME);
-                return;
             }
             res.name = libpath.join(source.fs.subDir, baseParts.join('.'));
             res.id = [res.type, res.subtype, res.name].join('-');
