@@ -22,6 +22,11 @@ Intended Audience
 Only advanced Mojito application developers needing finer grain control over the management 
 of resources or to extend the functionality of the resource store should read this documentation.
 
+Prerequisites
+-------------
+
+- Understanding of ``aspect-orient programming (AOP) <http://en.wikipedia.org/wiki/Aspect-oriented_programming>`_.
+- Experience using _YUIPlugin.
 
 .. _intro-use:
 
@@ -42,9 +47,9 @@ Define/Register New Resource Types
 ##################################
 
 You can write custom |RS| addons using the aspect-oriented features of
-the |RS| to define resource types. The |RS| has aspect-oriented features because it extends  
-`Y.Base <http://yuilibrary.com/yui/docs/base/>`_, and the |RS| addons 
-are implemented as `Y.Plugin <http://yuilibrary.com/yui/docs/plugin/>`_.
+the |RS| to define resource types. The |RS| has aspect-oriented features because it is
+implemented as an extension of `Y.Base <http://yuilibrary.com/yui/docs/base/>`_, and the 
+|RS| addons are implemented as `YUI Plugins <http://yuilibrary.com/yui/docs/plugin/>`_.
 
 For example, you could write your own |RS| addon so that the Mojito command-line tool 
 will register files and resources for your application. 
@@ -313,12 +318,16 @@ view Object
 +------------------------+---------------+-----------+---------------+-------------------------------+-----------------------------------------------+
 | Property               | Data Type     | Required? | Default Value | Possible Values               | Description                                   |
 +========================+===============+===========+===============+===============================+===============================================+
-| ``engine``             | string        | yes       | none          | N/A                           | The engine that renders the view template.    |  
-|                        |               |           |               |                               | Two examples of rendering engines are         |
-|                        |               |           |               |                               | Mustache and Handlebars.                      |
+| ``engine``             | string        | yes       | none          | Any view engine found         | The engine that renders the view template.    |  
+|                        |               |           |               | in ``addons/view-engines/``   | Two examples of rendering engines are         |
+|                        |               |           |               | of the application.           | Mustache and Handlebars.                      |
 +------------------------+---------------+-----------+---------------+-------------------------------+-----------------------------------------------+
 | ``outputFormat``       | string        | yes       | none          | N/A                           | The output format that a view template is     |
 |                        |               |           |               |                               | rendered into, such as HTML, XML, and JSON.   |
+|                        |               |           |               |                               | The ``outputFormat`` matches the file         |
+|                        |               |           |               |                               | extension of the view template. For example,  |
+|                        |               |           |               |                               | the output format for ``index.mu.html`` would |
+|                        |               |           |               |                               | be HTML.                                      |
 +------------------------+---------------+-----------+---------------+-------------------------------+-----------------------------------------------+
 
 .. _yui_obj:
@@ -463,7 +472,8 @@ Example
 How Does the Resource Store Work?
 =================================
 
-Understanding the |RS| will allow you to customize addons and debug your application.
+Understanding the |RS| will allow you to debug your 
+application and write |RS| addons to customize how it works.
 
 
 Overview
@@ -478,8 +488,7 @@ During this process, the resource store also does the following:
 - pre-calculates ("resolves") which resource versions are used for each version of the mojit.
 - also keeps track of application-level resources (archetypes, commands, config files, 
   and middleware).
-- provides methods and events, including those specialized for 
-  `aspect-orient programming (AOP) <http://en.wikipedia.org/wiki/Aspect-oriented_programming>`_.
+- provides methods and events, including those specialized for AOP.
 - explicitly uses the addons :ref:`selector <intro-selector>` and :ref:`config <intro-config>`.
 
 In the following sections, we'll look at the process in a little more details. To see the code for 
@@ -722,7 +731,7 @@ Key Methods
 Accessing the Resource Store
 ````````````````````````````
 
-To access the |RS|, you call ``this.get('host')``. The method returns an object containing the 
+To access the |RS|, you call ``this.get('host')``. The method returns the
 |RS|.
    
 .. _anatomy-key_events:
@@ -949,7 +958,7 @@ The |RS| comes with the following four built-in addons:
 
 - ``config``
    - registers new resource type ``config`` found in JSON configuration files
-   - provides an API for reading both context and straight-JSON files
+   - provides an API for reading both contextualized and straight-JSON files
    - provides sugar for reading the application's dimensions
 - ``selector``
    - decides the priority-ordered list (POSL) to use for a context
