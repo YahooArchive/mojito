@@ -57,8 +57,7 @@ YUI.add('mojito-deploy-addon-tests', function(Y, NAME) {
                         return { ondemandBaseYuiModules:[] };
                     },
                     yui: {
-                        getConfigFw: function() { return {}; },
-                        getConfigApp: function() { return {}; }
+                        getConfigShared: function() { return {}; }
                     }
                 }
             });
@@ -142,8 +141,7 @@ YUI.add('mojito-deploy-addon-tests', function(Y, NAME) {
                         return { ondemandBaseYuiModules:[] };
                     },
                     yui: {
-                        getConfigFw: function() { return {}; },
-                        getConfigApp: function() { return {}; }
+                        getConfigShared: function() { return {}; }
                     }
                 }
             });
@@ -235,8 +233,7 @@ YUI.add('mojito-deploy-addon-tests', function(Y, NAME) {
                         return { ondemandBaseYuiModules:[] };
                     },
                     yui: {
-                        getConfigFw: function() { return {}; },
-                        getConfigApp: function() { return {}; }
+                        getConfigShared: function() { return {}; }
                     }
                 }
             });
@@ -319,8 +316,7 @@ YUI.add('mojito-deploy-addon-tests', function(Y, NAME) {
                         return { ondemandBaseYuiModules:[] };
                     },
                     yui: {
-                        getConfigFw: function() { return {}; },
-                        getConfigApp: function() { return {}; }
+                        getConfigShared: function() { return {}; }
                     }
                 }
             });
@@ -403,8 +399,7 @@ YUI.add('mojito-deploy-addon-tests', function(Y, NAME) {
                         return { ondemandBaseYuiModules:[] };
                     },
                     yui: {
-                        getConfigFw: function() { return {}; },
-                        getConfigApp: function() { return {}; }
+                        getConfigShared: function() { return {}; }
                     }
                 }
             });

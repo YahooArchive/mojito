@@ -97,7 +97,7 @@ YUI.add('mojito-addon-rs-yui-tests', function(Y, NAME) {
             this.RVs[[res.affinity, res.selector, res.id].join('/')] = res;
         },
 
-        _makeResource: function(env, ctx, mojit, type, name, yuiName) {
+        _makeResource: function(env, ctx, mojit, type, name, yuiName, pkgName) {
             if (mojit && mojit !== 'shared') {
                 this._mojits[mojit] = true;
             }
@@ -107,7 +107,7 @@ YUI.add('mojito-addon-rs-yui-tests', function(Y, NAME) {
                         fullPath: 'path/for/' + type + '--' + name + '.common.ext',
                         rootDir: 'path/for'
                     },
-                    pkg: { name: 'testing' }
+                    pkg: { name: (pkgName || 'testing') }
                 },
                 mojit: mojit,
                 type: type,
@@ -709,6 +709,52 @@ YUI.add('mojito-addon-rs-yui-tests', function(Y, NAME) {
                 A.areSame('/foo/', instance.yui.sortedPaths['querystring-stringify'].substr(0, 5));
                 A.areSame('/foo/', instance.yui.sortedPaths['json-stringify'].substr(0, 5));
             });
+        },
+
+
+        'get config shared': function() {
+            var fixtures,
+                store,
+                config;
+            fixtures = libpath.join(__dirname, '../../../../fixtures/store');
+            store = new MockRS({ root: fixtures });
+            store.plug(Y.mojito.addons.rs.yui, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
+
+            store._makeResource('server', {}, 'shared', 'binder', 'index', 'FooBinderIndex');
+            store._makeResource('server', {}, 'shared', 'binder', 'list', 'FooBinderList', 'mojito');
+            store._makeResource('server', {}, 'Foo', 'controller', 'controller', 'FooController');
+
+            config = store.yui.getConfigShared('server', {}, false);
+            A.isNotUndefined(config.modules);
+            A.isNotUndefined(config.modules.FooBinderIndex);
+            A.isNotUndefined(config.modules.FooBinderList);
+            A.isUndefined(config.modules.FooController);
+
+            config = store.yui.getConfigShared('server', {}, true);
+            A.isNotUndefined(config.modules);
+            A.isNotUndefined(config.modules.FooBinderIndex);
+            A.isUndefined(config.modules.FooBinderList);
+            A.isUndefined(config.modules.FooController);
+        },
+
+
+        'get config all mojits': function() {
+            var fixtures,
+                store,
+                config;
+            fixtures = libpath.join(__dirname, '../../../../fixtures/store');
+            store = new MockRS({ root: fixtures });
+            store.plug(Y.mojito.addons.rs.yui, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
+
+            store._makeResource('server', {}, 'shared', 'binder', 'index', 'FooBinderIndex');
+            store._makeResource('server', {}, 'Foo', 'binder', 'list', 'FooBinderList', 'mojito');
+            store._makeResource('server', {}, 'Bar', 'controller', 'controller', 'BarController');
+
+            config = store.yui.getConfigAllMojits('server', {}, false);
+            A.isNotUndefined(config.modules);
+            A.isUndefined(config.modules.FooBinderIndex);
+            A.isNotUndefined(config.modules.FooBinderList);
+            A.isNotUndefined(config.modules.BarController);
         }
 
 

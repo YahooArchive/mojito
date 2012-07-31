@@ -47,21 +47,13 @@ global._mojito = {};
 // This configures YUI with both the Mojito framework and all the
 // YUI modules in the application.
 function configureYUI(Y, store, load) {
-    var fw,
-        app,
+    var shared,
         module;
-    fw = store.yui.getConfigFw('server', {});
-    Y.applyConfig(fw);
-    app = store.yui.getConfigApp('server', {});
-    Y.applyConfig(app);
-    // also pre-load fw and app modules
-    for (module in fw.modules) {
-        if (fw.modules.hasOwnProperty(module)) {
-            load.push(module);
-        }
-    }
-    for (module in app.modules) {
-        if (app.modules.hasOwnProperty(module)) {
+    shared = store.yui.getConfigShared('server', {}, false);
+    Y.applyConfig(shared);
+    // also pre-load shared modules
+    for (module in shared.modules) {
+        if (shared.modules.hasOwnProperty(module)) {
             load.push(module);
         }
     }

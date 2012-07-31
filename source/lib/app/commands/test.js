@@ -122,8 +122,7 @@ function configureYUI(YUI, store) {
     YUI.applyConfig({
         useSync: true,
         groups: {
-            'mojito-fw': store.yui.getConfigFw('server', {}),
-            'mojito-app': store.yui.getConfigApp('server', {}),
+            'mojito-shared': store.yui.getConfigShared('server', {}, false),
             'mojito-mojits': store.yui.getConfigAllMojits('server', {})
         }
     });
@@ -712,10 +711,10 @@ runTests = function(opts) {
             configureYUI(YUI, store);
 
             if (testType === 'fw') {
-                testConfigs = store.yui.getConfigApp('server', {}).modules;
+                testConfigs = store.yui.getConfigShared('server', {}, true).modules;
             } else if (testType === 'app') {
                 testConfigs = merge(
-                    store.yui.getConfigApp('server', {}).modules,
+                    store.yui.getConfigShared('server', {}, true).modules,
                     store.yui.getConfigAllMojits('server', {}).modules
                 );
             }

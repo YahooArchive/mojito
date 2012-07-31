@@ -59,13 +59,16 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
 
         /**
          * Returns a datastructure which tells a YUI instance where to find
-         * the YUI modules that are part of the Mojito framework.
-         * @method getConfigFw
+         * the YUI modules that are shared among all mojits.
+         * @method getConfigShared
          * @param {string} env runtime environment (either `client`, or `server`)
          * @param {object} ctx runtime context
+         * @param {boolean} justApp Indicates whether to include the YUI
+         *      modules just found in the application (true), or also include
+         *      those found in mojito (false).
          * @return {object} datastructure for configuring YUI
          */
-        getConfigFw: function(env, ctx) {
+        getConfigShared: function(env, ctx, justApp) {
             var r,
                 res,
                 ress,
@@ -76,50 +79,10 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
                 if (!res.yui || !res.yui.name) {
                     continue;
                 }
-                if ('mojito' !== res.source.pkg.name) {
+                if (justApp && ('mojito' === res.source.pkg.name)) {
                     continue;
                 }
-                modules[res.yui.name] = {
-                    fullpath: ('client' === env) ?
-                            res.url :
-                            res.source.fs.fullPath,
-                    requires:
-                        (res.yui.meta && res.yui.meta.requires) || []
-                };
-            }
-            return { modules: modules };
-        },
-
-
-        /**
-         * Returns a datastructure which tells a YUI instance where to find
-         * the YUI modules that are app-level Mojito resources.
-         * @method getConfigApp
-         * @param {string} env runtime environment (either `client`, or `server`)
-         * @param {object} ctx runtime context
-         * @return {object} datastructure for configuring YUI
-         */
-        getConfigApp: function(env, ctx) {
-            var r,
-                res,
-                ress,
-                modules = {};
-            ress = this.get('host').getResources(env, ctx, { mojit: 'shared' });
-            for (r = 0; r < ress.length; r += 1) {
-                res = ress[r];
-                if (!res.yui || !res.yui.name) {
-                    continue;
-                }
-                if ('mojito' === res.source.pkg.name) {
-                    continue;
-                }
-                modules[res.yui.name] = {
-                    fullpath: ('client' === env) ?
-                            res.url :
-                            res.source.fs.fullPath,
-                    requires:
-                        (res.yui.meta && res.yui.meta.requires) || []
-                };
+                modules[res.yui.name] = this._makeYUIModuleConfig(env, res);
             }
             return { modules: modules };
         },
@@ -155,13 +118,7 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
                         // generally only happens if res.mojit is 'shared'
                         continue;
                     }
-                    modules[res.yui.name] = {
-                        fullpath: ('client' === env) ?
-                                res.url :
-                                res.source.fs.fullPath,
-                        requires:
-                            (res.yui.meta && res.yui.meta.requires) || []
-                    };
+                    modules[res.yui.name] = this._makeYUIModuleConfig(env, res);
                 }
             }
             return { modules: modules };
@@ -259,7 +216,7 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
                     Y.log('invalid yui-module filename. skipping ' + fs.fullPath, 'warn', NAME);
                     return;
                 }
-                this._parseYUIModule(res);
+                this._captureYUIModuleDetails(res);
                 res.name = res.yui.name;
                 res.id = [res.type, res.subtype, res.name].join('-');
                 return new Y.Do.Halt(null, res);
@@ -290,7 +247,7 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
             if ('asset' === res.type) {
                 return;
             }
-            this._parseYUIModule(res);
+            this._captureYUIModuleDetails(res);
         },
 
 
@@ -586,6 +543,7 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
             if (!this.sortedModules[env][poslKey]) {
                 return;
             }
+            // example:  first try "zh-Hans-CN", then "zh-Hans", then "zh"
             for (p = parts.length; p > 0; p -= 1) {
                 test = parts.slice(0, p).join('-');
                 if (this.sortedModules[env][poslKey][test] &&
@@ -599,14 +557,31 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
 
 
         /**
+         * Generates the YUI configuration for the resource.
+         * @private
+         * @method _makeYUIModuleConfig
+         * @param {string} env runtime environment (either `client`, or `server`)
+         * @param {object} res the resource metadata
+         * @return {object} the YUI configuration for the module
+         */
+        _makeYUIModuleConfig: function(env, res) {
+            var config = {
+                fullpath: ('client' === env) ? res.url : res.source.fs.fullPath,
+                requires: (res.yui.meta && res.yui.meta.requires) || []
+            };
+            return config;
+        },
+
+
+        /**
          * If the resource is a YUI module, augments its metadata with metadata
          * about the YUI module.
          * @private
-         * @method _parseYUIModule
+         * @method _captureYUIModuleDetails
          * @param {object} res resource metadata
          * @return {nothing}
          */
-        _parseYUIModule: function(res) {
+        _captureYUIModuleDetails: function(res) {
             var file,
                 ctx,
                 yui = {};

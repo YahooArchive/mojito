@@ -240,10 +240,10 @@ YUI.add('mojito-deploy-addon', function(Y, NAME) {
             // fw & app scripts.
             if (useOnDemand) {
                 // add all framework-level and app-level code
-                this.addScripts('bottom', store.store.yui.getConfigFw('client',
-                    contextClient).modules);
-                this.addScripts('bottom', store.store.yui.getConfigApp('client',
-                    contextClient).modules);
+                this.addScripts('bottom', store.store.yui.getConfigShared(
+                    'client',
+                    contextClient
+                ).modules, false);
             }
 
             // add binders' dependencies
