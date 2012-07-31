@@ -182,6 +182,11 @@ function getInlineCssMojits(store, env, context) {
 }
 
 
+/**
+ * Creates the Resource Store object.
+ * @param {Object} cfg Configuration for the resource store.
+ * @return {ResourceStore} the new resource store object
+ */
 function makeStore(cfg) {
     var store;
     Y.applyConfig({
