@@ -184,6 +184,8 @@ function getInlineCssMojits(store, env, context) {
 
 /**
  * Creates the Resource Store object.
+ * @private
+ * @method MakeStore
  * @param {Object} cfg Configuration for the resource store.
  * @return {ResourceStore} the new resource store object
  */
