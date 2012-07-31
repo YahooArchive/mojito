@@ -240,7 +240,12 @@ YUI.add('mojito-client', function(Y, NAME) {
         this.yuiConsole = null;
         this._pauseQueue = [];
         if (config) {
-            this.init(config);
+            // Note the server sends cleased config data directly to the
+            // constructor from the deploy.server.js initializer to allow markup
+            // to move over the wire in config strings without triggering
+            // injection attacks. We need to undo that here so the strings
+            // return to their original format before we try to use them.
+            this.init(Y.mojito.util.uncleanse(config));
         }
     }
 
@@ -1046,7 +1051,6 @@ YUI.add('mojito-client', function(Y, NAME) {
                 }
             });
         }
-
     };
 
     Y.mojito.Client = MojitoClient;
