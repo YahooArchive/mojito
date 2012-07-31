@@ -32,18 +32,17 @@ Reflection
 ##########
 
 The |RS| API has methods that can be used (as-is, no addons 
-required) to query for details about an application.
+required) to query for details about an application. When you run the commands
+``mojito compile`` and ``mojito gv`` use the |RS| API methods
+``getResources`` and ``getResourceVersions``.
 
-.. I'd rather provide examples of API methods than mention that
-.. ``mojito compile`` and ``mojito gv`` use the public API or 
-.. at least say what methods are used when those commands are run.
+
 
 Define/Register New Resource Types
 ##################################
 
 You can write custom |RS| addons using the aspect-oriented features of
-the |RS| to define resource types and to map contexts to selectors.
-The |RS| has aspect-oriented features because it is implemented as a 
+the |RS| to define resource types. The |RS| has aspect-oriented features because it extends  
 `Y.Base <http://yuilibrary.com/yui/docs/base/>`_, and the |RS| addons 
 are implemented as `Y.Plugin <http://yuilibrary.com/yui/docs/plugin/>`_.
 
@@ -54,8 +53,9 @@ Extend/Modify Functionality of the |RS|
 #######################################
 
 You can also write addons or create custom versions of built-in |RS| addons to modify 
-how the resource store works. Your addon could track new file types, augment the information 
-that the |RS| stores about files or code, or augment/replace the information returned by the |RS|.          
+how the resource store works. Your addon could map contexts to 
+:ref:`selectors <resolution-selectors>`, track new file types, augment the information that the 
+|RS| stores about files or code, or augment/replace the information returned by the |RS|.          
          
 
 .. _rs-resources:
@@ -175,61 +175,61 @@ Metadata Object
 ---------------
         
 
-+---------------------------+---------------+-----------+---------------------+-----------------------------------+------------------------------------------------+
-| Property                  | Data Type     | Required? | Default Value       | Possible Values                   | Description                                    | 
-+===========================+===============+===========+=====================+===================================+================================================+
-| ``type``                  | string        | yes       | none                | See :ref:`Types of Resources      | Specifies the type of resource.                | 
-|                           |               |           |                     | <types_resources>`.               |                                                |
-+---------------------------+---------------+-----------+---------------------+-----------------------------------+------------------------------------------------+
-| ``subtype``               | string        | no        | none                | See the section                   | Some resource types have multiple subtypes     |
-|                           |               |           |                     | :ref:`Subtypes <types-subtypes>`  | that can be specified with ``subtype``. See    |
-|                           |               |           |                     |                                   | :ref:`Subtypes <types-subtypes>` for           |
-|                           |               |           |                     |                                   | more information.                              |   
-+---------------------------+---------------+-----------+---------------------+-----------------------------------+------------------------------------------------+
-| ``name``                  | string        | yes       | none                | N/A                               | The name of the resource that is common to     |
-|                           |               |           |                     |                                   | all versions (i.e., iPhone/Android, etc.)      | 
-|                           |               |           |                     |                                   | of the resource. Example: the name for         |
-|                           |               |           |                     |                                   | for the resources ``index.iphone.mu.html``     |
-|                           |               |           |                     |                                   | and ``index.mu.html`` is ``index``.            |
-+---------------------------+---------------+-----------+---------------------+-----------------------------------+------------------------------------------------+
-| ``id``                    | string        | yes       | none                | N/A                               | A unique ID that is common to all versions     | 
-|                           |               |           |                     |                                   | of the  resource. The ``id`` has the           |
-|                           |               |           |                     |                                   | following syntax convention:                   |
-|                           |               |           |                     |                                   | ``{type}-{subtype}-{name}``                    | 
-+---------------------------+---------------+-----------+---------------------+-----------------------------------+------------------------------------------------+
-| ``mojit``                 | string        | no        | none                | N/A                               | The mojit, if any, that uses this resource     | 
-|                           |               |           |                     |                                   | The value ``"shared"`` means the resource      |
-|                           |               |           |                     |                                   | is available to all mojits.                    | 
-+---------------------------+---------------+-----------+---------------------+-----------------------------------+------------------------------------------------+
-| ``affinity``              | string        | yes       | See :ref:`Note      | ``server``, ``client``,           | The affinity of the resource, which            |
-|                           |               |           | About Default       | ``common``                        | indicates where the resource will be used.     |           
-|                           |               |           | Values <def_vals>`. |                                   |                                                |
-+---------------------------+---------------+-----------+---------------------+-----------------------------------+------------------------------------------------+
-| ``selector``              | string        | no        | "*"                 | N/A                               | The version of the resource. For example, a    |
-|                           |               |           |                     |                                   | resource could have a version for iPhones,     |
-|                           |               |           |                     |                                   | Android devices, fallbacks, etc. (This concept |
-|                           |               |           |                     |                                   | of version should not to be confused code      |
-|                           |               |           |                     |                                   | revisions, which mark the change of something  |
-|                           |               |           |                     |                                   | over time.) For more info, see                 |
-|                           |               |           |                     |                                   | :ref:`selector Property <sel_prop>`.           |
-+---------------------------+---------------+-----------+---------------------+-----------------------------------+------------------------------------------------+
-| :ref:`source <src_obj>`   | object        | yes       | none                | N/A                               | Specifies where the resource came from.        |
-|                           |               |           |                     |                                   | See :ref:`source Object <src_obj>` for         |
-|                           |               |           |                     |                                   |  details.                                      |
-+---------------------------+---------------+-----------+---------------------+-----------------------------------+------------------------------------------------+
-| ``url``                   | string        | no        | none                | N/A                               | The path used to load the resource             | 
-|                           |               |           |                     |                                   | onto the client. Used only for resources       |
-|                           |               |           |                     |                                   | that can be deployed by reference to the       |
-|                           |               |           |                     |                                   | client.                                        |
-+---------------------------+---------------+-----------+---------------------+-----------------------------------+------------------------------------------------+
-| :ref:`view <view_ob>`     | object        | yes       | none                | N/A                               | Specifies the output format such as HTML, XML, |
-|                           |               |           |                     |                                   | JSON, etc., and the engine that renders the    |
-|                           |               |           |                     |                                   | view template into the output format. Some     |
-+---------------------------+---------------+-----------+---------------------+-----------------------------------+------------------------------------------------+
-| :ref:`yui <yui_obj>`      | object        | no        | none                | N/A                               | The metadata about YUI modules. See the        |
-|                           |               |           |                     |                                   | :ref:`yui Object <yui_obj>` for more           |
-|                           |               |           |                     |                                   | details.                                       |
-+---------------------------+---------------+-----------+---------------------+-----------------------------------+------------------------------------------------+
++---------------------------+---------------+---------------+---------------------+-----------------------------------+------------------------------------------------+
+| Property                  | Data Type     | Required?     | Default Value       | Possible Values                   | Description                                    | 
++===========================+===============+===============+=====================+===================================+================================================+
+| ``type``                  | string        | yes           | none                | See :ref:`Types of Resources      | Specifies the type of resource.                | 
+|                           |               |               |                     | <types_resources>`.               |                                                |
++---------------------------+---------------+---------------+---------------------+-----------------------------------+------------------------------------------------+
+| ``subtype``               | string        | no            | none                | See the section                   | Some resource types have multiple subtypes     |
+|                           |               |               |                     | :ref:`Subtypes <types-subtypes>`  | that can be specified with ``subtype``. See    |
+|                           |               |               |                     |                                   | :ref:`Subtypes <types-subtypes>` for           |
+|                           |               |               |                     |                                   | more information.                              |   
++---------------------------+---------------+---------------+---------------------+-----------------------------------+------------------------------------------------+
+| ``name``                  | string        | yes           | none                | N/A                               | The name of the resource that is common to     |
+|                           |               |               |                     |                                   | all versions (i.e., iPhone/Android, etc.)      | 
+|                           |               |               |                     |                                   | of the resource. Example: the name for         |
+|                           |               |               |                     |                                   | for the resources ``index.iphone.mu.html``     |
+|                           |               |               |                     |                                   | and ``index.mu.html`` is ``index``.            |
++---------------------------+---------------+---------------+---------------------+-----------------------------------+------------------------------------------------+
+| ``id``                    | string        | yes           | none                | N/A                               | A unique ID that is common to all versions     | 
+|                           |               |               |                     |                                   | of the  resource. The ``id`` has the           |
+|                           |               |               |                     |                                   | following syntax convention:                   |
+|                           |               |               |                     |                                   | ``{type}-{subtype}-{name}``                    | 
++---------------------------+---------------+---------------+---------------------+-----------------------------------+------------------------------------------------+
+| ``mojit``                 | string        | no            | none                | N/A                               | The mojit, if any, that uses this resource     | 
+|                           |               |               |                     |                                   | The value ``"shared"`` means the resource      |
+|                           |               |               |                     |                                   | is available to all mojits.                    | 
++---------------------------+---------------+---------------+---------------------+-----------------------------------+------------------------------------------------+
+| ``affinity``              | string        | yes           | See :ref:`Note      | ``server``, ``client``,           | The affinity of the resource, which            |
+|                           |               |               | About Default       | ``common``                        | indicates where the resource will be used.     |           
+|                           |               |               | Values <def_vals>`. |                                   |                                                |
++---------------------------+---------------+---------------+---------------------+-----------------------------------+------------------------------------------------+
+| ``selector``              | string        | no            | "*"                 | N/A                               | The version of the resource. For example, a    |
+|                           |               |               |                     |                                   | resource could have a version for iPhones,     |
+|                           |               |               |                     |                                   | Android devices, fallbacks, etc. (This concept |
+|                           |               |               |                     |                                   | of version should not to be confused code      |
+|                           |               |               |                     |                                   | revisions, which mark the change of something  |
+|                           |               |               |                     |                                   | over time.) For more info, see                 |
+|                           |               |               |                     |                                   | :ref:`selector Property <sel_prop>`.           |
++---------------------------+---------------+---------------+---------------------+-----------------------------------+------------------------------------------------+
+| :ref:`source <src_obj>`   | object        | yes           | none                | N/A                               | Specifies where the resource came from.        |
+|                           |               |               |                     |                                   | See :ref:`source Object <src_obj>` for         |
+|                           |               |               |                     |                                   |  details.                                      |
++---------------------------+---------------+---------------+---------------------+-----------------------------------+------------------------------------------------+
+| ``url``                   | string        | no            | none                | N/A                               | The path used to load the resource             | 
+|                           |               |               |                     |                                   | onto the client. Used only for resources       |
+|                           |               |               |                     |                                   | that can be deployed by reference to the       |
+|                           |               |               |                     |                                   | client.                                        |
++---------------------------+---------------+---------------+---------------------+-----------------------------------+------------------------------------------------+
+| :ref:`view <view_ob>`     | object        | yes, if       | none                | N/A                               | Specifies the output format such as HTML, XML, |
+|                           |               | ``type:view`` |                     |                                   | JSON, etc., and the engine that renders the    |
+|                           |               |               |                     |                                   | view template into the output format.          |
++---------------------------+---------------+---------------+---------------------+-----------------------------------+------------------------------------------------+
+| :ref:`yui <yui_obj>`      | object        | no            | none                | N/A                               | The metadata about YUI modules. See the        |
+|                           |               |               |                     |                                   | :ref:`yui Object <yui_obj>` for more           |
+|                           |               |               |                     |                                   | details.                                       |
++---------------------------+---------------+---------------+---------------------+-----------------------------------+------------------------------------------------+
 
 .. _def_vals:
 
@@ -241,23 +241,7 @@ Metadata Object
    on both client and server); however, the affinity for controllers comes 
    from the file name, so there is no default.
 
-.. _sel_prop:
 
-selector Property
-#################
-
-The  **selector** is an arbitrary user-defined string, which is used to 
-*select* which version of each resource to use.  The value of the ``selector`` 
-property is a string that must not have a period (``'.'``) or slash (``'/'``) in it.  
-In practice, it's suggested to use alphanumeric and hyphen ('-') characters only.
- 
-The selector is defined in the ``application.json``, with the ``selector`` property.
-Only one selector can be used in each configuration object identified by the 
-``setting`` property, which defines the context.
- 
-The specified selectors must match the selector found in the 
-resource file names.  So, for example, the view ``views/index.iphone.mu.html`` has 
-the selector ``iphone``.
 
 .. _src_obj:
 
@@ -342,7 +326,7 @@ view Object
 yui Object
 ##########
 
-The ``yui`` property of the metadata object is created by the ``yui`` |RS| addon. The
+The ``yui`` property of the ``metadata`` object is created by the ``yui`` |RS| addon. The
 ``yui`` property can be any data type, but in general, it is an object 
 containing metadata about YUI modules.  You can think of the ``yui`` object as a container for the 
 arguments to the ``YUI.add`` method that is used to register reusable YUI modules.
@@ -350,14 +334,18 @@ arguments to the ``YUI.add`` method that is used to register reusable YUI module
 The following table lists the typical properties that are 
 part of the ``yui`` object.
 
-+------------------------+---------------+-----------+---------------+-------------------------------+---------------------------------------------+
-| Property               | Data Type     | Required? | Default Value | Example Values                | Description                                 |
-+========================+===============+===========+===============+===============================+=============================================+
-| ``name``               | string        | yes       | none          | ``"scroll"``                  | The name of the YUI module.                 |
-+------------------------+---------------+-----------+---------------+-------------------------------+---------------------------------------------+
-| ``meta``               | array         | yes       | none          | ``["scroll","node","cache"]`` | Contains a list of YUI modules required by  |
-|                        |               |           |               |                               | this resource.                              |
-+------------------------+---------------+-----------+---------------+-------------------------------+---------------------------------------------+
++------------------------+---------------+-----------+---------------+-------------------------------+------------------------------------------------+
+| Property               | Data Type     | Required? | Default Value | Example Values                | Description                                    |
++========================+===============+===========+===============+===============================+================================================+
+| ``name``               | string        | yes       | none          | ``"scroll"``                  | The name of the YUI module.                    |
++------------------------+---------------+-----------+---------------+-------------------------------+------------------------------------------------+
+| ``meta``               | array         | yes       | none          | ``["scroll","node","cache"]`` | Contains a list of YUI modules required by     |
+|                        |               |           |               |                               | this resource. The ``meta`` object contains    |
+|                        |               |           |               |                               | the same properties as the ``details``         |
+|                        |               |           |               |                               | object that is passed to the `YUI add method < |
+|                        |               |           |               |                               | http://yuilibrary.com/yui/docs/api/classes/YUI |
+|                        |               |           |               |                               | .html#method_add>`_.                           |
++------------------------+---------------+-----------+---------------+-------------------------------+------------------------------------------------+
 
 
 .. _metadata-types:
@@ -365,7 +353,7 @@ part of the ``yui`` object.
 Types of Resources
 ------------------
 
-The ``type`` property of the metadata object can have any of the following values:
+The ``type`` property of the ``metadata`` object can have any of the following values:
 
 - ``config``      - a piece of configuration, sometimes for another resource
 - ``controller``  - the controller for a mojit
@@ -391,14 +379,36 @@ For ``type:archetype``, the subtypes refers to the ``type`` described in the out
 the command ``mojito help create``.  So, you could have ``subtype:app``,  or 
 ``subtype:mojit``.  (There may be more in the future!)       
 
+
+.. _sel_prop:
+
+selector Property
+-----------------
+
+The  **selector** is an arbitrary user-defined string, which is used to 
+*select* which version of each resource to use.  The selector is defined in the 
+``application.json``, with the ``selector`` property.
+
+The value of the ``selector`` property is a string that must not have a 
+period (``'.'``) or slash (``'/'``) in it.  In practice, it's suggested to use alphanumeric and 
+hyphen ('-') characters only.
+ 
+Only one selector can be used in each configuration object identified by the 
+``setting`` property, which defines the context.
+ 
+The specified selectors must match the selector found in the 
+resource file names.  So, for example, the view ``views/index.iphone.mu.html`` has 
+the selector ``iphone``.
+
+
 .. _metatdata-versions:
 
 Resource Versions
 -----------------
 
-Resources can have many versions that are identified by the ``selector`` property of the
-metadata object and the affinity. The selector is defined by the user and indicates the version of 
-the resource and the affinity is defined by the resource itself.
+Resources can have many versions that are identified by the 
+:ref:`selector property <sel_prop>` and the affinity. The selector is defined by the user and 
+indicates the version of the resource and the affinity is defined by the resource itself.
 
 For example, developer might decide to use the selector ``selector: iphone`` for the 
 iPhone version  and ``selector: android`` for the Android version of a resource. Using these two 
@@ -466,7 +476,8 @@ of resource each file is, creates metadata about the resource, and then register
 During this process, the resource store also does the following:
 
 - pre-calculates ("resolves") which resource versions are used for each version of the mojit.
-- also keeps track of application-level resources (archetypes, commands, config files, and middleware).
+- also keeps track of application-level resources (archetypes, commands, config files, 
+  and middleware).
 - provides methods and events, including those specialized for 
   `aspect-orient programming (AOP) <http://en.wikipedia.org/wiki/Aspect-oriented_programming>`_.
 - explicitly uses the addons :ref:`selector <intro-selector>` and :ref:`config <intro-config>`.
