@@ -116,9 +116,50 @@ YUI.add('mojito-addon-rs-selector-tests', function(Y, NAME) {
                 [ 'right', 'droid', '*' ]
             ];
             cmp(want, have);
+        },
+
+
+        'list used dimensions': function() {
+            var fixtures = libpath.join(__dirname, '../../../../fixtures/store');
+            var store = new MockRS({ root: fixtures });
+            store.plug(Y.mojito.addons.rs.config, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
+            store.plug(Y.mojito.addons.rs.selector, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
+
+            var have = store.selector._listUsedDimensions();
+            var want = {
+                runtime: ['server', 'client'],
+                device: ['iphone', 'android'],
+                environment: ['dev']
+            }
+            cmp(want, have);
+        },
+
+
+        'list used contexts': function() {
+            var fixtures = libpath.join(__dirname, '../../../../fixtures/store');
+            var store = new MockRS({ root: fixtures });
+            store.plug(Y.mojito.addons.rs.config, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
+            store.plug(Y.mojito.addons.rs.selector, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
+
+            var have = store.selector._listUsedContexts();
+            var want = [
+                { runtime: 'server', device: 'iphone', environment: 'dev' },
+                { runtime: 'server', device: 'iphone' },
+                { runtime: 'server', device: 'android', environment: 'dev' },
+                { runtime: 'server', device: 'android' },
+                { runtime: 'server', environment: 'dev' },
+                { runtime: 'server' },
+                { runtime: 'client', device: 'iphone', environment: 'dev' },
+                { runtime: 'client', device: 'iphone' },
+                { runtime: 'client', device: 'android', environment: 'dev' },
+                { runtime: 'client', device: 'android' },
+                { runtime: 'client', environment: 'dev' },
+                { runtime: 'client' }
+            ];
+            cmp(want, have);
         }
 
-        
+
     }));
     
     YUITest.TestRunner.add(suite);
