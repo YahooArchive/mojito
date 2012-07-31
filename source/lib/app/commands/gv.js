@@ -29,12 +29,14 @@ var run,
 
 
 
+// Quote a graphviz property.
 function gvQuote(str) {
     str = str.toString().replace(/"/g, '\\"');
     return '"' + str + '"';
 }
 
 
+// Turn an object into a set of graphviz properties.
 function gvStyle(style, nopad) {
     var pairs = [];
     Y.Object.each(style, function(v, k) {
@@ -256,6 +258,7 @@ Graph.prototype = {
         return out;
     },
 
+    // generic recursive find algorithm
     _find: function(source, target, cb) {
         var id, subgraph;
         if (source) {
@@ -277,6 +280,7 @@ Graph.prototype = {
         return false;
     },
 
+    // generic filter algorithm
     _filter: function(obj, filter, cb) {
         Y.Object.each(obj, function(val, key) {
             if (filter && !filter(val)) {
@@ -286,6 +290,7 @@ Graph.prototype = {
         });
     },
 
+    // edges are a triple, yet we need a string key for hashes
     _makeEdgeID: function(tail, head, directed) {
         return [tail, directed, head].join(',');
     }
@@ -293,6 +298,7 @@ Graph.prototype = {
 };
 
 
+// turn a list of resources into graph parts
 function parseResources(graph, ress, options) {
     var r,
         res,
@@ -361,6 +367,7 @@ function parseResources(graph, ress, options) {
 }
 
 
+// modify the graph to highlight traced node and nodes depending on it
 function trace(graph, options) {
     var doneNodes = {}, // name: true
         todoNodes = [],

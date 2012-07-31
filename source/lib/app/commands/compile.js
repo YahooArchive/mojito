@@ -116,7 +116,7 @@ options = [
  *          '/css.iphone.client.js',
  *      srcs: {
  *          '/static/FlickrDetail/assets/index.css': true,
- *          '/static/FlickrDetail/assets/message.css': true,
+ *          '/static/FlickrDetail/assets/message.css': true
  *   }
  * ]
  *
