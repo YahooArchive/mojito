@@ -7,6 +7,8 @@ Mojito Command Line
 Mojito comes with a command line tool that provides a number of key capabilities for the developer, from generating code skeletons, to running 
 tests and test coverage, to cleaning up and documenting the code base.
 
+.. _mj_cmdlne-help:
+
 Help
 ####
 
@@ -17,6 +19,8 @@ To show top-level help for this command line tool:
 To show help for a specific command:
 
 ``$ mojito help <command>``
+
+.. _mj_cmdlne-create_code:
 
 Creating Code from Archetypes
 #############################
@@ -51,6 +55,8 @@ any or all of controller, model, view, and binder.
 .. Android application using the Android SDK is generated. If ``<archetype-name>`` is ``xcode``, a project for creating an iPhone application using the 
 .. Apple iOS Developer Kit is generated.
 
+.. _mj_cmdlne-archetype:
+
 Mojito Archetypes
 #################
 
@@ -59,6 +65,8 @@ Mojito offers the following three archetypes for applications and mojits.
 - ``simple`` - The minimal configuration and code needed to run an application.
 - ``default`` - This archetype is run if no command line archetype option is specified. It is a happy medium between ``simple`` and ``full``.
 - ``full`` - Provides the most comprehensive configuration and code for applications.
+
+.. _mj_cmdlne-testing:
 
 Testing
 #######
@@ -83,6 +91,8 @@ Note that it is not (yet) possible to specify an alternative output location.
    If a mojit module (i.e., the YUI module for a portion of the mojit) is specified, only the tests for that module will be run. Otherwise all tests for 
    the mojit will be run.
 
+.. _mj_cmdlne-code_coverage:
+
 Code Coverage
 #############
 
@@ -104,15 +114,19 @@ to specify an alternative output location.
 
    ``$ mojito test -c mojit <mojit-path>``
 
+.. _mj_cmdlne-start_server:
+
 Starting the Server
 ###################
 
 Use the following to start the server and run the application.
 
-``$ mojito start [<port>]``
+``$ mojito start [<port>] [--context "key1:value1,key2:value2,key3:value3"] ``
 
 The port number specified in the command above overrides the port number in the application configuration file, ``application.json``. The default port 
-number is 8666.
+number is 8666. See :ref:`Specifying Context <mj_cmdlne-sanitize_code>` to learn how to use the ``--context`` option.
+
+
 
 Sanitizing Code
 ###############
@@ -139,6 +153,8 @@ location.
 
    Output is written to ``{app-dir}/artifacts/jslint/mojits/{mojit-name}``/.
 
+.. _mj_cmdlne-document_code:
+
 Documenting Code
 ################
 
@@ -163,6 +179,8 @@ Documentation output is written to files in the locations specified below. Note 
 
    Output is written to ``{app-dir}/artifacts/docs/mojits/{mojit-name}/``.
 
+.. _mj_cmdlne-version_info:
+
 Version Information
 ###################
 
@@ -180,20 +198,26 @@ Version Information
 
    Showing the version of the application and mojit requires that they have a ``package.json`` file.
 
+.. _mj_cmdlne-build_sys:
+
 Build System
 ############
 
 Mojito comes with a build command for generating an HTML5 offline Mojito application that runs in different environments. The command must be run inside 
 of the application you want built.
 
-``$ mojito build <type> [<output-path>]``
+``$ mojito build <type> [<output-path>] [--context "key1:value1,key2:value2,key3:value3"]``
 
 Output is written to ``{app-dir}/artifacts/builds/{type}`` by default.
+
+.. _build_sys-types:
 
 Build Types
 ===========
 
 The following sections describe the available build types.
+
+.. _build_types-html5app:
 
 html5app
 --------
@@ -207,10 +231,14 @@ generated from the result of calling the web root ``/`` of the Mojito applicatio
 by specifying the pages in the ``"builds": "html5app"`` object in ``application.json``. The `html5 <../intro/mojito_configuring.html#html5app-object>`_
 object lets you add the ``manifest`` attribute to the ``html`` element, configure relative paths, and specify a list of URLs to pages to generate.
 
+.. _mj_cmdlne-compile_sys:
+
 Compile System
 ##############
 
 Mojito comes with a compile command for generating creates files to optimize an application for production.
+
+.. _compile_sys-syntax
 
 Syntax
 ======
@@ -228,6 +256,7 @@ In addition, the compile command takes the following three options:
 
 .. note:: The ``--app`` option is not supported for the ``inlinecss``, ``views``, or ``json`` types.
 
+.. _compile_sys-inline_css:
 
 Compiling Inline CSS
 ====================
@@ -237,6 +266,7 @@ in the rendered views for mojits that are children of the ``HTMLFrameMojit``.
 
 ``$ mojito compile inlinecss``
 
+.. _compile_sys-views:
 
 Compiling Views
 ===============
@@ -245,6 +275,8 @@ The command below pre-compiles the views in ``mojit/{mojit_name}/views`` so that
 separate XHR call (back to the server) unnecessary.
 
 ``$ mojito compile views``
+
+.. _compile_sys-config:
 
 
 Compiling Configuration
@@ -255,6 +287,8 @@ The command below using the type ``json`` reads the JSON configuration files, su
 ``$ mojito compile json``
 
 
+.. _compile_sys-rollups:
+
 Compiling Rollups
 =================
 
@@ -262,6 +296,8 @@ The command below consolidates the YUI modules in the mojits into a single YUI m
 the ``--app`` option creates a rollup containing all of the application-level YUI modules as well as all of the Mojito framework code.
 
 ``$ mojito compile rollups``
+
+.. _compile_sys-all:
 
 Compiling All
 =============
@@ -272,6 +308,7 @@ The commands below compile inline CSS, views, and YUI modules.
 
 ``$ mojito compile -e``
 
+.. _mj_cmdline-dependency:
 
 Dependency Graphs
 #################
@@ -286,6 +323,8 @@ The ``mojito gv`` command has the following options:
 - ``--framework`` - also inspects the Mojito framework files.
 
 .. note:: To render the Graphviz files into GIF images, you need the `Graphviz - Graph Visualization Software <http://www.graphviz.org/Download..php>`_.
+
+.. _mj_cmdline-context:
 
 Specifying Context
 ##################
