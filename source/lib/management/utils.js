@@ -74,6 +74,30 @@ function heir(o) {
 }
 
 
+/**
+ * Decodes XML entities in the string.
+ * Only decodes a subset of named entities.
+ * @method decodeHTMLEntities
+ * @param {string} txt String to decode
+ * @return {string} input string with with XML entities decoded
+ */
+// TODO:  find a node module that can do this well
+function decodeHTMLEntities(txt) {
+    txt = txt.replace(/(&[^;]+;)/g, function(all, ent) {
+        if ('&#x' === ent.substr(0, 3)) {
+            return String.fromCharCode(parseInt(ent.substring(3, ent.length - 1), 16));
+        }
+        return ent;
+    });
+    txt = txt.replace(/&lt;/g, '<');
+    txt = txt.replace(/&gt;/g, '>');
+    txt = txt.replace(/&quot;/g, '"');
+    txt = txt.replace(/&apos;/g, "'");
+    txt = txt.replace(/&amp;/g, '&');
+    return txt;
+}
+
+
 function process_template(archetype_path, file, mojit_dir, template) {
 
     var archetype_file = path.join(archetype_path, file),
@@ -623,3 +647,6 @@ exports.copyUsingMatcher = copyUsingMatcher;
 /**
  */
 exports.heir = heir;
+
+exports.decodeHTMLEntities = decodeHTMLEntities;
+

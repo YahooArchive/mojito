@@ -404,22 +404,6 @@ function attachManifest(root, relativePath, content, force) {
 }
 
 
-function unEscape(txt) {
-    txt = txt.replace(/(&[^;]+;)/g, function(all, ent) {
-        if ('&#x' === ent.substr(0, 3)) {
-            return String.fromCharCode(parseInt(ent.substring(3, ent.length - 1), 16));
-        }
-        return ent;
-    });
-    txt = txt.replace(/&lt;/g, '<');
-    txt = txt.replace(/&gt;/g, '>');
-    txt = txt.replace(/&quot;/g, '"');
-    txt = txt.replace(/&apos;/g, "'");
-    txt = txt.replace(/&amp;/g, '&');
-    return txt;
-}
-
-
 /**
  * Changes server-relative paths to file-relative paths.
  *
@@ -441,7 +425,7 @@ function forceRelativePaths(root, relativePath, content, force) {
         content = content.replace(/(src|href)="([^"]+)"/g,
             function(all, name, val) {
                 // FUTURE:  once the "/" aren't escaped, we can do this easier
-                var fixed = unEscape(val);
+                var fixed = utils.decodeHTMLEntities(val);
                 if ('/' === fixed.charAt(0)) {
                     fixed = libpath.join(pathTo(libpath.dirname(fixed), dirname),
                         libpath.basename(fixed));
