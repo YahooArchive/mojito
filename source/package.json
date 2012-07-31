@@ -12,9 +12,6 @@
         "Martin Cooper <mcooper@yahoo-inc.com>",
         "Isao Yagi <isao@yahoo-inc.com>"
     ],
-    "### dependencies notes" : {
-        "jsdom": "version 0.2.0 does not (directly) install a binary extension"
-    },
     "dependencies": {
         "connect": "1.8.2",
         "express": "2.5.2",
@@ -41,6 +38,7 @@
         "type": "git",
         "url": "git://github.com/yahoo/mojito.git"
     },
+    "bugs": "https://github.com/yahoo/mojito/issues",
     "scripts": {
         "start": "mojito start",
         "test": "mojito test"
