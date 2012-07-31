@@ -154,17 +154,12 @@ exports.buildhtml5app = function(cmdOptions, store, config, destination,
         appConfig,
         tunnelPrefix;
 
-	// Convert the documented "mojito start --context" value from "key:val,key:val" to "key=val&key=val"
     if (typeof cmdOptions.context === 'string') {
-        cmdOptions.context = cmdOptions.context.replace(/:/g, '=').replace(/,/g, '&');
+        // Parse the context into an object
+        config.context = utils.contextCsvToObject(cmdOptions.context);
+        // Stringify the context object into query string
+        context = '?' + libqs.stringify(config.context);
     }
-
-    if (cmdOptions.context) {
-        context = '?' + cmdOptions.context;
-    }
-
-	// Add the provided context to the server config object so we start Mojito with the correct context.
-    config.context = libqs.parse(cmdOptions.context);
 
     urls['/' + context] = '/index.html';
 
@@ -406,7 +401,7 @@ writeWebPagesToFiles = function(type, store, destination, urls, config,
 
     options = {
         port: 11111,
-		context: config.context // Added so we can the context to app.start()
+        context: config.context
     };
 
     app = new utils.App(options);
