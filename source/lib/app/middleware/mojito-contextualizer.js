@@ -78,19 +78,26 @@ RequestContextualizer.prototype = {
         // and eventually offload to device catalog
         if (/opera mini/i.test(ua)) {
             return OPERA_MINI;
-        } else if (/ipod|iphone/i.test(ua)) {
+        }
+        if (/ipod|iphone/i.test(ua)) {
             return IPHONE;
-        } else if (/ipad/i.test(ua)) {
+        }
+        if (/ipad/i.test(ua)) {
             return IPAD;
-        } else if (/android/i.test(ua)) {
+        }
+        if (/android/i.test(ua)) {
             return ANDROID;
-        } else if (/iris|3g_t|windows ce|opera mobi|windows ce; smartphone;|windows ce; iemobile/i.test(ua)) {
+        }
+        if (/iris|3g_t|windows ce|opera mobi|windows ce; smartphone;|windows ce; iemobile/i.test(ua)) {
             return IE_MOBILE;
-        } else if (/pre\/|palm os|palm|hiptop|avantgo|fennec|plucker|xiino|blazer|elaine/i.test(ua)) {
+        }
+        if (/pre\/|palm os|palm|hiptop|avantgo|fennec|plucker|xiino|blazer|elaine/i.test(ua)) {
             return PALM;
-        } else if (/kindle/i.test(ua)) {
+        }
+        if (/kindle/i.test(ua)) {
             return KINDLE;
-        } else if (/blackberry/i.test(ua)) {
+        }
+        if (/blackberry/i.test(ua)) {
             return BLACKBERRY;
         }
 
