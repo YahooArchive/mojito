@@ -154,8 +154,11 @@ exports.buildhtml5app = function(cmdOptions, store, config, destination,
         appConfig,
         tunnelPrefix;
 
-    if (cmdOptions.context) {
-        context = '?' + cmdOptions.context;
+    if (typeof cmdOptions.context === 'string') {
+        // Parse the context into an object
+        config.context = utils.contextCsvToObject(cmdOptions.context);
+        // Stringify the context object into query string
+        context = '?' + libqs.stringify(config.context);
     }
 
     urls['/' + context] = '/index.html';
@@ -397,7 +400,8 @@ writeWebPagesToFiles = function(type, store, destination, urls, config,
     }
 
     options = {
-        port: 11111
+        port: 11111,
+        context: config.context
     };
 
     app = new utils.App(options);
