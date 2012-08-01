@@ -23,11 +23,13 @@ if (!isatty) {
     // fake out the getters that the "color" library would have added
     (['bold', 'underline', 'italic', 'inverse', 'grey', 'yellow', 'red',
         'green', 'blue', 'white', 'cyan', 'magenta']).forEach(function(style) {
-        Object.defineProperty(String.prototype, style, {
-            get: function() {
-                return this;
+            if (!String.prototype.hasOwnProperty(style)) {
+                Object.defineProperty(String.prototype, style, {
+                    get: function() {
+                        return this;
+                    }
+                });
             }
-        });
     });
 } else {
     require('./colors');
