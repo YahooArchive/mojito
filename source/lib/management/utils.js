@@ -17,6 +17,7 @@ var fs = require('fs'),
     spawn = require('child_process').spawn;
     mojito = require('../index.js'),
     httpProxy = require('http-proxy'),
+    sockjs = require('sockjs'),
     archetypes_dir = path.join(__dirname, '/../archetypes'),
     isatty = tty.isatty(1) && tty.isatty(2);
 
@@ -513,6 +514,8 @@ App.prototype = {
 
     proxy_start: function(cb) {
 
+        var connect_clients = [];
+
         var start_proxy = function (options, callback) {
             callback = callback || function () {
             };
@@ -557,6 +560,39 @@ App.prototype = {
                 }
             });
 
+            var sockjs_opts = {sockjs_url: "http://cdn.sockjs.org/sockjs-0.3.1.min.js",
+                                prefix:'/sockjs',
+                                heartbeat_delay: 25000,
+                                jsessionid: false
+                             };
+
+            socket  = sockjs.createServer(sockjs_opts);
+            socket.on('connection', function(conn) {
+
+                connect_clients.push(conn);
+
+                log('===>CLIENT:Got client connection');
+
+                conn.on('data', function(message) {
+                    log('===>CLIENT:Got client data');
+                    for (var i in connect_clients)
+                    {
+
+                        connect_clients[i].write(message);
+
+                    }
+
+                });
+                conn.on('close', function() {
+                    log('===>CLIENT:Client websocket closed');
+                    connect_clients = _.without(connect_clients, conn);
+
+                });
+            });
+
+            socket.installHandlers(p);
+
+            /*
             // Proxy websocket requests using same buffering logic as for regular HTTP requests
             p.on('upgrade', function (req, socket, head) {
                 if (Status.listening) {
@@ -575,7 +611,7 @@ App.prototype = {
                     });
                 }
             });
-
+            */
             p.on('error', function (err) {
                 if (err.code == 'EADDRINUSE') {
                     error("Can't listen on port " + outer_port
@@ -701,7 +737,7 @@ App.prototype = {
             // If a file is under a source_dir, and has one of the
             // source_extensions, then it's interesting.
             self.source_dirs = [self.app_dir];
-            self.source_extensions = ['.css', '.js', '.html'];
+            self.source_extensions = ['.css', '.js', '.html' , '.htm'];
             self.options = options;
 
             // Start monitoring
@@ -728,7 +764,6 @@ App.prototype = {
                 } catch (e) {
                     // doesn't exist -- leave stats undefined
                 }
-
                 // '+' is necessary to coerce the mtimes from date objects to ints
                 // (unix times) so they can be conveniently tested for equality
                 if (stats && +stats.mtime === +self.mtimes[filepath])
@@ -761,7 +796,7 @@ App.prototype = {
                     if (!stats.isDirectory()) {
                         // Intentionally not using fs.watch since it doesn't play well with
                         // vim (https://github.com/joyent/node/issues/3172)
-                        log('---------watch file---------'+filepath);
+                        //log('---------watch file---------'+filepath);
                         fs.watchFile(filepath, {interval:500}, // poll a lot!
                             _.bind(self._scan, self, false, filepath));
                         self.watches[filepath] = function () {
@@ -769,7 +804,7 @@ App.prototype = {
                         };
                     } else {
                         // fs.watchFile doesn't work for directories (as tested on ubuntu)
-                        log('---------watch file---------'+filepath);
+                        //log('---------watch file---------'+filepath);
                         var watch = fs.watch(filepath, {interval:500}, // poll a lot!
                             _.bind(self._scan, self, false, filepath));
                         self.watches[filepath] = function () {
@@ -816,11 +851,20 @@ App.prototype = {
 
         var start_watching = function (options) {
 
-            log('------------Launch Dependency watcher---------------');
             watcher = new DependencyWatcher(process.cwd(), options,function (options) {
                 if (Status.crashing)
                     log("=> Modified -- restarting.");
                 Status.reset();
+
+                for (var i in connect_clients)
+                {
+
+                    connect_clients[i].write('reload');
+
+                }
+
+                watcher.destroy();
+
                 restart_server(options);
             });
 

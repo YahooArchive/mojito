@@ -21,7 +21,8 @@
         "mime": "1.2.4",
         "yui": "~3.5.1",
         "yuitest": "~0.7.4",
-        "http-proxy": "0.8.2"
+        "http-proxy": "0.8.2",
+	    "sockjs": "0.3.1"
     },
     "keywords": [
         "framework",
