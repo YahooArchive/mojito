@@ -24,10 +24,10 @@ YUI.add('mojito-hb', function(Y, NAME) {
      * @param {boolean} bypassCache Whether or not we should rely on the cached content.
      * @return {object} literal object with the "raw" and "template" references.
      */
-    function getTemplateObj (tmpl, bypassCache) {
+    function getTemplateObj(tmpl, bypassCache) {
         var str;
         if (!cache[tmpl] || bypassCache) {
-            Y.log ('Loading template from disk: '+tmpl, 'mojito', 'qeperf');
+            Y.log('Loading template from disk: ' + tmpl, 'mojito', 'qeperf');
             // TODO: should we try/catch this? I don't see any try/catch when reading files
             //       in the rest of the repo, is this the intention?
             str = fs.readFileSync(tmpl, 'utf8');
@@ -63,7 +63,7 @@ YUI.add('mojito-hb', function(Y, NAME) {
          * @param {object} meta Optional metadata.
          * @param {boolean} more Whether there will be more content later.
          */
-        render: function(data, mojitType, tmpl, adapter, meta, more) {
+        render: function (data, mojitType, tmpl, adapter, meta, more) {
             var obj = getTemplateObj(tmpl, !meta.view.cacheTemplates);
 
             if (obj) {
@@ -84,7 +84,7 @@ YUI.add('mojito-hb', function(Y, NAME) {
          * @return {string} the string representation of the template
          * that can be sent to the client side.
          */
-        compiler: function(tmpl) {
+        compiler: function (tmpl) {
             var obj = getTemplateObj(tmpl);
             return obj ? JSON.stringify(obj.str) : false;
         },
@@ -94,7 +94,7 @@ YUI.add('mojito-hb', function(Y, NAME) {
          * @param {string} tmpl The name of the template to render.
          * @return {string} the precompiled template that can be sent to the client side as Javascript code.
          */
-        precompile: function(tmpl) {
+        precompile: function (tmpl) {
             var obj = getTemplateObj(tmpl);
             return obj ? HB.precompile(obj.str) : false;
         }
