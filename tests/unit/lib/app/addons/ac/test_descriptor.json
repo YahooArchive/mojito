@@ -2,6 +2,7 @@
     {
         "settings": [ "master" ],
         "name" : "ac-addon-unit-tests",
+        "commonlib": "$$config.base$$/mojito-test.js",
         "config" : {
             "lib": "../../../../../../source/lib",
             "base": "../../../../../base"
@@ -38,6 +39,13 @@
                     "test" : "./test-cookie.client.js"
                 },
                 "group" : "fw,client"
+            },
+            "cookie.server" : {
+                "params" : {
+                    "lib": "$$config.lib$$/app/addons/ac/cookie.server.js",
+                    "test" : "./test-cookie.server.js"
+                },
+                "group" : "fw,server"
             }
         }
     },
