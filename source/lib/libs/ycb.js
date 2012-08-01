@@ -207,9 +207,8 @@ Ycb.prototype = {
                                 config[key] = '--YCB-SUBSTITUTION-ERROR--';
                             }
                         }
-                    }
+                    } else if (SUBMATCH.test(config[key])) {
                     // Test if the value is a "substitution" value
-                    else if (SUBMATCH.test(config[key])) {
                         // We have a match so lets use it
                         sub = SUBMATCH.exec(config[key]);
                         // Pull out he key to "find"
@@ -228,9 +227,8 @@ Ycb.prototype = {
                             } else {
                                 config[key] = find;
                             }
-                        }
-                        // If not it's just part of the whole value
-                        else {
+                        } else {
+                            // If not it's just part of the whole value
                             config[key] = config[key].replace(sub[0], extract(base, find, null));
                         }
                     }
