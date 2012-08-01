@@ -16,7 +16,7 @@ This example shows how to use the i18n support built into Mojito that includes t
 The following topics will be covered:
 
 - including the `YUI Internationalization utility <http://developer.yahoo.com/yui/3/intl/>`_ in the mojit controller
-- using the `Intl addon <../../api/Intl.common.html>`_
+- using the `Intl addon <../../api/classes/Intl.common.html>`_
 - specifying the `BCP 47 <ftp://ftp.rfc-editor.org/in-notes/bcp/bcp47.txt>`_ language tags. BCP 47 is currently the combination of `RFC 5646 <http://tools.ietf.org/html/rfc5646>`_ and `RFC 4647 <http://tools.ietf.org/html/rfc4647>`_
 - specifying the resource bundles for the YUI Internationalization utility
 
@@ -63,7 +63,7 @@ Using the intl Addon
 
 In the ``controller.server.js`` file below, the ``intl.lang`` and ``intl.formData`` methods rely on the YUI Internationalization utility to select the language and format of the title and date. 
 The YUI Internationalization utility uses the ``Intl.lookupBestLang`` method to determine the best language based on an application's request and a module's language support. You also need to 
-include the `Intl addon <../../api/Intl.common.html>`_ by adding the string 'mojito-intl-addon' to the ``requires`` array.
+include the `Intl addon <../../api/classes/Intl.common.html>`_ by adding the string 'mojito-intl-addon' to the ``requires`` array.
 
 .. code-block:: javascript
 

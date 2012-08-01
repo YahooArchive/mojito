@@ -13,7 +13,7 @@ where to place files in the Mojito framework.
 Addons
 ######
 
-In addition to the `Action Context <../../api/module_ActionContext.html>`_ addons that Mojito provides, you can create your own addons to add functionality to controller actions.
+In addition to the `Action Context <../../api/classes/ActionContext.html>`_ addons that Mojito provides, you can create your own addons to add functionality to controller actions.
 
 Addons allows you to do the following:
 

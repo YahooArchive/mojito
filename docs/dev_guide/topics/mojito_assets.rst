@@ -150,7 +150,7 @@ From the static URL, you cannot tell the asset is mojit or application level, bu
 Using the Assets Addon
 ######################
 
-Mojito provides an `Assets addon <../../api/Assets.common.html>`_ that allows you to add inline assets 
+Mojito provides an `Assets addon <../../api/classes/Assets.common.html>`_ that allows you to add inline assets 
 or links to asset files. Using the ``Assets`` addon, you can dynamically add assets to an HTML page. Two possible use cases would be adding CSS if the 
 HTTP request is coming from a particular device or adding JavaScript if a user takes a particular action.
 
