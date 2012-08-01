@@ -15,7 +15,7 @@
     "dependencies": {
         "connect": "1.8.2",
         "express": "2.5.2",
-        "glob": "~3",
+        "glob": "~3.1.10",
         "mime": "1.2.4",
         "yui": "~3.5.1",
         "yuitest": "~0.7.4"
