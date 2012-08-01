@@ -19,6 +19,8 @@ General
 * :ref:`Can Mojito make runtime decisions to run client-side or server-side code? <moj_run_client_server>`
 * :ref:`Can Mojito applications access the 'request' or 'response' instances of the Node.js classes 'http.ServerRequest' and 'http.ServerResponse'? <moj_req_res_instances>`
 * :ref:`Is it possible to access headers from a Mojito application? <moj_access_headers>`
+* :ref:`Can Mojito be started with Node.js instead of using "mojito start"? <moj_node_start>`
+* :ref:`How can I improve the performance of my Mojito application? <moj_optimize_performance>`
 
 Mojits
 ------
@@ -152,7 +154,7 @@ General
     #. Refresh the page to view the modified application.
     
     **Note**: ``supervisor`` will only update files with extensions ``node`` or ``js`` by default. To have 
-    ``supervisor`` watch files with other exentsions, use the option ``-e`` or ``--extensions``: ``$ supervisor -e js,json,html -x path/to/mojito start``
+    ``supervisor`` watch files with other extensions, use the option ``-e`` or ``--extensions``: ``$ supervisor -e js,json,html -x path/to/mojito start``
 
 ------------    
     
@@ -215,7 +217,7 @@ General
 
     Yes, the Mojito API has the ``ActionContext`` addon ``Http.server`` that has methods for getting the ``request`` and ``response`` instances of the 
     Node.js classes ``http.ServerRequest`` and ``http.ServerResponse``. From the ``ActionContext`` object ``ac`` shown below, you call 
-    ``http.getRequest`` and ``http.getResponse`` to get the ``request`` and ``response`` instances. See `Class Http.server <../../api/Http.server.html>`_
+    ``http.getRequest`` and ``http.getResponse`` to get the ``request`` and ``response`` instances. See `Class Http.server <../../api/classes/Http.server.html>`_
     for more information.
     
     .. code-block:: javascript
@@ -230,8 +232,84 @@ General
 .. topic:: **Is it possible to access HTTP headers from a Mojito application?**
 
     Yes, the Mojito API has the ``ActionContext`` addon ``Http.server`` that allows you to get, set, and add HTTP headers. See 
-    `Class Http.server <../../api/Http.server.html>`_ for the available methods.
-  
+    `Class Http.server <../../api/classes/Http.server.html>`_ for the available methods.
+
+------------    
+    
+.. _moj_node_start:
+.. topic:: **Can Mojito be started with Node.js instead of using "mojito start"?**
+
+    Yes. Although there is not a standard way for starting Mojito with Node.js, you could do the following::
+    
+       $ node --debug `which mojito` start
+    
+    
+    Or you could specify the path to start a locally installed version of Mojito::
+    
+       $ node --debug node_modules/mojito/bin/mojito start
+
+------------
+
+
+
+.. _moj_optimize_performance:
+.. topic:: **How can I improve the performance of my Mojito application?**
+
+    The following sections offer some ideas about how to improve the performance of your 
+    Mojito application, but are by no means exhaustive. You should also review online articles 
+    about improving Node.js performance, such as `Blazing fast node.js: 10 performance tips from 
+    LinkedIn Mobile <http://bit.ly/uFyio2>`_ written by software engineer Shravya Garlapati.
+    
+    **Don't Add User Data to ac.context**
+    
+    The ``context`` property of the ``ActionContext`` object contains a small set of 
+    key/value pairs that define the run-time environment under which a mojit runs. These key/value 
+    pairs are used as a cache key. Adding your own key/values to ``ac.context`` will cause 
+    the cache to bloat. 
+    
+    As an alternative, you can share data using the following methods:
+    
+       * Parent mojits can share data with the child mojits by attaching data to the ``ActionContext`` 
+         object in the parent mojit's controller. For example, in the parent mojit, you could add 
+         an object to ``ac.composite.command.params.body`` that the children can then access with 
+         ``ac.composite.command.params.body['{obj_name}']``.
+       * From the server and before mojits are executed, middleware can be used to share
+         information about static handling and routing.
+       * Assets and data can be shared through the 
+         `view template <reference/glossary.html#view-template>`_ of a parent mojit or through a 
+         frame mojit such as 
+         `HTMLFrameMojit <../topics/mojito_framework_mojits.html#htmlframemojit>`_ that creates
+         a parent view template.
+    
+    **Rollup/Minify Assets** 
+    
+    Rolling up and minifying assets will reduce the number of network calls and improve load time.
+    For **rolling up assets**, we recommend that you use 
+    `Shaker <https://github.com/yahoo/mojito-shaker>`_, which is a static asset rollup manager. 
+    
+    Mojito also allows you to configure your app to use rollups by setting the 
+    ``useRollups`` property in the ``application.json`` file to ``true`` as shown below::
+   
+      "staticHandling": {
+        "useRollups": true
+      }
+    
+    You can also compile rollups, inline CSS, or views using the Mojito command-line utility. See 
+    the `Compile System <../reference/mojito_cmdline.html#compile-system>`_ to learn how.
+    
+    For **minification**, we recommend Shaker again. Other choices could be `YUI Compressor 
+    <http://yuilibrary.com/download/yuicompressor/>`_ or an npm module such as 
+    `UglifyJS <https://github.com/mishoo/UglifyJS>`_. 
+    
+    
+    **Use Lazy Loading**
+    
+    From the client, your Mojito application should lazy load assets as often as possible.
+    For example, the `YUI ImageLoader Utility <http://yuilibrary.com/yui/docs/imageloader/>`_ 
+    can be used to help you lazy load images. You can even lazy load a mojit from the client
+    using the `LazyLoadMojit <../topics/mojito_framework_mojits.html#lazyloadmojit>`_.
+   
+    
 
 Mojits
 ------
@@ -248,7 +326,7 @@ Mojits
 .. topic:: **Can mojits have child mojits?** 
 
     Yes, you can configure your application to have mojits that have one or more child mojits. The parent mojit can execute the child
-    mojits using the `Composite addon <../../api/Composite.common.html>`_. See `Configuring Applications to Have Multiple Mojit <../topics/intro/mojito_configuring.html#configuring-applications-to-have-multiple-mojits>`_ 
+    mojits using the `Composite addon <../../api/classes/Composite.common.html>`_. See `Configuring Applications to Have Multiple Mojit <../intro/mojito_configuring.html#configuring-applications-to-have-multiple-mojits>`_ 
     and `Composite Mojits <../topics/mojito_composite_mojits.html#composite-mojits>`_. 
 
     You can also use framework mojits, such as `HTMLFrameMojit <../topics/mojito_framework_mojits.html#htmlframemojit>`_ that can execute one or more child mojits.       
@@ -394,10 +472,10 @@ Data
 
     Currently the only way to do this is to pass data to the children in either the children config or parameters.
     If you use ``ac.composite.execute`` you can create/modify the children configuration in code before calling ``ac.composite.execute`` .
-    See `ac.composite.execute <../../api/Composite.common.html#method_execute>`_ for more information.
+    See `ac.composite.execute <../../api/classes/Composite.common.html#method_execute>`_ for more information.
 
     If you want to pass the data to the children in the parameters, you can do that with the ``ac._dispatch`` function.
-    See `ac._dispatch <../../api/ActionContext.html#method_dispatch>`_ for more information.
+    See `ac._dispatch <../../api/classes/ActionContext.html#method__dispatch>`_ for more information.
 
 Binders
 -------
@@ -422,7 +500,7 @@ CSS/JavaScript Assets
 
     You define the location of application-level or mojit-level assets in the ``application.json`` file. Once the location 
     of your assets has been configured, you can statically add the path to the assets in your view template. You can
-    also add assets to your view using the `Assets addon <../../api/Assets.common.html>`_ if your application is using the ``HTMLFrameMojit``.
+    also add assets to your view using the `Assets addon <../../api/classes/Assets.common.html>`_ if your application is using the ``HTMLFrameMojit``.
     See the `Assets <../topics/mojito_assets.html>`_ documentation for implementation details.
     
 ------------
@@ -430,7 +508,7 @@ CSS/JavaScript Assets
 .. _moj_dyn_assets:
 .. topic:: **How are assets dynamically added to views?**
 
-    The `Assets addon <../../api/Assets.common.html>`_ allow you to dynamically add to your view. You need to use the ``HTMLFrameMojit``, however,
+    The `Assets addon <../../api/classes/Assets.common.html>`_ allow you to dynamically add to your view. You need to use the ``HTMLFrameMojit``, however,
     to use the ``Assets addon``. See `Using the Assets Addon <../topics/mojito_assets.html#using-the-assets-addon>`_ for more information.
 
 
@@ -441,9 +519,10 @@ Views
 .. topic:: **Does Mojito support view partials?**
 
     Mojito does not support Mustache partials, but you do have the following options for rendering data through a template:
-      * use a child mojit instead of a view partial 
-      * render data from a binder through a specific template with the `render <../../api/Y.mojito.MojitProxy.html#method_render>`_ method. 
-      * render data from the controller using `ac.partial.render <../../api/Y.mojito.lib.Partial.common.html#method_render>`_.     
+    
+       * use a child mojit instead of a view partial 
+       * render data from a binder through a specific template with the `render <../../api/classes/MojitProxy.html#method_render>`_ method. 
+       * render data from the controller using `ac.partial.render <../../api/classes/Partial.common.html#method_render>`_.     
   
     Not clear what view partials are? See `view partial <../reference/glossary.html#view-partial>`_ in the `Mojito: Glossary <../reference/glossary.html>`_.
 
@@ -467,7 +546,7 @@ Views
     To refresh a view, you need to deploy a binder on the client. From the ``mojitProxy`` object of the binder, you can call the ``refreshView`` method to render 
     a new DOM node for the current mojit and its children, as well as reattach all of the existing binders to their new nodes within the new markup. Because all binder 
     instances are retained, state can be stored within a binder's scope. See `Refreshing Views <../intro/mojito_binders.html#refreshing-views>`_ and the 
-    `MojitProxy Class <../../api/MojitProxy.html>`_ in the Mojito API documentation for more information.
+    `MojitProxy Class <../../api/classes/MojitProxy.html>`_ in the Mojito API documentation for more information.
 
 ------------
 

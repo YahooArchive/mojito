@@ -77,7 +77,7 @@ YUI.add('mojito-cookie-addon', function(Y, NAME) {
 
     Addon.dependsOn = ['http'];
 
-    Y.mojito.addons.ac.cookie = Addon;
+    Y.namespace('mojito.addons.ac').cookie = Addon;
 
 }, '0.1.0', {requires: [
     'mojito',

@@ -46,7 +46,7 @@ YUI.add('mojito-util', function(Y) {
     }
 
 
-    Y.mojito.util = {
+    Y.namespace('mojito').util = {
 
         array: {
 
@@ -78,8 +78,11 @@ YUI.add('mojito-util', function(Y) {
          * that an entire object or array is escaped use the util.cleanse() call.
          * @param {Object} obj The object to encode/escape.
          */
-        unicodeEscape: function(obj) {
+        htmlEntitiesToUnicode: function(obj) {
 
+            // Note that we convert to an "escaped" unicode representation here
+            // which ensures that when the JSON string we're ultimately creating
+            // hits a browser it's not interpreted as the original character.
             if (Y.Lang.isString(obj)) {
                 return obj.replace(/</g, '\\u003C').
                     replace(/>/g, '\\u003E').
@@ -93,12 +96,34 @@ YUI.add('mojito-util', function(Y) {
 
 
         /**
+         * Converts unicode escapes for the HTML characters (<, >, ', ", and &)
+         * back into their original HTML form. Note that only strings are
+         * escaped by this routine. If you want to ensure that an entire object
+         * or array is escaped use the util.cleanse() call.
+         * @param {Object} obj The object to encode/escape.
+         */
+        unicodeToHtmlEntities: function(obj) {
+
+            // Note we convert the form produced by htmlEntitiesToUnicode.
+            if (Y.Lang.isString(obj)) {
+                return obj.replace(/\\u003C/g, '<').
+                    replace(/\\u003E/g, '>').
+                    replace(/\\u0026/g, '&').
+                    replace(/\\u0027/g, '\'').
+                    replace(/\\u0022/g, '"');
+            }
+
+            return obj;
+        },
+
+
+        /**
          * Cleanses string keys and values in an object, returning a new object
          * whose strings are escaped using the escape function provided. The
-         * default escape function is the util.unicodeEscape function.
+         * default escape function is the util.htmlEntitiesToUnicode function.
          * @param {Object} obj The object to cleanse.
          * @param {Function} escape The escape function to run. Default is
-         *     util.unicodeEscape.
+         *     util.htmlEntitiesToUnicode.
          * @return {Object} The cleansed object.
          */
         cleanse: function(obj, escape) {
@@ -115,7 +140,7 @@ YUI.add('mojito-util', function(Y) {
                     throw new Error('Invalid escape function: ' + escape);
                 }
             }
-            func = func || this.unicodeEscape;
+            func = func || this.htmlEntitiesToUnicode;
 
             // How we proceed depends on what type of object we received. If we
             // got a String or RegExp they're not strictly mutable, but we can
@@ -149,6 +174,18 @@ YUI.add('mojito-util', function(Y) {
             }
 
             return obj;
+        },
+
+
+        /**
+         * Uncleanses string keys and values in an object, returning a new
+         * object whose strings are unescaped via the unicodeToHtmlEntities
+         * routine. 
+         * @param {Object} obj The object to cleanse.
+         * @return {Object} The cleansed object.
+         */
+        uncleanse: function(obj) {
+            return this.cleanse(obj, this.unicodeToHtmlEntities);
         },
 
 

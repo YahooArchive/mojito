@@ -160,7 +160,7 @@ YUI.add('mojito-loader', function(Y, NAME) {
         }
     };
 
-    Y.mojito.Loader = Loader;
+    Y.namespace('mojito').Loader = Loader;
 
 }, '0.1.0', {requires: [
     'get',

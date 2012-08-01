@@ -169,7 +169,7 @@ YUI.add('mojito-output-handler', function(Y, NAME) {
         }
     };
 
-    Y.mojito.OutputHandler = OutputHandler;
+    Y.namespace('mojito').OutputHandler = OutputHandler;
 
 }, '0.1.0', {requires: [
     'mojito',

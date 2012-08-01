@@ -203,26 +203,25 @@ You will now modify the controller, so that the ``index`` function called in the
                     cb(null, modelData);
                   }
                 }
-             },
-             done: function(data) {
-               doneResults = data;
-             }
-          };
-          A.isNotNull(controller);
-          A.isFunction(controller.index);
-          controller.index(ac);
-          A.areSame('./index.css', assetsResults);
-          A.isObject(doneResults);
-          A.areSame('Hello World!', doneResults.status);
-          A.areSame('{"x":"y"}', doneResults.data);
+              },
+              done: function(data) {
+                doneResults = data;
+              }
+            };
+            A.isNotNull(controller);
+            A.isFunction(controller.index);
+            controller.index(ac);
+            A.areSame('./index.css', assetsResults);
+            A.isObject(doneResults);
+            A.areSame('Hello World!', doneResults.status);
+            A.areSame('{"x":"y"}', doneResults.data);
+          }
 
-       }
+        }));
 
-     }));
+        YUITest.TestRunner.add(suite);
 
-     YUITest.TestRunner.add(suite);
-
-   }, '0.0.1', {requires: ['mojito-test', 'HelloMojit']});
+      }, '0.0.1', {requires: ['mojito-test', 'HelloMojit']});
 
    Mojito has the unit test given in ``controller.server-tests.js`` confirms that the output from the action index is the same as the 
    string given in the assert statement.
