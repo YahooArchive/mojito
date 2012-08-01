@@ -77,6 +77,7 @@ YUI.add('mojito-controller-context', function(Y, NAME) {
             this.models = {};
 
             Y.Object.each(this.Y.mojito.models, function(model, modelName) {
+                var modelInstance;
 
                 if (!shareYUIInstance || (instance.modelYUIModuleNames &&
                         instance.modelYUIModuleNames[modelName])) {
@@ -84,11 +85,10 @@ YUI.add('mojito-controller-context', function(Y, NAME) {
                     // pass function-like models (for ex. Y.Model) as is
                     if (Y.Lang.isFunction(model)) {
                         this.models[modelName] = model;
-                    }
-                    else {
+                    } else {
                         // we inherit here to prevent accidental modification
                         // of object-like models
-                        var modelInstance = Y.mojito.util.heir(model);
+                        modelInstance = Y.mojito.util.heir(model);
 
                         if (Y.Lang.isFunction(modelInstance.init)) {
                             // NOTE that we use the same config here that we
