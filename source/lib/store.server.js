@@ -2465,7 +2465,7 @@ ServerStore.prototype = {
             if ('node_modules' === file) {
                 return false;
             }
-            if ('libs' === file) {
+            if ('libs' === file && 'test' !== me._appConfigStatic.env) {
                 return false;
             }
             if ('tests' === file && 'test' !== me._appConfigStatic.env) {
