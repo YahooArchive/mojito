@@ -11,8 +11,7 @@
 
 YUI.add('mojito', function(Y, NAME) {
 
-    Y.namespace('mojito');
-    Y.mojito.version = '0.2';
+    Y.namespace('mojito').version = '0.2';
     Y.namespace('mojito.trans');
     Y.namespace('mojito.actions');
     Y.namespace('mojito.binders');

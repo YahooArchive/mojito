@@ -49,7 +49,7 @@ YUI.add('HTMLFrameMojit', function(Y, NAME) {
     };
 
 
-    Y.mojito.controllers[NAME] = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         index: function(ac) {
             this.__call(ac);
