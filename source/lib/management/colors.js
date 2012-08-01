@@ -54,12 +54,14 @@ function stylize(str, style) {
 (['bold', 'underline', 'italic', 'inverse', 'grey', 'yellow', 'red', 'green',
     'blue', 'white', 'cyan', 'magenta']).forEach(
     function(style) {
-        if (!String.prototype.hasOwnProperty(style)) {
+        try {
             Object.defineProperty(String.prototype, style, {
                 get: function() {
                     return stylize(this, style);
                 }
             });
+        } catch (e) {
+            // just ignore
         }
     }
 );
@@ -67,7 +69,7 @@ function stylize(str, style) {
 // prototypes string with method "rainbow"
 // rainbow will apply a the color spectrum to a string, changing colors every
 // letter
-if (!String.prototype.hasOwnProperty('rainbow')) {
+try {
     Object.defineProperty(String.prototype, 'rainbow', {
         get: function() {
             //RoY G BiV
@@ -86,4 +88,8 @@ if (!String.prototype.hasOwnProperty('rainbow')) {
             return exploded.join('');
         }
     });
+} catch (e) {
+    // just ignore
 }
+
+
