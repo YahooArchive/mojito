@@ -25,8 +25,8 @@ of resources or to extend the functionality of the resource store should read th
 Prerequisites
 -------------
 
-- Understanding of ``aspect-orient programming (AOP) <http://en.wikipedia.org/wiki/Aspect-oriented_programming>`_.
-- Experience using _YUIPlugin.
+- Understanding of `aspect-orient programming (AOP) <http://en.wikipedia.org/wiki/Aspect-oriented_programming>`_.
+- Experience using |YUIPlugin|_.
 
 .. _intro-use:
 
@@ -37,9 +37,9 @@ Reflection
 ##########
 
 The |RS| API has methods that can be used (as-is, no addons 
-required) to query for details about an application. When you run the commands
-``mojito compile`` and ``mojito gv`` use the |RS| API methods
-``getResources`` and ``getResourceVersions``.
+required) to query for details about an application. For example, whe you run the commands
+``mojito compile`` and ``mojito gv``, the |RS| API methods ``getResources`` and 
+``getResourceVersions`` are called to get information about your application.
 
 
 
@@ -259,7 +259,7 @@ source Object
 | ``fs``                 | object        | yes       | none          | N/A                           | Contains the filesystem details of a        |
 |                        |               |           |               |                               | resource. See :ref:`fs Object <fs_obj>`.    |
 +------------------------+---------------+-----------+---------------+-------------------------------+---------------------------------------------+
-| ``pkg``                | object        | yes       | none          | N/A                           | Contains the ``npm``package details of a    |
+| ``pkg``                | object        | yes       | none          | N/A                           | Contains the ``npm`` package details of a   |
 |                        |               |           |               |                               | resource. See :ref:`pkg Object <pkg_obj>`.  |
 +------------------------+---------------+-----------+---------------+-------------------------------+---------------------------------------------+
 
@@ -350,10 +350,10 @@ part of the ``yui`` object.
 +------------------------+---------------+-----------+---------------+-------------------------------+------------------------------------------------+
 | ``meta``               | array         | yes       | none          | ``["scroll","node","cache"]`` | Contains a list of YUI modules required by     |
 |                        |               |           |               |                               | this resource. The ``meta`` object contains    |
-|                        |               |           |               |                               | the same properties as the ``details``         |
-|                        |               |           |               |                               | object that is passed to the `YUI add method < |
-|                        |               |           |               |                               | http://yuilibrary.com/yui/docs/api/classes/YUI |
-|                        |               |           |               |                               | .html#method_add>`_.                           |
+|                        |               |           |               |                               | the same properties as the ``details`` object  |
+|                        |               |           |               |                               | that is passed to the `YUI add method <http:// |
+|                        |               |           |               |                               | yuilibrary.com/yui/docs/api/classes/YUI.html#m |
+|                        |               |           |               |                               | ethod _add>`_.                                 |
 +------------------------+---------------+-----------+---------------+-------------------------------+------------------------------------------------+
 
 
@@ -396,7 +396,7 @@ selector Property
 
 The  **selector** is an arbitrary user-defined string, which is used to 
 *select* which version of each resource to use.  The selector is defined in the 
-``application.json``, with the ``selector`` property.
+``application.json`` with the ``selector`` property.
 
 The value of the ``selector`` property is a string that must not have a 
 period (``'.'``) or slash (``'/'``) in it.  In practice, it's suggested to use alphanumeric and 
@@ -517,15 +517,24 @@ Resolution and Priorities
 The resolving of resource version happens in the |RS| ``preload`` method as well.
 The act of resolving the resource versions is really just resolving the affinities and selectors.
 See :ref:`Resource Versions <metatdata-versions>` for a brief explanation about how affinities
-and selectors determine different versions of a resource.
+and selectors determine different versions of a resource. The following sections discuss what the 
+|RS| uses to resolve versions and create a **priority-ordered selector list (POSL)**.
+
+.. _resolution-affinities:
+
+Affinities
+##########
+
+The choice of a resource version depends on the **affinity** as well. If we're resolving versions 
+for the server, versions with ``affinity:server`` will have higher priority than 
+``affinity:common``, and ``affinity:client`` will be completely ignored.
 
 .. _resolution-selectors:
 
 Selectors
 #########
 
-The order of the selectors is defined by a **priority-ordered selector list (POSL)**.  The POSL 
-depends on the runtime context. 
+The order of the selectors is defined by a POSL, which depends on the runtime context. 
 
 Suppose an application has the following resources:
 
@@ -540,15 +549,6 @@ We need to use a (prioritized) list of selectors instead of just a "selector tha
 context" because not all versions might exist for all selectors.  In the example above, if
 ``controller.server.iphone.js`` didn't exist, we should still do the right thing for context 
 ``{device:iphone}``.
-
-.. _resolution-affinities:
-
-Affinities
-##########
-
-The choice of a resource version depends on the **affinity** as well. If we're resolving versions 
-for the server, versions with ``affinity:server`` will have higher priority than 
-``affinity:common``, and ``affinity:client`` will be completely ignored.
 
 .. _resolution-sources:
 
@@ -581,7 +581,7 @@ That means that if there exists, for example, both a ``controller.server.js`` an
 will be used because its selector is a higher priority match than its affinity.
 
 
-All this is pre-calculated for each resource, for each possible runtime configuration (client or 
+All this is pre-calculated for each resource and for each possible runtime configuration (client or 
 server, and every appropriate runtime context).
 
 .. _how-get_data:
@@ -631,7 +631,7 @@ documentation, you should be able to create your own custom |RS| addons.
 Anatomy of a |RS| Addon
 -----------------------
 
-The resource store addons are implemented using the _|YUIPlugin| mechanism. In essence, a Mojito 
+The resource store addons are implemented using the |YUIPlugin|_ mechanism. In essence, a Mojito 
 addon is a YUI plugin, so the skeleton of a |RS| addon will be the same as a YUI Plugin. 
 
 See the |RSC|_ for the parameters and return values for the |RS| methods.
@@ -653,7 +653,7 @@ Key Methods
        - :js:func:`preloadResourceVersions`
        - :js:func:`resolveResourceVersions` 
        
-    After ``preload`` has finished executing, you can call with 
+    After ``preload`` has finished executing, you can call  
     ``afterHostMethod('preload', ...)``.
     
     :param Object config: Contains configuration information with the following properties:     
@@ -696,11 +696,11 @@ Key Methods
 .. js:function:: findResourceVersionByConvention()
 
     This method is called on each directory or file being walked and is used to decide if the 
-    path is a resource version. The return value can be a bit confusing, so read API docs carefully 
-    and feel free to post any questions that you have to the 
+    path is a resource version. The return value can be a bit confusing, so read the API 
+    documentation carefully and feel free to post any questions that you have to the 
     `Yahoo! Mojito Forum <http://developer.yahoo.com/forum/Yahoo-Mojito/>`_.
     
-    Typically, you would hook into this method with the ``afterHostMethod()`` method to register 
+    Typically, you would hook into this method with the ``afterHostMethod`` method to register 
     your own resource version types. This method should work together with your 
     own version of the ``parseResourceVersion`` method.
     
@@ -751,7 +751,7 @@ This event is called when the resources in a mojit are resolved.
 getMojitTypeDetails
 ```````````````````
 
-This event is called during runtime as Mojito creates an "instance" used to dispatch a mojit.
+This event is called during runtime as Mojito creates an *instance* used to dispatch a mojit.
 
 .. _creating_rs_addons-ex:
 
@@ -959,12 +959,12 @@ The |RS| comes with the following four built-in addons:
 - ``config``
    - registers new resource type ``config`` found in JSON configuration files
    - provides an API for reading both contextualized and straight-JSON files
-   - provides sugar for reading the application's dimensions
+   - provides sugar for reading an application's dimensions
 - ``selector``
    - decides the priority-ordered list (POSL) to use for a context
    - looks  for ``selector`` in ``application.json``. Because 
-     ``application.json`` is a context configuration file, the ``selector`` can be contextualized 
-     there.
+     ``application.json`` is a context configuration file, the ``selector`` can 
+     be contextualized there.
 - ``url``
    - calculates the static handler URL for appropriate resources (and resource versions)
    - stores the URL in the ``url`` key of the resource
@@ -990,7 +990,7 @@ We will be examining the ``selector`` and ``url`` addons to help you create cust
 those addons. We do not recommend that you create custom versions of the 
 ``config`` or ``yui`` addons, so we will not be looking at those addons. Also, this documentation 
 explains what the |RS| expects the addon to do, so you can create your own version of the addons. 
-To learn what a |RS| built-in addons do, please refer to the |RSC|_ in the API documentation.
+To learn what the |RS| built-in addons do, please refer to the |RSC|_ in the API documentation.
 
 
 .. _custom-selector:
@@ -1004,8 +1004,8 @@ Description
 ```````````
 
 If you wish to use a different algorithm for to determine the selectors to use,
-you can implement your own version of this |RS| addon.  It will need to go in the file
-``addons/rs/selector.server.js`` of your application.  
+you can implement your own version of this |RS| addon in the
+``addons/rs/selector.server.js`` file of your application.  
 
 
 .. _selector-reqs:
@@ -1050,8 +1050,8 @@ The ``url`` addon calculates and manages the static handler URLs for resources.
 The addon is not used by resource store core, but used by the static handler middleware.
 
 If you wish to use a different algorithm to determine the URLs, you can
-implement your own version of this |RS| addon.  It'll need to go in
-``addons/rs/url.server.js`` in your application.
+implement your own version of this |RS| addon in the
+``addons/rs/url.server.js`` file of your application.
 
 After the method ``preloadResourceVersions`` sets ``res.url`` to the static handler URL
 for the resource, the method ``getMojitTypeDetails`` sets the mojit's ``assetsRoot``. 
@@ -1066,10 +1066,6 @@ Requirements
 Your addon is required to do the following:
 
 - Set the ``url`` property in the resource ``metadata`` object.
-
-
-
-
 
 
    
