@@ -63,7 +63,7 @@ YUI.add('mojito-tunnel-client', function(Y, NAME) {
         }
     };
 
-    Y.mojito.TunnelClient = TunnelClient;
+    Y.namespace('mojito').TunnelClient = TunnelClient;
 
 }, '0.1.0', {requires: [
     'breg',

@@ -324,7 +324,7 @@ YUI.add('mojito-action-context', function(Y, NAME) {
         controller[actionFunction](this);
     }
 
-    Y.mojito.ActionContext = ActionContext;
+    Y.namespace('mojito').ActionContext = ActionContext;
 
 }, '0.1.0', {requires: [
     // following are ACPs are always available

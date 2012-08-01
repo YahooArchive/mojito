@@ -1054,7 +1054,7 @@ YUI.add('mojito-client', function(Y, NAME) {
         }
     };
 
-    Y.mojito.Client = MojitoClient;
+    Y.namespace('mojito').Client = MojitoClient;
 
 }, '0.1.0', {requires: [
     'io-base',

@@ -44,7 +44,7 @@ YUI.add('mojito-view-renderer', function(Y) {
         }
     };
 
-    Y.mojito.ViewRenderer = Renderer;
+    Y.namespace('mojito').ViewRenderer = Renderer;
 
 }, '0.1.0', {requires: [
     'mojito'

@@ -208,7 +208,7 @@ YUI.add('mojito-logger', function(Y, NAME) {
         }
     };
 
-    Y.mojito.Logger = Logger;
+    Y.namespace('mojito').Logger = Logger;
 
 }, '0.1.0', {requires: [
     'mojito'

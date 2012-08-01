@@ -376,7 +376,7 @@ YUI.add('mojito-dispatcher', function(Y, NAME) {
      * order to have consistent logging, the Mojito logger is passed in and we
      * use it.
      */
-    Y.mojito.Dispatcher = {
+    Y.namespace('mojito').Dispatcher = {
 
         init: function(resourceStore, coreMojitoYuiModules, globalLogger,
                 globalLoader) {
