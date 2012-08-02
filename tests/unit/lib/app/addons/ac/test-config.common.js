@@ -10,7 +10,7 @@
 
 
 /*
- * Test suite for the analytics.common.js file functionality.
+ * Test suite for the config.common.js file functionality.
  */
 YUI().use('mojito-config-addon', 'test', function(Y) {
 

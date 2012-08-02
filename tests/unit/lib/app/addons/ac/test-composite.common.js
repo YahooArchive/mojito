@@ -40,7 +40,8 @@ YUI().use('mojito-composite-addon', 'test', function(Y) {
                         doneCalled = true;
                         OA.areEqual(datamock, data, "wrong data value");
                         OA.areEqual(metamock, meta, "wrong meta value");
-                    }, _notify: function() {}
+                    },
+                    _notify: function() {}
                 },
                 c = new Y.mojito.addons.ac.composite(command, adapter, ac),
                 doneCalled = false;

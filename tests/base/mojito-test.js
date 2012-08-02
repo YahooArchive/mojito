@@ -42,6 +42,16 @@ YUI.add('mojito-config-addon', function(Y, NAME) {
 
 /*
  */
+YUI.add('mojito-cookie-addon', function(Y, NAME) {
+});
+
+/*
+ */
+YUI.add('mojito-http-addon', function(Y, NAME) {
+});
+
+/*
+ */
 YUI.add('mojito-client-store', function(Y, NAME) {
 });
 
