@@ -499,7 +499,7 @@ YUI.add('mojito-mu', function(Y, NAME) {
             YUI._mojito._cache.compiled[ns].views[meta.view.name];
     };
 
-    Y.mojito.addons.viewEngines.mu = MuAdapter;
+    Y.namespace('mojito.addons.viewEngines').mu = MuAdapter;
 
 }, '0.1.0', {requires: [
     'mojito-util',

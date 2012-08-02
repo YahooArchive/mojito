@@ -17,32 +17,6 @@ Y.applyConfig({useSync: false});
 
 
 /**
- * Convert a CSV string into a context object.
- * @param {string} s A string of the form: 'key1:value1,key2:value2'.
- * @return {Object} The context object after conversion.
- */
-function contextCsvToObject(s) {
-    var ctx = {},
-        pairs = s.split(','),
-        pair,
-        i;
-
-    for (i = 0; i < pairs.length; i += 1) {
-        pair = pairs[i].split(':');
-        if (pair[0]) {
-            if (!pair[1]) {
-                utils.warn('Missing value for context key: ' + pair[0]);
-            } else {
-                ctx[pair[0]] = pair[1];
-            }
-        }
-    }
-
-    return ctx;
-}
-
-
-/**
  * Standard usage string export.
  */
 exports.usage = '\nmojito start [port]\n' +
@@ -101,7 +75,7 @@ exports.run = function(params, opts, callback) {
 
     options.port = params[0] || appConfig.appPort || 8666;
     if (inputOptions.context) {
-        options.context = contextCsvToObject(inputOptions.context);
+        options.context = utils.contextCsvToObject(inputOptions.context);
     }
 
     app = new utils.App(options);

@@ -157,7 +157,7 @@ YUI.add('mojito-controller-context', function(Y, NAME) {
         }
     };
 
-    Y.mojito.ControllerContext = ControllerContext;
+    Y.namespace('mojito').ControllerContext = ControllerContext;
 
 }, '0.1.0', {requires: [
     'mojito-action-context',

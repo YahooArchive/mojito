@@ -1,6 +1,6 @@
 {
     "name": "mojito",
-    "version": "0.3.29",
+    "version": "0.3.30",
     "description": "Mojito provides an architecture, components and tools for developers to build complex web applications faster.",
     "preferGlobal": true,
     "author": "Drew Folta <folta@yahoo-inc.com>",
@@ -15,7 +15,7 @@
     "dependencies": {
         "connect": "1.8.2",
         "express": "2.5.2",
-        "glob": "~3",
+        "glob": "~3.1.11",
         "mime": "1.2.4",
         "semver": "1.0.14",
         "yui": "~3.5.1",

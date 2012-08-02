@@ -204,7 +204,7 @@ YUI.add('mojito-client-store', function(Y, NAME) {
         }
     };
 
-    Y.mojito.ResourceStore = ClientStore;
+    Y.namespace('mojito').ResourceStore = ClientStore;
 
 }, '0.1.0', {requires: [
     'mojito-util',

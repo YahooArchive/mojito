@@ -21,7 +21,7 @@ YUI.add('mojito-resource-store-adapter', function(Y, NAME) {
     var logger;
 
 
-    Y.mojito.ResourceStoreAdapter = {
+    Y.namespace('mojito').ResourceStoreAdapter = {
 
         ENV: '',
 
