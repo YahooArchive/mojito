@@ -68,4 +68,6 @@
             }
         }
     }
-}]
+},
+{ "settings": [ "device:opera-mini" ], "selector": "opera-mini" }
+]

@@ -8,11 +8,11 @@
 /*jslint anon:true, sloppy:true, regexp:true, nomen:true*/
 
 
-var utils = require('../utils'),
-    fs = require('fs'),
+var fs = require('fs'),
     path = require('path'),
     exec = require('child_process').exec,
-    copyExclude = require('../utils').copyExclude,
+    utils = require(path.join(__dirname, '../../management/utils')),
+    copyExclude = utils.copyExclude,
     usage,
     dir_mojito = path.join(__dirname, '../../'),
     dir_yuidoc = path.join(dir_mojito, 'libs/yuidoc'),

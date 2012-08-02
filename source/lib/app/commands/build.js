@@ -9,17 +9,16 @@
 
 
 var libpath = require('path'),
-    utils = require('../utils'),
+    utils = require(libpath.join(__dirname, '../../management/utils')),
     fs = require('fs'),
     libqs = require('querystring'),
-    ResourceStore = require(libpath.join(__dirname, '../..',
-        'store.server.js')
-        ),
     MODE_755 = parseInt('755', 8),
+    getSpecURL,
     mkdirP,
     rmdirR,
     writeWebPagesToFiles,
-    Y = require('yui').YUI({useSync: true}).use('json-parse', 'json-stringify');
+    YUI = require('yui').YUI,
+    Y = YUI({useSync: true}).use('json-parse', 'json-stringify', 'escape');
 
 Y.applyConfig({useSync: false});
 
@@ -67,12 +66,27 @@ exports.options = [
  * @param {Function} callback Function to invoke on commmand completion.
  */
 exports.run = function(params, options, callback) {
-
-    var store = new ResourceStore(process.cwd()),
+    var store,
         type = 'html5app',
+        cwd = process.cwd(),
         destination,
         appConfig,
         config = {};
+
+    Y.applyConfig({
+        useSync: true,
+        modules: {
+            'mojito-resource-store': {
+                fullpath: libpath.join(__dirname, '../../store.server.js')
+            }
+        }
+    });
+    Y.use('mojito-resource-store');
+    Y.applyConfig({useSync: false});
+    store = new Y.mojito.ResourceStore({
+        root: cwd,
+        context: {}
+    });
 
     if (!params[0]) {
         params[0] = '';
@@ -91,26 +105,18 @@ exports.run = function(params, options, callback) {
     if (params[1] && params[1][0] === '/') {
         destination = libpath.join(params[1]);
     } else if (params[1]) {
-        destination = libpath.join(store._root, params[1]);
+        destination = libpath.join(cwd, params[1]);
     } else {
-        destination = libpath.join(store._root, 'artifacts/builds', type);
+        destination = libpath.join(cwd, 'artifacts/builds', type);
     }
 
     // Are we in a Mojito App?
-    utils.isMojitoApp(store._root, exports.usage, true);
+    utils.isMojitoApp(cwd, exports.usage, true);
 
-    // TODO:  probably should try to use store to read appConfig
-    try {
-        appConfig = Y.JSON.parse(String(fs.readFileSync(libpath.join(store._root,
-            'application.json'))));
-        appConfig = appConfig[0];
-
-        // Is there a "builds" section for this "type" in the appConfig
-        if (appConfig.builds && appConfig.builds[type]) {
-            config = appConfig.builds[type];
-        }
-    } catch (err) {
-        // there is no application.json, but that is okay
+    appConfig = store.getStaticAppConfig();
+    // Is there a "builds" section for this "type" in the appConfig
+    if (appConfig.builds && appConfig.builds[type]) {
+        config = appConfig.builds[type];
     }
 
     if (options.replace) {
@@ -148,11 +154,21 @@ exports.buildhtml5app = function(cmdOptions, store, config, destination,
         indexJs = "module.exports = require('express')." +
             "createServer(require('express')['static'](__dirname));",
         url,
+        storeURLs,
         urls = {}, // from: to
         app,
         context = '',
+        contextObj = libqs.parse(cmdOptions.context),
         appConfig,
-        tunnelPrefix;
+        tunnelPrefix,
+        dynamicURLs = {},
+        mr,
+        mojitRes,
+        mojitRess,
+        sr,
+        specRes,
+        specRess,
+        id;
 
     if (typeof cmdOptions.context === 'string') {
         // Parse the context into an object
@@ -171,12 +187,11 @@ exports.buildhtml5app = function(cmdOptions, store, config, destination,
 
     store.preload();
 
-    appConfig = store.getAppConfig(libqs.parse(cmdOptions.context),
-        'application');
+    appConfig = store.getAppConfig(contextObj);
     tunnelPrefix = appConfig.tunnelPrefix || '/tunnel';
 
     console.log('Building a "' + type + '" of the Mojito application at "' +
-        store._root + '"');
+        store._config.root + '"');
 
     console.log('...');
 
@@ -184,9 +199,10 @@ exports.buildhtml5app = function(cmdOptions, store, config, destination,
     manifest += 'CACHE:\n';
 
     // Copy all the files into the destination directory
-    for (url in store._staticURLs) {
-        if (store._staticURLs.hasOwnProperty(url)) {
-            from = store._staticURLs[url];  // filesystem path
+    storeURLs = store.getAllURLs();
+    for (url in storeURLs) {
+        if (storeURLs.hasOwnProperty(url)) {
+            from = storeURLs[url];  // filesystem path
             to = libpath.join(destination, url);
             extension = from.split('.').pop();
 
@@ -194,7 +210,7 @@ exports.buildhtml5app = function(cmdOptions, store, config, destination,
 
             manifest += url + '\n';
 
-            if (serverFiles[extension] !== undefined) {
+            if (serverFiles[extension]) {
                 urls[url + context] = url;
                 mkdirP(libpath.dirname(libpath.join(destination, url)),
                     MODE_755);
@@ -204,9 +220,32 @@ exports.buildhtml5app = function(cmdOptions, store, config, destination,
         }
     }
 
+    mojitRess = store.getResources('client', contextObj, {type: 'mojit'});
+    for (mr = 0; mr < mojitRess.length; mr += 1) {
+        mojitRes = mojitRess[mr];
+        if (!mojitRes.url) {
+            continue;
+        }
+        url = mojitRes.url + '/definition.json';
+        dynamicURLs[url] = true;
+
+        specRess = store.getResources('client', contextObj, {type: 'spec', mojit: mojitRes.name});
+        for (sr = 0; sr < specRess.length; sr += 1) {
+            specRes = specRess[sr];
+            dynamicURLs[specRes.url] = true;
+        }
+    }
+
+    for (id in appConfig.specs) {
+        if (appConfig.specs.hasOwnProperty(id)) {
+            url = getSpecURL(appConfig, id);
+            dynamicURLs[url] = true;
+        }
+    }
+
     // Get all the dynamic URLs we have to call via the "tunnel"
-    for (url in store._dynamicURLs) {
-        if (store._dynamicURLs.hasOwnProperty(url)) {
+    for (url in dynamicURLs) {
+        if (dynamicURLs.hasOwnProperty(url)) {
             urls[tunnelPrefix + url + context] = url;
             mkdirP(libpath.dirname(libpath.join(destination, url)), MODE_755);
         }
@@ -227,6 +266,24 @@ exports.buildhtml5app = function(cmdOptions, store, config, destination,
 
     // Now use the server to generate some of the files
     writeWebPagesToFiles(type, store, destination, urls, config, callback);
+};
+
+
+getSpecURL = function(appConfig, id) {
+    var prefix = '/static',
+        parts = id.split(':'),
+        typeName = parts[0],
+        specName = parts[1] || 'default',
+        ns = typeName.replace(/\./g, '_'),
+        url;
+
+    if (appConfig && appConfig.staticHandling &&
+            appConfig.staticHandling.hasOwnProperty('prefix')) {
+        prefix = (appConfig.staticHandling.prefix ? '/' +
+            appConfig.staticHandling.prefix : '');
+    }
+    url = prefix + '/' + typeName + '/specs/' + specName + '.json';
+    return url;
 };
 
 
@@ -370,11 +427,13 @@ function forceRelativePaths(root, relativePath, content, force) {
 
         content = content.replace(/(src|href)="([^"]+)"/g,
             function(all, name, val) {
-                var fixed = val;
-                if ('/' === val.charAt(0)) {
-                    fixed = libpath.join(pathTo(libpath.dirname(val), dirname),
-                        libpath.basename(val));
+                // FUTURE:  once the "/" aren't escaped, we can do this easier
+                var fixed = utils.decodeHTMLEntities(val);
+                if ('/' === fixed.charAt(0)) {
+                    fixed = libpath.join(pathTo(libpath.dirname(fixed), dirname),
+                        libpath.basename(fixed));
                 }
+                fixed = Y.Escape.html(fixed);
                 return name + '="' + fixed + '"';
             });
     }

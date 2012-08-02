@@ -8,8 +8,6 @@ YUI.add('mojito-partial-addon-tests', function(Y, NAME) {
     var suite = new YUITest.TestSuite(NAME),
         path = require('path'),
         fixtures = path.join(__dirname, '../../../../fixtures/store'),
-        ResourceStore = require(path.join(__dirname,
-            '../../../../../store.server')),
         Assert = YUITest.Assert,
         ObjectAssert = YUITest.ObjectAssert,
         Mock = YUITest.Mock,
@@ -28,9 +26,6 @@ YUI.add('mojito-partial-addon-tests', function(Y, NAME) {
                         views: {}
                     }
                 };
-
-            var store = new ResourceStore(fixtures);
-            store.setLogger(logger);
 
             var mockCallback = Mock();
             Mock.expect(mockCallback, {
@@ -58,9 +53,6 @@ YUI.add('mojito-partial-addon-tests', function(Y, NAME) {
                         }
                     }
                 };
-
-            var store = new ResourceStore(fixtures);
-            store.setLogger(logger);
 
             var addon = new Y.mojito.addons.ac.partial(command, null, ac);
 
@@ -97,9 +89,6 @@ YUI.add('mojito-partial-addon-tests', function(Y, NAME) {
                         }
                     }
                 };
-
-            var store = new ResourceStore(fixtures);
-            store.setLogger(logger);
 
             var mockCallback = Mock();
             Mock.expect(mockCallback, {

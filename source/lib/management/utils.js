@@ -15,7 +15,7 @@ var fs = require('fs'),
     http = require('http'),
     tty = require('tty'),
     mojito = require('../index.js'),
-    archetypes_dir = path.join(__dirname, '/../archetypes'),
+    archetypes_dir = path.join(__dirname, '../app/archetypes'),
     isatty = tty.isatty(1) && tty.isatty(2);
 
 
@@ -23,11 +23,15 @@ if (!isatty) {
     // fake out the getters that the "color" library would have added
     (['bold', 'underline', 'italic', 'inverse', 'grey', 'yellow', 'red',
         'green', 'blue', 'white', 'cyan', 'magenta']).forEach(function(style) {
-        Object.defineProperty(String.prototype, style, {
-            get: function() {
-                return this;
+            try {
+                Object.defineProperty(String.prototype, style, {
+                    get: function() {
+                        return this;
+                    }
+                });
+            } catch (e) {
+                // just ignore
             }
-        });
     });
 } else {
     require('./colors');
@@ -71,6 +75,30 @@ function heir(o) {
     function F() {}
     F.prototype = o;
     return new F();
+}
+
+
+/**
+ * Decodes XML entities in the string.
+ * Only decodes a subset of named entities.
+ * @method decodeHTMLEntities
+ * @param {string} txt String to decode
+ * @return {string} input string with with XML entities decoded
+ */
+// TODO:  find a node module that can do this well
+function decodeHTMLEntities(txt) {
+    txt = txt.replace(/(&[^;]+;)/g, function(all, ent) {
+        if ('&#x' === ent.substr(0, 3)) {
+            return String.fromCharCode(parseInt(ent.substring(3, ent.length - 1), 16));
+        }
+        return ent;
+    });
+    txt = txt.replace(/&lt;/g, '<');
+    txt = txt.replace(/&gt;/g, '>');
+    txt = txt.replace(/&quot;/g, '"');
+    txt = txt.replace(/&apos;/g, "'");
+    txt = txt.replace(/&amp;/g, '&');
+    return txt;
 }
 
 
@@ -652,3 +680,6 @@ exports.heir = heir;
 /**
  */
 exports.contextCsvToObject = contextCsvToObject;
+
+exports.decodeHTMLEntities = decodeHTMLEntities;
+
