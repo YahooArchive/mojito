@@ -10,7 +10,7 @@
 
 var fs = require('fs'),
     path = require('path'),
-    utils = require('../utils'),
+    utils = require(path.join(__dirname, '../../management/utils')),
     usage = 'mojito jslint [app | mojit] [<name>] {options}\n' +
             '\nOPTIONS: \n' +
             '\t  --print      :  print results to stdout \n' +
@@ -157,9 +157,10 @@ function OutputStdout(filename) {
  * and returning the number of errors encountered.
  */
 function lintOneFile(infile, outfile) {
-    var jslint = require('../fulljslint').jslint,
+    var jslint = require('../../management/fulljslint').jslint,
         OPTS = {
             'continue': true, // Tolerate continue
+            node: true,
             predef: [
                 // CommonJS
                 'exports',
@@ -366,7 +367,7 @@ function processFiles(inDir, outDir, excludeMatcher) {
             if (!outDir) {
                 out = new OutputStdout(relname);
             } else {
-                out = new OutputFile(path.join(outDir, outname))
+                out = new OutputFile(path.join(outDir, outname));
             }
 
             errors = lintOneFile(f, out);

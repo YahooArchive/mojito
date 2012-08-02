@@ -8,7 +8,18 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
 /*global YUI*/
 
+/**
+ * View engines.
+ *
+ * Please see the [documentation](http://developer.yahoo.com/cocktails/mojito/docs/topics/mojito_extensions.html#view-engines).
+ *
+ * @module ViewEngines
+ */
 
+
+/**
+ * @Module ViewEngines
+ */
 YUI.add('mojito-mu', function(Y, NAME) {
 
     var CACHE = {},

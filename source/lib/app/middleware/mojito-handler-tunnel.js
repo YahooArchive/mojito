@@ -41,7 +41,7 @@ TunnelServer.prototype = {
         logger = globalLogger;
         //console.log('creating handle');
         this._store = store;
-        config = store.getAppConfig({}, 'application');
+        config = store.getAppConfig({});
         this.tunnelPrefix = (config && config.tunnelPrefix) ?
                 config.tunnelPrefix :
                 '/tunnel';

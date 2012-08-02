@@ -7,6 +7,9 @@
         "type" : "device"
       }
     }
-  }
+  },
+  { "settings": [ "device:android" ], "selector": "android" },
+  { "settings": [ "device:blackberry" ], "selector": "blackberry" },
+  { "settings": [ "device:iphone" ], "selector": "iphone" }
 ]
 
