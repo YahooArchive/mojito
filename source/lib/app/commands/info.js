@@ -5,12 +5,12 @@
  */
 
 
-/*jslint anon:true, sloppy:true*/
+/*jslint anon:true, nomen:true, sloppy:true*/
 
 
 var fs = require('fs'),
     path = require('path'),
-    utils = require('../utils'),
+    utils = require(path.join(__dirname, '../../management/utils')),
     Y = require('yui').YUI({useSync: true}).use('json-parse', 'json-stringify');
 
 Y.applyConfig({useSync: false});

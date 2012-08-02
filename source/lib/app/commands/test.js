@@ -11,11 +11,11 @@
 var pathlib = require('path'),
     fs = require('fs'),
 
-    utils = require('../utils'),
-    ymc = require('../yui-module-configurator'),
+    utils = require('../../management/utils'),
+    ymc = require('../../management/yui-module-configurator'),
     exec = require('child_process').exec,
-    copyExclude = require('../utils').copyExclude,
-    copyFile = require('../utils').copyFile,
+    copyExclude = utils.copyExclude,
+    copyFile = utils.copyFile,
 
     MODE_ALL = parseInt('777', 8),
 
@@ -25,8 +25,6 @@ var pathlib = require('path'),
     mojitoInstrumentedDir = '/tmp/mojito-lib-inst',
 
     fwTestsRoot = pathlib.join(targetMojitoPath, 'lib/tests'),
-
-    ResourceStore,
 
     resultsDir = 'artifacts/test',
     resultsFile = pathlib.join(resultsDir, 'result.xml'),
@@ -120,13 +118,12 @@ function collectRunResults(results) {
     }
 }
 
-function configureYUI(YUI, store, load) {
+function configureYUI(YUI, store) {
     YUI.applyConfig({
         useSync: true,
         groups: {
-            'mojito-fw': store.getYuiConfigFw('server', {}),
-            'mojito-app': store.getYuiConfigApp('server', {}),
-            'mojito-mojits': store.getYuiConfigAllMojits('server', {})
+            'mojito-shared': store.yui.getConfigShared('server', {}, false),
+            'mojito-mojits': store.yui.getConfigAllMojits('server', {})
         }
     });
 }
@@ -669,7 +666,8 @@ runTests = function(opts) {
         testModuleNames = ['mojito', 'mojito-test'];
 
     testRunner = function(testPath) {
-        var testConfigs,
+        var Ystore,
+            testConfigs,
             sourceConfigs;
 
         if (testType === 'mojit') {
@@ -692,20 +690,32 @@ runTests = function(opts) {
                 modules: testConfigs
             });
         } else {
-            ResourceStore = require(pathlib.join(targetMojitoPath,
-                'lib/store.server.js'));
-            store = new ResourceStore(testPath);
+            Ystore = YUI();
+            Ystore.applyConfig({
+                useSync: true,
+                modules: {
+                    'mojito-resource-store': {
+                        fullpath: pathlib.join(targetMojitoPath, 'lib/store.server.js')
+                    }
+                }
+            });
+            Ystore.use('mojito-resource-store');
+            store = new Ystore.mojito.ResourceStore({
+                root: testPath,
+                context: {},
+                appConfig: { env: 'test' }
+            });
 
-            store.preload({}, { env: 'test' });
+            store.preload();
 
-            configureYUI(YUI, store, testModuleNames);
+            configureYUI(YUI, store);
 
             if (testType === 'fw') {
-                testConfigs = store.getYuiConfigApp('server', {}).modules;
+                testConfigs = store.yui.getConfigShared('server', {}, true).modules;
             } else if (testType === 'app') {
                 testConfigs = merge(
-                    store.getYuiConfigApp('server', {}).modules,
-                    store.getYuiConfigAllMojits('server', {}).modules
+                    store.yui.getConfigShared('server', {}, true).modules,
+                    store.yui.getConfigAllMojits('server', {}).modules
                 );
             }
         }

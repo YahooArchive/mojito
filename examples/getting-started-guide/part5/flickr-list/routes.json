@@ -11,7 +11,7 @@
         "flickr_base": {
             "verbs": ["get"],
             "path": "/flickr",
-            "param": "page=1&image=0",
+            "params": "page=1&image=0",
             "call": "flickr.index"
         }
         

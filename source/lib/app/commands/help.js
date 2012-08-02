@@ -51,7 +51,7 @@ function helpCommand(command) {
     } catch (e) {
         try {
             help('./' + command);
-        } catch(e) {
+        } catch (ee) {
             console.log('No such command: ' + command);
             helpTop();
         }
