@@ -10,7 +10,7 @@
 
 
 /*
- * Baseline Mojito client testing harness. 
+ * Baseline Mojito client testing harness.
  */
 
 /*
@@ -146,8 +146,9 @@ YUI.add('response-processor', function(Y, NAME) {
 
 
 /*
+ *
  */
-YUI.add('mojito-util', function(Y, NAME) {
+YUI.add('mojito-util-mock', function(Y, NAME) {
     Y.mojito.util = {
         // TODO: Do we want this to be a real copy operation? For mocking in
         // tests it's likely sufficient that it doesn't copy but side-effects
