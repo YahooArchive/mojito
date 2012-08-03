@@ -19,17 +19,21 @@ YUI().use('mojito-assets-addon', 'test', function(Y, NAME) {
         name: 'basics',
 
         setUp: function() {
-            addon = new Y.mojito.addons.ac.assets({instance: {}});
-            addon.mojitType = 'foo';
+            var init = {
+                    instance: {
+                        type: 'foo',
+                        config: {
+                            assets: {}
+                        }
+                    }
+                };
+
+            addon = new Y.mojito.addons.ac.assets(init);
             YUI.namespace('_mojito._cache.compiled');
         },
 
         tearDown: function() {
             addon = null;
-        },
-
-        'test to test testing tests': function () {
-            A.isTrue(true, 'true is false!?');
         },
 
         'test one top css with type and location': function() {
@@ -44,6 +48,37 @@ YUI().use('mojito-assets-addon', 'test', function(Y, NAME) {
             A.isArray(result.top.css, 'top.css should be an array');
             A.areSame(1, result.top.css.length, 'bad top.css array length');
             A.areSame(css, result.top.css[0], 'bad css value');
+        },
+
+        'test inlined css is deduped': function() {
+            var othertest = 'test one top css with type and location',
+                css = '<style>.foo { color:red; }</style>';
+
+            this[othertest]();
+
+            A.areSame(1, addon.getAssets('top').top.css.length);
+            addon.addAsset('css', 'top', css);
+            A.areSame(1, addon.getAssets('top').top.css.length);
+        },
+
+//         'test inlined css get wrapped in style tags': function() {
+//             var css = '.foo { color:red; }',
+//                 expected = '<style>.foo { color:red; }</style>',
+//                 tmp;
+//
+//             YUI.namespace('_mojito._cache.compiled.css.inline');
+//             tmp = YUI._mojito._cache.compiled.css.inline[id]
+//
+//             addon.addAsset('css', 'top', css);
+//             A.areSame(expected, addon.getAssets('top').top.css[0]);
+//         },
+
+        'test image preloading (for lcov, really)': function() {
+            var imgs = [
+                'http://yahoo.com',
+                'http://yahoo.com'
+            ];
+            addon.preLoadImages(imgs);
         },
 
         'test one bottom css with type and location': function() {
@@ -263,6 +298,67 @@ YUI().use('mojito-assets-addon', 'test', function(Y, NAME) {
             A.isUndefined(to.bottom.css, 'bad bottom.css');
         },
 
+        'addAsset() should return undefined if no content': function() {
+            A.isUndefined(addon.addAsset()); // for coverage, func always void
+        },
+
+        'addAsset() should normalize relative uris from assetsRoot config': function() {
+            var init = {
+                    instance: {
+                        assetsRoot: '/abc/def',
+                        config: {}
+                    }
+                },
+                addon = new Y.mojito.addons.ac.assets(init),
+                expected = init.instance.assetsRoot + '/foo.js';
+
+            addon.addAsset('js', 'top', './foo.js');
+
+            A.areSame(expected, addon.getAssets().top.js[0]);
+        },
+
+        'addAsset() should dedupe': function() {
+            var othertest = 'addAsset() should normalize relative uris from assetsRoot config';
+            this[othertest]();
+
+            addon.addAsset('js', 'top', './foo');// add again
+            addon.addAsset('js', 'top', './foo');// add again
+
+            A.areEqual(1, addon.getAssets().top.js.length);
+        },
+
+        'test asset initialization via constructor': function() {
+            var init = {
+                    instance: {
+                        config: {}
+                    }
+                },
+                addon,
+                actual,
+                expected;
+
+            init.instance.config.assets = {
+                top: {
+                    js: ['jst1','jst2'],
+                    css: ['csst1','csst2','csst3']
+                },
+                bottom: {
+                    js: ['jsb1']
+                }
+            };
+
+            expected = Y.merge(init.instance.config.assets); // copy
+
+            addon = new Y.mojito.addons.ac.assets(init);
+            actual = addon.getAssets();
+
+            AA.itemsAreEqual(expected.top.js, actual.top.js);
+
+            expected.foo = 9; // prove we made a copy
+            A.areNotSame(expected.foo, actual.foo);
+
+        },
+
         'test inline css': function() {
             YUI._mojito._cache.compiled.css = {
                 'inline': {
@@ -276,7 +372,7 @@ YUI().use('mojito-assets-addon', 'test', function(Y, NAME) {
             var results = addon.getAssets();
             A.isNotUndefined(results);
             var expected = { top: { blob: [ '<style type="text/css">\nfile-contents</style>\n' ] } };
-            console.log(results);
+
             A.areEqual(Y.JSON.stringify(expected), Y.JSON.stringify(results));
         }
     };
