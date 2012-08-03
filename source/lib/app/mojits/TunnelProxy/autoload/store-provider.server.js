@@ -9,7 +9,7 @@
 /*global YUI*/
 
 
-YUI.add('dali-store-provider-addon', function(Y, NAME) {
+YUI.add('tunnel-store-provider-addon', function(Y, NAME) {
 
     function Addon(command, adapter, ac) {
         this.instance = command.instance;

@@ -37,7 +37,7 @@ var express = require('express'),
     OutputHandler = require('./output-handler.server'),
     libpath = require('path');
 
-// The only global namespace within the framework code, used for Dali
+// The only global namespace within the framework code
 // transaction counts (really session ID?)
 /**
  */

@@ -343,7 +343,7 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
         'call listAllMojits()': function() {
             var list = store.listAllMojits('server');
             A.areSame(10, list.length, 'found the wrong number of mojits');
-            AA.contains('DaliProxy', list);
+            AA.contains('TunnelProxy', list);
             AA.contains('HTMLFrameMojit', list);
             AA.contains('LazyLoad', list);
             AA.contains('inlinecss', list);
@@ -420,16 +420,7 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
         'appConfig deferAllOptionalAutoloads': function() {
             var spec = { type: 'PagedFlickr' };
             store.expandInstanceForEnv('client', spec, {}, function(err, instance) {
-                A.isUndefined(instance.views.index['binder-yui-sorted']['breg'], 'breg');
-                A.isUndefined(instance.views.index['binder-yui-sorted']['dali-bean'], 'dali-bean');
-                A.isUndefined(instance.views.index['binder-yui-sorted']['dali-transport-base'], 'dali-transport-base');
-                A.isUndefined(instance.views.index['binder-yui-sorted']['io-facade'], 'io-facade');
                 A.isUndefined(instance.views.index['binder-yui-sorted']['mojito-tunnel-client'], 'mojito-tunnel-client');
-                A.isUndefined(instance.views.index['binder-yui-sorted']['request-handler'], 'request-handler');
-                A.isUndefined(instance.views.index['binder-yui-sorted']['requestor'], 'requestor');
-                A.isUndefined(instance.views.index['binder-yui-sorted']['response-formatter'], 'response-formatter');
-                A.isUndefined(instance.views.index['binder-yui-sorted']['response-processor'], 'response-processor');
-                A.isUndefined(instance.views.index['binder-yui-sorted']['simple-request-formatter'], 'simple-request-formatter');
             });
         },
 
