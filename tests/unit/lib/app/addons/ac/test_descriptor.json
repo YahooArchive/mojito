@@ -6,6 +6,7 @@
             "lib": "../../../../../../source/lib",
             "base": "../../../../../base"
         },
+        "commonlib": "$$config.lib$$/app/autoload/util.common.js",
         "dataprovider" : {
             "analytics.common" : {
                 "params" : {
@@ -38,6 +39,14 @@
                     "test" : "./test-cookie.client.js"
                 },
                 "group" : "fw,client"
+            },
+            "assets.common": {
+                "params" : {
+                    "page": "$$config.base$$/mojito-test.html",
+                    "lib": "$$config.lib$$/app/addons/ac/assets.common.js",
+                    "test" : "./test-assets.common.js"
+                },
+                "group" : "fw,client,server"
             }
         }
     },
