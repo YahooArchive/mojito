@@ -26,7 +26,7 @@
             AA.itemsAreEqual(a, Y.mojito.util.cleanse(a),
                 'test Empty array should cleanse properly as empty array.');
         },
-        
+
         'cleanse should accept nested empty arrays': function() {
             var a = [[]];
             // AA.itemsAreEqual is brain-damaged and doesn't maintain Array
@@ -37,7 +37,7 @@
         },
 
         'should cleanse an array of strings': function() {
-            var a1, 
+            var a1,
                 a2;
 
             a1 = ['<script>I\'m a hack attempt</script>'];
@@ -47,18 +47,18 @@
         },
 
         'test cleanse cleanses an object': function() {
-            var o1, 
+            var o1,
                 o2;
 
             o1 = {'key': '<script>I\'m a hack attempt</script>'};
-            o2 = {'key': 
+            o2 = {'key':
                 '\\u003Cscript\\u003EI\\u0027m a hack attempt\\u003C/script\\u003E'};
 
             OA.areEqual(o2, Y.mojito.util.cleanse(o1));
         },
 
         'test cleanse cleanses a nested array': function() {
-            var a1, 
+            var a1,
                 a2;
 
             a1 = [['<script>I\'m a hack attempt</script>']];
@@ -67,11 +67,11 @@
         },
 
         'test cleanse cleanses a nested object': function() {
-            var a1, 
+            var a1,
                 a2;
 
             a1 = [{'key': '<script>I\'m a hack attempt</script>'}];
-            a2 = [{'key': 
+            a2 = [{'key':
                 '\\u003Cscript\\u003EI\\u0027m a hack attempt\\u003C/script\\u003E'}];
 
             OA.areEqual(a2[0], Y.mojito.util.cleanse(a1)[0],
@@ -79,15 +79,15 @@
         },
 
         'test cleanse ignores numbers, booleans, etc.': function() {
-            var a1, 
+            var a1,
                 a2;
-       
-            a1 = [1, true, 'blah']; 
+
+            a1 = [1, true, 'blah'];
             a2 = [1, true, 'blah'];
 
             AA.itemsAreEqual(a2, Y.mojito.util.cleanse(a1));
         },
-        
+
         'test unicodeToHtmlEntities uncleanses a string': function() {
             A.areSame(
                 '<script>alert("hi, i\'m a squid & a happy one!")</script>',
@@ -108,7 +108,7 @@
             AA.itemsAreEqual(a, Y.mojito.util.uncleanse(a),
                 'Empty array should cleanse properly as empty array.');
         },
-        
+
         'test uncleanse cleanses an array with single array child': function() {
             var a = [[]];
             // AA.itemsAreEqual is brain-damaged and doesn't maintain Array
@@ -119,7 +119,7 @@
         },
 
         'test uncleanse uncleanses an array': function() {
-            var a1, 
+            var a1,
                 a2;
 
             a1 = ['<script>I\'m a hack attempt</script>'];
@@ -129,11 +129,11 @@
         },
 
         'test uncleanse uncleanses an object': function() {
-            var o1, 
+            var o1,
                 o2;
 
             o1 = {'key': '<script>I\'m a hack attempt</script>'};
-            o2 = {'key': 
+            o2 = {'key':
                 '\\u003Cscript\\u003EI\\u0027m a hack attempt\\u003C/script\\u003E'};
 
             OA.areEqual(o1, Y.mojito.util.uncleanse(o2),
@@ -141,7 +141,7 @@
         },
 
         'test uncleanse uncleanses a nested array': function() {
-            var a1, 
+            var a1,
                 a2;
 
             a1 = [['<script>I\'m a hack attempt</script>']];
@@ -151,11 +151,11 @@
         },
 
         'test uncleanse uncleanses a nested object': function() {
-            var a1, 
+            var a1,
                 a2;
 
             a1 = [{'key': '<script>I\'m a hack attempt</script>'}];
-            a2 = [{'key': 
+            a2 = [{'key':
                 '\\u003Cscript\\u003EI\\u0027m a hack attempt\\u003C/script\\u003E'}];
 
             OA.areEqual(a1[0], Y.mojito.util.uncleanse(a2)[0],
@@ -188,7 +188,7 @@
             var result = Y.mojito.util.metaMerge(to, from);
             OA.areEqual({}, result, "result should be empty");
         },
-        
+
         'test metaMerge full to empty': function() {
             var to = {};
             var from = {
