@@ -24,8 +24,7 @@ YUI.add('addon-rs-config', function(Y, NAME) {
 
     var libfs = require('fs'),
         libpath = require('path'),
-        // TODO:  move YCB into a node module
-        libycb = require(libpath.join(__dirname, '../../../libs/ycb'));
+        libycb = require('ycb');
 
     function RSAddonConfig() {
         RSAddonConfig.superclass.constructor.apply(this, arguments);

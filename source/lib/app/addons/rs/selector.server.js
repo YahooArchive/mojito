@@ -19,7 +19,7 @@
 YUI.add('addon-rs-selector', function(Y, NAME) {
 
     var libpath = require('path'),
-        libycb = require(libpath.join(__dirname, '../../../libs/ycb'));
+        libycb = require('ycb');
 
     function RSAddonSelector() {
         RSAddonSelector.superclass.constructor.apply(this, arguments);
