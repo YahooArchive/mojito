@@ -3,17 +3,26 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-YUI.add('mojito-composite-addon-tests', function(Y, NAME) {
-    
-    var suite = new YUITest.TestSuite(NAME),
-        A = YUITest.Assert,
-        OA = YUITest.ObjectAssert;
-    
-    suite.add(new YUITest.TestCase({
-    
+
+
+/*jslint anon:true, sloppy:true, nomen:true, node:true*/
+/*global YUI*/
+
+
+/*
+ * Test suite for the composite.common.js file functionality.
+ */
+YUI().use('mojito-composite-addon', 'test', function(Y) {
+
+    var suite = new Y.Test.Suite("mojito-composite-addon tests"),
+        A = Y.Assert,
+        OA = Y.ObjectAssert;
+
+    suite.add(new Y.Test.Case({
+
         name: 'composite tests',
 
-        'no-arg done calls execute with children': function() {
+        'test no-arg done calls execute with children': function() {
             var command = {
                     instance: {
                         config: {
@@ -45,7 +54,7 @@ YUI.add('mojito-composite-addon-tests', function(Y, NAME) {
             A.isTrue(doneCalled, "ac done function never called");
         },
 
-        'done throws error when no children in config': function() {
+        'test done throws error when no children in config': function() {
             var command = {instance: {config: {}}},
                 adapter = null,
                 ac = {_notify: function() {}},
@@ -55,11 +64,11 @@ YUI.add('mojito-composite-addon-tests', function(Y, NAME) {
                 A.fail("composite done should fail without children");
             } catch (err) {
                 A.areSame("Cannot run composite mojit children because there are " +
-                        "no children defined in the composite mojit spec.", err.message);
+                    "no children defined in the composite mojit spec.", err.message);
             }
         },
-        
-        'done throws error when children is an empty object': function() {
+
+        'test done throws error when children is an empty object': function() {
             var command = {instance: {config: {children: {}}}},
                 c = new Y.mojito.addons.ac.composite(command, null, {});
             try {
@@ -67,11 +76,11 @@ YUI.add('mojito-composite-addon-tests', function(Y, NAME) {
                 A.fail("composite done should fail when children key exists and is an empty object");
             } catch (err) {
                 A.areSame("Cannot run composite mojit children because there are " +
-                        "no children defined in the composite mojit spec.", err.message);
+                    "no children defined in the composite mojit spec.", err.message);
             }
         },
 
-        'execute dispatches each child': function() {
+        'test execute dispatches each child': function() {
             var command = {instance: {}},
                 adapter = null,
                 ac = {
@@ -108,8 +117,8 @@ YUI.add('mojito-composite-addon-tests', function(Y, NAME) {
             A.isTrue(exeCbCalled, "execute callback never called");
 
         },
-        
-        'run extra template data can be passed with no child or params': function() {
+
+        'test run extra template data can be passed with no child or params': function() {
 
             var command = {
                     instance: {
@@ -150,7 +159,7 @@ YUI.add('mojito-composite-addon-tests', function(Y, NAME) {
 
         },
 
-        'error is thrown when children is an array': function() {
+        'test error is thrown when children is an array': function() {
             var command = {instance: {}},
                 adapter = null,
                 ac = {},
@@ -171,7 +180,7 @@ YUI.add('mojito-composite-addon-tests', function(Y, NAME) {
 
         },
 
-        'proxied mojits are processed properly': function() {
+        'test proxied mojits are processed properly': function() {
             var command = {instance: {}},
                 adapter = null,
                 ac = {
@@ -211,8 +220,8 @@ YUI.add('mojito-composite-addon-tests', function(Y, NAME) {
 
             A.isTrue(exeCbCalled, "execute callback never called");
         },
-        
-        'defered mojits are processed properly': function() {
+
+        'test defered mojits are processed properly': function() {
             var command = {instance: {}},
                 adapter = null,
                 ac = {
@@ -253,7 +262,7 @@ YUI.add('mojito-composite-addon-tests', function(Y, NAME) {
             A.isTrue(exeCbCalled, "execute callback never called");
         },
 
-        'null or undefined child should be discarded': function() {
+        'test null or undefined child should be discarded': function() {
             var command = {instance: {}},
                 adapter = null,
                 ac = {
@@ -289,10 +298,7 @@ YUI.add('mojito-composite-addon-tests', function(Y, NAME) {
         }
 
     }));
-    
-    YUITest.TestRunner.add(suite);
 
-}, '0.0.1', {requires: [
-    'mojito',
-    'mojito-composite-addon'
-]});
+    Y.Test.Runner.add(suite);
+
+});
