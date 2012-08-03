@@ -176,6 +176,8 @@ YUI.add('mojito-assets-addon', function(Y, NAME) {
 
         /**
          * @method preLoadImage
+         * @param {string} url
+         * @deprecated
          */
         preLoadImage: function(url) {
             var img;
@@ -189,6 +191,8 @@ YUI.add('mojito-assets-addon', function(Y, NAME) {
 
         /**
          * @method preLoadImages
+         * @param {array.<string>} url
+         * @deprecated
          */
         preLoadImages: function(urls) {
             var i;
