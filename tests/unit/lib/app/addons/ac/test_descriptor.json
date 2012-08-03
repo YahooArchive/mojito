@@ -16,6 +16,14 @@
                 },
                 "group" : "fw,client,server"
             },
+            "carrier.server" : {
+                "params" : {
+                    "page": "$$config.base$$/mojito-test.html",
+                    "lib": "$$config.lib$$/app/addons/ac/carrier.server.js",
+                    "test" : "./test-carrier.server.js"
+                },
+                "group" : "fw,server"
+            },
             "composite.common" : {
                 "params" : {
                     "page": "$$config.base$$/mojito-test.html",
