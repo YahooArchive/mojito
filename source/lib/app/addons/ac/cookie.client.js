@@ -46,9 +46,10 @@ YUI.add('mojito-cookie-addon', function(Y, NAME) {
         namespace: 'cookie'
     };
 
-    Y.mojito.addons.ac.cookie = Addon;
+    Y.namespace('mojito.addons.ac').cookie = Addon;
 
 }, '0.1.0', {requires: [
     'cookie',
-    'mojito'
+    'mojito',
+    'mojito-meta-addon'
 ]});

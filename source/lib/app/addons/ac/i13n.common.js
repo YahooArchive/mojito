@@ -219,7 +219,7 @@ YUI.add('mojito-i13n-addon', function(Y, NAME) {
 
     I13nAddon.dependsOn = ['config', 'http', 'url'];
 
-    Y.mojito.addons.ac.i13n = I13nAddon;
+    Y.namespace('mojito.addons.ac').i13n = I13nAddon;
 
 }, '0.1.0', {requires: [
     'mojito'

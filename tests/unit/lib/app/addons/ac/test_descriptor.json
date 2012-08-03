@@ -1,0 +1,56 @@
+[
+    {
+        "settings": [ "master" ],
+        "name" : "ac-addon-unit-tests",
+        "config" : {
+            "lib": "../../../../../../source/lib",
+            "base": "../../../../../base"
+        },
+        "commonlib": "$$config.lib$$/app/autoload/util.common.js",
+        "dataprovider" : {
+            "analytics.common" : {
+                "params" : {
+                    "page": "$$config.base$$/mojito-test.html",
+                    "lib": "$$config.lib$$/app/addons/ac/analytics.common.js",
+                    "test" : "./test-analytics.common.js"
+                },
+                "group" : "fw,client,server"
+            },
+            "composite.common" : {
+                "params" : {
+                    "page": "$$config.base$$/mojito-test.html",
+                    "lib": "$$config.lib$$/app/addons/ac/composite.common.js",
+                    "test" : "./test-composite.common.js"
+                },
+                "group" : "fw,client,server"
+            },
+            "config.common" : {
+                "params" : {
+                    "page": "$$config.base$$/mojito-test.html",
+                    "lib": "$$config.lib$$/app/addons/ac/config.common.js",
+                    "test" : "./test-config.common.js"
+                },
+                "group" : "fw,client,server"
+            },
+            "cookie.client" : {
+                "params" : {
+                    "page": "$$config.base$$/mojito-test.html",
+                    "lib": "$$config.lib$$/app/addons/ac/cookie.client.js",
+                    "test" : "./test-cookie.client.js"
+                },
+                "group" : "fw,client"
+            },
+            "assets.common": {
+                "params" : {
+                    "page": "$$config.base$$/mojito-test.html",
+                    "lib": "$$config.lib$$/app/addons/ac/assets.common.js",
+                    "test" : "./test-assets.common.js"
+                },
+                "group" : "fw,client,server"
+            }
+        }
+    },
+    {
+        "settings": [ "environment:development" ]
+    }
+]

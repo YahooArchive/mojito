@@ -50,7 +50,7 @@ YUI.add('mojito-rest-lib', function(Y, NAME) {
      * @class REST
      * @namespace Y.mojito.lib
      */
-    Y.mojito.lib.REST = {
+    Y.namespace('mojito.lib').REST = {
 
         /**
          * @private

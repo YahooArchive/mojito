@@ -22,3 +22,4 @@ Table of Contents
    mojito_extensions
    mojito_using_contexts
    mojito_npm
+   mojito_resource_store

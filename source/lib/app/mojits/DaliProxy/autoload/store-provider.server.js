@@ -42,6 +42,6 @@ YUI.add('dali-store-provider-addon', function(Y, NAME) {
         }
     };
 
-    Y.mojito.addons.ac.store = Addon;
+    Y.namespace('mojito.addons.ac').store = Addon;
 
 }, '0.1.0');
