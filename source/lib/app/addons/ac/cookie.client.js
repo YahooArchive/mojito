@@ -50,5 +50,6 @@ YUI.add('mojito-cookie-addon', function(Y, NAME) {
 
 }, '0.1.0', {requires: [
     'cookie',
-    'mojito'
+    'mojito',
+    'mojito-meta-addon'
 ]});

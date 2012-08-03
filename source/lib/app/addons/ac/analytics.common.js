@@ -102,6 +102,7 @@ YUI.add('mojito-analytics-addon', function(Y, NAME) {
     Y.namespace('mojito.addons.ac').analytics = AnalyticsAddon;
 
 }, '0.1.0', {requires: [
+    'mojito',
     'mojito-util',
     'mojito-meta-addon'
 ]});
