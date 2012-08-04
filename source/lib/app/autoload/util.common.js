@@ -50,6 +50,7 @@ YUI.add('mojito-util', function(Y) {
 
         array: {
 
+            // wtf: this appears to be unused and nonfunctional
             remove: function(arr, from, to) {
                 var rest = arr.slice((to || from) + 1 || arr.length);
 

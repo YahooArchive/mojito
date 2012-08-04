@@ -268,7 +268,6 @@
                 }
             };
             var result = Y.mojito.util.metaMerge(to, from);
-            console.log(result);
             OA.areEqual(expected.a.b, result.a.b, "result should have objects merged (a.b)");
             A.areSame(expected.a.c, result.a.c, "result should have objects merged (a.c)");
         },
@@ -386,6 +385,15 @@
             A.areSame(expected.view, result.view, "meta view data should be retained");
         },
 
+        // is util.array.remove() dead code? no contructor but this.push.apply()
+
+        'test util.array.contains() lcov': function() {
+            var arr = [1,2,3,4,5,6];
+            A.isTrue(Y.mojito.util.array.contains(arr, 5));
+            A.isFalse(Y.mojito.util.array.contains(arr, '5'));
+            A.isFalse(Y.mojito.util.array.contains(arr, 'yo mama'));
+        },
+
         'ignore: metaMerge copies objects lower cases all keys': function() {
             var to = {};
             var from = {
@@ -409,7 +417,6 @@
                 'content-type': ['baz']
             };
             var result = Y.mojito.util.metaMerge(to, from);
-            console.log(result);
             OA.areEqual(expected['content-type'], result['content-type']);
         }
 
