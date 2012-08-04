@@ -8,10 +8,10 @@
 /*jslint anon:true, sloppy:true nomen:true*/
 /*global YUI*/
 
-YUI.add('DaliProxy', function(Y, NAME) {
+YUI.add('TunnelProxy', function(Y, NAME) {
 
 
-    function makeAdapter(ac, txId) {
+    function makeAdapter(ac) {
         var oldAdapter = ac._adapter,
             newAdapter;
 
@@ -20,7 +20,6 @@ YUI.add('DaliProxy', function(Y, NAME) {
             rpc: {
                 originalDone: oldAdapter.done,
                 ac: ac,
-                txId: txId,
                 buffer: {
                     data: '',
                     meta: {}
@@ -53,20 +52,14 @@ YUI.add('DaliProxy', function(Y, NAME) {
                 var out,
                     buffer = this.rpc.buffer;
                 this._updateBuffer(data, meta);
-                // Dali-specific keys here. If we change out for a different
-                // client/server protocol this construction will need to be
-                // abstracted into a builder/formatter of some form.
                 out = {
-                    resps: [{
-                        txId: this.rpc.txId,
-                        status: meta.http.code,
-                        data: {
-                            html: buffer.data,
-                            // including the meta data for resolution on the
-                            // client
-                            meta: buffer.meta
-                        }
-                    }]
+                    status: meta.http.code,
+                    data: {
+                        html: buffer.data,
+                        // including the meta data for resolution on the
+                        // client
+                        meta: buffer.meta
+                    }
                 };
                 // We need to do this so that the original done method will
                 // (eventually) be called.  If we don't, we'll loop back to
@@ -94,21 +87,13 @@ YUI.add('DaliProxy', function(Y, NAME) {
 
             if (!proxyCommand) {
                 ac.error(
-                    'Cannot execute DaliProxy mojit without a proxy command.'
-                );
-                return;
-            }
-
-            // can't use falsey cause txId might be 0
-            if (txId === null || txId === undefined) {
-                ac.error(
-                    'Cannot execute DaliProxy mojit without a transaction ID.'
+                    'Cannot execute TunnelProxy mojit without a proxy command.'
                 );
                 return;
             }
 
             // dispatch the command as the proxy
-            ac._dispatch(proxyCommand, makeAdapter(ac, txId));
+            ac._dispatch(proxyCommand, makeAdapter(ac));
         }
     };
 
