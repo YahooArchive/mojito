@@ -9,8 +9,8 @@
             "dependencyCalculations": "precomputed"
         },
         "specs": {
-            "daliProxy": {
-                "type": "DaliProxy"
+            "tunnelProxy": {
+                "type": "TunnelProxy"
             }
         }
     },
