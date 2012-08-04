@@ -1,68 +1,68 @@
 [
     {
         "settings": [ "master" ],
-        "name" : "ac-addon-unit-tests",
-        "config" : {
+        "name": "ac-addon-unit-tests",
+        "config": {
             "lib": "../../../../../../source/lib",
             "base": "../../../../../base"
         },
         "commonlib": "$$config.lib$$/app/autoload/util.common.js",
-        "dataprovider" : {
-            "analytics.common" : {
-                "params" : {
-                    "page": "$$config.base$$/mojito-test.html",
+        "dataprovider": {
+            "analytics.common": {
+                "params": {
                     "lib": "$$config.lib$$/app/addons/ac/analytics.common.js",
-                    "test" : "./test-analytics.common.js"
+                    "test": "./test-analytics.common.js",
+                    "page": "$$config.base$$/mojito-test.html"
                 },
-                "group" : "fw,client,server"
+                "group": "fw,client,server"
             },
             "assets.common": {
-                "params" : {
-                    "page": "$$config.base$$/mojito-test.html",
+                "params": {
                     "lib": "$$config.lib$$/app/addons/ac/assets.common.js",
-                    "test" : "./test-assets.common.js"
+                    "test": "./test-assets.common.js",
+                    "page": "$$config.base$$/mojito-test.html"
                 },
-                "group" : "fw,client,server"
+                "group": "fw,client,server"
             },
-            "carrier.server" : {
-                "params" : {
-                    "page": "$$config.base$$/mojito-test.html",
+            "carrier.server": {
+                "params": {
                     "lib": "$$config.lib$$/app/addons/ac/carrier.server.js",
-                    "test" : "./test-carrier.server.js"
+                    "test": "./test-carrier.server.js",
+                    "page": "$$config.base$$/mojito-test.html"
                 },
-                "group" : "fw,server"
+                "group": "fw,server"
             },
-            "composite.common" : {
-                "params" : {
-                    "page": "$$config.base$$/mojito-test.html",
+            "composite.common": {
+                "params": {
                     "lib": "$$config.lib$$/app/addons/ac/composite.common.js",
-                    "test" : "./test-composite.common.js"
+                    "test": "./test-composite.common.js",
+                    "page": "$$config.base$$/mojito-test.html"
                 },
-                "group" : "fw,client,server"
+                "group": "fw,client,server"
             },
-            "config.common" : {
-                "params" : {
-                    "page": "$$config.base$$/mojito-test.html",
+            "config.common": {
+                "params": {
                     "lib": "$$config.lib$$/app/addons/ac/config.common.js",
-                    "test" : "./test-config.common.js"
+                    "test": "./test-config.common.js",
+                    "page": "$$config.base$$/mojito-test.html"
                 },
-                "group" : "fw,client,server"
+                "group": "fw,client,server"
             },
-            "cookie.client" : {
-                "params" : {
-                    "page": "$$config.base$$/mojito-test.html",
+            "cookie.client": {
+                "params": {
                     "lib": "$$config.lib$$/app/addons/ac/cookie.client.js",
-                    "test" : "./test-cookie.client.js"
+                    "test": "./test-cookie.client.js",
+                    "page": "$$config.base$$/mojito-test.html"
                 },
-                "group" : "fw,client"
+                "group": "fw,client"
             },
-            "url.common" : {
-                "params" : {
-                    "page": "$$config.base$$/mojito-test.html",
+            "url.common": {
+                "params": {
                     "lib": "$$config.lib$$/app/addons/ac/url.common.js,../../../../../../source/lib/app/autoload/route-maker.common.js,../../../../../../source/node_modules/yui/querystring-parse/querystring-parse.js",
-                    "test" : "./test-url.common.js"
+                    "test": "./test-url.common.js",
+                    "page": "$$config.base$$/mojito-test.html"
                 },
-                "group" : "fw,client,server"
+                "group": "fw,client,server"
             }
         }
     },
