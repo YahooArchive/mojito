@@ -59,7 +59,7 @@
             "url.common" : {
                 "params" : {
                     "page": "$$config.base$$/mojito-test.html",
-                    "lib": "$$config.lib$$/app/addons/ac/url.common.js",
+                    "lib": "$$config.lib$$/app/addons/ac/url.common.js,../../../../../../source/lib/app/autoload/route-maker.common.js,../../../../../../source/node_modules/yui/querystring-parse/querystring-parse.js",
                     "test" : "./test-url.common.js"
                 },
                 "group" : "fw,client,server"

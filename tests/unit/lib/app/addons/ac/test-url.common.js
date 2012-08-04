@@ -10,29 +10,29 @@ YUI().use('mojito-url-addon', 'test', function(Y) {
         A = Y.Assert,
         AA = Y.ArrayAssert,
         OA = Y.ObjectAssert,
-        rm;
+        RouteMaker;
 
     cases = {
         name: 'make url tests',
 
         setUp: function() {
             // Capture the real RouteMaker
-            rm = Y.mojito.RouteMaker;
+            RouteMaker = Y.mojito.RouteMaker;
         },
 
         tearDown: function() {
             //  Put Y.mojito.RouteMaker back to the real RouteMaker
-            Y.mojito.RouteMaker = rm;
+            Y.mojito.RouteMaker = RouteMaker;
         },
-        
+
         'test find url (get)': function() {
 
             Y.mojito.RouteMaker = function(rtes) {
                 A.areSame('routes', rtes);
                 return {
                     find: function(url, verb) {
-                        A.areSame('myid.myaction', url, 'wrong route query to route finder');
-                        A.areSame('get', verb, 'wrong verb to route finder');
+                        A.areSame('myid.myaction', url);
+                        A.areSame('get', verb);
                         return 'ohhai url';
                     }
                 };
@@ -43,17 +43,79 @@ YUI().use('mojito-url-addon', 'test', function(Y) {
 
             url = addon.find('myid.myaction?foo=bar', 'get');
 
-            A.areSame('ohhai url', url, 'wrong url from find function');
+            A.areSame('ohhai url', url);
         },
 
+        'test find url (get) using real RouteMaker': function() {
+
+            var addon, url, routes = {
+                'aroute': {
+                    'call': 'foo',
+                    'path': '/a/b/c/',
+                    'verbs': ['get']
+                }
+            };
+
+            //need to use real find() which needs real RouteMaker
+            Y.mojito.RouteMaker = RouteMaker;
+
+            addon = new Y.mojito.addons.ac.url(null, null, {
+                app: { config: {}, routes: routes }
+            });
+
+            url = addon.find('/a/b/c/', 'get');
+
+            // url = {
+            //     "call": "foo",
+            //     "path": "/a/b/c/",
+            //     "verbs": {
+            //         "GET": true
+            //     },
+            //     "name": "aroute",
+            //     "params": {},
+            //     "regex": {},
+            //     "query": {},
+            //     "requires": {},
+            //     "ext_match": "^/a/b/c/$",
+            //     "int_match": "^$"
+            // }
+
+            A.areSame('foo', url.call);
+            A.areSame('/a/b/c/', url.path);
+            OA.ownsNoKeys(url.params);
+        },
+
+        'test find http://url?with=params (get) using real RouteMaker': function() {
+
+            var addon, url, routes = {
+                'aroute': {
+                    'call': 'foo',
+                    'path': '/a/b/c/',
+                    'verbs': ['get']
+                }
+            };
+
+            //need to use real find() which needs real RouteMaker
+            Y.mojito.RouteMaker = RouteMaker;
+
+            addon = new Y.mojito.addons.ac.url(null, null, {
+                app: { config: {}, routes: routes }
+            });
+
+            url = addon.find('http://xyz.com/a/b/c/?a=1&b=2', 'get');
+
+            A.areSame('foo', url.call);
+            A.areSame('/a/b/c/', url.path);
+            OA.ownsNoKeys(url.params);
+        },
         'test find url (post)': function() {
 
             Y.mojito.RouteMaker = function(rtes) {
                 A.areSame('routes', rtes);
                 return {
                     find: function(url, verb) {
-                        A.areSame('myid.myaction', url, 'wrong route query to route finder');
-                        A.areSame('post', verb, 'wrong verb to route finder');
+                        A.areSame('myid.myaction', url);
+                        A.areSame('post', verb);
                         return 'ohhai url';
                     }
                 };
@@ -64,7 +126,7 @@ YUI().use('mojito-url-addon', 'test', function(Y) {
 
             url = addon.find('myid.myaction', 'post');
 
-            A.areSame('ohhai url', url, 'wrong url from find function');
+            A.areSame('ohhai url', url);
         },
 
         'test make url (get)': function() {
@@ -73,8 +135,8 @@ YUI().use('mojito-url-addon', 'test', function(Y) {
                 A.areSame('routes', rtes);
                 return {
                     make: function(query, verb) {
-                        A.areSame('myid.myaction?foo=bar', query, 'wrong route query to route maker');
-                        A.areSame('get', verb, 'wrong verb to route maker');
+                        A.areSame('myid.myaction?foo=bar', query);
+                        A.areSame('get', verb);
                         return 'ohhai url';
                     }
                 };
@@ -86,17 +148,17 @@ YUI().use('mojito-url-addon', 'test', function(Y) {
 
             url = addon.make('myid', 'myaction', 'foo=bar', 'get');
 
-            A.areSame('ohhai url', url, 'wrong url from make function');
+            A.areSame('ohhai url', url);
 
         },
-        
+
         'test make url (get) plus qry param': function() {
             Y.mojito.RouteMaker = function(rtes) {
                 A.areSame('routes', rtes);
                 return {
                     make: function(query, verb) {
-                        A.areSame('myid.myaction?foo=bar', query, 'wrong route query to route maker');
-                        A.areSame('get', verb, 'wrong verb to route maker');
+                        A.areSame('myid.myaction?foo=bar', query);
+                        A.areSame('get', verb);
                         return 'ohhai url';
                     }
                 };
@@ -108,7 +170,7 @@ YUI().use('mojito-url-addon', 'test', function(Y) {
 
             url = addon.make('myid', 'myaction', 'foo=bar', 'get', {a:1, b:2});
 
-            A.areSame('ohhai url?a=1&b=2', url, 'wrong url from make function');
+            A.areSame('ohhai url?a=1&b=2', url);
         },
 
         'test make url (post)': function() {
@@ -117,8 +179,8 @@ YUI().use('mojito-url-addon', 'test', function(Y) {
                 A.areSame('routes', rtes);
                 return {
                     make: function(query, verb) {
-                        A.areSame('myid.myaction?foo=bar', query, 'wrong route query to route maker');
-                        A.areSame('post', verb, 'wrong verb to route maker');
+                        A.areSame('myid.myaction?foo=bar', query);
+                        A.areSame('post', verb);
                         return 'ohhai url';
                     }
                 };
@@ -130,7 +192,7 @@ YUI().use('mojito-url-addon', 'test', function(Y) {
 
             url = addon.make('myid', 'myaction', 'foo=bar', 'post');
 
-            A.areSame('ohhai url', url, 'wrong url from make function');
+            A.areSame('ohhai url', url);
 
         },
 
@@ -140,8 +202,8 @@ YUI().use('mojito-url-addon', 'test', function(Y) {
                 A.areSame('routes', rtes);
                 return {
                     make: function(query, verb) {
-                        A.areSame('myid.myaction', query, 'wrong route query to route maker');
-                        A.isUndefined(verb, 'wrong verb to route maker');
+                        A.areSame('myid.myaction', query);
+                        A.isUndefined(verb);
                         return 'ohhai url';
                     }
                 };
@@ -153,18 +215,18 @@ YUI().use('mojito-url-addon', 'test', function(Y) {
 
             url = addon.make('myid', 'myaction');
 
-            A.areSame('ohhai url', url, 'wrong url from make function');
+            A.areSame('ohhai url', url);
 
         },
-        
+
         'test make handles object params as well as string params': function() {
 
             Y.mojito.RouteMaker = function(rtes) {
                 A.areSame('routes', rtes);
                 return {
                     make: function(query, verb) {
-                        A.areSame('myid.myaction?foo=bar', query, 'wrong route query to route maker');
-                        A.areSame('get', verb, 'wrong verb to route maker');
+                        A.areSame('myid.myaction?foo=bar', query);
+                        A.areSame('get', verb);
                         return 'ohhai url';
                     }
                 };
@@ -176,10 +238,10 @@ YUI().use('mojito-url-addon', 'test', function(Y) {
 
             url = addon.make('myid', 'myaction', {foo:'bar'}, 'get');
 
-            A.areSame('ohhai url', url, 'wrong url from make function');
+            A.areSame('ohhai url', url);
 
         }
-        
+
     };
 
     suite.add(new Y.Test.Case(cases));
