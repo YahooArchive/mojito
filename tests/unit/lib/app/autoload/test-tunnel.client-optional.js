@@ -15,15 +15,17 @@
 YUI({useBrowserConsole: true}).use(
     "mojito-tunnel-client",
     "test",
+    "json-parse",
     function(Y) {
 
         var suite = new Y.Test.Suite("mojito-tunnel-client tests");
 
         suite.add(new Y.Test.Case({
             setUp: function () {
-                this.appConfig = {};
-                this.transport = Y.Mock();
-                Y.Dali.beanRegistry.registerBean('transport', this.transport);
+                this.appConfig = {
+                    tunnelPrefix: '/tunnel',
+                    tunnelTimeout: 10000
+                };
                 this.tunnelClient = new Y.mojito.TunnelClient(this.appConfig);
             },
 
@@ -31,81 +33,87 @@ YUI({useBrowserConsole: true}).use(
                 var tunnelClient = this.tunnelClient;
 
                 Y.Assert.areEqual(this.appConfig, tunnelClient._appConfig);
-                Y.Assert.isTrue(Y.Dali.beanRegistry.isInjected);
-                Y.Assert.isObject(Y.Dali.beanRegistry.beans);
-                Y.Assert.isObject(Y.Dali.beanRegistry.beans.errorReporter);
-                Y.Assert.isObject(Y.Dali.beanRegistry.beans.configProvider);
-                Y.Assert.areEqual(this.transport, tunnelClient._transport);
             },
 
             "test rpc success": function () {
-                var tunnelClient = this.tunnelClient,
-                    transport = this.transport,
+                var appConfig = this.appConfig,
+                    tunnelClient = this.tunnelClient,
                     adapter = Y.Mock(),
+                    command = {},
                     response = {
-                        html: '<div></div>',
-                        data: {
-                            meta: {
-                                http: {
-                                    code: 200
+                        responseText: Y.JSON.stringify({
+                            data: {
+                                html: '<div></div>',
+                                meta: {
+                                    http: {
+                                        code: 200
+                                    }
                                 }
                             }
-                        }
+                        })
                     };
 
-                Y.Mock.expect(transport, {
-                    method: 'makeRequest',
-                    args: [Y.Mock.Value.Object, Y.Mock.Value.Object],
-                    run: function (command, options) {
-                        Y.Assert.isObject(command);
-                        Y.Assert.isTrue(command.forcepost);
-                        Y.Assert.isObject(options);
-                        Y.Assert.isFunction(options.success);
-                        Y.Assert.isFunction(options.failure);
-                        options.success(response);
-                    }
-                });
+                tunnelClient._makeRequest = function (url, config) {
+                    Y.Assert.isString(url);
+                    Y.Assert.areEqual(appConfig.tunnelPrefix, url);
+                    Y.Assert.isObject(config);
+                    Y.Assert.areEqual('POST', config.method);
+                    Y.Assert.areEqual(Y.JSON.stringify(command), config.data);
+                    Y.Assert.isFunction(config.on.success);
+                    Y.Assert.isFunction(config.on.failure);
+                    Y.Assert.areEqual(config.on.scope, tunnelClient);
+                    Y.Assert.areEqual(tunnelClient, config.context);
+                    Y.Assert.areEqual(appConfig.tunnelTimeout, config.timeout);
+                    Y.Assert.isObject(config.headers);
+                    Y.Assert.areEqual('application/json', config.headers['Content-Type']);
+                    config.on.success(null, response);
+                };
 
                 Y.Mock.expect(adapter, {
                     method: 'done',
                     args: [Y.Mock.Value.String, Y.Mock.Value.Object],
                     run: function (html, meta) {
                         Y.Assert.areEqual('<div></div>', html);
-                        Y.Assert.areEqual(response.data.meta, meta);
+                        Y.Assert.areEqual(200, meta.http.code);
                     }
                 });
-                tunnelClient.rpc({}, adapter);
+                tunnelClient.rpc(command, adapter);
                 Y.Mock.verify(adapter);
-                Y.Mock.verify(transport);
             },
 
             "test rpc failure": function () {
-                var tunnelClient = this.tunnelClient,
-                    transport = this.transport,
+                var appConfig = this.appConfig,
+                    tunnelClient = this.tunnelClient,
                     adapter = Y.Mock(),
+                    command = {},
                     response = {
-                        html: '<div></div>',
-                        data: {
-                            meta: {
-                                http: {
-                                    code: 500
+                        responseText: Y.JSON.stringify({
+                            data: {
+                                html: '<div></div>',
+                                meta: {
+                                    http: {
+                                        code: 500
+                                    }
                                 }
                             }
-                        }
+                        })
                     };
 
-                Y.Mock.expect(transport, {
-                    method: 'makeRequest',
-                    args: [Y.Mock.Value.Object, Y.Mock.Value.Object],
-                    run: function (command, options) {
-                        Y.Assert.isObject(command);
-                        Y.Assert.isTrue(command.forcepost);
-                        Y.Assert.isObject(options);
-                        Y.Assert.isFunction(options.success);
-                        Y.Assert.isFunction(options.failure);
-                        options.failure(response);
-                    }
-                });
+                tunnelClient._makeRequest = function (url, config) {
+                    Y.Assert.isString(url);
+                    Y.Assert.areEqual(appConfig.tunnelPrefix, url);
+                    Y.Assert.isObject(config);
+                    Y.Assert.areEqual('POST', config.method);
+                    Y.Assert.areEqual(Y.JSON.stringify(command), config.data);
+                    Y.Assert.isFunction(config.on.success);
+                    Y.Assert.isFunction(config.on.failure);
+                    Y.Assert.areEqual(config.on.scope, tunnelClient);
+                    Y.Assert.areEqual(tunnelClient, config.context);
+                    Y.Assert.areEqual(appConfig.tunnelTimeout, config.timeout);
+                    Y.Assert.isObject(config.headers);
+                    Y.Assert.areEqual('application/json', config.headers['Content-Type']);
+                    config.on.failure(null, response);
+                };
 
                 Y.Mock.expect(adapter, {
                     method: 'error',
@@ -116,7 +124,6 @@ YUI({useBrowserConsole: true}).use(
                 });
                 tunnelClient.rpc({}, adapter);
                 Y.Mock.verify(adapter);
-                Y.Mock.verify(transport);
             }
         }));
 
