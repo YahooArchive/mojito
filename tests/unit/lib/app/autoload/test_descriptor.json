@@ -6,6 +6,7 @@
             "lib": "../../../../../source/lib",
             "base": "../../../../base"
         },
+        "commonlib": "$$config.lib$$/app/autoload/util.common.js",
         "dataprovider" : {
             "mojito-client.client" : {
                 "params" : {
