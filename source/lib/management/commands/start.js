@@ -54,7 +54,9 @@ exports.usage = '\nmojito start [port]\n' +
     ' used.\n' +
     '\nOptions\n' +
     '\n--live (optional)\n' +
-    '    Will enable live edit, With this param, will launch file system monitoring, once file change, mojito will restart,and then reload web page\n' +
+    '             Will enable live edit, With this param, will launch file \n' +
+    '             system monitoring, once file change, mojito will restart,\n' +
+    '             and then reload web page\n' +
     '\t--context  A comma-separated list of key:value pairs that define the' +
     ' base\n' +
     '\t           context used to read configuration files\n';

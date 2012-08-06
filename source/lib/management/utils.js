@@ -560,8 +560,7 @@ App.prototype = {
                 }
             });
 
-            var sockjs_opts = {sockjs_url: "http://cdn.sockjs.org/sockjs-0.3.1.min.js",
-                                prefix:'/sockjs',
+            var sockjs_opts = { prefix:'/sockjs',
                                 heartbeat_delay: 25000,
                                 jsessionid: false
                              };

@@ -2,6 +2,7 @@
 <html>
 <head>
 <script type="text/javascript">var MOJITO_INIT=new Date().getTime();</script>
+<script src="http://cdn.sockjs.org/sockjs-0.3.1.min.js"></script>
 {{#meta}}
 <meta name="{{name}}" content="{{content}}">
 {{/meta}}
@@ -15,6 +16,20 @@
 
 </head>
 <body>
+<script>
+    var sockjs_url = 'http://'+window.location.host+'/sockjs';
+    var sockjs = new SockJS(sockjs_url,null, {debug:true});
+    sockjs.onmessage = function(e) {
+
+        if (e.data === 'reload')
+        {
+            window.location.reload();
+        }
+
+
+    };
+
+</script>
     
 {{{child}}}
     
