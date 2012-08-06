@@ -5,7 +5,7 @@
  */
 
 
-/*jslint anon:true, sloppy:true, nomen:true, stupid:true */
+/*jslint anon:true, sloppy:true, nomen:true*/
 /*global YUI*/
 
 YUI.add('mojito-hb', function(Y, NAME) {
