@@ -30,7 +30,7 @@ using the |RS|:
 
 - |YUIPlugin|_
 - `Mojito addons <../topics/mojito_extensions.html#addons>`_
-- `aspect-orient programming (AOP) <http://en.wikipedia.org/wiki/Aspect-oriented_programming>`_.
+- `aspect-orient programming (AOP) <http://en.wikipedia.org/wiki/Aspect-oriented_programming>`_
 
 .. _intro-use:
 
