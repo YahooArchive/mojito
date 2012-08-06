@@ -188,7 +188,7 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
                 if (!res.yui) {
                     res.yui = {};
                 }
-                if (fs.basename === mojitType) {
+                if (fs.basename === mojitType || mojitType === 'shared') {
                     res.yui.lang = '';
                 } else if (mojitType === fs.basename.substr(0, mojitType.length)) {
                     res.yui.lang = fs.basename.substr(mojitType.length + 1);
