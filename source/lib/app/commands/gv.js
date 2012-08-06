@@ -396,10 +396,12 @@ function trace(graph, options) {
         head.attrs.trace = true;
         doneNodes[headName] = true;
 
-        for (e = 0; e < edges[headName].length; e += 1) {
-            edge = edges[headName][e];
-            edge.attrs.trace = true;
-            todoNodes.push(edge.tail);
+        if (edges[headName]) {
+            for (e = 0; e < edges[headName].length; e += 1) {
+                edge = edges[headName][e];
+                edge.attrs.trace = true;
+                todoNodes.push(edge.tail);
+            }
         }
     }
 }
