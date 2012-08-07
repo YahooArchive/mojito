@@ -70,9 +70,3 @@ Mojito is licensed under a [BSD license](https://github.com/yahoo/mojito/blob/ma
 
 The Mojito project is a [meritocratic, consensus-based community project](https://github.com/yahoo/mojito/wiki/Governance-Model) which allows anyone to contribute and gain additional responsibilities.
 
-## Third-party libraries
-
-Mojito includes the Mulib software available here:
-
-https://github.com/raycmorgan/Mu
-
