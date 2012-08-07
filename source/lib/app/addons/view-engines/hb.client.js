@@ -62,7 +62,7 @@ YUI.add('mojito-hb', function(Y, NAME) {
          */
         _getTemplateObj: function (tmpl, bypassCache, callback) {
             if (cache[tmpl] && !bypassCache) {
-                callback(cache[tmpl]);
+                callback(null, cache[tmpl]);
             }
 
             this._loadTemplate(tmpl, function (err, str) {
