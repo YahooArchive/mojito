@@ -14,7 +14,7 @@ YUI.add('mojito-hb', function(Y, NAME) {
     'use strict';
 
     var fs = require('fs'),
-        HB = require('yui/handlebars').Handlebars,
+        HB = Y.Handlebars,
         cache = YUI.namespace('Env.Handlebars');
 
     /**
@@ -113,4 +113,4 @@ YUI.add('mojito-hb', function(Y, NAME) {
 
     Y.namespace('mojito.addons.viewEngines').hb = HandleBarsAdapter;
 
-}, '0.1.0', {requires: []});
+}, '0.1.0', {requires: ['handlebars']});

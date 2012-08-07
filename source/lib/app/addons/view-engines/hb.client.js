@@ -34,7 +34,12 @@ YUI.add('mojito-hb', function(Y, NAME) {
          * @param {boolean} more Whether there will be more content later.
          */
         render: function (data, mojitType, tmpl, adapter, meta, more) {
-            var handler = function (obj) {
+            var handler = function (err, obj) {
+                if (err) {
+                    adapter.error(err);
+                    return;
+                }
+
                 if (obj) {
                     adapter.flush(obj.template(data), meta);
                     Y.log('render complete for view "' +
@@ -62,7 +67,7 @@ YUI.add('mojito-hb', function(Y, NAME) {
         _getTemplateObj: function (tmpl, bypassCache, callback) {
             var handler = function (templateStr) {
                 if (templateStr) {
-                    // applying a very simple local cache to avoid reading from disk over and over again.
+                    // applying a very simple local cache to avoid reading from requesting template file again
                     // in general, caching a reference to the compiled function is also a good performance boost.
                     cache[tmpl] = {
                         raw: templateStr,
@@ -88,8 +93,14 @@ YUI.add('mojito-hb', function(Y, NAME) {
             Y.log('Loading template from server: ' + tmpl, 'mojito', 'qeperf');
             Y.io(tmpl, {
                 on: {
-                    complete: function (id, resp) {
-                        cb(resp.responseText);
+                    success: function (id, resp) {
+                        cb(null, resp.responseText);
+                    },
+                    failure: function (id, resp) {
+                        cb({
+                            code: resp.status,
+                            message: resp.statusText
+                        });
                     }
                 }
             });
