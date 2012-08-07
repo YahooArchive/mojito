@@ -15,7 +15,7 @@ YUI.add('mojito-hb', function(Y, NAME) {
 
     var fs = require('fs'),
         HB = require('yui/handlebars').Handlebars,
-        cache = YUI.namespace('Env.Handlebars');
+        cache = YUI.namespace('Env.Mojito.Handlebars');
 
     /**
      * Class text.
@@ -35,18 +35,23 @@ YUI.add('mojito-hb', function(Y, NAME) {
          * @param {string} tmpl The name of the template to render.
          * @param {object} adapter The output adapter to use.
          * @param {object} meta Optional metadata.
-         * @param {boolean} more Whether there will be more content later.
          */
-        render: function (data, mojitType, tmpl, adapter, meta, more) {
-            var obj = this._getTemplateObj(tmpl, !meta.view.cacheTemplates);
+        render: function (data, mojitType, tmpl, adapter, meta) {
+            var handler = function (err, obj) {
+                if (err) {
+                    adapter.error(err);
+                    return;
+                }
 
-            if (obj) {
-                adapter.flush(obj.template(data), meta);
-                Y.log('render complete for view "' +
-                                    this.viewId + '"',
-                                    'mojito', 'qeperf');
-            }
-            adapter.done('', meta);
+                if (obj) {
+                    adapter.flush(obj.compiled(data), meta);
+                    Y.log('render complete for view "' +
+                        tmpl + '"',
+                        'mojito', 'qeperf');
+                }
+                adapter.done('', meta);
+            };
+            this._getTemplateObj(tmpl, !meta.view.cacheTemplates, handler);
         },
 
         /**
@@ -55,19 +60,21 @@ YUI.add('mojito-hb', function(Y, NAME) {
          * @return {string} the string representation of the template
          * that can be sent to the client side.
          */
-        compiler: function (tmpl) {
-            var obj = this._getTemplateObj(tmpl);
-            return obj ? JSON.stringify(obj.str) : false;
+        compiler: function (tmpl, callback) {
+            this._getTemplateObj(tmpl, false, function (err, obj) {
+                callback(err, Y.JSON.stringify(obj.raw));
+            });
         },
 
         /**
-         * Precompiles the handlebars template as a javascript function.
+         * Precompiles the handlebars template as a string of javascript.
          * @param {string} tmpl The name of the template to render.
          * @return {string} the precompiled template that can be sent to the client side as Javascript code.
          */
-        precompile: function (tmpl) {
-            var obj = this._getTemplateObj(tmpl);
-            return obj ? HB.precompile(obj.str) : false;
+        precompile: function (tmpl, callback) {
+            this._loadTemplate(tmpl, function (err, raw) {
+                callback(err, HB.precompile(raw));
+            });
         },
 
         /**
@@ -76,41 +83,41 @@ YUI.add('mojito-hb', function(Y, NAME) {
          * @private
          * @param {string} tmpl The name of the template to render.
          * @param {boolean} bypassCache Whether or not we should rely on the cached content.
-         * @return {object} literal object with the "raw" and "template" references.
+         * @param {function} callback The function that is called with the compiled template
          */
-        _getTemplateObj: function (tmpl, bypassCache) {
-            var str;
-            if (!cache[tmpl] || bypassCache) {
-                Y.log('Loading template from disk: ' + tmpl, 'mojito', 'qeperf');
-                str = this._loadTemplate(tmpl);
-                if (str) {
-                    // applying a very simple local cache to avoid reading from disk over and over again.
-                    // in general, caching a reference to the compiled function is also a good performance boost.
-                    cache[tmpl] = {
-                        raw: str,
-                        template: HB.compile(str)
-                    };
-                }
+        _getTemplateObj: function (tmpl, bypassCache, callback) {
+            if (cache[tmpl] && !bypassCache) {
+                callback(null, cache[tmpl]);
+                return;
             }
-            return cache[tmpl];
+
+            this._loadTemplate(tmpl, function (err, str) {
+                if (err) {
+                    callback(err);
+                    return;
+                }
+                cache[tmpl] = {
+                    raw: str,
+                    compiled: HB.compile(str)
+                };
+                callback(null, cache[tmpl]);
+            });
         },
 
         /**
          * Loads a template from the file system
-         * @param tmpl The location of the template file
-         * @return {string|undefined} The template string. Returns undefined if there
-         *  is an exception thrown during reading
+         * @param {string} tmpl The location of the template file
+         * @param {function} callback The callback to call with the template contents
          * @private
          */
-        _loadTemplate: function (tmpl) {
-            var str;
-            try {
-                str = fs.readFileSync(tmpl, 'utf8');
-            } catch (e) {}
-            return str;
+        _loadTemplate: function (tmpl, callback) {
+            Y.log('Loading template from disk: ' + tmpl, 'mojito', 'qeperf');
+            fs.readFile(tmpl, 'utf8', function (err, data) {
+                callback(err, data);
+            });
         }
     };
 
     Y.namespace('mojito.addons.viewEngines').hb = HandleBarsAdapter;
 
-}, '0.1.0', {requires: []});
+}, '0.1.0', {requires: ['json-stringify']});

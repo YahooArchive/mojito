@@ -35,7 +35,7 @@ var libpath = require('path'),
     options,
     run,
     YuiModuleCacher,
-    Y = require('yui').YUI({useSync: true}).use('json-parse', 'json-stringify');
+    Y = require('yui').YUI({useSync: true}).use('json-parse', 'json-stringify', 'async-queue');
 
 Y.applyConfig({useSync: false});
 
@@ -630,7 +630,8 @@ compile.views = function(context, options, callback) {
         source,
         engine,
         mojitViews = {},
-        YUI = require('yui').YUI;
+        YUI = require('yui').YUI,
+        compilerQueue = new Y.AsyncQueue();
 
     // there are no views in the app, so no need to do this
     if (options.app) {
@@ -705,26 +706,32 @@ compile.views = function(context, options, callback) {
                         renderer = new (MojY.mojito.addons.viewEngines[engine])();
 
                         if (typeof renderer.compiler === 'function') {
-                            renderedView = Y.JSON.parse(
-                                renderer.compiler(source).toString()
-                            );
-                            yuiModuleCacheWriter.createNamespace('compiled.' +
-                                mojitNs + '.views').cache(viewName,
-                                renderedView);
+                            compilerQueue.add(function () {
+                                renderer.compiler(source, function (err, templateObj) {
+                                    renderedView = Y.JSON.parse(templateObj.toString());
+                                    yuiModuleCacheWriter.createNamespace('compiled.' +
+                                        mojitNs + '.views').cache(viewName,
+                                        renderedView);
+                                });
+                            });
                         }
                     }
                 }
             }
         }
-        if (yuiModuleCacheWriter.write()) {
-            processed += 1;
-        }
+        compilerQueue.add(function () {
+            if (yuiModuleCacheWriter.write()) {
+                processed += 1;
+            }
+        });
 
     });
-
-    msgs.push(action + ' compiled view YUI modules for ' + processed +
-        ' mojits.');
-    callback();
+    compilerQueue.add(function () {
+        msgs.push(action + ' compiled view YUI modules for ' + processed +
+            ' mojits.');
+        callback();
+    });
+    compilerQueue.run();
 };
 
 

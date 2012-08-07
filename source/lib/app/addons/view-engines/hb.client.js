@@ -31,9 +31,8 @@ YUI.add('mojito-hb', function(Y, NAME) {
          * @param {string} tmpl The name of the template to render.
          * @param {object} adapter The output adapter to use.
          * @param {object} meta Optional metadata.
-         * @param {boolean} more Whether there will be more content later.
          */
-        render: function (data, mojitType, tmpl, adapter, meta, more) {
+        render: function (data, mojitType, tmpl, adapter, meta) {
             var handler = function (err, obj) {
                 if (err) {
                     adapter.error(err);
@@ -41,7 +40,7 @@ YUI.add('mojito-hb', function(Y, NAME) {
                 }
 
                 if (obj) {
-                    adapter.flush(obj.template(data), meta);
+                    adapter.flush(obj.compiled(data), meta);
                     Y.log('render complete for view "' +
                         tmpl + '"',
                         'mojito', 'qeperf');
@@ -59,30 +58,24 @@ YUI.add('mojito-hb', function(Y, NAME) {
          * @param {string} tmpl The name of the template to render.
          * @param {boolean} bypassCache Whether or not we should rely on the cached content.
          * @param {function} callback The function that is called with the compiled template
-         *  @param {Error|null} callback.err If an error occurred, this parameter will
-         *    contain the error. If the operation succeeded, _err_ will be
-         *    `null`.
-         *  @param {Object} callback.obj An object containing the raw template and a
-         *    compiled version of the template.
          * @return {object} literal object with the "raw" and "template" references.
          */
         _getTemplateObj: function (tmpl, bypassCache, callback) {
-            var handler = function (templateStr) {
-                if (templateStr) {
-                    // applying a very simple local cache to avoid reading from requesting template file again
-                    // in general, caching a reference to the compiled function is also a good performance boost.
-                    cache[tmpl] = {
-                        raw: templateStr,
-                        template: HB.compile(templateStr)
-                    };
-                }
-                callback(cache[tmpl]);
-            };
-            if (!cache[tmpl] || bypassCache) {
-                this._loadTemplate(tmpl, handler);
-            } else {
+            if (cache[tmpl] && !bypassCache) {
                 callback(cache[tmpl]);
             }
+
+            this._loadTemplate(tmpl, function (err, str) {
+                if (err) {
+                    callback(err);
+                    return;
+                }
+                cache[tmpl] = {
+                    raw: str,
+                    compiled: HB.compile(str)
+                };
+                callback(null, cache[tmpl]);
+            });
         },
 
         /**

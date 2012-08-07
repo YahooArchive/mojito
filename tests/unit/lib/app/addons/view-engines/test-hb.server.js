@@ -27,8 +27,7 @@ YUI({useBrowserConsole: true}).use(
             setUp: function () {
                 this.viewEngine = new Y.mojito.addons.viewEngines.hb();
                 this.viewEngine._loadTemplate = function (tmpl, cb) {
-                    var template = TEMPLATES[tmpl];
-                    return template;
+                    cb(null, TEMPLATES[tmpl]);
                 };
             },
 
