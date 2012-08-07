@@ -131,6 +131,9 @@ configuration Object
 | ``tunnelPrefix``                                       | string               | "/tunnel/"        | The URL prefix for the communication tunnel            |
 |                                                        |                      |                   | from the client back to the server.                    |
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
+| ``tunnelTimeout``                                      | number               | 30000             | The timeout in milliseconds for the communication      |
+|                                                        |                      |                   | tunnel from the client back to the server.             |
++--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
 | `yui <#yui-obj>`_                                      | object               | N/A               | When Mojito is deployed to client, the                 |
 |                                                        |                      |                   | :ref:`yui_obj` specifies where                         |
 |                                                        |                      |                   | and how to obtain YUI 3.                               |
@@ -259,7 +262,7 @@ specs Object
 |                              |               | child's execution itself. The proxy mojit will be executed in           |
 |                              |               | place of the mojit being proxied. The original proxied child mojit      |
 |                              |               | spec will be attached as a *proxied* object on the proxy mojit's        |
-|                              |               | \`config` for it to handle as necessary.                                |
+|                              |               | ``config`` for it to handle as necessary.                               |
 +------------------------------+---------------+-------------------------------------------------------------------------+
 | ``shareYUIInstance``         | boolean       | Determines whether the mojit should use the single shared YUI           |
 |                              |               | instance. To use the single shared YUI instance, the                    |
