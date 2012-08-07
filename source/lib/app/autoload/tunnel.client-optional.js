@@ -13,67 +13,62 @@ YUI.add('mojito-tunnel-client', function(Y, NAME) {
 
     function TunnelClient(appConfig) {
         this._appConfig = appConfig;
-
-        var errorReporter = {
-            error: function(type, msg) {
-                throw new Error('TRANSPORT ERROR: ' + type + ' : ' + msg);
-            }
-        },
-            configProvider = {
-
-                getProxyUrl: function() {
-                    return appConfig.tunnelPrefix;
-                },
-
-                getDaliProperties: function() {
-                    return {};
-                },
-
-                getProxyTimeout: function() {
-                    return 10000;
-                }
-            };
-
-        Y.Dali.beanRegistry.registerBean('errorReporter', errorReporter);
-        Y.Dali.beanRegistry.registerBean('configProvider', configProvider);
-        Y.Dali.beanRegistry.doInjection();
-        this._transport = Y.Dali.beanRegistry.getBean('transport');
     }
 
 
     TunnelClient.prototype = {
 
         rpc: function(command, adapter) {
+            var url,
+                cfg,
+                req;
 
-            // the RPC tunnel always sends JSON POST data
-            command.forcepost = true;
+            url = this._appConfig.tunnelPrefix;
 
-            this._transport.makeRequest(command, {
-
-                success: function(resp) {
-                    Y.log('rpc success', 'debug', NAME);
-                    adapter.done(resp.html, resp.data.meta);
+            cfg = {
+                method: 'POST',
+                data: Y.JSON.stringify(command),
+                on: {
+                    success: function (id, resp, args) {
+                        Y.log('rpc success', 'debug', NAME);
+                        try {
+                            resp = Y.JSON.parse(resp.responseText);
+                            adapter.done(resp.data.html, resp.data.meta);
+                        } catch (e) {
+                            adapter.error(e.message);
+                        }
+                    },
+                    failure: function (id, resp, args) {
+                        Y.log('rpc failure!', 'warn', NAME);
+                        try {
+                            resp = Y.JSON.parse(resp.responseText);
+                            adapter.error(resp.data.html);
+                        } catch (e) {
+                            adapter.error(e.message);
+                        }
+                    },
+                    scope: this
                 },
+                context: this,
+                timeout: this._appConfig.tunnelTimeout || 10000,
+                headers: {'Content-Type' : 'application/json'}
+            };
 
-                failure: function(resp) {
-                    Y.log('rpc failure!', 'warn', NAME);
-                    adapter.error(resp.html);
-                }
-            });
+            req = this._makeRequest(url, cfg);
+
+            return req;
+        },
+
+        _makeRequest: function (url, cfg) {
+            return Y.io(url, cfg);
         }
     };
 
-    Y.mojito.TunnelClient = TunnelClient;
+    Y.namespace('mojito').TunnelClient = TunnelClient;
 
 }, '0.1.0', {requires: [
-    'breg',
-    'querystring-stringify-simple',
     'mojito',
-    'dali-transport-base',
-    'request-handler',
-    'simple-request-formatter',
-    'requestor',
-    'io-facade',
-    'response-formatter',
-    'response-processor'
+    'io',
+    'json-stringify',
+    'json-parse'
 ]});

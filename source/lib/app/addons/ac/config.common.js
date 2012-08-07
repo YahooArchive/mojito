@@ -78,7 +78,7 @@ YUI.add('mojito-config-addon', function(Y, NAME) {
         }
     };
 
-    Y.mojito.addons.ac.config = Addon;
+    Y.namespace('mojito.addons.ac').config = Addon;
 
 }, '0.1.0', {requires: [
     'mojito'

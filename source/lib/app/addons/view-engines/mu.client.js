@@ -8,7 +8,18 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
 /*global YUI*/
 
+/**
+ * View engines.
+ *
+ * Please see the [documentation](http://developer.yahoo.com/cocktails/mojito/docs/topics/mojito_extensions.html#view-engines).
+ *
+ * @module ViewEngines
+ */
 
+
+/**
+ * @Module ViewEngines
+ */
 YUI.add('mojito-mu', function(Y, NAME) {
 
     var CACHE = {},
@@ -488,7 +499,7 @@ YUI.add('mojito-mu', function(Y, NAME) {
             YUI._mojito._cache.compiled[ns].views[meta.view.name];
     };
 
-    Y.mojito.addons.viewEngines.mu = MuAdapter;
+    Y.namespace('mojito.addons.viewEngines').mu = MuAdapter;
 
 }, '0.1.0', {requires: [
     'mojito-util',

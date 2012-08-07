@@ -293,5 +293,6 @@ YUI.add('mojito-composite-addon-tests', function(Y, NAME) {
     YUITest.TestRunner.add(suite);
 
 }, '0.0.1', {requires: [
+    'mojito',
     'mojito-composite-addon'
 ]});

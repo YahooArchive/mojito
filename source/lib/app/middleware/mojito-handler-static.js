@@ -26,7 +26,7 @@
  * Module dependencies.
  */
 var fs = require('fs'),
-    mime = require('../../libs/mime'),
+    mime = require('mime'),
     pa = require('path'),
     parseUrl = require('url').parse,
     logger,
@@ -164,10 +164,11 @@ function clearCache(key) {
  */
 function staticProvider(store, globalLogger) {
     logger = globalLogger;
-    var appConfig = store.getAppConfig(null, 'application'),
+    var appConfig = store.getStaticAppConfig(),
         options = appConfig.staticHandling || {},
         cache = options.cache,
-        maxAge = options.maxAge;
+        maxAge = options.maxAge,
+        urls = store.getAllURLs();
 
     if (cache && !maxAge) {
         maxAge = cache;
@@ -197,10 +198,10 @@ function staticProvider(store, globalLogger) {
 
         // Use the resource store as a URI "rewriter" here.
         // /favicon.ico is sent to ./my_app_folder/assets/favicon.ico
-        filename = store.fileFromStaticHandlerURL(path);
+        filename = urls[path];
         // TODO: [Issue 80] remove this for performance
         if ((!filename) && (path === '/favicon.ico')) {
-            filename = pa.join(store._root, 'assets', path);
+            filename = pa.join(store._config.root, 'assets', path);
         }
 
         if (!filename) {

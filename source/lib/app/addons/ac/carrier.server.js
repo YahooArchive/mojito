@@ -67,7 +67,7 @@ YUI.add('mojito-carrier-addon', function(Y, NAME) {
 
     CarrierAddon.dependsOn = ['config', 'http'];
 
-    Y.mojito.addons.ac.carrier = CarrierAddon;
+    Y.namespace('mojito.addons.ac').carrier = CarrierAddon;
 
 }, '0.1.0', {requires: [
     'mojito'

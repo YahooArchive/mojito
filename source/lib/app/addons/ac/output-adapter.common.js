@@ -346,7 +346,7 @@ YUI.add('mojito-output-adapter-addon', function(Y, NAME) {
         ac.error = error;
     }
 
-    Y.mojito.addons.ac.core = Addon;
+    Y.namespace('mojito.addons.ac').core = Addon;
 
 }, '0.1.0', {requires: [
     'json-stringify',

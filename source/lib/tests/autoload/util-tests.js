@@ -14,7 +14,7 @@ YUI.add('mojito-util-tests', function(Y, NAME) {
         
         name: 'others',
 
-        'unicodeEscape cleanses a string': function() {
+        'htmlEntitiesToUnicode cleanses a string': function() {
             A.areSame(
                 '\\u003Cscript\\u003Ealert(\\u0022hi, i\\u0027m a squid \\u0026 a happy one!\\u0022)\\u003C/script\\u003E',
                 Y.mojito.util.cleanse(
@@ -97,6 +97,80 @@ YUI.add('mojito-util-tests', function(Y, NAME) {
             AA.itemsAreEqual(a2, Y.mojito.util.cleanse(a1));
         },
         
+        'unicodeToHtmlEntities uncleanses a string': function() {
+            A.areSame(
+                '<script>alert("hi, i\'m a squid & a happy one!")</script>',
+                Y.mojito.util.cleanse(
+                    '\\u003Cscript\\u003Ealert(\\u0022hi, i\\u0027m a squid \\u0026 a happy one!\\u0022)\\u003C/script\\u003E',
+                    Y.mojito.util.unicodeToHtmlEntities));
+        },
+
+        'uncleanse uncleanses a string': function() {
+            A.areSame(
+                '<script>alert("hi, i\'m a squid & a happy one!")</script>',
+                Y.mojito.util.uncleanse(
+                    '\\u003Cscript\\u003Ealert(\\u0022hi, i\\u0027m a squid \\u0026 a happy one!\\u0022)\\u003C/script\\u003E'));
+        },
+
+        'uncleanse uncleanses an empty array': function() {
+            var a = [];
+            AA.itemsAreEqual(a, Y.mojito.util.uncleanse(a),
+                'Empty array should cleanse properly as empty array.');
+        },
+        
+        'uncleanse cleanses an array with single array child': function() {
+            var a = [[]];
+            // AA.itemsAreEqual is brain-damaged and doesn't maintain Array
+            // semantics for content checks so we hack around it with JSON.
+            A.areSame(Y.JSON.stringify(a),
+                Y.JSON.stringify(Y.mojito.util.uncleanse(a)),
+                'Array with single (empty) array child should uncleanse properly.');
+        },
+
+        'uncleanse uncleanses an array': function() {
+            var a1, 
+                a2;
+
+            a1 = ['<script>I\'m a hack attempt</script>'];
+            a2 = ['\\u003Cscript\\u003EI\\u0027m a hack attempt\\u003C/script\\u003E'];
+            AA.itemsAreEqual(a1, Y.mojito.util.uncleanse(a2),
+                'array uncleanse should work');
+        },
+
+        'uncleanse uncleanses an object': function() {
+            var o1, 
+                o2;
+
+            o1 = {'key': '<script>I\'m a hack attempt</script>'};
+            o2 = {'key': 
+                '\\u003Cscript\\u003EI\\u0027m a hack attempt\\u003C/script\\u003E'};
+
+            OA.areEqual(o1, Y.mojito.util.uncleanse(o2),
+                'object uncleanse should work');
+        },
+
+        'uncleanse uncleanses a nested array': function() {
+            var a1, 
+                a2;
+
+            a1 = [['<script>I\'m a hack attempt</script>']];
+            a2 = [['\\u003Cscript\\u003EI\\u0027m a hack attempt\\u003C/script\\u003E']];
+            AA.itemsAreEqual(a1[0], Y.mojito.util.uncleanse(a2)[0],
+                'nested array uncleanse should work');
+        },
+
+        'uncleanse uncleanses a nested object': function() {
+            var a1, 
+                a2;
+
+            a1 = [{'key': '<script>I\'m a hack attempt</script>'}];
+            a2 = [{'key': 
+                '\\u003Cscript\\u003EI\\u0027m a hack attempt\\u003C/script\\u003E'}];
+
+            OA.areEqual(a1[0], Y.mojito.util.uncleanse(a2)[0],
+                'object uncleanse should work');
+        },
+
         'copy() deep copies an object': function() {
             var obj = {
                     inner: {
@@ -356,4 +430,4 @@ YUI.add('mojito-util-tests', function(Y, NAME) {
     
     YUITest.TestRunner.add(suite);
     
-}, '0.0.1', {requires: ['mojito-util']});
+}, '0.0.1', {requires: ['mojito-util','json']});

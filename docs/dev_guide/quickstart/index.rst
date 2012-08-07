@@ -9,12 +9,13 @@ Prerequisites
 
 **System:** Unix-based system.
 
-**Software:** C++ compiler, `Node.js v0.4.5 or higher <http://nodejs.org/#download>`_, `npm <http://npmjs.org/>`_
+**Software:** `Node.js (>= 0.4.0 < 0.7) <http://nodejs.org/>`_, `npm (> 1.0.0)<http://npmjs.org/>`_
 
 Installation Steps
 ##################
 
-#. Get Mojito from the npm registry and globally install Mojito so that it can be run from the command line. You may need to use ``sudo`` if you run into permission errors.
+#. Get Mojito from the npm registry and globally install Mojito so that it can be run from the 
+   command line. You may need to use ``sudo`` if you run into permission errors.
 
    ``$ npm install mojito -g``
 
