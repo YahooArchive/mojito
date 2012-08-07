@@ -205,17 +205,17 @@ YUI.add('mojito-client-store', function(Y, NAME) {
             }
 
             if (url.indexOf('/') !== 0) {
-				url = '/' + url;
-			}
+                url = '/' + url;
+            }
 
-			// this is mainly used by html5app
+            // this is mainly used by html5app
             if (this.appConfig.pathToRoot) {
                 url = this.appConfig.pathToRoot + url;
             }
 
-			url += '?' + Y.QueryString.stringify(context);
+            url += '?' + Y.QueryString.stringify(context);
 
-			return url;
+            return url;
         }
     };
 
