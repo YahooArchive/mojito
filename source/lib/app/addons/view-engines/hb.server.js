@@ -14,7 +14,7 @@ YUI.add('mojito-hb', function(Y, NAME) {
     'use strict';
 
     var fs = require('fs'),
-        HB = Y.Handlebars,
+        HB = require('yui/handlebars').Handlebars,
         cache = YUI.namespace('Env.Handlebars');
 
     /**
@@ -46,9 +46,6 @@ YUI.add('mojito-hb', function(Y, NAME) {
                                     this.viewId + '"',
                                     'mojito', 'qeperf');
             }
-            // TODO: what should we do when the template fails to load?
-            //       should we just flush an empty string? the error message
-            //       was already reported by the getTemplateObj method for sure.
             adapter.done('', meta);
         },
 
@@ -85,8 +82,6 @@ YUI.add('mojito-hb', function(Y, NAME) {
             var str;
             if (!cache[tmpl] || bypassCache) {
                 Y.log('Loading template from disk: ' + tmpl, 'mojito', 'qeperf');
-                // TODO: should we try/catch this? I don't see any try/catch when reading files
-                //       in the rest of the repo, is this the intention?
                 str = this._loadTemplate(tmpl);
                 if (str) {
                     // applying a very simple local cache to avoid reading from disk over and over again.
@@ -103,14 +98,19 @@ YUI.add('mojito-hb', function(Y, NAME) {
         /**
          * Loads a template from the file system
          * @param tmpl The location of the template file
-         * @return {string} The template string
+         * @return {string|undefined} The template string. Returns undefined if there
+         *  is an exception thrown during reading
          * @private
          */
         _loadTemplate: function (tmpl) {
-            return fs.readFileSync(tmpl, 'utf8');
+            var str;
+            try {
+                str = fs.readFileSync(tmpl, 'utf8');
+            } catch (e) {}
+            return str;
         }
     };
 
     Y.namespace('mojito.addons.viewEngines').hb = HandleBarsAdapter;
 
-}, '0.1.0', {requires: ['handlebars']});
+}, '0.1.0', {requires: []});

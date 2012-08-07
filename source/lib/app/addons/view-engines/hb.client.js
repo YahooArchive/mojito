@@ -13,7 +13,7 @@ YUI.add('mojito-hb', function(Y, NAME) {
     'use strict';
 
     var HB = Y.Handlebars,
-        cache = Y.namespace('Env.Handlebars');
+        cache = Y.namespace('Env.Mojito.Handlebars');
 
     /**
      * Class text.
@@ -46,9 +46,6 @@ YUI.add('mojito-hb', function(Y, NAME) {
                         tmpl + '"',
                         'mojito', 'qeperf');
                 }
-                // TODO: what should we do when the template fails to load?
-                //       should we just flush an empty string? the error message
-                //       was already reported by the getTemplateObj method for sure.
                 adapter.done('', meta);
             };
 
@@ -62,6 +59,11 @@ YUI.add('mojito-hb', function(Y, NAME) {
          * @param {string} tmpl The name of the template to render.
          * @param {boolean} bypassCache Whether or not we should rely on the cached content.
          * @param {function} callback The function that is called with the compiled template
+         *  @param {Error|null} callback.err If an error occurred, this parameter will
+         *    contain the error. If the operation succeeded, _err_ will be
+         *    `null`.
+         *  @param {Object} callback.obj An object containing the raw template and a
+         *    compiled version of the template.
          * @return {object} literal object with the "raw" and "template" references.
          */
         _getTemplateObj: function (tmpl, bypassCache, callback) {
