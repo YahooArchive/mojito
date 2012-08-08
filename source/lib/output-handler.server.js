@@ -91,6 +91,7 @@ OutputHandler.prototype = {
         this.done(out, {
             http: {
                 code: err.code,
+                reasonPhrase: err.reasonPhrase,
                 headers: {
                     'content-type': 'text/html'
                 }
@@ -110,12 +111,21 @@ OutputHandler.prototype = {
         }
 
         this.statusCode = meta.http.code;
+        this.reasonPhrase = meta.http.reasonPhrase;
     },
 
 
     _writeHeaders: function() {
         if (!this.headersSent) {
-            this.res.writeHead(this.statusCode || 200, this.headers);
+
+            // passing a falsy reason phrase would break, because node uses every non-string arguments[1]
+            // as header object/array
+            if (this.reasonPhrase && typeof this.reasonPhrase === 'string') {
+                this.res.writeHead(this.statusCode || 200, this.reasonPhrase, this.headers);
+            } else {
+                this.res.writeHead(this.statusCode || 200, this.headers);
+            }
+
             this.headersSent = true;
         }
     }
