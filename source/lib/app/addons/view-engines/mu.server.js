@@ -5,7 +5,7 @@
  */
 
 
-/*jslint anon:true, sloppy:true, nomen:true, node:true*/
+/*jslint anon:true, sloppy:true, nomen:true, node:true, stupid:true*/
 /*global YUI*/
 
 

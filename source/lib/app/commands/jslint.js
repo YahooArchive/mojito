@@ -5,7 +5,7 @@
  */
 
 
-/*jslint anon:true, sloppy:true, regexp:true, nomen:true*/
+/*jslint anon:true, sloppy:true, regexp:true, nomen:true, stupid:true*/
 
 
 var fs = require('fs'),
@@ -157,7 +157,7 @@ function OutputStdout(filename) {
  * and returning the number of errors encountered.
  */
 function lintOneFile(infile, outfile) {
-    var jslint = require('../../management/fulljslint').jslint,
+    var jslint = require('jslint'),
         OPTS = {
             'continue': true, // Tolerate continue
             node: true,
