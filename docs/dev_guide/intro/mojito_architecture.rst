@@ -2,7 +2,10 @@
 Mojito Architecture
 ===================
 
-This chapter attemps to give you a general understanding of the Mojito architecture as a whole 
+.. role:: raw-html(raw)
+   :format: html
+
+This chapter attempts to give you a general understanding of the Mojito architecture as a whole 
 and the Mojito Framework. We'll first look at graphics to understand the relationships 
 of the discrete components within the architecture and then briefly discuss some of the core
 components. We hope that having a better understanding of how the pieces work 
@@ -19,13 +22,15 @@ uses the HTTP for client-server communication, and accesses data. The sections f
 diagram discuss the clients, Mojito applications, and getting data in greater detail.
 
 
-.. figure:: images/mojito_architecture.png
-   :scale: 75 %
+.. image:: images/mojito_architecture.png
+   :scale: 85 %
    :alt: Diagram showing Mojito running on different clients.
    :height: 574px
    :width: 459px
-   :align: left
+   :align: center 
   
+
+:raw-html:`<br clear="all"/>`
 
 .. _overview-clients:
 
@@ -54,7 +59,7 @@ distributed and deployed as a unit, and as such, it is deployment-independent. T
 used by an application may be included directly within the package or may be included by reference 
 from a cloud-based repository.
 
-See also `Mojito Applications <./mojito_apps.html>`_ for a more in-depth discussions.
+See also `Mojito Applications <./mojito_apps.html>`_ for a more in-depth discussion.
 
 .. _overview-data:
 
@@ -80,20 +85,23 @@ Mojito Core, mojits, and the runtime environments. The subsequent sections descr
 elements in the diagram in more detail.
 
 
-.. figure:: images/mojito_framework.png
-   :scale: 75 %
+.. image:: images/mojito_framework.png
+   :scale: 85 %
    :alt: Diagram showing the relationships between the Mojito application, Mojito core, mojits,
-   and runtime environments.
+         and runtime environments.
    :height: 513px
    :width: 718px
-   :align: left
+   :align: center
+
+
+:raw-html:`<br clear="all"/>`
 
 .. _framework-server_runtime:
 
 Mojito Server Runtime
 #####################
 
-The base server-only capabilities that support the Mojito Core includes, but are not 
+The base server-only capabilities that support the Mojito Core include, but are not 
 limited to, the following:
 
 - HTTP Server 
@@ -152,9 +160,8 @@ mojit is running within the client).
 Mojito Services
 ###############
 
-TBD
+TBD - Need a short description and list of components if any.
 
-.. Need a short description here.
 
 .. _framework-model_factory:
 
@@ -165,7 +172,7 @@ The Model Factory creates the model instance for a mojit instance based on that 
 configuration (and perhaps on its corresponding mojit definition). The use of a factory mechanism 
 allows the framework to easily interject proxies and other intermediaries, in a manner that is 
 transparent to the mojit developer. In addition, a mojit developer may choose to provide a custom 
-factory, although the need for this is not expected other than in rare circumstances.
+factory, although the need for this is not expected except in rare circumstances.
 
 .. _framework-view_factory:
 
@@ -202,14 +209,15 @@ we focus on the servicing of page requests and user interactions, and ignore for
 moment issues such as packaging and deployment. Again, we examine more closely 
 the framework components in the following sections.
 
-.. figure:: images/mojito_components.png
-   :scale: 75 %
+.. image:: images/mojito_components.png
    :alt: Flowchart showing how page requests are handled and responses returned.
    :height: 540px
    :width: 457px
-   :align: left
-   
-|   
+   :align: center
+   :target: ./images/mojito_components.png
+  
+
+:raw-html:`<br clear="all"/>`
 
 .. _framework_components-dispatcher:
 
@@ -238,10 +246,10 @@ URL management, so this component may not be used in such cases.
 Mojit Host
 ##########
 
-The mojits themselves are not part of the Application Container per se. However, 
-the container provides the facilities to host, support, and manage mojits while the mojits 
-collectively provide the functionality of the application. See `Mojits <mojito_apps.html#mojits>`_ 
-for more information about mojits.
+The mojits themselves are not part of the Application Container per se. The container
+provides the facilities to host, support, and manage mojits while the mojits collectively provide 
+the functionality of the application. See also `Mojits <mojito_apps.html#mojits>`_ for more 
+information about mojits.
 
 .. _framework_components-app_config:
 
@@ -251,8 +259,9 @@ Application Configuration
 A particular instance of the Application Container is initialized 
 through an externally managed configuration. This configuration includes, among other things, 
 the mappings that drive the Dispatcher, the identification of necessary mojit registries, and 
-other environmental parameters. (Note that the Application Configuration specifically excludes 
-deployment parameters; this is because the Application Configuration is part of the packaged, 
-deployable application, and thus, must not be tied to a particular deployment environment.)
+other environmental parameters. The Application Configuration specifically excludes 
+deployment parameters, however, because it is part of the packaged, deployable application, and 
+thus, must not be tied to a particular deployment environment.
+
 
 
