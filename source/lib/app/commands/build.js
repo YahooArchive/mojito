@@ -190,7 +190,7 @@ exports.buildhtml5app = function(cmdOptions, store, config, destination,
 
     appConfig = store.getAppConfig(config.context);
     tunnelPrefix = appConfig.tunnelPrefix || '/tunnel';
-    staticPrefix = '/' + appConfig.staticHandling.prefix;
+    staticPrefix = appConfig.staticHandling.prefix ? '/' + appConfig.staticHandling.prefix : '';
 
     console.log('Building a "' + type + '" of the Mojito application at "' +
         store._config.root + '"');
