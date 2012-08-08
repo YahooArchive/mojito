@@ -128,8 +128,25 @@ YUI.add('mojito-loader-tests', function(Y, NAME) {
             ];
             AA.itemsAreEqual(expected, got.js);
             A.isArray(got.css);
-        }
+        },
 
+        'create yui-lib combo URL with custom yui settings': function() {
+            var appConfig = {
+                yui: {
+                    config: {
+                        comboBase: "https://custom/combo?"
+                    }
+                }
+            };
+            var loader = new Y.mojito.Loader(appConfig);
+            A.isNotUndefined(loader);
+            var modules = [
+                'autocomplete'
+            ];
+            var got = loader.createYuiLibComboUrl(modules);
+            A.isArray(got.js);
+            A.areEqual(0 , got.js[0].indexOf('https://custom/combo?'), 'the comboBase setting is not being honored');
+        }
 
     }));
 
