@@ -22,6 +22,7 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
     var libfs = require('fs'),
         libpath = require('path'),
         libvm = require('vm'),
+        WARN_SERVER_MODULES = /\b(dom-\w+|node-\w+|io-upload-iframe)/g,
         MODULE_SUBDIRS = {
             autoload: true,
             tests: true,
@@ -451,6 +452,7 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
                 m,
                 module,
                 info,
+                warn,
                 sortedPaths = {};
 
             // We don't actually need the full list, just the required modules.
@@ -494,6 +496,16 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
                     sortedPaths[module] = info.fullpath || loader._url(info.path);
                 }
             }
+
+            // log warning if server mojit has dom dependency
+            if ('server' === env) {
+                warn = Y.Object.keys(sortedPaths).join(' ').match(WARN_SERVER_MODULES);
+                if (warn) {
+                    Y.log('your mojit "' + mojit + '" has a server affinity and these client-related deps: ' + warn.join(', '), 'WARN', NAME);
+                    Y.log('Mojito may be unable to start, unless you have provided server-side DOM/host-object suppport', 'WARN', NAME);
+                }
+            }
+
             return {
                 sorted: loader.sorted,
                 paths: sortedPaths
