@@ -74,14 +74,10 @@ YUI.add('mojito-middleware-handler-tunnel-tests', function(Y, NAME) {
                     'url': '/tunnel',
                     'method': 'POST',
                     'body': {
-                        'reqs': [{
-                            'data': {
-                                'context': {
-                                    'runtime': 'client',
-                                    'myKey': 'myValue'
-                                }
-                            }
-                        }]
+                        'context': {
+                            'runtime': 'client',
+                            'myKey': 'myValue'
+                        }
                     }
                 },
                 res = {
