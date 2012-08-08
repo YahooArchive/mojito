@@ -5,7 +5,7 @@
  */
 
 
-/*jslint anon:true, sloppy:true, nomen:true, regexp:true*/
+/*jslint anon:true, sloppy:true, nomen:true, regexp:true, stupid:true*/
 
 
 var libpath = require('path'),

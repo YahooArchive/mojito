@@ -33,11 +33,7 @@ YUI.add('mojito-carrier-addon', function(Y, NAME) {
                 // Set carrier accessor
                 Object.defineProperty(ac, 'carrier', {
                     get: function() {
-                        if (req.carrier) {
-                            return req.carrier;
-                        } else {
-                            return my;
-                        }
+                        return req.carrier || my;
                     },
                     set: function() {
                     },

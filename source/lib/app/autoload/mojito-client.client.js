@@ -700,9 +700,8 @@ YUI.add('mojito-client', function(Y, NAME) {
                         if (typeof cb === 'function') {
                             cb(new Error(err));
                             return;
-                        } else {
-                            throw new Error(err);
                         }
+                        throw new Error(err);
                     }
 
                     // if there is a controller in the client type details, that
@@ -917,9 +916,8 @@ YUI.add('mojito-client', function(Y, NAME) {
                     if (typeof cb === 'function') {
                         cb(new Error(err));
                         return;
-                    } else {
-                        throw new Error(err);
                     }
+                    throw new Error(err);
                 }
 
                 /*

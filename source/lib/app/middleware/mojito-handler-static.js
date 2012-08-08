@@ -225,7 +225,8 @@ function staticProvider(store, globalLogger) {
                 logger.log('err finding: ' + filename, 'warn', NAME);
                 // TODO: [Issue 90] send next an error?
                 return next();
-            } else if (stat.isDirectory()) {
+            }
+            if (stat.isDirectory()) {
                 // TODO: [Issue 90] send next an error?
                 return next();
             }
