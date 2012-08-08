@@ -12,9 +12,7 @@ YUI.add('HTMLFrameMojit-tests', function(Y, NAME) {
         mojitoPath = pathlib.join(__dirname, '../..'),
         targetMojitoPath = mojitoPath,
         fwTestsRoot = pathlib.join(targetMojitoPath, 'tests'),
-        YUITest = require(pathlib.join(fwTestsRoot,
-            'harness/lib/yuitest/javascript/build/yuitest/yuitest-node'
-            )).YUITest,
+        YUITest = require('yuitest').YUITest,
         suite = new YUITest.TestSuite(NAME),
         A = YUITest.Assert;
 

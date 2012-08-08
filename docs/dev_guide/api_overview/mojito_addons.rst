@@ -5,7 +5,7 @@ Addons
 ======
 
 The Action Context uses a mechanism called addons to provide functionality that lives both on the server and client. Each addon provides additional functions through a namespacing object,  
-which is appended to the ``ActionContext`` object that is available in every controller function. See the `ActionContextAddon Module <../../api/module_ActionContext.html>`_ for the addon classes.
+which is appended to the ``ActionContext`` object that is available in every controller function. See the `ActionContext Class <../../api/classes/ActionContext.html>`_ for the addon classes.
 
 Addons allow you to do the following:
 

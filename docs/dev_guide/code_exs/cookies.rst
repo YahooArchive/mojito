@@ -15,15 +15,15 @@ This example shows how to read and write cookies in a Mojito application.
 
 The following topics will be covered:
 
-- using the `Params addon <../../api/Params.common.html>`_ from the ``actionContext`` object
+- using the `Params addon <../../api/classes/Params.common.html>`_ from the ``actionContext`` object
 - getting and setting cookies from the mojit controller
-- using the `Cookie addon <../../api/Cookie.server.html>`_ and the `YUI Cookie module <http://developer.yahoo.com/yui/3/cookie/>`_ to get and set cookies
+- using the `Cookie addon <../../api/classes/Cookie.server.html>`_ and the `YUI Cookie module <http://developer.yahoo.com/yui/3/cookie/>`_ to get and set cookies
 
 Implementation Notes
 ####################
 
-To access many methods on the Mojito JavaScript library, you use `ActionContext addons <../../api/module_ActionContextAddon.html>`_. In this code example, 
-the `Cookie addon <../../api/Cookie.server.html>`_ is used to call the methods ``getCookie`` and ``setCookie`` to get and set cookies.
+To access many methods on the Mojito JavaScript library, you use `ActionContext addons <../../api/classes/ActionContext.html>`_. In this code example, 
+the `Cookie addon <../../api/classes/Cookie.server.html>`_ is used to call the methods ``getCookie`` and ``setCookie`` to get and set cookies.
 
 The ``index`` function in the ``controller.server.js`` below shows how to use ``cookie.get`` and ``cookie.set``.  The ``cookie.set`` method also allows you to pass a third parameter that 
 contains the domain, the path, and the expiration date of the cookie. For those familiar with YUI 3, these methods for getting and setting cookies should be familiar as Mojito uses the `YUI 3 Cookie Module <http://developer.yahoo.com/yui/3/api/Cookie.html>`_.

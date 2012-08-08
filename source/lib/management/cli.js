@@ -7,7 +7,8 @@
 
 /*jslint anon:true, sloppy:true*/
 
-var utils = require('./utils');
+var utils = require('./utils'),
+    libpath = require('path');
 
 /*
  * A command is expected to export the following:
@@ -99,7 +100,7 @@ function main() {
         command = require('mojito-cli-cmd-' + commandName);
     } catch (e) {
         try {
-            command = require('./commands/' + commandName);
+            command = require(libpath.join(__dirname, '../app/commands/', commandName));
         } catch (e) {
             utils.error('Invalid command: ' + command,
                         'mojito <command> [<params>] [<options>]');

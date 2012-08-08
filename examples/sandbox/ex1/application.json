@@ -40,5 +40,6 @@
                 "action": "jsonReturn"
             }
         }
-    }
+    },
+    { "settings": [ "device:iphone" ], "selector": "iphone" }
 ]

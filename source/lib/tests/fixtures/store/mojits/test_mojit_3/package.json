@@ -1,9 +1,11 @@
 {
     "name": "TestMojit3",
-    "config": {
+    "yahoo": {
         "mojito": {
-            "version": "0.1.0",
             "package": "public"
         }
+    },
+    "engines": {
+        "mojito": ">0.1.0"
     }
 }

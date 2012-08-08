@@ -1,8 +1,8 @@
 {
     "name": "TestMojit2",
-    "config": {
+    "yahoo": {
         "mojito": {
-            "version": "*"
+            "version": "0.3.x"
         }
     }
 }

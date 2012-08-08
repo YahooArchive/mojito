@@ -18,11 +18,10 @@
  */
 YUI.add('mojito-resource-store-adapter', function(Y, NAME) {
 
-    var APP_ROOT_PATH = '',
-        logger;
+    var logger;
 
 
-    Y.mojito.ResourceStoreAdapter = {
+    Y.namespace('mojito').ResourceStoreAdapter = {
 
         ENV: '',
 
@@ -36,13 +35,8 @@ YUI.add('mojito-resource-store-adapter', function(Y, NAME) {
 
             logger.log('resource store adapter init', 'mojito', NAME);
 
-            APP_ROOT_PATH = resourceStore._root;
-
             this.ENV = env;
             this.store = resourceStore;
-
-            this._root = resourceStore._root;
-            this._staticURLs = resourceStore._staticURLs;
 
             return this;
         },
@@ -85,7 +79,7 @@ YUI.add('mojito-resource-store-adapter', function(Y, NAME) {
                 // Here we get either the a spec or a type
                 source.func(env, source.name, context, function(err, data) {
                     if (err) {
-                        callback(err);
+                        callback(err, {});
                         return;
                     }
 
@@ -105,7 +99,7 @@ YUI.add('mojito-resource-store-adapter', function(Y, NAME) {
                         callback({
                             message: 'Instance was not valid.',
                             stack: Y.JSON.stringify(base, null, 4)
-                        });
+                        }, {});
                         return;
                     }
 
@@ -126,12 +120,12 @@ YUI.add('mojito-resource-store-adapter', function(Y, NAME) {
 
 
         getAppPath: function() {
-            return APP_ROOT_PATH;
+            return this.store._config.root;
         },
 
 
-        getAppConfig: function(context, name) {
-            return this.store.getAppConfig(context, name);
+        getAppConfig: function(context) {
+            return this.store.getAppConfig(context);
         },
 
 
@@ -191,39 +185,15 @@ YUI.add('mojito-resource-store-adapter', function(Y, NAME) {
         },
 
 
-        getYuiConfigAllMojits: function(env, ctx) {
-            //logger.log('getYuiConfigAllMojits', 'warn', NAME);
-            return this.store.getYuiConfigAllMojits(env, ctx);
-        },
-
-
-        getYuiConfigApp: function(env, ctx) {
-            //logger.log('getYuiConfigApp', 'warn', NAME);
-            return this.store.getYuiConfigApp(env, ctx);
-        },
-
-
-        getYuiConfigFw: function(env, ctx) {
-            //logger.log('getYuiConfigFw', 'warn', NAME);
-            return this.store.getYuiConfigFw(env, ctx);
-        },
-
-
-        serializeClientStore: function(ctx, instances) {
+        serializeClientStore: function(ctx) {
             //logger.log('serializeClientStore', 'warn', NAME);
-            return this.store.serializeClientStore(ctx, instances);
+            return this.store.serializeClientStore(ctx);
         },
 
 
         getMojitTypeDetails: function(env, ctx, mojitType, dest) {
             //logger.log('getMojitTypeDetails', 'warn', NAME);
             return this.store.getMojitTypeDetails(env, ctx, mojitType, dest);
-        },
-
-
-        fileFromStaticHandlerURL: function(url) {
-            //logger.log('fileFromStaticHandlerURL', 'warn', NAME);
-            return this.store.fileFromStaticHandlerURL(url);
         },
 
 
@@ -234,5 +204,6 @@ YUI.add('mojito-resource-store-adapter', function(Y, NAME) {
     };
 
 }, '0.1.0', {requires: [
-    'mojito-util'
+    'mojito-util',
+    'json-stringify'
 ]});

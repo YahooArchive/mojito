@@ -18,17 +18,17 @@ YUI.add('HTMLFrameMojit', function(Y, NAME) {
 
         if ('js' === type) {
             for (i = 0; i < list.length; i += 1) {
-                // Escape any HTML chars in the URL to avoid trivial attribute
-                // injection attacks.
-                url = Y.Escape.html(list[i]);
+                // TODO: Fuly escape any HTML chars in the URL to avoid trivial
+                // attribute injection attacks. See owasp-esapi reference impl.
+                url = encodeURI(list[i]);
                 data += '<script type="text/javascript" src="' +
                     url + '"></script>\n';
             }
         } else if ('css' === type) {
             for (i = 0; i < list.length; i += 1) {
-                // Escape any HTML chars in the URL to avoid trivial attribute
-                // injection attacks.
-                url = Y.Escape.html(list[i]);
+                // TODO: Escape any HTML chars in the URL to avoid trivial
+                // attribute injection attacks. See owasp-esapi reference impl.
+                url = encodeURI(list[i]);
                 data += '<link rel="stylesheet" type="text/css" href="' +
                     url + '"/>\n';
             }
@@ -49,7 +49,7 @@ YUI.add('HTMLFrameMojit', function(Y, NAME) {
     };
 
 
-    Y.mojito.controllers[NAME] = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         index: function(ac) {
             this.__call(ac);
@@ -124,6 +124,5 @@ YUI.add('HTMLFrameMojit', function(Y, NAME) {
 }, '0.1.0', {requires: [
     'mojito-assets-addon',
     'mojito-deploy-addon',
-    'mojito-config-addon',
-    'escape'
+    'mojito-config-addon'
 ]});

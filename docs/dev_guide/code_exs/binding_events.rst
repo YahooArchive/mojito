@@ -387,7 +387,7 @@ The controller for ``PagerMojit`` performs several functions:
 - calls the ``getData`` function in the model to get photo data
 - creates URLs for the **next** and **prev** links
 
-The `Params addon <../../api/Params.common.html>`_ allows you to access variables from the query string parameters, the POST request bodies, or the routing systems URLs. 
+The `Params addon <../../api/classes/Params.common.html>`_ allows you to access variables from the query string parameters, the POST request bodies, or the routing systems URLs. 
 In this code example, you use the ``getFromMerged`` method, which merges the parameters from the query string, POST request body, and the routing system URLs to give you access to 
 all of the parameters. In the code snippet taken from ``controller.server.js`` below, the ``getFromMerged`` method is used to get the value for the ``page`` parameter and then calculate 
 the index of the first photo to display:

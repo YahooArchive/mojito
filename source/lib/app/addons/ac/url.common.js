@@ -38,7 +38,7 @@ YUI.add('mojito-url-addon', function(Y, NAME) {
      * @class Url.common
      */
     function UrlAcAddon(command, adapter, ac) {
-        this.maker = new Y.mojito.RouteMaker(ac.app.routes);
+        this.routeConfig = ac.app.routes;
         this.appConfig = ac.app.config;
     }
 
@@ -70,7 +70,7 @@ YUI.add('mojito-url-addon', function(Y, NAME) {
                 query = query + '?' + routeParams;
             }
 
-            url = this.maker.make(query, verb);
+            url = this.getRouteMaker().make(query, verb);
 
             if (urlParams) {
                 urlParams = objectToQueryStr(urlParams, true);
@@ -112,11 +112,18 @@ YUI.add('mojito-url-addon', function(Y, NAME) {
                 url = url.slice(0, url.indexOf('?'));
             }
 
-            return this.maker.find(url, verb);
+            return this.getRouteMaker().find(url, verb);
+        },
+
+        getRouteMaker: function() {
+            if (!this.maker) {
+                this.maker = new Y.mojito.RouteMaker(this.routeConfig);
+            }
+            return this.maker;
         }
     };
 
-    Y.mojito.addons.ac.url = UrlAcAddon;
+    Y.namespace('mojito.addons.ac').url = UrlAcAddon;
 
 }, '0.1.0', {requires: [
     'querystring-stringify-simple',

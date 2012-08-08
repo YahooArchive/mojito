@@ -10,9 +10,9 @@ YUI.add('mojito-deploy-addon-tests', function(Y, NAME) {
         A = YUITest.Assert,
         AA = YUITest.ArrayAssert,
         OA = YUITest.ObjectAssert;
-    
+
     suite.add(new YUITest.TestCase({
-        
+
         name: 'basics',
 
         setUp: function() {
@@ -22,6 +22,7 @@ YUI.add('mojito-deploy-addon-tests', function(Y, NAME) {
         tearDown: function() {
             addon = null;
         },
+
 
         'YUI_config uses application.json yui.config': function() {
 
@@ -50,11 +51,14 @@ YUI.add('mojito-deploy-addon-tests', function(Y, NAME) {
                 serializeClientStore: function() {
                     return 'clientstore';
                 },
-                store: { _fwConfig: { ondemandBaseYuiModules:[] } },
-                getYuiConfigFw: function() { return {}; },
-                getYuiConfigApp: function() { return {}; },
-                fileFromStaticHandlerURL: function() {
-                    return 'path';
+                store: {
+                    getAllURLs: function() { return {}; },
+                    getFrameworkConfig: function() {
+                        return { ondemandBaseYuiModules:[] };
+                    },
+                    yui: {
+                        getConfigShared: function() { return {}; }
+                    }
                 }
             });
 
@@ -91,6 +95,7 @@ YUI.add('mojito-deploy-addon-tests', function(Y, NAME) {
             A.areSame('bar', config.foo, 'failed to base YUI_config on application.yui.config');
             A.areSame('klingon', config.lang, 'wrong lang used');
         },
+
 
         'honor yui.config.fetchCSS=false in application.json': function() {
 
@@ -130,11 +135,14 @@ YUI.add('mojito-deploy-addon-tests', function(Y, NAME) {
                 serializeClientStore: function() {
                     return 'clientstore';
                 },
-                store: { _fwConfig: { ondemandBaseYuiModules:[] } },
-                getYuiConfigFw: function() { return {}; },
-                getYuiConfigApp: function() { return {}; },
-                fileFromStaticHandlerURL: function() {
-                    return 'path';
+                store: {
+                    getAllURLs: function() { return {}; },
+                    getFrameworkConfig: function() {
+                        return { ondemandBaseYuiModules:[] };
+                    },
+                    yui: {
+                        getConfigShared: function() { return {}; }
+                    }
                 }
             });
 
@@ -179,6 +187,7 @@ YUI.add('mojito-deploy-addon-tests', function(Y, NAME) {
             A.areSame(1, counts['blob bottom'], 'wrong number of blob:bottom');
         },
 
+
         'dependencyCalculations precomputed': function() {
             var calledYuiModules;
             var realLoader = Y.mojito.Loader;
@@ -218,11 +227,14 @@ YUI.add('mojito-deploy-addon-tests', function(Y, NAME) {
                 serializeClientStore: function() {
                     return 'clientstore';
                 },
-                store: { _fwConfig: { ondemandBaseYuiModules:[] } },
-                getYuiConfigFw: function() { return {}; },
-                getYuiConfigApp: function() { return {}; },
-                fileFromStaticHandlerURL: function() {
-                    return 'path';
+                store: {
+                    getAllURLs: function() { return {}; },
+                    getFrameworkConfig: function() {
+                        return { ondemandBaseYuiModules:[] };
+                    },
+                    yui: {
+                        getConfigShared: function() { return {}; }
+                    }
                 }
             });
 
@@ -257,6 +269,7 @@ YUI.add('mojito-deploy-addon-tests', function(Y, NAME) {
             AA.itemsAreEqual(['yui'], calledYuiModules);
             A.areSame("'*'", YUI_use);
         },
+
 
         'dependencyCalculations ondemand': function() {
             var calledYuiModules;
@@ -297,11 +310,14 @@ YUI.add('mojito-deploy-addon-tests', function(Y, NAME) {
                 serializeClientStore: function() {
                     return 'clientstore';
                 },
-                store: { _fwConfig: { ondemandBaseYuiModules:[] } },
-                getYuiConfigFw: function() { return {}; },
-                getYuiConfigApp: function() { return {}; },
-                fileFromStaticHandlerURL: function() {
-                    return 'path';
+                store: {
+                    getAllURLs: function() { return {}; },
+                    getFrameworkConfig: function() {
+                        return { ondemandBaseYuiModules:[] };
+                    },
+                    yui: {
+                        getConfigShared: function() { return {}; }
+                    }
                 }
             });
 
@@ -336,6 +352,7 @@ YUI.add('mojito-deploy-addon-tests', function(Y, NAME) {
             AA.itemsAreEqual(['yui','get','loader-base','loader-rollup','loader-yui3'], calledYuiModules);
             A.areSame("'mojito-client'", YUI_use);
         },
+
 
         'dependencyCalculations precomputed+ondemand': function() {
             var calledYuiModules;
@@ -376,11 +393,14 @@ YUI.add('mojito-deploy-addon-tests', function(Y, NAME) {
                 serializeClientStore: function() {
                     return 'clientstore';
                 },
-                store: { _fwConfig: { ondemandBaseYuiModules:[] } },
-                getYuiConfigFw: function() { return {}; },
-                getYuiConfigApp: function() { return {}; },
-                fileFromStaticHandlerURL: function() {
-                    return 'path';
+                store: {
+                    getAllURLs: function() { return {}; },
+                    getFrameworkConfig: function() {
+                        return { ondemandBaseYuiModules:[] };
+                    },
+                    yui: {
+                        getConfigShared: function() { return {}; }
+                    }
                 }
             });
 
@@ -420,7 +440,7 @@ YUI.add('mojito-deploy-addon-tests', function(Y, NAME) {
     }));
 
     YUITest.TestRunner.add(suite);
-    
+
 
 }, '0.0.1', {requires: [
     'mojito-deploy-addon',

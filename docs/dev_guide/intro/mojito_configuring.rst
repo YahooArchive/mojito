@@ -131,6 +131,9 @@ configuration Object
 | ``tunnelPrefix``                                       | string               | "/tunnel/"        | The URL prefix for the communication tunnel            |
 |                                                        |                      |                   | from the client back to the server.                    |
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
+| ``tunnelTimeout``                                      | number               | 30000             | The timeout in milliseconds for the communication      |
+|                                                        |                      |                   | tunnel from the client back to the server.             |
++--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
 | `yui <#yui-obj>`_                                      | object               | N/A               | When Mojito is deployed to client, the                 |
 |                                                        |                      |                   | :ref:`yui_obj` specifies where                         |
 |                                                        |                      |                   | and how to obtain YUI 3.                               |
@@ -243,7 +246,7 @@ specs Object
 | `config <#config-obj>`_      | object        | This is user-defined information that allows you to configure the       |
 |                              |               | controller. Mojito does not interpret any part of this object. You can  |
 |                              |               | access your defined ``config`` in the controller using the `Config      |
-|                              |               | addon <../../api/Config.common.html>`_. For example:                    |
+|                              |               | addon <../../api/classes/Config.common.html>`_. For example:            |
 |                              |               | ``ac.config.get('message')``                                            |
 +------------------------------+---------------+-------------------------------------------------------------------------+
 | ``defer``                    | boolean       | If true and the mojit instance is a child of the ``HTMLFrameMojit``,    |
@@ -259,7 +262,7 @@ specs Object
 |                              |               | child's execution itself. The proxy mojit will be executed in           |
 |                              |               | place of the mojit being proxied. The original proxied child mojit      |
 |                              |               | spec will be attached as a *proxied* object on the proxy mojit's        |
-|                              |               | \`config` for it to handle as necessary.                                |
+|                              |               | ``config`` for it to handle as necessary.                               |
 +------------------------------+---------------+-------------------------------------------------------------------------+
 | ``shareYUIInstance``         | boolean       | Determines whether the mojit should use the single shared YUI           |
 |                              |               | instance. To use the single shared YUI instance, the                    |
@@ -608,7 +611,7 @@ Configuring Metadata
 The ``definition.json`` file in the mojit directory is used to specify metadata about the mojit type. The contents of the file override the mojit type metadata that Mojito generates 
 from the contents of the file system.
 
-The information is available from the controller using the `Config addon <../../api/Config.common.html>`_. For example, you would 
+The information is available from the controller using the `Config addon <../../api/classes/Config.common.html>`_. For example, you would 
 use ``ac.config.getDefinition('version')`` to get the version information.
 
 The table below describes the ``configuration`` object in ``definition.json``.
@@ -879,7 +882,7 @@ Adding Routing Parameters
 -------------------------
 
 You can configure a routing path to have routing parameters with the ``params`` property. Routing parameters are accessible from the ``ActionContext`` object using 
-the `Params addon <../../api/Params.common.html>`_.
+the `Params addon <../../api/classes/Params.common.html>`_.
 
 In the example ``routes.json`` below, routing parameters are added with an object. To get the value for the routing parameter ``page`` from a controller, you 
 would use ``ac.params.getFromRoute("page")``. 
@@ -947,7 +950,7 @@ The following URLs call the ``index`` and ``myAction`` functions in the controll
 Generate URLs from the Controller
 ---------------------------------
 
-The Mojito JavaScript library contains the `Url addon <../../api/Url.common.html>`_ that allows you to create a URL with the mojit instance, the action, and parameters 
+The Mojito JavaScript library contains the `Url addon <../../api/classes/Url.common.html>`_ that allows you to create a URL with the mojit instance, the action, and parameters 
 from the controller.
 
 In the code snippet below from ``routes.json``,  the mojit instance, the HTTP method, and the action are specified in the ``"foo_default"`` object.
@@ -960,7 +963,7 @@ In the code snippet below from ``routes.json``,  the mojit instance, the HTTP me
      "call": "foo-1.index"
    }
 
-In this code snippet from ``controller.js``,  the `Url addon <../../api/Url.common.html>`_ with the ``make`` method use the mojit instance and 
+In this code snippet from ``controller.js``,  the `Url addon <../../api/classes/Url.common.html>`_ with the ``make`` method use the mojit instance and 
 function specified in the ``routes.json`` above to create the URL ``/foo`` with the query string parameters ``?foo=bar``.
 
 .. code-block:: javascript
@@ -1034,7 +1037,7 @@ Controller
 ----------
 
 In the controller, the mojit-level configurations are passed to the ``init`` function. In other controller functions, you can access mojit-level configurations from the ``actionContext`` object using 
-the `Config addon <../../api/Config.common.html>`_. Use ``ac.config.get`` to access configuration values from ``application.json`` and ``defaults.json`` and ``ac.config.getDefinition`` 
+the `Config addon <../../api/classes/Config.common.html>`_. Use ``ac.config.get`` to access configuration values from ``application.json`` and ``defaults.json`` and ``ac.config.getDefinition`` 
 to access definition values from ``definition.json``.
 
 Model
