@@ -98,7 +98,7 @@ YUI.add('mojito-output-handler', function(Y, NAME) {
      */
     complete = function(data, meta, client, viewId, callback) {
         // If we get some JSON decode it
-        if (meta.http.headers['content-type'] &&
+        if (meta && meta.http && meta.http.headers['content-type'] &&
                 meta.http.headers['content-type'][0].indexOf(
                     'application/json'
                 ) === 0) {
@@ -169,9 +169,10 @@ YUI.add('mojito-output-handler', function(Y, NAME) {
         }
     };
 
-    Y.mojito.OutputHandler = OutputHandler;
+    Y.namespace('mojito').OutputHandler = OutputHandler;
 
 }, '0.1.0', {requires: [
     'mojito',
-    'json'
+    'json-parse',
+    'node'
 ]});

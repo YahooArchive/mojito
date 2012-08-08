@@ -54,32 +54,42 @@ function stylize(str, style) {
 (['bold', 'underline', 'italic', 'inverse', 'grey', 'yellow', 'red', 'green',
     'blue', 'white', 'cyan', 'magenta']).forEach(
     function(style) {
-        Object.defineProperty(String.prototype, style, {
-            get: function() {
-                return stylize(this, style);
-            }
-        });
+        try {
+            Object.defineProperty(String.prototype, style, {
+                get: function() {
+                    return stylize(this, style);
+                }
+            });
+        } catch (e) {
+            // just ignore
+        }
     }
 );
 
 // prototypes string with method "rainbow"
 // rainbow will apply a the color spectrum to a string, changing colors every
 // letter
-Object.defineProperty(String.prototype, 'rainbow', {
-    get: function() {
-        //RoY G BiV
-        var rainbowcolors = ['red', 'yellow', 'green', 'blue', 'magenta'],
-            exploded = this.split(''),
-            i = 0;
+try {
+    Object.defineProperty(String.prototype, 'rainbow', {
+        get: function() {
+            //RoY G BiV
+            var rainbowcolors = ['red', 'yellow', 'green', 'blue', 'magenta'],
+                exploded = this.split(''),
+                i = 0;
 
-        exploded = exploded.map(function(letter) {
-            if (letter === ' ') {
-                return letter;
-            } else {
-                return stylize(letter, rainbowcolors[(i += 1) %
-                    rainbowcolors.length]);
-            }
-        });
-        return exploded.join('');
-    }
-});
+            exploded = exploded.map(function(letter) {
+                if (letter === ' ') {
+                    return letter;
+                } else {
+                    return stylize(letter, rainbowcolors[(i += 1) %
+                        rainbowcolors.length]);
+                }
+            });
+            return exploded.join('');
+        }
+    });
+} catch (e) {
+    // just ignore
+}
+
+

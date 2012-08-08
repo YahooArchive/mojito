@@ -80,11 +80,11 @@ YUI.add('mojito-deploy-addon', function(Y, NAME) {
 
             var store = this.rs,
                 contextServer = this.ac.context,
-                appConfigServer = store.getAppConfig(contextServer,
-                    'application'),
+                appConfigServer = store.getAppConfig(contextServer),
                 contextClient,
                 appConfigClient,
                 yuiConfig = {},
+                fwConfig,
                 yuiConfigEscaped,
                 yuiConfigStr,
                 yuiModules,
@@ -97,7 +97,6 @@ YUI.add('mojito-deploy-addon', function(Y, NAME) {
                 binder,
                 i,
                 id,
-                instances = {},
                 clientConfig = {},
                 clientConfigEscaped,
                 clientConfigStr,
@@ -109,11 +108,12 @@ YUI.add('mojito-deploy-addon', function(Y, NAME) {
                 type,
                 module,
                 path,
-                pathToRoot;
+                pathToRoot,
+                urls;
 
             contextClient = Y.mojito.util.copy(contextServer);
             contextClient.runtime = 'client';
-            appConfigClient = store.getAppConfig(contextClient, 'application');
+            appConfigClient = store.getAppConfig(contextClient);
             clientConfig.context = contextClient;
 
             if (appConfigClient.yui && appConfigClient.yui.config) {
@@ -137,8 +137,7 @@ YUI.add('mojito-deploy-addon', function(Y, NAME) {
                 yuiConfig.loaderPath = appConfigClient.yui.loader;
             }
 
-            clientConfig.store = store.serializeClientStore(contextClient,
-                instances);
+            clientConfig.store = store.serializeClientStore(contextClient);
 
             usePrecomputed = appConfigServer.yui &&
                 appConfigServer.yui.dependencyCalculations && (-1 !==
@@ -153,6 +152,8 @@ YUI.add('mojito-deploy-addon', function(Y, NAME) {
             if (!usePrecomputed) {
                 useOnDemand = true;
             }
+
+            urls = store.store.getAllURLs();
 
             // Set the YUI URL to use on the client (This has to be done
             // before any other scripts are added)
@@ -176,6 +177,7 @@ YUI.add('mojito-deploy-addon', function(Y, NAME) {
                 yuiModules = ['yui'];
                 yuiJsUrlContains.yui = true;
                 if (useOnDemand) {
+                    fwConfig = store.store.getFrameworkConfig();
                     yuiModules.push('get');
                     yuiJsUrlContains.get = true;
                     yuiModules.push('loader-base');
@@ -184,10 +186,8 @@ YUI.add('mojito-deploy-addon', function(Y, NAME) {
                     yuiJsUrlContains['loader-rollup'] = true;
                     yuiModules.push('loader-yui3');
                     yuiJsUrlContains['loader-yui3'] = true;
-                    for (i = 0; i < store.store._fwConfig.
-                            ondemandBaseYuiModules.length; i += 1) {
-                        module =
-                            store.store._fwConfig.ondemandBaseYuiModules[i];
+                    for (i = 0; i < fwConfig.ondemandBaseYuiModules.length; i += 1) {
+                        module = fwConfig.ondemandBaseYuiModules[i];
                         yuiModules.push(module);
                         yuiJsUrlContains[module] = true;
                     }
@@ -209,7 +209,7 @@ YUI.add('mojito-deploy-addon', function(Y, NAME) {
                                 path = binder.needs[module];
                                 // Anything we don't know about we'll assume is
                                 // a YUI library module.
-                                if (!store.fileFromStaticHandlerURL(path)) {
+                                if (!urls[path]) {
                                     yuiModules.push(module);
                                     yuiJsUrlContains[module] = true;
                                 }
@@ -240,10 +240,10 @@ YUI.add('mojito-deploy-addon', function(Y, NAME) {
             // fw & app scripts.
             if (useOnDemand) {
                 // add all framework-level and app-level code
-                this.addScripts('bottom', store.getYuiConfigFw('client',
-                    contextClient).modules);
-                this.addScripts('bottom', store.getYuiConfigApp('client',
-                    contextClient).modules);
+                this.addScripts('bottom', store.store.yui.getConfigShared(
+                    'client',
+                    contextClient
+                ).modules, false);
             }
 
             // add binders' dependencies
@@ -312,7 +312,7 @@ YUI.add('mojito-deploy-addon', function(Y, NAME) {
 
             // Add all the scripts we have collected
             assetHandler.addAssets(
-                this.getScripts(appConfigServer.embedJsFilesInHtmlFrame)
+                this.getScripts(appConfigServer.embedJsFilesInHtmlFrame, urls)
             );
             // Add the boot script
             assetHandler.addAsset('blob', 'bottom', initializer);
@@ -344,10 +344,14 @@ YUI.add('mojito-deploy-addon', function(Y, NAME) {
          * @private
          * @param {bool} embed Should returned scripts be embedded in script
          *     tags.
+         * @param {object} urls Mapping of URLs to filesystem paths.  The keys
+         *      are the URLs, and the values are the cooresponding filesystem
+         *      paths.
          * @return {object} An object containing script descriptors.
          */
-        getScripts: function(embed) {
+        getScripts: function(embed, urls) {
             var i,
+                path,
                 x,
                 assets = {},
                 blob = {
@@ -359,16 +363,14 @@ YUI.add('mojito-deploy-addon', function(Y, NAME) {
             // Walk over the scripts and check what we can do
             for (i in this.scripts) {
                 if (this.scripts.hasOwnProperty(i)) {
-                    if (embed && this.rs._staticURLs[i]) {
-                        //blob.content+= fs.readFileSync(this.rs._staticURLs[i],
-                        //      'utf8');
-                        //delete this.scripts[i];
+                    path = urls[i];
+                    if (embed && path) {
                         this.scripts[i] = {
                             type: 'blob',
                             position: 'bottom',
                             content: '<script type="text/javascript">' +
-                                minify(fs.readFileSync(this.rs._staticURLs[i],
-                                    'utf8')) + '</script>'
+                                minify(fs.readFileSync(path, 'utf8')) +
+                                    '</script>'
                         };
                     } else {
                         this.scripts[i] = {
@@ -402,7 +404,7 @@ YUI.add('mojito-deploy-addon', function(Y, NAME) {
         }
     };
 
-    Y.mojito.addons.ac.deploy = Addon;
+    Y.namespace('mojito.addons.ac').deploy = Addon;
 
 }, '0.1.0', {requires: [
     'mojito-loader',

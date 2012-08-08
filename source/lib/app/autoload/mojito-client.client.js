@@ -240,7 +240,12 @@ YUI.add('mojito-client', function(Y, NAME) {
         this.yuiConsole = null;
         this._pauseQueue = [];
         if (config) {
-            this.init(config);
+            // Note the server sends cleased config data directly to the
+            // constructor from the deploy.server.js initializer to allow markup
+            // to move over the wire in config strings without triggering
+            // injection attacks. We need to undo that here so the strings
+            // return to their original format before we try to use them.
+            this.init(Y.mojito.util.uncleanse(config));
         }
     }
 
@@ -691,10 +696,18 @@ YUI.add('mojito-client', function(Y, NAME) {
             this.resourceStore.expandInstanceForEnv('client',
                 command.instance, this.context, function(err, details) {
 
+                    if (err) {
+                        if (typeof cb === 'function') {
+                            cb(new Error(err));
+                            return;
+                        } else {
+                            throw new Error(err);
+                        }
+                    }
+
                     // if there is a controller in the client type details, that
-                    // means the controller exists here "cast details.controller
-                    // to Boolean" ;)
-                    var existsOnClient = Boolean(details.controller);
+                    // means the controller exists here
+                    var existsOnClient = Boolean(details['controller-module']);
 
                     command.context = my.context;
 
@@ -1047,10 +1060,9 @@ YUI.add('mojito-client', function(Y, NAME) {
                 }
             });
         }
-
     };
 
-    Y.mojito.Client = MojitoClient;
+    Y.namespace('mojito').Client = MojitoClient;
 
 }, '0.1.0', {requires: [
     'io-base',

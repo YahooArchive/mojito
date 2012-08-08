@@ -326,9 +326,10 @@ callback({
         }
     };
 
-    Y.mojito.addons.ac.composite = Addon;
+    Y.namespace('mojito.addons.ac').composite = Addon;
 
 }, '0.1.0', {requires: [
+    'mojito',
     'mojito-util',
     'mojito-params-addon'
 ]});

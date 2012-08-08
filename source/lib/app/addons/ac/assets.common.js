@@ -84,7 +84,10 @@ YUI.add('mojito-assets-addon', function(Y, NAME) {
 
 
         /**
-         *
+         * @method addAsset
+         * @param {string} type css|js|blob
+         * @param {string} content A string of data.
+         * @param {string} location Either "top" or "bottom".
          */
         addAsset: function(type, location, content) {
             if (!content) {
@@ -150,6 +153,7 @@ YUI.add('mojito-assets-addon', function(Y, NAME) {
 
         /**
          * @method addAssets
+         * @param {object} assets by location (top|bottom) & type (css|js|blob)
          */
         addAssets: function(assets) {
             var location,
@@ -176,6 +180,8 @@ YUI.add('mojito-assets-addon', function(Y, NAME) {
 
         /**
          * @method preLoadImage
+         * @param {string} url
+         * @deprecated
          */
         preLoadImage: function(url) {
             var img;
@@ -189,6 +195,8 @@ YUI.add('mojito-assets-addon', function(Y, NAME) {
 
         /**
          * @method preLoadImages
+         * @param {array.<string>} url
+         * @deprecated
          */
         preLoadImages: function(urls) {
             var i;
@@ -203,6 +211,8 @@ YUI.add('mojito-assets-addon', function(Y, NAME) {
 
         /**
          * @method getUrl
+         * @param {string} path of asset, relative
+         * @return {string}
          */
         getUrl: function(path) {
             return this.assetsRoot + '/' + path;
@@ -211,6 +221,9 @@ YUI.add('mojito-assets-addon', function(Y, NAME) {
 
         /**
          * @method mixAssets
+         * @param {object} to
+         * @param {object} from
+         * @return {object}
          */
         mixAssets: function(to, from) {
             return Y.mojito.util.metaMerge(to, from);
@@ -218,10 +231,10 @@ YUI.add('mojito-assets-addon', function(Y, NAME) {
 
 
         /**
-         * @getAssets
+         * @method getAssets
+         * @return {object} assets by location (top|bottom) & type (css|js|blob)
          */
         getAssets: function() {
-            // MUST have some dedup code here
             return this.assets;
         },
 
@@ -235,8 +248,9 @@ YUI.add('mojito-assets-addon', function(Y, NAME) {
         }
     };
 
-    Y.mojito.addons.ac.assets = AssetsAcAddon;
+    Y.namespace('mojito.addons.ac').assets = AssetsAcAddon;
 
 }, '0.1.0', {requires: [
+    'mojito',
     'mojito-util'
 ]});

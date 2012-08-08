@@ -1,0 +1,64 @@
+[
+    {
+        "settings": [ "master" ],
+        "name": "mojito-unit-tests",
+        "config": {
+            "lib": "../../../../../source/lib",
+            "base": "../../../../base"
+        },
+        "commonlib": "$$config.lib$$/app/autoload/util.common.js",
+            "mojito-client.client": {
+                "params": {
+                    "page": "$$config.base$$/mojito-test.html",
+                    "lib": "$$config.lib$$/app/autoload/mojito-client.client.js",
+                    "test": "./test-mojito-client.client.js"
+                },
+                "group": "fw,unit,client"
+            },
+            "mojit-proxy.client": {
+                "params": {
+                    "page": "$$config.base$$/mojito-test.html",
+                    "lib": "$$config.lib$$/app/autoload/mojit-proxy.client.js",
+                    "test": "./test-mojit-proxy.client.js"
+                },
+                "group": "fw,unit,client"
+            },
+            "output-handler.client": {
+                "params": {
+                    "page": "$$config.base$$/mojito-test.html",
+                    "lib": "$$config.lib$$/app/autoload/output-handler.client.js",
+                    "test": "./test-output-handler.client.js"
+                },
+                "group": "fw,unit,client"
+            },
+            "tunnel.client": {
+                "params": {
+                    "page": "$$config.base$$/mojito-test.html",
+                    "lib": "$$config.lib$$/app/autoload/tunnel.client-optional.js",
+                    "test": "./test-tunnel.client-optional.js"
+                },
+                "group": "fw,unit,client"
+            },
+            "utils": {
+                "params": {
+                    "page": "$$config.base$$/mojito-test.html",
+                    "test": "./test-utils.js"
+                },
+                "group": "fw,unit,client"
+            }
+        }
+    },
+    {
+        "settings": [ "environment:development" ],
+        "name": "mojito-nodejs-unit-tests--is-not-hooked-up-yet",
+        "dataprovider": {
+            "deploy.server": {
+                "params": {
+                    "lib": "$$config.lib$$/app/addons/ac/deploy.server.js,../../../../../../source/lib/app/autoload/loader.common.js,../../../../../../source/lib/app/addons/ac/http.server.js",
+                    "test": "./test-deploy.server.js"
+                },
+                "group": "fw,server"
+            }
+        }
+    }
+]

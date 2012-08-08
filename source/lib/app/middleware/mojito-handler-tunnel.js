@@ -41,7 +41,7 @@ TunnelServer.prototype = {
         logger = globalLogger;
         //console.log('creating handle');
         this._store = store;
-        config = store.getAppConfig({}, 'application');
+        config = store.getAppConfig({});
         this.tunnelPrefix = (config && config.tunnelPrefix) ?
                 config.tunnelPrefix :
                 '/tunnel';
@@ -149,8 +149,7 @@ TunnelServer.prototype = {
 
     _handleRpc: function(req, res, next) {
         var data = req.body,
-            requestData = data.reqs[0],
-            command = requestData.data;
+            command = data;
 
         // all we need to do is expand the instance given within the RPC call
         // and attach it within a "tunnelCommand", which will be handled by
@@ -161,16 +160,15 @@ TunnelServer.prototype = {
                 command.instance = inst;
                 req.command = {
                     instance: {
-                        // Magic here to delegate to daliProxy.
-                        base: 'daliProxy'
+                        // Magic here to delegate to tunnelProxy.
+                        base: 'tunnelProxy'
                     },
                     params: {
                         body: {
-                            proxyCommand: command,
-                            txId: requestData.txId
+                            proxyCommand: command
                         }
                     },
-                    context: req.context
+                    context: data.context
                 };
                 next();
             });
