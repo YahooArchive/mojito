@@ -8,8 +8,8 @@
 /*jslint anon:true, sloppy:true, regexp:true, nomen:true*/
 
 
-var utils = require(path.join(__dirname, '../../management/utils')),
-    path = require('path'),
+var path = require('path'),
+    utils = require(path.join(__dirname, '../../management/utils')),
     exec = require('child_process').exec,
     wrench = require('wrench'),
     yuidocjs = require('yuidocjs'),
