@@ -2,18 +2,21 @@
 Mojito Architecture
 ===================
 
-This chapter first takes at the bird's eye view of the Mojito framework and then  
-offers a brief explanation of the key points.. Understanding the architecture and the components 
-of the Mojito framework will give you insight about how your application interacts 
-with the framework.
+This chapter attemps to give you a general understanding of the Mojito architecture as a whole 
+and the Mojito Framework. We'll first look at graphics to understand the relationships 
+of the discrete components within the architecture and then briefly discuss some of the core
+components. We hope that having a better understanding of how the pieces work 
+together and what role they play will help you design, build, and debug your applications.
 
 .. _mj_arch-overview:
 
 Overview
 --------
 
-The diagram below illustrates how Mojito runs on different clients and gets data. 
-See the sections that follow for further explanation about clients, Mojito applications, and data.
+Before looking at inside of Mojito, let's take a look at where Mojito lives and exists in the Web 
+application world. The diagram below illustrates how Mojito runs on different clients,
+uses the HTTP for client-server communication, and accesses data. The sections following the 
+diagram discuss the clients, Mojito applications, and getting data in greater detail.
 
 
 .. figure:: images/mojito_architecture.png
@@ -22,19 +25,22 @@ See the sections that follow for further explanation about clients, Mojito appli
    :height: 574px
    :width: 459px
    :align: left
+  
 
 .. _overview-clients:
 
 Clients and Runtimes
 ####################
 
-
+Mojito was designed with the goal to run in multiple runtime environments and to
+support online and offline experiences. The following are the supported client/runtime 
+environments:
                 
-- **Mobile browser:** Such clients support an HTML-based online experience, and may also 
-- support an HTML5-based offline experience.
-- **Desktop browser: Such clients are assumed to be always connected, and support an 
+- **Mobile browser:** - supports an HTML-based online experience and may also 
+  support an HTML5-based offline experience.
+- **Desktop browser:** - assumed to be always connected and support an 
   HTML-based online experience.
-- **Native client:** Such clients are deployed as packaged applications, wrapping native 
+- **Native client:** - deployed as packaged applications, wrapping native 
   chrome around an HTML5-based experience.
   
 .. _overview-apps:  
@@ -42,10 +48,11 @@ Clients and Runtimes
 Mojito Applications
 ###################
 
-In short, an application is a set of module/widget configurations together with a configuration 
-for the application itself. It is a packaged entity that may be distributed and deployed as a unit, 
-and as such, it is deployment-independent. The modules/widgets used by an application may be 
-included directly within the package or may be included by reference from a cloud-based repository.
+In short, a Mojito application is a set of module/widget configurations together with a configuration 
+for the application and the framework/application code. The application is packaged to be 
+distributed and deployed as a unit, and as such, it is deployment-independent. The modules/widgets 
+used by an application may be included directly within the package or may be included by reference 
+from a cloud-based repository.
 
 See also `Mojito Applications <./mojito_apps.html>`_ for a more in-depth discussions.
 
@@ -64,8 +71,12 @@ for data retrieved from YQL.
 Mojito Framework
 ----------------
 
-This diagram shows the relationship among the Mojito application, the 
-Mojito core, mojits, and the runtime environments. The subsequent sections describe the 
+The Mojito Framework consists of both a module and an application framework, which taken together
+provide the infrastructure upon which applications are built. The framework includes the base 
+component, the event system, and management of navigation, views, and configuration. 
+
+This diagram shows the relationships among the Mojito application, the 
+Mojito Core, mojits, and the runtime environments. The subsequent sections describe the 
 elements in the diagram in more detail.
 
 
@@ -85,7 +96,7 @@ Mojito Server Runtime
 The base server-only capabilities that support the Mojito Core includes, but are not 
 limited to, the following:
 
-- HTTP Server
+- HTTP Server 
 - Routing Rules
 - Config Loader
 - Disk-Based Loader
@@ -98,7 +109,7 @@ Mojito Client Runtime
 The base client-only capabilities that support the Mojito Core include, but are not limited 
 to, the following:
 
-- URL-Based/JSON-based Loader
+- URL-Based / JSON-Based Loader
 - Local Storage / Cache Access
 
 .. _framework-core:
@@ -106,9 +117,10 @@ to, the following:
 Mojito Core
 ###########
 
-The core common functionality of Mojito runs on both server and client. The core is initialized 
-(or bootstrapped, if you will) by either the Mojito Server Runtime or the Mojito Client Runtime, as 
-appropriate. Elements of the Mojito Core include, but are not limited to, the following:
+The Mojito Core is the common functionality of Mojito that runs on both server and client. The core 
+is initialized (or bootstrapped, if you will) by either the Mojito Server Runtime or the Mojito 
+Client Runtime, as appropriate. Elements of the Mojito Core include, but are not limited to, 
+the following:
 
 - Front Controller
 - Dispatcher
@@ -190,12 +202,14 @@ we focus on the servicing of page requests and user interactions, and ignore for
 moment issues such as packaging and deployment. Again, we examine more closely 
 the framework components in the following sections.
 
-.. figure::
+.. figure:: images/mojito_components.png
    :scale: 75 %
    :alt: Flowchart showing how page requests are handled and responses returned.
    :height: 540px
    :width: 457px
    :align: left
+   
+|   
 
 .. _framework_components-dispatcher:
 
