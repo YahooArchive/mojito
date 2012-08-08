@@ -15,7 +15,7 @@
 YUI({useBrowserConsole: true}).use(
     'mojito-client',
     'test',
-    function(Y, NAME) {
+    function(Y) {
 
         var suite = new Y.Test.Suite("mojito-client.client tests"),
             A = Y.Assert;

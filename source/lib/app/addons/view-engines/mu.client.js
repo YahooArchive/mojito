@@ -54,10 +54,9 @@ YUI.add('mojito-mu', function(Y, NAME) {
                 if (!this.includes('', template)) {
                     if (in_recursion) {
                         return template;
-                    } else {
-                        this.send(template);
-                        return;
                     }
+                    this.send(template);
+                    return;
                 }
 
                 template = this.render_pragmas(template);
@@ -147,10 +146,11 @@ YUI.add('mojito-mu', function(Y, NAME) {
                                     value.length === 0)) {
                                 return my.render(content, context, partials,
                                     true);
-                            } else {
-                                return '';
                             }
-                        } else if (type === '#') { // normal section
+                            return '';
+                        }
+
+                        if (type === '#') { // normal section
                             if (my.is_array(value)) {
                                 // Enumerable, Let's loop!
                                 return my.map(value,
@@ -159,24 +159,30 @@ YUI.add('mojito-mu', function(Y, NAME) {
                                             my.create_context(row),
                                             partials, true);
                                     }).join('');
-                            } else if (my.is_object(value)) {
+                            }
+
+                            if (my.is_object(value)) {
                                 // Object, Use it as subcontext!
                                 return my.render(content,
                                     my.create_context(value), partials, true);
-                            } else if (typeof value === 'function') {
+                            }
+
+                            if (typeof value === 'function') {
                                 // higher order section
                                 return value.call(context, content,
                                     function(text) {
                                         return my.render(text, context,
                                             partials, true);
                                     });
-                            } else if (value) {
+                            }
+
+                            if (value) {
                                 // boolean section
                                 return my.render(content, context, partials,
                                     true);
-                            } else {
-                                return '';
                             }
+
+                            return '';
                         }
                     });
             },
@@ -284,13 +290,20 @@ YUI.add('mojito-mu', function(Y, NAME) {
                 return s.replace(/&(?!\w+;)|["'<>\\]/g,
                     function(s) {
                         switch (s) {
-                        case '&': return '&amp;';
-                        case '\\': return '\\\\';
-                        case '"': return '&quot;';
-                        case '\'': return '&#39;';
-                        case '<': return '&lt;';
-                        case '>': return '&gt;';
-                        default: return s;
+                        case '&':
+                            return '&amp;';
+                        case '\\':
+                            return '\\\\';
+                        case '"':
+                            return '&quot;';
+                        case '\'':
+                            return '&#39;';
+                        case '<':
+                            return '&lt;';
+                        case '>':
+                            return '&gt;';
+                        default:
+                            return s;
                         }
                     });
             },
@@ -301,15 +314,15 @@ YUI.add('mojito-mu', function(Y, NAME) {
                     ctx;
                 if (this.is_object(_context)) {
                     return _context;
-                } else {
-                    iterator = '.';
-                    if (this.pragmas['IMPLICIT-ITERATOR']) {
-                        iterator = this.pragmas['IMPLICIT-ITERATOR'].iterator;
-                    }
-                    ctx = {};
-                    ctx[iterator] = _context;
-                    return ctx;
                 }
+
+                iterator = '.';
+                if (this.pragmas['IMPLICIT-ITERATOR']) {
+                    iterator = this.pragmas['IMPLICIT-ITERATOR'].iterator;
+                }
+                ctx = {};
+                ctx[iterator] = _context;
+                return ctx;
             },
 
 
@@ -332,14 +345,14 @@ YUI.add('mojito-mu', function(Y, NAME) {
                 var r, l, i;
                 if (typeof array.map === 'function') {
                     return array.map(fn);
-                } else {
-                    r = [];
-                    l = array.length;
-                    for (i = 0; i < l; i += 1) {
-                        r.push(fn(array[i]));
-                    }
-                    return r;
                 }
+
+                r = [];
+                l = array.length;
+                for (i = 0; i < l; i += 1) {
+                    r.push(fn(array[i]));
+                }
+                return r;
             }
         };  // End of Renderer.prototype definition.
 

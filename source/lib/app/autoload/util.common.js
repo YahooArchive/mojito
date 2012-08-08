@@ -50,6 +50,7 @@ YUI.add('mojito-util', function(Y) {
 
         array: {
 
+            // TODO: rm. this appears to be unused and nonfunctional
             remove: function(arr, from, to) {
                 var rest = arr.slice((to || from) + 1 || arr.length);
 
@@ -57,6 +58,7 @@ YUI.add('mojito-util', function(Y) {
                 return this.push.apply(arr, rest);
             },
 
+            // TODO: redundant w YUI
             contains: function(a, obj) {
                 var i = a.length;
 
