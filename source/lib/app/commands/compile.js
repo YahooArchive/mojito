@@ -616,7 +616,8 @@ compile.rollups = function(context, options, callback) {
  * @return {object} The return value from any optional callback function.
  */
 compile.views = function(context, options, callback) {
-    var cwd = process.cwd(),
+    var self = this,
+        cwd = process.cwd(),
         store = makeStore({root: cwd}),
         compiledFilename = '/autoload/compiled/views.common.js',
         mojits,
@@ -656,7 +657,8 @@ compile.views = function(context, options, callback) {
             mojitNs = mojitName.replace(/\./g, '_'),
             yuiModuleCacheWriter,
             viewName,
-            MojY;
+            MojY,
+            compileFunction;
 
         mojitRes = store.getResources('server', context, {type: 'mojit', name: mojitName});
         if (!mojitRes || !mojitRes.length) {
@@ -687,6 +689,14 @@ compile.views = function(context, options, callback) {
         mojit = store.getMojitTypeDetails('server', context, mojitName);
 
         if (mojit.views) {
+            compileFunction = function (renderer, source, mojitNs, viewName) {
+                renderer.compiler(source, function (err, templateObj) {
+                    renderedView = Y.JSON.parse(templateObj.toString());
+                    yuiModuleCacheWriter.createNamespace('compiled.' +
+                        mojitNs + '.views').cache(viewName,
+                        renderedView);
+                });
+            };
             // Check each view for a template and engine
             for (viewName in mojit.views) {
                 if (mojit.views.hasOwnProperty(viewName)) {
@@ -706,14 +716,7 @@ compile.views = function(context, options, callback) {
                         renderer = new (MojY.mojito.addons.viewEngines[engine])();
 
                         if (typeof renderer.compiler === 'function') {
-                            compilerQueue.add(function () {
-                                renderer.compiler(source, function (err, templateObj) {
-                                    renderedView = Y.JSON.parse(templateObj.toString());
-                                    yuiModuleCacheWriter.createNamespace('compiled.' +
-                                        mojitNs + '.views').cache(viewName,
-                                        renderedView);
-                                });
-                            });
+                            compilerQueue.add(Y.bind(compileFunction, self, renderer, source, mojitNs, viewName));
                         }
                     }
                 }
