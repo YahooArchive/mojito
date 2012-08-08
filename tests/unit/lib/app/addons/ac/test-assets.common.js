@@ -10,7 +10,7 @@
 
 YUI().use('mojito-assets-addon', 'test', function(Y, NAME) {
 
-    var suite = new Y.Test.Suite(NAME + ' tests @@'),
+    var suite = new Y.Test.Suite('mojito-assets-addon tests'),
         cases = {},
         A = Y.Assert,
         AA = Y.ArrayAssert;
