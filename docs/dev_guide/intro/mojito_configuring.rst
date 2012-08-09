@@ -105,11 +105,12 @@ configuration Object
 |                                                        |                      |                   | directory.                                             |
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
 | ``selector``                                           | string               | N/A               | The version of the resource. A resource is either a    |
-|                                                        |                      |                   | file to Mojito or metadata to the Resource Store.      |
-|                                                        |                      |                   | See  and the `selector Propery <../topics/mojito_      |
-|                                                        |                      |                   | resource_store.html#selector-property>`_ and           |
-|                                                        |                      |                   | `Selectors <../topics/mojito_resource_store.html#selec |
-|                                                        |                      |                   | tors>`_ for more information.                          |
+|                                                        |                      |                   | file to Mojito or metadata to the `Resource Store <../ |
+|                                                        |                      |                   | topics/mojito_resource_store.html>`_.                  |
+|                                                        |                      |                   | See the `selector Propery <../topics/mojito_resource   |
+|                                                        |                      |                   | _store.html#selector-property>`_ and `Selectors <../   |
+|                                                        |                      |                   | topics/mojito_resource_store.html#selectors>`_ for     |
+|                                                        |                      |                   | for more information.                                  |
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
 | ``settings``                                           | array of strings     | ["master"]        | Defines the context of the configuration. The          |
 |                                                        |                      |                   | context consists of a key-value pair that can          |
