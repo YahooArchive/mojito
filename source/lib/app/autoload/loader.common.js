@@ -108,11 +108,12 @@ YUI.add('mojito-loader', function(Y, NAME) {
                 name,
                 info,
                 filteredPath,
-                combo = { js: [], css: [] };
+                combo = { js: [], css: [] },
+                config = this.appConfig && this.appConfig.yui && this.appConfig.yui.config;
 
             filter = filter || 'min';
 
-            loader = new Y.Loader({});
+            loader = new Y.Loader((config || {}));
             for (i = 0; i < modules.length; i += 1) {
                 name = modules[i];
                 required[name] = true;
@@ -160,7 +161,7 @@ YUI.add('mojito-loader', function(Y, NAME) {
         }
     };
 
-    Y.mojito.Loader = Loader;
+    Y.namespace('mojito').Loader = Loader;
 
 }, '0.1.0', {requires: [
     'get',

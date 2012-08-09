@@ -47,7 +47,11 @@ YUI.add('mojito-action-context', function(Y, NAME) {
      * @param {Error} err A normal JavaScript Error object is expected, but you
      *     may add a "code" property to the error if you want the framework to
      *     report a certain HTTP status code for the error. For example, if the
-     *     status code is 404, Mojito will generate a 404 page.
+     *     status code is 404, Mojito will generate a 404 page. Additionally you
+     *     might provide a reasonPhrase property, to override the default human
+     *     readable description for this status code with one specific to your
+     *     application. For example for the status code 404 you could provide
+     *     "This does not exist in my app".
      */
 
     /**
@@ -186,13 +190,15 @@ YUI.add('mojito-action-context', function(Y, NAME) {
 
     /**
      * Mixes all the Action Context addons into the Action Context
-     * @attachActionContextAddons
+     * @private
+     * @method attachActionContextAddons
      * @param {Array} addons The action context addons.
      * @param {object} command The command object.
      * @param {object} adapter The output adapter.
      * @param {Y.mojito.ActionContext} ac The action context.
+     * @param {ResourceStore} store the resource store
      */
-    function attachActionContextAddons(addons, command, adapter, ac) {
+    function attachActionContextAddons(addons, command, adapter, ac, store) {
         var addonName,
             addon,
             dependencies = {};
@@ -217,6 +223,9 @@ YUI.add('mojito-action-context', function(Y, NAME) {
                 addon = new addons[addonName](command, adapter, ac);
                 if (addon.namespace) {
                     ac[addon.namespace] = addon;
+                    if (Y.Lang.isFunction(addon.setStore)) {
+                        addon.setStore(store);
+                    }
                 }
             }
         }
@@ -274,24 +283,14 @@ YUI.add('mojito-action-context', function(Y, NAME) {
             self._dispatch.apply(self, arguments);
         };
 
-        // TODO: should rework to be 'getAppConfig()' and 'getAppRoutes()' and
-        // not property access through a hash.
         this.app = {
-            config: store.getAppConfig(this.context, 'application'),
+            config: store.getAppConfig(this.context),
             routes: store.getRoutes(this.context)
         };
 
         // this is where the addons list is injected onto the action
         // context...yay!
-        attachActionContextAddons(Y.mojito.addons.ac, command, adapter, this);
-
-        // There is only one addon that requires the store so check for it here.
-        // TODO: how can we generalize this so it's not hard-coded to only the
-        // deploy add-on. Oh, and note we don't make sure that setStore is a
-        // callable function ;).
-        if (this.deploy) {
-            this.deploy.setStore(store);
-        }
+        attachActionContextAddons(Y.mojito.addons.ac, command, adapter, this, store);
 
         Y.log('ActionContext created for "' + (instance.id || '@' +
             instance.type) + '/' + command.action + '"', 'mojito', NAME);
@@ -324,7 +323,7 @@ YUI.add('mojito-action-context', function(Y, NAME) {
         controller[actionFunction](this);
     }
 
-    Y.mojito.ActionContext = ActionContext;
+    Y.namespace('mojito').ActionContext = ActionContext;
 
 }, '0.1.0', {requires: [
     // following are ACPs are always available

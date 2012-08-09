@@ -11,7 +11,7 @@
 
 YUI.add('LazyLoad', function(Y) {
 
-    Y.mojito.controller = {
+    Y.namespace('mojito').controller = {
 
         /*
          * Initially, renders a bar node

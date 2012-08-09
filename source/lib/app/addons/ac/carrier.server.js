@@ -33,11 +33,7 @@ YUI.add('mojito-carrier-addon', function(Y, NAME) {
                 // Set carrier accessor
                 Object.defineProperty(ac, 'carrier', {
                     get: function() {
-                        if (req.carrier) {
-                            return req.carrier;
-                        } else {
-                            return my;
-                        }
+                        return req.carrier || my;
                     },
                     set: function() {
                     },
@@ -67,7 +63,7 @@ YUI.add('mojito-carrier-addon', function(Y, NAME) {
 
     CarrierAddon.dependsOn = ['config', 'http'];
 
-    Y.mojito.addons.ac.carrier = CarrierAddon;
+    Y.namespace('mojito.addons.ac').carrier = CarrierAddon;
 
 }, '0.1.0', {requires: [
     'mojito'

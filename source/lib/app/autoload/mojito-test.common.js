@@ -119,8 +119,8 @@ YUI.add('mojito-test', function(Y, NAME) {
         return mock;
     }
 
-    Y.mojito.MockActionContext = MockActionContext;
-    Y.mojito.EasyMock = EasyMock;
+    Y.namespace('mojito').MockActionContext = MockActionContext;
+    Y.namespace('mojito').EasyMock = EasyMock;
 
 }, '0.1.0', {requires: [
     'mojito'

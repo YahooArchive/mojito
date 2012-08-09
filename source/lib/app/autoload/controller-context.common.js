@@ -34,13 +34,13 @@ YUI.add('mojito-controller-context', function(Y, NAME) {
 
                 // do a shallow merge of app-level and mojit-level configs
                 // mojit config properties take precedence
-                configApp = this.store.getAppConfig({}, 'application').config,
+                configApp = this.store.getAppConfig({}).config,
                 configCombo = Y.merge(configApp, instance.config),
 
                 // Y.mojito.controller for legacy, multi-instance.
                 // Y.mojito.controllers for shared instance
                 c = this.Y.mojito.controller ||
-                    this.Y.mojito.controllers[instance.controllerModuleName];
+                    this.Y.mojito.controllers[instance['controller-module']];
 
             if (!Y.Lang.isObject(c)) {
                 error = new Error('Mojit controller prototype is not an' +
@@ -79,8 +79,8 @@ YUI.add('mojito-controller-context', function(Y, NAME) {
             Y.Object.each(this.Y.mojito.models, function(model, modelName) {
                 var modelInstance;
 
-                if (!shareYUIInstance || (instance.modelYUIModuleNames &&
-                        instance.modelYUIModuleNames[modelName])) {
+                if (!shareYUIInstance || (instance.models &&
+                        instance.models[modelName])) {
 
                     // pass function-like models (for ex. Y.Model) as is
                     if (Y.Lang.isFunction(model)) {
@@ -164,7 +164,7 @@ YUI.add('mojito-controller-context', function(Y, NAME) {
         }
     };
 
-    Y.mojito.ControllerContext = ControllerContext;
+    Y.namespace('mojito').ControllerContext = ControllerContext;
 
 }, '0.1.0', {requires: [
     'mojito-action-context',

@@ -81,7 +81,7 @@ YUI.add('mojito-meta-addon', function(Y, NAME) {
 
     MetaAddon.dependsOn = ['core'];
 
-    Y.mojito.addons.ac.meta = MetaAddon;
+    Y.namespace('mojito.addons.ac').meta = MetaAddon;
 
 }, '0.1.0', {requires: [
     'mojito-util',

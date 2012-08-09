@@ -5,10 +5,13 @@
  */
 
 
-/*jslint anon:true, sloppy:true, nomen:true, node:true*/
+/*jslint anon:true, sloppy:true, nomen:true, node:true, stupid:true*/
 /*global YUI*/
 
 
+/**
+ * @Module ViewEngines
+ */
 YUI.add('mojito-mu', function(Y, NAME) {
 
     var mu = YUI.require(__dirname + '/../../libs/Mulib/Mu'),
@@ -76,4 +79,4 @@ YUI.add('mojito-mu', function(Y, NAME) {
 
     Y.namespace('mojito.addons.viewEngines').mu = MuAdapter;
 
-}, '0.1.0', {requires: []});
+}, '0.1.0', {requires: ['json-stringify']});

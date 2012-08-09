@@ -202,7 +202,7 @@ YUI.add('mojito-http-addon', function(Y, NAME) {
         }
     };
 
-    Y.mojito.addons.ac.http = Addon;
+    Y.namespace('mojito.addons.ac').http = Addon;
 
 }, '0.1.0', {requires: [
     'mojito-util'

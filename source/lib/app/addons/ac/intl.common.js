@@ -62,7 +62,7 @@ YUI.add('mojito-intl-addon', function(Y, NAME) {
 
     IntlAddon.dependsOn = ['config'];
 
-    Y.mojito.addons.ac.intl = IntlAddon;
+    Y.namespace('mojito.addons.ac').intl = IntlAddon;
 
 }, '0.1.0', {requires: [
     'intl',

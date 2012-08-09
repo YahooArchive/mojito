@@ -218,7 +218,7 @@ YUI.add('mojito-params-addon', function(Y, NAME) {
         }
     };
 
-    Y.mojito.addons.ac.params = Addon;
+    Y.namespace('mojito.addons.ac').params = Addon;
 
 }, '0.1.0', {requires: [
     'mojito'

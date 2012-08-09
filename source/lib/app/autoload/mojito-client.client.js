@@ -696,10 +696,17 @@ YUI.add('mojito-client', function(Y, NAME) {
             this.resourceStore.expandInstanceForEnv('client',
                 command.instance, this.context, function(err, details) {
 
+                    if (err) {
+                        if (typeof cb === 'function') {
+                            cb(new Error(err));
+                            return;
+                        }
+                        throw new Error(err);
+                    }
+
                     // if there is a controller in the client type details, that
-                    // means the controller exists here "cast details.controller
-                    // to Boolean" ;)
-                    var existsOnClient = Boolean(details.controller);
+                    // means the controller exists here
+                    var existsOnClient = Boolean(details['controller-module']);
 
                     command.context = my.context;
 
@@ -909,9 +916,8 @@ YUI.add('mojito-client', function(Y, NAME) {
                     if (typeof cb === 'function') {
                         cb(new Error(err));
                         return;
-                    } else {
-                        throw new Error(err);
                     }
+                    throw new Error(err);
                 }
 
                 /*
@@ -1054,7 +1060,7 @@ YUI.add('mojito-client', function(Y, NAME) {
         }
     };
 
-    Y.mojito.Client = MojitoClient;
+    Y.namespace('mojito').Client = MojitoClient;
 
 }, '0.1.0', {requires: [
     'io-base',

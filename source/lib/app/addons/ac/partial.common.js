@@ -140,7 +140,7 @@ YUI.add('mojito-partial-addon', function(Y, NAME) {
         }
     };
 
-    Y.mojito.addons.ac.partial = Addon;
+    Y.namespace('mojito.addons.ac').partial = Addon;
 
 }, '0.1.0', {requires: [
     'mojito-util',
