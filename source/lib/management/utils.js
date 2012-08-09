@@ -10,7 +10,7 @@
 
 var fs = require('fs'),
     util = require('util'),
-    mu = require('../app/libs/Mulib/Mu'),
+    hb = require('yui/handlebars').Handlebars,
     path = require('path'),
     http = require('http'),
     tty = require('tty'),
@@ -109,20 +109,18 @@ function process_template(archetype_path, file, mojit_dir, template) {
         buffer = '',
         stat,
         tmpl,
-        compiled;
+        compiled,
+        output;
 
     /* going to check for file size and use compileText to avoid
-       possible problems with any mustache templateRoot settings
+       possible problems with any handlebars templateRoot settings
      */
     stat = fs.statSync(archetype_file);
     if (stat.size > 0) {
-        tmpl = fs.readFileSync(archetype_file);
-        compiled = mu.compileText(tmpl);
-        compiled(template).addListener('data', function(c) {
-            buffer += c;
-        }).addListener('end', function() {
-            fs.writeFileSync(new_file, buffer);
-        });
+        tmpl = fs.readFileSync(archetype_file, 'utf8');
+        compiled = hb.compile(tmpl);
+        output = compiled(template);
+        fs.writeFileSync(new_file, output);
     } else {
         fs.writeFileSync(new_file, '');
     }
@@ -130,8 +128,8 @@ function process_template(archetype_path, file, mojit_dir, template) {
 
 
 function process_file(archetype_path, file, mojit_dir, template) {
-    if (/\.mu$/.test(file)) {
-        // Process as a Mu template
+    if (/\.hb$/.test(file)) {
+        // Process as a HB template
         process_template(archetype_path, file, mojit_dir, template);
     } else {
         // Just copy the file over
