@@ -104,6 +104,13 @@ configuration Object
 |                                                        |                      |                   | it is taken as relative to the application             |
 |                                                        |                      |                   | directory.                                             |
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
+| ``selector``                                           | string               | N/A               | The version of the resource. A resource is either a    |
+|                                                        |                      |                   | file to Mojito or metadata to the Resource Store.      |
+|                                                        |                      |                   | See  and the `selector Propery <../topics/mojito_      |
+|                                                        |                      |                   | resource_store.html#selector-property>`_ and           |
+|                                                        |                      |                   | `Selectors <../topics/mojito_resource_store.html#selec |
+|                                                        |                      |                   | tors>`_ for more information.                          |
++--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
 | ``settings``                                           | array of strings     | ["master"]        | Defines the context of the configuration. The          |
 |                                                        |                      |                   | context consists of a key-value pair that can          |
 |                                                        |                      |                   | specify the environment and environment                |
