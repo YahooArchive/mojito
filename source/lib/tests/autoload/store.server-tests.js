@@ -164,19 +164,19 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
                 A.areSame(3, Y.Object.keys(instance.views).length);
 
                 A.isObject(instance.views['test_1']);
-                A.areSame('/static/test_mojit_1/views/test_1.mu.html', instance.views['test_1']['content-path']);
-                A.areSame('mu', instance.views['test_1']['engine']);
+                A.areSame('/static/test_mojit_1/views/test_1.hb.html', instance.views['test_1']['content-path']);
+                A.areSame('hb', instance.views['test_1']['engine']);
                 A.areSame('/static/test_mojit_1/binders/test_1.js', instance.views['test_1']['binder-path']);
                 A.areSame('test_mojit_1Bindertest_1', instance.views['test_1']['binder-module']);
                 A.isNotUndefined(instance.views['test_1']['binder-yui-sorted']['mojito-client']);
 
                 A.isObject(instance.views['test_2']);
-                A.areSame('/static/test_mojit_1/views/test_2.mu.html', instance.views['test_2']['content-path']);
-                A.areSame('mu', instance.views['test_2']['engine']);
+                A.areSame('/static/test_mojit_1/views/test_2.hb.html', instance.views['test_2']['content-path']);
+                A.areSame('hb', instance.views['test_2']['engine']);
 
                 A.isObject(instance.views['subdir/test_1']);
-                A.areSame('/static/test_mojit_1/views/subdir/test_1.mu.html', instance.views['subdir/test_1']['content-path']);
-                A.areSame('mu', instance.views['subdir/test_1']['engine']);
+                A.areSame('/static/test_mojit_1/views/subdir/test_1.hb.html', instance.views['subdir/test_1']['content-path']);
+                A.areSame('hb', instance.views['subdir/test_1']['engine']);
                 A.areSame('/static/test_mojit_1/binders/subdir/test_1.js', instance.views['subdir/test_1']['binder-path']);
                 A.areSame('test_mojit_1Bindersubdir/test_1', instance.views['subdir/test_1']['binder-module']);
                 A.isNotUndefined(instance.views['subdir/test_1']['binder-yui-sorted']['mojito-client']);
@@ -223,17 +223,17 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
             A.isUndefined(urls['/static/TestMojit5/package.json']);
         },
 
-        'server mojit view index.mu.html is loaded correctly': function() {
+        'server mojit view index.hb.html is loaded correctly': function() {
             var instance = {type:'TestMojit3'};
             store.expandInstance(instance, {}, function(err, instance){
-                A.areSame('index.mu.html', instance.views.index['content-path'].split('/').pop());
+                A.areSame('index.hb.html', instance.views.index['content-path'].split('/').pop());
             });
         },
 
-        'server mojit view index.iphone.mu.html is loaded correctly': function(){
+        'server mojit view index.iphone.hb.html is loaded correctly': function(){
             var instance = {type:'TestMojit3'};
             store.expandInstance(instance, {device:'iphone'}, function(err, instance){
-                A.areSame('index.iphone.mu.html', instance.views.index['content-path'].split('/').pop());
+                A.areSame('index.iphone.hb.html', instance.views.index['content-path'].split('/').pop());
             });
         },
 
@@ -400,9 +400,9 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
             var spec = { type: 'PagedFlickr' };
             var ctx = { device: 'iphone' };
             store.expandInstance(spec, ctx, function(err, instance) {
-                A.areSame(libpath.join(fixtures, 'mojits/PagedFlickr/views/index.iphone.mu.html'), instance.views.index['content-path']);
+                A.areSame(libpath.join(fixtures, 'mojits/PagedFlickr/views/index.iphone.hb.html'), instance.views.index['content-path']);
             });
-        },
+        }
 
     }));
 
@@ -748,14 +748,14 @@ YUI.add('mojito-store-server-tests', function(Y, NAME) {
                         A.areSame('view', res.type);
                         A.areSame('x', res.name);
                         A.areSame('html', res.view.outputFormat);
-                        A.areSame('mu', res.view.engine);
+                        A.areSame('hb', res.view.engine);
                         switch (res.source.fs.basename) {
-                            case 'x.mu':
+                            case 'x.hb':
                                 A.areSame('*', res.selector);
                                 A.areSame('common', res.affinity);
                                 A.areSame('.html', res.source.fs.ext);
                                 break;
-                            case 'x.iphone.mu':
+                            case 'x.iphone.hb':
                                 A.areSame('iphone', res.selector);
                                 A.areSame('common', res.affinity);
                                 A.areSame('.html', res.source.fs.ext);

@@ -16,6 +16,6 @@ Relevant Files:
 Modified Files:
 ./application.json
 ./routes.json
-./mojits/MainMojit/views/index.mu.html
+./mojits/MainMojit/views/index.hb.html
 ./mojits/MainMojit/controller.server.js
 

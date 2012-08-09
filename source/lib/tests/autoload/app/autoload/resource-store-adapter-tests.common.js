@@ -150,19 +150,19 @@ YUI.add('mojito-resource-store-adapter-tests', function(Y, NAME) {
             });
         },
 
-        'server mojit view index.mu.html is loaded correctly': function(){
+        'server mojit view index.hb.html is loaded correctly': function(){
             var store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
             var instance = {type:'TestMojit3'};
             store.expandInstance(instance, {}, function(err, instance){
-                A.areSame('index.mu.html', instance.views.index['content-path'].split('/').pop());
+                A.areSame('index.hb.html', instance.views.index['content-path'].split('/').pop());
             });
         },
 
-        'server mojit view index.iphone.mu.html is loaded correctly': function(){
+        'server mojit view index.iphone.hb.html is loaded correctly': function(){
             var store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
             var instance = {type:'TestMojit3'};
             store.expandInstance(instance, {device:'iphone'}, function(err, instance){
-                A.areSame('index.iphone.mu.html', instance.views.index['content-path'].split('/').pop());
+                A.areSame('index.iphone.hb.html', instance.views.index['content-path'].split('/').pop());
             });
         },
 

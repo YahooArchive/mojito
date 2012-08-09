@@ -20,7 +20,7 @@ YUI.add('mojito-view-renderer', function(Y) {
      * @param {String} type view engine addon type to use
      */
     function Renderer(type, viewId) {
-        type = type || 'mu';
+        type = type || 'hb';
         this._renderer = new (Y.mojito.addons.viewEngines[type])(viewId);
     }
 
