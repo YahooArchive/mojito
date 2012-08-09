@@ -22,7 +22,7 @@ YUI.add('addon-rs-yui', function(Y, NAME) {
     var libfs = require('fs'),
         libpath = require('path'),
         libvm = require('vm'),
-        WARN_SERVER_MODULES = /\b(dom-[^ ]+|node-[^ ]+|io-upload-iframe)/g,
+        WARN_SERVER_MODULES = /\b(dom-[\w\-]+|node-[\w\-]+|io-upload-iframe)/ig,
         MODULE_SUBDIRS = {
             autoload: true,
             tests: true,
