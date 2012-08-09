@@ -12,13 +12,17 @@
         "Martin Cooper <mcooper@yahoo-inc.com>",
         "Isao Yagi <isao@yahoo-inc.com>"
     ],
+    "// NOTES FOR dependencies": {
+        "combohandler": "TEMPORARY so we can serve the local version of YUI to the client"
+    },
     "dependencies": {
+        "combohandler": "0.1.x",
         "connect": "1.8.2",
         "express": "2.5.2",
         "glob": "~3.1.11",
         "mime": "1.2.4",
         "semver": "1.0.14",
-        "yui": "~3.5.1"
+        "yui": "git://github.com/yui/yui3.git#3.x"
     },
     "keywords": [
         "framework",
