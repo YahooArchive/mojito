@@ -8,7 +8,8 @@ YUI.add('mojito-client-tests', function(Y, NAME) {
     var suite = new YUITest.TestSuite(NAME),
         A = YUITest.Assert,
         rm,
-        OA = YUITest.ObjectAssert;
+        OA = YUITest.ObjectAssert,
+        client;
 
     suite.add(new YUITest.TestCase({
 
@@ -30,6 +31,19 @@ YUI.add('mojito-client-tests', function(Y, NAME) {
         'TODO Test resume function': function() {
 
             A.skip();
+        },
+
+        // no deployRuntimeClient object attached to "config"
+        'test decompressBinders with no config': function() {
+
+            // var mockConfig = { foo: 'bar' };
+            /*
+            Y.mojito.Client.prototype.init = function(config) {
+                A.areEqual(mockConfig, config, 'wrong config');
+            };
+
+            client = new Y.mojito.Client(mockConfig);
+            */
         }
 
     }));
