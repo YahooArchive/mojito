@@ -400,7 +400,9 @@ selector Property
 
 The  **selector** is an arbitrary user-defined string, which is used to 
 *select* which version of each resource to use.  The selector is defined in the 
-``application.json`` with the ``selector`` property.
+``application.json`` with the ``selector`` property. Because the selector is a global
+entity, you cannot define it at the mojit level. For example, you cannot define the selector
+in the ``defaults.json`` of a mojit.
 
 The value of the ``selector`` property is a string that must not have a 
 period (``'.'``) or slash (``'/'``) in it.  In practice, it's suggested to use alphanumeric and 
