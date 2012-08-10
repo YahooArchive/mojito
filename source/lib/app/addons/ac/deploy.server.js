@@ -181,7 +181,7 @@ YUI.add('mojito-deploy-addon', function(Y, NAME) {
         for (viewId in binderMap) {
             if (binderMap.hasOwnProperty(viewId)) {
                 binder = binderMap[viewId];
-                // From Zed: Prune binderMap prior to deploying to client
+                // Prune binderMap prior to deploying to client
                 if (!binder.name) {
                     // Delete mojit entries that have no "binder"
                     delete binderMap[viewId];
