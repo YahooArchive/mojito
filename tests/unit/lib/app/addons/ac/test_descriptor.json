@@ -6,7 +6,7 @@
             "lib": "../../../../../../source/lib",
             "base": "../../../../../base"
         },
-        "commonlib": "$$config.lib$$/app/autoload/util.common.js",
+        "commonlib": "$$config.base$$/mojito-test.js,./../../../../../../source/lib/app/autoload/util.common.js",
         "dataprovider": {
             "analytics.common": {
                 "params": {
@@ -55,6 +55,13 @@
                     "page": "$$config.base$$/mojito-test.html"
                 },
                 "group": "fw,client"
+            },
+            "cookie.server": {
+                "params": {
+                    "lib": "$$config.lib$$/app/addons/ac/cookie.server.js",
+                    "test": "./test-cookie.server.js"
+                },
+                "group": "fw,server"
             },
             "url.common": {
                 "params": {
