@@ -11,6 +11,7 @@
 var fs = require('fs'),
     path = require('path'),
     utils = require('../utils'),
+    OPTS = {},
     usage = 'mojito jslint [app | mojit] [<name>] {options}\n' +
             '\nOPTIONS: \n' +
             '\t  --print      :  print results to stdout \n' +
@@ -22,6 +23,46 @@ var fs = require('fs'),
             hasValue: false
         }
     ];
+
+// Optionally, allow application to override default set of configurations from cli.json file
+OPTS = (function () {
+    var options,
+        defaultOptions;
+
+    // Load options from cli.json
+    try {
+        options = JSON.parse(fs.readFileSync(path.join(process.env.PWD, 'cli.json'), 'utf-8')).jslint;
+    } catch (e) {
+        options = {};
+    }
+
+    defaultOptions = {
+        'continue': true, // Tolerate continue
+        predef: [
+            // CommonJS
+            'exports',
+            // YUI
+            'YUI', 'YUI_config', 'YAHOO', 'YAHOO_config', 'Y', 'YUITest',
+            // Node
+            'global', 'process', 'require', '__filename', 'module',
+            // Browser
+            'document', 'navigator', 'console', 'self', 'window'
+        ]
+    };
+
+    Object.keys(options).forEach(function (option) {
+        // merge predefs
+        if (option === 'predef') {
+            defaultOptions[option] = defaultOptions[option].concat(options[option]);
+        } else {
+            defaultOptions[option] = options[option];
+        }
+    });
+
+    return defaultOptions;
+}());
+
+
 
 
 // ---------- Generic file system utilities ----------
@@ -158,19 +199,6 @@ function OutputStdout(filename) {
  */
 function lintOneFile(infile, outfile) {
     var jslint = require('../fulljslint').jslint,
-        OPTS = {
-            'continue': true, // Tolerate continue
-            predef: [
-                // CommonJS
-                'exports',
-                // YUI
-                'YUI', 'YUI_config', 'YAHOO', 'YAHOO_config', 'Y',
-                // Node
-                'global', 'process', 'require', '__filename', 'module',
-                // Browser
-                'document', 'navigator', 'console', 'self', 'window'
-            ]
-        },
         errors = 0,
         i = 0,
         e,
