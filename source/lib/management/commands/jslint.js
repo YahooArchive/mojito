@@ -31,7 +31,7 @@ OPTS = (function () {
 
     // Load options from cli.json
     try {
-        options = JSON.parse(fs.readFileSync(path.join(process.env.PWD, 'cli.json'), 'utf-8')).jslint;
+        options = JSON.parse(fs.readFileSync(path.join(process.env.PWD, 'cli.json'), 'utf-8')).jslint.rules;
     } catch (e) {
         options = {};
     }
