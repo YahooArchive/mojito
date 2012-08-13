@@ -37,7 +37,7 @@ Ycb.prototype = {
      * @return {object} the dimensions
      */
     getDimensions: function() {
-        return Y.clone(this.dimensions, true);
+        return this._cloneObj(this.dimensions);
     },
 
 
@@ -58,7 +58,7 @@ Ycb.prototype = {
             if (this.settings.hasOwnProperty(path)) {
                 context = this._getContextFromLookupPath(path);
                 // clone, so that noone mutates us
-                if (!callback(context, Y.clone(this.settings[path], true))) {
+                if (!callback(context, this._cloneObj(this.settings[path]))) {
                     break;
                 }
             }
@@ -99,7 +99,7 @@ Ycb.prototype = {
                     console.log(Y.JSON.stringify(this.settings[lookupPaths[path]], null, 4));
                 }
                 // merge a copy so that we don't modify the source
-                config = objectMerge(Y.clone(this.settings[lookupPaths[path]], true), config);
+                config = objectMerge(this._cloneObj(this.settings[lookupPaths[path]]), config);
             }
         }
 
@@ -146,7 +146,7 @@ Ycb.prototype = {
                     console.log('----USING---- ' + lookupPaths[path]);
                     console.log(Y.JSON.stringify(this.settings[lookupPaths[path]], null, 4));
                 }
-                config.push(Y.clone(this.settings[lookupPaths[path]], true));
+                config.push(this._cloneObj(this.settings[lookupPaths[path]]));
             }
         }
         return config;
@@ -505,6 +505,41 @@ Ycb.prototype = {
                 }
             }
         }
+    },
+
+
+    /**
+     * @private
+     * @method _cloneObj
+     * @param {object} o object to clone
+     * @return {object} a copy of the object
+     */
+    _cloneObj: function(o) {
+        var newO,
+            i;
+
+        if (typeof o !== 'object') {
+            return o;
+        }
+        if (!o) {
+            return o;
+        }
+
+        if ('[object Array]' === Object.prototype.toString.apply(o)) {
+            newO = [];
+            for (i = 0; i < o.length; i += 1) {
+                newO[i] = this._cloneObj(o[i]);
+            }
+            return newO;
+        }
+
+        newO = {};
+        for (i in o) {
+            if (o.hasOwnProperty(i)) {
+                newO[i] = this._cloneObj(o[i]);
+            }
+        }
+        return newO;
     }
 
 
