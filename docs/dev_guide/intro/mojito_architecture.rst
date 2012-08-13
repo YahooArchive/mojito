@@ -206,7 +206,7 @@ services to be developed as extensions to the core framework.
 View Factory
 ############
 
-Similar to the Model Factory, the View Factory creates the view instance for a
+The View Factory creates the view instance for a
 mojit instance based on a mojit's configuration and on its corresponding mojit
 definition. The following standard view types are provided, along with the
 capability for a mojit developer to define a custom view type:
