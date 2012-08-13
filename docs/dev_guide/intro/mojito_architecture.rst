@@ -16,14 +16,14 @@ Overview
 --------
 
 Before looking at the details of Mojito, let's take a look at how Mojito
-fits in the Web application world. In the diagram below the triangular symbol
-with three circles (representing Model, View, and Controller) represents the
-Mojito MVC core. This common MVC core executes across devices and on both client
+fits in the Web application world. In the diagram below, the triangular symbol
+formed with three circles represents the Mojito MVC core; the circles represent the model,
+view, and controller. This common MVC core executes across devices and on both client
 and server and is one of the key elements which gives Mojito its power. As the
 diagram illustrates, Mojito runs on various clients, uses HTTP for all
-client-server communication, and typically accesses data via Yahoo Query
+client-server communication, and typically accesses data with the Yahoo! Query
 Language (YQL) due to its power, ease-of-use, and ability to run from either
-client or server.
+the client or server.
 
 
 .. image:: images/mojito_architecture.png
@@ -74,7 +74,7 @@ Data
 ####
 
 To support seamless operation and migration of components between client and
-server Mojito application data is typically obtained with YQL. In most cases,
+server, Mojito application data is typically obtained with YQL. In most cases,
 your data will be requested and processed in some way before it is presented to
 the user. JSON is expected to be by far the most prevalent format for data
 retrieved from YQL.
@@ -84,7 +84,7 @@ retrieved from YQL.
 Mojito Framework
 ----------------
 
-The Mojito Framework consists of both module-level and application-level framing
+The Mojito Framework consists of both module-level and application-level framing,
 which taken together provide the infrastructure upon which applications are
 built. Mojito framing includes the base component framework, the event system,
 and management of navigation, views, and configuration. Mojito is built directly
@@ -92,7 +92,7 @@ on top of YUI and can be considered an extension of it.
 
 At the bottom of the stack, for the purposes of this discussion at least, is an
 implementation of the Node.js API. We use the Node.js API as the definition of an
-abstraction below which we may elect to deploy Node.js itself or an alternative
+abstraction below, which we may elect to deploy Node.js or an alternative
 implementation built atop another server-side JavaScript container.
 
 This diagram shows the relationships among the Mojito application, the Mojito
@@ -155,8 +155,8 @@ the Mojito Core include, but are not limited to, the following:
 Mojit Container
 ###############
 
-The Mojit Container is where mojit instances live. This is analogous, in a
-traditional Java Web framework, to the servlet container. In Mojito the
+The Mojit Container is where mojit instances live. This is analogous in a
+traditional Java Web framework to the servlet container. In Mojito the
 component container logic runs in both server and client contexts. Mojit
 container logic includes, but is not limited to, the following:
 
@@ -286,9 +286,9 @@ A particular instance of the Application Container is initialized through an
 externally managed configuration. This configuration includes, among other
 things, the mappings that drive the Dispatcher, the identification of necessary
 mojit registries, and other environmental parameters. The Application
-Configuration specifically excludes deployment parameters; however, because it
-is part of the packaged, deployable application, the Application Configuration
-must not be tied to a particular deployment environment.
+Configuration, however, specifically excludes deployment parameters because it
+is part of the packaged, deployable application, and therefore, must not be tied to a 
+particular deployment environment.
 
 
 

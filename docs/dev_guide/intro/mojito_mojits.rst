@@ -162,7 +162,7 @@ Mojit Definition
 
 A mojit definition is a set of artifacts that collectively define a reusable
 unit of functionality known as a mojit. A mojit definition includes the mojit
-implementation (e.g., JavaScript code, view template files, CSS stylesheets, etc.),
+implementation (e.g., JavaScript code, view template files, CSS, etc.)
 and has the following characteristics:
 
 - uniquely identified, and thus, capable of being referenced from and shared
@@ -200,10 +200,10 @@ Composite Mojits
 ################
 
 Mojits may be designed to be nested. That is, a mojit may be a "child" mojit, a
-self-contained unit of presentation, or a "container" mojit, one which may
+self-contained unit of presentation, or a "parent" mojit, one which may
 itself incorporate other mojits in order to fulfill its role. Composite mojits
-encapsulate their "containees" (children), such that, for all intents and purposes, an
-instance of a composite mojit cannot be distinguished from a child mojit.
+encapsulate their children, such that, for all intents and purposes, an
+instance of a composite mojit cannot be distinguished from its child mojits.
 
 See the chapter `Composite Mojits <../topics/mojito_composite_mojits.html>`_ for more information
 and to learn how to create composite mojits.
