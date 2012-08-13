@@ -187,15 +187,19 @@ services to be developed as extensions to the core framework.
 
 .. _framework-model_factory:
 
-Model Factory
-#############
+.. The Model Factory was part of the original design goal and not part of the
+.. current implementation, so it's being removed from the published docs, but
+.. left as a comment in the source file.
 
-The Model Factory creates the model instance for a mojit instance based on that
-mojit's configuration (and perhaps on its corresponding mojit definition). The
-use of a factory mechanism allows the framework to easily interject proxies and
-other intermediaries, in a manner that is transparent to the mojit developer. In
-addition, a mojit developer may choose to provide a custom factory, although the
-need for this is not expected except in rare circumstances.
+   Model Factory
+   #############
+
+   The Model Factory creates the model instance for a mojit instance based on that
+   mojit's configuration (and perhaps on its corresponding mojit definition). The
+   use of a factory mechanism allows the framework to easily interject proxies and
+   other intermediaries, in a manner that is transparent to the mojit developer. In
+   addition, a mojit developer may choose to provide a custom factory, although the
+   need for this is not expected except in rare circumstances.
 
 .. _framework-view_factory:
 
