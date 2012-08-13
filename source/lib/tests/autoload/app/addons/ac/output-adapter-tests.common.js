@@ -193,6 +193,66 @@ YUI.add('mojito-output-adapter-addon-tests', function(Y, NAME) {
 
         },
 
+        'custom binder is used for render': function() {
+            var vrRendered;
+            // mock view renderer
+            var VR = Y.mojito.ViewRenderer;
+            Y.mojito.ViewRenderer = function(engine) {
+                A.areSame('engine', engine, 'bad view engine');
+                return {
+                    render: function(d, type, v, a, m, more) {
+                        vrRendered = true;
+                        A.areSame(data, d, 'bad data to view');
+                        A.areSame('t', type, 'bad mojitType to view');
+                        A.areSame(meta, m, 'bad meta to view');
+                        A.isString(meta.view.id, 'bad id assigned to view');
+                        A.areSame(myBinderModuleName, meta.binders[meta.view.id].name, 'bad binder module name');
+                        A.isFalse(more);
+                    }
+                };
+            };
+            var ac = { app: { config: {} } };
+            var data = {};
+            var myBinderModuleName = 'MojitBinderFoo';
+            var meta = {
+                view: {
+                    name: 'viewName',
+                    binder: 'binderName'
+                }
+            };
+            ac._adapter = {
+                done: function() {
+                    A.fail('done should not be called, the view renderer should be calling it');
+                }
+            };
+            ac.command = {
+                    instance: {
+                        type: 't',
+                        views: {
+                            viewName: {
+                                engine: 'engine',
+                                'content-path': 'path'
+                            },
+                            binderName: {
+                                'binder-url': '/virtual/path/binders/foo.js',
+                                'binder-path': '/path/to/mojits/App/binders/foo.js',
+                                'binder-module': myBinderModuleName,
+                                'binder-yui-sorted': {}
+                            }
+                        }
+                    }
+                };
+            new Y.mojito.addons.ac.core(null, null, ac);
+
+            ac.done(data, meta, false);
+
+            A.isTrue(vrRendered, 'view render never called');
+
+            // replace mock
+            Y.mojito.ViewRenderer = VR;
+
+        },
+
         'config children params are stripped': function() {
             var doneCalled;
             var children = {

@@ -92,8 +92,37 @@ YUI.add('mojito-output-adapter-addon', function(Y, NAME) {
         // We want to know the view name, id, and binder used later so make sure
         // "meta" is up-to-date
         meta.view.name = meta.view.name || action;
-        // TODO: Use a different binder
-        meta.view.binder = meta.view.binder || meta.view.name;
+        // a custom binder was invoke
+        if (meta.view.binder) {
+            if (instance.views[meta.view.binder]) {
+                // merging the selected view with the precomputed binder structure.
+                // keep in mind that this is the binder path/filename, and based on that
+                // we can capture the rest of the meta data from the binders collection.
+                // Something like this:
+                /*
+                    bar/foo:  {
+                        'binder-url': '/App/binders/bar/foo.js',
+                        'binder-path': '/path/to/mojits/App/binders/bar/foo.js',
+                        'binder-module': 'MojitBinderBarFoo',
+                        'binder-yui-sorted': {}
+                    }
+                */
+                Y.log('Customizing binder "' + meta.view.binder + '" for view "' + meta.view.name + '"', 'mojito', 'qeperf');
+                // TODO: I don't like to have this whitelist of binder-* properties, but since
+                //       there is not a clear distintion on how to resolve a custom binder, there
+                //       is not much we can do. Remember that the actual binder lookup is based on
+                //       the binder path rather than the binder module name.
+                Y.mix(instance.views[meta.view.name], (instance.views[meta.view.binder] || {}),
+                      true, ['binder-url', 'binder-path', 'binder-module', 'binder-yui-sorted'], 0, false);
+            }
+            else {
+                Y.log ('Trying to attach an undefined binder with name='+meta.view.binder, 'error', NAME);
+            }
+        }
+        else {
+            // default binder is based on the view name.
+            meta.view.binder = meta.view.name;
+        }
         mojitView = instance.views[meta.view.name];
         if (!meta.view.id) {
             meta.view.id = Y.guid();
