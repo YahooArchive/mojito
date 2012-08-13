@@ -37,7 +37,8 @@ YUI.add('addon-rs-url', function(Y, NAME) {
          */
         initializer: function(config) {
             var appConfig,
-                p, part,
+                p,
+                part,
                 defaults = {};
 
             this.appRoot = config.appRoot;
@@ -55,8 +56,7 @@ YUI.add('addon-rs-url', function(Y, NAME) {
                 part = URL_PARTS[p];
                 if (this.config.hasOwnProperty(part)) {
                     this.config[part] = this.config[part].replace(/^\//g, '').replace(/\/$/g, '');
-                }
-                else {
+                } else {
                     this.config[part] = defaults[part] || '';
                 }
             }
