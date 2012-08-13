@@ -1922,6 +1922,12 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
         },
 
 
+        /**
+         * @private
+         * @method _cloneObj
+         * @param {object} o object to clone
+         * @return {object} a copy of the object
+         */
         _cloneObj: function(o) {
             var newO,
                 i;
