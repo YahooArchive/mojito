@@ -33,7 +33,7 @@ Mojit Architecture
 ------------------
 
 From the diagram below, you can see that the mojit has an MVC structure 
-centered around the `Action Context <mojito_architecture#framework-mojit_ac>`_
+centered around the `Action Context <mojito_architecture.html#api-action-context>`_
 and can be deployed to the client or run on the server. Also note that the Mojit Proxy
 allows client-side code (binders) to communicate with server-side code through the
 Action Context. The sections below describe the main components in the diagram that are 
@@ -101,7 +101,7 @@ Addons are extensions of the Action Context that provide additional functionalit
 that lives both on the server and client. 
 
 See `Addons <../api_overview/mojito_addons.html>`_ in the 
-`Mojito API Overview <api_overview/>`_ chapter for more information. 
+`Mojito API Overview <../api_overview/>`_ chapter for more information. 
 
 
 .. _mojit_arch-views:
@@ -208,3 +208,5 @@ instance of a composite mojit cannot be distinguished from its child mojits.
 See the chapter `Composite Mojits <../topics/mojito_composite_mojits.html>`_ for more information
 and to learn how to create composite mojits.
 
+.. |---| unicode:: U+2014  .. em dash, trimming surrounding whitespace
+   :trim:
