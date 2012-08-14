@@ -176,12 +176,12 @@ ENDDEFS
         push @svg, '    <g class="axis left">';
         push @svg, '        <line class="line" x1="50" y1="30" x2="50" y2="'.$y.'" />';
         for (my $i = 0; $i <= 10; $i++) {
-            my $y = round(30 + $i * ($GRAPH_HEIGHT / 10));
+            my $y = round(30 + (10-$i) * ($GRAPH_HEIGHT / 10));
             push @svg, '        <line class="tick" x1="40" y1="'.$y.'" x2="50" y2="'.$y.'" />';
         }
         my $tickscale = ($max{'left'} - $min{'left'}) / 10;
         for (my $i = 0; $i <= 10; $i++) {
-            my $y = round(35 + $i * ($GRAPH_HEIGHT / 10));
+            my $y = round(35 + (10-$i) * ($GRAPH_HEIGHT / 10));
             my $v = round($min{'left'} + ($i * $tickscale));
             push @svg, '        <text class="label" x="40" y="'.$y.'" font-size="12" text-anchor="end" >'.$v.'</text>';
         }
@@ -195,12 +195,12 @@ ENDDEFS
         push @svg, '    <g class="axis right">';
         push @svg, '        <line class="line" x1="'.$x.'" y1="30" x2="'.$x.'" y2="'.$y.'" />';
         for (my $i = 0; $i <= 10; $i++) {
-            my $y = round(30 + $i * ($GRAPH_HEIGHT / 10));
+            my $y = round(30 + (10-$i) * ($GRAPH_HEIGHT / 10));
             push @svg, '        <line class="tick" x1="'.$x.'" y1="'.$y.'" x2="'.($x+10).'" y2="'.$y.'" />';
         }
         my $tickscale = ($max{'right'} - $min{'right'}) / 10;
         for (my $i = 0; $i <= 10; $i++) {
-            my $y = round(35 + $i * ($GRAPH_HEIGHT / 10));
+            my $y = round(35 + (10-$i) * ($GRAPH_HEIGHT / 10));
             my $v = round($min{'right'} + ($i * $tickscale));
             push @svg, '        <text class="label" x="'.($x+10).'" y="'.$y.'" font-size="12" text-anchor="begin" >'.$v.'</text>';
         }
