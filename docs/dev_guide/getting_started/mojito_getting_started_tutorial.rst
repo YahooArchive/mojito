@@ -118,49 +118,50 @@ You will now modify the controller, so that the ``index`` function called in the
 
 #. Edit ``controller.server.js`` and replace the string 'Just a simple mojit.' in the code with 'Hello World!'. Your ``controller.server.js`` should look similar to the following code:
 
-  .. code-block:: javascript
+   .. code-block:: javascript
 
-       YUI.add('HelloMojit', function(Y, NAME) {
+      YUI.add('HelloMojit', function(Y, NAME) {
 
-         /**
-         * The HelloMojit module.
-         *
-         * @module HelloMojit
-         **/
+        /**
+        * The HelloMojit module.
+        *
+        * @module HelloMojit
+        **/
 
-         /**
-         * Constructor for the Controller class.
-         *
-         * @class Controller
-         * @constructor
-         */
-         Y.mojito.controllers[NAME] = {
+       /**
+        * Constructor for the Controller class.
+        *
+        * @class Controller
+        * @constructor
+        */
+        Y.mojito.controllers[NAME] = {
 
-           init: function(config) {
-             this.config = config;
-           },
+          init: function(config) {
+            this.config = config;
+          },
 
-           /**
-           * Method corresponding to the 'index' action.
-           *
-           * @param ac {Object} The ActionContext that provides access
-           *        to the Mojito API.
-           **/
-           index: function(ac) {
-             ac.models.HelloMojitModelFoo.getData(function(err, data) {
-             if (err) {
+          /**
+          * Method corresponding to the 'index' action.
+          *
+          * @param ac {Object} The ActionContext that provides access
+          *        to the Mojito API.
+          **/
+          index: function(ac) {
+            ac.models.HelloMojitModelFoo.getData(function(err, data) {
+              if (err) {
                 ac.error(err);
                 return;
-             }
-             ac.assets.addCss('./index.css');
-               ac.done({
-                 status: 'Hello World!',
-                 data: data
-               });
-             });
-           }
-         };
-       }, '0.0.1', {requires: ['mojito', 'HelloMojitModelFoo']});
+              }
+              ac.assets.addCss('./index.css');
+              ac.done({
+                status: 'Hello World!',
+                data: data
+              });
+            });
+          }
+        };
+      }, '0.0.1', {requires: ['mojito', 'HelloMojitModelFoo']});
+
 
    As you can see the "controllers" are just an array of JavaScript objects, and the "action" is just a method called on the controller object. 
    The result of the method are communicated back to Mojito through the ``actionContext`` object. 
