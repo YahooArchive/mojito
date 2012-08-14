@@ -383,6 +383,33 @@ YUI.add('mojito-util', function(Y) {
                 }
             }
             return url;
+        },
+
+        /**
+         * Determines whether a mojit instance should share its YUI instance.
+         * The app config determines this, however invdividual mojits can
+         * override the app value by setting either true or false. This gives
+         * mojits the ability to opt in, opt out, or leave it up to the application
+         * setting by leaving it undefined.
+         *
+         * @param appShareYUIInstance {boolean} The app's configuration
+         * @param mojitInstance {Object} The mojit instance to check against
+         * @return {boolean}
+         */
+        shouldShareYUIInstance: function (appShareYUIInstance, mojitInstance) {
+            if (true === mojitInstance.shareYUIInstance) {
+                return true;
+            }
+            if (false === mojitInstance.shareYUIInstance) {
+                return false;
+            }
+            if (mojitInstance.defaults && true === mojitInstance.defaults.shareYUIInstance) {
+                return true;
+            }
+            if (mojitInstance.defaults && false === mojitInstance.defaults.shareYUIInstance) {
+                return false;
+            }
+            return appShareYUIInstance || false;
         }
     };
 
