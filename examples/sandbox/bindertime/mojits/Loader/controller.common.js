@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('Loader', function(Y) {
+YUI.add('Loader', function(Y, NAME) {
 
 /**
  * The Loader module.
@@ -18,7 +18,7 @@ YUI.add('Loader', function(Y) {
      * @class Controller
      * @constructor
      */
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         init: function(config) {
             this.config = config;

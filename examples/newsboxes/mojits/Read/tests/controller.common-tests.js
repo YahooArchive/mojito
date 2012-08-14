@@ -250,7 +250,7 @@ YUI.add('ReadController-tests', function(Y) {
         name: 'ReadController tests',
 
         setUp: function() {
-            controller = Y.mojito.controller;
+            controller = Y.mojito.controllers.ReadController;
             controller.init({spaceid: '999', limit: 10});
         },
 

@@ -6,7 +6,7 @@
 
 YUI.add('myMojit', function(Y, NAME) {
 
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         index: function(ac) {
 			Y.log('controller index', 'debug', NAME);

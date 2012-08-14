@@ -15,7 +15,7 @@ YUI.add('i18n-tests', function(Y) {
         name: 'i18n user tests',
         
         setUp: function() {
-            controller = Y.mojito.controller;
+            controller = Y.mojito.controllers.i18n;
         },
         tearDown: function() {
             controller = null;

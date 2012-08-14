@@ -93,7 +93,7 @@ YUI.add('ShelfController-tests', function(Y) {
 
         setUp: function() {
             A.isNull(controller);
-            controller = Y.mojito.controller;
+            controller = Y.mojito.controllers.ShelfController;
             A.isNotNull(controller);
         },
 

@@ -16,7 +16,7 @@ YUI.add('RoutingMojit-tests', function(Y) {
         name: 'RoutingMojit user tests',
         
         setUp: function() {
-            controller = Y.mojito.controller;
+            controller = Y.mojito.controllers.RoutingMojit;
         },
         tearDown: function() {
             controller = null;

@@ -15,7 +15,7 @@ YUI.add('device-tests', function(Y) {
         name: 'device user tests',
         
         setUp: function() {
-            controller = Y.mojito.controller;
+            controller = Y.mojito.controllers.device;
         },
         tearDown: function() {
             controller = null;
