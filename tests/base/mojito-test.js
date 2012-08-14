@@ -47,6 +47,11 @@ YUI.add('mojito-http-addon', function(Y, NAME) {
 
 /*
  */
+YUI.add('mojito-output-adapter-addon', function(Y, NAME) {
+});
+
+/*
+ */
 YUI.add('mojito-client-store', function(Y, NAME) {
 });
 
@@ -77,6 +82,14 @@ YUI.add('mojito-output-handler', function(Y, NAME) {
 
 /*
  */
+YUI.add('mojito-perf', function(Y, NAME) {
+    Y.namespace('mojito').perf = {
+        mark: function () {}
+    };
+});
+
+/*
+ */
 YUI.add('mojito-resource-store-adapter', function(Y, NAME) {
 });
 
@@ -88,6 +101,11 @@ YUI.add('mojito-route-maker', function(Y, NAME) {
 /*
  */
 YUI.add('mojito-tunnel-client', function(Y, NAME) {
+});
+
+/*
+ */
+YUI.add('mojito-view-renderer', function(Y, NAME) {
 });
 
 /*

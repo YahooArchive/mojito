@@ -50,16 +50,6 @@
         }
     },
     {
-        "settings": [ "environment:development" ],
-        "name": "mojito-nodejs-unit-tests--is-not-hooked-up-yet",
-        "dataprovider": {
-            "deploy.server": {
-                "params": {
-                    "lib": "$$config.lib$$/app/addons/ac/deploy.server.js,../../../../../../source/lib/app/autoload/loader.common.js,../../../../../../source/lib/app/addons/ac/http.server.js",
-                    "test": "./test-deploy.server.js"
-                },
-                "group": "fw,server"
-            }
-        }
+        "settings": [ "environment:development" ]
     }
 ]
