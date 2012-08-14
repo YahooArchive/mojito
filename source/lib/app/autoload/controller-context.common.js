@@ -16,8 +16,7 @@ YUI.add('mojito-controller-context', function(Y, NAME) {
         this.dispatch = opts.dispatch;
         this.store = opts.store;
         this.Y = opts.Y;
-        this.shareYUIInstance = opts.appShareYUIInstance &&
-            this.instance.shareYUIInstance;
+        this.shareYUIInstance = Y.mojito.util.shouldShareYUIInstance(opts.appShareYUIInstance, this.instance);
         this.init();
     }
 
@@ -42,12 +41,19 @@ YUI.add('mojito-controller-context', function(Y, NAME) {
                 c = this.Y.mojito.controller ||
                     this.Y.mojito.controllers[instance['controller-module']];
 
+            // If sharing YUI and controller clobbers, log an error.
+            if (shareYUIInstance && this.Y.mojito.controller) {
+                this.Y.log(instance['controller-module'] + ' mojit' +
+                    ' clobbers Y.mojito.controller namespace. Please use' +
+                    ' `Y.namespace(\'mojito.controllers\')[NAME]` when ' +
+                    ' declaring controllers.', 'error', NAME);
+            }
+
             if (!Y.Lang.isObject(c)) {
                 error = new Error('Mojit controller prototype is not an' +
                     ' object! (mojit id: \'' + instance.id + '\')');
 
-                // TODO: change this to a more appropriate error code.
-                error.code = 404;
+                error.code = 500;
                 throw error;
             }
 
