@@ -559,6 +559,22 @@ App.prototype = {
     }
 };
 
+/**
+ * Return cli.json config object used with mojito cli for custom configurations
+ */
+function getCliConfig() {
+    var ret = null,
+        config_file = path.join(process.env.PWD, 'cli.json');
+    
+    if (fs.statSync(config_file)) {
+        try {
+            ret = JSON.parse(fs.readFileSync(config_file, 'utf-8'));
+        } catch (err) {}
+    }
+
+    return ret;
+}
+
 
 /**
  */
@@ -623,3 +639,7 @@ exports.copyUsingMatcher = copyUsingMatcher;
 /**
  */
 exports.heir = heir;
+
+/**
+ */
+exports.getCliConfig = getCliConfig;
