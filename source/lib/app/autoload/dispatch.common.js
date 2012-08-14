@@ -127,7 +127,7 @@ YUI.add('mojito-dispatcher', function(Y, NAME) {
                 // We replace the given instance with the expanded instance
                 command.instance = instance;
 
-                if (appShareYUIInstance && instance.shareYUIInstance) {
+                if (Y.mojito.util.shouldShareYUIInstance(appShareYUIInstance, command.instance)) {
                     instanceYuiCacheKey = 'singleton';
                 } else {
                     // Generate a cache key
@@ -271,7 +271,7 @@ YUI.add('mojito-dispatcher', function(Y, NAME) {
                 }
 
                 // Get the cached YUI instance (if there is one)
-                if (!(appShareYUIInstance && instance.shareYUIInstance)) {
+                if (!Y.mojito.util.shouldShareYUIInstance(appShareYUIInstance, command.instance)) {
                     instanceYuiCacheObj = CACHE.YUI[instanceYuiCacheKey];
                 }
 
@@ -329,7 +329,7 @@ YUI.add('mojito-dispatcher', function(Y, NAME) {
 
             appConfigStatic = store.getAppConfig({});
 
-            appShareYUIInstance = (false !== appConfigStatic.shareYUIInstance);
+            appShareYUIInstance = (true === appConfigStatic.shareYUIInstance);
             usePrecomputed = appConfigStatic.yui && (-1 !==
                 appConfigStatic.yui.dependencyCalculations.indexOf('precomputed'));
             useOnDemand = appConfigStatic.yui && (-1 !==

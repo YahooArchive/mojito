@@ -9,9 +9,9 @@
 /*global YUI*/
 
 
-YUI.add('LazyLoad', function(Y) {
+YUI.add('LazyLoad', function(Y, NAME) {
 
-    Y.namespace('mojito').controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         /*
          * Initially, renders a bar node

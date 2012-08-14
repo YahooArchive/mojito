@@ -43,9 +43,9 @@
             "utils": {
                 "params": {
                     "page": "$$config.base$$/mojito-test.html",
-                    "test": "./test-utils.js"
+                    "test": "./test-utils.common.js"
                 },
-                "group": "fw,unit,client"
+                "group": "fw,unit,client,server"
             }
         }
     },
