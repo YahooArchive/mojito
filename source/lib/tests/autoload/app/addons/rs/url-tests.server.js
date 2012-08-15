@@ -283,6 +283,66 @@ YUI.add('mojito-addon-rs-url-tests', function(Y, NAME) {
                 mojit: mojit
             });
             A.areSame('TEST/assets', mojit.assetsRoot);
+        },
+
+
+        'issue 375 -- shared assets have wrong URL, especially when staticHandling.appName is "/"': function() {
+            var fixtures = libpath.join(__dirname, '../../../../fixtures/store');
+
+            function runTest(staticHandling, cb) {
+                var store = new MockRS({
+                    root: fixtures,
+                    appConfig: {staticHandling: staticHandling}
+                });
+                store.plug(Y.mojito.addons.rs.url, {appRoot: fixtures, mojitoRoot: mojitoRoot});
+
+                store._makeResource('mojito', 'shared', 'x', 'y', 'common', 'red');
+                store._makeResource('orange', 'shared', 'x', 'y', 'common', 'red');
+                store.preloadResourceVersions();
+                cb(store);
+            }
+
+            runTest({appName: '/'}, function(store) {
+                A.areSame('/static/mojito/x--y.common.ext', store._mojitRVs.shared[0].url, 'mojito with appName /');
+                A.areSame('/static/x--y.common.ext', store._mojitRVs.shared[1].url, 'shared with /');
+            });
+            runTest({appName: '/AAA'}, function(store) {
+                A.areSame('/static/mojito/x--y.common.ext', store._mojitRVs.shared[0].url, 'mojito with appName /AAA');
+                A.areSame('/static/AAA/x--y.common.ext', store._mojitRVs.shared[1].url, 'shared with appName /AAA');
+            });
+            runTest({appName: 'AAA/'}, function(store) {
+                A.areSame('/static/mojito/x--y.common.ext', store._mojitRVs.shared[0].url, 'mojito with appName AAA/');
+                A.areSame('/static/AAA/x--y.common.ext', store._mojitRVs.shared[1].url, 'shared with appName AAA/');
+            });
+            runTest({appName: '/AAA/'}, function(store) {
+                A.areSame('/static/mojito/x--y.common.ext', store._mojitRVs.shared[0].url, 'mojito with appName /AAA/');
+                A.areSame('/static/AAA/x--y.common.ext', store._mojitRVs.shared[1].url, 'shared with appName /AAA/');
+            });
+            runTest({appName: '/AAA/BBB/'}, function(store) {
+                A.areSame('/static/mojito/x--y.common.ext', store._mojitRVs.shared[0].url, 'mojito with appName /AAA/BBB/');
+                A.areSame('/static/AAA/BBB/x--y.common.ext', store._mojitRVs.shared[1].url, 'shared with appName /AAA/BBB/');
+            });
+
+            runTest({frameworkName: '/'}, function(store) {
+                A.areSame('/static/x--y.common.ext', store._mojitRVs.shared[0].url, 'mojito with frameworkName /');
+                A.areSame('/static/store/x--y.common.ext', store._mojitRVs.shared[1].url, 'shared with frameworkName /');
+            });
+            runTest({frameworkName: '/FFF'}, function(store) {
+                A.areSame('/static/FFF/x--y.common.ext', store._mojitRVs.shared[0].url, 'mojito with frameworkName /FFF');
+                A.areSame('/static/store/x--y.common.ext', store._mojitRVs.shared[1].url, 'shared with frameworkName /FFF');
+            });
+            runTest({frameworkName: 'FFF/'}, function(store) {
+                A.areSame('/static/FFF/x--y.common.ext', store._mojitRVs.shared[0].url, 'mojito with frameworkName FFF/');
+                A.areSame('/static/store/x--y.common.ext', store._mojitRVs.shared[1].url, 'shared with frameworkName FFF/');
+            });
+            runTest({frameworkName: '/FFF/'}, function(store) {
+                A.areSame('/static/FFF/x--y.common.ext', store._mojitRVs.shared[0].url, 'mojito with frameworkName /FFF/');
+                A.areSame('/static/store/x--y.common.ext', store._mojitRVs.shared[1].url, 'shared with frameworkName /FFF/');
+            });
+            runTest({frameworkName: '/FFF/BBB/'}, function(store) {
+                A.areSame('/static/FFF/BBB/x--y.common.ext', store._mojitRVs.shared[0].url, 'mojito with frameworkName /FFF/BBB/');
+                A.areSame('/static/store/x--y.common.ext', store._mojitRVs.shared[1].url, 'shared with frameworkName /FFF/BBB/');
+            });
         }
 
 

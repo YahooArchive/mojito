@@ -19,7 +19,8 @@
 YUI.add('addon-rs-url', function(Y, NAME) {
 
     var libfs = require('fs'),
-        libpath = require('path');
+        libpath = require('path'),
+        URL_PARTS = ['frameworkName', 'appName', 'prefix'];
 
     function RSAddonUrl() {
         RSAddonUrl.superclass.constructor.apply(this, arguments);
@@ -35,7 +36,11 @@ YUI.add('addon-rs-url', function(Y, NAME) {
          * @return {nothing}
          */
         initializer: function(config) {
-            var appConfig;
+            var appConfig,
+                p,
+                part,
+                defaults = {};
+
             this.appRoot = config.appRoot;
             this.mojitoRoot = config.mojitoRoot;
             this.afterHostMethod('preloadResourceVersions', this.preloadResourceVersions, this);
@@ -43,11 +48,19 @@ YUI.add('addon-rs-url', function(Y, NAME) {
 
             appConfig = config.host.getStaticAppConfig();
             this.config = appConfig.staticHandling || {};
-            this.config.appName = this.config.appName || libpath.basename(this.appRoot);
-            this.config.frameworkName = this.config.frameworkName || 'mojito';
-            if (!this.config.hasOwnProperty('prefix')) {
-                this.config.prefix = 'static';
+
+            defaults.frameworkName = 'mojito';
+            defaults.appName = libpath.basename(this.appRoot);
+            defaults.prefix = 'static';
+            for (p = 0; p < URL_PARTS.length; p += 1) {
+                part = URL_PARTS[p];
+                if (this.config.hasOwnProperty(part)) {
+                    this.config[part] = this.config[part].replace(/^\//g, '').replace(/\/$/g, '');
+                } else {
+                    this.config[part] = defaults[part] || '';
+                }
             }
+
             // FUTURE:  deprecate appConfig.assumeRollups
             this.assumeRollups = this.config.assumeRollups || appConfig.assumeRollups;
         },
@@ -174,13 +187,19 @@ YUI.add('addon-rs-url', function(Y, NAME) {
 
             if ('shared' === res.mojit) {
                 if ('mojito' === res.source.pkg.name) {
-                    urlParts.push(this.config.frameworkName);
+                    if (this.config.frameworkName) {
+                        urlParts.push(this.config.frameworkName);
+                    }
                 } else {
-                    urlParts.push(this.config.appName);
+                    if (this.config.appName) {
+                        urlParts.push(this.config.appName);
+                    }
                 }
                 // fw resources are also put into the app-level rollup
                 if (res.yui && res.yui.name) {
-                    rollupParts.push(this.config.appName);
+                    if (this.config.appName) {
+                        rollupParts.push(this.config.appName);
+                    }
                     rollupParts.push('rollup.client.js');
                     rollupFsPath = libpath.join(this.appRoot, 'rollup.client.js');
                 }
