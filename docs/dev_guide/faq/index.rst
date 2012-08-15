@@ -71,7 +71,7 @@ Views
 * :ref:`Does Mojito support view partials? <moj_partials>`  
 * :ref:`Do I have to create separate mojits for different devices? <moj_devices>` 
 * :ref:`How do I refresh the view on the client? <moj_refresh_view>`
-* :ref:`Can I use a different templating system other than Mustache? <moj_different_templating>`
+* :ref:`Can I use a different templating system other than Handlebars? <moj_different_templating>`
 * :ref:`Can the mojit controller specify which view template should be rendered? <moj_controller_specify_view>`
 
 Logging/Testing
@@ -448,7 +448,7 @@ Data
 .. topic:: **How does a parent mojit send data to the view template?** 
 
     From the controller of the parent mojit, pass the ``template`` object to ``ac.done`` as seen below. The ``template`` object can contain 
-    key-value pairs that can be added to the view template as Mustache tags. For example, the key ``foo`` in the ``template`` object shown here
+    key-value pairs that can be added to the view template as Handlebar expressions. For example, the key ``foo`` in the ``template`` object shown here
     can be used in the view template as ``{{foo}}``, which will be replaced by the value 'bar' when the view template is rendered.
     
     ``// Inside parent mojit``
@@ -518,7 +518,7 @@ Views
 .. _moj_partials:
 .. topic:: **Does Mojito support view partials?**
 
-    Mojito does not support Mustache partials, but you do have the following options for rendering data through a template:
+    Mojito does not support partials, but you do have the following options for rendering data through a template:
     
        * use a child mojit instead of a view partial 
        * render data from a binder through a specific template with the `render <../../api/classes/MojitProxy.html#method_render>`_ method. 
@@ -551,9 +551,9 @@ Views
 ------------
 
 .. _moj_different_templating:
-.. topic:: **Can I use a different templating system other than Mustache?**
+.. topic:: **Can I use a different templating system other than Handlebars?**
 
-    Mojito currently only comes with a Mustache rendering engine, but you can add other rendering engines for templating
+    Mojito currently only comes with a Handlebars rendering engine, but you can add other rendering engines for templating
     systems such as EJS or Jade. See the `View Engine <../topics/mojito_extensions.html#view-engines>`_ documentation
     for implementation details. 
 

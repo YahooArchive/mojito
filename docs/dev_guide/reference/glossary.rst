@@ -133,7 +133,7 @@ view partial
 view template
 -------------
 
-   Template files that are rendered into HTML and served to a device. These templates can contain tags, such as Mustache tags, that 
+   Template files that are rendered into HTML and served to a device. These templates can contain expressions (Handlebars) or tags (Mustache) that 
    are replaced with values by a view rendering engine.
    
 YUI

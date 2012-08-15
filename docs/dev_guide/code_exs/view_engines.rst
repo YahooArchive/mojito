@@ -192,7 +192,7 @@ so that it can be compiled by ``handlebars``.
      return fs.readFileSync(tmpl, 'utf8');
    }
 
-The Mustache and Handlebars rendering engines compile templates into an executable JavaScript function, 
+The Handlebars rendering engines compile templates into an executable JavaScript function, 
 but the implementation of the ``compile`` method in the view engine addon is up to the developer. 
 In the above code snippet, the ``compile`` method simply returns the template file to the
 ``render`` method, where the instance of the Handlebars rendering engine calls ``compile`` to render 

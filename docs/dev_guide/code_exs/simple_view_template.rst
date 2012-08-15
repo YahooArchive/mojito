@@ -1,8 +1,8 @@
 
 
-==============================================
-Creating a Simple View with Mustache Templates
-==============================================
+================================================
+Creating a Simple View with Handlebars Templates
+================================================
 
 **Time Estimate:** 10 minutes
 
@@ -11,13 +11,13 @@ Creating a Simple View with Mustache Templates
 Summary
 #######
 
-This example shows how to create a simple view for Mojito applications with `Mustache templates <http://mustache.github.com/>`_. Mojito views are template files that are 
+This example shows how to create a simple view for Mojito applications with `Handlebars <http://handlebarsjs.com/>`_. Mojito views are template files that are 
 rendered into HTML and served to a device. These template files are simply called *view templates* in this example and throughout the Mojito documentation.
 
 The following topics will be covered:
 
 - adding a simple view template
-- Mustache template basics
+- Handlebars template basics
 - passing data to the view template
 
 Implementation Notes
@@ -30,7 +30,7 @@ In the following screenshot, you see the HTML page that was rendered from the vi
    :width: 226px
 
 In Mojito applications, the controller is responsible for passing data to the view template. From the below code snippet taken from ``controller.server.js``, you see the ``index`` function 
-creating a ``data`` object and passing it to the ``done`` method. The ``done`` method called on ``ac``, the `ActionContext <../../api/classes/ActionContext.html>`_ object, sends the ``data`` object to the view template ``index.mu.html``.
+creating a ``data`` object and passing it to the ``done`` method. The ``done`` method called on ``ac``, the `ActionContext <../../api/classes/ActionContext.html>`_ object, sends the ``data`` object to the view template ``index.hb.html``.
 
 .. code-block:: javascript
 
@@ -51,8 +51,8 @@ creating a ``data`` object and passing it to the ``done`` method. The ``done`` m
      };
    ...
 
-In the ``index`` view template of this code example, the properties of the ``data`` object are placed in Mustache tags that are evaluated by Mojito when the view template is rendered. 
-In Mustache templates, the property names in double mustaches, such as ``{{type}}``, are variables.  The double mustaches with a pound are called sections and can be used for lists or 
+In the ``index`` view template of this code example, the properties of the ``data`` object are placed in Handlebars expressions that are evaluated by Mojito when the view template is rendered. 
+In Handlebars templates, the property names in double braces, such as ``{{type}}``, are variables.  The double mustaches with a pound are called sections and can be used for lists or 
 conditional expression, such as ``{{#show}...{{/show}``. You also use double mustaches with a pound to access properties within an object, which is how the ``hours`` property of the ``time`` object 
 is accessed here.
 
@@ -71,7 +71,7 @@ is accessed here.
      <div>html: {{{html}}}</div>
    </div>
 
-For the complete list of Mustache tag types, see the `Mustache Manual <http://mustache.github.com/mustache.5.html>`_.
+See the `Handlebars expressions <http://handlebarsjs.com/expressions.html>`_ in the Handlebars documentation for more information.
 
 Setting Up This Example
 #######################
@@ -145,7 +145,7 @@ To set up and run ``simple_view``:
         };
       }, '0.0.1', {requires: []});
 
-#. Modify your ``index`` view template by replacing the code in ``views/index.mu.html`` with the following:
+#. Modify your ``index`` view template by replacing the code in ``views/index.hb.html`` with the following:
 
    .. code-block:: html
 
