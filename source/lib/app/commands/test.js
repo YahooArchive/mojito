@@ -711,7 +711,10 @@ runTests = function(opts) {
             configureYUI(YUI, store);
 
             if (testType === 'fw') {
-                testConfigs = store.yui.getConfigShared('server', {}, true).modules;
+                testConfigs = merge(
+                    store.yui.getConfigShared('server', {}, true).modules,
+                    store.yui.getConfigAllMojits('server', {}).modules
+                );
             } else if (testType === 'app') {
                 testConfigs = merge(
                     store.yui.getConfigShared('server', {}, true).modules,
