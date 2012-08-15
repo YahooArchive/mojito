@@ -1,4 +1,8 @@
 artifacts
+examples
+artifacts
+tests
+Makefile
 .lock-wscript
 .svn/
 .git/

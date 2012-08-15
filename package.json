@@ -24,9 +24,13 @@
         "framework",
         "webapp"
     ],
-    "main": "lib/index",
+    "main": "source/lib/index",
+    "directories": [
+        "docs",
+        "source"
+    ],
     "bin": {
-        "mojito": "bin/mojito"
+        "mojito": "source/bin/mojito"
     },
     "engines": {
         "node": ">= 0.4.0 < 0.7.0",
@@ -45,8 +49,8 @@
     },
     "bugs": "https://github.com/yahoo/mojito/issues",
     "scripts": {
-        "start": "mojito start",
-        "test": "mojito test"
+        "start": "./source/bin/mojito start",
+        "test": "./source/bin/mojito test"
     },
     "yahoo": {
         "bugzilla": {
@@ -55,7 +59,7 @@
         },
         "mojito": {
             "type": "bundle",
-            "location": "lib/app"
+            "location": "source/lib/app"
         }
     }
 }
