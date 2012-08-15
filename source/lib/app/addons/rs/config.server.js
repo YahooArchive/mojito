@@ -47,7 +47,7 @@ YUI.add('addon-rs-config', function(Y, NAME) {
             this.beforeHostMethod('parseResourceVersion', this.parseResourceVersion, this);
 
             this._jsonCache = {};   // fullPath: contents as JSON object
-            this._ycbCache = {};    // fullPath: YCB config object
+            this._ycbCache = {};    // fullPath: context: YCB config object
             this._ycbDims = this._readYcbDimensions();
         },
 
@@ -107,14 +107,19 @@ YUI.add('addon-rs-config', function(Y, NAME) {
 
             store.validateContext(ctx);
 
-            ycb = this._ycbCache[fullPath];
+            if (!this._ycbCache[fullPath]) {
+                this._ycbCache[fullPath] = {};
+            }
+
+            cacheKey = Y.JSON.stringify(ctx);
+            ycb = this._ycbCache[fullPath][cacheKey];
             if (!ycb) {
                 json = this.readConfigJSON(fullPath);
                 json = this._ycbDims.concat(json);
-                ycb = new libycb.Ycb(json);
-                this._ycbCache[fullPath] = ycb;
+                ycb = libycb.read(json, ctx);
+                this._ycbCache[fullPath][cacheKey] = ycb;
             }
-            return ycb.read(ctx, {});
+            return Y.mojito.util.copy(ycb);
         },
 
 
