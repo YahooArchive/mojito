@@ -268,7 +268,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
          * @return {object} the context
          */
         getStaticContext: function() {
-            return this._cloneObj(this._config.context);
+            return Y.mojito.util.copy(this._config.context);
         },
 
 
@@ -278,7 +278,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
          * @return {object} the configuration from applications.json
          */
         getStaticAppConfig: function() {
-            return this._cloneObj(this._appConfigStatic);
+            return Y.mojito.util.copy(this._appConfigStatic);
         },
 
 
@@ -288,7 +288,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
          * @return {object} the configuration for mojito
          */
         getFrameworkConfig: function() {
-            return this._cloneObj(this._fwConfig);
+            return Y.mojito.util.copy(this._fwConfig);
         },
 
 
@@ -305,18 +305,18 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             this.validateContext(ctx);
 
             if (this._appConfigStatic && (!ctx || !Object.keys(ctx).length)) {
-                return this._cloneObj(this._appConfigStatic);
+                return Y.mojito.util.copy(this._appConfigStatic);
             }
 
             // start with the base
-            appConfig = this._cloneObj(this._fwConfig.appConfigBase);
+            appConfig = Y.mojito.util.copy(this._fwConfig.appConfigBase);
 
             // apply the read values from the file
             ycb = this.config.readConfigYCB(this._libs.path.join(this._config.root, 'application.json'), ctx);
             this.mergeRecursive(appConfig, ycb);
 
             // apply the passed-in overrides
-            this.mergeRecursive(appConfig, this._cloneObj(this._config.appConfig));
+            this.mergeRecursive(appConfig, Y.mojito.util.copy(this._config.appConfig));
 
             return appConfig;
         },
@@ -541,7 +541,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             this.validateContext(ctx);
 
             if (cacheValue) {
-                cb(null, this._cloneObj(cacheValue));
+                cb(null, Y.mojito.util.copy(cacheValue));
                 return;
             }
 
@@ -568,12 +568,12 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 return cb(err2);
             }
             if (spec.defaults && spec.defaults.config) {
-                config = this._cloneObj(spec.defaults.config);
+                config = Y.mojito.util.copy(spec.defaults.config);
                 this.mergeRecursive(config, spec.config);
                 spec.config = config;
             }
 
-            this._expandInstanceCache[env][cacheKey] = this._cloneObj(spec);
+            this._expandInstanceCache[env][cacheKey] = Y.mojito.util.copy(spec);
             cb(null, spec);
         },
 
@@ -743,7 +743,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             for (r = 0; r < ress.length; r += 1) {
                 res = ress[r];
                 if (fixedPaths[res.source.fs.fullPath]) {
-                    routes = this._cloneObj(this.config.readConfigYCB(res.source.fs.fullPath, ctx));
+                    routes = Y.mojito.util.copy(this.config.readConfigYCB(res.source.fs.fullPath, ctx));
                     out = Y.merge(out, routes);
                 }
             }
@@ -1722,7 +1722,7 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
                 if (versions.hasOwnProperty(resid)) {
                     highest = Math.max.apply(Math, Object.keys(versions[resid]));
                     //console.log('--DEBUG-- highest=' + highest + ' -- ' + resid);
-                    chosen = this._cloneObj(versions[resid][highest]);
+                    chosen = Y.mojito.util.copy(versions[resid][highest]);
                     out.push(chosen);
                 }
             }
@@ -1919,41 +1919,6 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
             });
             Y.use.apply(Y, Object.keys(modules));
             Y.applyConfig({ useSync: false });
-        },
-
-
-        /**
-         * @private
-         * @method _cloneObj
-         * @param {object} o object to clone
-         * @return {object} a copy of the object
-         */
-        _cloneObj: function(o) {
-            var newO,
-                i;
-
-            if (typeof o !== 'object') {
-                return o;
-            }
-            if (!o) {
-                return o;
-            }
-
-            if ('[object Array]' === Object.prototype.toString.apply(o)) {
-                newO = [];
-                for (i = 0; i < o.length; i += 1) {
-                    newO[i] = this._cloneObj(o[i]);
-                }
-                return newO;
-            }
-
-            newO = {};
-            for (i in o) {
-                if (o.hasOwnProperty(i)) {
-                    newO[i] = this._cloneObj(o[i]);
-                }
-            }
-            return newO;
         }
 
 
@@ -1966,5 +1931,6 @@ YUI.add('mojito-resource-store', function(Y, NAME) {
 }, '0.0.1', { requires: [
     'base',
     'json-stringify',
-    'oop'
+    'oop',
+    'mojito-util'
 ]});

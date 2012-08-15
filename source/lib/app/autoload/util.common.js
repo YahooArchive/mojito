@@ -191,18 +191,29 @@ YUI.add('mojito-util', function(Y) {
         },
 
 
-        copy: function(obj) {
-            var temp = null,
-                key = '';
+        copy: function(oldObj) {
+            var newObj,
+                key;
 
-            if (!obj || typeof obj !== 'object') { return obj; }
-            temp = new obj.constructor();
-            for (key in obj) {
-                if (obj.hasOwnProperty(key)) {
-                    temp[key] = Y.mojito.util.copy(obj[key]);
+            if (!oldObj || typeof oldObj !== 'object') {
+                return oldObj;
+            }
+
+            if ('[object Array]' === Object.prototype.toString.apply(oldObj)) {
+                newObj = [];
+                for (key = 0; key < oldObj.length; key += 1) {
+                    newObj[key] = Y.mojito.util.copy(oldObj[key]);
+                }
+                return newObj;
+            }
+
+            newObj = {};
+            for (key in oldObj) {
+                if (oldObj.hasOwnProperty(key)) {
+                    newObj[key] = Y.mojito.util.copy(oldObj[key]);
                 }
             }
-            return temp;
+            return newObj;
         },
 
 
