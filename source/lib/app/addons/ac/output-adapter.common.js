@@ -352,5 +352,6 @@ YUI.add('mojito-output-adapter-addon', function(Y, NAME) {
     'json-stringify',
     'event-custom-base',
     'mojito-view-renderer',
-    'mojito-util'
+    'mojito-util',
+    'mojito-perf'
 ]});
