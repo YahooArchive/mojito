@@ -333,5 +333,6 @@ YUI.add('mojito-action-context', function(Y, NAME) {
     'mojito-assets-addon',
     'mojito-cookie-addon',
     'mojito-params-addon',
-    'mojito-composite-addon'
+    'mojito-composite-addon',
+    'mojito-perf'
 ]});
