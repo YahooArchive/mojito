@@ -1,0 +1,14 @@
+[{
+    "settings": ["master"],
+    "basic": {
+        "verbs": ["get", "post"],
+        "path": "/execute",
+        "call": "myCommand.runCommand"
+    },
+    "default": {
+        "verbs": ["get", "post", "put", "head", "delete"],
+        "path": "/:mojit-id/:mojit-action",
+        "call": "{mojit-id}.{mojit-action}"
+    }
+
+}]
