@@ -161,6 +161,7 @@ exports.buildhtml5app = function(cmdOptions, store, config, destination,
         contextObj = libqs.parse(cmdOptions.context),
         appConfig,
         tunnelPrefix,
+        staticPrefix,
         dynamicURLs = {},
         mr,
         mojitRes,
@@ -187,8 +188,9 @@ exports.buildhtml5app = function(cmdOptions, store, config, destination,
 
     store.preload();
 
-    appConfig = store.getAppConfig(contextObj);
+    appConfig = store.getAppConfig(config.context);
     tunnelPrefix = appConfig.tunnelPrefix || '/tunnel';
+    staticPrefix = appConfig.staticHandling.prefix ? '/' + appConfig.staticHandling.prefix : '';
 
     console.log('Building a "' + type + '" of the Mojito application at "' +
         store._config.root + '"');
@@ -203,7 +205,7 @@ exports.buildhtml5app = function(cmdOptions, store, config, destination,
     for (url in storeURLs) {
         if (storeURLs.hasOwnProperty(url)) {
             from = storeURLs[url];  // filesystem path
-            to = libpath.join(destination, url);
+            to = libpath.join(destination, staticPrefix, url);
             extension = from.split('.').pop();
 
             mkdirP(libpath.dirname(to), MODE_755);
@@ -211,9 +213,8 @@ exports.buildhtml5app = function(cmdOptions, store, config, destination,
             manifest += url + '\n';
 
             if (serverFiles[extension]) {
-                urls[url + context] = url;
-                mkdirP(libpath.dirname(libpath.join(destination, url)),
-                    MODE_755);
+                urls[staticPrefix + url + context] = staticPrefix + url;
+                // mkdirP(libpath.dirname(to, MODE_755);
             } else {
                 fs.writeFileSync(to, fs.readFileSync(from), 'utf8');
             }
@@ -246,8 +247,8 @@ exports.buildhtml5app = function(cmdOptions, store, config, destination,
     // Get all the dynamic URLs we have to call via the "tunnel"
     for (url in dynamicURLs) {
         if (dynamicURLs.hasOwnProperty(url)) {
-            urls[tunnelPrefix + url + context] = url;
-            mkdirP(libpath.dirname(libpath.join(destination, url)), MODE_755);
+            urls[tunnelPrefix + url + context] = staticPrefix + url;
+            mkdirP(libpath.dirname(libpath.join(destination, staticPrefix, url)), MODE_755);
         }
     }
 
