@@ -31,11 +31,7 @@ YUI.add('mojito-device-addon', function(Y, NAME) {
         // Set device accessor
         Object.defineProperty(ac, 'device', {
             get: function() {
-                if (req.device) {
-                    return req.device;
-                } else {
-                    return my;
-                }
+                return req.device || my;
             },
             set: function() {
             },

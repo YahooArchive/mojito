@@ -11,4 +11,4 @@ pgrep -f arrow_server >/dev/null || err 3 'arrow_server not running'
 pgrep -f selenium >/dev/null || err 5 'selenium not running'
 
 opts="--driver=selenium --reuseSession=true --logLevel=WARN $@"
-find . -name '*descriptor.json' | xargs -t arrow $opts | egrep '^ |..32m[0-9]+'
+find . -name '*descriptor.json' | xargs -tn1 arrow $opts | egrep '^ |..32m[0-9]+'

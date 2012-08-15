@@ -299,11 +299,11 @@ YUI.add('mojito-output-adapter-addon', function(Y, NAME) {
                 return simpleXml(Object.keys(js).map(function(key) {
                     return simpleXml(js[key], key);
                 }).join('\n'), wraptag);
-            } else {
-                return ((wraptag) ? '<' + wraptag + '>' : '') + js +
+            }
+
+            return ((wraptag) ? '<' + wraptag + '>' : '') + js +
                     ((wraptag) ? '</' + wraptag + '>' : ''
                     );
-            }
         }
 
         meta.http.headers['content-type'] = ['application/xml; ' + CHARSET];
@@ -352,5 +352,6 @@ YUI.add('mojito-output-adapter-addon', function(Y, NAME) {
     'json-stringify',
     'event-custom-base',
     'mojito-view-renderer',
-    'mojito-util'
+    'mojito-util',
+    'mojito-perf'
 ]});

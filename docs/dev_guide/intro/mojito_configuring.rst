@@ -104,6 +104,14 @@ configuration Object
 |                                                        |                      |                   | it is taken as relative to the application             |
 |                                                        |                      |                   | directory.                                             |
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
+| ``selector``                                           | string               | N/A               | The version of the resource. A resource is either a    |
+|                                                        |                      |                   | file to Mojito or metadata to the `Resource Store <../ |
+|                                                        |                      |                   | topics/mojito_resource_store.html>`_.                  |
+|                                                        |                      |                   | See the `selector Propery <../topics/mojito_resource   |
+|                                                        |                      |                   | _store.html#selector-property>`_ and `Selectors <../   |
+|                                                        |                      |                   | topics/mojito_resource_store.html#selectors>`_ for     |
+|                                                        |                      |                   | for more information.                                  |
++--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
 | ``settings``                                           | array of strings     | ["master"]        | Defines the context of the configuration. The          |
 |                                                        |                      |                   | context consists of a key-value pair that can          |
 |                                                        |                      |                   | specify the environment and environment                |
@@ -130,6 +138,9 @@ configuration Object
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
 | ``tunnelPrefix``                                       | string               | "/tunnel/"        | The URL prefix for the communication tunnel            |
 |                                                        |                      |                   | from the client back to the server.                    |
++--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
+| ``tunnelTimeout``                                      | number               | 30000             | The timeout in milliseconds for the communication      |
+|                                                        |                      |                   | tunnel from the client back to the server.             |
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
 | `yui <#yui-obj>`_                                      | object               | N/A               | When Mojito is deployed to client, the                 |
 |                                                        |                      |                   | :ref:`yui_obj` specifies where                         |
@@ -259,7 +270,7 @@ specs Object
 |                              |               | child's execution itself. The proxy mojit will be executed in           |
 |                              |               | place of the mojit being proxied. The original proxied child mojit      |
 |                              |               | spec will be attached as a *proxied* object on the proxy mojit's        |
-|                              |               | \`config` for it to handle as necessary.                                |
+|                              |               | ``config`` for it to handle as necessary.                               |
 +------------------------------+---------------+-------------------------------------------------------------------------+
 | ``shareYUIInstance``         | boolean       | Determines whether the mojit should use the single shared YUI           |
 |                              |               | instance. To use the single shared YUI instance, the                    |

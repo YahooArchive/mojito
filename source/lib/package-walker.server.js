@@ -6,7 +6,7 @@
 
 
 /*jslint
-    anon:true, sloppy:true, regexp:true, continue:true, nomen:true, node:true
+    anon:true, sloppy:true, regexp:true, continue:true, nomen:true, node:true, stupid:true
 */
 
 
