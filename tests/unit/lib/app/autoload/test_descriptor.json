@@ -48,10 +48,10 @@
                 },
                 "group": "fw,unit,client"
             },
-            "utils.common": {
+            "util.common": {
                 "params": {
                     "page": "$$config.base$$/mojito-test.html",
-                    "test": "./test-utils.common.js"
+                    "test": "./test-util.common.js"
                 },
                 "group": "fw,unit,client,server"
             }
