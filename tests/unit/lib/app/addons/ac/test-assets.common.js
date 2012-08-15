@@ -8,7 +8,7 @@
 /*jslint anon:true, sloppy:true, nomen:true, node:true*/
 /*global YUI*/
 
-YUI().use('mojito-assets-addon', 'test', function(Y, NAME) {
+YUI().use('mojito-assets-addon', 'test', 'array-extras', function(Y, NAME) {
 
     var suite = new Y.Test.Suite('mojito-assets-addon tests'),
         cases = {},

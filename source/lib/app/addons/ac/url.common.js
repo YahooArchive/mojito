@@ -126,7 +126,7 @@ YUI.add('mojito-url-addon', function(Y, NAME) {
     Y.namespace('mojito.addons.ac').url = UrlAcAddon;
 
 }, '0.1.0', {requires: [
-    'querystring-stringify-simple',
+    'querystring',
     'mojito-route-maker',
     'mojito-util'
 ]});

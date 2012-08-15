@@ -15,6 +15,7 @@
 YUI({useBrowserConsole: true}).use(
     "mojito-hb",
     "test",
+    "handlebars",
     function(Y) {
 
         var suite = new Y.Test.Suite("mojito-hb client tests"),
