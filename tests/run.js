@@ -7,7 +7,7 @@ var fs = require('fs'),
     cwd = process.cwd();
 
 program.command('test')
-    .description('Run functional tests')
+    .description('Run unit and functional tests')
     .option('-u, --unit', 'Run unit tests')
     .option('-f, --func', 'Run functional tests')
     .option('-b, --no-build', 'Don\'t build the apps')
