@@ -10,7 +10,8 @@
         "Chris Klaiber <cklaiber@yahoo-inc.com>",
         "Drew Folta <folta@yahoo-inc.com>",
         "Martin Cooper <mcooper@yahoo-inc.com>",
-        "Isao Yagi <isao@yahoo-inc.com>"
+        "Isao Yagi <isao@yahoo-inc.com>",
+        "Michael Ridgway <mridgway@yahoo-inc.com>"
     ],
     "dependencies": {
         "connect": "1.8.2",
@@ -29,6 +30,11 @@
         "webapp"
     ],
     "main": "lib/index",
+    "directories": [
+        "bin",
+        "docs",
+        "lib"
+    ],
     "bin": {
         "mojito": "bin/mojito"
     },
@@ -45,8 +51,8 @@
     },
     "bugs": "https://github.com/yahoo/mojito/issues",
     "scripts": {
-        "start": "mojito start",
-        "test": "mojito test"
+        "start": "./bin/mojito start",
+        "test": "./bin/mojito test"
     },
     "yahoo": {
         "bugzilla": {
