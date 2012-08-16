@@ -656,33 +656,36 @@ Mojito can examine the HTTP header ``User Agent`` and detect the following devic
 Using Handlebars Expressions
 ============================
 
-The view templates are HTML files with embedded Handlebars expressions that allow variable 
-substitution when the view template is rendered. In this section, we will look at a simple 
-view template that uses Handlebars expressions for substituting variables from the controller. 
-Handlebars is a superset of Mustache, so you can use 
-`Mustache tags <http://mustache.github.com/mustache.5.html>`_, but also have access
-to the more advanced features of Handlebars, such as block helpers, iterators, partials,  
-and access to object properties through the dot operater (i.e, ``{{house.price}}``).
-See the `Handlebars documentation <http://handlebarsjs.com/>`_ for
-examples of Handlebars expressions and blocks.
+Handlebars is a superset of `Mustache <http://mustache.github.com/mustache.5.html>`_, thus,
+Handlebars expressions include Mustache tags. Handlebars, however, also has some additional features
+such as registering help function and built-in block helpers, iterators, and access to object
+properties through the dot operator (i.e, ``{{house.price}}``).  We’re just going to look at a few 
+Handlebars expressions as an introduction. See the
+`Handlebars documentation <http://handlebarsjs.com/>`_ for more information examples.
 
-The ``index`` view template below uses double braces (``{{}}``) to substitute the value of the 
-``country`` variable received from the ``index`` function of the controller.
+One of the things that we mentioned already is block helpers, which help you iterate through arrays. 
+You could use the block helper ``#each`` (shown below) to iterate through an
+array of strings as shown below:
 
 .. code-block:: html
 
-   <div>
-   <p>The user is from {{country}}.</p>
-   </div>
+   <ul>
+     {{#each view_engines}}
+     <li>{{this}}</li>
+     {{/each}}
+   </ul>
 
-If the ``index`` function sends the object ``{"country": "Mexico"}`` to the view template, the 
-rendered view would be the following:
+Another interesting block helper used in this example is #with, which will invoke a block when given 
+a specified context. For example, in the code snippet below, if the ``ul`` object is given, 
+the property title is evaluated.
 
 .. code-block:: html
 
-   <div>
-   <p>The user is from Mexico.</p>
-   </div>
+   {{#with ul}}
+     <h3>{{title}}</h3>
+   {{/with}}
+
+
 
 Mojito-Supplied Data
 ====================
