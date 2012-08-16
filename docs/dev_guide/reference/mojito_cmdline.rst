@@ -247,7 +247,7 @@ To build an HTML 5 application, use the the following:
 ``$ mojito build html5app``
 
 This generates a HTML5 Offline Application with a ``cache.manifest`` listing all the files that will 
-be available offline. An ``index.mu.html`` page is generated from the result of calling the Web root 
+be available offline. An ``index.hb.html`` page is generated from the result of calling the Web root 
 ``/`` of the Mojito application that this command was run within. You can build other pages by 
 specifying the pages in the ``"builds": "html5app"`` object in ``application.json``. The 
 `html5 <../intro/mojito_configuring.html#html5app-object>`_ object lets you add the ``manifest`` 

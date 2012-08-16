@@ -1,7 +1,7 @@
 Views
 #####
 
-These examples show you how to create view templates, use Mustache tags, and pass data from the mojit controller to the view templates.
+These examples show you how to create view templates, use Handlebars expressions, and pass data from the mojit controller to the view templates.
 
 .. toctree::
    :maxdepth: 1

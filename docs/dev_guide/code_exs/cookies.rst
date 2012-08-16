@@ -155,7 +155,7 @@ To set up and run ``using_cookies``:
         };
       }, '0.0.1', {requires: []});
 
-#. To display the cookie values set in your controller,  replace the code in ``views/index.mu.html`` with the following:
+#. To display the cookie values set in your controller, replace the code in ``views/index.hb.html`` with the following:
 
    .. code-block:: html
 
