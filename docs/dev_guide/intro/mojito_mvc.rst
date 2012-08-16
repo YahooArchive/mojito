@@ -659,13 +659,13 @@ Using Handlebars Expressions
 Handlebars is a superset of `Mustache <http://mustache.github.com/mustache.5.html>`_, thus,
 Handlebars expressions include Mustache tags. Handlebars, however, also has some additional features
 such as registering help function and built-in block helpers, iterators, and access to object
-properties through the dot operator (i.e, ``{{house.price}}``).  We’re just going to look at a few 
+properties through the dot operator (i.e, ``{{house.price}}``).  We're just going to look at a few 
 Handlebars expressions as an introduction. See the
 `Handlebars documentation <http://handlebarsjs.com/>`_ for more information examples.
 
 One of the things that we mentioned already is block helpers, which help you iterate through arrays. 
-You could use the block helper ``#each`` (shown below) to iterate through an
-array of strings as shown below:
+You could use the block helper ``#each`` shown below to iterate through an
+array of strings:
 
 .. code-block:: html
 

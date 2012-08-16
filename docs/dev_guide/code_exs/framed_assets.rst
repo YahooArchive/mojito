@@ -52,7 +52,7 @@ see the code example `Using the HTML Frame Mojit <./htmlframe_view.html>`_.
      }
    ]
 
-The view template ``index.hb.html`` below uses the asset ``index.css`` , but you do not need to include them in the file. If you use the same name for your CSS file as the name of your view 
+The view template ``index.hb.html`` below uses the asset ``index.css``, but you do not need to include them in the file. If you use the same name for your CSS file as the name of your view 
 template and place the CSS in the mojit ``assets`` directory, ``HTMLFrameMojit`` will automatically include the assets in the ``<head>`` tag for you and then inject the rendered view template 
 into the ``<body>`` tag.
 
