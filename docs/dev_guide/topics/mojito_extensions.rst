@@ -656,7 +656,7 @@ View Template
           {{title}} 
         {{/ul}}
         {{^ul}}
-          Besides Mustache, here are some other rendering engines:
+          Besides EJS, here are some other rendering engines:
         {{/ul}}  
         </h3>
         <ul>

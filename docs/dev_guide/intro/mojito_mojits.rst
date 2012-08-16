@@ -110,7 +110,7 @@ View Files
 ##########
 
 View files are called view templates in Mojito. View templates can contain both HTML
-and templating tags, such as Mustache or Handlebars, and are rendered into markup that is
+and templating tags/expressions, such as Mustache or Handlebars, and are rendered into markup that is
 outputted to the client.
 
 See `Views <mojito_mvc.html#views>`_ in the `MVC in Mojito <mojito_mvc.html>`_ chapter

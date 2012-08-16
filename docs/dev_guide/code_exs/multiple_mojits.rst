@@ -109,7 +109,7 @@ which we will take a look at next.
      }
    }, '0.0.1', {requires: []});
 
-The ``index.hb.html`` view template of ``FrameMojit``, shown below, has variables from the children mojits in different ``div`` tags. The variables ``header``, ``body``, and ``footer`` are in triple mustaches, 
+The ``index.hb.html`` view template of ``FrameMojit``, shown below, has variables from the children mojits in different ``div`` tags. The variables ``header``, ``body``, and ``footer`` are in triple curly braces, 
 which allows you to return unescaped HTML.
 
 .. code-block:: html
@@ -223,7 +223,7 @@ To set up and run ``multiple_mojits``:
         };
       }, '0.0.1', {requires: []});
 
-#. Modify the default template to use mustache variables from the child mojits by replacing the code in ``views/index.hb.html`` with the following:
+#. Modify the default template to use Handlebars expressions from the child mojits by replacing the code in ``views/index.hb.html`` with the following:
 
    .. code-block:: javascript
 

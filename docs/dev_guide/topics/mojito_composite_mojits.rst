@@ -112,8 +112,8 @@ The view template of the parent mojit can use Handlebars expressions to embed th
 ``footer`` was defined in ``application.json``, the view template of the parent mojit could use  ``{{{footer}}}`` to embed the content created 
 by ``footer``.
 
-In the example ``index`` view template of the parent mojit below, the rendered ``index`` view templates of the child mojits  ``nav``,  ``body``, 
-``footer`` are embedded using Mustache tags.
+In the example ``index`` view template of the parent mojit below, the rendered ``index`` view templates of the child mojits  ``nav``,  ``body``, ``footer`` are embedded using Handlebars expressions.
+
 
 .. code-block:: html
 

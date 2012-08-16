@@ -208,7 +208,7 @@ General
     
     Mojito determines the client device based on the HTTP header ``User-Agent`` or the value of the query string parameter ``device`` and then will render the
     appropriate view if it exists--it's up to the developer to create the views. For example, if an iPhone is making a request, Mojito will render the view 
-    ``index.iphone.mu.html`` if it has been created. See `Views: Naming Conventions <../intro/mojito_mvc.html#naming-convention>`_ for more information.    
+    ``index.iphone.hb.html`` if it has been created. See `Views: Naming Conventions <../intro/mojito_mvc.html#naming-convention>`_ for more information.    
 
 ------------
 
