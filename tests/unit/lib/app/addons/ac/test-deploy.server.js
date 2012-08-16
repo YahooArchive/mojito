@@ -8,7 +8,7 @@
 javascript error: require is not defined at 17, url: http://localhost:4459/arrow/static/Users/isao/Repos/mojito/myfork/source/lib/app/addons/ac/deploy.server.js
 
 */
-YUI().use('mojito-deploy-addon', 'test', function(Y) {
+YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
     var suite = new Y.Test.Suite('mojito-deploy-addon tests'),
         cases = {},
         A = Y.Assert,
@@ -26,7 +26,7 @@ YUI().use('mojito-deploy-addon', 'test', function(Y) {
             addon = null;
         },
 
-        'YUI_config should use application.json yui.config': function() {
+        'test YUI_config should use application.json yui.config': function() {
 
             var realRouteMaker = Y.mojito.RouteMaker;
             Y.mojito.RouteMaker = function() {};
@@ -99,7 +99,7 @@ YUI().use('mojito-deploy-addon', 'test', function(Y) {
         },
 
 
-        'application.json should honor yui.config.fetchCSS=false': function() {
+        'test application.json should honor yui.config.fetchCSS=false': function() {
 
             var realLoader = Y.mojito.Loader;
             Y.mojito.Loader = function () {};

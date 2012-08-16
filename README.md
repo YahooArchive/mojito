@@ -3,6 +3,8 @@
 Mojito is the JavaScript library implementing Cocktails, a JavaScript-based
 on-line/off-line, multi-device, hosted application platform.
 
+[![Build Status](https://secure.travis-ci.org/yahoo/mojito.png?branch=develop)](http://travis-ci.org/yahoo/mojito)
+
 ## Installation
 
 ### via GitHub

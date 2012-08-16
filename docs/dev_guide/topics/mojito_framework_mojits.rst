@@ -305,7 +305,7 @@ The ``Container`` mojit uses ``ac.composite.done`` to execute its child mojits.
    }, '0.0.1', {requires: ['mojito']});
 
 Instead of waiting for the child mojit to execute, the partially rendered view of the ``Container`` mojit is immediately sent to the client. After the child mojit is lazily loaded, 
-the content of the executed child replaces the mustache tag ``{{{myLazyChild}}}``.
+the content of the executed child replaces the Handlebars expression ``{{{myLazyChild}}}``.
 
 .. code-block:: html
 
@@ -335,7 +335,7 @@ in the ``LazyChild`` mojit below is never called.
      };
    }, '0.0.1', {requires: ['mojito']});
 
-The view template ``hello.mu.html`` is rendered on the server and then lazily loaded to the client.
+The view template ``hello.hb.html`` is rendered on the server and then lazily loaded to the client.
 
 .. code-block:: html
 

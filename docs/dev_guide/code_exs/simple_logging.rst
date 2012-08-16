@@ -195,7 +195,7 @@ To set up and run ``simple_logging``:
         };
       }, '0.0.1', {requires: ['mojito-client']});
 
-#. Modify the default view template by replacing the code in ``views/index.mu.html`` with the following:
+#. Modify the default view template by replacing the code in ``views/index.hb.html`` with the following:
 
    .. code-block:: html
 

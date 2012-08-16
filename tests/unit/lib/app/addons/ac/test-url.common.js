@@ -3,7 +3,7 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-YUI().use('mojito-url-addon', 'test', function(Y) {
+YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
 
     var suite = new Y.Test.Suite('mojito-url-addon tests'),
         cases = {},
