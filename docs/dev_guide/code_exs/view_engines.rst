@@ -307,7 +307,7 @@ To set up and run ``view_engines``:
         function EjsAdapter(viewId) {
           this.viewId = viewId;
         }
-        HbAdapter.prototype = {
+        EjsAdapter.prototype = {
         
           render: function(data, mojitType, tmpl, adapter, meta, more) {
             var me = this,
