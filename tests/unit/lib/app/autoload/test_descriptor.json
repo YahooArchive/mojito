@@ -3,15 +3,15 @@
         "settings": [ "master" ],
         "name": "mojito-unit-tests",
         "config": {
-            "lib": "../../../../../source/lib",
+            "lib": "../../../../../lib",
             "base": "../../../../base"
         },
-        "commonlib": "$$config.base$$/mojito-test.js,./../../../../../source/lib/app/autoload/util.common.js",
+        "commonlib": "$$config.base$$/mojito-test.js,./../../../../../lib/app/autoload/util.common.js",
         "dataprovider" : {
             "action-context.common": {
                 "params": {
                     "page": "$$config.base$$/mojito-test.html",
-                    "lib": "$$config.lib$$/app/autoload/action-context.common.js,./../../../../../source/lib/app/addons/ac/output-adapter.common.js",
+                    "lib": "$$config.lib$$/app/autoload/action-context.common.js,./../../../../../lib/app/addons/ac/output-adapter.common.js",
                     "test": "./test-action-context.common.js"
                 },
                 "group": "fw,unit,client,server"

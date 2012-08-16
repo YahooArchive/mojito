@@ -3,10 +3,10 @@
         "settings": [ "master" ],
         "name" : "view-engine-addon-unit-tests",
         "config" : {
-            "lib": "../../../../../../source/lib",
+            "lib": "../../../../../../lib",
             "base": "../../../../../base"
         },
-        "commonlib": "$$config.base$$/mojito-test.js,./../../../../../../source/lib/app/autoload/util.common.js",
+        "commonlib": "$$config.base$$/mojito-test.js,./../../../../../../lib/app/autoload/util.common.js",
         "dataprovider" : {
             "hb.client" : {
                 "params" : {
