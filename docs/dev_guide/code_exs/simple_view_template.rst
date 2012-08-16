@@ -11,12 +11,14 @@ Summary
 #######
 
 This example shows how to create a simple view for Mojito applications with 
-`Handlebars <http://handlebarsjs.com/>`_. Handlebars is a superset of `Mustache <http://mustache.github.com/>`_
-so there is an overlap of some syntax and nomenclature.
+`Handlebars <http://handlebarsjs.com/>`_. Note that because Handlebars is a superset 
+of `Mustache <http://mustache.github.com/>`_, there is an overlap of some syntax and nomenclature.
 
-Mojito views are template files that are rendered into 
-HTML and served to a device. These template files are simply called *view templates* in this example 
-and throughout the Mojito documentation.
+
+Mojito views are template files that are rendered into HTML and served to a device.
+These template files are simply called *view templates* in this example and throughout the 
+Mojito documentation.
+
 
 The following topics will be covered:
 
@@ -66,7 +68,7 @@ The double braces with a pound are used for lists or conditional
 expression, such as ``{{#show}...{{/show}``. Handlebars also has a built-in conditional structure
 that allow you to form the same conditional expression in the following way: ``{{#if show}}...{{/if}}``
 
-You also use double braces with a  pound to access properties within an object, which is how the ``hours`` property of the ``time`` object is accessed here.
+You also use double braces with a pound to access properties within an object, which is how the ``hours`` property of the ``time`` object is accessed here.
 
 
 .. code-block:: html
