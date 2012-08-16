@@ -137,7 +137,7 @@ the view template of the parent mojit using Handlebars expressions. If the child
 and ``body`` were defined in the configuration object passed to ``ac.composite.execute``, you
 could add the rendered content from those child mojit instances to the parent mojit's view template with 
 the Handlebars expressions ``{{{header}}}``, ``{{{footer}}}``, and ``{{{body}}}`` as shown in the 
-example view template below. The Handlebars expressions using triple curly braces insert unescaped HTML into the page.
+example view template below. The Handlebars expressions using triple braces insert unescaped HTML into the page.
 
 .. code-block:: html 
    

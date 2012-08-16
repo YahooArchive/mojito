@@ -109,7 +109,7 @@ which we will take a look at next.
      }
    }, '0.0.1', {requires: []});
 
-The ``index.hb.html`` view template of ``FrameMojit``, shown below, has variables from the children mojits in different ``div`` tags. The variables ``header``, ``body``, and ``footer`` are in triple curly braces, 
+The ``index.hb.html`` view template of ``FrameMojit``, shown below, has variables from the children mojits in different ``div`` tags. The variables ``header``, ``body``, and ``footer`` are in triple braces, 
 which allows you to return unescaped HTML.
 
 .. code-block:: html

@@ -1,4 +1,4 @@
-
+ 
 ======================================
 Creating a Simple View with Handlebars
 ======================================
@@ -61,13 +61,13 @@ object to the view template ``index.hb.html``.
 In the ``index`` view template of this code example, the properties of the ``data`` object are 
 placed in Handlebars expressions that are evaluated by Mojito when the view template is rendered. 
 In Handlebars templates, the property names in double braces, such as ``{{type}}``, are expressions.
-The double curly braces with a pound are used for lists or conditional 
-expression, such as ``{{#show}...{{/show}``. Handlebars also has built-in conditional structure
+
+The double braces with a pound are used for lists or conditional 
+expression, such as ``{{#show}...{{/show}``. Handlebars also has a built-in conditional structure
 that allow you to form the same conditional expression in the following way: ``{{#if show}}...{{/if}}``
 
-You also use double curly braces with a 
-pound to access properties within an object, which is how the ``hours`` property of the ``time`` object 
-is accessed here.
+You also use double braces with a  pound to access properties within an object, which is how the ``hours`` property of the ``time`` object is accessed here.
+
 
 .. code-block:: html
 

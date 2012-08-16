@@ -666,7 +666,7 @@ and access to object properties through the dot operater (i.e, ``{{house.price}}
 See the `Handlebars documentation <http://handlebarsjs.com/>`_ for
 examples of Handlebars expressions and blocks.
 
-The ``index`` view template below uses double curly braces (``{{}}``) to substitute the value of the 
+The ``index`` view template below uses double braces (``{{}}``) to substitute the value of the 
 ``country`` variable received from the ``index`` function of the controller.
 
 .. code-block:: html
