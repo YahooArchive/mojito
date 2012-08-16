@@ -448,7 +448,7 @@ Data
 .. topic:: **How does a parent mojit send data to the view template?** 
 
     From the controller of the parent mojit, pass the ``template`` object to ``ac.done`` as seen below. The ``template`` object can contain 
-    key-value pairs that can be added to the view template as Handlebar expressions. For example, the key ``foo`` in the ``template`` object shown here
+    key-value pairs that can be added to the view template as Handlebars expressions. For example, the key ``foo`` in the ``template`` object shown here
     can be used in the view template as ``{{foo}}``, which will be replaced by the value 'bar' when the view template is rendered.
     
     ``// Inside parent mojit``

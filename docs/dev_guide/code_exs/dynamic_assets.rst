@@ -114,7 +114,7 @@ The appropriate CSS file is dynamically attached to the view template with ``ac.
    }, '0.0.1', {requires: []});
 
 The ``index.iphone`` view template below contains CSS for controlling the orientation of the page, which is needed for displaying the page correctly on an iPhone. When the template is rendered, 
-the CSS is dynamically added, and the Handlebar expressions are replaced with values. If the device making the call is an iPhone, the ``viewport`` meta data will also be added dynamically.
+the CSS is dynamically added, and the Handlebars expressions are replaced with values. If the device making the call is an iPhone, the ``viewport`` meta data will also be added dynamically.
 
 .. code-block:: html
 
