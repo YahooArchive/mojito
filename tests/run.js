@@ -12,8 +12,8 @@ program.command('test')
     .option('-f, --func', 'Run functional tests')
     .option('-b, --no-build', 'Don\'t build the apps')
     .option('-d, --no-deploy', 'Don\'t deploy the apps')
-    .option('-s, --no-selenium', 'Don\'t start selenium')
-    .option('-a, --no-arrow', 'Don\'t start arrow server')
+    .option('-s, --no-selenium', 'Don\'t run selenium')
+    .option('-a, --no-arrow', 'Don\'t run arrow_server')
     .action(test);
 
 program.command('deploy')
@@ -32,15 +32,18 @@ function test (cmd) {
     if (cmd.selenium) {
         series.push(startSelenium);
     }
-    if (cmd.arrow) {
-        series.push(startArrow);
-    }
     if (cmd.unit) {
+        if (cmd.arrow) {
+            series.push(startArrowServer);
+        }
         series.push(runUnitTests);
     }
     if (cmd.func) {
         if (cmd.build) {
             series.push(build);
+        }
+        if (cmd.selenium) {
+            series.push(startArrowSelenium);
         }
         if (cmd.deploy) {
             series.push(deploy);
@@ -48,6 +51,14 @@ function test (cmd) {
         series.push(runFuncTests);
     }
     async.series(series, finalize);
+}
+
+function startArrowServer (callback) {
+    console.log("---Starting Arrow Server---");
+    var p = runCommand(cwd, "arrow_server");
+    setTimeout(function () {
+        callback(null, [p.pid]);
+    }, 5000);
 }
 
 function runUnitTests (callback) {
@@ -116,12 +127,12 @@ function startSelenium (callback) {
     callback(null, p.pid);
 }
 
-function startArrow (callback) {
-    console.log("---Starting Arrow Server---");
+function startArrowSelenium (callback) {
+    console.log("---Starting Arrow Selenium---");
     var p = runCommand(cwd+"/func/applications/frameworkapp/common", "arrow_selenium", ["--open=firefox"]);
     setTimeout(function () {
-        callback(null, p.pid);
-    }, 15000);
+        callback(null, [p.pid]);
+    }, 10000);
 }
 
 function runFuncTests (callback) {
@@ -129,7 +140,7 @@ function runFuncTests (callback) {
     var arrowReportDir = cwd + '/arrowreport/func/';
     runCommand(cwd, "mkdir", [arrowReportDir], function () {
         var cmd = runCommand(
-            cwd + 'func/',
+            cwd + '/func/',
             "arrow",
             ["**/*_descriptor.json", "--browser=firefox", "--reuseSession", "--report=true", "--reportFolder=" + arrowReportDir],
             callback
@@ -197,5 +208,5 @@ function runApp (basePath, path, port, params, callback) {
     console.log('Starting ' + path + ' at port ' + port + ' with params ' + (params || 'empty'));
     var p = runCommand(basePath + '/' + path, "mojito", ["start", port, "--context", params], function () {});
     // Give each app a second to start
-    setTimeout(function () { callback(null, p.pid) }, 1000);
+    setTimeout(function () { callback(null, [p.pid]) }, 1000);
 }
