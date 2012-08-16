@@ -335,7 +335,7 @@ in the ``LazyChild`` mojit below is never called.
      };
    }, '0.0.1', {requires: ['mojito']});
 
-The view template ``hello.mu.html`` is rendered on the server and then lazily loaded to the client.
+The view template ``hello.hb.html`` is rendered on the server and then lazily loaded to the client.
 
 .. code-block:: html
 

@@ -282,7 +282,7 @@ The example ``package.json`` has the ``yahoo`` object that specifies that this n
                        definition.json
                        views/
                        index/
-                             index.mu.html
+                             index.hb.html
                        binders/
                                index/
                                      index.js

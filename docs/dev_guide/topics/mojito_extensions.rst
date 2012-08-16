@@ -1,4 +1,4 @@
-
+﻿
 
 ================
 Extending Mojito
@@ -565,186 +565,107 @@ engine will cause an error because Mojito will not be able to decide which view 
 Examples
 ========
 
-Mustache
---------
+Embedded JavaScript (EJS)
+-------------------------
 
-The following example is of the `Mustache view engine <http://mustache.github.com/mustache.1.html>`_. 
-This view engine uses the prescribed location and file naming convention, and  meets the view 
-engine addon requirements. 
+The following example is of the `EJS view engine <http://embeddedjs.com/>`_. 
 
-Mustache Rendering Engine
-~~~~~~~~~~~~~~~~~~~~~~~~~
+EJS Rendering Engine
+~~~~~~~~~~~~~~~~~~~~
 
-``{app_dir}/libs/Mulib/Mu``
+You install ``ejs`` locally with ``npm`` so that the EJS rendering engine is installed in
+the ``node_modules`` directory as seen below:
+
+````
+::
+
+   {app_dir}/node_modules
+   └── ejs
+       ├── History.md
+       ├── Makefile
+       ├── Readme.md
+       ├── benchmark.js
+       ├── ejs.js
+       ├── ejs.min.js
+       ├── examples
+       ├── index.js
+       ├── lib
+       ├── package.json
+       ├── support
+       └── test
+
 
 View Engine Addon
 ~~~~~~~~~~~~~~~~~
 
-``{app_dir}/addons/view-engines/mu.server.js``
+``{app_dir}/addons/view-engines/ejs.server.js``
 
 
 .. code-block:: javascript
 
-   YUI.add('mojito-mu', function(Y, NAME) {
-     
-     // Create an instance of the Mustache rendering engine
-     var mu = YUI.require(__dirname + '/../../libs/Mulib/Mu'),
-       fs = require('fs');
-
-     /**
-     * Class text.
-     * @class MuAdapterServer
-     * @private
-     */
-     function MuAdapter(viewId) {
-       this.viewId = viewId;
-     }
-
-     MuAdapter.prototype = {
-
-       /**
-       * Renders the Mustache template using the data provided.
-       * @method render
-       * @param {object} data The data to render.
-       * @param {string} mojitType The name of the mojit type.
-       * @param {string} tmpl The name of the template to render.
-       * @param {object} adapter The output adapter to use.
-       * @param {object} meta Optional metadata.
-       * @param {boolean} more Whether there will be more content later.
-       */
-       render: function(data, mojitType, tmpl, adapter, meta, more) {
-         var me = this,
-         handleRender = function(err, output) {
-           if (err) {
-             throw err;
-           }
-           output.addListener('data', function(c) {
-             adapter.flush(c, meta);
-           });
-           output.addListener('end', function() {
-             if (!more) {
-               Y.log('render complete for view "' + me.viewId + '"',
-                 'mojito', 'qeperf');
-               adapter.done('', meta);
-             }
-           });
-         };
-
-         Y.log('Rendering template "' + tmpl + '"', 'mojito', NAME);
-         mu.render(tmpl, data, {cached: meta.view.cacheTemplates}, handleRender);
-       },
-       compiler: function(tmpl) {
-         return JSON.stringify(fs.readFileSync(tmpl, 'utf8'));
-       }
-     };
-     Y.namespace('mojito.addons.viewEngines').mu = MuAdapter;
-   }, '0.1.0', {requires: []});
+   .. code-block:: javascript
+   
+      YUI.add('addons-viewengine-ejs', function(Y, NAME) {
+	
+        var ejs = require('ejs'),
+        fs = require('fs');
+        function EjsAdapter(viewId) {
+          this.viewId = viewId;
+        }
+        EjsAdapter.prototype = {
+        
+          render: function(data, mojitType, tmpl, adapter, meta, more) {
+            var me = this,
+            handleRender = function(output) {
+		    
+		      output.addListener('data', function(c) {
+		        adapter.flush(c, meta);
+		      });
+		      output.addListener('end', function() {
+		        if (!more) {
+		          adapter.done('', meta);
+		        }
+		      });
+		    };
+		    Y.log('Rendering template "' + tmpl + '"', 'mojito', NAME);
+		    var result = ejs.render(this.compiler(tmpl),data);
+		    console.log(result);
+		    adapter.done(result,meta);
+		  },
+		  compiler: function(tmpl) {
+		    return fs.readFileSync(tmpl, 'utf8');
+		  }
+		};
+		Y.namespace('mojito.addons.viewEngines').ejs = EjsAdapter;
+      }, '0.1.0', {requires: []});    
 
 
 View Template
 ~~~~~~~~~~~~~
 
-``{app_dir}/mojits/{mojit_name}/views/foo.mu.html``
+``{app_dir}/mojits/{mojit_name}/views/foo.ejs.html``
 
 .. code-block:: html
 
-   <div id="{{mojit_view_id}}">
-     <dl>
-       <dt>status</dt>
-       <dd id="dd_status">{{status}}</dd>
-       <dt>data</dt>
-       <dd id="dd_data">
-         <b>some:</b> {{#data}}{{some}}{{/data}}
-       </dd>
-     </dl>
-   </div>
+   .. code-block:: html
+   
+      <h2>{{title}}</h2>
+      <div id="{{mojit_view_id}}">
+        <h3>
+        {{#ul}}
+          {{title}} 
+        {{/ul}}
+        {{^ul}}
+          Besides Mustache, here are some other rendering engines:
+        {{/ul}}  
+        </h3>
+        <ul>
+        {{#view_engines}}
+          <li>{{name}}</li>
+        {{/view_engines}} 
+        </ul>
+      </div>
 
 
-Handlebars
-----------
 
-This examples shows how to use another popular templating system called `Handlebars <http://handlebarsjs.com/>`_, which is also compatible with
-Mustache.  
-
-Handlebars Rendering Engine 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-``{app_dir}/node_modules/handlebars``
-
-View Engine Addon
-~~~~~~~~~~~~~~~~~
-
-``{app_dir}/addons/view-engines/hb.server.js``
-
-
-.. code-block:: javascript
-
-   YUI.add('addons-viewengine-hb', function(Y, NAME) {
-
-     var hb = require('handlebars'),
-       fs = require('fs');
-
-     /**
-     * Class text.
-     * @class HandleBars
-     * @private
-     */
-     function HbAdapter(viewId) {
-       this.viewId = viewId;
-     }
-
-     HbAdapter.prototype = {
-
-       /**
-       * Renders the Handlebars template using the data provided.
-       * @method render
-       * @param {object} data The data to render.
-       * @param {string} mojitType The name of the mojit type.
-       * @param {string} tmpl The name of the template to render.
-       * @param {object} adapter The output adapter to use.
-       * @param {object} meta Optional metadata.
-       * @param {boolean} more Whether there will be more content later.
-       */
-       render: function(data, mojitType, tmpl, adapter, meta, more) {
-         var me = this;
-         Y.log('Rendering template "' + tmpl + '"', 'mojito', NAME);
-         try {
-           var template = hb.compile(this.compiler(tmpl));
-           var result = template(data);
-           console.log(result);
-         } catch(e){
-           Y.log(e);
-         }
-         adapter.flush(result,meta);
-         if(!more) {
-           adapter.done('',meta);
-         }
-       },
-
-       compiler: function(tmpl) {
-         return fs.readFileSync(tmpl, 'utf8');
-       }
-     };
-
-     Y.namespace('mojito.addons.viewEngines').hb = HbAdapter;
-
-   }, '0.1.0', {requires: []});
-
-View Template
-~~~~~~~~~~~~~
-
-``{app_dir}/mojits/{mojit_name}/views/foo.hb.html``
-
-.. code-block:: html
-
-   <div id="{{mojit_view_id}}">
-     <dl>
-       <dt>status</dt>
-       <dd id="dd_status">{{status/text}}</dd>
-       <dt>data</dt>
-       <dd id="dd_data">
-         <b>See the </b>{{{link "following" data.url}}}
-       </dd>
-     </dl>
-   </div>
 
