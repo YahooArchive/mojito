@@ -54,9 +54,11 @@ Those marked with an asterisk are not created by default.
 Mojits
 ======
 
-Mojits are the basic unit of composition and reuse in a Mojito application. Visually, you can think of a mojit as the rectangular area of a page that was 
-constructed by a Mojito application. Mojits follow the MVC pattern and have their own discrete set of configuration, markup, and JavaScript files. 
-The following section will take a look at the files and directories that generated when you create a mojit.
+Mojits are the basic unit of composition and reuse in a Mojito application. This 
+section covers the details of the files and directories contained in a mojit.
+To get an overview about mojits and learn about their architecture and structure, 
+see `Mojits <mojito_mojits.html>`_. 
+
 
 Mojit Files and Directories
 ---------------------------

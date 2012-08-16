@@ -8,6 +8,14 @@
         },
         "commonlib": "$$config.base$$/mojito-test.js,./../../../../../source/lib/app/autoload/util.common.js",
         "dataprovider" : {
+            "action-context.common": {
+                "params": {
+                    "page": "$$config.base$$/mojito-test.html",
+                    "lib": "$$config.lib$$/app/autoload/action-context.common.js,./../../../../../source/lib/app/addons/ac/output-adapter.common.js",
+                    "test": "./test-action-context.common.js"
+                },
+                "group": "fw,unit,client,server"
+            },
             "mojito-client.client": {
                 "params": {
                     "page": "$$config.base$$/mojito-test.html",
@@ -40,26 +48,16 @@
                 },
                 "group": "fw,unit,client"
             },
-            "utils": {
+            "util.common": {
                 "params": {
                     "page": "$$config.base$$/mojito-test.html",
-                    "test": "./test-utils.js"
+                    "test": "./test-util.common.js"
                 },
-                "group": "fw,unit,client"
+                "group": "fw,unit,client,server"
             }
         }
     },
     {
-        "settings": [ "environment:development" ],
-        "name": "mojito-nodejs-unit-tests--is-not-hooked-up-yet",
-        "dataprovider": {
-            "deploy.server": {
-                "params": {
-                    "lib": "$$config.lib$$/app/addons/ac/deploy.server.js,../../../../../../source/lib/app/autoload/loader.common.js,../../../../../../source/lib/app/addons/ac/http.server.js",
-                    "test": "./test-deploy.server.js"
-                },
-                "group": "fw,server"
-            }
-        }
+        "settings": [ "environment:development" ]
     }
 ]
