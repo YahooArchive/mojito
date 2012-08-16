@@ -12,7 +12,7 @@ program.command('test')
     .option('-f, --func', 'Run functional tests')
     .option('-b, --no-build', 'Don\'t build the apps')
     .option('-d, --no-deploy', 'Don\'t deploy the apps')
-    .option('-s, --no-selenium', 'Don\'t run selenium')
+    .option('-s, --no-selenium', 'Don\'t run arrow_selenium')
     .option('-a, --no-arrow', 'Don\'t run arrow_server')
     .action(test);
 
@@ -28,9 +28,6 @@ function test (cmd) {
     if (!cmd.unit && !cmd.func) {
         cmd.unit = true;
         cmd.func = true;
-    }
-    if (cmd.selenium) {
-        series.push(startSelenium);
     }
     if (cmd.unit) {
         if (cmd.arrow) {
@@ -119,12 +116,6 @@ function deploy (callback) {
         })();
     }
     async.series(appSeries, callback);
-}
-
-function startSelenium (callback) {
-    console.log("---Starting Selenium---");
-    var p = runCommand(cwd+"/base", "java", ["-jar", "selenium-server-standalone-2.22.0.jar"]);
-    callback(null, p.pid);
 }
 
 function startArrowSelenium (callback) {
