@@ -364,9 +364,9 @@ at either the application or mojit level. Application-level view engines are ava
 
 The view engine consists of an addon that we will refer to as the view engine addon to differentiate 
 it from other addons. The view engine addon can include code that renders templates
-or use a rendering engine, such as  `Handlebars <http://handlebarsjs.com/>`_ or 
-`Embedded JavaScript (EJS) http://embeddedjs.com/>`_ to render view templates. In the latter case, 
-the view engine addon acts as an interface between the Mojito framework and the rendering engine. 
+or use a rendering engine, such as `Embedded JavaScript (EJS) http://embeddedjs.com/>`_,
+to render view templates. In the latter case, the view engine addon acts as an interface between the 
+Mojito framework and the rendering engine. 
 
 In the following sections, we will be discussing how to create a view engine addon that relies on 
 a rendering engine, not how to write code that renders templates.
@@ -382,7 +382,7 @@ The following list may help clarify the meaning of commonly used terms in this s
   relies on a rendering engine to compile and render view templates, but may include code to do the 
   compilation and rendering. 
 - **rendering engine** - The rendering engine is typically an off-the-shelf technology, such as 
-  `Handlebars <http://handlebarsjs.com/>`_, `Jade <http://jade-lang.com/>`_, or 
+  `Dust <http://akdubya.github.com/dustjs>`_, `Jade <http://jade-lang.com/>`_, or 
   `EJS <http://embeddedjs.com/>`_, that renders the template into markup for an HTML page.
 - **view template** - The template file (chosen by the controller) that contains tags and HTML that 
   is rendered into markup for an HTML page.
@@ -473,11 +473,11 @@ The view engine addon must have the following:
       
       ...
         
-        function HbAdapter(viewId) {
+        function EjsAdapter(viewId) {
           this.viewId = viewId;
         }
       ...
-      Y.namespace('mojito.addons.viewEngines').hb = HbAdapter;
+      Y.namespace('mojito.addons.viewEngines').ejs = EjsAdapter;
       
 - a prototype of the object has the following two methods ``render`` and ``compiler`` as shown below:
 
@@ -485,7 +485,7 @@ The view engine addon must have the following:
    
       ...
         
-        HbAdapter.prototype = {
+        EjsAdapter.prototype = {
        
           render: function(data, mojitType, tmpl, adapter, meta, more) {
            ...
@@ -562,8 +562,8 @@ A naming convention associates a view engine and its view templates. For example
 engine will cause an error because Mojito will not be able to decide which view engine to use 
 (which to prioritize above the other) to render the view template.
 
-Examples
-========
+Example
+=======
 
 Embedded JavaScript (EJS)
 -------------------------
