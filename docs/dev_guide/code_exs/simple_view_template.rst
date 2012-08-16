@@ -1,8 +1,8 @@
 
 
-================================================
-Creating a Simple View with Handlebars Templates
-================================================
+======================================
+Creating a Simple View with Handlebars
+======================================
 
 **Time Estimate:** 10 minutes
 
