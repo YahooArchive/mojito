@@ -4,9 +4,9 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('Parent', function(Y) {
+YUI.add('Parent', function(Y, NAME) {
 
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         index: function(ac) {
             ac.composite.done({template: {time: new Date().toString()}});

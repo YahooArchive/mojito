@@ -15,7 +15,7 @@ YUI.add('Loader-tests', function(Y, NAME) {
         name: 'Loader user tests',
         
         setUp: function() {
-            controller = Y.mojito.controller;
+            controller = Y.mojito.controllers.Loader;
         },
         tearDown: function() {
             controller = null;

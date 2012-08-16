@@ -11,7 +11,7 @@
 
 YUI.add('WeatherController', function(Y, NAME) {
 
-    Y.mojito.controllers[NAME] = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         index: function(ac) {
             var location = 'san francisco, california';

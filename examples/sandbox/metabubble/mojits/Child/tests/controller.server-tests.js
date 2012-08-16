@@ -15,7 +15,7 @@ YUI.add('Child-tests', function(Y) {
         name: 'Child user tests',
         
         setUp: function() {
-            controller = Y.mojito.controller;
+            controller = Y.mojito.controllers.Child;
         },
         tearDown: function() {
             controller = null;

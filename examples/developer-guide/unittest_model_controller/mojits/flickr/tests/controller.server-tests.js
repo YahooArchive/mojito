@@ -15,7 +15,7 @@ YUI.add('flickr-tests', function(Y) {
         name: 'flickr user tests',
         
         setUp: function() {
-            controller = Y.mojito.controller;
+            controller = Y.mojito.controllers.flickr;
         },
         tearDown: function() {
             controller = null;

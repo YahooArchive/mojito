@@ -1,6 +1,6 @@
 YUI.add('myMojit', function(Y, NAME) {
 
-  Y.mojito.controllers[NAME] = {
+  Y.namespace('mojito.controllers')[NAME] = {
 
     init: function(config) {
       this.config = config;
