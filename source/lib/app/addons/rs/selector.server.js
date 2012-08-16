@@ -46,6 +46,7 @@ YUI.add('addon-rs-selector', function(Y, NAME) {
             json = dims.concat(json);
             // TODO:  use rs.config for this too
             this._appConfigYCB = new libycb.Ycb(json);
+            this._poslCache = {};   // context: POSL
         },
 
 
@@ -79,22 +80,29 @@ YUI.add('addon-rs-selector', function(Y, NAME) {
          */
         getPOSLFromContext: function(ctx) {
             var store = this.get('host'),
-                sels = ['*'],
+                cacheKey,
+                posl,
                 p,
                 part,
                 parts;
 
             store.validateContext(ctx);
 
-            // TODO:  use rs.config for this too
-            parts = this._appConfigYCB.readNoMerge(ctx, {});
-            for (p = 0; p < parts.length; p += 1) {
-                part = parts[p];
-                if (part.selector && store.selectors[part.selector]) {
-                    sels.unshift(part.selector);
+            cacheKey = Y.JSON.stringify(ctx);
+            posl = this._poslCache[cacheKey];
+            if (!posl) {
+                posl = ['*'];
+                // TODO:  use rs.config for this too
+                parts = this._appConfigYCB.readNoMerge(ctx, {});
+                for (p = 0; p < parts.length; p += 1) {
+                    part = parts[p];
+                    if (part.selector && store.selectors[part.selector]) {
+                        posl.unshift(part.selector);
+                    }
                 }
+                this._poslCache[cacheKey] = posl;
             }
-            return sels;
+            return Y.mojito.util.copy(posl);
         },
 
 
@@ -189,4 +197,4 @@ YUI.add('addon-rs-selector', function(Y, NAME) {
     Y.namespace('mojito.addons.rs');
     Y.mojito.addons.rs.selector = RSAddonSelector;
 
-}, '0.0.1', { requires: ['plugin', 'oop', 'json-stringify']});
+}, '0.0.1', { requires: ['plugin', 'oop', 'json-stringify', 'mojito-util']});
