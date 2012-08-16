@@ -3,10 +3,10 @@
         "settings": [ "master" ],
         "name": "ac-addon-unit-tests",
         "config": {
-            "lib": "../../../../../../source/lib",
+            "lib": "../../../../../../lib",
             "base": "../../../../../base"
         },
-        "commonlib": "$$config.base$$/mojito-test.js,./../../../../../../source/lib/app/autoload/util.common.js",
+        "commonlib": "$$config.base$$/mojito-test.js,./../../../../../../lib/app/autoload/util.common.js",
         "dataprovider": {
             "analytics.common": {
                 "params": {
@@ -72,7 +72,7 @@
             },
             "deploy.server": {
                 "params": {
-                    "lib": "$$config.lib$$/app/addons/ac/deploy.server.js,../../../../../../source/lib/app/autoload/loader.common.js,../../../../../../source/lib/app/addons/ac/http.server.js",
+                    "lib": "$$config.lib$$/app/addons/ac/deploy.server.js,../../../../../../lib/app/autoload/loader.common.js,../../../../../../lib/app/addons/ac/http.server.js",
                     "test": "./test-deploy.server.js"
                 },
                 "group": "fw,server"
@@ -134,7 +134,7 @@
             },
             "url.common": {
                 "params": {
-                    "lib": "$$config.lib$$/app/addons/ac/url.common.js,../../../../../../source/lib/app/autoload/route-maker.common.js",
+                    "lib": "$$config.lib$$/app/addons/ac/url.common.js,../../../../../../lib/app/autoload/route-maker.common.js",
                     "test": "./test-url.common.js",
                     "page": "$$config.base$$/mojito-test.html"
                 },

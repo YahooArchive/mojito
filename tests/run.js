@@ -8,6 +8,8 @@ var fs = require('fs'),
 
 program.command('test')
     .description('Run functional tests')
+    .option('-u, --unit', 'Run unit tests')
+    .option('-f, --func', 'Run functional tests')
     .option('-b, --no-build', 'Don\'t build the apps')
     .option('-d, --no-deploy', 'Don\'t deploy the apps')
     .option('-s, --no-selenium', 'Don\'t start selenium')
@@ -22,28 +24,56 @@ program.parse(process.argv);
 
 function test (cmd) {
     var series = [];
-    if (cmd.build) {
-        series.push(build);
+    // Default to all tests
+    if (!cmd.unit && !cmd.func) {
+        cmd.unit = true;
+        cmd.func = true;
     }
     if (cmd.selenium) {
         series.push(startSelenium);
     }
-    if (cmd.deploy) {
-        series.push(deploy);
-    }
     if (cmd.arrow) {
         series.push(startArrow);
     }
-    series.push(runTests);
+    if (cmd.unit) {
+        series.push(runUnitTests);
+    }
+    if (cmd.func) {
+        if (cmd.build) {
+            series.push(build);
+        }
+        if (cmd.deploy) {
+            series.push(deploy);
+        }
+        series.push(runFuncTests);
+    }
     async.series(series, finalize);
+}
+
+function runUnitTests (callback) {
+    console.log('---Running Unit Tests---');
+    var arrowReportDir = cwd + '/arrowreport/unit/';
+    runCommand(cwd, "mkdir", [cwd + '/arrowreport/'], function () {
+        runCommand(cwd, "mkdir", [arrowReportDir], function () {
+            var cmd = runCommand(
+                cwd + '/unit',
+                "arrow",
+                ["**/*_descriptor.json", "--browser=phantomjs", "--report=true", "--reportFolder=" + arrowReportDir],
+                callback
+            );
+            cmd.stdout.on('data', function (data) {
+                process.stdout.write(data);
+            });
+        });
+    });
 }
 
 function build (callback) {
     console.log('---Building Apps---');
     runCommand(
-        cwd + '/applications/frameworkapp/common',
+        cwd + '/func/applications/frameworkapp/common',
         "mojito",
-        ['build', 'html5app', cwd + '/applications/frameworkapp/flatfile'],
+        ['build', 'html5app', cwd + '/func/applications/frameworkapp/flatfile'],
         callback
     );
 }
@@ -51,7 +81,7 @@ function build (callback) {
 function deploy (callback) {
     console.log('---Deploying Apps---');
     var appSeries = [],
-        appsConfig = JSON.parse(fs.readFileSync(cwd + '/applications/apps.json', 'utf8')),
+        appsConfig = JSON.parse(fs.readFileSync(cwd + '/func/applications/apps.json', 'utf8')),
         apps = appsConfig.applications;
 
     for (var i=0; i<apps.length; i++) {
@@ -66,13 +96,13 @@ function deploy (callback) {
                         var test = mytests[j],
                             port = test.port ? parseInt(test.port) : null;
                         appSeries.push(function (callback) {
-                            runApp(cwd + '/applications', app.path, port, test.param, callback);
+                            runApp(cwd + '/func/applications', app.path, port, test.param, callback);
                         });
                     })();
                 }
             } else if (app.enabled === "true" && app.path && port) {
                 appSeries.push(function (callback) {
-                    runApp(cwd + '/applications', app.path, port, app.param, callback);
+                    runApp(cwd + '/func/applications', app.path, port, app.param, callback);
                 });
             }
         })();
@@ -82,24 +112,24 @@ function deploy (callback) {
 
 function startSelenium (callback) {
     console.log("---Starting Selenium---");
-    var p = runCommand(cwd+"/lib", "java", ["-jar", "selenium-server-standalone-2.22.0.jar"]);
+    var p = runCommand(cwd+"/base", "java", ["-jar", "selenium-server-standalone-2.22.0.jar"]);
     callback(null, p.pid);
 }
 
 function startArrow (callback) {
     console.log("---Starting Arrow Server---");
-    var p = runCommand(cwd+"/applications/frameworkapp/common", "arrow_selenium", ["--open=firefox"]);
+    var p = runCommand(cwd+"/func/applications/frameworkapp/common", "arrow_selenium", ["--open=firefox"]);
     setTimeout(function () {
         callback(null, p.pid);
     }, 15000);
 }
 
-function runTests (callback) {
-    console.log('---Running Tests---');
-    var arrowReportDir = cwd + '/arrowreport/';
+function runFuncTests (callback) {
+    console.log('---Running Functional Tests---');
+    var arrowReportDir = cwd + '/arrowreport/func/';
     runCommand(cwd, "mkdir", [arrowReportDir], function () {
         var cmd = runCommand(
-            cwd,
+            cwd + 'func/',
             "arrow",
             ["**/*_descriptor.json", "--browser=firefox", "--reuseSession", "--report=true", "--reportFolder=" + arrowReportDir],
             callback
