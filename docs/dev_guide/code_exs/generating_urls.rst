@@ -158,7 +158,7 @@ To set up and run ``generating_urls``:
         };
       }, '0.0.1', {requires: ['mojito-intl-addon']});
 
-#. To display the rendered ``index`` view template when HTTP GET is called on the root path,  replace the code in ``views/index.mu.html`` with the following:
+#. To display the rendered ``index`` view template when HTTP GET is called on the root path,  replace the code in ``views/index.hb.html`` with the following:
 
    .. code-block:: html
 
@@ -173,7 +173,7 @@ To set up and run ``generating_urls``:
         </div>
       </div>
 
-#. To display the rendered ``contactus`` view template when the ``contactus`` action is executed,  replace the code in ``views/contactus.mu.html`` with the following:
+#. To display the rendered ``contactus`` view template when the ``contactus`` action is executed,  replace the code in ``views/contactus.hb.html`` with the following:
 
    .. code-block:: html
 

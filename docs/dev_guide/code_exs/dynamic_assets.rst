@@ -114,7 +114,7 @@ The appropriate CSS file is dynamically attached to the view template with ``ac.
    }, '0.0.1', {requires: []});
 
 The ``index.iphone`` view template below contains CSS for controlling the orientation of the page, which is needed for displaying the page correctly on an iPhone. When the template is rendered, 
-the CSS is dynamically added, and the Mustache tags are replaced with values. If the device making the call is an iPhone, the ``viewport`` meta data will also be added dynamically.
+the CSS is dynamically added, and the Handlebars expressions are replaced with values. If the device making the call is an iPhone, the ``viewport`` meta data will also be added dynamically.
 
 .. code-block:: html
 
@@ -248,7 +248,7 @@ To create and run ``device_assets``:
         };
       }, '0.0.1', {requires: []});
 
-#. To create the default ``index`` view template, replace the code in ``views/index.mu.html`` with the following:
+#. To create the default ``index`` view template, replace the code in ``views/index.hb.html`` with the following:
 
    .. code-block:: html
 
@@ -275,7 +275,7 @@ To create and run ``device_assets``:
         </body>
       </html>
 
-#. To create the default iPhone view template, create the file ``views/index.iphone.mu.html`` with the following:
+#. To create the default iPhone view template, create the file ``views/index.iphone.hb.html`` with the following:
 
    .. code-block:: html
 
@@ -319,7 +319,7 @@ To create and run ``device_assets``:
         </ul>
       </div>
 
-#. Create the file ``assets/simple.css`` for the CSS that is included in ``index.mu.html`` with the following:
+#. Create the file ``assets/simple.css`` for the CSS that is included in ``index.hb.html`` with the following:
 
    .. code-block:: css
 
@@ -337,7 +337,7 @@ To create and run ``device_assets``:
       }
       .toolbar li { display:inline; }
 
-#. Create the file ``assets/simple.iphone.css`` for the CSS that is included in ``index.iphone.html`` with the following:
+#. Create the file ``assets/simple.iphone.css`` for the CSS that is included in ``index.iphone.hb.html`` with the following:
 
    .. code-block:: css
 
