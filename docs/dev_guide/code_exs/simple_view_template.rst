@@ -11,8 +11,10 @@ Creating a Simple View with Handlebars Templates
 Summary
 #######
 
-This example shows how to create a simple view for Mojito applications with `Handlebars <http://handlebarsjs.com/>`_. Mojito views are template files that are 
-rendered into HTML and served to a device. These template files are simply called *view templates* in this example and throughout the Mojito documentation.
+This example shows how to create a simple view for Mojito applications with 
+`Handlebars <http://handlebarsjs.com/>`_. Mojito views are template files that are rendered into 
+HTML and served to a device. These template files are simply called *view templates* in this example 
+and throughout the Mojito documentation.
 
 The following topics will be covered:
 
@@ -29,8 +31,11 @@ In the following screenshot, you see the HTML page that was rendered from the vi
    :height: 288px
    :width: 226px
 
-In Mojito applications, the controller is responsible for passing data to the view template. From the below code snippet taken from ``controller.server.js``, you see the ``index`` function 
-creating a ``data`` object and passing it to the ``done`` method. The ``done`` method called on ``ac``, the `ActionContext <../../api/classes/ActionContext.html>`_ object, sends the ``data`` object to the view template ``index.hb.html``.
+In Mojito applications, the controller is responsible for passing data to the view template. From 
+the below code snippet taken from ``controller.server.js``, you see the ``index`` function 
+creating a ``data`` object and passing it to the ``done`` method. The ``done`` method called on 
+``ac``, the `ActionContext <../../api/classes/ActionContext.html>`_ object, sends the ``data`` 
+object to the view template ``index.hb.html``.
 
 .. code-block:: javascript
 
@@ -51,9 +56,12 @@ creating a ``data`` object and passing it to the ``done`` method. The ``done`` m
      };
    ...
 
-In the ``index`` view template of this code example, the properties of the ``data`` object are placed in Handlebars expressions that are evaluated by Mojito when the view template is rendered. 
-In Handlebars templates, the property names in double braces, such as ``{{type}}``, are variables.  The double curly braces with a pound are called sections and can be used for lists or 
-conditional expression, such as ``{{#show}...{{/show}``. You also use double curly braces with a pound to access properties within an object, which is how the ``hours`` property of the ``time`` object 
+In the ``index`` view template of this code example, the properties of the ``data`` object are 
+placed in Handlebars expressions that are evaluated by Mojito when the view template is rendered. 
+In Handlebars templates, the property names in double braces, such as ``{{type}}``, are variables.
+The double curly braces with a pound are called sections and can be used for lists or conditional 
+expression, such as ``{{#show}...{{/show}``. You also use double curly braces with a 
+pound to access properties within an object, which is how the ``hours`` property of the ``time`` object 
 is accessed here.
 
 .. code-block:: html
@@ -71,7 +79,8 @@ is accessed here.
      <div>html: {{{html}}}</div>
    </div>
 
-See the `Handlebars expressions <http://handlebarsjs.com/expressions.html>`_ in the Handlebars documentation for more information.
+See the `Handlebars expressions <http://handlebarsjs.com/expressions.html>`_ in the Handlebars 
+documentation for more information.
 
 Setting Up This Example
 #######################
@@ -88,7 +97,8 @@ To set up and run ``simple_view``:
 
    ``$ mojito create mojit simple``
 
-#. To specify that your application use the ``simple`` mojit, replace the code in ``application.json`` with the following:
+#. To specify that your application use the ``simple`` mojit, replace the code in 
+   ``application.json`` with the following:
 
    .. code-block:: javascript
 
@@ -120,7 +130,8 @@ To set up and run ``simple_view``:
 
 #. Change to ``mojits/simple``.
 
-#. Modify the mojit controller to pass data to the view by replacing the code in ``controller.server.js`` with the following:
+#. Modify the mojit controller to pass data to the view by replacing the code in 
+   ``controller.server.js`` with the following:
 
    .. code-block:: javascript
 
