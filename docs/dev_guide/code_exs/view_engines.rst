@@ -201,7 +201,7 @@ so that it can be rendered by ``ejs``.
 
 
 In the above code snippet, the ``compile`` method simply returns the template file to the
-``render`` method, where the instance of the EJS rendering engine calls ``render` to render 
+``render`` method, where the instance of the EJS rendering engine calls ``render`` to render 
 the template file into a string. The implementation of the ``compile`` method in the 
 addon could have been written to call ``ejs.render``.
 
@@ -416,7 +416,7 @@ To set up and run ``adding_view_engines``:
    
 #. Now see the view template rendered by the EJS rendering engine at the following URL:
 
-   `http://localhost:8666/hb <http://localhost:8666/ejs>`_   
+   `http://localhost:8666/ejs <http://localhost:8666/ejs>`_   
 
 #. Great, your application is using two different rendering engines. You should now be ready to add
    your own view engine that uses a rendering engine such as Jade.   
