@@ -618,7 +618,7 @@ Here are some other example view template names with descriptions:
 
 .. note:: Currently, Mojito comes with Handlebars, so the name of view templates 
           always contains ``hb``. Users can use other 
-          `view engines <topics/mojito_extensions.html#view-engines>`_, but the
+          `view engines <../topics/mojito_extensions.html#view-engines>`_, but the
           ``{rendering_engine}`` component of the view template name must change. An error will 
           occur if the file names of different views are the same except the ``{rendering_engine}``. 
           For example, having the two view templates ``index.hb.html`` and 

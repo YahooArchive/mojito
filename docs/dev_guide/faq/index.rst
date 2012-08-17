@@ -276,7 +276,7 @@ General
        * From the server and before mojits are executed, middleware can be used to share
          information about static handling and routing.
        * Assets and data can be shared through the 
-         `view template <reference/glossary.html#view-template>`_ of a parent mojit or through a 
+         `view template <../reference/glossary.html#view-template>`_ of a parent mojit or through a 
          frame mojit such as 
          `HTMLFrameMojit <../topics/mojito_framework_mojits.html#htmlframemojit>`_ that creates
          a parent view template.
