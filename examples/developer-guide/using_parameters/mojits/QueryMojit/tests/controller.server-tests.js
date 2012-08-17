@@ -15,7 +15,7 @@ YUI.add('QueryMojit-tests', function(Y) {
         name: 'QueryMojit user tests',
         
         setUp: function() {
-            controller = Y.mojito.controller;
+            controller = Y.mojito.controllers.QueryMojit;
         },
         tearDown: function() {
             controller = null;

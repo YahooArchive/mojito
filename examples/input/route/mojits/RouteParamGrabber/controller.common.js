@@ -4,9 +4,9 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('RouteParamGrabber', function(Y) {
-    
-    Y.mojito.controller = {
+YUI.add('RouteParamGrabber', function(Y, NAME) {
+
+    Y.namespace('mojito.controllers')[NAME] = {
         
         index: function(ac) {
             var params = ac.params.route(),

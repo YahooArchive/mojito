@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('ClickLog', function(Y) {
+YUI.add('ClickLog', function(Y, NAME) {
 
 /**
  * The ClickLog mojit which just shows running log of user clicks.
@@ -17,7 +17,7 @@ YUI.add('ClickLog', function(Y) {
     /**
      * @class Controller
      */
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         /**
          * This "index" action generates the initial view.

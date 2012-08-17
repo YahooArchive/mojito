@@ -15,7 +15,7 @@ YUI.add('GenURLMojit-tests', function(Y) {
         name: 'GenURLMojit user tests',
         
         setUp: function() {
-            controller = Y.mojito.controller;
+            controller = Y.mojito.controllers.GenURLMojit;
         },
         tearDown: function() {
             controller = null;

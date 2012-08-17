@@ -15,7 +15,7 @@ YUI.add('HeaderMojit-tests', function(Y) {
         name: 'HeaderMojit user tests',
         
         setUp: function() {
-            controller = Y.mojito.controller;
+            controller = Y.mojito.controllers.HeaderMojit;
         },
         tearDown: function() {
             controller = null;

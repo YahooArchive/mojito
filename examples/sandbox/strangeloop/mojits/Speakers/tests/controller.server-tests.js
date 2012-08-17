@@ -15,7 +15,7 @@ YUI.add('Speakers-tests', function(Y) {
         name: 'Speakers user tests',
         
         setUp: function() {
-            controller = Y.mojito.controller;
+            controller = Y.mojito.controllers.Speakers;
         },
         tearDown: function() {
             controller = null;

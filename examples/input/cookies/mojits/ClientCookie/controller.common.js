@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('ClientCookie', function(Y) {
+YUI.add('ClientCookie', function(Y, NAME) {
 
 /**
  * The ClientCookie module.
@@ -18,7 +18,7 @@ YUI.add('ClientCookie', function(Y) {
      * @class Controller
      * @constructor
      */
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         init: function(config) {
             this.config = config;
