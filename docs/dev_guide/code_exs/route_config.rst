@@ -186,7 +186,7 @@ To set up and run ``configure_routing``:
         }
       }, '0.0.1', {requires: []});
 
-#. To display your route information in your ``index`` view template, replace the content of ``index.mu.html`` with the following:
+#. To display your route information in your ``index`` view template, replace the content of ``index.hb.html`` with the following:
 
    .. code-block:: html
 
@@ -196,7 +196,7 @@ To set up and run ``configure_routing``:
         <b>Route Name:</b> {{name}}
       </div>
 
-#. To display your route information in your ``show`` view template, create the file ``show.mu.html`` with the following:
+#. To display your route information in your ``show`` view template, create the file ``show.hb.html`` with the following:
 
    .. code-block:: html
 

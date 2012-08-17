@@ -1,0 +1,16 @@
+language: node_js
+node_js:
+  - 0.8
+  - 0.6
+  - 0.4
+notifications:
+  email:
+    recipients:
+      - "devel-mojito@yahoo-inc.com"
+    on_success: change
+    on_failure: always
+  irc:
+    channels:
+      - "irc.freenode.org#mojito"
+    on_success: change
+    on_failure: always

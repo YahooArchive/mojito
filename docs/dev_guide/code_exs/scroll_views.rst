@@ -92,7 +92,7 @@ image ``alt`` attribute is passed to the ``index`` view template.
      };
    }, '0.0.1', {requires: ['mojito']});
 
-In the ``index.mu.html`` below, the YUI ScrollView module is included with ``YUI.use``. To create the scrolling content widget,  you need to create a container, a header, and content frame with ``div`` tags 
+In the ``index.hb.html`` below, the YUI ScrollView module is included with ``YUI.use``. To create the scrolling content widget,  you need to create a container, a header, and content frame with ``div`` tags 
 that use YUI-specific IDs and render a ScrollView object. For detailed instructions, see the `Getting Started <http://developer.yahoo.com/yui/3/scrollview/#start>`_ section on the YUI 3: ScrollView page.
 
 .. code-block:: html
@@ -237,7 +237,7 @@ To set up and run ``scroll_views``:
         };
       }, '0.0.1', {requires: []});
 
-#. To modify the ``index`` view template, replace the code in ``views/index.mu.html`` with the following:
+#. To modify the ``index`` view template, replace the code in ``views/index.hb.html`` with the following:
 
    .. code-block:: html
 
@@ -368,7 +368,7 @@ To set up and run ``scroll_views``:
 Source Code
 ###########
 
-- `Index View Template <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/scroll_views/mojits/scroll/views/index.mu.html>`_
+- `Index View Template <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/scroll_views/mojits/scroll/views/index.hb.html>`_
 - `Scroll Views Application <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/scroll_views/>`_
 
 

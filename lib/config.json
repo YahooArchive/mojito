@@ -1,0 +1,44 @@
+{
+    "###": "Copyright (c) 2012 Yahoo! Inc. All rights reserved.",
+
+    "appConfigBase": {
+        "mojitsDirs": [ "mojits" ],
+        "routesFiles": [ "routes.json" ],
+        "tunnelPrefix": "/tunnel",
+        "yui": {
+            "dependencyCalculations": "precomputed"
+        },
+        "specs": {
+            "tunnelProxy": {
+                "type": "TunnelProxy"
+            }
+        }
+    },
+    "ondemandBaseYuiModules": [
+        "oop",
+        "event-custom-base",
+        "querystring-stringify-simple",
+        "io-base",
+        "dom-core",
+        "dom-base",
+        "selector-native",
+        "selector",
+        "node-core",
+        "node-base",
+        "event-base",
+        "event-delegate",
+        "json-stringify",
+        "array-extras",
+        "querystring-parse",
+        "cookie",
+        "event-custom-complex",
+        "json-parse"
+    ],
+    "defaultRoutes" : {
+        "_default_path": {
+            "verbs": [ "GET" ],
+            "path": "/:module/:action",
+            "call": "*.*"
+        }
+    }
+}

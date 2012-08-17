@@ -47,7 +47,7 @@ The routing configuration for Mojito applications is contained in ``routes.json`
    ]
 
 The ``index`` method is a canned method in the controller when you create a mojit. To learn how to create view templates that get data from the controller, 
-see `Creating a Simple View with Mustache Templates <simple_view_template.html>`_.
+see `Creating a Simple View with Handlebars <simple_view_template.html>`_.
 
 Setting Up this Example
 #######################
