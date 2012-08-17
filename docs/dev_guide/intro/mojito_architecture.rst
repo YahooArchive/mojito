@@ -242,7 +242,6 @@ sections.
    :height: 540px
    :width: 457px
    :align: center
-   :target: ./images/mojito_components.png
   
 
 :raw-html:`<br clear="all"/>`
