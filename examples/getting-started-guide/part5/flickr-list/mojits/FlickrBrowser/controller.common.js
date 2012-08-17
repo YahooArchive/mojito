@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('FlickrBrowser', function(Y) {
+YUI.add('FlickrBrowser', function(Y, NAME) {
 
 /**
  * The FlickrBrowser module.
@@ -18,7 +18,7 @@ YUI.add('FlickrBrowser', function(Y) {
      * @class Controller
      * @constructor
      */
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         /**
          * Method corresponding to the 'index' action.

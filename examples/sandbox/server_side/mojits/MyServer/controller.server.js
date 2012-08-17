@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('MyServer', function(Y) {
+YUI.add('MyServer', function(Y, NAME) {
 
 /**
  * The MyServer module.
@@ -18,7 +18,7 @@ YUI.add('MyServer', function(Y) {
      * @class Controller
      * @constructor
      */
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         init: function(config) {
             this.config = config;

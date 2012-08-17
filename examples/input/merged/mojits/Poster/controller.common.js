@@ -4,9 +4,9 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('Poster', function(Y) {
-    
-    Y.mojito.controller = {
+YUI.add('Poster', function(Y, NAME) {
+
+    Y.namespace('mojito.controllers')[NAME] = {
         
         index: function(ac) {
             ac.done({desc: "Submit for for example of POST processing."});

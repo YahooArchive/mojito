@@ -15,7 +15,7 @@ YUI.add('FrameMojit-tests', function(Y) {
         name: 'FrameMojit user tests',
         
         setUp: function() {
-            controller = Y.mojito.controller;
+            controller = Y.mojito.controllers.FrameMojit;
         },
         tearDown: function() {
             controller = null;

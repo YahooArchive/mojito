@@ -4,11 +4,11 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('PagedFlickr', function(Y) {
+YUI.add('PagedFlickr', function(Y, NAME) {
 
     var PAGESIZE = 9;
 
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         index: function(ac) {
             var page = ac.params.merged('page'),

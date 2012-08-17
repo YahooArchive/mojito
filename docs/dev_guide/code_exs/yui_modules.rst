@@ -197,7 +197,7 @@ To set up and run ``yui_module``:
         // See autoload/storage-lite.client.js
       }, '0.0.1', {requires: [ 'gallery-storage-lite' ]});
 
-#. To display a form that allows users to input text, replace the code in ``views/index.mu.html`` with the following:
+#. To display a form that allows users to input text, replace the code in ``views/index.hb.html`` with the following:
 
    .. code-block:: html
 

@@ -54,9 +54,11 @@ Those marked with an asterisk are not created by default.
 Mojits
 ======
 
-Mojits are the basic unit of composition and reuse in a Mojito application. Visually, you can think of a mojit as the rectangular area of a page that was 
-constructed by a Mojito application. Mojits follow the MVC pattern and have their own discrete set of configuration, markup, and JavaScript files. 
-The following section will take a look at the files and directories that generated when you create a mojit.
+Mojits are the basic unit of composition and reuse in a Mojito application. This 
+section covers the details of the files and directories contained in a mojit.
+To get an overview about mojits and learn about their architecture and structure, 
+see `Mojits <mojito_mojits.html>`_. 
+
 
 Mojit Files and Directories
 ---------------------------
@@ -86,14 +88,14 @@ values for ``{affinity}`` are ``client``, ``common``, and ``server``. The `affin
 
 - ``views`` - directory containing the view templates.
 
-   - ``index.mu.html`` - the default view template for the mojit. You can create other view templates that get content from functions in the mojit controllers.
+   - ``index.hb.html`` - the default view template for the mojit. You can create other view templates that get content from functions in the mojit controllers.
 
 Application Directory Structure
 ===============================
 
 The following shows the directory structure of a Mojito application that has one mojit. The allowed 
 values for ``{affinity}`` are ``client``, ``common``, and ``server``. The `affinity <../reference/glossary.html>`_ specifies where the resource is available. The ``{view_engine}`` is the 
-engine that renders tags used in a templating system. For example, the value ``mu`` in ``index.mu.html`` instructs Mojito to use the Mustache rendering engine.
+engine that renders tags used in a templating system. For example, the value ``hb`` in ``index.hb.html`` instructs Mojito to use the Handlebars rendering engine.
 
 ::
 

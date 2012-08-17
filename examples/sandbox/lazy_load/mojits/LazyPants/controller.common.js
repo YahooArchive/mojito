@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('LazyPants', function(Y) {
+YUI.add('LazyPants', function(Y, NAME) {
 
 /**
  * The LazyPants module.
@@ -18,7 +18,7 @@ YUI.add('LazyPants', function(Y) {
      * @class Controller
      * @constructor
      */
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         /**
          * Method corresponding to the 'index' action.
