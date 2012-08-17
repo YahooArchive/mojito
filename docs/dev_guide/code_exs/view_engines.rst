@@ -100,7 +100,7 @@ The view engine addon must have the following:
 
       YUI.add('addons-viewengine-ejs', function(Y, NAME) {
     
-        // The addon name 'addons-viewengine-hb' is registered by YUI.add
+        // The addon name 'addons-viewengine-ejs' is registered by YUI.add
     
       }, '0.1.0', {requires: []});
       
@@ -193,13 +193,13 @@ so that it can be rendered by ``ejs``.
      return fs.readFileSync(tmpl, 'utf8');
    }
 
-The Handlebars rendering engines that comes with Mojito has a ``compile`` function that compile templates into an executable 
-JavaScript function, but EJS has a ``render`` function that returns a string containing the rendered template.
-The implementation of the ``compile`` method in the view engine addon is up to the developer. 
-In the above code snippet, the ``compile`` method simply returns the template file to the
-``render`` method, where the instance of the EJS rendering engine calls ``render` to render 
-the template file into a string. The implementation of the ``compile`` method in the 
-addon could have been written to call ``ejs.render``.
+The Handlebars rendering engines that comes with Mojito has a ``compile`` function that compile 
+templates into an executable JavaScript function, but EJS has a ``render`` function that returns a 
+string containing the rendered template. The implementation of the ``compile`` method in the view 
+engine addon is up to the developer. In the above code snippet, the ``compile`` method simply 
+returns the template file to the ``render`` method, where the instance of the EJS rendering engine 
+calls ``render` to render the template file into a string. The implementation of the ``compile`` 
+method in the addon could have been written to call ``ejs.render``.
 
 EJS Templates
 -------------
@@ -213,6 +213,7 @@ below, where the variable ``title`` is substituted with a value.
 
    <h2> <%= title %></h2>
 
+
 You can do most of the same things with EJS as you can with JavaScript. For example,
 you can iterate through an array in the same way as shown here:
 
@@ -224,8 +225,8 @@ you can iterate through an array in the same way as shown here:
      <% } %>
    </ul>
 
-EJS also has view helpers for creating links and forms, much like ``ERB``. See `Getting Started with EJS <http://embeddedjs.com/getting_started.html>`_
-for more information.
+EJS also has view helpers for creating links and forms, much like ``ERB``. See 
+`Getting Started with EJS <http://embeddedjs.com/getting_started.html>`_ for more information.
 
 
 Setting Up this Example
@@ -237,12 +238,6 @@ To set up and run ``adding_view_engines``:
 #. Create your application.
 
    ``$ mojito create app adding_view_engines``
-
-To set up and run ``view_engines``:
-
-#. Create your application.
-
-   ``$ mojito create app view_engine``
 
 #. Change to the application directory.
 
@@ -266,7 +261,8 @@ To set up and run ``view_engines``:
       ]
 
 
-#. To configure routing so controller functions using different view templates are used, create the file ``routes.json`` with the following:
+#. To configure routing so controller functions using different view templates are used, create the 
+   file ``routes.json`` with the following:
 
    .. code-block:: javascript
 
@@ -349,28 +345,28 @@ To set up and run ``view_engines``:
           },
           default_ve: function(ac) {
             ac.done({
-              "title": "Mustache at work!",
+              "title": "Handlebars at work!",
               "view_engines": [ 
-                { "name": "Handlebars"},
                 {"name": "EJS"},
                 {"name": "Jade"}, 
                 {"name": "dust"},
                 {"name": "underscore" }
               ],
-              "ul": { "title": 'Here are some of the other available rendering engines:' },
+              "ul": { "title": 'Besides the default, here are some of the other available rendering engines:' },
             });
           },
           added_ve: function(ac) {
             ac.done({
-              "title": "Handlebars at work!",
-              "view_engines": [ "Mustache","EJS","Jade", "dust","underscore" ],
-              "ul": { "title": 'Here are some of the other available rendering engines:' }
+              "title": "EJS at work!",
+              "view_engines": [ "Mustache","Jade", "Dust","underscore" ],
+              "ul": { "title": 'In addition to EJS, you can also create view engine addons for these rendering engines:' }
             });  
           }
         };
       }, '0.0.1', {requires: ['mojito', 'myMojitModelFoo']});
  
-#. Create the view template ``views/default_ve.hb.html`` that uses Mustache tags with the following:
+#. Create the view template ``views/default_ve.hb.html`` that uses Handlebars expressions with the 
+   following:
 
    .. code-block:: html
    
@@ -391,7 +387,7 @@ To set up and run ``view_engines``:
         </ul>
       </div>
 
-#. Create the view template ``views/added_ve.hb.html`` that uses Handlebars with the following:
+#. Create the view template ``views/added_ve.ejs.html`` that uses EJS templates with the following:
 
    .. code-block:: html
    
@@ -409,15 +405,17 @@ To set up and run ``view_engines``:
 
    ``$ mojito start``
    
-#. Open the following URL in your browser to see the view template rendered by the Mustache rendering engine.   
+#. Open the following URL in your browser to see the view template rendered by the Handlebars 
+   rendering engine.   
 
    `http://localhost:8666/ <http://localhost:8666/>`_
    
-#. Now see the view template rendered by the Handlebars rendering engine at the following URL:
+#. Now see the view template rendered by the EJS rendering engine at the following URL:
 
    `http://localhost:8666/hb <http://localhost:8666/ejs>`_   
 
-#. Great, your application is using two different rendering engines. You should now be ready to add your own view engine that uses a rendering engine such as Jade.   
+#. Great, your application is using two different rendering engines. You should now be ready to add 
+   your own view engine addon that uses a rendering engine such as Jade.   
 
 
 Source Code
