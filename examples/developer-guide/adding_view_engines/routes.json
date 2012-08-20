@@ -8,7 +8,7 @@
     },
     "hb": {
       "verbs": ["get"],
-      "path": "/hb",
+      "path": "/ejs",
       "call": "myMojit.added_ve"
     }
   }
