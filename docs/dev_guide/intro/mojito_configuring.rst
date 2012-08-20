@@ -64,7 +64,7 @@ configuration Object
 | ``appPort``                                            | number               | 8666              | The port number (1-65355) that the application         |
 |                                                        |                      |                   | will use.                                              |
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
-| `build <#build-obj>`_                                  | object               | N/A               | Specifies configuration for builds.                    |
+| `builds <#builds-obj>`_                                | object               | N/A               | Specifies configuration for builds.                    |
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
 | ``cacheViewTemplates``                                 | boolean              | true              | Specifies whether the view engine should attempt       |
 |                                                        |                      |                   | to cache the view. Note that not all view engines      |
@@ -149,10 +149,10 @@ configuration Object
 
 
 
-.. _build_obj:
+.. _builds_obj:
 
-build Object
-============
+builds Object
+=============
 
 +-----------------------------+---------------+------------------------------------------------+
 | Property                    | Data Type     | Description                                    |
