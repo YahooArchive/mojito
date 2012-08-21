@@ -58,6 +58,7 @@ YUI.add('mojito-perf', function(Y, NAME) {
         mark: function () {}
     };
 });
+YUI.add('mojito-resource-store', function(Y, NAME) {});
 YUI.add('mojito-resource-store-adapter', function(Y, NAME) {});
 YUI.add('mojito-rest-lib', function(Y, NAME) {});
 YUI.add('mojito-route-maker', function(Y, NAME) {});
