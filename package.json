@@ -53,7 +53,6 @@
     },
     "bugs": "https://github.com/yahoo/mojito/issues",
     "scripts": {
-        "start": "./bin/mojito start",
         "test": "./bin/mojito jslint -p && ./bin/mojito test"
     },
     "yahoo": {
