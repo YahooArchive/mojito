@@ -214,14 +214,23 @@ Controller Objects and Methods
 Several objects and methods form the backbone of the controller.
 
 - ``YUI.add`` - (required) registers the controller as a YUI module in the Mojito framework. 
-- ``Y.mojito.controller`` -  (required) creates a namespace that makes functions available as Mojito actions.
-- ``init`` - (optional) if you provide an ``init`` function on your controller, Mojito will call it as it creates a controller instance, passing in the mojit specification. You can store the specification on the ``this`` reference for use within controller functions.
-- ``this`` - a reference pointing to an instance of the controller that the function is running within. This means that you can refer to other functions described within ``Y.mojito.controller`` using ``this.otherFunction``. This is helpful when you've added some utility functions onto your controller that do not accept an ActionContext object.
+- ``Y.mojito.controller`` -  (required) creates a namespace that makes functions available as Mojito 
+  actions.
+- ``init`` - (optional) if you provide an ``init`` function on your controller, Mojito will call it 
+  as it creates a controller instance, passing in the mojit specification. You can store the 
+  specification on the ``this`` reference for use within controller functions.
+- ``this`` - a reference pointing to an instance of the controller that the function is running 
+  within. This means that you can refer to other functions described within ``Y.mojito.controller`` 
+  using ``this.otherFunction``. This is helpful when you've added some utility functions onto your 
+  controller that do not accept an ActionContext object.
 - ``requires`` - (optional) an array that lists additional YUI modules needed by the controller.
 
-The example controller below shows you how the components are used. The ``status`` mojit is registered with ``YUI.add``, and the ``Y.mojito.controller`` namespace is created with the ``init`` and other functions. 
-The ``init`` function stores the date so it can be used by other functions, and the ``this`` reference allows the ``index`` function to call ``create_status``. Lastly, the ``requires`` array instructs Mojito to 
-load the YUI module ``mojito-intl-addon`` for localizing the date and title.
+The example controller below shows you how the components are used. The ``status`` mojit is 
+registered with ``YUI.add``, and the ``Y.mojito.controller`` namespace is created with the ``init`` 
+and other functions. The ``init`` function stores the date so it can be used by other functions, and 
+the ``this`` reference allows the ``index`` function to call ``create_status``. Lastly, the 
+``requires`` array instructs Mojito to load the YUI module ``mojito-intl-addon`` for localizing the 
+date and title.
 
 .. code-block:: javascript
 
@@ -252,9 +261,11 @@ load the YUI module ``mojito-intl-addon`` for localizing the date and title.
 Controller Functions as Mojito Actions
 ======================================
 
-When mojit instances are created in the application configuration file, you can then call controller functions as actions that are mapped to route paths.
+When mojit instances are created in the application configuration file, you can then call controller 
+functions as actions that are mapped to route paths.
 
-In the application configure file ``application.json`` below, the mojit instance ``hello`` is created.
+In the application configure file ``application.json`` below, the mojit instance ``hello`` is 
+created.
 
 .. code-block:: javascript
 
@@ -270,8 +281,10 @@ In the application configure file ``application.json`` below, the mojit instance
      }
    ]
 
-The controller for the ``HelloMojit`` mojit has an ``index`` function that we want to call when an HTTP GET call is made on the root path. To do this, the route configuration file ``routes.json`` maps 
-the ``hello`` instance and the ``index`` action to the root path with the ``path`` and ``call`` properties as seen below.
+The controller for the ``HelloMojit`` mojit has an ``index`` function that we want to call when an 
+HTTP GET call is made on the root path. To do this, the route configuration file ``routes.json`` 
+maps the ``hello`` instance and the ``index`` action to the root path with the ``path`` and ``call`` 
+properties as seen below.
 
 .. code-block:: javascript
 
@@ -285,8 +298,10 @@ the ``hello`` instance and the ``index`` action to the root path with the ``path
      }
    ]
 
-In the controller, any function that is defined in the ``Y.mojito.controller`` namespace is available as a Mojito action. These functions can only accept the ``ActionContext`` object 
-as an argument. In the example controller below, the ``index`` and ``greeting`` functions are available as Mojito actions.
+In the controller, any function that is defined in the ``Y.mojito.controller`` namespace is 
+available as a Mojito action. These functions can only accept the ``ActionContext`` object as an 
+argument. In the example controller below, the ``index`` and ``greeting`` functions are available as 
+Mojito actions.
 
 .. code-block:: javascript
 
@@ -308,8 +323,10 @@ as an argument. In the example controller below, the ``index`` and ``greeting`` 
 Initializing and Referencing a Controller Instance
 ==================================================
 
-If the controller has an ``init`` function, Mojito will call it as it creates a controller instance. The ``init`` function is passed the mojit ``config`` object, which is
-defined in ``application.json`` or ``defaults.json``. See the `config Object <./mojito_configuring.html#config-object>`_ for the specifications.
+If the controller has an ``init`` function, Mojito will call it as it creates a controller instance. 
+The ``init`` function is passed the mojit ``config`` object, which is
+defined in ``application.json`` or ``defaults.json``. See the 
+`config Object <./mojito_configuring.html#config-object>`_ for the specifications.
 
 You can also use ``init`` to store other initialization data on ``this`` as seen below:
 
@@ -325,11 +342,15 @@ You can also use ``init`` to store other initialization data on ``this`` as seen
      };
    }, '0.0.1', {requires: []});
 
-Within your controller actions and the ``init`` action, the ``this`` reference points to an instance of the controller the action is running within. This means that you can refer to other 
-functions or actions described within ``Y.mojito.controller`` using the syntax ``this.{otherFunction}``. This is helpful when you've added some utility functions onto your controller that do not 
-accept an ActionContext object as the argument, but you wish to use for several actions.
+Within your controller actions and the ``init`` action, the ``this`` reference points to an instance 
+of the controller the action is running within. This means that you can refer to other 
+functions or actions described within ``Y.mojito.controller`` using the syntax 
+``this.{otherFunction}``. This is helpful when you've added some utility functions onto your 
+controller that do not accept an ActionContext object as the argument, but you wish to use for 
+several actions.
 
-In the example controller below, the ``health`` function uses ``this`` to call the utility function ``get_bmi``.
+In the example controller below, the ``health`` function uses ``this`` to call the utility function 
+``get_bmi``.
 
 .. code-block:: javascript
 
@@ -364,13 +385,17 @@ In the example controller below, the ``health`` function uses ``this`` to call t
 Calling the Model
 =================
 
-The mojit controller communicates with the model through the `ActionContext object <../api_overview/mojito_action_context.html>`_ and a 
-syntax convention. The ActionContext object allows controller functions to access framework features such as API methods and addons that extend functionality. 
-To access the model from the ActionContext object ``ac``, you use the following syntax: ``ac.models.{model_name}.{model_function}``
+The mojit controller communicates with the model through the 
+`ActionContext object <../api_overview/mojito_action_context.html>`_ and a syntax convention. The 
+``ActionContext`` object allows controller functions to access framework features such as API 
+methods and addons that extend functionality. To access the model from the ActionContext object 
+``ac``, you use the following syntax: ``ac.models.{model_name}.{model_function}``
 
-Thus, if you wanted to use the ``photo_search`` function in the model for the ``flickr`` mojit, you would use the following: ``ac.models.flickr.photo_search(args, callback);``
+Thus, if you wanted to use the ``photo_search`` function in the model for the ``flickr`` mojit, you
+would use the following: ``ac.models.flickr.photo_search(args, callback);``
 
-The ``controller.server.js`` below shows a simple example of calling ``get_data`` from the model of the ``simple`` mojit.
+The ``controller.server.js`` below shows a simple example of calling ``get_data`` from the model of 
+the ``simple`` mojit.
 
 .. code-block:: javascript
 
@@ -395,11 +420,14 @@ The ``controller.server.js`` below shows a simple example of calling ``get_data`
 Passing Data to the View
 ========================
 
-The controller also uses the ActionContext object to send data to the view. Calling the ``done`` method from the ActionContext object, you can send literal strings or objects, with the 
-latter being interpolated in template tags that are rendered by the appropriate view engine. The ``done`` method should only be called once. If neither ``done`` nor ``error`` is called, 
+The controller also uses the ActionContext object to send data to the view. Calling the ``done`` 
+method from the ActionContext object, you can send literal strings or objects, with the latter being 
+interpolated in template tags that are rendered by the appropriate view engine. The ``done`` method 
+should only be called once. If neither ``done`` nor ``error`` is called, 
 your application will hang waiting for output.
 
-In the example ``controller.server.js`` below, the ``index`` function sends the ``user`` object to the ``index`` view template.
+In the example ``controller.server.js`` below, the ``index`` function sends the ``user`` object to 
+the ``index`` view template.
 
 .. code-block:: javascript
 
@@ -432,12 +460,17 @@ In the example ``controller.server.js`` below, the ``index`` function sends the 
 Specifying the View
 -------------------
 
-The default behavior when you pass data from the controller to the view is for the data to be passed to the view that has the same name as the controller function. For example, 
-if ``ac.done({ "title": "Default View" })`` is invoked in the controller ``index`` function, the data is sent by default to the ``index`` view template. The ``index`` view template 
-could be ``index.mu.html``, ``index.iphone.mu.html``, etc., depending on the calling device and rendering engine.
+The default behavior when you pass data from the controller to the view is for the data to be passed 
+to the view that has the same name as the controller function. For example, if 
+``ac.done({ "title": "Default View" })`` is invoked in the controller ``index`` function, the data 
+is sent by default to the ``index`` view template. The ``index`` view template could be 
+``index.hb.html``, ``index.iphone.hb.html``, etc., depending on the calling device and rendering 
+engine.
 
-To specify the view that receives the data, the controller function passes two parameters to ``ac.done``: The first parameter is the data, and the second parameter specifies the view name in 
-the object ``{ "view": { "name": "name_of_view_receiving_data" } }``. In the example controller below, the ``user`` function passes the ``data`` object to the ``profile`` view template 
+To specify the view that receives the data, the controller function passes two parameters to 
+``ac.done``: The first parameter is the data, and the second parameter specifies the view name in 
+the object ``{ "view": { "name": "name_of_view_receiving_data" } }``. In the example controller 
+below, the ``user`` function passes the ``data`` object to the ``profile`` view template 
 instead of the default ``user`` view template.
 
 .. code-block:: javascript
@@ -475,11 +508,15 @@ instead of the default ``user`` view template.
 Reporting Errors
 ================
 
-The ``ActionContext`` object has an ``error`` method for reporting errors. Like the ``done`` method, ``error`` should only be called once. Also, you cannot call both ``done`` and ``error``. The error requires 
-an ``Error`` object as a parameter. The ``Error`` object is just the standard JavasScript ``Error`` object that can have a ``code`` property specifying the HTTP response code that 
+The ``ActionContext`` object has an ``error`` method for reporting errors. Like the ``done`` method, 
+``error`` should only be called once. Also, you cannot call both ``done`` and ``error``. The error 
+requires an ``Error`` object as a parameter. The ``Error`` object is just the standard JavasScript 
+``Error`` object that can have a ``code`` property specifying the HTTP response code that 
 will be used if the error bubbles to the top of the page (i.e., not caught by a parent mojit).
 
-In the code snippet below from ``controller.server.js``, the model is asked to get a blog post. The ``try-catch`` clause will catch any errors made calling ``getPost``, and the ``error`` method will display the error message.
+In the code snippet below from ``controller.server.js``, the model is asked to get a blog post. The 
+``try-catch`` clause will catch any errors made calling ``getPost``, and the ``error`` method will 
+display the error message.
 
 .. code-block:: javascript
 
@@ -500,12 +537,14 @@ In the code snippet below from ``controller.server.js``, the model is asked to g
 Saving State
 ============
 
-You can maintain the state within controllers when they are running on the client because the client-side Mojito runtime is long-lived. You **cannot** maintain state within server controllers because 
-the controller is discarded after the page has been generated and served to the client.
+You can maintain the state within controllers when they are running on the client because the 
+client-side Mojito runtime is long-lived. You **cannot** maintain state within server controllers 
+because the controller is discarded after the page has been generated and served to the client.
 
-In the example ``controller.client.js`` below, the ``pitch`` function stores the variable ``ball`` on ``this``. If 
-client code invokes ``pitch``, the ``ball`` parameter it sends will be stored in controller instance state. If ``catch`` function 
-is invoked, that state variable is retrieved and sent back in a callback.
+In the example ``controller.client.js`` below, the ``pitch`` function stores the variable ``ball`` 
+on ``this``. If client code invokes ``pitch``, the ``ball`` parameter it sends will be stored in 
+controller instance state. If ``catch`` function is invoked, that state variable is retrieved and 
+sent back in a callback.
 
 .. code-block:: javascript
 
@@ -548,28 +587,43 @@ is invoked, that state variable is retrieved and sent back in a callback.
 Views
 #####
 
-The views are HTML files that can include template tags, such as Mustache tags, and are located in the ``views`` directory. We call these files *view templates* to differentiate 
+The views are HTML files that can include templates, such as Handlebars expressions, and are located in 
+the ``views`` directory. We call these files *view templates* to differentiate 
 them from the rendered views that have substituted values for the template tags.
 
 Naming Convention
 =================
 
-The naming convention of the view templates is based on the controller function that supplies data, the engine that renders the templates, and the device requesting the page. If the calling device is 
-determined not to be a portable device such as a cell phone, the ``{device}`` element of the syntax below is omitted.
+The naming convention of the view templates is based on the controller function that supplies data, 
+the engine that renders the templates, and the device requesting the page. If the calling device is 
+determined not to be a portable device such as a cell phone, the ``{device}`` element of the syntax 
+below is omitted.
 
 **File Naming Convention for View Templates:**
 
 ``{controller_function}.[{device}].{rendering_engine}.html``
 
-For example, if the view template is receiving data from the ``index`` function of the controller and has Mustache tags that need to be rendered, the name of the view template would be ``index.mu.html``.
+For example, if the view template is receiving data from the ``index`` function of the controller 
+and has Handlebars expressions that need to be rendered, the name of the view template would be 
+``index.hb.html``.
 
 Here are some other example view template names with descriptions:
 
-- ``greeting.mu.html`` - This view template gets data from the ``greeting`` function of the controller and the calling device is determined to be a Web browser.
-- ``get_photos.iphone.mu.html`` - This view template gets data from the ``get_photos`` function of the controller and the calling device is an iPhone.
-- ``find_friend.android.mu.html`` - This view template gets data from the ``find_friend`` function of the controller and the calling device is Android based.
+- ``greeting.hb.html`` - This view template gets data from the ``greeting`` function of the 
+  controller and the calling device is determined to be a Web browser.
+- ``get_photos.iphone.hb.html`` - This view template gets data from the ``get_photos`` function of 
+  the controller and the calling device is an iPhone.
+- ``find_friend.android.hb.html`` - This view template gets data from the ``find_friend`` function 
+  of the controller and the calling device is Android based.
 
-.. note:: Currently, the only templating system allowed is Mustache, so the name of view templates always contains ``mu``. Once Mojito adopts other templating systems, the ``{rendering_engine}`` component of the view template name can change. An error will occur if the file names of different views are the same except the ``{rendering_engine}``. For example, having the two view templates ``index.mu.html`` and ``index.hb.html`` (``hb`` could be `Handlebars <http://handlebars.strobeapp.com/>`_) would cause an error.
+.. note:: Currently, Mojito comes with Handlebars, so the name of view templates 
+          always contains ``hb``. Users can use other 
+          `view engines <../topics/mojito_extensions.html#view-engines>`_, but the
+          ``{rendering_engine}`` component of the view template name must change. An error will 
+          occur if the file names of different views are the same except the ``{rendering_engine}``. 
+          For example, having the two view templates ``index.hb.html`` and 
+          ``index.ejs.html`` (``ejs`` could be `Embedded JavaScript (EJS) <http://embeddedjs.com/>`_) would 
+          cause an error.
 
 
 Supported Devices
@@ -580,62 +634,79 @@ Mojito can examine the HTTP header ``User Agent`` and detect the following devic
 +-----------------+---------------------------+
 | Device/Browser  | Example View Template     |
 +=================+===========================+
-| Opera Mini      | index.opera-mini.mu.html  |
+| Opera Mini      | index.opera-mini.hb.html  |
 +-----------------+---------------------------+
-| iPhone          | index.iphone.mu.html      |
+| iPhone          | index.iphone.hb.html      |
 +-----------------+---------------------------+
-| iPad            | index.ipad.mu.html        |
+| iPad            | index.ipad.hb.html        |
 +-----------------+---------------------------+
-| Android         | index.android.mu.html     |
+| Android         | index.android.hb.html     |
 +-----------------+---------------------------+
-| Windows Mobile  | index.iemobile.mu.html    |
+| Windows Mobile  | index.iemobile.hb.html    |
 +-----------------+---------------------------+
-| Palm            | index.palm.mu.html        |
+| Palm            | index.palm.hb.html        |
 +-----------------+---------------------------+
-| Kindle          | index.kindle.mu.html      |
+| Kindle          | index.kindle.hb.html      |
 +-----------------+---------------------------+
-| Blackberry      | index.blackberry.mu.html  |
+| Blackberry      | index.blackberry.hb.html  |
 +-----------------+---------------------------+
 
 
 
-Using Mustache Templates
-========================
+Using Handlebars Expressions
+============================
 
-The view templates are HTML files with embedded Mustache tags that allow variable substitution when the view template is rendered. In this section, we will look at a simple view template that 
-uses Mustache tags for substituting variables from the controller. Mustache tags also have more advanced features such as lists, conditionals, comments, and lambdas, which you can learn more about  
-in the `Mustache Manual <http://mustache.github.com/mustache.5.html>`_.
+Handlebars is a superset of `Mustache <http://mustache.github.com/mustache.5.html>`_, thus,
+Handlebars expressions include Mustache tags. Handlebars, however, also has some additional features
+such as registering help function and built-in block helpers, iterators, and access to object
+properties through the dot operator (i.e, ``{{house.price}}``).  We're just going to look at a few 
+Handlebars expressions as an introduction. See the
+`Handlebars documentation <http://handlebarsjs.com/>`_ for more information examples.
 
-The ``index`` view template below uses double mustaches (``{{}}``) to substitute the value of the ``country`` variable received from the ``index`` function of the controller.
+One of the things that we mentioned already is block helpers, which help you iterate through arrays. 
+You could use the block helper ``#each`` shown below to iterate through an
+array of strings:
 
 .. code-block:: html
 
-   <div>
-   <p>The user is from {{country}}.</p>
-   </div>
+   <ul>
+     {{#each view_engines}}
+     <li>{{this}}</li>
+     {{/each}}
+   </ul>
 
-If the ``index`` function sends the object ``{"country": "Mexico"}`` to the view template, the rendered view would be the following:
+Another interesting block helper used in this example is #with, which will invoke a block when given 
+a specified context. For example, in the code snippet below, if the ``ul`` object is given, 
+the property title is evaluated.
 
 .. code-block:: html
 
-   <div>
-   <p>The user is from Mexico.</p>
-   </div>
+   {{#with ul}}
+     <h3>{{title}}</h3>
+   {{/with}}
+
+
 
 Mojito-Supplied Data
 ====================
 
 Mojito supplies the following data that can be accessed as template tags in the view template:
 
-- ``{{mojit_view_id}}`` - a unique ID for the view being rendered. We recommend that this tag be used as the value for the ``id`` attribute of the a top-level element (i.e., ``<div>``) of your template because it is used to bind the binders to the DOM of the view.
-- ``{{mojit_assets}}`` - the partial URL to the ``assets`` directory of your mojit. You can use the value of this tag to point to specific assets. For example, if your mojit has the 
-image ``assets/spinner.gif``, then you can point to this image in your view template with the following: ``<img src="{{mojit_assets}}/spinner.gif">``
+- ``{{mojit_view_id}}`` - a unique ID for the view being rendered. We recommend that this tag be 
+  used as the value for the ``id`` attribute of the a top-level element (i.e., ``<div>``) of your 
+  template because it is used to bind the binders to the DOM of the view.
+- ``{{mojit_assets}}`` - the partial URL to the ``assets`` directory of your mojit. You can use the 
+  value of this tag to point to specific assets. For example, if your mojit has the 
+  image ``assets/spinner.gif``, then you can point to this image in your view template with the 
+  following: ``<img src="{{mojit_assets}}/spinner.gif">``
 
-.. note:: The prefix ``mojit_`` is reserved for use by Mojito, and thus, user-defined variables cannot use this prefix in their names.
+.. note:: The prefix ``mojit_`` is reserved for use by Mojito, and thus, user-defined variables 
+          cannot use this prefix in their names.
 
 Examples
 ========
 
-See `Code Examples: Views <../code_exs/#views>`_ for annotated code examples, steps to run code, and source code for Mojito applications.
+See `Code Examples: Views <../code_exs/#views>`_ for annotated code examples, steps to run code, and 
+source code for Mojito applications.
 
 

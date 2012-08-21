@@ -15,7 +15,7 @@ YUI.add('LazyPants-tests', function(Y) {
         name: 'LazyPants user tests',
         
         setUp: function() {
-            controller = Y.mojito.controller;
+            controller = Y.mojito.controllers.LazyPants;
         },
         tearDown: function() {
             controller = null;

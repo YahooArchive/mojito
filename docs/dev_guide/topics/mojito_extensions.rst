@@ -1,4 +1,4 @@
-
+﻿
 
 ================
 Extending Mojito
@@ -7,13 +7,15 @@ Extending Mojito
 Introduction
 ############
 
-The Mojito framework lets you add features and extend functionality through addons, libraries, and middleware. This chapter discusses how to create extensions and 
-where to place files in the Mojito framework.
+The Mojito framework lets you add features and extend functionality through addons, libraries, and 
+middleware. This chapter discusses how to create extensions and where to place files in the Mojito 
+framework.
 
 Addons
 ######
 
-In addition to the `Action Context <../../api/classes/ActionContext.html>`_ addons that Mojito provides, you can create your own addons to add functionality to controller actions.
+In addition to the `Action Context <../../api/classes/ActionContext.html>`_ addons that Mojito 
+provides, you can create your own addons to add functionality to controller actions.
 
 Addons allows you to do the following:
 
@@ -26,14 +28,15 @@ Addons allows you to do the following:
 Creating New Addons
 ===================
 
-An addon is simply a JavaScript files that contains a YUI module. You can create addons at the application and mojit level. Application-level addons are available to 
-all mojits in the application, whereas, mojit-level addons are only available to its mojit.
+An addon is simply a JavaScript files that contains a YUI module. You can create addons at the 
+application and mojit level. Application-level addons are available to all mojits in the application, 
+whereas, mojit-level addons are only available to its mojit.
 
 Naming Convention
 -----------------
 
-The name of an addon should have the following syntax where ``{addon_name}`` is a unique YUI module name defined by the user and ``{affinity}`` is ``server``, ``common``, 
-or ``client``.
+The name of an addon should have the following syntax where ``{addon_name}`` is a unique YUI module 
+name defined by the user and ``{affinity}`` is ``server``, ``common``, or ``client``.
 
 ``{addon_name}.{affinity}.js``
 
@@ -51,17 +54,21 @@ Mojit-level addons should be placed in the following directory:
 Writing the Addon
 -----------------
 
-The ActionContext is a `YUI Base <http://developer.yahoo.com/yui/3/base/>`_ object, and Action Context addons are `YUI Plugins <http://developer.yahoo.com/yui/3/plugin/>`_. 
-To create a new addon, you write a new YUI Plugin and register it with Mojito.
+The ActionContext is a `YUI Base <http://developer.yahoo.com/yui/3/base/>`_ object, and ActionContext 
+addons are `YUI Plugins <http://developer.yahoo.com/yui/3/plugin/>`_. To create a new addon, you 
+write a new YUI Plugin and register it with Mojito.
 
 The addon must have the following:
 
 - registered plugin name, which is the string passed to ``YUI.add``
 - constructor with a ``prototype`` property
-- statement assigning the constructor to a namespace of ``Y.mojito.addons.ac``, so Mojito can access your addon
+- statement assigning the constructor to a namespace of ``Y.mojito.addons.ac``, so Mojito can access 
+  your addon
 
 **Optional:** ``requires`` array to include other modules.
-The code snippet below shows the skeleton of an addon with the registered plugin name (``'addon-ac-cheese'``) and the constructor (``CheeseAcAddon``) with its ``prototype`` property:
+The code snippet below shows the skeleton of an addon with the registered 
+plugin name (``'addon-ac-cheese'``) and the constructor (``CheeseAcAddon``) with its ``prototype`` 
+property:
 
 .. code-block:: javascript
 
@@ -91,8 +98,9 @@ The code snippet below shows the skeleton of an addon with the registered plugin
 Example Addon
 ~~~~~~~~~~~~~
 
-In this example addon, the ``YUI.add`` method registers the ``addon-ac-cheese`` plugin. The addon has the namespace ``cheese`` and the method ``cheesify``, which is added 
-through the ``prototype`` property.
+In this example addon, the ``YUI.add`` method registers the ``addon-ac-cheese`` plugin. The addon
+has the namespace ``cheese`` and the method ``cheesify``, which is added through the ``prototype`` 
+property.
 
 .. code-block:: javascript
 
@@ -133,11 +141,12 @@ through the ``prototype`` property.
 Using Your Addon
 ----------------
 
-The addon in `Example Addon`_ registered the plugin ``addon-ac-cheese`` and made its constructor available through
-the namespace ``cheese``. The addons are not automatically added to the ActionContext, but to access an addon, your controller needs to 
-add the YUI plugin name to the ``requires`` array. The YUI plugin name is the string passed to ``YUI.add`` in the addon.
-To invoke the addon methods, call the methods from the namespace defined in the ``prototype`` property of the addon's constructor. 
-In our addon, we defined the namespace ``cheese`` (``"namespace": "cheese"``).
+The addon in `Example Addon`_ registered the plugin ``addon-ac-cheese`` and made its constructor 
+available through the namespace ``cheese``. The addons are not automatically added to the 
+ActionContext, but to access an addon, your controller needs to add the YUI plugin name to the 
+``requires`` array. The YUI plugin name is the string passed to ``YUI.add`` in the addon. To invoke 
+the addon methods, call the methods from the namespace defined in the ``prototype`` property of the 
+addon's constructor. In our addon, we defined the namespace ``cheese`` (``"namespace": "cheese"``).
 
 .. code-block:: javascript
 
@@ -163,13 +172,16 @@ Middleware
 Introduction
 ============
 
-Middleware is code that can handle (or modify) the HTTP request in the server. Because Mojito middleware is based on the HTTP middleware `Connect <http://senchalabs.github.com/connect/>`_,  
-the code must follow the Connect API. Also, because each piece of middleware is a Node.js module, it should use ``module.exports`` to create a function to handle incoming requests.
+Middleware is code that can handle (or modify) the HTTP request in the server. Because Mojito 
+middleware is based on the HTTP middleware `Connect <http://senchalabs.github.com/connect/>`_,  the 
+code must follow the Connect API. Also, because each piece of middleware is a Node.js module, it 
+should use ``module.exports`` to create a function to handle incoming requests.
 
 Configuring Middleware
 ======================
 
-To use middleware, the path to its code must be listed in the ``middleware`` array in ``application.json``. The path can be marked as relative to the application by prefixing 
+To use middleware, the path to its code must be listed in the ``middleware`` array in 
+``application.json``. The path can be marked as relative to the application by prefixing 
 it with "./".
 
 .. code-block:: javascript
@@ -191,13 +203,14 @@ it with "./".
 Location of Middleware
 ======================
 
-We suggest that middleware be located in the directory ``{app_dir}/middleware/``, but this is only a convention and not required. The name of the file is not important.
+We suggest that middleware be located in the directory ``{app_dir}/middleware/``, but this is only 
+a convention and not required. The name of the file is not important.
 
 Example
 =======
 
-The simple example below of middleware intercepts an HTTP request and lowercases URLs containing the string "module_" before the 
-URLs are received by the server.
+The simple example below of middleware intercepts an HTTP request and lowercases URLs containing 
+the string "module_" before the URLs are received by the server.
 
 .. code-block:: javascript
 
@@ -213,20 +226,22 @@ URLs are received by the server.
 Libraries
 #########
 
-Mojito allows you to use YUI libraries, external libraries, or customized libraries. To use any library in Mojito, you need to specify the module in either the ``requires`` array 
-in the controller for YUI libraries or using the ``require`` method for Node.js modules.
+Mojito allows you to use YUI libraries, external libraries, or customized libraries. To use any 
+library in Mojito, you need to specify the module in either the ``requires`` array in the controller 
+for YUI libraries or using the ``require`` method for Node.js modules.
 
 YUI Library
 ===========
 
-YUI libraries can be made available at the application or the mojit level. Each file can only have one ``YUI.add`` statement. 
-Other components, such as controllers, models, etc., needing the library should specify the YUI module name in the ``requires`` array.
+YUI libraries can be made available at the application or the mojit level. Each file can only have 
+one ``YUI.add`` statement. Other components, such as controllers, models, etc., needing the library 
+should specify the YUI module name in the ``requires`` array.
 
 File Naming Convention
 ----------------------
 
-The file name of a YUI module should have the following syntax where ``{yui_mod_name}`` is a unique YUI module name defined by the user and ``{affinity}`` is ``server``, ``common``, 
-or ``client``.
+The file name of a YUI module should have the following syntax where ``{yui_mod_name}`` is a unique 
+YUI module name defined by the user and ``{affinity}`` is ``server``, ``common``, or ``client``.
 
 ``{yui_mod_name}.{affinity}.js``
 
@@ -253,7 +268,8 @@ To create a YUI module, your code needs to have the following:
 Adding the Module to YUI
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Your YUI module must have a ``YUI.add`` statement that adds the module to YUI. Below is the basic syntax of the ``YUI.add`` statement:
+Your YUI module must have a ``YUI.add`` statement that adds the module to YUI. Below is the basic 
+syntax of the ``YUI.add`` statement:
 
 ``YUI.add('{module-name', function(Y){ ... }``
 
@@ -264,7 +280,8 @@ For example, the ``send-photos`` YUI module would use the following:
 Constructor
 ~~~~~~~~~~~
 
-The constructor of a YUI module is basically a new namespace that is assigned a function. The new namespace is created with the following syntax:
+The constructor of a YUI module is basically a new namespace that is assigned a function. The new 
+namespace is created with the following syntax:
 
 ``Y.namespace('mojito').{constructor_name} = function() { ... }``
 
@@ -275,8 +292,9 @@ For example, to create the constructor ``HELLO`` for a YUI module, you would cou
 Example
 ~~~~~~~
 
-In the code example below, the ``create_id`` function becomes the constructor for the ``UID`` namespace. This will let you create an instance, and the ``prototype`` object 
-then allows you to access the method ``log`` from that instance.
+In the code example below, the ``create_id`` function becomes the constructor for the ``UID`` 
+namespace. This will let you create an instance, and the ``prototype`` object then allows you to 
+access the method ``log`` from that instance.
 
 .. code-block:: javascript
 
@@ -296,8 +314,9 @@ then allows you to access the method ``log`` from that instance.
 Using the YUI Module
 --------------------
 
-In the example mojit controller below, the YUI module ``hello-uid`` is loaded because the module is in the ``requires`` array. An instance of the module is created and 
-saved in the ``init`` function. With the saved instance, the ``log`` method from the ``hello-uid`` module can be called:
+In the example mojit controller below, the YUI module ``hello-uid`` is loaded because the module is 
+in the ``requires`` array. An instance of the module is created and saved in the ``init`` function. 
+With the saved instance, the ``log`` method from the ``hello-uid`` module can be called:
 
 .. code-block:: javascript
 
@@ -318,8 +337,9 @@ saved in the ``init`` function. With the saved instance, the ``log`` method from
 Other Libraries
 ===============
 
-Non-YUI libraries can also be used at either the application or mojit level. Because Node.js and **not** Mojito will read the contents of the library files, 
-you need to use ``require()`` to include the library. Mojito will only confirm that the files exist.
+Non-YUI libraries can also be used at either the application or mojit level. Because Node.js and 
+**not** Mojito will read the contents of the library files, you need to use ``require()`` to include 
+the library. Mojito will only confirm that the files exist.
 
 Location of Non-YUI Libraries
 -----------------------------
@@ -338,33 +358,44 @@ View Engines
 Overview
 ========
 
-A view engine is the piece of code that takes the data returned by a controller and applies it to a view. This is most often done by interpreting the view as a template. 
-View engines in Mojito can be at either the application or mojit level. Application-level view engines are available to all mojits.
+A view engine is the piece of code that takes the data returned by a controller and applies it to a 
+view. This is most often done by interpreting the view as a template. View engines in Mojito can be 
+at either the application or mojit level. Application-level view engines are available to all mojits.
 
-The view engine consists of an addon that we will refer to as the view engine addon to differentiate it from other addons. The view engine addon can include code that renders templates
-or use a rendering engine such as  `Mustache <http://mustache.github.com/mustache.1.html>`_ and `Handlebars <http://handlebarsjs.com/>`_ to render view templates.
-In the latter case, the view engine addon acts as an interface between the Mojito framework and the rendering engine. 
-In the following sections, we will be discussing how to create a view engine addon that relies on a rendering engine, not how to write code that renders templates.
+The view engine consists of an addon that we will refer to as the view engine addon to differentiate 
+it from other addons. The view engine addon can include code that renders templates
+or use a rendering engine, such as `Embedded JavaScript (EJS) http://embeddedjs.com/>`_,
+to render view templates. In the latter case, the view engine addon acts as an interface between the 
+Mojito framework and the rendering engine. 
+
+In the following sections, we will be discussing how to create a view engine addon that relies on 
+a rendering engine, not how to write code that renders templates.
 
 Terminology
 -----------
 
 The following list may help clarify the meaning of commonly used terms in this section.
 
-- **view engine** - The code used to apply data to a view. In Mojito, the view engine consists of a view engine addon. 
-- **view engine addon** - The Mojito addon that compiles and renders templates. The addon typically relies on a rendering engine to compile and render view templates, but may 
-  include code to do the compilation and rendering. 
+- **view engine** - The code used to apply data to a view. In Mojito, the view engine consists of a 
+  view engine addon. 
+- **view engine addon** - The Mojito addon that compiles and renders templates. The addon typically 
+  relies on a rendering engine to compile and render view templates, but may include code to do the 
+  compilation and rendering. 
 - **rendering engine** - The rendering engine is typically an off-the-shelf technology, such as 
-  `Mustache <http://mustache.github.com/mustache.1.html>`_, `Handlebars <http://handlebarsjs.com/>`_, `Jade <http://jade-lang.com/>`_, or `EJS <http://embeddedjs.com/>`_, 
-  that renders the template into markup for an HTML page.
-- **view template** - The template file (chosen by the controller) that contains tags and HTML that is rendered into markup for an HTML page.
+  `Dust <http://akdubya.github.com/dustjs>`_, `Jade <http://jade-lang.com/>`_, or 
+  `EJS <http://embeddedjs.com/>`_, that renders the template into markup for an HTML page.
+- **view template** - The template file (chosen by the controller) that contains tags and HTML that 
+  is rendered into markup for an HTML page.
 
 General Steps for Creating View Engines
 =======================================
 
-#. Use ``npm`` to install the rendering engine into your Mojito application or copy it into a directory such as ``{app_dir}/libs``.
-#. Create a view engine addon that references the rendering engine with a ``require`` statement and meets the :ref:`requirements of the view engine addon <reqs_ve_addon>`.
-#. Create view templates using the templates for the rendering engine and place them in ``{mojit_dir}/views``. 
+#. Use ``npm`` to install the rendering engine into your Mojito application or copy it into a 
+   directory such as ``{app_dir}/libs``.
+#. Create a view engine addon that references the rendering engine with a ``require`` statement and 
+   meets the :ref:`requirements of the view engine addon <reqs_ve_addon>`.
+#. Create view templates using the templates for the rendering engine and place them in 
+   ``{mojit_dir}/views``. 
 
 
 
@@ -374,8 +405,8 @@ File Naming Conventions
 View Engine Addon
 -----------------
 
-The name of the addon should have the following syntax where ``{view_engine_name}`` is the view engine and ``{affinity}`` 
-is ``server``, ``common``, or ``client``.
+The name of the addon should have the following syntax where ``{view_engine_name}`` is the view 
+engine and ``{affinity}`` is ``server``, ``common``, or ``client``.
 
 ``{view_engine_name}.{affinity}.js``
 
@@ -405,8 +436,9 @@ Mojit-Level View Engine Addons
 Rendering Engines
 -----------------
 
-Mojito does not require rendering engines to be in a specific location. The recommended practice is to use ``npm`` to install
-rendering engines into the ``node_modules`` directory or copy the rendering engine into the ``libs`` directory as shown below:
+Mojito does not require rendering engines to be in a specific location. The recommended practice is 
+to use ``npm`` to install rendering engines into the ``node_modules`` directory or copy the 
+rendering engine into the ``libs`` directory as shown below:
 
 ``{app_dir}/node_modules/{rendering_engine}``
 
@@ -414,7 +446,8 @@ rendering engines into the ``node_modules`` directory or copy the rendering engi
 
 ``{mojit_dir}/libs/{rendering_engine}}``
 
-.. note:: If you are using mojit-level view engine addons, the rendering engine should be at the mojit level as well, such as ``{mojit_dir}/libs/{rendering_engine}``.
+.. note:: If you are using mojit-level view engine addons, the rendering engine should be at the 
+          mojit level as well, such as ``{mojit_dir}/libs/{rendering_engine}``.
 
 
 .. _reqs_ve_addon:
@@ -426,43 +459,42 @@ The view engine addon must have the following:
 
 - a ``YUI.add`` statement to register the addon. For example:
 
-.. code-block:: javascript
+   .. code-block:: javascript
 
-   YUI.add('addons-viewengine-hb', function(Y, NAME) {
+      YUI.add('addons-viewengine-hb', function(Y, NAME) {
     
-    // The addon name 'addons-viewengine-hb' is registered by YUI.add
+        // The addon name 'addons-viewengine-hb' is registered by YUI.add
     
-   }, '0.1.0', {requires: []});
+      }, '0.1.0', {requires: []});
 
 - an object that is assigned to ``Y.mojito.addons.viewEngines.{view_engine_name}`` as seen below:
    
-.. code-block:: javascript
+   .. code-block:: javascript
       
-   ...
-        
-     function HbAdapter(viewId) {
-       this.viewId = viewId;
-      }
       ...
-      Y.namespace('mojito.addons.viewEngines').hb = HbAdapter;
+        
+        function EjsAdapter(viewId) {
+          this.viewId = viewId;
+        }
+      ...
+      Y.namespace('mojito.addons.viewEngines').ejs = EjsAdapter;
       
 - a prototype of the object has the following two methods ``render`` and ``compiler`` as shown below:
 
-.. code-block:: javascript
+   .. code-block:: javascript
    
-   ...
+      ...
         
-     HbAdapter.prototype = {
+        EjsAdapter.prototype = {
        
-       render: function(data, mojitType, tmpl, adapter, meta, more) {
-         ...
-       },
-       compiler: function(tmpl) {
-         ...
-       }
-       ...
+          render: function(data, mojitType, tmpl, adapter, meta, more) {
+           ...
+          },
+          compiler: function(tmpl) {
+            ...
+          }
+          ...
     
-   
    
 Methods for the View Engine Addon
 =================================
@@ -487,8 +519,10 @@ Parameters
 - ``mojitType`` (String) - the mojit whose view is being rendered.
 - ``tmpl`` - (String) - path to template to render.
 - ``adapter`` (Object) - the output adapter to use.
-- ``meta`` (Object) - the metadata that should be passed as the second argument to ``adapter.flush`` or ``adapter.done``
-- ``more`` (Boolean) - if ``true``, the addon should call the method ``adapter.flush``, and if ``false``, call the method ``adapter.done``.
+- ``meta`` (Object) - the metadata that should be passed as the second argument to ``adapter.flush`` 
+  or ``adapter.done``
+- ``more`` (Boolean) - if ``true``, the addon should call the method ``adapter.flush``, and if 
+  ``false``, call the method ``adapter.done``.
 
 Return
 ~~~~~~
@@ -501,7 +535,8 @@ compiler
 
 Description
 ~~~~~~~~~~~
-Returns the compiled template. The ``compiler`` method is only used when you run the following command: ``mojito compile views``
+Returns the compiled template. The ``compiler`` method is only used when you run the following 
+command: ``mojito compile views``
 
 Signature
 ~~~~~~~~~
@@ -521,192 +556,100 @@ Return
 View Engine Addon and Its View
 ==============================
 
-A naming convention associates a view engine and its view templates. For example, the view engine ``{mojit_dir}/addons/view-engines/big_engine.server.js`` will
-be used to render the view template ``{mojit_dir}/views/foo.big_engine.html``. Having two view templates that only differ by the view engine will cause an error
-because Mojito will not be able to decide which view engine to use (which to prioritize above the other) to render the view template.
+A naming convention associates a view engine and its view templates. For example, the view engine 
+``{mojit_dir}/addons/view-engines/big_engine.server.js`` will be used to render the view template 
+``{mojit_dir}/views/foo.big_engine.html``. Having two view templates that only differ by the view 
+engine will cause an error because Mojito will not be able to decide which view engine to use 
+(which to prioritize above the other) to render the view template.
 
-Examples
-========
+Example
+=======
 
-Mustache
---------
+Embedded JavaScript (EJS)
+-------------------------
 
-The following example is of the `Mustache view engine <http://mustache.github.com/mustache.1.html>`_ that comes with Mojito. 
-This built-in view engine uses the prescribed location and file naming convention, and  meets the view engine addon requirements. 
+The following example is of the `EJS view engine <http://embeddedjs.com/>`_. 
 
-Mustache Rendering Engine
-~~~~~~~~~~~~~~~~~~~~~~~~~
+EJS Rendering Engine
+~~~~~~~~~~~~~~~~~~~~
 
-``{app_dir}/libs/Mulib/Mu``
+You install ``ejs`` locally with ``npm`` so that the EJS rendering engine is installed in
+the ``node_modules`` directory as seen below:
+
+
+::
+
+   {app_dir}/node_modules
+   └── ejs
+       ├── History.md
+       ├── Makefile
+       ├── Readme.md
+       ├── benchmark.js
+       ├── ejs.js
+       ├── ejs.min.js
+       ├── examples
+       ├── index.js
+       ├── lib
+       ├── package.json
+       ├── support
+       └── test
+
 
 View Engine Addon
 ~~~~~~~~~~~~~~~~~
 
-``{app_dir}/addons/view-engines/mu.server.js``
+``{app_dir}/addons/view-engines/ejs.server.js``
 
 
 .. code-block:: javascript
 
-   YUI.add('mojito-mu', function(Y, NAME) {
-     
-     // Create an instance of the Mustache rendering engine
-     var mu = YUI.require(__dirname + '/../../libs/Mulib/Mu'),
-       fs = require('fs');
-
-     /**
-     * Class text.
-     * @class MuAdapterServer
-     * @private
-     */
-     function MuAdapter(viewId) {
+   YUI.add('addons-viewengine-ejs', function(Y, NAME) {
+	
+     var ejs = require('ejs'),
+     fs = require('fs');
+     function EjsAdapter(viewId) {
        this.viewId = viewId;
      }
-
-     MuAdapter.prototype = {
-
-       /**
-       * Renders the Mustache template using the data provided.
-       * @method render
-       * @param {object} data The data to render.
-       * @param {string} mojitType The name of the mojit type.
-       * @param {string} tmpl The name of the template to render.
-       * @param {object} adapter The output adapter to use.
-       * @param {object} meta Optional metadata.
-       * @param {boolean} more Whether there will be more content later.
-       */
+     EjsAdapter.prototype = {
+        
        render: function(data, mojitType, tmpl, adapter, meta, more) {
          var me = this,
-         handleRender = function(err, output) {
-           if (err) {
-             throw err;
-           }
+         handleRender = function(output) {
+		    
            output.addListener('data', function(c) {
-             adapter.flush(c, meta);
+	     adapter.flush(c, meta);
            });
-           output.addListener('end', function() {
-             if (!more) {
-               Y.log('render complete for view "' + me.viewId + '"',
-                 'mojito', 'qeperf');
-               adapter.done('', meta);
-             }
-           });
-         };
-
-         Y.log('Rendering template "' + tmpl + '"', 'mojito', NAME);
-         mu.render(tmpl, data, {cached: meta.view.cacheTemplates}, handleRender);
+	   output.addListener('end', function() {
+	     if (!more) {
+	       adapter.done('', meta);
+	     }
+	   });
+	 };
+	 Y.log('Rendering template "' + tmpl + '"', 'mojito', NAME);
+	 var result = ejs.render(this.compiler(tmpl),data);
+         adapter.done(result,meta);
        },
-       compiler: function(tmpl) {
-         return JSON.stringify(fs.readFileSync(tmpl, 'utf8'));
-       }
-     };
-     Y.namespace('mojito.addons.viewEngines').mu = MuAdapter;
-   }, '0.1.0', {requires: []});
-
-
-View Template
-~~~~~~~~~~~~~
-
-``{app_dir}/mojits/{mojit_name}/views/foo.mu.html``
-
-.. code-block:: html
-
-   <div id="{{mojit_view_id}}">
-     <dl>
-       <dt>status</dt>
-       <dd id="dd_status">{{status}}</dd>
-       <dt>data</dt>
-       <dd id="dd_data">
-         <b>some:</b> {{#data}}{{some}}{{/data}}
-       </dd>
-     </dl>
-   </div>
-
-
-Handlebars
-----------
-
-This examples shows how to use another popular templating system called `Handlebars <http://handlebarsjs.com/>`_, which is also compatible with
-Mustache.  
-
-Handlebars Rendering Engine 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-``{app_dir}/node_modules/handlebars``
-
-View Engine Addon
-~~~~~~~~~~~~~~~~~
-
-``{app_dir}/addons/view-engines/hb.server.js``
-
-
-.. code-block:: javascript
-
-   YUI.add('addons-viewengine-hb', function(Y, NAME) {
-
-     var hb = require('handlebars'),
-       fs = require('fs');
-
-     /**
-     * Class text.
-     * @class HandleBars
-     * @private
-     */
-     function HbAdapter(viewId) {
-       this.viewId = viewId;
-     }
-
-     HbAdapter.prototype = {
-
-       /**
-       * Renders the Handlebars template using the data provided.
-       * @method render
-       * @param {object} data The data to render.
-       * @param {string} mojitType The name of the mojit type.
-       * @param {string} tmpl The name of the template to render.
-       * @param {object} adapter The output adapter to use.
-       * @param {object} meta Optional metadata.
-       * @param {boolean} more Whether there will be more content later.
-       */
-       render: function(data, mojitType, tmpl, adapter, meta, more) {
-         var me = this;
-         Y.log('Rendering template "' + tmpl + '"', 'mojito', NAME);
-         try {
-           var template = hb.compile(this.compiler(tmpl));
-           var result = template(data);
-           console.log(result);
-         } catch(e){
-           Y.log(e);
-         }
-         adapter.flush(result,meta);
-         if(!more) {
-           adapter.done('',meta);
-         }
-       },
-
        compiler: function(tmpl) {
          return fs.readFileSync(tmpl, 'utf8');
        }
      };
+     Y.namespace('mojito.addons.viewEngines').ejs = EjsAdapter;
+   }, '0.1.0', {requires: []});    
 
-     Y.namespace('mojito.addons.viewEngines').hb = HbAdapter;
-
-   }, '0.1.0', {requires: []});
 
 View Template
 ~~~~~~~~~~~~~
 
-``{app_dir}/mojits/{mojit_name}/views/foo.hb.html``
+``{app_dir}/mojits/{mojit_name}/views/foo.ejs.html``
 
 .. code-block:: html
 
-   <div id="{{mojit_view_id}}">
-     <dl>
-       <dt>status</dt>
-       <dd id="dd_status">{{status/text}}</dd>
-       <dt>data</dt>
-       <dd id="dd_data">
-         <b>See the </b>{{{link "following" data.url}}}
-       </dd>
-     </dl>
-   </div>
-
+   <h2> <%= title %></h2>
+   <div id=<%= mojit_view_id %>>
+     <h3><%= ul.title %></h3>
+     <ul>
+     <% for(var i=0;i<view_engines.length;i++){ %>
+       <li><%= view_engines[i] %></li>
+     <% } %>
+     </ul>
+   </div> 

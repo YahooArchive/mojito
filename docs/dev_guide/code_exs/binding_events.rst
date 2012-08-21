@@ -798,7 +798,7 @@ To set up and run ``binding_events``:
         }
       }, '0.0.1', {requires: ['yql', 'io', 'dump']});
 
-#. To display links to photos and associated photo data in the rendered view template, replace the code in ``views/index.mu.html`` with the following:
+#. To display links to photos and associated photo data in the rendered view template, replace the code in ``views/index.hb.html`` with the following:
 
    .. code-block:: html
 

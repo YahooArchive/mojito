@@ -64,7 +64,7 @@ configuration Object
 | ``appPort``                                            | number               | 8666              | The port number (1-65355) that the application         |
 |                                                        |                      |                   | will use.                                              |
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
-| `build <#build-obj>`_                                  | object               | N/A               | Specifies configuration for builds.                    |
+| `builds <#builds-obj>`_                                | object               | N/A               | Specifies configuration for builds.                    |
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
 | ``cacheViewTemplates``                                 | boolean              | true              | Specifies whether the view engine should attempt       |
 |                                                        |                      |                   | to cache the view. Note that not all view engines      |
@@ -104,6 +104,14 @@ configuration Object
 |                                                        |                      |                   | it is taken as relative to the application             |
 |                                                        |                      |                   | directory.                                             |
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
+| ``selector``                                           | string               | N/A               | The version of the resource. A resource is either a    |
+|                                                        |                      |                   | file to Mojito or metadata to the `Resource Store <../ |
+|                                                        |                      |                   | topics/mojito_resource_store.html>`_.                  |
+|                                                        |                      |                   | See the `selector Propery <../topics/mojito_resource   |
+|                                                        |                      |                   | _store.html#selector-property>`_ and `Selectors <../   |
+|                                                        |                      |                   | topics/mojito_resource_store.html#selectors>`_ for     |
+|                                                        |                      |                   | for more information.                                  |
++--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
 | ``settings``                                           | array of strings     | ["master"]        | Defines the context of the configuration. The          |
 |                                                        |                      |                   | context consists of a key-value pair that can          |
 |                                                        |                      |                   | specify the environment and environment                |
@@ -141,10 +149,10 @@ configuration Object
 
 
 
-.. _build_obj:
+.. _builds_obj:
 
-build Object
-============
+builds Object
+=============
 
 +-----------------------------+---------------+------------------------------------------------+
 | Property                    | Data Type     | Description                                    |

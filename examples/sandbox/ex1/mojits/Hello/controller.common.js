@@ -7,7 +7,7 @@
 YUI.add('Hello', function(Y, NAME) {
 
 
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         init: function(config) {
             Y.log('init', 'debug', NAME);

@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('Flickr', function(Y) {
+YUI.add('Flickr', function(Y, NAME) {
 
 /**
  * The Flickr module.
@@ -12,7 +12,7 @@ YUI.add('Flickr', function(Y) {
  * @module Flickr
  */
 
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         /**
          * Method corresponding to the 'index' action.

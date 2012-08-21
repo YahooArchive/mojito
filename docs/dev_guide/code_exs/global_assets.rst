@@ -52,7 +52,7 @@ The directory structure of this example below shows the location of the global `
    │       ├── models
    │       │   └── foo.server.js
    │       └── views
-   │           └── index.mu.html
+   │           └── index.hb.html
    ├── package.json
    ├── routes.json
    └── server.js
@@ -213,7 +213,7 @@ To set up and run ``global_assets``:
         };
       }, '0.0.1', {requires: ['mojito']});
 
-#. Modify your ``index`` view template to explicitly include the global asset ``sadwalrus.jpeg`` by replacing the code in ``views/index.mu.html`` with the following:
+#. Modify your ``index`` view template to explicitly include the global asset ``sadwalrus.jpeg`` by replacing the code in ``views/index.hb.html`` with the following:
 
    .. code-block:: html
 

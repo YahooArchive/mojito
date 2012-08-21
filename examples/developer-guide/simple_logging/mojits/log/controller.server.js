@@ -12,7 +12,7 @@ YUI.add('log', function(Y, NAME) {
      * @class Controller
      * @constructor
      */
-    Y.mojito.controllers[NAME] = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         init: function(config) {
             this.config = config;

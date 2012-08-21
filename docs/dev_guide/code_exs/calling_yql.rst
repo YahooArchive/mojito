@@ -335,7 +335,7 @@ To set up and run ``model_yql``:
         border-color:#000;
       }
 
-#. Modify your ``index`` view template by replacing the code in ``views/index.mu.html`` with the following:
+#. Modify your ``index`` view template by replacing the code in ``views/index.hb.html`` with the following:
 
    .. code-block:: html
 

@@ -41,6 +41,6 @@ Mojito Applications
 Mojito applications are JavaScript applications that fuse configuration and MVC architecture. Because the application code is written in JavaScript, your applications are portable, 
 being able to move freely from the server to the client or just execute on the server in the Node.js environment. Being on the client does not restrict your application because it can 
 still communicate with the server through event-driven modules called binders. The binders make it simple to update content or dynamically change the page. Your application can also customize 
-views for different devices by rendering HTML markup from templating systems such as `Mustache <http://mustache.github.com/mustache.1.html>`_.
+views for different devices by rendering HTML markup from templating systems such as `Handlebars <http://handlebarsjs.com/>`_.
 
 
