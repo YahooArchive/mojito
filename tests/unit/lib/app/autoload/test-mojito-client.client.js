@@ -96,8 +96,8 @@ YUI({useBrowserConsole: true}).use(
                     },
                     deployRuntimeClient: {
                         optimized: {
-                            'yui-base': '$x_yui-base/yui-base-min.js',
-                            'mojito-view-renderer': '$y_autoload/view-renderer.common.js',
+                            'yui-base': '$y_yui-base/yui-base-min.js',
+                            'mojito-view-renderer': '$m_autoload/view-renderer.common.js',
                             'moduleOne': '/foo/bar/moduleOne.js',
                             'moduleTwo': '/foo/bar/moduleTwo.js'
                         }

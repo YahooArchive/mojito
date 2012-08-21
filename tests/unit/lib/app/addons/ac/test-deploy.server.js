@@ -455,8 +455,8 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
            A.isFalse(deployConfig.useCompression, 'useCompression');
            A.isFalse(deployConfig.useDedupe, 'useDedupe');
            A.isFalse(deployConfig.debug, 'debug');
-           A.areEqual('$x_', deployConfig.yuiPrefix, '$x_');
-           A.areEqual('$y_', deployConfig.mojitoPrefix, '$y_');
+           A.areEqual('$y_', deployConfig.yuiPrefix, '$y_');
+           A.areEqual('$m_', deployConfig.mojitoPrefix, '$m_');
            A.isTrue(Y.Lang.isArray(deployConfig.exclude), 'exclude should be Array');
            A.isTrue(0 === deployConfig.exclude.length, 'exclude array should be empty');
            A.areEqual('/static/mojito/', deployConfig.staticHandlingPrefix, 'staticHandlingPrefix should be set to /static/mojito/');
@@ -488,8 +488,8 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
             A.isFalse(config.useCompression, 'useCompression');
             A.isFalse(config.useDedupe, 'useDedupe');
             A.isFalse(config.debug, 'debug');
-            A.areEqual('$x_', config.yuiPrefix, 'yuiPrefix');
-            A.areEqual('$y_', config.mojitoPrefix, 'mojitoPrefix');
+            A.areEqual('$y_', config.yuiPrefix, 'yuiPrefix');
+            A.areEqual('$m_', config.mojitoPrefix, 'mojitoPrefix');
             A.isTrue(0 === config.exclude.length, 'exclude');
         },
         'test sanitizeDeployRuntimeClientConfig with user provided deployConfig settings': function() {
@@ -620,7 +620,7 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
                 deployConfig: { yuiConfigBase: yuiBase }
             });
             A.isTrue(4 === Y.Object.size(hashMap), 'should be 4 keys!');
-            A.areEqual('$x_yui-base/yui-base-min.js',
+            A.areEqual('$m_yui-base/yui-base-min.js',
                        hashMap['yui-base'],
                        'module path mismatch!');
         },
