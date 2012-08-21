@@ -45,7 +45,6 @@
         "npm": ">= 1.0.0"
     },
     "devDependencies": {
-        "node-static": "*"
     },
     "homepage": "http://developer.yahoo.com/cocktails/mojito/",
     "repository": {
