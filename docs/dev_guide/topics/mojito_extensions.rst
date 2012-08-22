@@ -365,7 +365,7 @@ at either the application or mojit level. Application-level view engines are ava
 The view engine consists of an addon that we will refer to as the view engine addon to differentiate 
 it from other addons. The view engine addon can include code that renders templates
 or use a rendering engine, such as `Embedded JavaScript (EJS) http://embeddedjs.com/>`_,
-to render view templates. In the latter case, the view engine addon acts as an interface between the 
+to render templates. In the latter case, the view engine addon acts as an interface between the 
 Mojito framework and the rendering engine. 
 
 In the following sections, we will be discussing how to create a view engine addon that relies on 
@@ -379,12 +379,12 @@ The following list may help clarify the meaning of commonly used terms in this s
 - **view engine** - The code used to apply data to a view. In Mojito, the view engine consists of a 
   view engine addon. 
 - **view engine addon** - The Mojito addon that compiles and renders templates. The addon typically 
-  relies on a rendering engine to compile and render view templates, but may include code to do the 
+  relies on a rendering engine to compile and render templates, but may include code to do the 
   compilation and rendering. 
 - **rendering engine** - The rendering engine is typically an off-the-shelf technology, such as 
   `Dust <http://akdubya.github.com/dustjs>`_, `Jade <http://jade-lang.com/>`_, or 
   `EJS <http://embeddedjs.com/>`_, that renders the template into markup for an HTML page.
-- **view template** - The template file (chosen by the controller) that contains tags and HTML that 
+- **template** - The template file (chosen by the controller) that contains tags and HTML that 
   is rendered into markup for an HTML page.
 
 General Steps for Creating View Engines
@@ -394,7 +394,7 @@ General Steps for Creating View Engines
    directory such as ``{app_dir}/libs``.
 #. Create a view engine addon that references the rendering engine with a ``require`` statement and 
    meets the :ref:`requirements of the view engine addon <reqs_ve_addon>`.
-#. Create view templates using the templates for the rendering engine and place them in 
+#. Create templates using the templates for the rendering engine and place them in 
    ``{mojit_dir}/views``. 
 
 
@@ -410,10 +410,10 @@ engine and ``{affinity}`` is ``server``, ``common``, or ``client``.
 
 ``{view_engine_name}.{affinity}.js``
 
-View Template
+Template
 -------------
 
-The name of the view template should have the following syntax where ``{view_engine_name}`` should
+The name of the template should have the following syntax where ``{view_engine_name}`` should
 be the same as the ``{view_engine_name}`` in the file name of the view engine addon.
 
 ``{view}.{view_engine_name}.html``
@@ -556,11 +556,11 @@ Return
 View Engine Addon and Its View
 ==============================
 
-A naming convention associates a view engine and its view templates. For example, the view engine 
-``{mojit_dir}/addons/view-engines/big_engine.server.js`` will be used to render the view template 
-``{mojit_dir}/views/foo.big_engine.html``. Having two view templates that only differ by the view 
+A naming convention associates a view engine and its templates. For example, the view engine 
+``{mojit_dir}/addons/view-engines/big_engine.server.js`` will be used to render the template 
+``{mojit_dir}/views/foo.big_engine.html``. Having two templates that only differ by the view 
 engine will cause an error because Mojito will not be able to decide which view engine to use 
-(which to prioritize above the other) to render the view template.
+(which to prioritize above the other) to render the template.
 
 Example
 =======
@@ -637,7 +637,7 @@ View Engine Addon
    }, '0.1.0', {requires: []});    
 
 
-View Template
+Template
 ~~~~~~~~~~~~~
 
 ``{app_dir}/mojits/{mojit_name}/views/foo.ejs.html``

@@ -427,7 +427,7 @@ should only be called once. If neither ``done`` nor ``error`` is called,
 your application will hang waiting for output.
 
 In the example ``controller.server.js`` below, the ``index`` function sends the ``user`` object to 
-the ``index`` view template.
+the ``index`` template.
 
 .. code-block:: javascript
 
@@ -463,15 +463,15 @@ Specifying the View
 The default behavior when you pass data from the controller to the view is for the data to be passed 
 to the view that has the same name as the controller function. For example, if 
 ``ac.done({ "title": "Default View" })`` is invoked in the controller ``index`` function, the data 
-is sent by default to the ``index`` view template. The ``index`` view template could be 
+is sent by default to the ``index`` template. The ``index`` template could be 
 ``index.hb.html``, ``index.iphone.hb.html``, etc., depending on the calling device and rendering 
 engine.
 
 To specify the view that receives the data, the controller function passes two parameters to 
 ``ac.done``: The first parameter is the data, and the second parameter specifies the view name in 
 the object ``{ "view": { "name": "name_of_view_receiving_data" } }``. In the example controller 
-below, the ``user`` function passes the ``data`` object to the ``profile`` view template 
-instead of the default ``user`` view template.
+below, the ``user`` function passes the ``data`` object to the ``profile`` template 
+instead of the default ``user`` template.
 
 .. code-block:: javascript
 
@@ -495,11 +495,11 @@ instead of the default ``user`` view template.
        * provides access to the Mojito API.
        */
        index: function(ac) {
-         var data = { "title": "Going to default view template." }
+         var data = { "title": "Going to default template." }
          ac.done(data);
        },
        user: function(ac) {
-         var data = { "title": "Going to profile view template." }
+         var data = { "title": "Going to profile template." }
          ac.done(data, { "view": { "name": "profile" } });
        }
      };
@@ -588,40 +588,40 @@ Views
 #####
 
 The views are HTML files that can include templates, such as Handlebars expressions, and are located in 
-the ``views`` directory. We call these files *view templates* to differentiate 
+the ``views`` directory. We call these files *templates* to differentiate 
 them from the rendered views that have substituted values for the template tags.
 
 Naming Convention
 =================
 
-The naming convention of the view templates is based on the controller function that supplies data, 
+The naming convention of the templates is based on the controller function that supplies data, 
 the engine that renders the templates, and the device requesting the page. If the calling device is 
 determined not to be a portable device such as a cell phone, the ``{device}`` element of the syntax 
 below is omitted.
 
-**File Naming Convention for View Templates:**
+**File Naming Convention for Templates:**
 
 ``{controller_function}.[{device}].{rendering_engine}.html``
 
-For example, if the view template is receiving data from the ``index`` function of the controller 
-and has Handlebars expressions that need to be rendered, the name of the view template would be 
+For example, if the template is receiving data from the ``index`` function of the controller 
+and has Handlebars expressions that need to be rendered, the name of the template would be 
 ``index.hb.html``.
 
-Here are some other example view template names with descriptions:
+Here are some other example template names with descriptions:
 
-- ``greeting.hb.html`` - This view template gets data from the ``greeting`` function of the 
+- ``greeting.hb.html`` - This template gets data from the ``greeting`` function of the 
   controller and the calling device is determined to be a Web browser.
-- ``get_photos.iphone.hb.html`` - This view template gets data from the ``get_photos`` function of 
+- ``get_photos.iphone.hb.html`` - This template gets data from the ``get_photos`` function of 
   the controller and the calling device is an iPhone.
-- ``find_friend.android.hb.html`` - This view template gets data from the ``find_friend`` function 
+- ``find_friend.android.hb.html`` - This template gets data from the ``find_friend`` function 
   of the controller and the calling device is Android based.
 
-.. note:: Currently, Mojito comes with Handlebars, so the name of view templates 
+.. note:: Currently, Mojito comes with Handlebars, so the name of templates 
           always contains ``hb``. Users can use other 
           `view engines <../topics/mojito_extensions.html#view-engines>`_, but the
-          ``{rendering_engine}`` component of the view template name must change. An error will 
+          ``{rendering_engine}`` component of the template name must change. An error will 
           occur if the file names of different views are the same except the ``{rendering_engine}``. 
-          For example, having the two view templates ``index.hb.html`` and 
+          For example, having the two templates ``index.hb.html`` and 
           ``index.ejs.html`` (``ejs`` could be `Embedded JavaScript (EJS) <http://embeddedjs.com/>`_) would 
           cause an error.
 
@@ -632,7 +632,7 @@ Supported Devices
 Mojito can examine the HTTP header ``User Agent`` and detect the following devices/browsers: 
 
 +-----------------+---------------------------+
-| Device/Browser  | Example View Template     |
+| Device/Browser  | Example Template     |
 +=================+===========================+
 | Opera Mini      | index.opera-mini.hb.html  |
 +-----------------+---------------------------+
@@ -690,14 +690,14 @@ the property title is evaluated.
 Mojito-Supplied Data
 ====================
 
-Mojito supplies the following data that can be accessed as template tags in the view template:
+Mojito supplies the following data that can be accessed as template tags in the template:
 
 - ``{{mojit_view_id}}`` - a unique ID for the view being rendered. We recommend that this tag be 
   used as the value for the ``id`` attribute of the a top-level element (i.e., ``<div>``) of your 
   template because it is used to bind the binders to the DOM of the view.
 - ``{{mojit_assets}}`` - the partial URL to the ``assets`` directory of your mojit. You can use the 
   value of this tag to point to specific assets. For example, if your mojit has the 
-  image ``assets/spinner.gif``, then you can point to this image in your view template with the 
+  image ``assets/spinner.gif``, then you can point to this image in your template with the 
   following: ``<img src="{{mojit_assets}}/spinner.gif">``
 
 .. note:: The prefix ``mojit_`` is reserved for use by Mojito, and thus, user-defined variables 
