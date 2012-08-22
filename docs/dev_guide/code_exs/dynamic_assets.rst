@@ -11,18 +11,18 @@ Dynamically Adding CSS to Different Devices
 Summary
 #######
 
-This example shows how to dynamically include assets (CSS) in the rendered view template of a mojit. The assets in this example are included in the rendered default view template and 
-device-specific view templates.
+This example shows how to dynamically include assets (CSS) in the rendered template of a mojit. The assets in this example are included in the rendered default template and 
+device-specific templates.
 
 The following topics will be covered:
 
 - configuring an application to dynamically include assets
-- using the ``addAssets`` method in the controller to dynamically add assets to both the rendered default and device-specific view templates
+- using the ``addAssets`` method in the controller to dynamically add assets to both the rendered default and device-specific templates
 
 Implementation Notes
 ####################
 
-The screenshot below shows the rendered iPhone view template with dynamically included CSS and JavaScript.
+The screenshot below shows the rendered iPhone template with dynamically included CSS and JavaScript.
 
 .. image:: images/dynamic_assets.device_specific.preview.gif
    :height: 400px
@@ -77,7 +77,7 @@ that contains the ``context`` object:
 To dynamically add CSS and meta data from the controller, you use methods from the `Assets addon <../../api/classes/Assets.common.html>`_. 
 In the ``controller.server.js`` below, the ``index`` function determines the calling device using the ``context`` object seen above. 
 To add metadata for the iPhone, the ``addBlob`` method is called from the ``Assets`` addon. 
-The appropriate CSS file is dynamically attached to the view template with ``ac.assets.addCss``.
+The appropriate CSS file is dynamically attached to the template with ``ac.assets.addCss``.
 
 .. code-block:: javascript
 
@@ -113,7 +113,7 @@ The appropriate CSS file is dynamically attached to the view template with ``ac.
      };
    }, '0.0.1', {requires: []});
 
-The ``index.iphone`` view template below contains CSS for controlling the orientation of the page, which is needed for displaying the page correctly on an iPhone. When the template is rendered, 
+The ``index.iphone`` template below contains CSS for controlling the orientation of the page, which is needed for displaying the page correctly on an iPhone. When the template is rendered, 
 the CSS is dynamically added, and the Handlebars expressions are replaced with values. If the device making the call is an iPhone, the ``viewport`` meta data will also be added dynamically.
 
 .. code-block:: html
@@ -133,7 +133,7 @@ the CSS is dynamically added, and the Handlebars expressions are replaced with v
      };
      // Changes background color of the header. 
      // Note: JavaScript code should not be hard coded 
-     // into the view template. It's done 
+     // into the template. It's done 
      // here to simplify the code example.
      function setColor(id, color) {
        document.getElementById(id).style.backgroundColor = color;
@@ -212,7 +212,7 @@ To create and run ``device_assets``:
 
 #. Change to ``mojits/device``.
 
-#. Modify your controller to dynamically add assets to the rendered view template by replacing the code in ``controller.server.js`` with the following:
+#. Modify your controller to dynamically add assets to the rendered template by replacing the code in ``controller.server.js`` with the following:
 
    .. code-block:: javascript
 
@@ -248,7 +248,7 @@ To create and run ``device_assets``:
         };
       }, '0.0.1', {requires: []});
 
-#. To create the default ``index`` view template, replace the code in ``views/index.hb.html`` with the following:
+#. To create the default ``index`` template, replace the code in ``views/index.hb.html`` with the following:
 
    .. code-block:: html
 
@@ -256,7 +256,7 @@ To create and run ``device_assets``:
         <head>
           <script type="text/javascript">
             // Changes background color of the header.
-            // Note: JavaScript code should not be hard coded into the view template. It's done
+            // Note: JavaScript code should not be hard coded into the template. It's done
             // here to simplify the code example.
             function setColor(id, color) {
               document.getElementById(id).style.backgroundColor = color;
@@ -275,7 +275,7 @@ To create and run ``device_assets``:
         </body>
       </html>
 
-#. To create the default iPhone view template, create the file ``views/index.iphone.hb.html`` with the following:
+#. To create the default iPhone template, create the file ``views/index.iphone.hb.html`` with the following:
 
    .. code-block:: html
 
@@ -294,7 +294,7 @@ To create and run ``device_assets``:
         };
         // Changes background color of the header. 
         // Note: JavaScript code should not be hard coded 
-        // into the view template. It's done 
+        // into the template. It's done 
         // here to simplify the code example.
         function setColor(id, color) {
           document.getElementById(id).style.backgroundColor = color;

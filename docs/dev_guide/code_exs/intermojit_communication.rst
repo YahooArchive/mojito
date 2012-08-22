@@ -98,7 +98,7 @@ Master Mojit
 ============
 
 The ``MasterMojit`` performs three major functions, each handled by a different file. The controller executes the ``index`` methods of the children mojits. The binder listens for events and then 
-broadcasts those events to its children. Lastly, the ``index`` view template displays the content created by the child mojits. We'll now take a look at each of the files to understand how they perform 
+broadcasts those events to its children. Lastly, the ``index`` template displays the content created by the child mojits. We'll now take a look at each of the files to understand how they perform 
 these three functions.
 
 The ``controller.server.js`` below is very simple because the main purpose is to execute the ``index`` functions of the child mojits. The Action Context object ``actionContext`` is vital because 
@@ -154,7 +154,7 @@ passed to the ``listen`` and ``fire`` methods are the event types.
 
 In the ``application.json`` file discussed in :ref:`impl_notes-app_config`, four mojit instances were declared: ``frame``, ``child``, ``sender``, and ``receiver``. Because the ``child`` instance 
 of ``MasterMojit`` is the parent of the ``sender`` and ``receiver`` mojit instances, the controller can execute the code in the child mojit instances by calling ``actionContext.composite.done()`` 
-in the controller. As you can see below, the output from the ``sender`` and ``receiver`` instances can be inserted into the view template through Handlebars expressions.
+in the controller. As you can see below, the output from the ``sender`` and ``receiver`` instances can be inserted into the template through Handlebars expressions.
 
 .. code-block:: html
 
@@ -174,7 +174,7 @@ Sender Mojit
 ============
 
 The ``SenderMojit`` listens for click events and then forwards them and an associated URL to the ``MasterMojit``. Because the controller for the ``SenderMojit`` does little but send some text, 
-we will only examine the binder and index view template.
+we will only examine the binder and index template.
 
 The binder for the ``SenderMojit`` binds and attaches event handlers to the DOM. In the ``binders/index.js`` below, the handler for click events uses the ``mojitProxy`` object to fire the event to the binder for the ``MasterMojit``. The URL of the clicked link is passed to the ``MasterMojit``.
 
@@ -200,7 +200,7 @@ The binder for the ``SenderMojit`` binds and attaches event handlers to the DOM.
      };
    }, '0.0.1', {requires: ['node','mojito-client']});
 
-The ``index`` view template for the ``SenderMojit`` has an unordered list of links to Flickr photos. As we saw in the binder, the handler for click events passes the event and the link URL 
+The ``index`` template for the ``SenderMojit`` has an unordered list of links to Flickr photos. As we saw in the binder, the handler for click events passes the event and the link URL 
 to the ``MasterMojit``.
 
 .. code-block:: html
@@ -409,7 +409,7 @@ To set up and run ``inter-mojit``:
         };
       }, '0.0.1', {requires: ['mojito-client']});
 
-#. Modify the ``index`` view template to include output from the ``SenderMojit`` and ``ReceiverMojit`` by replacing the code in ``views/index.hb.html`` with the following:
+#. Modify the ``index`` template to include output from the ``SenderMojit`` and ``ReceiverMojit`` by replacing the code in ``views/index.hb.html`` with the following:
 
    .. code-block:: html
 
@@ -468,7 +468,7 @@ To set up and run ``inter-mojit``:
         };
       }, '0.0.1', {requires: ['node','mojito-client']});
 
-#. To provide an unordered list of image links to the ``index`` view template of the ``MasterMojit``, replace the code in ``views/index..hb.html`` with the following:
+#. To provide an unordered list of image links to the ``index`` template of the ``MasterMojit``, replace the code in ``views/index..hb.html`` with the following:
 
    .. code-block:: html
 
@@ -553,7 +553,7 @@ To set up and run ``inter-mojit``:
         <div id="view" style="margin: auto auto;"></div>
       </div>
 
-#. To create the view template that displays the photo of the clicked link, create the file ``views/show.hb.html`` with the following:
+#. To create the template that displays the photo of the clicked link, create the file ``views/show.hb.html`` with the following:
 
    .. code-block:: html
 
@@ -578,7 +578,7 @@ Source Code
 - `Application Configuration <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/inter-mojit/application.json>`_
 - `Master Mojit Controller <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/inter-mojit/mojits/MasterMojit/controller.server.js>`_
 - `Master Mojit Binder <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/inter-mojit/mojits/MasterMojit/binders/index.js>`_
-- `Master Mojit View Template <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/inter-mojit/mojits/MasterMojit/views/index.html>`_
+- `Master Mojit Template <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/inter-mojit/mojits/MasterMojit/views/index.html>`_
 - `Sender Mojit Controller <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/inter-mojit/mojits/SenderMojit/controller.js>`_
 - `Sender Mojit Binder <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/inter-mojit/mojits/SenderMojit/binders/binder.js>`_
 - `Receiver Mojit Controller <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/inter-mojit/mojits/ReceiverMojit/controller.js>`_

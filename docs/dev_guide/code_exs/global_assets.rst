@@ -60,7 +60,7 @@ The directory structure of this example below shows the location of the global `
 Static URLs to Assets
 =====================
 
-Mojito provides static URLs to application-level and mojit-level assets. You can refer to these assets in your view templates, or if you are using the ``HTMLFrameMojit``, you configure your 
+Mojito provides static URLs to application-level and mojit-level assets. You can refer to these assets in your templates, or if you are using the ``HTMLFrameMojit``, you configure your 
 application to automatically insert the assets into the rendered view.
 
 Syntax
@@ -77,7 +77,7 @@ The path to the application-level asset ``sadwalrus.jpeg`` of the ``global_asset
 
 ``/static/global_assets/assets/sadwalrus.jpeg``
 
-In the view template, the application-level assets above can be referred to using the static URLs as seen here.
+In the template, the application-level assets above can be referred to using the static URLs as seen here.
 
 .. code-block:: html
 
@@ -213,7 +213,7 @@ To set up and run ``global_assets``:
         };
       }, '0.0.1', {requires: ['mojito']});
 
-#. Modify your ``index`` view template to explicitly include the global asset ``sadwalrus.jpeg`` by replacing the code in ``views/index.hb.html`` with the following:
+#. Modify your ``index`` template to explicitly include the global asset ``sadwalrus.jpeg`` by replacing the code in ``views/index.hb.html`` with the following:
 
    .. code-block:: html
 

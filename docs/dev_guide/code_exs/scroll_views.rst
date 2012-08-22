@@ -11,11 +11,11 @@ Including YUI Modules in Views
 Summary
 #######
 
-This example shows how to include the `YUI ScrollView Module <http://developer.yahoo.com/yui/3/scrollview/>`_ in your mojit's view template.
+This example shows how to include the `YUI ScrollView Module <http://developer.yahoo.com/yui/3/scrollview/>`_ in your mojit's template.
 
 The following topics will be covered:
 
-- embedding the YUI ScrollView Module in the view template
+- embedding the YUI ScrollView Module in the template
 - implementing a scrolling content widget
 
 Implementation Notes
@@ -56,7 +56,7 @@ In the ``application.json`` file for this code example, the customized CSS are s
    ]
 
 The mojit controller provides the photo URLs for the scrollable content widget. In the ``controller.server.js`` below, the ``photos`` array that contains the photo URLs and the text for the 
-image ``alt`` attribute is passed to the ``index`` view template.
+image ``alt`` attribute is passed to the ``index`` template.
 
 .. code-block:: javascript
 
@@ -201,7 +201,7 @@ To set up and run ``scroll_views``:
 
 #. Change to ``mojits/scroll``.
 
-#. To have the controller send image data to the view template for the scrolling widget, replace the code in ``controller.server.js`` with the following:
+#. To have the controller send image data to the template for the scrolling widget, replace the code in ``controller.server.js`` with the following:
 
    .. code-block:: javascript
 
@@ -237,7 +237,7 @@ To set up and run ``scroll_views``:
         };
       }, '0.0.1', {requires: []});
 
-#. To modify the ``index`` view template, replace the code in ``views/index.hb.html`` with the following:
+#. To modify the ``index`` template, replace the code in ``views/index.hb.html`` with the following:
 
    .. code-block:: html
 
@@ -285,7 +285,7 @@ To set up and run ``scroll_views``:
           }, "img");});
       </script>
 
-#. To add CSS for the ``index`` view template, create the file ``assets/index.css`` with the following:
+#. To add CSS for the ``index`` template, create the file ``assets/index.css`` with the following:
 
    .. code-block:: css
 
@@ -368,7 +368,7 @@ To set up and run ``scroll_views``:
 Source Code
 ###########
 
-- `Index View Template <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/scroll_views/mojits/scroll/views/index.hb.html>`_
+- `Index Template <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/scroll_views/mojits/scroll/views/index.hb.html>`_
 - `Scroll Views Application <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/scroll_views/>`_
 
 

@@ -16,8 +16,8 @@ This example shows how to use a parent mojit with multiple child mojits to creat
 The following topics will be covered:
 
 - configuring the application to use multiple mojits
-- including the output from different mojits in one view template
-- embedding the rendered view template into the HTML frame
+- including the output from different mojits in one template
+- embedding the rendered template into the HTML frame
 
 .. tip:: To learn how to use the Mojito built-in mojit ``HTMLFrameMojit`` to aggregate and display the output from child mojits, see `Using the HTML Frame Mojit <./htmlframe_view.html>`_.
 
@@ -92,7 +92,7 @@ gets output from the other mojits because that happens in the controller of the 
    ]
 
 In ``controller.server.js`` of the ``FrameMojit``, the ``Composite`` addon allows the parent mojit to execute the child mojits defined in ``application.json`` that we looked at earlier. 
-After the children mojits are executed, the data that is passed to the ``done`` method in the children mojits becomes accessible in the ``index.hb.html`` view template of ``FrameMojit``, 
+After the children mojits are executed, the data that is passed to the ``done`` method in the children mojits becomes accessible in the ``index.hb.html`` template of ``FrameMojit``, 
 which we will take a look at next.
 
 .. code-block:: javascript
@@ -109,7 +109,7 @@ which we will take a look at next.
      }
    }, '0.0.1', {requires: []});
 
-The ``index.hb.html`` view template of ``FrameMojit``, shown below, has variables from the children mojits in different ``div`` tags. The variables ``header``, ``body``, and ``footer`` are in triple braces, 
+The ``index.hb.html`` template of ``FrameMojit``, shown below, has variables from the children mojits in different ``div`` tags. The variables ``header``, ``body``, and ``footer`` are in triple braces, 
 which allows you to return unescaped HTML.
 
 .. code-block:: html
@@ -259,7 +259,7 @@ To set up and run ``multiple_mojits``:
         };
       }, '0.0.1', {requires: []});
 
-   The ``done`` method will make its parameters available to the view template.
+   The ``done`` method will make its parameters available to the template.
 
 #. Replace the code in ``views/index.hb.html`` with the following:
 
@@ -269,7 +269,7 @@ To set up and run ``multiple_mojits``:
         <h3>{{title}}</h3>
       </div>
 
-   This HTML fragment will be included in the header section of the default view template of ``FrameMojit``.
+   This HTML fragment will be included in the header section of the default template of ``FrameMojit``.
 
 #. Change to ``BodyMojit`` directory.
 
@@ -298,7 +298,7 @@ To set up and run ``multiple_mojits``:
         <h4>{{title}}</h4>
       </div>
 
-   This HTML fragment will be included in the body section of the default view template of ``FrameMojit``.
+   This HTML fragment will be included in the body section of the default template of ``FrameMojit``.
 
 #. Change to the ``FooterMojit`` directory.
 
@@ -327,7 +327,7 @@ To set up and run ``multiple_mojits``:
         <h3>{{title}}</h3>
       </div>
 
-   This HTML fragment will be included in the footer section of the default view template of ``FrameMojit``.
+   This HTML fragment will be included in the footer section of the default template of ``FrameMojit``.
 
 #. From the application directory, run the server.
 

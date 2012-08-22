@@ -9,7 +9,7 @@ you create an instance of the ``ActionContext`` class, which we will call ``ac``
 client context. See the `ActionContext Class <../../api/classes/ActionContext.html>`_ for the methods available from ``ac``.
 
 One of the most common methods used from an instance of the ``ActionContext`` class is ``done``, which lets you pass data from the controller to a view. In the example ``controller.server.js`` below, 
-the ``done`` method sends the ``data`` object to the ``index`` view template.
+the ``done`` method sends the ``data`` object to the ``index`` template.
 
 .. code-block:: javascript
 
@@ -36,7 +36,7 @@ the ``done`` method sends the ``data`` object to the ``index`` view template.
        * provides access to the Mojito API.
        */
        index: function(ac) {
-         var data = { "data":"data passed to the index view template" };
+         var data = { "data":"data passed to the index template" };
          ac.done(data);
        }
      };

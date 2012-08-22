@@ -26,7 +26,7 @@ to access the query string parameters in the first function.
 
 The ``example1`` function below gets all of the query string parameters using ``params.getFromUrl``. To get a specific parameter, just pass a key to ``params.getFromUrl(key)``. 
 In the code below, the key-value pairs that are fetched by ``params.getFromUrl()`` are wrapped in objects that are pushed to the array ``paramsArray``. The array is assigned to ``params``, 
-which is then passed to the ``example1`` view template. By default, the function sends data to the view template with the same name.
+which is then passed to the ``example1`` template. By default, the function sends data to the template with the same name.
 
 .. code-block:: javascript
 
@@ -41,7 +41,7 @@ which is then passed to the ``example1`` view template. By default, the function
        // Create an object for each key-value pair and
        // push those objects to an array, which is then
        // assigned to 'params' that is available in
-       // index view template (index.hb.html).
+       // index template (index.hb.html).
        Y.Object.each(params, function(param, key) {
          paramsArray.push({key: key, value: param});
        });
@@ -57,7 +57,7 @@ which is then passed to the ``example1`` view template. By default, the function
    ...
 
 The ``example2`` function below uses ``params.getFromBody()`` to extract parameters from the POST body. Once again, the array of objects containing the key-value pairs is passed to 
-the ``example2`` view template, where the array is available through the ``params`` variable.
+the ``example2`` template, where the array is available through the ``params`` variable.
 
 .. code-block:: javascript
 
@@ -322,7 +322,7 @@ To set up and run ``using_parameters``:
         };
       }, '0.0.1', {requires: ['dump']});
 
-#. To display the key-value pairs from the query string parameters, create the view template ``views/example1.hb.html`` with the following:
+#. To display the key-value pairs from the query string parameters, create the template ``views/example1.hb.html`` with the following:
 
    .. code-block:: html
 
@@ -336,7 +336,7 @@ To set up and run ``using_parameters``:
         </ul>
       </div>
 
-#. To display the key-value pairs from the POST request body parameters, create the view template ``views/example2.hb.html`` with the following:
+#. To display the key-value pairs from the POST request body parameters, create the template ``views/example2.hb.html`` with the following:
 
    .. code-block:: html
 
@@ -365,7 +365,7 @@ To set up and run ``using_parameters``:
         </ul>
       </div>
 
-#. To display the key-value pairs set in ``routes.json``, create the view template ``views/example3.hb.html`` with the following:
+#. To display the key-value pairs set in ``routes.json``, create the template ``views/example3.hb.html`` with the following:
 
    .. code-block:: html
 
@@ -379,7 +379,7 @@ To set up and run ``using_parameters``:
         </ul>
       </div>
 
-#. To display all of the available parameters, create the view template ``views/example4.hb.html`` with the following:
+#. To display all of the available parameters, create the template ``views/example4.hb.html`` with the following:
 
    .. code-block:: html
 

@@ -142,14 +142,14 @@ The controller in this code example performs the following functions:
 
 - gets the query string parameters using the `Params addon <../../api/classes/Params.common.html>`_
 - passes the query string parameters to the ``search`` function of the model
-- receives the ``photos`` array from the ``search`` function and sends an object to the view template
+- receives the ``photos`` array from the ``search`` function and sends an object to the template
 
 The ``index`` function in the ``controller.server.js`` below uses the ``getFromUrl`` method of the ``Params`` addon to get the query string parameters to form the YQL statement. The YQL Statement and 
 the `paging and limit parameters <http://developer.yahoo.com/yql/guide/paging.html>`_ are then passed to the ``search`` function of the model.
 
 To access model functions from the controller, you use the Action Context (``ac``) object with the following syntax: ``ac.models.{model_name}``. This code example uses the ``flickr`` mojit, so to 
 access the model from the controller, you would use ``ac.models.flickr`` as seen in the ``model.server.js`` below. Once the callback function passed to ``search`` returns the array of photo objects, 
-the ``done`` method sends the ``photos`` array and the query string parameters to the ``index`` view template.
+the ``done`` method sends the ``photos`` array and the query string parameters to the ``index`` template.
 
 .. code-block:: javascript
 
@@ -335,7 +335,7 @@ To set up and run ``model_yql``:
         border-color:#000;
       }
 
-#. Modify your ``index`` view template by replacing the code in ``views/index.hb.html`` with the following:
+#. Modify your ``index`` template by replacing the code in ``views/index.hb.html`` with the following:
 
    .. code-block:: html
 

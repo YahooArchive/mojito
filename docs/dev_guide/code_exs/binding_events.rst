@@ -269,7 +269,7 @@ bind the ``flipper`` and ``showOutlay`` functions to handle click and mouseover 
    ...
 
 After a little analysis, the full ``binders/index.js`` below should be easier to understand. The binder attaches event handlers to nodes, invokes a function in the controller, and updates the content in 
-the view template. The binder also has a couple of helper functions for parsing and requires the IO and YQL modules, which are specified in the ``requires`` array.
+the template. The binder also has a couple of helper functions for parsing and requires the IO and YQL modules, which are specified in the ``requires`` array.
 
 .. code-block:: javascript
 
@@ -798,7 +798,7 @@ To set up and run ``binding_events``:
         }
       }, '0.0.1', {requires: ['yql', 'io', 'dump']});
 
-#. To display links to photos and associated photo data in the rendered view template, replace the code in ``views/index.hb.html`` with the following:
+#. To display links to photos and associated photo data in the rendered template, replace the code in ``views/index.hb.html`` with the following:
 
    .. code-block:: html
 

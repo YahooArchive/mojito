@@ -50,7 +50,7 @@ contains the domain, the path, and the expiration date of the cookie. For those 
      };
    }, '0.0.1', {requires: []});
 
-The code below from the ``index`` view template interpolates the value of the variable ``{{request_cookie_value}}`` from the controller and uses the `YUI Cookie module <http://developer.yahoo.com/yui/3/api/module_cookie.html>`_ 
+The code below from the ``index`` template interpolates the value of the variable ``{{request_cookie_value}}`` from the controller and uses the `YUI Cookie module <http://developer.yahoo.com/yui/3/api/module_cookie.html>`_ 
 to set and get a cookie. To use the YUI Cookie module, first include the module with ``YUI().use`` and then call ``Y.Cookie.get`` and ``Y.Cookie.set``.
 
 .. code-block:: html

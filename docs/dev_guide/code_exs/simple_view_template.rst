@@ -16,30 +16,30 @@ of `Mustache <http://mustache.github.com/>`_, there is an overlap of some syntax
 
 
 Mojito views are template files that are rendered into HTML and served to a device.
-These template files are simply called *view templates* in this example and throughout the 
+These template files are simply called *templates* in this example and throughout the 
 Mojito documentation.
 
 
 The following topics will be covered:
 
-- adding a simple view template
+- adding a simple template
 - Handlebars template basics
-- passing data to the view template
+- passing data to the template
 
 Implementation Notes
 ####################
 
-In the following screenshot, you see the HTML page that was rendered from the view template.
+In the following screenshot, you see the HTML page that was rendered from the template.
 
 .. image:: images/simple_view_preview.jpg
    :height: 288px
    :width: 226px
 
-In Mojito applications, the controller is responsible for passing data to the view template. From 
+In Mojito applications, the controller is responsible for passing data to the template. From 
 the below code snippet taken from ``controller.server.js``, you see the ``index`` function 
 creating a ``data`` object and passing it to the ``done`` method. The ``done`` method called on 
 ``ac``, the `ActionContext <../../api/classes/ActionContext.html>`_ object, sends the ``data`` 
-object to the view template ``index.hb.html``.
+object to the template ``index.hb.html``.
 
 .. code-block:: javascript
 
@@ -60,8 +60,8 @@ object to the view template ``index.hb.html``.
      };
    ...
 
-In the ``index`` view template of this code example, the properties of the ``data`` object are 
-placed in Handlebars expressions that are evaluated by Mojito when the view template is rendered. 
+In the ``index`` template of this code example, the properties of the ``data`` object are 
+placed in Handlebars expressions that are evaluated by Mojito when the template is rendered. 
 In Handlebars templates, the property names in double braces, such as ``{{type}}``, are expressions.
 
 The double braces with a pound are used for lists or conditional 
@@ -163,7 +163,7 @@ To set up and run ``simple_view``:
         };
       }, '0.0.1', {requires: []});
 
-#. Modify your ``index`` view template by replacing the code in ``views/index.hb.html`` with the following:
+#. Modify your ``index`` template by replacing the code in ``views/index.hb.html`` with the following:
 
    .. code-block:: html
 
