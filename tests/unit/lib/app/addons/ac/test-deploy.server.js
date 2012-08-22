@@ -3,20 +3,19 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-/*
 
-javascript error: require is not defined at 17, url: http://localhost:4459/arrow/static/Users/isao/Repos/mojito/myfork/source/lib/app/addons/ac/deploy.server.js
 
-*/
 YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
     var suite = new Y.Test.Suite('mojito-deploy-addon tests'),
         cases = {},
         A = Y.Assert,
         AA = Y.ArrayAssert,
-        OA = Y.ObjectAssert;
+        OA = Y.ObjectAssert,
+
+        addon;
 
     cases = {
-        name: 'basics',
+        name: 'mojito-deploy-addon tests',
 
         setUp: function() {
             addon = new Y.mojito.addons.ac.deploy({instance: {}});
