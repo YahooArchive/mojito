@@ -17,8 +17,5 @@
     },
     "engines": {
         "node": ">= 0.6.x"
-    },
-    "scripts": {
-        "start": "server.js"
     }
 }
