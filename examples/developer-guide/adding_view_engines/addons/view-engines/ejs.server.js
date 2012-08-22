@@ -1,11 +1,11 @@
-YUI.add('addons-viewengine-hb', function(Y, NAME) {
+YUI.add('addons-viewengine-ejs', function(Y, NAME) {
 
-  var hb = require('handlebars'),
+  var ejs = require('ejs'),
   fs = require('fs');
-  function HbAdapter(viewId) {
+  function EjsAdapter(viewId) {
     this.viewId = viewId;
   }
-  HbAdapter.prototype = {
+  EjsAdapter.prototype = {
 
     render: function(data, mojitType, tmpl, adapter, meta, more) {
       var me = this,
@@ -21,8 +21,7 @@ YUI.add('addons-viewengine-hb', function(Y, NAME) {
                 });
               };
               Y.log('Rendering template "' + tmpl + '"', 'mojito', NAME);
-              var template = hb.compile(this.compiler(tmpl));
-              var result = template(data);
+              var result = ejs.render(this.compiler(tmpl),data);
               console.log(result);
               adapter.done(result,meta);
             },
@@ -30,5 +29,5 @@ YUI.add('addons-viewengine-hb', function(Y, NAME) {
               return fs.readFileSync(tmpl, 'utf8');
             }
           };
-          Y.namespace('mojito.addons.viewEngines').hb = HbAdapter;
+          Y.namespace('mojito.addons.viewEngines').ejs = EjsAdapter;
 }, '0.1.0', {requires: []});
