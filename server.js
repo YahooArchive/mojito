@@ -4,6 +4,4 @@
  * See the accompanying LICENSE file for terms.
  */
 
-var Mojito = require('./lib/mojito');
-
-Mojito.createServer();
+module.exports = require('./lib/mojito').createServer();
