@@ -28,7 +28,7 @@
                 "params": {
                     "lib": "$$config.lib$$/app/addons/ac/carrier.server.js",
                     "test": "./test-carrier.server.js",
-                    "page": "$$config.base$$/mojito-test.html"
+                    "driver": "nodejs"
                 },
                 "group": "fw,server"
             },
@@ -59,28 +59,32 @@
             "cookie.server": {
                 "params": {
                     "lib": "$$config.lib$$/app/addons/ac/cookie.server.js",
-                    "test": "./test-cookie.server.js"
+                    "test": "./test-cookie.server.js",
+                    "driver": "nodejs"
                 },
                 "group": "fw,server"
             },
             "device.server": {
                 "params": {
                     "lib": "$$config.lib$$/app/addons/ac/device.server.js",
-                    "test": "./test-device.server.js"
+                    "test": "./test-device.server.js",
+                    "driver": "nodejs"
                 },
                 "group": "fw,server"
             },
             "deploy.server": {
                 "params": {
                     "lib": "$$config.lib$$/app/addons/ac/deploy.server.js,../../../../../../lib/app/autoload/loader.common.js,../../../../../../lib/app/addons/ac/http.server.js",
-                    "test": "./test-deploy.server.js"
+                    "test": "./test-deploy.server.js",
+                    "driver": "nodejs"
                 },
                 "group": "fw,server"
             },
             "http.server": {
                 "params": {
                     "lib": "$$config.lib$$/app/addons/ac/http.server.js",
-                    "test": "./test-http.server.js"
+                    "test": "./test-http.server.js",
+                    "driver": "nodejs"
                 },
                 "group": "fw,server"
             },
