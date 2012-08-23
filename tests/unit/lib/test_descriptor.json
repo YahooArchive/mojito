@@ -8,13 +8,6 @@
         },
         "commonlib": "$$config.base$$/mojito-test.js,./../../../lib/app/autoload/util.common.js",
         "dataprovider" : {
-            "index.server": {
-                "params": {
-                    "test": "./test-index.server.js",
-                    "driver": "nodejs"
-                },
-                "group": "fw,unit,server"
-            },
             "mojito": {
                 "params": {
                     "lib": "$$config.lib$$/mojito.js",
