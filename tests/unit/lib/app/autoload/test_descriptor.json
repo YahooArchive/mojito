@@ -90,9 +90,9 @@
             },
             "mojito-perf.server": {
                 "params": {
-                    "page": "$$config.base$$/mojito-test.html",
                     "lib": "$$config.lib$$/app/autoload/perf.server.js",
-                    "test": "./test-perf.server.js"
+                    "test": "./test-perf.server.js",
+                    "driver": "nodejs"
                 },
                 "group": "fw,unit,server"
             },

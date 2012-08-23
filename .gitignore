@@ -6,3 +6,5 @@ flatfile
 .*.swp
 *~
 .svn
+test_descriptor-report.json
+test_descriptor-report.xml

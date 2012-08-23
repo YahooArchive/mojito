@@ -77,7 +77,7 @@ function runUnitTests (callback) {
             var cmd = runCommand(
                 cwd + '/unit',
                 "arrow",
-                ["**/*_descriptor.json", "--browser=phantomjs", "--report=true", "--reportFolder=" + arrowReportDir],
+                ["\"**/*_descriptor.json\"", "--browser=phantomjs", "--report=true", "--reportFolder=" + arrowReportDir],
                 function (code) {
                     callback(code);
                 }
@@ -154,7 +154,7 @@ function runFuncTests (callback) {
         var cmd = runCommand(
             cwd + '/func/',
             "arrow",
-            ["**/*_descriptor.json", "--browser=firefox", "--reuseSession", "--report=true", "--reportFolder=" + arrowReportDir],
+            ["\"**/*_descriptor.json\"", "--browser=firefox", "--reuseSession", "--report=true", "--reportFolder=" + arrowReportDir],
             function (code) {
                 callback(code);
             }
