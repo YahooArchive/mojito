@@ -11,7 +11,8 @@
             "utils.server": {
                 "params": {
                     "lib": "$$config.lib$$/management/utils.js",
-                    "test": "./test-utils.server.js"
+                    "test": "./test-utils.server.js",
+                    "driver": "nodejs"
                 },
                 "group": "fw,unit,server"
             }

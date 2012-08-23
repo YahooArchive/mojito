@@ -18,9 +18,9 @@
             },
             "hb.server" : {
                 "params" : {
-                    "page": "$$config.base$$/mojito-test.html",
                     "lib": "$$config.lib$$/app/addons/view-engines/hb.server.js",
-                    "test" : "./test-hb.server.js"
+                    "test" : "./test-hb.server.js",
+                    "driver": "nodejs"
                 },
                 "group" : "fw,server"
             }
