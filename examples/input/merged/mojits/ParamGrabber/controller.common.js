@@ -4,9 +4,9 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('ParamGrabber', function(Y) {
-    
-    Y.mojito.controller = {
+YUI.add('ParamGrabber', function(Y, NAME) {
+
+    Y.namespace('mojito.controllers')[NAME] = {
         
         index: function(ac) {
             var merged = ac.params.merged(),

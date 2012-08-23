@@ -15,7 +15,7 @@ YUI.add('log-tests', function(Y) {
         name: 'log user tests',
         
         setUp: function() {
-            controller = Y.mojito.controller;
+            controller = Y.mojito.controllers.log;
         },
         tearDown: function() {
             controller = null;

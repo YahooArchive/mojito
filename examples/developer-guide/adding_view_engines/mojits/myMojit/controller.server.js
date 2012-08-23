@@ -5,14 +5,10 @@ YUI.add('myMojit', function(Y, NAME) {
     init: function(config) {
       this.config = config;
     },
-    index: function(ac) {
-      ac.done("Mojito is working.");
-    },
     default_ve: function(ac) {
       ac.done({
-        "title": "Mustache at work!",
+        "title": "Handlebars at work!",
         "view_engines": [
-          { "name": "Handlebars"},
           {"name": "EJS"},
           {"name": "Jade"},
           {"name": "dust"},
@@ -23,9 +19,9 @@ YUI.add('myMojit', function(Y, NAME) {
     },
     added_ve: function(ac) {
       ac.done({
-        "title": "Handlebars at work!",
-        "view_engines": [ "Mustache","EJS","Jade", "dust","underscore" ],
-        "ul": { "title": 'Here are some of the other available rendering engines:' }
+        "title": "EJS at work!",
+        "view_engines": [ "Jade", "Dust","underscore" ],
+        "ul": { "title": 'In addition to Handlebars and EJS, you can also use these rendering engines:' }
       });
     }
   };

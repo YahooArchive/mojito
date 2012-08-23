@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('YuiTweets', function(Y) {
+YUI.add('YuiTweets', function(Y, NAME) {
 
 /**
  * The YuiTweets module.
@@ -18,7 +18,7 @@ YUI.add('YuiTweets', function(Y) {
      * @class Controller
      * @constructor
      */
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         /**
          * Method corresponding to the 'index' action.

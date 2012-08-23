@@ -37,8 +37,8 @@ The following screenshots show you how the application appears on different devi
    :height: 368px
    :width: 401px
 
-For each device's customized view, you need to create a view template. This code example uses the view templates ``index.iphone.mu.html``, ``index.android.mu.html``, and ``index.blackberry.mu.html`` 
-to create customized views for iPhones, Android phones, and BlackBerries. The ``mu`` in the view template file names represents the Mustache rendering engine that renders Mustache tags.
+For each device's customized view, you need to create a view template. This code example uses the view templates ``index.iphone.hb.html``, ``index.android.hb.html``, and ``index.blackberry.hb.html`` 
+to create customized views for iPhones, Android phones, and BlackBerries. The ``hb`` in the view template file names represents the Handlebars rendering engine that renders Handlebars exressions.
 
 Mojito uses two ways to determine what device is making an HTTP request for a page. The first way is to use the value assign to the query string parameter ``device``. For example, 
 if Mojito received an HTTP GET request on the URL below, it would render the iPhone view into HTML and serve the page to the device.
@@ -65,10 +65,10 @@ the device as shown here:
 
 ``{action}.{device}.{rendering_engine}.html``
 
-Thus, if an iPhone was making an HTTP GET request on the index (action) file and the view template was being rendered by the Mustache rendering engine, Mojito would use ``index.iphone.mu.html`` 
+Thus, if an iPhone was making an HTTP GET request on the index (action) file and the view template was being rendered by the Handlebars rendering engine, Mojito would use ``index.iphone.hb.html`` 
 and serve the rendered view as HTML to the iPhone.
 
-The view templates used in this code example use the controller to get the data for the Mustache variable ``{{mojit_view_id}}``, but each view template uses customized CSS.
+The view templates used in this code example use the controller to get the data for the Handlebars expression ``{{mojit_view_id}}``, but each view template uses customized CSS.
 
 Setting Up this Example
 #######################
@@ -137,7 +137,7 @@ To set up and run ``device_views``:
         };
       }, '0.0.1', {requires: []});
 
-#. To modify the default view template, replace the code in ``views/index.mu.html`` with the following:
+#. To modify the default view template, replace the code in ``views/index.hb.html`` with the following:
 
    .. code-block:: html
 
@@ -169,7 +169,7 @@ To set up and run ``device_views``:
         </body>
       </html>
 
-#. For the iPhone view, create the ``views/index.iphone.mu.html`` file with the following:
+#. For the iPhone view, create the ``views/index.iphone.hb.html`` file with the following:
    
    .. code-block:: html
    
@@ -201,7 +201,7 @@ To set up and run ``device_views``:
         </body>
       </html>
 
-#. For the Android view, create the ``views/index.android.mu.html`` file with the following:
+#. For the Android view, create the ``views/index.android.hb.html`` file with the following:
 
    .. code-block:: html
 
@@ -233,7 +233,7 @@ To set up and run ``device_views``:
         </body>
       </html>
 
-#. For the BlackBerry view, create the ``views/index.blackberry.mu.html`` file with the following:
+#. For the BlackBerry view, create the ``views/index.blackberry.hb.html`` file with the following:
 
    .. code-block:: html
 

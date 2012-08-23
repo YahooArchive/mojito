@@ -154,7 +154,7 @@ passed to the ``listen`` and ``fire`` methods are the event types.
 
 In the ``application.json`` file discussed in :ref:`impl_notes-app_config`, four mojit instances were declared: ``frame``, ``child``, ``sender``, and ``receiver``. Because the ``child`` instance 
 of ``MasterMojit`` is the parent of the ``sender`` and ``receiver`` mojit instances, the controller can execute the code in the child mojit instances by calling ``actionContext.composite.done()`` 
-in the controller. As you can see below, the output from the ``sender`` and ``receiver`` instances can be inserted into the view template through Mustache tags.
+in the controller. As you can see below, the output from the ``sender`` and ``receiver`` instances can be inserted into the view template through Handlebars expressions.
 
 .. code-block:: html
 
@@ -409,7 +409,7 @@ To set up and run ``inter-mojit``:
         };
       }, '0.0.1', {requires: ['mojito-client']});
 
-#. Modify the ``index`` view template to include output from the ``SenderMojit`` and ``ReceiverMojit`` by replacing the code in ``views/index.mu.html`` with the following:
+#. Modify the ``index`` view template to include output from the ``SenderMojit`` and ``ReceiverMojit`` by replacing the code in ``views/index.hb.html`` with the following:
 
    .. code-block:: html
 
@@ -468,7 +468,7 @@ To set up and run ``inter-mojit``:
         };
       }, '0.0.1', {requires: ['node','mojito-client']});
 
-#. To provide an unordered list of image links to the ``index`` view template of the ``MasterMojit``, replace the code in ``views/index..mu.html`` with the following:
+#. To provide an unordered list of image links to the ``index`` view template of the ``MasterMojit``, replace the code in ``views/index..hb.html`` with the following:
 
    .. code-block:: html
 
@@ -545,7 +545,7 @@ To set up and run ``inter-mojit``:
         };
       }, '0.0.1', {requires: ['mojito-client']});
 
-#. Replace the code in ``views/index.mu.html`` with the following:
+#. Replace the code in ``views/index.hb.html`` with the following:
 
    .. code-block:: html
 
@@ -553,7 +553,7 @@ To set up and run ``inter-mojit``:
         <div id="view" style="margin: auto auto;"></div>
       </div>
 
-#. To create the view template that displays the photo of the clicked link, create the file ``views/show.mu.html`` with the following:
+#. To create the view template that displays the photo of the clicked link, create the file ``views/show.hb.html`` with the following:
 
    .. code-block:: html
 

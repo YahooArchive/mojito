@@ -15,7 +15,7 @@ YUI.add('RedChild-tests', function(Y) {
         name: 'RedChild user tests',
         
         setUp: function() {
-            controller = Y.mojito.controller;
+            controller = Y.mojito.controllers.RedChild;
         },
         tearDown: function() {
             controller = null;

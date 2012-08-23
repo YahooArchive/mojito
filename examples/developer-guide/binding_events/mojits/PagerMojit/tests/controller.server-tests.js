@@ -16,7 +16,7 @@ YUI.add('PagerMojit-tests', function(Y) {
         name: 'PagerMojit user tests',
         
         setUp: function() {
-            controller = Y.mojito.controller;
+            controller = Y.mojito.controllers.PagerMojit;
         },
         tearDown: function() {
             controller = null;

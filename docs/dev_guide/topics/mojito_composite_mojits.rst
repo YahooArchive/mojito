@@ -68,12 +68,12 @@ In the example controller of ``ParentMojit`` below, the ``init`` function saves 
    }
 
 When the controller of the parent mojit calls ``ac.composite.done`` from the ``index`` function, the controllers of the mojit children execute ``ac.done`` 
-from their ``index`` functions. The rendered views from the child mojits are then available as Mustache key tags to the ``index`` view template of the 
+from their ``index`` functions. The rendered views from the child mojits are then available as Handlebars expressions in the ``index`` view template of the 
 parent mojit.
 
 For example, in the example controller of the parent mojit below, the ``index`` function calls ``ac.composite.done``, which executes ``ac.done`` in the ``index`` 
-functions of the child mojits. The rendered ``index`` views for each of the child mojits is then available to as a Mustache key tag, such as ``{{{child_mojit}}}``.
-Notice that the ``template`` object allows the parent mojit to send data to the view template, so that the Mustache tag ``{{title}}`` can be used in the 
+functions of the child mojits. The rendered ``index`` views for each of the child mojits is then available to as a Handlebars expression, such as ``{{{child_mojit}}}``.
+Notice that the ``template`` object allows the parent mojit to send data to the view template, so that ``{{title}}`` can be used in the 
 view template.
 
 .. code-block:: javascript
@@ -108,12 +108,12 @@ Displaying Child Mojits in View
 ###############################
 
 After the controller of the parent mojit calls ``ac.composite.done``, its view template then has access to the content created by the child mojits. 
-The view template of the parent mojit can use Mustache tags to embed the output from the child mojits. For example, if the child mojit instance 
+The view template of the parent mojit can use Handlebars expressions to embed the output from the child mojits. For example, if the child mojit instance 
 ``footer`` was defined in ``application.json``, the view template of the parent mojit could use  ``{{{footer}}}`` to embed the content created 
 by ``footer``.
 
-In the example ``index`` view template of the parent mojit below, the rendered ``index`` view templates of the child mojits  ``nav``,  ``body``, 
-``footer`` are embedded using Mustache tags.
+In the example ``index`` view template of the parent mojit below, the rendered ``index`` view templates of the child mojits  ``nav``,  ``body``, ``footer`` are embedded using Handlebars expressions.
+
 
 .. code-block:: html
 

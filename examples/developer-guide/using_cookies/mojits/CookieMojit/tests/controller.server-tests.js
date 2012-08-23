@@ -15,7 +15,7 @@ YUI.add('CookieMojit-tests', function(Y) {
         name: 'CookieMojit user tests',
         
         setUp: function() {
-            controller = Y.mojito.controller;
+            controller = Y.mojito.controllers.CookieMojit;
         },
         tearDown: function() {
             controller = null;

@@ -15,7 +15,7 @@ YUI.add('Layout-tests', function(Y, NAME) {
         name: 'Layout user tests',
         
         setUp: function() {
-            controller = Y.mojito.controller;
+            controller = Y.mojito.controllers.Layout;
         },
         tearDown: function() {
             controller = null;

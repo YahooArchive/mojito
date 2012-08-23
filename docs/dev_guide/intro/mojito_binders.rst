@@ -55,7 +55,7 @@ after all other binders on the page have been constructed and their ``init`` met
 broadcast events. Users should attach DOM event handlers in ``bind`` to capture user interactions.
 
 For Mojito to reference the DOM node representing the mojit instance and pass it to the ``bind`` function, the root element of the 
-mojit's view template must have the ``id`` attribute with the Mustache tag ``{{mojit_view_id}}``. Mojito will render ``{{mojit_view_id}}``
+mojit's view template must have the ``id`` attribute with the Handlebars expression ``{{mojit_view_id}}``. Mojito will render ``{{mojit_view_id}}``
 into a unique ID that can be used to select the DOM node.
 
 For example, the root element ``<div>`` in the view template below has the ``id`` attribute with the value ``{{mojit_view_id}}``. This ``id``

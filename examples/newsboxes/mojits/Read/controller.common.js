@@ -15,7 +15,7 @@ YUI.add('ReadController', function(Y, NAME) {
      * Display feed data in a horizontally flickable scrollview.
      * @class ReadController
      */
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         /**
          * Initialize the controller.

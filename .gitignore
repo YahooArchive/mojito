@@ -1,7 +1,8 @@
 .DS_Store
-source/node_modules
-artifacts/
-**/artifacts/
+node_modules
+artifacts
+arrowreport
+flatfile
 .*.swp
 *~
 .svn
