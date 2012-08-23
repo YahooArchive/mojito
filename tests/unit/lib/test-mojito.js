@@ -3,6 +3,10 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
+
+/*jslint anon:true, sloppy:true, nomen:true */
+/*global YUI*/
+
 YUI().use('mojito', 'test', function (Y) {
 
     var suite = new Y.Test.Suite('mojito tests'),
@@ -10,12 +14,16 @@ YUI().use('mojito', 'test', function (Y) {
         A = Y.Assert,
         OA = Y.ObjectAssert,
         Mojito = require(path.join(__dirname, '../../../lib/mojito')),
+        noop = function() {},
         realServer,
-        realConfig;
+        realConfig,
+        realListen,
+        server,
+        app;
 
     suite.add(new Y.Test.Case({
 
-        name: 'Mojito',
+        name: 'Mojito object interface tests',
 
         setUp: function() {
             // Save original server type so we can mock it in tests.
@@ -25,12 +33,13 @@ YUI().use('mojito', 'test', function (Y) {
         tearDown: function() {
             // Restore the original server type.
             Mojito.Server = realServer;
+            server = null;
         },
 
         'Mojito object is returned from require()': function() {
             A.isObject(Mojito);
         },
-        
+
         'Mojito has a MOJITO_INIT timestamp': function() {
             A.isNumber(Mojito.MOJITO_INIT);
         },
@@ -40,7 +49,6 @@ YUI().use('mojito', 'test', function (Y) {
         },
 
         'Mojito.Server is returned from createServer': function() {
-            var server;
 
             // Mock the server to avoid YUI loader/Resource store issues.
             Mojito.Server = function() {};
@@ -52,8 +60,7 @@ YUI().use('mojito', 'test', function (Y) {
 
         'createServer() properly passes options': function() {
             var passed,
-                options,
-                server;
+                options;
 
             // Mock the server type and capture options.
             Mojito.Server = function(options) {
@@ -64,17 +71,13 @@ YUI().use('mojito', 'test', function (Y) {
 
             server = Mojito.createServer(options);
             OA.areEqual(options, passed);
-        },
-
-        'Mojito.include() SKIPPED - can not mock require()': function() {
-            // Can't test include since it is a pure wrapper for require() which
-            // is provided "module specific" by the loader.
         }
+
     }));
 
     suite.add(new Y.Test.Case({
 
-        name: 'Mojito.Server',
+        name: 'Mojito.Server general interface tests',
 
         setUp: function() {
             // Mock the configure function so majority of tests don't have to.
@@ -89,44 +92,110 @@ YUI().use('mojito', 'test', function (Y) {
             Mojito.Server.prototype._configureAppInstance = realConfig;
         },
 
-        'Mojito.Server() creates an express server instance': function() {
-            var instance;
+        'new Mojito.Server() creates an express server instance': function() {
+            server = new Mojito.Server();
+            A.isObject(server._app);
+        },
+        
+        'new Mojito.Server() defaults options properly': function() {
+            server = new Mojito.Server();
+            A.isObject(server._options);
+        },
+        
+        'new Mojito.Server() accepts options properly': function() {
+            var options = {
+                    port: 2222
+                };
 
-            instance = new Mojito.Server();
-            A.isObject(instance._app);
+            server = new Mojito.Server(options);
+            A.areEqual(server._options.port, 2222);
+        },
+ 
+        'new Mojito.Server() defaults port properly': function() {
+            process.env.PORT = 2222;
+            server = new Mojito.Server();
+            A.areEqual(server._options.port, 2222);
         },
 
         'setLogFormatter() accepts a log formatter': function() {
-            var server,
-                func;
-
             server = new Mojito.Server();
-            func = function() {};
-            server.setLogFormatter(func);
+            server.setLogFormatter(noop);
 
-            OA.areEqual(func, server._logFormatter);
+            OA.areEqual(noop, server._logFormatter);
         },
 
         'setLogPublisher() accepts a log publisher': function() {
-            var server,
-                func;
-
             server = new Mojito.Server();
-            func = function() {};
-            server.setLogPublisher(func);
+            server.setLogPublisher(noop);
 
-            OA.areEqual(func, server._logPublisher);
+            OA.areEqual(noop, server._logPublisher);
         },
 
         'setLogWriter() accepts a log writer': function() {
-            var server,
-                func;
-
             server = new Mojito.Server();
-            func = function() {};
-            server.setLogWriter(func);
+            server.setLogWriter(noop);
 
-            OA.areEqual(func, server._logWriter);
+            OA.areEqual(noop, server._logWriter);
+        }
+    }));
+
+    suite.add(new Y.Test.Case({
+
+        name: 'Mojito.Server start/stop tests',
+
+        setUp: function() {
+            server = new Mojito.Server();
+            app = server._app;
+            realListen = app.listen;
+            app.listen = function() {
+                listened = true;
+            }
+        },
+
+        tearDown: function() {
+            app.listen = realListen;
+        },
+
+        'close() ': function() {
+            var closed = false,
+                closer;
+
+            closer = app.close;
+            app.close = function() {
+                closed = true;
+            };
+
+            server.close();
+            A.isTrue(closed);
+
+            app.close = closer;
+        },
+
+        'start() configures the application instance': function() {
+            var configured = false;
+
+            server._configureAppInstance = function() {
+                configured = true;
+            }
+
+            server.start();
+            A.isTrue(configured);
+        },
+
+        'start() sets a start time': function() {
+            server.start();
+            A.isNumber(server._startupTime);
+        },
+
+        'start() tries to listen': function() {
+            var listened = false;
+
+            app.listen = function() {
+                listened = true;
+            }
+
+            server.start();
+            A.isTrue(listened);
         }
 
     }));
