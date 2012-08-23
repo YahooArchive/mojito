@@ -72,6 +72,18 @@ YUI.add('mojito-view-renderer', function(Y, NAME) {});
  * Add a mojito-test module containing the mocking support we want for other
  * Mojito components.
  */
+YUI.add('mojito-testutils', function(Y, NAME) {
+
+    /**
+     * @param {string} relpath relative to repo base directory
+     * @return {string} absolute path
+     */
+    Y._projpath = function(relpath) {
+        return require('path').resolve(__dirname, '../../' + relpath);
+    };
+});
+
+
 YUI.add('mojito-test', function(Y, NAME) {
 
     function EasyMock() {

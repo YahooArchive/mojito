@@ -9,7 +9,7 @@ YUI().use('mojito-testutils', 'test', function(Y) {
         OA = Y.ObjectAssert,
         cases = {},
 
-        contextualizer = require(Y.u.projpath('lib/app/middleware/mojito-contextualizer.js')),
+        factory = require(Y._projpath('lib/app/middleware/mojito-contextualizer.js')),
         handler,
         req,
         res,
@@ -23,7 +23,7 @@ YUI().use('mojito-testutils', 'test', function(Y) {
         name: 'basic',
 
         setUp: function() {
-            handler = contextualizer({
+            handler = factory({
                 context: {},
                 logger: function() {}
             });

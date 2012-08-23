@@ -9,7 +9,7 @@ YUI().use('mojito-testutils', 'test', function(Y) {
         OA = Y.ObjectAssert,
         cases = {},
 
-        factory = require(Y.u.projpath('lib/app/middleware/mojito-handler-tunnel')),
+        factory = require(Y._projpath('lib/app/middleware/mojito-handler-tunnel')),
         expandedContext;
 
     cases = {
