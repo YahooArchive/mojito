@@ -9,8 +9,9 @@ YUI().use('mojito-testutils', 'test', function(Y) {
         OA = Y.ObjectAssert,
         cases = {},
 
-        contextualizer = require(Y.u.abspath('lib/app/middleware/mojito-contextualizer.js')),
+        contextualizer = require(Y.u.projpath('lib/app/middleware/mojito-contextualizer.js')),
         handler,
+        req,
         res,
         nextCalled;
 
@@ -26,6 +27,10 @@ YUI().use('mojito-testutils', 'test', function(Y) {
                 context: {},
                 logger: function() {}
             });
+            req = {
+                url: '/some/uri',
+                headers: {'user-agent': null}
+            };
             res = null;
             nextCalled = false;
         },
@@ -34,7 +39,7 @@ YUI().use('mojito-testutils', 'test', function(Y) {
             A.isTrue(true);
         },
 
-        'request enriched': function() {
+        'contextualize no headers': function() {
             var req = {
                     url: '/amoduleid/anything',
                     headers: {}
@@ -47,29 +52,92 @@ YUI().use('mojito-testutils', 'test', function(Y) {
             A.isTrue(nextCalled, 'next() was not called');
         },
 
-        'request find user agent': function() {
-            var req = {
-                url: '/amoduleid/anything',
-                headers: {
-                    'user-agent': 'iphone'
-                }
-            };
-            
+        'contextualize ua iphone': function() {
+            req.headers['user-agent'] = 'iphone';
             handler(req, res, nextFn);
-            
             A.areSame('iphone', req.context.device);
         },
 
-        'bug4368914 bad case in Accept-Language header': function() {
-            var req = {
-                url: '/amoduleid/anything',
-                headers: {
-                    'accept-language': 'en-us,en;q=0.7;de;q=0.3'
-                }
-            };
-            
+        'contextualize ua ipod': function() {
+            req.headers['user-agent'] = 'ipod';
             handler(req, res, nextFn);
-            
+            A.areSame('iphone', req.context.device);
+        },
+
+        'contextualize ua opera mini': function() {
+            req.headers['user-agent'] = 'opera mini';
+            handler(req, res, nextFn);
+            A.areSame('opera-mini', req.context.device);
+        },
+
+        'contextualize ua android': function() {
+            req.headers['user-agent'] = 'android';
+            handler(req, res, nextFn);
+            A.areSame('android', req.context.device);
+        },
+
+        'contextualize ua ie-mobile': function() {
+            req.headers['user-agent'] = 'windows ce';
+            handler(req, res, nextFn);
+            A.areSame('iemobile', req.context.device);
+        },
+        'contextualize ua palm': function() {
+            req.headers['user-agent'] = 'palm';
+            handler(req, res, nextFn);
+            A.areSame('palm', req.context.device);
+        },
+        'contextualize ua kindle': function() {
+            req.headers['user-agent'] = 'kindle';
+            handler(req, res, nextFn);
+            A.areSame('kindle', req.context.device);
+        },
+        'contextualize ua blackberry': function() {
+            req.headers['user-agent'] = 'blackberry';
+            handler(req, res, nextFn);
+            A.areSame('blackberry', req.context.device);
+        },
+
+        'test some bad/empty lang header values return default': function() {
+            req.headers = {'accept-language': ''};
+            handler(req, res, nextFn);
+            A.areEqual('en', req.context.lang);
+
+            req.headers = {'accept-language': '   '};
+            handler(req, res, nextFn);
+            A.areEqual('en', req.context.lang);
+
+            req.headers = {'accept-language': null};
+            handler(req, res, nextFn);
+            A.areEqual('en', req.context.lang);
+
+            // da<space>,
+            req.headers = {'accept-language': 'da , en-gb;q=0.8, en;q=0.7'};
+            handler(req, res, nextFn);
+            A.areEqual('da', req.context.lang);
+        },
+
+        'test lang value spaces work': function() {
+            //http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4
+            req.headers = {'accept-language': 'da, en-gb;q=0.8, en;q=0.7'};
+            handler(req, res, nextFn);
+            A.areEqual('da', req.context.lang);
+        },
+
+        'test de lang value returns de': function() {
+            req.headers = {'accept-language': 'de'};
+            handler(req, res, nextFn);
+            A.areEqual('de', req.context.lang);
+        },
+
+        'test missing lang header value returns default': function() {
+            req.headers = {};
+            handler(req, res, nextFn);
+            A.areEqual('en', req.context.lang);
+        },
+
+        'bug4368914 bad case in Accept-Language header': function() {
+            req.headers = {'accept-language': 'en-us,en;q=0.7;de;q=0.3'};
+            handler(req, res, nextFn);
             A.areEqual('en-US', req.context.lang);
         }
 
