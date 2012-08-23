@@ -1,0 +1,24 @@
+[
+    {
+        "settings": [ "master" ],
+        "name": "mojito-middleware-unit-tests",
+        "config": {
+            "lib": "../../../../../lib",
+            "base": "../../../../base"
+        },
+        "commonlib": "./util.js",
+        "dataprovider" : {
+            "contextualizer": {
+                "params": {
+                    "lib": "$$config.lib$$/app/middleware/mojito-contextualizer.js",
+                    "page": "$$config.base$$/mojito-test.html",
+                    "test": "./test-contextualizer.js"
+                },
+                "group": "fw,unit,server"
+            }
+        }
+    },
+    {
+        "settings": [ "environment:development" ]
+    }
+]
