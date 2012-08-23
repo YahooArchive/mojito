@@ -6,7 +6,7 @@
             "lib": "../../../../../lib",
             "base": "../../../../base"
         },
-        "commonlib": "./util.js",
+        "commonlib": "./mojito-testutils.js",
         "dataprovider" : {
             "contextualizer": {
                 "params": {
@@ -15,7 +15,24 @@
                     "test": "./test-contextualizer.js"
                 },
                 "group": "fw,unit,server"
+            },
+            "handler-tunnel": {
+                "params": {
+                    "lib": "$$config.lib$$/app/middleware/mojito-handler-tunnel.js",
+                    "page": "$$config.base$$/mojito-test.html",
+                    "test": "./test-handler-tunnel.js"
+                },
+                "group": "fw,unit,server"
+            },
+            "router": {
+                "params": {
+                    "lib": "$$config.lib$$/app/middleware/mojito-handler-tunnel.js",
+                    "page": "$$config.base$$/mojito-test.html",
+                    "test": "./test-router.js"
+                },
+                "group": "fw,unit,server"
             }
+
         }
     },
     {
