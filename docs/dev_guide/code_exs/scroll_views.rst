@@ -11,7 +11,8 @@ Including YUI Modules in Views
 Summary
 #######
 
-This example shows how to include the `YUI ScrollView Module <http://developer.yahoo.com/yui/3/scrollview/>`_ in your mojit's template.
+This example shows how to include the 
+`YUI ScrollView Module <http://developer.yahoo.com/yui/3/scrollview/>`_ in your mojit's template.
 
 The following topics will be covered:
 
@@ -27,7 +28,8 @@ The following screenshots show you how the application appears on different devi
    :height: 368px
    :width: 401px
 
-In the ``application.json`` file for this code example, the customized CSS are specified in the ``assets`` array as seen below.
+In the ``application.json`` file for this code example, the customized CSS are specified in the 
+``assets`` array as seen below.
 
 .. code-block:: javascript
 
@@ -55,8 +57,9 @@ In the ``application.json`` file for this code example, the customized CSS are s
      }
    ]
 
-The mojit controller provides the photo URLs for the scrollable content widget. In the ``controller.server.js`` below, the ``photos`` array that contains the photo URLs and the text for the 
-image ``alt`` attribute is passed to the ``index`` template.
+The mojit controller provides the photo URLs for the scrollable content widget. In the 
+``controller.server.js`` below, the ``photos`` array that contains the photo URLs and the text for 
+the image ``alt`` attribute is passed to the ``index`` template.
 
 .. code-block:: javascript
 
@@ -92,8 +95,11 @@ image ``alt`` attribute is passed to the ``index`` template.
      };
    }, '0.0.1', {requires: ['mojito']});
 
-In the ``index.hb.html`` below, the YUI ScrollView module is included with ``YUI.use``. To create the scrolling content widget,  you need to create a container, a header, and content frame with ``div`` tags 
-that use YUI-specific IDs and render a ScrollView object. For detailed instructions, see the `Getting Started <http://developer.yahoo.com/yui/3/scrollview/#start>`_ section on the YUI 3: ScrollView page.
+In the ``index.hb.html`` below, the YUI ScrollView module is included with ``YUI.use``. To create 
+the scrolling content widget,  you need to create a container, a header, and content frame with 
+``div`` tags that use YUI-specific IDs and render a ScrollView object. For detailed instructions, 
+see the `Getting Started <http://developer.yahoo.com/yui/3/scrollview/#start>`_ section on the 
+YUI 3: ScrollView page.
 
 .. code-block:: html
 
@@ -184,7 +190,8 @@ To set up and run ``scroll_views``:
         }
       ]
 
-#. To configure routing to call the ``index`` action from the instance of the ``HTMLFrameMojit`` when an HTTP GET call is made on the route path, create the file ``routes.json`` with the following:
+#. To configure routing to call the ``index`` action from the instance of the ``HTMLFrameMojit`` 
+   when an HTTP GET call is made on the route path, create the file ``routes.json`` with the following:
 
    .. code-block:: javascript
 
@@ -201,7 +208,8 @@ To set up and run ``scroll_views``:
 
 #. Change to ``mojits/scroll``.
 
-#. To have the controller send image data to the template for the scrolling widget, replace the code in ``controller.server.js`` with the following:
+#. To have the controller send image data to the template for the scrolling widget, replace the code 
+   in ``controller.server.js`` with the following:
 
    .. code-block:: javascript
 

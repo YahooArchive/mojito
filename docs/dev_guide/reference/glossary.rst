@@ -131,7 +131,7 @@ view partial
    Using a view partial, you can create that document fragment instead of iterating through the collection in the view.
 
 template
--------------
+--------
 
    Template files that are rendered into HTML and served to a device. These templates can contain expressions (Handlebars) or tags (Mustache) that 
    are replaced with values by a view rendering engine.

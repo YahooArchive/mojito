@@ -68,7 +68,8 @@ The double braces with a pound are used for lists or conditional
 expression, such as ``{{#show}...{{/show}``. Handlebars also has a built-in conditional structure
 that allow you to form the same conditional expression in the following way: ``{{#if show}}...{{/if}}``
 
-You also use double braces with a pound to access properties within an object, which is how the ``hours`` property of the ``time`` object is accessed here.
+You also use double braces with a pound to access properties within an object, which is how the 
+``hours`` property of the ``time`` object is accessed here.
 
 
 .. code-block:: html
@@ -120,7 +121,8 @@ To set up and run ``simple_view``:
         }
       ]
 
-#. To configure the routing for your application, create the file ``routes.json`` with the following:
+#. To configure the routing for your application, create the file ``routes.json`` with the 
+   following:
 
    .. code-block:: javascript
 
@@ -163,7 +165,8 @@ To set up and run ``simple_view``:
         };
       }, '0.0.1', {requires: []});
 
-#. Modify your ``index`` template by replacing the code in ``views/index.hb.html`` with the following:
+#. Modify your ``index`` template by replacing the code in ``views/index.hb.html`` with the 
+   following:
 
    .. code-block:: html
 

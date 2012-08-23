@@ -109,7 +109,7 @@ See `Addons <../api_overview/mojito_addons.html>`_ in the
 View Files
 ##########
 
-View files are called templates in Mojito. View templates can contain both HTML
+View files are called templates in Mojito. Templates can contain both HTML
 and templating tags/expressions, such as Mustache or Handlebars, and are rendered into markup that is
 outputted to the client.
 
