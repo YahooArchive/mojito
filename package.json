@@ -32,7 +32,7 @@
         "framework",
         "webapp"
     ],
-    "main": "lib/index",
+    "main": "lib/mojito",
     "directories": [
         "bin",
         "docs",
