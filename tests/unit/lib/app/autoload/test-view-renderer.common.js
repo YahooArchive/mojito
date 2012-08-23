@@ -7,7 +7,6 @@
 
 /*jslint anon:true, sloppy:true, nomen:true, node:true*/
 /*global YUI*/
-var zz;
 
 YUI().use('mojito-view-renderer', 'test', function(Y) {
     var A = Y.Assert,

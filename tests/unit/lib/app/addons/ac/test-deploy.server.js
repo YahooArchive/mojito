@@ -25,7 +25,7 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
             addon = null;
         },
 
-        'test YUI_config should use application.json yui.config': function() {
+        'YUI_config should use application.json yui.config': function() {
 
             var realRouteMaker = Y.mojito.RouteMaker;
             Y.mojito.RouteMaker = function() {};
@@ -89,7 +89,7 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
             }
 
             A.areSame(1, blobs.length, 'wrong number of blobs');
-            var matches = blobs[0].match(/YUI_config = ({[^}]+})/);
+            var matches = blobs[0].match(/YUI_config = (.+?);/);
             A.isNotUndefined(matches[1], 'failed to find YUI_config in blob');
             var config = Y.JSON.parse(matches[1]);
             A.isObject(config, 'failed to parse YUI_config');
@@ -97,6 +97,98 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
             A.areSame('klingon', config.lang, 'wrong lang used');
         },
 
+        'test constructMojitoClientRuntime w/ a binderMap': function() {
+
+            var blobs = [],
+                assetHandler = {
+                    addCss: function(path, location) {
+                        // not testing this
+                        return;
+                    },
+                    addAssets: function(type, location, content) {
+                        // not testing this
+                        return;
+                    },
+                    addAsset: function(type, location, content) {
+                        if ('blob' === type) {
+                            blobs.push(content);
+                        }
+                    }
+                },
+                binderMap = {
+                    'viewId1': {
+                        needs: 'a drink'
+                    },
+                    'viewId2': {
+                        needs: 'another drink'
+                    },
+                },
+                realRouteMaker = Y.mojito.RouteMaker
+            ;
+
+            Y.mojito.RouteMaker = function() {};
+            Y.mojito.RouteMaker.prototype = {
+                getComputedRoutes: function() {
+                    return ['routes'];
+                }
+            };
+
+            addon.ac = {
+                http: {
+                    getHeader: function(h) {
+                        return null;
+                    }
+                },
+                context: {
+                    lang: 'klingon'
+                }
+            };
+
+            addon.setStore({
+                getAppConfig: function() {
+                    return { yui:{ config:{ foo:'bar' } } };
+                },
+                serializeClientStore: function() {
+                    return 'clientstore';
+                },
+                store: {
+                    getAllURLs: function() { return {}; },
+                    getFrameworkConfig: function() {
+                        return { ondemandBaseYuiModules:[] };
+                    },
+                    yui: {
+                        getConfigShared: function() { return {}; }
+                    }
+                }
+            });
+
+            try {
+                addon.constructMojitoClientRuntime(assetHandler, binderMap);
+            }
+            finally {
+                Y.mojito.RouteMaker = realRouteMaker;
+            }
+
+            var expected = [
+                    '<script type="text/javascript">',
+                    '    YUI_config = {"foo":"bar","lang":"klingon","core":["get","features","intl-base","yui-log","mojito","yui-later"]};',
+                    '    YUI().use(\'mojito-client\', function(Y) {',
+                    '    window.YMojito = { client: new Y.mojito.Client({"context":{"lang":"klingon","runtime":"client"},"binderMap":{"viewId1":{"needs":"a drink"},"viewId2":{"needs":"another drink"}},"routes":["routes"]}) };',
+                    '        });',
+                    '</script>',
+                    ''
+                ].join("\n");
+
+            A.isArray(blobs);
+            A.areSame(expected, blobs[0]);
+            A.areSame(1, blobs.length, 'wrong number of blobs');
+            var matches = blobs[0].match(/YUI_config = (.+?);/);
+            A.isNotUndefined(matches[1], 'failed to find YUI_config in blob');
+            var config = Y.JSON.parse(matches[1]);
+            A.isObject(config, 'failed to parse YUI_config');
+            A.areSame('bar', config.foo, 'failed to base YUI_config on application.yui.config');
+            A.areSame('klingon', config.lang, 'wrong lang used');
+        },
 
         'test application.json should honor yui.config.fetchCSS=false': function() {
 
