@@ -1,5 +1,7 @@
 .DS_Store
 node_modules
+!tests/fixtures/packages/node_modules
+!tests/fixtures/packages/node_modules/*/node_modules
 artifacts
 arrowreport
 flatfile
