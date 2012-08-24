@@ -527,7 +527,7 @@ YUI().use(
                     // This happens when mojito is installed via npm, since npm
                     // won't install the node_modules/ directories in
                     // tests/fixtures/packages.
-                    A.skip();
+                    A.isTrue(true);
                     return;
                 }
 
