@@ -3,7 +3,7 @@
         "settings": [ "master" ],
 
         "appPort": 8666,
-        "cacheViewTemplates": true,
+        "cacheTemplates": true,
         "deferAllOptionalAutoload": false,
         "embedJsFilesInHtmlFrame": false,
         "log": {
