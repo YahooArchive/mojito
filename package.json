@@ -16,7 +16,7 @@
     "dependencies": {
         "async": "*",
         "colors": "*",
-        "commander": "~1.0.1",
+        "commander": "1.0.1",
         "connect": "1.8.2",
         "express": "2.5.2",
         "glob": "~3.1.11",
