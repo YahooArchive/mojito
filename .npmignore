@@ -4,7 +4,6 @@
 .svn/
 *.bak
 *~
-/node_modules
 /tests
 arrowreport
 artifacts
