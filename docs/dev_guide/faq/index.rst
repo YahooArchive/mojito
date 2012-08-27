@@ -21,6 +21,8 @@ General
 * :ref:`Is it possible to access headers from a Mojito application? <moj_access_headers>`
 * :ref:`Can Mojito be started with Node.js instead of using "mojito start"? <moj_node_start>`
 * :ref:`How can I improve the performance of my Mojito application? <moj_optimize_performance>`
+* :ref:`When I run 'mojito version', why is the version different than the version I installed? <moj_version_conflict>`
+
 
 Mojits
 ------
@@ -110,7 +112,7 @@ General
 
     The tools used in developing mojit modules (mojits) work offline, without requiring 
     access to networked resources. When networked (cloud) resources are required due to the 
-    module’s own nature, e.g., retrieving data from a back-end service, Cocktails provides 
+    moduleâs own nature, e.g., retrieving data from a back-end service, Cocktails provides 
     facilities to mock these resources and simulate their behavior with dummy (local) implementations.
 
 ------------
@@ -309,6 +311,29 @@ General
     can be used to help you lazy load images. You can even lazy load a mojit from the client
     using the `LazyLoadMojit <../topics/mojito_framework_mojits.html#lazyloadmojit>`_.
    
+
+------------
+
+
+
+.. _moj_version_conflict:
+.. topic:: **When I run 'mojito version', why is the version different than the version I installed?**
+
+    If you globally installed a version of Mojito (``npm install mojito -g``) that is different 
+    than what is shown when running the the command ``mojito version``, it's likely that Node.js is 
+    using a version of Mojito found in a local ``node_modules`` or ``.node_modules`` directory.  
+    Node.js has an algorithm for resolving different versions of the same module, which 
+    may be the reason it is running a different version of Mojito than you're expecting. You can read 
+    the `high-level algorithm in pseudocode <http://nodejs.org/api/modules.html#modules_all_together>`_ 
+    in the Node.js API documentation.
+    
+    To make sure Node.js runs the global version of Mojito, you should search for local 
+    ``node_modules`` and  ``.node_modules`` directories and remove ``mojito`` from them.
+    You can also run ``node -pe 'require.resolve("mojito")'`` to see what version of Mojito is 
+    being used by Node.js. Once you have removed or moved any local versions of Mojito, try running 
+    ``mojito version`` again. You should now see the same version as the globally installed Mojito. 
+    
+    
     
 
 Mojits
@@ -531,7 +556,7 @@ Views
 .. _moj_devices:
 .. topic:: **Do I have to create separate mojits for different devices?**
 
-    The platform’s capabilities allow mojits to be executed (and their results displayed) 
+    The platformâs capabilities allow mojits to be executed (and their results displayed) 
     on every device in either set. For a module developer, the benefit is obvious: a single 
     codebase that can address a wide range of devices. Mojits may still need to be customized 
     for a specific device (or device class), however, to take advantage of device-specific 
@@ -616,3 +641,4 @@ Addons/Libraries/Middleware
     modules to require some tweaking before they can be re-purposed. Mojito, however, does 
     offer facilities that make it possible and easy to extend existing modules. 
     
+
