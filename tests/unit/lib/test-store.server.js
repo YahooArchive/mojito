@@ -426,7 +426,7 @@ YUI().use(
                 store.preload();
             },
 
-            'ignore: appConfig deferAllOptionalAutoloads': function() {
+            'appConfig deferAllOptionalAutoloads': function() {
                 var spec = { type: 'PagedFlickr' };
                 store.expandInstanceForEnv('client', spec, {}, function(err, instance) {
                     A.isUndefined(instance.views.index['binder-yui-sorted']['mojito-tunnel-client'], 'mojito-tunnel-client');
