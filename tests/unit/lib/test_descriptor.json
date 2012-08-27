@@ -1,0 +1,52 @@
+[
+    {
+        "settings": [ "master" ],
+        "name": "mojito-unit-tests",
+        "config": {
+            "lib": "../../../lib",
+            "base": "../../base"
+        },
+        "commonlib": "$$config.base$$/mojito-test.js,./../../../lib/app/autoload/util.common.js",
+        "dataprovider" : {
+            "index.server": {
+                "params": {
+                    "test": "./test-index.server.js",
+                    "driver": "nodejs"
+                },
+                "group": "fw,unit,server"
+            },
+            "output-handler.server": {
+                "params": {
+                    "test": "./test-output-handler.server.js",
+                    "driver": "nodejs"
+                },
+                "group": "fw,unit,server"
+            },
+            "package-walker.server": {
+                "params": {
+                    "test": "./test-package-walker.server.js",
+                    "driver": "nodejs"
+                },
+                "group": "fw,unit,server"
+            },
+            "server-log.server": {
+                "params": {
+                    "test": "./test-server-log.server.js",
+                    "driver": "nodejs"
+                },
+                "group": "fw,unit,server"
+            },
+            "store.server": {
+                "params": {
+                    "lib": "$$config.lib$$/store.server.js,../../../lib/app/addons/rs/config.server.js,../../../lib/app/addons/rs/selector.server.js,../../../lib/app/addons/rs/url.server.js,../../../lib/app/addons/rs/yui.server.js",
+                    "test": "./test-store.server.js",
+                    "driver": "nodejs"
+                },
+                "group": "fw,unit,server"
+            }
+        }
+    },
+    {
+        "settings": [ "environment:development" ]
+    }
+]

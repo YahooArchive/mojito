@@ -4,7 +4,7 @@ var fs = require('fs'),
     program = require('commander'),
     async = require('async'),
     child = require('child_process'),
-    cwd = process.cwd(),
+    cwd = __dirname,
     pids = [],
     returnVal = 0;
 
@@ -61,10 +61,25 @@ function test (cmd) {
 }
 
 function startArrowServer (callback) {
+    var timeout,
+        listener = function (data) {
+            process.stdout.write(data);
+        };
     console.log("---Starting Arrow Server---");
-    var p = runCommand(cwd, "arrow_server");
+    var p = runCommand(cwd, "arrow_server", [], function () {
+        // If this command returns called, then it failed to launch
+        if (timeout) {
+            clearTimeout(timeout);
+        }
+        console.log('arrow_server failed to start. If it is already running' +
+            ' use \'-a\' to skip startup of arrow_server.');
+        pids.pop();
+        callback(1); // Trigger failure
+    });
+    p.stdout.on('data', listener);
     pids.push(p.pid);
-    setTimeout(function () {
+    timeout = setTimeout(function () {
+        p.stdout.removeListener('data', listener); // Stop printing output from arrow_server
         callback(null);
     }, 5000);
 }
@@ -77,7 +92,7 @@ function runUnitTests (callback) {
             var cmd = runCommand(
                 cwd + '/unit',
                 "arrow",
-                ["**/*_descriptor.json", "--browser=phantomjs", "--report=true", "--reportFolder=" + arrowReportDir],
+                [cwd + "/unit/**/test_descriptor.json", "--browser=phantomjs", "--report=true", "--reportFolder=" + arrowReportDir],
                 function (code) {
                     callback(code);
                 }
@@ -154,7 +169,7 @@ function runFuncTests (callback) {
         var cmd = runCommand(
             cwd + '/func/',
             "arrow",
-            ["**/*_descriptor.json", "--browser=firefox", "--reuseSession", "--report=true", "--reportFolder=" + arrowReportDir],
+            [cwd + "/func/**/test_descriptor.json", "--browser=firefox", "--reuseSession", "--report=true", "--reportFolder=" + arrowReportDir],
             function (code) {
                 callback(code);
             }
@@ -183,6 +198,7 @@ function finalize (err, results) {
 
 function runCommand (path, command, argv, callback) {
     callback = callback || function () {};
+    console.log(path);
     process.chdir(path);
     var cmd = child.spawn(command, argv, {
         cwd: path,
