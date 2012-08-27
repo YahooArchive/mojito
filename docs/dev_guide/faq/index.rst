@@ -21,6 +21,8 @@ General
 * :ref:`Is it possible to access headers from a Mojito application? <moj_access_headers>`
 * :ref:`Can Mojito be started with Node.js instead of using "mojito start"? <moj_node_start>`
 * :ref:`How can I improve the performance of my Mojito application? <moj_optimize_performance>`
+* :ref:`When I run 'mojito version', why is the version different than the version I installed <moj_version_conflict>`
+
 
 Mojits
 ------
@@ -309,6 +311,22 @@ General
     can be used to help you lazy load images. You can even lazy load a mojit from the client
     using the `LazyLoadMojit <../topics/mojito_framework_mojits.html#lazyloadmojit>`_.
    
+
+------------
+
+
+
+.. _moj_version_conflict:
+.. topic:: **When I run 'mojito version', why is the version different than the version I installed?**
+
+    Node.js has an algorithm for finding modules. If you globally installed a version Mojito
+    (``npm install mojito -g``) that is different that the output from the command ``mojito version``, 
+    it's likely that Node.js is using a version of Mojito found in a local ``node_modules`` or 
+    ``.node_modules`` directory.  You should search for local ``node_modules`` and  ``.node_modules`` 
+    directories, remove ``mojito`` from them, and then run ``mojito version`` again. You can
+    also run ``node -pe 'require.resolve("mojito")'`` to see where Node.js is finding Mojito.
+    
+    
     
 
 Mojits
