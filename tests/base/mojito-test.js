@@ -63,7 +63,8 @@ YUI.add('mojito-resource-store-adapter', function(Y, NAME) {});
 YUI.add('mojito-rest-lib', function(Y, NAME) {});
 YUI.add('mojito-route-maker', function(Y, NAME) {});
 YUI.add('mojito-client-store', function(Y, NAME) {});
-YUI.add('mojito-tunnel-client', function(Y, NAME) {});
+// Don't add mojito-tunnel-client.  It's optional, so adding always will
+// confuse our test that makes sure it's not loaded sometimes :)
 YUI.add('mojito-util', function(Y, NAME) {});
 YUI.add('mojito-view-renderer', function(Y, NAME) {});
 
