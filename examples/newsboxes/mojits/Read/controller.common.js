@@ -61,10 +61,10 @@ YUI.add('ReadController', function(Y, NAME) {
         },
 
         /**
-         * Compose the data for the view.
+         * Compose the data for the template.
          * @param {Object} feedmeta Feed metadata.
          * @param {Array.<Object>} stories The list of stories.
-         * @return {Object} Data for view renderer (mustache.js).
+         * @return {Object} Data for template renderer (mustache.js).
          */
         compose: function(feedmeta, stories) {
             var my = this,

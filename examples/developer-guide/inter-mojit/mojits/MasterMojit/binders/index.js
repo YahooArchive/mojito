@@ -13,10 +13,10 @@ YUI.add('MasterMojitBinderIndex', function(Y, NAME) {
             Y.log("Entering MasterMojitBinderIndex");
             this.mojitProxy.listen('fire-link', function(payload) {
                 var c = mp.getChildren();
-                var receiverID = c["receiver"].viewId;
+                var receiverID = c["receiver"].templateId;
                 Y.log('intercepted fire-link event: ' + payload.data.url, 'info', NAME);
                 mojitProxy.broadcast('broadcast-link',
-                                     {url: payload.data.url},{ target: {viewId:receiverID }});
+                                     {url: payload.data.url},{ target: {templateId:receiverID }});
                 Y.log('broadcasted event to child mojit: ' + payload.data.url, 'info', NAME);
             });
         },

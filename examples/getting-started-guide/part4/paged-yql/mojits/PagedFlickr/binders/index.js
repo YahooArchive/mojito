@@ -26,7 +26,7 @@ YUI.add('PagedFlickrBinderIndex', function(Y, NAME) {
 
                 evt.halt();
 
-                self.mojitProxy.refreshView({
+                self.mojitProxy.refreshTemplate({
                     rpc: true,
                     params: {
                         route: {page: page}

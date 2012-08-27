@@ -33,7 +33,7 @@
         </entry>
       </file>
       <file leaf-file-name="index.mu.html" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/mojits/TweetView/views/index.mu.html">
+        <entry file="file://$PROJECT_DIR$/mojits/TweetView/templates/index.mu.html">
           <provider selected="true" editor-type-id="text-editor">
             <state line="7" column="27" selection-start="189" selection-end="189" vertical-scroll-proportion="-4.967742">
               <folding />
@@ -78,15 +78,15 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/mojits/TweetView/views/index.mu.html" />
+        <option value="$PROJECT_DIR$/mojits/TweetView/templates/index.mu.html" />
         <option value="$PROJECT_DIR$/mojits/Speakers/models/strangeloop.common.js" />
         <option value="$PROJECT_DIR$/mojits/TweetView/models/twitter.common.js" />
         <option value="$PROJECT_DIR$/routes.json" />
         <option value="$PROJECT_DIR$/mojits/TweetView/assets/style.css" />
         <option value="$PROJECT_DIR$/mojits/Speakers/assets/style.css" />
         <option value="$PROJECT_DIR$/application.json" />
-        <option value="$PROJECT_DIR$/mojits/Speakers/views/index.mu.html" />
-        <option value="$PROJECT_DIR$/mojits/Container/views/index.mu.html" />
+        <option value="$PROJECT_DIR$/mojits/Speakers/templates/index.mu.html" />
+        <option value="$PROJECT_DIR$/mojits/Container/templates/index.mu.html" />
         <option value="$PROJECT_DIR$/mojits/Speakers/controller.common.js" />
         <option value="$PROJECT_DIR$/mojits/Container/controller.server.js" />
         <option value="$PROJECT_DIR$/mojits/TweetView/binders/index.js" />
@@ -170,7 +170,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="views" />
+              <option name="myItemId" value="templates" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -440,14 +440,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mojits/Speakers/views/index.mu.html">
+    <entry file="file://$PROJECT_DIR$/mojits/Speakers/templates/index.mu.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="11" column="0" selection-start="328" selection-end="328" vertical-scroll-proportion="-7.464286">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mojits/Container/views/index.mu.html">
+    <entry file="file://$PROJECT_DIR$/mojits/Container/templates/index.mu.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="2" column="16" selection-start="64" selection-end="64" vertical-scroll-proportion="0.0642978">
           <folding />
@@ -475,7 +475,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/mojits/TweetView/views/index.mu.html">
+    <entry file="file://$PROJECT_DIR$/mojits/TweetView/templates/index.mu.html">
       <provider selected="true" editor-type-id="text-editor">
         <state line="7" column="27" selection-start="189" selection-end="189" vertical-scroll-proportion="-4.967742">
           <folding />

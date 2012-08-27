@@ -33,7 +33,7 @@ YUI.add('mojito-mu', function(Y){
         Y.io(tmpl);
     }
 
-    Y.mojito.addons.viewEngines.mu = MuAdapter;
+    Y.mojito.addons.templateEngines.mu = MuAdapter;
 
     /*
     Taken from https://github.com/janl/mustache.js
@@ -181,7 +181,7 @@ YUI.add('mojito-mu', function(Y){
         },
 
         /*
-    Replace {{foo}} and friends with values from our view
+    Replace {{foo}} and friends with values from our template
     */
         render_tags: function(template, context, partials, in_recursion) {
           // tit for tat
@@ -244,7 +244,7 @@ YUI.add('mojito-mu', function(Y){
 
         /*
     find `name` in current `context`. That is find me a value
-    from the view object
+    from the template object
     */
         find: function(name, context) {
           name = this.trim(name);
@@ -348,7 +348,7 @@ YUI.add('mojito-mu', function(Y){
         version: "0.3.1-dev",
 
         /*
-    Turns a template and view into HTML
+    Turns a template into HTML
     */
         to_html: function(template, view, partials, send_fun) {
           var renderer = new Renderer();

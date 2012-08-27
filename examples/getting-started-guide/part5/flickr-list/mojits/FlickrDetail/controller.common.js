@@ -15,13 +15,13 @@ YUI.add('FlickrDetail', function(Y, NAME) {
             // a little paranoia about inputs
             if (!image.match(/^\d+$/)) {
                 ac.assets.addCss('./message.css');
-                ac.done({ type: 'error', message: ac.intl.lang('ERROR_BAD_IMAGE_ID') }, { view: { name:'message' } });
+                ac.done({ type: 'error', message: ac.intl.lang('ERROR_BAD_IMAGE_ID') }, { template: { name:'message' } });
                 return;
             }
 
             if ('0' === image) {
                 ac.assets.addCss('./message.css');
-                ac.done({ type: 'info', message: ac.intl.lang('INFO_NO_IMAGE_CHOSEN') }, { view: { name:'message' } });
+                ac.done({ type: 'info', message: ac.intl.lang('INFO_NO_IMAGE_CHOSEN') }, { template: { name:'message' } });
                 return;
             }
 

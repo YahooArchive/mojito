@@ -37,4 +37,4 @@ Edit controller index action:
 
     ac.done();
 
-Add view and binder.
+Add template and binder.

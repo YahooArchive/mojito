@@ -30,7 +30,7 @@ YUI.add('ColoredChildBinderIndex', function(Y, NAME) {
             }));
             
             this.handlers.push(node.one('.ChildRefresh').on('click', function() {
-                this.mp.refreshView({
+                this.mp.refreshTemplate({
                         params: { 
                             url: {
                                 background: 'olive' 
@@ -52,7 +52,7 @@ YUI.add('ColoredChildBinderIndex', function(Y, NAME) {
             }
         },
 
-        onRefreshView: function(node) {
+        onRefreshTemplate: function(node) {
             Y.log(this.myid + ' refreshed', 'info', NAME);
             Y.Array.each(this.handlers, function(handler) {
                 handler.detach();

@@ -16,7 +16,7 @@
         "client": { "level": "warn", "yui": true },
         "server": { "level": "info", "yui": true }
     },
-    "cacheViewTemplates": false,
+    "cacheTemplates": false,
 
     "specs": {
 

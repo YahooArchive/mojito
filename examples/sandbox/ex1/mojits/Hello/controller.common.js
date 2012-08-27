@@ -20,7 +20,7 @@ YUI.add('Hello', function(Y, NAME) {
          */
         index: function(ac) {
             var paramMessage = ac.params.url('message');
-            var msg = 'Mojito index view is working.';
+            var msg = 'Mojito index template is working.';
             if (this.config.test) {
                 msg = msg + ' ' + this.config.test;
             }
@@ -90,7 +90,7 @@ YUI.add('Hello', function(Y, NAME) {
 //                    flush: function(childData) {
 //                        buffers[child.id] = buffers[child.id] + childData;
 //                    },
-//                    done: function(childData, childViewMeta) {
+//                    done: function(childData, childTemplateMeta) {
 //                        childDoneCount++;
 //                        template[child.id] = buffers[child.id] + childData;
 //                        if (childDoneCount === childCount) {

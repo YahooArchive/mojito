@@ -26,7 +26,7 @@ YUI.add('Flickr', function(Y, NAME) {
 
                 ac.flush({images: images});
 
-                ac.done({images: images}, {view: {name: 'bar'}});
+                ac.done({images: images}, {template: {name: 'bar'}});
             });
         }
 

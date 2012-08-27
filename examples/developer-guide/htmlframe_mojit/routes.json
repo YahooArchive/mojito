@@ -1,7 +1,7 @@
 [
   {
     "settings": [ "master" ],
-    "_framed_view": { 
+    "_framed_template": { 
       "verbs": ["get"],
       "path": "/",
       "call": "frame.index"

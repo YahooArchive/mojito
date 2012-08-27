@@ -32,7 +32,7 @@ YUI.add('LoaderBinderFoo', function(Y, NAME) {
         bind: function(node) {
             this.node = node;
             var nodeId = node.get('id');
-            var binderId = this.mojitProxy._viewId;
+            var binderId = this.mojitProxy._templateId;
             var instanceId = this.mojitProxy._instanceId;
             Y.log('mojit ' + instanceId + ' binder ' + binderId + ' bound to node: #' + nodeId, 'debug', NAME);
             if (nodeId !== binderId) {
