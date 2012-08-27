@@ -1,12 +1,13 @@
 .DS_Store
+.lock-wscript
+.svn/
+*.bak
+*~
 node_modules
 !tests/fixtures/packages/node_modules
 !tests/fixtures/packages/node_modules/*/node_modules
-artifacts
 arrowreport
+artifacts
 flatfile
-.*.swp
-*~
-.svn
 test_descriptor-report.json
 test_descriptor-report.xml
