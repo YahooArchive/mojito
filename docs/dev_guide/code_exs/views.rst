@@ -1,12 +1,13 @@
 Views
 #####
 
-These examples show you how to create view templates, use Handlebars expressions, and pass data from the mojit controller to the view templates.
+These examples show you how to create templates, use Handlebars expressions, and pass data from the 
+mojit controller to the templates.
 
 .. toctree::
    :maxdepth: 1
 
-   simple_view_template
+   simple_view
    views_multiple_devices 
    htmlframe_view
    scroll_views

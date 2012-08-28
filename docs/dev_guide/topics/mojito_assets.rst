@@ -128,10 +128,10 @@ For mojit-level assets, the static URL has the following syntax:
 
 ``/static/{mojit_name}/assets/{asset_file}``
 
-Referring to the Static URL in the View Template
+Referring to the Static URL in the Template
 ================================================
 
-Once Mojito has created a static URL to an asset, you can use the ``<link>`` tag in your view to refer to the asset. In the example index view template below, the ``<link>`` tag refers to the static URL to the asset ``index.css``.
+Once Mojito has created a static URL to an asset, you can use the ``<link>`` tag in your view to refer to the asset. In the example ``index`` template below, the ``<link>`` tag refers to the static URL to the asset ``index.css``.
 
 .. code-block:: html
 
