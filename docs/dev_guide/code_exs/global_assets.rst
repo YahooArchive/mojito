@@ -11,7 +11,8 @@ Using Global Assets
 Summary
 #######
 
-This example shows how to configure and use global assets in Mojito applications. In this example, the ``HTMLFrameMojit`` inserts global assets into the rendered view. 
+This example shows how to configure and use global assets in Mojito applications. In this example, 
+the ``HTMLFrameMojit`` inserts global assets into the rendered view. 
 See `Adding CSS <./adding_assets.html>`_ for an example that uses mojit-level assets.
 
 The following topics will be covered:
@@ -26,15 +27,18 @@ Implementation Notes
 What Are Assets?
 ================
 
-Assets are resources that are required on the clients. These resources are primarily CSS but can also be JavaScript. Your assets should not be the core components of your application.
+Assets are resources that are required on the clients. These resources are primarily CSS but can 
+also be JavaScript. Your assets should not be the core components of your application.
 
 Location of Assets
 ==================
 
-Mojito applications can have both global and local assets. Global assets are placed in the ``assets`` directory under the application directory. Assets at the mojit level are placed in the ``assets``
-directory under the mojit directory.
+Mojito applications can have both global and local assets. Global assets are placed in the 
+``assets`` directory under the application directory. Assets at the mojit level are placed in the 
+``assets``directory under the mojit directory.
 
-The directory structure of this example below shows the location of the global ``assets`` directory with the asset files.
+The directory structure of this example below shows the location of the global ``assets`` directory 
+with the asset files.
 
 ::
 
@@ -60,7 +64,8 @@ The directory structure of this example below shows the location of the global `
 Static URLs to Assets
 =====================
 
-Mojito provides static URLs to application-level and mojit-level assets. You can refer to these assets in your view templates, or if you are using the ``HTMLFrameMojit``, you configure your 
+Mojito provides static URLs to application-level and mojit-level assets. You can refer to these 
+assets in your templates, or if you are using the ``HTMLFrameMojit``, you configure your 
 application to automatically insert the assets into the rendered view.
 
 Syntax
@@ -73,11 +78,13 @@ For application-level assets, the static URL has the following syntax:
 Examples
 --------
 
-The path to the application-level asset ``sadwalrus.jpeg`` of the ``global_assets`` application would be the following:
+The path to the application-level asset ``sadwalrus.jpeg`` of the ``global_assets`` application 
+would be the following:
 
 ``/static/global_assets/assets/sadwalrus.jpeg``
 
-In the view template, the application-level assets above can be referred to using the static URLs as seen here.
+In the template, the application-level assets above can be referred to using the static URLs as 
+seen here.
 
 .. code-block:: html
 
@@ -88,10 +95,13 @@ In the view template, the application-level assets above can be referred to usin
 Configuring HTMLFrameMojit to Include Assets
 ============================================
 
-When using the ``HTMLFrameMojit``,  assets are listed in the ``assets`` object in ``application.json.`` The ``assets`` object can contain a ``top`` object and/or a ``bottom`` object. 
-The assets listed in ``top`` will be inserted into the ``head`` element of the HTML page. The assets listed in ``bottom`` are inserted at the bottom of the ``body`` element.
+When using the ``HTMLFrameMojit``,  assets are listed in the ``assets`` object in 
+``application.json``. The ``assets`` object can contain a ``top`` object and/or a ``bottom`` object. 
+The assets listed in ``top`` will be inserted into the ``head`` element of the HTML page. The assets 
+listed in ``bottom`` are inserted at the bottom of the ``body`` element.
 
-In the example ``application.json`` below, which is taken from this code example, the global asset ``ohhai.css`` is inserted into the ``head`` element of the rendered view.
+In the example ``application.json`` below, which is taken from this code example, the global asset 
+``ohhai.css`` is inserted into the ``head`` element of the rendered view.
 
 .. code-block:: javascript
 
@@ -139,7 +149,8 @@ To set up and run ``global_assets``:
 
    ``$ mojito create mojit OhHai``
 
-#. To specify that your application use ``HTMLFrameMojit`` with a child mojit, replace the code in ``application.json`` with the following:
+#. To specify that your application use ``HTMLFrameMojit`` with a child mojit, replace the code in 
+   ``application.json`` with the following:
 
    .. code-block:: javascript
 
@@ -201,7 +212,8 @@ To set up and run ``global_assets``:
 
 #. Change to ``mojits/OhHai``.
 
-#. Modify the mojit controller to get data from the model by replacing the code in ``controller.server.js`` with the following:
+#. Modify the mojit controller to get data from the model by replacing the code in 
+   ``controller.server.js`` with the following:
 
    .. code-block:: javascript
 
@@ -213,7 +225,8 @@ To set up and run ``global_assets``:
         };
       }, '0.0.1', {requires: ['mojito']});
 
-#. Modify your ``index`` view template to explicitly include the global asset ``sadwalrus.jpeg`` by replacing the code in ``views/index.hb.html`` with the following:
+#. Modify your ``index`` template to explicitly include the global asset ``sadwalrus.jpeg`` by 
+   replacing the code in ``views/index.hb.html`` with the following:
 
    .. code-block:: html
 
@@ -229,7 +242,8 @@ To set up and run ``global_assets``:
 
    http://localhost:8666
  
-#. View the source code to see that the global asset ``ohhai.css`` was inserted into the ``head`` element.
+#. View the source code to see that the global asset ``ohhai.css`` was inserted into the ``head`` 
+   element.
 
 Source Code
 ###########
