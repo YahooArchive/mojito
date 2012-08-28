@@ -121,7 +121,7 @@ OAuth
 view
 ----
 
-   The display element of Mojito that is served to a device. The view is rendered from the view template and consists of HTML and CSS.
+   The display element of Mojito that is served to a device. The view is rendered from the template and consists of HTML and CSS.
    See `MVC: Views <../intro/mojito_mvc.html#views>`_ for more information.
    
 view partial
@@ -130,8 +130,8 @@ view partial
    Also referred to as partials, partial views, and partial collection. View partials are collections that can be iterated through to create a document fragment. 
    Using a view partial, you can create that document fragment instead of iterating through the collection in the view.
 
-view template
--------------
+template
+--------
 
    Template files that are rendered into HTML and served to a device. These templates can contain expressions (Handlebars) or tags (Mustache) that 
    are replaced with values by a view rendering engine.

@@ -11,8 +11,10 @@ Including YUI Modules
 Summary
 #######
 
-This example shows how to include the YUI module `Storage Lite <http://yuilibrary.com/gallery/show/storage-lite>`_ in a Mojito application. The example uses the Storage Lite module to 
-create a notepad application. Any text that you input into the application will persist between page views and browser sessions.
+This example shows how to include the YUI module 
+`Storage Lite <http://yuilibrary.com/gallery/show/storage-lite>`_ in a Mojito application. The 
+example uses the Storage Lite module to create a notepad application. Any text that you input into 
+the application will persist between page views and browser sessions.
 
 The following topics will be covered:
 
@@ -30,24 +32,29 @@ Adding YUI Modules
 Location
 --------
 
-To add YUI modules that all your mojits can access, place the modules in the ``autoload`` directory under the application directory. For example, YUI modules in the ``hello_world`` application 
+To add YUI modules that all your mojits can access, place the modules in the ``autoload`` directory 
+under the application directory. For example, YUI modules in the ``hello_world`` application 
 would be placed in ``hello_world/autoload``.
 
 File Naming Convention
 ----------------------
 
-YUI modules must use the following naming convention, where where ``{module_name}`` is an arbitrary string for identifying the module and ``{affinity}`` is either ``common``, ``server``, or ``client``.
+YUI modules must use the following naming convention, where where ``{module_name}`` is an arbitrary 
+string for identifying the module and ``{affinity}`` is either ``common``, ``server``, or 
+``client``.
 
 ``{module_name}.{affinity}.js``
 
-In this code example, code is being deployed to the client, so the affinity must be either ``common`` or ``client``.
+In this code example, code is being deployed to the client, so the affinity must be either 
+``common`` or ``client``.
 
 .. _registering_module:
 
 Registering Module
 ------------------
 
-To register a module so that it is available to your mojits, pass a string that identifies the module to the ``YUI.add`` method. From the skeleton of ``storage-lite.client.js`` below, you can see 
+To register a module so that it is available to your mojits, pass a string that identifies the 
+module to the ``YUI.add`` method. From the skeleton of ``storage-lite.client.js`` below, you can see 
 that ``add`` method registers the module identified by the string ``'gallery-storage-lite'``.
 
 .. code-block:: javascript
@@ -59,8 +66,10 @@ that ``add`` method registers the module identified by the string ``'gallery-sto
 Using a YUI Module from Mojits
 ==============================
 
-After registered YUI modules have been added to the ``autoload`` directory, you can load them into your mojit code by listing them as dependencies in the ``requires`` array. 
-In the binder ``index.js`` below, you can see that the Storage Lite module that we created and registered in :ref:`registering_module` is listed as a dependency in the ``requires`` array.
+After registered YUI modules have been added to the ``autoload`` directory, you can load them into 
+your mojit code by listing them as dependencies in the ``requires`` array. In the binder 
+``index.js`` below, you can see that the Storage Lite module that we created and registered 
+in :ref:`registering_module` is listed as a dependency in the ``requires`` array.
 
 .. code-block:: javascript
 
@@ -76,7 +85,8 @@ In the binder ``index.js`` below, you can see that the Storage Lite module that 
      // See autoload/storage-lite.client.js
    }, '0.0.1', {requires: [  'gallery-storage-lite' ]});
 
-In the ``bind`` method, ``Y.StorageLite.getItem`` and ``Y.StorageLite.setItem`` are used to get and set persistent data. Note that you must use the ``Y`` instance to access the module.
+In the ``bind`` method, ``Y.StorageLite.getItem`` and ``Y.StorageLite.setItem`` are used to get and 
+set persistent data. Note that you must use the ``Y`` instance to access the module.
 
 .. code-block:: javascript
 
@@ -86,7 +96,8 @@ In the ``bind`` method, ``Y.StorageLite.getItem`` and ``Y.StorageLite.setItem`` 
        var keyname = 'storage-lite-example', notes = node.one('#notes');
        // Populate the textarea with the stored note
        // text on page load.
-       notes.set('value', Y.StorageLite.getItem(keyname) || '');    // Save the contents of the textarea after
+       notes.set('value', Y.StorageLite.getItem(keyname) || '');    
+       // Save the contents of the textarea after
        // each keystroke.
        notes.on('keyup', function() {
          Y.StorageLite.setItem(keyname, notes.get('value')); 
@@ -109,7 +120,8 @@ To set up and run ``yui_module``:
 
    ``$ mojito create mojit Notepad``
 
-#. To specify that your application use the ``Notepad`` mojit and be deployed to the client, replace the code in ``application.json`` with the following:
+#. To specify that your application use the ``Notepad`` mojit and be deployed to the client, replace 
+   the code in ``application.json`` with the following:
 
    .. code-block:: javascript
 
@@ -168,7 +180,8 @@ To set up and run ``yui_module``:
         };
       }, '0.0.1', {requires: ['mojito']});
 
-#. To create the binder for getting user input and storing it with the Storage Lite module, create the file ``binders/index.js`` with the following:
+#. To create the binder for getting user input and storing it with the Storage Lite module, create 
+   the file ``binders/index.js`` with the following:
 
    .. code-block:: javascript
 
@@ -219,9 +232,11 @@ To set up and run ``yui_module``:
 
    http://localhost:8666/
 
-#. Point to the same URL in a new tab. You should see the same text that you entered in the form before.
+#. Point to the same URL in a new tab. You should see the same text that you entered in the form 
+   before.
 
-#. Open the same URL in a new browser window. Once again, you should see the same text that you entered earlier.
+#. Open the same URL in a new browser window. Once again, you should see the same text that you 
+   entered earlier.
 
 Source Code
 ###########

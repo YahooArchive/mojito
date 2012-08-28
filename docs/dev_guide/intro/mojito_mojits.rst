@@ -109,7 +109,7 @@ See `Addons <../api_overview/mojito_addons.html>`_ in the
 View Files
 ##########
 
-View files are called view templates in Mojito. View templates can contain both HTML
+View files are called templates in Mojito. Templates can contain both HTML
 and templating tags/expressions, such as Mustache or Handlebars, and are rendered into markup that is
 outputted to the client.
 
@@ -125,7 +125,7 @@ Mojit Structure
 One of the key characteristics of mojits is that portions of their code may run
 in different environments, depending upon particular attributes of the client
 runtime. Specifically, while the raw HTML rendering and event handlers always
-run within the client, the remaining portions (such as view template
+run within the client, the remaining portions (such as template
 processing) may run within the client, if it is sufficiently capable, or on the
 back end, if it is not.
 
@@ -162,7 +162,7 @@ Mojit Definition
 
 A mojit definition is a set of artifacts that collectively define a reusable
 unit of functionality known as a mojit. A mojit definition includes the mojit
-implementation (e.g., JavaScript code, view template files, CSS, etc.)
+implementation (e.g., JavaScript code, template files, CSS, etc.)
 and has the following characteristics:
 
 - uniquely identified, and thus, capable of being referenced from and shared

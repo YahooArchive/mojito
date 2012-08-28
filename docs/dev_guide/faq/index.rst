@@ -51,7 +51,7 @@ Data
 
 * :ref:`How do I get content for my mojits? <moj_content>`  
 * :ref:`How is data shared among mojits? <moj_share_data>`
-* :ref:`How does a parent mojit send data to the view template? <moj_parent_mojit_data>`
+* :ref:`How does a parent mojit send data to the template? <moj_parent_mojit_data>`
 * :ref:`In Mojito applications, how are parameters passed from the controller to binders? <moj_params_controller_binder>`
 * :ref:`How can data be passed from a parent mojit to its child mojits? <moj_pass_data_parent_to_child>`
 
@@ -64,7 +64,7 @@ Binders
 CSS/JavaScript Assets
 ---------------------
 
-* :ref:`How do I add assets view templates? <moj_assets>`
+* :ref:`How do I add assets templates? <moj_assets>`
 * :ref:`How are assets dynamically added to views? <moj_dyn_assets>`
 
 Views
@@ -74,7 +74,7 @@ Views
 * :ref:`Do I have to create separate mojits for different devices? <moj_devices>` 
 * :ref:`How do I refresh the view on the client? <moj_refresh_view>`
 * :ref:`Can I use a different templating system other than Handlebars? <moj_different_templating>`
-* :ref:`Can the mojit controller specify which view template should be rendered? <moj_controller_specify_view>`
+* :ref:`Can the mojit controller specify which template should be rendered? <moj_controller_specify_view>`
 
 Logging/Testing
 ---------------
@@ -278,10 +278,10 @@ General
        * From the server and before mojits are executed, middleware can be used to share
          information about static handling and routing.
        * Assets and data can be shared through the 
-         `view template <../reference/glossary.html#view-template>`_ of a parent mojit or through a 
+         `template <../reference/glossary.html#view-template>`_ of a parent mojit or through a 
          frame mojit such as 
          `HTMLFrameMojit <../topics/mojito_framework_mojits.html#htmlframemojit>`_ that creates
-         a parent view template.
+         a parent template.
     
     **Rollup/Minify Assets** 
     
@@ -470,11 +470,11 @@ Data
 ------------
 
 .. _moj_parent_mojit_data:
-.. topic:: **How does a parent mojit send data to the view template?** 
+.. topic:: **How does a parent mojit send data to the template?** 
 
     From the controller of the parent mojit, pass the ``template`` object to ``ac.done`` as seen below. The ``template`` object can contain 
-    key-value pairs that can be added to the view template as Handlebars expressions. For example, the key ``foo`` in the ``template`` object shown here
-    can be used in the view template as ``{{foo}}``, which will be replaced by the value 'bar' when the view template is rendered.
+    key-value pairs that can be added to the template as Handlebars expressions. For example, the key ``foo`` in the ``template`` object shown here
+    can be used in the template as ``{{foo}}``, which will be replaced by the value 'bar' when the template is rendered.
     
     ``// Inside parent mojit``
     
@@ -521,10 +521,10 @@ CSS/JavaScript Assets
 ---------------------
 
 .. _moj_assets:
-.. topic:: **How do I add assets view templates?**
+.. topic:: **How do I add assets templates?**
 
     You define the location of application-level or mojit-level assets in the ``application.json`` file. Once the location 
-    of your assets has been configured, you can statically add the path to the assets in your view template. You can
+    of your assets has been configured, you can statically add the path to the assets in your template. You can
     also add assets to your view using the `Assets addon <../../api/classes/Assets.common.html>`_ if your application is using the ``HTMLFrameMojit``.
     See the `Assets <../topics/mojito_assets.html>`_ documentation for implementation details.
     
@@ -585,7 +585,7 @@ Views
 ------------
 
 .. _moj_controller_specify_view:  
-.. topic:: **Can the mojit controller specify which view template should be rendered?** 
+.. topic:: **Can the mojit controller specify which template should be rendered?** 
 
     Yes, you can a ``view`` object as the second parameter to ``ac.done`` that specifies which template should receive the data and be rendered.
     See `Controllers: Specifying the View <../intro/mojito_mvc.html#specifying-the-view>`_ for details.

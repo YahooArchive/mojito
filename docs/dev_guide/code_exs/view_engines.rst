@@ -11,7 +11,7 @@ Summary
 #######
 
 This example shows how to install a third-party rendering engine (Embedded Javascript), create a 
-view engine addon that uses the installed rendering engine, and create a view template for the view 
+view engine addon that uses the installed rendering engine, and create a template for the view 
 engine. Mojito uses the `Handlebars <https://github.com/wycats/handlebars.js/>`_ rendering engine 
 by default.
 
@@ -19,7 +19,7 @@ The following topics will be covered:
 
 - using ``npm`` to install the rendering engine
 - creating a view engine addon
-- using Embedded JavaScript (EJS) in the view template
+- using Embedded JavaScript (EJS) in the template
 
 
 Implementation Notes
@@ -186,7 +186,7 @@ compile the view.
      ...
         
 The ``compile`` method is required to run the command ``mojito compile views``. In our example, 
-the ``compile`` method also reads the view template file and returns a string to ``render``
+the ``compile`` method also reads the template file and returns a string to ``render``
 so that it can be rendered by ``ejs``. 
 
 .. code-block:: javascript
@@ -263,7 +263,7 @@ To set up and run ``adding_view_engines``:
       ]
 
 
-#. To configure routing so controller functions using different view templates are used, create the 
+#. To configure routing so controller functions using different templates are used, create the 
    file ``routes.json`` with the following:
 
    .. code-block:: javascript
@@ -367,7 +367,7 @@ To set up and run ``adding_view_engines``:
         };
       }, '0.0.1', {requires: ['mojito', 'myMojitModelFoo']});
  
-#. Create the view template ``views/default_ve.hb.html`` that uses Handlebar expressions with the 
+#. Create the template ``views/default_ve.hb.html`` that uses Handlebar expressions with the 
    following:
 
    .. code-block:: html
@@ -389,7 +389,7 @@ To set up and run ``adding_view_engines``:
         </ul>
       </div>
 
-#. Create the view template ``views/added_ve.ejs.html`` that uses EJS with the following:
+#. Create the template ``views/added_ve.ejs.html`` that uses EJS with the following:
 
    .. code-block:: html
    
@@ -407,12 +407,12 @@ To set up and run ``adding_view_engines``:
 
    ``$ mojito start``
    
-#. Open the following URL in your browser to see the view template rendered by the Handlebars 
+#. Open the following URL in your browser to see the template rendered by the Handlebars 
    rendering engine.   
 
    `http://localhost:8666/ <http://localhost:8666/>`_
    
-#. Now see the view template rendered by the EJS rendering engine at the following URL:
+#. Now see the template rendered by the EJS rendering engine at the following URL:
 
    `http://localhost:8666/ejs <http://localhost:8666/ejs>`_   
 
@@ -425,4 +425,4 @@ Source Code
 
 - `View Engines <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/adding_view_engines/>`_
 - `View Engine Addon <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/adding_view_engines/addons/view-engines/ejs.server.js>`_
-- `View Templates <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/adding_view_engines/mojits/myMojit/views/>`_
+- `Templates <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/adding_view_engines/mojits/myMojit/views/>`_
