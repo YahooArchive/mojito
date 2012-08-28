@@ -6,7 +6,7 @@ Client Object
 
 When Mojito starts up, the global object ``Y.mojito.client`` that represents the client runtime is 
 created. The ``client`` object can be used to pause and resume mojits running within the page.  
-See `Class Y.mojito.Client <../../api/Y.mojito.Client.html>`_ in the 
+See `Class Y.mojito.Client <../../api/classes/Y.mojito.Client.html>`_ in the 
 `Mojito API Reference <../../api/>`_ for more details.
 
 Pausing Mojits
