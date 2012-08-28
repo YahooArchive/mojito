@@ -169,7 +169,7 @@ function runFuncTests (callback) {
         var cmd = runCommand(
             cwd + '/func/',
             "arrow",
-            [cwd + "/func/**/test_descriptor.json", "--browser=firefox", "--reuseSession", "--report=true", "--reportFolder=" + arrowReportDir],
+            [cwd + "/func/**/*_descriptor.json", "--browser=firefox", "--reuseSession", "--report=true", "--reportFolder=" + arrowReportDir],
             function (code) {
                 callback(code);
             }
