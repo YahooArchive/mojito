@@ -35,14 +35,21 @@ YUI.add('{{name}}BinderIndex', function(Y, NAME) {
         bind: function(node) {
             var me = this;
             this.node = node;
-            node.all('dt').on('mouseenter', function(evt) {
-                var dd = '#dd_' + evt.target.get('text');
-                me.node.one(dd).addClass('sel');
-            });
-            node.all('dt').on('mouseleave', function(evt) {
-                var dd = '#dd_' + evt.target.get('text');
-                me.node.one(dd).removeClass('sel');
-            });
+            /**
+             * Example code for the bind method:
+             *
+             * node.all('dt').on('mouseenter', function(evt) {
+             *   var dd = '#dd_' + evt.target.get('text');
+             *   me.node.one(dd).addClass('sel');
+             *
+             * });
+             * node.all('dt').on('mouseleave', function(evt) {
+             *   
+             *   var dd = '#dd_' + evt.target.get('text');
+             *   me.node.one(dd).removeClass('sel');
+             *
+             * });
+             */
         }
 
     };
