@@ -89,7 +89,7 @@ location.
 
    ``$ mojito test``
 
-   Output is written to ````{CWD}/artifacts/test/result.xml``, where ``{CWD}`` is the current working 
+   Output is written to ``{CWD}/artifacts/test/result.xml``, where ``{CWD}`` is the current working 
    directory.
 
 - To run tests for an application:
