@@ -44,7 +44,7 @@ YUI.add('BroadcastBinderDestroyDyno', function(Y, NAME) {
                 var child = findChild(source, children);
                 var order = child.config.order;
                 if(child.config.order == "1"){
-                    mp.destroyChild(child.viewId);
+                    mp.destroyChild(child.templateId);
                 }
             });
         },
@@ -61,7 +61,7 @@ YUI.add('BroadcastBinderDestroyDyno', function(Y, NAME) {
     function findChild(guid, children) {
         var n;
         for (n in children) {
-            if (children[n].viewId === guid) {
+            if (children[n].templateId === guid) {
                 return children[n];
             }
         }

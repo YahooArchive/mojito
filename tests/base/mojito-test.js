@@ -41,7 +41,7 @@ YUI.add('addon-rs-selector', function(Y, NAME) {});
 YUI.add('addon-rs-url', function(Y, NAME) {});
 YUI.add('addon-rs-yui', function(Y, NAME) {});
 
-/* VIEW ENGINE ADDONS */
+/* TEMPLATE ENGINE ADDONS */
 YUI.add('mojito-hb', function(Y, NAME) {});
 YUI.add('mojito-mu', function(Y, NAME) {});
 
@@ -66,7 +66,7 @@ YUI.add('mojito-client-store', function(Y, NAME) {});
 // Don't add mojito-tunnel-client.  It's optional, so adding always will
 // confuse our test that makes sure it's not loaded sometimes :)
 YUI.add('mojito-util', function(Y, NAME) {});
-YUI.add('mojito-view-renderer', function(Y, NAME) {});
+YUI.add('mojito-template-renderer', function(Y, NAME) {});
 
 /*
  * Add a mojito-test module containing the mocking support we want for other

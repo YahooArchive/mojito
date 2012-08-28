@@ -59,13 +59,13 @@ YUI.add('ActionContextMojit', function(Y) {
                 actionContext.flush({data:"Hello, world!"}, 'json');
                 actionContext.done();
             }else if(test=="done8"){
-                actionContext.done({data:"Hello, world!--from done"}, {view: {name: "mytemplate"}});
+                actionContext.done({data:"Hello, world!--from done"}, {template: {name: "mytemplate"}});
             }else if(test=="done9"){
-                actionContext.done({ foo: null }, {view: {name: "mytemplate1"}});
+                actionContext.done({ foo: null }, {template: {name: "mytemplate1"}});
             }else if(test=="done10"){
-                actionContext.done({ foo: [ 1, 2, null, 4 ]}, {view: {name: "mytemplate1"}} );
+                actionContext.done({ foo: [ 1, 2, null, 4 ]}, {template: {name: "mytemplate1"}} );
             }else if(test=="flush8"){
-                actionContext.flush({data:"Hello, world!--from flush"}, {view: {name: "mytemplate"}});
+                actionContext.flush({data:"Hello, world!--from flush"}, {template: {name: "mytemplate"}});
                 actionContext.done();
             }else{
                 actionContext.flush("Hello, world!--from flush,");

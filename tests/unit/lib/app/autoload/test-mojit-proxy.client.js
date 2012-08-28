@@ -32,7 +32,7 @@ YUI({useBrowserConsole: true}).use(
                     base: 'testBase',
                     node: 'testNode',
                     element: 'testElement',
-                    viewId: 'testViewId',
+                    templateId: 'testTemplateId',
                     instanceId: 'testInstanceId',
                     client: 'testClient',
                     store: 'testStore',
@@ -49,7 +49,7 @@ YUI({useBrowserConsole: true}).use(
                     guid: 'yui_3_5_1_23_1342581977495_9',
                     instanceId: 'yui_3_5_1_23_1342581977495_9',
                     type: 'Example',
-                    viewId: 'yui_3_5_1_23_1342581977495_7'
+                    templateId: 'yui_3_5_1_23_1342581977495_7'
                 };
             },
 
@@ -97,10 +97,10 @@ YUI({useBrowserConsole: true}).use(
                 Y.Mock.expect(mojitProxy._client, {
                     method: 'doRender',
                     args: [Y.Mock.Value.Object, Y.Mock.Value.Object, Y.Mock.Value.String, Y.Mock.Value.Function],
-                    run: function (mp, data, view, cb) {
+                    run: function (mp, data, template, cb) {
                         Y.Assert.areEqual(mojitProxy, mp);
                         Y.Assert.areEqual('testName', data.name);
-                        Y.Assert.areEqual('index', view);
+                        Y.Assert.areEqual('index', template);
                         Y.Assert.isFunction(cb);
                     }
                 });
@@ -165,11 +165,11 @@ YUI({useBrowserConsole: true}).use(
                 Y.Mock.verify(mojitProxy._client);
             },
 
-            "test refreshView": function () {
+            "test refreshTemplate": function () {
                 var mojitProxy = this.mojitProxy;
                 mojitProxy._client = Y.Mock();
                 Y.Mock.expect(mojitProxy._client, {
-                    method: 'refreshMojitView',
+                    method: 'refreshMojitTemplate',
                     args: [Y.Mock.Value.Object, Y.Mock.Value.Object, Y.Mock.Value.Function],
                     run: function (mp, options, cb) {
                         Y.Assert.areEqual(mojitProxy, mp);
@@ -178,7 +178,7 @@ YUI({useBrowserConsole: true}).use(
                         Y.Assert.areEqual('testVal', options.params.body.testKey);
                     }
                 });
-                mojitProxy.refreshView({
+                mojitProxy.refreshTemplate({
                     params: {
                         body: {
                             testKey: 'testVal'
@@ -216,7 +216,7 @@ YUI({useBrowserConsole: true}).use(
             "test getId": function () {
                 var mojitProxyConfig = this.mojitProxyConfig,
                     id = this.mojitProxy.getId();
-                Y.Assert.areEqual(mojitProxyConfig.viewId, id);
+                Y.Assert.areEqual(mojitProxyConfig.templateId, id);
             },
 
             "test getChildren": function () {
@@ -226,7 +226,7 @@ YUI({useBrowserConsole: true}).use(
 
                 mojitProxy._client = {
                     _mojits: {
-                        testViewId: {
+                        testTemplateId: {
                             children: {
                                 example: this.exampleChild
                             }
@@ -239,7 +239,7 @@ YUI({useBrowserConsole: true}).use(
                 Y.Assert.areEqual(exampleChild.guid, children.example.guid);
                 Y.Assert.areEqual(exampleChild.instanceId, children.example.instanceId);
                 Y.Assert.areEqual(exampleChild.type, children.example.type);
-                Y.Assert.areEqual(exampleChild.viewId, children.example.viewId);
+                Y.Assert.areEqual(exampleChild.templateId, children.example.templateId);
             },
 
             "test destroyChild with valid child id": function () {
@@ -257,7 +257,7 @@ YUI({useBrowserConsole: true}).use(
                     method: 'destroyMojitProxy',
                     args: [Y.Mock.Value.String, Y.Mock.Value.Boolean],
                     run: function (id, retainNode) {
-                        Y.Assert.areEqual(exampleChild.viewId, id);
+                        Y.Assert.areEqual(exampleChild.templateId, id);
                         Y.Assert.isTrue(retainNode);
                     }
                 });
@@ -265,7 +265,7 @@ YUI({useBrowserConsole: true}).use(
                 mojitProxy.destroyChild('example', true);
             },
 
-            "test destroyChild with valid viewId": function () {
+            "test destroyChild with valid templateId": function () {
                 var exampleChild = this.exampleChild,
                     mojitProxy = this.mojitProxy;
 
@@ -280,12 +280,12 @@ YUI({useBrowserConsole: true}).use(
                     method: 'destroyMojitProxy',
                     args: [Y.Mock.Value.String, Y.Mock.Value.Boolean],
                     run: function (id, retainNode) {
-                        Y.Assert.areEqual(exampleChild.viewId, id);
+                        Y.Assert.areEqual(exampleChild.templateId, id);
                         Y.Assert.isTrue(retainNode);
                     }
                 });
 
-                mojitProxy.destroyChild(this.exampleChild.viewId, true);
+                mojitProxy.destroyChild(this.exampleChild.templateId, true);
             },
 
             "test destroyChild with invalid ID": function () {
@@ -298,13 +298,13 @@ YUI({useBrowserConsole: true}).use(
                     };
                 };
 
-                mojitProxy.destroyChild('invalidViewId', true);
+                mojitProxy.destroyChild('invalidTemplateId', true);
             },
 
             "test destroyChildren": function () {
                 var exampleChild1 = this.exampleChild,
                     exampleChild2 = Y.merge(this.exampleChild, {
-                        viewId: 'yui_3_5_1_23_1342581977495_8'
+                        templateId: 'yui_3_5_1_23_1342581977495_8'
                     }),
                     mojitProxy = this.mojitProxy,
                     childrenDestroyed = [];
@@ -335,7 +335,7 @@ YUI({useBrowserConsole: true}).use(
                     method: 'destroyMojitProxy',
                     args: [Y.Mock.Value.String, Y.Mock.Value.Boolean],
                     run: function (id, retainNode) {
-                        Y.Assert.areEqual(mojitProxyConfig.viewId, id);
+                        Y.Assert.areEqual(mojitProxyConfig.templateId, id);
                         Y.Assert.isTrue(retainNode);
                     }
                 });
@@ -369,7 +369,7 @@ YUI({useBrowserConsole: true}).use(
                     method: 'doUnlisten',
                     args: [Y.Mock.Value.String],
                     run: function (id) {
-                        Y.Assert.areEqual(mojitProxyConfig.viewId, id);
+                        Y.Assert.areEqual(mojitProxyConfig.templateId, id);
                     }
                 });
                 mojitProxy._destroy(false);

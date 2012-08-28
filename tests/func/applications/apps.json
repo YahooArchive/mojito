@@ -88,8 +88,8 @@
             "group": "example"
         },
         {
-            "name":"simple_view",
-            "path": "../../../examples/developer-guide/simple_view",
+            "name":"simple_template",
+            "path": "../../../examples/developer-guide/simple_template",
             "port": "4087",
             "enabled": "true",
             "group": "example"
@@ -277,8 +277,8 @@
             "group": "example"
         },
         {
-            "name":"device_views",
-            "path": "../../../examples/developer-guide/device_views",
+            "name":"device_templates",
+            "path": "../../../examples/developer-guide/device_templates",
             "port": "4117",
             "enabled": "true",
             "group": "example"

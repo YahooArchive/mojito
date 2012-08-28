@@ -25,7 +25,7 @@ YUI.add('PagedFlickr2Binder', function(Y, NAME) {
 
                 evt.halt();
 
-                self.mojitProxy.refreshView({
+                self.mojitProxy.refreshTemplate({
                     rpc: true,
                     params: {
                         route: {page: page}

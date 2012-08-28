@@ -11,9 +11,9 @@ YUI.add('lifecycle', function(Y) {
     });
     Y.mojito.Client.subscribe('pre-attach-binders', function(data) {
         Y.Object.each(data.binderMap, function(key) {
-            Y.log("**********key[viewId]***********"+ key['viewId']);
-            data.binderMap[key['viewId']].config.config1="mynewconfig";
-            Y.log("**********k2***********"+ data.binderMap[key['viewId']].config.config1);
+            Y.log("**********key[templateId]***********"+ key['templateId']);
+            data.binderMap[key['templateId']].config.config1="mynewconfig";
+            Y.log("**********k2***********"+ data.binderMap[key['templateId']].config.config1);
         });
     });
 }, '0.0.1', {requires: ['mojito-client']});

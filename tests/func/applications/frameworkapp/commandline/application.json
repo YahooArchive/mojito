@@ -30,11 +30,11 @@
 								"mojito create mojit testmojit"
 							]
 						},
-						"compile_views": {
+						"compile_templates": {
 							"cmd": [
 								"cp -R ../common /tmp/",
 								"cd /tmp/common",
-								"mojito compile views"
+								"mojito compile templates"
 							]
 						}
 					}

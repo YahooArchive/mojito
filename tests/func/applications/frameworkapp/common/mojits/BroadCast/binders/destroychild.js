@@ -38,7 +38,7 @@ YUI.add('BroadcastBinderDestroy', function(Y, NAME) {
          */
         bind: function(node) {
             this.node = node;
-            //var binderId = this.mp._viewId;
+            //var binderId = this.mp._templateId;
             //Y.log("**********binderId*********"+binderId);
             //var instanceId = this.mp._instanceId;
             //Y.log("**********instanceId*********"+instanceId);

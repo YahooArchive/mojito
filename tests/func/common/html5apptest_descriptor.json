@@ -326,10 +326,10 @@
                     "page" : "$$config.baseUrl$$/?test=abc"
                 }
             },
-			"testmojitproxyrefreshview" : {
+			"testmojitproxyrefreshtemplate" : {
                 "group" : "smoke,html5app",
                 "params" : {
-                    "test" : "testmojitproxyrefreshview.js",
+                    "test" : "testmojitproxyrefreshtemplate.js",
                     "page" : "$$config.baseUrl$$/"
                 }
             },

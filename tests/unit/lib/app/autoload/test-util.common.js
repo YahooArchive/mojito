@@ -371,18 +371,18 @@
             OA.areEqual(expected['content-type'], result['content-type'], "result array should only have last content-type value");
         },
 
-        'test metaMerge does not merge view data': function() {
+        'test metaMerge does not merge template data': function() {
             var to = {
-                view: 'foo'
+                template: 'foo'
             };
             var from = {
-                view: 'bar'
+                template: 'bar'
             };
             var expected = {
-                view: 'foo'
+                template: 'foo'
             };
             var result = Y.mojito.util.metaMerge(to, from);
-            A.areSame(expected.view, result.view, "meta view data should be retained");
+            A.areSame(expected.template, result.template, "meta template data should be retained");
         },
 
         // is util.array.remove() dead code? no contructor but this.push.apply()

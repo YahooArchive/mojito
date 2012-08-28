@@ -55,7 +55,7 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                     instance: {
                         type: 'Type',
                         config: 'instance config',
-                        views: 'views'
+                        templates: 'templates'
                     }
                 },
                 models: {},
@@ -107,7 +107,7 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                     instance: {
                         type: 'Type',
                         config: 'instance config',
-                        views: 'views'
+                        templates: 'templates'
                     }
                 },
                 models: {},
@@ -159,7 +159,7 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                     instance: {
                         type: 'Type',
                         config: 'instance config',
-                        views: 'views'
+                        templates: 'templates'
                     }
                 },
                 models: {},
@@ -211,7 +211,7 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                     instance: {
                         type: 'Type',
                         config: 'instance config',
-                        views: 'views'
+                        templates: 'templates'
                     }
                 },
                 models: {},
@@ -300,7 +300,7 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                     instance: {
                         type: 'Type',
                         config: 'instance config',
-                        views: 'views'
+                        templates: 'templates'
                     }
                 },
                 models: {},

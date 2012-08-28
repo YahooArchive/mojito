@@ -14,35 +14,35 @@ YUI().use('mojito-partial-addon', 'test', function (Y) {
 
         name: 'render() tests',
 
-        'test callback called with error when view is not found': function() {
+        'test callback called with error when template is not found': function() {
             var ac = {},
                 command = {
                     instance: {
-                        views: {}
+                        templates: {}
                     }
                 };
 
             var mockCallback = Mock();
             Mock.expect(mockCallback, {
                 method: 'callback',
-                args: ['View "missingView" not found']
+                args: ['Template "missingTemplate" not found']
             });
 
             var addon = new Y.mojito.addons.ac.partial(command, null, ac);
-            addon.render(null, 'missingView', mockCallback.callback);
+            addon.render(null, 'missingTemplate', mockCallback.callback);
 
             Mock.verify(mockCallback);
         },
 
-        'test correctly invokes named view engine': function() {
+        'test correctly invokes named template engine': function() {
             var ac = {},
                 data = { key: 'value' },
                 command = {
                     instance: {
                         type: 'myInstanceType',
-                        views: {
-                            myView: {
-                                engine: 'myViewEngine',
+                        templates: {
+                            myTemplate: {
+                                engine: 'myTemplateEngine',
                                 'content-path': 'myContentPath'
                             }
                         }
@@ -59,15 +59,15 @@ YUI().use('mojito-partial-addon', 'test', function (Y) {
 
             var mockYMojito = Mock();
             Mock.expect(mockYMojito, {
-                method: 'ViewRenderer',
-                args: ['myViewEngine'],
+                method: 'TemplateRenderer',
+                args: ['myTemplateEngine'],
                 returns: mockRenderer
             });
 
             var yMojito = Y.mojito;
             Y.mojito = mockYMojito;
 
-            addon.render(data, 'myView', null);
+            addon.render(data, 'myTemplate', null);
 
             Y.mojito = yMojito;
 
@@ -75,12 +75,12 @@ YUI().use('mojito-partial-addon', 'test', function (Y) {
             Mock.verify(mockRenderer);
         },
 
-        'test passes a valid adapter to the view engine': function() {
+        'test passes a valid adapter to the template engine': function() {
             var ac = {},
                 command = {
                     instance: {
-                        views: {
-                            myView: {}
+                        templates: {
+                            myTemplate: {}
                         }
                     }
                 };
@@ -91,8 +91,8 @@ YUI().use('mojito-partial-addon', 'test', function (Y) {
                 args: [null, 'flushdone']
             });
 
-            var yMojitoViewRenderer = Y.mojito.ViewRenderer;
-            Y.mojito.ViewRenderer = function() {
+            var yMojitoTemplateRenderer = Y.mojito.TemplateRenderer;
+            Y.mojito.TemplateRenderer = function() {
                 this.render = function(a, b, c, adapter, d) {
                     adapter.flush('flush');
                     adapter.done('done');
@@ -100,9 +100,9 @@ YUI().use('mojito-partial-addon', 'test', function (Y) {
             };
 
             var addon = new Y.mojito.addons.ac.partial(command, null, ac);
-            addon.render(null, 'myView', mockCallback.callback);
+            addon.render(null, 'myTemplate', mockCallback.callback);
 
-            Y.mojito.ViewRenderer = yMojitoViewRenderer;
+            Y.mojito.TemplateRenderer = yMojitoTemplateRenderer;
 
             Mock.verify(mockCallback);
         }

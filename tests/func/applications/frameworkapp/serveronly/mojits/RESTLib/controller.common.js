@@ -283,7 +283,7 @@ YUI.add('RESTLib', function(Y) {
 	        	//console.log("I am here");
 	        	//actionContext.http.setHeader('content-type', 'text/html');
 	        	//actionContext.done("<p id=\"output\">This is a very simple web service</p>");
-	        	actionContext.done({output: "This is a very simple web service"}, {view: {name: "wsOutput"}});
+	        	actionContext.done({output: "This is a very simple web service"}, {template: {name: "wsOutput"}});
 	        },
 
 	        myWS: function(actionContext){

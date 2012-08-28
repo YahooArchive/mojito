@@ -26,8 +26,8 @@ YUI({useBrowserConsole: true}).use(
 
         suite.add(new Y.Test.Case({
             setUp: function () {
-                this.viewEngine = new Y.mojito.addons.viewEngines.hb();
-                this.viewEngine._loadTemplate = function (tmpl, cb) {
+                this.templateEngine = new Y.mojito.addons.templateEngines.hb();
+                this.templateEngine._loadTemplate = function (tmpl, cb) {
                     var template = TEMPLATES[tmpl];
                     cb(null, template);
                 };
@@ -41,7 +41,7 @@ YUI({useBrowserConsole: true}).use(
                     },
                     adapter = Y.Mock(),
                     meta = {
-                        view: {}
+                        template: {}
                     };
                 Y.Mock.expect(adapter, {
                     method: 'flush',
@@ -54,7 +54,7 @@ YUI({useBrowserConsole: true}).use(
                     method: 'done',
                     args: ['', meta]
                 });
-                this.viewEngine.render(data, 'test', 'oldObjNotation.hb.html', adapter, meta);
+                this.templateEngine.render(data, 'test', 'oldObjNotation.hb.html', adapter, meta);
             },
 
             'test render dot notation': function () {
@@ -65,7 +65,7 @@ YUI({useBrowserConsole: true}).use(
                     },
                     adapter = Y.Mock(),
                     meta = {
-                        view: {}
+                        template: {}
                     };
                 Y.Mock.expect(adapter, {
                     method: 'flush',
@@ -78,7 +78,7 @@ YUI({useBrowserConsole: true}).use(
                     method: 'done',
                     args: ['', meta]
                 });
-                this.viewEngine.render(data, 'test', 'dotNotation.hb.html', adapter, meta);
+                this.templateEngine.render(data, 'test', 'dotNotation.hb.html', adapter, meta);
             }
         }));
 

@@ -32,7 +32,7 @@ YUI.add('MojitProxyMojit', function(Y) {
         },
         
         'refreshtest': function(ac) {
-            ac.done({title: 'Testing ac.refreshView'})
+            ac.done({title: 'Testing ac.refreshTemplate'})
         },
         
         'pauseresumetest': function(ac) {

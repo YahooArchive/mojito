@@ -96,7 +96,7 @@
             "restWS": {
                 "type":  "RESTLib"
             },
-            "refreshViewFrame": {
+            "refreshTemplateFrame": {
                   "type": "HTMLFrameMojit",
                   "config": {
                       "deploy": true,

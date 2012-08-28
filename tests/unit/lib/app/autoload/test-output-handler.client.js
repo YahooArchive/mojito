@@ -23,16 +23,16 @@ YUI({useBrowserConsole: true}).use(
 
         suite.add(new Y.Test.Case({
             setUp: function () {
-                this.viewId = 'yui_3_5_1_23_1342581977495_7';
+                this.templateId = 'yui_3_5_1_23_1342581977495_7';
                 this.callback = function () {};
                 this.mojitoClient = Y.Mock();
-                this.outputHandler = new Y.mojito.OutputHandler(this.viewId, this.callback, this.mojitoClient);
+                this.outputHandler = new Y.mojito.OutputHandler(this.templateId, this.callback, this.mojitoClient);
             },
 
             "test constructor": function() {
                 var outputHandler = this.outputHandler;
                 Y.Assert.isObject(outputHandler);
-                Y.Assert.areEqual(this.viewId, outputHandler.viewId);
+                Y.Assert.areEqual(this.templateId, outputHandler.templateId);
                 Y.Assert.areEqual(this.callback, outputHandler.callback);
                 Y.Assert.areEqual('', outputHandler.buffer);
                 Y.Assert.areEqual(this.mojitoClient, outputHandler.mojitoClient);
@@ -75,7 +75,7 @@ YUI({useBrowserConsole: true}).use(
                                 instanceId: 'yui_3_5_1_35_1342738202643_10',
                                 name: 'FlickrDetailBinderIndex',
                                 type: 'FlickrDetail',
-                                viewId: 'yui_3_5_1_2_1342738213108_12'
+                                templateId: 'yui_3_5_1_2_1342738213108_12'
                             }
                         },
                         http: {
@@ -83,7 +83,7 @@ YUI({useBrowserConsole: true}).use(
                                 'content-type': ['application/json; charset=utf-8']
                             }
                         },
-                        view: {
+                        template: {
                             binder: 'index',
                             cacheTemplates: true,
                             id: 'yui_3_5_1_2_1342738213108_12',
@@ -95,12 +95,12 @@ YUI({useBrowserConsole: true}).use(
                 Y.Mock.expect(this.mojitoClient, {
                     method: 'attachBinders',
                     args: [Y.Mock.Value.Object, Y.Mock.Value.String, Y.Mock.Value.String],
-                    run: function (binders, viewId, metaViewId) {
+                    run: function (binders, templateId, metaTemplateId) {
                         console.log('attachBinders called');
                         Y.Assert.isObject(binders);
                         Y.Assert.isObject(binders.yui_3_5_1_2_1342738213108_12);
-                        Y.Assert.areEqual(self.viewId, viewId);
-                        Y.Assert.areEqual(inputMeta.view.id, metaViewId);
+                        Y.Assert.areEqual(self.templateId, templateId);
+                        Y.Assert.areEqual(inputMeta.template.id, metaTemplateId);
                     }
                 });
                 outputHandler.callback = function (err, data, meta) {

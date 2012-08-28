@@ -24,11 +24,11 @@ YUI.add('MojitProxyMojitRefreshtestIndex', function(Y, NAME) {
             self.node = node;
             this.handle = self.node.one('input').on('click', function(){
                 Y.log("I am in the click function");
-                self.mp.refreshView();
+                self.mp.refreshTemplate();
             }, this);
         },
 
-        onRefreshView: function() {
+        onRefreshTemplate: function() {
             this.handle.detach();
             this.bind.apply(this, arguments);
         }
