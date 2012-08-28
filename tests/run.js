@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 
 var fs = require('fs'),
+    libpath = require('path'),
     program = require('commander'),
     async = require('async'),
     child = require('child_process'),
     cwd = __dirname,
     pids = [],
+    pidNames = {},
     returnVal = 0;
 
 program.command('test')
@@ -78,6 +80,7 @@ function startArrowServer (callback) {
     });
     p.stdout.on('data', listener);
     pids.push(p.pid);
+    pidNames[p.pid] = 'arrow_server';
     timeout = setTimeout(function () {
         p.stdout.removeListener('data', listener); // Stop printing output from arrow_server
         callback(null);
@@ -158,6 +161,7 @@ function startArrowSelenium (callback) {
     var p = runCommand(cwd+"/func/applications/frameworkapp/common", "arrow_selenium", ["--open=firefox"]);
     setTimeout(function () {
         pids.push(p.pid);
+        pidNames[p.pid] = 'arrow_selenium';
         callback(null);
     }, 10000);
 }
@@ -182,8 +186,13 @@ function runFuncTests (callback) {
 
 function finalize (err, results) {
     for(var i=0; i < pids.length; i++) {
-        console.log('Shutting down pid ' + pids[i]);
-        process.kill(pids[i]);
+        console.log('Shutting down pid ' + pids[i] + ' -- ' + pidNames[pids[i]]);
+        try {
+            process.kill(pids[i]);
+        }
+        catch(e) {
+            console.log('FAILED to shut down pid ' + pids[i] + ' -- ' + pidNames[pids[i]]);
+        }
     }
     if (err) {
         console.log(err);
@@ -234,6 +243,7 @@ function runMojitoApp (basePath, path, port, params, callback) {
     console.log('Starting ' + path + ' at port ' + port + ' with params ' + (params || 'empty'));
     var p = runCommand(basePath + '/' + path, "mojito", ["start", port, "--context", params], function () {});
     pids.push(p.pid);
+    pidNames[p.pid] = libpath.basename(path) + ':' + port + (params ? '?' + params : '');
     // Give each app a second to start
     setTimeout(function () { callback(null) }, 1000);
 }
@@ -243,6 +253,7 @@ function runStaticApp (basePath, path, port, params, callback) {
     console.log('Starting static server for ' + path + ' at port ' + port);
     var p = runCommand(basePath + '/' + path, "node", [cwd + "/base/staticServer.js", port], function () {});
     pids.push(p.pid);
+    pidNames[p.pid] = 'static ' + libpath.basename(path) + ':' + port;
     // Give each app a second to start
     setTimeout(function () { callback(null) }, 1000);
 }
