@@ -190,7 +190,7 @@ function startArrowSelenium (cmd, callback) {
         pids.push(p.pid);
         pidNames[p.pid] = 'arrow_selenium';
         callback(null);
-    }, 10000);
+    });
 }
 
 function runFuncTests (cmd, callback) {
