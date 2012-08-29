@@ -2,16 +2,16 @@
 
 echo "Starting YUI install: `pwd`"
 
+cd "$(dirname "$0")"
+
+echo "cd: `pwd`"
+
 # YUI bleeding
 git clone git://github.com/yui/yui3.git yui-src
 wait
 cd ./yui-src/
-wait
-if [ -n "$TRAVIS" ]; then
-    echo "Installing Shifter.."
-    npm -g install shifter -loglevel silent
-fi
 make npm
+wait
 cd ../
 
 # Building YUI module
