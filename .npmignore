@@ -10,5 +10,5 @@ artifacts
 examples
 flatfile
 Makefile
-test_descriptor-report.json
-test_descriptor-report.xml
+*_descriptor-report.json
+*_descriptor-report.xml
