@@ -29,7 +29,7 @@
         "semver": "1.0.14",
         "wrench": "~1.3.9",
         "ycb": "~1.0.0",
-        "yui": "git://github.com/yui/yui3.git#3.x",
+        "yui": "3.x",
         "yuidocjs": "~0.3.14",
         "yuitest": "~0.7.4"
     },

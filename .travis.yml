@@ -3,6 +3,8 @@ node_js:
   - 0.8
   - 0.6
   - 0.4
+after_install:
+    - ./travis/yui_after_install.sh
 notifications:
   email:
     recipients:
