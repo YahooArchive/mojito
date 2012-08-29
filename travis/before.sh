@@ -12,11 +12,11 @@ if [ -n "$TRAVIS" ]; then
 fi
 
 # YUI bleeding
+cd ../
 echo "Cloning YUI Repository"
 git clone git://github.com/yui/yui3.git yui-src
 wait
-cd ./yui-src/
+cd ./yui-src/src/yui
 echo "Making YUI NPM Module"
 make npm
 wait
-cd ../

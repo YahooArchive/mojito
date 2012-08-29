@@ -7,14 +7,12 @@ cd "$(dirname "$0")"
 echo "cd: `pwd`"
 
 # Building NPM module
-cd ./mojito;
-
+cd ../
 echo "NPM Build Dir: `pwd`"
 wait
 echo "Installing NPM Modules"
 npm install -loglevel silent
 wait
-cd  ../
 
 # Building YUI module
 cd ./yui-src/build-npm;
@@ -23,13 +21,13 @@ wait
 echo "Installing YUI NPM Module"
 npm install -loglevel silent
 wait
-cd  ../../
+cd ../../
 
 # Linking YUI module
 echo "Linking YUI NPM..."
 wait
-rm -rf ./mojito/node_modules/yui
-ln -s ./yui-src/build-npm ./mojito/node_modules/yui
+rm -rf ./node_modules/yui
+ln -s ./yui-src/build-npm ./node_modules/yui
 
 echo "YUI NPM Install Complete"
 echo ""
