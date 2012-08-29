@@ -4,9 +4,9 @@ node_js:
   - 0.6
   - 0.4
 before_install:
-    - ./travis/before.sh
+    - ./yahoo/mojito/travis/before.sh
 install:
-    - ./travis/install.sh
+    - ./yahoo/mojito/travis/install.sh
 notifications:
   email:
     recipients:

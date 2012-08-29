@@ -6,13 +6,15 @@ cd "$(dirname "$0")"
 
 echo "cd: `pwd`"
 
-# YUI bleeding
-git clone git://github.com/yui/yui3.git yui-src
+# Building NPM module
+cd ./mojito;
+
+echo "NPM Build Dir: `pwd`"
 wait
-cd ./yui-src/
-make npm
+echo "Installing NPM Modules"
+npm install -loglevel silent
 wait
-cd ../
+cd  ../
 
 # Building YUI module
 cd ./yui-src/build-npm;
