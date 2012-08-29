@@ -1,0 +1,48 @@
+[
+    {
+        "settings": [ "master" ],
+        "name": "rs-addon-unit-tests",
+        "config": {
+            "lib": "../../../../../../lib",
+            "base": "../../../../../base"
+        },
+        "commonlib": "$$config.base$$/mojito-test.js,./../../../../../../lib/app/autoload/util.common.js",
+        "dataprovider": {
+            "cookie.server": {
+                "params": {
+                    "lib": "$$config.lib$$/app/addons/rs/config.server.js",
+                    "test": "./test-config.server.js",
+                    "driver": "nodejs"
+                },
+                "group": "fw,server"
+            },
+            "selector.server": {
+                "params": {
+                    "lib": "$$config.lib$$/app/addons/rs/selector.server.js,../../../../../../lib/app/addons/rs/config.server.js",
+                    "test": "./test-selector.server.js",
+                    "driver": "nodejs"
+                },
+                "group": "fw,server"
+            },
+            "url.server": {
+                "params": {
+                    "lib": "$$config.lib$$/app/addons/rs/url.server.js",
+                    "test": "./test-url.server.js",
+                    "driver": "nodejs"
+                },
+                "group": "fw,server"
+            },
+            "yui.server": {
+                "params": {
+                    "lib": "$$config.lib$$/app/addons/rs/yui.server.js,../../../../../../lib/app/addons/rs/config.server.js,../../../../../../lib/app/addons/rs/selector.server.js,../../../../../../lib/store.server.js",
+                    "test": "./test-yui.server.js",
+                    "driver": "nodejs"
+                },
+                "group": "fw,server"
+            }
+        }
+    },
+    {
+        "settings": [ "environment:development" ]
+    }
+]

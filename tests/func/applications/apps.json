@@ -33,7 +33,8 @@
             "path": "./frameworkapp/flatfile",
             "port": "4084",
             "enabled": "true",
-            "group": "qeapp"
+            "group": "qeapp",
+            "type": "static"
         },
         {
             "name":"commandline",

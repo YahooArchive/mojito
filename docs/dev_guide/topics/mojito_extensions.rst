@@ -576,7 +576,7 @@ EJS Rendering Engine
 You install ``ejs`` locally with ``npm`` so that the EJS rendering engine is installed in
 the ``node_modules`` directory as seen below:
 
-````
+
 ::
 
    {app_dir}/node_modules
