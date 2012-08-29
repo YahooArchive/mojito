@@ -21,24 +21,26 @@ if the ``simple`` view is used, the binder ``simple.js`` is used. This can be ov
 If no binder matches the view, then no binder is used.
 
 
-Configuring Applications to Use Binders
-#######################################
+Application Requirements for Using Binders
+##########################################
 
-Before looking at binder code, you should first know how to configure applications to use binders.
-Your application should follow the guidelines below:
+To use binders, your application is required to have the following: 
 
-- The top-level mojit instance defined in ``application.json`` should be of type ``HTMLFrameMojit`` 
+- The top-level mojit instance defined in ``application.json`` is of type ``HTMLFrameMojit`` 
   or your own frame mojit. See `HTMLFrameMojit <../topics/mojito_framework_mojits.html#htmlframemojit>`_ 
   for an introduction and example configuration.
-- The template files of your application (e.g., ``index.hb.html``) should have 
-  containers (``div`` elements) that have the ``id`` attribute assigned the 
-  value ``{{mojit_view_id}}``. For example: ``<div id={{mojit_view_id}}>``. The
-  attribute value ``{{mojit_view_id}}`` allows binders to attach themselves to the DOM.
-- Applications should be configured to deploy code to the client with the ``deploy`` property in 
+- Your application is configured to deploy code to the client with the ``deploy`` property in 
   ``application.json``. See 
   `Configuring Applications to Be Deployed to Client <../intro/mojito_configuring.html
   #configuring-applications-to-be-deployed-to-client>`_ for more information.
+- The template files (e.g., ``index.hb.html``) have 
+  containers (``div`` elements) that have the ``id`` attribute assigned the 
+  value ``{{mojit_view_id}}``. For example: ``<div id={{mojit_view_id}}>``. The
+  attribute value ``{{mojit_view_id}}`` allows binders to attach themselves to the DOM.
+
   
+See `Binding Events <../code_exs/binding_events.html>`_ for a documented example that uses
+binders.
 
 Anatomy of the Binder
 #####################
