@@ -27,7 +27,7 @@ cd ../../
 echo "Linking YUI NPM..."
 wait
 rm -rf ./node_modules/yui
-ln -s ./yui-src/build-npm ./node_modules/yui
+ln -s ../yui-src/build-npm ./node_modules/yui
 
 echo "YUI NPM Install Complete"
 echo ""
