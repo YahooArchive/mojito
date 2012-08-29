@@ -158,12 +158,11 @@ function deploy (cmd, callback) {
 
 function startArrowSelenium (callback) {
     console.log("---Starting Arrow Selenium---");
-    var p = runCommand(cwd+"/func/applications/frameworkapp/common", "arrow_selenium", ["--open=firefox"]);
-    setTimeout(function () {
+    var p = runCommand(cwd+"/func/applications/frameworkapp/common", "arrow_selenium", ["--open=firefox"], function () {
         pids.push(p.pid);
         pidNames[p.pid] = 'arrow_selenium';
         callback(null);
-    }, 10000);
+    });
 }
 
 function runFuncTests (callback) {
