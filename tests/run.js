@@ -207,7 +207,7 @@ function startArrowSelenium (browser, callback) {
 function runFuncTests (cmd, callback) {
     console.log('---Running Functional Tests---');
     var arrowReportDir = cwd + '/artifacts/arrowreport/func/';
-    runCommand(cwd, "mkdir", [cwd + '/artifacts/arrowreport/'], function () {
+    runCommand(cwd, "mkdir", [cwd + '/artifacts/'], function () {
         runCommand(cwd, "mkdir", [cwd + '/artifacts/arrowreport/'], function () {
             runCommand(cwd, "mkdir", [arrowReportDir], function () {
                 var commandArgs = [
