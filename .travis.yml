@@ -3,6 +3,10 @@ node_js:
   - 0.8
   - 0.6
   - 0.4
+before_install:
+    - ./travis/before.sh
+install:
+    - ./travis/install.sh
 notifications:
   email:
     recipients:
