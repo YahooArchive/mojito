@@ -12,7 +12,7 @@ YUI({
      suite.add(new Y.Test.Case({
 	    "test PUTWithParamsServer": function(){
             Y.Assert.areEqual('200', Y.one('#status').get('innerHTML'));
-            Y.Assert.areEqual('(METHOD: PUT)', Y.one('#output').get('innerHTML'));
+            Y.Assert.areEqual('(METHOD: PUT) This is sprint 4 for the project Mojito', Y.one('#output').get('innerHTML'));
         }
      }));
 
