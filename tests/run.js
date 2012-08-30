@@ -43,25 +43,35 @@ function test (cmd) {
         cmd.unit = true;
         cmd.func = true;
     }
+    cmd.unitBrowser = cmd.unitBrowser || cmd.browser || 'firefox';
+    cmd.funcBrowser = cmd.funcBrowser || cmd.browser || 'firefox';
     if (cmd.unit) {
         if (cmd.arrow) {
             series.push(startArrowServer);
+        }
+        if ('phantomjs' !== cmd.unitBrowser) {
+            if (cmd.selenium) {
+                series.push(function (callback) {
+                    startArrowSelenium(cmd.unitBrowser, callback);
+                });
+            }
         }
         series.push(function (callback) {
             runUnitTests(cmd, callback)
         });
     }
     if (cmd.func) {
-        cmd.browser = cmd.browser || 'firefox';
         if (cmd.build) {
             series.push(function (callback) {
                 build(cmd, callback);
             });
         }
-        if (cmd.selenium) {
-            series.push(function (callback) {
-                startArrowSelenium(cmd, callback);
-            });
+        if ('phantomjs' !== cmd.funcBrowser) {
+            if (cmd.selenium) {
+                series.push(function (callback) {
+                    startArrowSelenium(cmd.funcBrowser, callback);
+                });
+            }
         }
         if (cmd.deploy) {
             series.push(function (callback) {
@@ -105,14 +115,16 @@ function runUnitTests (cmd, callback) {
     var arrowReportDir = cwd + '/artifacts/arrowreport/unit/';
     runCommand(cwd, "mkdir", [cwd + '/artifacts/arrowreport/'], function () {
         runCommand(cwd, "mkdir", [arrowReportDir], function () {
-            cmd.browser = cmd.browser || 'phantomjs';
             var commandArgs = [
                 cwd + "/unit/**/*_descriptor.json",
                 "--report=true",
                 "--reportFolder=" + arrowReportDir
             ];
+            if ('phantomjs' !== cmd.unitBrowser) {
+                commandArgs.push('--reuseSession');
+            }
             commandArgs.push('--logLevel=' + cmd.logLevel);
-            commandArgs.push('--browser=' + cmd.browser);
+            commandArgs.push('--browser=' + cmd.unitBrowser);
             cmd.driver && commandArgs.push('--driver=' + cmd.driver);
             cmd.testName && commandArgs.push('--testName=' + cmd.testName);
             cmd.group && commandArgs.push('--group=' + cmd.group);
@@ -181,14 +193,11 @@ function deploy (cmd, callback) {
     async.series(appSeries, callback);
 }
 
-function startArrowSelenium (cmd, callback) {
+function startArrowSelenium (browser, callback) {
     console.log("---Starting Arrow Selenium---");
     var commandArgs = [];
-    cmd.browser && commandArgs.push("--open=" + cmd.browser);
-    var p = runCommand(cwd+"/func/applications/frameworkapp/common", "arrow_selenium", commandArgs);
-    setTimeout(function () {
-        pids.push(p.pid);
-        pidNames[p.pid] = 'arrow_selenium';
+    commandArgs.push("--open=" + browser);
+    runCommand(cwd+"/func/applications/frameworkapp/common", "arrow_selenium", commandArgs, function () {
         callback(null);
     });
 }
@@ -200,12 +209,14 @@ function runFuncTests (cmd, callback) {
         runCommand(cwd, "mkdir", [arrowReportDir], function () {
             var commandArgs = [
                 cwd + "/func/**/*_descriptor.json",
-                "--reuseSession",
                 "--report=true",
                 "--reportFolder=" + arrowReportDir
             ];
+            if ('phantomjs' !== cmd.funcBrowser) {
+                commandArgs.push('--reuseSession');
+            }
             commandArgs.push('--logLevel=' + cmd.logLevel);
-            commandArgs.push('--browser=' + cmd.browser);
+            commandArgs.push('--browser=' + cmd.funcBrowser);
             cmd.driver && commandArgs.push('--driver=' + cmd.driver);
             cmd.testName && commandArgs.push('--testName=' + cmd.testName);
             cmd.group && commandArgs.push('--group=' + cmd.group);
