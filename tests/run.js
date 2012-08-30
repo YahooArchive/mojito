@@ -45,10 +45,10 @@ function test (cmd) {
     }
     cmd.unitBrowser = cmd.unitBrowser || cmd.browser || 'firefox';
     cmd.funcBrowser = cmd.funcBrowser || cmd.browser || 'firefox';
+    if (cmd.arrow) {
+        series.push(startArrowServer);
+    }
     if (cmd.unit) {
-        if (cmd.arrow) {
-            series.push(startArrowServer);
-        }
         if ('phantomjs' !== cmd.unitBrowser) {
             if (cmd.selenium) {
                 series.push(function (callback) {
