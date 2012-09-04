@@ -17,18 +17,24 @@ YUI().use('mojito-rest-lib', 'test', function(Y) {
             // arrange and mock
             var doRequest = Y.mojito.lib.REST._doRequest;
             var doRequestCalled = false;
-            Y.mojito.lib.REST._doRequest = function(method, url, params, config, callback) {
+            Y.mojito.lib.REST._doRequest = function(url, config) {
                 // assert
-                A.areSame('GET', method, 'wrong method');
-                A.areSame('url', url, 'wrong url');
-                A.areSame('params', params, 'wrong params');
-                A.areSame('config', config, 'wrong config');
-                A.areSame('callback', callback, 'wrong callback');
+                A.areSame('GET', config.method, 'wrong method');
+                A.areSame('url?params', url, 'wrong url');
+                A.areSame('header1', config.headers.header1, 'wrong header');
+                A.areSame(10000, config.timeout, 'wrong timeout');
+                A.isFunction(config.on.success, 'callback is not a function');
                 doRequestCalled = true;
             };
 
             // act
-            Y.mojito.lib.REST.GET('url', 'params', 'config', 'callback');
+            Y.mojito.lib.REST.GET('url', 'params', {
+                headers: {
+                    'header1': 'header1'
+                },
+                timeout: 10000
+
+            }, 'callback');
 
             // assert
             A.isTrue(doRequestCalled, 'doRequest never called');
@@ -41,18 +47,16 @@ YUI().use('mojito-rest-lib', 'test', function(Y) {
             // arrange and mock
             var doRequest = Y.mojito.lib.REST._doRequest;
             var doRequestCalled = false;
-            Y.mojito.lib.REST._doRequest = function(method, url, params, config, callback) {
+            Y.mojito.lib.REST._doRequest = function(url, config) {
                 // assert
-                A.areSame('POST', method, 'wrong method');
+                A.areSame('POST', config.method, 'wrong method');
                 A.areSame('url', url, 'wrong url');
-                A.areSame('params', params, 'wrong params');
-                A.areSame('config', config, 'wrong config');
-                A.areSame('callback', callback, 'wrong callback');
+                A.areSame('params', config.data, 'data not added to body');
                 doRequestCalled = true;
             };
 
             // act
-            Y.mojito.lib.REST.POST('url', 'params', 'config', 'callback');
+            Y.mojito.lib.REST.POST('url', 'params');
 
             // assert
             A.isTrue(doRequestCalled, 'doRequest never called');
@@ -65,18 +69,16 @@ YUI().use('mojito-rest-lib', 'test', function(Y) {
             // arrange and mock
             var doRequest = Y.mojito.lib.REST._doRequest;
             var doRequestCalled = false;
-            Y.mojito.lib.REST._doRequest = function(method, url, params, config, callback) {
+            Y.mojito.lib.REST._doRequest = function(url, config) {
                 // assert
-                A.areSame('PUT', method, 'wrong method');
+                A.areSame('PUT', config.method, 'wrong method');
                 A.areSame('url', url, 'wrong url');
-                A.areSame('params', params, 'wrong params');
-                A.areSame('config', config, 'wrong config');
-                A.areSame('callback', callback, 'wrong callback');
+                A.areSame('params', config.data, 'data not added to body');
                 doRequestCalled = true;
             };
 
             // act
-            Y.mojito.lib.REST.PUT('url', 'params', 'config', 'callback');
+            Y.mojito.lib.REST.PUT('url', 'params');
 
             // assert
             A.isTrue(doRequestCalled, 'doRequest never called');
@@ -89,13 +91,10 @@ YUI().use('mojito-rest-lib', 'test', function(Y) {
             // arrange and mock
             var doRequest = Y.mojito.lib.REST._doRequest;
             var doRequestCalled = false;
-            Y.mojito.lib.REST._doRequest = function(method, url, params, config, callback) {
+            Y.mojito.lib.REST._doRequest = function(url, config) {
                 // assert
-                A.areSame('DELETE', method, 'wrong method');
+                A.areSame('DELETE', config.method, 'wrong method');
                 A.areSame('url', url, 'wrong url');
-                A.areSame('params', params, 'wrong params');
-                A.areSame('config', config, 'wrong config');
-                A.areSame('callback', callback, 'wrong callback');
                 doRequestCalled = true;
             };
 
@@ -113,13 +112,10 @@ YUI().use('mojito-rest-lib', 'test', function(Y) {
             // arrange and mock
             var doRequest = Y.mojito.lib.REST._doRequest;
             var doRequestCalled = false;
-            Y.mojito.lib.REST._doRequest = function(method, url, params, config, callback) {
+            Y.mojito.lib.REST._doRequest = function(url, config) {
                 // assert
-                A.areSame('HEAD', method, 'wrong method');
+                A.areSame('HEAD', config.method, 'wrong method');
                 A.areSame('url', url, 'wrong url');
-                A.areSame('params', params, 'wrong params');
-                A.areSame('config', config, 'wrong config');
-                A.areSame('callback', callback, 'wrong callback');
                 doRequestCalled = true;
             };
 
@@ -137,123 +133,30 @@ YUI().use('mojito-rest-lib', 'test', function(Y) {
 
     suite.add(new Y.Test.Case({
 
-        name: 'y.io',
-
-        'test doRequest defers to Y.io with proper method': function() {
-            // arrange
-            var io = Y.io;
-            var ioCalled = false;
-            Y.io = function(url, opts) {
-                A.isObject(opts, 'io was not sent an options object');
-                A.areSame('method', opts.method, 'bad http method to y.io');
-                ioCalled = true;
-            };
-
-            // act
-            Y.mojito.lib.REST._doRequest('method');
-
-            // assert
-            A.isTrue(ioCalled, 'io never called');
-
-            // replace mocks
-            Y.io = io;
-        },
-
-        'test doRequest defers to Y.io with proper url': function() {
-            // arrange
-            var io = Y.io;
-            var ioCalled = false;
-            Y.io = function(url) {
-                A.areSame('url', url, 'bad url to y.io');
-                ioCalled = true;
-            };
-
-            // act
-            Y.mojito.lib.REST._doRequest('', 'url');
-
-            // assert
-            A.isTrue(ioCalled, 'io never called');
-
-            // replace mocks
-            Y.io = io;
-        },
-
-        'test doRequest defers to Y.io with proper params data': function() {
-            // arrange
-            var io = Y.io;
-            var ioCalled = false;
-            Y.io = function(url, opts) {
-                A.areSame('/x/?params', url, 'params added to URL');
-                ioCalled = true;
-            };
-
-            // act
-            Y.mojito.lib.REST._doRequest('GET', '/x/', 'params');
-
-            // assert
-            A.isTrue(ioCalled, 'io never called');
-
-            // replace mocks
-            Y.io = io;
-        },
-
-        'test doRequest defers to Y.io with proper config data': function() {
-            // arrange
-            var io = Y.io;
-            var ioCalled = false;
-            var headers = {headers:'yo'};
-            Y.io = function(url, opts) {
-                A.areSame(47, opts.timeout, 'bad timeout to y.io');
-                OA.areEqual(headers, opts.headers);
-                ioCalled = true;
-            };
-
-            // act
-            Y.mojito.lib.REST._doRequest('', '', '', {
-                timeout: 47,
-                headers: headers,
-                proxy: 'proxy'
-            });
-
-            // assert
-            A.isTrue(ioCalled, 'io never called');
-
-            // replace mocks
-            Y.io = io;
-        }
-
-    }));
-
-    suite.add(new Y.Test.Case({
-
         name: 'callback',
 
         'test callback is called without err on Y.io success': function() {
             // arrange
-            var io = Y.io;
             var cbCalled = false;
-            Y.io = function(url, opts) {
-                opts.on.success();
+
+            Y.mojito.lib.REST._doRequest = function (url, config) {
+                config.on.success();
             };
 
             // act
-            Y.mojito.lib.REST._doRequest('', '', '', '', function(err) {
+            Y.mojito.lib.REST._makeRequest('', '', '', '', function(err) {
                 A.isNull(err, 'err object within callback should be null on success');
                 cbCalled = true;
             });
 
             // assert
             A.isTrue(cbCalled, 'success callback never called');
-
-            // replace mocks
-            Y.io = io;
         },
 
         'test callback is called with proper response object on Y.io success': function() {
             // arrange
-            var io = Y.io;
             var cbCalled = false;
-            Y.io = function(url, opts) {
+            Y.mojito.lib.REST._doRequest = function(url, opts) {
                 opts.on.success(1234, {
                     status: 200,
                     statusText: 'Success',
@@ -272,7 +175,7 @@ YUI().use('mojito-rest-lib', 'test', function(Y) {
             };
 
             // act
-            Y.mojito.lib.REST._doRequest('', '', '', '', function(err, resp) {
+            Y.mojito.lib.REST._makeRequest('', '', '', '', function(err, resp) {
                 A.isFunction(resp.getStatusCode, 'response missing getStatusCode function');
                 A.isFunction(resp.getStatusMessage, 'response missing getStatusMessage function');
                 A.isFunction(resp.getHeader, 'response missing getHeader function');
@@ -288,22 +191,18 @@ YUI().use('mojito-rest-lib', 'test', function(Y) {
 
             // assert
             A.isTrue(cbCalled, 'success callback never called');
-
-            // replace mocks
-            Y.io = io;
         },
 
         'test callback is called with err on Y.io failure with proper error status and message': function() {
             // arrange
-            var io = Y.io;
             var cbCalled = false;
             var error = {status:503, statusText:'Wicked Error'};
-            Y.io = function(url, opts) {
+            Y.mojito.lib.REST._doRequest = function(url, opts) {
                 opts.on.failure(1234 /* tx id */, error);
             };
 
             // act
-            Y.mojito.lib.REST._doRequest('', '', '', '', function(err, data) {
+            Y.mojito.lib.REST._makeRequest('', '', '', '', function(err, data) {
                 A.isObject(err, 'err object was not populated');
                 OA.areEqual(error, err, 'wrong error object');
                 cbCalled = true;
@@ -311,9 +210,6 @@ YUI().use('mojito-rest-lib', 'test', function(Y) {
 
             // assert
             A.isTrue(cbCalled, 'success callback never called');
-
-            // replace mocks
-            Y.io = io;
         }
 
     }));

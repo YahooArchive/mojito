@@ -15,7 +15,7 @@ YUI({
 	        var that = this;
 	        Y.one('#p_putParam').simulate('click');
             that.wait(function(){
-	            Y.Assert.areEqual('(METHOD: PUT)', Y.one('#output').get('innerHTML'));
+                Y.Assert.areEqual('(METHOD: PUT) This is sprint 4 for the project Mojito', Y.one('#output').get('innerHTML'));
             }, 2000);
        }
        
