@@ -1,11 +1,13 @@
 #!/usr/bin/env node
 
 var fs = require('fs'),
+    libpath = require('path'),
     program = require('commander'),
     async = require('async'),
     child = require('child_process'),
-    cwd = process.cwd(),
+    cwd = __dirname,
     pids = [],
+    pidNames = {},
     returnVal = 0;
 
 program.command('test')
@@ -16,6 +18,11 @@ program.command('test')
     .option('-d, --no-deploy', 'Don\'t deploy the apps')
     .option('-s, --no-selenium', 'Don\'t run arrow_selenium')
     .option('-a, --no-arrow', 'Don\'t run arrow_server')
+    .option('--logLevel <value>', 'Arrow logLevel')
+    .option('--testName <value>', 'Arrow testName')
+    .option('--group <value>', 'Arrow group')
+    .option('--driver <value>', 'Arrow driver')
+    .option('--browser <value>', 'Arrow browser')
     .action(test);
 
 program.command('build')
@@ -30,16 +37,28 @@ program.parse(process.argv);
 
 function test (cmd) {
     var series = [];
+    cmd.logLevel = cmd.logLevel || 'ERROR';
     // Default to all tests
     if (!cmd.unit && !cmd.func) {
         cmd.unit = true;
         cmd.func = true;
     }
+    cmd.unitBrowser = cmd.unitBrowser || cmd.browser || 'firefox';
+    cmd.funcBrowser = cmd.funcBrowser || cmd.browser || 'firefox';
     if (cmd.unit) {
         if (cmd.arrow) {
             series.push(startArrowServer);
         }
-        series.push(runUnitTests);
+        if ('phantomjs' !== cmd.unitBrowser) {
+            if (cmd.selenium) {
+                series.push(function (callback) {
+                    startArrowSelenium(cmd.unitBrowser, callback);
+                });
+            }
+        }
+        series.push(function (callback) {
+            runUnitTests(cmd, callback)
+        });
     }
     if (cmd.func) {
         if (cmd.build) {
@@ -47,43 +66,81 @@ function test (cmd) {
                 build(cmd, callback);
             });
         }
-        if (cmd.selenium) {
-            series.push(startArrowSelenium);
+        if ('phantomjs' !== cmd.funcBrowser) {
+            if (cmd.selenium) {
+                series.push(function (callback) {
+                    startArrowSelenium(cmd.funcBrowser, callback);
+                });
+            }
         }
         if (cmd.deploy) {
             series.push(function (callback) {
                 deploy(cmd, callback);
             });
         }
-        series.push(runFuncTests);
+        series.push(function (callback) {
+            runFuncTests(cmd, callback)
+        });
     }
     async.series(series, finalize);
 }
 
 function startArrowServer (callback) {
+    var timeout,
+        listener = function (data) {
+            process.stdout.write(data);
+        };
     console.log("---Starting Arrow Server---");
-    var p = runCommand(cwd, "arrow_server");
+    var p = runCommand(cwd, "arrow_server", [], function () {
+        // If this command returns called, then it failed to launch
+        if (timeout) {
+            clearTimeout(timeout);
+        }
+        console.log('arrow_server failed to start. If it is already running' +
+            ' use \'-a\' to skip startup of arrow_server.');
+        pids.pop();
+        callback(1); // Trigger failure
+    });
+    p.stdout.on('data', listener);
     pids.push(p.pid);
-    setTimeout(function () {
+    pidNames[p.pid] = 'arrow_server';
+    timeout = setTimeout(function () {
+        p.stdout.removeListener('data', listener); // Stop printing output from arrow_server
         callback(null);
     }, 5000);
 }
 
-function runUnitTests (callback) {
+function runUnitTests (cmd, callback) {
     console.log('---Running Unit Tests---');
-    var arrowReportDir = cwd + '/arrowreport/unit/';
-    runCommand(cwd, "mkdir", [cwd + '/arrowreport/'], function () {
-        runCommand(cwd, "mkdir", [arrowReportDir], function () {
-            var cmd = runCommand(
-                cwd + '/unit',
-                "arrow",
-                ["\"**/*_descriptor.json\"", "--browser=phantomjs", "--report=true", "--reportFolder=" + arrowReportDir],
-                function (code) {
-                    callback(code);
+    var arrowReportDir = cwd + '/artifacts/arrowreport/unit/';
+    runCommand(cwd, "mkdir", [cwd + '/artifacts/'], function () {
+        runCommand(cwd, "mkdir", [cwd + '/artifacts/arrowreport/'], function () {
+            runCommand(cwd, "mkdir", [arrowReportDir], function () {
+                var commandArgs = [
+                    cwd + "/unit/**/*_descriptor.json",
+                    "--report=true",
+                    "--reportFolder=" + arrowReportDir
+                ];
+                if ('phantomjs' !== cmd.unitBrowser) {
+                    commandArgs.push('--reuseSession');
                 }
-            );
-            cmd.stdout.on('data', function (data) {
-                process.stdout.write(data);
+                commandArgs.push('--logLevel=' + cmd.logLevel);
+                commandArgs.push('--browser=' + cmd.unitBrowser);
+                cmd.driver && commandArgs.push('--driver=' + cmd.driver);
+                cmd.testName && commandArgs.push('--testName=' + cmd.testName);
+                cmd.group && commandArgs.push('--group=' + cmd.group);
+
+                var p = runCommand(
+                    cwd + '/unit',
+                    "arrow",
+                    commandArgs,
+                    function (code) {
+                        callback(code);
+                    }
+                );
+                p.stdout.on('data', function (data) {
+                    process.stdout.write(data);
+                });
             });
         });
     });
@@ -138,37 +195,60 @@ function deploy (cmd, callback) {
     async.series(appSeries, callback);
 }
 
-function startArrowSelenium (callback) {
+function startArrowSelenium (browser, callback) {
     console.log("---Starting Arrow Selenium---");
-    var p = runCommand(cwd+"/func/applications/frameworkapp/common", "arrow_selenium", ["--open=firefox"]);
-    setTimeout(function () {
-        pids.push(p.pid);
+    var commandArgs = [];
+    commandArgs.push("--open=" + browser);
+    runCommand(cwd+"/func/applications/frameworkapp/common", "arrow_selenium", commandArgs, function () {
         callback(null);
-    }, 10000);
+    });
 }
 
-function runFuncTests (callback) {
+function runFuncTests (cmd, callback) {
     console.log('---Running Functional Tests---');
-    var arrowReportDir = cwd + '/arrowreport/func/';
-    runCommand(cwd, "mkdir", [arrowReportDir], function () {
-        var cmd = runCommand(
-            cwd + '/func/',
-            "arrow",
-            ["\"**/*_descriptor.json\"", "--browser=firefox", "--reuseSession", "--report=true", "--reportFolder=" + arrowReportDir],
-            function (code) {
-                callback(code);
-            }
-        );
-        cmd.stdout.on('data', function (data) {
-            process.stdout.write(data);
+    var arrowReportDir = cwd + '/artifacts/arrowreport/func/';
+    runCommand(cwd, "mkdir", [cwd + '/artifacts/'], function () {
+        runCommand(cwd, "mkdir", [cwd + '/artifacts/arrowreport/'], function () {
+            runCommand(cwd, "mkdir", [arrowReportDir], function () {
+                var commandArgs = [
+                    cwd + "/func/**/*_descriptor.json",
+                    "--report=true",
+                    "--reportFolder=" + arrowReportDir
+                ];
+                if ('phantomjs' !== cmd.funcBrowser) {
+                    commandArgs.push('--reuseSession');
+                }
+                commandArgs.push('--logLevel=' + cmd.logLevel);
+                commandArgs.push('--browser=' + cmd.funcBrowser);
+                cmd.driver && commandArgs.push('--driver=' + cmd.driver);
+                cmd.testName && commandArgs.push('--testName=' + cmd.testName);
+                cmd.group && commandArgs.push('--group=' + cmd.group);
+
+                var p = runCommand(
+                    cwd + '/func/',
+                    "arrow",
+                    commandArgs,
+                    function (code) {
+                        callback(code);
+                    }
+                );
+                p.stdout.on('data', function (data) {
+                    process.stdout.write(data);
+                });
+            });
         });
     });
 }
 
 function finalize (err, results) {
     for(var i=0; i < pids.length; i++) {
-        console.log('Shutting down pid ' + pids[i]);
-        process.kill(pids[i]);
+        console.log('Shutting down pid ' + pids[i] + ' -- ' + pidNames[pids[i]]);
+        try {
+            process.kill(pids[i]);
+        }
+        catch(e) {
+            console.log('FAILED to shut down pid ' + pids[i] + ' -- ' + pidNames[pids[i]]);
+        }
     }
     if (err) {
         console.log(err);
@@ -201,6 +281,7 @@ function runCommand (path, command, argv, callback) {
         cmd.stdin.end();
         if (0 !== code) {
             callback('exit: child process exited with code ' + code);
+            return;
         }
         callback(code);
     });
@@ -218,6 +299,7 @@ function runMojitoApp (basePath, path, port, params, callback) {
     console.log('Starting ' + path + ' at port ' + port + ' with params ' + (params || 'empty'));
     var p = runCommand(basePath + '/' + path, "mojito", ["start", port, "--context", params], function () {});
     pids.push(p.pid);
+    pidNames[p.pid] = libpath.basename(path) + ':' + port + (params ? '?' + params : '');
     // Give each app a second to start
     setTimeout(function () { callback(null) }, 1000);
 }
@@ -227,6 +309,7 @@ function runStaticApp (basePath, path, port, params, callback) {
     console.log('Starting static server for ' + path + ' at port ' + port);
     var p = runCommand(basePath + '/' + path, "node", [cwd + "/base/staticServer.js", port], function () {});
     pids.push(p.pid);
+    pidNames[p.pid] = 'static ' + libpath.basename(path) + ':' + port;
     // Give each app a second to start
     setTimeout(function () { callback(null) }, 1000);
 }

@@ -88,14 +88,6 @@
                 },
                 "group": "fw,server"
             },
-            "i13n.common": {
-                "params": {
-                    "lib": "$$config.lib$$/app/addons/ac/i13n.common.js",
-                    "test": "./test-i13n.common.js",
-                    "page": "$$config.base$$/mojito-test.html"
-                },
-                "group": "fw,client,server"
-            },
             "intl.common": {
                 "params": {
                     "lib": "$$config.lib$$/app/addons/ac/intl.common.js",

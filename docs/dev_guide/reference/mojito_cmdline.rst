@@ -81,14 +81,15 @@ Testing
 #######
 
 Unit tests are run using YUI Test invoked using the Mojito command-line tool. Test output is written 
-to the console and also to the file ``$CWD/artifacts/test/result.xml``.  Note that it is not (yet) 
-possible to specify an alternative output location.
+to the console and also to the file ``{CWD}/artifacts/test/result.xml``, where ``{CWD}`` is
+the current working directory. Note that it is not (yet) possible to specify an alternative output 
+location.
 
 - To run tests for the Mojito framework itself:
 
    ``$ mojito test``
 
-   Output is written to ``$CWD/artifacts/test/result.xml``, where ``$CWD`` is the current working 
+   Output is written to ``{CWD}/artifacts/test/result.xml``, where ``{CWD}`` is the current working 
    directory.
 
 - To run tests for an application:
@@ -111,7 +112,7 @@ Code coverage is invoked in the same way as unit testing, but with the added opt
 or ``-c``. To run code coverage tests, you need to have Java installed.
 
 Coverage results are written to the console and also to file in the directory 
-``$CWD/artifacts/framework/coverage/``.  As with unit tests,  it is not possible to specify an 
+``{CWD}/artifacts/framework/coverage/``.  As with unit tests,  it is not possible to specify an 
 alternative output location.
 
 - To run code coverage for the Mojito framework itself:
@@ -153,8 +154,8 @@ output location.
 
    ``$ mojito jslint``
 
-   Output is written to ``$CWD/artifacts/framework/jslint/``, where ``$CWD`` is the current working 
-   directory.
+   Output is written to ``{CWD}/artifacts/framework/jslint/``, where ``{CWD}`` is the current 
+   working directory.
 
 - To run JSLint on an application, including all of its (owned) mojits:
 
@@ -182,7 +183,7 @@ location.
 
    ``$ mojito docs mojito``
 
-   Output is written to ``$CWD/artifacts/docs/mojito/``, where ``$CWD`` is the current working 
+   Output is written to ``{CWD}/artifacts/docs/mojito/``, where ``{CWD}`` is the current working 
    directory.
 
 - To generate documentation for an application, including all of its (owned) mojits, run the 
@@ -259,7 +260,7 @@ to generate.
 Compile System
 ##############
 
-Mojito comes with a compile command for generating creates files to optimize an application for 
+Mojito comes with a compile command for generating files to optimize an application for 
 production.
 
 .. _compile_sys-syntax
@@ -343,8 +344,8 @@ The commands below compile inline CSS, views, and YUI modules.
 Dependency Graphs
 #################
 
-The command below generates the Graphviz file ``$CWD/artifacts/gv/yui.client.dot`` that describes 
-the YUI module dependencies.
+The command below generates the Graphviz file ``{CWD}/artifacts/gv/yui.client.dot`` (``{CWD}`` represents
+the current working directory) that describes the YUI module dependencies.
 
 ``$ mojito gv``
 
@@ -352,7 +353,8 @@ The ``mojito gv`` command has the following options:
 
 - ``--client`` - inspects the files that have ``client`` and ``common`` as the affinity. The default 
   is just to inspect files that have ``server`` and ``common`` as the affinity. For example, using 
-  the ``--client`` option, the file ``controller.client.js`` and ``controller.common.js`` will be inspected.
+  the ``--client`` option, the file ``controller.client.js`` and ``controller.common.js`` will be 
+  inspected.
 - ``--framework`` - also inspects the Mojito framework files.
 
 .. note:: To render the Graphviz files into GIF images, you need the `Graphviz - Graph Visualization 

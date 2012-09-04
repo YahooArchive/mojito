@@ -314,12 +314,11 @@ YUI.add('RESTLib', function(Y) {
 	        },
 
 	        printPUTParams: function(actionContext){
-	            var project = actionContext.params.getFromUrl("project");
-	            var sprint = actionContext.params.getFromUrl("sprint");
+	            var project = actionContext.params.getFromBody("project");
+	            var sprint = actionContext.params.getFromBody("sprint");
 	            var method = actionContext.http.getRequest().method;
 
-	            //var output = "<p id=\"output\">(METHOD: " + method + ") This is sprint " + sprint + " for the project " + project + "</p>";
-	            var output = "<p id=\"output\">(METHOD: " + method + ")</p>";
+	            var output = "<p id=\"output\">(METHOD: " + method + ") This is sprint " + sprint + " for the project " + project + "</p>";
 	            actionContext.http.setHeader('content-type', 'text/html');
 	            actionContext.done(output);
 	        },
