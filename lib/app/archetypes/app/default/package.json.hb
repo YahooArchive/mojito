@@ -16,6 +16,6 @@
         "mojito": "0.4.x"
     },
     "engines": {
-        "node": ">= 0.6.x"
+        "node": "0.6.x"
     }
 }
