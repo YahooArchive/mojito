@@ -15,7 +15,7 @@ YUI.add('BodyMojit-tests', function(Y) {
         name: 'BodyMojit user tests',
         
         setUp: function() {
-            controller = Y.mojito.controller;
+            controller = Y.mojito.controllers.BodyMojit;
         },
         tearDown: function() {
             controller = null;

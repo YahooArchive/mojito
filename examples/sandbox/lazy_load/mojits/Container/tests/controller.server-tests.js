@@ -15,7 +15,7 @@ YUI.add('Container-tests', function(Y) {
         name: 'Container user tests',
         
         setUp: function() {
-            controller = Y.mojito.controller;
+            controller = Y.mojito.controllers.Container;
         },
         tearDown: function() {
             controller = null;

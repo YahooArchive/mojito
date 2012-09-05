@@ -15,7 +15,7 @@ YUI.add('BlueChild-tests', function(Y) {
         name: 'BlueChild user tests',
         
         setUp: function() {
-            controller = Y.mojito.controller;
+            controller = Y.mojito.controllers.BlueChild;
         },
         tearDown: function() {
             controller = null;

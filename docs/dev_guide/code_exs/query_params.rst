@@ -41,7 +41,7 @@ which is then passed to the ``example1`` view template. By default, the function
        // Create an object for each key-value pair and
        // push those objects to an array, which is then
        // assigned to 'params' that is available in
-       // index view template (index.mu.html).
+       // index view template (index.hb.html).
        Y.Object.each(params, function(param, key) {
          paramsArray.push({key: key, value: param});
        });
@@ -322,7 +322,7 @@ To set up and run ``using_parameters``:
         };
       }, '0.0.1', {requires: ['dump']});
 
-#. To display the key-value pairs from the query string parameters, create the view template ``views/example1.mu.html`` with the following:
+#. To display the key-value pairs from the query string parameters, create the view template ``views/example1.hb.html`` with the following:
 
    .. code-block:: html
 
@@ -336,7 +336,7 @@ To set up and run ``using_parameters``:
         </ul>
       </div>
 
-#. To display the key-value pairs from the POST request body parameters, create the view template ``views/example2.mu.html`` with the following:
+#. To display the key-value pairs from the POST request body parameters, create the view template ``views/example2.hb.html`` with the following:
 
    .. code-block:: html
 
@@ -365,7 +365,7 @@ To set up and run ``using_parameters``:
         </ul>
       </div>
 
-#. To display the key-value pairs set in ``routes.json``, create the view template ``views/example3.mu.html`` with the following:
+#. To display the key-value pairs set in ``routes.json``, create the view template ``views/example3.hb.html`` with the following:
 
    .. code-block:: html
 
@@ -379,7 +379,7 @@ To set up and run ``using_parameters``:
         </ul>
       </div>
 
-#. To display all of the available parameters, create the view template ``views/example4.mu.html`` with the following:
+#. To display all of the available parameters, create the view template ``views/example4.hb.html`` with the following:
 
    .. code-block:: html
 

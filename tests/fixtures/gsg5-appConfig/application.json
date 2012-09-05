@@ -1,0 +1,66 @@
+[
+    {
+        "settings": [ "master" ],
+
+        "deferAllOptionalAutoloads": true,
+
+        "staticHandling": {
+            "prefix": "",
+            "appName": "app",
+            "frameworkName": "fw"
+        },
+
+        "yui": {
+            "base": "/foo/"
+        },
+
+        "log": {
+            "client": {
+                "level": "warn",
+                "yui": false
+            },
+            "server": {
+                "level": "warn",
+                "yui": false
+            }
+        },
+
+        "specs": {
+            "flickr": {
+                "type": "HTMLFrameMojit",
+                "config": {
+                    "deploy": true,
+                    "child": {
+                        "type": "FlickrBrowser",
+                        "config": {
+                            "children": {
+                                "thumbs": {
+                                    "base": "thumbs"
+                                },
+                                "detail": {
+                                    "base": "detail"
+                                }
+                            }
+                        }
+                    },
+                    "meta": {
+                        "viewport": "width=device-width,initial-scale=1"
+                    },
+                    "assets": {
+                        "top": {
+                            "css": [
+                                "/static/PagedFlickr/assets/index.css"
+                            ]
+                        }
+                    }
+                }
+            },
+            "thumbs": {
+                "type": "PagedFlickr"
+            },
+            "detail": {
+                "type": "FlickrDetail"
+            }
+        }
+    }
+]

@@ -15,7 +15,7 @@ YUI.add('TweetView-tests', function(Y) {
         name: 'TweetView user tests',
         
         setUp: function() {
-            controller = Y.mojito.controller;
+            controller = Y.mojito.controllers.TweetView;
         },
         tearDown: function() {
             controller = null;

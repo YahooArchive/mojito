@@ -15,7 +15,7 @@ YUI.add('ClickLog-tests', function(Y) {
         name: 'ClickLog user tests',
         
         setUp: function() {
-            controller = Y.mojito.controller;
+            controller = Y.mojito.controllers.ClickLog;
         },
         tearDown: function() {
             controller = null;

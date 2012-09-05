@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('PagedFlickr', function(Y) {
+YUI.add('PagedFlickr', function(Y, NAME) {
 
 /**
  * The PagedFlickr module.
@@ -20,7 +20,7 @@ YUI.add('PagedFlickr', function(Y) {
      * @class Controller
      * @constructor
      */
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         /**
          * Method corresponding to the 'index' action.

@@ -4,9 +4,9 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('ServerCookie', function(Y) {
+YUI.add('ServerCookie', function(Y, NAME) {
     
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
         
         pitch: function(ac) {
             var opts = {

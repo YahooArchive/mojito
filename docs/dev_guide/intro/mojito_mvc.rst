@@ -464,7 +464,7 @@ The default behavior when you pass data from the controller to the view is for t
 to the view that has the same name as the controller function. For example, if 
 ``ac.done({ "title": "Default View" })`` is invoked in the controller ``index`` function, the data 
 is sent by default to the ``index`` view template. The ``index`` view template could be 
-``index.mu.html``, ``index.iphone.mu.html``, etc., depending on the calling device and rendering 
+``index.hb.html``, ``index.iphone.hb.html``, etc., depending on the calling device and rendering 
 engine.
 
 To specify the view that receives the data, the controller function passes two parameters to 
@@ -587,7 +587,7 @@ sent back in a callback.
 Views
 #####
 
-The views are HTML files that can include template tags, such as Mustache tags, and are located in 
+The views are HTML files that can include templates, such as Handlebars expressions, and are located in 
 the ``views`` directory. We call these files *view templates* to differentiate 
 them from the rendered views that have substituted values for the template tags.
 
@@ -604,24 +604,25 @@ below is omitted.
 ``{controller_function}.[{device}].{rendering_engine}.html``
 
 For example, if the view template is receiving data from the ``index`` function of the controller 
-and has Mustache tags that need to be rendered, the name of the view template would be 
-``index.mu.html``.
+and has Handlebars expressions that need to be rendered, the name of the view template would be 
+``index.hb.html``.
 
 Here are some other example view template names with descriptions:
 
-- ``greeting.mu.html`` - This view template gets data from the ``greeting`` function of the 
+- ``greeting.hb.html`` - This view template gets data from the ``greeting`` function of the 
   controller and the calling device is determined to be a Web browser.
-- ``get_photos.iphone.mu.html`` - This view template gets data from the ``get_photos`` function of 
+- ``get_photos.iphone.hb.html`` - This view template gets data from the ``get_photos`` function of 
   the controller and the calling device is an iPhone.
-- ``find_friend.android.mu.html`` - This view template gets data from the ``find_friend`` function 
+- ``find_friend.android.hb.html`` - This view template gets data from the ``find_friend`` function 
   of the controller and the calling device is Android based.
 
-.. note:: Currently, the only templating system allowed is Mustache, so the name of view templates 
-          always contains ``mu``. Once Mojito adopts other templating systems, the 
-          ``{rendering_engine}`` component of the view template name can change. An error will 
+.. note:: Currently, Mojito comes with Handlebars, so the name of view templates 
+          always contains ``hb``. Users can use other 
+          `view engines <../topics/mojito_extensions.html#view-engines>`_, but the
+          ``{rendering_engine}`` component of the view template name must change. An error will 
           occur if the file names of different views are the same except the ``{rendering_engine}``. 
-          For example, having the two view templates ``index.mu.html`` and 
-          ``index.hb.html`` (``hb`` could be `Handlebars <http://handlebars.strobeapp.com/>`_) would 
+          For example, having the two view templates ``index.hb.html`` and 
+          ``index.ejs.html`` (``ejs`` could be `Embedded JavaScript (EJS) <http://embeddedjs.com/>`_) would 
           cause an error.
 
 
@@ -633,51 +634,58 @@ Mojito can examine the HTTP header ``User Agent`` and detect the following devic
 +-----------------+---------------------------+
 | Device/Browser  | Example View Template     |
 +=================+===========================+
-| Opera Mini      | index.opera-mini.mu.html  |
+| Opera Mini      | index.opera-mini.hb.html  |
 +-----------------+---------------------------+
-| iPhone          | index.iphone.mu.html      |
+| iPhone          | index.iphone.hb.html      |
 +-----------------+---------------------------+
-| iPad            | index.ipad.mu.html        |
+| iPad            | index.ipad.hb.html        |
 +-----------------+---------------------------+
-| Android         | index.android.mu.html     |
+| Android         | index.android.hb.html     |
 +-----------------+---------------------------+
-| Windows Mobile  | index.iemobile.mu.html    |
+| Windows Mobile  | index.iemobile.hb.html    |
 +-----------------+---------------------------+
-| Palm            | index.palm.mu.html        |
+| Palm            | index.palm.hb.html        |
 +-----------------+---------------------------+
-| Kindle          | index.kindle.mu.html      |
+| Kindle          | index.kindle.hb.html      |
 +-----------------+---------------------------+
-| Blackberry      | index.blackberry.mu.html  |
+| Blackberry      | index.blackberry.hb.html  |
 +-----------------+---------------------------+
 
 
 
-Using Mustache Templates
-========================
+Using Handlebars Expressions
+============================
 
-The view templates are HTML files with embedded Mustache tags that allow variable substitution when 
-the view template is rendered. In this section, we will look at a simple view template that 
-uses Mustache tags for substituting variables from the controller. Mustache tags also have more 
-advanced features such as lists, conditionals, comments, and lambdas, which you can learn more about  
-in the `Mustache Manual <http://mustache.github.com/mustache.5.html>`_.
+Handlebars is a superset of `Mustache <http://mustache.github.com/mustache.5.html>`_, thus,
+Handlebars expressions include Mustache tags. Handlebars, however, also has some additional features
+such as registering help function and built-in block helpers, iterators, and access to object
+properties through the dot operator (i.e, ``{{house.price}}``).  We're just going to look at a few 
+Handlebars expressions as an introduction. See the
+`Handlebars documentation <http://handlebarsjs.com/>`_ for more information examples.
 
-The ``index`` view template below uses double mustaches (``{{}}``) to substitute the value of the 
-``country`` variable received from the ``index`` function of the controller.
+One of the things that we mentioned already is block helpers, which help you iterate through arrays. 
+You could use the block helper ``#each`` shown below to iterate through an
+array of strings:
 
 .. code-block:: html
 
-   <div>
-   <p>The user is from {{country}}.</p>
-   </div>
+   <ul>
+     {{#each view_engines}}
+     <li>{{this}}</li>
+     {{/each}}
+   </ul>
 
-If the ``index`` function sends the object ``{"country": "Mexico"}`` to the view template, the 
-rendered view would be the following:
+Another interesting block helper used in this example is #with, which will invoke a block when given 
+a specified context. For example, in the code snippet below, if the ``ul`` object is given, 
+the property title is evaluated.
 
 .. code-block:: html
 
-   <div>
-   <p>The user is from Mexico.</p>
-   </div>
+   {{#with ul}}
+     <h3>{{title}}</h3>
+   {{/with}}
+
+
 
 Mojito-Supplied Data
 ====================
