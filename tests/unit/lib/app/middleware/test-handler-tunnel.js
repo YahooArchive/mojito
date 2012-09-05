@@ -3,13 +3,13 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-YUI().use('mojito-testutils', 'test', function(Y) {
+YUI().use('mojito-test', 'test', function(Y) {
     var A = Y.Assert,
         AA = Y.ArrayAssert,
         OA = Y.ObjectAssert,
         cases = {},
 
-        factory = require(Y._projpath('lib/app/middleware/mojito-handler-tunnel')),
+        factory = require(Y.mojito.projpath('lib/app/middleware/mojito-handler-tunnel')),
         expandedContext;
 
     cases = {
