@@ -13,29 +13,20 @@ YUI().use('mojito-testutils', 'test', function(Y) {
         expandedContext;
 
     cases = {
-        name: 'handler tests',
+        name: 'handler-tunnel tests',
 
         _handler: null,
 
         setUp: function() {
             var store = {
                     getAppConfig: function() { return { obj: 'appConfig' }; },
-                    getSpec: function(env, id, ctx, cb) {
-                        cb(null, {
-                            env: env,
-                            id: id,
-                            ctx: ctx
-                        });
-                    },
-                    getType: function(env, type, ctx, cb) {
-                        cb(null, {
-                            env: env,
-                            type: type,
-                            ctx: ctx
-                        });
-                    },
                     expandInstance: function(instance, context, callback) {
                         expandedContext = context;
+                        callback(null, instance);
+                    },
+                    expandInstanceForEnv: function(env, instance, context, callback) {
+                        instance.env = env;
+                        instance.ctx = context;
                         callback(null, instance);
                     }
                 },
@@ -111,7 +102,6 @@ YUI().use('mojito-testutils', 'test', function(Y) {
             A.areEqual(1, callCount, 'next() handler should have been called');
         },
 
-
         'handler should override execution context to server (with /tunnel prefix)': function() {
             var nextCalls = 0, writeCalls = 0, endCalls = 0,
                 req = {
@@ -180,8 +170,8 @@ YUI().use('mojito-testutils', 'test', function(Y) {
                     },
                     end: function(data) {
                         var expected = {
-                            "env": "client",
-                            "id": "MojitA:orange"
+                            "base": "MojitA:orange",
+                            "env": "client"
                         };
                         endCalls++;
                         A.areEqual(Y.JSON.stringify(expected,null,4), data, 'should have gotten spec');
@@ -212,8 +202,8 @@ YUI().use('mojito-testutils', 'test', function(Y) {
                     },
                     end: function(data) {
                         var expected = {
-                            "env": "client",
-                            "id": "MojitA:orange"
+                            "base": "MojitA:orange",
+                            "env": "client"
                         };
                         endCalls++;
                         A.areEqual(Y.JSON.stringify(expected,null,4), data, 'should have gotten spec');
@@ -244,8 +234,8 @@ YUI().use('mojito-testutils', 'test', function(Y) {
                     },
                     end: function(data) {
                         var expected = {
-                            "env": "client",
-                            "type": "MojitA"
+                            "type": "MojitA",
+                            "env": "client"
                         };
                         endCalls++;
                         A.areEqual(Y.JSON.stringify(expected,null,4), data, 'should have gotten spec');
@@ -276,8 +266,8 @@ YUI().use('mojito-testutils', 'test', function(Y) {
                     },
                     end: function(data) {
                         var expected = {
-                            "env": "client",
-                            "type": "MojitA"
+                            "type": "MojitA",
+                            "env": "client"
                         };
                         endCalls++;
                         A.areEqual(Y.JSON.stringify(expected,null,4), data, 'should have gotten spec');
@@ -292,10 +282,6 @@ YUI().use('mojito-testutils', 'test', function(Y) {
             A.areEqual(0, nextCalls, 'next() handler should not have been called');
             A.areEqual(1, writeCalls, 'res.writeHead() should have been called');
             A.areEqual(1, endCalls, 'res.end() should have been called');
-        },
-
-        'ignore:': function () {
-
         }
     };
 
