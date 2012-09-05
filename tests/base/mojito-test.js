@@ -75,8 +75,11 @@ YUI.add('mojito-view-renderer', function(Y, NAME) {});
 YUI.add('mojito-testutils', function(Y, NAME) {
 
     /**
+     * Get the full path to something, given it's path relative to the mojito
+     * repo directory
+     * @method {_projpath}
      * @param {string} relpath relative to repo base directory
-     * @return {string} absolute path
+     * @return {string} absolute filesystem path
      */
     Y._projpath = function(relpath) {
         return require('path').resolve(__dirname, '../../' + relpath);
