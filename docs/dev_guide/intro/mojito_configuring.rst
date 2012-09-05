@@ -116,7 +116,7 @@ configuration Object
 |                                                        |                      |                   | topics/mojito_resource_store.html>`_. For example,     |
 |                                                        |                      |                   | ``"selector": "iphone"`` would configure the Resource  |
 |                                                        |                      |                   | Store to find resources with the identifier ``iphone`` |
-|                                                        |                      |                   | such as ``index.iphone.hb.html``.
+|                                                        |                      |                   | such as ``index.iphone.hb.html``.                      |
 |                                                        |                      |                   | See the `selector Propery <../topics/mojito_resource   |
 |                                                        |                      |                   | _store.html#selector-property>`_ and `Selectors <../   |
 |                                                        |                      |                   | topics/mojito_resource_store.html#selectors>`_ for     |
