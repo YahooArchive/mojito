@@ -142,6 +142,14 @@
                     "test": "./test-util.common.js"
                 },
                 "group": "fw,unit,client,server"
+            },
+            "view-renderer.common": {
+                "params": {
+                    "page": "$$config.base$$/mojito-test.html",
+                    "lib": "$$config.lib$$/app/autoload/view-renderer.common.js",
+                    "test": "./test-view-renderer.common.js"
+                },
+                "group": "fw,unit,client,server"
             }
         }
     },
