@@ -7,13 +7,13 @@ YUI({
     logInclude: { TestRunner: true }
 }).use('node', 'node-event-simulate', 'test', 'console', function (Y) {
    
-     var suite = new Y.Test.Suite("Serveronly");
+     var suite = new Y.Test.Suite("Config");
 
      suite.add(new Y.Test.Case({
 	     "test mathde": function(){
             Y.Assert.areEqual('This is from application.json:environment:testing', Y.one('#myenv').get('innerHTML'));
             Y.Assert.areEqual('This is from application.json:environment:testing,subject:math', Y.one('#mysubject').get('innerHTML'));
-            Y.Assert.areEqual('This is from application.json:environment:testing,lang:de', Y.one('#mylang').get('innerHTML'));
+            Y.Assert.areEqual('This is from defaults.json:master', Y.one('#mylang').get('innerHTML'));
          }
   }));
 
