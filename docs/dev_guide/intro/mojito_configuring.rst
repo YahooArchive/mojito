@@ -40,7 +40,7 @@ Below is the skeleton of a configuration file. See `Application Configuration`_ 
 .. _configure_mj-app:
 
 Application Configuration
--------------------------
+=========================
 
 Both the server and client runtimes of an application can be configured. The application is 
 configured in the ``application.json`` file in the application directory. The file consists of an 
@@ -63,7 +63,7 @@ object, which is user defined.
 .. _app-configuration_obj:
 
 configuration Object
-####################
+--------------------
 
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
 | Property                                               | Data Type            | Default Value     | Description                                            |
@@ -113,8 +113,10 @@ configuration Object
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
 | ``selector``                                           | string               | N/A               | The version of the resource. A resource is either a    |
 |                                                        |                      |                   | file to Mojito or metadata to the `Resource Store <../ |
-|                                                        |                      |                   | topics/mojito_resource_store.html>`_. For example,   |
-|                                                        |                      |                   | |
+|                                                        |                      |                   | topics/mojito_resource_store.html>`_. For example,     |
+|                                                        |                      |                   | ``"selector": "iphone"`` would configure the Resource  |
+|                                                        |                      |                   | Store to find resources with the identifier ``iphone`` |
+|                                                        |                      |                   | such as ``index.iphone.hb.html``.
 |                                                        |                      |                   | See the `selector Propery <../topics/mojito_resource   |
 |                                                        |                      |                   | _store.html#selector-property>`_ and `Selectors <../   |
 |                                                        |                      |                   | topics/mojito_resource_store.html#selectors>`_ for     |
@@ -407,13 +409,13 @@ See `Example Application Configurations`_ for an example of the ``yui`` object. 
 .. _config-multiple_mojits:
 
 Configuring Applications to Have Multiple Mojits
-================================================
+------------------------------------------------
 
 Applications not only can specify multiple mojit instances in ``application.json``, but mojits can 
 have one or more child mojits as well.
 
 Application With Multiple Mojits
---------------------------------
+################################
 
 Your application configuration can specify multiple mojit instances of the same or different types 
 in the ``specs`` object. In the example ``application.json`` below, the mojit instances ``sign_in`` 
@@ -436,7 +438,7 @@ and ``sign_out`` are defined:
    ]
    
 Parent Mojit With Child Mojit
------------------------------
+#############################
 
 A mojit instance can be configured to have a child mojit using the ``child`` object. In the example 
 ``application.json`` below, the mojit instance ``parent`` of type ``ParentMojit`` has a child mojit 
@@ -461,7 +463,7 @@ of type ``ChildMojit``.
    ]
 
 Parent Mojit With Children
---------------------------
+##########################
 
 A mojit instance can also be configured to have more than one child mojits using the ``children`` 
 object that contains mojit instances. To execute the children, the parent mojit would use the 
@@ -495,7 +497,7 @@ the children ``son`` and ``daughter`` of type ``ChildMojit``.
    ]
 
 Child Mojit With Children
--------------------------
+#########################
 
 A parent mojit can have a single child that has its own children. The parent mojit specifies a child 
 with the ``child`` object, which in turn lists children in the ``children`` object. For the child 
@@ -539,14 +541,14 @@ child ``son``, which has the children ``grandson`` and ``granddaughter``.
 .. _deploy_app:
 
 Configuring Applications to Be Deployed to Client
-=================================================
+-------------------------------------------------
 
 To configure Mojito to deploy code to the client, you must be using the ``HTMLFrameMojit`` as the 
 parent mojit and also set the ``deploy`` property of the :ref:`app-configuration_obj` object 
 to ``true`` in the ``config`` object of your mojit instance.
 
 What Gets Deployed?
--------------------
+###################
 
 The following is deployed to the client:
 
@@ -559,7 +561,7 @@ controller is ``server``, the invocation occurs on the server. In either case, t
 seamlessly invoke the controller.
 
 Example
--------
+#######
 
 The example ``application.json`` below uses the ``deploy`` property to configure the application to be deployed to the client.
 
@@ -587,7 +589,7 @@ The example ``application.json`` below uses the ``deploy`` property to configure
 .. _app_config-ex:
 
 Example Application Configurations
-==================================
+----------------------------------
 
 This example ``application.json`` defines the two mojit instances ``foo`` and ``bar``. The ``foo`` 
 mojit instance is of type ``MessageViewer``, and the ``bar`` mojit instance uses ``foo`` as the base 
@@ -627,14 +629,14 @@ mojit. Both have metadata configured in the ``config`` object.
 .. _configure_mj-mojit:
 
 Mojit Configuration
-###################
+===================
 
 Although mojit instances are defined at the application level, you configure metadata and defaults 
 for the mojit at the mojit level. The following sections will cover configuration at the mojit level 
 as well as examine the configuration of the mojit instance.
 
 Configuring Metadata
-====================
+--------------------
 
 The ``definition.json`` file in the mojit directory is used to specify metadata about the mojit 
 type. The contents of the file override the mojit type metadata that Mojito generates from the 
@@ -664,7 +666,7 @@ The table below describes the ``configuration`` object in ``definition.json``.
 +------------------+----------------------+-------------------+--------------------------------------------------------+
 
 Configuring and Using an Application-Level Mojit
-================================================
+------------------------------------------------
 
 The ``definition.json`` file lets you configure a mojit to be available at the application level, 
 so that other mojits can use its actions, addons, assets, binders, models, and views. Mojits 
@@ -702,7 +704,7 @@ array as seen below:
    }, '0.0.1', {requires: ['FooMojitModel']});
 
 Configuring Defaults for Mojit Instances
-========================================
+----------------------------------------
 
 The ``defaults.json`` file in the mojit type directory can be used to specify defaults for each 
 mojit instance of the type. The format is the same as the mojit instance as specified in the 
@@ -710,7 +712,7 @@ mojit instance of the type. The format is the same as the mojit instance as spec
 well as any defaults you might want to put in the ``config`` object.
 
 Mojit Instances
-===============
+---------------
 
 A mojit instance is made entirely of configuration. This configuration specifies which mojit type 
 to use and configures an instance of that type. The mojit instances are defined in the ``specs`` 
@@ -719,7 +721,7 @@ object of the ``application.json`` file.
 See :ref:`configure_mj-app` and :ref:`app_config-ex` for details of the ``specs`` object.
 
 Using Mojit Instances
----------------------
+#####################
 
 When a mojit instance is defined in ``application.json``, routing paths defined in ``routes.json`` 
 can be associated with an action of that mojit instance. Actions are references to functions in 
@@ -763,7 +765,7 @@ the controller of the ``Foo`` mojit.
 
 
 Routing
-#######
+=======
 
 In Mojito, routing is the mapping of URLs to specific mojit actions. This section will describe the 
 routing configuration file ``routes.json`` and the following two ways to configure routing:
@@ -775,7 +777,7 @@ See   `Code Examples: Configuring Routing <../code_exs/route_config.html>`_ to s
 configuring routing in a Mojito application.
 
 Routing Configuration File
-==========================
+--------------------------
 
 The ``routes.json`` file contains the routing configuration information in JSON. The JSON consists 
 of an array of one or more ``configuration`` objects that include ``route`` objects specifying route 
@@ -822,7 +824,7 @@ The table below describes the properties of the ``route`` object of  ``routes.js
 +----------------+----------------------+---------------+--------------------------------------------------------+
 
 Map Routes to Specific Mojit Instances and Actions
-==================================================
+--------------------------------------------------
 
 This type of route configuration is the most sophisticated and recommended for production 
 applications. To map routes to a mojit instance and action, you create the file ``routes.json`` 
@@ -830,7 +832,7 @@ in your application directory. The ``routes.json`` file allows you to configure 
 routes and specify the HTTP method and action to use for each route.
 
 Single Route
-------------
+############
 
 To create a route, you need to create a mojit instance that can be mapped to a path. In the 
 ``application.json`` below, the ``hello`` instance of type ``HelloMojit`` is defined.
@@ -886,7 +888,7 @@ the mojit type.
    ]
 
 Multiple Routes
----------------
+###############
 
 To specify multiple routes, you create multiple route objects that contain ``verb``, ``path``, and 
 ``call`` properties in ``routes.json`` as seen here:
@@ -1038,7 +1040,7 @@ The ``index`` function above returns the following URL: ``http://localhost:8666/
 
 
 Accessing Configurations from Mojits
-####################################
+====================================
 
 The controller, model, and binder can access mojit configurations from the ``init`` function. The 
 controller and model are passed ``configuration`` objects. The controller can also access 
@@ -1047,13 +1049,13 @@ the binder instead of a configuration object is passed the ``mojitProxy`` object
 you to get the configurations.  
 
 Application-Level Configurations
-================================
+--------------------------------
 
 Only the mojit controller has access to application-level configurations through the 
 ``actionContext`` object. 
 
 application.json
-----------------
+################
 
 The controller functions that are passed an ``actionContext`` object can reference the application
 configurations in ``application.json`` with ``ac.app.config``. For example, if you wanted to access 
@@ -1061,12 +1063,12 @@ the ``specs`` object defined in ``application.json``,
 you would use ``ac.app.config.spec``. 
 
 routes.json
------------
+###########
 
 The routing configuration can be accessed with ``ac.app.routes``. 
 
 Application Context
-===================
+-------------------
 
 The contexts for an application specify environment variables such as the runtime environment, the 
 location, device, region, etc. Once again, only the controller that is passed the ``actionContext`` 
@@ -1092,7 +1094,7 @@ Below is an example of the ``context`` object:
 
 
 Mojit-Level Configurations
-==========================
+--------------------------
 
 Mojit-level configurations can be specified in two locations. You can specify mojit-level 
 configurations in the ``config`` object of a mojit instance in ``application.json`` or default 
@@ -1100,7 +1102,7 @@ configurations for a mojit in ``mojits/{mojit_name}/defaults.json``. The configu
 ``application.json`` override those in ``defaults.json``.
 
 Controller
-----------
+##########
 
 In the controller, the mojit-level configurations are passed to the ``init`` function. In other 
 controller functions, you can access mojit-level configurations from the ``actionContext`` object 
@@ -1109,7 +1111,7 @@ configuration values from ``application.json`` and ``defaults.json`` and ``ac.co
 to access definition values from ``definition.json``.
 
 Model
------
+#####
 
 The ``init`` function in the model is also passed the mojit-level configurations. If other model 
 functions need the configurations, you need to save the configurations to the ``this`` reference 
@@ -1117,7 +1119,7 @@ because no ``actionContext`` object is passed to the model, so your model does n
 the ``Config`` addon.
 
 Binder
-------
+######
 
 As mentioned earlier, you access configurations through the ``mojitProxy`` object by referencing the 
 ``config`` property: ``mojitProxy.config``
