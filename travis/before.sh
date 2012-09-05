@@ -14,7 +14,7 @@ fi
 # YUI bleeding
 cd ../
 echo "Cloning YUI Repository"
-git clone git://github.com/yui/yui3.git yui-src
+git clone -b 3.x git://github.com/yui/yui3.git yui-src
 wait
 cd ./yui-src/src/yui
 echo "Making YUI NPM Module"
