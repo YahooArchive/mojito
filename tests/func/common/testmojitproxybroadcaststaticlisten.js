@@ -11,7 +11,7 @@ YUI({
 
     suite.add(new Y.Test.Case({
 
-        "skip: test broadcaststaticlisten": function() {
+        "test broadcaststaticlisten": function() {
             var that = this;
             Y.one('#staticButton').simulate('click');
             that.wait(function(){

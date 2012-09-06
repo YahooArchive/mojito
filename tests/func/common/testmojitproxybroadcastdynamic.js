@@ -11,7 +11,7 @@ YUI({
 
     suite.add(new Y.Test.Case({
 
-        "skip: test mojitproxybroadcastdynamic": function() {
+        "test mojitproxybroadcastdynamic": function() {
             var that = this;
             Y.one('#dynamicButton').simulate('click');
             that.wait(function(){//Parent - Child Communication: Dynamic children
