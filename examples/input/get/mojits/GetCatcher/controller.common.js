@@ -4,9 +4,9 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('GetCatcher', function(Y) {
+YUI.add('GetCatcher', function(Y, NAME) {
     
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         allParams: function(ac) {
             var params = ac.params.url(),

@@ -1,0 +1,56 @@
+[
+    {
+        "settings": [ "master" ],
+		"appPort": 4085,
+        "specs": {
+			"myCommand": {
+                "type": "ExecuteCommand",
+				"config": {
+					"commands": {
+						"create_app": {
+							"cmd": [
+								"cd /tmp",
+								"mojito create app test"
+							]
+						},
+						"pwd": {
+							"cmd": [
+								"pwd"
+							]
+						},
+						"create_app_again": {
+							"cmd": [
+								"cd /tmp",
+								"mojito create app test"
+							]
+						},
+						"create_mojit": {
+							"cmd": [
+								"cd /tmp/test",
+								"mojito create mojit testmojit"
+							]
+						},
+						"compile_views": {
+							"cmd": [
+								"cp -R ../common /tmp/",
+								"cd /tmp/common",
+								"mojito compile views"
+							]
+						}
+					}
+				}
+            },
+			"Coverage": {
+				"type": "Coverage"
+			}
+		}
+    },
+    { "settings": [ "device:android" ], "selector": "android" },
+    { "settings": [ "device:blackberry" ], "selector": "blackberry" },
+    { "settings": [ "device:iemobile" ], "selector": "iemobile" },
+    { "settings": [ "device:ipad" ], "selector": "ipad" },
+    { "settings": [ "device:iphone" ], "selector": "iphone" },
+    { "settings": [ "device:kindle" ], "selector": "kindle" },
+    { "settings": [ "device:opera-mini" ], "selector": "opera-mini" },
+    { "settings": [ "device:palm" ], "selector": "palm" }
+]

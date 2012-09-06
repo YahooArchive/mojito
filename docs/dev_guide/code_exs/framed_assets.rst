@@ -52,12 +52,12 @@ see the code example `Using the HTML Frame Mojit <./htmlframe_view.html>`_.
      }
    ]
 
-The view template ``index.mu.html`` below uses the asset ``index.css`` , but you do not need to include them in the file. If you use the same name for your CSS file as the name of your view 
+The view template ``index.hb.html`` below uses the asset ``index.css``, but you do not need to include them in the file. If you use the same name for your CSS file as the name of your view 
 template and place the CSS in the mojit ``assets`` directory, ``HTMLFrameMojit`` will automatically include the assets in the ``<head>`` tag for you and then inject the rendered view template 
 into the ``<body>`` tag.
 
-For example, the ``mojits/framed/assets/index.css`` file will automatically be included in the ``<head>`` tag of the rendered ``mojits/framed/views/index.mu.html`` view template. 
-When the ``index.mu.index`` view template below is rendered, it will be embedded in an HTML skeleton that includes a ``<html>``, ``<head>``, and ``<body>`` tags. If the ``/assets/index.css`` file exists, 
+For example, the ``mojits/framed/assets/index.css`` file will automatically be included in the ``<head>`` tag of the rendered ``mojits/framed/views/index.hb.html`` view template. 
+When the ``index.hb.index`` view template below is rendered, it will be embedded in an HTML skeleton that includes a ``<html>``, ``<head>``, and ``<body>`` tags. If the ``/assets/index.css`` file exists, 
 it will automatically be injected into the ``<head>`` tag.
 
 .. code-block:: html
@@ -167,7 +167,7 @@ To create and run ``framed_assets``:
         };
       }, '0.0.1', {requires: []});
 
-#. Include the assets in your view template by replacing the code in ``views/index.mu.html`` with the following:
+#. Include the assets in your view template by replacing the code in ``views/index.hb.html`` with the following:
 
    .. code-block:: html
 
@@ -218,7 +218,7 @@ Source Code
 ###########
 
 - `Assets <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/framed_assets/mojits/framed/assets/>`_
-- `Index View Template <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/framed_assets/mojits/framed/views/index.mu.html>`_
+- `Index View Template <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/framed_assets/mojits/framed/views/index.hb.html>`_
 - `Framed Assets Application <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/framed_assets/>`_
 
 

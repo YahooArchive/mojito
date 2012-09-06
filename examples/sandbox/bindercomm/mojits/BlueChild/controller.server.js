@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('BlueChild', function(Y) {
+YUI.add('BlueChild', function(Y, NAME) {
 
 /**
  * The BlueChild module.
@@ -18,7 +18,7 @@ YUI.add('BlueChild', function(Y) {
      * @class Controller
      * @constructor
      */
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         init: function(config) {
             this.config = config;

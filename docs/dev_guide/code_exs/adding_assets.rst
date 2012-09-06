@@ -74,7 +74,7 @@ This code example uses the ``simple`` mojit and the ``simple.css`` asset. To acc
 
 ``/static/simple/assets/simple.css``
 
-The ``index.mu.html`` view template below includes ``simple.css`` from the ``assets`` directory using the path above.
+The ``index.hb.html`` view template below includes ``simple.css`` from the ``assets`` directory using the path above.
 
 .. code-block:: html
 
@@ -201,7 +201,7 @@ To create and run ``simple_assets``:
         };
       }, '0.0.1', {requires: []});
 
-#. Include the assets in your view template by replacing the code in ``views/index.mu.html`` with the following:
+#. Include the assets in your view template by replacing the code in ``views/index.hb.html`` with the following:
 
    .. code-block:: html
 
@@ -256,7 +256,7 @@ Source Code
 ###########
 
 - `Mojit Assets <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/simple_assets/mojits/simple/assets/>`_
-- `Index View Template <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/simple_assets/mojits/simple/views/index.mu.html>`_
+- `Index View Template <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/simple_assets/mojits/simple/views/index.hb.html>`_
 - `Simple Assets Application <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/simple_assets/>`_
 
 

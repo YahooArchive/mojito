@@ -234,7 +234,7 @@ To set up and run ``locale_i18n``:
         );
       }, "3.1.0", {requires: ['intl']});
 
-#. To modify the index view template to show a localized message, replace the code in ``views/index.mu.html`` with the following:
+#. To modify the index view template to show a localized message, replace the code in ``views/index.hb.html`` with the following:
 
    .. code-block:: javascript
 

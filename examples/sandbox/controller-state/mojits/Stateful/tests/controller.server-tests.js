@@ -15,7 +15,7 @@ YUI.add('Stateful-tests', function(Y) {
         name: 'Stateful user tests',
         
         setUp: function() {
-            controller = Y.mojito.controller;
+            controller = Y.mojito.controllers.Stateful;
         },
         tearDown: function() {
             controller = null;

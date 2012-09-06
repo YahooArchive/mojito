@@ -18,7 +18,7 @@ YUI.add('MainMojit', function(Y, NAME) {
      * @class Controller
      * @constructor
      */
-      Y.mojito.controllers[NAME] = {
+      Y.namespace('mojito.controllers')[NAME] = {
 
         /**
          * Method corresponding to the 'index' action.

@@ -14,7 +14,9 @@ Table of Contents
 
    mojito_overview
    mojito_quicktour
+   mojito_architecture
    mojito_apps
+   mojito_mojits
    mojito_mvc
    mojito_configuring
    mojito_binders

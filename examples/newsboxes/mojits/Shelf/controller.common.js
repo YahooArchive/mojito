@@ -16,7 +16,7 @@ YUI.add('ShelfController', function(Y, NAME) {
      * ./definition.json.
      * @class ShelfController
      */
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         /**
          * Display a clickable tile for each feed in ./definition.json.

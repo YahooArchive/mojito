@@ -4,9 +4,9 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('Catcher', function(Y) {
-    
-    Y.mojito.controller = {
+YUI.add('Catcher', function(Y, NAME) {
+
+    Y.namespace('mojito.controllers')[NAME] = {
         
         index: function(ac) {
             var name = ac.params.body('name'),

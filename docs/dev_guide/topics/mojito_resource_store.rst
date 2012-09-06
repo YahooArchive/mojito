@@ -108,7 +108,7 @@ Resource Versions
 -----------------
 
 Because there can be multiple files which are all conceptually different versions of the
-same thing (e.g., ``views/index.mu.html`` and ``views/index.iphone.mu.html``), the |RS| defines
+same thing (e.g., ``views/index.hb.html`` and ``views/index.iphone.hb.html``), the |RS| defines
 **resource version** as the metadata about each file and resource as the metadata
 about the file chosen among the possible choices.
 
@@ -198,8 +198,8 @@ Metadata Object
 | ``name``                  | string        | yes           | none                | N/A                               | The name of the resource that is common to     |
 |                           |               |               |                     |                                   | all versions (i.e., iPhone/Android, etc.)      | 
 |                           |               |               |                     |                                   | of the resource. Example: the name for         |
-|                           |               |               |                     |                                   | for the resources ``index.iphone.mu.html``     |
-|                           |               |               |                     |                                   | and ``index.mu.html`` is ``index``.            |
+|                           |               |               |                     |                                   | for the resources ``index.iphone.hb.html``     |
+|                           |               |               |                     |                                   | and ``index.hb.html`` is ``index``.            |
 +---------------------------+---------------+---------------+---------------------+-----------------------------------+------------------------------------------------+
 | ``id``                    | string        | yes           | none                | N/A                               | A unique ID that is common to all versions     | 
 |                           |               |               |                     |                                   | of the  resource. The ``id`` has the           |
@@ -324,13 +324,13 @@ view Object
 +========================+===============+===========+===============+===============================+===============================================+
 | ``engine``             | string        | yes       | none          | Any view engine found         | The engine that renders the view template.    |  
 |                        |               |           |               | in ``addons/view-engines/``   | Two examples of rendering engines are         |
-|                        |               |           |               | of the application.           | Mustache and Handlebars.                      |
+|                        |               |           |               | of the application.           | Dust and Handlebars.                          |
 +------------------------+---------------+-----------+---------------+-------------------------------+-----------------------------------------------+
 | ``outputFormat``       | string        | yes       | none          | N/A                           | The output format that a view template is     |
 |                        |               |           |               |                               | rendered into, such as HTML, XML, and JSON.   |
 |                        |               |           |               |                               | The ``outputFormat`` matches the file         |
 |                        |               |           |               |                               | extension of the view template. For example,  |
-|                        |               |           |               |                               | the output format for ``index.mu.html`` would |
+|                        |               |           |               |                               | the output format for ``index.hb.html`` would |
 |                        |               |           |               |                               | be HTML.                                      |
 +------------------------+---------------+-----------+---------------+-------------------------------+-----------------------------------------------+
 
@@ -400,7 +400,9 @@ selector Property
 
 The  **selector** is an arbitrary user-defined string, which is used to 
 *select* which version of each resource to use.  The selector is defined in the 
-``application.json`` with the ``selector`` property.
+``application.json`` with the ``selector`` property. Because the selector is a global
+entity, you cannot define it at the mojit level. For example, you cannot define the selector
+in the ``defaults.json`` of a mojit.
 
 The value of the ``selector`` property is a string that must not have a 
 period (``'.'``) or slash (``'/'``) in it.  In practice, it's suggested to use alphanumeric and 
@@ -410,7 +412,7 @@ Only one selector can be used in each configuration object identified by the
 ``setting`` property, which defines the context.
  
 The specified selectors must match the selector found in the 
-resource file names.  So, for example, the view ``views/index.iphone.mu.html`` has 
+resource file names.  So, for example, the view ``views/index.iphone.hb.html`` has 
 the selector ``iphone``.
 
 
@@ -427,8 +429,8 @@ For example, developer might decide to use the selector ``selector: iphone`` for
 iPhone version  and ``selector: android`` for the Android version of a resource. Using these two 
 selectors, you could have the following two versions of the ``index`` resource of type ``view``:
 
-- ``index.iphone.mu.html``
-- ``index.android.mu.html``
+- ``index.iphone.hb.html``
+- ``index.android.hb.html``
 
 
 .. _metadata-ex:
@@ -442,14 +444,14 @@ Example
    {
      "source": {
        "fs": {
-         "fullPath": /"home/me/github-mojito/examples/getting-started-guide/part4/paged-yql/mojits/PagedFlickr/views/index.mu.html",
+         "fullPath": /"home/me/github-mojito/examples/getting-started-guide/part4/paged-yql/mojits/PagedFlickr/views/index.hb.html",
          "rootDir": "/home/me/github-mojito/yahoo/mojito/github-drewfish/examples/getting-started-guide/part4/paged-yql/mojits/PagedFlickr",
          "rootType": "mojit",
          "subDir": ".",
          "subDirArray": [],
          "isFile": true,
          "ext": ".html",
-         "basename": "index.mu"
+         "basename": "index.hb"
        },
        "pkg": {
          "name": "paged-yql",
@@ -467,7 +469,7 @@ Example
        "outputFormat": "html",
        "engine": "mu"
      },
-     "url": "/static/PagedFlickr/views/index.mu.html"
+     "url": "/static/PagedFlickr/views/index.hb.html"
    } 
      
 

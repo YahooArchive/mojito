@@ -1,0 +1,159 @@
+[
+    {
+        "settings": [ "master" ],
+        "name": "mojito-unit-tests",
+        "config": {
+            "lib": "../../../../../lib",
+            "base": "../../../../base"
+        },
+        "commonlib": "$$config.base$$/mojito-test.js,./../../../../../lib/app/autoload/util.common.js",
+        "dataprovider" : {
+            "action-context.common": {
+                "params": {
+                    "page": "$$config.base$$/mojito-test.html",
+                    "lib": "$$config.lib$$/app/autoload/action-context.common.js,./../../../../../lib/app/addons/ac/output-adapter.common.js",
+                    "test": "./test-action-context.common.js"
+                },
+                "group": "fw,unit,client,server"
+            },
+            "controller-context.common": {
+                "params": {
+                    "page": "$$config.base$$/mojito-test.html",
+                    "lib": "$$config.lib$$/app/autoload/controller-context.common.js",
+                    "test": "./test-controller-context.common.js"
+                },
+                "group": "fw,unit,client,server"
+            },
+            "dispatch.common": {
+                "params": {
+                    "page": "$$config.base$$/mojito-test.html",
+                    "lib": "$$config.lib$$/app/autoload/dispatch.common.js",
+                    "test": "./test-dispatch.common.js"
+                },
+                "group": "fw,unit,client,server"
+            },
+            "loader.common": {
+                "params": {
+                    "page": "$$config.base$$/mojito-test.html",
+                    "lib": "$$config.lib$$/app/autoload/loader.common.js",
+                    "test": "./test-loader.common.js"
+                },
+                "group": "fw,unit,client,server"
+            },
+            "logger.common": {
+                "params": {
+                    "page": "$$config.base$$/mojito-test.html",
+                    "lib": "$$config.lib$$/app/autoload/logger.common.js",
+                    "test": "./test-logger.common.js"
+                },
+                "group": "fw,unit,client,server"
+            },
+            "mojit-proxy.client": {
+                "params": {
+                    "page": "$$config.base$$/mojito-test.html",
+                    "lib": "$$config.lib$$/app/autoload/mojit-proxy.client.js",
+                    "test": "./test-mojit-proxy.client.js"
+                },
+                "group": "fw,unit,client"
+            },
+            "mojito-client.client": {
+                "params": {
+                    "page": "$$config.base$$/mojito-test.html",
+                    "lib": "$$config.lib$$/app/autoload/mojito-client.client.js",
+                    "test": "./test-mojito-client.client.js"
+                },
+                "group": "fw,unit,client"
+            },
+            "mojito.common": {
+                "params": {
+                    "page": "$$config.base$$/mojito-test.html",
+                    "lib": "$$config.lib$$/app/autoload/mojito.common.js",
+                    "test": "./test-mojito.common.js"
+                },
+                "group": "fw,unit,client,server"
+            },
+            "output-handler.client": {
+                "params": {
+                    "page": "$$config.base$$/mojito-test.html",
+                    "lib": "$$config.lib$$/app/autoload/output-handler.client.js",
+                    "test": "./test-output-handler.client.js"
+                },
+                "group": "fw,unit,client"
+            },
+            "mojito-perf.client": {
+                "params": {
+                    "page": "$$config.base$$/mojito-test.html",
+                    "lib": "$$config.lib$$/app/autoload/perf.client.js",
+                    "test": "./test-perf.client.js"
+                },
+                "group": "fw,unit,client"
+            },
+            "mojito-perf.server": {
+                "params": {
+                    "lib": "$$config.lib$$/app/autoload/perf.server.js",
+                    "test": "./test-perf.server.js",
+                    "driver": "nodejs"
+                },
+                "group": "fw,unit,server"
+            },
+            "resource-store-adapter.common": {
+                "params": {
+                    "page": "$$config.base$$/mojito-test.html",
+                    "lib": "$$config.lib$$/app/autoload/resource-store-adapter.common.js",
+                    "test": "./test-resource-store-adapter.common.js"
+                },
+                "group": "fw,unit,client,server"
+            },
+            "rest.common": {
+                "params": {
+                    "page": "$$config.base$$/mojito-test.html",
+                    "lib": "$$config.lib$$/app/autoload/rest.common.js",
+                    "test": "./test-rest.common.js"
+                },
+                "group": "fw,unit,client,server"
+            },
+            "route-maker.common": {
+                "params": {
+                    "page": "$$config.base$$/mojito-test.html",
+                    "lib": "$$config.lib$$/app/autoload/route-maker.common.js",
+                    "test": "./test-route-maker.common.js"
+                },
+                "group": "fw,unit,client,server"
+            },
+            "tunnel.client": {
+                "params": {
+                    "page": "$$config.base$$/mojito-test.html",
+                    "lib": "$$config.lib$$/app/autoload/tunnel.client-optional.js",
+                    "test": "./test-tunnel.client-optional.js"
+                },
+                "group": "fw,unit,client"
+            },
+            "store.client": {
+                "params": {
+                    "page": "$$config.base$$/mojito-test.html",
+                    "lib": "$$config.lib$$/app/autoload/store.client.js",
+                    "test": "./test-store.client.js"
+                },
+                "group": "fw,unit,client"
+            },
+            "util.common": {
+                "params": {
+                    "page": "$$config.base$$/mojito-test.html",
+                    "test": "./test-util.common.js"
+                },
+                "group": "fw,unit,client,server"
+            },
+            "view-renderer.common": {
+                "params": {
+                    "page": "$$config.base$$/mojito-test.html",
+                    "lib": "$$config.lib$$/app/autoload/view-renderer.common.js",
+                    "test": "./test-view-renderer.common.js"
+                },
+                "group": "fw,unit,client,server"
+            }
+        }
+    },
+    {
+        "settings": [ "environment:development" ]
+    }
+]
