@@ -101,7 +101,7 @@
 				 "group" : "developerguide,globalassets",
 				 "params" : {
 		                     "test" : "test_global_assets.js",
-		                     "page" : "$$config.baseUrl$$:4022/"    
+		                     "page" : "$$config.baseUrl$$:4122/"    
 				}
             },
 			"hello" : {
@@ -233,7 +233,7 @@
                 }
 	        },
 			"usingparameters" : {
-				 "group" : "developerguide,usingparameters,new",
+				 "group" : "developerguide,usingparameters",
 				 "params" : {
 		                     "test" : "test_using_parameters.js",
 		                     "page" : "$$config.baseUrl$$::4100/example1?foo=bar&bar=foo"    
