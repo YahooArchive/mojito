@@ -1,6 +1,6 @@
-YUI.add('MergeParams', function(Y) {
+YUI.add('MergeParams', function(Y, NAME) {
     
-     Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
       	  index: function(ac) {
 	          ac.done();
 	      },  
@@ -103,4 +103,4 @@ YUI.add('MergeParams', function(Y) {
         return paramsArray;
     }
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito']});

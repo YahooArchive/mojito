@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('myMojit', function(Y) {
+YUI.add('myMojit', function(Y, NAME) {
 
 /**
  * The TestMojit module.
@@ -15,7 +15,7 @@ YUI.add('myMojit', function(Y) {
      * @class Controller
      * @constructor
      */
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         /**
          * Method corresponding to the 'index' action.

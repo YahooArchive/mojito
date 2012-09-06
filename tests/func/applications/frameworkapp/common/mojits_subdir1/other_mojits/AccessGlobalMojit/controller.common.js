@@ -1,9 +1,9 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('AccessGlobalMojit', function(Y) {
+YUI.add('AccessGlobalMojit', function(Y, NAME) {
 
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         init: function(config) {
             this.config = config;
@@ -23,4 +23,4 @@ YUI.add('AccessGlobalMojit', function(Y) {
 
     };
 
-}, '0.0.1', {requires: ['GlobalMojitModel', 'mojito-mytest-addon', 'BindersModel']});
+}, '0.0.1', {requires: ['mojito', 'GlobalMojitModel', 'mojito-mytest-addon', 'BindersModel']});

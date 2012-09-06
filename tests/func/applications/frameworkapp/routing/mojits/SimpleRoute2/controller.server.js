@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('SimpleRoute2', function(Y) {
+YUI.add('SimpleRoute2', function(Y, NAME) {
 
 /**
  * The SimpleRoute2 module.
@@ -15,7 +15,7 @@ YUI.add('SimpleRoute2', function(Y) {
      * @class Controller
      * @constructor
      */
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         init: function(config) {
             this.config = config;
@@ -37,4 +37,4 @@ YUI.add('SimpleRoute2', function(Y) {
 
     };
 
-}, '0.0.1', {requires: ['mojito-http-addon']});
+}, '0.0.1', {requires: ['mojito', 'mojito-http-addon']});

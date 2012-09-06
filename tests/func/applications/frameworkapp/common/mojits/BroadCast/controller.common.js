@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('BroadCast', function(Y) {
+YUI.add('BroadCast', function(Y, NAME) {
 
 /**
  * The Parent module.
@@ -15,7 +15,7 @@ YUI.add('BroadCast', function(Y) {
      * @class Controller
      * @constructor
      */
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         init: function(spec) {
             this.spec = spec;
@@ -125,4 +125,4 @@ YUI.add('BroadCast', function(Y) {
 
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito']});

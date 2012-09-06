@@ -132,7 +132,7 @@
 					"scenario": [
                         {
                            "test" : "testpagedflickr-de.js",
-                           "page" : "$$config.baseUrl$$/flickr"
+                           "page" : "$$config.baseUrl$$/flickr?lang=de"
                         },
                         {
                            "controller": "locator",

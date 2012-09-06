@@ -50,7 +50,7 @@ YUI({useBrowserConsole: true}).use(
                 });
                 Y.Mock.expect(adapter, {
                     method: 'done',
-                    args: ['', meta]
+                    args: ['<div>test</div>', meta]
                 });
                 this.viewEngine.render(data, 'test', 'oldObjNotation.hb.html', adapter, meta);
             },
@@ -74,7 +74,7 @@ YUI({useBrowserConsole: true}).use(
                 });
                 Y.Mock.expect(adapter, {
                     method: 'done',
-                    args: ['', meta]
+                    args: ['<div>test</div>', meta]
                 });
                 this.viewEngine.render(data, 'test', 'dotNotation.hb.html', adapter, meta);
             }

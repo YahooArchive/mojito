@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('ConfigMojit', function(Y) {
+YUI.add('ConfigMojit', function(Y, NAME) {
 
 /**
  * The ConfigMojit module.
@@ -15,7 +15,7 @@ YUI.add('ConfigMojit', function(Y) {
      * @class Controller
      * @constructor
      */
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         init: function(config) {
             this.config = config;
@@ -68,4 +68,4 @@ YUI.add('ConfigMojit', function(Y) {
 
     };
 
-}, '0.0.1', {requires: [ 'mojito-config-addon' ]});
+}, '0.0.1', {requires: [ 'mojito', 'mojito-config-addon' ]});

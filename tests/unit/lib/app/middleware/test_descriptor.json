@@ -1,0 +1,40 @@
+[
+    {
+        "settings": [ "master" ],
+        "name": "mojito-middleware-unit-tests",
+        "config": {
+            "lib": "../../../../../lib",
+            "base": "../../../../base"
+        },
+        "commonlib": "$$config.base$$/mojito-test.js",
+        "dataprovider" : {
+            "contextualizer": {
+                "params": {
+                    "lib": "$$config.lib$$/app/middleware/mojito-contextualizer.js",
+                    "test": "./test-contextualizer.js",
+                    "driver": "nodejs"
+                },
+                "group": "fw,unit,server"
+            },
+            "handler-tunnel": {
+                "params": {
+                    "lib": "$$config.lib$$/app/middleware/mojito-handler-tunnel.js",
+                    "test": "./test-handler-tunnel.js",
+                    "driver": "nodejs"
+                },
+                "group": "fw,unit,server"
+            },
+            "router": {
+                "params": {
+                    "lib": "$$config.lib$$/app/middleware/mojito-handler-tunnel.js,../../../../../lib/app/autoload/route-maker.common.js,../../../../../lib/app/autoload/util.common.js",
+                    "test": "./test-router.js",
+                    "driver": "nodejs"
+                },
+                "group": "fw,unit,server"
+            }
+        }
+    },
+    {
+        "settings": [ "environment:development" ]
+    }
+]
