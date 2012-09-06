@@ -11,7 +11,7 @@ YUI({
 
          suite.add(new Y.Test.Case({
          
-             "test generatingurls": function() { 
+             "test globalassets": function() { 
                  Y.Assert.areEqual("/static/global_assets/assets/ohhai.css", Y.one('link').getAttribute('href'));
                  Y.Assert.areEqual("/static/global_assets/assets/sadwalrus.jpeg", Y.one('img').getAttribute('src'));
              }
