@@ -1,7 +1,0 @@
-artifacts
-.lock-wscript
-.svn/
-.git/
-*~
-*.bak
-.DS_Store

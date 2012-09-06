@@ -133,11 +133,11 @@ View Templates
 ++++++++++++++
 
 The rendered output from each of the dynamically defined child mojit instances can be injected into
-the view template of the parent mojit using Mustache tags. If the child mojit instances ``header``, ``footer``,
+the view template of the parent mojit using Handlebars expressions. If the child mojit instances ``header``, ``footer``,
 and ``body`` were defined in the configuration object passed to ``ac.composite.execute``, you
 could add the rendered content from those child mojit instances to the parent mojit's view template with 
-the Mustache tags ``{{{header}}}``, ``{{{footer}}}``, and ``{{{body}}}`` as shown in the 
-example view template below. The triple mustache tags insert unescaped HTML into the page.
+the Handlebars expressions ``{{{header}}}``, ``{{{footer}}}``, and ``{{{body}}}`` as shown in the 
+example view template below. The Handlebars expressions using triple braces insert unescaped HTML into the page.
 
 .. code-block:: html 
    

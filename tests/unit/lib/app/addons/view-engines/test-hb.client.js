@@ -15,6 +15,7 @@
 YUI({useBrowserConsole: true}).use(
     "mojito-hb",
     "test",
+    "handlebars",
     function(Y) {
 
         var suite = new Y.Test.Suite("mojito-hb client tests"),
@@ -43,15 +44,11 @@ YUI({useBrowserConsole: true}).use(
                         view: {}
                     };
                 Y.Mock.expect(adapter, {
-                    method: 'flush',
+                    method: 'done',
                     args: [Y.Mock.Value.String, meta],
                     run: function (output, metaResult) {
                         Y.Assert.areEqual('<div>test</div>', output);
                     }
-                });
-                Y.Mock.expect(adapter, {
-                    method: 'done',
-                    args: ['', meta]
                 });
                 this.viewEngine.render(data, 'test', 'oldObjNotation.hb.html', adapter, meta);
             },
@@ -67,15 +64,11 @@ YUI({useBrowserConsole: true}).use(
                         view: {}
                     };
                 Y.Mock.expect(adapter, {
-                    method: 'flush',
+                    method: 'done',
                     args: [Y.Mock.Value.String, meta],
                     run: function (output, metaResult) {
                         Y.Assert.areEqual('<div>test</div>', output);
                     }
-                });
-                Y.Mock.expect(adapter, {
-                    method: 'done',
-                    args: ['', meta]
                 });
                 this.viewEngine.render(data, 'test', 'dotNotation.hb.html', adapter, meta);
             }

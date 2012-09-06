@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('Layout', function(Y) {
+YUI.add('Layout', function(Y, NAME) {
 
 /**
  * The Layout module.
@@ -18,7 +18,7 @@ YUI.add('Layout', function(Y) {
      * @class Controller
      * @constructor
      */
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         init: function(config) {
             this.config = config;

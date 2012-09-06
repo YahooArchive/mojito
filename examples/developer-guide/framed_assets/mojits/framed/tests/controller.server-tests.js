@@ -15,7 +15,7 @@ YUI.add('framed-tests', function(Y) {
         name: 'framed user tests',
         
         setUp: function() {
-            controller = Y.mojito.controller;
+            controller = Y.mojito.controllers.framed;
         },
         tearDown: function() {
             controller = null;

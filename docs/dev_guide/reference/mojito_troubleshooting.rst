@@ -13,7 +13,7 @@ Issues
 * :ref:`I am getting the message that my mojit controller is not an object? What does this mean and how do I fix the problem? <moj_controller_not_obj>`
 * :ref:`I am including CSS files in the assets object of "application.json", so why are my CSS files not being inserted into the HTML page? <moj_asset_insertion>`
 * :ref:`My binder is getting deployed to the client, so why isn't the "init" function being called? <moj_binder_init>`
-* :ref:`I am getting Mustache rendering errors. Is this a client-side or server-side issue with Mustache, and can it be fixed? <mustache_rendering_error>`
+* :ref:`I am getting Handlebars rendering errors. Is this a client-side or server-side issue with Handlebars and can it be fixed? <handlebars_rendering_error>`
 * :ref:`Why can't my controller access the YUI modules in the "autoload" directory? <controller_access_autoload>`
 * :ref:`Why am I getting the error message "EADDRINUSE, Address already in use" when I try to start Mojito? <eaddriuse_err>`
 * :ref:`When I execute child mojits with "composite.execute", the views are being rendered, but the binders are not executed. Why? <binder_not_executing>`
@@ -106,14 +106,14 @@ the ``id`` attribute of that ``<div>`` element: ``<div id={{mojit_view_id}}>``
 ------------
 
 
-.. _mustache_rendering_error:
+.. _handlebars_rendering_error:
 
-**Q:** *I am getting Mustache rendering errors. Is this a client-side or server-side issue with Mustache, and can it be fixed?*
+**Q:** *I am getting Handlebars rendering errors. Is this a client-side or server-side issue with Handlebars and can it be fixed?*
 
 **A:**
-The issue is not with Mustache on the client, but with the Mustache rendering engine on the
-server. The Mustache rendering engine inspects the prototypes during the template processing stage. If you
-remove the prototype inspecting, e.g., creating object literals, the Mustache engine cannot process the data for the templates.
+The issue is not with Handlebars on the client, but with the Handlebars rendering engine on the
+server. The Handlebars rendering engine inspects the prototypes during the template processing stage. If you
+remove the prototype inspecting, e.g., creating object literals, the Handlebars engine cannot process the data for the templates.
 
 Although not a permanent solution, you can use ``Y.mix`` to ensure that your data has a prototype so that
 your templates can be rendered. Try doing the following: ``ac.done(Y.mix({},data));``

@@ -12,83 +12,63 @@
 /*
  * Baseline Mojito client testing harness.
  */
-
-/*
- */
 YUI.add('mojito', function(Y, NAME) {
     Y.namespace('mojito');
     Y.namespace('mojito.addons.ac');
 });
 
-/*
- */
-YUI.add('mojito-meta-addon', function(Y, NAME) {
-});
+/* AC ADDONS */
+YUI.add('mojito-analytics-addon', function(Y, NAME) {});
+YUI.add('mojito-assets-addon', function(Y, NAME) {});
+YUI.add('mojito-carrier-addon', function(Y, NAME) {});
+YUI.add('mojito-composite-addon', function(Y, NAME) {});
+YUI.add('mojito-config-addon', function(Y, NAME) {});
+YUI.add('mojito-cookie-addon', function(Y, NAME) {});
+YUI.add('mojito-deploy-addon', function(Y, NAME) {});
+YUI.add('mojito-device-addon', function(Y, NAME) {});
+YUI.add('mojito-http-addon', function(Y, NAME) {});
+YUI.add('mojito-i13n-addon', function(Y, NAME) {});
+YUI.add('mojito-intl-addon', function(Y, NAME) {});
+YUI.add('mojito-meta-addon', function(Y, NAME) {});
+YUI.add('mojito-output-adapter-addon', function(Y, NAME) {});
+YUI.add('mojito-params-addon', function(Y, NAME) {});
+YUI.add('mojito-partial-addon', function(Y, NAME) {});
+YUI.add('mojito-url-addon', function(Y, NAME) {});
 
-/*
- */
-YUI.add('mojito-composite-addon', function(Y, NAME) {
-});
+/* RS ADDONS */
+YUI.add('addon-rs-config', function(Y, NAME) {});
+YUI.add('addon-rs-selector', function(Y, NAME) {});
+YUI.add('addon-rs-url', function(Y, NAME) {});
+YUI.add('addon-rs-yui', function(Y, NAME) {});
 
-/*
- */
-YUI.add('mojito-params-addon', function(Y, NAME) {
-});
+/* VIEW ENGINE ADDONS */
+YUI.add('mojito-hb', function(Y, NAME) {});
+YUI.add('mojito-mu', function(Y, NAME) {});
 
-/*
- */
-YUI.add('mojito-config-addon', function(Y, NAME) {
+/* AUTOLOAD */
+YUI.add('mojito-action-context', function(Y, NAME) {});
+YUI.add('mojito-controller-context', function(Y, NAME) {});
+YUI.add('mojito-dispatcher', function(Y, NAME) {});
+YUI.add('mojito-loader', function(Y, NAME) {});
+YUI.add('mojito-logger', function(Y, NAME) {});
+YUI.add('mojito-mojit-proxy', function(Y, NAME) {});
+YUI.add('mojito-output-handler', function(Y, NAME) {});
+YUI.add('mojito-perf', function(Y, NAME) {
+    Y.namespace('mojito').perf = {
+        mark: function () {}
+    };
 });
+YUI.add('mojito-resource-store', function(Y, NAME) {});
+YUI.add('mojito-resource-store-adapter', function(Y, NAME) {});
+YUI.add('mojito-rest-lib', function(Y, NAME) {});
+YUI.add('mojito-route-maker', function(Y, NAME) {});
+YUI.add('mojito-client-store', function(Y, NAME) {});
+// Don't add mojito-tunnel-client.  It's optional, so adding always will
+// confuse our test that makes sure it's not loaded sometimes :)
+YUI.add('mojito-util', function(Y, NAME) {});
+YUI.add('mojito-view-renderer', function(Y, NAME) {});
 
-/*
- */
-YUI.add('mojito-client-store', function(Y, NAME) {
-});
 
-/*
- */
-YUI.add('mojito-dispatcher', function(Y, NAME) {
-});
-
-/*
- */
-YUI.add('mojito-loader', function(Y, NAME) {
-});
-
-/*
- */
-YUI.add('mojito-logger', function(Y, NAME) {
-});
-
-/*
- */
-YUI.add('mojito-mojit-proxy', function(Y, NAME) {
-});
-
-/*
- */
-YUI.add('mojito-output-handler', function(Y, NAME) {
-});
-
-/*
- */
-YUI.add('mojito-resource-store-adapter', function(Y, NAME) {
-});
-
-/*
- */
-YUI.add('mojito-route-maker', function(Y, NAME) {
-});
-
-/*
- */
-YUI.add('mojito-tunnel-client', function(Y, NAME) {
-});
-
-/*
- * Add a mojito-test module containing the mocking support we want for other
- * Mojito components.
- */
 YUI.add('mojito-test', function(Y, NAME) {
 
     function EasyMock() {
@@ -198,6 +178,17 @@ YUI.add('mojito-test', function(Y, NAME) {
         };
         return mock;
     }
+
+    /**
+     * Get the full path to something, given it's path relative to the mojito
+     * repo directory
+     * @method {projpath}
+     * @param {string} relpath relative to repo base directory
+     * @return {string} absolute filesystem path
+     */
+    Y.mojito.projpath = function (relpath) {
+        return require('path').resolve(__dirname, '../../' + relpath);
+    };
 
     Y.mojito.MockActionContext = MockActionContext;
     Y.mojito.EasyMock = EasyMock;

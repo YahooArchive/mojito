@@ -6,7 +6,7 @@
 
 YUI.add('Notepad', function(Y, NAME) {
 
-    Y.mojito.controllers[NAME] = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         index: function(ac) {
             ac.done();

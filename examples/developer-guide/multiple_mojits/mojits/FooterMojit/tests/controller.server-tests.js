@@ -15,7 +15,7 @@ YUI.add('FooterMojit-tests', function(Y) {
         name: 'FooterMojit user tests',
         
         setUp: function() {
-            controller = Y.mojito.controller;
+            controller = Y.mojito.controllers.FooterMojit;
         },
         tearDown: function() {
             controller = null;

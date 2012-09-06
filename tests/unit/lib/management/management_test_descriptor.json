@@ -1,0 +1,24 @@
+[
+    {
+        "settings": [ "master" ],
+        "name": "mojito-unit-tests",
+        "config": {
+            "lib": "../../../../lib",
+            "base": "../../../base"
+        },
+        "commonlib": "$$config.base$$/mojito-test.js",
+        "dataprovider" : {
+            "utils.server": {
+                "params": {
+                    "lib": "$$config.lib$$/management/utils.js",
+                    "test": "./test-utils.server.js",
+                    "driver": "nodejs"
+                },
+                "group": "fw,unit,server"
+            }
+        }
+    },
+    {
+        "settings": [ "environment:development" ]
+    }
+]

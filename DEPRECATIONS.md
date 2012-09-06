@@ -15,6 +15,18 @@ Currently Deprecated
 
 ### Deprecated but Available
 
+* (2012-08-14) Controllers that declare themselves using `Y.mojito.controller = {...}`
+should be changed to use `Y.namespace('mojito.controllers')[NAME] = {...}`. The previously
+used pattern will clobber the controllers if you are using `shareYUIInstance: true`.
+
+* (2012-08-13) Files ending in `.mu.html` will eventually not be rendered
+out-of-the-box by Mojito. All downstream projects should use the Handlebars
+view engine by renaming all view files from `.mu.html` to `.hb.html`. All examples
+and archetypes have already been updated, so new projects will use Handlebars
+by default. To rename all views in your project, run the following in your project's
+root folder:
+`find . -name "*.mu.html" -exec sh -c 'mv "$1" "$(echo "$1" | sed s/mu.html\$/hb.html/)"' _ {} \;`
+
 * (2012-04-23) The `.guid` member of Mojito metadata (such as binder metadata)
 is going away.  Often there's an associated member which more specifically
 expresses the intent of the unique ID (for example `.viewId` or `.instanceId`).

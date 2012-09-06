@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('TweetView', function(Y) {
+YUI.add('TweetView', function(Y, NAME) {
 
 /**
  * The TweetView module.
@@ -18,7 +18,7 @@ YUI.add('TweetView', function(Y) {
      * @class Controller
      * @constructor
      */
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         /**
          * Method corresponding to the 'index' action.
