@@ -37,7 +37,7 @@ program.parse(process.argv);
 
 function test (cmd) {
     var series = [];
-    cmd.logLevel = cmd.logLevel || 'ERROR';
+    cmd.logLevel = cmd.logLevel || 'WARN';
     // Default to all tests
     if (!cmd.unit && !cmd.func) {
         cmd.unit = true;
@@ -45,10 +45,10 @@ function test (cmd) {
     }
     cmd.unitBrowser = cmd.unitBrowser || cmd.browser || 'firefox';
     cmd.funcBrowser = cmd.funcBrowser || cmd.browser || 'firefox';
+    if (cmd.arrow) {
+        series.push(startArrowServer);
+    }
     if (cmd.unit) {
-        if (cmd.arrow) {
-            series.push(startArrowServer);
-        }
         if ('phantomjs' !== cmd.unitBrowser) {
             if (cmd.selenium) {
                 series.push(function (callback) {
@@ -91,7 +91,7 @@ function startArrowServer (callback) {
             process.stdout.write(data);
         };
     console.log("---Starting Arrow Server---");
-    var p = runCommand(cwd, "arrow_server", [], function () {
+    var p = runCommand(cwd, "node", [cwd+"/../node_modules/yahoo-arrow/arrow_server/server.js"], function () {
         // If this command returns called, then it failed to launch
         if (timeout) {
             clearTimeout(timeout);
@@ -117,6 +117,7 @@ function runUnitTests (cmd, callback) {
         runCommand(cwd, "mkdir", [cwd + '/artifacts/arrowreport/'], function () {
             runCommand(cwd, "mkdir", [arrowReportDir], function () {
                 var commandArgs = [
+                    cwd + "/../node_modules/yahoo-arrow/index.js",
                     cwd + "/unit/**/*_descriptor.json",
                     "--report=true",
                     "--reportFolder=" + arrowReportDir
@@ -132,7 +133,7 @@ function runUnitTests (cmd, callback) {
 
                 var p = runCommand(
                     cwd + '/unit',
-                    "arrow",
+                    "node",
                     commandArgs,
                     function (code) {
                         callback(code);
@@ -150,7 +151,7 @@ function build (cmd, callback) {
     console.log('---Building Apps---');
     runCommand(
         cwd + '/func/applications/frameworkapp/common',
-        "mojito",
+        cwd + "/../bin/mojito",
         ['build', 'html5app', cwd + '/func/applications/frameworkapp/flatfile'],
         callback
     );
@@ -197,9 +198,9 @@ function deploy (cmd, callback) {
 
 function startArrowSelenium (browser, callback) {
     console.log("---Starting Arrow Selenium---");
-    var commandArgs = [];
+    var commandArgs = [cwd+"/../node_modules/yahoo-arrow/arrow_selenium/selenium.js"];
     commandArgs.push("--open=" + browser);
-    runCommand(cwd+"/func/applications/frameworkapp/common", "arrow_selenium", commandArgs, function () {
+    runCommand(cwd+"/func/applications/frameworkapp/common", "node", commandArgs, function () {
         callback(null);
     });
 }
@@ -211,6 +212,7 @@ function runFuncTests (cmd, callback) {
         runCommand(cwd, "mkdir", [cwd + '/artifacts/arrowreport/'], function () {
             runCommand(cwd, "mkdir", [arrowReportDir], function () {
                 var commandArgs = [
+                    cwd + "/../node_modules/yahoo-arrow/index.js",
                     cwd + "/func/**/*_descriptor.json",
                     "--report=true",
                     "--reportFolder=" + arrowReportDir
@@ -226,7 +228,7 @@ function runFuncTests (cmd, callback) {
 
                 var p = runCommand(
                     cwd + '/func/',
-                    "arrow",
+                    "node",
                     commandArgs,
                     function (code) {
                         callback(code);
@@ -264,6 +266,7 @@ function finalize (err, results) {
 function runCommand (path, command, argv, callback) {
     callback = callback || function () {};
     process.chdir(path);
+    console.log(command + ' ' + argv.join(' '));
     var cmd = child.spawn(command, argv, {
         cwd: path,
         env: process.env
@@ -297,7 +300,7 @@ function runCommand (path, command, argv, callback) {
 function runMojitoApp (basePath, path, port, params, callback) {
     params = params || '';
     console.log('Starting ' + path + ' at port ' + port + ' with params ' + (params || 'empty'));
-    var p = runCommand(basePath + '/' + path, "mojito", ["start", port, "--context", params], function () {});
+    var p = runCommand(basePath + '/' + path, cwd + "/../bin/mojito", ["start", port, "--context", params], function () {});
     pids.push(p.pid);
     pidNames[p.pid] = libpath.basename(path) + ':' + port + (params ? '?' + params : '');
     // Give each app a second to start
