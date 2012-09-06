@@ -3,13 +3,13 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-YUI().use('mojito-route-maker', 'mojito-test', 'test', function(Y) {
+YUI().use('mojito-route-maker', 'mojito-test-extra', 'test', function(Y) {
     var A = Y.Assert,
         AA = Y.ArrayAssert,
         OA = Y.ObjectAssert,
         cases = {},
 
-        factory = require(Y.mojito.projpath('lib/app/middleware/mojito-router'));
+        factory = require(Y.MOJITO_DIR + 'lib/app/middleware/mojito-router');
 
     cases = {
         name: 'Handler route matching',
