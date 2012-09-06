@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('RESTLib', function(Y) {
+YUI.add('RESTLib', function(Y, NAME) {
 
 /**
  * The RESTLib module.
@@ -15,7 +15,7 @@ YUI.add('RESTLib', function(Y) {
      * @class Controller
      * @constructor
      */
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         init: function(config) {
             this.config = config;
@@ -370,4 +370,4 @@ YUI.add('RESTLib', function(Y) {
 	    	return hostPort;
 	    }
 	
-}, '0.0.1', {requires: ['mojito-http-addon']});
+}, '0.0.1', {requires: ['mojito', 'mojito-http-addon']});

@@ -29,12 +29,4 @@ YUI({
     }));
 
     Y.Test.Runner.add(suite);
-
-    function enterText(node, str){
-        for (var i = 0, length = str.length; i < length; i++) {
-            node.simulate("keypress", {
-                charCode: str.charCodeAt(i)
-            }); 	
-        }
-    }
 });

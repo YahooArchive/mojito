@@ -13,7 +13,7 @@ YUI({
 
 	  "test statefulclient": function() {
           var that = this;
-          enterText(Y.one('#inputbox'), "baseball"); 
+          Y.one('#inputbox').set('value', "baseball");
           Y.one('#pitchbutton').simulate('click');
           that.wait(function(){
               Y.Assert.areEqual('pitched: baseball', Y.one('#ControllerCachingResult').get('innerHTML').match(/pitched: baseball/gi));
@@ -27,12 +27,4 @@ YUI({
    }));
 
    Y.Test.Runner.add(suite);
-
-   function enterText(node, str){
-       for (var i = 0, length = str.length; i < length; i++) {
-           node.simulate("keypress", {
-               charCode: str.charCodeAt(i)
-           }); 	
-       }
-   }
 });

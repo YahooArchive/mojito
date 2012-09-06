@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('CM_Footer', function(Y) {
+YUI.add('CM_Footer', function(Y, NAME) {
 
 /**
  * The CM_Footer module.
@@ -15,7 +15,7 @@ YUI.add('CM_Footer', function(Y) {
      * @class Controller
      * @constructor
      */
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         init: function(config) {
             this.config = config;
@@ -45,4 +45,4 @@ YUI.add('CM_Footer', function(Y) {
         }
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito']});

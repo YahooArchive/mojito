@@ -22,8 +22,8 @@ YUI({
 	            Y.Assert.areEqual('I\'m a blue child.', Y.all('#childblue').item(1).get('innerHTML').match(/I\'m a blue child./gi));
 	            Y.Assert.areEqual('I\'m a green child.', Y.all('#childgreen').item(0).get('innerHTML').match(/I\'m a green child./gi));
 	            Y.Assert.areEqual('I\'m a green child.', Y.all('#childgreen').item(1).get('innerHTML').match(/I\'m a green child./gi));
-	            enterText(Y.one('#message'), "three"); 
-	            enterText(Y.one('#child'), "happy"); 
+	            Y.one('#message').set('value', "three");
+	            Y.one('#child').set('value', "happy");
 	            Y.one('#sendbutton').simulate('click');
 	            that.wait(function(){
 		            Y.log("*****after clicking*******");
@@ -40,13 +40,6 @@ YUI({
     }));
 
     Y.Test.Runner.add(suite);
-
-    function enterText(node, str){
-        for (var i = 0, length = str.length; i < length; i++) {
-	   node.simulate("keypress", {
- 	      charCode: str.charCodeAt(i)
- 	   }); 	
-    }
   }
 
 });

@@ -11,7 +11,7 @@ YUI({
 
     suite.add(new Y.Test.Case({
 
-        "test mojitproxybroadcastdynamic": function() {
+        "skip: test mojitproxybroadcastdynamic": function() {
             var that = this;
             Y.one('#dynamicButton').simulate('click');
             that.wait(function(){//Parent - Child Communication: Dynamic children
@@ -56,12 +56,4 @@ YUI({
     }));
 
     Y.Test.Runner.add(suite);
-
-    function enterText(node, str){
-        for (var i = 0, length = str.length; i < length; i++) {
-            node.simulate("keypress", {
-                charCode: str.charCodeAt(i)
-            }); 	
-        }
-    }
 });

@@ -15,14 +15,14 @@ YUI({
 	        var that = this;
             Y.one('#myMojitsButton').simulate('click');
             that.wait(function(){
-                enterText(Y.all('#inputbox').item(1), "basketball"); 
+                Y.all('#inputbox').item(1).set('value', "basketball");
                 Y.all('#pitchbutton').item(1).simulate('click');
                 that.wait(function(){
                     Y.Assert.areEqual('pitched: basketball', Y.one('#ControllerCachingResult').get('innerHTML').match(/pitched: basketball/gi));
 		            Y.all('#retrievebutton').item(1).simulate('click');
 		            that.wait(function(){
                         Y.Assert.areEqual('ball: basketball', Y.one('#ControllerCachingResult').get('innerHTML').match(/ball: basketball/gi));
-			            enterText(Y.all('#inputbox').item(2), "softball"); 
+			            Y.all('#inputbox').item(2).set('value', "softball");
                         Y.all('#pitchbutton').item(2).simulate('click');
 			            that.wait(function(){
                             Y.Assert.areEqual('pitched: softball', Y.one('#ControllerCachingResult').get('innerHTML').match(/pitched: softball/gi));
@@ -39,12 +39,4 @@ YUI({
     }));
 
     Y.Test.Runner.add(suite);
-
-    function enterText(node, str){
-        for (var i = 0, length = str.length; i < length; i++) {
-            node.simulate("keypress", {
-                charCode: str.charCodeAt(i)
-            }); 	
-        }
-    }
 });

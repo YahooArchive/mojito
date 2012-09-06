@@ -1,6 +1,6 @@
-YUI.add('GetParams', function(Y) {
+YUI.add('GetParams', function(Y, NAME) {
     
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
       index: function(ac){
 	     ac.done();
 	  },  
@@ -46,4 +46,4 @@ YUI.add('GetParams', function(Y) {
                 });
         }
     };   
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito']});
