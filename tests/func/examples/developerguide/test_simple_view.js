@@ -11,7 +11,7 @@ YUI({
 
          suite.add(new Y.Test.Case({
          
-             "test view": function() {
+             "test simpleview": function() {
                  Y.Assert.areEqual("Simple View", Y.one('h2').get('innerHTML'));
                  Y.Assert.areEqual("type: simple", Y.all('div').item(1).get('innerHTML'));
                  var currentTime = new Date();
@@ -27,7 +27,7 @@ YUI({
                      }
                      time = "time: "+ hours +":"+minutes +" p.m.";
                  }else{
-                     time = "time "+ hours +":"+minutes +" a.m."
+                     time = "time: "+ hours +":"+minutes +" a.m."
                  }
                  Y.log("time..."+time);
                  Y.log("time..."+Y.all('div').item(2).get('innerHTML'));
