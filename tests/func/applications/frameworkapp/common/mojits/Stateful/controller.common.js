@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('Stateful', function(Y) {
+YUI.add('Stateful', function(Y, NAME) {
 
 /**
  * The Stateful module.
@@ -15,7 +15,7 @@ YUI.add('Stateful', function(Y) {
      * @class Controller
      * @constructor
      */
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         init: function(spec) {
             this.spec = spec;
@@ -42,4 +42,4 @@ YUI.add('Stateful', function(Y) {
 
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito']});

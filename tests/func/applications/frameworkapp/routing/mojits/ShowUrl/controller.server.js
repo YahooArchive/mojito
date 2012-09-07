@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('ShowUrl', function(Y) {
+YUI.add('ShowUrl', function(Y, NAME) {
 
 /**
  * The ShowUrl module.
@@ -15,7 +15,7 @@ YUI.add('ShowUrl', function(Y) {
      * @class Controller
      * @constructor
      */
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         init: function(config) {
             this.config = config;
@@ -91,4 +91,4 @@ YUI.add('ShowUrl', function(Y) {
     	}
     };
 
-}, '0.0.1', {requires: ['mojito-http-addon']});
+}, '0.0.1', {requires: ['mojito', 'mojito-http-addon']});

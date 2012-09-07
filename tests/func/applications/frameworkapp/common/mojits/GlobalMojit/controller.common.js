@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('GlobalMojit', function(Y) {
+YUI.add('GlobalMojit', function(Y, NAME) {
 
 /**
  * The GlobalMojit module.
@@ -15,7 +15,7 @@ YUI.add('GlobalMojit', function(Y) {
      * @class Controller
      * @constructor
      */
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         init: function(config) {
             this.config = config;
@@ -33,4 +33,4 @@ YUI.add('GlobalMojit', function(Y) {
 
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito']});

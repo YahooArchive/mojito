@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2012 Yahoo! Inc. All rights reserved.
  */
-YUI.add('OtherFeatures', function(Y) {
+YUI.add('OtherFeatures', function(Y, NAME) {
 
 /**
  * The OtherFeatures module.
@@ -15,7 +15,7 @@ YUI.add('OtherFeatures', function(Y) {
      * @class Controller
      * @constructor
      */
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         /**
          * Method corresponding to the 'index' action.

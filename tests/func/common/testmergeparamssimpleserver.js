@@ -11,19 +11,11 @@ YUI({
 
     suite.add(new Y.Test.Case({
         "test mergeparamssimpleserver": function() {
-            enterText(Y.one('#namesimple'), "Everyone"); 
+            Y.one('#namesimple').set('value', "Everyone");
 	        Y.one('#likessimple > option[value="ice cream"]').set('selected','selected');    
         }
 
     }));
     
     Y.Test.Runner.add(suite);
-
-    function enterText(node, str){
-        for (var i = 0, length = str.length; i < length; i++) {
-            node.simulate("keypress", {
-                charCode: str.charCodeAt(i)
-            }); 	
-        }
-    }
 });

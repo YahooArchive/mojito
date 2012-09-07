@@ -37,7 +37,7 @@ program.parse(process.argv);
 
 function test (cmd) {
     var series = [];
-    cmd.logLevel = cmd.logLevel || 'ERROR';
+    cmd.logLevel = cmd.logLevel || 'DEBUG';
     // Default to all tests
     if (!cmd.unit && !cmd.func) {
         cmd.unit = true;

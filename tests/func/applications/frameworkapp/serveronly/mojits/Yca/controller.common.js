@@ -1,9 +1,9 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('Yca', function(Y) {
+YUI.add('Yca', function(Y, NAME) {
 
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         init: function(config) {
             this.config = config;
@@ -28,4 +28,4 @@ YUI.add('Yca', function(Y) {
             ac.done(data);
         }
     };
-}, '0.0.1', {requires: ['mojito-yca-addon']});
+}, '0.0.1', {requires: ['mojito', 'mojito-yca-addon']});

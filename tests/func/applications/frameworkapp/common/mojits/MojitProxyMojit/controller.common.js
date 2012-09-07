@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('MojitProxyMojit', function(Y) {
+YUI.add('MojitProxyMojit', function(Y, NAME) {
 
 /**
  * The MojitProxyMojit module.
@@ -15,7 +15,7 @@ YUI.add('MojitProxyMojit', function(Y) {
      * @class Controller
      * @constructor
      */
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         init: function(spec) {
             this.spec = spec;

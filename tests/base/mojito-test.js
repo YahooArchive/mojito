@@ -179,17 +179,6 @@ YUI.add('mojito-test', function(Y, NAME) {
         return mock;
     }
 
-    /**
-     * Get the full path to something, given it's path relative to the mojito
-     * repo directory
-     * @method {projpath}
-     * @param {string} relpath relative to repo base directory
-     * @return {string} absolute filesystem path
-     */
-    Y.mojito.projpath = function (relpath) {
-        return require('path').resolve(__dirname, '../../' + relpath);
-    };
-
     Y.mojito.MockActionContext = MockActionContext;
     Y.mojito.EasyMock = EasyMock;
 
@@ -198,3 +187,9 @@ YUI.add('mojito-test', function(Y, NAME) {
     "node",
     "node-event-simulate"
 ]});
+
+
+YUI.add('mojito-test-extra', function(Y, NAME) {
+	Y.MOJITO_DIR = require ?
+	    require('path').resolve(__dirname, '../../') + '/' : null;
+});
