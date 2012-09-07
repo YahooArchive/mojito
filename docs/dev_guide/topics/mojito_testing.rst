@@ -11,7 +11,7 @@ models, and mojit binders.
 The next few sections show you how to run specific tests with the ``mojito`` command.
 
 Conventions
-###########
+===========
 
 - Tests should be in the following directories:
 
@@ -36,7 +36,7 @@ Conventions
           files in the ``tests`` directories shown above.
 
 Framework Tests
-###############
+===============
 
 After you have installed Mojito, you should run the framework test to confirm that Mojito installed 
 correctly and that Node.js has been given permission to access the file system.
@@ -46,7 +46,7 @@ To test the Mojito framework, run the following:
 ``$ mojito test``
 
 Application Tests
-#################
+=================
 
 Running applications tests is much like running the framework tests above. The following command runs 
 tests for all of the mojits of a Mojito application.
@@ -59,7 +59,7 @@ YUI module or the module to be tested.
 ``$ mojito test app {path-to-app}/{application-name} [test-name]``
 
 Mojit Tests
-###########
+===========
 
 You create unit tests for your mojits and execute them also using the ``mojito`` command. Mojit tests 
 must require (included in the YUI ``require`` array) the module undergoing testing and the Mojito 
@@ -73,7 +73,7 @@ Each mojit test will be executed within a YUI instance along with its required d
 can be assured to only have properly scoped values.
 
 Types of Mojit Tests
-====================
+--------------------
 
 The following three types of mojit tests exist:
 
@@ -274,7 +274,7 @@ that tests the ``done`` function and verifies it was called correctly.
    ac.verify();
 
 Creating the MockActionContext Object
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#####################################
 
 To mock the ``ActionContext``, the ``mojito-test`` YUI module provides the ``MockActionContext`` 
 constructor that returns a mocked ``ActionContext`` as shown below:
@@ -284,7 +284,7 @@ constructor that returns a mocked ``ActionContext`` as shown below:
    var ac = new Y.mojito.MockActionContext();
 
 Setting Test Expectations
-~~~~~~~~~~~~~~~~~~~~~~~~~
+#########################
 
 To test with the ``MockActionContext`` object, you use the ``expect`` method and pass it an 
 ``expectation`` object containing the properties ``method``, ``args``, and ``run``. 
@@ -305,7 +305,7 @@ using the ``YUITest`` module to perform an assertion on the function's return va
    });
 
 Configuring Mojito to Test MockActionContext Object
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+###################################################
 
 To configure Mojito to use your ``MockActionContext`` object to run test, use the following:
 
@@ -334,7 +334,7 @@ Example Expectations
 --------------------
 
 Passing Multiple expectation Objects
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+####################################
 
 You can pass many ``expectation`` objects to the ``expect`` method:
 
@@ -361,7 +361,7 @@ You can pass many ``expectation`` objects to the ``expect`` method:
    );
 
 Chaining expect Methods
-~~~~~~~~~~~~~~~~~~~~~~~
+#######################
 
 You can also chain ``expect`` methods:
 
@@ -403,7 +403,7 @@ addons within the ``MockActionContext`` constructor:
    });
 
 Mocking Custom Addons
-~~~~~~~~~~~~~~~~~~~~~
+#####################
 
 To create a custom addon that contains functions within a property, you might have an addon that is 
 used in the following way:
@@ -427,7 +427,7 @@ To test the addon, you pass the ``addons`` array with a list of the addons you w
 This will give you a mock object at ``ac.customAddon.params`` from which you can call ``expect``.
 
 Mocking Models
-~~~~~~~~~~~~~~
+##############
 
 To test models with the ``MockActionContext`` object, you pass the ``models`` array with the model 
 YUI modules as is done with addons:
@@ -591,6 +591,8 @@ Setting Up
 #. Shut down the Arrow server with ``Ctrl-C^`` command.  
 
    
+.. _func_unit-install_selenium:
+   
 Installing Selenium (recommended)
 #################################
 
@@ -603,9 +605,12 @@ The following instructions work for both Macs and Linux.
 #. Confirm Selenium is running by going to the following URL: `http://localhost:4444/wd/hub/static/resource/hub.html <http://localhost:4444/wd/hub/static/resource/hub.html>`_   
 #. Shut down the Selenium server with ``Ctrl-C^`` command.  
 
+.. _func_unit-run:
 
 Running Tests
 #############
+
+.. _func_unit_run-batch:
 
 Batch Tests
 ```````````
@@ -636,10 +641,12 @@ or unit tests with one command.
    ``$ ./run.js test -f``
 #. To view the reports for the tests in the following directories: 
 
-   - ``$ ./artifacts/arrowreport/unit/``
-   - ``$ ./artifacts/arrowreport/func/``
+      - ``$ ./artifacts/arrowreport/unit/``
+      - ``$ ./artifacts/arrowreport/func/``
 
    Note: You will not get a report If you terminated any tests before they completed. 
+   
+.. _func_unit_run-arrow:
    
 Using Arrow to Run Tests
 ````````````````````````
@@ -678,12 +685,6 @@ the ``Arrow README <https://github.com/yahoo/arrow/blob/master/README.md>`_.
    and ``reports.json``.
    
    
-   ``
-
-
-   
-#. 
-
 
 
 
