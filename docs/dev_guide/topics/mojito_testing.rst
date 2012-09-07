@@ -1,5 +1,3 @@
-
-
 =======
 Testing
 =======
@@ -550,7 +548,7 @@ Macs
 .. _func_unit-macs_setup:
 
 Setting Up
-``````````
+~~~~~~~~~~
 
 #. `Download PhantomJS <http://www.doctor46.com/phantomjs>`_.
 #. Copy the phantomjs binary to ``/usr/local/bin/``.
@@ -562,7 +560,7 @@ Setting Up
    ``$ npm install arrow -g`` 
 #. Install commander:
 
-   ``$ npm install commander -g` 
+   ``$ npm install commander -g`` 
 #. Start the Arrow server to confirm it was installed:
 
    ``$ arrow_server``
@@ -576,7 +574,7 @@ Linux
 .. _func_unit-linux_setup:
 
 Setting Up
-``````````
+~~~~~~~~~~
 
 #. Follow the `installation instructions for PhantomJS <http://www.doctor46.com/phantomjs>`_.
 #. Copy the phantomjs binary to ``/usr/local/bin/``.
@@ -613,8 +611,8 @@ Running Tests
 
 .. _func_unit_run-batch:
 
-Batch Tests
-```````````
+Running Batch Tests
+~~~~~~~~~~~~~~~~~~~
 
 The following instructions show you how to run 
 Arrow tests with the wrapper script ``run.js``,
@@ -650,13 +648,13 @@ or unit tests with one command.
 .. _func_unit_run-arrow:
    
 Using Arrow to Run Tests
-````````````````````````
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can also separately run unit and functional tests directly 
 with the ``arrow`` command. You pass Arrow a test descriptor, which
 is a JSON configuration file that describes and organizes your tests.
 For an overview of Arrow and the command-line options, see 
-the ``Arrow README <https://github.com/yahoo/arrow/blob/master/README.md>`_.
+the `Arrow README <https://github.com/yahoo/arrow/blob/master/README.md>`_.
 
 #. Change to the ``mojito/tests/unit/lib/management/`` directory.
 #. Run the unit library tests with Arrow:
@@ -678,9 +676,9 @@ the ``Arrow README <https://github.com/yahoo/arrow/blob/master/README.md>`_.
    Also, getting the following error:
    
    /opt/local/lib/node_modules/arrow/lib/controller/default.js:135
-            self.driver.navigate(self.testParams.page, callback);
-                        ^
+   ``self.driver.navigate(self.testParams.page, callback);``                ^
    TypeError: Object #<NodeDriver> has no method 'navigate'
+   
 #. As with running the ``run.js`` script, Arrow will generate reports containing  
    the results of the tests. You can view the test reports in ``reports.xml``
    and ``reports.json``.
