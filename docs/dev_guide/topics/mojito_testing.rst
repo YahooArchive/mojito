@@ -15,10 +15,10 @@ Conventions
 
 - Tests should be in the following directories:
 
-   - ``{app_name}/tests`` - application tests
-   - ``{app_name}/mojits/{mojit_name}/tests`` - mojit tests
-   - ``{app_name}/autoload/{yui_module}/tests`` - tests for application-level YUI modules
-   - ``{app_name}/mojits/{mojit_name}/autoload/{yui_module}/tests`` - tests for mojit-level YUI modules
+     - ``{app_name}/tests`` - application tests
+     - ``{app_name}/mojits/{mojit_name}/tests`` - mojit tests
+     - ``{app_name}/autoload/{yui_module}/tests`` - tests for application-level YUI modules
+     - ``{app_name}/mojits/{mojit_name}/autoload/{yui_module}/tests`` - tests for mojit-level YUI modules
 - Syntax for the name of the test file: ``{yui_module}.{affinity}-tests.js``
 
   For example, the name of the unit test YUI module for the ``HelloMojit`` mojit with the ``server`` 
