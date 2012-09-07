@@ -21,15 +21,16 @@ Conventions
    - ``{app_name}/mojits/{mojit_name}/autoload/{yui_module}/tests`` - tests for mojit-level YUI modules
 - Syntax for the name of the test file: ``{yui_module}.{affinity}-tests.js``
 
-   For example, the name of the unit test YUI module for the ``HelloMojit`` mojit with the ``server`` 
-   affinity would be ``HelloMojit-tests.server.js``.
+  For example, the name of the unit test YUI module for the ``HelloMojit`` mojit with the ``server`` 
+  affinity would be ``HelloMojit-tests.server.js``.
 
 - The unit test YUI module should include the target module and the ``mojito-test`` module in the 
   ``requires`` array. The requires array includes the ``mojito-test`` module and the target module ``HelloMojit``:
 
-   .. code-block:: javascript
+  .. code-block:: javascript
 
-      { requires: [ 'mojito-test', 'HelloMojit' ] }
+     { requires: [ 'mojito-test', 'HelloMojit' ] }
+
 
 .. note:: Test files that are **not** in a ``tests`` directory may be found by Mojito as long as the 
           file name has the suffix ``-tests``. The suggested practice though is to place all test 
