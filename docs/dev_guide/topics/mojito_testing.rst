@@ -523,6 +523,10 @@ NodeJS, PhantomJS and Selenium. Arrow lets you write tests in
 You can also write your own functional/unit tests with Arrow. Mojito recommends that contributors
 write Arrow functional/unit tests for their code to accelerate the process of merging pull requests.
 
+The following sections show you how to set up your environment and run the unit and 
+functional tests that come with Mojito. In the future, we will also provide you with instructions
+for writing Arrow tests for your code contributions.
+
 .. _func_unit-builtin:
 
 Running Mojito's Built-In Tests
@@ -608,8 +612,8 @@ Batch Tests
 
 The following instructions show you how to run 
 Arrow tests with the wrapper script ``run.js``,
-which simplifies running batch tests. For example,
-you can use ``run.js`` to run all of the functional
+which allows you to run batch tests. 
+For example, you can use ``run.js`` to run all of the functional
 or unit tests with one command.
 
 #. Clone the Mojito repository.
@@ -619,30 +623,66 @@ or unit tests with one command.
 #. Start the Selenium server in the background.
 
    ``$ java -jar path/to/selenium-server.jar &``
-#. Run the unit tests for the framework and client 
+#. Run the unit tests for the framework and client: 
 
    ``$ ./run.js test -u --group fw,client,server``
-#. Run the functional tests:
+   
+   TBD: error: Error: ENOENT, no such file or directory 
+   '/private/tmp/mojito/tests/unit//private/tmp/mojito/tests/unit/lib/app/addons/ac/report.xml'
+
+#. You can run all the functional tests with the below command. You can
+   terminate the tests at any time with **Ctl-C**.
 
    ``$ ./run.js test -f``
-#. You can view the reports for the test in the following directory: ``$ ./artifacts/arrowreport/unit``
+#. To view the reports for the tests in the following directories: 
 
+   - ``$ ./artifacts/arrowreport/unit/``
+   - ``$ ./artifacts/arrowreport/func/``
 
+   Note: You will not get a report If you terminated any tests before they completed. 
+   
 Using Arrow to Run Tests
 ````````````````````````
 
 You can also separately run unit and functional tests directly 
-with the ``arrow`` command. See the ``Arrow README <https://github.com/yahoo/arrow/blob/master/README.md>`_
-for an overview and command-line options.
+with the ``arrow`` command. You pass Arrow a test descriptor, which
+is a JSON configuration file that describes and organizes your tests.
+For an overview of Arrow and the command-line options, see 
+the ``Arrow README <https://github.com/yahoo/arrow/blob/master/README.md>`_.
 
-#. Change to the ``mojito/tests/func/routing`` directory.
-#. Run the functional routing tests with Arrow:
-   
-   ``$ arrow routingtest_descriptor.json``
-#. Change to the ``mojito/tests/unit/lib/`` directory.
+#. Change to the ``mojito/tests/unit/lib/management/`` directory.
 #. Run the unit library tests with Arrow:
 
-   ``$ arrow routingtest_descriptor.json``   
+   ``$ arrow management_test_descriptor.json``   
+#. Change to the ``mojito/tests/func/routing`` directory.
+#. Functional tests depend on the browser, so let's start ``arrow_selenium``
+   so that the tests will be executed in one browser session:
+   
+   ``$ arrow_selenium``
+#. Run the functional routing tests with Arrow with the ``arrow`` command, the test descriptor,
+   and the option ``--browser=resuse``:
+   
+   ``$ arrow routingtest_descriptor.json --browser=reuse``
+   
+   TBD: None of the tests are passing. Firefox is giving the following
+   error message: Firefox can't establish a connection to the server at localhost:4082.
+   
+   Also, getting the following error:
+   
+   /opt/local/lib/node_modules/arrow/lib/controller/default.js:135
+            self.driver.navigate(self.testParams.page, callback);
+                        ^
+   TypeError: Object #<NodeDriver> has no method 'navigate'
+#. As with running the ``run.js`` script, Arrow will generate reports containing  
+   the results of the tests. You can view the test reports in ``reports.xml``
+   and ``reports.json``.
+   
+   
+   ``
+
+
+   
+#. 
 
 
 
