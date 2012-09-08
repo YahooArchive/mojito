@@ -2,7 +2,7 @@
 Testing
 =======
 
-Mojito provides a testing framework based on `YUI Test <http://yuilibrary.com/yuitest/>`_ that 
+Mojito provides a testing framework based on `YUI Test`_ that 
 allows you to run unit tests for the framework, modules, applications, mojit controllers, mojit 
 models, and mojit binders.
 
@@ -517,8 +517,8 @@ Functional/Unit Tests
 
 Mojito comes with functional tests that you can run with the npm module 
 `Arrow <https://github.com/yahoo/arrow/>`_, a testing framework that fuses together JavaScript, 
-NodeJS, PhantomJS and Selenium. Arrow lets you write tests in 
-`YUI Test <http://yuilibrary.com/projects/yuitest/>`_ that can be executed on the client or server. 
+Node.js, PhantomJS, and Selenium. Arrow lets you write tests in 
+`YUI Test`_ that can be executed on the client or server. 
 You can also write your own functional/unit tests with Arrow. Mojito recommends that contributors
 write Arrow functional/unit tests for their code to accelerate the process of merging pull requests.
 
@@ -656,34 +656,37 @@ is a JSON configuration file that describes and organizes your tests.
 For an overview of Arrow and the command-line options, see 
 the `Arrow README <https://github.com/yahoo/arrow/blob/master/README.md>`_.
 
-#. Change to the ``mojito/tests/unit/lib/management/`` directory.
-#. Run the unit library tests with Arrow:
 
-   ``$ arrow management_test_descriptor.json``   
-#. Change to the ``mojito/tests/func/routing`` directory.
-#. Functional tests depend on the browser, so let's start ``arrow_selenium``
-   so that the tests will be executed in one browser session:
+
+In the following steps, you'll start a routing application, run a test with Arrow,
+and then look at the test reports. Afterward, you should be able to
+run some of the other tests included with Mojito.
+
+#. Start Selenium in the background if it is not running already. You can confirm that it's running 
+   by going to http://127.0.0.1:4444/wd/hub/static/resource/hub.html.
+#. Change to the directory containg the routing test application.
    
-   ``$ arrow_selenium``
-#. Run the functional routing tests with Arrow with the ``arrow`` command, the test descriptor,
-   and the option ``--browser=resuse``:
+   ``$ cd mojito/tests/func/applications/frameworkapp/routing``
+#. Start the application specifying port 4082 in the background.
    
+   ``$ mojito start 4082 &``
+#. Change to the directory containing the tests for the routing applications.
+   
+   ``$ cd mojito/tests/func/routing``
+#. Launch Firefox with ``arrow_selenium``. 
+   
+   ``$ arrow_selenium --open=firefox``
+#. After Firefox has launched, run the functional routing tests with Arrow with the ``arrow`` command, 
+   the test descriptor, and the option ``--browser=resuse``:
+ 
    ``$ arrow routingtest_descriptor.json --browser=reuse``
-   
-   TBD: None of the tests are passing. Firefox is giving the following
-   error message: Firefox can't establish a connection to the server at localhost:4082.
-   
-   Also, getting the following error:
-   
-   /opt/local/lib/node_modules/arrow/lib/controller/default.js:135
-   ``self.driver.navigate(self.testParams.page, callback);``                ^
-   TypeError: Object #<NodeDriver> has no method 'navigate'
-   
 #. As with running the ``run.js`` script, Arrow will generate reports containing  
-   the results of the tests. You can view the test reports in ``reports.xml``
-   and ``reports.json``.
+   the results of the tests, but the report names will match the name of the 
+   test descriptor and be located in the current working directory. Consequently,
+   you should see the test reports ``routingtest_descriptor-report.json`` and
+   ``routingtest_descriptor-report.xml``.
    
    
-
+.. _YUI Test: http://yuilibrary.com/yuitest/
 
 
