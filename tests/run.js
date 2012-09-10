@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 var fs = require('fs'),
+    wrench = require('wrench'),
     libpath = require('path'),
     program = require('commander'),
     async = require('async'),
@@ -113,37 +114,34 @@ function startArrowServer (callback) {
 function runUnitTests (cmd, callback) {
     console.log('---Running Unit Tests---');
     var arrowReportDir = cwd + '/artifacts/arrowreport/unit/';
-    runCommand(cwd, "mkdir", [cwd + '/artifacts/'], function () {
-        runCommand(cwd, "mkdir", [cwd + '/artifacts/arrowreport/'], function () {
-            runCommand(cwd, "mkdir", [arrowReportDir], function () {
-                var commandArgs = [
-                    cwd + "/../node_modules/yahoo-arrow/index.js",
-                    cwd + "/unit/**/*_descriptor.json",
-                    "--report=true",
-                    "--reportFolder=" + arrowReportDir
-                ];
-                if ('phantomjs' !== cmd.unitBrowser) {
-                    commandArgs.push('--reuseSession');
-                }
-                commandArgs.push('--logLevel=' + cmd.logLevel);
-                commandArgs.push('--browser=' + cmd.unitBrowser);
-                cmd.driver && commandArgs.push('--driver=' + cmd.driver);
-                cmd.testName && commandArgs.push('--testName=' + cmd.testName);
-                cmd.group && commandArgs.push('--group=' + cmd.group);
+    wrench.rmdirSyncRecursive(arrowReportDir);
+    wrench.mkdirSyncRecursive(arrowReportDir);
 
-                var p = runCommand(
-                    cwd + '/unit',
-                    "node",
-                    commandArgs,
-                    function (code) {
-                        callback(code);
-                    }
-                );
-                p.stdout.on('data', function (data) {
-                    process.stdout.write(data);
-                });
-            });
-        });
+    var commandArgs = [
+        cwd + "/../node_modules/yahoo-arrow/index.js",
+        cwd + "/unit/**/*_descriptor.json",
+        "--report=true",
+        "--reportFolder=" + arrowReportDir
+    ];
+    if ('phantomjs' !== cmd.unitBrowser) {
+        commandArgs.push('--reuseSession');
+    }
+    commandArgs.push('--logLevel=' + cmd.logLevel);
+    commandArgs.push('--browser=' + cmd.unitBrowser);
+    cmd.driver && commandArgs.push('--driver=' + cmd.driver);
+    cmd.testName && commandArgs.push('--testName=' + cmd.testName);
+    cmd.group && commandArgs.push('--group=' + cmd.group);
+
+    var p = runCommand(
+        cwd + '/unit',
+        "node",
+        commandArgs,
+        function (code) {
+            callback(code);
+        }
+    );
+    p.stdout.on('data', function (data) {
+        process.stdout.write(data);
     });
 }
 
@@ -208,37 +206,34 @@ function startArrowSelenium (browser, callback) {
 function runFuncTests (cmd, callback) {
     console.log('---Running Functional Tests---');
     var arrowReportDir = cwd + '/artifacts/arrowreport/func/';
-    runCommand(cwd, "mkdir", [cwd + '/artifacts/'], function () {
-        runCommand(cwd, "mkdir", [cwd + '/artifacts/arrowreport/'], function () {
-            runCommand(cwd, "mkdir", [arrowReportDir], function () {
-                var commandArgs = [
-                    cwd + "/../node_modules/yahoo-arrow/index.js",
-                    cwd + "/func/**/*_descriptor.json",
-                    "--report=true",
-                    "--reportFolder=" + arrowReportDir
-                ];
-                if ('phantomjs' !== cmd.funcBrowser) {
-                    commandArgs.push('--reuseSession');
-                }
-                commandArgs.push('--logLevel=' + cmd.logLevel);
-                commandArgs.push('--browser=' + cmd.funcBrowser);
-                cmd.driver && commandArgs.push('--driver=' + cmd.driver);
-                cmd.testName && commandArgs.push('--testName=' + cmd.testName);
-                cmd.group && commandArgs.push('--group=' + cmd.group);
+    wrench.rmdirSyncRecursive(arrowReportDir);
+    wrench.mkdirSyncRecursive(arrowReportDir);
 
-                var p = runCommand(
-                    cwd + '/func/',
-                    "node",
-                    commandArgs,
-                    function (code) {
-                        callback(code);
-                    }
-                );
-                p.stdout.on('data', function (data) {
-                    process.stdout.write(data);
-                });
-            });
-        });
+    var commandArgs = [
+        cwd + "/../node_modules/yahoo-arrow/index.js",
+        cwd + "/func/**/*_descriptor.json",
+        "--report=true",
+        "--reportFolder=" + arrowReportDir
+    ];
+    if ('phantomjs' !== cmd.funcBrowser) {
+        commandArgs.push('--reuseSession');
+    }
+    commandArgs.push('--logLevel=' + cmd.logLevel);
+    commandArgs.push('--browser=' + cmd.funcBrowser);
+    cmd.driver && commandArgs.push('--driver=' + cmd.driver);
+    cmd.testName && commandArgs.push('--testName=' + cmd.testName);
+    cmd.group && commandArgs.push('--group=' + cmd.group);
+
+    var p = runCommand(
+        cwd + '/func/',
+        "node",
+        commandArgs,
+        function (code) {
+            callback(code);
+        }
+    );
+    p.stdout.on('data', function (data) {
+        process.stdout.write(data);
     });
 }
 
