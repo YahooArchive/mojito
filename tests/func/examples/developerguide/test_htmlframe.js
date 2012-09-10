@@ -13,7 +13,7 @@ YUI({
          
              "test htmlframe": function() {
                  Y.Assert.areEqual("Framed Mojit", Y.one('h2').get('innerHTML'));
-                 Y.Assert.areEqual("border: 10px solid rgb(61, 54, 45); -moz-border-radius: 10px 10px 10px 10px; margin-left: auto; margin-right: auto; padding: 10px 0px; background-color: rgb(247, 246, 244); text-align: center; font-weight: bold; font-size: 2em; color: rgb(255, 153, 0); width: 90%;", Y.one('h2').getAttribute('style'));
+                 Y.Assert.areEqual("90%", Y.one('h2').getStyle('width'));
              }
          }));    
 
