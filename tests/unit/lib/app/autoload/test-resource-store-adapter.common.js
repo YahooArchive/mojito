@@ -32,22 +32,43 @@ YUI().use('mojito-resource-store-adapter', 'test', function(Y) {
                         testKey3: 'testVal3'
                     };
                 },
-                expandInstanceForEnv: function (env, instance, context, callback) {
-                    var spec = {
-                        type: 'test_mojit_1',
-                        id: 'test1',
-                        config: {
-                            testKey4: 'testVal4',
-                            testKey5: 'testVal5',
-                            testKey6: {
-                                testKey7: 'testVal7'
-                            }
-                        },
-                        action: 'index',
-                        instanceId: 'yui_3_5_1_2_8_1345575332231_57351',
-                        yui: {}
+                getSpec: function (env, id, context, callback) {
+                    var specs = {
+                        'test1': {
+                            type: 'test_mojit_1',
+                            id: 'test1',
+                            config: {
+                                testKey4: 'testVal4',
+                                testKey5: 'testVal5',
+                                testKey6: {
+                                    testKey7: 'testVal7'
+                                }
+                            },
+                            action: 'index',
+                            instanceId: 'yui_3_5_1_2_8_1345575332231_57351',
+                            yui: {}
+                        }
                     };
-                    callback(null, spec);
+                    callback(null, specs[id]);
+                },
+                getType: function (env, type, context, callback) {
+                    var specs = {
+                        'test_mojit_1': {
+                            type: 'test_mojit_1',
+                            id: 'test1',
+                            config: {
+                                testKey4: 'testVal4',
+                                testKey5: 'testVal5',
+                                testKey6: {
+                                    testKey7: 'testVal7'
+                                }
+                            },
+                            action: 'index',
+                            instanceId: 'yui_3_5_1_2_8_1345575332231_57351',
+                            yui: {}
+                        }
+                    };
+                    callback(null, specs[type]);
                 },
                 serializeClientStore: function (ctx) {
                     return {};
@@ -89,6 +110,28 @@ YUI().use('mojito-resource-store-adapter', 'test', function(Y) {
                 A.isTrue(instance.type === 'test_mojit_1', 'type was wrong');
                 A.isTrue(instance.config.testKey4 === 'testVal4', 'testKey4 was wrong');
                 A.isTrue(instance.config.testKey6.testKey7 === 'testVal7', 'testKey6 was wrong');
+            });
+        },
+
+        'server mojit config value via type & overrride': function() {
+            var store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
+            var instance = {
+                type:'test_mojit_1',
+                config:{testKey4: 'other'}
+            };
+            store.expandInstance(instance, {}, function(err, instance){
+                A.isTrue(instance.type === 'test_mojit_1');
+                A.isTrue(instance.config.testKey4 === 'other');
+                A.isTrue(instance.config.testKey5 === 'testVal5');
+            });
+        },
+
+        'test getType()': function(){
+            var store = Y.mojito.ResourceStoreAdapter.init('server', resourceStore, dummyLog);
+            store.getType('server', 'test_mojit_1', {}, function(err, instance){
+                A.isTrue(instance.type === 'test_mojit_1');
+                A.isTrue(instance.config.testKey4 === 'testVal4');
+                A.isTrue(instance.config.testKey6.testKey7 === 'testVal7');
             });
         }
 
