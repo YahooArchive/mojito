@@ -19,14 +19,23 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
 
         setUp: function() {
             var store = {
-                    getAppConfig: function() { return { obj: 'appConfig' }; },
+                    getAppConfig: function () { return { obj: 'appConfig' }; },
+                    getSpec: function (env, id, ctx, cb) {
+                        cb(null, {
+                            env: env,
+                            id: id,
+                            ctx: ctx
+                        });
+                    },
+                    getType: function (env, type, ctx, cb) {
+                        cb(null, {
+                            env: env,
+                            type: type,
+                            ctx: ctx
+                        });
+                    },
                     expandInstance: function(instance, context, callback) {
                         expandedContext = context;
-                        callback(null, instance);
-                    },
-                    expandInstanceForEnv: function(env, instance, context, callback) {
-                        instance.env = env;
-                        instance.ctx = context;
                         callback(null, instance);
                     }
                 },
