@@ -48,6 +48,8 @@
         "npm": ">= 1.0.0"
     },
     "devDependencies": {
+        "node-static": "~0.6.1",
+        "yahoo-arrow": "~0.0.58"
     },
     "homepage": "http://developer.yahoo.com/cocktails/mojito/",
     "repository": {
@@ -57,7 +59,7 @@
     "bugs": "https://github.com/yahoo/mojito/issues",
     "scripts": {
         "start": "./bin/mojito start",
-        "test": "./bin/mojito jslint -p && ./bin/mojito test"
+        "test": "./tests/run.js test -u --group server --driver nodejs && ./tests/run.js test -u --group client --driver selenium"
     },
     "yahoo": {
         "bugzilla": {
