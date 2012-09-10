@@ -114,7 +114,9 @@ function startArrowServer (callback) {
 function runUnitTests (cmd, callback) {
     console.log('---Running Unit Tests---');
     var arrowReportDir = cwd + '/artifacts/arrowreport/unit/';
-    wrench.rmdirSyncRecursive(arrowReportDir);
+    try {
+        wrench.rmdirSyncRecursive(arrowReportDir);
+    } catch (e) {}
     wrench.mkdirSyncRecursive(arrowReportDir);
 
     var commandArgs = [
@@ -206,7 +208,9 @@ function startArrowSelenium (browser, callback) {
 function runFuncTests (cmd, callback) {
     console.log('---Running Functional Tests---');
     var arrowReportDir = cwd + '/artifacts/arrowreport/func/';
-    wrench.rmdirSyncRecursive(arrowReportDir);
+    try {
+        wrench.rmdirSyncRecursive(arrowReportDir);
+    } catch (e) {}
     wrench.mkdirSyncRecursive(arrowReportDir);
 
     var commandArgs = [
