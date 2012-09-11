@@ -7,7 +7,7 @@ YUI({
     logInclude: { TestRunner: true }
 }).use('node', 'node-event-simulate', 'test', 'console', 'intl', 'datatype-date-format', function (Y) {
    
-         var suite = new Y.Test.Suite("UseCase");
+         var suite = new Y.Test.Suite("UseCases: hello");
 
          suite.add(new Y.Test.Case({
          

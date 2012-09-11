@@ -7,7 +7,7 @@ YUI({
     logInclude: { TestRunner: true }
 }).use('node', 'node-event-simulate', 'test', 'console', 'json-parse', function (Y) {
    
-    var suite = new Y.Test.Suite("Common");
+    var suite = new Y.Test.Suite("Common: lazyloadclient");
 
     suite.add(new Y.Test.Case({
 
@@ -20,7 +20,7 @@ YUI({
                 try {
                     finalLazyResult = Y.JSON.parse(finalLazyResultText);
                 } catch (e) {
-                    this.fail();
+                    Y.Assert.isTrue(false, 'Failed to parse JSON: ' + finalLazyResultText);
                 }
                 Y.Assert.areEqual('Lazy Loading', Y.one('#header1').get('innerHTML').match(/Lazy Loading/gi));
                 Y.Assert.areEqual('Defer:true', Y.one('#header2').get('innerHTML').match(/Defer:true/gi));

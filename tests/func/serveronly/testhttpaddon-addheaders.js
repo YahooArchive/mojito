@@ -7,7 +7,7 @@ YUI({
     logInclude: { TestRunner: true }
 }).use('node', 'node-event-simulate', 'test', 'console', 'intl', 'datatype-date-format', function (Y) {
    
-     var suite = new Y.Test.Suite("Serveronly");
+     var suite = new Y.Test.Suite("ServerOnly: addHeaders");
 
      suite.add(new Y.Test.Case({
 

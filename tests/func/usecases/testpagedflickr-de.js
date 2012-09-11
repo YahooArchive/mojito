@@ -7,7 +7,7 @@ YUI({
     logInclude: { TestRunner: true }
 }).use('node', 'node-event-simulate', 'test', 'console', 'intl', 'datatype-date-format', function (Y) {
     
-         var suite = new Y.Test.Suite("UseCase");
+         var suite = new Y.Test.Suite("UseCases: pagedflickr-de");
 
          suite.add(new Y.Test.Case({
          

@@ -7,11 +7,11 @@ YUI({
     logInclude: { TestRunner: true }
 }).use('node', 'node-event-simulate', 'test', 'console', function (Y) {
    
-    var suite = new Y.Test.Suite("Common");
+    var suite = new Y.Test.Suite("Common: broadcaststaticlistenall");
 
     suite.add(new Y.Test.Case({
 
-        "test broadcaststaticunlistenall": function() {
+        "test broadcaststaticlistenall": function() {
             var that = this;
             Y.one('#staticButton').simulate('click');
             that.wait(function(){
