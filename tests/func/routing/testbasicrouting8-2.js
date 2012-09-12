@@ -7,7 +7,7 @@ YUI({
     logInclude: { TestRunner: true }
 }).use('node', 'node-event-simulate', 'test', 'console', function (Y) {
    
-    var suite = new Y.Test.Suite("Routing");
+    var suite = new Y.Test.Suite("Routing: BasicRouting8-2");
     
     suite.add(new Y.Test.Case({
 	     "test BasicRouting8-2": function(){   

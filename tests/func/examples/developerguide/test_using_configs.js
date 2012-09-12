@@ -7,7 +7,7 @@ YUI({
     logInclude: { TestRunner: true }
 }).use('node', 'node-event-simulate', 'test', 'console', function (Y) {
    
-         var suite = new Y.Test.Suite("Developerguide");
+         var suite = new Y.Test.Suite("DeveloperGuide: usingconfigs");
 
          suite.add(new Y.Test.Case({
          

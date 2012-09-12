@@ -4,8 +4,8 @@
 
         "name" : "common",
 
-		"commonlib" : "yui-test.js",
- 
+        "commonlib" : "../../base/yui-test.js",
+
         "config" :{
             "baseUrl" : "http://localhost:4081"
         },
@@ -18,80 +18,73 @@
                     "page" : "$$config.baseUrl$$/"
                 }
             },
-			"acmojitdone2client" : {
+            "acmojitdone2client" : {
                 "group" : "smoke,common,acmojit",
                 "params" : {
                     "test" : "testacmojitdone2client.js",
                     "page" : "$$config.baseUrl$$/"
                 }
             },
-			"acmojitdone3client" : {
+            "acmojitdone3client" : {
                 "group" : "smoke,common,acmojit",
                 "params" : {
                     "test" : "testacmojitdone3client.js",
                     "page" : "$$config.baseUrl$$/"
                 }
             },
-			"acmojitdone4client" : {
+            "acmojitdone4client" : {
                 "group" : "smoke,common,acmojit",
                 "params" : {
                     "test" : "testacmojitdone4client.js",
                     "page" : "$$config.baseUrl$$/"
                 }
             },
-			"acmojitdone5client" : {
+            "acmojitdone5client" : {
                 "group" : "smoke,common,acmojit",
                 "params" : {
                     "test" : "testacmojitdone5client.js",
                     "page" : "$$config.baseUrl$$/"
                 }
             },
-			"acmojitdone6client" : {
+            "acmojitdone6client" : {
                 "group" : "smoke,common,acmojit",
                 "params" : {
                     "test" : "testacmojitdone6client.js",
                     "page" : "$$config.baseUrl$$/"
                 }
             },
-			"acmojitdone7client" : {
+            "acmojitdone7client" : {
                 "group" : "smoke,common,acmojit",
                 "params" : {
                     "test" : "testacmojitdone7client.js",
                     "page" : "$$config.baseUrl$$/"
                 }
             },
-			"acmojitdone8client" : {
+            "acmojitdone8client" : {
                 "group" : "smoke,common,acmojit",
                 "params" : {
                     "test" : "testacmojitdone8client.js",
                     "page" : "$$config.baseUrl$$/"
                 }
             },
-			"acmojitdone9client" : {
+            "acmojitdone9client" : {
                 "group" : "smoke,common,acmojit",
                 "params" : {
                     "test" : "testacmojitdone9client.js",
                     "page" : "$$config.baseUrl$$/"
                 }
             },
-			"acmojitdone10client" : {
+            "acmojitdone10client" : {
                 "group" : "smoke,common,acmojit",
                 "params" : {
                     "test" : "testacmojitdone10client.js",
                     "page" : "$$config.baseUrl$$/"
                 }
             },
-			"acmojitnoparamclient" : {
+            "acmojitnoparamclient" : {
                 "group" : "smoke,common,acmojit",
                 "params" : {
                     "test" : "testacmojitnoparamclient.js",
-                    "page" : "$$config.baseUrl$$/"
-                }
-            },
-			"testdependencyclient" : {
-                "group" : "smoke,common",
-                "params" : {
-                    "test" : "testdependencyclient.js",
                     "page" : "$$config.baseUrl$$/"
                 }
             },
@@ -109,7 +102,7 @@
                     "page" : "$$config.baseUrl$$/"
                 }
             },
-			"testassetwithlocationclient" : {
+            "testassetwithlocationclient" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testassetwithlocationclient.js",
@@ -130,7 +123,7 @@
                     "page" : "$$config.baseUrl$$/"
                 }
             },
-			"testassetwithdefaultlocationclient" : {
+            "testassetwithdefaultlocationclient" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testassetwithdefaultlocationclient.js",
@@ -151,14 +144,14 @@
                     "page" : "$$config.baseUrl$$/"
                 }
             },
-			"testbinderclient" : {
+            "testbinderclient" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testbinderclient.js",
                     "page" : "$$config.baseUrl$$/"
                 }
             },
-			"testcompositemojitclient" : {
+            "testcompositemojitclient" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testcompositemojitclient.js",
@@ -172,28 +165,28 @@
                     "page" : "$$config.baseUrl$$/"
                 }
             },
-			"testcompositemojit2client" : {
+            "testcompositemojit2client" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testcompositemojit2client.js",
                     "page" : "$$config.baseUrl$$/"
                 }
             },
-			"testcompositemojitrefreshclient" : {
+            "testcompositemojitrefreshclient" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testcompositemojitrefreshclient.js",
                     "page" : "$$config.baseUrl$$/"
                 }
             },
-			"testcompositemojitrefresh1client" : {
+            "testcompositemojitrefresh1client" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testcompositemojitrefresh1client.js",
                     "page" : "$$config.baseUrl$$/cmframe?run_from_server=false"
                 }
             },
-			"testconfiginappfileclient" : {
+            "testconfiginappfileclient" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testconfiginappfileclient.js",
@@ -207,21 +200,21 @@
                     "page" : "$$config.baseUrl$$/"
                 }
             },
-			"testconfiginappfilenegclient" : {
+            "testconfiginappfilenegclient" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testconfiginappfilenegclient.js",
                     "page" : "$$config.baseUrl$$/"
                 }
             },
-			"testconfigindefaultfileclient" : {
+            "testconfigindefaultfileclient" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testconfigindefaultfileclient.js",
                     "page" : "$$config.baseUrl$$/"
                 }
             },
-			"testconfigindefinitionfileclient" : {
+            "testconfigindefinitionfileclient" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testconfigindefinitionfileclient.js",
@@ -235,7 +228,7 @@
                     "page" : "$$config.baseUrl$$/"
                 }
             },
-			"testmojitproxydestroychild" : {
+            "testmojitproxydestroychild" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testmojitproxydestroychild.js",
@@ -249,21 +242,21 @@
                     "page" : "$$config.baseUrl$$/"
                 }
             },
-			"teststatefulclient" : {
+            "teststatefulclient" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "teststatefulclient.js",
                     "page" : "$$config.baseUrl$$/"
                 }
             },
-			"testdependencyclient" : {
+            "testdependencyclient" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testdependencyclient.js",
                     "page" : "$$config.baseUrl$$/"
                 }
             },
-			"testlazyloadclient" : {
+            "testlazyloadclient" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testlazyloadclient.js",
@@ -277,153 +270,153 @@
                     "page" : "$$config.baseUrl$$/"
                 }
             },
-			"testclientpause" : {
+            "testclientpause" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testclientpause.js",
                     "page" : "$$config.baseUrl$$/"
                 }
             },
-			"testsimplemodelclient" : {
+            "testsimplemodelclient" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testsimplemodelclient.js",
                     "page" : "$$config.baseUrl$$/"
                 }
             },
-			"testmojitproxybroadcaststaticlistenall" : {
+            "testmojitproxybroadcaststaticlistenall" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testmojitproxybroadcaststaticlistenall.js",
                     "page" : "$$config.baseUrl$$/"
                 }
             },
-			"testmojitproxybroadcaststaticlisten2" : {
+            "testmojitproxybroadcaststaticlisten2" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testmojitproxybroadcaststaticlisten2.js",
                     "page" : "$$config.baseUrl$$/"
                 }
             },
-			"testmojitproxybroadcaststaticlisten1" : {
+            "testmojitproxybroadcaststaticlisten1" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testmojitproxybroadcaststaticlisten1.js",
                     "page" : "$$config.baseUrl$$/"
                 }
             },
-			"testmojitproxybroadcaststaticlisten" : {
+            "testmojitproxybroadcaststaticlisten" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testmojitproxybroadcaststaticlisten.js",
                     "page" : "$$config.baseUrl$$/"
                 }
             },
-			"testmojitproxybroadcastdynamic" : {
+            "testmojitproxybroadcastdynamic" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testmojitproxybroadcastdynamic.js",
                     "page" : "$$config.baseUrl$$/"
                 }
             },
-			"testmojitproxyrender" : {
+            "testmojitproxyrender" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testmojitproxyrender.js",
                     "page" : "$$config.baseUrl$$/?test=abc"
                 }
             },
-			"testmojitproxyrefreshview" : {
+            "testmojitproxyrefreshview" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testmojitproxyrefreshview.js",
                     "page" : "$$config.baseUrl$$/"
                 }
             },
-			"testmojitproxygetid" : {
+            "testmojitproxygetid" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testmojitproxygetid.js",
                     "page" : "$$config.baseUrl$$/"
                 }
             },
-			"testmojitproxygetfromurl" : {
+            "testmojitproxygetfromurl" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testmojitproxygetfromurl.js",
                     "page" : "$$config.baseUrl$$/?test=abc"
                 }
             },
-			"testgetparamsclient" : {
-	            "group" : "smoke,common",
-	            "params" : {
-	                "test" : "testgetparamsclient.js",
-	                "page" : "$$config.baseUrl$$/"
-	            }
-	        },
-	        "testgetparamssimpleclient" : {
-	            "group" : "smoke,common",
-	            "params" : {
-	                "test" : "testgetparamssimpleclient.js",
-	                "page" : "$$config.baseUrl$$/"
-	            }
-	        },
-			"testgetparamsbyvalueclient" : {
-	            "group" : "smoke,common",
-	            "params" : {
-	                "test" : "testgetparamsbyvalueclient.js",
-	                "page" : "$$config.baseUrl$$/"
-	            }
-	        },
-			"testgetparamsbyvaluesimpleclient" : {
-	            "group" : "smoke,common",
-	            "params" : {
-	                "test" : "testgetparamsbyvaluesimpleclient.js",
-	                "page" : "$$config.baseUrl$$/"
-	            }
-	        },
-			"testmergeparamsclient" : {
-	            "group" : "smoke,common",
-	            "params" : {
-	                "test" : "testmergeparamsclient.js",
-	                "page" : "$$config.baseUrl$$/"
-	            }
-	        },
-	        "testmergeparamssimpleclient" : {
-	            "group" : "smoke,common",
-	            "params" : {
-	                "test" : "testmergeparamssimpleclient.js",
-	                "page" : "$$config.baseUrl$$/"
-	            }
-	        },
-			"testpostparamsclient" : {
-	            "group" : "smoke,common",
-	            "params" : {
-	                "test" : "testpostparamsclient.js",
-	                "page" : "$$config.baseUrl$$/"
-	            }
-	        },
-			"testpostparamssimpleclient" : {
-	            "group" : "smoke,common",
-	            "params" : {
-	                "test" : "testpostparamssimpleclient.js",
-	                "page" : "$$config.baseUrl$$/"
-	            }
-	        },
-			"testrouteparamsclient" : {
-	            "group" : "smoke,common",
-	            "params" : {
-	                "test" : "testrouteparamsclient.js",
-	                "page" : "$$config.baseUrl$$/"
-	            }
-	        },
-			"testrouteparamssimpleclient" : {
-	            "group" : "smoke,common",
-	            "params" : {
-	                "test" : "testrouteparamssimpleclient.js",
-	                "page" : "$$config.baseUrl$$/"
-	            }
-	        }
+            "testgetparamsclient" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testgetparamsclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testgetparamssimpleclient" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testgetparamssimpleclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testgetparamsbyvalueclient" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testgetparamsbyvalueclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testgetparamsbyvaluesimpleclient" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testgetparamsbyvaluesimpleclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testmergeparamsclient" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testmergeparamsclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testmergeparamssimpleclient" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testmergeparamssimpleclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testpostparamsclient" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testpostparamsclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testpostparamssimpleclient" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testpostparamssimpleclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testrouteparamsclient" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testrouteparamsclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testrouteparamssimpleclient" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testrouteparamssimpleclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            }
         }     
     },
 
