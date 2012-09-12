@@ -7,7 +7,7 @@ YUI({
     logInclude: { TestRunner: true }
 }).use('node', 'node-event-simulate', 'test', 'console', 'intl', 'datatype-date-format', function (Y) {
    
-         var suite = new Y.Test.Suite("Developerguide");
+         var suite = new Y.Test.Suite("DeveloperGuide: locale_i18n");
 
          suite.add(new Y.Test.Case({
          

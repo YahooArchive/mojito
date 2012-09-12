@@ -3,9 +3,9 @@
         "settings": [ "master" ],
 
         "name" : "usecase",
-		
-		"commonlib" : "yui-test.js",
- 
+
+        "commonlib" : "../../base/yui-test.js",
+
         "config" :{
             "baseUrl" : "http://localhost:4085"
         },
@@ -18,155 +18,155 @@
                     "page" : "$$config.baseUrl$$/hello-1/index"
                 }
             },
-			"flickr1" : {
-			     "group" : "smoke,usecases",
-	             "params" : {
+            "flickr1" : {
+                 "group" : "smoke,usecases",
+                 "params" : {
                      "test" : "testflickr1.js",
                      "page" : "$$config.baseUrl$$/flickr-1/index"
                 }
             },
             "i18n" : {
-				 "group" : "smoke,usecases",
-	             "params" : {
+                 "group" : "smoke,usecases",
+                 "params" : {
                      "test" : "testi18n.js",
                      "page" : "$$config.baseUrl$$/i18n-1/index"
                 }
             },
             "i18n-en" : {
-				 "group" : "smoke,usecases",
-	             "params" : {
+                 "group" : "smoke,usecases",
+                 "params" : {
                      "test" : "testi18n.js",
                      "page" : "$$config.baseUrl$$/i18n-1/index?lang=en-US"
                 }
             },
             "i18n-de" : {
                  "group" : "smoke,usecases",
-	             "params" : {
+                 "params" : {
                      "test" : "testi18n-de.js",
                      "page" : "$$config.baseUrl$$/i18n-1/index?lang=de"
                 }
             },
             "i18n-fr" : {
                  "group" : "smoke,usecases",
-	             "params" : {
+                 "params" : {
                      "test" : "testi18n-neg.js",
                      "page" : "$$config.baseUrl$$/i18n-1/index?lang=fr"
                 }
             },
-			"i18n-intlLang" : {
+            "i18n-intlLang" : {
                  "group" : "smoke,usecases",
-	             "params" : {
+                 "params" : {
                      "test" : "testi18nintlLang.js",
                      "page" : "$$config.baseUrl$$/i18n-1/index"
                 }
             },
             "i18n-intlLang-de" : {
                  "group" : "smoke,usecases",
-	             "params" : {
+                 "params" : {
                      "test" : "testi18nintlLang.js",
                      "page" : "$$config.baseUrl$$/i18n-1/index?lang=de"
                 }
             },
-			"i18n2" : {
-				 "group" : "smoke,usecases",
-	             "params" : {
+            "i18n2" : {
+                 "group" : "smoke,usecases",
+                 "params" : {
                      "test" : "testi18n.js",
                      "page" : "$$config.baseUrl$$/i18n-2/index"
                 }
             },
             "i18n2-en" : {
-				 "group" : "smoke,usecases",
-	             "params" : {
+                 "group" : "smoke,usecases",
+                 "params" : {
                      "test" : "testi18n.js",
                      "page" : "$$config.baseUrl$$/i18n-2/index?lang=en-US"
                 }
             },
             "i18n2-de" : {
                  "group" : "smoke,usecases",
-	             "params" : {
+                 "params" : {
                      "test" : "testi18n-de.js",
                      "page" : "$$config.baseUrl$$/i18n-2/index?lang=de"
                 }
             },
             "i18n2-fr" : {
                  "group" : "smoke,usecases",
-	             "params" : {
+                 "params" : {
                      "test" : "testi18n-neg.js",
                      "page" : "$$config.baseUrl$$/i18n-2/index?lang=fr"
                 }
             },
             "pagedflickr" : {
                  "group" : "smoke,usecases",
-	             "params" : {
-					"scenario": [
+                 "params" : {
+                    "scenario": [
                         {
                            "test" : "testpagedflickr.js",
                            "page" : "$$config.baseUrl$$/flickr"
                         },
                         {
                            "controller": "locator",
-						   "params": {
-						          "value": "#paginate a",
-						          "click": true
-						   }
+                           "params": {
+                                  "value": "#paginate a",
+                                  "click": true
+                           }
                         },
-						{
-	                       "test" : "testpagedflickr-page2.js"
-	                    },
-						{
+                        {
+                           "test" : "testpagedflickr-page2.js"
+                        },
+                        {
                            "controller": "locator",
-						   "params": {
-						          "value": "#paginate a",
-						          "click": true
-						   }
+                           "params": {
+                                  "value": "#paginate a",
+                                  "click": true
+                           }
                         },
-						{
-	                       "test" : "testpagedflickr.js"
-	                    }
+                        {
+                           "test" : "testpagedflickr.js"
+                        }
                      ]
                 }
             },
-			"pagedflickr-de" : {
+            "pagedflickr-de" : {
                  "group" : "smoke,usecases",
-	             "params" : {
-					"scenario": [
+                 "params" : {
+                    "scenario": [
                         {
                            "test" : "testpagedflickr-de.js",
                            "page" : "$$config.baseUrl$$/flickr?lang=de"
                         },
                         {
                            "controller": "locator",
-						   "params": {
-						          "value": "#paginate a",
-						          "click": true
-						   }
+                           "params": {
+                                  "value": "#paginate a",
+                                  "click": true
+                           }
                         },
-						{
-	                       "test" : "testpagedflickr-de-page2.js"
-	                    },
-						{
+                        {
+                           "test" : "testpagedflickr-de-page2.js"
+                        },
+                        {
                            "controller": "locator",
-						   "params": {
-						          "value": "#paginate a",
-						          "click": true
-						   }
+                           "params": {
+                                  "value": "#paginate a",
+                                  "click": true
+                           }
                         },
-						{
-	                       "test" : "testpagedflickr-de.js"
-	                    }
+                        {
+                           "test" : "testpagedflickr-de.js"
+                        }
                      ]
                 }
             },
-			"preinit" : {
-			     "group" : "smoke,usecases",
-	             "params" : {
+            "preinit" : {
+                 "group" : "smoke,usecases",
+                 "params" : {
                      "test" : "testpreinit.js",
                      "page" : "$$config.baseUrl$$/flickr2"
                 }
             },
-			"preattachbinder" : {
-			     "group" : "smoke,usecases",
-	             "params" : {
+            "preattachbinder" : {
+                 "group" : "smoke,usecases",
+                 "params" : {
                      "test" : "testpreattachedbinder.js",
                      "page" : "$$config.baseUrl$$/flickr2"
                 }

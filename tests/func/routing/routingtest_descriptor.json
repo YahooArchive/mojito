@@ -4,7 +4,8 @@
 
         "name" : "routing",
 
- 
+        "commonlib" : "../../base/yui-test.js",
+
         "config" :{
             "baseUrl" : "http://localhost:4082"
         },
@@ -17,30 +18,30 @@
                     "page" : "$$config.baseUrl$$/route-1/index"
                 }
             },
-			"BasicRouting2" : {
-			     "group" : "functional,smoke,routing",
-	             "params" : {
+            "BasicRouting2" : {
+                 "group" : "functional,smoke,routing",
+                 "params" : {
                      "test" : "testbasicrouting2.js",
                      "page" : "$$config.baseUrl$$/route-2/index"
                 }
             },
             "BasicRouting3" : {
-				 "group" : "functional,smoke,routing",
-	             "params" : {
+                 "group" : "functional,smoke,routing",
+                 "params" : {
                      "test" : "testbasicrouting3.js",
                      "page" : "$$config.baseUrl$$/myAction"
                 }
             },
             "BasicRouting4" : {
                  "group" : "functional,smoke,routing",
-	             "params" : {
+                 "params" : {
                      "test" : "testbasicrouting4.js",
                      "page" : "$$config.baseUrl$$/route-2/myPath"
                 }
             },
             "BasicRouting5" : {
                  "group" : "functional,smoke,routing",
-	             "params" : {
+                 "params" : {
                      "test" : "testbasicrouting5.js",
                      "page" : "$$config.baseUrl$$/route1/anything"
                 }
@@ -56,140 +57,140 @@
                 "group" : "functional,smoke,routing",
                 "params" : {
                     "scenario": [
-	             		 {
-		                     "page" : "$$config.baseUrl$$/route-1/run_index"
-		                 },
-					     {
-		                     "test" : "testbasicrouting7-1.js"
-		                 },
-		                 {
-		                     "page" : "$$config.baseUrl$$/route-2/run_index"
-		                 },
-					     {
-		                     "test" : "testbasicrouting7-2.js"
-		                 }
-		           ]
+                         {
+                             "page" : "$$config.baseUrl$$/route-1/run_index"
+                         },
+                         {
+                             "test" : "testbasicrouting7-1.js"
+                         },
+                         {
+                             "page" : "$$config.baseUrl$$/route-2/run_index"
+                         },
+                         {
+                             "test" : "testbasicrouting7-2.js"
+                         }
+                   ]
                 }
             },
             "BasicRouting8" : {
                 "group" : "functional,smoke,routing",
                 "params" : {
                     "scenario": [
-	             		 {
-		                     "page" : "$$config.baseUrl$$/routepostget"
-		                 },
-		                 {
-		                     "test" : "testbasicrouting8.js"
-		                 },
-		                 {
-		                     "controller": "locator",
-					         "params": {
-					               "value": "#postinput",
-					               "click": true
-					         }
-		                 },
-					     {
-		                     "test" : "testbasicrouting8-1.js"
-		                 },
-		                 {
-		                     "page" : "$$config.baseUrl$$/routepostget"
-		                 },
-		                 {
-		                     "controller": "locator",
-					         "params": {
-					               "value": "#getinput",
-					               "click": true
-					         }
-		                 },
-					     {
-		                     "test" : "testbasicrouting8-2.js"
-		                 }
-		           ]
+                         {
+                             "page" : "$$config.baseUrl$$/routepostget"
+                         },
+                         {
+                             "test" : "testbasicrouting8.js"
+                         },
+                         {
+                             "controller": "locator",
+                             "params": {
+                                   "value": "#postinput",
+                                   "click": true
+                             }
+                         },
+                         {
+                             "test" : "testbasicrouting8-1.js"
+                         },
+                         {
+                             "page" : "$$config.baseUrl$$/routepostget"
+                         },
+                         {
+                             "controller": "locator",
+                             "params": {
+                                   "value": "#getinput",
+                                   "click": true
+                             }
+                         },
+                         {
+                             "test" : "testbasicrouting8-2.js"
+                         }
+                   ]
                 }
             },
             "BasicRouting9" : {
                 "group" : "functional,smoke,routing",
                 "params" : {
                     "scenario": [
-	             		 {
-		                     "page" : "$$config.baseUrl$$/showurl?mojit_name=route-2&mojit_action=index"
-		                 },
-					     {
-		                     "test" : "testbasicrouting9-1.js"
-		                 },
-		                 {
-		                     "page" : "$$config.baseUrl$$/showurl?mojit_name=route-1&mojit_action=myAction"
-		                 },
-					     {
-		                     "test" : "testbasicrouting9-2.js"
-		                 }
-		           ]
+                         {
+                             "page" : "$$config.baseUrl$$/showurl?mojit_name=route-2&mojit_action=index"
+                         },
+                         {
+                             "test" : "testbasicrouting9-1.js"
+                         },
+                         {
+                             "page" : "$$config.baseUrl$$/showurl?mojit_name=route-1&mojit_action=myAction"
+                         },
+                         {
+                             "test" : "testbasicrouting9-2.js"
+                         }
+                   ]
                 }
             },
             "BasicRouting10" : {
                 "group" : "functional,smoke,routing",
                 "params" : {
                     "scenario": [
-	             		 {
-		                     "page" : "$$config.baseUrl$$/showurl?mojit_name=route-2&mojit_action=nothing&mojit_urlparams=http://www.abc.com"
-		                 },
-					     {
-		                     "test" : "testbasicrouting10-1.js"
-		                 },
-		                 {
-		                     "page" : "$$config.baseUrl$$/showurl?mojit_name=route-2&mojit_action=nothing&mojit_verbs=POST"
-		                 },
-					     {
-		                     "test" : "testbasicrouting10-2.js"
-		                 }
-		           ]
+                         {
+                             "page" : "$$config.baseUrl$$/showurl?mojit_name=route-2&mojit_action=nothing&mojit_urlparams=http://www.abc.com"
+                         },
+                         {
+                             "test" : "testbasicrouting10-1.js"
+                         },
+                         {
+                             "page" : "$$config.baseUrl$$/showurl?mojit_name=route-2&mojit_action=nothing&mojit_verbs=POST"
+                         },
+                         {
+                             "test" : "testbasicrouting10-2.js"
+                         }
+                   ]
                 }
             },
             "BasicRouting11" : {
                 "group" : "functional,smoke,routing",
                 "params" : {
                     "scenario": [
-	             		 {
-		                     "page" : "$$config.baseUrl$$/showurl?mojit_url=/you/found/a/good/path"
-		                 },
-					     {
-		                     "test" : "testbasicrouting11pos.js"
-		                 },
-		                 {
-		                     "page" : "$$config.baseUrl$$/showurl?mojit_url=/you/found/a/good/path?abc=efg"
-		                 },
-					     {
-		                     "test" : "testbasicrouting11pos.js"
-		                 },
-		                 {
-		                     "page" : "$$config.baseUrl$$/showurl?mojit_url=/you/found/a/good/path&mojit_verb=GET"
-		                 },
-					     {
-		                     "test" : "testbasicrouting11pos.js"
-		                 },
-		                 {
-		                     "page" : "$$config.baseUrl$$/showurl?mojit_url=/you/found/a/bad/path"
-		                 },
-					     {
-		                     "test" : "testbasicrouting11neg1.js"
-		                 },
-		                 {
-		                     "page" : "$$config.baseUrl$$/showurl?mojit_url=/you/found/a/good/path&mojit_verb=POST"
-		                 },
-					     {
-		                     "test" : "testbasicrouting11neg2.js"
-		                 }
-		           ]
+                         {
+                             "page" : "$$config.baseUrl$$/showurl?mojit_url=/you/found/a/good/path"
+                         },
+                         {
+                             "test" : "testbasicrouting11pos.js"
+                         },
+                         {
+                             "page" : "$$config.baseUrl$$/showurl?mojit_url=/you/found/a/good/path?abc=efg"
+                         },
+                         {
+                             "test" : "testbasicrouting11pos.js"
+                         },
+                         {
+                             "page" : "$$config.baseUrl$$/showurl?mojit_url=/you/found/a/good/path&mojit_verb=GET"
+                         },
+                         {
+                             "test" : "testbasicrouting11pos.js"
+                         },
+                         {
+                             "page" : "$$config.baseUrl$$/showurl?mojit_url=/you/found/a/bad/path"
+                         },
+                         {
+                             "test" : "testbasicrouting11neg1.js"
+                         },
+                         {
+                             "page" : "$$config.baseUrl$$/showurl?mojit_url=/you/found/a/good/path&mojit_verb=POST"
+                         },
+                         {
+                             "test" : "testbasicrouting11neg2.js"
+                         }
+                   ]
                 }
             },
-			"BasicRoutingNeg1" : {
+            "BasicRoutingNeg1" : {
                 "group" : "functional,smoke,routing",
                 "params" : {
                     "test" : "testbasicroutingneg1.js",
                     "page" : "$$config.baseUrl$$/route-2/myAction"
                 }
             },
-			"BasicRoutingNeg2" : {
+            "BasicRoutingNeg2" : {
                 "group" : "functional,smoke,routing",
                 "params" : {
                     "test" : "testbasicroutingneg2.js",
