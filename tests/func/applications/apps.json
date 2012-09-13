@@ -303,6 +303,41 @@
             "port": "4120",
             "enabled": "true",
             "group": "example"
+        },
+		{
+            "name":"adding_view_engines",
+            "path": "../../../examples/developer-guide/adding_view_engines",
+            "port": "4121",
+            "enabled": "true",
+            "group": "example"
+        },
+		{
+            "name":"global_assets",
+            "path": "../../../examples/developer-guide/global_assets",
+            "port": "4122",
+            "enabled": "true",
+            "group": "example"
+        },
+		{
+            "name":"unittest_model_controller",
+            "path": "../../../examples/developer-guide/unittest_model_controller",
+            "port": "4123",
+            "enabled": "true",
+            "group": "example"
+        },
+		{
+            "name":"using_configs",
+            "path": "../../../examples/developer-guide/using_configs",
+            "port": "4124",
+            "enabled": "true",
+            "group": "example"
+        },
+		{
+            "name":"newsboxes",
+            "path": "../../../examples/newsboxes",
+            "port": "4125",
+            "enabled": "true",
+            "group": "example"
         }
     ]
 }

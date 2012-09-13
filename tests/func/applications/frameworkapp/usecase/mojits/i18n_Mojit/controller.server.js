@@ -1,9 +1,9 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('i18n_Mojit', function(Y) {
+YUI.add('i18n_Mojit', function(Y, NAME) {
 
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         init: function(mojitSpec) {
             this.spec = mojitSpec;
@@ -28,4 +28,4 @@ YUI.add('i18n_Mojit', function(Y) {
         }
     };
 
-}, '0.0.1', {requires: ['mojito-intl-addon'], lang: ['de', 'en-US']});
+}, '0.0.1', {requires: ['mojito', 'mojito-intl-addon'], lang: ['de', 'en-US']});

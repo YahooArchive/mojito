@@ -1,8 +1,9 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('SearchMojit', function(Y) {
-    Y.mojito.controller = {
+YUI.add('SearchMojit', function(Y, NAME) {
+
+    Y.namespace('mojito.controllers')[NAME] = {
 
         index: function(ac)
         {

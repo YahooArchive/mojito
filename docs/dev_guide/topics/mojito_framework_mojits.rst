@@ -206,7 +206,7 @@ then lazily load parts of the page.
 How Does It Work?
 =================
 
-The ``LazyLoadMojit`` is really a proxy mojit that dispatches it's binder and an empty DOM node to 
+The ``LazyLoadMojit`` is really a proxy mojit that dispatches its binder and an empty DOM node to 
 the client. From the client, the binder sends a request to the controller to execute the code of 
 the proxied (original) mojit. The output from the executed mojit is then returned to the binder of 
 the ``LazyLoadMojit``, which attaches the output to the empty DOM node. The binder of 

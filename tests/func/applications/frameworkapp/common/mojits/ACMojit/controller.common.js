@@ -1,6 +1,6 @@
-YUI.add('ActionContextMojit', function(Y) {
+YUI.add('ActionContextMojit', function(Y, NAME) {
 
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         /**
          * Method corresponding to the 'index' action.
@@ -76,4 +76,4 @@ YUI.add('ActionContextMojit', function(Y) {
     };
 
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito']});
