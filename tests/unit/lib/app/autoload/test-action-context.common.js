@@ -264,8 +264,6 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                 }
             });
 
-            console.log(ac);
-
             A.isObject(ac.config, 'Missing config addon');
             A.isObject(ac.url, 'Missing url addon');
             A.isObject(ac.cookie, 'Missing cookie addon');

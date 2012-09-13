@@ -68,10 +68,7 @@ YUI.add('mojito-client-store', function(Y, NAME) {});
 YUI.add('mojito-util', function(Y, NAME) {});
 YUI.add('mojito-view-renderer', function(Y, NAME) {});
 
-/*
- * Add a mojito-test module containing the mocking support we want for other
- * Mojito components.
- */
+
 YUI.add('mojito-test', function(Y, NAME) {
 
     function EasyMock() {
@@ -190,3 +187,9 @@ YUI.add('mojito-test', function(Y, NAME) {
     "node",
     "node-event-simulate"
 ]});
+
+
+YUI.add('mojito-test-extra', function(Y, NAME) {
+	Y.MOJITO_DIR = require ?
+	    require('path').resolve(__dirname, '../../') + '/' : null;
+});

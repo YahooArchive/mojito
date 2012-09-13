@@ -7,7 +7,7 @@ YUI({
     logInclude: { TestRunner: true }
 }).use('node', 'node-event-simulate', 'test', 'console', function (Y) {
    
-    var suite = new Y.Test.Suite("Common");
+    var suite = new Y.Test.Suite("Common: clientpause");
 
     suite.add(new Y.Test.Case({
 
@@ -29,12 +29,4 @@ YUI({
     }));
 
     Y.Test.Runner.add(suite);
-
-    function enterText(node, str){
-        for (var i = 0, length = str.length; i < length; i++) {
-            node.simulate("keypress", {
-                charCode: str.charCodeAt(i)
-            }); 	
-        }
-    }
 });

@@ -15,7 +15,7 @@ YUI.add('ExecuteCommand', function(Y, NAME) {
      * @class Controller
      * @constructor
      */
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         init: function(spec) {
             this.spec = spec;
