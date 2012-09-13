@@ -44,8 +44,8 @@
         "mojito": "bin/mojito"
     },
     "engines": {
-        "node": ">= 0.4.0 < 0.7.0",
-        "npm": ">= 1.0.0"
+        "node": ">0.4",
+        "npm": ">1.0"
     },
     "devDependencies": {
         "node-static": "~0.6.1",
@@ -62,10 +62,6 @@
         "test": "./tests/run.js test -u --group server --driver nodejs && ./tests/run.js test -u --group client --driver selenium"
     },
     "yahoo": {
-        "bugzilla": {
-            "product": "Mojito",
-            "component": "General"
-        },
         "mojito": {
             "type": "bundle",
             "location": "lib/app"
