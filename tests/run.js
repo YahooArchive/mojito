@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 var fs = require('fs'),
+    path = require('path'),
     wrench = require('wrench'),
     libpath = require('path'),
     program = require('commander'),
@@ -24,6 +25,7 @@ program.command('test')
     .option('--group <value>', 'Arrow group')
     .option('--driver <value>', 'Arrow driver')
     .option('--browser <value>', 'Arrow browser')
+    .option('--path <value>', 'Path to find the tests')
     .action(test);
 
 program.command('build')
@@ -46,6 +48,8 @@ function test (cmd) {
     }
     cmd.unitBrowser = cmd.unitBrowser || cmd.browser || 'firefox';
     cmd.funcBrowser = cmd.funcBrowser || cmd.browser || 'firefox';
+    cmd.unitPath = path.resolve(cwd, cmd.unitPath || cmd.path || './unit');
+    cmd.funcPath = path.resolve(cwd, cmd.funcPath || cmd.path || './func');
     if (cmd.arrow) {
         series.push(startArrowServer);
     }
@@ -53,7 +57,7 @@ function test (cmd) {
         if ('phantomjs' !== cmd.unitBrowser) {
             if (cmd.selenium) {
                 series.push(function (callback) {
-                    startArrowSelenium(cmd.unitBrowser, callback);
+                    startArrowSelenium(cmd, callback);
                 });
             }
         }
@@ -70,7 +74,7 @@ function test (cmd) {
         if ('phantomjs' !== cmd.funcBrowser) {
             if (cmd.selenium) {
                 series.push(function (callback) {
-                    startArrowSelenium(cmd.funcBrowser, callback);
+                    startArrowSelenium(cmd, callback);
                 });
             }
         }
@@ -113,7 +117,7 @@ function startArrowServer (callback) {
 
 function runUnitTests (cmd, callback) {
     console.log('---Running Unit Tests---');
-    var arrowReportDir = cwd + '/artifacts/arrowreport/unit/';
+    var arrowReportDir = cmd.unitPath + '/artifacts/arrowreport/';
     try {
         wrench.rmdirSyncRecursive(arrowReportDir);
     } catch (e) {}
@@ -121,7 +125,7 @@ function runUnitTests (cmd, callback) {
 
     var commandArgs = [
         cwd + "/../node_modules/yahoo-arrow/index.js",
-        cwd + "/unit/**/*_descriptor.json",
+        cmd.unitPath + "/**/*_descriptor.json",
         "--report=true",
         "--reportFolder=" + arrowReportDir
     ];
@@ -135,7 +139,7 @@ function runUnitTests (cmd, callback) {
     cmd.group && commandArgs.push('--group=' + cmd.group);
 
     var p = runCommand(
-        cwd + '/unit',
+        cmd.unitPath,
         "node",
         commandArgs,
         function (code) {
@@ -150,9 +154,9 @@ function runUnitTests (cmd, callback) {
 function build (cmd, callback) {
     console.log('---Building Apps---');
     runCommand(
-        cwd + '/func/applications/frameworkapp/common',
+        cmd.funcPath + '/applications/frameworkapp/common',
         cwd + "/../bin/mojito",
-        ['build', 'html5app', cwd + '/func/applications/frameworkapp/flatfile'],
+        ['build', 'html5app', cmd.funcPath + '/applications/frameworkapp/flatfile'],
         callback
     );
 }
@@ -160,7 +164,7 @@ function build (cmd, callback) {
 function deploy (cmd, callback) {
     console.log('---Deploying Apps---');
     var appSeries = [],
-        appsConfig = JSON.parse(fs.readFileSync(cwd + '/func/applications/apps.json', 'utf8')),
+        appsConfig = JSON.parse(fs.readFileSync(cmd.funcPath + '/applications/apps.json', 'utf8')),
         apps = appsConfig.applications;
 
     for (var i=0; i<apps.length; i++) {
@@ -177,18 +181,18 @@ function deploy (cmd, callback) {
                             var test = mytests[j],
                                 port = test.port ? parseInt(test.port) : null;
                             appSeries.push(function (callback) {
-                                runMojitoApp(cwd + '/func/applications', app.path, port, test.param, callback);
+                                runMojitoApp(cmd.funcPath + '/applications', app.path, port, test.param, callback);
                             });
                         })();
                     }
                 } else if (app.enabled === "true" && app.path && port) {
                     appSeries.push(function (callback) {
-                        runMojitoApp(cwd + '/func/applications', app.path, port, app.param, callback);
+                        runMojitoApp(cmd.funcPath + '/applications', app.path, port, app.param, callback);
                     });
                 }
             } else if ('static' === type) {
                 appSeries.push(function (callback) {
-                    runStaticApp(cwd + '/func/applications', app.path, port, app.param, callback);
+                    runStaticApp(cmd.funcPath + '/applications', app.path, port, app.param, callback);
                 });
             }
         })();
@@ -196,18 +200,18 @@ function deploy (cmd, callback) {
     async.series(appSeries, callback);
 }
 
-function startArrowSelenium (browser, callback) {
+function startArrowSelenium (cmd, callback) {
     console.log("---Starting Arrow Selenium---");
     var commandArgs = [cwd+"/../node_modules/yahoo-arrow/arrow_selenium/selenium.js"];
-    commandArgs.push("--open=" + browser);
-    runCommand(cwd+"/func/applications/frameworkapp/common", "node", commandArgs, function () {
+    commandArgs.push("--open=" + cmd.funcBrowser);
+    runCommand(cwd, "node", commandArgs, function () {
         callback(null);
     });
 }
 
 function runFuncTests (cmd, callback) {
     console.log('---Running Functional Tests---');
-    var arrowReportDir = cwd + '/artifacts/arrowreport/func/';
+    var arrowReportDir = cmd.funcPath + '/artifacts/arrowreport/';
     try {
         wrench.rmdirSyncRecursive(arrowReportDir);
     } catch (e) {}
@@ -215,7 +219,7 @@ function runFuncTests (cmd, callback) {
 
     var commandArgs = [
         cwd + "/../node_modules/yahoo-arrow/index.js",
-        cwd + "/func/**/*_descriptor.json",
+        cmd.funcPath + "/**/*_descriptor.json",
         "--report=true",
         "--reportFolder=" + arrowReportDir
     ];
@@ -229,7 +233,7 @@ function runFuncTests (cmd, callback) {
     cmd.group && commandArgs.push('--group=' + cmd.group);
 
     var p = runCommand(
-        cwd + '/func/',
+        cmd.funcPath,
         "node",
         commandArgs,
         function (code) {
