@@ -112,22 +112,32 @@ After completing the two phases, Mojito can then apply the correct context confi
 for a request. The following section will detail the order of precedence for configurations and
 then context. 
 
+
 Reading and Merging Configurations
 ----------------------------------
 
-At start-up, Mojito reads, parses, and then merges the configurations of your applications,
+At start-up, Mojito reads, parses, and then merges the configurations of your applications
 with the most specific configurations overriding the less specific. For example, the default 
-configurations defined in ``defaults.json`` are overridden by configurations defined in 
-``application.json``.
+configurations defined in ``defaults.json`` are overridden by more specific application-level
+and mojit instance configurations defined in ``application.json``.
 
-The following is the order of evaluation of configurations from highest to lowest: 
+The following lists the order of evaluation of configurations:
 
-#. dynamically set configurations (e.g., using ``ac._dispatch`` or ``ac.composite.execute``)
-#. configurations defined in ``application.json``
-#. default configurations defined in ``defaults.json`` 
+#. Application configurations:
+   - routing in ``routes.json``
+   - ``application.json`` 
+#. Mojit instance configurations:
+   - default and definition configurations for mojit instances defined in ``defaults.json`` and
+     ``definition.json``. The configurations in ``defaults.json`` and ``definitions.json`` do not 
+      overlap.
+   - mojit instance configurations in ``application.json`` override the default configurations set
+     in ``defaults.json``.
+#. Dynamically set configurations (e.g., using ``ac._dispatch`` or ``ac.composite.execute``)
+   override configurations statically defined in files.
 
-Context Precedence
-------------------
+
+Determining Context
+-------------------
 
 The contexts are defined in Mojito's ``dimensions.json`` or an application-level (local)
 version of ``dimensions.json``. The contexts, like configurations, are ordered most-specific to 
@@ -141,11 +151,12 @@ to learn how to define contexts in an application-level ``dimensions.json``.
 
 Mojito determines contexts in the following order:
 
+#. No context is specified (statically or dynamically), so the default context ``master`` is used.
+#. A context is specified (statically) on the command line with the ``--context`` 
+   option.
 #. A context is dynamically set in the query string, HTTP headers, or through
    the execution of a child mojit with configuration information.
-#. A context is specified on the command line with the ``--context`` 
-   option.
-#. No context is specified, so the default context ``master`` is used.
+
 
    
 
