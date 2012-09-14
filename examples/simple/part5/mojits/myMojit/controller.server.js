@@ -10,7 +10,7 @@ YUI.add('myMojit', function(Y, NAME) {
 
         index: function(ac) {
 
-            ac.models.message.get(function(data){
+            ac.models.get('message').get(function(data) {
                 ac.done(data);
             });
             
@@ -18,4 +18,7 @@ YUI.add('myMojit', function(Y, NAME) {
 
     };
 
-});
+}, '0.0.1', { requires: [
+    'mojito-models-addon',
+    'myMojitModel'
+]});
