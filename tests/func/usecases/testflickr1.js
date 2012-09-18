@@ -8,7 +8,7 @@ YUI({
 }).use('node', 'node-event-simulate', 'test', 'console', 'intl', 'datatype-date-format', function (Y) {
 
     
-         var suite = new Y.Test.Suite("UseCase");
+         var suite = new Y.Test.Suite("UseCases: flickr");
 
          suite.add(new Y.Test.Case({
          

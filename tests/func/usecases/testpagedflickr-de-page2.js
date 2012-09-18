@@ -9,7 +9,7 @@ YUI({
 }).use('node', 'node-event-simulate', 'test', 'console', 'intl', 'datatype-date-format', function (Y) {
 
     
-         var suite = new Y.Test.Suite("UseCase");
+         var suite = new Y.Test.Suite("UseCases: pagedflickr-page2");
 
          suite.add(new Y.Test.Case({
          

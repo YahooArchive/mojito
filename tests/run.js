@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 var fs = require('fs'),
+    path = require('path'),
     wrench = require('wrench'),
     libpath = require('path'),
     program = require('commander'),
@@ -24,6 +25,7 @@ program.command('test')
     .option('--group <value>', 'Arrow group')
     .option('--driver <value>', 'Arrow driver')
     .option('--browser <value>', 'Arrow browser')
+    .option('--path <value>', 'Path to find the tests')
     .action(test);
 
 program.command('build')
@@ -38,7 +40,7 @@ program.parse(process.argv);
 
 function test (cmd) {
     var series = [];
-    cmd.logLevel = cmd.logLevel || 'DEBUG';
+    cmd.logLevel = cmd.logLevel || 'WARN';
     // Default to all tests
     if (!cmd.unit && !cmd.func) {
         cmd.unit = true;
@@ -46,14 +48,16 @@ function test (cmd) {
     }
     cmd.unitBrowser = cmd.unitBrowser || cmd.browser || 'firefox';
     cmd.funcBrowser = cmd.funcBrowser || cmd.browser || 'firefox';
+    cmd.unitPath = path.resolve(cwd, cmd.unitPath || cmd.path || './unit');
+    cmd.funcPath = path.resolve(cwd, cmd.funcPath || cmd.path || './func');
+    if (cmd.arrow) {
+        series.push(startArrowServer);
+    }
     if (cmd.unit) {
-        if (cmd.arrow) {
-            series.push(startArrowServer);
-        }
         if ('phantomjs' !== cmd.unitBrowser) {
             if (cmd.selenium) {
                 series.push(function (callback) {
-                    startArrowSelenium(cmd.unitBrowser, callback);
+                    startArrowSelenium(cmd, callback);
                 });
             }
         }
@@ -70,7 +74,7 @@ function test (cmd) {
         if ('phantomjs' !== cmd.funcBrowser) {
             if (cmd.selenium) {
                 series.push(function (callback) {
-                    startArrowSelenium(cmd.funcBrowser, callback);
+                    startArrowSelenium(cmd, callback);
                 });
             }
         }
@@ -92,7 +96,7 @@ function startArrowServer (callback) {
             process.stdout.write(data);
         };
     console.log("---Starting Arrow Server---");
-    var p = runCommand(cwd, "arrow_server", [], function () {
+    var p = runCommand(cwd, "node", [cwd+"/../node_modules/yahoo-arrow/arrow_server/server.js"], function () {
         // If this command returns called, then it failed to launch
         if (timeout) {
             clearTimeout(timeout);
@@ -113,14 +117,15 @@ function startArrowServer (callback) {
 
 function runUnitTests (cmd, callback) {
     console.log('---Running Unit Tests---');
-    var arrowReportDir = cwd + '/artifacts/arrowreport/unit/';
+    var arrowReportDir = cmd.unitPath + '/artifacts/arrowreport/';
     try {
         wrench.rmdirSyncRecursive(arrowReportDir);
     } catch (e) {}
     wrench.mkdirSyncRecursive(arrowReportDir);
 
     var commandArgs = [
-        cwd + "/unit/**/*_descriptor.json",
+        cwd + "/../node_modules/yahoo-arrow/index.js",
+        cmd.unitPath + "/**/*_descriptor.json",
         "--report=true",
         "--reportFolder=" + arrowReportDir
     ];
@@ -134,8 +139,8 @@ function runUnitTests (cmd, callback) {
     cmd.group && commandArgs.push('--group=' + cmd.group);
 
     var p = runCommand(
-        cwd + '/unit',
-        "arrow",
+        cmd.unitPath,
+        "node",
         commandArgs,
         function (code) {
             callback(code);
@@ -149,9 +154,9 @@ function runUnitTests (cmd, callback) {
 function build (cmd, callback) {
     console.log('---Building Apps---');
     runCommand(
-        cwd + '/func/applications/frameworkapp/common',
-        "mojito",
-        ['build', 'html5app', cwd + '/func/applications/frameworkapp/flatfile'],
+        cmd.funcPath + '/applications/frameworkapp/common',
+        cwd + "/../bin/mojito",
+        ['build', 'html5app', cmd.funcPath + '/applications/frameworkapp/flatfile'],
         callback
     );
 }
@@ -159,7 +164,7 @@ function build (cmd, callback) {
 function deploy (cmd, callback) {
     console.log('---Deploying Apps---');
     var appSeries = [],
-        appsConfig = JSON.parse(fs.readFileSync(cwd + '/func/applications/apps.json', 'utf8')),
+        appsConfig = JSON.parse(fs.readFileSync(cmd.funcPath + '/applications/apps.json', 'utf8')),
         apps = appsConfig.applications;
 
     for (var i=0; i<apps.length; i++) {
@@ -176,18 +181,18 @@ function deploy (cmd, callback) {
                             var test = mytests[j],
                                 port = test.port ? parseInt(test.port) : null;
                             appSeries.push(function (callback) {
-                                runMojitoApp(cwd + '/func/applications', app.path, port, test.param, callback);
+                                runMojitoApp(cmd.funcPath + '/applications', app.path, port, test.param, callback);
                             });
                         })();
                     }
                 } else if (app.enabled === "true" && app.path && port) {
                     appSeries.push(function (callback) {
-                        runMojitoApp(cwd + '/func/applications', app.path, port, app.param, callback);
+                        runMojitoApp(cmd.funcPath + '/applications', app.path, port, app.param, callback);
                     });
                 }
             } else if ('static' === type) {
                 appSeries.push(function (callback) {
-                    runStaticApp(cwd + '/func/applications', app.path, port, app.param, callback);
+                    runStaticApp(cmd.funcPath + '/applications', app.path, port, app.param, callback);
                 });
             }
         })();
@@ -195,25 +200,26 @@ function deploy (cmd, callback) {
     async.series(appSeries, callback);
 }
 
-function startArrowSelenium (browser, callback) {
+function startArrowSelenium (cmd, callback) {
     console.log("---Starting Arrow Selenium---");
-    var commandArgs = [];
-    commandArgs.push("--open=" + browser);
-    runCommand(cwd+"/func/applications/frameworkapp/common", "arrow_selenium", commandArgs, function () {
+    var commandArgs = [cwd+"/../node_modules/yahoo-arrow/arrow_selenium/selenium.js"];
+    commandArgs.push("--open=" + cmd.funcBrowser);
+    runCommand(cwd, "node", commandArgs, function () {
         callback(null);
     });
 }
 
 function runFuncTests (cmd, callback) {
     console.log('---Running Functional Tests---');
-    var arrowReportDir = cwd + '/artifacts/arrowreport/func/';
+    var arrowReportDir = cmd.funcPath + '/artifacts/arrowreport/';
     try {
         wrench.rmdirSyncRecursive(arrowReportDir);
     } catch (e) {}
     wrench.mkdirSyncRecursive(arrowReportDir);
 
     var commandArgs = [
-        cwd + "/func/**/*_descriptor.json",
+        cwd + "/../node_modules/yahoo-arrow/index.js",
+        cmd.funcPath + "/**/*_descriptor.json",
         "--report=true",
         "--reportFolder=" + arrowReportDir
     ];
@@ -227,8 +233,8 @@ function runFuncTests (cmd, callback) {
     cmd.group && commandArgs.push('--group=' + cmd.group);
 
     var p = runCommand(
-        cwd + '/func/',
-        "arrow",
+        cmd.funcPath,
+        "node",
         commandArgs,
         function (code) {
             callback(code);
@@ -263,6 +269,7 @@ function finalize (err, results) {
 function runCommand (path, command, argv, callback) {
     callback = callback || function () {};
     process.chdir(path);
+    console.log(command + ' ' + argv.join(' '));
     var cmd = child.spawn(command, argv, {
         cwd: path,
         env: process.env
@@ -296,7 +303,7 @@ function runCommand (path, command, argv, callback) {
 function runMojitoApp (basePath, path, port, params, callback) {
     params = params || '';
     console.log('Starting ' + path + ' at port ' + port + ' with params ' + (params || 'empty'));
-    var p = runCommand(basePath + '/' + path, "mojito", ["start", port, "--context", params], function () {});
+    var p = runCommand(basePath + '/' + path, cwd + "/../bin/mojito", ["start", port, "--context", params], function () {});
     pids.push(p.pid);
     pidNames[p.pid] = libpath.basename(path) + ':' + port + (params ? '?' + params : '');
     // Give each app a second to start

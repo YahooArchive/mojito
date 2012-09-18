@@ -7,7 +7,7 @@ YUI({
     logInclude: { TestRunner: true }
 }).use('node', 'node-event-simulate', 'test', 'console', function (Y) {
    
-    var suite = new Y.Test.Suite("Routing");
+    var suite = new Y.Test.Suite("Routing: BasicRouting10-1");
     suite.add(new Y.Test.Case({
 	     "test BasicRouting10-1": function(){   
 	         Y.Assert.areEqual('Click to execute the action \'route-2\' for the mojit \'nothing\'', Y.one('#mylink').get('innerHTML'));

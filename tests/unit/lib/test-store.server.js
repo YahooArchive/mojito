@@ -309,7 +309,7 @@ YUI().use(
                 var spec = { base: 'nonexistant' };
                 store.expandInstance(spec, {}, function(err, instance) {
                     A.isNotUndefined(err);
-                    A.areSame('Unknown base of "nonexistant"', err.message);
+                    A.areSame('Unknown base "nonexistant". You should have configured "nonexistant" in application.json under specs or used "@nonexistant" if you wanted to specify a mojit name.', err.message);
                     A.isUndefined(instance);
                 });
             },
