@@ -7,11 +7,11 @@ YUI({
      logInclude: { TestRunner: true }
 }).use('node', 'node-event-simulate', 'test', 'console', function (Y) {
 
-     var suite = new Y.Test.Suite("Common");
+     var suite = new Y.Test.Suite("Common: ACPartailRenderClient");
 
      suite.add(new Y.Test.Case({
 
-        "test test ACPartailRenderClient": function() {
+        "test ACPartailRenderClient": function() {
 	        var that = this;
             Y.one('#partialRenderButton').simulate('click');
             that.wait(function(){

@@ -33,7 +33,7 @@ is created, which can then be associated in a route defined in ``routes.json``.
    ]
 
 The example ``routes.json`` below associates the ``mapped_mojit`` instance defined in ``application.json`` with a path and explicitly calls the ``index`` action. If the controller for ``RoutingMojit`` had the function ``myFunction``, 
-you could would use the following to call it: ``mapped_mojit.myFunction``.   Based on the ``custom-route`` route below, when an HTTP GET call is made on the URL ``http:{domain}:8666/custom-route``, 
+you would use the following to call it: ``mapped_mojit.myFunction``.   Based on the ``custom-route`` route below, when an HTTP GET call is made on the URL ``http:{domain}:8666/custom-route``, 
 the ``index`` action is called from the ``custom-route`` instance.
 
 .. code-block:: javascript
@@ -64,11 +64,11 @@ method ``post_params`` from the ``post-route`` mojit instance.
          "verbs": ["get"],
          "path": "/custom-route",
          "call": "mapped_mojit.index"
-       }
+       },
        "another-route": {
-         "verbs": ["post"]
+         "verbs": ["post"],
          "path": "/*",
-         "call": mojit-post-route.post_params"
+         "call": "mojit-post-route.post_params"
        }
      }
    ]

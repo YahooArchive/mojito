@@ -4,8 +4,8 @@
 
         "name" : "serveronly",
 
-        "commonlib" : "yui-test.js",
- 
+        "commonlib" : "../../base/yui-test.js",
+
         "config" :{
             "baseUrl" : "http://localhost:4083"
         },
@@ -18,44 +18,44 @@
                     "page" : "$$config.baseUrl$$/httpParent/testRequestObj"
                 }
             },
-			"HttpAddonResponseObject" : {
-			     "group" : "smoke,httpaddon,serveronly",
-	             "params" : {
+            "HttpAddonResponseObject" : {
+                 "group" : "smoke,httpaddon,serveronly",
+                 "params" : {
                      "test" : "testhttpaddon-response.js",
                      "page" : "$$config.baseUrl$$/httpParent/testResponseObj"
                 }
             },
             "HttpAddonRedirect" : {
-				 "group" : "smoke,httpaddon,serveronly",
-	             "params" : {
+                 "group" : "smoke,httpaddon,serveronly",
+                 "params" : {
                      "test" : "testhttpaddon-redirect.js",
                      "page" : "$$config.baseUrl$$/httpParent/testSimpleRedirect?method=GET&mojit=restWS&action=simpleWSCall"
                 }
             },
             "HttpAddonTrueXhr" : {
                  "group" : "smoke,httpaddon,serveronly",
-	             "params" : {
+                 "params" : {
                      "test" : "testhttpaddon-truexhr.js",
                      "page" : "$$config.baseUrl$$/httpParent/callWSWithXhr?isXhr=true"
                 }
             },
             "HttpAddonFalseXhr" : {
                  "group" : "smoke,httpaddon,serveronly",
-	             "params" : {
-	                 "scenario": [
-	             		 {
-		                     "page" : "$$config.baseUrl$$/httpParent/callWSWithXhr?isXhr=false"
-		                 },
-					     {
-		                     "test" : "testhttpaddon-falsexhr.js"
-		                 },
-		                 {
-		                     "page" : "$$config.baseUrl$$/httpParent/callWSWithXhr"
-		                 },
-					     {
-		                     "test" : "testhttpaddon-falsexhr.js"
-		                 }
-		           ]
+                 "params" : {
+                     "scenario": [
+                         {
+                             "page" : "$$config.baseUrl$$/httpParent/callWSWithXhr?isXhr=false"
+                         },
+                         {
+                             "test" : "testhttpaddon-falsexhr.js"
+                         },
+                         {
+                             "page" : "$$config.baseUrl$$/httpParent/callWSWithXhr"
+                         },
+                         {
+                             "test" : "testhttpaddon-falsexhr.js"
+                         }
+                   ]
                 }
             },
             "HttpAddonAddHeader" : {
@@ -66,8 +66,8 @@
                 }
             },
             "HttpAddonAddHeaders" : {
-			     "group" : "smoke,httpaddon,serveronly",
-	             "params" : {
+                 "group" : "smoke,httpaddon,serveronly",
+                 "params" : {
                      "test" : "testhttpaddon-addheaders.js",
                      "page" : "$$config.baseUrl$$/httpParent/testAddSetHeaders"
                 }
@@ -80,418 +80,418 @@
                 }
             },
             "HttpAddonSetHeaders" : {
-			     "group" : "smoke,httpaddon,serveronly",
-	             "params" : {
+                 "group" : "smoke,httpaddon,serveronly",
+                 "params" : {
                      "test" : "testhttpaddon-setheaders.js",
                      "page" : "$$config.baseUrl$$/httpParent/testAddSetHeaders?header_option=set"
                 }
             },
             "HttpAddonGetHeaders" : {
-			     "group" : "smoke,httpaddon,serveronly",
-	             "params" : {
+                 "group" : "smoke,httpaddon,serveronly",
+                 "params" : {
                      "test" : "testhttpaddon-getheaders.js",
                      "page" : "$$config.baseUrl$$/httpParent/testGetHeaders"
                 }
             },
-			"simpleWSCallServer" : {
+            "simpleWSCallServer" : {
                  "group" : "smoke,restlib,serveronly",
-	             "params" : {
-					"scenario": [
-					    {
+                 "params" : {
+                    "scenario": [
+                        {
                            "page" : "$$config.baseUrl$$/restWSFrame/index"
                         },
                         {
                            "controller": "locator",
-						   "params": {
-						          "value": "#a_simpleWS",
-						          "click": true
-						   }
+                           "params": {
+                                  "value": "#a_simpleWS",
+                                  "click": true
+                           }
                         },
-						{
-	                       "test" : "testrestlib-simpleWSCallServer.js"
-	                    }
-	        		]
+                        {
+                           "test" : "testrestlib-simpleWSCallServer.js"
+                        }
+                    ]
                 }
             },
-			"inspectResponseServer" : {
+            "inspectResponseServer" : {
                 "group" : "smoke,restlib,serveronly",
                 "params" : {
-				    "scenario": [
-					    {
+                    "scenario": [
+                        {
                            "page" : "$$config.baseUrl$$/restWSFrame/index"
                         },
                         {
                            "controller": "locator",
-						   "params": {
-						          "value": "#a_inspectResp",
-						          "click": true
-						   }
+                           "params": {
+                                  "value": "#a_inspectResp",
+                                  "click": true
+                           }
                         },
-						{
-	                       "test" : "testrestlib-inspectResponseServer.js"
-	                    }
-					]
+                        {
+                           "test" : "testrestlib-inspectResponseServer.js"
+                        }
+                    ]
                 }
             },
-			"inspectResponseHeaderServer" : {
+            "inspectResponseHeaderServer" : {
                 "group" : "smoke,restlib,serveronly",
                 "params" : {
-				    "scenario": [
-	                    {
+                    "scenario": [
+                        {
                            "page" : "$$config.baseUrl$$/restWSFrame/index"
                         },
                         {
                            "controller": "locator",
-						   "params": {
-						          "value": "#a_inspectResp",
-						          "click": true
-						   }
+                           "params": {
+                                  "value": "#a_inspectResp",
+                                  "click": true
+                           }
                         },
-						{
-	                       "test" : "testrestlib-inspectResponseHeaderServer.js"
-	                    }
-					]
+                        {
+                           "test" : "testrestlib-inspectResponseHeaderServer.js"
+                        }
+                    ]
                 }
             },
-			"inspectErrorServer" : {
+            "inspectErrorServer" : {
                 "group" : "smoke,restlib,serveronly",
                 "params" : {
-				    "scenario": [
-	                    {
+                    "scenario": [
+                        {
                            "page" : "$$config.baseUrl$$/restWSFrame/index"
                         },
                         {
                            "controller": "locator",
-						   "params": {
-						          "value": "#a_inspectErr",
-						          "click": true
-						   }
+                           "params": {
+                                  "value": "#a_inspectErr",
+                                  "click": true
+                           }
                         },
-						{
-	                       "test" : "testrestlib-inspectErrorServer.js"
-	                    }
-					]
+                        {
+                           "test" : "testrestlib-inspectErrorServer.js"
+                        }
+                    ]
                 }
             },
-			"GETWithParamsServer" : {
+            "GETWithParamsServer" : {
                 "group" : "smoke,restlib,serveronly",
                 "params" : {
-				    "scenario": [
-					    {
+                    "scenario": [
+                        {
                            "page" : "$$config.baseUrl$$/restWSFrame/index"
                         },
                         {
                            "controller": "locator",
-						   "params": {
-						          "value": "#a_getParam",
-						          "click": true
-						   }
+                           "params": {
+                                  "value": "#a_getParam",
+                                  "click": true
+                           }
                         },
-						{
-	                       "test" : "testrestlib-GETWithParamsServer.js"
-	                    }
-					]
+                        {
+                           "test" : "testrestlib-GETWithParamsServer.js"
+                        }
+                    ]
                 }
             },
-			"GETWithParamsNegativeServer" : {
+            "GETWithParamsNegativeServer" : {
                 "group" : "smoke,restlib,serveronly",
                 "params" : {
-				    "scenario": [
-	                    {
+                    "scenario": [
+                        {
                            "page" : "$$config.baseUrl$$/restWSFrame/index"
                         },
                         {
                            "controller": "locator",
-						   "params": {
-						          "value": "#a_getParamNegative",
-						          "click": true
-						   }
+                           "params": {
+                                  "value": "#a_getParamNegative",
+                                  "click": true
+                           }
                         },
-						{
-	                       "test" : "testrestlib-GETWithParamsNegativeServer.js"
-	                    }
-					]
+                        {
+                           "test" : "testrestlib-GETWithParamsNegativeServer.js"
+                        }
+                    ]
                 }
             },
-			"POSTWithParamsServer" : {
+            "POSTWithParamsServer" : {
                 "group" : "smoke,restlib,serveronly",
                 "params" : {
-				    "scenario": [
-	                    {
+                    "scenario": [
+                        {
                            "page" : "$$config.baseUrl$$/restWSFrame/index"
                         },
                         {
                            "controller": "locator",
-						   "params": {
-						          "value": "#a_postParam",
-						          "click": true
-						   }
+                           "params": {
+                                  "value": "#a_postParam",
+                                  "click": true
+                           }
                         },
-						{
-	                       "test" : "testrestlib-POSTWithParamsServer.js"
-	                    }
-					]
+                        {
+                           "test" : "testrestlib-POSTWithParamsServer.js"
+                        }
+                    ]
                 }
             },
-			"POSTWithParamsNegativeServer" : {
+            "POSTWithParamsNegativeServer" : {
                 "group" : "smoke,restlib,serveronly",
                 "params" : {
-				    "scenario": [
-	                    {
+                    "scenario": [
+                        {
                            "page" : "$$config.baseUrl$$/restWSFrame/index"
                         },
                         {
                            "controller": "locator",
-						   "params": {
-						          "value": "#a_postParamNegative",
-						          "click": true
-						   }
+                           "params": {
+                                  "value": "#a_postParamNegative",
+                                  "click": true
+                           }
                         },
-						{
-	                       "test" : "testrestlib-POSTWithParamsNegativeServer.js"
-	                    }
-					]
+                        {
+                           "test" : "testrestlib-POSTWithParamsNegativeServer.js"
+                        }
+                    ]
                 }
             },
-			"PUTWithParamsServer" : {
+            "PUTWithParamsServer" : {
                 "group" : "smoke,restlib,serveronly",
                 "params" : {
-				    "scenario": [
+                    "scenario": [
                         {
                            "page" : "$$config.baseUrl$$/restWSFrame/index"
                         },
                         {
                            "controller": "locator",
-						   "params": {
-						          "value": "#a_putParam",
-						          "click": true
-						   }
+                           "params": {
+                                  "value": "#a_putParam",
+                                  "click": true
+                           }
                         },
-						{
-	                       "test" : "testrestlib-PUTWithParamsServer.js"
-	                    }
-					]
+                        {
+                           "test" : "testrestlib-PUTWithParamsServer.js"
+                        }
+                    ]
                 }
             },
-			"DELETEWithParamsServer" : {
+            "DELETEWithParamsServer" : {
                 "group" : "smoke,restlib,serveronly",
                 "params" : {
-				    "scenario": [
-	                    {
+                    "scenario": [
+                        {
                            "page" : "$$config.baseUrl$$/restWSFrame/index"
                         },
                         {
                            "controller": "locator",
-						   "params": {
-						          "value": "#a_deleteParam",
-						          "click": true
-						   }
+                           "params": {
+                                  "value": "#a_deleteParam",
+                                  "click": true
+                           }
                         },
-						{
-	                       "test" : "testrestlib-DELETEWithParamsServer.js"
-	                    }
-					]
+                        {
+                           "test" : "testrestlib-DELETEWithParamsServer.js"
+                        }
+                    ]
                 }
             },
-			"HEADParamsServer" : {
+            "HEADParamsServer" : {
                 "group" : "smoke,restlib,serveronly",
                 "params" : {
-				    "scenario": [
-	                    {
+                    "scenario": [
+                        {
                            "page" : "$$config.baseUrl$$/restWSFrame/index"
                         },
                         {
                            "controller": "locator",
-						   "params": {
-						          "value": "#a_headParam",
-						          "click": true
-						   }
+                           "params": {
+                                  "value": "#a_headParam",
+                                  "click": true
+                           }
                         },
-						{
-	                       "test" : "testrestlib-HEADParamsServer.js"
-	                    }
-					]
+                        {
+                           "test" : "testrestlib-HEADParamsServer.js"
+                        }
+                    ]
                 }
             },
-			"HeadersServer" : {
+            "HeadersServer" : {
                 "group" : "smoke,restlib,serveronly",
                 "params" : {
-				    "scenario": [
-	                    {
+                    "scenario": [
+                        {
                            "page" : "$$config.baseUrl$$/restWSFrame/index"
                         },
                         {
                            "controller": "locator",
-						   "params": {
-						          "value": "#a_headers",
-						          "click": true
-						   }
+                           "params": {
+                                  "value": "#a_headers",
+                                  "click": true
+                           }
                         },
-						{
-	                       "test" : "testrestlib-HeadersServer.js"
-	                    }
+                        {
+                           "test" : "testrestlib-HeadersServer.js"
+                        }
                      ]
                 }
             },
-			"SimpleWSCallClient" : {
+            "SimpleWSCallClient" : {
                 "group" : "smoke,restlib,serveronly",
                 "params" : {
                     "test" : "testrestlib-SimpleWSCallClient.js",
                     "page" : "$$config.baseUrl$$/restWSFrame/index"
                 }
             },
-			"inspectResponseClient" : {
+            "inspectResponseClient" : {
                 "group" : "smoke,restlib,serveronly",
                 "params" : {
                     "test" : "testrestlib-inspectResponseClient.js",
                     "page" : "$$config.baseUrl$$/restWSFrame/index"
                 }
             },
-			"inspectResponseHeaderClient" : {
+            "inspectResponseHeaderClient" : {
                 "group" : "smoke,restlib,serveronly",
                 "params" : {
                     "test" : "testrestlib-inspectResponseHeaderClient.js",
                     "page" : "$$config.baseUrl$$/restWSFrame/index"
                 }
             },
-			"inspectErrorClient" : {
+            "inspectErrorClient" : {
                 "group" : "smoke,restlib,serveronly",
                 "params" : {
                     "test" : "testrestlib-inspectErrorClient.js",
                     "page" : "$$config.baseUrl$$/restWSFrame/index"
                 }
             },
-			"GETWithParamsClient" : {
+            "GETWithParamsClient" : {
                 "group" : "smoke,restlib,serveronly",
                 "params" : {
                     "test" : "testrestlib-GETWithParamsClient.js",
                     "page" : "$$config.baseUrl$$/restWSFrame/index"
                 }
             },
-			"GETWithParamsNegativeClient" : {
+            "GETWithParamsNegativeClient" : {
                 "group" : "smoke,restlib,serveronly",
                 "params" : {
                     "test" : "testrestlib-GETWithParamsNegativeClient.js",
                     "page" : "$$config.baseUrl$$/restWSFrame/index"
                 }
             },
-			"POSTWithParamsClient" : {
+            "POSTWithParamsClient" : {
                 "group" : "smoke,restlib,serveronly",
                 "params" : {
                     "test" : "testrestlib-POSTWithParamsClient.js",
                     "page" : "$$config.baseUrl$$/restWSFrame/index"
                 }
             },
-			"POSTWithParamsNegativeClient" : {
+            "POSTWithParamsNegativeClient" : {
                 "group" : "smoke,restlib,serveronly",
                 "params" : {
                     "test" : "testrestlib-POSTWithParamsNegativeClient.js",
                     "page" : "$$config.baseUrl$$/restWSFrame/index"
                 }
             },
-			"PUTWithParamsClient" : {
+            "PUTWithParamsClient" : {
                 "group" : "smoke,restlib,serveronly",
                 "params" : {
                     "test" : "testrestlib-PUTWithParamsClient.js",
                     "page" : "$$config.baseUrl$$/restWSFrame/index"
                 }
             },
-			"DELETEWithParamsClient" : {
+            "DELETEWithParamsClient" : {
                 "group" : "smoke,restlib,serveronly",
                 "params" : {
                     "test" : "testrestlib-DELETEWithParamsClient.js",
                     "page" : "$$config.baseUrl$$/restWSFrame/index"
                 }
             },
-			"HeadersClient" : {
+            "HeadersClient" : {
                 "group" : "smoke,restlib,serveronly",
                 "params" : {
                     "test" : "testrestlib-HeadersClient.js",
                     "page" : "$$config.baseUrl$$/restWSFrame/index"
                 }
             },
-			"bz5300267" : {
+            "bz5300267" : {
                 "group" : "smoke,restlib,serveronly",
                 "params" : {
                     "test" : "testbz5300267.js",
                     "page" : "$$config.baseUrl$$/frame"
                 }
             },
-			"bz5249892" : {
+            "bz5249892" : {
                 "group" : "smoke,restlib,serveronly",
                 "params" : {
                     "test" : "testbz5249892.js",
                     "page" : "$$config.baseUrl$$/frame"
                 }
             },
-			"bz5332780" : {
+            "bz5332780" : {
                 "group" : "smoke,restlib,serveronly",
                 "params" : {
                     "test" : "testbz5332780.js",
                     "page" : "$$config.baseUrl$$/frame"
                 }
             },
-			"bz5264755" : {
+            "bz5264755" : {
                 "group" : "smoke,restlib,serveronly",
                 "params" : {
                     "test" : "testbz5264755.js",
                     "page" : "$$config.baseUrl$$/frame"
                 }
             },
-			"bz5590319" : {
+            "bz5590319" : {
                 "group" : "smoke,restlib,serveronly",
                 "params" : {
                     "test" : "testbz5590319.js",
                     "page" : "$$config.baseUrl$$/frame"
                 }
             },
-			"bz5366776" : {
+            "bz5366776" : {
                 "group" : "smoke,restlib,serveronly",
                 "params" : {
                     "test" : "testbz5366776.js",
                     "page" : "$$config.baseUrl$$/frame"
                 }
             },
-			"bz5329232" : {
+            "bz5329232" : {
                 "group" : "smoke,restlib,serveronly",
                 "params" : {
                     "test" : "testbz5329232.js",
                     "page" : "$$config.baseUrl$$/otherFeatures/index"
                 }
             },
-			"multiaction1" : {
+            "multiaction1" : {
                 "group" : "smoke,restlib,serveronly",
                 "params" : {
                     "test" : "testMultiActions1.js",
                     "page" : "$$config.baseUrl$$/inst0"
                 }
             },
-			"multiaction2" : {
+            "multiaction2" : {
                 "group" : "smoke,restlib,serveronly",
                 "params" : {
                     "test" : "testMultiActions2.js",
                     "page" : "$$config.baseUrl$$/inst1"
                 }
             },
-			"multiaction3" : {
+            "multiaction3" : {
                 "group" : "smoke,restlib,serveronly",
                 "params" : {
                     "test" : "testMultiActions3.js",
                     "page" : "$$config.baseUrl$$/inst01"
                 }
             },
-			"multiaction4" : {
+            "multiaction4" : {
                 "group" : "smoke,restlib,serveronly",
                 "params" : {
                     "test" : "testMultiActions4.js",
                     "page" : "$$config.baseUrl$$/inst2"
                 }
             },
-			"refreshview" : {
+            "refreshview" : {
                 "group" : "smoke,restlib,serveronly",
                 "params" : {
-					"test" : "testRefreshview.js",
-	                "page" : "$$config.baseUrl$$/refreshview"
+                    "test" : "testRefreshview.js",
+                    "page" : "$$config.baseUrl$$/refreshview"
                 }
             }
         }     
