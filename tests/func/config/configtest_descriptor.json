@@ -4,7 +4,8 @@
 
         "name" : "config",
 
- 
+        "commonlib" : "../../base/yui-test.js",
+
         "config" :{
             "baseUrl" : "http://localhost"
         },
@@ -17,119 +18,119 @@
                     "page" : "$$config.baseUrl$$:5000"
                 }
             },
-			"DefaultConfig2" : {
+            "DefaultConfig2" : {
                 "group" : "functional,smoke,config",
                 "params" : {
                     "test" : "testDefaultConfig2.js",
                     "page" : "$$config.baseUrl$$:5000/?lang=de"
                 }
             },
-			"DefaultConfig3" : {
+            "DefaultConfig3" : {
                 "group" : "functional,smoke,config",
                 "params" : {
                     "test" : "testDefaultConfig3.js",
                     "page" : "$$config.baseUrl$$:5000/?lang=fr"
                 }
             },
-			"DefaultConfig4" : {
+            "DefaultConfig4" : {
                 "group" : "functional,smoke,config",
                 "params" : {
                     "test" : "testDefaultConfig4.js",
                     "page" : "$$config.baseUrl$$:5000/?subject=math"
                 }
             },
-			"ProdEnv1" : {
+            "ProdEnv1" : {
                 "group" : "functional,smoke,config",
                 "params" : {
                     "test" : "testproductionenv1.js",
                     "page" : "$$config.baseUrl$$:5001"
                 }
             },
-			"ProdEnv2" : {
+            "ProdEnv2" : {
                 "group" : "functional,smoke,config",
                 "params" : {
                     "test" : "testproductionenv2.js",
                     "page" : "$$config.baseUrl$$:5001/?lang=de"
                 }
             },
-			"TestingEnv1" : {
+            "TestingEnv1" : {
                 "group" : "functional,smoke,config",
                 "params" : {
                     "test" : "testtestingenv1.js",
                     "page" : "$$config.baseUrl$$:5002/"
                 }
             },
-			"TestingEnv2" : {
+            "TestingEnv2" : {
                 "group" : "functional,smoke,config",
                 "params" : {
                     "test" : "testtestingenv2.js",
                     "page" : "$$config.baseUrl$$:5002/?lang=de"
                 }
             },
-			"TestingEnv3" : {
+            "TestingEnv3" : {
                 "group" : "functional,smoke,config",
                 "params" : {
                     "test" : "testtestingenv3.js",
                     "page" : "$$config.baseUrl$$:5002/?lang=fr"
                 }
             },
-			"TestingEnv4" : {
+            "TestingEnv4" : {
                 "group" : "functional,smoke,config",
                 "params" : {
                     "test" : "testtestingenv4.js",
                     "page" : "$$config.baseUrl$$:5002/?lang=fr-CA"
                 }
             },
-			"TestingEnv5" : {
+            "TestingEnv5" : {
                 "group" : "functional,smoke,config",
                 "params" : {
                     "test" : "testtestingenv5.js",
                     "page" : "$$config.baseUrl$$:5002/?subject=math"
                 }
             },
-			"TestingEnv6" : {
+            "TestingEnv6" : {
                 "group" : "functional,smoke,config",
                 "params" : {
                     "test" : "testtestingenv6.js",
                     "page" : "$$config.baseUrl$$:5002/?subject=math&lang=de"
                 }
             },
-			"MathEnv1" : {
+            "MathEnv1" : {
                 "group" : "functional,smoke,config",
                 "params" : {
                     "test" : "testmathenv1.js",
                     "page" : "$$config.baseUrl$$:5003/"
                 }
             },
-			"MathEnv2" : {
+            "MathEnv2" : {
                 "group" : "functional,smoke,config",
                 "params" : {
                     "test" : "testmathenv2.js",
-                    "page" : "$$config.baseUrl$:5003/?subject=chemistry&lang=fr"
+                    "page" : "$$config.baseUrl$$:5003/?subject=chemistry&lang=fr"
                 }
             },
-			"ChemEnv1" : {
+            "ChemEnv1" : {
                 "group" : "functional,smoke,config",
                 "params" : {
                     "test" : "testchemenv1.js",
                     "page" : "$$config.baseUrl$$:5004/"
                 }
             },
-			"ChemEnv2" : {
+            "ChemEnv2" : {
                 "group" : "functional,smoke,config",
                 "params" : {
                     "test" : "testchemenv2.js",
                     "page" : "$$config.baseUrl$$:5004/?lang=fr"
                 }
             },
-			"MathEnv1" : {
+            "MathDe" : {
                 "group" : "functional,smoke,config",
                 "params" : {
                     "test" : "testmathde.js",
                     "page" : "$$config.baseUrl$$:5005/"
                 }
             },
-			"MathEnv2" : {
+            "TestFr" : {
                 "group" : "functional,smoke,config",
                 "params" : {
                     "test" : "testfr.js",

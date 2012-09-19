@@ -15,7 +15,7 @@ YUI.add('TestsLayout', function(Y, NAME) {
      * @class Controller
      * @constructor
      */
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         init: function(mojitSpec) {
             this.spec = mojitSpec;
@@ -74,4 +74,4 @@ YUI.add('TestsLayout', function(Y, NAME) {
 		}
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito']});

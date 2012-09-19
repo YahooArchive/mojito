@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('Poster', function(Y) {
+YUI.add('Poster', function(Y, NAME) {
 
 /**
  * The Poster module.
@@ -15,7 +15,7 @@ YUI.add('Poster', function(Y) {
      * @class Controller
      * @constructor
      */
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         init: function(config) {
             this.config = config;
@@ -34,4 +34,4 @@ YUI.add('Poster', function(Y) {
 
     };
 
-}, '0.0.1', {requires: ['mojito-http-addon']});
+}, '0.0.1', {requires: ['mojito', 'mojito-http-addon']});

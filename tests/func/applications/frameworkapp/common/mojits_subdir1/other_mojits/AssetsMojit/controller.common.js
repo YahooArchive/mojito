@@ -1,9 +1,9 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('AssetsMojit', function(Y) {
+YUI.add('AssetsMojit', function(Y, NAME) {
 
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         init: function(config) {
             this.config = config;
@@ -87,4 +87,4 @@ YUI.add('AssetsMojit', function(Y) {
         }
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito']});

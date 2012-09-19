@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('HttpAddonChild', function(Y) {
+YUI.add('HttpAddonChild', function(Y, NAME) {
 
 /**
  * The HttpAddonChild module.
@@ -15,7 +15,7 @@ YUI.add('HttpAddonChild', function(Y) {
      * @class Controller
      * @constructor
      */
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         init: function(mojitSpec) {
             this.spec = mojitSpec;
@@ -34,4 +34,4 @@ YUI.add('HttpAddonChild', function(Y) {
         }
     };
 
-}, '0.0.1', {requires: ['mojito-http-addon']});
+}, '0.0.1', {requires: ['mojito', 'mojito-http-addon']});

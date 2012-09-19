@@ -1,7 +1,7 @@
 /*
 * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
 */
-YUI.add('FlickrDetail', function(Y) {
+YUI.add('FlickrDetail', function(Y, NAME) {
 
 /**
  * The FlickrDetail module.
@@ -15,7 +15,7 @@ YUI.add('FlickrDetail', function(Y) {
      * @class Controller
      * @constructor
      */
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         /**
          * Method corresponding to the 'index' action.
@@ -75,4 +75,4 @@ YUI.add('FlickrDetail', function(Y) {
 
     };
 
-}, '0.0.1', {requires: ['mojito-intl-addon'], lang: ['de', 'en-US']});
+}, '0.0.1', {requires: ['mojito', 'mojito-intl-addon'], lang: ['de', 'en-US']});

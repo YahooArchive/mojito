@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('CM_Nav', function(Y) {
+YUI.add('CM_Nav', function(Y, NAME) {
 
 /**
  * The CM_Nav module.
@@ -15,7 +15,7 @@ YUI.add('CM_Nav', function(Y) {
      * @class Controller
      * @constructor
      */
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         init: function(config) {
             this.config = config;
@@ -33,4 +33,4 @@ YUI.add('CM_Nav', function(Y) {
 
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito']});

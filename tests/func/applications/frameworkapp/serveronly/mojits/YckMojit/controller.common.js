@@ -1,6 +1,6 @@
-YUI.add('YckMojit', function(Y) {
+YUI.add('YckMojit', function(Y, NAME) {
 
-    Y.mojito.controller  = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         /**
          * Method corresponding to the 'index' action.
@@ -19,4 +19,4 @@ YUI.add('YckMojit', function(Y) {
 
     };
 
-}, '0.0.1', {requires: ['mojito-yck-addon']});
+}, '0.0.1', {requires: ['mojito', 'mojito-yck-addon']});

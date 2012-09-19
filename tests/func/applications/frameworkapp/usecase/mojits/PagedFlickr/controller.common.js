@@ -1,11 +1,11 @@
 /*
 * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
 */
-YUI.add('PagedFlickr', function(Y) {
+YUI.add('PagedFlickr', function(Y, NAME) {
 
     var PAGESIZE = 9;
 
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         index: function(ac) {
             var page = ac.params.getFromMerged('page'),
@@ -55,4 +55,4 @@ YUI.add('PagedFlickr', function(Y) {
     }
 
 
-}, '0.0.1', {requires: ['mojito-intl-addon', 'mojito-util'], lang: ['de', 'en-US']});
+}, '0.0.1', {requires: ['mojito', 'mojito-intl-addon', 'mojito-util'], lang: ['de', 'en-US']});

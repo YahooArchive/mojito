@@ -51,9 +51,9 @@ YUI().use('mojito-client-store', 'test', 'querystring-stringify-simple', functio
                 ];
 
             Y.Array.each(tests, function (test) {
-                var output = self.store.buildUrl(test.input, test.context);
+                var output = this.store.buildUrl(test.input, test.context);
                 A.areEqual(test.expectation, output, 'buildUrl did not create the correct url');
-            });
+            }, this);
         }
 
     }));

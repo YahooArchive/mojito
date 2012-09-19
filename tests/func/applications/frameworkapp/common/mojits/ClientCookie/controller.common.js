@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('ClientCookie', function(Y) {
+YUI.add('ClientCookie', function(Y, NAME) {
 
 /**
  * The ClientCookie module.
@@ -15,7 +15,7 @@ YUI.add('ClientCookie', function(Y) {
      * @class Controller
      * @constructor
      */
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         init: function(config) {
             this.config = config;
@@ -53,4 +53,4 @@ YUI.add('ClientCookie', function(Y) {
 
     };
 
-}, '0.0.1', {requires: ['mojito-cookie-addon']});
+}, '0.0.1', {requires: ['mojito', 'mojito-cookie-addon']});

@@ -1,9 +1,9 @@
 /*
 * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
 */
-YUI.add('YivParams', function(Y) {
+YUI.add('YivParams', function(Y, NAME) {
     
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
         
         filteredBody: function(ac) {
             var testname = ac.params.getFromUrl('testname');
@@ -90,4 +90,4 @@ YUI.add('YivParams', function(Y) {
         }
 
     };   
-}, '0.0.1', {requires: ['mojito-yiv-addon', 'mojito-http-addon']});
+}, '0.0.1', {requires: ['mojito', 'mojito-yiv-addon', 'mojito-http-addon']});

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('SearchResult', function(Y) {
+YUI.add('SearchResult', function(Y, NAME) {
 
 /**
  * The SearchResult module.
@@ -15,7 +15,7 @@ YUI.add('SearchResult', function(Y) {
      * @class Controller
      * @constructor
      */
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         /**
          * Method corresponding to the 'index' action.

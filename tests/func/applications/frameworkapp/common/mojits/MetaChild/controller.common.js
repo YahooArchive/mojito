@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('MetaChild', function(Y) {
+YUI.add('MetaChild', function(Y, NAME) {
 
 /**
  * The Stateful module.
@@ -15,7 +15,7 @@ YUI.add('MetaChild', function(Y) {
      * @class Controller
      * @constructor
      */
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         init: function(spec) {
             this.spec = spec;
@@ -39,4 +39,4 @@ YUI.add('MetaChild', function(Y) {
         }
     };
 
-}, '0.0.1', {requires: ['mojito-meta-addon']});
+}, '0.0.1', {requires: ['mojito', 'mojito-meta-addon']});

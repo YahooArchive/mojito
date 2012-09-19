@@ -1,7 +1,7 @@
 /*
 * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
 */
-YUI.add('Flickr', function(Y) {
+YUI.add('Flickr', function(Y, NAME) {
 
 /**
  * The Flickr module.
@@ -9,7 +9,7 @@ YUI.add('Flickr', function(Y) {
  * @module Flickr
  */
 
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         /**
          * Method corresponding to the 'index' action.
@@ -26,4 +26,4 @@ YUI.add('Flickr', function(Y) {
 
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito']});

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('Binders', function(Y) {
+YUI.add('Binders', function(Y, NAME) {
 
 /**
  * The Binders module.
@@ -15,7 +15,7 @@ YUI.add('Binders', function(Y) {
      * @class Controller
      * @constructor
      */
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         init: function(mojitSpec) {
             this.spec = mojitSpec;
@@ -44,4 +44,4 @@ YUI.add('Binders', function(Y) {
         }
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito']});

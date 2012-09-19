@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('GreenChild', function(Y) {
+YUI.add('GreenChild', function(Y, NAME) {
 
 /**
  * The GreenChild module.
@@ -15,7 +15,7 @@ YUI.add('GreenChild', function(Y) {
      * @class Controller
      * @constructor
      */
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         init: function(spec) {
             this.spec = spec;
@@ -34,4 +34,4 @@ YUI.add('GreenChild', function(Y) {
 
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito']});

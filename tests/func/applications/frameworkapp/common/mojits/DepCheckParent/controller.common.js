@@ -3,7 +3,7 @@
  */
  YUI.add('DepCheckParent', function(Y, NAME) {
 
-     Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
          'index': function(ac) {
              ac.done();
          },
@@ -35,4 +35,4 @@
             }
      };
 
-}, '0.0.1', {requires: ['mojito-intl-addon', 'mojito-util','querystring-stringify','AppLevelMojitModel','mojito-meta-addon']});
+}, '0.0.1', {requires: ['mojito', 'mojito-intl-addon', 'mojito-util','querystring-stringify','AppLevelMojitModel','mojito-meta-addon']});
