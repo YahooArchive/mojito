@@ -11,6 +11,7 @@ YUI().use(
     'addon-rs-selector',
     'addon-rs-url',
     'addon-rs-yui',
+    'mojito-perf',
     'test',
     function(Y) {
 
@@ -128,6 +129,7 @@ YUI().use(
             'server mojit config value': function() {
                 var instance = {base:'test1'};
                 store.expandInstance(instance, {}, function(err, instance){
+                    A.isNull(err);
                     A.isTrue(instance.id === 'test1', 'wrong ID');
                     A.isTrue(instance.type === 'test_mojit_1', 'wrong type');
                     A.isTrue(instance.config.testKey4 === 'testVal4', 'missing key from definition.json');
@@ -143,15 +145,15 @@ YUI().use(
                 });
             },
 
-            'server mojit config value via type & overrride': function() {
+            'server mojit config value via type & override': function() {
                 var instance = {
                     type:'test_mojit_1',
                     config:{testKey4: 'other'}
                 };
                 store.expandInstance(instance, {}, function(err, instance){
                     A.isTrue(instance.type === 'test_mojit_1', 'wrong ID');
-                    A.isTrue(instance.config.testKey4 === 'other', 'missing config from definition.json');
-                    A.isTrue(instance.config.testKey5 === 'testVal5', 'missing deep config from definition.json');
+                    A.areSame('other', instance.config.testKey4, 'missing config from definition.json');
+                    A.areSame('testVal5', instance.config.testKey5, 'missing deep config from defaults.json');
                 });
             },
 
@@ -261,12 +263,22 @@ YUI().use(
             },
 
             'expandInstance caching': function() {
-                var instance = 'foo';
+                var inInstance = {
+                    base: 'a',
+                    action: 'b',
+                    type: 'c',
+                    id: 'd'
+                };
                 var context = {};
-                var key = Y.JSON.stringify(instance) + Y.JSON.stringify(context);
-                store._expandInstanceCache.server[key] = 'bar';
-                store.expandInstance(instance, context, function(err, instance) {
-                    A.areEqual('bar', instance);
+                var key = Y.JSON.stringify([inInstance, context]);
+                store._expandInstanceCache.server[key] = { x: 'y' };
+                store.expandInstance(inInstance, context, function(err, outInstance) {
+                    A.areEqual(5, Object.keys(outInstance).length);
+                    A.areEqual('a', outInstance.base);
+                    A.areEqual('b', outInstance.action);
+                    A.areEqual('c', outInstance.type);
+                    A.areEqual('d', outInstance.id);
+                    A.areEqual('y', outInstance.x);
                 });
             },
 
@@ -368,8 +380,7 @@ YUI().use(
                 var fixtures = libpath.join(__dirname, '../../fixtures/store');
                 var spec = { type: 'rollups' };
                 store.expandInstanceForEnv('client', spec, {}, function(err, instance) {
-                    A.areSame('/static/rollups/rollup.client.js', instance.yui.sortedPaths['rollups']);
-                    A.areSame('/static/rollups/rollup.client.js', instance.yui.sortedPaths['rollupsModelClient']);
+                    A.areSame('/static/rollups/rollup.client.js', instance.yui.sortedPaths['rollups'], 'main rollup');
                     var urls = store.getAllURLs();
                     A.areSame(libpath.join(fixtures, 'mojits/rollups/rollup.client.js'), urls['/static/rollups/rollup.client.js']);
                 });
