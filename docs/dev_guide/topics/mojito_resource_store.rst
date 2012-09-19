@@ -1082,7 +1082,7 @@ Your addon is required to do the following:
 .. |YUIPlugin| replace:: YUI Plugin
 .. _YUIPlugin: http://yuilibrary.com/yui/docs/plugin/
 .. |SS| replace:: server.store.js
-.. _SS: https://github.com/yahoo/mojito/blob/develop/source/lib/store.server.js     
+.. _SS: https://github.com/yahoo/mojito/blob/develop/lib/store.server.js
 .. |--| unicode:: U+2013   .. en dash
 .. |---| unicode:: U+2014  .. em dash
    :trim:
