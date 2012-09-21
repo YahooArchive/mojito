@@ -5,79 +5,102 @@ Using Context Configurations
 ============================
 
 Introduction
-############
+============
 
-The Mojito framework allows you to define sets of configurations for different environments, 
-languages, and devices. Your applications can either statically apply configurations when the 
-application is started or dynamically apply configurations based on incoming HTTP requests. In both 
-static and dynamic cases, Mojito determines which configurations to apply by a string consisting of 
-key-value pairs known as the *context*. In the case of applying configurations per request, Mojito 
-looks for the context in the HTTP headers or the query string. If no context is found, Mojito uses 
-the :ref:`context_config_exs-defaults_json`.
+Context configurations are how Mojito enables different configurations to be used based on various 
+runtime factors. Many factors are predefined such as language and device, but you can 
+create custom ones as well. These runtime factors are called **contexts** in Mojito
+and are mapped to user-defined configurations. For example, you could set the configuration 
+``logLevel`` to ``ERROR`` in the production context and set it to ``INFO`` in the development 
+context.
 
 
 Why Use Context Configurations?
-###############################
+-------------------------------
 
-Context configurations make it easier to develop applications by allowing developers to create sets 
-of configurations associated with environments. Developers can experiment or make modifications to 
-configurations mapped to a testing environment context without affecting the application running 
-with the *master* configurations defined in ``"setting: ["master"]``. Context configurations also make it 
-easier to customize content for users. Applications can dynamically apply language and device 
-configurations by determining the user's language preferences and the device making the HTTP request. 
-Mojito provides default contexts that you can define configurations for, but you can also 
-`create custom contexts <#creating-custom-contexts>`_ to meet your application's needs.
+Context configurations make it possible to do the following:
 
-Flow of Using Context Configurations
-####################################
+- Create sets of configurations associated with environments without affecting the application 
+  running with the *master* configurations ``"setting: ["master"]``. 
+- Customize content for users: Applications can dynamically apply language and device 
+  configurations by determining the user's language preferences and the device making the HTTP request. 
 
-#. **Create context configurations:**
 
-   Define context configurations in ``application.json``, ``routes.json``, and default context 
-   configurations for your mojits in the ``defaults.json`` file in your mojit directory.
+What is a Context?
+==================
 
-#. **Start application:**
+The context is the runtime parameters that are either statically set (base context) 
+on the command line or dynamically set (request context) in the HTTP headers and/or the 
+request query string. The configurations for request contexts override those of the base context.
 
-   - Use the master configurations by not specifying a base context: ``$ mojito start``
-   - Specify the base context with the ``--context`` option. Mojito will apply the configurations 
-     mapped to the base context. For example: ``$ mojito start --context "environment:test"``
 
-#. **Receive HTTP requests:**
+Base Context
+------------
 
-   *Request new context:*
-      Mojito will look at the HTTP headers for language and device contexts and the query string 
-      parameters for any of the default contexts. 
-      Contexts found in the request are referred to as request contexts. Mojito will then merge the 
-      default configurations or the configurations of the base context with the configurations of 
-      the request context. The configurations of the request context override default configurations 
-      or those of the base context.
-   *Change configurations:*
-      The application can dynamically change configurations by having a parent mojit execute a child 
-      with new configuration values.
-
-Contexts
-########
-
-The context is a string consisting of key-value pairs that map to a set of configurations. Mojito 
-provides default contexts for environments, devices, and languages. If none of the default contexts 
-meet your needs, you can create :ref:`context_configs-custom`.
+The base context is statically set with the ``--context`` option when you start an application. 
 
 Syntax
-======
+######
 
-The context has the following syntax :
+The base context has the following syntax:
 
 ``"key1:value1[,key2:value2]"``
 
-.. _contexts-defaults:
+Example
+#######
 
-Default Contexts
-================
+The following starts the application with the base context ``environment:production``:
+
+``$ mojito start --context "environment:production"``
+
+Request Contexts
+----------------
+
+Contexts that are dynamically invoked by HTTP requests are called request contexts. When Mojito 
+receives an HTTP request that specifies a context, the configurations mapped to that context will be 
+dynamically applied. The contexts can be specified in HTTP request as a parameter in the query 
+string or in the HTTP header.
+
+Request Headers
+###############
+
+The contexts for languages can be requested using the HTTP header ``Accept-Language``. After 
+starting an application with the context ``"environment:testing"``, you can dynamically apply the 
+configurations for the context ``"environment:testing,lang:fr"`` by sending the HTTP header 
+``"Accept-Language: fr"``. In the same way, the contexts for devices can be requested using the HTTP 
+header ``User-Agent``. The configurations for the context "device:android" could be requested with 
+the HTTP header ``"User-Agent: Mozilla/5.0 (Linux; U; Android 2.3; en-us)"``.
+
+Query String Parameters
+#######################
+
+The key and value pairs in the context are dynamically set by the query string.
+
+Syntax
+``````
+ 
+``?key1=value1,key2=value2``
+
+Example
+```````
+
+For example, if an application is started with the base context ``"environment:testing"`` and you 
+want to dynamically apply the context ``"environment:testing,device:iphone"``, you could append the 
+following query string to the application URL: 
+
+``?device=iphone``
+
+
+
+.. _contexts-predefined:
+
+Mojito Predefined Contexts
+--------------------------
 
 The following lists the contexts that are defined by Mojito. You can define configurations for these 
-default contexts. You can combine multiple contexts to form a compound context as well. For example, 
-if you wanted a context to map to configurations for Android devices in a testing environment, you 
-could use the following compound context: ``"environment:test,device:android"``
+predefined contexts. You can combine multiple contexts to form a compound context as well. For 
+example, if you wanted a context to map to configurations for Android devices in a testing 
+environment, you could use the following compound context: ``"environment:test,device:android"``
 
 - ``environment:development``
 - ``environment:production``
@@ -95,73 +118,70 @@ could use the following compound context: ``"environment:test,device:android"``
 - ``device:palm``
 - ``lang:{BCP 47 language tag}``
 
+
 You can view the supported BCP 47 language tags and default contexts in the 
 `dimensions.json <https://github.com/yahoo/mojito/blob/develop/source/lib/dimensions.json>`_ file 
-of Mojito.
-
-Context Configuration Precedence
-================================
-
-The precedence of context configurations is determined in the
-following two phases:
-
-#. collecting and merging a set of configurations for each context
-#. determining the context of a request
-
-After completing the two phases, Mojito can then apply the correct context configurations 
-for a request. The following section will detail the order of precedence for configurations and
-then context. 
+of Mojito. You can also :ref:`create custom contexts <context_configs-custom>` if the Mojito
+default contexts don't meet the needs of your application.
 
 
-Reading and Merging Configurations
-----------------------------------
+How Does Mojito Resolve Context Configurations?
+===============================================
 
-At start-up, Mojito reads, parses, and then merges the configurations of your applications
-with the most specific configurations overriding the less specific. For example, the default 
-configurations defined in ``defaults.json`` are overridden by more specific application-level
-and mojit instance configurations defined in ``application.json``.
+When a request is made to a Mojito application, Mojito has to resolve 
+configurations, defined contexts (``dimensions.json``), and the base/requested contexts
+before the correct context configurations can be applied.
 
-The following lists the order of evaluation of configurations:
+The following are the steps taken by Mojito to apply the correct context
+configurations:
 
-#. Application configurations:
-   - routing in ``routes.json``
-   - ``application.json`` 
-#. Mojit instance configurations:
-   - default and definition configurations for mojit instances defined in ``defaults.json`` and
-     ``definition.json``. The configurations in ``defaults.json`` and ``definitions.json`` do not 
-      overlap.
-   - mojit instance configurations in ``application.json`` override the default configurations set
-     in ``defaults.json``.
-#. Dynamically set configurations (e.g., using ``ac._dispatch`` or ``ac.composite.execute``)
-   override configurations statically defined in files.
+#. **Determines Valid Contexts:**
 
+   Mojito looks for a local ``dimensions.json``. If one is found, Mojito replaces
+   Mojito's ``dimensions.json`` with it. Mojito then uses ``dimensions.json`` to determine
+   which contexts are valid. Contexts defined earlier in ``dimensions.json`` override 
+   contexts defined later in the file.
+   
+#. **Merges Configurations**
 
-Determining Context
--------------------
+   Mojito merges configurations for all contexts, with the configurations
+   in ``application.json`` overriding those in ``defaults.json``. If contexts
+   are found that are not defined in ``dimensions.json``, Mojito will throw
+   an error.
+   
+#. **Determines Context**
 
-The contexts are defined in Mojito's ``dimensions.json`` or an application-level (local)
-version of ``dimensions.json``. The contexts, like configurations, are ordered most-specific to 
-least-specific.  For example, the context ``"env:prod, device:iphone"`` is more
-specific than just ``"device:iphone"``. Also, the dimensions defined earlier in the 
-``dimensions.json`` file have higher precedence than dimensions defined later. 
-See :ref:`Default Contexts <contexts-defaults>` for the dimensions
-defined in Mojito's ``dimension.json`` and :ref:`Creating Custom Contexts <context_configs-custom>`
-to learn how to define contexts in an application-level ``dimensions.json``.
+   - Mojito checks if a base context was specified (statically) on the command line with 
+     the ``--context`` option. 
+   - Mojito receives an HTTP request and looks for a request context in 
+     the query string, HTTP headers, or through the execution of a child mojit with configuration 
+     information. 
+   - Mojito merges the base context (if any) with the request context (if any). For example,
+     if the base context is ``"environment:develop``" and the request context found in the query string
+     is ``"?lang=de"``, then the compound request context in the ``setting`` array in
+      configuration files would be ``["environment:development", "lang:de"]``.
+   - If no base or request context is found, Mojito then uses the default context ``master``.
 
+#. **Resolves Context Configurations**
 
-Mojito determines contexts in the following order:
+   Mojito then searches for configurations associated with the determined context. 
+   The contexts are found in the ``setting`` object in configuration files.
+   Mojito will use the more qualified contexts if present over more general contexts.
+   For example, if the merged base and request context is ``"environment:prod, device:iphone"``,
+   then Mojito will use it over either ``"device:iphone"`` or ``"env:prod"``. If 
+   ``"environment:prod, device:iphone"`` is not present, Mojito will use the request context 
+   over the base context as the resolved context. 
+  
 
-#. No context is specified (statically or dynamically), so the default context ``master`` is used.
-#. A context is specified (statically) on the command line with the ``--context`` 
-   option.
-#. A context is dynamically set in the query string, HTTP headers, or through
-   the execution of a child mojit with configuration information.
+#.  **Applies Context Configuration**
 
-
+    Mojito applies the configurations associated with the resolved context. 
+    
    
 
+
 Defining Configurations for Contexts
-####################################
+====================================
 
 Configurations for contexts are defined in the application configuration file ``application.json``. 
 Routing configurations for contexts are defined in the routing configuration file ``routes.json``. 
@@ -170,7 +190,7 @@ merged when an application starts. The configuration values in ``application.jso
 in ``defaults.json``.
 
 Configuration Objects
-=====================
+---------------------
 
 The ``application.json`` and ``routes.json`` files in the application directory and the 
 ``defaults.json`` file in a mojit's directory consist of an array of configuration objects. The 
@@ -183,13 +203,13 @@ configuration such as the path, HTTP methods, actions, and routing parameters, b
 a ``specs`` or a ``config`` object.
 
 setting
--------
+#######
 
 The ``settings`` array specifies the context or the default ("master") that is then mapped to 
 configurations.
 
 Default Configurations
-~~~~~~~~~~~~~~~~~~~~~~
+``````````````````````
 
 Default configurations are used when no context is given. These configurations are found in the 
 object where the settings array has the string "master" as seen below.
@@ -207,7 +227,7 @@ object where the settings array has the string "master" as seen below.
    ]
 
 Simple Context Configuration
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+````````````````````````````
 
 The context is specified in the ``settings`` array of the configuration object.
 
@@ -225,7 +245,7 @@ The context is specified in the ``settings`` array of the configuration object.
    ]
 
 Compound Context Configuration
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+``````````````````````````````
 
 Compound contexts are specified in the settings array as a series of contexts separated by commas 
 as seen below.
@@ -244,7 +264,7 @@ as seen below.
    ]
    
 Routing Context Configuration
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+`````````````````````````````
 
 .. code-block:: javascript
 
@@ -265,7 +285,7 @@ Routing Context Configuration
 
 
 specs
------
+#####
 
 The ``specs`` object contains the mojit instances associated with a context.
 
@@ -285,7 +305,7 @@ The ``specs`` object contains the mojit instances associated with a context.
    ]
 
 config
-------
+######
 
 The ``config`` object stores configuration for a mojit that is mapped to the context.
 
@@ -308,10 +328,10 @@ The ``config`` object stores configuration for a mojit that is mapped to the con
    ]
 
 Examples
-========
+--------
 
 application.json
-----------------
+################
 
 The configuration objects in ``application.json`` below define default configurations and three 
 context configurations. The last context configuration contains two strings containing key-value 
@@ -369,9 +389,10 @@ pairs and is, thus, called a compound context configuration.
 .. _context_config_exs-defaults_json:
 
 defaults.json
--------------
+#############
 
-The configuration ``gamma`` in the example ``defaults.json`` below is mapped to contexts for languages.
+The configuration ``gamma`` in the example ``defaults.json`` below is mapped to contexts for 
+languages.
 
 .. code-block:: javascript
 
@@ -399,7 +420,7 @@ The configuration ``gamma`` in the example ``defaults.json`` below is mapped to 
    ]
    
 routes.json
------------
+###########
 
 .. code-block:: javascript
 
@@ -423,57 +444,9 @@ routes.json
    ]
 
 
-Applying Context Configurations
-###############################
-
-The configurations for a context can be applied statically or dynamically. The base context is used 
-to statically apply configurations. The request context is used to dynamically apply configurations.
-
-Base Context
-============
-
-The base context is specified with the ``--context`` option when you start an application. The 
-following starts the application with the base context ``environment:production``:
-
-``$ mojito start --context "environment:production"``
-
-Request Contexts
-================
-
-Contexts that are dynamically invoked by HTTP requests are called request contexts. When Mojito 
-receives an HTTP request that specifies a context, the configurations mapped to that context will be 
-dynamically applied. The contexts can be specified in HTTP request as a parameter in the query 
-string or in the HTTP header.
-
-Request Headers
----------------
-
-The contexts for languages can be requested using the HTTP header ``Accept-Language``. After 
-starting an application with the context ``"environment:testing"``, you can dynamically apply the 
-configurations for the context ``"environment:testing,lang:fr"`` by sending the HTTP header 
-``"Accept-Language: fr"``. In the same way, the contexts for devices can be requested using the HTTP 
-header ``User-Agent``. The configurations for the context "device:android" could be requested with 
-the HTTP header ``"User-Agent: Mozilla/5.0 (Linux; U; Android 2.3; en-us)"``.
-
-Query String Parameters
------------------------
-
-The key and value pairs in the context are dynamically set by the query string using the standard 
-syntax for query strings: ``?key1=value1,key2=value2``
-
-For example, if an application is started with the base context ``"environment:testing"`` and you 
-want to dynamically apply the context ``"environment:testing,device:iphone"``, you could append the 
-following query string to the application URL: ``?device=iphone``
-
-Merged Base and Request Contexts
-================================
-
-An application started with a base context can apply configurations for request contexts. Mojito will 
-merge the configurations for both the base and request contexts. The configurations for request 
-contexts override those of the base context.
 
 Dynamically Changing Configurations
-###################################
+===================================
 
 You may dynamically change the configurations for any context by having a parent mojit execute a 
 child mojit with new configurations. This is different than getting different configurations by 
@@ -522,24 +495,28 @@ to add new or change configurations of the current context.
 .. _context_configs-custom:
 
 Creating Custom Contexts
-########################
+========================
 
 The Mojito framework defines default contexts that developers can map configurations to. These 
-default contexts are defined in the ``dimensions.json`` file found in the Mojito source code. 
-Developers can create an application-level ``dimensions.json`` to define custom contexts that can be 
-mapped to configurations as well. Defining and applying configurations for custom contexts is done 
-in the same way as for default contexts.
+default contexts are defined in the file ``dimensions.json <https://github.com/yahoo/mojito/blob/develop/source/lib/dimensions.json>`_ 
+found in the Mojito source code. Developers can create an application-level ``dimensions.json`` to 
+define custom contexts that can be mapped to configurations as well. 
+
+The local ``dimensions.json`` replaces the Mojito's ``dimensions.json``, so to create custom 
+contexts, you will need to copy Mojito's ``dimension.json`` to your application directory and 
+then add your custom contexts to the file. Defining and applying configurations for custom contexts 
+is done in the same way as for default contexts.
 
 Who Should Create Custom Contexts?
-==================================
+----------------------------------
 
 Developers who create applications that require a degree of personalization that extends beyond 
 language and device would be good candidates to create custom contexts. Before beginning to create 
-your own ``dimensions.json`` file, you should review the :ref:`contexts-defaults` to make sure that 
+your own ``dimensions.json`` file, you should review the :ref:`contexts-predefined` to make sure that 
 you truly need custom contexts.
 
 Dimensions File
-===============
+---------------
 
 The key-value pairs of the context are defined in the ``dimensions.json`` file in the application 
 directory. Once contexts are defined in the ``dimensions.file``, you can then map configurations to 
@@ -548,7 +525,7 @@ Mojito or at the application level in ``dimensions.json``, an error will prevent
 the application.
 
 Syntax for JavaScript Object
-----------------------------
+############################
 
 In the ``dimension.json`` file, the ``dimensions`` array contains JavaScript objects that define the 
 contexts. The keys of the context are the names of the objects, 
@@ -571,7 +548,7 @@ and the values are the object's properties as seen below.
    }
 
 Example dimensions.js
----------------------
+`````````````````````
 
 Based on the example ``dimensions.json`` below, the following are valid contexts:
 
@@ -585,17 +562,21 @@ Based on the example ``dimensions.json`` below, the following are valid contexts
    [
      {
        "dimensions": [
+         ...
          {
            "account_type": {
              "basic": null,
              "premium": null
+           }
          },
          {
            "region":{
              "us": null,
              "gb": null,
              "fr": null
+           }
          }
+         ...
      }
    ]
 
