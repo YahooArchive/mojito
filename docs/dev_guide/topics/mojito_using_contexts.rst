@@ -120,7 +120,7 @@ environment, you could use the following compound context: ``"environment:test,d
 
 
 You can view the supported BCP 47 language tags and default contexts in the 
-`dimensions.json <https://github.com/yahoo/mojito/blob/develop/source/lib/dimensions.json>`_ file 
+`dimensions.json <https://github.com/yahoo/mojito/blob/develop/lib/dimensions.json>`_ file 
 of Mojito. You can also :ref:`create custom contexts <context_configs-custom>` if the Mojito
 default contexts don't meet the needs of your application.
 
@@ -159,9 +159,7 @@ configurations:
    - Mojito merges the base context (if any) with the request context (if any). For example,
      if the base context is ``"environment:develop``" and the request context found in the query string
      is ``"?lang=de"``, then the compound context in the ``setting`` array in
-     configuration files would be ``["environment:development", "lang:de"]``. Mojito will
-     use the most qualified context possible. If the appropriate compound context does not exist, 
-     Mojito uses the request context over the base context.
+     configuration files would be ``["environment:development", "lang:de"]``. 
    - If no base or request context is found, Mojito then uses the default context ``master``.
 
 #. **Resolves Context Configurations**
