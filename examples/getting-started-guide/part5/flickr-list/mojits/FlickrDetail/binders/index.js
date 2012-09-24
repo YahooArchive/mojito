@@ -4,6 +4,8 @@
  * See the accompanying LICENSE file for terms.
  */
 
+/*jslint anon:true, sloppy:true, nomen:true, node:true*/
+
 YUI.add('FlickrDetailBinderIndex', function(Y, NAME) {
 
 /**
@@ -21,7 +23,7 @@ YUI.add('FlickrDetailBinderIndex', function(Y, NAME) {
      * @class Binder
      * @constructor
      */
-    
+
     Y.namespace('mojito.binders')[NAME] = {
 
         /**
@@ -33,10 +35,10 @@ YUI.add('FlickrDetailBinderIndex', function(Y, NAME) {
             this.mojitProxy = mojitProxy;
             this.mojitProxy.listen('flickr-image-detail', function(payload) {
                 Y.log('on flickr-image-detail ' + payload.data.id, 'debug', NAME);
-                var urlParams = Y.mojito.util.copy(mojitProxy.context);
-                var routeParams = {
-                    image: payload.data.id
-                };
+                var urlParams = Y.mojito.util.copy(mojitProxy.context),
+                    routeParams = {
+                        image: payload.data.id
+                    };
                 mojitProxy.refreshView({
                     params: {
                         url: urlParams,

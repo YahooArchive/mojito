@@ -4,6 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
+/*jslint anon:true, sloppy:true, nomen:true, node:true*/
 YUI.add("lang/PagedFlickr_de", function(Y) {
 
     Y.Intl.add(

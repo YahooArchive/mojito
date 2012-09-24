@@ -4,6 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
+/*jslint anon:true, sloppy:true, nomen:true, node:true*/
 YUI.add('Flickr', function(Y, NAME) {
 
 /**
@@ -11,7 +12,6 @@ YUI.add('Flickr', function(Y, NAME) {
  *
  * @module Flickr
  */
-
     Y.namespace('mojito.controllers')[NAME] = {
 
         /**

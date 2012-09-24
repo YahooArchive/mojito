@@ -4,7 +4,8 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('NotepadBinderIndex', function (Y, NAME) {
+/*jslint anon:true, sloppy:true, nomen:true, node:true*/
+YUI.add('NotepadBinderIndex', function(Y, NAME) {
 
     Y.namespace('mojito.binders')[NAME] = {
 

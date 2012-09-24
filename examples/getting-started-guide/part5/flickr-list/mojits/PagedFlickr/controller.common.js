@@ -4,6 +4,8 @@
  * See the accompanying LICENSE file for terms.
  */
 
+/*jslint anon:true, sloppy:true, nomen:true, node:true*/
+
 YUI.add('PagedFlickr', function(Y, NAME) {
 
 /**
@@ -20,6 +22,19 @@ YUI.add('PagedFlickr', function(Y, NAME) {
      * @class Controller
      * @constructor
      */
+
+    function selfUrl(ac, mojitType, mods) {
+        var k,
+            params = Y.mojito.util.copy(ac.params.merged());
+        for (k in mods) {
+            // jslint says: The body of a for in should be wrapped in an if statement to filter unwanted properties from the prototype.
+            if (mods.hasOwnProperty(k)) {
+                params[k] = mods[k];
+            }
+        }
+        return ac.url.make(mojitType, 'index', Y.QueryString.stringify(params));
+    }
+
     Y.namespace('mojito.controllers')[NAME] = {
 
         /**
@@ -28,6 +43,7 @@ YUI.add('PagedFlickr', function(Y, NAME) {
          * @param ac {Object} The action context that provides access
          *        to the Mojito API.
          */
+
         index: function(ac) {
 
             Y.log(ac.params.all());
@@ -43,10 +59,10 @@ YUI.add('PagedFlickr', function(Y, NAME) {
 
             // The "page" parameter is base-1, but the model's "start"
             // parameter is base-0.
-            start = (page-1) * PAGESIZE;
+            start = (page - 1) * PAGESIZE;
 
             ac.models.flickr.getFlickrImages('mojito', start, PAGESIZE, function(err, images) {
-               var dateString, data;
+                var dateString, data;
 
                 // on model error, fail fast
                 if (err) {
@@ -58,11 +74,11 @@ YUI.add('PagedFlickr', function(Y, NAME) {
                     date: dateString,
                     greeting: ac.intl.lang("TITLE"),
                     prev: {
-                        url: selfUrl(ac, 'flickr', { page: page-1 } ),
+                        url: selfUrl(ac, 'flickr', { page: page - 1 }),
                         title: ac.intl.lang("PREV") || 'prev'
                     },
                     next: {
-                        url: selfUrl(ac, 'flickr', { page: page+1 } ),
+                        url: selfUrl(ac, 'flickr', { page: page + 1 }),
                         title: ac.intl.lang("NEXT") || 'next'
                     }
                 };
@@ -73,7 +89,7 @@ YUI.add('PagedFlickr', function(Y, NAME) {
                 data.images = images;
 
                 if (page > 1) {
-                    data.prev.url = selfUrl(ac, 'flickr', { page: page-1 });
+                    data.prev.url = selfUrl(ac, 'flickr', { page: page - 1 });
                     data.has_prev = true;
                 }
                 ac.done(data);
@@ -82,12 +98,6 @@ YUI.add('PagedFlickr', function(Y, NAME) {
         }
     };
 
-    function selfUrl(ac, mojitType, mods) {
-        var params = Y.mojito.util.copy(ac.params.merged());
-        for (var k in mods) {
-            params[k] = mods[k];
-        }
-        return ac.url.make(mojitType, 'index', Y.QueryString.stringify(params));
-    }
+
 
 }, '0.0.1', {requires: ['mojito-intl-addon', 'mojito-util', 'querystring-stringify', 'ModelFlickr'], lang: ['de', 'en-US']});

@@ -4,10 +4,11 @@
  * See the accompanying LICENSE file for terms.
  */
 
+/*jslint anon:true, sloppy:true, nomen:true, node:true*/
 YUI.add('PagedFlickrBinderIndex', function(Y, NAME) {
 
     function getPage(href) {
-        return href.split('/').pop().split('=').pop()
+        return href.split('/').pop().split('=').pop();
     }
 
     Y.namespace('mojito.binders')[NAME] = {
@@ -17,12 +18,13 @@ YUI.add('PagedFlickrBinderIndex', function(Y, NAME) {
         },
 
         bind: function(node) {
-            var self = this;
+            var self = this,
+                paginator;
             this.node = node;
-            var paginator = function(evt) {
+            paginator = function(evt) {
 
-                var tgt = evt.target;
-                var page = getPage(tgt.get('href'));
+                var tgt = evt.target,
+                    page = getPage(tgt.get('href'));
 
                 evt.halt();
 
@@ -32,11 +34,11 @@ YUI.add('PagedFlickrBinderIndex', function(Y, NAME) {
                         route: {page: page}
                     }
                 });
-                
+
             };
             this.node.all('#paginate a').on('click', paginator, this);
         }
-        
+
     };
 
 }, '0.0.1', {requires: []});
