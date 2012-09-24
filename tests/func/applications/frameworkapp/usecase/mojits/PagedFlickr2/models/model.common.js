@@ -8,7 +8,7 @@ YUI.add('PagedFlickr2Model', function(Y) {
     Y.mojito.models.flickr = {
 
         getFlickrImages: function(queryString, start, count, callback) {
-            var APP_KEY = '9cc79c8bf1942c683b0d4e30b838ee9c';
+            var APP_KEY = '84921e87fb8f2fc338c3ff9bf51a412e';
             var q;
             start = parseInt(start) || 0;
             count = parseInt(count) || 10;
