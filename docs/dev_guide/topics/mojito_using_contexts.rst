@@ -153,13 +153,15 @@ configurations:
 
    - Mojito checks if a base context was specified (statically) on the command line with 
      the ``--context`` option. 
-   - Mojito receives an HTTP request and looks for a request context in 
+   - When Mojito receives an HTTP request, it looks for a request context in 
      the query string, HTTP headers, or through the execution of a child mojit with configuration 
      information. 
    - Mojito merges the base context (if any) with the request context (if any). For example,
      if the base context is ``"environment:develop``" and the request context found in the query string
-     is ``"?lang=de"``, then the compound request context in the ``setting`` array in
-      configuration files would be ``["environment:development", "lang:de"]``.
+     is ``"?lang=de"``, then the compound context in the ``setting`` array in
+     configuration files would be ``["environment:development", "lang:de"]``. Mojito will
+     use the most qualified context possible. If the appropriate compound context does not exist, 
+     Mojito uses the request context over the base context.
    - If no base or request context is found, Mojito then uses the default context ``master``.
 
 #. **Resolves Context Configurations**
