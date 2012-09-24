@@ -15,7 +15,7 @@
  * @module gallery-storage-lite
  */
 
-YUI.add('gallery-storage-lite', function (Y) {
+YUI.add('gallery-storage-lite', function(Y) {
 
 // -- Shorthand ----------------------------------------------------------------
 var d           = Y.config.doc,
@@ -297,7 +297,7 @@ if (storageMode === MODE_HTML5 || storageMode === MODE_GECKO) {
             }
         }, true);
 
-        Y.on('domready', function () {
+        Y.on('domready', function() {
             d.body.appendChild(storageDriver);
             storageDriver.load(USERDATA_PATH);
 

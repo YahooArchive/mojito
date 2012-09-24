@@ -4,6 +4,8 @@
  * See the accompanying LICENSE file for terms.
  */
 
+/*jslint anon:true, sloppy:true, nomen:true, node:true*/
+
 YUI.add('flickr-logger-mutator', function(Y) {
 
     /*

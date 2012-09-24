@@ -4,6 +4,8 @@
  * See the accompanying LICENSE file for terms.
  */
 
+/*jslint anon:true, sloppy:true, nomen:true, node:true*/
+
 YUI.add('PagedFlickrBinderIndex', function(Y, NAME) {
 
 /**
@@ -21,7 +23,7 @@ YUI.add('PagedFlickrBinderIndex', function(Y, NAME) {
      * @class Binder
      * @constructor
      */
-    
+
     Y.namespace('mojito.binders')[NAME] = {
 
         /**
@@ -40,10 +42,11 @@ YUI.add('PagedFlickrBinderIndex', function(Y, NAME) {
          */
         bind: function(node) {
             node.all('.pic a').on('click', function(evt) {
-                var url = evt.currentTarget.get('href');
+                var imageID, matches, url;
+                url = evt.currentTarget.get('href');
                 Y.log('on click ' + url, 'debug', NAME);
-                var matches = url.match(/image\/(\d+)/);
-                var imageID = matches[1];
+                matches = url.match(/image\/(\d+)/);
+                imageID = matches[1];
                 if (imageID) {
                     evt.halt();
 
@@ -51,7 +54,7 @@ YUI.add('PagedFlickrBinderIndex', function(Y, NAME) {
                     // to the server, we persist the image choice.
                     node.all('#paginate a').each(function(pageLink) {
                         var pageUrl = pageLink.get('href');
-                        pageLink.set('href', pageUrl.replace(/\/image\/\d+/, '/image/'+imageID));
+                        pageLink.set('href', pageUrl.replace(/\/image\/\d+/, '/image/' + imageID));
                     });
 
                     Y.log('broadcast flickr-image-chosen ' + imageID, 'debug', NAME);

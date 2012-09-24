@@ -4,4 +4,5 @@
  * See the accompanying LICENSE file for terms.
  */
 
-module.exports = require('mojito').createServer({dir:__dirname});
+/*jslint nomen: true*/
+module.exports = require('mojito').createServer({dir: __dirname});

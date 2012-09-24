@@ -4,7 +4,9 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('PagerMojitBinder', function (Y, NAME) {
+/*jslint anon:true, sloppy:true, nomen:true, node:true*/
+
+YUI.add('PagerMojitBinder', function(Y, NAME) {
   var API_KEY = '9cc79c8bf1942c683b0d4e30b838ee9c';
 
   /** 

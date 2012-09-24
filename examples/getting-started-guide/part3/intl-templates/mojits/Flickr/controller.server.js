@@ -4,6 +4,8 @@
  * See the accompanying LICENSE file for terms.
  */
 
+/*jslint anon:true, sloppy:true, nomen:true, node:true*/
+
 YUI.add('Flickr', function(Y, NAME) {
 
 /**
@@ -22,12 +24,13 @@ YUI.add('Flickr', function(Y, NAME) {
          */
         index: function(ac) {
             ac.models.flickr.getFlickrImages('mojito', function(images) {
-                var dateString = ac.intl.formatDate(new Date());
-                var data = {
+                var dateString, data;
+                dateString = ac.intl.formatDate(new Date());
+                data = {
                     images: images,
                     date: dateString,
                     greeting: ac.intl.lang("TITLE"),
-                    url: ac.url.make('flickr','index')
+                    url: ac.url.make('flickr', 'index')
                 };
                 ac.done(data);
             });

@@ -4,6 +4,8 @@
  * See the accompanying LICENSE file for terms.
  */
 
+/*jslint anon:true, sloppy:true, nomen:true, node:true, plusplus: true */
+
 YUI.add('FlickrModel', function(Y) {
     var API_KEY = '9cc79c8bf1942c683b0d4e30b838ee9c';
 
@@ -12,6 +14,11 @@ YUI.add('FlickrModel', function(Y) {
  *
  * @module FlickrModel
  */
+    function buildFlickrUrlFromRecord(record) {
+        return 'http://farm' + record.farm +
+            '.static.flickr.com/' + record.server +
+            '/' + record.id + '_' + record.secret + '.jpg';
+    }
 
     Y.mojito.models.flickr = {
 
@@ -27,12 +34,12 @@ YUI.add('FlickrModel', function(Y) {
             Y.YQL(q, function(rawYqlData) {
                 Y.log(rawYqlData);
                 var rawPhotos = rawYqlData.query.results.photo,
-                    rawPhoto = null
+                    rawPhoto = null,
                     photos = [],
                     photo = null,
-                    i = 0;
+                    i;
 
-                for (; i<rawPhotos.length; i++) {
+                for (i = 0; i < rawPhotos.length; i++) {
                     rawPhoto = rawPhotos[i];
                     photo = {
                         title: rawPhoto.title,
@@ -53,11 +60,7 @@ YUI.add('FlickrModel', function(Y) {
 
     };
 
-    function buildFlickrUrlFromRecord(record) {
-        return 'http://farm' + record.farm 
-            + '.static.flickr.com/' + record.server 
-            + '/' + record.id + '_' + record.secret + '.jpg';
-    }
+
 
 // TODO: remove 'jsonp-url' requirement when YUI fix for bug http://yuilibrary.com/projects/yui3/ticket/2530251 is deployed.
 }, '0.0.1', {requires: ['yql', 'jsonp-url']});

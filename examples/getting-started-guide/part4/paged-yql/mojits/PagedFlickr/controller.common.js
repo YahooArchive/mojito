@@ -4,9 +4,19 @@
  * See the accompanying LICENSE file for terms.
  */
 
+/*jslint anon:true, sloppy:true, nomen:true, node:true*/
+
 YUI.add('PagedFlickr', function(Y, NAME) {
 
     var PAGESIZE = 9;
+
+    function selfUrl(ac, page) {
+        // No real link for pages before page 1
+        if (page < 1) { return '#'; }
+        var params = ac.params.url();
+        params.page = page; // provide the page we want to createa  URL to
+        return ac.url.make('flickr', 'index', Y.QueryString.stringify(params));
+    }
 
     Y.namespace('mojito.controllers')[NAME] = {
 
@@ -22,7 +32,7 @@ YUI.add('PagedFlickr', function(Y, NAME) {
 
             // The "page" parameter is base-1, but the model's "start"
             // parameter is base-0.
-            start = (page-1) * PAGESIZE;
+            start = (page - 1) * PAGESIZE;
 
             ac.models.flickr.getFlickrImages('mojito', start, PAGESIZE, function(err, images) {
 
@@ -39,28 +49,21 @@ YUI.add('PagedFlickr', function(Y, NAME) {
                     date: dateString,
                     greeting: ac.intl.lang("TITLE") || 'title',
                     prev: {
-                        url: selfUrl(ac, page-1 ),
+                        url: selfUrl(ac, page - 1),
                         title: ac.intl.lang("PREV") || 'prev'
                     },
                     next: {
-                        url: selfUrl(ac, page+1),
+                        url: selfUrl(ac, page + 1),
                         title: ac.intl.lang("NEXT") || 'next'
                     }
                 };
 
                 ac.done(data);
-                
+
             });
         }
     };
-    
-   function selfUrl(ac, page) {
-       // No real link for pages before page 1
-       if (page < 1) { return '#'; }
-       var params = ac.params.url();
-       params.page = page; // provide the page we want to createa  URL to
-       return ac.url.make('flickr', 'index', Y.QueryString.stringify(params));
-    }
+
 
 
 }, '0.0.1', {requires: [

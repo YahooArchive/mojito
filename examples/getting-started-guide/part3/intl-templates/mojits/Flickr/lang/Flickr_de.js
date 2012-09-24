@@ -4,8 +4,8 @@
  * See the accompanying LICENSE file for terms.
  */
 
+/*jslint anon:true, sloppy:true, nomen:true, node:true*/
 YUI.add("lang/Flickr_de", function(Y) {
-
     Y.Intl.add(
 
         "Flickr",   // associated module
