@@ -83,7 +83,7 @@ selector Property
 How does Mojito know which template file to use for a device? Mojito identifies files resources
 using the ``selector`` property in configuration files. In the ``application.json`` file,
 we can use the contexts for our devices with the ``selector`` property so Mojito knows what
-file resources to use for the context associated with devices.
+file resources to use for contexts associated with devices.
 
 .. code-block:: javascript
 
@@ -101,14 +101,14 @@ file resources to use for the context associated with devices.
    }
 
 For example, when given the context ``device:iphone``, Mojito will look for file resources that have 
-for identifier ``iphone``. For more information about the ``selector`` property, 
+the identifier ``iphone``. For more information about the ``selector`` property, 
 see `Resource Store: selector Property <../topics/mojito_resource_store.html#selector-property>`_.
 
 Determining Context
 ###################
 
-Mojito uses two ways to determine what device is making an HTTP request for a page. The first way 
-is to use the value assign to the query string parameter ``device``. For example, if Mojito received 
+Mojito uses two ways to determine which device is making an HTTP request for a page. The first way 
+is to use the value assigned to the query string parameter ``device``. For example, if Mojito received 
 an HTTP GET request on the URL below, it would render the iPhone view into HTML and serve the page 
 to the device.
 
@@ -141,7 +141,7 @@ BlackBerries.
 Naming Convention for Templates
 ###############################
 
-The naming convention for template files have the following syntax, where ``{selector}``
+The naming convention for template files has the following syntax, where ``{selector}``
 is the string identifier (defined by the ``selector`` property) of a device, such as "iphone":
 
 ``{action}.{selector}.{rendering_engine}.html``
