@@ -409,11 +409,39 @@ period (``'.'``) or slash (``'/'``) in it.  In practice, it's suggested to use a
 hyphen ('-') characters only.
  
 Only one selector can be used in each configuration object identified by the 
-``setting`` property, which defines the context.
- 
-The specified selectors must match the selector found in the 
-resource file names.  So, for example, the view ``views/index.iphone.hb.html`` has 
+``setting`` property, which defines the context. The specified selectors must match the selector 
+found in the resource file names.  So, for example, the template ``views/index.iphone.hb.html`` has 
 the selector ``iphone``.
+
+Example
+#######
+
+The selector is typically used in conjunction with a context to specify a resource
+for a particular device. In the example ``application.json`` below, the selector
+``ipad`` is defined when the context is ``device:ipad``. If an application
+is running in the ``device:ipad`` context, Mojito will select resources
+with ``ipad`` identifier. Thus, Mojito might render the template ``index.ipad.hb.html`` 
+and **not** ``index.iphone.hb.html``.
+
+.. code-block:: javascript
+
+   [
+     { 
+       "settings": ["master"],
+       ...
+     },
+     {
+       "settings": ["device:ipad"], 
+       "selector":"ipad",
+       "specs": {
+         "iPad": {
+           "type": "iPadReader",
+         }
+       }
+     }
+   ]  
+    
+
 
 
 .. _metatdata-versions:
@@ -1082,7 +1110,7 @@ Your addon is required to do the following:
 .. |YUIPlugin| replace:: YUI Plugin
 .. _YUIPlugin: http://yuilibrary.com/yui/docs/plugin/
 .. |SS| replace:: server.store.js
-.. _SS: https://github.com/yahoo/mojito/blob/develop/source/lib/store.server.js     
+.. _SS: https://github.com/yahoo/mojito/blob/develop/lib/store.server.js
 .. |--| unicode:: U+2013   .. en dash
 .. |---| unicode:: U+2014  .. em dash
    :trim:
