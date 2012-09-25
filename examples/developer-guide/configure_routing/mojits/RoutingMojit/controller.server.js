@@ -19,23 +19,23 @@ YUI.add('RoutingMojit', function(Y, NAME) {
   // Builds object containing route information
   function route_info(ac){
     var methods = "";
-    var name=""; 
+    var name = ""; 
     var action = ac.action;
     var path = ac.http.getRequest().url;
-    ac.url.getRouteMaker();
+    var routes = ac.config.getRoutes();
     if(action==="index" && path==="/"){
-      name = ac.app.routes.root_route.name;
-      Object.keys(ac.app.routes.root_route.verbs).forEach(function(n) {
+      name = routes.root_route.name;
+      Object.keys(routes.root_route.verbs).forEach(function(n) {
         methods += n + ", ";
       });   
     }else if(action==="index"){
-      name = ac.app.routes.index_route.name;
-      Object.keys(ac.app.routes.index_route.verbs).forEach(function(n) {
+      name = routes.index_route.name;
+      Object.keys(routes.index_route.verbs).forEach(function(n) {
         methods += n + ", ";
       });
     }else {
-      name = ac.app.routes.show_route.name;
-      Object.keys(ac.app.routes.show_route.verbs).forEach(function(n) {
+      name = routes.show_route.name;
+      Object.keys(routes.show_route.verbs).forEach(function(n) {
           methods += n + ", ";
       });
     }
@@ -45,4 +45,4 @@ YUI.add('RoutingMojit', function(Y, NAME) {
       "methods": methods.replace(/, $/,"")
     }; 
   }
-}, '0.0.1', {requires: ['mojito-url-addon']});
+}, '0.0.1', {requires: ['mojito-config-addon', 'mojito-http-addon']});

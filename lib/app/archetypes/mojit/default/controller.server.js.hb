@@ -29,7 +29,7 @@ YUI.add('{{name}}', function(Y, NAME) {
          *        to the Mojito API.
          */
         index: function(ac) {
-            ac.models.{{name}}ModelFoo.getData(function(err, data) {
+            ac.models.get('{{name}}ModelFoo').getData(function(err, data) {
                 if (err) {
                     ac.error(err);
                     return;
@@ -44,4 +44,4 @@ YUI.add('{{name}}', function(Y, NAME) {
 
     };
 
-}, '0.0.1', {requires: ['mojito', '{{name}}ModelFoo']});
+}, '0.0.1', {requires: ['mojito', 'mojito-models-addon', '{{name}}ModelFoo']});
