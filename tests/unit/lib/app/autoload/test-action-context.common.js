@@ -48,14 +48,15 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                 this.namespace = 'intl';
             };
             ac = new Y.mojito.ActionContext({
-                dispatch: 'the dispatch',
+                dispatcher: 'the dispatcher',
                 command: {
                     action: 'index',
                     context: 'context',
                     instance: {
                         type: 'Type',
                         config: 'instance config',
-                        views: 'views'
+                        views: 'views',
+                        yui: { sorted: [] }
                     }
                 },
                 models: {},
@@ -100,14 +101,15 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                 this.namespace = 'intl';
             };
             ac = new Y.mojito.ActionContext({
-                dispatch: 'the dispatch',
+                dispatcher: 'the dispatcher',
                 command: {
                     action: 'index',
                     context: 'context',
                     instance: {
                         type: 'Type',
                         config: 'instance config',
-                        views: 'views'
+                        views: 'views',
+                        yui: { sorted: [] }
                     }
                 },
                 models: {},
@@ -152,14 +154,15 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                 this.namespace = 'intl';
             };
             ac = new Y.mojito.ActionContext({
-                dispatch: 'the dispatch',
+                dispatcher: 'the dispatcher',
                 command: {
                     action: 'index',
                     context: 'context',
                     instance: {
                         type: 'Type',
                         config: 'instance config',
-                        views: 'views'
+                        views: 'views',
+                        yui: { sorted: [] }
                     }
                 },
                 models: {},
@@ -204,18 +207,20 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                 this.namespace = 'intl';
             };
             ac = new Y.mojito.ActionContext({
-                dispatch: 'the dispatch',
                 command: {
                     action: 'index',
                     context: 'context',
                     instance: {
                         type: 'Type',
                         config: 'instance config',
-                        views: 'views'
+                        views: 'views',
+                        yui: { sorted: [] }
                     }
                 },
                 models: {},
                 controller: {index: function() {}},
+                dispatcher: 'the dispatcher',
+                adapter: { },
                 store: {
                     getAppConfig: function() {
                         return 'app config';
@@ -227,33 +232,39 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                 }
             });
 
-            A.areSame('the dispatch', ac._dispatch, "dispatch function wasn't stashed.");
+            A.areSame('the dispatcher', ac.dispatcher,
+                "dispatcher wasn't stashed.");
         },
 
-        'test all default plugins are preloaded and plugged': function() {
-            Y.namespace('mojito').controller = { index: function() {} };
-            Y.namespace('mojito.addons').ac = {
-                core: function () {},
-                http: function () {},
-                intl: function () {},
-                config: function () {},
-                url: function () {},
-                cookie: function () {},
-                params: function () {},
-                composite: function () {},
-                assets: function () {}
+        // NOTE: Only specifed addons are now attached to AC
+        'all required (was: default) plugins are preloaded and plugged': function() {
+            Y.mojito.controller = { index: function() {} };
+            // fake out the http plugin so the others will load
+            Y.mojito.addons.ac.http = function() {
+                this.namespace = 'http';
+                this.getRequest = function() {};
             };
-            Y.Object.each(Y.namespace('mojito.addons').ac, function (addon, namespace) {
-                addon.prototype.namespace = namespace;
-            });
+            // fake out the intl plugin so the others will load
+            Y.mojito.addons.ac.intl = function() {
+                this.namespace = 'intl';
+            };
             var ac = new Y.mojito.ActionContext({
-                dispatch: 'the dispatch',
+                dispatcher: 'the dispatcher',
                 command: {
                     action: 'index',
                     instance: {
                         id: 'id',
-                        type: 'Type42'
-                    }
+                        type: 'Type',
+                        yui: {
+                            sorted: [
+                                'mojito-config-addon',
+                                'mojito-url-addon',
+                                //'mojito-cookie-addon'
+                                'mojito-params-addon',
+                                'mojito-composite-addon'
+                            ]
+                        }
+                    },
                 },
                 controller: {index: function() {}},
                 store: {
@@ -291,14 +302,15 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                 this.namespace = 'intl';
             };
             ac = new Y.mojito.ActionContext({
-                dispatch: 'the dispatch',
+                dispatcher: 'the dispatcher',
                 command: {
                     action: 'index',
                     context: 'context',
                     instance: {
                         type: 'Type',
                         config: 'instance config',
-                        views: 'views'
+                        views: 'views',
+                        yui: { sorted: [] }
                     }
                 },
                 models: {},
@@ -320,8 +332,9 @@ YUI().use('mojito-action-context', 'test', function (Y) {
 
             OA.areEqual({config: 'app config', routes: 'routes'}, ac.app, 'bad app property');
             A.areSame(ac.app.config, 'app config', 'bad app config');
-            A.areSame('the dispatch', ac._dispatch, "dispatch function wasn't stashed.");
-            A.isObject(ac.models, 'bad models');
+            A.areSame('the dispatcher', ac.dispatcher,
+                "dispatcher wasn't stashed.");
+            // A.isObject(ac.models, 'bad models');
 
         },
 
@@ -341,13 +354,14 @@ YUI().use('mojito-action-context', 'test', function (Y) {
 //                this.getRequest = function() {};
 //            };
 //            var ac = new Y.mojito.ActionContext({
-//                dispatch: 'the dispatch',
+//                dispatcher: 'the dispatcher',
 //                command: {
 //                    instance: {
 //                        id: 'id',
 //                        type: 'Type',
 //                        action: 'index',
-//                        config: 'instance config'
+//                        config: 'instance config',
+//                        yui: { sorted: [] }
 //                    }
 //                },
 //                controller: controller,
@@ -387,13 +401,14 @@ YUI().use('mojito-action-context', 'test', function (Y) {
 //                this.getRequest = function() {};
 //            };
 //            var ac = new Y.mojito.ActionContext({
-//                dispatch: 'the dispatch',
+//                dispatcher: 'the dispatcher',
 //                command: {
 //                    instance: {
 //                        id: 'id',
 //                        type: 'Type',
 //                        action: 'index',
-//                        config: 'instance config'
+//                        config: 'instance config',
+//                        yui: { sorted: [] }
 //                    }
 //                },
 //                controller: {index: function() {}},
@@ -428,13 +443,15 @@ YUI().use('mojito-action-context', 'test', function (Y) {
 //                this.getRequest = function() {};
 //            };
 //            var ac = new Y.mojito.ActionContext({
-//                dispatch: 'the dispatch',
+//                dispatcher: 'the dispatcher',
 //                command: {
 //                    instance: {
 //                        id: 'id',
 //                        type: 'Type',
 //                        action: 'foo',
-//                        config: 'instance config'
+//                        config: 'instance config',
+//                        yui: { sorted: [] }
+//                    }
 //                    }
 //                },
 //                controller: controller,
@@ -486,7 +503,15 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                     action: 'index',
                     instance: {
                         id: 'id',
-                        type: 'Type2' // Need to clear the addons cache
+                        type: 'Type2', // Need to clear the addons cache
+                        yui: {
+                            sorted: [
+                                'first',
+                                'second',
+                                'third',
+                                'fourth'
+                            ]
+                        }
                     }
                 },
                 controller: {index: function() {}},
