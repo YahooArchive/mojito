@@ -239,6 +239,15 @@ YUI().use('mojito-action-context', 'test', function (Y) {
         // NOTE: Only specifed addons are now attached to AC
         'all required (was: default) plugins are preloaded and plugged': function() {
             Y.mojito.controller = { index: function() {} };
+            Y.namespace('mojito.addons').ac = {
+                 core: function () {},
+                 config: function () {},
+                 url: function () {},
+                 cookie: function () {},
+                 params: function () {},
+                 composite: function () {},
+                 assets: function () {}
+            };
             // fake out the http plugin so the others will load
             Y.mojito.addons.ac.http = function() {
                 this.namespace = 'http';
