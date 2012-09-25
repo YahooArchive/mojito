@@ -55,7 +55,8 @@ YUI.add('mojito-mojit-proxy', function(Y, NAME) {});
 YUI.add('mojito-output-handler', function(Y, NAME) {});
 YUI.add('mojito-perf', function(Y, NAME) {
     Y.namespace('mojito').perf = {
-        mark: function () {}
+        mark: function () {},
+        timeline: function () { return { done: function() {} }; }
     };
 });
 YUI.add('mojito-resource-store', function(Y, NAME) {});

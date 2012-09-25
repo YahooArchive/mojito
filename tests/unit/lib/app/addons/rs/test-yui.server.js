@@ -714,7 +714,6 @@ YUI().use(
                 A.areSame('/foo/', instance.yui.sortedPaths['intl'].substr(0, 5));
                 A.areSame('/foo/', instance.yui.sortedPaths['jsonp'].substr(0, 5));
                 A.areSame('/foo/', instance.yui.sortedPaths['yql'].substr(0, 5));
-                A.areSame('/foo/', instance.yui.sortedPaths['querystring-parse'].substr(0, 5));
                 A.areSame('/foo/', instance.yui.sortedPaths['querystring-stringify'].substr(0, 5));
                 A.areSame('/foo/', instance.yui.sortedPaths['json-stringify'].substr(0, 5));
             });

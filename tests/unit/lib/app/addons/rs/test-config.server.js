@@ -74,7 +74,7 @@ YUI().use('addon-rs-config', 'base', 'oop', 'test', function(Y) {
     function readJSON(dir, file) {
         var path = libpath.join(dir, file);
         var contents = libfs.readFileSync(path, 'utf-8');
-        return Y.JSON.parse(contents);
+        return JSON.parse(contents);
     }
 
 
