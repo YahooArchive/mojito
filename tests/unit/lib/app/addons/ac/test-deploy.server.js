@@ -52,14 +52,12 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
                 serializeClientStore: function() {
                     return 'clientstore';
                 },
-                store: {
-                    getAllURLs: function() { return {}; },
-                    getFrameworkConfig: function() {
-                        return { ondemandBaseYuiModules:[] };
-                    },
-                    yui: {
-                        getConfigShared: function() { return {}; }
-                    }
+                getAllURLs: function() { return {}; },
+                getFrameworkConfig: function() {
+                    return { ondemandBaseYuiModules:[] };
+                },
+                yui: {
+                    getConfigShared: function() { return {}; }
                 }
             });
 
@@ -151,14 +149,12 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
                 serializeClientStore: function() {
                     return 'clientstore';
                 },
-                store: {
-                    getAllURLs: function() { return {}; },
-                    getFrameworkConfig: function() {
-                        return { ondemandBaseYuiModules:[] };
-                    },
-                    yui: {
-                        getConfigShared: function() { return {}; }
-                    }
+                getAllURLs: function() { return {}; },
+                getFrameworkConfig: function() {
+                    return { ondemandBaseYuiModules:[] };
+                },
+                yui: {
+                    getConfigShared: function() { return {}; }
                 }
             });
 
@@ -228,14 +224,12 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
                 serializeClientStore: function() {
                     return 'clientstore';
                 },
-                store: {
-                    getAllURLs: function() { return {}; },
-                    getFrameworkConfig: function() {
-                        return { ondemandBaseYuiModules:[] };
-                    },
-                    yui: {
-                        getConfigShared: function() { return {}; }
-                    }
+                getAllURLs: function() { return {}; },
+                getFrameworkConfig: function() {
+                    return { ondemandBaseYuiModules:[] };
+                },
+                yui: {
+                    getConfigShared: function() { return {}; }
                 }
             });
 
@@ -320,14 +314,12 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
                 serializeClientStore: function() {
                     return 'clientstore';
                 },
-                store: {
-                    getAllURLs: function() { return {}; },
-                    getFrameworkConfig: function() {
-                        return { ondemandBaseYuiModules:[] };
-                    },
-                    yui: {
-                        getConfigShared: function() { return {}; }
-                    }
+                getAllURLs: function() { return {}; },
+                getFrameworkConfig: function() {
+                    return { ondemandBaseYuiModules:[] };
+                },
+                yui: {
+                    getConfigShared: function() { return {}; }
                 }
             });
 
@@ -403,14 +395,12 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
                 serializeClientStore: function() {
                     return 'clientstore';
                 },
-                store: {
-                    getAllURLs: function() { return {}; },
-                    getFrameworkConfig: function() {
-                        return { ondemandBaseYuiModules:[] };
-                    },
-                    yui: {
-                        getConfigShared: function() { return {}; }
-                    }
+                getAllURLs: function() { return {}; },
+                getFrameworkConfig: function() {
+                    return { ondemandBaseYuiModules:[] };
+                },
+                yui: {
+                    getConfigShared: function() { return {}; }
                 }
             });
 
@@ -486,14 +476,12 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
                 serializeClientStore: function() {
                     return 'clientstore';
                 },
-                store: {
-                    getAllURLs: function() { return {}; },
-                    getFrameworkConfig: function() {
-                        return { ondemandBaseYuiModules:[] };
-                    },
-                    yui: {
-                        getConfigShared: function() { return {}; }
-                    }
+                getAllURLs: function() { return {}; },
+                getFrameworkConfig: function() {
+                    return { ondemandBaseYuiModules:[] };
+                },
+                yui: {
+                    getConfigShared: function() { return {}; }
                 }
             });
 
