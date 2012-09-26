@@ -37,6 +37,7 @@ YUI.add('mojito-url-addon', function(Y, NAME) {});
 
 /* RS ADDONS */
 YUI.add('addon-rs-config', function(Y, NAME) {});
+YUI.add('addon-rs-dispatch-helper', function(Y, NAME) {});
 YUI.add('addon-rs-selector', function(Y, NAME) {});
 YUI.add('addon-rs-url', function(Y, NAME) {});
 YUI.add('addon-rs-yui', function(Y, NAME) {});
