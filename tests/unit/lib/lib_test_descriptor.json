@@ -1,19 +1,20 @@
 [
     {
         "settings": [ "master" ],
-        "name": "mojito-unit-tests",
+        "name": "lib-unit-tests",
         "config": {
             "lib": "../../../lib",
             "base": "../../base"
         },
         "commonlib": "$$config.base$$/mojito-test.js,./../../../lib/app/autoload/util.common.js",
         "dataprovider" : {
-            "index.server": {
+            "mojito": {
                 "params": {
-                    "test": "./test-index.server.js",
-                    "driver": "nodejs"
+                    "lib": "$$config.lib$$/mojito.js",
+                    "test": "./test-mojito.js",
+                    "page": "$$config.base$$/mojito-test.html"
                 },
-                "group": "fw,unit,server"
+                "group": "fw,server"
             },
             "output-handler.server": {
                 "params": {
