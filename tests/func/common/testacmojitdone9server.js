@@ -7,7 +7,7 @@
       logInclude: { TestRunner: true }
  }).use('node', 'node-event-simulate', 'test', 'console', function (Y) {
 
-      var suite = new Y.Test.Suite("Common");
+      var suite = new Y.Test.Suite("Common: acmojitdone9server");
 
       suite.add(new Y.Test.Case({
 

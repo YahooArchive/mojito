@@ -4,8 +4,8 @@
 
         "name" : "common",
 
-		"commonlib" : "yui-test.js",
- 
+        "commonlib" : "../../base/yui-test.js",
+
         "config" :{
             "baseUrl" : "http://localhost:4081"
         },
@@ -25,56 +25,56 @@
                     "page" : "$$config.baseUrl$$/ACMojit/acMojit?test=done1"
                 }
             },
-			"acmojitdone2server" : {
+            "acmojitdone2server" : {
                 "group" : "smoke,common,acmojit",
                 "params" : {
                     "test" : "testacmojitdone2server.js",
                     "page" : "$$config.baseUrl$$/ACMojit/acMojit?test=done2"
                 }
             },
-			"acmojitdone3server" : {
+            "acmojitdone3server" : {
                 "group" : "smoke,common,acmojit",
                 "params" : {
                     "test" : "testacmojitdone3server.js",
                     "page" : "$$config.baseUrl$$/ACMojit/acMojit?test=done3"
                 }
             },
-			"acmojitdone4server" : {
+            "acmojitdone4server" : {
                 "group" : "smoke,common,acmojit",
                 "params" : {
                     "test" : "testacmojitdone4server.js",
                     "page" : "$$config.baseUrl$$/ACMojit/acMojit?test=done4"
                 }
             },
-			"acmojitdone6server" : {
+            "acmojitdone6server" : {
                 "group" : "smoke,common,acmojit",
                 "params" : {
                     "test" : "testacmojitdone6server.js",
                     "page" : "$$config.baseUrl$$/ACMojit/acMojit?test=done6"
                 }
             },
-			"acmojitdone8server" : {
+            "acmojitdone8server" : {
                 "group" : "smoke,common,acmojit",
                 "params" : {
                     "test" : "testacmojitdone8server.js",
                     "page" : "$$config.baseUrl$$/ACMojit/acMojit?test=done8"
                 }
             },
-			"acmojitdone9server" : {
+            "acmojitdone9server" : {
                 "group" : "smoke,common,acmojit",
                 "params" : {
                     "test" : "testacmojitdone9server.js",
                     "page" : "$$config.baseUrl$$/ACMojit/acMojit?test=done9"
                 }
             },
-			"acmojitdone10server" : {
+            "acmojitdone10server" : {
                 "group" : "smoke,common,acmojit",
                 "params" : {
                     "test" : "testacmojitdone10server.js",
                     "page" : "$$config.baseUrl$$/ACMojit/acMojit?test=done10"
                 }
             },
-			"acmojitflushdoneserver" : {
+            "acmojitflushdoneserver" : {
                 "group" : "smoke,common,acmojit",
                 "params" : {
                     "test" : "testacmojitflushdoneserver.js",
@@ -88,49 +88,49 @@
                     "page" : "$$config.baseUrl$$/ACMojit/acMojit?test=flush1"
                 }
             },
-			"acmojitflush3server" : {
+            "acmojitflush3server" : {
                 "group" : "smoke,common,acmojit",
                 "params" : {
                     "test" : "testacmojitflush3server.js",
                     "page" : "$$config.baseUrl$$/ACMojit/acMojit?test=flush3"
                 }
             },
-			"acmojitflush4server" : {
+            "acmojitflush4server" : {
                 "group" : "smoke,common,acmojit",
                 "params" : {
                     "test" : "testacmojitflush4server.js",
                     "page" : "$$config.baseUrl$$/ACMojit/acMojit?test=flush4"
                 }
             },
-			"acmojitflush6server" : {
+            "acmojitflush6server" : {
                 "group" : "smoke,common,acmojit",
                 "params" : {
                     "test" : "testacmojitflush6server.js",
                     "page" : "$$config.baseUrl$$/ACMojit/acMojit?test=flush6"
                 }
             },
-			"acmojitflush8server" : {
+            "acmojitflush8server" : {
                 "group" : "smoke,common,acmojit",
                 "params" : {
                     "test" : "testacmojitflush8server.js",
                     "page" : "$$config.baseUrl$$/ACMojit/acMojit?test=flush8"
                 }
             },
-			"acmojitflush9server" : {
+            "acmojitflush9server" : {
                 "group" : "smoke,common,acmojit",
                 "params" : {
                     "test" : "testacmojitflush9server.js",
                     "page" : "$$config.baseUrl$$/ACMojit/acMojit?test=flush9"
                 }
             },
-			"acmojitflush10server" : {
+            "acmojitflush10server" : {
                 "group" : "smoke,common,acmojit",
                 "params" : {
                     "test" : "testacmojitflush10server.js",
                     "page" : "$$config.baseUrl$$/ACMojit/acMojit?test=flush10"
                 }
             },
-			"testdependencyserver" : {
+            "testdependencyserver" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testdependencyserver.js",
@@ -151,7 +151,7 @@
                     "page" : "$$config.baseUrl$$/@PartialMojit/myinvoke"
                 }
             },
-			"testassetwithlocationserver" : {
+            "testassetwithlocationserver" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testassetwithlocationserver.js",
@@ -165,7 +165,7 @@
                     "page" : "$$config.baseUrl$$/assetsframeloc"
                 }
             },
-			"testassetjswithlocationbodyserver" : {
+            "testassetjswithlocationbodyserver" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testassetjswithlocationbodyserver.js",
@@ -179,14 +179,14 @@
                     "page" : "$$config.baseUrl$$/assetsframeloc"
                 }
             },
-			"testassetcsswithlocationbodyserver" : {
+            "testassetcsswithlocationbodyserver" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testassetcsswithlocationbodyserver.js",
                     "page" : "$$config.baseUrl$$/assetsframeloc"
                 }
             },
-			"testassetwithdefaultlocationserver" : {
+            "testassetwithdefaultlocationserver" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testassetwithdefaultlocationserver.js",
@@ -200,7 +200,7 @@
                     "page" : "$$config.baseUrl$$/assetsframedefault"
                 }
             },
-			"testassetjswithdefaultlocationbodyserver" : {
+            "testassetjswithdefaultlocationbodyserver" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testassetjswithdefaultlocationbodyserver.js",
@@ -221,42 +221,42 @@
                     "page" : "$$config.baseUrl$$/assetsframedefault"
                 }
             },
-			"testbinderserver" : {
+            "testbinderserver" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testbinderserver.js",
                     "page" : "$$config.baseUrl$$/binderframe"
                 }
             },
-			"testcompositemojitserver" : {
+            "testcompositemojitserver" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testcompositemojitserver.js",
                     "page" : "$$config.baseUrl$$/cmframe"
                 }
             },
-			"testcompositemojit1server" : {
+            "testcompositemojit1server" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testcompositemojit1server.js",
                     "page" : "$$config.baseUrl$$/cmframe"
                 }
             },
-			"testcompositemojit2server" : {
+            "testcompositemojit2server" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testcompositemojit2server.js",
                     "page" : "$$config.baseUrl$$/cmframe"
                 }
             },
-			"testcompositemojitrefreshserver" : {
+            "testcompositemojitrefreshserver" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testcompositemojitrefreshserver.js",
                     "page" : "$$config.baseUrl$$/cmframe?run_from_server=true"
                 }
             },
-			"testconfiginappfileserver" : {
+            "testconfiginappfileserver" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testconfiginappfileserver.js",
@@ -270,21 +270,21 @@
                     "page" : "$$config.baseUrl$$/MyConfig/myIndex"
                 }
             },
-			"testconfiginappfilenegserver" : {
+            "testconfiginappfilenegserver" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testconfiginappfilenegserver.js",
                     "page" : "$$config.baseUrl$$/MyConfig/myIndex"
                 }
             },
-			"testconfigindefaultfileserver" : {
+            "testconfigindefaultfileserver" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testconfigindefaultfileserver.js",
                     "page" : "$$config.baseUrl$$/MyConfig/myIndex"
                 }
             },
-			"testconfigindefinitionfileserver" : {
+            "testconfigindefinitionfileserver" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testconfigindefinitionfileserver.js",
@@ -298,14 +298,14 @@
                     "page" : "$$config.baseUrl$$/MyConfig/myIndex"
                 }
             },
-			"testsimplemodelserver" : {
+            "testsimplemodelserver" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testsimplemodelserver.js",
                     "page" : "$$config.baseUrl$$/SimpleModel/simpleModel"
                 }
             },
-			"testgetparamsserver" : {
+            "testgetparamsserver" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testgetparamsserver.js",
@@ -319,133 +319,133 @@
                     "page" : "$$config.baseUrl$$/GetParams/allParamsSimple?foo=123&bar=2&test=no"
                 }
             },
-			"testgetparamsbyvalueserver" : {
+            "testgetparamsbyvalueserver" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testgetparamsbyvalueserver.js",
                     "page" : "$$config.baseUrl$$/GetParams/paramsByValue?foo=abc"
                 }
             },
-			"testgetparamsbyvaluesimpleserver" : {
+            "testgetparamsbyvaluesimpleserver" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testgetparamsbyvaluesimpleserver.js",
                     "page" : "$$config.baseUrl$$/GetParams/paramsByValueSimple?foo=abc"
                 }
             },
-			"testmergeparamsserver" : {
+            "testmergeparamsserver" : {
                 "group" : "smoke,common",
                 "params" : {
-					"scenario": [
+                    "scenario": [
                         {
                            "test" : "testmergeparamsserver.js",
-	                       "page" : "$$config.baseUrl$$/MergePoster/index"
+                           "page" : "$$config.baseUrl$$/MergePoster/index"
                         },
                         {
                            "controller": "locator",
-						   "params": {
-						          "value": "#submitbutton",
-						          "click": true
-						   }
+                           "params": {
+                                  "value": "#submitbutton",
+                                  "click": true
+                           }
                         },
-						{
-	                       "test" : "testmergeparams1server.js"
-	                    }
+                        {
+                           "test" : "testmergeparams1server.js"
+                        }
                      ]
                 }
             },
             "testmergeparamssimpleserver" : {
                 "group" : "smoke,common",
                 "params" : {
-					"scenario": [
+                    "scenario": [
                         {
                            "test" : "testmergeparamssimpleserver.js",
-	                       "page" : "$$config.baseUrl$$/MergePoster/index"
+                           "page" : "$$config.baseUrl$$/MergePoster/index"
                         },
                         {
                            "controller": "locator",
-						   "params": {
-						          "value": "#submitsimplebutton",
-						          "click": true
-						   }
+                           "params": {
+                                  "value": "#submitsimplebutton",
+                                  "click": true
+                           }
                         },
-						{
-	                       "test" : "testmergeparamssimple1server.js"
-	                    }
+                        {
+                           "test" : "testmergeparamssimple1server.js"
+                        }
                      ]
                 }
             },
-			"testpostparamsserver" : {
+            "testpostparamsserver" : {
                 "group" : "smoke,common",
                 "params" : {
                     "scenario": [
                         {
                            "test" : "testpostparamsserver.js",
-	                       "page" : "$$config.baseUrl$$/Poster/index"
+                           "page" : "$$config.baseUrl$$/Poster/index"
                         },
                         {
                            "controller": "locator",
-						   "params": {
-						          "value": "#submitbutton",
-						          "click": true
-						   }
+                           "params": {
+                                  "value": "#submitbutton",
+                                  "click": true
+                           }
                         },
-						{
-	                       "test" : "testpostparams1server.js"
-	                    }
+                        {
+                           "test" : "testpostparams1server.js"
+                        }
                      ]
                 }
             },
-			"testpostparamssimpleserver" : {
+            "testpostparamssimpleserver" : {
                 "group" : "smoke,common",
                 "params" : {
                     "scenario": [
                         {
                            "test" : "testpostparamssimpleserver.js",
-	                       "page" : "$$config.baseUrl$$/Poster/index"
+                           "page" : "$$config.baseUrl$$/Poster/index"
                         },
                         {
                            "controller": "locator",
-						   "params": {
-						          "value": "#submitsimplebutton",
-						          "click": true
-						   }
+                           "params": {
+                                  "value": "#submitsimplebutton",
+                                  "click": true
+                           }
                         },
-						{
-	                       "test" : "testpostparamssimple1server.js"
-	                    }
+                        {
+                           "test" : "testpostparamssimple1server.js"
+                        }
                      ]
                 }
             },
-			"testrouteparamsserver" : {
+            "testrouteparamsserver" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testrouteparamsserver.js",
                     "page" : "$$config.baseUrl$$/RouteParams"
                 }
             },
-			"testrouteparamssimpleserver" : {
+            "testrouteparamssimpleserver" : {
                 "group" : "smoke,common",
                 "params" : {
                     "test" : "testrouteparamssimpleserver.js",
                     "page" : "$$config.baseUrl$$/RouteParamsSimple"
                 }
             },
-			"testmobiledevicedefaultview" : {
+            "testmobiledevicedefaultview" : {
                 "group" : "smoke,common,new",
                 "params" : {
                     "test" : "testmobiledevicedefaultview.js",
                     "page" : "$$config.baseUrl$$/mobiledevices/index"
                 }
             },
-			"testmobiledeviceiphoneview" : {
+            "testmobiledeviceiphoneview" : {
                 "group" : "smoke,common,new",
                 "params" : {
                     "test" : "testmobiledeviceiphoneview.js",
                     "page" : "$$config.baseUrl$$/mobiledevices/index?device=iphone"
                 }
             },
-			"testmobiledevicekindleview" : {
+            "testmobiledevicekindleview" : {
                 "group" : "smoke,common,new",
                 "params" : {
                     "test" : "testmobiledevicekindleview.js",

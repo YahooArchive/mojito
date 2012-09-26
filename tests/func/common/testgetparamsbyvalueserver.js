@@ -7,7 +7,7 @@ YUI({
     logInclude: { TestRunner: true }
 }).use('node', 'node-event-simulate', 'test', 'console', function (Y) {
    
-    var suite = new Y.Test.Suite("Common");
+    var suite = new Y.Test.Suite("Common: getparamsbyvalueserver");
 
     suite.add(new Y.Test.Case({
 
