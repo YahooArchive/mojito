@@ -210,9 +210,6 @@ YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
                 }
             };
 
-            // TODO: Remove self-reference for current perf workaround.
-            store.store = store;
-
             command = {
                 action: 'index',
                 instance: {
