@@ -299,24 +299,6 @@ YUI().use(
                 cmp(post, pre);
             },
 
-            'call getSpec()': function() {
-                store.getSpec('server', 'test1', {}, function(err, instance) {
-                    A.areSame('test_mojit_1', instance.type);
-                    A.areSame('test1', instance.id);
-                    // ... and all the type-specific parts...
-                    A.areSame('/static/test_mojit_1/assets', instance.assetsRoot);
-                });
-            },
-
-            'call getType()': function() {
-                store.getType('server', 'test_mojit_1', {}, function(err, instance) {
-                    A.areSame('test_mojit_1', instance.type);
-                    A.isUndefined(instance.id);
-                    // ... and all the type-specific parts...
-                    A.areSame('/static/test_mojit_1/assets', instance.assetsRoot);
-                });
-            },
-
             'instance with base pointing to non-existant spec': function() {
                 var spec = { base: 'nonexistant' };
                 store.expandInstance(spec, {}, function(err, instance) {
