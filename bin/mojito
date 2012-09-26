@@ -12,6 +12,6 @@ try {
 catch (e) {
     libpath = require('path'),
     // need to do this if mojito is installed via `npm link`
-    libmojito = require(libpath.join(__dirname, '..', 'lib'));
+    libmojito = require(libpath.join(__dirname, '..', 'lib/mojito'));
 }
 libmojito.include('management/cli');

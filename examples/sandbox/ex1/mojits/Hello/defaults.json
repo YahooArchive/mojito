@@ -1,8 +1,0 @@
-[
-    {
-        "settings": [ "master" ],
-        "config": {
-            "test": "This data came from the mojit type defaults in mojits/Hello/defaults.yaml."
-        }
-    }
-]
