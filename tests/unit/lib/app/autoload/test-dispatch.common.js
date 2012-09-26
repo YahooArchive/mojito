@@ -5,10 +5,10 @@
  */
 YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
 
-    var suite = new YUITest.TestSuite(NAME),
-        A = YUITest.Assert,
-        AA = YUITest.ArrayAssert,
-        OA = YUITest.ObjectAssert,
+    var suite = new Y.Test.Suite(NAME),
+        A = Y.Assert,
+        AA = Y.ArrayAssert,
+        OA = Y.ObjectAssert,
         logger = {
             log: function() {
                 // Not testing this.
@@ -25,7 +25,7 @@ YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
         command,
         adapter;
 
-    suite.add(new YUITest.TestCase({
+    suite.add(new Y.Test.Case({
 
         name: 'dependencyCalcs',
 
@@ -61,7 +61,7 @@ YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
             store = null;
         },
 
-        'dependencyCalculations precomputed': function() {
+        'test dependencyCalculations precomputed': function() {
 
             store.getAppConfig = function() {
                 return { yui: { dependencyCalculations: 'precomputed' } };
@@ -73,7 +73,7 @@ YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
             A.areSame(false, res.useOnDemand);
         },
 
-        'dependencyCalculations ondemand': function() {
+        'test dependencyCalculations ondemand': function() {
 
             store.getAppConfig = function() {
                 return { yui: { dependencyCalculations: 'ondemand' } };
@@ -85,7 +85,7 @@ YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
             A.areSame(true, res.useOnDemand);
         },
 
-        'dependencyCalculations precomputed+ondemand': function() {
+        'test dependencyCalculations precomputed+ondemand': function() {
 
             store.getAppConfig = function() {
                 return { yui: 
@@ -100,7 +100,7 @@ YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
 
     }));
     
-    suite.add(new YUITest.TestCase({
+    suite.add(new Y.Test.Case({
 
         name: 'init',
 
@@ -136,14 +136,14 @@ YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
             store = null;
         },
 
-        'store cached': function() {
+        'test store cached': function() {
 
             var res = dispatcher.init(store, coreModules, logger, loader);
             A.areSame(res, dispatcher);
             A.areSame(res.store, store);
         },
 
-        'modules used for ondemand': function() {
+        'test modules used for ondemand': function() {
 
             var modules = ['foo'];
             var res = dispatcher.init(store, modules, logger, loader);
@@ -154,7 +154,7 @@ YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
             AA.itemsAreSame(res.coreYuiModules, modules);
         },
 
-        'modules used for precomputed': function() {
+        'test modules used for precomputed': function() {
 
             store.getAppConfig = function() {
                 return { yui: { dependencyCalculations: 'precomputed' } };
@@ -167,7 +167,7 @@ YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
             AA.itemsAreSame(res.coreYuiModules, modules);
         },
 
-        'creates YUI instance cache': function() {
+        'test creates YUI instance cache': function() {
 
             var res = dispatcher.init(store, coreModules, logger, loader);
             A.areSame(res, dispatcher);
@@ -177,7 +177,7 @@ YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
 
     }));
  
-    suite.add(new YUITest.TestCase({
+    suite.add(new Y.Test.Case({
 
         name: 'dispatch',
 
@@ -187,6 +187,8 @@ YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
                     return { yui: { dependencyCalculations: 'ondemand' } };
                 },
                 getRoutes: function() {
+                },
+                validateContext: function() {
                 },
                 expandInstance: function(instance, context, cb) {
                     cb(null, {
@@ -208,6 +210,9 @@ YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
                 }
             };
 
+            // TODO: Remove self-reference for current perf workaround.
+            store.store = store;
+
             command = {
                 action: 'index',
                 instance: {
@@ -228,10 +233,14 @@ YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
             adapter = null;
         },
 
-        'dispatch uses supplied getter': function() {
+        'test dispatch uses supplied getter': function() {
 
             var getterInvoked = false,
                 res;
+
+            Y.namespace('mojito').ActionContext = function(opts) {
+                return this;
+            }
 
             store.expandInstance = function(instance, context, cb) {
                     cb(null, {
@@ -244,7 +253,10 @@ YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
                             return { index: function() {} }
                         },
                         yui: {
-                            config: {},
+                            config: {
+                                modules: ['mojito', 'mojito-action-context',
+                                    'mojito-perf']
+                            },
                             langs: [],
                             requires: [],
                             sorted: ['mojito', 'mojito-action-context'],
@@ -260,7 +272,7 @@ YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
             A.isTrue(getterInvoked);
         },
 
-        'dispatch uses supplied action': function() {
+        'test dispatch uses supplied action': function() {
 
             var actionInvoked = false,
                 res;
@@ -277,7 +289,10 @@ YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
                             } }
                         },
                         yui: {
-                            config: {},
+                            config: {
+                                modules: ['mojito', 'mojito-action-context',
+                                    'mojito-perf']
+                            },
                             langs: [],
                             requires: [],
                             sorted: ['mojito', 'mojito-action-context'],
@@ -296,6 +311,6 @@ YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
     }));
  
 
-    YUITest.TestRunner.add(suite);
+    Y.Test.Runner.add(suite);
 
 }, '0.0.1', {requires: ['mojito-dispatcher']});

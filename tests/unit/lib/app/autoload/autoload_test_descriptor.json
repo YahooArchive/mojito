@@ -27,7 +27,7 @@
             "dispatch.common": {
                 "params": {
                     "page": "$$config.base$$/mojito-test.html",
-                    "lib": "$$config.lib$$/app/autoload/dispatch.common.js",
+                    "lib": "$$config.lib$$/app/autoload/action-context.common.js,./../../../../../lib/app/autoload/dispatch.common.js",
                     "test": "./test-dispatch.common.js"
                 },
                 "group": "fw,unit,client,server"
