@@ -236,26 +236,15 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                 "dispatcher wasn't stashed.");
         },
 
-        // NOTE: Only specifed addons are now attached to AC
-        'all required (was: default) plugins are preloaded and plugged': function() {
-            Y.mojito.controller = { index: function() {} };
-            Y.namespace('mojito.addons').ac = {
-                 core: function () {},
-                 config: function () {},
-                 url: function () {},
-                 cookie: function () {},
-                 params: function () {},
-                 composite: function () {},
-                 assets: function () {}
+        'test all required (was: default) plugins are preloaded and plugged': function() {
+            Y.namespace('mojito.addons.ac').config = function() {
+                this.namespace = 'config';
             };
-            // fake out the http plugin so the others will load
-            Y.mojito.addons.ac.http = function() {
-                this.namespace = 'http';
-                this.getRequest = function() {};
+            Y.namespace('mojito.addons.ac').params = function() {
+                this.namespace = 'params';
             };
-            // fake out the intl plugin so the others will load
-            Y.mojito.addons.ac.intl = function() {
-                this.namespace = 'intl';
+            Y.namespace('mojito.addons.ac').composite = function() {
+                this.namespace = 'composite';
             };
             var ac = new Y.mojito.ActionContext({
                 dispatcher: 'the dispatcher',
@@ -263,16 +252,13 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                     action: 'index',
                     instance: {
                         id: 'id',
-                        type: 'Type',
-                        yui: {
-                            sorted: [
-                                'mojito-config-addon',
-                                'mojito-url-addon',
-                                //'mojito-cookie-addon'
-                                'mojito-params-addon',
-                                'mojito-composite-addon'
-                            ]
-                        }
+                        type: 'Type666',
+                        yui: { sorted: [
+                            'mojito-config-addon',
+                            'mojito-url-addon',
+                            'mojito-params-addon',
+                            'mojito-composite-addon'
+                        ] }
                     },
                 },
                 controller: {index: function() {}},
@@ -286,10 +272,8 @@ YUI().use('mojito-action-context', 'test', function (Y) {
 
             A.isObject(ac.config, 'Missing config addon');
             A.isObject(ac.url, 'Missing url addon');
-            A.isObject(ac.cookie, 'Missing cookie addon');
             A.isObject(ac.params, 'Missing config params');
             A.isObject(ac.composite, 'Missing config composite');
-
         },
 
         'test AC properties': function() {
@@ -343,138 +327,7 @@ YUI().use('mojito-action-context', 'test', function (Y) {
             A.areSame(ac.app.config, 'app config', 'bad app config');
             A.areSame('the dispatcher', ac.dispatcher,
                 "dispatcher wasn't stashed.");
-            // A.isObject(ac.models, 'bad models');
-
         },
-
-        // TODO: move to controller context tests
-//        'controller is initialized': function() {
-//            var controllerInit = false;
-//            var controller = {
-//                init: function(cfg) {
-//                    controllerInit = true;
-//                    A.areSame('instance config', cfg, 'controller init bad config object');
-//                },
-//                index: function() {}
-//            };
-//            // fake out the http plugin so the others will load
-//            Y.mojito.addons.ac.http = function() {
-//                this.namespace = 'http';
-//                this.getRequest = function() {};
-//            };
-//            var ac = new Y.mojito.ActionContext({
-//                dispatcher: 'the dispatcher',
-//                command: {
-//                    instance: {
-//                        id: 'id',
-//                        type: 'Type',
-//                        action: 'index',
-//                        config: 'instance config',
-//                        yui: { sorted: [] }
-//                    }
-//                },
-//                controller: controller,
-//                store: {
-//                    getAppConfig: function() {
-//                    },
-//                    getRoutes: function() {
-//                    }
-//                }
-//            });
-//
-//            A.isTrue(controllerInit, 'controller not initalized');
-//        },
-
-        // TODO: move to controller context tests
-//        'models are initialized': function() {
-//            var fooModelInit = false;
-//            var barModelInit = false;
-//            Y.mojito.controller = {
-//                index: function() {}
-//            };
-//            Y.mojito.models.foo = {
-//                init: function(cfg) {
-//                    fooModelInit = true;
-//                    A.areSame('instance config', cfg, 'model init bad config object');
-//                }
-//            };
-//            Y.mojito.models.bar = {
-//                init: function(cfg) {
-//                    barModelInit = true;
-//                    A.areSame('instance config', cfg, 'model init bad config object');
-//                }
-//            };
-//            // fake out the http plugin so the others will load
-//            Y.mojito.addons.ac.http = function() {
-//                this.namespace = 'http';
-//                this.getRequest = function() {};
-//            };
-//            var ac = new Y.mojito.ActionContext({
-//                dispatcher: 'the dispatcher',
-//                command: {
-//                    instance: {
-//                        id: 'id',
-//                        type: 'Type',
-//                        action: 'index',
-//                        config: 'instance config',
-//                        yui: { sorted: [] }
-//                    }
-//                },
-//                controller: {index: function() {}},
-//                store: {
-//                    getAppConfig: function() {
-//                    },
-//                    getRoutes: function() {
-//                    }
-//                }
-//            });
-//
-//            A.isTrue(fooModelInit, 'controller not initalized');
-//            A.isTrue(barModelInit, 'controller not initalized');
-//
-//        },
-
-        // TODO: move to controller context tests
-//        'actions are mixed into controller': function() {
-//            var actionCalled = false;
-//            var controller = {
-//                index: function() {}
-//            };
-//            Y.mojito.actions = {
-//                foo: function(ac) {
-//                    actionCalled = true;
-//                    A.areSame(Y.mojito.controller, this, 'action not executed within the scope of the controller');
-//                }
-//            };
-//            // fake out the http plugin so the others will load
-//            Y.mojito.addons.ac.http = function() {
-//                this.namespace = 'http';
-//                this.getRequest = function() {};
-//            };
-//            var ac = new Y.mojito.ActionContext({
-//                dispatcher: 'the dispatcher',
-//                command: {
-//                    instance: {
-//                        id: 'id',
-//                        type: 'Type',
-//                        action: 'foo',
-//                        config: 'instance config',
-//                        yui: { sorted: [] }
-//                    }
-//                    }
-//                },
-//                controller: controller,
-//                store: {
-//                    getAppConfig: function() {
-//                    },
-//                    getRoutes: function() {
-//                    }
-//                }
-//            });
-//
-//            A.isTrue(actionCalled, 'action never called');
-//
-//        },
 
         'test ac plugins plugged in proper order': function() {
             var mixes = [];
@@ -533,7 +386,6 @@ YUI().use('mojito-action-context', 'test', function (Y) {
             });
 
             OA.areEqual([4,3,2,1], mixes, 'wrong addon load order');
-
         }
 
     }));
