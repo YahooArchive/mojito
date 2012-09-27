@@ -270,7 +270,7 @@ YUI().use(
                     id: 'd'
                 };
                 var context = {};
-                var key = Y.JSON.stringify([inInstance, context]);
+                var key = Y.JSON.stringify([inInstance, ['*'], context.lang]);
                 store._expandInstanceCache.server[key] = { x: 'y' };
                 store.expandInstance(inInstance, context, function(err, outInstance) {
                     A.areEqual(5, Object.keys(outInstance).length);
