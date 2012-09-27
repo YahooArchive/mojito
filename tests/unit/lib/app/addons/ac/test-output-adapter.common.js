@@ -33,6 +33,7 @@ YUI().use('mojito-output-adapter-addon', 'test', function(Y) {
         'test when called with string data, done renders a string without templating': function() {
             var ac = {};
             var doneCalled;
+            ac.app = { config: {} };
             ac._adapter = {
                 done: function(data, meta) {
                     var ct = meta.http.headers['content-type'];
@@ -55,6 +56,7 @@ YUI().use('mojito-output-adapter-addon', 'test', function(Y) {
         'test when called with string data and Content-Type header set, done respects the type': function() {
             var ac = {};
             var doneCalled;
+            ac.app = { config: {} };
             ac._adapter = {
                 done: function(data, meta) {
                     var ct = meta.http.headers['content-type'];
@@ -84,6 +86,7 @@ YUI().use('mojito-output-adapter-addon', 'test', function(Y) {
             var ac = {};
             var doneCalled;
             var json = {hi:'there'};
+            ac.app = { config: {} };
             ac._adapter = {
                 done: function(data, meta) {
                     var ct = meta.http.headers['content-type'];
@@ -106,6 +109,7 @@ YUI().use('mojito-output-adapter-addon', 'test', function(Y) {
             var ac = {};
             var doneCalled;
             var json = {hi:'there'};
+            ac.app = { config: {} };
             ac._adapter = {
                 done: function(data, meta) {
                     var ct = meta.http.headers['content-type'];
@@ -129,6 +133,7 @@ YUI().use('mojito-output-adapter-addon', 'test', function(Y) {
             var doneCalled;
             var data = 'data';
             var meta = {};
+            ac.app = { config: {} };
             ac._adapter = {
                 done: function(d, m) {
                     doneCalled = true;
