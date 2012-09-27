@@ -15,6 +15,10 @@
 YUI.add('mojito', function(Y, NAME) {
     Y.namespace('mojito');
     Y.namespace('mojito.addons.ac');
+    Y.namespace('mojito').perf = {
+        mark: function () {},
+        timeline: function () { return { done: function() {} }; }
+    };
 });
 
 /* AC ADDONS */
@@ -53,12 +57,7 @@ YUI.add('mojito-loader', function(Y, NAME) {});
 YUI.add('mojito-logger', function(Y, NAME) {});
 YUI.add('mojito-mojit-proxy', function(Y, NAME) {});
 YUI.add('mojito-output-handler', function(Y, NAME) {});
-YUI.add('mojito-perf', function(Y, NAME) {
-    Y.namespace('mojito').perf = {
-        mark: function () {},
-        timeline: function () { return { done: function() {} }; }
-    };
-});
+YUI.add('mojito-perf', function(Y, NAME) {});
 YUI.add('mojito-resource-store', function(Y, NAME) {});
 YUI.add('mojito-resource-store-adapter', function(Y, NAME) {});
 YUI.add('mojito-rest-lib', function(Y, NAME) {});

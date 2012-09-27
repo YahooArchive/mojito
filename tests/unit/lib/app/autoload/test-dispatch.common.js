@@ -251,8 +251,7 @@ YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
                         },
                         yui: {
                             config: {
-                                modules: ['mojito', 'mojito-action-context',
-                                    'mojito-perf']
+                                modules: ['mojito', 'mojito-action-context']
                             },
                             langs: [],
                             requires: [],
@@ -287,8 +286,7 @@ YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
                         },
                         yui: {
                             config: {
-                                modules: ['mojito', 'mojito-action-context',
-                                    'mojito-perf']
+                                modules: ['mojito', 'mojito-action-context']
                             },
                             langs: [],
                             requires: [],
