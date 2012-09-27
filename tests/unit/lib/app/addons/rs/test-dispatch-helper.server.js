@@ -12,7 +12,7 @@ YUI().use(
     'json',
     'test',
     function(Y) {
-    
+
     var suite = new YUITest.TestSuite('mojito-addon-rs-dispatch-helper-tests'),
         libpath = require('path'),
         mojitoRoot = libpath.join(__dirname, '../../../../../../lib'),
@@ -20,9 +20,9 @@ YUI().use(
 
 
     suite.add(new YUITest.TestCase({
-        
+
         name: 'dispatch-helper rs addon tests',
-        
+
 
         'augment getMojitTypeDetails with AC addons': function() {
             var fixtures = libpath.join(__dirname, '../../../../../fixtures/gsg5');
@@ -31,18 +31,13 @@ YUI().use(
 
             var details = store.getMojitTypeDetails('server', {}, 'PagedFlickr');
             // order matters
-            var keys = Y.Object.keys(details.acAddons);
-            A.areSame(4, keys.length, 'number of AC addons');
-            A.areSame(JSON.stringify(['config','intl','params','url']), JSON.stringify(keys), 'correct order');
-            A.areSame('mojito-config-addon', details.acAddons.config);
-            A.areSame('mojito-intl-addon', details.acAddons.intl);
-            A.areSame('mojito-params-addon', details.acAddons.params);
-            A.areSame('mojito-url-addon', details.acAddons.url);
+            A.areSame(4, details.acAddons.length, 'number of AC addons');
+            A.areSame(JSON.stringify(['config','intl','params','url']), JSON.stringify(details.acAddons), 'correct order');
         }
 
 
     }));
-    
+
     Y.Test.Runner.add(suite);
-    
+
 });
