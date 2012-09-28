@@ -4,9 +4,9 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('flickrModel', function(Y) {
+YUI.add('flickrModel', function(Y, NAME) {
 var API_KEY = '9cc79c8bf1942c683b0d4e30b838ee9c';
-  Y.mojito.models.flickr = {
+  Y.mojito.models.flickrModel = {
     init: function(config) {
       this.config = config;
     },
@@ -55,4 +55,4 @@ var API_KEY = '9cc79c8bf1942c683b0d4e30b838ee9c';
       });
     }
   };
-}, '0.0.1', {requires: ['yql']});
+}, '0.0.1', {requires: ['mojito', 'yql']});

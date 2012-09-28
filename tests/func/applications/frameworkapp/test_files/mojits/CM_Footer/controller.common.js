@@ -45,4 +45,4 @@ YUI.add('CM_Footer', function(Y, NAME) {
         }
     };
 
-}, '0.0.1', {requires: ['mojito']});
+}, '0.0.1', {requires: ['mojito','mojito-params-addon']});

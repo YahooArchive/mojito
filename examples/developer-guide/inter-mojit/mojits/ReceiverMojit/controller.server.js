@@ -10,12 +10,12 @@ YUI.add('ReceiverMojit', function(Y, NAME) {
         init: function(config) {
             this.config = config;
         },
-        index: function(actionContext) {
-            actionContext.done({title: 'This is the receiver mojit'});
+        index: function(ac) {
+            ac.done({title: 'This is the receiver mojit'});
         },
-        show: function(actionContext) {
-            var url = actionContext.params.merged('url') || "http://farm1.static.flickr.com/21/35282840_8155ba1a22_o.jpg";
-            actionContext.done(
+        show: function(ac) {
+            var url = ac.params.merged('url') || "http://farm1.static.flickr.com/21/35282840_8155ba1a22_o.jpg";
+            ac.done(
                 {
                     title: 'Image matching the link clicked on the left.',
                     url: url
@@ -25,4 +25,4 @@ YUI.add('ReceiverMojit', function(Y, NAME) {
         }
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito', 'mojito-params-done']});

@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('i18nModel', function(Y) {
+YUI.add('i18nModel', function(Y, NAME) {
 
 /**
  * The i18nModel module.
@@ -36,4 +36,4 @@ YUI.add('i18nModel', function(Y) {
 
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito']});

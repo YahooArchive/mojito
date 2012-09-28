@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('PosterModel', function(Y) {
+YUI.add('PosterModel', function(Y, NAME) {
 
 /**
  * The PosterModel module.
@@ -33,4 +33,4 @@ YUI.add('PosterModel', function(Y) {
 
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito']});

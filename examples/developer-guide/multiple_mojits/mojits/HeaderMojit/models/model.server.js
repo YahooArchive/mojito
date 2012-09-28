@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('HeaderMojitModel', function(Y) {
+YUI.add('HeaderMojitModel', function(Y, NAME) {
 
 /**
  * The HeaderMojitModel module.
@@ -36,4 +36,4 @@ YUI.add('HeaderMojitModel', function(Y) {
 
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito']});

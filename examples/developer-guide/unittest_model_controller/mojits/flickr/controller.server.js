@@ -15,7 +15,7 @@ YUI.add('flickr', function(Y, NAME) {
       page = (ac.params.getFromUrl('page') || 0) / 1,
       count = (ac.params.getFromUrl('size') || 20) / 1,
       start = page * count;
-      var model = ac.models.flickr;
+      var model = ac.models.get('flickrModel');
       model.search (q, start, count, function(photos) {
         ac.done (
           {
@@ -28,4 +28,8 @@ YUI.add('flickr', function(Y, NAME) {
       });
     }
   };
-}, '0.0.1', {requires: ['flickrModel']});
+}, '0.0.1', {requires: [
+    'mojito',
+    'mojito-params-addon',
+    'mojito-models-addon',
+    'flickrModel']});

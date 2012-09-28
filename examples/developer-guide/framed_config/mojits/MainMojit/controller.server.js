@@ -23,12 +23,12 @@ YUI.add('MainMojit', function(Y, NAME) {
         /**
          * Method corresponding to the 'index' action.
          *
-         * @param actionContext {Object} The action context that provides access
+         * @param ac {Object} The action context that provides access
          *        to the Mojito API.
          */
-        index: function(actionContext) {
-            actionContext.done({title: "HTML Frame Configuration Example"});
+        index: function(ac) {
+            ac.done({title: "HTML Frame Configuration Example"});
         }
 
     };
-}, '0.0.1', {requires: ['']});
+}, '0.0.1', {requires: ['mojito']});

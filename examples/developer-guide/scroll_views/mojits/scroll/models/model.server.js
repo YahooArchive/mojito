@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('scrollModel', function(Y) {
+YUI.add('scrollModel', function(Y, NAME) {
 
   Y.mojito.models.scrollMojit = {
      init: function(config) {
@@ -14,4 +14,4 @@ YUI.add('scrollModel', function(Y) {
         callback({some:'data'});
       }
   };
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito']});

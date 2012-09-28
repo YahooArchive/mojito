@@ -36,6 +36,7 @@ YUI.add('mojito-cookie-addon', function(Y, NAME) {});
 YUI.add('mojito-deploy-addon', function(Y, NAME) {});
 YUI.add('mojito-device-addon', function(Y, NAME) {});
 YUI.add('mojito-http-addon', function(Y, NAME) {});
+YUI.add('mojito-models-addon', function(Y, NAME) {});
 YUI.add('mojito-i13n-addon', function(Y, NAME) {});
 YUI.add('mojito-intl-addon', function(Y, NAME) {});
 YUI.add('mojito-meta-addon', function(Y, NAME) {});

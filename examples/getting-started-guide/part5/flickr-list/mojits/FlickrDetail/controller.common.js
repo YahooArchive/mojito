@@ -25,7 +25,7 @@ YUI.add('FlickrDetail', function(Y, NAME) {
                 return;
             }
 
-            ac.models.flickr.getFlickrDetail(image, function(err, details) {
+            ac.models.get('flickrModel').getFlickrDetail(image, function(err, details) {
                 if (err) {
                     ac.error(new Error("YQL Error"));
                     return;
@@ -64,4 +64,9 @@ YUI.add('FlickrDetail', function(Y, NAME) {
 
     };
 
-}, '0.0.1', {requires: ['mojito-intl-addon', 'ModelFlickr'], lang: ['de', 'en-US']});
+}, '0.0.1', {requires: [
+    'mojito-assets-addon',
+    'mojito-params-addon',
+    'mojito-intl-addon',
+    'mojito-models-addon',
+    'ModelFlickr'], lang: ['de', 'en-US']});

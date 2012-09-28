@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('RoutingMojitModel', function(Y) {
+YUI.add('RoutingMojitModel', function(Y, NAME) {
 
 /**
  * The RoutingMojitModel module.
@@ -36,4 +36,4 @@ YUI.add('RoutingMojitModel', function(Y) {
 
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito']});
