@@ -9,7 +9,7 @@ YUI.add('FlickrModel', function(Y) {
  * @module FlickrModel
  */
 
-    Y.mojito.models.flickr = {
+    Y.mojito.models.flickrModel = {
 
         /**
          * Method that will be invoked by the mojit controller to obtain data.
@@ -56,4 +56,4 @@ YUI.add('FlickrModel', function(Y) {
             + '/' + record.id + '_' + record.secret + '.jpg';
     }
 
-}, '0.0.1', {requires: ['yql']});
+}, '0.0.1', {requires: ['mojito', 'yql']});

@@ -27,10 +27,10 @@ YUI.add('HttpAddonChild', function(Y, NAME) {
          * @param ac {Object} The action context that provides access
          *        to the Mojito API.
          */
-        index: function(actionContext) {
+        index: function(ac) {
         	console.log("Child set header");
-            actionContext.http.addHeader('my_header', 'ByChild');
-            actionContext.done({title: "Child Mojit adding a header"});
+            ac.http.addHeader('my_header', 'ByChild');
+            ac.done({title: "Child Mojit adding a header"});
         }
     };
 

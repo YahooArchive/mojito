@@ -9,13 +9,16 @@ YUI.add('GenURLMojit', function(Y, NAME) {
     init: function(config) {
       this.config = config;
     },
-    index: function(actionContext) {
-      var url = actionContext.url.make('mymojit', 'contactus', '');
-      actionContext.done({contactus_url: url});
+    index: function(ac) {
+      var url = ac.url.make('mymojit', 'contactus', '');
+      ac.done({contactus_url: url});
     },
-    contactus: function(actionContext) {
-      var currentTime = actionContext.intl.formatDate(new Date());
-      actionContext.done({currentTime: currentTime});
+    contactus: function(ac) {
+      var currentTime = ac.intl.formatDate(new Date());
+      ac.done({currentTime: currentTime});
     }
   };
-}, '0.0.1', {requires: ['mojito-intl-addon']});
+}, '0.0.1', {requires: [
+    'mojito',
+    'mojito-url-addon',
+    'mojito-intl-addon']});

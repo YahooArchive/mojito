@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('MobileDevicesModel', function(Y) {
+YUI.add('MobileDevicesModel', function(Y, NAME) {
 
     Y.mojito.models.MobileDevices = {
 
@@ -15,4 +15,4 @@ YUI.add('MobileDevicesModel', function(Y) {
 
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito']});

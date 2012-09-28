@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('BodyMojitModel', function(Y) {
+YUI.add('BodyMojitModel', function(Y, NAME) {
 
 /**
  * The BodyMojitModel module.
@@ -36,4 +36,4 @@ YUI.add('BodyMojitModel', function(Y) {
 
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito']});

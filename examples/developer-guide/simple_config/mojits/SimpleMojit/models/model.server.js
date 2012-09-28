@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('SimpleMojitModel', function(Y) {
+YUI.add('SimpleMojitModel', function(Y, NAME) {
 
 /**
  * The SimpleMojitModel module.
@@ -36,4 +36,4 @@ YUI.add('SimpleMojitModel', function(Y) {
 
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito']});

@@ -9,10 +9,10 @@ YUI.add('Coverage', function(Y, NAME) {
             this.config = config;
         },
 
-        index: function(actionContext) {
+        index: function(ac) {
 	    	var fs = require('fs');
 	    	var mojitoVer = Y.mojito.version;
-	    	var applicationName = actionContext.params.getFromUrl('application');
+	    	var applicationName = ac.params.getFromUrl('application');
 	    	
 	    	var dir_structure = "/tmp/coverage/mojito/" + mojitoVer + "/data/" + applicationName;
 	    	var fileName = "data.json";
@@ -32,10 +32,10 @@ YUI.add('Coverage', function(Y, NAME) {
 	        	  if (err) throw err;
 	        	  Y.log('File is saved!' + coverageData, "INFO");
 	        	});
-	        	actionContext.done("Executed the coverage mojit for " + applicationName + " application");
+	        	ac.done("Executed the coverage mojit for " + applicationName + " application");
 	        });
         }
 
     };
 
-}, '0.0.1', {requires: ['mojito']});
+}, '0.0.1', {requires: ['mojito', 'mojito-params-addon']});

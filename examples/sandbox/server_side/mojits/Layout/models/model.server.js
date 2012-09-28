@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('LayoutModel', function(Y) {
+YUI.add('LayoutModel', function(Y, NAME) {
 
 /**
  * The LayoutModel module.
@@ -36,4 +36,4 @@ YUI.add('LayoutModel', function(Y) {
 
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito']});

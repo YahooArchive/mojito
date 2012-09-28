@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('rollupsModelServer', function(Y) {
+YUI.add('rollupsModelServer', function(Y, NAME) {
 
     Y.mojito.models.rollups = {
 
@@ -15,4 +15,4 @@ YUI.add('rollupsModelServer', function(Y) {
 
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito']});

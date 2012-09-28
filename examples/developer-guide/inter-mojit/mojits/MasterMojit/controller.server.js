@@ -11,9 +11,9 @@ YUI.add('MasterMojit', function(Y, NAME) {
         init: function(config) {
             this.config = config;
         },
-        "index": function(actionContext) {
-            actionContext.composite.done();
+        "index": function(ac) {
+            ac.composite.done();
         }
 
     };
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito', 'mojito-composite-addon']});

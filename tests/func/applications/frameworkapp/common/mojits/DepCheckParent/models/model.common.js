@@ -15,7 +15,7 @@ YUI.add('DepCheckModel', function(Y) {
      * @class Model
      * @constructor
      */
-    Y.mojito.models.DepCheckParent = {
+    Y.mojito.models.DepCheckModel = {
 
         init: function(config) {
             this.config = config;
@@ -29,4 +29,4 @@ YUI.add('DepCheckModel', function(Y) {
         }
     };
 
-}, '0.0.1', {requires: ['arraysort']});
+}, '0.0.1', {requires: ['mojito', 'arraysort']});

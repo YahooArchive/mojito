@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('HttpAddonChildModel', function(Y) {
+YUI.add('HttpAddonChildModel', function(Y, NAME) {
 
 /**
  * The HttpAddonChildModel module.
@@ -33,4 +33,4 @@ YUI.add('HttpAddonChildModel', function(Y) {
 
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito']});

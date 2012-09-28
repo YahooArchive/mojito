@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('soloMojit', function(Y) {
+YUI.add('soloMojit', function(Y, NAME) {
 
     Y.mojito.controller = {
 
@@ -15,4 +15,4 @@ YUI.add('soloMojit', function(Y) {
 
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito']});

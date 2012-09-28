@@ -52,4 +52,8 @@ YUI.add('Container', function(Y, NAME) {
 
     };
 
-}, '0.0.1', {requires: ['mojito', 'ContainerModelFoo']});
+}, '0.0.1', {requires: [
+    'mojito',
+    'mojito-config-addon',
+    'mojito-composite-addon',
+    'ContainerModelFoo']});

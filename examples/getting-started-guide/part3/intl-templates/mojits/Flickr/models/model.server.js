@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('FlickrModel', function(Y) {
+YUI.add('FlickrModel', function(Y, NAME) {
     var API_KEY = '9cc79c8bf1942c683b0d4e30b838ee9c';
 
 /**
@@ -13,7 +13,7 @@ YUI.add('FlickrModel', function(Y) {
  * @module FlickrModel
  */
 
-    Y.mojito.models.flickr = {
+    Y.mojito.models.flickrModel = {
 
         /**
          * Method that will be invoked by the mojit controller to obtain data.
@@ -59,4 +59,4 @@ YUI.add('FlickrModel', function(Y) {
     }
 
 // TODO: remove 'jsonp-url' requirement when YUI fix for bug http://yuilibrary.com/projects/yui3/ticket/2530251 is deployed.
-}, '0.0.1', {requires: ['yql', 'jsonp-url']});
+}, '0.0.1', {requires: ['mojito', 'yql', 'jsonp-url']});

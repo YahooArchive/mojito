@@ -7,7 +7,7 @@
 YUI.add('PagedFlickrModel', function(Y) {
     var API_KEY = '9cc79c8bf1942c683b0d4e30b838ee9c';
 
-    Y.mojito.models.flickr = {
+    Y.mojito.models.flickrModel = {
 
         getFlickrImages: function(queryString, start, count, callback) {
             var q;
