@@ -34,19 +34,6 @@ YUI().use('mojito-action-context', 'test', function (Y) {
             Y.namespace('mojito').controller = {
                 index: function() {}
             };
-            // fake out the http plugin so the others will load
-            Y.namespace('mojito.addons.ac').http = function() {
-                this.namespace = 'http';
-                this.getRequest = function() {};
-            };
-            // fake out the url plugin so it won't try to load routes
-            Y.namespace('mojito.addons.ac').url = function() {
-                this.namespace = 'url';
-            };
-            // fake out the intl plugin so the others will load
-            Y.namespace('mojito.addons.ac').intl = function() {
-                this.namespace = 'intl';
-            };
             ac = new Y.mojito.ActionContext({
                 dispatcher: 'the dispatcher',
                 command: {
@@ -86,19 +73,6 @@ YUI().use('mojito-action-context', 'test', function (Y) {
             var ac;
             Y.namespace('mojito').controller = {
                 index: function() {}
-            };
-            // fake out the http plugin so the others will load
-            Y.namespace('mojito.addons.ac').http = function() {
-                this.namespace = 'http';
-                this.getRequest = function() {};
-            };
-            // fake out the url plugin so it won't try to load routes
-            Y.namespace('mojito.addons.ac').url = function() {
-                this.namespace = 'url';
-            };
-            // fake out the intl plugin so the others will load
-            Y.namespace('mojito.addons.ac').intl = function() {
-                this.namespace = 'intl';
             };
             ac = new Y.mojito.ActionContext({
                 dispatcher: 'the dispatcher',
@@ -140,19 +114,6 @@ YUI().use('mojito-action-context', 'test', function (Y) {
             Y.namespace('mojito').controller = {
                 index: function() {}
             };
-            // fake out the http plugin so the others will load
-            Y.namespace('mojito.addons.ac').http = function() {
-                this.namespace = 'http';
-                this.getRequest = function() {};
-            };
-            // fake out the url plugin so it won't try to load routes
-            Y.namespace('mojito.addons.ac').url = function() {
-                this.namespace = 'url';
-            };
-            // fake out the intl plugin so the others will load
-            Y.namespace('mojito.addons.ac').intl = function() {
-                this.namespace = 'intl';
-            };
             ac = new Y.mojito.ActionContext({
                 dispatcher: 'the dispatcher',
                 command: {
@@ -193,19 +154,6 @@ YUI().use('mojito-action-context', 'test', function (Y) {
             Y.namespace('mojito').controller = {
                 index: function() {}
             };
-            // fake out the http plugin so the others will load
-            Y.namespace('mojito.addons.ac').http = function() {
-                this.namespace = 'http';
-                this.getRequest = function() {};
-            };
-            // fake out the url plugin so it won't try to load routes
-            Y.namespace('mojito.addons.ac').url = function() {
-                this.namespace = 'url';
-            };
-            // fake out the intl plugin so the others will load
-            Y.namespace('mojito.addons.ac').intl = function() {
-                this.namespace = 'intl';
-            };
             ac = new Y.mojito.ActionContext({
                 command: {
                     action: 'index',
@@ -237,14 +185,8 @@ YUI().use('mojito-action-context', 'test', function (Y) {
         },
 
         'test all required (was: default) plugins are preloaded and plugged': function() {
-            Y.namespace('mojito.addons.ac').config = function() {
-                this.namespace = 'config';
-            };
-            Y.namespace('mojito.addons.ac').params = function() {
-                this.namespace = 'params';
-            };
-            Y.namespace('mojito.addons.ac').composite = function() {
-                this.namespace = 'composite';
+            Y.namespace('mojito.addons.ac').custom = function() {
+                return { namespace: 'custom' };
             };
             var ac = new Y.mojito.ActionContext({
                 dispatcher: 'the dispatcher',
@@ -253,13 +195,9 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                     instance: {
                         id: 'id',
                         type: 'Type666',
-                        yui: { sorted: [
-                            'mojito-config-addon',
-                            'mojito-url-addon',
-                            'mojito-params-addon',
-                            'mojito-composite-addon'
-                        ] }
-                    },
+                        yui: { sorted: [] },
+                        acAddons: ['custom']
+                    }
                 },
                 controller: {index: function() {}},
                 store: {
@@ -270,29 +208,14 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                 }
             });
 
-            A.isObject(ac.config, 'Missing config addon');
-            A.isObject(ac.url, 'Missing url addon');
-            A.isObject(ac.params, 'Missing config params');
-            A.isObject(ac.composite, 'Missing config composite');
+            A.isObject(ac.core, 'output-adapter addon should be plug by default');
+            A.isObject(ac.custom, 'custom required addon is missing');
         },
 
         'test AC properties': function() {
             var ac;
             Y.namespace('mojito').controller = {
                 index: function() {}
-            };
-            // fake out the http plugin so the others will load
-            Y.namespace('mojito.addons.ac').http = function() {
-                this.namespace = 'http';
-                this.getRequest = function() {};
-            };
-            // fake out the url plugin so it won't try to load routes
-            Y.namespace('mojito.addons.ac').url = function() {
-                this.namespace = 'url';
-            };
-            // fake out the intl plugin so the others will load
-            Y.namespace('mojito.addons.ac').intl = function() {
-                this.namespace = 'intl';
             };
             ac = new Y.mojito.ActionContext({
                 dispatcher: 'the dispatcher',
@@ -355,9 +278,6 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                 mixes.push(4);
                 return { namespace: 'fourth' };
             };
-            Y.namespace('mojito.addons.ac').first.dependsOn = ['second'];
-            Y.namespace('mojito.addons.ac').second.dependsOn = ['third'];
-            Y.namespace('mojito.addons.ac').third.dependsOn = ['fourth'];
 
             new Y.mojito.ActionContext({
                 dispatch: 'the dispatch',
@@ -366,14 +286,13 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                     instance: {
                         id: 'id',
                         type: 'Type2', // Need to clear the addons cache
-                        yui: {
-                            sorted: [
-                                'first',
-                                'second',
-                                'third',
-                                'fourth'
-                            ]
-                        }
+                        yui: { sorted: [] },
+                        acAddons: [
+                            'first',
+                            'second',
+                            'third',
+                            'fourth'
+                        ]
                     }
                 },
                 controller: {index: function() {}},
@@ -385,7 +304,7 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                 }
             });
 
-            OA.areEqual([4,3,2,1], mixes, 'wrong addon load order');
+            OA.areEqual([1,2,3,4], mixes, 'wrong addon attach order, should be based on acAddons');
         }
 
     }));
