@@ -34,7 +34,7 @@
         "framework",
         "webapp"
     ],
-    "main": "lib/index",
+    "main": "lib/mojito",
     "directories": [
         "bin",
         "docs",
@@ -58,7 +58,6 @@
     },
     "bugs": "https://github.com/yahoo/mojito/issues",
     "scripts": {
-        "start": "./bin/mojito start",
         "test": "./tests/run.js test -u --group server --driver nodejs && ./tests/run.js test -u --group client --driver selenium"
     },
     "yahoo": {
