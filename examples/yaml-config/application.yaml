@@ -1,0 +1,13 @@
+# The application configuration file
+---
+
+-
+    # These are the dimensions that will be affected by these settings
+    settings: [master]
+
+    # Set the log level for the application
+    log:
+        # On the server only
+        server:
+            # This is the level that will be used
+            level: error
