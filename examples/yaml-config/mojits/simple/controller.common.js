@@ -7,7 +7,6 @@
 YUI.add("simple-ctrl", function (Y, NAME) {
     Y.namespace("mojito.controllers")[NAME] = {
         index: function (ac) {
-        	console.log(ac.config.get());
             ac.done(ac.config.get("message"));
         }
     };
