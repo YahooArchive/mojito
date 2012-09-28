@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('GenURLMojitModel', function(Y) {
+YUI.add('GenURLMojitModel', function(Y, NAME) {
 
 /**
  * The GenURLMojitModel module.
@@ -36,4 +36,4 @@ YUI.add('GenURLMojitModel', function(Y) {
 
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito']});

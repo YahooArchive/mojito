@@ -10,8 +10,8 @@ YUI.add('SenderMojit', function(Y, NAME) {
         init: function(config) {
             this.config = config;
         },
-        "index": function(actionContext) {
-            actionContext.done({title: 'List of images for testing'});
+        "index": function(ac) {
+            ac.done({title: 'List of images for testing'});
         }
     };
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito']});

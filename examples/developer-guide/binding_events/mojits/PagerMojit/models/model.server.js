@@ -16,7 +16,7 @@ YUI.add('PagerMojitModel', function(Y) {
   * @class Model 
   * @constructor 
   */
-  Y.mojito.models.PagerMojit = {
+  Y.mojito.models.PagerMojitModel = {
     init: function(config) {
       this.config = config;
     },
@@ -51,4 +51,7 @@ YUI.add('PagerMojitModel', function(Y) {
       });
     }
   };
-}, '0.0.1', {requires: ['yql']});
+}, '0.0.1', {requires: [
+    'mojito',
+    'mojito-models-addon',
+    'yql']});

@@ -9,8 +9,8 @@ YUI.add('FooterMojit', function(Y, NAME) {
     init: function(config) {
       this.config = config; 
     },
-    index: function(actionContext) {
-      actionContext.done({title: "Footer"}); 
+    index: function(ac) {
+      ac.done({title: "Footer"}); 
     }
   };
 }, '0.0.1', {requires: ['mojito']})

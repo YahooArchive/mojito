@@ -21,7 +21,7 @@ YUI.add('Flickr', function(Y, NAME) {
          *        to the Mojito API.
          */
         index: function(ac) {
-            ac.models.flickr.getFlickrImages('mojito', function(images) {
+            ac.models.get('flickrModel').getFlickrImages('mojito', function(images) {
                 var dateString = ac.intl.formatDate(new Date());
                 var data = {
                     images: images,
@@ -35,4 +35,9 @@ YUI.add('Flickr', function(Y, NAME) {
 
     };
 
-}, '0.0.1', {requires: ['mojito-intl-addon']});
+}, '0.0.1', {requires: [
+    'mojito',
+    'mojito-models-addon',
+    'mojito-intl-addon',
+    'mojito-url-addon',
+    'flickrModel']});

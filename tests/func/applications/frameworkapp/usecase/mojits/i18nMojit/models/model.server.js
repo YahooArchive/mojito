@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('i18nMojitModel', function(Y) {
+YUI.add('i18nMojitModel', function(Y, NAME) {
 
 /**
  * The i18nMojitModel module.
@@ -58,4 +58,4 @@ YUI.add('i18nMojitModel', function(Y) {
             + '/' + record.id + '_' + record.secret + '.jpg';
     }
 
-}, '0.0.1', {requires: ['yql']});
+}, '0.0.1', {requires: ['mojito', 'yql']});

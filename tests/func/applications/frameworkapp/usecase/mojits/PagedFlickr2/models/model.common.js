@@ -2,10 +2,8 @@
 * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
 */
 YUI.add('PagedFlickr2Model', function(Y) {
-
-
     
-    Y.mojito.models.flickr = {
+    Y.mojito.models.flickrModel = {
 
         getFlickrImages: function(queryString, start, count, callback) {
             var APP_KEY = '84921e87fb8f2fc338c3ff9bf51a412e';

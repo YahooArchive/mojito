@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('MModelFoo', function(Y) {
+YUI.add('MModelFoo', function(Y, NAME) {
 
 /**
  * The MModel module.
@@ -33,4 +33,4 @@ YUI.add('MModelFoo', function(Y) {
 
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito']});

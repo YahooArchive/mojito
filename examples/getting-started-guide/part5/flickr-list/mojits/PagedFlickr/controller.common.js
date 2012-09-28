@@ -45,7 +45,7 @@ YUI.add('PagedFlickr', function(Y, NAME) {
             // parameter is base-0.
             start = (page-1) * PAGESIZE;
 
-            ac.models.flickr.getFlickrImages('mojito', start, PAGESIZE, function(err, images) {
+            ac.models.get('flickrModel').getFlickrImages('mojito', start, PAGESIZE, function(err, images) {
                var dateString, data;
 
                 // on model error, fail fast
@@ -90,4 +90,11 @@ YUI.add('PagedFlickr', function(Y, NAME) {
         return ac.url.make(mojitType, 'index', Y.QueryString.stringify(params));
     }
 
-}, '0.0.1', {requires: ['mojito-intl-addon', 'mojito-util', 'querystring-stringify', 'ModelFlickr'], lang: ['de', 'en-US']});
+}, '0.0.1', {requires: [
+    'mojito-models-addon',
+    'mojito-params-addon',
+    'mojito-intl-addon',
+    'mojito-url-addon',
+    'mojito-util',
+    'querystring-stringify',
+    'ModelFlickr'], lang: ['de', 'en-US']});

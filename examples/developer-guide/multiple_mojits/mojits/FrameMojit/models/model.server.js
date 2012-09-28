@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('FrameMojitModel', function(Y) {
+YUI.add('FrameMojitModel', function(Y, NAME) {
 
 /**
  * The FrameMojitModel module.
@@ -36,4 +36,4 @@ YUI.add('FrameMojitModel', function(Y) {
 
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito']});

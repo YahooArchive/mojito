@@ -18,15 +18,6 @@ YUI.add('ReadController', function(Y, NAME) {
     Y.namespace('mojito.controllers')[NAME] = {
 
         /**
-         * Initialize the controller.
-         * @param {Object} config (also available via ac.config.get() in an
-         *     action).
-         */
-        init: function(config) {
-            this.config = config;
-        },
-
-        /**
          * Load feed metadata for feed named in url, get data, display.
          * @param {ActionContext} ac The action context to operate on.
          */
@@ -38,6 +29,8 @@ YUI.add('ReadController', function(Y, NAME) {
                 feedmeta = ac.config.getDefinition('feeds')[id],
                 error = null,
                 my = this;
+
+            this.config = ac.config.getAppConfig();
 
             if (feedmeta) {
                 feedmeta.id = id;
@@ -57,7 +50,7 @@ YUI.add('ReadController', function(Y, NAME) {
             // Ask model for feed data, or display error.
             return error ?
                     my.fail(error, ac) :
-                    ac.models.rss.get(feedmeta, afterQuery);
+                    ac.models.get('rssModel').get(feedmeta, afterQuery);
         },
 
         /**
@@ -70,6 +63,9 @@ YUI.add('ReadController', function(Y, NAME) {
             var my = this,
                 vu = {
                     feedname: feedmeta.name,
+                    // NOTE that this will only work if index() has already been
+                    // called since we need an ac.config reference to set
+                    // config.
                     spaceid: this.config.spaceid,
                     stories: stories || [],
                     navdots: []
@@ -121,5 +117,9 @@ YUI.add('ReadController', function(Y, NAME) {
     };
 
 }, '0.0.1', {requires: [
+    'mojito',
+    'mojito-params-addon',
+    'mojito-config-addon',
+    'mojito-models-addon',
     'ReadModelRss'
 ]});

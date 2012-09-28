@@ -31,10 +31,11 @@ YUI.add('Binders', function(Y, NAME) {
 			ac.done();
 		},
         myIndex: function(ac) {
-		   //Y.log("In the myIndex");
-           ac.models.Binders.getData(function(data) {
-                 ac.models.Binders.getTaco(function(taco) {
-                     data.version = ac.config.get('version');
+		    //Y.log("In the myIndex");
+            var model = ac.models.get('Binders');
+            model.getData(function(data) {
+                model.getTaco(function(taco) {
+                    data.version = ac.config.get('version');
                      //console.log("VERSION: " + data.version);
                      data.extra = ac.config.get('extra');
                      data.taco = taco;
@@ -44,4 +45,8 @@ YUI.add('Binders', function(Y, NAME) {
         }
     };
 
-}, '0.0.1', {requires: ['mojito']});
+}, '0.0.1', {requires: [
+    'mojito',
+    'mojito-config-addon',
+    'mojito-models-addon',
+    'BindersModel']});

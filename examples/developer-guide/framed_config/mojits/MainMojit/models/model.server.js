@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('MainMojitModel', function(Y) {
+YUI.add('MainMojitModel', function(Y, NAME) {
 
     Y.mojito.models.MainMojit = {
 
@@ -13,4 +13,4 @@ YUI.add('MainMojitModel', function(Y) {
         }
 
     };
-}, '0.0.1', {requires: ['']});
+}, '0.0.1', {requires: ['mojito']});

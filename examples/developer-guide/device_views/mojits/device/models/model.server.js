@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('deviceModel', function(Y) {
+YUI.add('deviceModel', function(Y, NAME) {
 
 /**
  * The deviceModel module.
@@ -36,4 +36,4 @@ YUI.add('deviceModel', function(Y) {
 
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito']});
