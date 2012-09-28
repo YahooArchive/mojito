@@ -11,7 +11,6 @@ YUI().use(
     'addon-rs-selector',
     'addon-rs-url',
     'addon-rs-yui',
-    'mojito-perf',
     'test',
     function(Y) {
 
