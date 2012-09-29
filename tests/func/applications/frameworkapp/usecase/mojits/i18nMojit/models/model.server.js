@@ -58,4 +58,4 @@ YUI.add('i18nMojitModel', function(Y) {
             + '/' + record.id + '_' + record.secret + '.jpg';
     }
 
-}, '0.0.1', {requires: ['yql']});
+}, '0.0.1', {requires: ['mojito', 'yql']});
