@@ -59,4 +59,4 @@ YUI.add('FlickrModel', function(Y) {
     }
 
 // TODO: remove 'jsonp-url' requirement when YUI fix for bug http://yuilibrary.com/projects/yui3/ticket/2530251 is deployed.
-}, '0.0.1', {requires: ['yql', 'jsonp-url']});
+}, '0.0.1', {requires: ['mojito', 'yql', 'jsonp-url']});

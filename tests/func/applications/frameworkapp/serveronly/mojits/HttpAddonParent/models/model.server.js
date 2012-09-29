@@ -54,4 +54,4 @@ YUI.add('HttpAddonParentModel', function(Y) {
     	}
     };
 
-}, '0.0.1', {requires: ['mojito-rest-lib']});
+}, '0.0.1', {requires: ['mojito', 'mojito-rest-lib']});
