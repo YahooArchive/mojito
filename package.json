@@ -29,7 +29,7 @@
         "yui": "~3.5.1",
         "yuidocjs": "~0.3.14",
         "yuitest": "~0.7.4",
-        "js-yaml": "~1.0.2"
+        "js-yaml": "1.0.2"
     },
     "keywords": [
         "framework",
