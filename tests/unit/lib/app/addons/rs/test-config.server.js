@@ -238,7 +238,7 @@ YUI().use('addon-rs-config', 'base', 'oop', 'test', function(Y) {
             store.plug(Y.mojito.addons.rs.config, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
 
             var path = libpath.join(fixtures, 'application.json');
-            var have = store.config.readConfigJSON(path);
+            var have = store.config.readConfigThroughCacheSync(path);
             var want = readJSON(fixtures, 'application.json');
             cmp(have, want);
         },
