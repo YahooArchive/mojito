@@ -51,4 +51,4 @@ YUI.add('PagerMojitModel', function(Y) {
       });
     }
   };
-}, '0.0.1', {requires: ['yql']});
+}, '0.0.1', {requires: ['mojito', 'yql']});

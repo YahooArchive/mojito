@@ -55,4 +55,4 @@ var API_KEY = '84921e87fb8f2fc338c3ff9bf51a412e';
       });
     }
   };
-}, '0.0.1', {requires: ['yql']});
+}, '0.0.1', {requires: ['mojito', 'yql']});
