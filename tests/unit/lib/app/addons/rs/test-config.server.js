@@ -280,7 +280,7 @@ YUI().use('addon-rs-config', 'base', 'oop', 'test', function(Y) {
 
             var path = libpath.join(fixtures, 'routes.json');
             try {
-                store.config.readConfigJSON(path);
+                store.config.readConfigThroughCacheSync(path);
             }
             catch (err) {
                 A.areSame('Error parsing JSON file:', err.message.substr(0, 24));
