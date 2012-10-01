@@ -1,5 +1,3 @@
-
-
 ====================================
 Creating Views for Different Devices
 ====================================
@@ -108,9 +106,9 @@ Determining Context
 ###################
 
 Mojito uses two ways to determine which device is making an HTTP request for a page. The first way 
-is to use the value assigned to the query string parameter ``device``. For example, if Mojito received 
-an HTTP GET request on the URL below, it would render the iPhone view into HTML and serve the page 
-to the device.
+is to use the value assigned to the query string parameter ``device``. For example, if Mojito 
+received an HTTP GET request on the URL below, it would render the iPhone view into HTML and serve 
+the page to the device.
 
 ::
 
@@ -169,9 +167,7 @@ To set up and run ``device_views``:
 #. Create your application.
 
    ``$ mojito create app device_views``
-
 #. Change to the application directory.
-
 #. Create your mojit.
 
    ``$ mojito create mojit device``
@@ -204,7 +200,7 @@ To set up and run ``device_views``:
         }
       ]
 
-#. To configure routing, replace the contents of the file ``routes.json`` with the following:
+#. To configure routing, replace the code in  ``routes.json`` with the following:
 
    .. code-block:: javascript
 
@@ -372,7 +368,6 @@ To set up and run ``device_views``:
 #. From the application directory, run the server.
 
    ``$ mojito start``
-
 #. To view your application, go to the URL:
 
    http://localhost:8666
@@ -382,9 +377,9 @@ To set up and run ``device_views``:
    http://localhost:8666?device=iphone
 
 Source Code
-###########
+===========
 
-- `View Templates <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/device_views/mojits/device/views/>`_
+- `Templates <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/device_views/mojits/device/views/>`_
 - `Device Views Application <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/device_views/>`_
 
 
