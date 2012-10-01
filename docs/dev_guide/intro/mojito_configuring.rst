@@ -387,7 +387,7 @@ See `Example Application Configurations`_ for an example of the ``yui`` object. 
 | ``dependencyCalculations``     | string               | Specifies whether the YUI module dependencies are calculated at        |
 |                                |                      | server startup (pre-computed) or deferred until a particular           |
 |                                |                      | module is needed (on demand). The following are the two allowed        |
-|                                |                      | values: ``precomputed``, ``ondemand``                                  |
+|                                |                      | values: ``precomputed``, ``ondemand``, ``precomputed+ondemand``        |
 +--------------------------------+----------------------+------------------------------------------------------------------------+
 | ``extraModules``               | array of strings     | Specifies additional YUI library modules that should be added to       |
 |                                |                      | the page when Mojito is sent to the client.                            |

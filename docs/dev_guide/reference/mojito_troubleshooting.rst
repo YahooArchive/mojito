@@ -99,8 +99,8 @@ In the example ``application.json`` below, the ``simple.css`` file will be inclu
 **Q:** *My binder is getting deployed to the client, so why isn't the "init" function being called?*
 
 **A:**
-Most likely Mojito was not able to create a ``Y.one`` instance to wrap the DOM nodes that wrap mojit instances because the root element of the mojit's view template
-didn't have the ``id`` value ``{{mojit_view_id}}``. If your view template wraps its content in a ``<div>`` element, assign the value  ``{{mojit_view_id}}`` to
+Most likely Mojito was not able to create a ``Y.one`` instance to wrap the DOM nodes that wrap mojit instances because the root element of the mojit's template
+didn't have the ``id`` value ``{{mojit_view_id}}``. If your template wraps its content in a ``<div>`` element, assign the value  ``{{mojit_view_id}}`` to
 the ``id`` attribute of that ``<div>`` element: ``<div id={{mojit_view_id}}>``
 
 ------------
