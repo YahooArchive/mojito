@@ -9,7 +9,8 @@ Attaching Assets with HTMLFrameMojit
 Summary
 =======
 
-This example shows how to configure an application to use the HTML Frame Mojit (``HTMLFrameMojit``) with predefined assets (CSS) that are attached to the rendered template of a mojit.
+This example shows how to configure an application to use the HTML Frame Mojit (``HTMLFrameMojit``) 
+with predefined assets (CSS) that are attached to the rendered template of a mojit.
 
 The following topics will be covered:
 
@@ -19,11 +20,14 @@ The following topics will be covered:
 Implementation Notes
 ====================
 
-This example code's ``application.json``, shown below, configures the application to use the HTML Frame Mojit and to include CSS assets. The ``HTMLFrameMojit`` creates the 
-HTML skeleton and includes the CSS in the ``<head>`` tag because of the ``"top"`` property.  To configure Mojito, place the CSS at the bottom, wrap the ``css`` array in the 
-"bottom" property. You can also include JavaScript by including the path to JavaScript files in a ``js`` array. If you do not use the ``HTMLFrameMojit``, 
-you have to explicitly include assets as `static resources <../intro/mojito_static_resources.html>`_ in your template. To learn more about the ``HTMLFrameMojit``, 
-see the code example `Using the HTML Frame Mojit <./htmlframe_view.html>`_.
+This example code's ``application.json``, shown below, configures the application to use the 
+HTML Frame Mojit and to include CSS assets. The ``HTMLFrameMojit`` creates the 
+HTML skeleton and includes the CSS in the ``<head>`` tag because of the ``"top"`` property.  To 
+configure Mojito, place the CSS at the bottom, wrap the ``css`` array in the "bottom" property. 
+You can also include JavaScript by including the path to JavaScript files in a ``js`` array. If you 
+do not use the ``HTMLFrameMojit``, you have to explicitly include assets as 
+`static resources <../intro/mojito_static_resources.html>`_ in your template. To learn more about 
+the ``HTMLFrameMojit``, see the code example `Using the HTML Frame Mojit <./htmlframe_view.html>`_.
 
 .. code-block:: javascript
 
@@ -50,12 +54,15 @@ see the code example `Using the HTML Frame Mojit <./htmlframe_view.html>`_.
      }
    ]
 
-The template ``index.hb.html`` below uses the asset ``index.css``, but you do not need to include them in the file. If you use the same name for your CSS file as the name of your view 
-template and place the CSS in the mojit ``assets`` directory, ``HTMLFrameMojit`` will automatically include the assets in the ``<head>`` tag for you and then inject the rendered template 
-into the ``<body>`` tag.
+The template ``index.hb.html`` below uses the asset ``index.css``, but you do not need to include 
+them in the file. If you use the same name for your CSS file as the name of your template and 
+place the CSS in the mojit ``assets`` directory, ``HTMLFrameMojit`` will automatically include the 
+assets in the ``<head>`` tag for you and then inject the rendered template into the ``<body>`` tag.
 
-For example, the ``mojits/framed/assets/index.css`` file will automatically be included in the ``<head>`` tag of the rendered ``mojits/framed/views/index.hb.html`` template. 
-When the ``index.hb.index`` template below is rendered, it will be embedded in an HTML skeleton that includes a ``<html>``, ``<head>``, and ``<body>`` tags. If the ``/assets/index.css`` file exists, 
+For example, the ``mojits/framed/assets/index.css`` file will automatically be included in the 
+``<head>`` tag of the rendered ``mojits/framed/views/index.hb.html`` template. When the 
+``index.hb.index`` template below is rendered, it will be embedded in an HTML skeleton that includes 
+a ``<html>``, ``<head>``, and ``<body>`` tags. If the ``/assets/index.css`` file exists, 
 it will automatically be injected into the ``<head>`` tag.
 
 .. code-block:: html
@@ -78,8 +85,11 @@ it will automatically be injected into the ``<head>`` tag.
      </ul>
    </div>
 
-.. note:: If you do not use the ``HTMLFrameMojit`` or use CSS with a different name than the template, you will have to explicitly reference your CSS files in the ``assets`` directory. For example, if you have ``/mojits/{mojit_name}/assets/simple.css``, you can use the HTML ``<link>`` tag to reference the 
-    CSS at the following location: ``/static/{mojit_name}/assets/simple.css``
+.. note:: If you do not use the ``HTMLFrameMojit`` or use CSS with a different name than the 
+          template, you will have to explicitly reference your CSS files in the ``assets`` directory. 
+          For example, if you have ``/mojits/{mojit_name}/assets/simple.css``, you can use the HTML 
+          ``<link>`` tag to reference the CSS at the following location: 
+          ``/static/{mojit_name}/assets/simple.css``
 
 Setting Up this Example
 =======================
@@ -203,7 +213,6 @@ To create and run ``framed_assets``:
 #. From the application directory, run the server.
 
    ``$ mojito start``
-
 #. To view your application, go to the URL:
 
    http://localhost:8666
@@ -212,7 +221,5 @@ Source Code
 ===========
 
 - `Assets <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/framed_assets/mojits/framed/assets/>`_
-- `Index View Template <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/framed_assets/mojits/framed/views/index.hb.html>`_
+- `Index Template <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/framed_assets/mojits/framed/views/index.hb.html>`_
 - `Framed Assets Application <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/framed_assets/>`_
-
-

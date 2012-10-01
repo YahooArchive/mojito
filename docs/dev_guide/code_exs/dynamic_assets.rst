@@ -183,7 +183,6 @@ To create and run ``device_assets``:
 #. Create your mojit.
 
    ``$ mojito create mojit device``
-
 #. To configure your application to use ``HTMLFrameMojit`` and include JavaScript, replace the code 
    in ``application.json`` with the following:
 

@@ -260,7 +260,8 @@ To set up and run ``adding_view_engines``:
       ]
 
 
-#. To configure routing so controller functions using different templates are used, replace the code in ``routes.json`` with the following:
+#. To configure routing so controller functions using different templates are used, replace the code 
+   in ``routes.json`` with the following:
 
    .. code-block:: javascript
 
@@ -414,4 +415,4 @@ Source Code
 
 - `View Engines <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/adding_view_engines/>`_
 - `View Engine Addon <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/adding_view_engines/addons/view-engines/ejs.server.js>`_
-- `View Templates <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/adding_view_engines/mojits/myMojit/views/>`_
+- `Templates <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/adding_view_engines/mojits/myMojit/views/>`_

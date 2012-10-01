@@ -233,7 +233,7 @@ Metadata Object
 +---------------------------+---------------+---------------+---------------------+-----------------------------------+------------------------------------------------+
 | :ref:`view <view_ob>`     | object        | yes, if       | none                | N/A                               | Specifies the output format such as HTML, XML, |
 |                           |               | ``type:view`` |                     |                                   | JSON, etc., and the engine that renders the    |
-|                           |               |               |                     |                                   | view template into the output format.          |
+|                           |               |               |                     |                                   | template into the output format.          |
 +---------------------------+---------------+---------------+---------------------+-----------------------------------+------------------------------------------------+
 | :ref:`yui <yui_obj>`      | object        | no            | none                | N/A                               | The metadata about YUI modules. See the        |
 |                           |               |               |                     |                                   | :ref:`yui Object <yui_obj>` for more           |
@@ -322,14 +322,14 @@ view Object
 +------------------------+---------------+-----------+---------------+-------------------------------+-----------------------------------------------+
 | Property               | Data Type     | Required? | Default Value | Possible Values               | Description                                   |
 +========================+===============+===========+===============+===============================+===============================================+
-| ``engine``             | string        | yes       | none          | Any view engine found         | The engine that renders the view template.    |  
+| ``engine``             | string        | yes       | none          | Any view engine found         | The engine that renders the template.    |  
 |                        |               |           |               | in ``addons/view-engines/``   | Two examples of rendering engines are         |
 |                        |               |           |               | of the application.           | Dust and Handlebars.                          |
 +------------------------+---------------+-----------+---------------+-------------------------------+-----------------------------------------------+
-| ``outputFormat``       | string        | yes       | none          | N/A                           | The output format that a view template is     |
+| ``outputFormat``       | string        | yes       | none          | N/A                           | The output format that a template is     |
 |                        |               |           |               |                               | rendered into, such as HTML, XML, and JSON.   |
 |                        |               |           |               |                               | The ``outputFormat`` matches the file         |
-|                        |               |           |               |                               | extension of the view template. For example,  |
+|                        |               |           |               |                               | extension of the template. For example,  |
 |                        |               |           |               |                               | the output format for ``index.hb.html`` would |
 |                        |               |           |               |                               | be HTML.                                      |
 +------------------------+---------------+-----------+---------------+-------------------------------+-----------------------------------------------+

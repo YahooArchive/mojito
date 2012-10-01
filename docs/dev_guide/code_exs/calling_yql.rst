@@ -10,8 +10,10 @@ Calling YQL from a Mojit
 Summary
 =======
 
-This example shows how to use YQL to get Flickr images from a Mojito application. YQL allows you to get data from many sources in the form of JSON, JSONP, and XML. 
-For more information about YQL, see the `YQL Guide <http://developer.yahoo.com/yql/guide/>`_. For this example, you will need to `get a Flickr API key <http://www.flickr.com/services/api/keys/apply/>`_.
+This example shows how to use YQL to get Flickr images from a Mojito application. YQL allows you to 
+get data from many sources in the form of JSON, JSONP, and XML. For more information about YQL, see 
+the `YQL Guide <http://developer.yahoo.com/yql/guide/>`_. For this example, you will need to 
+`get a Flickr API key <http://www.flickr.com/services/api/keys/apply/>`_.
 
 The following topics will be covered:
 
@@ -32,16 +34,22 @@ The following screenshot shows the grid of Flickr images retrieved by YQL.
 Forming the YQL Statement and Flickr Photo URI
 ----------------------------------------------
 
-The mojit model needs a method to access data. This code example uses YQL to access Flickr data, so we need to form the YQL statement to get the Flickr image information. Because the response from 
-the YQL statement contains photo information and not the URIs to images, you also need to form the URI scheme for Flickr photos.
+The mojit model needs a method to access data. This code example uses YQL to access Flickr data, so 
+we need to form the YQL statement to get the Flickr image information. Because the response from 
+the YQL statement contains photo information and not the URIs to images, you also need to form the 
+URI scheme for Flickr photos.
 
-To get photo data from Flickr, you use the YQL table ``flickr.photos.search``. This table allows you to get photos that are associated with a string. In the YQL statement below, we use the table to 
-return Flickr photos whose title, description, or tags contain the text "muppet". Click on the YQL statement to open the YQL Console, and then click the **TEST** button to see the returned XML response.
+To get photo data from Flickr, you use the YQL table ``flickr.photos.search``. This table allows you 
+to get photos that are associated with a string. In the YQL statement below, we use the table to 
+return Flickr photos whose title, description, or tags contain the text "muppet". Click on the YQL 
+statement to open the YQL Console, and then click the **TEST** button to see the returned XML 
+response.
 
 `select * from flickr.photos.search where text="muppets" and api_key="84921e87fb8f2fc338c3ff9bf51a412e" <http://developer.yahoo.com/yql/console/#h=select%20*%20from%20flickr.photos.search%20where%20has_geo%3D%22true%22%20and%20text%3D%22san%20francisco%22%20and%20api_key%3D%2284921e87fb8f2fc338c3ff9bf51a412e%22>`_
 
-As you can see from the partial response from YQL below, the photo URIs are not returned, just metadata about the photos. You need to extract metadata and use it to form the 
-photo URIs to get the photos. We'll look at the URI scheme for the photos next.
+As you can see from the partial response from YQL below, the photo URIs are not returned, just 
+metadata about the photos. You need to extract metadata and use it to form the photo URIs to get 
+the photos. We'll look at the URI scheme for the photos next.
 
 .. code-block:: xml
 
@@ -54,7 +62,8 @@ photo URIs to get the photos. We'll look at the URI scheme for the photos next.
      </results>
    </query>
 
-Using the ``farm``, ``server``, ``id``, ``secret``, and ``title`` attributes from the response, you form the photo URIs using the following URI scheme:
+Using the ``farm``, ``server``, ``id``, ``secret``, and ``title`` attributes from the response, you 
+form the photo URIs using the following URI scheme:
 
 ``http://farm + {farm} + static.flickr.com/ + {server} + / + {id} + _ + {secret} + .jpg``
 
@@ -71,10 +80,15 @@ The mojit model for this code example does the following:
 - forms the photo URIs
 - passes photo information to the controller
 
-In the example ``model.server.js`` below, the ``search`` function creates the YQL statement and passes it to the ``YQL`` function made available by the `YQL Module of YUI <http://developer.yahoo.com/yui/3/yql/>`_.
+In the example ``model.server.js`` below, the ``search`` function creates the YQL statement and 
+passes it to the ``YQL`` function made available by the 
+`YQL Module of YUI <http://developer.yahoo.com/yui/3/yql/>`_.
 
-The ``YQL`` function makes the REST call to the YQL Web services, and the response is passed to an anonymous function. This function extracts the fields from the response that are needed to 
-create the photo URIs and then stores those photo URIs, photo IDs, and titles in objects. These objects are stored in the ``photos`` array and passed to the controller through the ``callback`` function.
+The ``YQL`` function makes the REST call to the YQL Web services, and the response is passed to an 
+anonymous function. This function extracts the fields from the response that are needed to 
+create the photo URIs and then stores those photo URIs, photo IDs, and titles in objects. These 
+objects are stored in the ``photos`` array and passed to the controller through the ``callback`` 
+function.
 
 .. code-block: javascript
 
@@ -132,7 +146,12 @@ create the photo URIs and then stores those photo URIs, photo IDs, and titles in
      };
    }, '0.0.1', {requires: ['yql']});
 
-.. note:: If you are new to the Node.js world, when you create models for your applications, take these words to heart: **DON'T WRITE BLOCKING CODE**. Models need to be asynchronous in order to allow the rest of Mojito execution to continue, so you cannot call any model functions synchronously. You must call them with a callback function to be executed when the model receives its data. Because you don't know when the model is getting its data, you have to assume that it may block.
+.. note:: If you are new to the Node.js world, when you create models for your applications, take 
+          these words to heart: **DON'T WRITE BLOCKING CODE**. Models need to be asynchronous in 
+          order to allow the rest of Mojito execution to continue, so you cannot call any model 
+          functions synchronously. You must call them with a callback function to be executed when 
+          the model receives its data. Because you don't know when the model is getting its data, 
+          you have to assume that it may block.
 
 Calling the Model from the Controller
 -------------------------------------
@@ -143,12 +162,17 @@ The controller in this code example performs the following functions:
 - passes the query string parameters to the ``search`` function of the model
 - receives the ``photos`` array from the ``search`` function and sends an object to the template
 
-The ``index`` function in the ``controller.server.js`` below uses the ``getFromUrl`` method of the ``Params`` addon to get the query string parameters to form the YQL statement. The YQL Statement and 
-the `paging and limit parameters <http://developer.yahoo.com/yql/guide/paging.html>`_ are then passed to the ``search`` function of the model.
+The ``index`` function in the ``controller.server.js`` below uses the ``getFromUrl`` method of the 
+``Params`` addon to get the query string parameters to form the YQL statement. The YQL Statement and 
+the `paging and limit parameters <http://developer.yahoo.com/yql/guide/paging.html>`_ are then 
+passed to the ``search`` function of the model.
 
-To access model functions from the controller, you use the Action Context (``ac``) object with the following syntax: ``ac.models.{model_name}``. This code example uses the ``flickr`` mojit, so to 
-access the model from the controller, you would use ``ac.models.flickr`` as seen in the ``model.server.js`` below. Once the callback function passed to ``search`` returns the array of photo objects, 
-the ``done`` method sends the ``photos`` array and the query string parameters to the ``index`` template.
+To access model functions from the controller, you use the Action Context (``ac``) object with the 
+following syntax: ``ac.models.{model_name}``. This code example uses the ``flickr`` mojit, so to 
+access the model from the controller, you would use ``ac.models.flickr`` as seen in the 
+``model.server.js`` below. Once the callback function passed to ``search`` returns the array of 
+photo objects, the ``done`` method sends the ``photos`` array and the query string parameters to 
+the ``index`` template.
 
 .. code-block:: javascript
 
@@ -190,7 +214,8 @@ To set up and run ``model_yql``:
 
    ``$ mojito create mojit flickr``
 
-#. To specify that your application uses ``HTMLFrameMojit`` and the child ``flickr`` mojit, replace the code in ``application.json`` with the following:
+#. To specify that your application uses ``HTMLFrameMojit`` and the child ``flickr`` mojit, replace 
+   the code in ``application.json`` with the following:
 
    .. code-block:: javascript
 
@@ -218,7 +243,8 @@ To set up and run ``model_yql``:
         }
       ]
 
-#. To configure the routing to call the ``index`` method an instance of ``HTMLFrameMojit``, replace the code in ``routes.json`` with the following:
+#. To configure the routing to call the ``index`` method an instance of ``HTMLFrameMojit``, replace 
+   the code in ``routes.json`` with the following:
 
    .. code-block:: javascript
 
@@ -234,7 +260,8 @@ To set up and run ``model_yql``:
       ]
 
 #. Change to ``mojits/flickr``.
-#. Modify the mojit model to call YQL to get Flickr photos by replacing the code in ``models/model.server.js`` with the following:
+#. Modify the mojit model to call YQL to get Flickr photos by replacing the code in 
+   ``models/model.server.js`` with the following:
 
    .. code-block:: javascript
 
@@ -293,7 +320,8 @@ To set up and run ``model_yql``:
         };
       }, '0.0.1', {requires: ['yql']});
 
-#. `Get a Flickr API key <http://www.flickr.com/services/api/keys/apply/>`_ and then replace the string ``'{Flickr API Key}'`` in your model with your API key.
+#. `Get a Flickr API key <http://www.flickr.com/services/api/keys/apply/>`_ and then replace the 
+   string ``'{Flickr API Key}'`` in your model with your API key.
 
    .. code-block:: javascript
 
@@ -304,7 +332,8 @@ To set up and run ``model_yql``:
         ...
       }
 
-#. Modify the mojit controller to get data from the model by replacing the code in ``controller.server.js`` with the following:
+#. Modify the mojit controller to get data from the model by replacing the code in 
+   ``controller.server.js`` with the following:
 
    .. code-block:: javascript
    
@@ -368,7 +397,8 @@ To set up and run ``model_yql``:
         border-color:#000;
       }
 
-#. Modify your ``index`` template by replacing the code in ``views/index.hb.html`` with the following:
+#. Modify your ``index`` template by replacing the code in ``views/index.hb.html`` with the 
+   following:
 
    .. code-block:: html
 
@@ -383,11 +413,9 @@ To set up and run ``model_yql``:
 #. From the application directory, run the server.
 
    ``$ mojito start``
-
 #. To view your application, go to the URL below:
 
    http://localhost:8666
-
 #. Get 50 Flickr photos using the search query "mojito" with the following URL:
 
    http://localhost:8666?q=mojito&size=50

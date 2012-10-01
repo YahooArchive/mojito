@@ -67,7 +67,7 @@ All Parameters
 To get all of the query string parameters, you call ``getFromUrl`` or its alias ``url`` without passing a key as a parameter.
 
 In this example controller, all of the query string parameter are stored in the ``qs_params`` array, which ``ac.done`` makes available in 
-the view template.
+the template.
 
 .. code-block:: javascript
 
@@ -103,7 +103,7 @@ Single
 To get a parameter from the POST body, call ``getFromBody`` with the key as the parameter. You can also use the alias ``body`` to get a parameter
 from the POST body.
 
-In the example controller below, the POST body parameter ``name`` is retrieved and then uses the ``done`` method to make it accessible to the view template.
+In the example controller below, the POST body parameter ``name`` is retrieved and then uses the ``done`` method to make it accessible to the template.
 
 .. code-block:: javascript
 
@@ -328,7 +328,7 @@ Getting Cookie Data
 -------------------
 
 The method ``cookie.get(name)`` is used to get the cookie value associated with ``name``. In the example controller below, the cookie value 
-for ``'user'`` is obtained and then used to pass user information to the view template.
+for ``'user'`` is obtained and then used to pass user information to the template.
 
 .. code-block:: javascript
 

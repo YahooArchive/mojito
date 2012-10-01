@@ -67,7 +67,8 @@ The double braces with a pound are used for lists or conditional
 expression, such as ``{{#show}...{{/show}``. Handlebars also has a built-in conditional structure
 that allow you to form the same conditional expression in the following way: ``{{#if show}}...{{/if}}``
 
-You also use double braces with a pound to access properties within an object, which is how the ``hours`` property of the ``time`` object is accessed here.
+You also use double braces with a pound to access properties within an object, which is how the 
+``hours`` property of the ``time`` object is accessed here.
 
 
 .. code-block:: html
@@ -100,7 +101,6 @@ To set up and run ``simple_view``:
 #. Create your mojit.
 
    ``$ mojito create mojit simple``
-
 #. To specify that your application use the ``simple`` mojit, replace the code in 
    ``application.json`` with the following:
 
@@ -159,7 +159,8 @@ To set up and run ``simple_view``:
         };
       }, '0.0.1', {requires: []});
 
-#. Modify your ``index`` template by replacing the code in ``views/index.hb.html`` with the following:
+#. Modify your ``index`` template by replacing the code in ``views/index.hb.html`` with the 
+   following:
 
    .. code-block:: html
 
@@ -179,7 +180,6 @@ To set up and run ``simple_view``:
 #. From the application directory, run the server.
 
    ``$ mojito start``
-
 #. To view your application, go to the URL below:
 
    http://localhost:8666
@@ -189,5 +189,3 @@ Source Code
 
 - `Mojit Controller <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/simple_view/mojits/simple/controller.server.js>`_
 - `Simple View Application <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/simple_view/>`_
-
-
