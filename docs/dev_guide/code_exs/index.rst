@@ -1,5 +1,3 @@
-
-
 =========================
 Overview of Code Examples
 =========================
@@ -8,12 +6,12 @@ The code examples intend to provide solutions for common problems. Each example 
 skill level are given at the beginning of each example.
 
 Prerequisites
-#############
+=============
 
 Complete the `Getting Started tutorial <../getting_started/>`_.
 
 Format of Code Examples
-#######################
+=======================
 
 In general, the code examples have the following format:
 
@@ -31,7 +29,7 @@ In general, the code examples have the following format:
 .. note:: The steps in **Setting Up This Example** assume that you are running the examples on a local host. Thus, the links provided to the application URL will look like the following: ``http://localhost:8666/{code_example}``. To view examples running on a remote server, point your browser to the appropriate application URL.
 
 Table of Contents
-#################
+=================
 
 .. toctree::
    :maxdepth: 2

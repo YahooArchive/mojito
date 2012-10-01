@@ -1,5 +1,3 @@
-
-
 ==============
 Binding Events
 ==============
@@ -9,7 +7,7 @@ Binding Events
 **Difficulty Level:** Advanced
 
 Summary
-#######
+=======
 
 This example shows how to bind events to a mojit, configure code to run on the client, and make AJAX calls to the YQL Web service. The application listens for events and then makes AJAX calls to 
 YQL to get Flickr photo information.
@@ -22,10 +20,10 @@ The following topics will be covered:
 - making AJAX calls to YQL from the binder
 
 Implementation Notes
-####################
+====================
 
 Configuring the Application to Run on the Client
-================================================
+------------------------------------------------
 
 Mojito lets you configure applications to run on either the server or client side. This example uses binders that are deployed to the client, so we need to configure Mojito to deploy
 the application to the client, where it will be executed by the browser.
@@ -52,7 +50,7 @@ To configure Mojito to run on the client, you simply set the ``"deploy"`` proper
    ]
 
 Getting Data with YQL in the Model
-==================================
+----------------------------------
 
 In the mojit model, the `YUI YQL Query Utility <http://developer.yahoo.com/yui/3/yql/>`_ is used to get Flickr photo information. To access the utility in your model, specify ``'yql'`` 
 in the ``requires`` array as seen in the code snippet below:
@@ -132,12 +130,12 @@ wraps the photo information in an object and stores those objects in the ``image
 For a more detailed explanation about how to use YQL in your Mojito application, see `Calling YQL from a Mojit <calling_yql.html>`_. For more information about YQL, see the `YQL Guide <http://developer.yahoo.com/yql/guide>`_.
 
 Binding Events
-==============
+--------------
 
 This section will discuss the basics of binding events in Mojito and then look at the binder used in this code example.
 
 Binder Basics
--------------
+#############
 
 A mojit may have zero, one, or many binders within the ``binders`` directory. Each binder will be deployed to the browser along with the 
 rest of the mojit code, where the client-side Mojito runtime will call it appropriately.  On the client,
@@ -169,7 +167,7 @@ The skeleton of the ``binders/index.js`` file below illustrates the basic struct
    }, '0.0.1', {requires: ['mojito']});
 
 Examining the PageMojitBinder
------------------------------
+#############################
 
 This code example uses the binder ``PageMojitBinder`` to perform the following:
 
@@ -269,7 +267,7 @@ bind the ``flipper`` and ``showOutlay`` functions to handle click and mouseover 
    ...
 
 After a little analysis, the full ``binders/index.js`` below should be easier to understand. The binder attaches event handlers to nodes, invokes a function in the controller, and updates the content in 
-the view template. The binder also has a couple of helper functions for parsing and requires the IO and YQL modules, which are specified in the ``requires`` array.
+the template. The binder also has a couple of helper functions for parsing and requires the IO and YQL modules, which are specified in the ``requires`` array.
 
 .. code-block:: javascript
 
@@ -355,7 +353,7 @@ the view template. The binder also has a couple of helper functions for parsing 
    }, '0.0.1', {requires: ['mojito', 'yql', 'io', 'dump', 'mojito-client']});
 
 Using Paging
-============
+------------
 
 The paging for this code example relies on the application configuration to set route paths and the controller to create links to access previous and next pages.
 
@@ -526,7 +524,7 @@ the ``createLink`` function to create URLs for the **next** and **prev** links.
    }, '0.0.1', {requires: ['dump']});
 
 Setting Up this Example
-#######################
+=======================
 
 To set up and run ``binding_events``:
 
@@ -561,7 +559,7 @@ To set up and run ``binding_events``:
         }
       ]
 
-#. To configure routing to call the ``index`` action from the instance of the ``HTMLFrameMojit``, create the file ``routes.json`` with the following:
+#. To configure routing to call the ``index`` action from the instance of the ``HTMLFrameMojit``, replace the code in ``routes.json`` with the following:
 
    .. code-block:: javascript
 
@@ -582,8 +580,8 @@ To set up and run ``binding_events``:
       ]
 
 #. Change to ``mojits/PageMojit``.
-
-#. To have the controller get data from the model and create links for paging, replace the code in ``controller.server.js`` with the following:
+#. To have the controller get data from the model and create links for paging, replace the code in ``controller.server.js`` 
+   with the following:
 
    .. code-block:: javascript
 
@@ -696,7 +694,8 @@ To set up and run ``binding_events``:
         };
       }, '0.0.1', {requires: ['yql']});
 
-#. To create the binder for click events and invoke the ``index`` function of the controller, create the file ``binders/index.js`` with the following:
+#. To create the binder for click events and invoke the ``index`` function of the controller, replace the code in ``binders/index.js`` 
+   with the following:
 
    .. code-block:: javascript
 
@@ -798,7 +797,7 @@ To set up and run ``binding_events``:
         }
       }, '0.0.1', {requires: ['yql', 'io', 'dump']});
 
-#. To display links to photos and associated photo data in the rendered view template, replace the code in ``views/index.hb.html`` with the following:
+#. To display links to photos and associated photo data in the rendered template, replace the code in ``views/index.hb.html`` with the following:
 
    .. code-block:: html
 
@@ -824,10 +823,6 @@ To set up and run ``binding_events``:
           {{/data}}
           </ul>
         </div>
-        <!--
-        <div id="display" style="position: absolute; right: 0; top: 100px; background-color: pink; text-align: center;">Model Unknown
-        </div>
-        -->
         <div style="width: 50%; float: right">
         <!-- load image here dynamically -->
           <div id="display" style="margin: 0 auto;">
@@ -845,7 +840,7 @@ To set up and run ``binding_events``:
    http://localhost:8666
 
 Source Code
-###########
+===========
 
 - `Application Configuration <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/binding_events/application.json>`_
 - `Mojit Binder <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/binding_events/mojits/PagerMojit/binders/index.js>`_

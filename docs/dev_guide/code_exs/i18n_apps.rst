@@ -1,5 +1,3 @@
-
-
 ===================================
 Internationalizing Your Application
 ===================================
@@ -9,7 +7,7 @@ Internationalizing Your Application
 **Difficulty Level:** Intermediate
 
 Summary
-#######
+=======
 
 This example shows how to use the i18n support built into Mojito that includes top-level defaults and the capability to override the default languages of countries.
 
@@ -21,10 +19,10 @@ The following topics will be covered:
 - specifying the resource bundles for the YUI Internationalization utility
 
 Implementation Notes
-####################
+====================
 
 Resources Bundles for Languages
-===============================
+-------------------------------
 
 Mojito uses the `YUI 3 Internationalization <http://developer.yahoo.com/yui/3/intl/#switchingLangs>`_ utility to support internationalization. To use the YUI Internationalization utility in Mojito, 
 you create resource bundles in JSON that specify the keys and values for the strings that need localizing. These resource bundles are JavaScript files that are placed in the ``lang`` directory of the mojit.
@@ -59,7 +57,7 @@ and the ``TITLE`` key with its value. The YUI Internationalization utility is in
    }, "3.1.0", {requires: ['intl']});
 
 Using the intl Addon
-====================
+--------------------
 
 In the ``controller.server.js`` file below, the ``intl.lang`` and ``intl.formData`` methods rely on the YUI Internationalization utility to select the language and format of the title and date. 
 The YUI Internationalization utility uses the ``Intl.lookupBestLang`` method to determine the best language based on an application's request and a module's language support. You also need to 
@@ -85,7 +83,7 @@ include the `Intl addon <../../api/classes/Intl.common.html>`_ by adding the str
     }, '0.0.1', { requires: ['mojito-intl-addon']});
 
 Configuring a Mojit to Run on Client
-####################################
+------------------------------------
 
 When trying to deliver HTML pages with the language and date format preferred by the user, it's best to rely on the user's browser settings. YUI, when running on the client side, 
 can detect the browser settings to select the default translation and date format. During server-side execution, however, the preferred language and date format is determined by 
@@ -116,20 +114,17 @@ To configure Mojito to run on the client, you simply set the ``"deploy"`` proper
    ]
 
 Setting Up this Example
-#######################
+=======================
 
 To set up and run ``locale_i18n``:
 
 #. Create your application.
 
    ``$ mojito create app locale_i18n``
-
 #. Change to the application directory.
-
 #. Create your mojit.
 
    ``$ mojito create mojit i18n``
-
 #. To configure you application to have the mojit code run on the client, replace the code in ``application.json`` with the following:
 
    .. code-block:: javascript
@@ -151,7 +146,7 @@ To set up and run ``locale_i18n``:
         }
       ]
 
-#. To configure routing, create the file ``routes.json`` with the following:
+#. To configure routing, replace the code in ``routes.json`` with the following:
 
    .. code-block:: javascript
 
@@ -167,7 +162,6 @@ To set up and run ``locale_i18n``:
       ]
 
 #. Change to ``mojits/i18n``.
-
 #. Replace the code in ``controller.server.js`` with the following:
 
    .. code-block:: javascript
@@ -234,7 +228,7 @@ To set up and run ``locale_i18n``:
         );
       }, "3.1.0", {requires: ['intl']});
 
-#. To modify the index view template to show a localized message, replace the code in ``views/index.hb.html`` with the following:
+#. To modify the index template to show a localized message, replace the code in ``views/index.hb.html`` with the following:
 
    .. code-block:: javascript
 
@@ -251,13 +245,12 @@ To set up and run ``locale_i18n``:
 #. Configure your browser to use French as the default language. To change the language preferences of Firefox or Chrome, see the `Firefox instructions <http://support.mozilla.com/en-US/kb/Options%20window%20-%20Content%20panel?s=change+preference+language&as=s#w_languages>`_ and `Chrome instructions <http://www.google.com/support/chrome/bin/answer.py?hl=en&answer=95416&from=95415&rd=1>`_.
 
 #. Now go to your `application URL <http://localhost:8666>`_ and see the page display French.
-
 #. To force the page to display a specific language and date format, you can also use the query string parameter ``lang.`` The URL below uses the ``lang`` parameter to display the page in Australian English:
 
    http://localhost:8666?lang=en-AU
 
 Source Code
-###########
+===========
 
 - `Resource Bundles for Languages <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/locale_i18n/mojits/i18n/lang/>`_
 - `Mojit Controller <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/locale_i18n/mojits/i18n/controller.server.js>`_

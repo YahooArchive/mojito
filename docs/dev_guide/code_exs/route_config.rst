@@ -1,5 +1,3 @@
-
-
 ===================
 Configuring Routing
 ===================
@@ -9,12 +7,12 @@ Configuring Routing
 **Difficulty Level:** Beginning
 
 Summary
-#######
+=======
 
 This example shows how to configure routing for your Mojito application. In Mojito, routing is the mapping of URLs to mojit actions.
 
 Implementation Notes
-####################
+====================
 
 Before you create routes for your application, you need to specify one or more mojit instances that can be mapped to URLs. In the ``application.json`` below, the ``mapped_mojit`` instance of ``RoutingMojit`` 
 is created, which can then be associated in a route defined in ``routes.json``.
@@ -79,20 +77,17 @@ The ``routes.json`` above configures the routes below. Notice that the wildcard 
 - ``http://localhost:8666/{any_path}``
 
 Setting Up this Example
-#######################
+=======================
 
 To set up and run ``configure_routing``:
 
 #. Create your application.
 
    ``$ mojito create app configure_routing``
-
 #. Change to the application directory.
-
 #. Create your mojit.
 
    ``$ mojito create mojit RoutingMojit``
-
 #. To create an instance of ``RoutingMojit``, replace the code in ``application.json`` with the following:
 
    .. code-block:: javascript
@@ -109,7 +104,7 @@ To set up and run ``configure_routing``:
         }
       ]
 
-#. To map routes to specific actions of the mojit instance, create the file ``routes.json`` with the following:
+#. To map routes to specific actions of the mojit instance, replace the code in ``routes.json`` with the following:
 
    .. code-block:: javascript
 
@@ -137,7 +132,6 @@ To set up and run ``configure_routing``:
    The ``mapped_mojit`` instance is created in ``application.json`` and configured here to be used when HTTP GET calls are made on the paths ``/index`` or ``/show``.
 
 #. Change to ``mojits/RoutingMojit``.
-
 #. Modify your controller to contain the ``index`` and ``show`` actions by replacing the code in ``controller.server.js`` with the following:
 
    .. code-block:: javascript
@@ -186,7 +180,7 @@ To set up and run ``configure_routing``:
         }
       }, '0.0.1', {requires: []});
 
-#. To display your route information in your ``index`` view template, replace the content of ``index.hb.html`` with the following:
+#. To display your route information in your ``index`` template, replace the content of ``index.hb.html`` with the following:
 
    .. code-block:: html
 
@@ -196,7 +190,7 @@ To set up and run ``configure_routing``:
         <b>Route Name:</b> {{name}}
       </div>
 
-#. To display your route information in your ``show`` view template, create the file ``show.hb.html`` with the following:
+#. To display your route information in your ``show`` template, create the file ``show.hb.html`` with the following:
 
    .. code-block:: html
 
@@ -207,13 +201,12 @@ To set up and run ``configure_routing``:
       </div>
 
 #. Run the server and open the following URL in a browser to see the ``index`` route: http://localhost:8666/index
-
 #. To see the ``show`` route, open the following URL in a browser:
 
    http://localhost:8666/show
 
 Source Code
-###########
+===========
 
 - `Application Configuration <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/configure_routing/application.json>`_
 - `Route Configuration <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/configure_routing/routes.json>`_

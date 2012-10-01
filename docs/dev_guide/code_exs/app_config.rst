@@ -1,5 +1,3 @@
-
-
 =================================
 Basic Configuring of Applications
 =================================
@@ -9,12 +7,12 @@ Basic Configuring of Applications
 **Difficulty Level:** Beginning
 
 Summary
-#######
+=======
 
 This example shows how to configure a mojit and the routing for your application.
 
 Implementation Notes
-####################
+====================
 
 The ``application.json`` file is used to specify the mojits that your application can use. The example ``application.json`` below specifies that the application use the mojit ``SimpleMojit``.
 
@@ -46,11 +44,11 @@ The routing configuration for Mojito applications is contained in ``routes.json`
      }
    ]
 
-The ``index`` method is a canned method in the controller when you create a mojit. To learn how to create view templates that get data from the controller, 
+The ``index`` method is a canned method in the controller when you create a mojit. To learn how to create templates that get data from the controller, 
 see `Creating a Simple View with Handlebars <simple_view_template.html>`_.
 
 Setting Up this Example
-#######################
+=======================
 
 To set up and run ``simple_config``:
 
@@ -59,7 +57,6 @@ To set up and run ``simple_config``:
    ``$ mojito create app simple_config``
 
 #. Change to the application directory.
-
 #. Create your mojit.
 
    ``$ mojito create mojit SimpleMojit``
@@ -79,7 +76,7 @@ To set up and run ``simple_config``:
         }
       ]
 
-#. To configure routing, create the file ``routes.json`` with the following:
+#. To configure routing, replace the code in ``routes.json`` with the following:
 
    .. code-block:: javascript
 
@@ -103,7 +100,7 @@ To set up and run ``simple_config``:
    http://localhost:8666
 
 Source Code
-###########
+===========
 
 - `Simple Config Application <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/simple_config/>`_
 

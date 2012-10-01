@@ -1,5 +1,4 @@
 
-
 ========================
 Calling YQL from a Mojit
 ========================
@@ -9,7 +8,7 @@ Calling YQL from a Mojit
 **Difficulty Level:** Intermediate
 
 Summary
-#######
+=======
 
 This example shows how to use YQL to get Flickr images from a Mojito application. YQL allows you to get data from many sources in the form of JSON, JSONP, and XML. 
 For more information about YQL, see the `YQL Guide <http://developer.yahoo.com/yql/guide/>`_. For this example, you will need to `get a Flickr API key <http://www.flickr.com/services/api/keys/apply/>`_.
@@ -22,7 +21,7 @@ The following topics will be covered:
 - calling the YQL Web service with the `YQL Module of YUI <http://developer.yahoo.com/yui/3/yql/>`_
 
 Implementation Notes
-####################
+====================
 
 The following screenshot shows the grid of Flickr images retrieved by YQL.
 
@@ -31,7 +30,7 @@ The following screenshot shows the grid of Flickr images retrieved by YQL.
    :width: 401px
 
 Forming the YQL Statement and Flickr Photo URI
-==============================================
+----------------------------------------------
 
 The mojit model needs a method to access data. This code example uses YQL to access Flickr data, so we need to form the YQL statement to get the Flickr image information. Because the response from 
 the YQL statement contains photo information and not the URIs to images, you also need to form the URI scheme for Flickr photos.
@@ -62,7 +61,7 @@ Using the ``farm``, ``server``, ``id``, ``secret``, and ``title`` attributes fro
 Having formed the YQL statement and the Flickr photo URI to get data, we can create the model.
 
 Creating the Model
-==================
+------------------
 
 The mojit model for this code example does the following:
 
@@ -136,20 +135,20 @@ create the photo URIs and then stores those photo URIs, photo IDs, and titles in
 .. note:: If you are new to the Node.js world, when you create models for your applications, take these words to heart: **DON'T WRITE BLOCKING CODE**. Models need to be asynchronous in order to allow the rest of Mojito execution to continue, so you cannot call any model functions synchronously. You must call them with a callback function to be executed when the model receives its data. Because you don't know when the model is getting its data, you have to assume that it may block.
 
 Calling the Model from the Controller
-=====================================
+-------------------------------------
 
 The controller in this code example performs the following functions:
 
 - gets the query string parameters using the `Params addon <../../api/classes/Params.common.html>`_
 - passes the query string parameters to the ``search`` function of the model
-- receives the ``photos`` array from the ``search`` function and sends an object to the view template
+- receives the ``photos`` array from the ``search`` function and sends an object to the template
 
 The ``index`` function in the ``controller.server.js`` below uses the ``getFromUrl`` method of the ``Params`` addon to get the query string parameters to form the YQL statement. The YQL Statement and 
 the `paging and limit parameters <http://developer.yahoo.com/yql/guide/paging.html>`_ are then passed to the ``search`` function of the model.
 
 To access model functions from the controller, you use the Action Context (``ac``) object with the following syntax: ``ac.models.{model_name}``. This code example uses the ``flickr`` mojit, so to 
 access the model from the controller, you would use ``ac.models.flickr`` as seen in the ``model.server.js`` below. Once the callback function passed to ``search`` returns the array of photo objects, 
-the ``done`` method sends the ``photos`` array and the query string parameters to the ``index`` view template.
+the ``done`` method sends the ``photos`` array and the query string parameters to the ``index`` template.
 
 .. code-block:: javascript
 
@@ -178,7 +177,7 @@ the ``done`` method sends the ``photos`` array and the query string parameters t
    }, '0.0.1', {requires: []});
 
 Setting Up this Example
-#######################
+=======================
 
 To set up and run ``model_yql``:
 
@@ -187,7 +186,6 @@ To set up and run ``model_yql``:
    ``$ mojito create app model_yql``
 
 #. Change to the application directory.
-
 #. Create your mojit.
 
    ``$ mojito create mojit flickr``
@@ -220,7 +218,7 @@ To set up and run ``model_yql``:
         }
       ]
 
-#. To configure the routing to call the ``index`` method an instance of ``HTMLFrameMojit``, create the file ``routes.json`` with the following:
+#. To configure the routing to call the ``index`` method an instance of ``HTMLFrameMojit``, replace the code in ``routes.json`` with the following:
 
    .. code-block:: javascript
 
@@ -236,7 +234,6 @@ To set up and run ``model_yql``:
       ]
 
 #. Change to ``mojits/flickr``.
-
 #. Modify the mojit model to call YQL to get Flickr photos by replacing the code in ``models/model.server.js`` with the following:
 
    .. code-block:: javascript
@@ -345,7 +342,7 @@ To set up and run ``model_yql``:
         };
       }, '0.0.1', {requires: []});
 
-#. Create the file ``assets/index.css`` for the application's CSS with the following:
+#. Replace the contents of ``assets/index.css`` for the application's CSS with the following:
 
    .. code-block:: css
 
@@ -371,7 +368,7 @@ To set up and run ``model_yql``:
         border-color:#000;
       }
 
-#. Modify your ``index`` view template by replacing the code in ``views/index.hb.html`` with the following:
+#. Modify your ``index`` template by replacing the code in ``views/index.hb.html`` with the following:
 
    .. code-block:: html
 
@@ -396,7 +393,7 @@ To set up and run ``model_yql``:
    http://localhost:8666?q=mojito&size=50
 
 Source Code
-###########
+===========
 
 - `Mojit Model <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/model_yql/mojits/flickr/models/model.server.js>`_
 - `Mojit Controller <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/model_yql/mojits/flickr/controller.server.js>`_

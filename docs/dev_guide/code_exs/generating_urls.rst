@@ -1,5 +1,3 @@
-
-
 ===============
 Generating URLs
 ===============
@@ -9,7 +7,7 @@ Generating URLs
 **Difficulty Level:** Intermediate
 
 Summary
-#######
+=======
 
 This example shows you a way to generate URLs to a particular view independent of the controller or action of the mojit.
 
@@ -19,7 +17,7 @@ The following topics will be covered:
 - creating a URL in the mojit controller with the `Url addon <../../api/classes/Url.common.html>`_
 
 Implementation Notes
-####################
+====================
 
 The route paths for this code example are defined in the routing configuration file ``routes.json``. You can define any path and then associate that path with a mojit instance and an action. 
 When the client makes an HTTP request on that path, the associated action on the mojit instance defined in ``application.json`` will be executed. Before creating the routes for the application, 
@@ -87,20 +85,17 @@ based on the path defined in ``routes.json``.
    }, '0.0.1', {requires: ['mojito-intl-addon']});
 
 Setting Up this Example
-#######################
+=======================
 
 To set up and run ``generating_urls``:
 
 #. Create your application.
 
    ``$ mojito create app generating_urls``
-
 #. Change to the application directory.
-
 #. Create your mojit.
 
    ``$ mojito create mojit GenURLMojit``
-
 #. To configure your application to use ``GenURLMojit``, replace the code in ``application.json`` with the following:
 
    .. code-block:: javascript
@@ -137,7 +132,6 @@ To set up and run ``generating_urls``:
       ]
 
 #. Change to ``mojits/GenURLMojit``.
-
 #. Enable the controller to create a URL using the route paths defined in ``routes.json`` by replacing the code in ``controller.server.js`` with the following:
 
    .. code-block:: javascript
@@ -158,7 +152,7 @@ To set up and run ``generating_urls``:
         };
       }, '0.0.1', {requires: ['mojito-intl-addon']});
 
-#. To display the rendered ``index`` view template when HTTP GET is called on the root path,  replace the code in ``views/index.hb.html`` with the following:
+#. To display the rendered ``index`` template when HTTP GET is called on the root path,  replace the code in ``views/index.hb.html`` with the following:
 
    .. code-block:: html
 
@@ -173,7 +167,7 @@ To set up and run ``generating_urls``:
         </div>
       </div>
 
-#. To display the rendered ``contactus`` view template when the ``contactus`` action is executed,  replace the code in ``views/contactus.hb.html`` with the following:
+#. To display the rendered ``contactus`` template when the ``contactus`` action is executed,  replace the code in ``views/contactus.hb.html`` with the following:
 
    .. code-block:: html
 
@@ -188,11 +182,10 @@ To set up and run ``generating_urls``:
       </div>
 
 #. Run the server and open the following URL in a browser: http://localhost:8666/
-
 #. From your application, click on the `here <http://localhost:8666/some-really-long-url-that-we-dont-need-to-remember-contactus>`_ link to see the URL with the long path.
 
 Source Code
-###########
+===========
 
 - `Routing Configuration <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/generating_urls/routes.json>`_
 - `Mojit Controller <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/generating_urls/mojits/GenURLMojit/controller.server.js>`_
