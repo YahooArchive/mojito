@@ -58,7 +58,7 @@ may not need to install any npm modules.
 #. Create a Mojito application.
 #. Install Mojito in your application with npm.
 
-   ``{app_dir}$ npm install mojito -l``
+   ``{app_dir}$ npm install mojito``
 #. Add any needed dependencies to ``dependencies`` object in ``package.json``.
 #. Install dependencies with npm.
     

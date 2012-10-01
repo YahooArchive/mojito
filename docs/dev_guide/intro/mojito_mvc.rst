@@ -632,7 +632,7 @@ Supported Devices
 Mojito can examine the HTTP header ``User Agent`` and detect the following devices/browsers: 
 
 +-----------------+---------------------------+
-| Device/Browser  | Example Template     |
+| Device/Browser  | Example Template          |
 +=================+===========================+
 | Opera Mini      | index.opera-mini.hb.html  |
 +-----------------+---------------------------+

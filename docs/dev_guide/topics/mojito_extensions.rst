@@ -411,7 +411,7 @@ engine and ``{affinity}`` is ``server``, ``common``, or ``client``.
 ``{view_engine_name}.{affinity}.js``
 
 Template
--------------
+--------
 
 The name of the template should have the following syntax where ``{view_engine_name}`` should
 be the same as the ``{view_engine_name}`` in the file name of the view engine addon.
@@ -571,7 +571,7 @@ Embedded JavaScript (EJS)
 The following example is of the `EJS view engine <http://embeddedjs.com/>`_. 
 
 EJS Rendering Engine
-~~~~~~~~~~~~~~~~~~~~
+####################
 
 You install ``ejs`` locally with ``npm`` so that the EJS rendering engine is installed in
 the ``node_modules`` directory as seen below:
@@ -596,7 +596,7 @@ the ``node_modules`` directory as seen below:
 
 
 View Engine Addon
-~~~~~~~~~~~~~~~~~
+#################
 
 ``{app_dir}/addons/view-engines/ejs.server.js``
 
@@ -638,7 +638,7 @@ View Engine Addon
 
 
 Template
-~~~~~~~~~~~~~
+########
 
 ``{app_dir}/mojits/{mojit_name}/views/foo.ejs.html``
 
