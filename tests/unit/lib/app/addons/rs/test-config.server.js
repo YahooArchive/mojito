@@ -283,7 +283,7 @@ YUI().use('addon-rs-config', 'base', 'oop', 'test', function(Y) {
                 store.config.readConfigSimple(path);
             }
             catch (err) {
-                A.areSame('Error parsing JSON file:', err.message.substr(0, 24));
+                A.areSame('Error parsing file:', err.message.substr(0, 19));
             }
         },
 
