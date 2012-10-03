@@ -50,8 +50,8 @@ A model should have the basic structure shown below.
 
    YUI.add('{mojit_name}Model{Model_name}', function(Y, NAME) {
      // Models must register themselves in the
-     // Y.mojito.models namespace.
-     Y.namespace('mojito.models').{model_name} = {
+     // Namespace for models
+     Y.namespace('mojito.models')[NAME] = {
        // Optional init() method is given the
        // mojit configuration information.
        init: function(config) {
@@ -76,12 +76,12 @@ Model Objects and Methods
 The following objects and methods form the backbone of the model.
 
 - ``YUI.add`` - (required) adds the module 
-- ``Y.namespace('mojito.models')`` - (required) registers the model 
+- ``Y.namespace('mojito.models')[NAME]`` - (required) registers the model 
 - ``init`` - (optional) gets configuration information 
 
 
 The example model below shows you how the objects and methods are used. The ``galleryModelFlickr`` model is registered with ``YUI.add``, and the namespace for the 
-model is created with ``Y.namespace('mojito.models').flickr``. The ``init`` function stores the date so it can be used by other functions, and the ``requires`` array 
+model is created with ``Y.namespace('mojito.models')[NAME]``. The ``init`` function stores the date so it can be used by other functions, and the ``requires`` array 
 instructs Mojito to load the YUI module ``yql`` for getting data.
 
 .. code-block:: javascript
@@ -89,8 +89,8 @@ instructs Mojito to load the YUI module ``yql`` for getting data.
    YUI.add('galleryModelFlickr', function(Y, NAME) {
    
      // Models must register themselves in the 
-     // Y.mojito.models namespace.
-     Y.namespace('mojito.models').flickr = {
+     // Namespace for model
+     Y.namespace('mojito.models')[NAME] = {
        // Optional init() method is given the mojit 
        // configuration information.       
        init: function(config) {
@@ -138,8 +138,8 @@ Example
 
    YUI.add('weatherModelForecast', function(Y, NAME) {
      // Models must register themselves in the
-     // Y.mojito.models namespace.
-     Y.namespace('mojito.models').forecast = {
+     // Namespace for model
+     Y.namespace('mojito.models')[NAME] = {
        // Optional init() method is given the mojit
        // configuration information.
        init: function(config) {

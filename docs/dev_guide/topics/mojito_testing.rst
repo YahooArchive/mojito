@@ -465,7 +465,7 @@ The ``model.server.js`` below includes the ``FooModel`` module.
 .. code-block:: javascript
 
    YUI.add('FooModel', function(Y, NAME) {
-     Y.mojito.models.Foo = {
+     Y.namespace('mojito.models')[NAME] = {      
        getData: function(callback) {
          callback({some:'data'});
        }
