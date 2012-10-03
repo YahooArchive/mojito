@@ -28,7 +28,7 @@ the ``done`` method sends the ``data`` object to the ``index`` template.
      * @class Controller
      * @constructor
      */
-      Y.namespace('mojito.controllers')[NAME] = {   
+     Y.namespace('mojito.controllers')[NAME] = { 
        init: function(config) {
          this.config = config;
        },
