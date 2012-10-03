@@ -143,7 +143,7 @@ Adding Assets with HTMLFrameMojit
 You specify the assets for ``HTMLFrameMojit`` just as you would specify assets for any mojit. The 
 basic difference is that  ``HTMLFrameMojit`` will automatically attach ``<link>`` elements for CSS 
 and ``<script>`` elements for JavaScript files to the HTML page. When using assets with other mojits, 
-you have to manually add ``<link>`` elements that refer to assets to view templates.  See 
+you have to manually add ``<link>`` elements that refer to assets to templates.  See 
 `Assets <./mojito_assets.html>`_ for general information about using assets in Mojito.
 
 In the example ``application.json`` below, the ``HTMLFrameMojit`` instance ``frame`` has one child 
@@ -365,7 +365,7 @@ The ``LazyLoadMojit`` in the ``application.json`` is configured to lazily load t
      };
    }, '0.0.1', {requires: ['mojito']});
 
-The view template ``hello.hb.html`` is rendered on the server and then lazily loaded to the client.
+The template ``hello.hb.html`` is rendered on the server and then lazily loaded to the client.
 
 .. code-block:: html
 
