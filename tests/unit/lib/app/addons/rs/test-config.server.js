@@ -238,7 +238,7 @@ YUI().use('addon-rs-config', 'base', 'oop', 'test', function(Y) {
             store.plug(Y.mojito.addons.rs.config, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
 
             var path = libpath.join(fixtures, 'application.json');
-            var have = store.config.readConfigThroughCacheSync(path);
+            var have = store.config.readConfigSimple(path);
             var want = readJSON(fixtures, 'application.json');
             cmp(have, want);
         },
@@ -280,7 +280,7 @@ YUI().use('addon-rs-config', 'base', 'oop', 'test', function(Y) {
 
             var path = libpath.join(fixtures, 'routes.json');
             try {
-                store.config.readConfigThroughCacheSync(path);
+                store.config.readConfigSimple(path);
             }
             catch (err) {
                 A.areSame('Error parsing JSON file:', err.message.substr(0, 24));
