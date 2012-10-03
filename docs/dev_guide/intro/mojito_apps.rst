@@ -86,9 +86,9 @@ values for ``{affinity}`` are ``client``, ``common``, and ``server``. The `affin
 
 - ``{app_name}/mojits/{mojit_name}/tests/autoload/{module_name}.{affinity}-tests.js``
 
-- ``views`` - directory containing the view templates.
+- ``views`` - directory containing the templates.
 
-   - ``index.hb.html`` - the default view template for the mojit. You can create other view templates that get content from functions in the mojit controllers.
+   - ``index.hb.html`` - the default template for the mojit. You can create other templates that get content from functions in the mojit controllers.
 
 Application Directory Structure
 ===============================
