@@ -195,8 +195,8 @@ The ``controller.server.js`` below requires the ``Foo`` module.
 
 .. code-block:: javascript
 
-   YUI.add('Foo', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('Foo', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
        init: function(mojitSpec) {
          this.spec = mojitSpec;
        },
@@ -465,7 +465,7 @@ The ``model.server.js`` below includes the ``FooModel`` module.
 .. code-block:: javascript
 
    YUI.add('FooModel', function(Y, NAME) {
-     Y.mojito.models.Foo = {
+     Y.namespace('mojito.models')[NAME] = {      
        getData: function(callback) {
          callback({some:'data'});
        }
