@@ -551,46 +551,6 @@ YUI().use(
         },
 
 
-/* DOOMED
-        'server mojit instance yui - precomputed': function() {
-            var fixtures = libpath.join(__dirname, '../../../../../fixtures/precomputed');
-            var store = new Y.mojito.ResourceStore({ root: fixtures });
-            store.preload();
-
-            var instance = { type:'PagedFlickr' };
-            store.expandInstance(instance, {}, function(err, instance) {
-                A.isNotUndefined(instance.yui);
-
-                A.isArray(instance.yui.sorted);
-                AA.contains('intl', instance.yui.sorted);
-                AA.contains('datatype-date-format', instance.yui.sorted);
-                AA.contains('mojito', instance.yui.sorted);
-                AA.contains('mojito-util', instance.yui.sorted);
-                AA.contains('mojito-intl-addon', instance.yui.sorted);
-                AA.contains('lang/PagedFlickr_de', instance.yui.sorted);
-                AA.contains('lang/PagedFlickr_en', instance.yui.sorted);
-                AA.contains('lang/PagedFlickr_en-US', instance.yui.sorted);
-
-                A.isObject(instance.yui.sortedPaths);
-                A.isNotUndefined(instance.yui.sortedPaths['intl']);
-                A.isNotUndefined(instance.yui.sortedPaths['datatype-date-format']);
-                A.isNotUndefined(instance.yui.sortedPaths['mojito']);
-                A.isNotUndefined(instance.yui.sortedPaths['mojito-util']);
-                A.isNotUndefined(instance.yui.sortedPaths['mojito-intl-addon']);
-                A.areSame(libpath.join(fixtures, 'mojits/PagedFlickr/controller.common.js'), instance.yui.sortedPaths['PagedFlickr']);
-                A.areSame(libpath.join(fixtures, 'mojits/PagedFlickr/lang/PagedFlickr_de.js'), instance.yui.sortedPaths['lang/PagedFlickr_de']);
-                A.areSame(libpath.join(fixtures, 'mojits/PagedFlickr/lang/PagedFlickr_en.js'), instance.yui.sortedPaths['lang/PagedFlickr_en']);
-                A.areSame(libpath.join(fixtures, 'mojits/PagedFlickr/lang/PagedFlickr_en-US.js'), instance.yui.sortedPaths['lang/PagedFlickr_en-US']);
-
-                // the particular datatype-date-format for no-lang is up to YUI,
-                // so this test is a little fragile
-                AA.contains('lang/datatype-date-format_en', instance.yui.sorted);
-                A.isNotUndefined(instance.yui.sortedPaths['lang/datatype-date-format_en']);
-            });
-        },
-*/
-
-
         'server mojit instance yui - ondemand': function() {
             var fixtures = libpath.join(__dirname, '../../../../../fixtures/ondemand');
             var store = new Y.mojito.ResourceStore({ root: fixtures });
@@ -611,47 +571,6 @@ YUI().use(
                 A.isUndefined(instance.yui.sortedPaths, 'sortedPaths');
             });
         },
-
-
-/* DOOMED
-        'server mojit instance yui - precomputed+ondemand': function() {
-            var fixtures = libpath.join(__dirname, '../../../../../fixtures/precomputed-ondemand');
-            var store = new Y.mojito.ResourceStore({ root: fixtures });
-            store.preload();
-
-            var instance = { type:'PagedFlickr' };
-            store.expandInstance(instance, {}, function(err, instance) {
-                A.isNotUndefined(instance.yui);
-
-                A.isArray(instance.yui.sorted);
-                AA.contains('intl', instance.yui.sorted, 'contains intl');
-                AA.contains('datatype-date-format', instance.yui.sorted, 'contains datatype-date-format');
-                AA.contains('mojito', instance.yui.sorted, 'contains mojito');
-                AA.contains('mojito-util', instance.yui.sorted, 'contains mojito-util');
-                AA.contains('mojito-intl-addon', instance.yui.sorted, 'contains mojito-intl-addon');
-                AA.contains('lang/PagedFlickr_de', instance.yui.sorted);
-                AA.contains('lang/PagedFlickr_en', instance.yui.sorted);
-                AA.contains('lang/PagedFlickr_en-US', instance.yui.sorted);
-                AA.doesNotContain('lang/datatype-date-format_de', instance.yui.sorted, 'does not contain datatype-date-format_de');
-                AA.contains('lang/datatype-date-format_en', instance.yui.sorted, 'contains datatype-date-format_en');
-                AA.doesNotContain('lang/datatype-date-format_en-US', instance.yui.sorted, 'does not contain datatype-date-format_en-US');
-
-                A.isObject(instance.yui.sortedPaths);
-                A.isNotUndefined(instance.yui.sortedPaths['intl']);
-                A.isNotUndefined(instance.yui.sortedPaths['datatype-date-format']);
-                A.isNotUndefined(instance.yui.sortedPaths['mojito']);
-                A.isNotUndefined(instance.yui.sortedPaths['mojito-util']);
-                A.isNotUndefined(instance.yui.sortedPaths['mojito-intl-addon']);
-                A.areSame(libpath.join(fixtures, 'mojits/PagedFlickr/controller.common.js'), instance.yui.sortedPaths['PagedFlickr']);
-                A.areSame(libpath.join(fixtures, 'mojits/PagedFlickr/lang/PagedFlickr_de.js'), instance.yui.sortedPaths['lang/PagedFlickr_de']);
-                A.areSame(libpath.join(fixtures, 'mojits/PagedFlickr/lang/PagedFlickr_en.js'), instance.yui.sortedPaths['lang/PagedFlickr_en']);
-                A.areSame(libpath.join(fixtures, 'mojits/PagedFlickr/lang/PagedFlickr_en-US.js'), instance.yui.sortedPaths['lang/PagedFlickr_en-US']);
-                A.isUndefined(instance.yui.sortedPaths['lang/datatype-date-format_de']);
-                A.isNotUndefined(instance.yui.sortedPaths['lang/datatype-date-format_en']);
-                A.isUndefined(instance.yui.sortedPaths['lang/datatype-date-format_en-US']);
-            });
-        },
-*/
 
 
         'stuff with ctx{lang:}, in language fallback': function() {
