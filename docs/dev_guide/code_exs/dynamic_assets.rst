@@ -92,8 +92,8 @@ The appropriate CSS file is dynamically attached to the template with ``ac.asset
 
 .. code-block:: javascript
 
-   YUI.add('device', function(Y,NAME){
-     Y.mojito.controllers[NAME] = {
+   YUI.add('device', function(Y, NAME){
+     Y.namespace('mojito.controllers')[NAME] = {   
        init: function(config) {
         this.config = config;
        },
@@ -231,8 +231,8 @@ To create and run ``device_assets``:
 
    .. code-block:: javascript
 
-      YUI.add('device', function(Y,NAME){
-        Y.mojito.controllers[NAME] = {
+      YUI.add('device', function(Y, NAME){
+        Y.namespace('mojito.controllers')[NAME] = {   
           init: function(config) {
            this.config = config;
           },

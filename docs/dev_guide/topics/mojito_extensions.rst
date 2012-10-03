@@ -151,7 +151,7 @@ addon's constructor. In our addon, we defined the namespace ``cheese`` (``"names
 .. code-block:: javascript
 
    YUI.add('Foo', function(Y) {
-     Y.mojito.controllers = {
+     Y.namespace('mojito.controllers')[NAME] = {
        index: function(ac) {
          // Use the type 'cheese' and then the
          // the addon function 'cheesify'

@@ -171,7 +171,7 @@ To create and run ``simple_assets``:
 
    .. code-block:: javascript
 
-      YUI.add('simple', function(Y,NAME) {
+      YUI.add('simple', function(Y, NAME) {
         /**
         * The simple module.
         *
@@ -183,7 +183,7 @@ To create and run ``simple_assets``:
         * @class Controller
         * @constructor
         */
-        Y.mojito.controllers[NAME] = {
+        Y.namespace('mojito.controllers')[NAME] = {     
           init: function(config) {
           this.config = config;
         },
@@ -208,7 +208,8 @@ To create and run ``simple_assets``:
         };
       }, '0.0.1', {requires: []});
 
-#. Include the assets in your template by replacing the code in ``views/index.hb.html`` with the following:
+#. Include the assets in your template by replacing the code in ``views/index.hb.html`` with the 
+   following:
 
    .. code-block:: html
 

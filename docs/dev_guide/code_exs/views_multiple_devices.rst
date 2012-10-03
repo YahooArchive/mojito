@@ -221,8 +221,8 @@ To set up and run ``device_views``:
 
    .. code-block:: javascript
 
-      YUI.add('device', function(Y,NAME) {
-        Y.mojito.controllers[NAME] = {
+      YUI.add('device', function(Y, NAME) {
+        Y.namespace('mojito.controllers')[NAME] = {   
           init: function(config) {
             this.config = config;
           },
