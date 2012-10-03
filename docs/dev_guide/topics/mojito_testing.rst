@@ -195,8 +195,8 @@ The ``controller.server.js`` below requires the ``Foo`` module.
 
 .. code-block:: javascript
 
-   YUI.add('Foo', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('Foo', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
        init: function(mojitSpec) {
          this.spec = mojitSpec;
        },

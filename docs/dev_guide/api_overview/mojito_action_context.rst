@@ -13,7 +13,7 @@ the ``done`` method sends the ``data`` object to the ``index`` template.
 
 .. code-block:: javascript
 
-   YUI.add('HelloMojit', function(Y) {
+   YUI.add('HelloMojit', function(Y, NAME) {
      /**
      * The HelloMojit module.
      *
@@ -25,7 +25,7 @@ the ``done`` method sends the ``data`` object to the ``index`` template.
      * @class Controller
      * @constructor
      */
-     Y.mojito.controller = {
+     Y.namespace('mojito.controllers')[NAME] = { 
        init: function(config) {
          this.config = config;
        },

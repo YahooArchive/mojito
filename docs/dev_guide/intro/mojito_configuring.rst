@@ -692,8 +692,8 @@ array as seen below:
 
 .. code-block:: javascript
 
-   YUI.add('BarMojit', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('BarMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
        init: function(config) {
          this.config = config;
        },
