@@ -54,4 +54,5 @@ YUI.add('PagerMojitModel', function(Y) {
 }, '0.0.1', {requires: [
     'mojito',
     'mojito-models-addon',
-    'yql']});
+    'yql'
+]});

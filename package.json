@@ -1,6 +1,6 @@
 {
     "name": "mojito",
-    "version": "0.4.4",
+    "version": "0.4.5",
     "description": "Mojito provides an architecture, components and tools for developers to build complex web applications faster.",
     "preferGlobal": true,
     "author": "Drew Folta <folta@yahoo-inc.com>",
@@ -34,7 +34,7 @@
         "framework",
         "webapp"
     ],
-    "main": "lib/index",
+    "main": "lib/mojito",
     "directories": [
         "bin",
         "docs",
@@ -49,7 +49,7 @@
     },
     "devDependencies": {
         "node-static": "~0.6.1",
-        "yahoo-arrow": "~0.0.59"
+        "yahoo-arrow": "0.0.59"
     },
     "homepage": "http://developer.yahoo.com/cocktails/mojito/",
     "repository": {
@@ -58,7 +58,6 @@
     },
     "bugs": "https://github.com/yahoo/mojito/issues",
     "scripts": {
-        "start": "./bin/mojito start",
         "test": "./tests/run.js test -u --group server --driver nodejs && ./tests/run.js test -u --group client --driver selenium"
     },
     "yahoo": {
