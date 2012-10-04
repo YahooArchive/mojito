@@ -276,24 +276,24 @@ YUI().use(
             source = makeSource(fixtures, 'bundle', 'lang', 'testing.js', true);
             res = store.parseResourceVersion(source, 'yui-lang', undefined, 'testing');
             A.isNotUndefined(res);
-            cmp(res.source, source);
-            A.areSame('yui-lang', res.type);
-            A.areSame('common', res.affinity);
-            A.areSame('*', res.selector);
-            A.areSame('', res.name);
-            A.areSame('yui-lang--', res.id);
-            A.areSame('testing', res.mojit);
+            cmp(res.source, source, 'testing.js source');
+            A.areSame('yui-lang', res.type, 'testing.js type');
+            A.areSame('common', res.affinity, 'testing.js affinity');
+            A.areSame('*', res.selector, 'testing.js selector');
+            A.areSame('lang/testing', res.name, 'testing.js name');
+            A.areSame('yui-lang--lang/testing', res.id, 'testing.js id');
+            A.areSame('testing', res.mojit, 'testing.js mojit');
 
             source = makeSource(fixtures, 'bundle', 'lang', 'testing_de.js', true);
             res = store.parseResourceVersion(source, 'yui-lang', undefined, 'testing');
             A.isNotUndefined(res);
-            cmp(res.source, source);
-            A.areSame('yui-lang', res.type);
-            A.areSame('common', res.affinity);
-            A.areSame('*', res.selector);
-            A.areSame('de', res.name);
-            A.areSame('yui-lang--de', res.id);
-            A.areSame('testing', res.mojit);
+            cmp(res.source, source, 'testing_de.js source');
+            A.areSame('yui-lang', res.type, 'testing_de.js type');
+            A.areSame('common', res.affinity, 'testing_de.js affinity');
+            A.areSame('*', res.selector, 'testing_de.js selector');
+            A.areSame('lang/testing_de', res.name, 'testing_de.js name');
+            A.areSame('yui-lang--lang/testing_de', res.id, 'testing_de.js id');
+            A.areSame('testing', res.mojit, 'testing_de.js mojit');
 
             source = makeSource(fixtures, 'bundle', 'lang', 'testing_en-US.js', true);
             res = store.parseResourceVersion(source, 'yui-lang', undefined, 'testing');
@@ -302,8 +302,8 @@ YUI().use(
             A.areSame('yui-lang', res.type);
             A.areSame('common', res.affinity);
             A.areSame('*', res.selector);
-            A.areSame('en-US', res.name);
-            A.areSame('yui-lang--en-US', res.id);
+            A.areSame('lang/testing_en-US', res.name);
+            A.areSame('yui-lang--lang/testing_en-US', res.id);
             A.areSame('testing', res.mojit);
         },
 
@@ -404,40 +404,40 @@ YUI().use(
                     case 'spec--x':
                     case 'view--x':
                         break;
-                    case 'yui-lang--':
+                    case 'yui-lang--lang/testing':
                         A.areSame(pkg, res.source.pkg);
                         A.areSame('yui-lang', res.type);
-                        A.areSame('', res.name);
+                        A.areSame('lang/testing', res.name);
                         A.areSame('*', res.selector);
                         A.areSame('common', res.affinity);
                         A.areSame('.', res.source.fs.subDir);
                         A.areSame('testing', res.source.fs.basename);
                         A.areSame('.js', res.source.fs.ext);
                         break;
-                    case 'yui-lang--de':
+                    case 'yui-lang--lang/testing_de':
                         A.areSame(pkg, res.source.pkg);
                         A.areSame('yui-lang', res.type);
-                        A.areSame('de', res.name);
+                        A.areSame('lang/testing_de', res.name);
                         A.areSame('*', res.selector);
                         A.areSame('common', res.affinity);
                         A.areSame('.', res.source.fs.subDir);
                         A.areSame('testing_de', res.source.fs.basename);
                         A.areSame('.js', res.source.fs.ext);
                         break;
-                    case 'yui-lang--en':
+                    case 'yui-lang--lang/testing_en':
                         A.areSame(pkg, res.source.pkg);
                         A.areSame('yui-lang', res.type);
-                        A.areSame('en', res.name);
+                        A.areSame('lang/testing_en', res.name);
                         A.areSame('*', res.selector);
                         A.areSame('common', res.affinity);
                         A.areSame('.', res.source.fs.subDir);
                         A.areSame('testing_en', res.source.fs.basename);
                         A.areSame('.js', res.source.fs.ext);
                         break;
-                    case 'yui-lang--en-US':
+                    case 'yui-lang--lang/testing_en-US':
                         A.areSame(pkg, res.source.pkg);
                         A.areSame('yui-lang', res.type);
-                        A.areSame('en-US', res.name);
+                        A.areSame('lang/testing_en-US', res.name);
                         A.areSame('*', res.selector);
                         A.areSame('common', res.affinity);
                         A.areSame('.', res.source.fs.subDir);

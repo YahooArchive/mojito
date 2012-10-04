@@ -65,9 +65,9 @@ YUI.add('PagedFlickr', function(Y, NAME) {
 
 }, '0.0.1', {requires: [
     'mojito-intl-addon',
-    'mojito-models-addon'
-    'mojito-params-addon'
-    'mojito-url-addon'
+    'mojito-models-addon',
+    'mojito-params-addon',
+    'mojito-url-addon',
     'mojito-util',
     'PagedFlickrModel'
 ], lang: ['de', 'en-US']});
