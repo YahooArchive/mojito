@@ -26,7 +26,6 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
         },
 
         'test find url (get)': function() {
-
             Y.mojito.RouteMaker = function(rtes) {
                 A.areSame('routes', rtes);
                 return {
@@ -37,17 +36,18 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
                     }
                 };
             };
-            var addon = new Y.mojito.addons.ac.url(null, null, {
-                app: { config: {}, routes: 'routes' }
+            var addon = new Y.mojito.addons.ac.url({}, null, {
+                staticAppConfig: {}
+            });
+            addon.setStore({
+                getRoutes: function() { return 'routes'; }
             });
 
             url = addon.find('myid.myaction?foo=bar', 'get');
-
             A.areSame('ohhai url', url);
         },
 
         'test find url (get) using real RouteMaker': function() {
-
             var addon, url, routes = {
                 'aroute': {
                     'call': 'foo',
@@ -59,8 +59,11 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
             //need to use real find() which needs real RouteMaker
             Y.mojito.RouteMaker = RouteMaker;
 
-            addon = new Y.mojito.addons.ac.url(null, null, {
-                app: { config: {}, routes: routes }
+            addon = new Y.mojito.addons.ac.url({}, null, {
+                staticAppConfig: {}
+            });
+            addon.setStore({
+                getRoutes: function() { return routes; }
             });
 
             url = addon.find('/a/b/c/', 'get');
@@ -86,7 +89,6 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
         },
 
         'test find http://url?with=params (get) using real RouteMaker': function() {
-
             var addon, url, routes = {
                 'aroute': {
                     'call': 'foo',
@@ -98,18 +100,20 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
             //need to use real find() which needs real RouteMaker
             Y.mojito.RouteMaker = RouteMaker;
 
-            addon = new Y.mojito.addons.ac.url(null, null, {
-                app: { config: {}, routes: routes }
+            addon = new Y.mojito.addons.ac.url({}, null, {
+                staticAppConfig: {}
+            });
+            addon.setStore({
+                getRoutes: function() { return routes; }
             });
 
             url = addon.find('http://xyz.com/a/b/c/?a=1&b=2', 'get');
-
             A.areSame('foo', url.call);
             A.areSame('/a/b/c/', url.path);
             OA.ownsNoKeys(url.params);
         },
-        'test find url (post)': function() {
 
+        'test find url (post)': function() {
             Y.mojito.RouteMaker = function(rtes) {
                 A.areSame('routes', rtes);
                 return {
@@ -120,17 +124,18 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
                     }
                 };
             };
-            var addon = new Y.mojito.addons.ac.url(null, null, {
-                app: { config: {}, routes: 'routes' }
+            var addon = new Y.mojito.addons.ac.url({}, null, {
+                staticAppConfig: {}
+            });
+            addon.setStore({
+                getRoutes: function() { return 'routes'; }
             });
 
             url = addon.find('myid.myaction', 'post');
-
             A.areSame('ohhai url', url);
         },
 
         'test make url (get)': function() {
-
             Y.mojito.RouteMaker = function(rtes) {
                 A.areSame('routes', rtes);
                 return {
@@ -141,15 +146,16 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
                     }
                 };
             };
-            var addon = new Y.mojito.addons.ac.url(null, null, {
-                app: { config: {}, routes: 'routes' }
+            var addon = new Y.mojito.addons.ac.url({}, null, {
+                staticAppConfig: {}
             });
-
+            addon.setStore({
+                getRoutes: function() { return 'routes'; }
+            });
 
             url = addon.make('myid', 'myaction', 'foo=bar', 'get');
 
             A.areSame('ohhai url', url);
-
         },
 
         'test make url (get) plus qry param': function() {
@@ -163,18 +169,18 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
                     }
                 };
             };
-            var addon = new Y.mojito.addons.ac.url(null, null, {
-                app: { config: {}, routes: 'routes' }
+            var addon = new Y.mojito.addons.ac.url({}, null, {
+                staticAppConfig: {}
+            });
+            addon.setStore({
+                getRoutes: function() { return 'routes'; }
             });
 
-
             url = addon.make('myid', 'myaction', 'foo=bar', 'get', {a:1, b:2});
-
             A.areSame('ohhai url?a=1&b=2', url);
         },
 
         'test make url (post)': function() {
-
             Y.mojito.RouteMaker = function(rtes) {
                 A.areSame('routes', rtes);
                 return {
@@ -185,19 +191,18 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
                     }
                 };
             };
-            var addon = new Y.mojito.addons.ac.url(null, null, {
-                app: { config: {}, routes: 'routes' }
+            var addon = new Y.mojito.addons.ac.url({}, null, {
+                staticAppConfig: {}
+            });
+            addon.setStore({
+                getRoutes: function() { return 'routes'; }
             });
 
-
             url = addon.make('myid', 'myaction', 'foo=bar', 'post');
-
             A.areSame('ohhai url', url);
-
         },
 
         'test make url default params and method': function() {
-
             Y.mojito.RouteMaker = function(rtes) {
                 A.areSame('routes', rtes);
                 return {
@@ -208,19 +213,18 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
                     }
                 };
             };
-            var addon = new Y.mojito.addons.ac.url(null, null, {
-                app: { config: {}, routes: 'routes' }
+            var addon = new Y.mojito.addons.ac.url({}, null, {
+                staticAppConfig: {}
+            });
+            addon.setStore({
+                getRoutes: function() { return 'routes'; }
             });
 
-
             url = addon.make('myid', 'myaction');
-
             A.areSame('ohhai url', url);
-
         },
 
         'test make handles object params as well as string params': function() {
-
             Y.mojito.RouteMaker = function(rtes) {
                 A.areSame('routes', rtes);
                 return {
@@ -231,15 +235,15 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
                     }
                 };
             };
-            var addon = new Y.mojito.addons.ac.url(null, null, {
-                app: { config: {}, routes: 'routes' }
+            var addon = new Y.mojito.addons.ac.url({}, null, {
+                staticAppConfig: {}
+            });
+            addon.setStore({
+                getRoutes: function() { return 'routes'; }
             });
 
-
             url = addon.make('myid', 'myaction', {foo:'bar'}, 'get');
-
             A.areSame('ohhai url', url);
-
         }
 
     };
