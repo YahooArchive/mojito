@@ -21,6 +21,7 @@ Conventions
 
   For example, the name of the unit test YUI module for the ``HelloMojit`` mojit with the ``server`` 
   affinity would be ``HelloMojit-tests.server.js``.
+<<<<<<< HEAD
 
 - The unit test YUI module should include the target module and the ``mojito-test`` module in the 
   ``requires`` array. The requires array includes the ``mojito-test`` module and the target module ``HelloMojit``:
@@ -30,6 +31,17 @@ Conventions
      { requires: [ 'mojito-test', 'HelloMojit' ] }
 
 
+=======
+
+- The unit test YUI module should include the target module and the ``mojito-test`` module in the 
+  ``requires`` array. The requires array includes the ``mojito-test`` module and the target module ``HelloMojit``:
+
+  .. code-block:: javascript
+
+     { requires: [ 'mojito-test', 'HelloMojit' ] }
+
+
+>>>>>>> b6c9e5421ad8103ec655fb09d7f18b320b0bfedf
 .. note:: Test files that are **not** in a ``tests`` directory may be found by Mojito as long as the 
           file name has the suffix ``-tests``. The suggested practice though is to place all test 
           files in the ``tests`` directories shown above.
@@ -689,9 +701,12 @@ run some of the other tests included with Mojito.
    
 .. _YUI Test: http://yuilibrary.com/yuitest/
 
+<<<<<<< HEAD
 
 
    
 .. _YUI Test: http://yuilibrary.com/yuitest/
 
+=======
+>>>>>>> b6c9e5421ad8103ec655fb09d7f18b320b0bfedf
 
