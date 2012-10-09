@@ -148,6 +148,6 @@ YUI().use('mojito-loader', 'test', function(Y) {
 
     }));
 
-    Y.Test.Runner.add(suite);
+    //DOOMED:  Y.Test.Runner.add(suite);
 
 });

@@ -42,7 +42,7 @@
             },
             "yui.server": {
                 "params": {
-                    "lib": "$$config.lib$$/app/addons/rs/yui.server.js,../../../../../../lib/app/addons/rs/config.server.js,../../../../../../lib/app/addons/rs/selector.server.js,../../../../../../lib/store.server.js",
+                    "lib": "$$config.lib$$/app/addons/rs/yui.server.js,../../../../../../lib/app/addons/rs/config.server.js,../../../../../../lib/app/addons/rs/selector.server.js,../../../../../../lib/app/addons/rs/url.server.js,../../../../../../lib/store.server.js",
                     "test": "./test-yui.server.js",
                     "driver": "nodejs"
                 },
