@@ -569,7 +569,7 @@ Setting Up
    ``$ sudo ln -s /usr/local/lib /node_modules``
 #. Install Arrow:
 
-   ``$ npm install arrow -g`` 
+   ``$ npm install yahoo-arrow -g`` 
 #. Install commander:
 
    ``$ npm install commander -g`` 
