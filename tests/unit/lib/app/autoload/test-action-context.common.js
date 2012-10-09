@@ -208,7 +208,6 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                 }
             });
 
-            A.isObject(ac.core, 'output-adapter addon should be plug by default');
             A.isObject(ac.custom, 'custom required addon is missing');
         },
 
@@ -246,8 +245,6 @@ YUI().use('mojito-action-context', 'test', function (Y) {
             A.areSame('index', ac.action, 'bad action');
             A.areSame('context', ac.context, 'bad context');
 
-            OA.areEqual({config: 'app config', routes: 'routes'}, ac.app, 'bad app property');
-            A.areSame(ac.app.config, 'app config', 'bad app config');
             A.areSame('the dispatcher', ac.dispatcher,
                 "dispatcher wasn't stashed.");
         },
