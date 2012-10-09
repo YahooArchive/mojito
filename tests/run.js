@@ -36,6 +36,10 @@ program.command('deploy')
     .description('Deploy all apps')
     .action(deploy);
 
+// report how we're called, mainly to help debug CI environments
+console.log(process.argv.join(' '));
+console.log();
+
 program.parse(process.argv);
 
 function test (cmd) {
