@@ -157,7 +157,11 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
 
             var expected = [
                     '<script type="text/javascript">',
-                    '    YUI_config = {"foo":"bar","lang":"klingon","core":["get","features","intl-base","yui-log","mojito","yui-later"]};',
+                    '    YUI_config = {"foo":"bar","lang":"klingon","base":"combo?","combine":true};',
+                    '    YUI.Env.core.push("loader-base"); // workaround (ticket 2532571)',
+                    '    YUI_config.bootstrap = true;',
+                    '    YUI_config.comboBase = "/combo?";',
+                    '    YUI_config.combine = true;',
                     '    YUI().use(\'mojito-client\', function(Y) {',
                     '    window.YMojito = { client: new Y.mojito.Client({"context":{"lang":"klingon","runtime":"client"},"binderMap":{"viewId1":{"needs":"a drink"},"viewId2":{"needs":"another drink"}},"routes":["routes"]}) };',
                     '        });',
@@ -259,7 +263,8 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
                 Y.mojito.Loader = realLoader;
             }
 
-            A.areSame(1, Object.keys(counts).length, 'too many type:location pairs');
+            A.areSame(2, Object.keys(counts).length, 'too many type:location pairs');
+            A.areSame(1, counts['js top'], 'wrong number of js:top');
             A.areSame(1, counts['blob bottom'], 'wrong number of blob:bottom');
         },
 
@@ -321,7 +326,7 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
             var binderMap = {};
 
             addon.constructMojitoClientRuntime(assetHandler, binderMap);
-            A.areSame("'*'", YUI_use);
+            A.areSame("'mojito-client'", YUI_use);
         },
 
 
