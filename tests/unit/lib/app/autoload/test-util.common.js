@@ -418,58 +418,6 @@
             };
             var result = Y.mojito.util.metaMerge(to, from);
             OA.areEqual(expected['content-type'], result['content-type']);
-        },
-
-        'test shouldShareYUIInstance': function() {
-            var tests = [
-                    {
-                        desc: 'Test Defaults',
-                        appShare: undefined,
-                        instance: {shareYUIInstance: undefined},
-                        expected: false
-                    },
-                    {
-                        desc: 'Test App True',
-                        appShare: true,
-                        instance: {shareYUIInstance: undefined},
-                        expected: true
-                    },
-                    {
-                        desc: 'Test App False',
-                        appShare: false,
-                        instance: {shareYUIInstance: undefined},
-                        expected: false
-                    },
-                    {
-                        desc: 'Instance Override True',
-                        appShare: false,
-                        instance: {shareYUIInstance: true},
-                        expected: true
-                    },
-                    {
-                        desc: 'Instance Override False',
-                        appShare: true,
-                        instance: {shareYUIInstance: false},
-                        expected: false
-                    },
-                    {
-                        desc: 'Instance Override False',
-                        appShare: undefined,
-                        instance: {shareYUIInstance: false},
-                        expected: false
-                    },
-                    {
-                        desc: 'Instance Override True',
-                        appShare: undefined,
-                        instance: {shareYUIInstance: true},
-                        expected: true
-                    }
-                ],
-                result;
-            Y.Array.each(tests, function (test) {
-                result = Y.mojito.util.shouldShareYUIInstance(test.appShare, test.instance);
-                A.areEqual(test.expected, result, test.desc + ' failed.');
-            });
         }
 
     };
