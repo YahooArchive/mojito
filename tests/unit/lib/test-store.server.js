@@ -361,7 +361,7 @@ YUI().use(
                 var fixtures = libpath.join(__dirname, '../../fixtures/store');
                 var spec = { type: 'rollups' };
                 store.expandInstanceForEnv('client', spec, {}, function(err, instance) {
-                    A.areSame('/static/rollups/rollup.client.js', instance.yui.sortedPaths['rollups'], 'main rollup');
+                    A.areSame('/static/rollups/rollup.client.js', instance.yui.config.modules['rollups'].fullpath, 'main rollup');
                     var urls = store.getAllURLs();
                     A.areSame(libpath.join(fixtures, 'mojits/rollups/rollup.client.js'), urls['/static/rollups/rollup.client.js']);
                 });
@@ -477,9 +477,9 @@ YUI().use(
                 store.preload();
                 var spec = { type: 'M' };
                 store.expandInstance(spec, {}, function(err, instance) {
-                    A.isUndefined(instance.yui.sortedPaths['addon-ac-not']);
-                    A.isUndefined(instance.yui.sortedPaths['MAutoloadNot']);
-                    A.isUndefined(instance.yui.sortedPaths['MModelNot']);
+                    A.isUndefined(instance.yui.config.modules['addon-ac-not']);
+                    A.isUndefined(instance.yui.config.modules['MAutoloadNot']);
+                    A.isUndefined(instance.yui.config.modules['MModelNot']);
                     A.isUndefined(instance.views['not']['binder-url']);
                 });
             },
@@ -672,12 +672,12 @@ YUI().use(
                             switch (res.source.fs.basename) {
                                 case 'x':
                                     A.areSame('*', res.selector);
-                                    A.areSame('common', res.affinity);
+                                    A.areSame('client', res.affinity);
                                     A.areSame('.js', res.source.fs.ext);
                                     break;
                                 case 'x.iphone':
                                     A.areSame('iphone', res.selector);
-                                    A.areSame('common', res.affinity);
+                                    A.areSame('client', res.affinity);
                                     A.areSame('.js', res.source.fs.ext);
                                     break;
                                 default:

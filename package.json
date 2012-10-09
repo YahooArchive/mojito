@@ -11,7 +11,8 @@
         "Drew Folta <folta@yahoo-inc.com>",
         "Martin Cooper <mcooper@yahoo-inc.com>",
         "Isao Yagi <isao@yahoo-inc.com>",
-        "Michael Ridgway <mridgway@yahoo-inc.com>"
+        "Michael Ridgway <mridgway@yahoo-inc.com>",
+        "Caridy Patino <caridy@yahoo-inc.com>"
     ],
     "dependencies": {
         "async": "*",
