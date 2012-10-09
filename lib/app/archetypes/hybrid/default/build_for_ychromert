@@ -1,0 +1,56 @@
+#!/bin/bash
+# Build the packages required for template Mojito App to run in iOS xcode project.
+# Call ./build_for_ychromert  [dev | ship]    from this directory.
+#
+# author: Anne-Lise Hassenklover
+#  Copyright Yahoo! Inc. 2012. All rights reserved.
+
+
+script_name=`basename $0`
+script_dir=`pwd`
+dest_packages_dir="../../packages"
+dest_app_package="yahoo.application._template_"
+use_dev=1
+
+if [[ -n "$1" ]]
+then
+	if [[ "$1" == "ship" ]]
+	then
+		use_dev=0
+	fi
+fi
+
+# First remove existing packages
+echo "REMOVE $dest_packages_dir/"
+rm -rf "$dest_packages_dir/"
+
+# Build the packages for ychrome (the app package).
+mojito build --context "environment:dev" html5app $dest_packages_dir
+if [[ "$?" != "0" ]]
+then
+	echo "FAILED to build packages for Mojito app"
+	exit $?
+fi
+
+# Remove files/folders we don't need that were created by the build step.
+echo "Removing un-needed files and directories from packages dir"
+rm $dest_packages_dir/index.html
+rm -rf $dest_packages_dir/daliProxy
+rm -rf $dest_packages_dir/HTMLFrameMojit
+rm -rf $dest_packages_dir/LazyLoad
+
+# Copy over the package.json file for yahoo.application._template_
+cp "template_package.json" "$dest_packages_dir/$dest_app_package/package.json"
+
+# Now fetch the YUI packages for ychromert
+cd ../../
+if [[ $use_dev == 1 ]]
+then
+	echo "Setup to use DEV YUI packages"
+	./use_dev_packages
+else
+	echo "Setup to use SHIP YUI packages"
+	./use_ship_packages
+fi
+
+exit $?

@@ -1,0 +1,13 @@
+{
+    "description": "This application's main package: yahoo.application._template_",
+    "dependencies": {
+     },
+    "maintainers": [
+		{"email": "yourname@yahoo-inc.com",
+         "name": "Your Name"
+    	}
+	],
+    "name": "yahoo.application._template_",
+    "pkg_type": "application",
+    "version": "0.0.1"
+}
