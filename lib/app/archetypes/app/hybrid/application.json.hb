@@ -4,7 +4,6 @@
         "appPort": 8666,
         "builds": {
             "html5app": {
-                "buildDir": "../{{name}}-build/html5app",
                 "urls": ["/yahoo.application.{{name}}/index.html"]
             }
         },
