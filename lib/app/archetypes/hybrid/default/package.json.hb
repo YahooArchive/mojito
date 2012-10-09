@@ -1,22 +1,16 @@
 {
-    "name": "yahoo.application._template_",
-    "description": "_template_ mojito application",
+    "name": "yahoo.application.{{name}}",
+    "author": "Your Name <you@yahoo-inc.com>",
+    "description": "This application's main package: yahoo.application.{{name}}",
     "version": "0.0.1",
-    "author": {
-        "name": "Your Name",
-        "email": "nobody@yahoo-inc.com"
-    },
-    "contributors": [
-          {
-              "name": "Your Name",
-              "email": "nobody@yahoo-inc.com"
-          }
-    ],
+    "pkg_type": "application",
     "dependencies": {
-        "mojito": ">= 0.1.0"
+        "mojito": ">0.4"
     },
     "engines": {
-        "node": ">= 0.4.2 < 0.5.0"
+        "node": ">0.6",
+        "npm": ">1.0",
+        "mojito": ">0.4"
     },
     "scripts": {
         "start": "mojito start"
