@@ -1,7 +1,8 @@
 /*
  * Copyright (c) 2012 Yahoo! Inc. All rights reserved.
  */
-YUI.add('top_frameModelFoo', function(Y) {
+/*jslint anon:true, sloppy:true, nomen:true*/
+YUI.add('top_frameModelFoo', function(Y, NAME) {
 
 /**
  * The top_frameModelFoo module.
@@ -15,7 +16,7 @@ YUI.add('top_frameModelFoo', function(Y) {
      * @class top_frameModelFoo
      * @constructor
      */
-    Y.mojito.models.top_frameModelFoo = {
+    Y.namespace('mojito.models')[NAME] = {
 
         init: function(config) {
             this.config = config;
@@ -24,11 +25,11 @@ YUI.add('top_frameModelFoo', function(Y) {
         /**
          * Method that will be invoked by the mojit controller to obtain data.
          *
-         * @param callback {Function} The callback function to call when the
+         * @param callback {function(err,data)} The callback function to call when the
          *        data has been retrieved.
          */
         getData: function(callback) {
-            callback({some:'data'});
+            callback(null, { some: 'data' });
         }
 
     };
