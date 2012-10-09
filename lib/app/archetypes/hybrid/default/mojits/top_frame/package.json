@@ -1,0 +1,18 @@
+{
+    "description": "The _template_ application's top frame (HTMLFrameMojit)",
+    "dependencies": {
+     },
+    "maintainers": [
+		{"email": "yourname@yahoo-inc.com",
+         "name": "Your Name"
+    	}
+	],
+    "name": "yahoo._template_.top_frame",
+    "pkg_type": "frame",
+    "version": "0.0.1",
+	"yahoo": {
+		"mojito": {
+			"version": "*"
+		}
+	}
+}

@@ -1,0 +1,19 @@
+[
+	{
+		"settings": [ "master" ],
+
+		"type": "HTMLFrameMojit",
+		"config": {
+			"deploy": true,
+			"title": "template App",
+			"child": {
+				"type": "yahoo._template_.top_frame"
+			},
+			"assets": {
+				"bottom": {
+					"js": ["/yahoo.ychrome.lib/yui-cfg.js"]
+				}
+			}
+		}
+	}
+]
