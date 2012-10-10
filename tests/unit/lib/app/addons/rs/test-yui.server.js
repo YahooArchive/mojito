@@ -539,14 +539,7 @@ YUI().use(
                 AA.doesNotContain('test_applevelModel', instance.yui.sorted);
                 AA.doesNotContain('ModelFlickr', instance.yui.sorted);
                 AA.contains('mojito-mu', instance.yui.sorted);
-                AA.contains('mojito', instance.yui.sorted);
-
-                A.isObject(instance.yui.sortedPaths);
-                A.areSame(libpath.join(fixtures, 'mojits/test_mojit_2/controller.server.js'), instance.yui.sortedPaths['test_mojit_2']);
-                A.isUndefined(instance.yui.sortedPaths['test_applevelModel']);
-                A.isUndefined(instance.yui.sortedPaths['ModelFlickr']);
-                A.areSame(libpath.join(mojitoRoot, 'app/addons/view-engines/mu.server.js'), instance.yui.sortedPaths['mojito-mu']);
-                A.areSame(libpath.join(mojitoRoot, 'app/autoload/mojito.common.js'), instance.yui.sortedPaths['mojito']);
+                AA.contains('mojito-dispatcher', instance.yui.sorted);
             });
         },
 
@@ -583,56 +576,40 @@ YUI().use(
             ctx = { lang: 'en-US' };
             spec = { type: 'PagedFlickr' };
             store.expandInstance(spec, ctx, function(err, instance) {
-                A.isNotUndefined(instance.yui.sortedPaths['lang/PagedFlickr_en-US'], 'en-US is undefined {lang:en-US}');
-                A.isUndefined(instance.yui.sortedPaths['lang/PagedFlickr_en'], 'en is not undefined {lang:en-US}');
+                AA.contains('lang/PagedFlickr_en-US', instance.yui.sorted, 'en-US is undefined {lang:en-US}');
+                AA.doesNotContain('lang/PagedFlickr_en', instance.yui.sorted, 'en is not undefined {lang:en-US}');
 
                 // second test
                 ctx = { lang: 'en' };
                 spec = { type: 'PagedFlickr' };
                 store.expandInstance(spec, ctx, function(err, instance) {
-                    A.isNotUndefined(instance.yui.sortedPaths['lang/PagedFlickr_en'], 'en is undefined {lang-en}');
-                    A.isUndefined(instance.yui.sortedPaths['lang/PagedFlickr_en-US'], 'en-US is not undefined {lang:en}');
+                    AA.contains('lang/PagedFlickr_en', instance.yui.sorted, 'en is undefined {lang-en}');
+                    AA.doesNotContain('lang/PagedFlickr_en-US', instance.yui.sorted, 'en-US is not undefined {lang:en}');
 
                     // third test
                     ctx = { lang: 'de-AT' };
                     spec = { type: 'PagedFlickr' };
                     store.expandInstance(spec, ctx, function(err, instance) {
-                        A.isNotUndefined(instance.yui.sortedPaths['lang/PagedFlickr_de'], 'de is undefined {lang:de-AT}');
-                        A.isUndefined(instance.yui.sortedPaths['lang/PagedFlickr_en-US'], 'en-US is not undefined {lang:de-AT}');
+                        AA.contains('lang/PagedFlickr_de', instance.yui.sorted, 'de is undefined {lang:de-AT}');
+                        AA.doesNotContain('lang/PagedFlickr_en-US', instance.yui.sorted, 'en-US is not undefined {lang:de-AT}');
 
                         // fourth test
                         ctx = { lang: 'tr-TR' };
                         spec = { type: 'PagedFlickr' };
                         store.expandInstance(spec, ctx, function(err, instance) {
-                            A.isUndefined(instance.yui.sortedPaths['lang/PagedFlickr_de'], 'de is defined {lang:tr-TR}');
-                            A.isUndefined(instance.yui.sortedPaths['lang/PagedFlickr_en-US'], 'en-US is undefined {lang:tr-TR}');
+                            AA.doesNotContain('lang/PagedFlickr_de', instance.yui.sorted, 'de is defined {lang:tr-TR}');
+                            AA.doesNotContain('lang/PagedFlickr_en-US', instance.yui.sorted, 'en-US is undefined {lang:tr-TR}');
 
                             // fifth test
                             ctx = {};
                             spec = { type: 'PagedFlickr' };
                             store.expandInstance(spec, ctx, function(err, instance) {
-                                A.isUndefined(instance.yui.sortedPaths['lang/PagedFlickr_de'], 'de is undefined {}');
-                                A.isUndefined(instance.yui.sortedPaths['lang/PagedFlickr_en-US'], 'en-US is undefined {}');
+                                AA.doesNotContain('lang/PagedFlickr_de', instance.yui.sorted, 'de is undefined {}');
+                                AA.doesNotContain('lang/PagedFlickr_en-US', instance.yui.sorted, 'en-US is undefined {}');
                             });
                         });
                     });
                 });
-            });
-        },
-
-
-        'appConfig yui.base': function() {
-            var fixtures = libpath.join(__dirname, '../../../../../fixtures/gsg5-appConfig'),
-                store = new Y.mojito.ResourceStore({ root: fixtures });
-            store.preload();
-            var spec = { type: 'PagedFlickr' };
-            store.expandInstance(spec, {}, function(err, instance) {
-                A.areSame('/foo/', instance.yui.sortedPaths['oop'].substr(0, 5));
-                A.areSame('/foo/', instance.yui.sortedPaths['intl'].substr(0, 5));
-                A.areSame('/foo/', instance.yui.sortedPaths['jsonp'].substr(0, 5));
-                A.areSame('/foo/', instance.yui.sortedPaths['yql'].substr(0, 5));
-                A.areSame('/foo/', instance.yui.sortedPaths['querystring-stringify'].substr(0, 5));
-                A.areSame('/foo/', instance.yui.sortedPaths['json-stringify'].substr(0, 5));
             });
         },
 

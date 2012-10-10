@@ -25,20 +25,21 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
             addon = null;
         },
 
+
         'YUI_config should use application.json yui.config': function() {
-
-            var realRouteMaker = Y.mojito.RouteMaker;
-            Y.mojito.RouteMaker = function() {};
-            Y.mojito.RouteMaker.prototype = {
-                getComputedRoutes: function() {
-                    return ['routes'];
-                }
-            };
-
             addon.ac = {
                 http: {
                     getHeader: function(h) {
                         return null;
+                    }
+                },
+                url: {
+                    getRouteMaker: function() {
+                        return {
+                            getComputedRoutes: function() {
+                                return ['routes'];
+                            }
+                        };
                     }
                 }
             };
@@ -78,13 +79,7 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
                     }
                 };
             var binderMap = {};
-
-            try {
-                addon.constructMojitoClientRuntime(assetHandler, binderMap);
-            }
-            finally {
-                Y.mojito.RouteMaker = realRouteMaker;
-            }
+            addon.constructMojitoClientRuntime(assetHandler, binderMap);
 
             A.areSame(1, blobs.length, 'wrong number of blobs');
             var matches = blobs[0].match(/YUI_config = (.+?);/);
@@ -95,8 +90,8 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
             A.areSame('klingon', config.lang, 'wrong lang used');
         },
 
-        'test constructMojitoClientRuntime w/ a binderMap': function() {
 
+        'test constructMojitoClientRuntime w/ a binderMap': function() {
             var blobs = [],
                 assetHandler = {
                     addCss: function(path, location) {
@@ -120,16 +115,7 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
                     'viewId2': {
                         needs: 'another drink'
                     },
-                },
-                realRouteMaker = Y.mojito.RouteMaker
-            ;
-
-            Y.mojito.RouteMaker = function() {};
-            Y.mojito.RouteMaker.prototype = {
-                getComputedRoutes: function() {
-                    return ['routes'];
-                }
-            };
+                };
 
             addon.ac = {
                 http: {
@@ -139,6 +125,15 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
                 },
                 context: {
                     lang: 'klingon'
+                },
+                url: {
+                    getRouteMaker: function() {
+                        return {
+                            getComputedRoutes: function() {
+                                return ['routes'];
+                            }
+                        };
+                    }
                 }
             };
 
@@ -158,16 +153,15 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
                 }
             });
 
-            try {
-                addon.constructMojitoClientRuntime(assetHandler, binderMap);
-            }
-            finally {
-                Y.mojito.RouteMaker = realRouteMaker;
-            }
+            addon.constructMojitoClientRuntime(assetHandler, binderMap);
 
             var expected = [
                     '<script type="text/javascript">',
-                    '    YUI_config = {"foo":"bar","lang":"klingon","core":["get","features","intl-base","yui-log","mojito","yui-later"]};',
+                    '    YUI_config = {"foo":"bar","lang":"klingon","base":"combo?","combine":true};',
+                    '    YUI.Env.core.push("loader-base"); // workaround (ticket 2532571)',
+                    '    YUI_config.bootstrap = true;',
+                    '    YUI_config.comboBase = "/combo?";',
+                    '    YUI_config.combine = true;',
                     '    YUI().use(\'mojito-client\', function(Y) {',
                     '    window.YMojito = { client: new Y.mojito.Client({"context":{"lang":"klingon","runtime":"client"},"binderMap":{"viewId1":{"needs":"a drink"},"viewId2":{"needs":"another drink"}},"routes":["routes"]}) };',
                     '        });',
@@ -186,8 +180,8 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
             A.areSame('klingon', config.lang, 'wrong lang used');
         },
 
-        'test application.json should honor yui.config.fetchCSS=false': function() {
 
+        'test application.json should honor yui.config.fetchCSS=false': function() {
             var realLoader = Y.mojito.Loader;
             Y.mojito.Loader = function () {};
             Y.mojito.Loader.prototype = {
@@ -199,18 +193,19 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
                 }
             };
 
-            var realRouteMaker = Y.mojito.RouteMaker;
-            Y.mojito.RouteMaker = function() {};
-            Y.mojito.RouteMaker.prototype = {
-                getComputedRoutes: function() {
-                    return ['routes'];
-                }
-            };
-
             addon.ac = {
                 http: {
                     getHeader: function(h) {
                         return null;
+                    }
+                },
+                url: {
+                    getRouteMaker: function() {
+                        return {
+                            getComputedRoutes: function() {
+                                return ['routes'];
+                            }
+                        };
                     }
                 }
             };
@@ -265,42 +260,29 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
                 addon.constructMojitoClientRuntime(assetHandler, binderMap);
             }
             finally {
-                Y.mojito.RouteMaker = realRouteMaker;
                 Y.mojito.Loader = realLoader;
             }
 
             A.areSame(2, Object.keys(counts).length, 'too many type:location pairs');
-            A.areSame(2, counts['js top'], 'wrong number of js:top');
+            A.areSame(1, counts['js top'], 'wrong number of js:top');
             A.areSame(1, counts['blob bottom'], 'wrong number of blob:bottom');
         },
 
 
         'test dependencyCalculations precomputed': function() {
-            var calledYuiModules;
-            var realLoader = Y.mojito.Loader;
-            Y.mojito.Loader = function () {};
-            Y.mojito.Loader.prototype = {
-                createYuiLibComboUrl: function(yuiModules, yuiFilter) {
-                    calledYuiModules = yuiModules;
-                    return {
-                        'css': ['css-1','css-2'],
-                        'js':  ['js-1','js-2']
-                    };
-                }
-            };
-
-            var realRouteMaker = Y.mojito.RouteMaker;
-            Y.mojito.RouteMaker = function() {};
-            Y.mojito.RouteMaker.prototype = {
-                getComputedRoutes: function() {
-                    return ['routes'];
-                }
-            };
-
             addon.ac = {
                 http: {
                     getHeader: function(h) {
                         return null;
+                    }
+                },
+                url: {
+                    getRouteMaker: function() {
+                        return {
+                            getComputedRoutes: function() {
+                                return ['routes'];
+                            }
+                        };
                     }
                 }
             };
@@ -343,45 +325,25 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
                 };
             var binderMap = {};
 
-            try {
-                addon.constructMojitoClientRuntime(assetHandler, binderMap);
-            }
-            finally {
-                Y.mojito.RouteMaker = realRouteMaker;
-                Y.mojito.Loader = realLoader;
-            }
-
-            AA.itemsAreEqual(['yui'], calledYuiModules);
-            A.areSame("'*'", YUI_use);
+            addon.constructMojitoClientRuntime(assetHandler, binderMap);
+            A.areSame("'mojito-client'", YUI_use);
         },
 
 
         'test dependencyCalculations ondemand': function() {
-            var calledYuiModules;
-            var realLoader = Y.mojito.Loader;
-            Y.mojito.Loader = function () {};
-            Y.mojito.Loader.prototype = {
-                createYuiLibComboUrl: function(yuiModules, yuiFilter) {
-                    calledYuiModules = yuiModules;
-                    return {
-                        'css': ['css-1','css-2'],
-                        'js':  ['js-1','js-2']
-                    };
-                }
-            };
-
-            var realRouteMaker = Y.mojito.RouteMaker;
-            Y.mojito.RouteMaker = function() {};
-            Y.mojito.RouteMaker.prototype = {
-                getComputedRoutes: function() {
-                    return ['routes'];
-                }
-            };
-
             addon.ac = {
                 http: {
                     getHeader: function(h) {
                         return null;
+                    }
+                },
+                url: {
+                    getRouteMaker: function() {
+                        return {
+                            getComputedRoutes: function() {
+                                return ['routes'];
+                            }
+                        };
                     }
                 }
             };
@@ -424,45 +386,25 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
                 };
             var binderMap = {};
 
-            try {
-                addon.constructMojitoClientRuntime(assetHandler, binderMap);
-            }
-            finally {
-                Y.mojito.RouteMaker = realRouteMaker;
-                Y.mojito.Loader = realLoader;
-            }
-
-            AA.itemsAreEqual(['yui','get','loader-base','loader-rollup','loader-yui3'], calledYuiModules);
+            addon.constructMojitoClientRuntime(assetHandler, binderMap);
             A.areSame("'mojito-client'", YUI_use);
         },
 
 
         'test dependencyCalculations precomputed+ondemand': function() {
-            var calledYuiModules;
-            var realLoader = Y.mojito.Loader;
-            Y.mojito.Loader = function () {};
-            Y.mojito.Loader.prototype = {
-                createYuiLibComboUrl: function(yuiModules, yuiFilter) {
-                    calledYuiModules = yuiModules;
-                    return {
-                        'css': ['css-1','css-2'],
-                        'js':  ['js-1','js-2']
-                    };
-                }
-            };
-
-            var realRouteMaker = Y.mojito.RouteMaker;
-            Y.mojito.RouteMaker = function() {};
-            Y.mojito.RouteMaker.prototype = {
-                getComputedRoutes: function() {
-                    return ['routes'];
-                }
-            };
-
             addon.ac = {
                 http: {
                     getHeader: function(h) {
                         return null;
+                    }
+                },
+                url: {
+                    getRouteMaker: function() {
+                        return {
+                            getComputedRoutes: function() {
+                                return ['routes'];
+                            }
+                        };
                     }
                 }
             };
@@ -505,15 +447,7 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
                 };
             var binderMap = {};
 
-            try {
-                addon.constructMojitoClientRuntime(assetHandler, binderMap);
-            }
-            finally {
-                Y.mojito.RouteMaker = realRouteMaker;
-                Y.mojito.Loader = realLoader;
-            }
-
-            AA.itemsAreEqual(['yui','get','loader-base','loader-rollup','loader-yui3'], calledYuiModules);
+            addon.constructMojitoClientRuntime(assetHandler, binderMap);
             A.areSame("'mojito-client'", YUI_use);
         }
     };
