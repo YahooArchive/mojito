@@ -21,7 +21,6 @@ Conventions
 
   For example, the name of the unit test YUI module for the ``HelloMojit`` mojit with the ``server`` 
   affinity would be ``HelloMojit-tests.server.js``.
-<<<<<<< HEAD
 
 - The unit test YUI module should include the target module and the ``mojito-test`` module in the 
   ``requires`` array. The requires array includes the ``mojito-test`` module and the target module ``HelloMojit``:
@@ -30,18 +29,6 @@ Conventions
 
      { requires: [ 'mojito-test', 'HelloMojit' ] }
 
-
-=======
-
-- The unit test YUI module should include the target module and the ``mojito-test`` module in the 
-  ``requires`` array. The requires array includes the ``mojito-test`` module and the target module ``HelloMojit``:
-
-  .. code-block:: javascript
-
-     { requires: [ 'mojito-test', 'HelloMojit' ] }
-
-
->>>>>>> b6c9e5421ad8103ec655fb09d7f18b320b0bfedf
 .. note:: Test files that are **not** in a ``tests`` directory may be found by Mojito as long as the 
           file name has the suffix ``-tests``. The suggested practice though is to place all test 
           files in the ``tests`` directories shown above.
@@ -570,9 +557,6 @@ Setting Up
 #. Install Arrow:
 
    ``$ npm install yahoo-arrow -g`` 
-#. Install commander:
-
-   ``$ npm install commander -g`` 
 #. Start the Arrow server to confirm it was installed:
 
    ``$ arrow_server``
@@ -590,9 +574,6 @@ Setting Up
 
 #. Follow the `installation instructions for PhantomJS <http://www.doctor46.com/phantomjs>`_.
 #. Copy the phantomjs binary to ``/usr/local/bin/``.
-#. Link ``phantomjs`` to ``/node_modules`` so Node.js can use it.
-   
-   ``$ sudo ln -s /usr/local/lib /node_modules``
 #. Install Arrow:
 
    ``$ npm install yahoo-arrow -g``
@@ -635,7 +616,12 @@ or unit tests with one command.
 #. Clone the Mojito repository.
 
    ``$ git clone https://github.com/yahoo/mojito.git``
-#. Change to the ``mojito/tests`` directory.
+#. Change to the ``mojito`` directory.
+#. Install Mojito's dependencies. Mojito needs several npm modules to 
+   run tests.
+   
+   ``$ npm install``
+#. Change to the ``tests`` directory.
 #. Start the Selenium server in the background.
 
    ``$ java -jar path/to/selenium-server.jar &``
@@ -643,19 +629,20 @@ or unit tests with one command.
 
    ``$ ./run.js test -u --group fw,client,server``
    
-   TBD: error: Error: ENOENT, no such file or directory 
-   '/private/tmp/mojito/tests/unit//private/tmp/mojito/tests/unit/lib/app/addons/ac/report.xml'
-
-#. You can run all the functional tests with the below command. You can
-   terminate the tests at any time with **Ctl-C**.
+#. You can also run all the functional tests with the below command. You may 
+   want to terminate the tests with **Ctl-C** as there are quite a number of
+   functional tests that will take time to complete.
 
    ``$ ./run.js test -f``
 #. To view the reports for the tests in the following directories: 
 
-      - ``$ ./artifacts/arrowreport/unit/``
-      - ``$ ./artifacts/arrowreport/func/``
+      - ``$ ./unit/artifacts/arrowreport/``
+      - ``$ ./func/artifacts/arrowreport/``
 
-   Note: You will not get a report If you terminated any tests before they completed. 
+   Note: You will not get a report if you terminated any tests before they completed. 
+         Also, Selenium will display the error message ``SeleniumDriver - Failed to collect the 
+	 test report`` if a previously generated report exists.
+
    
 .. _func_unit_run-arrow:
    
@@ -667,8 +654,6 @@ with the ``arrow`` command. You pass Arrow a test descriptor, which
 is a JSON configuration file that describes and organizes your tests.
 For an overview of Arrow and the command-line options, see 
 the `Arrow README <https://github.com/yahoo/arrow/blob/master/README.md>`_.
-
-
 
 In the following steps, you'll start a routing application, run a test with Arrow,
 and then look at the test reports. Afterward, you should be able to
@@ -689,12 +674,12 @@ run some of the other tests included with Mojito.
    
    ``$ arrow_selenium --open=firefox``
 #. After Firefox has launched, run the functional routing tests with Arrow with the ``arrow`` command, 
-   the test descriptor, and the option ``--browser=resuse``:
+   the test descriptor, and the option ``--browser=reuse``:
  
    ``$ arrow routingtest_descriptor.json --browser=reuse``
 #. As with running the ``run.js`` script, Arrow will generate reports containing  
    the results of the tests, but the report names will match the name of the 
-   test descriptor and be located in the current working directory. Consequently,
+   test descriptor and be located in the current working directory. Thus,
    you should see the test reports ``routingtest_descriptor-report.json`` and
    ``routingtest_descriptor-report.xml``.
    
