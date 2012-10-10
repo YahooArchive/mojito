@@ -564,9 +564,8 @@ Setting Up
 
 #. `Download PhantomJS <http://www.doctor46.com/phantomjs>`_.
 #. Copy the phantomjs binary to ``/usr/local/bin/``.
-#. Link ``phantomjs`` to ``/node_modules`` so Node.js can find it.
-   
-   ``$ sudo ln -s /usr/local/lib /node_modules``
+
+   ``$ cp phantomjs /usr/local/bin/``
 #. Install Arrow:
 
    ``$ npm install yahoo-arrow -g`` 
@@ -590,12 +589,8 @@ Setting Up
 
 #. Follow the `installation instructions for PhantomJS <http://www.doctor46.com/phantomjs>`_.
 #. Copy the phantomjs binary to ``/usr/local/bin/``.
-#. Link ``phantomjs`` to ``/node_modules`` so Node.js can use it.
-   
-   ``$ sudo ln -s /usr/local/lib /node_modules``
-#. Install Arrow:
 
-   ``$ npm install yahoo-arrow -g``
+   ``$ cp phantomjs /usr/local/bin/``
 #. Start the Arrow server to confirm it was installed:
 
    ``$ arrow_server``
@@ -613,7 +608,9 @@ The following instructions work for both Macs and Linux.
 #. Start the Selenium server:
 
    ``$ java -jar path/to/selenium-server.jar``
-#. Confirm Selenium is running by going to the following URL: `http://localhost:4444/wd/hub/static/resource/hub.html <http://localhost:4444/wd/hub/static/resource/hub.html>`_   
+#. Confirm Selenium is running by going to the following URL: 
+
+   `http://localhost:4444/wd/hub/static/resource/hub.html <http://localhost:4444/wd/hub/static/resource/hub.html>`_   
 #. Shut down the Selenium server with ``Ctrl-C^`` command.  
 
 .. _func_unit-run:
@@ -626,16 +623,17 @@ Running Tests
 Running Batch Tests
 ~~~~~~~~~~~~~~~~~~~
 
-The following instructions show you how to run 
-Arrow tests with the wrapper script ``run.js``,
-which allows you to run batch tests. 
-For example, you can use ``run.js`` to run all of the functional
-or unit tests with one command.
+The following instructions show you how to run Arrow tests with the wrapper script ``run.js``,
+which allows you to run batch tests. For example, you can use ``run.js`` to run all of the Mojito 
+functional or unit tests with one command.
 
 #. Clone the Mojito repository.
 
    ``$ git clone https://github.com/yahoo/mojito.git``
-#. Change to the ``mojito/tests`` directory.
+#. Change to the ``mojito`` directory and install Mojito's dependencies.
+
+   ``$ npm install``
+#. Change to the ``tests`` directory.
 #. Start the Selenium server in the background.
 
    ``$ java -jar path/to/selenium-server.jar &``
@@ -643,17 +641,14 @@ or unit tests with one command.
 
    ``$ ./run.js test -u --group fw,client,server``
    
-   TBD: error: Error: ENOENT, no such file or directory 
-   '/private/tmp/mojito/tests/unit//private/tmp/mojito/tests/unit/lib/app/addons/ac/report.xml'
-
-#. You can run all the functional tests with the below command. You can
-   terminate the tests at any time with **Ctl-C**.
+#. You can also run all the functional tests with the below command. The functional tests 
+   may take some time to complete, but you want to terminate the tests with **Ctl-C**.
 
    ``$ ./run.js test -f``
-#. To view the reports for the tests in the following directories: 
+#. To view the test reports (in JSON or XML) in the following directories: 
 
-      - ``$ ./artifacts/arrowreport/unit/``
-      - ``$ ./artifacts/arrowreport/func/``
+      - ``$ ./unit/artifacts/arrowreport/``
+      - ``$ ./func/artifacts/arrowreport/``
 
    Note: You will not get a report If you terminated any tests before they completed. 
    
@@ -667,7 +662,6 @@ with the ``arrow`` command. You pass Arrow a test descriptor, which
 is a JSON configuration file that describes and organizes your tests.
 For an overview of Arrow and the command-line options, see 
 the `Arrow README <https://github.com/yahoo/arrow/blob/master/README.md>`_.
-
 
 
 In the following steps, you'll start a routing application, run a test with Arrow,
@@ -692,9 +686,10 @@ run some of the other tests included with Mojito.
    the test descriptor, and the option ``--browser=resuse``:
  
    ``$ arrow routingtest_descriptor.json --browser=reuse``
+#. You should see the functional tests running in Firefox testing different routing paths.
 #. As with running the ``run.js`` script, Arrow will generate reports containing  
    the results of the tests, but the report names will match the name of the 
-   test descriptor and be located in the current working directory. Consequently,
+   test descriptor and be located in the current working directory. Thus,
    you should see the test reports ``routingtest_descriptor-report.json`` and
    ``routingtest_descriptor-report.xml``.
    
