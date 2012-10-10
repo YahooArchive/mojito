@@ -252,10 +252,8 @@ Example:
             },
 
             index: function(ac) {
-                ac.models.DebugBarModelFoo.getData(function(err, data) {
-                    var my_data = ac.debug.get("my_flag");
-                    ac.done("My data: " + my_data.some);
-                });
+                var my_data = ac.debug.get("my_flag");
+                ac.done("My data: " + my_data.some);
             }
 
         };
@@ -292,14 +290,15 @@ Example:
             index: function(ac) {
                 var debug = ac._adapter.debug,
                     currentUrl = ac._adapter.req.url,
-                    newUrl = currentUrl.slice(ac.app.config.debug.debugPath.length),
+                    config = YUI.Env.mojito.DataProcess.retrieve('static-app-config'),
+                    newUrl = currentUrl.slice(config.debug.debugPath.length),
                     mojitoRoute = ac.url.find(newUrl),
                     call = mojitoRoute.call.split('.'),
                     route = Y.clone(ac.app.config.specs[call[0]]);
 
                 route.action = call[1];
 
-                Y.each(debug.parseDebugParameters(ac.params.url()[ac.app.config.debug.queryParam]), function (flag) {
+                Y.each(debug.parseDebugParameters(ac.params.url()[config.debug.queryParam]), function (flag) {
                     debug.addFlag(flag);
                 });
 
@@ -314,7 +313,7 @@ Example:
                     var res;
 
                     res = data.application + "<P>";
-                    Y.each(debug.parseDebugParameters(ac.params.url()[ac.app.config.debug.queryParam]), function (flag) {
+                    Y.each(debug.parseDebugParameters(ac.params.url()[config.debug.queryParam]), function (flag) {
                         var data = debug.get(flag);
 
                         if (data)
@@ -324,7 +323,7 @@ Example:
                 });
             }
         };
-    }, '0.0.1', {requires: ['mojito', 'mojito-url-addon']});
+    }, '0.0.1', {requires: ['mojito', 'mojito-url-addon', 'mojito-params-addon', 'mojito-http-addon', 'mojito-composite-addon']});
 
 
 
