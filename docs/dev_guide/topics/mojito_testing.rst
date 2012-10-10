@@ -701,12 +701,4 @@ run some of the other tests included with Mojito.
    
 .. _YUI Test: http://yuilibrary.com/yuitest/
 
-<<<<<<< HEAD
-
-
-   
-.. _YUI Test: http://yuilibrary.com/yuitest/
-
-=======
->>>>>>> b6c9e5421ad8103ec655fb09d7f18b320b0bfedf
 
