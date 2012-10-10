@@ -1,34 +1,27 @@
 [
     {
         "settings": [ "master" ],
-        "appPort": 8666,
+
+        "specs": {
+            "frame": {
+                "base": "top_frame"
+            }
+        },
+
+        "shareYUIInstance": true,
+
+        "staticHandling": {
+            "appName": "yahoo.{{name}}.application",
+            "prefix": "yahoo.application.{{name}}"
+        },
+
         "builds": {
             "html5app": {
+                "forceRelativePaths": true,
                 "urls": ["/yahoo.application.{{name}}/index.html"]
             }
         },
-        "cacheViewTemplates": true,
-        "deferAllOptionalAutoload": false,
-        "embedJsFilesInHtmlFrame": false,
-        "log": {
-            "client": {
-                "level": "info",
-                "yui": false
-            },
-            "server": {
-                "level": "info",
-                "yui": false
-            }
-        },
-        "shareYUIInstance": true,
-        "tunnelPrefix": "/tunnel/",
-        "staticHandling": {
-            "appName": "yahoo.{{name}}.application",
-            "cache": false,
-            "frameworkName": "yahoo.{{name}}.mojito",
-            "prefix": "",
-            "useRollups": false
-        },
+
         "yui": {
             "dependencyCalculations": "precomputed"
         }
