@@ -1,5 +1,5 @@
 {
-    "name": "yahoo.{{name}}.top_frame",
+    "name": "yahoo.application.{{name}}.top_frame",
     "version": "0.0.1",
     "pkg_type": "frame",
     "description": "The {{name}} application's top frame (HTMLFrameMojit)",
