@@ -7,7 +7,7 @@
 			"deploy": true,
 			"title": "template App",
 			"child": {
-				"type": "yahoo._template_.top_frame"
+				"type": "yahoo.{{name}}.top_frame"
 			},
 			"assets": {
 				"bottom": {
