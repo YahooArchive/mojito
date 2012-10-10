@@ -551,9 +551,6 @@ Setting Up
 
 #. `Download PhantomJS <http://www.doctor46.com/phantomjs>`_.
 #. Copy the phantomjs binary to ``/usr/local/bin/``.
-#. Link ``phantomjs`` to ``/node_modules`` so Node.js can find it.
-   
-   ``$ sudo ln -s /usr/local/lib /node_modules``
 #. Install Arrow:
 
    ``$ npm install yahoo-arrow -g`` 
