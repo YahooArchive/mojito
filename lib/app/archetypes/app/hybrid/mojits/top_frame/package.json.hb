@@ -1,11 +1,8 @@
 {
-    "name": "yahoo.application.{{name}}.top_frame",
+    "name": "top_frame",
     "version": "0.0.1",
     "pkg_type": "frame",
     "description": "The {{name}} application's top frame (HTMLFrameMojit)",
-    "dependencies": {
-        "mojito": ">0.4"
-    },
     "engines": {
         "node": ">0.6",
         "npm": ">1.0",
