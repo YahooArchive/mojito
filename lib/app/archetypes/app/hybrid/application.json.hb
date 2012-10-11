@@ -11,7 +11,7 @@
         "shareYUIInstance": true,
 
         "staticHandling": {
-            "appName": "yahoo.{{name}}.application",
+            "appName": "yahoo.application.{{name}}"
             "prefix": "yahoo.application.{{name}}"
         },
 
