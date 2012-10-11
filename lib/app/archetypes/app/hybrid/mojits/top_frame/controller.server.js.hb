@@ -31,10 +31,9 @@ YUI.add('top_frame', function(Y, NAME) {
         index: function(ac) {
             ac.models.top_frameModelFoo.getData(function(err, data) {
                 if (err) {
-                    ac.error(err);
-                    return;
+                    return ac.error(err);
                 }
-                ac.assets.addCss('./index.css');
+
                 ac.done({
                     status: 'Mojito is working.',
                     data: data
