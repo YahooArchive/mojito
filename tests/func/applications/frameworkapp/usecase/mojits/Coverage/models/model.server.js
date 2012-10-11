@@ -15,7 +15,7 @@ YUI.add('CoverageModel', function(Y, NAME) {
      * @class Model
      * @constructor
      */
-    Y.mojito.models.default = {
+    Y.mojito.models[NAME] = {
 
         init: function(mojitSpec) {
             this.spec = mojitSpec;

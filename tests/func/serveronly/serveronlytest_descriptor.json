@@ -466,21 +466,21 @@
                     "page" : "$$config.baseUrl$$/inst0"
                 }
             },
-            "multiaction2" : {
+            "bz5300267-multiaction2" : {
                 "group" : "smoke,restlib,serveronly",
                 "params" : {
                     "test" : "testMultiActions2.js",
                     "page" : "$$config.baseUrl$$/inst1"
                 }
             },
-            "multiaction3" : {
+            "bz5300267-multiaction3" : {
                 "group" : "smoke,restlib,serveronly",
                 "params" : {
                     "test" : "testMultiActions3.js",
                     "page" : "$$config.baseUrl$$/inst01"
                 }
             },
-            "multiaction4" : {
+            "bz5300267-multiaction4" : {
                 "group" : "smoke,restlib,serveronly",
                 "params" : {
                     "test" : "testMultiActions4.js",

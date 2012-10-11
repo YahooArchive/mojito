@@ -1,7 +1,7 @@
 /*
 * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
 */
-YUI.add('PagedFlickr5Model', function(Y) {
+YUI.add('PagedFlickr5Model', function(Y, NAME) {
 
 /**
  * The PagedFlickr5Model module.
@@ -15,7 +15,7 @@ YUI.add('PagedFlickr5Model', function(Y) {
      * @class PagedFlickr5Model
      * @constructor
      */
-    Y.mojito.models.flickr = {
+    Y.mojito.models[NAME] = {
 
         /**
          * Method that will be invoked by the mojit controller to obtain data.

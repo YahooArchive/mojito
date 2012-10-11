@@ -374,4 +374,5 @@ YUI.add('RESTLib', function(Y, NAME) {
     'mojito',
     'mojito-models-addon',
     'mojito-http-addon',
+    'mojito-params-addon',
     'RESTLibModel']});
