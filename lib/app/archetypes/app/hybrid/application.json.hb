@@ -8,8 +8,6 @@
             }
         },
 
-        "shareYUIInstance": true,
-
         "staticHandling": {
             "appName": "yahoo.application.{{name}}",
             "prefix": "yahoo.application.{{name}}"
