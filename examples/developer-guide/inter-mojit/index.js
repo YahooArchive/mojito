@@ -4,6 +4,8 @@
  * See the accompanying LICENSE file for terms.
  */
 
+/*jslint anon:true, sloppy:true, nomen:true*/
+
 process.chdir(__dirname);
 
 /**
@@ -11,13 +13,13 @@ process.chdir(__dirname);
  * @param {object} token Token used to identify the application.
  */
 module.exports = function(config, token) {
-    var server = require('./server.js');
-    var YUI = require('mojito').YUI;
+    var server = require('./server.js'),
+        YUI = require('mojito').YUI;
 
     YUI().use('mojito-server', function(Y) {
         var app = server(Y);
 
         // Signal the app is ready, providing the token and app references.
         process.emit("application-ready", token, app);
-    });    
+    });
 };
