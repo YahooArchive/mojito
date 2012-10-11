@@ -2,19 +2,19 @@
   {
     "settings": [ "master" ],
 
-    "/": {
-      "verbs": ["get"],
-      "path": "/",
-      "call": "topFrame.index"
+    "root": {
+        "verbs": ["get"],
+        "path": "/",
+        "call": "frame.index"
     },
 
-    "default-for-html5app": {
+    "yahoo.application.{{name}}": {
         "verbs": ["get"],
         "path": "/yahoo.application.{{name}}/index.html",
-        "call": "topFrame.index"
+        "call": "frame.index"
     },
 
-    "by-mojit-action": {
+    "any mojit/action": {
         "verbs": [ "GET" ],
         "path": "/:module/:action",
         "call": "{module}.{action}"
