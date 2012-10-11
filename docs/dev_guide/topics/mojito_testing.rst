@@ -626,11 +626,11 @@ functional or unit tests with one command.
    ``$ java -jar path/to/selenium-server.jar &``
 #. Run the unit tests for the framework and client: 
 
-   ``$ ./run.js test -u --group fw,client,server``
+   ``$ ./run.js test -u --path unit --group fw,client,server``
 #. You can also run all the functional tests with the below command. The functional tests 
    may take some time to complete, so you may want to terminate the tests with **Ctl-C**.
 
-   ``$ ./run.js test -f``
+   ``$ ./run.js test -f --path func``
 #. To view the test reports (in JSON or XML) in the following directories: 
 
       - ``$ ./unit/artifacts/arrowreport/``
