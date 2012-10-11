@@ -37,7 +37,7 @@ YUI.add('FlickrDetail', function(Y, NAME) {
                 return;
             }
 
-            ac.models.get('flickrModel').getFlickrDetail(image, function(details) {
+            ac.models.get('FlickrDetailModelFlickr').getFlickrDetail(image, function(details) {
                 if (!details) {
                     ac.done({ type: 'error', message: ac.intl.lang('ERROR_NO_DETAILS') }, { name:'message' });
                     return;
