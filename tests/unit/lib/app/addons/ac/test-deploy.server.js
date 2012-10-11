@@ -26,7 +26,7 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
         },
 
 
-        'YUI_config should use application.json yui.config': function() {
+        'YUI.applyConfig() should use application.json yui.config': function() {
             addon.ac = {
                 http: {
                     getHeader: function(h) {
@@ -82,11 +82,11 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
             addon.constructMojitoClientRuntime(assetHandler, binderMap);
 
             A.areSame(1, blobs.length, 'wrong number of blobs');
-            var matches = blobs[0].match(/YUI_config = (.+?);/);
-            A.isNotUndefined(matches[1], 'failed to find YUI_config in blob');
+            var matches = blobs[0].match(/YUI\.applyConfig\((.+?)\);/);
+            A.isNotUndefined(matches[1], 'failed to find YUI.applyConfig() in blob');
             var config = Y.JSON.parse(matches[1]);
-            A.isObject(config, 'failed to parse YUI_config');
-            A.areSame('bar', config.foo, 'failed to base YUI_config on application.yui.config');
+            A.isObject(config, 'failed to parse YUI.applyConfig()');
+            A.areSame('bar', config.foo, 'failed to base YUI.applyConfig() on application.yui.config');
             A.areSame('klingon', config.lang, 'wrong lang used');
         },
 
@@ -157,11 +157,7 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
 
             var expected = [
                     '<script type="text/javascript">',
-                    '    YUI_config = {"foo":"bar","lang":"klingon","base":"combo?","combine":true};',
-                    '    YUI.Env.core.push("loader-base"); // workaround (ticket 2532571)',
-                    '    YUI_config.bootstrap = true;',
-                    '    YUI_config.comboBase = "/combo?";',
-                    '    YUI_config.combine = true;',
+                    '    YUI.applyConfig({"foo":"bar","lang":"klingon","combine":true,"comboBase":"/combo?","root":""});',
                     '    YUI().use(\'mojito-client\', function(Y) {',
                     '    window.YMojito = { client: new Y.mojito.Client({"context":{"lang":"klingon","runtime":"client"},"binderMap":{"viewId1":{"needs":"a drink"},"viewId2":{"needs":"another drink"}},"routes":["routes"]}) };',
                     '        });',
@@ -172,11 +168,11 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
             A.isArray(blobs);
             A.areSame(expected, blobs[0]);
             A.areSame(1, blobs.length, 'wrong number of blobs');
-            var matches = blobs[0].match(/YUI_config = (.+?);/);
-            A.isNotUndefined(matches[1], 'failed to find YUI_config in blob');
+            var matches = blobs[0].match(/YUI\.applyConfig\((.+?)\);/);
+            A.isNotUndefined(matches[1], 'failed to find YUI.applyConfig() in blob');
             var config = Y.JSON.parse(matches[1]);
-            A.isObject(config, 'failed to parse YUI_config');
-            A.areSame('bar', config.foo, 'failed to base YUI_config on application.yui.config');
+            A.isObject(config, 'failed to parse YUI.applyConfig()');
+            A.areSame('bar', config.foo, 'failed to base YUI.applyConfig() on application.yui.config');
             A.areSame('klingon', config.lang, 'wrong lang used');
         },
 
