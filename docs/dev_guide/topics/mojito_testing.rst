@@ -21,7 +21,6 @@ Conventions
 
   For example, the name of the unit test YUI module for the ``HelloMojit`` mojit with the ``server`` 
   affinity would be ``HelloMojit-tests.server.js``.
-<<<<<<< HEAD
 
 - The unit test YUI module should include the target module and the ``mojito-test`` module in the 
   ``requires`` array. The requires array includes the ``mojito-test`` module and the target module ``HelloMojit``:
@@ -30,18 +29,6 @@ Conventions
 
      { requires: [ 'mojito-test', 'HelloMojit' ] }
 
-
-=======
-
-- The unit test YUI module should include the target module and the ``mojito-test`` module in the 
-  ``requires`` array. The requires array includes the ``mojito-test`` module and the target module ``HelloMojit``:
-
-  .. code-block:: javascript
-
-     { requires: [ 'mojito-test', 'HelloMojit' ] }
-
-
->>>>>>> b6c9e5421ad8103ec655fb09d7f18b320b0bfedf
 .. note:: Test files that are **not** in a ``tests`` directory may be found by Mojito as long as the 
           file name has the suffix ``-tests``. The suggested practice though is to place all test 
           files in the ``tests`` directories shown above.
@@ -569,9 +556,6 @@ Setting Up
 #. Install Arrow:
 
    ``$ npm install yahoo-arrow -g`` 
-#. Install commander:
-
-   ``$ npm install commander -g`` 
 #. Start the Arrow server to confirm it was installed:
 
    ``$ arrow_server``
@@ -589,8 +573,9 @@ Setting Up
 
 #. Follow the `installation instructions for PhantomJS <http://www.doctor46.com/phantomjs>`_.
 #. Copy the phantomjs binary to ``/usr/local/bin/``.
+#. Install Arrow:
 
-   ``$ cp phantomjs /usr/local/bin/``
+   ``$ npm install yahoo-arrow -g``
 #. Start the Arrow server to confirm it was installed:
 
    ``$ arrow_server``
@@ -630,8 +615,10 @@ functional or unit tests with one command.
 #. Clone the Mojito repository.
 
    ``$ git clone https://github.com/yahoo/mojito.git``
-#. Change to the ``mojito`` directory and install Mojito's dependencies.
-
+#. Change to the ``mojito`` directory.
+#. Install Mojito's dependencies. Mojito needs several npm modules to 
+   run tests.
+   
    ``$ npm install``
 #. Change to the ``tests`` directory.
 #. Start the Selenium server in the background.
@@ -640,9 +627,8 @@ functional or unit tests with one command.
 #. Run the unit tests for the framework and client: 
 
    ``$ ./run.js test -u --group fw,client,server``
-   
 #. You can also run all the functional tests with the below command. The functional tests 
-   may take some time to complete, but you want to terminate the tests with **Ctl-C**.
+   may take some time to complete, so you may want to terminate the tests with **Ctl-C**.
 
    ``$ ./run.js test -f``
 #. To view the test reports (in JSON or XML) in the following directories: 
@@ -650,7 +636,10 @@ functional or unit tests with one command.
       - ``$ ./unit/artifacts/arrowreport/``
       - ``$ ./func/artifacts/arrowreport/``
 
-   Note: You will not get a report If you terminated any tests before they completed. 
+.. note:: You will not get a report if you terminated any tests before they completed. 
+          Also, Selenium will display the error message ``SeleniumDriver - Failed to collect the 
+	  test report`` if a previously generated report exists.
+
    
 .. _func_unit_run-arrow:
    
@@ -663,14 +652,13 @@ is a JSON configuration file that describes and organizes your tests.
 For an overview of Arrow and the command-line options, see 
 the `Arrow README <https://github.com/yahoo/arrow/blob/master/README.md>`_.
 
-
 In the following steps, you'll start a routing application, run a test with Arrow,
 and then look at the test reports. Afterward, you should be able to
 run some of the other tests included with Mojito.
 
 #. Start Selenium in the background if it is not running already. You can confirm that it's running 
    by going to http://127.0.0.1:4444/wd/hub/static/resource/hub.html.
-#. Change to the directory containg the routing test application.
+#. Change to the directory containing the routing test application.
    
    ``$ cd mojito/tests/func/applications/frameworkapp/routing``
 #. Start the application specifying port 4082 in the background.
@@ -683,7 +671,7 @@ run some of the other tests included with Mojito.
    
    ``$ arrow_selenium --open=firefox``
 #. After Firefox has launched, run the functional routing tests with Arrow with the ``arrow`` command, 
-   the test descriptor, and the option ``--browser=resuse``:
+   the test descriptor, and the option ``--browser=reuse``:
  
    ``$ arrow routingtest_descriptor.json --browser=reuse``
 #. You should see the functional tests running in Firefox testing different routing paths.
