@@ -25,7 +25,7 @@ YUI.add('flickrModel', function(Y) {
       // Execute against YQL
       Y.YQL (select, function(rawYql) {
         // Handle empty response.
-        if (null == rawYql || 0 == rawYql.query.count) {
+        if (null == rawYql || !rawYql.query.count || !rawYql.query.results) {
           callback ([]);
         }
       // Process data.
