@@ -4,11 +4,13 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('OhHai', function(Y, NAME) {
+/*jslint anon:true, sloppy:true, nomen:true*/
+
+YUI.add('OhHai', function (Y, NAME) {
 
     Y.namespace('mojito.controllers')[NAME] = {
 
-        index: function(ac) {
+        index: function (ac) {
             ac.done();
         }
 

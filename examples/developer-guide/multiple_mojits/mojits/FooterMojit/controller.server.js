@@ -4,13 +4,15 @@
  * See the accompanying LICENSE file for terms.
  */
 
+/*jslint anon:true, sloppy:true, nomen:true*/
+
 YUI.add('FooterMojit', function(Y, NAME) {
-  Y.namespace('mojito.controllers')[NAME] = {
-    init: function(config) {
-      this.config = config; 
-    },
-    index: function(actionContext) {
-      actionContext.done({title: "Footer"}); 
-    }
-  };
-}, '0.0.1', {requires: ['mojito']})
+    Y.namespace('mojito.controllers')[NAME] = {
+        init: function (config) {
+            this.config = config;
+        },
+        index: function (actionContext) {
+            actionContext.done({title: "Footer"});
+        }
+    };
+}, '0.0.1', {requires: ['mojito']});

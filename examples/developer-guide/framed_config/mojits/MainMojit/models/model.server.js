@@ -4,12 +4,14 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('MainMojitModel', function(Y) {
+/*jslint anon:true, sloppy:true, nomen:true*/
+
+YUI.add('MainMojitModel', function (Y) {
 
     Y.mojito.models.MainMojit = {
 
-        getData: function(callback) {
-            callback({some:'data'});
+        getData: function (callback) {
+            callback({some: 'data'});
         }
 
     };
