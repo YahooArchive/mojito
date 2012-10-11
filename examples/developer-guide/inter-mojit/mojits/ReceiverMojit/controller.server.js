@@ -4,16 +4,18 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('ReceiverMojit', function(Y, NAME) {
+/*jslint anon:true, sloppy:true, nomen:true*/
+
+YUI.add('ReceiverMojit', function (Y, NAME) {
 
     Y.namespace('mojito.controllers')[NAME] = {
         init: function(config) {
             this.config = config;
         },
-        index: function(actionContext) {
+        index: function (actionContext) {
             actionContext.done({title: 'This is the receiver mojit'});
         },
-        show: function(actionContext) {
+        show: function (actionContext) {
             var url = actionContext.params.merged('url') || "http://farm1.static.flickr.com/21/35282840_8155ba1a22_o.jpg";
             actionContext.done(
                 {
