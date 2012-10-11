@@ -2,6 +2,8 @@
     {
         "settings": [ "master" ],
 
+        "appPort": {{port}},
+
         "specs": {
             "frame": {
                 "base": "top_frame"
