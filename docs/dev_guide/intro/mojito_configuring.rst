@@ -816,6 +816,10 @@ The table below describes the properties of the ``route`` object of  ``routes.js
 |                |                      |               | actions used in the ``call`` property.  See also       |
 |                |                      |               | :ref:`parameterized_paths`.                            |
 +----------------+----------------------+---------------+--------------------------------------------------------+
+| ``regex``      | string               | No            | A regular expression for matching a routing path,      |
+|                |                      |               | which can then be mapped to the action in the ``call`` |
+|                |                      |               | property.
++----------------+----------------------+---------------+--------------------------------------------------------+
 | ``verbs``      | array of strings     | No            | The HTTP methods allowed on the route path defined     |
 |                |                      |               | by ``path``. For example, to allow HTTP GET and        |
 |                |                      |               | POST calls to be made on the specified path, you       |
