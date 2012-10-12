@@ -69,7 +69,7 @@ YUI().use('addon-rs-url', 'base', 'oop', 'test', function(Y) {
             return out;
         },
 
-        preloadResourceVersions: function() {
+        resolveResourceVersions: function() {
             // no-op
         },
 
@@ -148,7 +148,7 @@ YUI().use('addon-rs-url', 'base', 'oop', 'test', function(Y) {
 
             store._makeResource('mojito', null, 'mojit', 'X', 'common');
             store._makeResource('mojito', 'X', 'controller', 'controller', 'server');
-            store.preloadResourceVersions();
+            store.resolveResourceVersions();
             A.isUndefined(store._mojitRVs.X[0].url);
         },
 
@@ -166,7 +166,7 @@ YUI().use('addon-rs-url', 'base', 'oop', 'test', function(Y) {
             store._makeResource('mojito', null, 'mojit', 'Y', 'common');
             store._makeResource('mojito', 'Y', 'controller', 'controller', 'client');
             store._makeResource('mojito', 'Y', 'controller', 'controller', 'server');
-            store.preloadResourceVersions();
+            store.resolveResourceVersions();
             A.areSame(1, store._mojitRVs.X.length);
             A.areSame('/static/X/controller--controller.common.ext', store._mojitRVs.X[0].url);
             A.areSame(2, store._mojitRVs.Y.length);
@@ -185,7 +185,7 @@ YUI().use('addon-rs-url', 'base', 'oop', 'test', function(Y) {
 
             store._makeResource('mojito', 'shared', 'x', 'y', 'common');
             store._makeResource('orange', 'shared', 'x', 'y', 'common');
-            store.preloadResourceVersions();
+            store.resolveResourceVersions();
             A.areSame('/static/mojito/x--y.common.ext', store._mojitRVs.shared[0].url);
             A.areSame('/static/store/x--y.common.ext', store._mojitRVs.shared[1].url);
         },
@@ -203,7 +203,7 @@ YUI().use('addon-rs-url', 'base', 'oop', 'test', function(Y) {
             store._makeResource('orange', 'X', 'x', 'y', 'common');
             store._makeResource('orange', null, 'mojit', 'Y', 'common');
             store._makeResource('orange', 'Y', 'x', 'y', 'common');
-            store.preloadResourceVersions();
+            store.resolveResourceVersions();
             A.areSame('/static/X/x--y.common.ext', store._mojitRVs.X[0].url);
             A.areSame('/static/Y/x--y.common.ext', store._mojitRVs.Y[0].url);
         },
@@ -225,7 +225,7 @@ YUI().use('addon-rs-url', 'base', 'oop', 'test', function(Y) {
 
             store._makeResource('mojito', 'shared', 'x', 'y', 'common');
             store._makeResource('orange', 'shared', 'x', 'y', 'common');
-            store.preloadResourceVersions();
+            store.resolveResourceVersions();
             A.areSame('/FFF/x--y.common.ext', store._mojitRVs.shared[0].url);
             A.areSame('/AAA/x--y.common.ext', store._mojitRVs.shared[1].url);
         },
@@ -248,7 +248,7 @@ YUI().use('addon-rs-url', 'base', 'oop', 'test', function(Y) {
             store._makeResource('orange', null, 'mojit', 'Y', 'common');
             store._makeResource('orange', 'Y', 'x', 'y', 'common', 'red');
             store._makeResource('orange', 'Y', 'not', 'yui', 'common');
-            store.preloadResourceVersions();
+            store.resolveResourceVersions();
             A.areSame('/static/store/rollup.client.js', store._mojitRVs.shared[0].url);
             A.areSame(libpath.join(fixtures, 'rollup.client.js'), store._mojitRVs.shared[0].source.fs.rollupPath);
             A.areSame('/static/store/rollup.client.js', store._mojitRVs.shared[1].url);
@@ -298,7 +298,7 @@ YUI().use('addon-rs-url', 'base', 'oop', 'test', function(Y) {
 
                 store._makeResource('mojito', 'shared', 'x', 'y', 'common', 'red');
                 store._makeResource('orange', 'shared', 'x', 'y', 'common', 'red');
-                store.preloadResourceVersions();
+                store.resolveResourceVersions();
                 cb(store);
             }
 

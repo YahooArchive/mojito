@@ -16,6 +16,14 @@
                 },
                 "group": "fw,unit,server"
             },
+            "handler-static": {
+                "params": {
+                    "lib": "$$config.lib$$/app/middleware/mojito-handler-static.js",
+                    "test": "./test-handler-static.js",
+                    "driver": "nodejs"
+                },
+                "group": "fw,unit,server"
+            },
             "handler-tunnel": {
                 "params": {
                     "lib": "$$config.lib$$/app/middleware/mojito-handler-tunnel.js",
