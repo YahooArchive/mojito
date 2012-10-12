@@ -47,6 +47,7 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                     }
                 },
                 models: {},
+                adapter: {},
                 controller: {index: function() {}},
                 store: {
                     getAppConfig: function() {
@@ -87,6 +88,7 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                     }
                 },
                 models: {},
+                adapter: {},
                 controller: {index: function() {}},
                 store: {
                     getAppConfig: function() {
@@ -127,6 +129,7 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                     }
                 },
                 models: {},
+                adapter: {},
                 controller: {index: function() {}},
                 store: {
                     getAppConfig: function() {
@@ -200,6 +203,7 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                     }
                 },
                 controller: {index: function() {}},
+                adapter: {},
                 store: {
                     getAppConfig: function() {
                     },
@@ -229,6 +233,7 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                     }
                 },
                 models: {},
+                adapter: {},
                 controller: {index: function() {}},
                 store: {
                     getAppConfig: function() {
@@ -293,6 +298,7 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                     }
                 },
                 controller: {index: function() {}},
+                adapter: {},
                 store: {
                     getAppConfig: function() {
                     },

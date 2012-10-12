@@ -150,6 +150,14 @@
                     "test": "./test-view-renderer.common.js"
                 },
                 "group": "fw,unit,client,server"
+            },
+            "debug-api.common": {
+                "params": {
+                    "page": "$$config.base$$/mojito-test.html",
+                    "lib": "$$config.lib$$/app/autoload/debug-api.common.js",
+                    "test": "./test-debug-api.common.js"
+                },
+                "group": "fw,unit,client,server"
             }
         }
     },

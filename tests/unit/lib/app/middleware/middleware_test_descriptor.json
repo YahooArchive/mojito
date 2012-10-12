@@ -31,6 +31,14 @@
                     "driver": "nodejs"
                 },
                 "group": "fw,unit,server"
+            },
+            "debug": {
+                "params": {
+                    "lib": "$$config.lib$$/app/middleware/mojito-debug.js,../../../../../lib/app/autoload/debug-api.common.js",
+                    "test": "./test-debug.js",
+                    "driver": "nodejs"
+                },
+                "group": "fw,unit,server"
             }
         }
     },
