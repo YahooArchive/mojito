@@ -826,10 +826,10 @@ The table below describes the properties of the ``route`` object of  ``routes.js
 +----------------+----------------------+---------------+--------------------------------------------------------+
 | ``regex``      | object               | No            | An object containing a key-value pair, where the key   |
 |                |                      |               | is a path parameter and the value contains the regular |
-|                |                      |               | expression. For example: ``"regex": { "path_param":    |
-|                |                      |               | "?:(.*).html" }`` See :ref:`Using Regular Expressions  |
-|                |                      |               | to Match Routing Paths <regex_paths>` for more         |
-|                |                      |               | information.                                           |
+|                |                      |               | expression. For example:                               |
+|                |                      |               | ``"regex": { "path_param":  "?:(.*).html" }``          |
+|                |                      |               | See :ref:`Using Regular Expressions o Match Routing    |
+|                |                      |               | Paths <regex_paths>` for more information.             |
 +----------------+----------------------+---------------+--------------------------------------------------------+
 | ``verbs``      | array of strings     | No            | The HTTP methods allowed on the route path defined     |
 |                |                      |               | by ``path``. For example, to allow HTTP GET and        |
@@ -1029,9 +1029,12 @@ replace ``{mojit-action}}`` in the ``call`` property. The following URLs call th
 Using Regular Expressions to Match Routing Paths
 ------------------------------------------------
 
-You can use the ``regex`` property of the ``routing`` object to define a key 
-that acts as a path parameter (e.g., ``/:bar``) and its value containing the regular 
-expression.  
+You can use the ``regex`` property of the ``routing`` object to define a key-value pair 
+that define a path parameter and a regular expression. The key is prepended 
+with a colon as the path parameter. The key ``name`` defined in ``regex`` would
+be represented as ``:name`` as a path parameter: ``"path": "/:name"``.
+The associated value contains the regular expression that is matched against 
+the request URL. 
 
 For example, in the ``routes.json`` below, if the path of the request 
 matches the regular expression ``\\d{1,2}_[Mm]ojitos?``, the ``index``
