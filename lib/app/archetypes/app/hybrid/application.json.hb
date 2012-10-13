@@ -17,6 +17,7 @@
 
         "builds": {
             "html5app": {
+                "attachManifest": true,
                 "forceRelativePaths": true,
                 "urls": ["/yahoo.application.{{name}}/index.html"]
             }
