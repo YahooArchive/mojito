@@ -1030,9 +1030,9 @@ Using Regular Expressions to Match Routing Paths
 ------------------------------------------------
 
 You can use the ``regex`` property of the ``routing`` object to define a key-value pair 
-that define a path parameter and a regular expression. The key is prepended 
-with a colon as the path parameter. The key ``name`` defined in ``regex`` would
-be represented as ``:name`` as a path parameter: ``"path": "/:name"``.
+that defines a path parameter and a regular expression. The key is prepended 
+with a colon when represented as a path parameter. For example, the key ``name`` 
+would be represented as ``:name`` as a path parameter: ``"path": "/:name"``.
 The associated value contains the regular expression that is matched against 
 the request URL. 
 
