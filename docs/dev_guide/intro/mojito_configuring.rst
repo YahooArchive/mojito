@@ -828,7 +828,7 @@ The table below describes the properties of the ``route`` object of  ``routes.js
 |                |                      |               | is a path parameter and the value contains the regular |
 |                |                      |               | expression. For example:                               |
 |                |                      |               | ``"regex": { "path_param":  "?:(.*).html" }``          |
-|                |                      |               | See :ref:`Using Regular Expressions o Match Routing    |
+|                |                      |               | See :ref:`Using Regular Expressions to Match Routing   |
 |                |                      |               | Paths <regex_paths>` for more information.             |
 +----------------+----------------------+---------------+--------------------------------------------------------+
 | ``verbs``      | array of strings     | No            | The HTTP methods allowed on the route path defined     |
