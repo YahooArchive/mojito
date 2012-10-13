@@ -13,9 +13,11 @@ YUI.add('simple', function (Y, NAME) {
         },
         index: function(ac) {
             var today = new Date(),
+                hours = today.getHours(),
+                h = hours > 12 ? hours % 12 : hours;
                 data = {
                     type : 'simple',
-                    time : { hours: today.getHours() % 12, minutes: today.getMinutes() < 10 ? "0" + today.getMinutes() : today.getMinutes(), period: today.getHours() >= 12 ? "p.m." : "a.m."},
+                    time : { hours: h, minutes: today.getMinutes() < 10 ? "0" + today.getMinutes() : today.getMinutes(), period: today.getHours() >= 12 ? "p.m." : "a.m."},
                     show : true,
                     hide : false,
                     list : [{id: 2}, {id: 1}, {id: 3} ],
