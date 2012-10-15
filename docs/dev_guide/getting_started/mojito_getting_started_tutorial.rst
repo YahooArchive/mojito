@@ -134,7 +134,7 @@ You will now modify the controller, so that the ``index`` function called in the
         * @class Controller
         * @constructor
         */
-        Y.mojito.controllers[NAME] = {
+        Y.namespace('mojito.controllers')[NAME] = {   
 
           init: function(config) {
             this.config = config;

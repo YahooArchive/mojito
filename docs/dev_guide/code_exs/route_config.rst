@@ -149,8 +149,8 @@ To set up and run ``configure_routing``:
 
    .. code-block:: javascript
 
-      YUI.add('RoutingMojit', function(Y,NAME) {
-        Y.mojito.controllers[NAME] = {
+      YUI.add('RoutingMojit', function(Y, NAME) {
+        Y.namespace('mojito.controllers')[NAME] = {   
           init: function(config) {
             this.config = config;
           },

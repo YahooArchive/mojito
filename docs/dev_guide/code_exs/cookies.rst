@@ -34,8 +34,8 @@ these methods for getting and setting cookies should be familiar as Mojito uses 
 
 .. code-block:: javascript
 
-   YUI.add('CookieMojit', function(Y,NAME) {
-     Y.mojito.controllers[NAME] = {
+   YUI.add('CookieMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = {   
        init: function(config) {
          this.config = config;
        },
@@ -65,7 +65,8 @@ cookie. To use the YUI Cookie module, first include the module with ``YUI().use`
    <div id="{{mojit_view_id}}" class="mojit">
      <h2>{{title}}</h2>
      <div>
-       <p>This is a demo showing how to read read cookies from browser, and how to write cookies to browser from the Mojit.</p>
+       <p>This is a demo showing how to read read cookies from browser, and how to write cookies to 
+       browser from the Mojit.</p>
      </div>
      <div>
        <p>Value of request cookie sent by browser: {{request_cookie_value}}</p>
@@ -140,8 +141,8 @@ To set up and run ``using_cookies``:
 
    .. code-block:: javascript
 
-      YUI.add('CookieMojit', function(Y,NAME) {
-        Y.mojito.controllers[NAME] = {
+      YUI.add('CookieMojit', function(Y, NAME) {
+        Y.namespace('mojito.controllers')[NAME] = {   
           init: function(config) {
             this.config = config;
           },

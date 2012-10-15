@@ -103,7 +103,8 @@ To create and run ``framed_assets``:
 #. Create your mojit.
 
    ``$ mojito create mojit framed``
-#. To configure your application to have assets, replace the code in ``application.json`` with the following:
+#. To configure your application to have assets, replace the code in ``application.json`` with the 
+   following:
 
    .. code-block:: javascript
 
@@ -146,12 +147,13 @@ To create and run ``framed_assets``:
       ]
 
 #. Change to ``mojits/framed``.
-#. Modify your controller to pass an array of objects to the template by replacing the code in ``controller.server.js`` with the following:
+#. Modify your controller to pass an array of objects to the template by replacing the code in 
+   ``controller.server.js`` with the following:
 
    .. code-block:: javascript
 
-      YUI.add('framed', function(Y,NAME) {
-        Y.mojito.controllers[NAME] = {
+      YUI.add('framed', function(Y, NAME) {
+        Y.namespace('mojito.controllers')[NAME] = {   
           init: function(config) {
             this.config = config;
           },
@@ -171,7 +173,8 @@ To create and run ``framed_assets``:
         };
       }, '0.0.1', {requires: []});
 
-#. Include the assets in your template by replacing the code in ``views/index.hb.html`` with the following:
+#. Include the assets in your template by replacing the code in ``views/index.hb.html`` with the 
+   following:
 
    .. code-block:: html
 

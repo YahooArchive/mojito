@@ -154,8 +154,8 @@ To set up and run ``htmlframe_mojit``:
 
    .. code-block:: javascript
 
-      YUI.add('framed', function(Y,NAME) {
-        Y.mojito.controllers[NAME] = {
+      YUI.add('framed', function(Y, NAME) {
+        Y.namespace('mojito.controllers')[NAME] = {   
           init: function(config) {
             this.config = config;
           },

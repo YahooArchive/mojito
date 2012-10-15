@@ -1,5 +1,3 @@
-
-
 ======
 Assets
 ======
@@ -159,8 +157,8 @@ the ``<meta>`` tag and the ``addCss`` method adds the device-specific CSS.
 
 .. code-block:: javascript
 
-   YUI.add('device', function(Y){
-     Y.mojito.controller = {
+   YUI.add('device', function(Y, NAME){
+     Y.namespace('mojito.controllers')[NAME] = { 
        init: function(config) {
          this.config = config;
        },
@@ -215,8 +213,8 @@ and then add the module name in the ``requires`` array as seen in the example mo
 
 .. code-block:: javascript
 
-   YUI.add('textProcessor', function(Y){
-     Y.mojito.controller = {
+   YUI.add('textProcessor', function(Y, NAME){
+     Y.namespace('mojito.controllers')[NAME] = { 
        init: function(config) {
          this.config = config;
        },
