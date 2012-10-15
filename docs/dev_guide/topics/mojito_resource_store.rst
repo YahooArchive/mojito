@@ -375,6 +375,7 @@ The ``type`` property of the ``metadata`` object can have any of the following v
 - ``binder``      - a binder for a mojit
 - ``asset``       - an asset (css, js, image, etc.)
 - ``addon``       - an addon to the mojito system
+- ``archetype``   - the commands to create resources as described in the output from ``mojito help create`` 
 - ``spec``        - the configuration for a mojit instance
 - ``yui-lang``    - a YUI 3 language bundle
 - ``yui-module``  - a YUI 3 module (that isn't one of the above)
@@ -388,9 +389,9 @@ You can use a subtype to specify types of a ``type``. For example, a
 resource of ``type:addon`` might have subtypes, such as ``subtype:ac`` for AC addons,  
 ``subtype:view-engine`` for view engines, or ``subtype:rs`` for |RS| addons. 
 
-For ``type:archetype``, the subtypes refers to the ``type`` described in the output from 
-the command ``mojito help create``.  So, you could have ``subtype:app``  or 
-``subtype:mojit``.  (There may be more in the future!)       
+For ``type:archetype``, the subtypes could be ``subtype:app``  or 
+``subtype:mojit``.  The subtype specifies what archetype Mojito should create,
+such as an application or mojit. (There may be more in the future!)       
 
 
 .. _sel_prop:
@@ -948,8 +949,7 @@ Controller
 
    YUI.add('Viewer', function(Y, NAME) {
    
-     Y.mojito.controllers[NAME] = {
-
+     Y.namespace('mojito.controllers')[NAME] = { 
        init: function(config) {
          this.config = config;
        },

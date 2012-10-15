@@ -46,8 +46,8 @@ In the example controller below, the value for the ``name`` query string paramet
 
 .. code-block:: javascript
 
-   YUI.add('ParamsMojit', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('ParamsMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
        init: function(config) {
          this.config = config;
        },
@@ -71,8 +71,8 @@ the template.
 
 .. code-block:: javascript
 
-   YUI.add('ParamsMojit', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('ParamsMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
        init: function(config) {
          this.config = config;
        },
@@ -107,8 +107,8 @@ In the example controller below, the POST body parameter ``name`` is retrieved a
 
 .. code-block:: javascript
 
-   YUI.add('ParamsMojit', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('ParamsMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
        init: function(config) {
          this.config = config;
        },
@@ -132,8 +132,8 @@ template.
 
 .. code-block:: javascript
 
-   YUI.add('ParamsMojit', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('ParamsMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
        init: function(config) {
          this.config = config;
        },
@@ -204,8 +204,8 @@ In the example controller below, the routing parameter ``coupon`` is used to det
 
 .. code-block:: javascript
 
-   YUI.add('CouponMojit', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('CouponMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
        init: function(config) {
          this.config = config;
        },
@@ -234,8 +234,8 @@ In the example controller below, all of the routing routing parameters to create
 
 .. code-block:: javascript
 
-   YUI.add('LinkMojit', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('LinkMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
        init: function(config) {
          this.config = config;
        },
@@ -274,8 +274,8 @@ In the example controller below, the ``name`` parameter is obtained using ``getF
 
 .. code-block:: javascript
 
-   YUI.add('MergedParamsMojit', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('MergedParamsMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
        init: function(config) {
          this.config = config;
        },
@@ -296,8 +296,8 @@ To get all of the GET, POST, and routing parameters, call ``getFromMerged`` or `
 
 .. code-block:: javascript
 
-   YUI.add('MergedParamsMojit', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('MergedParamsMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
        init: function(config) {
          this.config = config;
        },
@@ -332,8 +332,8 @@ for ``'user'`` is obtained and then used to pass user information to the templat
 
 .. code-block:: javascript
 
-   YUI.add('CookieMojit', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('CookieMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
        init: function(config) {
          this.config = config;
      },
@@ -356,8 +356,8 @@ with the name ``'user'`` if one does not exist.
 
 .. code-block:: javascript
 
-   YUI.add('CookieMojit', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('CookieMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
        init: function(config) {
          this.config = config;
      },

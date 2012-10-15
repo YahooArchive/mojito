@@ -17,7 +17,7 @@ instructs YUI to load the library. Once the library is loaded,  you can use
 
 .. code-block:: javascript
 
-   YUI.add('MyModel', function(Y) {
+   YUI.add('MyModel', function(Y, NAME) {
      ...
      // Make the REST call.
      Y.mojito.lib.REST.GET("http://example.com");
@@ -33,9 +33,9 @@ the Recipe Puppy API.
 
 .. code-block:: javascript
 
-   YUI.add('ProductSearchModel', function(Y) {
-     Y.mojito.models.RecipeSearch = {
-       init: function(config) {
+   YUI.add('ProductSearchModel', function(Y, NAME) {
+      Y.namespace('mojito.models')[NAME] = {
+        init: function(config) {
            this.config = config;
        },
        recipeSearch: function(count, cb) {

@@ -4,7 +4,9 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('SimpleMojit', function(Y, NAME) {
+/*jslint anon:true, sloppy:true, nomen:true*/
+
+YUI.add('SimpleMojit', function (Y, NAME) {
 
 /**
  * The SimpleMojit module.
@@ -20,7 +22,7 @@ YUI.add('SimpleMojit', function(Y, NAME) {
      */
     Y.namespace('mojito.controllers')[NAME] = {
 
-        init: function(config) {
+        init: function (config) {
             this.config = config;
         },
 
@@ -30,7 +32,7 @@ YUI.add('SimpleMojit', function(Y, NAME) {
          * @param ac {Object} The action context that provides access
          *        to the Mojito API.
          */
-        index: function(ac) {
+        index: function (ac) {
             ac.done('Mojito is working.');
         }
 

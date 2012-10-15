@@ -110,8 +110,8 @@ In the example controller below, the child instances ``header``, ``body``, and `
 
 .. code-block:: javascript
 
-   YUI.add('FrameMojit', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('FrameMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
        init: function(config) {
          this.config = config;
        },
@@ -158,8 +158,8 @@ ParentMojit
 
 .. code-block:: javascript
 
-   YUI.add('ParentMojit', function(Y) {
-      Y.mojito.controller = {
+   YUI.add('ParentMojit', function(Y, NAME) {
+      Y.namespace('mojito.controllers')[NAME] = { 
         index: function(ac) {
           var cfg = {
             "children": {
@@ -187,8 +187,8 @@ DynamicChildMojit
 
 .. code-block:: javascript
 
-   YUI.add('DynamicChildMojit', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('DynamicChildMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
        index: function(ac) {
          var caller = ac.config.get("caller");       
          if("ParentMojit"==caller){
@@ -322,10 +322,8 @@ instance and passes custom versions of ``done``, ``flush``, and ``error``.
 
 .. code-block:: javascript
 
-   YUI.add('MotherlodeMojit', function(Y) {
-
-     Y.mojito.controller = {
-
+   YUI.add('MotherlodeMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
        index: function(ac) {
          var adapter = {
            done: function(data, meta){
@@ -398,10 +396,9 @@ CreatorMojit
 
 .. code-block:: javascript 
 
-   YUI.add('CreatorMojit', function(Y) {
+   YUI.add('CreatorMojit', function(Y, NAME) {
    
-      Y.mojito.controller = {
-
+      Y.namespace('mojito.controllers')[NAME] = { 
         index: function(ac) {
           var buffer = '';
           var command = {
@@ -444,9 +441,9 @@ SpawnedMojit
 
 .. code-block:: javascript 
 
-   YUI.add('SpawnedMojit', function(Y) {
+   YUI.add('SpawnedMojit', function(Y, NAME) {
    
-      Y.mojito.controller = {
+      Y.namespace('mojito.controllers')[NAME] = { 
 
         "index": function(ac) {
           ac.done({ "route": ac.params.route('name'), "url": ac.params.url('path'), "body": ac.params.body("message") });
@@ -542,8 +539,8 @@ ParentMojit
 
 .. code-block:: javascript
 
-   YUI.add('ParentMojit', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('ParentMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
        index: function(ac) {
          ac.assets.addCss("/static/parent/assets/index.css", "top");
          ac.done();
@@ -567,8 +564,8 @@ ChildMojit
 
 .. code-block:: javascript
 
-   YUI.add('ChildMojit', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('ChildMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
        index: function(ac) {
          ac.assets.addCss("/static/child/assets/index.css", "top");
          var content = Math.floor(Math.random()*10001);
@@ -733,8 +730,8 @@ GrandparentMojit
 
 .. code-block:: javascript
 
-   YUI.add('GrandparentMojit', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('GrandparentMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
        index: function(ac) {
          var command = {
            "instance": {
@@ -761,8 +758,8 @@ ParentMojit
 
 .. code-block:: javascript
 
-   YUI.add('ParentMojit', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('ParentMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
        index: function(ac) {
          var params = ac.params.body();
          var cfg = {
@@ -791,8 +788,8 @@ GrandchildMojit
 
 .. code-block:: javascript
 
-   YUI.add('GrandchildMojit', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('GrandchildMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
        index: function(ac) {
          var data = { "creator": ac.config.get("creator"), "whoami": ac.config.get("whoami") };
          ac.done(data);

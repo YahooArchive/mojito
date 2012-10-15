@@ -4,7 +4,9 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('SimpleMojitModel', function(Y, NAME) {
+/*jslint anon:true, sloppy:true, nomen:true*/
+
+YUI.add('SimpleMojitModel', function (Y) {
 
 /**
  * The SimpleMojitModel module.
@@ -20,7 +22,7 @@ YUI.add('SimpleMojitModel', function(Y, NAME) {
      */
     Y.mojito.models.SimpleMojit = {
 
-        init: function(config) {
+        init: function (config) {
             this.config = config;
         },
 
@@ -30,8 +32,8 @@ YUI.add('SimpleMojitModel', function(Y, NAME) {
          * @param callback {Function} The callback function to call when the
          *        data has been retrieved.
          */
-        getData: function(callback) {
-            callback({some:'data'});
+        getData: function (callback) {
+            callback({some: 'data'});
         }
 
     };

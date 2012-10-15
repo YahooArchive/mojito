@@ -4,19 +4,21 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('MasterMojitBinderIndex', function(Y, NAME) {
+/*jslint anon:true, sloppy:true, nomen:true*/
 
-    Y.namespace("mojito.binders")[NAME]= { 
+YUI.add('MasterMojitBinderIndex', function (Y, NAME) {
 
-        init: function(mojitProxy) {
+    Y.namespace("mojito.binders")[NAME] = {
+
+        init: function (mojitProxy) {
             var mp = this.mp = this.mojitProxy = mojitProxy;
             Y.log("Entering MasterMojitBinderIndex");
             this.mojitProxy.listen('fire-link', function(payload) {
-                var c = mp.getChildren();
-                var receiverID = c["receiver"].viewId;
+                var c = mp.getChildren(),
+                    receiverID = c.receiver.viewId;
                 Y.log('intercepted fire-link event: ' + payload.data.url, 'info', NAME);
                 mojitProxy.broadcast('broadcast-link',
-                                     {url: payload.data.url},{ target: {viewId:receiverID }});
+                                     {url: payload.data.url}, { target: {viewId: receiverID }});
                 Y.log('broadcasted event to child mojit: ' + payload.data.url, 'info', NAME);
             });
         },
@@ -27,7 +29,7 @@ YUI.add('MasterMojitBinderIndex', function(Y, NAME) {
          *
          * @param node {Node} The DOM node to which this mojit is attached.
          */
-        bind: function(node) {
+        bind: function (node) {
             this.node = node;
         }
 

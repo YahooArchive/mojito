@@ -4,15 +4,17 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('ContactUs', function(Y, NAME) {
+/*jslint anon:true, sloppy:true, nomen:true*/
+
+YUI.add('ContactUs', function (Y, NAME) {
 
     Y.namespace('mojito.controllers')[NAME] = {
 
-        init: function(config) {
+        init: function (config) {
             this.config = config;
         },
 
-        index: function(ac) {
+        index: function (ac) {
             var vudata = {
                 'company': ac.config.get("company"),
                 'copyright': ac.config.get("copyright"),
@@ -25,4 +27,5 @@ YUI.add('ContactUs', function(Y, NAME) {
 
 }, '0.0.1', {requires: [
     'mojito',
-    'mojito-config-addon']});
+    'mojito-config-addon'
+]});

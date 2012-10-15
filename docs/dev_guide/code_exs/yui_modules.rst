@@ -42,7 +42,8 @@ string for identifying the module and ``{affinity}`` is either ``common``, ``ser
 
 ``{module_name}.{affinity}.js``
 
-In this code example, code is being deployed to the client, so the affinity must be either ``common`` or ``client``.
+In this code example, code is being deployed to the client, so the affinity must be either 
+``common`` or ``client``.
 
 .. _registering_module:
 
@@ -92,7 +93,8 @@ and set persistent data. Note that you must use the ``Y`` instance to access the
        var keyname = 'storage-lite-example', notes = node.one('#notes');
        // Populate the textarea with the stored note
        // text on page load.
-       notes.set('value', Y.StorageLite.getItem(keyname) || '');    // Save the contents of the textarea after
+       notes.set('value', Y.StorageLite.getItem(keyname) || '');   
+       // Save the contents of the textarea after
        // each keystroke.
        notes.on('keyup', function() {
          Y.StorageLite.setItem(keyname, notes.get('value')); 
@@ -162,8 +164,8 @@ To set up and run ``yui_module``:
 
    .. code-block:: javascript
 
-      YUI.add('Notepad', function(Y,NAME) {
-        Y.mojito.controllers[NAME] = {
+      YUI.add('Notepad', function(Y, NAME) {
+        Y.namespace('mojito.controllers')[NAME] = {   
           index: function(ac) {
             ac.done();
           }

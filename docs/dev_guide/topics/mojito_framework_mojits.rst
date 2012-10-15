@@ -1,5 +1,3 @@
-
-
 ================
 Framework Mojits
 ================
@@ -318,8 +316,8 @@ The ``Container`` mojit uses ``ac.composite.done`` to execute its child mojits.
 
 .. code-block:: javascript
 
-   YUI.add('Container', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('Container', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
      /**
      * Method corresponding to the 'index' action.
      *
@@ -354,8 +352,8 @@ The ``LazyLoadMojit`` in the ``application.json`` is configured to lazily load t
 
 .. code-block:: javascript
 
-   YUI.add('LazyChild', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('LazyChild', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
        hello: function(ac) {
          ac.done({time: new Date()});
        },

@@ -4,11 +4,13 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('ReceiverMojitBinderIndex', function(Y, NAME) {
+/*jslint anon:true, sloppy:true, nomen:true*/
+
+YUI.add('ReceiverMojitBinderIndex', function (Y, NAME) {
 
     Y.namespace('mojito.binders')[NAME] = {
 
-        init: function(mojitProxy) {
+        init: function (mojitProxy) {
             var self = this;
             this.mojitProxy = mojitProxy;
             this.mojitProxy.listen('broadcast-link', function(payload) {
@@ -34,10 +36,10 @@ YUI.add('ReceiverMojitBinderIndex', function(Y, NAME) {
          *
          * @param node {Node} The DOM node to which this mojit is attached.
          */
-        bind: function(node) {
+        bind: function (node) {
             this.node = node;
         }
 
     };
 
-}, '0.0.1', {requires: ['mojito-client','event-custom','json']});
+}, '0.0.1', {requires: ['mojito-client', 'event-custom', 'json']});
