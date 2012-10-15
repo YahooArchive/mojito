@@ -372,6 +372,30 @@ YUI().use(
                     ress;
                 ress = store.getResources('server', {}, {mojit: 'HTMLFrameMojit', type: 'controller'});
                 A.areSame(libpath.join(fixtures, 'mojits/HTMLFrameMojit/controller.server.js'), ress[0].source.fs.fullPath);
+            },
+
+            'ignore: getAllURLResources()': function() {
+                // TODO
+            },
+
+            'ignore: makeResourceVersions()': function() {
+                // TODO
+            },
+
+            'ignore: getResourceContent()': function() {
+                // TODO
+            },
+
+            'ignore: processResourceContent()': function() {
+                // TODO
+            },
+
+            'ignore: getAppPkgMeta()': function() {
+                // TODO
+            },
+
+            'ignore: makeResourceFSMeta()': function() {
+                // TODO
             }
 
         }));
