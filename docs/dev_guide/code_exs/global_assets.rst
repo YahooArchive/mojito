@@ -211,8 +211,8 @@ To set up and run ``global_assets``:
 
    .. code-block:: javascript
 
-      YUI.add('OhHai', function(Y,NAME) {
-        Y.mojito.controllers[NAME] = {
+      YUI.add('OhHai', function(Y, NAME) {
+        Y.namespace('mojito.controllers')[NAME] = {   
           index: function(ac) {
             ac.done();
           }

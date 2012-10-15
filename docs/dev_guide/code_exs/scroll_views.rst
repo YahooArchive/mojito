@@ -61,10 +61,10 @@ the image ``alt`` attribute is passed to the ``index`` template.
 
 .. code-block:: javascript
 
-   YUI.add('scroll', function(Y,NAME) {
-       Y.mojito.controllers[NAME] = {
-         init: function(config) {
-           this.config = config;
+   YUI.add('scroll', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = {   
+       init: function(config) {
+         this.config = config;
        },
        index: function(ac) {
          // Populate Template
@@ -127,7 +127,7 @@ YUI 3: ScrollView page.
      </div>
    </div>
    <script type="text/javascript" charset="utf-8">
-     YUI().use('scrollview', function(Y,NAME) {
+     YUI().use('scrollview', function(Y, NAME) {
        var scrollView = new Y.ScrollView({
          id: 'scrollview',
          srcNode: '#scrollview-content',
@@ -207,8 +207,8 @@ To set up and run ``scroll_views``:
 
    .. code-block:: javascript
 
-      YUI.add('scroll', function(Y,NAME) {
-        Y.mojito.controllers[NAME] = {
+      YUI.add('scroll', function(Y, NAME) {
+        Y.namespace('mojito.controllers')[NAME] = {   
           init: function(config) {
             this.config = config;
           },
@@ -269,7 +269,7 @@ To set up and run ``scroll_views``:
         </div>
       </div>
       <script type="text/javascript" charset="utf-8">
-        YUI().use('scrollview', function(Y,NAME) {
+        YUI().use('scrollview', function(Y, NAME) {
           var scrollView = new Y.ScrollView({
             id: 'scrollview',
             srcNode: '#scrollview-content',

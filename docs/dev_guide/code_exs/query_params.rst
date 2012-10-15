@@ -253,8 +253,8 @@ To set up and run ``using_parameters``:
 
    .. code-block:: javascript
 
-      YUI.add('QueryMojit', function(Y,NAME) {
-        Y.mojito.controllers[NAME] = {
+      YUI.add('QueryMojit', function(Y, NAME) {
+        Y.namespace('mojito.controllers')[NAME] = {   
           init: function(config) {
             this.config = config;
           },

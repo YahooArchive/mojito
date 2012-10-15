@@ -4,15 +4,17 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('MasterMojit', function(Y, NAME) {
+/*jslint anon:true, sloppy:true, nomen:true*/
+
+YUI.add('MasterMojit', function (Y, NAME) {
 
     Y.namespace('mojito.controllers')[NAME] = {
 
-        init: function(config) {
+        init: function (config) {
             this.config = config;
         },
-        "index": function(ac) {
-            ac.composite.done();
+        "index": function (actionContext) {
+            actionContext.composite.done();
         }
 
     };

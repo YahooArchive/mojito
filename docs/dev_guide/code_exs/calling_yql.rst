@@ -92,10 +92,10 @@ function.
 
 .. code-block: javascript
 
-   YUI.add('flickrModel', function(Y,NAME) {
+   YUI.add('flickrModel', function(Y, NAME) {
      // Flickr requires an API key
      var API_KEY = '84921e87fb8f2fc338c3ff9bf51a412e';
-     Y.mojito.models.flickr = {
+     Y.namespace('mojito.models')[NAME] = {
        init: function(config) {
          this.config = config;
        },
@@ -176,8 +176,8 @@ the ``index`` template.
 
 .. code-block:: javascript
 
-   YUI.add('flickr', function(Y,NAME) {
-     Y.mojito.controllers[NAME] = {
+   YUI.add('flickr', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = {   
        init: function(config) {
          this.config = config;
        },
@@ -265,11 +265,11 @@ To set up and run ``model_yql``:
 
    .. code-block:: javascript
 
-      YUI.add('flickrModel', function(Y,NAME) {
+      YUI.add('flickrModel', function(Y, NAME) {
         // Replace '{Flickr API Key}' with your own Flickr
         // API key.
         var API_KEY = '{Flickr API Key}';
-        Y.mojito.models.flickr = {
+         Y.namespace('mojito.models')[NAME] = {
           init: function(config) {
             this.config = config;
           },
@@ -325,7 +325,7 @@ To set up and run ``model_yql``:
 
    .. code-block:: javascript
 
-      YUI.add('flickrModel', function(Y,NAME) {
+      YUI.add('flickrModel', function(Y, NAME) {
         // Replace '{Flickr API Key}' with your own Flickr
         // API key.
         var API_KEY = '{Flickr API Key}';

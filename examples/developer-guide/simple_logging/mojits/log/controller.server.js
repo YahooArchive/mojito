@@ -4,7 +4,9 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('log', function(Y, NAME) {
+/*jslint anon:true, sloppy:true, nomen:true*/
+
+YUI.add('log', function (Y, NAME) {
 
     /**
      * Constructor for the Controller class.
@@ -14,10 +16,10 @@ YUI.add('log', function(Y, NAME) {
      */
     Y.namespace('mojito.controllers')[NAME] = {
 
-        init: function(config) {
+        init: function (config) {
             this.config = config;
         },
-        
+
         /**
          * Method corresponding to the 'index' action.
          *
@@ -25,29 +27,29 @@ YUI.add('log', function(Y, NAME) {
          *        to the Mojito API.
          */
 
-        index: function(ac) {
-            Y.log('[CONTROLLER]: entering into controller index (...)',"info"); 
-            var today = new Date(), 
-            data = { 
-                type : 'simple',
-                time : {
-                    hours: today.getHours()%12, 
-                    minutes: today.getMinutes()<10 ? "0" + today.getMinutes() : today.getMinutes(), 
-                    period: today.getHours()>=12 ? "p.m." : "a.m."
-                }, 
-                show : true, 
-                hide : false, 
-                list : [{
-                    id: 2
-                }, {
-                    id: 1
-                }, {
-                    id: 3
-                } ],
-                hole : null, 
-                html : "<h3 style='color:red;'>simple html</h3>"
-            };
-            Y.log('[CONTROLLER]: Today ' +today); 
+        index: function (ac) {
+            Y.log('[CONTROLLER]: entering into controller index (...)', "info");
+            var today = new Date(),
+                data = {
+                    type : 'simple',
+                    time : {
+                        hours: today.getHours() % 12,
+                        minutes: today.getMinutes() < 10 ? "0" + today.getMinutes() : today.getMinutes(),
+                        period: today.getHours() >= 12 ? "p.m." : "a.m."
+                    },
+                    show : true,
+                    hide : false,
+                    list : [{
+                        id: 2
+                    }, {
+                        id: 1
+                    }, {
+                        id: 3
+                    } ],
+                    hole : null,
+                    html : "<h3 style='color:red;'>simple html</h3>"
+                };
+            Y.log('[CONTROLLER]: Today ' + today);
             ac.done(data);
         }
 
