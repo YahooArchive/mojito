@@ -157,7 +157,7 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
 
             var expected = [
                     '<script type="text/javascript">',
-                    '    YUI.applyConfig({"foo":"bar","lang":"klingon","combine":true,"comboBase":"/combo?","root":""});',
+                    '    YUI.applyConfig({"fetchCSS":true,"combine":true,"base":"/combo?","comboBase":"/combo?","root":"","url":"/combo?yui-base/yui-base.js\\\\u0026loader-base/loader-base.js\\\\u0026loader-app-base_klingon.js","foo":"bar","lang":"klingon"});',
                     '    YUI().use(\'mojito-client\', function(Y) {',
                     '    window.YMojito = { client: new Y.mojito.Client({"context":{"lang":"klingon","runtime":"client"},"binderMap":{"viewId1":{"needs":"a drink"},"viewId2":{"needs":"another drink"}},"routes":["routes"]}) };',
                     '        });',
