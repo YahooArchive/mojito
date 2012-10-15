@@ -657,6 +657,26 @@ YUI().use(
             A.isUndefined(config.modules.FooBinderIndex);
             A.isNotUndefined(config.modules.FooBinderList);
             A.isNotUndefined(config.modules.BarController);
+        },
+
+
+        'ignore: makeResourceVersions()': function() {
+            // TODO
+        },
+
+
+        'ignore: getResourceContent()': function() {
+            // TODO
+        },
+
+
+        'ignore: gather list of all langs in app': function() {
+            // TODO
+        },
+
+
+        'ignore: _precomputeConfigApp()': function() {
+            // TODO
         }
 
 

@@ -24,6 +24,14 @@
                 },
                 "group": "fw,server"
             },
+            "mime.server": {
+                "params": {
+                    "lib": "$$config.lib$$/app/addons/rs/mime.server.js",
+                    "test": "./test-mime.server.js",
+                    "driver": "nodejs"
+                },
+                "group": "fw,server"
+            },
             "selector.server": {
                 "params": {
                     "lib": "$$config.lib$$/app/addons/rs/selector.server.js,../../../../../../lib/app/addons/rs/config.server.js",
