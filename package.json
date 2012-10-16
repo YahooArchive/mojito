@@ -17,7 +17,7 @@
         "async": "*",
         "colors": "*",
         "commander": "1.0.1",
-        "express": "2.5.10",
+        "connect": ">1.8.2",
         "glob": "~3.1.11",
         "jslint": "~0.1.9",
         "mime": "1.2.4",
