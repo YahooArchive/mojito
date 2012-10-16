@@ -52,6 +52,9 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                     getAppConfig: function() {
                         return 'app config';
                     },
+                    getStaticContext: function() {
+                        return 'static context';
+                    },
                     getRoutes: function(ctx) {
                         A.areSame('context', ctx, "wrong context for getRoutes");
                         return "routes";
@@ -92,6 +95,9 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                     getAppConfig: function() {
                         return 'app config';
                     },
+                    getStaticContext: function() {
+                        return 'static context';
+                    },
                     getRoutes: function(ctx) {
                         A.areSame('context', ctx, "wrong context for getRoutes");
                         return "routes";
@@ -131,6 +137,9 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                 store: {
                     getAppConfig: function() {
                         return 'app config';
+                    },
+                    getStaticContext: function() {
+                        return 'static context';
                     },
                     getRoutes: function(ctx) {
                         A.areSame('context', ctx, "wrong context for getRoutes");
@@ -173,6 +182,9 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                     getAppConfig: function() {
                         return 'app config';
                     },
+                    getStaticContext: function() {
+                        return 'static context';
+                    },
                     getRoutes: function(ctx) {
                         A.areSame('context', ctx, "wrong context for getRoutes");
                         return "routes";
@@ -202,6 +214,10 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                 controller: {index: function() {}},
                 store: {
                     getAppConfig: function() {
+                        return 'app config';
+                    },
+                    getStaticContext: function() {
+                        return 'static context';
                     },
                     getRoutes: function() {
                     }
@@ -233,6 +249,9 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                 store: {
                     getAppConfig: function() {
                         return 'app config';
+                    },
+                    getStaticContext: function() {
+                        return 'static context';
                     },
                     getRoutes: function(ctx) {
                         A.areSame('context', ctx, "wrong context for getRoutes");
@@ -295,6 +314,10 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                 controller: {index: function() {}},
                 store: {
                     getAppConfig: function() {
+                        return 'app config';
+                    },
+                    getStaticContext: function() {
+                        return 'static context';
                     },
                     getRoutes: function() {
                     }
