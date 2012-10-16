@@ -77,8 +77,8 @@ pass the instance and action to ``url.make`` to create the URL based on the path
 
 .. code-block:: javascript
 
-   YUI.add('GenURLMojit', function(Y,NAME) {
-     Y.mojito.controllers[NAME] = {
+   YUI.add('GenURLMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = {   
        init: function(config) {
          this.config = config;
        },
@@ -147,8 +147,8 @@ To set up and run ``generating_urls``:
 
    .. code-block:: javascript
 
-      YUI.add('GenURLMojit', function(Y,NAME) {
-        Y.mojito.controllers[NAME] = {
+      YUI.add('GenURLMojit', function(Y, NAME) {
+        Y.namespace('mojito.controllers')[NAME] = {   
           init: function(config) {
             this.config = config;
           },

@@ -171,32 +171,16 @@ YUI().use('mojito', 'test', function (Y) {
             app.close = closer;
         },
 
-        'start() configures the application instance': function() {
+        'Constructor configures the application instance': function() {
             var configured = false;
 
-            server._configureAppInstance = function() {
+            Mojito.Server.prototype._configureAppInstance = function() {
                 configured = true;
             }
 
-            server.start();
+            server = new Mojito.Server();
             A.isTrue(configured);
         },
-
-        'start() sets a start time': function() {
-            server.start();
-            A.isNumber(server._startupTime);
-        },
-
-        'start() tries to listen': function() {
-            var listened = false;
-
-            app.listen = function() {
-                listened = true;
-            }
-
-            server.start();
-            A.isTrue(listened);
-        }
 
     }));
 

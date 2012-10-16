@@ -4,15 +4,17 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('scrollBinder', function(Y, NAME) {
+/*jslint anon:true, sloppy:true, nomen:true*/
 
-    Y.namespace('mojito.binders')[NAME] = { 
-       init: function(mojitProxy){
-        this.mojitProxy = mojitProxy;
-       },
-       bind: function(node) {
+YUI.add('scrollBinder', function (Y, NAME) {
+
+    Y.namespace('mojito.binders')[NAME] = {
+        init: function (mojitProxy) {
+            this.mojitProxy = mojitProxy;
+        },
+        bind: function (node) {
             this.node = node;
             Y.log('NODE: ' + Y.dump(this.node));
-       }
+        }
     };
 }, '0.0.1', {requires: []});

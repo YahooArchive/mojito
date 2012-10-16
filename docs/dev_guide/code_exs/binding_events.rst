@@ -61,7 +61,7 @@ get Flickr photo information. To access the utility in your model, specify ``'yq
 
 .. code-block:: javascript
 
-   YUI.add('PagerMojitModel', function(Y,NAME) {
+   YUI.add('PagerMojitModel', function(Y, NAME) {
      ...
      /* Code for PagerMojitModel */
      ...
@@ -87,7 +87,7 @@ the controller through the ``callback`` function.
 
 .. code-block:: javascript
 
-   YUI.add('PagerMojitModel', function(Y,NAME) {
+   YUI.add('PagerMojitModel', function(Y, NAME) {
      /**
      * The PagerMojitModel module.
      * @module PagerMojitModel
@@ -97,7 +97,7 @@ the controller through the ``callback`` function.
      * @class Model
      * @constructor
      **/
-     Y.mojito.models.simple = {
+     Y.namespace('mojito.models')[NAME] = {
        init: function(config) {
          this.config = config;
        },
@@ -502,7 +502,7 @@ the **next** and **prev** links.
 
 .. code-block:: javascript
 
-   YUI.add('PagerMojit', function(Y,NAME) {
+   YUI.add('PagerMojit', function(Y, NAME) {
      /**
      * The PagerMojit module.
      * @module PagerMojit */
@@ -512,7 +512,7 @@ the **next** and **prev** links.
      * @class Controller
      * @constructor
      */
-     Y.mojito.controllers[NAME] = {
+     Y.namespace('mojito.controllers')[NAME] = {   
        init: function(config) {
          this.config = config;
        },
@@ -624,14 +624,14 @@ To set up and run ``binding_events``:
 
    .. code-block:: javascript
 
-      YUI.add('PagerMojit', function(Y,NAME) {
+      YUI.add('PagerMojit', function(Y, NAME) {
         var PAGE_SIZE = 10;
         /**
         * Constructor for the Controller class.
         * @class Controller
         * @constructor
         */
-          Y.mojito.controllers[NAME] = {
+          Y.namespace('mojito.controllers')[NAME] = {   
             init: function(config) {
               this.config = config;
           },
@@ -686,7 +686,7 @@ To set up and run ``binding_events``:
 
    .. code-block:: javascript
 
-      YUI.add('PagerMojitModel', function(Y,NAME) {
+      YUI.add('PagerMojitModel', function(Y, NAME) {
         /**
         * The PagerMojitModel module.
         * @module PagerMojitModel
@@ -696,7 +696,7 @@ To set up and run ``binding_events``:
         * @class Model
         * @constructor
         */
-        Y.mojito.models.PagerMojit = {
+        Y.namespace('mojito.models')[NAME] = {
           init: function(config) {
             this.config = config;
           },

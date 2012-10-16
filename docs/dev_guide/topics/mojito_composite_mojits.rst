@@ -1,5 +1,3 @@
-
-
 ================
 Composite Mojits
 ================
@@ -55,8 +53,8 @@ In the example controller of ``ParentMojit`` below, the ``init`` function saves 
 
 .. code-block:: javascript
 
-   YUI.add('ParentMojit', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('ParentMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
        init: function(config) {
          this.config = config;
          // Displays the 'children' object that is
@@ -79,7 +77,7 @@ template.
 .. code-block:: javascript
 
    YUI.add('ParentMojit', function(Y, NAME) {
-     Y.mojito.controllers[NAME] = {
+     Y.namespace('mojito.controllers')[NAME] = { 
        init: function(config) {
          this.config = config;
        },
@@ -94,7 +92,7 @@ If ``ParentMojit`` above is the parent of ``ChildMojit``, the controller of ``Ch
 .. code-block:: javascript
 
    YUI.add('ChildMojit', function(Y, NAME) {
-     Y.mojito.controllers[NAME] = {
+     Y.namespace('mojito.controllers')[NAME] = { 
        init: function(config) {
          this.config = config;
        },
