@@ -19,11 +19,6 @@ YUI.add('mojito', function(Y, NAME) {
         mark: function () {},
         timeline: function () { return { done: function() {} }; }
     };
-    YUI.namespace('Env.mojito').DataProcess = {
-        add: function () {},
-        flush: function () {},
-        retrieve: function () {}
-    };
 });
 
 /* AC ADDONS */
