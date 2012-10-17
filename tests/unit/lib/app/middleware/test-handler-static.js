@@ -68,7 +68,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                     };
                 },
                 getResources: function(env, ctx, filter) {
-                    return { filter: filter }
+                    return [{ filter: filter }];
                 }
             };
 
@@ -191,9 +191,12 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                 handler,
                 resourceContentCalled = false,
                 urls,
-                i;
+                i,
+                getResourceContentFn,
+                callCount;
 
 
+            getResourceContentFn = store.getResourceContent;
             urls = ['/robots.txt', '/crossdomain.xml', '/favicon.ico'];
             ress = [
                 'asset-txt-robots',
@@ -214,7 +217,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
 
 
             for (i = 0; i < urls.length; i += 1) {
-
+                callCount = 0;
                 resourceContentCalled = false;
                 req.url = urls[i];
                 handler = factory({
@@ -224,17 +227,95 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                         log: function() {}
                     }
                 });
-                // set our expectation
                 store.getResourceContent = function(resource, cb) {
                     OA.areEqual(urlRess[req.url], resource, 'wrong resource');
                     resourceContentCalled = true;
                 };
                 handler(req, res, function() {
+                    callCount++;
                 });
+                A.isTrue(0 === callCount, 'next() handler should not have been called')
                 A.isTrue(resourceContentCalled, 'getResourceContent was not called for url: ' + req.url);
             }
 
-            delete store.getResourceContent;
+            store.getResourceContent = getResourceContentFn;
+        },
+
+        'handler deals with resources correctly': function() {
+            var req,
+                resp,
+                getResourcesFn,
+                getAllURLResourcesFn,
+                getResourceContentFn,
+                handler,
+                mockResources;
+
+            mockResources = {
+                "/robots.txt": { 
+                    mime: { type: 'text/html' }
+                }
+            };
+            getResourceContentFn = store.getResourceContent;
+            getAllURLResourcesFn = store.getAllURLResources;
+            getResourcesFn = store.getResources;
+
+            req = {
+                url: '/robots.txt',
+                method: 'GET',
+                headers: {}
+            };
+            resp = {
+                writeHeader: function() { },
+                end: function() { }
+            }
+
+            // 
+            // handle res of type obj
+            store.getAllURLResources = function() {
+                return mockResources;
+            };
+            store.getResources = function() {
+                return [];
+            };
+            store.getResourceContent = function(res, cb) {
+                OA.areEqual(mockResources["/robots.txt"], res, 'wrong resource');
+            };
+
+            handler = factory({
+                store: store,
+                context: {},
+                logger: { log: function() {} }
+            });
+
+            handler(req, resp, function() {
+                A.fail('next() handler 1 should not have been called');
+            });
+
+            //
+            // handle res of type array
+            store.getAllURLResources = function() {
+                return {};
+            };
+            store.getResources = function() {
+                return [mockResources["/robots.txt"]];
+            };
+            store.getResourceContent = function(res, cb) {
+                OA.areEqual(mockResources["/robots.txt"], res, 'wrong resource');
+            };
+
+            handler = factory({
+                store: store,
+                context: {},
+                logger: { log: function() {} }
+            });
+
+            handler(req, resp, function() {
+                A.fail('next() handler 2 should not have been called');
+            });
+
+            store.getResources = getResourcesFn;
+            store.getResourceContent = getResourceContentFn;
+            store.getAllURLResources = getAllURLResourcesFn;
         }
     };
 
