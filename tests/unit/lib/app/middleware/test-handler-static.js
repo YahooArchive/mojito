@@ -234,7 +234,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                 handler(req, res, function() {
                     callCount++;
                 });
-                A.isTrue(0 === callCount, 'next() handler should not have been called')
+                A.areEqual(0, callCount, 'next() handler should not have been called')
                 A.isTrue(resourceContentCalled, 'getResourceContent was not called for url: ' + req.url);
             }
 
@@ -291,7 +291,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                 A.fail('next() handler 1 should not have been called');
             });
 
-            //
+            // 
             // handle res of type array
             store.getAllURLResources = function() {
                 return {};
