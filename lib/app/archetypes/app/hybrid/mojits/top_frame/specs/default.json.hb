@@ -10,9 +10,6 @@
 				"type": "top_frame"
 			},
 			"assets": {
-			    "top": {
-			    	"css": ["./index.css"]
-			    },
 				"bottom": {
 					"js": ["/yahoo.ychrome.lib/yui-cfg.js"]
 				}
