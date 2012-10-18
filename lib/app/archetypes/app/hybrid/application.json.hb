@@ -17,20 +17,12 @@
 
         "builds": {
             "hybridapp": {
-                "attachManifest": true,
-                "forceRelativePaths": true,
                 "urls": ["/yahoo.application.{{name}}/index.html"]
             }
         },
 
         "yui": {
-            "dependencyCalculations": "precomputed"
-        }
-    },
-
-    {
-        "settings": [ "environment:dev" ],
-        "yui": {
+            "dependencyCalculations": "precomputed+ondemand",
             "base": "/yahoo.libs.yui/",
             "url": "$$yui.base$$yui/yui-min.js",
             "loader": "loader/loader-min.js"
