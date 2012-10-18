@@ -16,7 +16,7 @@
         },
 
         "builds": {
-            "html5app": {
+            "hybridapp": {
                 "attachManifest": true,
                 "forceRelativePaths": true,
                 "urls": ["/yahoo.application.{{name}}/index.html"]
