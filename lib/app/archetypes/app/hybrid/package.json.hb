@@ -6,7 +6,8 @@
     "type": "application",
     "pkg_type": "application",
     "dependencies": {
-        "mojito": ">0.4"
+        "mojito": ">0.4",
+        "yahoo.libs.yui": "*"
     },
     "engines": {
         "node": ">0.6",
