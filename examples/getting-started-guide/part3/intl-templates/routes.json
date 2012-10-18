@@ -1,7 +1,6 @@
 [
     {
         "settings": [ "master" ],
-        
         "root": {
             "verbs": ["get"],
             "path": "/flickr",
