@@ -4,13 +4,21 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('PagedFlickr', function(Y, NAME) {
+YUI.add('PagedFlickr', function (Y, NAME) {
 
+    "use strict";
     var PAGESIZE = 9;
+    function selfUrl(ac, page) {
+        // No real link for pages before page 1
+        if (page < 1) { return '#'; }
+        var params = ac.params.url();
+        params.page = page; // provide the page we want to createa  URL to
+        return ac.url.make('flickr', 'index', Y.QueryString.stringify(params));
+    }
 
     Y.namespace('mojito.controllers')[NAME] = {
 
-        index: function(ac) {
+        index: function (ac) {
             var page = ac.params.merged('page'),
                 start;
 
@@ -22,9 +30,9 @@ YUI.add('PagedFlickr', function(Y, NAME) {
 
             // The "page" parameter is base-1, but the model's "start"
             // parameter is base-0.
-            start = (page-1) * PAGESIZE;
+            start = (page - 1) * PAGESIZE;
 
-            ac.models.flickr.getFlickrImages('mojito', start, PAGESIZE, function(err, images) {
+            ac.models.PagedFlickrModel.getFlickrImages('mojito', start, PAGESIZE, function (err, images) {
 
                 var dateString, data;
 
@@ -39,30 +47,18 @@ YUI.add('PagedFlickr', function(Y, NAME) {
                     date: dateString,
                     greeting: ac.intl.lang("TITLE") || 'title',
                     prev: {
-                        url: selfUrl(ac, page-1 ),
+                        url: selfUrl(ac, page - 1),
                         title: ac.intl.lang("PREV") || 'prev'
                     },
                     next: {
-                        url: selfUrl(ac, page+1),
+                        url: selfUrl(ac, page + 1),
                         title: ac.intl.lang("NEXT") || 'next'
                     }
                 };
-
                 ac.done(data);
-                
             });
         }
     };
-    
-   function selfUrl(ac, page) {
-       // No real link for pages before page 1
-       if (page < 1) { return '#'; }
-       var params = ac.params.url();
-       params.page = page; // provide the page we want to createa  URL to
-       return ac.url.make('flickr', 'index', Y.QueryString.stringify(params));
-    }
-
-
 }, '0.0.1', {requires: [
     'mojito-intl-addon', 'mojito-util', 'PagedFlickrModel'
 ], lang: ['de', 'en-US']});
