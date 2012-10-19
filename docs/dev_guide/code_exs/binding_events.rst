@@ -811,7 +811,7 @@ To set up and run ``binding_events``:
                 Y.log('IMAGE ID: ' + imageId);
                 target.addClass('overlayed');
                 // Query for the image metadata
-                var query = 'select * from flickr.photos.info where photo_id="' + imageId + '"';
+                var query = 'select * from flickr.photos.info where photo_id="' + imageId + '" and api_key="' + API_KEY + '"';
                 thatNode.one('#display').setContent('Loading ...');
                 Y.YQL(query, function(raw) {
                   if (!raw.query.results.photo) {
