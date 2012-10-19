@@ -741,6 +741,16 @@ To set up and run ``binding_events``:
    .. code-block:: javascript
 
       YUI.add('PagerMojitBinder', function(Y, NAME) {
+        var API_KEY = '{your_api_key}';
+        function parseImageId(link) {
+          var matches = link.match(/com\/(\d+)\/(\d+)_([0-9a-z]+)\.jpg$/);
+          return matches[2];
+        }
+        function parsePage(link) {
+          var matches = link.match(/page=(\d+)/);
+          return matches[1];
+        }
+
         /**
         * The PagerMojitBinder module.
         * @module PagerMojitBinder
@@ -828,14 +838,6 @@ To set up and run ``binding_events``:
             thatNode.all('#nav a').on('click', flipper, this);
           }
         };
-        function parseImageId(link) {
-          var matches = link.match(/com\/(\d+)\/(\d+)_([0-9a-z]+)\.jpg$/);
-          return matches[2];
-        }
-        function parsePage(link) {
-          var matches = link.match(/page=(\d+)/);
-          return matches[1];
-        }
       }, '0.0.1', {requires: ['yql', 'io', 'dump']});
 
 #. To display links to photos and associated photo data in the rendered template, replace the code 
