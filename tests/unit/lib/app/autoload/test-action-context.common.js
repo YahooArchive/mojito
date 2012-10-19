@@ -42,8 +42,7 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                     instance: {
                         type: 'Type',
                         config: 'instance config',
-                        views: 'views',
-                        yui: { sorted: [] }
+                        views: 'views'
                     }
                 },
                 models: {},
@@ -85,8 +84,7 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                     instance: {
                         type: 'Type',
                         config: 'instance config',
-                        views: 'views',
-                        yui: { sorted: [] }
+                        views: 'views'
                     }
                 },
                 models: {},
@@ -128,8 +126,7 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                     instance: {
                         type: 'Type',
                         config: 'instance config',
-                        views: 'views',
-                        yui: { sorted: [] }
+                        views: 'views'
                     }
                 },
                 models: {},
@@ -170,8 +167,7 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                     instance: {
                         type: 'Type',
                         config: 'instance config',
-                        views: 'views',
-                        yui: { sorted: [] }
+                        views: 'views'
                     }
                 },
                 models: {},
@@ -207,7 +203,6 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                     instance: {
                         id: 'id',
                         type: 'Type666',
-                        yui: { sorted: [] },
                         acAddons: ['custom']
                     }
                 },
@@ -240,8 +235,7 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                     instance: {
                         type: 'Type',
                         config: 'instance config',
-                        views: 'views',
-                        yui: { sorted: [] }
+                        views: 'views'
                     }
                 },
                 models: {},
@@ -302,7 +296,6 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                     instance: {
                         id: 'id',
                         type: 'Type2', // Need to clear the addons cache
-                        yui: { sorted: [] },
                         acAddons: [
                             'first',
                             'second',
