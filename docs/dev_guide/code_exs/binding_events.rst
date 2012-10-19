@@ -78,10 +78,11 @@ title, description, or tags containing a string. For example, the YQL statement 
 photo information for those photos that have a title, description, or tags containing the string 
 "Manhattan". 
 
-Using you Flickr API key, run the query in the `YQL Console <http://developer.yahoo.com/yql/console/>`_ 
-and click **TEST** to see the returned XML response.
+Copy the query below into the `YQL Console <http://developer.yahoo.com/yql/console/>`_,
+replace ``{your_flickr_api_key}`` with your own Flickr API key, and then  click **TEST** 
+to see the returned XML response.
 
-``select * from flickr.photos.search where text="Manhattan" and api_key="{your_flickr_api_key}"
+``select * from flickr.photos.search where text="Manhattan" and api_key="{your_flickr_api_key}"``
 
 The returned response contains photo information in the ``photo`` element. You extract the ``farm``, 
 ``server``, ``id``, and ``secret`` attributes from each photo element to create the photo URI as 
@@ -312,7 +313,7 @@ the ``requires`` array.
 .. code-block:: javascript
 
    YUI.add('PagerMojitBinder', function(Y, NAME) {
-     var API_KEY = '{your_api_key}';
+     var API_KEY = '{your_flickr_api_key}';
      function parseImageId(link) {
        var matches = link.match(/com\/(\d+)\/(\d+)_([0-9a-z]+)\.jpg$/);
        return matches[2];
@@ -718,7 +719,7 @@ To set up and run ``binding_events``:
    .. code-block:: javascript
 
       YUI.add('PagerMojitModel', function(Y, NAME) {
-        var API_KEY = '{your_api_key}';
+        var API_KEY = '{your_flickr_api_key}';
         /**
         * The PagerMojitModel module.
         * @module PagerMojitModel
@@ -772,7 +773,7 @@ To set up and run ``binding_events``:
    .. code-block:: javascript
 
       YUI.add('PagerMojitBinder', function(Y, NAME) {
-        var API_KEY = '{your_api_key}';
+        var API_KEY = '{your_flickr_api_key}';
         function parseImageId(link) {
           var matches = link.match(/com\/(\d+)\/(\d+)_([0-9a-z]+)\.jpg$/);
           return matches[2];
