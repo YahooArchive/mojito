@@ -4,8 +4,9 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('HelloMojit', function(Y, NAME) {
+YUI.add('HelloMojit', function (Y, NAME) {
 
+    "use strict";
 /**
  * The HelloMojit module.
  *
@@ -26,7 +27,7 @@ YUI.add('HelloMojit', function(Y, NAME) {
          * @param ac {Object} The action context that provides access
          *        to the Mojito API.
          */
-        index: function(ac) {
+        index: function (ac) {
             ac.done('Mojito is working.');
         }
 
