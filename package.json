@@ -50,9 +50,9 @@
         "npm": ">1.0"
     },
     "devDependencies": {
+        "ejs": "*",
         "node-static": "~0.6.1",
-        "yahoo-arrow": "0.0.59",
-        "ejs": "*"
+        "yahoo-arrow": "0.0.59"
     },
     "homepage": "http://developer.yahoo.com/cocktails/mojito/",
     "repository": {
