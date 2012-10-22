@@ -11,7 +11,7 @@
 			},
 			"assets": {
 				"bottom": {
-					"js": ["/yahoo.ychrome.lib/yui-cfg.js"]
+					"js": ["/yahoo.crt.lib/yui-cfg.js"]
 				}
 			}
 		}
