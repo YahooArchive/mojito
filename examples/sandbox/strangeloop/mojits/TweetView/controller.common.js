@@ -33,7 +33,8 @@ YUI.add('TweetView', function(Y, NAME) {
                 ac.done({screenName: 'Nobody'});
                 return;
             }
-            ac.models.twitter.getTweetsFor(screenName, function(err, tweets) {
+// DOING
+            ac.models.get('twitter').getTweetsFor(screenName, function(err, tweets) {
                 ac.done({
                     screenName: screenName,
                     tweets: tweets
@@ -43,4 +44,8 @@ YUI.add('TweetView', function(Y, NAME) {
 
     };
 
-}, '0.0.1', {requires: ['mojito']});
+}, '0.0.1', {requires: [
+    'mojito',
+    'mojito-models-addon',
+    'DOING'
+]});

@@ -50,7 +50,7 @@ YUI.add('ReadController', function(Y, NAME) {
             // Ask model for feed data, or display error.
             return error ?
                     my.fail(error, ac) :
-                    ac.models.get('rssModel').get(feedmeta, afterQuery);
+                    ac.models.get('ReadModelRss').get(feedmeta, afterQuery);
         },
 
         /**

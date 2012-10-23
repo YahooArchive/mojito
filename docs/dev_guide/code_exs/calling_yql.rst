@@ -168,8 +168,8 @@ the `paging and limit parameters <http://developer.yahoo.com/yql/guide/paging.ht
 passed to the ``search`` function of the model.
 
 To access model functions from the controller, you use the Action Context (``ac``) object with the 
-following syntax: ``ac.models.{model_name}``. This code example uses the ``flickr`` mojit, so to 
-access the model from the controller, you would use ``ac.models.flickr`` as seen in the 
+following syntax: ``ac.models.get({model_name})``. This code example uses the ``flickr`` mojit, so to 
+access the model from the controller, you would use ``ac.models.get('flickrModel')`` as seen in the 
 ``model.server.js`` below. Once the callback function passed to ``search`` returns the array of 
 photo objects, the ``done`` method sends the ``photos`` array and the query string parameters to 
 the ``index`` template.
@@ -186,7 +186,7 @@ the ``index`` template.
          page = (ac.params.getFromUrl('page') || 0) / 1,
          count = (ac.params.getFromUrl('size') || 20) / 1,
          start = page * count;
-         var model = ac.models.flickr;
+         var model = ac.models.get('flickrModel');
          model.search (q, start, count, function(photos) {
          ac.done (
            {
@@ -198,7 +198,10 @@ the ``index`` template.
          });
        }
      };
-   }, '0.0.1', {requires: []});
+   }, '0.0.1', {requires: [
+     'mojito-models-addon',
+     'flickrModel'
+   ]});
 
 Setting Up this Example
 =======================
@@ -356,7 +359,7 @@ To set up and run ``model_yql``:
               count = (ac.params.getFromUrl('count') || 20) / 1;
             }
             var start = page * count;
-            var model = ac.models.flickr;
+            var model = ac.models.get('flickrModel');
             model.search (q, start, count, function(photos) {
               ac.done (
                 {
@@ -369,7 +372,10 @@ To set up and run ``model_yql``:
             });
           }
         };
-      }, '0.0.1', {requires: []});
+      }, '0.0.1', {requires: [
+        'mojito-models-addon',
+        'flickrModel'
+      ]});
 
 #. Replace the contents of ``assets/index.css`` for the application's CSS with the following:
 

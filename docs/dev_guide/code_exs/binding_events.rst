@@ -11,7 +11,7 @@ Summary
 
 This example shows how to bind events to a mojit, configure code to run on the client, and make AJAX 
 calls to the YQL Web service. The application listens for events and then makes AJAX calls to 
-YQL to get Flickr photo information.
+YQL to get Flickr photo information. 
 
 The following topics will be covered:
 
@@ -19,6 +19,12 @@ The following topics will be covered:
 - getting Flickr data from the model with YQL
 - binding events through the ``mojitProxy`` object
 - making AJAX calls to YQL from the binder
+
+Prerequisite
+------------
+
+You will need to `get a Flickr API key <http://www.flickr.com/services/api/keys/apply/>`_
+to run this example.
 
 Implementation Notes
 ====================
@@ -70,9 +76,13 @@ get Flickr photo information. To access the utility in your model, specify ``'yq
 This code example uses the ``flickr.photos.search`` table to get information for photos that have a 
 title, description, or tags containing a string. For example, the YQL statement below returns Flickr 
 photo information for those photos that have a title, description, or tags containing the string 
-"Manhattan". Open the query in the YQL Console and click **TEST** to see the returned XML response.
+"Manhattan". 
 
-`select * from flickr.photos.search where text="Manhattan" <http://developer.yahoo.com/yql/console/#h=select%20*%20from%20flickr.photos.search%20where%20text%3D%22Manhattan%22>`_
+Copy the query below into the `YQL Console <http://developer.yahoo.com/yql/console/>`_,
+replace ``{your_flickr_api_key}`` with your own Flickr API key, and then  click **TEST** 
+to see the returned XML response.
+
+``select * from flickr.photos.search where text="Manhattan" and api_key="{your_flickr_api_key}"``
 
 The returned response contains photo information in the ``photo`` element. You extract the ``farm``, 
 ``server``, ``id``, and ``secret`` attributes from each photo element to create the photo URI as 
@@ -104,10 +114,10 @@ the controller through the ``callback`` function.
        getData: function(query, start, count, callback) {
           var q = null;
          // Get Flickr API key: http://www.flickr.com/services/api/keys/apply/
-         var API_KEY = "{your_api_key}";
+         var API_KEY = "{your_flickr_api_key}";
          start = parseInt(start) || 0;
          count = parseInt(count) || 10;
-         q = 'select * from flickr.photos.search(' + start + ',' + count + ')  where text="%' + query + '%" and api_key="' + API_KEY+'"';
+         q = 'select * from flickr.photos.search(' + start + ',' + count + ')  where text="%' + query + '%" and api_key="' + API_KEY + '"';
          Y.YQL(q, function(rawData) {
            if (!rawData.query.results) {
              callback([]);
@@ -143,33 +153,33 @@ from a Mojit <calling_yql.html>`_. For more information about YQL, see the
 Binding Events
 --------------
 
-This section will discuss the basics of binding events in Mojito and then look at the binder used in 
-this code example.
+This section will discuss the basics of binding events in Mojito and then look at the 
+binder used in this code example.
 
 Binder Basics
 #############
 
-A mojit may have zero, one, or many binders within the ``binders`` directory. Each binder will be 
-deployed to the browser along with the rest of the mojit code, where the client-side Mojito runtime 
-will call it appropriately.  On the client, the binder has a proxy object (``mojitProxy``) for 
-interacting with the mojit it represents as well as with other mojits on the page. 
-Methods can be called from the ``mojitProxy`` object that allow binders to listen for and fire 
-events.
+A mojit may have zero, one, or many binders within the ``binders`` directory. Each binder 
+will be deployed to the browser along with the rest of the mojit code, where the client-side 
+Mojito runtime will call it appropriately.  On the client, the binder has a proxy 
+object (``mojitProxy``) for interacting with the mojit it represents as well as with other 
+mojits on the page. Methods can be called from the ``mojitProxy`` object that allow 
+binders to listen for and fire events.
 
-The binder consists of a constructor, an initializer, and a bind function. The following describes 
-each component and indicates when the ``mojitProxy`` object can be used.
+The binder consists of a constructor, an initializer, and a bind function. The following 
+describes each component and indicates when the ``mojitProxy`` object can be used.
 
-- **constructor** - creates the namespace for your binder that wraps the initialization code and 
-  binder.
-- **initializer** - is passed the ``mojitProxy`` where it can be stored and used to listen and fire 
-  events with other binders. The ``mojitProxy`` is the only gateway back into the Mojito framework 
-  for your binder.
-- **bind** - is a function that is passed a ``Y.Node`` instance that wraps the DOM node representing 
-  this mojit instance. The DOM event handlers for capturing user interactions should be attached in 
-  this function.
+- **constructor** - creates the namespace for your binder that wraps the initialization 
+  code and binder.
+- **initializer** - is passed the ``mojitProxy`` where it can be stored and used to listen 
+  and fire events with other binders. The ``mojitProxy`` is the only gateway back into the 
+  Mojito framework for your binder.
+- **bind** - is a function that is passed a ``Y.Node`` instance that wraps the DOM node 
+  representing this mojit instance. The DOM event handlers for capturing user interactions 
+  should be attached in this function.
 
-The skeleton of the ``binders/index.js`` file below illustrates the basic structure of the binder. 
-For more information, see `Mojito Binders <../intro/mojito_binders.html>`_.
+The skeleton of the ``binders/index.js`` file below illustrates the basic structure of the 
+binder. For more information, see `Mojito Binders <../intro/mojito_binders.html>`_.
 
 .. code-block:: javascript
 
@@ -196,9 +206,9 @@ This code example uses the binder ``PageMojitBinder`` to perform the following:
 - invoke the ``index`` method of the controller through the ``mojitProxy`` object
 - create an overlay with Flickr photo information received from YQL
 
-The ``binders/index.js`` for this code example is long and fairly involved, so we will dissect and 
-analyze the code.  Let's begin by looking at the ``bind`` function of ``index.js``, which allows 
-mojits to attach DOM event handlers.
+The ``binders/index.js`` for this code example is long and fairly involved, so we will 
+dissect and analyze the code.  Let's begin by looking at the ``bind`` function of 
+``index.js``, which allows mojits to attach DOM event handlers.
 
 In this code snippet of ``binders/index.js``, the ``bind`` function contains the nested 
 ``updateDOM`` function that updates node content and attaches event handlers. Using the 
@@ -230,9 +240,10 @@ controller. The callback ``updateDOM`` is passed to ``index`` to update the cont
    ...
 
 
-The event handler for mouseovers and mouseouts are handled by the ``showOverlay`` function, which 
-creates the overlay containing photo information. In the code snippet below,  ``showOverlay`` makes 
-an AJAX call to YQL to get photo data that is placed in an unordered list for the overlay.
+The event handler for mouseovers and mouseouts are handled by the ``showOverlay`` function, 
+which creates the overlay containing photo information. In the code snippet below, 
+``showOverlay`` makes an AJAX call to YQL to get photo data that is placed in an unordered 
+list for the overlay.
 
 .. code-block:: javascript
 
@@ -251,7 +262,7 @@ an AJAX call to YQL to get photo data that is placed in an unordered list for th
            Y.log('IMAGE ID: ' + imageId);
            target.addClass('overlayed');
            // Query for the image metadata
-           var query = 'select * from flickr.photos.info where photo_id="' + imageId + '"';
+           var query = 'select * from flickr.photos.info where photo_id="' + imageId + '" and api_key="' + {your_flickr_api_key} + '"';
            thatNode.one('#display').setContent('Loading ...');
            Y.YQL(query, function(raw) {
              if (!raw.query.results.photo) {
@@ -275,9 +286,10 @@ an AJAX call to YQL to get photo data that is placed in an unordered list for th
      }
    ...
 
-Thus far, we've looked at the event handlers, but not the actual binding of the handlers to nodes. 
-At the end of the ``bind`` function, you'll see three important lines (shown below) that 
-bind the ``flipper`` and ``showOutlay`` functions to handle click and mouseover events.
+Thus far, we've looked at the event handlers, but not the actual binding of the handlers 
+to nodes. At the end of the ``bind`` function, you'll see three important lines 
+(shown below) that bind the ``flipper`` and ``showOutlay`` functions to handle click and 
+mouseover events.
 
 .. code-block:: javascript
 
@@ -292,15 +304,43 @@ bind the ``flipper`` and ``showOutlay`` functions to handle click and mouseover 
      }
    ...
 
-After a little analysis, the full ``binders/index.js`` below should be easier to understand. The 
-binder attaches event handlers to nodes, invokes a function in the controller, and updates the 
-content in the template. The binder also has a couple of helper functions for parsing and requires 
-the IO and YQL modules, which are specified in the ``requires`` array.
+After a little analysis, the full ``binders/index.js`` below should be easier to 
+understand. The binder attaches event handlers to nodes, invokes a function in the 
+controller, and updates the content in the template. The binder also has a couple of 
+helper functions for parsing and requires the IO and YQL modules, which are specified in 
+the ``requires`` array.
 
 .. code-block:: javascript
 
    YUI.add('PagerMojitBinder', function(Y, NAME) {
+     var API_KEY = '{your_flickr_api_key}';
+     function parseImageId(link) {
+       var matches = link.match(/com\/(\d+)\/(\d+)_([0-9a-z]+)\.jpg$/);
+       return matches[2];
+     }
+     function parsePage(link) {
+       var matches = link.match(/page=(\d+)/);
+       return matches[1];
+     }
+
+     /**
+     * The PagerMojitBinder module.
+     * @module PagerMojitBinder
+     */
+     /**
+     * Constructor for the Binder class.
+     *
+     * @param mojitProxy {Object} The proxy to allow
+     * the binder to interact with its owning mojit.
+     * @class Binder
+     * @constructor
+     */
      Y.namespace('mojito.binders')[NAME] = {
+       /**
+       * Binder initialization method, invoked
+       * after all binders on the page have
+       * been constructed.
+       */
        init: function(mojitProxy) {
          this.mojitProxy = mojitProxy;
        },
@@ -343,7 +383,7 @@ the IO and YQL modules, which are specified in the ``requires`` array.
              Y.log('IMAGE ID: ' + imageId);
              target.addClass('overlayed');
              // Query for the image metadata
-             var query = 'select * from flickr.photos.info where photo_id="' + imageId + '"';
+             var query = 'select * from flickr.photos.info where photo_id="' + imageId + '" and api_key="' + API_KEY + '"';
              thatNode.one('#display').setContent('Loading ...');
              Y.YQL(query, function(raw) {
                if (!raw.query.results.photo) {
@@ -370,26 +410,18 @@ the IO and YQL modules, which are specified in the ``requires`` array.
          thatNode.all('#nav a').on('click', flipper, this);
        }
      };
-     function parseImageId(link) {
-       var matches = link.match(/com\/(\d+)\/(\d+)_([0-9a-z]+)\.jpg$/);
-       return matches[2];
-     }
-     function parsePage(link) {
-       var matches = link.match(/page=(\d+)/);
-       return matches[1];
-     }
-   }, '0.0.1', {requires: ['mojito', 'yql', 'io', 'dump', 'mojito-client']});
-
+   }, '0.0.1', {requires: ['yql', 'io', 'dump']});
 Using Paging
 ------------
 
-The paging for this code example relies on the application configuration to set route paths and the 
-controller to create links to access previous and next pages.
+The paging for this code example relies on the application configuration to set route 
+paths and the controller to create links to access previous and next pages.
 
-The ``routes.json`` file below configures two route paths for HTTP GET calls made on the root path. 
-The ``perpage`` configuration, however, requires a query string with the ``page`` parameter, 
-which is used for paging. The ``page`` parameter has the value ``:page``, which is a variable that 
-is assigned a value by the controller that we're going to look shortly.
+The ``routes.json`` file below configures two route paths for HTTP GET calls made on the 
+root path. The ``perpage`` configuration, however, requires a query string with the 
+``page`` parameter, which is used for paging. The ``page`` parameter has the value 
+``:page``, which is a variable that is assigned a value by the controller that we're 
+going to look shortly.
 
 .. code-block:: javascript
 
@@ -416,12 +448,13 @@ The controller for ``PagerMojit`` performs several functions:
 - calls the ``getData`` function in the model to get photo data
 - creates URLs for the **next** and **prev** links
 
-The `Params addon <../../api/classes/Params.common.html>`_ allows you to access variables from the 
-query string parameters, the POST request bodies, or the routing systems URLs. In this code example, 
-you use the ``getFromMerged`` method, which merges the parameters from the query string, POST request 
-body, and the routing system URLs to give you access to all of the parameters. In the code snippet 
-taken from ``controller.server.js`` below, the ``getFromMerged`` method is used to get the value for 
-the ``page`` parameter and then calculate the index of the first photo to display:
+The `Params addon <../../api/classes/Params.common.html>`_ allows you to access variables 
+from the query string parameters, the POST request bodies, or the routing systems URLs. 
+In this code example, you use the ``getFromMerged`` method, which merges the parameters 
+from the query string, POST request body, and the routing system URLs to give you access 
+to all of the parameters. In the code snippet taken from ``controller.server.js`` below, 
+the ``getFromMerged`` method is used to get the value for the ``page`` parameter and then 
+calculate the index of the first photo to display:
 
 .. code-block:: javascript
 
@@ -439,11 +472,11 @@ the ``page`` parameter and then calculate the index of the first photo to displa
       }
    ...
 
-To get the photo data, the controller depends on the model to call YQL to query the Flickr API. 
-Using ``actionContext.models.{model_name}`` lets you get a reference to the model. 
-In this example controller,  the model of the ``PagerMojit`` is accessed through 
-``actionContext.models.PageMojit``, allowing you to call ``getData`` and get the returned data from 
-YQL in the callback function.
+To get the photo data, the controller depends on the model to call YQL to query the 
+Flickr API. Using ``actionContext.models.{model_name}`` lets you get a reference to the 
+model. In this example controller,  the model of the ``PagerMojit`` is accessed through 
+``actionContext.models.PageMojit``, allowing you to call ``getData`` and get the returned 
+data from YQL in the callback function.
 
 .. code-block:: javascript
 
@@ -477,12 +510,12 @@ YQL in the callback function.
    };
    ...
 
-The URLs for the **prev** and **next** links are created by passing the mojit instance, the method, 
-and the query string parameters to the ``make`` method from the ``Url`` addon. The code snippet 
-below creates the query string parameters with the 
-`YUI QueryString module <http://yuilibrary.com/yui/docs/api/modules/querystring.html>`_. If the 
-query string created by ``Y.QueryString.stringify`` is "page=2" , ``actionContext.url.make`` would 
-return the URL ``{domain_name}:8666/?page=2``.
+The URLs for the **prev** and **next** links are created by passing the mojit instance, 
+the method, and the query string parameters to the ``make`` method from the ``Url`` addon. 
+The code snippet below creates the query string parameters with the 
+`YUI QueryString module <http://yuilibrary.com/yui/docs/api/modules/querystring.html>`_. 
+If the query string created by ``Y.QueryString.stringify`` is "page=2" , 
+``actionContext.url.make`` would return the URL ``{domain_name}:8666/?page=2``.
 
 .. code-block:: javascript
 
@@ -496,9 +529,9 @@ return the URL ``{domain_name}:8666/?page=2``.
      }
    ...
 
-Stitching the above code snippets together, we have the ``controller.server.js`` below. The 
-``index`` function relies on the model for data and the ``createLink`` function to create URLs for 
-the **next** and **prev** links.
+Stitching the above code snippets together, we have the ``controller.server.js`` below. 
+The ``index`` function relies on the model for data and the ``createLink`` function to 
+create URLs for the **next** and **prev** links.
 
 .. code-block:: javascript
 
@@ -574,8 +607,8 @@ To set up and run ``binding_events``:
 #. Create your mojit.
 
    ``$ mojito create mojit PagerMojit``
-#. To configure you application to run on the client and use ``HTMLFrameMojit``, replace the code in 
-   ``application.json`` with the following:
+#. To configure you application to run on the client and use ``HTMLFrameMojit``, replace 
+   the code in ``application.json`` with the following:
 
    .. code-block:: javascript
 
@@ -596,8 +629,8 @@ To set up and run ``binding_events``:
         }
       ]
 
-#. To configure routing to call the ``index`` action from the instance of the ``HTMLFrameMojit``, 
-   replace the code in ``routes.json`` with the following:
+#. To configure routing to call the ``index`` action from the instance of the 
+   ``HTMLFrameMojit``, replace the code in ``routes.json`` with the following:
 
    .. code-block:: javascript
 
@@ -618,9 +651,8 @@ To set up and run ``binding_events``:
       ]
 
 #. Change to ``mojits/PageMojit``.
-#. To have the controller get data from the model and create links for paging, replace the code in 
-   ``controller.server.js`` 
-   with the following:
+#. To have the controller get data from the model and create links for paging, replace the 
+   code in ``controller.server.js`` with the following:
 
    .. code-block:: javascript
 
@@ -681,12 +713,13 @@ To set up and run ``binding_events``:
         }
       }, '0.0.1', {requires: ['dump']});
 
-#. To get Flickr photo information using YQL, replace the code in ``model.server.js`` with the 
-   following:
+#. To get Flickr photo information using YQL, replace the code in ``model.server.js`` with 
+   the following:
 
    .. code-block:: javascript
 
       YUI.add('PagerMojitModel', function(Y, NAME) {
+        var API_KEY = '{your_flickr_api_key}';
         /**
         * The PagerMojitModel module.
         * @module PagerMojitModel
@@ -706,7 +739,7 @@ To set up and run ``binding_events``:
             var API_KEY = "{your_api_key}";
             start = parseInt(start) || 0;
             count = parseInt(count) || 10;
-            q = 'select * from flickr.photos.search(' + start + ',' + count + ')  where text="%' + query + '%" and api_key="' + API_KEY+'"';
+            q = 'select * from flickr.photos.search(' + start + ',' + count + ')  where text="%' + query + '%" and api_key="' + API_KEY+ '"';
             Y.YQL(q, function(rawData) {
               if (!rawData.query.results) {
                 callback([]);
@@ -734,13 +767,22 @@ To set up and run ``binding_events``:
         };
       }, '0.0.1', {requires: ['yql']});
 
-#. To create the binder for click events and invoke the ``index`` function of the controller, 
-   replace the code in ``binders/index.js`` 
-   with the following:
+#. To create the binder for click events and invoke the ``index`` function of the 
+   controller, replace the code in ``binders/index.js`` with the following:
 
    .. code-block:: javascript
 
       YUI.add('PagerMojitBinder', function(Y, NAME) {
+        var API_KEY = '{your_flickr_api_key}';
+        function parseImageId(link) {
+          var matches = link.match(/com\/(\d+)\/(\d+)_([0-9a-z]+)\.jpg$/);
+          return matches[2];
+        }
+        function parsePage(link) {
+          var matches = link.match(/page=(\d+)/);
+          return matches[1];
+        }
+
         /**
         * The PagerMojitBinder module.
         * @module PagerMojitBinder
@@ -801,7 +843,7 @@ To set up and run ``binding_events``:
                 Y.log('IMAGE ID: ' + imageId);
                 target.addClass('overlayed');
                 // Query for the image metadata
-                var query = 'select * from flickr.photos.info where photo_id="' + imageId + '"';
+                var query = 'select * from flickr.photos.info where photo_id="' + imageId + '" and api_key="' + API_KEY + '"';
                 thatNode.one('#display').setContent('Loading ...');
                 Y.YQL(query, function(raw) {
                   if (!raw.query.results.photo) {
@@ -828,18 +870,10 @@ To set up and run ``binding_events``:
             thatNode.all('#nav a').on('click', flipper, this);
           }
         };
-        function parseImageId(link) {
-          var matches = link.match(/com\/(\d+)\/(\d+)_([0-9a-z]+)\.jpg$/);
-          return matches[2];
-        }
-        function parsePage(link) {
-          var matches = link.match(/page=(\d+)/);
-          return matches[1];
-        }
       }, '0.0.1', {requires: ['yql', 'io', 'dump']});
 
-#. To display links to photos and associated photo data in the rendered template, replace the code 
-   in ``views/index.hb.html`` with the following:
+#. To display links to photos and associated photo data in the rendered template, replace 
+   the code in ``views/index.hb.html`` with the following:
 
    .. code-block:: html
 

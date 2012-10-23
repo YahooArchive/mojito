@@ -4,7 +4,10 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('FlickrModel', function(Y, NAME) {
+/*jslint plusplus:true */
+YUI.add('FlickrModel', function (Y, NAME) {
+    "use strict";
+
     var API_KEY = '84921e87fb8f2fc338c3ff9bf51a412e';
 
 /**
@@ -13,7 +16,12 @@ YUI.add('FlickrModel', function(Y, NAME) {
  * @module FlickrModel
  */
 
-    Y.mojito.models.flickrModel = {
+    function buildFlickrUrlFromRecord(record) {
+        return 'http://farm' + record.farm
+            + '.static.flickr.com/' + record.server
+            + '/' + record.id + '_' + record.secret + '.jpg';
+    }
+    Y.namespace('mojito.models')[NAME] = {
 
         /**
          * Method that will be invoked by the mojit controller to obtain data.
@@ -22,17 +30,17 @@ YUI.add('FlickrModel', function(Y, NAME) {
          *        data has been retrieved.
          * @return {Object} photots
          */
-        getFlickrImages: function(queryString, callback) {
+        getFlickrImages: function (queryString, callback) {
             var q = 'select * from flickr.photos.search where text="' + queryString + '" and api_key="' + API_KEY + '"';
-            Y.YQL(q, function(rawYqlData) {
+            Y.YQL(q, function (rawYqlData) {
                 Y.log(rawYqlData);
                 var rawPhotos = rawYqlData.query.results.photo,
-                    rawPhoto = null
+                    rawPhoto = null,
                     photos = [],
                     photo = null,
                     i = 0;
 
-                for (; i<rawPhotos.length; i++) {
+                for (i = 0; i < rawPhotos.length; i++) {
                     rawPhoto = rawPhotos[i];
                     photo = {
                         title: rawPhoto.title,
@@ -53,11 +61,5 @@ YUI.add('FlickrModel', function(Y, NAME) {
 
     };
 
-    function buildFlickrUrlFromRecord(record) {
-        return 'http://farm' + record.farm 
-            + '.static.flickr.com/' + record.server 
-            + '/' + record.id + '_' + record.secret + '.jpg';
-    }
-
-// TODO: remove 'jsonp-url' requirement when YUI fix for bug http://yuilibrary.com/projects/yui3/ticket/2530251 is deployed.
+ // TODO: remove 'jsonp-url' requirement when YUI fix for bug http://yuilibrary.com/projects/yui3/ticket/2530251 is deployed.
 }, '0.0.1', {requires: ['mojito', 'yql', 'jsonp-url']});

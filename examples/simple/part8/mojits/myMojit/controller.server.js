@@ -10,6 +10,7 @@ YUI.add('myMojit', function(Y, NAME) {
 
         index: function(ac) {
 
+// DOING
             ac.models.get('message').get(function(data){
 
                 data.title = ac.intl.lang('TITLE');
@@ -22,4 +23,5 @@ YUI.add('myMojit', function(Y, NAME) {
     'mojito',
     'mojito-models-addon',
     'mojito-intl-addon',
-    'myMojitModel']});
+    'myMojitModel'
+]});

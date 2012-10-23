@@ -147,7 +147,7 @@ You will now modify the controller, so that the ``index`` function called in the
           *        to the Mojito API.
           **/
           index: function(ac) {
-            ac.models.HelloMojitModelFoo.getData(function(err, data) {
+            ac.models.get('HelloMojitModelFoo').getData(function(err, data) {
               if (err) {
                 ac.error(err);
                 return;
@@ -160,7 +160,11 @@ You will now modify the controller, so that the ``index`` function called in the
             });
           }
         };
-      }, '0.0.1', {requires: ['mojito', 'HelloMojitModelFoo']});
+      }, '0.0.1', {requires: [
+        'mojito',
+        'mojito-models-addon',
+        'HelloMojitModelFoo'
+      ]});
 
 
    As you can see the "controllers" are just an array of JavaScript objects, and the "action" is just a method called on the controller object. 
@@ -199,10 +203,12 @@ You will now modify the controller, so that the ``index`` function called in the
                 }
               },
               models: {
-                HelloMojitModelFoo: {
-                  getData: function(cb) {
-                    cb(null, modelData);
-                  }
+                get: function() {
+                  return {
+                    getData: function(cb) {
+                      cb(null, modelData);
+                    }
+                  };
                 }
               },
               done: function(data) {

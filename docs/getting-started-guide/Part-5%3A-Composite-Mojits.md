@@ -34,11 +34,11 @@ We'll re-use the Flickr mojit from the previous Getting Started Guide.
 
 Edit `mojits/PagedFlickr/controller.server.js` to contain the following:
 
-    YUI.add('PagedFlickr', function(Y) {
+    YUI.add('PagedFlickr', function(Y, NAME) {
 
         var PAGESIZE = 6;
 
-        Y.mojito.controller = {
+        Y.mojito.controllers[NAME] = {
 
             index: function(ac) {
 
@@ -55,7 +55,7 @@ Edit `mojits/PagedFlickr/controller.server.js` to contain the following:
                 // parameter is base-0.
                 start = (page-1) * PAGESIZE;
 
-                ac.models.flickr.getFlickrImages('mojito', start, PAGESIZE, function(err, images) {
+                ac.models.get('ModelFlickr').getFlickrImages('mojito', start, PAGESIZE, function(err, images) {
                    var dateString, data;
 
                     // on model error, fail fast
@@ -100,7 +100,13 @@ Edit `mojits/PagedFlickr/controller.server.js` to contain the following:
             return ac.url.make(mojitType, 'index', Y.QueryString.stringify(params));
         }
 
-    }, '0.0.1', {requires: ['mojito-intl-addon', 'mojito-util', 'querystring-stringify', 'ModelFlickr'], lang: ['de', 'en-US']});
+    }, '0.0.1', {requires: [
+        'mojito-models-addon',
+        'mojito-intl-addon',
+        'mojito-util',
+        'querystring-stringify',
+        'ModelFlickr'
+    ], lang: ['de', 'en-US']});
 
 
     
@@ -112,9 +118,9 @@ And we are going to provide a shared model alongside the mojits directory at `mo
     /*
      * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
      */
-    YUI.add('ModelFlickr', function(Y) {
+    YUI.add('ModelFlickr', function(Y, NAME) {
 
-        Y.mojito.models.flickr = {
+        Y.mojito.models[NAME] = {
 
             getFlickrImages: function(queryString, start, count, callback) {
                 var q;
@@ -350,9 +356,9 @@ You should now be able to mouse-over the images and see URLs like `/detail/image
 
 Here's the `mojits/FlickrDetail/controller.js`:
 
-    YUI.add('FlickrDetail', function(Y) {
+    YUI.add('FlickrDetail', function(Y, NAME) {
 
-        Y.mojito.controller = {
+        Y.mojito.controllers[NAME] = {
 
             index: function(ac) {
 
@@ -369,7 +375,7 @@ Here's the `mojits/FlickrDetail/controller.js`:
                     return;
                 }
 
-                ac.models.flickr.getFlickrDetail(image, function(err, details) {
+                ac.models.get('ModelFlickr').getFlickrDetail(image, function(err, details) {
                     if (err) {
                         ac.error(new Error("YQL Error"));
                         return;
@@ -407,7 +413,11 @@ Here's the `mojits/FlickrDetail/controller.js`:
 
         };
 
-    }, '0.0.1', {requires: ['mojito-intl-addon'], lang: ['de', 'en-US']});
+    }, '0.0.1', {requires: [
+        'mojito-intl-addon',
+        'mojito-models-addon',
+        'ModelFlickr'
+    ], lang: ['de', 'en-US']});
 
 Because we are using a shared model, we can simply add a new function into our model called `getFlickrDetail`, which will query YQL for data. Edit `models/flickr.server.js` and add this function:
 
@@ -705,11 +715,11 @@ Here's `mojits/FlickrBrowser/assets/index.css`:
 
 There's one more small change that we need to make. We need to update the PagedFlickr mojit to create thumbnail URLs to the "flickr" page instead of the "detail" page. Here is an updated `mojits/PagedFlickr/controller.server.js`:
 
-    YUI.add('PagedFlickr', function(Y) {
+    YUI.add('PagedFlickr', function(Y, NAME) {
 
         var PAGESIZE = 6;
 
-        Y.mojito.controller = {
+        Y.mojito.controllers[NAME] = {
 
             index: function(ac) {
 
@@ -726,7 +736,7 @@ There's one more small change that we need to make. We need to update the PagedF
                 // parameter is base-0.
                 start = (page-1) * PAGESIZE;
 
-                ac.models.flickr.getFlickrImages('mojito', start, PAGESIZE, function(err, images) {
+                ac.models.get('ModelFlickr').getFlickrImages('mojito', start, PAGESIZE, function(err, images) {
                    var dateString, data;
 
                     // on model error, fail fast
@@ -772,7 +782,13 @@ There's one more small change that we need to make. We need to update the PagedF
             return ac.url.make(mojitType, 'index', Y.QueryString.stringify(params));
         }
 
-    }, '0.0.1', {requires: ['mojito-intl-addon', 'mojito-util', 'querystring-stringify', 'ModelFlickr'], lang: ['de', 'en-US']});
+    }, '0.0.1', {requires: [
+        'mojito-models-addon',
+        'mojito-intl-addon',
+        'mojito-util',
+        'querystring-stringify',
+        'ModelFlickr'
+    ], lang: ['de', 'en-US']});
 
 Start up the server again and visit <http://localhost:8666/flickr>. We should be able to page through the thumbs as before. Now, when we click on a thumb, it'll show details for that image. The choice is persisted as we continue paging.
 

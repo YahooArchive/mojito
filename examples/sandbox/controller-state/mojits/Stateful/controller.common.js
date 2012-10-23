@@ -26,7 +26,8 @@ YUI.add('Stateful', function(Y, NAME) {
         'catch': function(ac) {
             var self = this;
             this.logit('catch');
-            ac.models.Stateful.getData(function(err, data) {
+// DOING
+            ac.models.get('Stateful').getData(function(err, data) {
                 ac.done({
                     ball: self.ball,
                     time: self.time,
@@ -42,4 +43,7 @@ YUI.add('Stateful', function(Y, NAME) {
 
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: [
+    'mojito-models-addon',
+    'DOING'
+]});
