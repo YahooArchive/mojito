@@ -17,6 +17,7 @@
 
         "builds": {
             "hybridapp": {
+                "forceRelativePaths": true,
                 "urls": ["/yahoo.application.{{name}}/index.html"]
             }
         },
