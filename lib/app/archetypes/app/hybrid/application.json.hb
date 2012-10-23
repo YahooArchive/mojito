@@ -23,7 +23,7 @@
         },
 
         "yui": {
-            "dependencyCalculations": "precomputed+ondemand",
+            "dependencyCalculations": "precomputed",
             "base": "/yahoo.libs.yui/",
             "url": "$$yui.base$$yui/yui-min.js",
             "loader": "loader/loader-min.js"
