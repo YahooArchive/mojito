@@ -4,28 +4,30 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('FlickrDetail', function(Y, NAME) {
+YUI.add('FlickrDetail', function (Y, NAME) {
+
+    "use strict";
 
     Y.namespace('mojito.controllers')[NAME] = {
 
-        index: function(ac) {
+        index: function (ac) {
 
             var image = ac.params.merged('image') || '0';
 
             // a little paranoia about inputs
             if (!image.match(/^\d+$/)) {
                 ac.assets.addCss('./message.css');
-                ac.done({ type: 'error', message: ac.intl.lang('ERROR_BAD_IMAGE_ID') }, { view: { name:'message' } });
+                ac.done({ type: 'error', message: ac.intl.lang('ERROR_BAD_IMAGE_ID') }, { view: { name: 'message' } });
                 return;
             }
 
             if ('0' === image) {
                 ac.assets.addCss('./message.css');
-                ac.done({ type: 'info', message: ac.intl.lang('INFO_NO_IMAGE_CHOSEN') }, { view: { name:'message' } });
+                ac.done({ type: 'info', message: ac.intl.lang('INFO_NO_IMAGE_CHOSEN') }, { view: { name: 'message' } });
                 return;
             }
 
-            ac.models.get('flickrModel').getFlickrDetail(image, function(err, details) {
+            ac.models.get('ModelFlickr').getFlickrDetail(image, function(err, details) {
                 if (err) {
                     ac.error(new Error("YQL Error"));
                     return;
@@ -69,4 +71,5 @@ YUI.add('FlickrDetail', function(Y, NAME) {
     'mojito-params-addon',
     'mojito-intl-addon',
     'mojito-models-addon',
-    'ModelFlickr'], lang: ['de', 'en-US']});
+    'ModelFlickr'
+], lang: ['de', 'en-US']});

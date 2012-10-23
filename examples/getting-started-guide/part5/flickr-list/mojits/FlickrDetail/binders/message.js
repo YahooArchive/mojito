@@ -4,8 +4,8 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('FlickrDetailBinderMessage', function(Y, NAME) {
-
+YUI.add('FlickrDetailBinderMessage', function (Y, NAME) {
+    "use strict";
     /**
      * The FlickrDetailBinderMessage module.
      *
