@@ -4,8 +4,9 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('Flickr', function(Y, NAME) {
+YUI.add('Flickr', function (Y, NAME) {
 
+    "use strict";
 /**
  * The Flickr module.
  *
@@ -22,7 +23,7 @@ YUI.add('Flickr', function(Y, NAME) {
          * @return {}       
          */
         index: function(ac) {
-            ac.models.get('flickrModel').getFlickrImages('mojito', function(images) {
+            ac.models.get('FlickrModel').getFlickrImages('mojito', function(images) {
 
                 ac.flush({images: images});
 
@@ -35,4 +36,5 @@ YUI.add('Flickr', function(Y, NAME) {
 }, '0.0.1', {requires: [
     'mojito',
     'mojito-models-addon',
-    'flickrModel']});
+    'FlickrModel'
+]});

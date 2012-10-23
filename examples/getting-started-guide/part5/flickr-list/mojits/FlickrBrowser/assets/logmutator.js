@@ -4,8 +4,9 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('flickr-logger-mutator', function(Y) {
+YUI.add('flickr-logger-mutator', function (Y) {
 
+    "use strict";
     /*
      * Providing a custom log formatter function
      */
