@@ -18,4 +18,4 @@ YUI.add('ParentModel', function(Y) {
 
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito']});

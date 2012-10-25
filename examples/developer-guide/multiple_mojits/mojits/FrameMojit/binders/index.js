@@ -4,6 +4,8 @@
  * See the accompanying LICENSE file for terms.
  */
 
+/*jslint anon:true, sloppy:true, nomen:true*/
+
 YUI.add('FrameMojitBinderIndex', function(Y, NAME) {
 
 /**
@@ -27,7 +29,7 @@ YUI.add('FrameMojitBinderIndex', function(Y, NAME) {
          * Binder initialization method, invoked after all binders on the page
          * have been constructed.
          */
-        init: function(mojitProxy) {
+        init: function (mojitProxy) {
             this.mojitProxy = mojitProxy;
         },
 
@@ -37,7 +39,7 @@ YUI.add('FrameMojitBinderIndex', function(Y, NAME) {
          *
          * @param node {Node} The DOM node to which this mojit is attached.
          */
-        bind: function(node) {
+        bind: function (node) {
             this.node = node;
         }
 

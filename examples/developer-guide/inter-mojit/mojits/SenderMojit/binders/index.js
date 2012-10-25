@@ -4,15 +4,17 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('SenderMojitBinderIndex', function(Y, NAME) {
+/*jslint anon:true, sloppy:true, nomen:true*/
+
+YUI.add('SenderMojitBinderIndex', function (Y, NAME) {
 
     Y.namespace('mojito.binders')[NAME] = {
 
-        init: function(mojitProxy) { 
+        init: function (mojitProxy) {
             this.mp = mojitProxy;
         },
 
-        bind: function(node) {
+        bind: function (node) {
             var mp = this.mp;
             this.node = node;
             // capture all events on "ul li a"
@@ -27,4 +29,4 @@ YUI.add('SenderMojitBinderIndex', function(Y, NAME) {
 
     };
 
-}, '0.0.1', {requires: ['node','mojito-client']});
+}, '0.0.1', {requires: ['node', 'mojito-client']});

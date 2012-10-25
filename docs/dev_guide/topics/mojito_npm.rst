@@ -56,9 +56,6 @@ The following steps are just a guideline and not definitive instructions. Your a
 may not need to install any npm modules.
 
 #. Create a Mojito application.
-#. Install Mojito in your application with npm.
-
-   ``{app_dir}$ npm install mojito -l``
 #. Add any needed dependencies to ``dependencies`` object in ``package.json``.
 #. Install dependencies with npm.
     
@@ -169,9 +166,10 @@ specifies the resource type and location.
 |              |                |           | See :ref:`res_types` for   |
 |              |                |           | details.                   |
 +--------------+----------------+-----------+----------------------------+
-| ``version``  | String         | Yes       | The version of Mojito      |
+| ``version``  | String         | No        | The version of Mojito      |
 |              |                |           | required to use the        |
-|              |                |           | resource.                  |
+|              |                |           | resource.                  | 
+|              |                |           | For example: ``">0.4"``    |
 +--------------+----------------+-----------+----------------------------+
 
                                    
@@ -190,7 +188,7 @@ Currently, Mojito packages can be of type ``mojit`` or ``bundle``. See the secti
 mojit
 .....
 
-The ``mojit`` type specifies that the NPM module contains a mojit. The resources in the mojit (controller, views, etc.) will be looked for at 
+The ``mojit`` type specifies that the npm module contains a mojit. The resources in the mojit (controller, views, etc.) will be looked for at 
 the location specified by the ``"location"`` field of the ``mojito`` object. For example, the controller will be looked for 
 in the following location, where ``{name}`` is the name of the npm package: ``{location}/controller.{affinity}.{selector}.js``
 

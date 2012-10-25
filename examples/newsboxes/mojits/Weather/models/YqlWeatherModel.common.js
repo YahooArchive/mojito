@@ -51,7 +51,7 @@ YUI.add('YqlWeatherModel', function(Y, NAME) {
         }
     };
 
-}, '0.0.1', {requires: ['yql', 'jsonp-url']});
+}, '0.0.1', {requires: ['mojito', 'yql', 'jsonp-url']});
 
 /*
 http://query.yahooapis.com/v1/public/yql?loc=san+francisco,california&env=store://datatables.org/alltableswithkeys&format=json&q=SELECT+item.condition,item.description+FROM+weather.forecast+WHERE+location+IN(SELECT+id+FROM+weather.search+WHERE+query=@loc)+LIMIT+1

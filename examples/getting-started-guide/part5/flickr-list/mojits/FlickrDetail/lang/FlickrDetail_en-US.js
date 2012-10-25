@@ -4,8 +4,8 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add("lang/FlickrDetail_en-US", function(Y) {
-
+YUI.add("lang/FlickrDetail_en-US", function (Y) {
+    "use strict";
     Y.Intl.add(
 
         "FlickrDetail", // associated module

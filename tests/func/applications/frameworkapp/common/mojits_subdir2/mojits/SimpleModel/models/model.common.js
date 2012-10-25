@@ -6,7 +6,7 @@ YUI.add('SimpleModelModel', function(Y) {
         },
           
         getTurkeyImages: function(callback) {
-            var API_KEY = '9cc79c8bf1942c683b0d4e30b838ee9c';
+            var API_KEY = '84921e87fb8f2fc338c3ff9bf51a412e';
             var queryString = 'wild turkey';
             var q = 'select * from flickr.photos.search where text="wild turkey" and api_key="' + API_KEY + '"';
             Y.YQL(q, function(rawYqlData) {

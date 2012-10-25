@@ -4,20 +4,22 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('ContactUs', function(Y, NAME) {
+/*jslint anon:true, sloppy:true, nomen:true*/
+
+YUI.add('ContactUs', function (Y, NAME) {
 
     Y.namespace('mojito.controllers')[NAME] = {
 
-        init: function(config) {
+        init: function (config) {
             this.config = config;
         },
 
-        index: function(ac) {
+        index: function (ac) {
             var vudata = {
                 'company': ac.config.get("company"),
                 'copyright': this.config.copyright,
                 'depts': ac.config.getDefinition(this.config.key)
-            }
+            };
 
             ac.done(vudata);
         }

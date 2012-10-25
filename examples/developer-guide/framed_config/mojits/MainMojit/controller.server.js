@@ -4,29 +4,31 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('MainMojit', function(Y, NAME) {
+/*jslint anon:true, sloppy:true, nomen:true*/
 
-/**
- * The MainMojit module.
- *
- * @module MainMojit
- */
+YUI.add('MainMojit', function (Y, NAME) {
 
     /**
-     * Constructor for the Controller class.
-     *
-     * @class Controller
-     * @constructor
-     */
-      Y.namespace('mojito.controllers')[NAME] = {
+    * The MainMojit module.
+    *
+    * @module MainMojit
+    */
 
-        /**
-         * Method corresponding to the 'index' action.
-         *
-         * @param actionContext {Object} The action context that provides access
-         *        to the Mojito API.
-         */
-        index: function(actionContext) {
+    /**
+    * Constructor for the Controller class.
+    *
+    * @class Controller
+    * @constructor
+    */
+    Y.namespace('mojito.controllers')[NAME] = {
+
+    /**
+    * Method corresponding to the 'index' action.
+    *
+    * @param actionContext {Object} The action context that provides access
+    *        to the Mojito API.
+    */
+        index: function (actionContext) {
             actionContext.done({title: "HTML Frame Configuration Example"});
         }
 
