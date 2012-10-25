@@ -77,7 +77,7 @@ Mojito v0.4.6
 
 Version 0.4.6 has been found not to work with at least one hosting container
 due to changes in how a Mojito server instance is created and the
-API of that instances. See the :ref:`server.js <startup_reqs_v0.4.6-server>`
+API of that instances. See :ref:`server.js <startup_reqs_v0.4.6-server>`
 for details of the changes. We **recommend** using version 0.4.7 or
 greater. 
 
