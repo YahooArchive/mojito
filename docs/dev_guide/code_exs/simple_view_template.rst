@@ -117,7 +117,8 @@ To set up and run ``simple_view``:
         }
       ]
 
-#. To configure the routing for your application, replace the code in ``routes.json`` with the following:
+#. To configure the routing for your application, replace the code in ``routes.json`` with the 
+   following:
 
    .. code-block:: javascript
 
@@ -139,7 +140,7 @@ To set up and run ``simple_view``:
    .. code-block:: javascript
 
       YUI.add('simple', function(Y, NAME) {
-        Y.mojito.controllers[NAME] = {
+        Y.namespace('mojito.controllers')[NAME] = {   
           init: function(config) {
             this.config = config;
           },

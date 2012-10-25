@@ -4,6 +4,8 @@
  * See the accompanying LICENSE file for terms.
  */
 
+/*jslint anon:true, sloppy:true, nomen:true*/
+
 YUI.add('GenURLMojitModel', function(Y) {
 
 /**
@@ -20,7 +22,7 @@ YUI.add('GenURLMojitModel', function(Y) {
      */
     Y.mojito.models.GenURLMojit = {
 
-        init: function(config) {
+        init: function (config) {
             this.config = config;
         },
 
@@ -30,8 +32,8 @@ YUI.add('GenURLMojitModel', function(Y) {
          * @param callback {Function} The callback function to call when the
          *        data has been retrieved.
          */
-        getData: function(callback) {
-            callback({some:'data'});
+        getData: function (callback) {
+            callback({some: 'data'});
         }
 
     };

@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('PagedFlickrBinderIndex', function(Y, NAME) {
+YUI.add('PagedFlickrBinderIndex', function (Y, NAME) {
 
 /**
  * The PagedFlickrBinder module.
@@ -21,14 +21,14 @@ YUI.add('PagedFlickrBinderIndex', function(Y, NAME) {
      * @class Binder
      * @constructor
      */
-    
+    "use strict";
     Y.namespace('mojito.binders')[NAME] = {
 
         /**
          * Binder initialization method, invoked after all binders on the page
          * have been constructed.
          */
-        init: function(mojitProxy) {
+        init: function (mojitProxy) {
             this.mojitProxy = mojitProxy;
         },
 
@@ -38,20 +38,20 @@ YUI.add('PagedFlickrBinderIndex', function(Y, NAME) {
          *
          * @param node {Node} The DOM node to which this mojit is attached.
          */
-        bind: function(node) {
-            node.all('.pic a').on('click', function(evt) {
-                var url = evt.currentTarget.get('href');
+        bind: function (node) {
+            node.all('.pic a').on('click', function (evt) {
+                var url = evt.currentTarget.get('href'),
+                    matches = url.match(/image\/(\d+)/),
+                    imageID = matches[1];
                 Y.log('on click ' + url, 'debug', NAME);
-                var matches = url.match(/image\/(\d+)/);
-                var imageID = matches[1];
                 if (imageID) {
                     evt.halt();
 
                     // Update our pagination links so when we round-trip back
                     // to the server, we persist the image choice.
-                    node.all('#paginate a').each(function(pageLink) {
+                    node.all('#paginate a').each(function (pageLink) {
                         var pageUrl = pageLink.get('href');
-                        pageLink.set('href', pageUrl.replace(/\/image\/\d+/, '/image/'+imageID));
+                        pageLink.set('href', pageUrl.replace(/\/image\/\d+/, '/image/' + imageID));
                     });
 
                     Y.log('broadcast flickr-image-chosen ' + imageID, 'debug', NAME);

@@ -103,8 +103,8 @@ which we will take a look at next.
 
 .. code-block:: javascript
 
-   YUI.add('FrameMojit', function(Y,NAME) {
-     Y.mojito.controllers[NAME] = {
+   YUI.add('FrameMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = {   
        init: function(config) {
          this.config = config;
        },
@@ -218,8 +218,8 @@ To set up and run ``multiple_mojits``:
 
    .. code-block:: javascript
 
-      YUI.add('FrameMojit', function(Y,NAME) {
-        Y.mojito.controllers[NAME] = {
+      YUI.add('FrameMojit', function(Y, NAME) {
+        Y.namespace('mojito.controllers')[NAME] = {   
           init: function(config) {
             this.config = config;
           },
@@ -255,8 +255,8 @@ To set up and run ``multiple_mojits``:
 
    .. code-block:: javascript
 
-      YUI.add('HeaderMojit', function(Y,NAME) {
-        Y.mojito.controllers[NAME] = {
+      YUI.add('HeaderMojit', function(Y, NAME) {
+        Y.namespace('mojito.controllers')[NAME] = {   
           init: function(config) {
             this.config = config;
           },
@@ -287,8 +287,8 @@ To set up and run ``multiple_mojits``:
 
    .. code-block:: javascript
 
-      YUI.add('BodyMojit', function(Y,NAME) {
-        Y.mojito.controllers[NAME] = {
+      YUI.add('BodyMojit', function(Y, NAME) {
+        Y.namespace('mojito.controllers')[NAME] = {   
           init: function(config) {
             this.config = config;
           },
@@ -316,8 +316,8 @@ To set up and run ``multiple_mojits``:
 
    .. code-block:: javascript
 
-      YUI.add('FooterMojit', function(Y,NAME) {
-        Y.mojito.controllers[NAME] = {
+      YUI.add('FooterMojit', function(Y, NAME) {
+        Y.namespace('mojito.controllers')[NAME] = {   
           init: function(config) {
             this.config = config;
           },

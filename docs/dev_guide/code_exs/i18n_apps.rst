@@ -55,7 +55,7 @@ the string ``'intl'`` to the ``requires`` array.
 
 .. code-block:: javascript
 
-   YUI.add("lang/i18n_en-US", function(Y,NAME) {
+   YUI.add("lang/i18n_en-US", function(Y, NAME) {
      Y.Intl.add(
        "i18n",  // associated mojit
        "en-US",    // BCP 47 language tag
@@ -78,8 +78,8 @@ include the `Intl addon <../../api/classes/Intl.common.html>`_ by adding the str
 
 .. code-block:: javascript
 
-   YUI.add('i18n', function(Y,NAME) {/
-     Y.mojito.controllers[NAME] = {
+   YUI.add('i18n', function(Y, NAME) {/
+     Y.namespace('mojito.controllers')[NAME] = {   
        init: function(config) {
          this.config = config;
        },
@@ -185,8 +185,8 @@ To set up and run ``locale_i18n``:
 
    .. code-block:: javascript
 
-      YUI.add('i18n', function(Y,NAME) {
-        Y.mojito.controllers[NAME] = {
+      YUI.add('i18n', function(Y, NAME) {
+        Y.namespace('mojito.controllers')[NAME] = {   
           init: function(config) {
             this.config = config;
           },
@@ -207,7 +207,7 @@ To set up and run ``locale_i18n``:
 
    .. code-block:: javascript
 
-      YUI.add("lang/i18n_en-US", function(Y,NAME) {
+      YUI.add("lang/i18n_en-US", function(Y, NAME) {
         Y.Intl.add(
           "i18n",  // associated mojit
           "en-US",    // BCP 47 language tag
@@ -222,7 +222,7 @@ To set up and run ``locale_i18n``:
 
    .. code-block:: javascript
 
-      YUI.add("lang/i18n_fr-FR", function(Y,NAME) {
+      YUI.add("lang/i18n_fr-FR", function(Y, NAME) {
         Y.Intl.add(
           "i18n",  // associated mojit
           "fr-FR",    // BCP 47 language tag
@@ -238,7 +238,7 @@ To set up and run ``locale_i18n``:
 
    .. code-block:: javascript
 
-      YUI.add("lang/i18n_en-AU", function(Y,NAME) {
+      YUI.add("lang/i18n_en-AU", function(Y, NAME) {
         Y.Intl.add(
           "i18n",  // associated mojit
           "en-AU",    // BCP 47 language tag
