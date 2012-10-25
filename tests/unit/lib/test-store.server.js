@@ -117,7 +117,6 @@ YUI().use(
                     success = false;
                 }
                 A.isFalse(success, '{device:iphone,runtime:kite} should be invalid');
-
             },
 
             'server app config value': function() {
@@ -176,9 +175,13 @@ YUI().use(
                     A.isObject(instance.views['test_1']);
                     A.areSame('/static/test_mojit_1/views/test_1.hb.html', instance.views['test_1']['content-path']);
                     A.areSame('hb', instance.views['test_1']['engine']);
-                    A.areSame('/static/test_mojit_1/binders/test_1.js', instance.views['test_1']['binder-path']);
-                    A.areSame('test_mojit_1Bindertest_1', instance.views['test_1']['binder-module']);
-                    A.isNotUndefined(instance.views['test_1']['binder-yui-sorted']['mojito-client']);
+
+                    A.areSame('test_mojit_1Bindertest_1', instance.binders['test_1']);
+                    A.areSame('test_mojit_1Bindersubdir/test_1', instance.binders['subdir/test_1']);
+
+                    A.isObject(instance.views['test_1']);
+                    A.areSame('/static/test_mojit_1/views/test_1.hb.html', instance.views['test_1']['content-path']);
+                    A.areSame('hb', instance.views['test_1']['engine']);
 
                     A.isObject(instance.views['test_2']);
                     A.areSame('/static/test_mojit_1/views/test_2.hb.html', instance.views['test_2']['content-path']);
@@ -187,9 +190,6 @@ YUI().use(
                     A.isObject(instance.views['subdir/test_1']);
                     A.areSame('/static/test_mojit_1/views/subdir/test_1.hb.html', instance.views['subdir/test_1']['content-path']);
                     A.areSame('hb', instance.views['subdir/test_1']['engine']);
-                    A.areSame('/static/test_mojit_1/binders/subdir/test_1.js', instance.views['subdir/test_1']['binder-path']);
-                    A.areSame('test_mojit_1Bindersubdir/test_1', instance.views['subdir/test_1']['binder-module']);
-                    A.isNotUndefined(instance.views['subdir/test_1']['binder-yui-sorted']['mojito-client']);
                 });
             },
 
@@ -197,19 +197,20 @@ YUI().use(
                 var instance = {type:'test_mojit_1'};
                 store.expandInstance(instance, {}, function(err, instance) {
                     A.areSame(4, Y.Object.keys(instance.models).length);
-                    A.isTrue(instance.models['flickr']);
-                    A.isTrue(instance.models['test_applevel']);
-                    A.isTrue(instance.models['test_1']);
-                    A.isTrue(instance.models['test_2']);
+                    A.areSame('ModelFlickr', instance.models['flickr']);
+                    A.areSame('test_applevelModel', instance.models['test_applevel']);
+                    A.areSame('test_mojit_1_model_test_1', instance.models['test_1']);
+                    A.areSame('test_mojit_1_model_test_2', instance.models['test_2']);
                 });
             },
 
             'server mojit type name can come from package.json': function() {
+                var fixtures = libpath.join(__dirname, '../../fixtures/store');
                 var instance = {type:'TestMojit2'};
                 store.expandInstance(instance, {}, function(err, instance){
-                    A.isNotUndefined(instance['controller-path']);
+                    A.isNotUndefined(instance.controller);
                     A.areSame('/static/TestMojit2/assets', instance.assetsRoot);
-                    A.isNotUndefined(instance.yui.config.modules.test_mojit_2);
+                    A.areSame(libpath.join(fixtures, 'mojits/test_mojit_2/views/index.hb.html'), instance.views.index['content-path']);
                 });
             },
 
@@ -257,7 +258,7 @@ YUI().use(
             'mojitDirs setting': function() {
                 var instance = { type: 'soloMojit' };
                 store.expandInstance(instance, {}, function(err, instance) {
-                    A.isNotUndefined(instance['controller-path']);
+                    A.areSame('soloMojit', instance.controller);
                 });
             },
 
@@ -357,7 +358,8 @@ YUI().use(
                 AA.contains('soloMojit', list);
             },
 
-            'app with rollups': function() {
+            // TODO -- do we still need rollups?
+            'ignore: app with rollups': function() {
                 var fixtures = libpath.join(__dirname, '../../fixtures/store');
                 var spec = { type: 'rollups' };
                 store.expandInstanceForEnv('client', spec, {}, function(err, instance) {
@@ -416,7 +418,7 @@ YUI().use(
                 var spec = { type: 'PagedFlickr' };
                 var ctx = { device: 'iphone' };
                 store.expandInstance(spec, ctx, function(err, instance) {
-                    A.areSame(libpath.join(fixtures, 'mojits/PagedFlickr/controller.common.iphone.js'), instance['controller-path']);
+                    A.areSame('PagedFlickr', instance.controller);
                 });
             },
 
@@ -440,13 +442,6 @@ YUI().use(
                 var fixtures = libpath.join(__dirname, '../../fixtures/gsg5-appConfig');
                 store = new Y.mojito.ResourceStore({ root: fixtures });
                 store.preload();
-            },
-
-            'appConfig deferAllOptionalAutoloads': function() {
-                var spec = { type: 'PagedFlickr' };
-                store.expandInstanceForEnv('client', spec, {}, function(err, instance) {
-                    A.isUndefined(instance.views.index['binder-yui-sorted']['mojito-tunnel-client'], 'mojito-tunnel-client');
-                });
             },
 
             'appConfig staticHandling.prefix': function() {
@@ -501,10 +496,8 @@ YUI().use(
                 store.preload();
                 var spec = { type: 'M' };
                 store.expandInstance(spec, {}, function(err, instance) {
-                    A.isUndefined(instance.yui.config.modules['addon-ac-not']);
-                    A.isUndefined(instance.yui.config.modules['MAutoloadNot']);
-                    A.isUndefined(instance.yui.config.modules['MModelNot']);
-                    A.isUndefined(instance.views['not']['binder-url']);
+                    A.isUndefined(instance.models['MModelNot']);
+                    A.isUndefined(instance.binders.not);
                 });
             },
 
@@ -565,7 +558,7 @@ YUI().use(
                 }
 
                 var details = store.getMojitTypeDetails('server', {}, 'a');
-                A.isNotNull(details['controller-path'].match(/a\/foo\/controller\.server\.js$/), 'controller should not be null');
+                A.areSame('a', details.controller);
             },
 
             'find and parse resources by convention': function() {
