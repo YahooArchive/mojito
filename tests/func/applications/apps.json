@@ -338,6 +338,12 @@
             "port": "4125",
             "enabled": "true",
             "group": "example"
+        },
+        {
+            "name":"yaml-config",
+            "path": "./frameworkapp/yaml-config",
+            "enabled": "true",
+            "group": "qeapp"
         }
     ]
 }

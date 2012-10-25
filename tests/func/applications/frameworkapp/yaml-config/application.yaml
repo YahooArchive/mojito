@@ -4,10 +4,11 @@
 -
     # These are the dimensions that will be affected by these settings
     settings: [master]
-
+    # Port number
+    appPort: 5000
     # Set the log level for the application
     log:
         # On the server only
         server:
             # This is the level that will be used
-            level: error
+            level: debug

@@ -1,0 +1,23 @@
+[
+  {
+    "settings": [ "master" ],
+	"log":{
+	  "client":{
+	    "level":"debug",
+	    "yui":true,
+	    "timestamp": false
+	  },
+	  "server":{
+	    "level":"debug",
+	    "yui":true,
+	    "timestamp": true
+	  }
+	},
+    "appPort": 4000,
+    "specs": {
+      "simple": {
+        "type": "simple"
+      }
+    }
+  }
+]
