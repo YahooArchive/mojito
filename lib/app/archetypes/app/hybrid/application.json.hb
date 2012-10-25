@@ -2,7 +2,7 @@
     {
         "settings": [ "master" ],
 
-        "appPort": {{port}},
+        "appPort": "{{port}}",
 
         "specs": {
             "frame": {
@@ -20,13 +20,17 @@
                 "forceRelativePaths": true,
                 "urls": ["/yahoo.application.{{name}}/index.html"]
             }
-        },
+        }
+    },
+
+    {
+        "settings": ["build:debug"],
 
         "yui": {
             "dependencyCalculations": "precomputed",
             "base": "/yahoo.libs.yui/",
-            "url": "$$yui.base$$yui/yui-min.js",
-            "loader": "loader/loader-min.js"
+            "url": "$$yui.base$$yui/yui-debug.js",
+            "loader": "loader/loader-debug.js"
         }
     }
 ]
