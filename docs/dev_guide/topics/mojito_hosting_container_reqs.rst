@@ -5,7 +5,11 @@ Startup Requirements for Mojito in Hosting Environments
 This chapter discusses the startup files needed to
 launch Mojito applications in a hosting environment.
 Because different versions of Mojito
-use different startup files, we will look 
+use different startup files, you may need 
+to modify or even remove certain startup files in your applications,
+so that they may be launched in hosting environments.
+We will look at what startup files are required for each version and provide
+the contents of the required files.
 
 .. _startup_reqs-v0.4.5:
 
