@@ -18,7 +18,10 @@
         "builds": {
             "hybridapp": {
                 "forceRelativePaths": true,
-                "urls": ["/yahoo.application.{{name}}/index.html"]
+                "urls": ["/yahoo.application.{{name}}/index.html"],
+                "snapshotPackages": {
+                    "yahoo.libs.yui": "*"
+                }
             }
         }
     },
