@@ -15,7 +15,7 @@ YUI.add('i18nMojitModel', function(Y, NAME) {
      * @class Model
      * @constructor
      */
-    Y.mojito.models.i18nTest = {
+    Y.mojito.models[NAME] = {
 
         init: function(mojitSpec) {
             this.spec = mojitSpec;

@@ -72,12 +72,12 @@ Here is our updated controller:
 
 `mojits/Flickr/controller.server.js`:
 
-    YUI.add('Flickr', function(Y) {
+    YUI.add('Flickr', function(Y, NAME) {
 
-        Y.mojito.controller = {
+        Y.mojito.controllers[NAME] = {
 
             index: function(ac) {
-                ac.models.Flickr.getFlickrImages('mojito', function(images) {
+                ac.models.get('ModelFlickr').getFlickrImages('mojito', function(images) {
                     var dateString = ac.intl.formatDate(new Date());
                     var data = {
                         images: images,
@@ -91,7 +91,11 @@ Here is our updated controller:
 
         };
 
-    }, '0.0.1',  {requires: ['mojito-intl-addon']});
+    }, '0.0.1',  {requires: [
+        'mojito-intl-addon',
+        'mojito-models-addon',
+        'ModelFlickr'
+    ]});
 
 #### Using Different Views
 

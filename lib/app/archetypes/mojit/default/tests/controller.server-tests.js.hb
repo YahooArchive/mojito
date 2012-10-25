@@ -32,9 +32,12 @@ YUI.add('{{name}}-tests', function(Y) {
                     }
                 },
                 models: {
-                    {{name}}ModelFoo: {
-                        getData: function(cb) {
-                            cb(null, modelData);
+                    get: function(modelName) {
+                        A.areEqual('{{name}}ModelFoo', modelName, 'wrong model name');
+                        return {
+                            getData: function(cb) {
+                                cb(null, modelData);
+                            }
                         }
                     }
                 },

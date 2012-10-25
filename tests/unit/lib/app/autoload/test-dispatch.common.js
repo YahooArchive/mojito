@@ -11,7 +11,7 @@ YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
         store,
         command,
         adapter;
-    
+
     suite.add(new Y.Test.Case({
 
         name: 'dispatch',
@@ -20,6 +20,8 @@ YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
             store = {
                 getAppConfig: function() {
                     return { yui: { dependencyCalculations: 'ondemand' } };
+                },
+                getStaticContext: function () {
                 },
                 getRoutes: function() {
                 },
@@ -32,7 +34,7 @@ YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
                         instanceId: 'xyz123',
                         'controller-module': 'dispatch',
                         getController: function() {
-                            return { index: function() {} }
+                            return { index: function() {} };
                         },
                         yui: {
                             config: {},
@@ -73,7 +75,7 @@ YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
 
             Y.namespace('mojito').ActionContext = function(opts) {
                 return this;
-            }
+            };
 
             store.expandInstance = function(instance, context, cb) {
                     cb(null, {
@@ -83,7 +85,7 @@ YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
                         'controller-module': 'dispatch',
                         getController: function() {
                             getterInvoked = true;
-                            return { index: function() {} }
+                            return { index: function() {} };
                         },
                         yui: {
                             config: {
@@ -119,7 +121,7 @@ YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
                         getController: function() {
                             return { index: function() {
                                 actionInvoked = true;
-                            } }
+                            } };
                         },
                         yui: {
                             config: {
@@ -141,7 +143,7 @@ YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
         }
 
     }));
- 
+
 
     Y.Test.Runner.add(suite);
 

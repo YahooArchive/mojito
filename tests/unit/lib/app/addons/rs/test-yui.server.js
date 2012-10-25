@@ -122,7 +122,7 @@ YUI().use(
                 type: type,
                 name: name,
                 id: type + '--' + name
-            }
+            };
             if (yuiName) {
                 res.yui = { name: yuiName };
             }
@@ -200,9 +200,9 @@ YUI().use(
 
 
     suite.add(new YUITest.TestCase({
-        
+
         name: 'yui rs addon tests',
-        
+
         'find yui resources': function() {
             var fixtures = libpath.join(__dirname, '../../../../../fixtures/store');
             var store = new MockRS({ root: fixtures });
@@ -345,31 +345,6 @@ YUI().use(
             A.isUndefined(res.yui);
         },
 
-        
-        'augment getMojitTypeDetails': function() {
-            var fixtures = libpath.join(__dirname, '../../../../../fixtures/store');
-            var store = new MockRS({ root: fixtures });
-            store.plug(Y.mojito.addons.rs.yui, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
-
-            store._makeResource('server', {}, 'Foo', 'binder', 'index', 'FooBinderIndex');
-            store._makeResource('server', {}, 'Foo', 'binder', 'list', 'FooBinderList');
-            store._makeResource('server', {}, 'Foo', 'controller', 'controller', 'FooController');
-            var mojit = { views: {} };
-            store.fire('getMojitTypeDetails', {
-                args: {
-                    env: 'server',
-                    ctx: {},
-                    mojitType: 'Foo'
-                },
-                mojit: mojit
-            });
-            A.isNotUndefined(mojit.views.index);
-            A.areSame('FooBinderIndex', mojit.views.index['binder-module']);
-            A.isNotUndefined(mojit.views.list);
-            A.areSame('FooBinderList', mojit.views.list['binder-module']);
-            A.areSame('FooController', mojit['controller-module']);
-        },
-
 
         'find and parse resources by convention': function() {
             var fixtures = libpath.join(__dirname, '../../../../../fixtures/conventions'),
@@ -382,7 +357,7 @@ YUI().use(
 
             var pkg = { name: 'test', version: '6.6.6' };
             var mojitType = 'testing';
-            var ress = store._findResourcesByConvention(fixtures, 'app', pkg, mojitType)
+            var ress = store._findResourcesByConvention(fixtures, 'app', pkg, mojitType);
 
             var r, res;
             for (r = 0; r < ress.length; r++) {
@@ -518,102 +493,6 @@ YUI().use(
         },
 
 
-        'server mojit instance yui': function() {
-            var fixtures = libpath.join(__dirname, '../../../../../fixtures/store');
-            var store = new Y.mojito.ResourceStore({ root: fixtures, mojitoRoot: mojitoRoot });
-            store.preload();
-
-            var instance = {type:'TestMojit2'};
-            store.expandInstance(instance, {}, function(err, instance) {
-                A.isNotUndefined(instance.yui);
-
-                A.isNotUndefined(instance.yui.config);
-                A.isNotUndefined(instance.yui.config.modules);
-                A.isNotUndefined(instance.yui.config.modules['test_mojit_2']);
-                A.areSame(libpath.join(fixtures, 'mojits/test_mojit_2/controller.server.js'), instance.yui.config.modules['test_mojit_2'].fullpath);
-                A.isNotUndefined(instance.yui.config.modules['mojito-mu']);
-                A.areSame(libpath.join(mojitoRoot, 'app/addons/view-engines/mu.server.js'), instance.yui.config.modules['mojito-mu'].fullpath);
-
-                A.isArray(instance.yui.sorted);
-                AA.contains('test_mojit_2', instance.yui.sorted);
-                AA.doesNotContain('test_applevelModel', instance.yui.sorted);
-                AA.doesNotContain('ModelFlickr', instance.yui.sorted);
-                AA.contains('mojito-mu', instance.yui.sorted);
-                AA.contains('mojito-dispatcher', instance.yui.sorted);
-            });
-        },
-
-
-        'server mojit instance yui - ondemand': function() {
-            var fixtures = libpath.join(__dirname, '../../../../../fixtures/ondemand');
-            var store = new Y.mojito.ResourceStore({ root: fixtures });
-            store.preload();
-
-            var instance = { type:'PagedFlickr' };
-            store.expandInstance(instance, {}, function(err, instance) {
-                A.isNotUndefined(instance.yui);
-
-                A.isArray(instance.yui.sorted, 'sorted');
-                AA.contains('mojito-dispatcher', instance.yui.sorted, 'mojito-dispatch');
-                AA.contains('mojito-mu', instance.yui.sorted, 'mojito-mu');
-                AA.contains('PagedFlickr', instance.yui.sorted, 'PagedFlickr');
-                AA.doesNotContain('lang/PagedFlickr_de', instance.yui.sorted, 'lang/PagedFlickr_de');
-                AA.doesNotContain('lang/PagedFlickr_en', instance.yui.sorted, 'lang/PagedFlickr_en');
-                AA.doesNotContain('lang/PagedFlickr_en-US', instance.yui.sorted, 'lang/PagedFlickr_en-US');
-
-                A.isUndefined(instance.yui.sortedPaths, 'sortedPaths');
-            });
-        },
-
-
-        'stuff with ctx{lang:}, in language fallback': function() {
-            var fixtures = libpath.join(__dirname, '../../../../../fixtures/gsg5'),
-                store = new Y.mojito.ResourceStore({ root: fixtures }),
-                ctx, spec;
-            store.preload();
-
-            // first test
-            ctx = { lang: 'en-US' };
-            spec = { type: 'PagedFlickr' };
-            store.expandInstance(spec, ctx, function(err, instance) {
-                AA.contains('lang/PagedFlickr_en-US', instance.yui.sorted, 'en-US is undefined {lang:en-US}');
-                AA.doesNotContain('lang/PagedFlickr_en', instance.yui.sorted, 'en is not undefined {lang:en-US}');
-
-                // second test
-                ctx = { lang: 'en' };
-                spec = { type: 'PagedFlickr' };
-                store.expandInstance(spec, ctx, function(err, instance) {
-                    AA.contains('lang/PagedFlickr_en', instance.yui.sorted, 'en is undefined {lang-en}');
-                    AA.doesNotContain('lang/PagedFlickr_en-US', instance.yui.sorted, 'en-US is not undefined {lang:en}');
-
-                    // third test
-                    ctx = { lang: 'de-AT' };
-                    spec = { type: 'PagedFlickr' };
-                    store.expandInstance(spec, ctx, function(err, instance) {
-                        AA.contains('lang/PagedFlickr_de', instance.yui.sorted, 'de is undefined {lang:de-AT}');
-                        AA.doesNotContain('lang/PagedFlickr_en-US', instance.yui.sorted, 'en-US is not undefined {lang:de-AT}');
-
-                        // fourth test
-                        ctx = { lang: 'tr-TR' };
-                        spec = { type: 'PagedFlickr' };
-                        store.expandInstance(spec, ctx, function(err, instance) {
-                            AA.doesNotContain('lang/PagedFlickr_de', instance.yui.sorted, 'de is defined {lang:tr-TR}');
-                            AA.doesNotContain('lang/PagedFlickr_en-US', instance.yui.sorted, 'en-US is undefined {lang:tr-TR}');
-
-                            // fifth test
-                            ctx = {};
-                            spec = { type: 'PagedFlickr' };
-                            store.expandInstance(spec, ctx, function(err, instance) {
-                                AA.doesNotContain('lang/PagedFlickr_de', instance.yui.sorted, 'de is undefined {}');
-                                AA.doesNotContain('lang/PagedFlickr_en-US', instance.yui.sorted, 'en-US is undefined {}');
-                            });
-                        });
-                    });
-                });
-            });
-        },
-
-
         'get config shared': function() {
             var fixtures,
                 store,
@@ -657,11 +536,31 @@ YUI().use(
             A.isUndefined(config.modules.FooBinderIndex);
             A.isNotUndefined(config.modules.FooBinderList);
             A.isNotUndefined(config.modules.BarController);
+        },
+
+
+        'ignore: makeResourceVersions()': function() {
+            // TODO
+        },
+
+
+        'ignore: getResourceContent()': function() {
+            // TODO
+        },
+
+
+        'ignore: gather list of all langs in app': function() {
+            // TODO
+        },
+
+
+        'ignore: _precomputeConfigApp()': function() {
+            // TODO
         }
 
 
     }));
-    
+
     Y.Test.Runner.add(suite);
-    
+
 });

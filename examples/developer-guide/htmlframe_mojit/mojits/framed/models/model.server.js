@@ -4,7 +4,9 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('framedModel', function(Y, NAME) {
+/*jslint anon:true, sloppy:true, nomen:true*/
+
+YUI.add('framedModel', function(Y) {
 
 /**
  * The framedModel module.
@@ -20,7 +22,7 @@ YUI.add('framedModel', function(Y, NAME) {
      */
     Y.mojito.models.framed = {
 
-        init: function(config) {
+        init: function (config) {
             this.config = config;
         },
 
@@ -30,8 +32,8 @@ YUI.add('framedModel', function(Y, NAME) {
          * @param callback {Function} The callback function to call when the
          *        data has been retrieved.
          */
-        getData: function(callback) {
-            callback({some:'data'});
+        getData: function (callback) {
+            callback({some: 'data'});
         }
 
     };

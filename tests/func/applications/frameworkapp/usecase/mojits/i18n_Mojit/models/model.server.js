@@ -4,7 +4,7 @@
 YUI.add('i18n_MojitModel', function(Y, NAME) {
 
 
-    Y.mojito.models.i18nTest = {
+    Y.mojito.models[NAME] = {
 
         init: function(mojitSpec) {
             this.spec = mojitSpec;

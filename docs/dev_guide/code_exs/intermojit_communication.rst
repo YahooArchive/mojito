@@ -114,8 +114,8 @@ can execute the ``index`` functions of the child mojits by calling the ``done`` 
 
 .. code-block:: javascript
 
-   YUI.add('MasterMojit', function(Y,NAME) {
-     Y.mojito.controllers[NAME] = {
+   YUI.add('MasterMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = {   
        init: function(config) {
          this.config = config;
        },
@@ -256,8 +256,8 @@ binder, which we'll look at next.
 
 .. code-block:: javascript
 
-   YUI.add('ReceiverMojit', function(Y,NAME) {
-     Y.mojito.controllers[NAME] = {
+   YUI.add('ReceiverMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = {   
        init: function(config) {
          this.config = config;
        },
@@ -278,7 +278,7 @@ object is used to invoke the ``show`` function and pass the photo URI.
 
 .. code-block:: javascript
 
-   YUI.add('ReceiverMojitBinderIndex', function(Y,NAME) {
+   YUI.add('ReceiverMojitBinderIndex', function(Y, NAME) {
      Y.namespace('mojito.binders')[NAME] = {
        init: function(mojitProxy) {
          var self = this;
@@ -393,8 +393,8 @@ To set up and run ``inter-mojit``:
 
    .. code-block:: javascript
 
-      YUI.add('MasterMojit', function(Y,NAME) {
-        Y.mojito.controllers[NAME] = {
+      YUI.add('MasterMojit', function(Y, NAME) {
+        Y.namespace('mojito.controllers')[NAME] = {   
           init: function(spec) {
             this.spec=spec;
           },
@@ -460,8 +460,8 @@ To set up and run ``inter-mojit``:
 
    .. code-block:: javascript
 
-      YUI.add('SenderMojit', function(Y,NAME) {
-         Y.mojito.controllers[NAME] = {
+      YUI.add('SenderMojit', function(Y, NAME) {
+        Y.namespace('mojito.controllers')[NAME] = {   
           init: function(config) {
             this.config = config;
           },
@@ -523,8 +523,8 @@ To set up and run ``inter-mojit``:
 
    .. code-block:: javascript
 
-      YUI.add('ReceiverMojit', function(Y,NAME) {
-        Y.mojito.controllers[NAME] = {
+      YUI.add('ReceiverMojit', function(Y, NAME) {
+        Y.namespace('mojito.controllers')[NAME] = {   
           init: function(spec) {
             this.spec = spec;
           },
@@ -543,7 +543,7 @@ To set up and run ``inter-mojit``:
 
    .. code-block:: javascript
 
-      YUI.add('ReceiverMojitBinderIndex', function(Y,NAME) {
+      YUI.add('ReceiverMojitBinderIndex', function(Y, NAME) {
         Y.namespace('mojito.binders')[NAME] = {
           init: function(mojitProxy) {
             var self = this;

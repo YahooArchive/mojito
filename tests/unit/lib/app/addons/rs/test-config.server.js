@@ -3,8 +3,8 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-YUI().use('addon-rs-config', 'base', 'oop', 'test', function(Y) {
-    
+YUI().use('addon-rs-config', 'mojito-util', 'base', 'oop', 'test', function(Y) {
+
     var suite = new YUITest.TestSuite('mojito-addon-rs-config-tests'),
         libfs = require('fs'),
         libpath = require('path'),
@@ -36,28 +36,8 @@ YUI().use('addon-rs-config', 'base', 'oop', 'test', function(Y) {
             return this._config.context || {};
         },
 
-        mergeRecursive: function(dest, src, typeMatch) {
-            var p;
-            for (p in src) {
-                if (src.hasOwnProperty(p)) {
-                    // Property in destination object set; update its value.
-                    if (src[p] && src[p].constructor === Object) {
-                        if (!dest[p]) {
-                            dest[p] = {};
-                        }
-                        dest[p] = this.mergeRecursive(dest[p], src[p]);
-                    } else {
-                        if (dest[p] && typeMatch) {
-                            if (typeof dest[p] === typeof src[p]) {
-                                dest[p] = src[p];
-                            }
-                        } else {
-                            dest[p] = src[p];
-                        }
-                    }
-                }
-            }
-            return dest;
+        blendStaticContext: function(ctx) {
+            return Y.mojito.util.blend(this._config.context, ctx);
         },
 
         findResourceVersionByConvention: function(source, mojitType) {

@@ -37,7 +37,7 @@ Thus, the ``YUI.add`` statement in ``photos/models/flickr.server.js`` would be t
 
 .. code-block:: javascript
 
-   YUI.add("photosModelFlickr", function(Y) {
+   YUI.add("photosModelFlickr", function(Y, NAME) {
       ...
    }
 
@@ -48,10 +48,10 @@ A model should have the basic structure shown below.
 
 .. code-block:: javascript
 
-   YUI.add('{mojit_name}Model{Model_name}', function(Y) {
+   YUI.add('{mojit_name}Model{Model_name}', function(Y, NAME) {
      // Models must register themselves in the
-     // Y.mojito.models namespace.
-     Y.namespace('mojito.models').{model_name} = {
+     // Namespace for models
+     Y.namespace('mojito.models')[NAME] = {
        // Optional init() method is given the
        // mojit configuration information.
        init: function(config) {
@@ -76,21 +76,21 @@ Model Objects and Methods
 The following objects and methods form the backbone of the model.
 
 - ``YUI.add`` - (required) adds the module 
-- ``Y.namespace('mojito.model')`` - (required) registers the model 
+- ``Y.namespace('mojito.models')[NAME]`` - (required) registers the model 
 - ``init`` - (optional) gets configuration information 
 
 
 The example model below shows you how the objects and methods are used. The ``galleryModelFlickr`` model is registered with ``YUI.add``, and the namespace for the 
-model is created with ``Y.namespace('mojito.models').flickr``. The ``init`` function stores the date so it can be used by other functions, and the ``requires`` array 
+model is created with ``Y.namespace('mojito.models')[NAME]``. The ``init`` function stores the date so it can be used by other functions, and the ``requires`` array 
 instructs Mojito to load the YUI module ``yql`` for getting data.
 
 .. code-block:: javascript
 
-   YUI.add('galleryModelFlickr', function(Y) {
+   YUI.add('galleryModelFlickr', function(Y, NAME) {
    
      // Models must register themselves in the 
-     // Y.mojito.models namespace.
-     Y.namespace('mojito.models').flickr = {
+     // Namespace for model
+     Y.namespace('mojito.models')[NAME] = {
        // Optional init() method is given the mojit 
        // configuration information.       
        init: function(config) {
@@ -116,19 +116,22 @@ Using Models
 The function of the model is to get information and send it to the controller. When calling model functions from a mojit controller, a callback function must be provided to allow for the model 
 code to run long-term processes for data storage and retrieval. As a matter of best practice, the model should be a YUI module and not include blocking code, although blocking code can be used.
 
-To access a model from the controller, use the syntax ``ac.models.{model_name}`` as seen in the code example below. For a more detailed example, 
+To access a model from the controller, use the syntax ``ac.models.get('{model_name}')`` as seen in the code example below. For a more detailed example, 
 see `Calling the Model`_ and `Calling YQL from a Mojit <../code_exs/calling_yql.html>`_.
 
 .. code-block:: javascript
 
-   YUI.add('{mojit_name}', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('{mojit_name}', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
        index: function(ac) {
-         // Use ac.models.{mojit_name} if the default model 'model.server.js' is being used.
-         var model = ac.models.{model_name};
+         // Use ac.models.get('{mojit_name}') if the default model 'model.server.js' is being used.
+         var model = ac.models.get('{model_name}');
        }
      };
-   }, '0.0.1', { requires:[ ] });
+   }, '0.0.1', { requires:[
+     'mojito-models-addon',
+     '{model_name}'
+   ]});
 
 Example
 =======
@@ -136,10 +139,10 @@ Example
 
 .. code-block:: javascript
 
-   YUI.add('weatherModelForecast', function(Y) {
+   YUI.add('weatherModelForecast', function(Y, NAME) {
      // Models must register themselves in the
-     // Y.mojito.models namespace.
-     Y.namespace('mojito.models').forecast = {
+     // Namespace for model
+     Y.namespace('mojito.models')[NAME] = {
        // Optional init() method is given the mojit
        // configuration information.
        init: function(config) {
@@ -183,10 +186,10 @@ A controller should have the following basic structure:
 
 .. code-block:: javascript
 
-   YUI.add('{mojit_name}', function(Y)
+   YUI.add('{mojit_name}', function(Y, NAME)
      // Module name is {mojit-name}
      // Constructor for the Controller class.
-     Y.mojito.controller = {
+     Y.namespace('mojito.controllers')[NAME] = {
        // The spec configuration is passed to init
        init: function(config) {
          this.config = config;
@@ -214,28 +217,27 @@ Controller Objects and Methods
 Several objects and methods form the backbone of the controller.
 
 - ``YUI.add`` - (required) registers the controller as a YUI module in the Mojito framework. 
-- ``Y.mojito.controller`` -  (required) creates a namespace that makes functions available as Mojito 
+- ``Y.namespace('mojito.controllers')[NAME]`` -  (required) creates a namespace that makes functions available as Mojito 
   actions.
 - ``init`` - (optional) if you provide an ``init`` function on your controller, Mojito will call it 
   as it creates a controller instance, passing in the mojit specification. You can store the 
   specification on the ``this`` reference for use within controller functions.
 - ``this`` - a reference pointing to an instance of the controller that the function is running 
-  within. This means that you can refer to other functions described within ``Y.mojito.controller`` 
+  within. This means that you can refer to other functions described within ``Y.namespace('mojito.controllers')[NAME]`` 
   using ``this.otherFunction``. This is helpful when you've added some utility functions onto your 
   controller that do not accept an ActionContext object.
 - ``requires`` - (optional) an array that lists additional YUI modules needed by the controller.
 
 The example controller below shows you how the components are used. The ``status`` mojit is 
-registered with ``YUI.add``, and the ``Y.mojito.controller`` namespace is created with the ``init`` 
-and other functions. The ``init`` function stores the date so it can be used by other functions, and 
+registered with ``YUI.add`` and the ``init`` function stores the date so it can be used by other functions, and 
 the ``this`` reference allows the ``index`` function to call ``create_status``. Lastly, the 
 ``requires`` array instructs Mojito to load the YUI module ``mojito-intl-addon`` for localizing the 
 date and title.
 
 .. code-block:: javascript
 
-   YUI.add('status', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('status', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = {  
        init: function(spec) {
          this.spec = spec;
          this.date = new Date();
@@ -298,15 +300,15 @@ properties as seen below.
      }
    ]
 
-In the controller, any function that is defined in the ``Y.mojito.controller`` namespace is 
+In the controller, any function that is defined in the ``Y.namespace('mojito.controllers')[NAME]`` is 
 available as a Mojito action. These functions can only accept the ``ActionContext`` object as an 
 argument. In the example controller below, the ``index`` and ``greeting`` functions are available as 
 Mojito actions.
 
 .. code-block:: javascript
 
-   YUI.add('Stateful', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('Stateful', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = {  
        init: function(config) {
          this.config = config;
        },
@@ -332,8 +334,8 @@ You can also use ``init`` to store other initialization data on ``this`` as seen
 
 .. code-block:: javascript
 
-   YUI.add('PlaceFinder', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('PlaceFinder', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = {  
        init: function(config) {
          this.config = config;
          this.geo_api = "http://where.yahooapis.com/geocode";
@@ -344,7 +346,7 @@ You can also use ``init`` to store other initialization data on ``this`` as seen
 
 Within your controller actions and the ``init`` action, the ``this`` reference points to an instance 
 of the controller the action is running within. This means that you can refer to other 
-functions or actions described within ``Y.mojito.controller`` using the syntax 
+functions or actions described within ``Y.namespace('mojito.controllers')[NAME]`` using the syntax 
 ``this.{otherFunction}``. This is helpful when you've added some utility functions onto your 
 controller that do not accept an ActionContext object as the argument, but you wish to use for 
 several actions.
@@ -354,8 +356,8 @@ In the example controller below, the ``health`` function uses ``this`` to call t
 
 .. code-block:: javascript
 
-   YUI.add('HealthStats', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('HealthStats', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = {  
        init: function(config) {
          this.config = config;
        },
@@ -389,23 +391,23 @@ The mojit controller communicates with the model through the
 `ActionContext object <../api_overview/mojito_action_context.html>`_ and a syntax convention. The 
 ``ActionContext`` object allows controller functions to access framework features such as API 
 methods and addons that extend functionality. To access the model from the ActionContext object 
-``ac``, you use the following syntax: ``ac.models.{model_name}.{model_function}``
+``ac``, you use the following syntax: ``ac.models.get('{model_name}').{model_function}``
 
 Thus, if you wanted to use the ``photo_search`` function in the model for the ``flickr`` mojit, you
-would use the following: ``ac.models.flickr.photo_search(args, callback);``
+would use the following: ``ac.models.get('flickr').photo_search(args, callback);``
 
 The ``controller.server.js`` below shows a simple example of calling ``get_data`` from the model of 
 the ``simple`` mojit.
 
 .. code-block:: javascript
 
-   YUI.add('simple', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('simple', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = {  
        init: function(config) {
          this.config = config;
        },
        index: function(ac) {
-         var model = ac.models.simple;
+         var model = ac.models.get('simpleModel');
          model.get_data (function(data) {
            ac.done (
              {
@@ -415,7 +417,10 @@ the ``simple`` mojit.
          });
        }
      };
-   }, '0.0.1', {requires: []});
+   }, '0.0.1', {requires: [
+     'mojito-models-addon',
+     'simpleModel'
+   ]});
 
 Passing Data to the View
 ========================
@@ -431,7 +436,7 @@ the ``index`` template.
 
 .. code-block:: javascript
 
-   YUI.add('UserMojit', function(Y) {
+   YUI.add('UserMojit', function(Y, NAME) {
      /**
      * The HelloMojit module.
      * @module HelloMojit
@@ -441,7 +446,7 @@ the ``index`` template.
      * @class Controller
      * @constructor
      */
-     Y.mojito.controller = {
+     Y.namespace('mojito.controllers')[NAME] = {  
        init: function(config) {
          this.config = config;
        },
@@ -475,7 +480,7 @@ instead of the default ``user`` template.
 
 .. code-block:: javascript
 
-   YUI.add('UserMojit', function(Y) {
+   YUI.add('UserMojit', function(Y, NAME) {
      /**
      * The HelloMojit module.
      * @module HelloMojit
@@ -485,7 +490,7 @@ instead of the default ``user`` template.
      * @class Controller
      * @constructor
      */
-     Y.mojito.controller = {
+     Y.namespace('mojito.controllers')[NAME] = {  
        init: function(config) {
          this.config = config;
        },
@@ -523,7 +528,7 @@ display the error message.
    ...
      index: function(ac) {
        try {
-         var post = ac.models.Blog.getPost();
+         var post = ac.models.get('BlogModel').getPost();
          ac.done({ "post": post });
        }catch(e) {
          console.log(e);
@@ -548,8 +553,8 @@ sent back in a callback.
 
 .. code-block:: javascript
 
-   YUI.add('Stateful', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('Stateful', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = {  
        init: function(config) {
          this.config = config;
          this.time = new Date().getTime();
@@ -570,7 +575,7 @@ sent back in a callback.
          // for later use.
          var me = this;
          this.logit('catch');
-         ac.models.Stateful.getData(function(err, data) {
+         ac.models.get('StatefulModel').getData(function(err, data) {
            ac.done({
              ball: me.ball,
              time: me.time,
@@ -582,7 +587,10 @@ sent back in a callback.
          Y.log(msg + this.time, 'warn');
        }
      };
-   }, '0.0.1', {requires: []});
+   }, '0.0.1', {requires: [
+     'mojito-models-addon',
+     'StatefulModel'
+   ]});
 
 Views
 #####

@@ -37,7 +37,9 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
                 };
             };
             var addon = new Y.mojito.addons.ac.url({}, null, {
-                staticAppConfig: {}
+                config: {
+                    getAppConfig: function() { return {}; }
+                }
             });
             addon.setStore({
                 getRoutes: function() { return 'routes'; }
@@ -60,7 +62,9 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
             Y.mojito.RouteMaker = RouteMaker;
 
             addon = new Y.mojito.addons.ac.url({}, null, {
-                staticAppConfig: {}
+                config: {
+                    getAppConfig: function() { return {}; }
+                }
             });
             addon.setStore({
                 getRoutes: function() { return routes; }
@@ -101,7 +105,9 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
             Y.mojito.RouteMaker = RouteMaker;
 
             addon = new Y.mojito.addons.ac.url({}, null, {
-                staticAppConfig: {}
+                config: {
+                    getAppConfig: function() { return {}; }
+                }
             });
             addon.setStore({
                 getRoutes: function() { return routes; }
@@ -125,7 +131,9 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
                 };
             };
             var addon = new Y.mojito.addons.ac.url({}, null, {
-                staticAppConfig: {}
+                config: {
+                    getAppConfig: function() { return {}; }
+                }
             });
             addon.setStore({
                 getRoutes: function() { return 'routes'; }
@@ -147,7 +155,9 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
                 };
             };
             var addon = new Y.mojito.addons.ac.url({}, null, {
-                staticAppConfig: {}
+                config: {
+                    getAppConfig: function() { return {}; }
+                }
             });
             addon.setStore({
                 getRoutes: function() { return 'routes'; }
@@ -170,7 +180,9 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
                 };
             };
             var addon = new Y.mojito.addons.ac.url({}, null, {
-                staticAppConfig: {}
+                config: {
+                    getAppConfig: function() { return {}; }
+                }
             });
             addon.setStore({
                 getRoutes: function() { return 'routes'; }
@@ -192,7 +204,9 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
                 };
             };
             var addon = new Y.mojito.addons.ac.url({}, null, {
-                staticAppConfig: {}
+                config: {
+                    getAppConfig: function() { return {}; }
+                }
             });
             addon.setStore({
                 getRoutes: function() { return 'routes'; }
@@ -214,7 +228,9 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
                 };
             };
             var addon = new Y.mojito.addons.ac.url({}, null, {
-                staticAppConfig: {}
+                config: {
+                    getAppConfig: function() { return {}; }
+                }
             });
             addon.setStore({
                 getRoutes: function() { return 'routes'; }
@@ -236,7 +252,9 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
                 };
             };
             var addon = new Y.mojito.addons.ac.url({}, null, {
-                staticAppConfig: {}
+                config: {
+                    getAppConfig: function() { return {}; }
+                }
             });
             addon.setStore({
                 getRoutes: function() { return 'routes'; }

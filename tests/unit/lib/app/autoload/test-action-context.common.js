@@ -42,8 +42,7 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                     instance: {
                         type: 'Type',
                         config: 'instance config',
-                        views: 'views',
-                        yui: { sorted: [] }
+                        views: 'views'
                     }
                 },
                 models: {},
@@ -51,6 +50,9 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                 store: {
                     getAppConfig: function() {
                         return 'app config';
+                    },
+                    getStaticContext: function() {
+                        return 'static context';
                     },
                     getRoutes: function(ctx) {
                         A.areSame('context', ctx, "wrong context for getRoutes");
@@ -82,8 +84,7 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                     instance: {
                         type: 'Type',
                         config: 'instance config',
-                        views: 'views',
-                        yui: { sorted: [] }
+                        views: 'views'
                     }
                 },
                 models: {},
@@ -91,6 +92,9 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                 store: {
                     getAppConfig: function() {
                         return 'app config';
+                    },
+                    getStaticContext: function() {
+                        return 'static context';
                     },
                     getRoutes: function(ctx) {
                         A.areSame('context', ctx, "wrong context for getRoutes");
@@ -122,8 +126,7 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                     instance: {
                         type: 'Type',
                         config: 'instance config',
-                        views: 'views',
-                        yui: { sorted: [] }
+                        views: 'views'
                     }
                 },
                 models: {},
@@ -131,6 +134,9 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                 store: {
                     getAppConfig: function() {
                         return 'app config';
+                    },
+                    getStaticContext: function() {
+                        return 'static context';
                     },
                     getRoutes: function(ctx) {
                         A.areSame('context', ctx, "wrong context for getRoutes");
@@ -161,8 +167,7 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                     instance: {
                         type: 'Type',
                         config: 'instance config',
-                        views: 'views',
-                        yui: { sorted: [] }
+                        views: 'views'
                     }
                 },
                 models: {},
@@ -172,6 +177,9 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                 store: {
                     getAppConfig: function() {
                         return 'app config';
+                    },
+                    getStaticContext: function() {
+                        return 'static context';
                     },
                     getRoutes: function(ctx) {
                         A.areSame('context', ctx, "wrong context for getRoutes");
@@ -195,13 +203,16 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                     instance: {
                         id: 'id',
                         type: 'Type666',
-                        yui: { sorted: [] },
                         acAddons: ['custom']
                     }
                 },
                 controller: {index: function() {}},
                 store: {
                     getAppConfig: function() {
+                        return 'app config';
+                    },
+                    getStaticContext: function() {
+                        return 'static context';
                     },
                     getRoutes: function() {
                     }
@@ -224,8 +235,7 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                     instance: {
                         type: 'Type',
                         config: 'instance config',
-                        views: 'views',
-                        yui: { sorted: [] }
+                        views: 'views'
                     }
                 },
                 models: {},
@@ -233,6 +243,9 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                 store: {
                     getAppConfig: function() {
                         return 'app config';
+                    },
+                    getStaticContext: function() {
+                        return 'static context';
                     },
                     getRoutes: function(ctx) {
                         A.areSame('context', ctx, "wrong context for getRoutes");
@@ -283,7 +296,6 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                     instance: {
                         id: 'id',
                         type: 'Type2', // Need to clear the addons cache
-                        yui: { sorted: [] },
                         acAddons: [
                             'first',
                             'second',
@@ -295,6 +307,10 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                 controller: {index: function() {}},
                 store: {
                     getAppConfig: function() {
+                        return 'app config';
+                    },
+                    getStaticContext: function() {
+                        return 'static context';
                     },
                     getRoutes: function() {
                     }

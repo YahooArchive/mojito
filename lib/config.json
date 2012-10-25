@@ -5,35 +5,13 @@
         "mojitsDirs": [ "mojits" ],
         "routesFiles": [ "routes.json" ],
         "tunnelPrefix": "/tunnel",
-        "yui": {
-            "dependencyCalculations": "precomputed"
-        },
+        "yui": {},
         "specs": {
             "tunnelProxy": {
                 "type": "TunnelProxy"
             }
         }
     },
-    "ondemandBaseYuiModules": [
-        "oop",
-        "event-custom-base",
-        "querystring-stringify-simple",
-        "io-base",
-        "dom-core",
-        "dom-base",
-        "selector-native",
-        "selector",
-        "node-core",
-        "node-base",
-        "event-base",
-        "event-delegate",
-        "json-stringify",
-        "array-extras",
-        "querystring-parse",
-        "cookie",
-        "event-custom-complex",
-        "json-parse"
-    ],
     "defaultRoutes" : {
         "_default_path": {
             "verbs": [ "GET" ],

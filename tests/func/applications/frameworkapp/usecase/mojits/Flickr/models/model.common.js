@@ -1,7 +1,7 @@
 /*
 * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
 */
-YUI.add('FlickrModel', function(Y) {
+YUI.add('FlickrModel', function(Y, NAME) {
 
 /**
  * The FlickrModel module.
@@ -9,7 +9,7 @@ YUI.add('FlickrModel', function(Y) {
  * @module FlickrModel
  */
 
-    Y.mojito.models.flickrModel = {
+    Y.mojito.models[NAME] = {
 
         /**
          * Method that will be invoked by the mojit controller to obtain data.

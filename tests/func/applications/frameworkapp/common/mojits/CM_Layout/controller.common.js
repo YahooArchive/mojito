@@ -74,6 +74,6 @@ YUI.add('CM_Layout', function(Y, NAME) {
 
 }, '0.0.1', {requires: [
     'mojito',
-    'mojito-config-done',
-    'mojito-composite-done',
+    'mojito-config-addon',
+    'mojito-composite-addon',
     'mojito-params-addon']});

@@ -1,6 +1,4 @@
-﻿
-
-================
+﻿================
 Extending Mojito
 ================
 
@@ -150,8 +148,8 @@ addon's constructor. In our addon, we defined the namespace ``cheese`` (``"names
 
 .. code-block:: javascript
 
-   YUI.add('Foo', function(Y) {
-     Y.mojito.controllers = {
+   YUI.add('Foo', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
        index: function(ac) {
          // Use the type 'cheese' and then the
          // the addon function 'cheesify'
@@ -320,8 +318,8 @@ With the saved instance, the ``log`` method from the ``hello-uid`` module can be
 
 .. code-block:: javascript
 
-   YUI.add('HelloMojit', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('HelloMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
        init: function(config) {
          this.config = config;
          this.uid = new Y.mojito.UID();

@@ -16,35 +16,11 @@
                 },
                 "group": "fw,unit,client,server"
             },
-            "controller-context.common": {
-                "params": {
-                    "page": "$$config.base$$/mojito-test.html",
-                    "lib": "$$config.lib$$/app/autoload/controller-context.common.js",
-                    "test": "./test-controller-context.common.js"
-                },
-                "group": "fw,unit,client,server"
-            },
             "dispatch.common": {
                 "params": {
                     "page": "$$config.base$$/mojito-test.html",
                     "lib": "$$config.lib$$/app/autoload/action-context.common.js,./../../../../../lib/app/autoload/dispatch.common.js",
                     "test": "./test-dispatch.common.js"
-                },
-                "group": "fw,unit,client,server"
-            },
-            "loader.common": {
-                "params": {
-                    "page": "$$config.base$$/mojito-test.html",
-                    "lib": "$$config.lib$$/app/autoload/loader.common.js",
-                    "test": "./test-loader.common.js"
-                },
-                "group": "fw,unit,client,server"
-            },
-            "logger.common": {
-                "params": {
-                    "page": "$$config.base$$/mojito-test.html",
-                    "lib": "$$config.lib$$/app/autoload/logger.common.js",
-                    "test": "./test-logger.common.js"
                 },
                 "group": "fw,unit,client,server"
             },
@@ -95,14 +71,6 @@
                     "driver": "nodejs"
                 },
                 "group": "fw,unit,server"
-            },
-            "resource-store-adapter.common": {
-                "params": {
-                    "page": "$$config.base$$/mojito-test.html",
-                    "lib": "$$config.lib$$/app/autoload/resource-store-adapter.common.js",
-                    "test": "./test-resource-store-adapter.common.js"
-                },
-                "group": "fw,unit,client,server"
             },
             "rest.common": {
                 "params": {
