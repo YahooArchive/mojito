@@ -2,14 +2,11 @@
 Startup Requirements for Mojito in Hosting Environments
 =======================================================
 
-This chapter discusses the startup files needed to
-launch Mojito applications in a hosting environment.
-Because different versions of Mojito
-use different startup files, you may need 
-to modify or even remove certain startup files in your applications,
-so that they may be launched in hosting environments.
-We will look at what startup files are required for each version and provide
-the contents of the required files.
+This chapter discusses the startup files needed to launch Mojito applications in a 
+hosting environment. Because different versions of Mojito use different startup files, 
+you may need to modify or even remove certain startup files in your applications,
+so that they may be launched in hosting environments. We will look at what startup files 
+are required for each version and provide code examples.
 
 .. _startup_reqs-v0.4.5:
 
@@ -76,6 +73,13 @@ server.js
 Mojito v0.4.6
 =============
 
+**NOT RECOMMENDED**
+
+Version 0.4.6 has been found not to work with at least one hosting container
+due to changes in how a Mojito server instance is created and the
+API of that instances. See the :ref:`server.js <startup_reqs_v0.4.6-server>`
+for details of the changes. We **recommend** using version 0.4.7 or
+greater. 
 
 .. _startup_reqs_v0.4.6-index:
 
@@ -94,9 +98,7 @@ For version 0.4.6, the ``server.js`` file changes due to changes in how a Mojito
 server instance is created and the API of that instance. In this version of
 Mojito, there is a ``start`` method on the Mojito server that is used to launch a
 new server. Unfortunately, while this approach works, it retains some limitations
-and created an issue with at least one hosting container. For that reason
-version 0.4.6 is not recommended; instead we recommend using version 0.4.7 or
-greater.
+and created an issue with at least one hosting container.
 
 .. code-block:: javascript
 
@@ -123,14 +125,14 @@ greater.
 npm start
 ---------
 
-**NOT RECOMMENDED**
-
 Version 0.4.6 is the first version of Mojito to support ``npm start`` in addition
 to ``mojito start`` as a means for starting up a new Mojito server instance.
 
 Mojito version 0.4.6 alters Mojito's startup logic to support ``npm start`` as a
 common startup mechanism and expands the number of hosting containers Mojito was
-compatible with... _startup_reqs_v0.4.6-npm:
+compatible with.
+
+
 
 .. _startup_reqs-v0.4.7:
 
@@ -208,7 +210,7 @@ Mojito v0.4.8 and Later
 
 Version 0.4.8 solidifies the changes made in version 0.4.7, removing the
 ``index.js`` file from any application archetypes (the files used to create new
-applications) and removing unneccessary commented-out code in the ``server.js``
+applications) and the unneccessary commented-out code in the ``server.js``
 file. As with applications created by version 0.4.7, you should remove 
 the ``index.js`` file from any applications using version 0.4.8 or later versions 
 and update your ``server.js`` file to match the one provided below.
@@ -220,7 +222,7 @@ index.js
 
 **OBSOLETE**
 
-The ``index.js`` is not created by version 0.4.7. Remove from any applications
+The ``index.js`` file is not created by version 0.4.7. Remove from any applications
 that are using versions 0.4.7 or greater.
 
 .. _startup_reqs_v0.4.8-server:
