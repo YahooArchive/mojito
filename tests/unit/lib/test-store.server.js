@@ -20,7 +20,8 @@ YUI().use(
             store,
             Mock = Y.Mock,
             A = Y.Assert,
-            AA = Y.ArrayAssert;
+            AA = Y.ArrayAssert,
+            OA = Y.ObjectAssert;
 
 
         function cmp(x, y, msg) {
@@ -46,7 +47,6 @@ YUI().use(
             }
             A.areSame(x, y, msg || 'args should be the same');
         }
-
 
         suite.add(new Y.Test.Case({
 
@@ -789,6 +789,88 @@ YUI().use(
 
         }));
 
+        suite.add(new Y.Test.Case({
+
+            name: 'Store tests -- "bleeding"',
+
+            setUp: function() {
+                var fixtures = libpath.join(__dirname, '../../fixtures/store');
+                store = new Y.mojito.ResourceStore({ root: fixtures });
+                store.preload();
+            },
+
+            'test bleeding spec with no config': function() {
+                var instance = { type: "page" },
+                    ctx = {};
+
+                store.expandInstanceForEnv('server', instance, ctx, function(err, expanded) {
+                    A.isNotUndefined(expanded, 'expanded should not be undefined');
+                    OA.areEqual({}, expanded.config, 'config should be empty');
+                });
+            },
+
+            'test bleeding spec with config': function() {
+                var instance,
+                    ctx = {};
+
+                instance = {
+                    type: "page",
+                    config: {
+                        children: {
+                            weather: { type: "weather", action: "index" },
+                            stream: { type: "stream", action: "index" }
+                        }
+                    }
+                };
+                store.expandInstanceForEnv('server', instance, ctx, function(err, expanded) {
+
+                    A.isNotUndefined(expanded, 'expanded should not be undefined');
+                    OA.areEqual(instance.config.children.weather,
+                                expanded.config.children.weather,
+                                'config missing children.weather');
+                    OA.areEqual(instance.config.children.stream,
+                                expanded.config.children.stream,
+                                'config missing children.stream');
+                });
+            },
+
+            'test bleeding spec with mixed config': function() {
+                var instance1,
+                    instance2,
+                    ctx = {};
+
+                instance1 = {
+                    type: "page",
+                    config: {
+                        children: {
+                            weather: { type: "weather", action: "index" },
+                            stream: { type: "stream", action: "index" }
+                        }
+                    }
+                };
+                instance2 = {
+                    type: "page"
+                };
+
+                store.expandInstanceForEnv('server', instance1, ctx, function(err, expanded1) {
+
+                    // test 1
+                    A.isNotUndefined(expanded1, 'expanded1 should not be undefined');
+                    OA.areEqual(instance1.config.children.weather,
+                                expanded1.config.children.weather,
+                                'config missing children.weather');
+                    OA.areEqual(instance1.config.children.stream,
+                                expanded1.config.children.stream,
+                                'config missing children.stream');
+
+                    // test 2
+                    store.expandInstanceForEnv('server', instance2, ctx, function(err, expanded2) {
+                        A.isNotUndefined(expanded2, 'expanded2 should not be undefined');
+                        OA.areEqual({}, expanded2.config, 'expanded2 instance config should be empty!');
+                    });
+                });
+            }
+        }));
 
     Y.Test.Runner.add(suite);
 
