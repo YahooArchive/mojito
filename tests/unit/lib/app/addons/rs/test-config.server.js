@@ -302,6 +302,83 @@ YUI().use('addon-rs-config', 'base', 'oop', 'test', function(Y) {
         
     }));
     
+    suite.add(new YUITest.TestCase({
+        
+        name: 'config rs addon tests',
+
+        "readConfigSync JSON file":  function () {
+
+            var fixtures = libpath.join(__dirname, '../../../../../fixtures'),
+                store = new MockRS({ root: fixtures }),
+                path = libpath.join(fixtures, "/config/", "json.json"),
+                obj;
+
+            store.plug(Y.mojito.addons.rs.config, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
+
+            obj = store.config.readConfigSync(path);
+
+            A.areSame("val", obj.key);
+        },
+
+        "readConfigSync YAML file":  function () {
+
+            var fixtures = libpath.join(__dirname, '../../../../../fixtures'),
+                store = new MockRS({ root: fixtures }),
+                path = libpath.join(fixtures, "/config/", "yaml.yaml"),
+                obj;
+
+            store.plug(Y.mojito.addons.rs.config, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
+
+            obj = store.config.readConfigSync(path);
+
+            A.areSame("val", obj.key);
+        },
+
+        "readConfigSync YML file":  function () {
+
+            var fixtures = libpath.join(__dirname, '../../../../../fixtures'),
+                store = new MockRS({ root: fixtures }),
+                path = libpath.join(fixtures, "/config/", "yml.yml"),
+                obj;
+
+            store.plug(Y.mojito.addons.rs.config, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
+
+            obj = store.config.readConfigSync(path);
+
+            A.areSame("val", obj.key);
+        },
+
+        "readConfigSync no ext file":  function () {
+
+            var fixtures = libpath.join(__dirname, '../../../../../fixtures'),
+                store = new MockRS({ root: fixtures }),
+                path = libpath.join(fixtures, "/config/", "ext"),
+                obj;
+
+            store.plug(Y.mojito.addons.rs.config, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
+
+            obj = store.config.readConfigSync(path);
+
+            A.areSame("val", obj.key);
+        },
+
+        "readConfigSync YAML file with TAB not space":  function () {
+
+            var fixtures = libpath.join(__dirname, '../../../../../fixtures'),
+                store = new MockRS({ root: fixtures }),
+                path = libpath.join(fixtures, "/config/", "bad.yaml");
+
+            store.plug(Y.mojito.addons.rs.config, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
+
+            try {
+                store.config.readConfigSync(path);
+            }
+            catch (err) {
+                A.areSame('Error parsing file:', err.message.substr(0, 19));
+            }
+        }
+    }));
+    
     Y.Test.Runner.add(suite);
     
 });
