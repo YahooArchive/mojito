@@ -210,7 +210,7 @@ Mojito v0.4.8 and Later
 
 Version 0.4.8 solidifies the changes made in version 0.4.7, removing the
 ``index.js`` file from any application archetypes (the files used to create new
-applications) and the unneccessary commented-out code in the ``server.js``
+applications) and the unnecessary commented-out code in the ``server.js``
 file. As with applications created by version 0.4.7, you should remove 
 the ``index.js`` file from any applications using version 0.4.8 or later versions 
 and update your ``server.js`` file to match the one provided below.
