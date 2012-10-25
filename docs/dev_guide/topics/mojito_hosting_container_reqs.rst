@@ -2,14 +2,22 @@
 Startup Requirements for Mojito in Hosting Environments
 =======================================================
 
+This chapter discusses the startup files needed to
+launch Mojito applications in a hosting environment.
+Because different versions of Mojito
+use different startup files, we will look 
+
+.. _startup_reqs-v0.4.5:
 
 Mojito v0.4.5 and Earlier Versions
 ==================================
 
-Version 0.4.5 and earlier versions rely exclusively on 'mojito start' to run a
-new Mojito server instance which means the index.js and server.js files are both
-required. Applications using Mojito version 0.4.5 and prior versions should use
-index.js and server.js files matching those below.
+Version 0.4.5 and earlier versions rely exclusively on ``mojito start`` to run a
+new Mojito server instance, which means the ``index.js`` and ``server.js`` files are 
+both required. Applications using Mojito version 0.4.5 and prior versions should use
+``index.js`` and ``server.js`` files matching those below.
+
+.. _startup_reqs_v0.4.5-index:
 
 index.js
 --------
@@ -38,6 +46,8 @@ index.js
      process.emit('application-ready', token, app);
    };
 
+.. _startup_reqs_v0.4.5-server:
+
 server.js
 ---------
 
@@ -57,33 +67,31 @@ server.js
    */
    module.exports = require('mojito').createServer();
 
+.. _startup_reqs-v0.4.6:
+
 Mojito v0.4.6
 =============
 
-NOT RECOMMENDED
----------------
 
-Version 0.4.6 is the first version of Mojito to support ``npm start`` in addition
-to ``mojito start`` as a means for starting up a new Mojito server instance.
-
-Mojito version 0.4.6 alters Mojito's startup logic to support 'npm start' as a
-common startup mechanism and expands the number of hosting containers Mojito was
-compatible with.
+.. _startup_reqs_v0.4.6-index:
 
 index.js
-########
+--------
 
-The ``index.js`` file does not change for 0.4.6.
+The ``index.js`` file does not change for version 0.4.6.
+
+
+.. _startup_reqs_v0.4.6-server:
 
 server.js
-#########
+---------
 
-For version 0.4.6 the ``server.js`` file changes due to changes in how a Mojito
+For version 0.4.6, the ``server.js`` file changes due to changes in how a Mojito
 server instance is created and the API of that instance. In this version of
-Mojito there is a ``start`` method on the Mojito server which is used to launch a
-new server. Unfortunately, while this approach works it retains some limitations
+Mojito, there is a ``start`` method on the Mojito server that is used to launch a
+new server. Unfortunately, while this approach works, it retains some limitations
 and created an issue with at least one hosting container. For that reason
-version 0.4.6 is not recommended, instead we recommend using version 0.4.7 or
+version 0.4.6 is not recommended; instead we recommend using version 0.4.7 or
 greater.
 
 .. code-block:: javascript
@@ -106,6 +114,22 @@ greater.
    module.exports = app.start();
 
 
+.. _startup_reqs_v0.4.6-npm:
+
+npm start
+---------
+
+**NOT RECOMMENDED**
+
+Version 0.4.6 is the first version of Mojito to support ``npm start`` in addition
+to ``mojito start`` as a means for starting up a new Mojito server instance.
+
+Mojito version 0.4.6 alters Mojito's startup logic to support ``npm start`` as a
+common startup mechanism and expands the number of hosting containers Mojito was
+compatible with... _startup_reqs_v0.4.6-npm:
+
+.. _startup_reqs-v0.4.7:
+
 Mojito v0.4.7
 =============
 
@@ -116,15 +140,21 @@ to provide access to the Node.js ``http.Server`` instance being used. This
 approach makes it possible for Mojito to support an even broader range of
 hosting containers and startup requirements.
 
-Applications running version 0.4.7 or greater no longer require an index.js
-file, although one is still provided. Such applications must use a server.js
-file as specified below.
+Applications running version 0.4.7 or greater no longer require an ``index.js``
+file, although one is still provided. Such applications must use the ``server.js``
+file shown below.
+
+.. _startup_reqs_v0.4.7-index:
 
 index.js
 --------
 
-OBSOLETE, but still present, in this version. Remove from any applications using
-0.4.7 or greater.
+**OBSOLETE**
+
+Version 0.4.7 still creates the ``index.js`` file, but is not used. Remove the
+``index.js`` file from any applications using version 0.4.7 or greater.
+
+.. _startup_reqs_v0.4.7-server:
 
 server.js
 ---------
@@ -167,22 +197,29 @@ server.js
    */
    module.exports = app.listen();
 
+.. _startup_reqs-v0.4.8:
 
 Mojito v0.4.8 and Later
 =======================
 
 Version 0.4.8 solidifies the changes made in version 0.4.7, removing the
-index.js file from any application archetypes (the files used to create new
+``index.js`` file from any application archetypes (the files used to create new
 applications) and removing unneccessary commented-out code in the ``server.js``
-file. As with 0.4.7 applications, you should remove the ``index.js`` file from any
-applications using 0.4.8 or later versions of Mojito and update your server.js
-file to match the one provided here.
+file. As with applications created by version 0.4.7, you should remove 
+the ``index.js`` file from any applications using version 0.4.8 or later versions 
+and update your ``server.js`` file to match the one provided below.
+
+.. _startup_reqs_v0.4.8-index:
 
 index.js
 --------
 
-OBSOLETE and no longer present in this version. Remove from any applications
-using 0.4.7 or greater.
+**OBSOLETE**
+
+The ``index.js`` is not created by version 0.4.7. Remove from any applications
+that are using versions 0.4.7 or greater.
+
+.. _startup_reqs_v0.4.8-server:
 
 server.js
 ---------
