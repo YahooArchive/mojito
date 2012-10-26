@@ -13,7 +13,7 @@
 	    "timestamp": true
 	  }
 	},
-    "appPort": 4000,
+    "appPort": 4001,
     "specs": {
       "simple": {
         "type": "simple"
