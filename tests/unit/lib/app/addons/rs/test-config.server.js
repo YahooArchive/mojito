@@ -244,6 +244,28 @@ YUI().use('addon-rs-config', 'mojito-util', 'base', 'oop', 'test', function(Y) {
                 "specs": {
                     "test1": {
                         "type": "test_mojit_1"
+                    },
+                    "single": {
+                        "type": "HTMLFrameMojit",
+                        "config": {
+                            "child": {
+                                "type": "page",
+                                "config": {
+                                    "children": {
+                                        "weather": { "type": "weather", "action": "index" },
+                                        "stream": { "type": "stream", "action": "stream" }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "multiple": {
+                        "type": "HTMLFrameMojit",
+                        "config": {
+                            "child": {
+                                "type": "page"
+                            }
+                        }
                     }
                 },
                 "selector": "shelves",
