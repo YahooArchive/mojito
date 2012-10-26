@@ -27,4 +27,4 @@ YUI.add('ReceiverMojit', function (Y, NAME) {
         }
     };
 
-}, '0.0.1', {requires: ['mojito', 'mojito-params-done']});
+}, '0.0.1', {requires: ['mojito', 'mojito-params-addon']});
