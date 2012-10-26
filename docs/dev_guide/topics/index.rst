@@ -23,3 +23,4 @@ Table of Contents
    mojito_using_contexts
    mojito_npm
    mojito_resource_store
+   mojito_hosting_container_reqs
