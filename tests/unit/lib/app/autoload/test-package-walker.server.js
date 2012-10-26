@@ -7,9 +7,9 @@ YUI().use('test', function(Y) {
 
     var suite = new Y.Test.Suite('mojito-package-walker-server-tests'),
         libpath = require('path'),
-        fixtures = libpath.join(__dirname, '../../fixtures/packages'),
-        mojitoRoot = libpath.join(__dirname, '../../../lib'),
-        libwalker = require(libpath.join(mojitoRoot, 'package-walker.server')),
+        fixtures = libpath.join(__dirname, '../../../../fixtures/packages'),
+        mojitoRoot = libpath.join(__dirname, '../../../../../lib'),
+        libwalker = require(libpath.join(mojitoRoot, 'app/autoload/package-walker.server')),
         Mock = Y.Mock,
         A = Y.Assert,
         AA = Y.ArrayAssert;

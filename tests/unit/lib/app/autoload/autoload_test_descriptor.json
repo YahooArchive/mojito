@@ -72,6 +72,13 @@
                 },
                 "group": "fw,unit,server"
             },
+            "package-walker.server": {
+                "params": {
+                    "test": "./test-package-walker.server.js",
+                    "driver": "nodejs"
+                },
+                "group": "fw,unit,server"
+            },
             "rest.common": {
                 "params": {
                     "page": "$$config.base$$/mojito-test.html",
@@ -87,6 +94,14 @@
                     "test": "./test-route-maker.common.js"
                 },
                 "group": "fw,unit,client,server"
+            },
+            "store.server": {
+                "params": {
+                    "lib": "$$config.lib$$/app/autoload/store.server.js,./../../../../../lib/app/addons/rs/config.server.js,./../../../../../lib/app/addons/rs/selector.server.js,./../../../../../lib/app/addons/rs/url.server.js,./../../../../../lib/app/addons/rs/yui.server.js",
+                    "test": "./test-store.server.js",
+                    "driver": "nodejs"
+                },
+                "group": "fw,unit,server"
             },
             "tunnel.client": {
                 "params": {
