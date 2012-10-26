@@ -171,7 +171,10 @@ YUI().use('addon-rs-url', 'base', 'oop', 'test', function(Y) {
             A.areSame('/static/X/controller--controller.common.ext', store._mojitRVs.X[0].url);
             A.areSame(2, store._mojitRVs.Y.length);
             A.areSame('/static/Y/controller--controller.client.ext', store._mojitRVs.Y[0].url);
-            A.areSame('/static/Y/controller--controller.server.ext', store._mojitRVs.Y[1].url);
+
+            // server-only mojit does *not* get a url
+            A.areSame('server', store._mojitRVs.Y[1].affinity.affinity);
+            A.areSame(undefined, store._mojitRVs.Y[1].url);
         },
 
 
