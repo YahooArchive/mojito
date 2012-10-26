@@ -9,6 +9,11 @@
             "child": {
                 "type": "top_frame"
             }
+        },
+        "assets": {
+            "top": {
+                "css": ["./index.css"]
+            }
         }
     },
 
