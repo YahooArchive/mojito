@@ -263,7 +263,6 @@ YUI().use('addon-rs-config', 'mojito-util', 'base', 'oop', 'test', function(Y) {
                                         }
                                     }
                                 }
-
                             }
                         }
                     },
