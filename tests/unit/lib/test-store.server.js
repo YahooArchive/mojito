@@ -345,7 +345,7 @@ YUI().use(
 
             'call listAllMojits()': function() {
                 var list = store.listAllMojits('server');
-                A.areSame(10, list.length, 'found the wrong number of mojits');
+                A.areSame(11, list.length, 'found the wrong number of mojits');
                 AA.contains('TunnelProxy', list);
                 AA.contains('HTMLFrameMojit', list);
                 AA.contains('LazyLoad', list);
@@ -356,6 +356,7 @@ YUI().use(
                 AA.contains('TestMojit3', list);
                 AA.contains('TestMojit5', list);
                 AA.contains('soloMojit', list);
+                AA.contains('page', list);
             },
 
             // TODO -- do we still need rollups?
@@ -438,7 +439,7 @@ YUI().use(
 
             name: 'Store tests -- preload fixture "gsg5-appConfig"',
 
-            setUp: function() {
+            init: function() {
                 var fixtures = libpath.join(__dirname, '../../fixtures/gsg5-appConfig');
                 store = new Y.mojito.ResourceStore({ root: fixtures });
                 store.preload();
@@ -793,7 +794,7 @@ YUI().use(
 
             name: 'Store tests -- "bleeding"',
 
-            setUp: function() {
+            init: function() {
                 var fixtures = libpath.join(__dirname, '../../fixtures/store');
                 store = new Y.mojito.ResourceStore({ root: fixtures });
                 store.preload();
