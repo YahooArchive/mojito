@@ -33,7 +33,7 @@ YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
                         id: 'xyz123',
                         instanceId: 'xyz123',
                         'controller-module': 'dispatch',
-                        getController: function() {
+                        createController: function() {
                             return { index: function() {} };
                         },
                         yui: {
@@ -83,7 +83,7 @@ YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
                         id: 'xyz123',
                         instanceId: 'xyz123',
                         'controller-module': 'dispatch',
-                        getController: function() {
+                        createController: function() {
                             getterInvoked = true;
                             return { index: function() {} };
                         },
@@ -118,7 +118,7 @@ YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
                         id: 'xyz123',
                         instanceId: 'xyz123',
                         'controller-module': 'dispatch',
-                        getController: function() {
+                        createController: function() {
                             return { index: function() {
                                 actionInvoked = true;
                             } };
