@@ -97,7 +97,7 @@
             },
             "store.server": {
                 "params": {
-                    "lib": "$$config.lib$$/app/autoload/store.server.js,./../../../../../lib/app/addons/rs/config.server.js,./../../../../../lib/app/addons/rs/selector.server.js,./../../../../../lib/app/addons/rs/url.server.js,./../../../../../lib/app/addons/rs/yui.server.js",
+                    "lib": "$$config.lib$$/app/autoload/store.server.js,./../../../../../lib/app/addons/rs/config.js,./../../../../../lib/app/addons/rs/selector.js,./../../../../../lib/app/addons/rs/url.js,./../../../../../lib/app/addons/rs/yui.js",
                     "test": "./test-store.server.js",
                     "driver": "nodejs"
                 },
