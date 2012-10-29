@@ -252,8 +252,14 @@ YUI().use('addon-rs-config', 'mojito-util', 'base', 'oop', 'test', function(Y) {
                                 "type": "page",
                                 "config": {
                                     "children": {
-                                        "weather": { "type": "weather", "action": "index" },
-                                        "stream": { "type": "stream", "action": "stream" }
+                                        "weather": {
+                                            "type": "weather",
+                                            "action": "index"
+                                        },
+                                        "stream": {
+                                            "type": "stream",
+                                            "action": "stream"
+                                        }
                                     }
                                 }
                             }
