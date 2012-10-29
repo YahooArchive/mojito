@@ -238,6 +238,7 @@ YUI().use('addon-rs-config', 'mojito-util', 'base', 'oop', 'test', function(Y) {
                 "staticHandling": {
                     "useRollups": true
                 },
+
                 "testKey1": "testVal1-server",
                 "testKey2": "testVal2",
                 "testKey3": "testVal3",
@@ -273,6 +274,7 @@ YUI().use('addon-rs-config', 'mojito-util', 'base', 'oop', 'test', function(Y) {
                             }
                         }
                     }
+
                 },
                 "selector": "shelves",
                 "pathos": "portended"
