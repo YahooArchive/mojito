@@ -53,13 +53,13 @@ YUI().use(
             name: 'Store tests -- preload fixture "store"',
 
             init: function() {
-                var fixtures = libpath.join(__dirname, '../../fixtures/store');
+                var fixtures = libpath.join(__dirname, '../../../../fixtures/store');
                 store = new Y.mojito.ResourceStore({ root: fixtures });
                 store.preload();
             },
 
             'pre load': function() {
-                var fixtures = libpath.join(__dirname, '../../fixtures/store');
+                var fixtures = libpath.join(__dirname, '../../../../fixtures/store');
                 //Y.log(Y.JSON.stringify(store,null,4));
                 A.isTrue(store._config.root === fixtures);
             },
@@ -156,7 +156,7 @@ YUI().use(
             },
 
             'server mojit instance assets': function() {
-                var fixtures = libpath.join(__dirname, '../../fixtures/store');
+                var fixtures = libpath.join(__dirname, '../../../../fixtures/store');
                 var instance = {type:'test_mojit_1'};
                 store.expandInstance(instance, {}, function(err, instance) {
                     A.areSame('/static/test_mojit_1/assets', instance.assetsRoot);
@@ -205,7 +205,7 @@ YUI().use(
             },
 
             'server mojit type name can come from package.json': function() {
-                var fixtures = libpath.join(__dirname, '../../fixtures/store');
+                var fixtures = libpath.join(__dirname, '../../../../fixtures/store');
                 var instance = {type:'TestMojit2'};
                 store.expandInstance(instance, {}, function(err, instance){
                     A.isNotUndefined(instance.controller);
@@ -361,7 +361,7 @@ YUI().use(
 
             // TODO -- do we still need rollups?
             'ignore: app with rollups': function() {
-                var fixtures = libpath.join(__dirname, '../../fixtures/store');
+                var fixtures = libpath.join(__dirname, '../../../../fixtures/store');
                 var spec = { type: 'rollups' };
                 store.expandInstanceForEnv('client', spec, {}, function(err, instance) {
                     A.areSame('/static/rollups/rollup.client.js', instance.yui.config.modules['rollups'].fullpath, 'main rollup');
@@ -371,7 +371,7 @@ YUI().use(
             },
 
             'app resource overrides framework resource': function() {
-                var fixtures = libpath.join(__dirname, '../../fixtures/store'),
+                var fixtures = libpath.join(__dirname, '../../../../fixtures/store'),
                     ress;
                 ress = store.getResources('server', {}, {mojit: 'HTMLFrameMojit', type: 'controller'});
                 A.areSame(libpath.join(fixtures, 'mojits/HTMLFrameMojit/controller.server.js'), ress[0].source.fs.fullPath);
@@ -409,13 +409,13 @@ YUI().use(
             name: 'Store tests -- preload fixture "gsg5"',
 
             init: function() {
-                var fixtures = libpath.join(__dirname, '../../fixtures/gsg5');
+                var fixtures = libpath.join(__dirname, '../../../../fixtures/gsg5');
                 store = new Y.mojito.ResourceStore({ root: fixtures });
                 store.preload();
             },
 
             'controller with selector': function() {
-                var fixtures = libpath.join(__dirname, '../../fixtures/gsg5');
+                var fixtures = libpath.join(__dirname, '../../../../fixtures/gsg5');
                 var spec = { type: 'PagedFlickr' };
                 var ctx = { device: 'iphone' };
                 store.expandInstance(spec, ctx, function(err, instance) {
@@ -424,7 +424,7 @@ YUI().use(
             },
 
             'binder with selector': function() {
-                var fixtures = libpath.join(__dirname, '../../fixtures/gsg5');
+                var fixtures = libpath.join(__dirname, '../../../../fixtures/gsg5');
                 var spec = { type: 'PagedFlickr' };
                 var ctx = { device: 'iphone' };
                 store.expandInstance(spec, ctx, function(err, instance) {
@@ -440,7 +440,7 @@ YUI().use(
             name: 'Store tests -- preload fixture "gsg5-appConfig"',
 
             init: function() {
-                var fixtures = libpath.join(__dirname, '../../fixtures/gsg5-appConfig');
+                var fixtures = libpath.join(__dirname, '../../../../fixtures/gsg5-appConfig');
                 store = new Y.mojito.ResourceStore({ root: fixtures });
                 store.preload();
             },
@@ -460,7 +460,7 @@ YUI().use(
             name: 'Store tests -- misc',
 
             'static context is really static': function() {
-                var fixtures = libpath.join(__dirname, '../../fixtures/store'),
+                var fixtures = libpath.join(__dirname, '../../../../fixtures/store'),
                     context = { runtime: 'server' },
                     store = new Y.mojito.ResourceStore({ root: fixtures, context: context }),
                     config;
@@ -474,7 +474,7 @@ YUI().use(
             },
 
             'pre load no application.json file': function() {
-                var fixtures = libpath.join(__dirname, '../../fixtures/store_no_app_config'),
+                var fixtures = libpath.join(__dirname, '../../../../fixtures/store_no_app_config'),
                     store = new Y.mojito.ResourceStore({ root: fixtures });
                 store.preload();
 
@@ -483,7 +483,7 @@ YUI().use(
             },
 
             'default routes': function() {
-                var fixtures = libpath.join(__dirname, '../../fixtures/store_no_app_config'),
+                var fixtures = libpath.join(__dirname, '../../../../fixtures/store_no_app_config'),
                     store = new Y.mojito.ResourceStore({ root: fixtures });
                 store.preload();
 
@@ -492,7 +492,7 @@ YUI().use(
             },
 
             'bad files': function() {
-                var fixtures = libpath.join(__dirname, '../../fixtures/badfiles'),
+                var fixtures = libpath.join(__dirname, '../../../../fixtures/badfiles'),
                     store = new Y.mojito.ResourceStore({ root: fixtures });
                 store.preload();
                 var spec = { type: 'M' };
@@ -503,7 +503,7 @@ YUI().use(
             },
 
             'sortedReaddirSync() sorts the result of fs.readdirSync()': function() {
-                var fixtures = libpath.join(__dirname, '../../fixtures/store');
+                var fixtures = libpath.join(__dirname, '../../../../fixtures/store');
                 var mockfs = Mock();
 
                 Mock.expect(mockfs, {
@@ -521,7 +521,7 @@ YUI().use(
             },
 
             '_skipBadPath() does just that': function() {
-                var fixtures = libpath.join(__dirname, '../../fixtures/store');
+                var fixtures = libpath.join(__dirname, '../../../../fixtures/store');
                 var store = new Y.mojito.ResourceStore({ root: fixtures });
                 A.isTrue(store._skipBadPath({ isFile: true, ext: '.js~' }), 'need to skip bad file naems');
                 A.isFalse(store._skipBadPath({ isFile: false, ext: '.js~' }), 'need to not-skip bad directory names');
@@ -529,7 +529,7 @@ YUI().use(
             },
 
             'load node_modules': function() {
-                var fixtures = libpath.join(__dirname, '../../fixtures/packages'),
+                var fixtures = libpath.join(__dirname, '../../../../fixtures/packages'),
                     store = new Y.mojito.ResourceStore({ root: fixtures });
                 store.preload();
 
@@ -563,14 +563,14 @@ YUI().use(
             },
 
             'find and parse resources by convention': function() {
-                var fixtures = libpath.join(__dirname, '../../fixtures/conventions'),
+                var fixtures = libpath.join(__dirname, '../../../../fixtures/conventions'),
                     store = new Y.mojito.ResourceStore({ root: fixtures });
 
                 // fake out some parts of preload(), which we're trying to avoid
                 store._fwConfig = store.config.readConfigJSON(libpath.join(mojitoRoot, 'config.json'));
                 store._appConfigStatic = store.getStaticAppConfig();
 
-                var dir = libpath.join(__dirname, '../../fixtures/conventions');
+                var dir = libpath.join(__dirname, '../../../../fixtures/conventions');
                 var pkg = { name: 'test', version: '6.6.6' };
                 var mojitType = 'testing';
                 var ress = store._findResourcesByConvention(dir, 'app', pkg, mojitType)
@@ -795,7 +795,8 @@ YUI().use(
             name: 'Store tests -- "bleeding"',
 
             init: function() {
-                var fixtures = libpath.join(__dirname, '../../fixtures/store');
+                var fixtures = libpath.join(__dirname, '../../../../fixtures/store');
+
                 store = new Y.mojito.ResourceStore({ root: fixtures });
                 store.preload();
             },

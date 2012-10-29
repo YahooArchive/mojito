@@ -44,4 +44,4 @@ YUI.add('{{name}}', function(Y, NAME) {
 
     };
 
-}, '0.0.1', {requires: ['mojito', 'mojito-models-addon', '{{name}}ModelFoo']});
+}, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', '{{name}}ModelFoo']});
