@@ -22,6 +22,7 @@ program.command('test')
     .option('-a, --no-arrow', 'Don\'t run arrow_server')
     .option('--logLevel <value>', 'Arrow logLevel')
     .option('--testName <value>', 'Arrow testName')
+    .option('--coverage', 'Arrow code coverage')
     .option('--group <value>', 'Arrow group')
     .option('--driver <value>', 'Arrow driver')
     .option('--browser <value>', 'Arrow browser')
@@ -137,6 +138,7 @@ function runUnitTests (cmd, callback) {
     cmd.driver && commandArgs.push('--driver=' + cmd.driver);
     cmd.testName && commandArgs.push('--testName=' + cmd.testName);
     cmd.group && commandArgs.push('--group=' + cmd.group);
+    cmd.coverage && commandArgs.push('--coverage=' + cmd.coverage);
 
     var p = runCommand(
         cmd.unitPath,
@@ -231,6 +233,7 @@ function runFuncTests (cmd, callback) {
     cmd.driver && commandArgs.push('--driver=' + cmd.driver);
     cmd.testName && commandArgs.push('--testName=' + cmd.testName);
     cmd.group && commandArgs.push('--group=' + cmd.group);
+    cmd.coverage && commandArgs.push('--coverage=' + cmd.coverage);
 
     var p = runCommand(
         cmd.funcPath,
