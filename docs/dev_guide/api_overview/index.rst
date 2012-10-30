@@ -20,6 +20,10 @@ The API contains the following five modules:
   inter-mojit communication through the ``mojitProxy`` object.
 - **MojitServer** - is the module that provides access to the Mojito server.
 
+
+Table of Contents
+#################
+
 .. toctree::
    :maxdepth: 2
 

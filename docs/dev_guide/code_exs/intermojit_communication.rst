@@ -1,6 +1,6 @@
-=========================
-Inter-Mojit Communication
-=========================
+==================================
+Allowing Inter-Mojit Communication
+==================================
 
 **Time Estimate:** 15 minutes
 
