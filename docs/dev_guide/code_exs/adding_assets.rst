@@ -2,6 +2,10 @@
 Adding CSS
 ==========
 
+.. raw:: html
+
+  <span class="testimate">Time Estimate: 10 minutes</span>&nbsp;&nbsp;&nbsp;<span class="difficulty">Difficulty: Beginner</span>
+	
 **Time Estimate:** 10 minutes
 
 **Difficulty:** Beginner
