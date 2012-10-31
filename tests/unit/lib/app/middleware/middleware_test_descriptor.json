@@ -8,6 +8,14 @@
         },
         "commonlib": "$$config.base$$/mojito-test.js",
         "dataprovider" : {
+            "combo-handler": {
+                "params": {
+                    "lib": "$$config.lib$$/app/middleware/mojito-combo-handler.js",
+                    "test": "./test-combo-handler.js",
+                    "driver": "nodejs"
+                },
+                "group": "fw,unit,server"
+            },
             "contextualizer": {
                 "params": {
                     "lib": "$$config.lib$$/app/middleware/mojito-contextualizer.js",

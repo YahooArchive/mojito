@@ -12,7 +12,7 @@ YUI().use('mojito-route-maker', 'mojito-test-extra', 'test', function(Y) {
         factory = require(Y.MOJITO_DIR + 'lib/app/middleware/mojito-router');
 
     cases = {
-        name: 'Handler route matching',
+        name: 'router middleware tests',
 
         'dynamic id and action': function() {
             autoRouteMatchTester(
