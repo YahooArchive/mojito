@@ -130,6 +130,7 @@ function runUnitTests (cmd, callback) {
     var commandArgs = [
         cwd + "/../node_modules/yahoo-arrow/index.js",
         cmd.unitPath + "/**/*_descriptor.json",
+        "--coverage=true",
         "--report=true",
         "--reportFolder=" + arrowReportDir
     ];
