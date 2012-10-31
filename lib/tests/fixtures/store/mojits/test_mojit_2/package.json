@@ -1,8 +1,0 @@
-{
-    "name": "TestMojit2",
-    "yahoo": {
-        "mojito": {
-            "version": "> 0.3"
-        }
-    }
-}
