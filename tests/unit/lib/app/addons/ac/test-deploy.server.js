@@ -58,7 +58,8 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
                     return { ondemandBaseYuiModules:[] };
                 },
                 yui: {
-                    getConfigShared: function() { return {}; }
+                    getConfigShared: function() { return {}; },
+                    getClosestLang: function(lang) { return lang; }
                 }
             });
 
@@ -149,7 +150,8 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
                     return { ondemandBaseYuiModules:[] };
                 },
                 yui: {
-                    getConfigShared: function() { return {}; }
+                    getConfigShared: function() { return {}; },
+                    getClosestLang: function(lang) { return lang; }
                 }
             });
 
@@ -220,7 +222,8 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
                     return { ondemandBaseYuiModules:[] };
                 },
                 yui: {
-                    getConfigShared: function() { return {}; }
+                    getConfigShared: function() { return {}; },
+                    getClosestLang: function(lang) { return lang; }
                 }
             });
 
@@ -297,7 +300,8 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
                     return { ondemandBaseYuiModules:[] };
                 },
                 yui: {
-                    getConfigShared: function() { return {}; }
+                    getConfigShared: function() { return {}; },
+                    getClosestLang: function(lang) { return lang; }
                 }
             });
 
@@ -358,7 +362,8 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
                     return { ondemandBaseYuiModules:[] };
                 },
                 yui: {
-                    getConfigShared: function() { return {}; }
+                    getConfigShared: function() { return {}; },
+                    getClosestLang: function(lang) { return lang; }
                 }
             });
 
@@ -419,7 +424,8 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
                     return { ondemandBaseYuiModules:[] };
                 },
                 yui: {
-                    getConfigShared: function() { return {}; }
+                    getConfigShared: function() { return {}; },
+                    getClosestLang: function(lang) { return lang; }
                 }
             });
 
