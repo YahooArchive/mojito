@@ -549,11 +549,20 @@ YUI().use(
         },
 
 
-        'yui meta': function() {
+        'yui meta and getClosestLang': function() {
             var fixtures = libpath.join(__dirname, '../../../../../fixtures/gsg5'),
                 store = new Y.mojito.ResourceStore({ root: fixtures }),
                 series = [];
             store.preload();
+
+            A.areSame('en-US', store.yui.getClosestLang('en-US-midwest'), 'en-US-midwest');
+            A.areSame('en-US', store.yui.getClosestLang('en-US'), 'en-US');
+            A.areSame('en', store.yui.getClosestLang('en'), 'en');
+            A.areSame('de', store.yui.getClosestLang('de-DE'), 'de-DE');
+            A.areSame('de', store.yui.getClosestLang('de'), 'de');
+            A.areSame('', store.yui.getClosestLang('nl-NL'), 'nl-NL');
+            A.areSame('', store.yui.getClosestLang('nl'), 'nl');
+            A.areSame('', store.yui.getClosestLang(''), 'no lang');
 
             series.push(function(next) {
                 var res, ress;
