@@ -12,7 +12,8 @@
                 "params": {
                     "lib": "$$config.lib$$/mojito.js",
                     "test": "./test-mojito.js",
-                    "page": "$$config.base$$/mojito-test.html"
+                    "page": "$$config.base$$/mojito-test.html",
+                    "driver": "nodejs"
                 },
                 "group": "fw,server"
             },
