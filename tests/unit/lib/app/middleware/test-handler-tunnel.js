@@ -13,7 +13,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
         expandedContext;
 
     cases = {
-        name: 'handler tests',
+        name: 'tunnel handler tests',
 
         _handler: null,
 
