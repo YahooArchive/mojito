@@ -34,6 +34,12 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                 type: 'text/xml',
                 charset: 'UTF-8'
             }
+        },
+        "/cacheable.css": {
+            mime: {
+                type: 'text/css',
+                charset: 'UTF-8'
+            }
         }
     };
     cases = {
@@ -62,7 +68,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                 getStaticAppConfig: function() {
                     return {
                         staticHandling: {
-                            cache: false,
+                            cache: true,
                             maxAge: null
                         }
                     };
@@ -143,7 +149,48 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
         },
 
 
-        'ignore: handler uses cache when possible': function () {
+        'handler uses cache when possible': function () {
+            var resCode,
+                resHeader,
+                end = 0,
+                next = 0,
+                hits = 0,
+                req = {
+                    url: '/cacheable.css',
+                    method: 'GET',
+                    headers: {}
+                },
+                res = {
+                    writeHead: function(code, header) {
+                        resCode = code;
+                        resHeader = header;
+                    },
+                    end: function() {
+                        end++;
+                    }
+                },
+                // backing up the original getResourceContent to count
+                // the hits
+                getResourceContentFn = store.getResourceContent;
+
+            store.getResourceContent = function() {
+                hits++;
+                // counting and executing the original function
+                getResourceContentFn.apply(this, arguments);
+            };
+
+            this._handler(req, res, function() {
+                next++;
+            });
+            this._handler(req, res, function() {
+                next++;
+            });
+
+            A.areEqual(0, next, 'next() should not be called for valid entries');
+            A.areEqual(1, hits, 'one hit to the store should be issued, the next should use the cached version.');
+            A.areEqual(2, end, 'two valid requests should be counted');
+
+            store.getResourceContent = getResourceContentFn;
         },
 
 
@@ -213,7 +260,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                 },
                 end: function() {
                 }
-            }
+            };
 
 
             for (i = 0; i < urls.length; i += 1) {
@@ -234,7 +281,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                 handler(req, res, function() {
                     callCount++;
                 });
-                A.areEqual(0, callCount, 'next() handler should not have been called')
+                A.areEqual(0, callCount, 'next() handler should not have been called');
                 A.isTrue(resourceContentCalled, 'getResourceContent was not called for url: ' + req.url);
             }
 
@@ -251,7 +298,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                 mockResources;
 
             mockResources = {
-                "/robots.txt": { 
+                "/robots.txt": {
                     mime: { type: 'text/html' }
                 }
             };
@@ -269,7 +316,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                 end: function() { }
             }
 
-            // 
+            //
             // handle res of type obj
             store.getAllURLResources = function() {
                 return mockResources;
@@ -291,7 +338,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                 A.fail('next() handler 1 should not have been called');
             });
 
-            // 
+            //
             // handle res of type array
             store.getAllURLResources = function() {
                 return {};
