@@ -28,7 +28,7 @@ YUI().use('addon-rs-url', 'base', 'oop', 'test', function(Y) {
             this._mojitRVs = {};
             this.publish('getMojitTypeDetails', {emitFacade: true, preventable: false});
             this.config = {
-                readConfigSimple: function() { return {} }
+                readConfigJSON: function() { return {} }
             };
         },
 

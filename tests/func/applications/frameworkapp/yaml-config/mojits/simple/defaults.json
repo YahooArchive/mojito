@@ -1,9 +1,0 @@
-[
-    {
-        "settings": [ "master" ],
-        "config": {
-			"message": "Using JSON configs with comments!"
-        }
-    }
-]
-        
