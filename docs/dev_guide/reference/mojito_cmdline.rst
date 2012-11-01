@@ -72,8 +72,9 @@ Mojito offers the following three archetypes for applications and mojits.
 - ``default`` - This archetype is run if no command line archetype option is specified. 
   It is a happy medium between ``simple`` and ``full``.
 - ``full`` - Provides the most comprehensive configuration and code for applications.
-- ``hybrid`` - Creates a hybrid HTML5 application that can be plugged into a Cocktails 
-  Runtime project. 
+- ``hybrid`` - Creates a hybrid HTML5 application that can be plugged into a future 
+  component of Cocktails that will allow HTML5/JavaScript applications to access 
+  the features of native devices. 
 
 .. _mj_cmdlne-testing:
 
@@ -263,15 +264,13 @@ To build a hybrid application, use the following.
 
 ``$ mojito build hybridapp [-c <context> -n <snapshot_name> -t <snapshot_tag>] <path/to/app/>`` 
 
-This generates a HTML5 application that is customized to work with Cocktails Runtime.
+This generates a HTML5 application that is customized to work with a future component
+of the Cocktails suite that will allow you to write HTML5/JavaScript applications
+that can access native features of mobile devices.
+
 The generated application contains Mojito, frame mojits, the default mojit ``top_frame``,
 your created mojits, and application configuration. The command will also create 
-a ``snapshot.json`` file that will be read by the Cocktails Updater, which is a 
-Web service that saves snapshots of your application that client devices can fetch and
-update applications. The ``<snapshot_name>`` is the name for a snapshot and 
-``<snapshot_tag>`` can be any tag that you want associated with the application.
-
-See the `Cocktails Updater documentation <>`_ for more information.
+a ``snapshot.json`` file that can be used tracking and updating applications.
 
 
 .. _mj_cmdlne-compile_sys:

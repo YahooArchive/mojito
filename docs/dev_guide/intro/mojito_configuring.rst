@@ -165,12 +165,20 @@ configuration Object
 builds Object
 #############
 
-+-----------------------------+---------------+------------------------------------------------+
-| Property                    | Data Type     | Description                                    |
-+=============================+===============+================================================+
-| `html5app <#html5app-obj>`_ | object        | Specifies configuration for HTML5 applications |
-|                             |               | created with ``$ mojito build html5app``.      | 
-+-----------------------------+---------------+------------------------------------------------+
++-------------------------------+---------------+---------------------------------------------------+
+| Property                      | Data Type     | Description                                       |
++===============================+===============+===================================================+
+| `html5app <#html5app-obj>`_   | object        | Specifies configuration for HTML5 applications    |
+|                               |               | created with ``$ mojito build html5app``. See     | 
+|                               |               | `Build Types: hybridapp <../reference/mojito_cmdl |
+|                               |               | ine.html#hybridapp>`_ for details.                |
++-------------------------------+---------------+---------------------------------------------------+
+| `hybridapp <#hybridapp-obj>`_ | object        | Specifies configuration for hybrid applications   |
+|                               |               | created with ``$ mojito build hybridapp``. See    |
+|                               |               | `Build Types: hybridapp <../reference/mojito_cmdl |
+|                               |               | ine.html#hybridapp>`_ for more information about  |
+|                               |               | hybrid applications.                              |
++-------------------------------+---------------+---------------------------------------------------+
 
 
 .. _html5app_obj:
@@ -201,6 +209,43 @@ html5app Object
 |                        |               |           |               | using the following:                      |
 |                        |               |           |               | ``urls: [ '/view.html']``                 |
 +------------------------+---------------+-----------+---------------+-------------------------------------------+
+
+.. _hybrid_obj:
+
+hybridapp Object
+################
+
++------------------------+---------------+-----------+-------------------------------+-------------------------------------------+
+| Property               | Data Type     | Required? | Default Value                 | Description                               |
++========================+===============+===========+===============================+===========================================+
+| ``buildDir``           | string        | no        | ``artifacts/builds``          | The path to the built hybrid              |
+|                        |               |           |                               | application.                              |
++------------------------+---------------+-----------+-------------------------------+-------------------------------------------+
+| ``forceRelativePaths`` | boolean       | no        | ``false``                     | When ``true``, the server-relative paths  |
+|                        |               |           |                               | (those starting with "/") are converted   |
+|                        |               |           |                               | into paths relative to the generated      |
+|                        |               |           |                               | file.                                     |
++------------------------+---------------+-----------+-------------------------------+-------------------------------------------+
+| ``packages``           | object        | yes       | ``{ "yahoo.libs.yui": "*" }`` | The list of dependencies needed by the    |  
+|                        |               |           |                               | hybrid application. The object contains   |
+|                        |               |           |                               | key-value pairs, with the keys denoting   |
+|                        |               |           |                               | the library/module names and the value    |
+|                        |               |           |                               | denoting the version.                     |
++------------------------+---------------+-----------+-------------------------------+-------------------------------------------+
+| ``urls``               | array of      | yes       | none                          | The routing paths to views that           | 
+|                        | strings       |           |                               | be rendered into static pages and then    |
+|                        |               |           |                               | cached so that the page can be viewed     |
+|                        |               |           |                               | offline. For example, if the running      |
+|                        |               |           |                               | application renders the view              |
+|                        |               |           |                               | ``view.html``, you could configure the    |
+|                        |               |           |                               | application to statically create and      | 
+|                        |               |           |                               | cache ``view.html`` in                    |
+|                        |               |           |                               | ``{app_dir}/artifacts/builds/html5app``   |
+|                        |               |           |                               | using the following:                      |
+|                        |               |           |                               | ``urls: [ '/view.html']``                 |
++------------------------+---------------+-----------+-------------------------------+-------------------------------------------+
+
+
 
 log Object
 ##########
