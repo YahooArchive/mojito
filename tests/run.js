@@ -187,7 +187,7 @@ function deploy (cmd, callback) {
                             });
                         })();
                     }
-                } else if (app.enabled === "true" && app.path) {
+                } else if (app.enabled === "true" && app.path && port) {
                     appSeries.push(function (callback) {
                         runMojitoApp(cmd.funcPath + '/applications', app.path, port, app.param, callback);
                     });
@@ -306,11 +306,7 @@ function runCommand (path, command, argv, callback) {
 function runMojitoApp (basePath, path, port, params, callback) {
     params = params || '';
     console.log('Starting ' + path + ' at port ' + port + ' with params ' + (params || 'empty'));
-    if(port){
-        var p = runCommand(basePath + '/' + path, cwd + "/../bin/mojito", ["start", port, "--context", params], function () {});
-    } else {
-        var p = runCommand(basePath + '/' + path, cwd + "/../bin/mojito", ["start"], function () {});
-    }
+    var p = runCommand(basePath + '/' + path, cwd + "/../bin/mojito", ["start", port, "--context", params], function () {});
     pids.push(p.pid);
     pidNames[p.pid] = libpath.basename(path) + ':' + port + (params ? '?' + params : '');
     // Give each app a second to start

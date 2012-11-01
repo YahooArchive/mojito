@@ -1,3 +1,5 @@
+
+
 ==================
 Configuring Mojito
 ==================
@@ -11,13 +13,10 @@ configured differently, but uses same general file format consisting of JSON.
 File Format
 -----------
 
-JSON
-####
-
-By default, configuration files in Mojito have a general top-level structure and are 
-in JSON format. At the top level of each configuration file is an array. Each item of 
-the array is an object that configures one component of Mojito, such as logging, assets, 
-mojits, static resources, etc.
+All configuration files in Mojito have a general top-level structure and are in JSON format. 
+At the top level of each configuration file is an array. Each item of the array is an 
+object that configures one component of Mojito, such as logging, assets, mojits, static 
+resources, etc.
 
 Each configuration object is required to have a ``settings`` property that specifies 
 conditions for applying the configuration settings. These conditions could be used to 
@@ -38,17 +37,6 @@ Below is the skeleton of a configuration file. See `Application Configuration`_ 
      },
      ...
    ]
-
-
-YAML
-####
-
-Mojito also supports configuration files in YAML format. The YAML file extension could 
-be ``.yaml`` or ``.yml``. Mojito allows comments in the YAML files. When both JSON file 
-and YAML files are present, the YAML file is used and a warning is issued. For the data 
-types of the YAML elements, please see the JSON configuration tables in 
-:ref:`Application Configuration <configure_mj-app>`, :ref:`Routing <configure_mj-routing>`, 
-and :ref:`Mojit Configuration <configure_mj-mojit>`.
 
 .. _configure_mj-app:
 
@@ -782,7 +770,6 @@ function in the controller of the ``Foo`` mojit.
      }
    ]
 
-.. _configure_mj-routing:
 
 Routing
 =======
