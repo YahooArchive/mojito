@@ -53,6 +53,12 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                 getAllURLResources: function () {
                     return urlRess;
                 },
+                listAllMojits: function () {
+                    return [];
+                },
+                getResourceVersions: function () {
+                    return {};
+                },
                 getResourceContent: function (args, callback) {
                     var content, stat;
                     content = new Buffer('1234567890');
@@ -314,7 +320,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
             resp = {
                 writeHeader: function() { },
                 end: function() { }
-            }
+            };
 
             //
             // handle res of type obj
@@ -363,7 +369,41 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
             store.getResources = getResourcesFn;
             store.getResourceContent = getResourceContentFn;
             store.getAllURLResources = getAllURLResourcesFn;
+        },
+
+
+        'bad or missing files': function() {
+            var handler = factory({
+                    context: {},
+                    store: store,
+                    logger: { log: function() {} }
+                });
+
+            var req = {
+                    method: 'GET',
+                    // combining an existing file with an invalid one should trigger 400
+                    url: '/combo?/compiled.css&PagedFlickrModel.js'
+                };
+            var writeHeadCalled = 0,
+                gotCode,
+                gotHeaders,
+                res = {
+                    writeHead: function(code, headers) {
+                        writeHeadCalled += 1;
+                        gotCode = code;
+                        gotHeaders = headers;
+                    },
+                    end: function(body) {
+                        var i;
+                        A.areSame(1, writeHeadCalled);
+                        A.areSame(400, gotCode);
+                        A.isUndefined(gotHeaders);
+                        A.isUndefined(body);
+                    }
+                };
+            handler(req, res);
         }
+
     };
 
     Y.Test.Runner.add(new Y.Test.Case(cases));
