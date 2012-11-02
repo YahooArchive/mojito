@@ -12,7 +12,9 @@
             {
                 "environment": {
                     "development": {
-                        "dev": null,
+                        "dev": null
+                    },
+                    "testing": {
                         "test": null
                     },
                     "production": {
