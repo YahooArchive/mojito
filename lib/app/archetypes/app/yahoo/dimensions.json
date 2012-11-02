@@ -10,29 +10,39 @@
                 }
             },
             {
-                "environment": {
-                    "development": {
-                        "dev": null
-                    },
-                    "testing": {
-                        "test": null
-                    },
-                    "production": {
-                        "stage": null,
-                        "prod": null
-                    }
-                }
-            },
-			{
                 "device": {
-                    "android": null,
-                    "blackberry": null,
-                    "iemobile": null,
-                    "iphone": null,
-                    "ipad": null,
-                    "kindle": null,
-                    "opera-mini": null,
-                    "palm": null
+                    "mobile": {
+                        "android": null,
+                        "blackberry": null,
+                        "iemobile": null,
+                        "iphone": null,
+                        "opera-mini": null,
+                        "palm": null
+                    },
+                    "tablet": {
+                        "ipad": null,
+                        "kindle": null
+                    },
+                    "desktop": null
+                    }
+                } 
+            },
+            {
+                "environment": {
+                    "dev": {
+                        "development": null
+                    },
+                    "qa": {
+                        "smoke": null,
+                        "regression": null,
+                        "functional": null
+                    },
+                    "prod": {
+                        "staging": null,
+                        "manhattan-stage": null,
+                        "performance": null,
+                        "production": null
+                    }
                 }
             },
             {
@@ -178,6 +188,18 @@
                             "zh-Hant-TW": null
                         }
                     }
+                }
+            },
+            {
+                "network": {
+                    "ynet": null,
+                    "inet": null
+                }
+            },
+            {
+                "protocol": {
+                    "https": null,
+                    "http": null
                 }
             }
         ]
