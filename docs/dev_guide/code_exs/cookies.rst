@@ -13,7 +13,8 @@ This example shows how to read and write cookies in a Mojito application.
 
 The following topics will be covered:
 
-- using the `Params addon <../../api/classes/Params.common.html>`_ from the ``actionContext`` object
+- using the `Params addon <../../api/classes/Params.common.html>`_ from the 
+  ``actionContext`` object
 - getting and setting cookies from the mojit controller
 - using the `Cookie addon <../../api/classes/Cookie.server.html>`_ and the 
 `YUI Cookie module <http://developer.yahoo.com/yui/3/cookie/>`_ to get and set cookies
@@ -23,14 +24,14 @@ Implementation Notes
 
 To access many methods on the Mojito JavaScript library, you use 
 `ActionContext addons <../../api/classes/ActionContext.html>`_. In this code example, the 
-`Cookie addon <../../api/classes/Cookie.server.html>`_ is used to call the methods ``getCookie`` 
-and ``setCookie`` to get and set cookies.
+`Cookie addon <../../api/classes/Cookie.server.html>`_ is used to call the methods 
+``getCookie`` and ``setCookie`` to get and set cookies.
 
-The ``index`` function in the ``controller.server.js`` below shows how to use ``cookie.get`` and 
-``cookie.set``.  The ``cookie.set`` method also allows you to pass a third parameter that 
-contains the domain, the path, and the expiration date of the cookie. For those familiar with YUI 3, 
-these methods for getting and setting cookies should be familiar as Mojito uses the 
-`YUI 3 Cookie Module <http://developer.yahoo.com/yui/3/api/Cookie.html>`_.
+The ``index`` function in the ``controller.server.js`` below shows how to use ``cookie.get`` 
+and ``cookie.set``.  The ``cookie.set`` method also allows you to pass a third parameter 
+that contains the domain, the path, and the expiration date of the cookie. For those 
+familiar with YUI 3, these methods for getting and setting cookies should be familiar as 
+Mojito uses the `YUI 3 Cookie Module <http://developer.yahoo.com/yui/3/api/Cookie.html>`_.
 
 .. code-block:: javascript
 
@@ -56,17 +57,17 @@ these methods for getting and setting cookies should be familiar as Mojito uses 
 
 The code below from the ``index`` template interpolates the value of the variable 
 ``{{request_cookie_value}}`` from the controller and uses the 
-`YUI Cookie module <http://developer.yahoo.com/yui/3/api/module_cookie.html>`_ to set and get a 
-cookie. To use the YUI Cookie module, first include the module with ``YUI().use`` and then call 
-``Y.Cookie.get`` and ``Y.Cookie.set``.
+`YUI Cookie module <http://developer.yahoo.com/yui/3/api/module_cookie.html>`_ to set and 
+get a cookie. To use the YUI Cookie module, first include the module with ``YUI().use`` 
+and then call ``Y.Cookie.get`` and ``Y.Cookie.set``.
 
 .. code-block:: html
 
    <div id="{{mojit_view_id}}" class="mojit">
      <h2>{{title}}</h2>
      <div>
-       <p>This is a demo showing how to read read cookies from browser, and how to write cookies to 
-       browser from the Mojit.</p>
+       <p>This is a demo showing how to read read cookies from browser, and how to write 
+       cookies to browser from the Mojit.</p>
      </div>
      <div>
        <p>Value of request cookie sent by browser: {{request_cookie_value}}</p>
@@ -99,8 +100,8 @@ To set up and run ``using_cookies``:
 #. Create your mojit.
 
    ``$ mojito create mojit CookieMojit``
-#. To configure your application to use the ``HTMLFrameMojit`` and its child mojit ``CookieMojit``, 
-   replace the code in ``application.json`` with the following:
+#. To configure your application to use the ``HTMLFrameMojit`` and its child mojit 
+   ``CookieMojit``, replace the code in ``application.json`` with the following:
 
    .. code-block:: javascript
 
@@ -131,6 +132,11 @@ To set up and run ``using_cookies``:
             "verbs": ["get"],
             "path": "/",
             "call": "frame.index"
+          },
+          "example1": {
+            "verbs": ["get"],
+            "path": "/example1",
+            "call": "frame.example1"
           }
         }
       ]

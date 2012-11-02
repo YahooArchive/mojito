@@ -9,8 +9,8 @@ Using Query Parameters
 Summary
 =======
 
-This example shows how to access query parameters from the URL, the POST body, and the routing 
-configuration of your Mojito application.
+This example shows how to access query parameters from the URL, the POST body, and the 
+routing configuration of your Mojito application.
 
 The following topics will be covered:
 
@@ -20,15 +20,17 @@ The following topics will be covered:
 Implementation Notes
 ====================
 
-The mojit controller of this code example has four functions, each using methods from the ``Params`` 
-addon to access different types of parameters. Let's start by learning how 
+The mojit controller of this code example has four functions, each using methods from the 
+``Params`` addon to access different types of parameters. Let's start by learning how 
 to access the query string parameters in the first function.
 
-The ``example1`` function below gets all of the query string parameters using ``params.getFromUrl``. 
-To get a specific parameter, just pass a key to ``params.getFromUrl(key)``. In the code below, the 
-key-value pairs that are fetched by ``params.getFromUrl()`` are wrapped in objects that are pushed 
-to the array ``paramsArray``. The array is assigned to ``params``, which is then passed to the 
-``example1`` template. By default, the function sends data to the template with the same name.
+The ``example1`` function below gets all of the query string parameters using 
+``params.getFromUrl``. To get a specific parameter, just pass a key to 
+``params.getFromUrl(key)``. In the code below, the key-value pairs that are fetched by 
+``params.getFromUrl()`` are wrapped in objects that are pushed to the array 
+``paramsArray``. The array is assigned to ``params``, which is then passed to the 
+``example1`` template. By default, the function sends data to the template with the same 
+name.
 
 .. code-block:: javascript
 
@@ -58,9 +60,10 @@ to the array ``paramsArray``. The array is assigned to ``params``, which is then
      },
    ...
 
-The ``example2`` function below uses ``params.getFromBody()`` to extract parameters from the POST 
-body. Once again, the array of objects containing the key-value pairs is passed to the ``example2`` 
-template, where the array is available through the ``params`` variable.
+The ``example2`` function below uses ``params.getFromBody()`` to extract parameters from 
+the POST body. Once again, the array of objects containing the key-value pairs is passed 
+to the ``example2`` template, where the array is available through the ``params`` 
+variable.
 
 .. code-block:: javascript
 
@@ -83,8 +86,8 @@ template, where the array is available through the ``params`` variable.
      },
    ...
 
-The ``example3`` function below uses ``params.getFromRoute()`` to access the parameters that are 
-specified in ``routes.json``, which we will look at in the next code snippet.
+The ``example3`` function below uses ``params.getFromRoute()`` to access the parameters 
+that are specified in ``routes.json``, which we will look at in the next code snippet.
 
 .. code-block:: javascript
 
@@ -106,10 +109,11 @@ specified in ``routes.json``, which we will look at in the next code snippet.
      },
    ...
 
-In the ``routes.json`` file below, you see parameters are set for the ``example3`` and ``example4``
-route. Notice that ``example3`` only accepts HTTP GET calls, whereas ``example4`` allows 
-both HTTP GET and POST calls. Storing parameters in your routing configuration allows you to 
-associate them with a function, an HTTP method, and a URL path.
+In the ``routes.json`` file below, you see parameters are set for the ``example3`` and 
+``example4`` route. Notice that ``example3`` only accepts HTTP GET calls, whereas 
+``example4`` allows both HTTP GET and POST calls. Storing parameters in your routing 
+configuration allows you to associate them with a function, an HTTP method, and a URL 
+path.
 
 .. code-block:: javascript
 
@@ -148,11 +152,11 @@ associate them with a function, an HTTP method, and a URL path.
    
 
 In the ``example4`` function below, you find the parameters catch-all method 
-``params.getFromMerged``. Using ``params.getFromMerged``, you can get the query string parameters, 
-the POST body parameters, and the parameters set in ``routes.json`` at one time. You can also get a 
-specific parameter by passing a key to ``params.getFromMerged(key)``. For example, 
-``params.getFromMerged("from")`` would return the value "routing" from the parameters set in the 
-``routes.json`` shown above.
+``params.getFromMerged``. Using ``params.getFromMerged``, you can get the query string 
+parameters, the POST body parameters, and the parameters set in ``routes.json`` at one 
+time. You can also get a specific parameter by passing a key to 
+``params.getFromMerged(key)``. For example, ``params.getFromMerged("from")`` would return 
+the value "routing" from the parameters set in the ``routes.json`` shown above.
 
 .. code-block:: javascript
 
@@ -178,8 +182,8 @@ specific parameter by passing a key to ``params.getFromMerged(key)``. For exampl
      }
    ...
 
-For more information, see the `Params addon <../../api/classes/Params.common.html>`_ in the Mojito 
-API documentation.
+For more information, see the `Params addon <../../api/classes/Params.common.html>`_ in 
+the Mojito API documentation.
 
 Setting Up this Example
 =======================
@@ -193,8 +197,8 @@ To set up and run ``using_parameters``:
 #. Create your mojit.
 
    ``$ mojito create mojit QueryMojit``
-#. To specify that your application use ``QueryMojit``, replace the code in ``application.json`` 
-   with the following:
+#. To specify that your application use ``QueryMojit``, replace the code in 
+   ``application.json`` with the following:
 
    .. code-block:: javascript
 
@@ -209,8 +213,8 @@ To set up and run ``using_parameters``:
         }
       ]
 
-#. To configure the routing for your application, replace the code in ``routes.json`` with the 
-   following:
+#. To configure the routing for your application, replace the code in ``routes.json`` with 
+   the following:
 
    .. code-block:: javascript
 
@@ -346,8 +350,8 @@ To set up and run ``using_parameters``:
         </ul>
       </div>
 
-#. To display the key-value pairs from the POST request body parameters, create the template 
-   ``views/example2.hb.html`` with the following:
+#. To display the key-value pairs from the POST request body parameters, create the 
+   template ``views/example2.hb.html`` with the following:
 
    .. code-block:: html
 
@@ -391,8 +395,8 @@ To set up and run ``using_parameters``:
         </ul>
       </div>
 
-#. To display all of the available parameters, create the template ``views/example4.hb.html`` with 
-   the following:
+#. To display all of the available parameters, create the template 
+   ``views/example4.hb.html`` with the following:
 
    .. code-block:: html
 
@@ -424,19 +428,19 @@ To set up and run ``using_parameters``:
 #. From the application directory, run the server.
 
    ``$ mojito start``
-#. To see the query string parameters fetched by the controller, go to the URL with the query string 
-   below:
+#. To see the query string parameters fetched by the controller, go to the URL with the 
+   query string below:
 
    http://localhost:8666/example1?foo=bar&bar=foo
-#. To see the POST body parameters fetched by the controller, go to the URL below and submit the 
-   form on the page.
+#. To see the POST body parameters fetched by the controller, go to the URL below and 
+   submit the form on the page.
 
    http://localhost:8666/example2
 #. To see the parameters set in ``routes.json``, go to the URL below:
 
    http://localhost:8666/example3
-#. To see the query string parameters, the post body parameters, and those set in ``routes.json``, 
-   go to the URL below and submit the form on the page:
+#. To see the query string parameters, the post body parameters, and those set in 
+   ``routes.json``, go to the URL below and submit the form on the page:
 
    http://localhost:8666/example4?foo=bar&bar=foo
 
