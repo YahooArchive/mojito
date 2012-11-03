@@ -6,7 +6,7 @@
 
 /*jslint anon:true, sloppy:true, nomen:true*/
 
-YUI.add('QueryMojitModel', function (Y) {
+YUI.add('QueryMojitModel', function (Y, NAME) {
 
 /**
  * The QueryMojitModel module.
@@ -20,7 +20,7 @@ YUI.add('QueryMojitModel', function (Y) {
      * @class Model
      * @constructor
      */
-    Y.mojito.models.QueryMojit = {
+     Y.namespace('mojito.models')[NAME] = {
 
         init: function (config) {
             this.config = config;
