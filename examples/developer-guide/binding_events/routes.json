@@ -4,5 +4,10 @@
         "verbs": ["get"],
         "path": "/",
         "call": "frame.index"
+    },
+   "perpage": {
+        "verbs": ["get"],
+        "path": "/?page=:page",
+        "call": "frame.index"
     }
 }]

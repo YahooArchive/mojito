@@ -6,6 +6,8 @@ Using Cookies
 
 **Difficulty Level:** Beginning
 
+.. _using-cookies-summary:
+
 Summary
 =======
 
@@ -18,6 +20,8 @@ The following topics will be covered:
 - getting and setting cookies from the mojit controller
 - using the `Cookie addon <../../api/classes/Cookie.server.html>`_ and the 
 `YUI Cookie module <http://developer.yahoo.com/yui/3/cookie/>`_ to get and set cookies
+
+.. _using-cookies-notes:
 
 Implementation Notes
 ====================
@@ -88,6 +92,8 @@ and then call ``Y.Cookie.get`` and ``Y.Cookie.set``.
      });
    </script>
 
+.. _using-cookies-setup:
+
 Setting Up this Example
 =======================
 
@@ -142,8 +148,8 @@ To set up and run ``using_cookies``:
       ]
 
 #. Change to ``mojits/CookieMojit``.
-#. To set a cookie from your controller, replace the code in ``controller.server.js`` with the 
-   following:
+#. To set a cookie from your controller, replace the code in ``controller.server.js`` with 
+   the following:
 
    .. code-block:: javascript
 
@@ -167,21 +173,23 @@ To set up and run ``using_cookies``:
         };
       }, '0.0.1', {requires: []});
 
-#. To display the cookie values set in your controller, replace the code in ``views/index.hb.html`` 
-   with the following:
+#. To display the cookie values set in your controller, replace the code in 
+   ``views/index.hb.html`` with the following:
 
    .. code-block:: html
 
       <div id="{{mojit_view_id}}" class="mojit">
         <h2>{{title}}</h2>
         <div>
-          <p>This is a demo showing how to read read cookies from browser, and how to write cookies to browser from the Mojit.</p>
+          <p>This is a demo showing how to read read cookies from browser, and how to 
+          write cookies to browser from the Mojit.</p>
         </div>
         <div>
           <p>Value of request cookie sent by browser: {{request_cookie_value}}</p>
         </div>
         <div>
-          <p>The response cookie written by the server should be displayed in browser as an alert.</p>
+          <p>The response cookie written by the server should be displayed in browser as 
+          an alert.</p>
         </div>
       </div>
       <script type="text/javascript" src="http://yui.yahooapis.com/3.3.0/build/yui/yui-min.js"></script>
@@ -203,6 +211,8 @@ To set up and run ``using_cookies``:
 #. To view your application, go to the URL below:
 
    http://localhost:8666
+
+.. _using-cookies-src:
 
 Source Code
 ===========

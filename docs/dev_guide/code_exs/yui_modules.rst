@@ -6,6 +6,8 @@ Including YUI Modules
 
 **Difficulty:** Intermediate
 
+.. _yui_mods-summary:
+
 Summary
 =======
 
@@ -20,6 +22,8 @@ The following topics will be covered:
 - adding YUI modules to the ``autoload`` directory
 - accessing YUI modules from a mojit
 
+.. _yui_mods-notes:
+
 Implementation Notes
 ====================
 
@@ -28,12 +32,16 @@ Implementation Notes
 Adding YUI Modules
 ------------------
 
+.. _yui_mod_add-loc:
+
 Location
 ########
 
 To add YUI modules that all your mojits can access, place the modules in the ``autoload`` 
 directory under the application directory. For example, YUI modules in the ``hello_world`` 
 application would be placed in ``hello_world/autoload``.
+
+.. _yui_mod_add-naming:
 
 File Naming Convention
 ######################
@@ -62,6 +70,8 @@ below, you can see that ``add`` method registers the module identified by the st
    YUI.add('gallery-storage-lite', function (Y) {
       ...
    }, '1.0.0', { requires: ['event-base', 'event-custom', 'event-custom-complex', 'json']});
+
+.. _yui_mod_notes-using:
 
 Using a YUI Module from Mojits
 ------------------------------
@@ -106,6 +116,8 @@ module.
        });
      }
    ...
+
+.. _yui_mods-setup:
 
 Setting Up this Example
 =======================
@@ -234,6 +246,8 @@ To set up and run ``yui_module``:
    the form before.
 #. Open the same URL in a new browser window. Once again, you should see the same text 
    that you entered earlier.
+
+.. _yui_mods-src:
 
 Source Code
 ===========

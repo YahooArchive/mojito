@@ -6,6 +6,8 @@ Creating and Using a View Engine Addon
 
 **Difficulty Level:** Intermediate
 
+.. _view_engine-summary:
+
 Summary
 =======
 
@@ -20,6 +22,7 @@ The following topics will be covered:
 - creating a view engine addon
 - using Embedded JavaScript (EJS) in the template
 
+.. _view_engine-notes:
 
 Implementation Notes
 ====================
@@ -30,6 +33,7 @@ example that you can use to add your own view engines and also to show some of i
 points of using view engines in Mojito applications. For more comprehensive but less 
 hands-on documentation, see `Developer Topics: View Engines <../topics/mojito_extensions.html#view-engines>`_.
 
+.. _view_engine_notes-what:
 
 What Is a View Engine?
 ----------------------
@@ -39,6 +43,7 @@ often done by interpreting the view as a template. View engines in Mojito can fu
 either the application or mojit level. This example uses an application-level view engine 
 addon, allowing multiple mojits to use it although the example only uses one mojit.
 
+.. _view_engine_notes-install:
 
 Installing a Rendering Engine
 -----------------------------
@@ -83,7 +88,8 @@ contents similar to the following:
    │       ├── ejs.test.js
    │       └── fixtures/
    ...
-       
+    
+.. _view_engine_notes-create:   
        
 Creating the View Engine Addon
 ------------------------------
@@ -91,6 +97,8 @@ Creating the View Engine Addon
 The view engine addon like other addons is simply a YUI module that lives in the 
 ``addons/view-engines`` directory. For the application-level view engine addons that this 
 example is using, the view engine addon will be in ``{app_dir}/addons/view-engines``.
+
+.. _ve_notes_create-reqs: 
 
 Requirements
 ############
@@ -140,6 +148,7 @@ The view engine addon must have the following:
       ...
       Y.namespace('mojito.addons.viewEngines').ejs = EjsAdapter;
       
+.. _ve_notes_create-render: 
 
 render and compile
 ##################
@@ -204,6 +213,9 @@ In the above code snippet, the ``compile`` method simply returns the template fi
 render the template file into a string. The implementation of the ``compile`` method in 
 the addon could have been written to call ``ejs.render``.
 
+
+.. _view_engine_notes-ejs: 
+
 EJS Templates
 -------------
 
@@ -231,6 +243,7 @@ EJS also has view helpers for creating links and forms, much like ``ERB``. See
 `Getting Started with EJS <http://embeddedjs.com/getting_started.html>`_ for more 
 information.
 
+.. _view_engine-setup:
 
 Setting Up this Example
 =======================
@@ -411,6 +424,7 @@ To set up and run ``adding_view_engines``:
 #. Great, your application is using two different rendering engines. You should now be 
    ready to add your own view engine that uses a rendering engine such as Jade.   
 
+.. _view_engine-src:
 
 Source Code
 ===========

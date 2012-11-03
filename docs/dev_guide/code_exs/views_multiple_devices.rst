@@ -6,6 +6,8 @@ Creating Views for Different Devices
 
 **Difficulty Level:** Intermediate
 
+.. _device_views-summary:
+
 Summary
 =======
 
@@ -19,6 +21,8 @@ The following topics will be covered:
 - creating specialized views for wireless devices
 - using query parameters to select the device view
 - using the user agent to select the device view
+
+.. _device_views-notes:
 
 Implementation Notes
 ====================
@@ -37,8 +41,12 @@ The following screenshots show you how the application appears on different devi
    :height: 368px
    :width: 401px
 
+.. _dv_notes-config:
+
 Configuring Application to Use Device-Specific Templates
 --------------------------------------------------------
+
+.. _dv_notes_config-context:
 
 Context Configurations
 ######################
@@ -75,6 +83,8 @@ for Android, Blackberry, and iPhone with the following:
 You can also have contexts for environment, language, and region configurations, or create
 custom contexts. See `Using Context Configurations <../topics/mojito_using_contexts.html>`_.
 
+.. _dv_notes_config-select:
+
 selector Property
 #################
 
@@ -101,6 +111,8 @@ property so Mojito knows what file resources to use for contexts associated with
 For example, when given the context ``device:iphone``, Mojito will look for file resources 
 that have the identifier ``iphone``. For more information about the ``selector`` property, 
 see `Resource Store: selector Property <../topics/mojito_resource_store.html#selector-property>`_.
+
+.. _dv_notes_config-determine:
 
 Determining Context
 ###################
@@ -129,6 +141,7 @@ rendered HTML to the device.
    Accept: application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
    Accept-Charset: utf-8, iso-8859-1, utf-16, *;q=0.7
 
+.. _dv_notes-create_templates:
 
 Creating Templates for Devices
 ------------------------------
@@ -136,6 +149,8 @@ Creating Templates for Devices
 For each device's customized view, you need to create a template. 
 This code example uses the templates to create customized views for iPhones, Android 
 phones, and BlackBerries. 
+
+.. _dv_notes-template_naming:
 
 Naming Convention for Templates
 ###############################
@@ -145,6 +160,8 @@ is the string identifier (defined by the ``selector`` property) of a device, suc
 "iphone":
 
 ``{action}.{selector}.{rendering_engine}.html``
+
+.. _dv_notes-template_ex:
 
 Templates for This Example
 ##########################
@@ -160,6 +177,7 @@ Thus, if an iPhone was making an HTTP GET request on the ``index`` (action) file
 template was being rendered by the Handlebars rendering engine, Mojito would use 
 ``index.iphone.hb.html`` and serve the rendered view to the iPhone.
 
+.. _device_views-setup:
 
 Setting Up this Example
 =======================
@@ -380,6 +398,8 @@ To set up and run ``device_views``:
 #. Request the iPhone view by adding query string parameter ``?device=iphone``:
 
    http://localhost:8666?device=iphone
+
+.. _device_views-src:
 
 Source Code
 ===========

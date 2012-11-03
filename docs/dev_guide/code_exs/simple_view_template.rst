@@ -6,6 +6,8 @@ Creating a Simple View with Handlebars
 
 **Difficulty Level:** Beginning
 
+.. _simple_view-summary:
+
 Summary
 =======
 
@@ -25,6 +27,8 @@ The following topics will be covered:
 - adding a simple template
 - Handlebars template basics
 - passing data to the template
+
+.. _simple_view-notes:
 
 Implementation Notes
 ====================
@@ -91,6 +95,8 @@ how the ``hours`` property of the ``time`` object is accessed here.
 
 See the `Handlebars expressions <http://handlebarsjs.com/expressions.html>`_ in the 
 Handlebars documentation for more information.
+
+.. _simple_view-setup:
 
 Setting Up This Example
 =======================
@@ -187,6 +193,8 @@ To set up and run ``simple_view``:
 #. To view your application, go to the URL below:
 
    http://localhost:8666
+
+.. _simple_view-src:
 
 Source Code
 ===========

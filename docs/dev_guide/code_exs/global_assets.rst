@@ -6,6 +6,8 @@ Using Global Assets
 
 **Difficulty:** Intermediate
 
+.. _global_assets-summary:
+
 Summary
 =======
 
@@ -19,8 +21,12 @@ The following topics will be covered:
 - creating and storing your global assets
 - static URLs to global assets
 
+.. _global_assets-notes:
+
 Implementation Notes
 ====================
+
+.. _ga_notes-what:
 
 What Are Assets?
 ----------------
@@ -28,6 +34,8 @@ What Are Assets?
 Assets are resources that are required on the clients. These resources are primarily CSS 
 but can also be JavaScript. Your assets should not be the core components of your 
 application.
+
+.. _ga_notes-location:
 
 Location of Assets
 ------------------
@@ -60,6 +68,8 @@ directory with the asset files.
    ├── routes.json
    └── server.js
 
+.. _ga_notes-static:
+
 Static URLs to Assets
 ---------------------
 
@@ -67,12 +77,16 @@ Mojito provides static URLs to application-level and mojit-level assets. You can
 these assets in your templates, or if you are using the ``HTMLFrameMojit``, you configure 
 your application to automatically insert the assets into the rendered view.
 
+.. _ga_notes_static-syntax:
+
 Syntax
 ######
 
 For application-level assets, the static URL has the following syntax:
 
 ``/static/{application_name}/assets/{asset_file}``
+
+.. _ga_notes_static-exs:
 
 Examples
 ########
@@ -90,6 +104,8 @@ URLs as seen here.
    <div id="{{mojit_view_id}}" class="lolrus">
      <img src="/static/global_assets/assets/sadwalrus.jpeg" alt="walrus smile fail" height="497" width="486">
    </div>
+
+.. _ga_notes-htmlframemojit:
 
 Configuring HTMLFrameMojit to Include Assets
 --------------------------------------------
@@ -133,6 +149,7 @@ global asset ``ohhai.css`` is inserted into the ``head`` element of the rendered
      }
    ]
 
+.. _global_assets-setup:
 
 Setting Up this Example
 =======================
@@ -238,6 +255,8 @@ To set up and run ``global_assets``:
    http://localhost:8666
 #. View the source code to see that the global asset ``ohhai.css`` was inserted into the 
    ``head`` element.
+
+.. _global_assets-src:
 
 Source Code
 ===========

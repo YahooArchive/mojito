@@ -6,10 +6,14 @@ Basic Configuring of Applications
 
 **Difficulty Level:** Beginning
 
+.. _basic_app_config-summary:
+
 Summary
 =======
 
 This example shows how to configure a mojit and the routing for your application.
+
+.. _basic_app_config-notes:
 
 Implementation Notes
 ====================
@@ -51,6 +55,8 @@ controller when an HTTP GET is called on the root path.
 The ``index`` method is a canned method in the controller when you create a mojit. To 
 learn how to create templates that get data from the controller, 
 see `Creating a Simple View with Handlebars <simple_view_template.html>`_.
+
+.. _basic_app_config-setup:
 
 Setting Up this Example
 =======================
@@ -101,6 +107,8 @@ To set up and run ``simple_config``:
 #. To view your application, go to the URL:
 
    http://localhost:8666
+
+.. _basic_app_config-src:
 
 Source Code
 ===========

@@ -6,6 +6,8 @@ Using Query Parameters
 
 **Difficulty Level:** Intermediate
 
+.. _query_params-summary:
+
 Summary
 =======
 
@@ -16,6 +18,8 @@ The following topics will be covered:
 
 - using the `Params addon <../../api/classes/Params.common.html>`_ to access parameters
 - setting and getting parameters from your route configuration
+
+.. _query_params-notes:
 
 Implementation Notes
 ====================
@@ -184,6 +188,8 @@ the value "routing" from the parameters set in the ``routes.json`` shown above.
 
 For more information, see the `Params addon <../../api/classes/Params.common.html>`_ in 
 the Mojito API documentation.
+
+.. _query_params-setup:
 
 Setting Up this Example
 =======================
@@ -443,6 +449,8 @@ To set up and run ``using_parameters``:
    ``routes.json``, go to the URL below and submit the form on the page:
 
    http://localhost:8666/example4?foo=bar&bar=foo
+
+.. _query_params-src:
 
 Source Code
 ===========

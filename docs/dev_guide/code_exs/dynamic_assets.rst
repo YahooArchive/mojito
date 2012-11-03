@@ -6,6 +6,8 @@ Dynamically Adding CSS to Different Devices
 
 **Difficulty:** Intermediate
 
+.. _dynamic_css-summary:
+
 Summary
 =======
 
@@ -18,6 +20,8 @@ The following topics will be covered:
 - configuring an application to dynamically include assets
 - using the ``addAssets`` method in the controller to dynamically add assets to both the
   rendered default and device-specific templates
+
+.. _dynamic_css-notes:
 
 Implementation Notes
 ====================
@@ -174,6 +178,8 @@ be added dynamically.
      {{/colors}}
      </ul>
    </div>
+
+.. _dynamic_css-setup:
 
 Setting Up this Example
 =======================
@@ -393,6 +399,8 @@ To create and run ``device_assets``:
    URL below with the device parameter:
 
    http://localhost:8666?device=iphone
+
+.. _dynamic_css-src:
 
 Source Code
 ===========

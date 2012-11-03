@@ -2,13 +2,12 @@
 Adding CSS
 ==========
 
-.. raw:: html
 
-  <span class="testimate">Time Estimate: 10 minutes</span>&nbsp;&nbsp;&nbsp;<span class="difficulty">Difficulty: Beginner</span>
-	
 **Time Estimate:** 10 minutes
 
 **Difficulty:** Beginner
+
+.. _adding_css-summary:
 
 Summary
 =======
@@ -19,6 +18,8 @@ The following topics will be covered:
 
 - configuring an application to have assets
 - including assets in the template
+
+.. _adding_css-notes:
 
 Implementation Notes
 ====================
@@ -120,6 +121,9 @@ is in ``simple_assets/assets/``, you would access ``simple.css`` with the follow
 .. note:: For the purpose of simplifying this code example, the ``setColor`` function was hardcoded 
           into the template. In your Mojito applications, you should avoid mixing the business and 
           presentation logic of your application by hardcoding JavaScript into your template.
+
+
+.. _adding_css-setup:
 
 Setting Up this Example
 =======================
@@ -265,6 +269,8 @@ To create and run ``simple_assets``:
 #. To view your application, go to the URL:
 
    http://localhost:8666
+
+.. _adding_css-src:
 
 Source Code
 ===========

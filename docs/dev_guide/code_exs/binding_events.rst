@@ -6,6 +6,8 @@ Binding Events
 
 **Difficulty Level:** Advanced
 
+.. _binding_events-summary:
+
 Summary
 =======
 
@@ -20,14 +22,20 @@ The following topics will be covered:
 - binding events through the ``mojitProxy`` object
 - making AJAX calls to YQL from the binder
 
+.. _be_summary-prereqs:
+
 Prerequisite
 ------------
 
 You will need to `get a Flickr API key <http://www.flickr.com/services/api/keys/apply/>`_
 to run this example.
 
+.. _binding_events-notes:
+
 Implementation Notes
 ====================
+
+.. _be_notes-run_on_client:
 
 Configuring the Application to Run on the Client
 ------------------------------------------------
@@ -57,6 +65,8 @@ To configure Mojito to run on the client, you simply set the ``"deploy"`` proper
        }
      }
    ]
+
+.. _be_notes-getting_data:
 
 Getting Data with YQL in the Model
 ----------------------------------
@@ -98,33 +108,29 @@ the ``images`` array that is sent to the controller through the ``callback`` fun
 .. code-block:: javascript
 
    YUI.add('PagerMojitModel', function(Y, NAME) {
-     /**
-     * The PagerMojitModel module.
-     * @module PagerMojitModel
-     */
-     /**
-     * Constructor for the Model class.
-     * @class Model
-     * @constructor
-     **/
+    
+     var API_KEY = '{your_flickr_api_key}';
      Y.namespace('mojito.models')[NAME] = {
        init: function(config) {
-         this.config = config;
+            this.config = config;
        },
-       getData: function(query, start, count, callback) {
-          var q = null;
-         // Get Flickr API key: http://www.flickr.com/services/api/keys/apply/
-         var API_KEY = "{your_flickr_api_key}";
-         start = parseInt(start) || 0;
-         count = parseInt(count) || 10;
+       getData: function (query, start, count, callback) {
+         var q = null;
+         start = parseInt(start, 10) || 0;
+         count = parseInt(count, 10) || 10;
          q = 'select * from flickr.photos.search(' + start + ',' + count + ')  where text="%' + query + '%" and api_key="' + API_KEY + '"';
-         Y.YQL(q, function(rawData) {
+         Y.log('QUERY: ' + q);
+         Y.YQL(q, function (rawData) {
            if (!rawData.query.results) {
              callback([]);
              return;
            }
-           var rawImages = rawData.query.results.photo, rawImage = null,images = [], image = null, i = 0;
-           for (; i<rawImages.length; i++) {
+           var rawImages = rawData.query.results.photo,
+               rawImage = null,
+               images = [],
+               image = null,
+               i = 0;
+           for (i; i < rawImages.length; i += 1) {
              rawImage = rawImages[i];
              image = {
                title: rawImage.title,
@@ -143,18 +149,22 @@ the ``images`` array that is sent to the controller through the ``callback`` fun
          });
        }
      };
-   }, '0.0.1', {requires: [ 'yql']});
+   }, '0.0.1', {requires: ['mojito', 'yql']});
 
 
 For a more detailed explanation about how to use YQL in your Mojito application, see 
 `Calling YQL from a Mojit <calling_yql.html>`_. For more information about YQL, see the 
 `YQL Guide <http://developer.yahoo.com/yql/guide>`_.
 
+.. _be_notes-binding_events:
+
 Binding Events
 --------------
 
 This section will discuss the basics of binding events in Mojito and then look at the 
 binder used in this code example.
+
+.. _notes_binding_events-basics:
 
 Binder Basics
 #############
@@ -196,6 +206,8 @@ binder. For more information, see `Mojito Binders <../intro/mojito_binders.html>
      };
      Y.mojito.registerEventBinder('AwesomeMojit', Binder);
    }, '0.0.1', {requires: ['mojito']});
+
+.. _notes_binding_events-pagemojitbinder:
 
 Examining the PageMojitBinder
 #############################
@@ -312,7 +324,7 @@ the ``requires`` array.
 
 .. code-block:: javascript
 
-   YUI.add('PagerMojitBinder', function(Y, NAME) {
+   YUI.add('PagerMojitBinder', function (Y, NAME) {
      var API_KEY = '{your_flickr_api_key}';
      function parseImageId(link) {
        var matches = link.match(/com\/(\d+)\/(\d+)_([0-9a-z]+)\.jpg$/);
@@ -323,94 +335,69 @@ the ``requires`` array.
        return matches[1];
      }
 
-     /**
-     * The PagerMojitBinder module.
-     * @module PagerMojitBinder
-     */
-     /**
-     * Constructor for the Binder class.
-     *
-     * @param mojitProxy {Object} The proxy to allow
-     * the binder to interact with its owning mojit.
-     * @class Binder
-     * @constructor
-     */
      Y.namespace('mojito.binders')[NAME] = {
-       /**
-       * Binder initialization method, invoked
-       * after all binders on the page have
-       * been constructed.
-       */
        init: function(mojitProxy) {
          this.mojitProxy = mojitProxy;
        },
-       /**
-       * The binder method, invoked to allow the mojit
-       * to attach DOM event handlers.
-       * @param node {Node} The DOM node to which this
-       * mojit is attached.
-       */
        bind: function(node) {
-         var thatNode = node;
-         Y.log('NODE: ' + Y.dump(this.node));
-         // define the action when user click on prev/next
-         var flipper = function(event) {
-           var target = event.target;
-           // get the link to the page
-           var page = parsePage(target.get('href'));
-           Y.log('PAGE: ' + page);
-           var updateDOM = function(markup) {
-             thatNode.set('innerHTML', markup);
-             thatNode.all('#nav a').on('click', flipper, this);
-             thatNode.all('#master ul li a').on('mouseover', showOverlay, this);
-             thatNode.all('#master ul li a').on('mouseout', showOverlay, this);
+         var thatNode = node,
+             showOverlay = function(event) {
+               var target = event.target,
+                   href = target.get('href'),
+                   imageId = parseImageId(href),
+                   // Query for the image metadata
+                   query = 'select * from flickr.photos.info where photo_id="' + imageId + '" and api_key="' + API_KEY + '"';
+               if (target.hasClass('overlayed')) {
+                 target.removeClass('overlayed');
+                 thatNode.one('#display').setContent('');
+               } else {
+                 target.addClass('overlayed');
+                 thatNode.one('#display').setContent('Loading ...');
+                 Y.YQL(query, function(raw) {
+                   if (!raw.query.results.photo) {
+                     Y.log('No results found for photoId: ' + imageId);
+                     return;
+                   }
+                   var props = raw.query.results.photo,
+                       snippet = '<ul style="list-style-type: square;">',
+                       key;
+                   for (key in props) {
+                     if (props.hasOwnProperty(key)) {
+                       if (typeof (props[key]) === 'object') {
+                         continue;
+                       }
+                       snippet += '<li>' + key + ': ' + props[key] + '</li>';
+                     }
+                   }
+                   snippet += '</ul>';
+                   thatNode.one('#display').setContent(snippet);
+                 });
+               }
+             },
+             // define the action when user click on prev/next         
+             flipper = function(event) {
+               var target = event.target,
+                   // get the link to the page 
+                   page = parsePage(target.get('href')),
+                   updateDOM = function(markup) {
+                     thatNode.set('innerHTML', markup);
+                     thatNode.all('#nav a').on('click', flipper, this);
+                     thatNode.all('#master ul li a').on('mouseover', showOverlay, this);
+                     thatNode.all('#master ul li a').on('mouseout', showOverlay, this);
+                   };
+                   this.mojitProxy.invoke('index', { params: {page: page} }, updateDOM);
+               };
+               // Bind all the image links to showOverlay
+               thatNode.all('#master ul li a').on('mouseover', showOverlay, this);
+               thatNode.all('#master ul li a').on('mouseout', showOverlay, this);
+               // Bind the prev + next links to flipper
+               thatNode.all('#nav a').on('click', flipper, this);
+             }
            };
-           this.mojitProxy.invoke('index',
-             {
-               params: {page: page}
-             }, updateDOM
-           );
-         };
-         var showOverlay = function(event) {
-           var target = event.target;
-           var href = target.get('href');
-           var imageId = parseImageId(href);
-           if (target.hasClass('overlayed')) {
-             target.removeClass('overlayed');
-             thatNode.one('#display').setContent('');
-           } else {
-             Y.log('HREF: ' + href);
-             Y.log('IMAGE ID: ' + imageId);
-             target.addClass('overlayed');
-             // Query for the image metadata
-             var query = 'select * from flickr.photos.info where photo_id="' + imageId + '" and api_key="' + API_KEY + '"';
-             thatNode.one('#display').setContent('Loading ...');
-             Y.YQL(query, function(raw) {
-               if (!raw.query.results.photo) {
-                 Y.log('No results found for photoId: ' + imageId);
-                 return;
-               }
-               var props = raw.query.results.photo;
-               var snippet = '<ul style="list-style-type: square;">';
-               for (var key in props) {
-                 if (typeof(props[key]) == 'object') {
-                   continue;
-                 }
-                 snippet += '<li>' + key + ': ' + props[key] + '</li>';
-               }
-               snippet += '</ul>';
-               thatNode.one('#display').setContent(snippet);
-             });
-           }
-         };
-         // Bind all the image links to showOverlay
-         thatNode.all('#master ul li a').on('mouseover', showOverlay, this);
-         thatNode.all('#master ul li a').on('mouseout', showOverlay, this);
-         // Bind the prev + next links to flipper
-         thatNode.all('#nav a').on('click', flipper, this);
-       }
-     };
-   }, '0.0.1', {requires: ['yql', 'io', 'dump']});
+         }, '0.0.1', {requires: ['yql', 'io', 'dump', 'mojito-client']});
+
+
+.. _be_notes-paging:
 
 Using Paging
 ------------
@@ -596,6 +583,9 @@ create URLs for the **next** and **prev** links.
      }
    }, '0.0.1', {requires: ['dump']});
 
+
+.. _binding_events-setup:
+
 Setting Up this Example
 =======================
 
@@ -677,7 +667,7 @@ To set up and run ``binding_events``:
             }
             // Page param is 1 based, but the model is 0 based
             start = (page - 1) * PAGE_SIZE;
-            var model = actionContext.models.PagerMojit;
+            var model = actionContext.models.PagerMojitModel;
             // Data is an array of images
             model.getData('mojito', start, PAGE_SIZE, function(data) {
               Y.log('DATA: ' + Y.dump(data));
@@ -721,53 +711,48 @@ To set up and run ``binding_events``:
    .. code-block:: javascript
 
       YUI.add('PagerMojitModel', function(Y, NAME) {
+		
         var API_KEY = '{your_flickr_api_key}';
-        /**
-        * The PagerMojitModel module.
-        * @module PagerMojitModel
-        */
-        /**
-        * Constructor for the Model class.
-        * @class Model
-        * @constructor
-        */
         Y.namespace('mojito.models')[NAME] = {
           init: function(config) {
-            this.config = config;
-          },
-          getData: function(query, start, count, callback) {
-             var q = null;
-            // Get Flickr API key: http://www.flickr.com/services/api/keys/apply/
-            var API_KEY = "{your_api_key}";
-            start = parseInt(start) || 0;
-            count = parseInt(count) || 10;
-            q = 'select * from flickr.photos.search(' + start + ',' + count + ')  where text="%' + query + '%" and api_key="' + API_KEY+ '"';
-            Y.YQL(q, function(rawData) {
-              if (!rawData.query.results) {
-                callback([]);
-                return;
-              }
-              var rawImages = rawData.query.results.photo, rawImage = null,images = [], image = null, i = 0;
-              for (; i<rawImages.length; i++) {
-                rawImage = rawImages[i];
-                image = {
-                  title: rawImage.title,
-                  location: 'http://farm' + rawImage.farm + '.static.flickr.com/' + rawImage.server + '/' + rawImage.id + '_' + rawImage.secret + '.jpg',
-                  farm: rawImage.farm,
-                  server: rawImage.server,
-                  image_id: rawImage.id,
-                  secret: rawImage.secret
-                };
-                if (!image.title) {
-                  image.title = "Generic Title: " + query;
-                }
-                images.push(image);
-              }
-              callback(images);
-            });
+	    this.config = config;
+     	  },
+	  getData: function (query, start, count, callback) {
+	    var q = null;
+	    start = parseInt(start, 10) || 0;
+	    count = parseInt(count, 10) || 10;
+	    q = 'select * from flickr.photos.search(' + start + ',' + count + ')  where text="%' + query + '%" and api_key="' + API_KEY + '"';
+	    Y.log('QUERY: ' + q);
+	    Y.YQL(q, function (rawData) {
+	      if (!rawData.query.results) {
+	        callback([]);
+	        return;
+	      }
+	      var rawImages = rawData.query.results.photo,
+	          rawImage = null,
+		  images = [],
+		  image = null,
+		  i = 0;
+	      for (i; i < rawImages.length; i += 1) {
+	        rawImage = rawImages[i];
+	        image = {
+	          title: rawImage.title,
+		  location: 'http://farm' + rawImage.farm + '.static.flickr.com/' + rawImage.server + '/' + rawImage.id + '_' + rawImage.secret + '.jpg',
+	          farm: rawImage.farm,
+	          server: rawImage.server,
+		  image_id: rawImage.id,
+		  secret: rawImage.secret
+	        };
+	        if (!image.title) {
+	          image.title = "Generic Title: " + query;
+	        }
+	        images.push(image);
+	      }
+	      callback(images);
+	    });
           }
         };
-      }, '0.0.1', {requires: ['yql']});
+      }, '0.0.1', {requires: ['mojito', 'yql']});
 
 #. To create the binder for click events and invoke the ``index`` function of the 
    controller, replace the code in ``binders/index.js`` with the code below. Again,
@@ -786,33 +771,10 @@ To set up and run ``binding_events``:
           return matches[1];
         }
 
-        /**
-        * The PagerMojitBinder module.
-        * @module PagerMojitBinder
-        */
-        /**
-        * Constructor for the Binder class.
-        *
-        * @param mojitProxy {Object} The proxy to allow
-        * the binder to interact with its owning mojit.
-        * @class Binder
-        * @constructor
-        */
         Y.namespace('mojito.binders')[NAME] = {
-          /**
-          * Binder initialization method, invoked
-          * after all binders on the page have
-          * been constructed.
-          */
           init: function(mojitProxy) {
             this.mojitProxy = mojitProxy;
           },
-          /**
-          * The binder method, invoked to allow the mojit
-          * to attach DOM event handlers.
-          * @param node {Node} The DOM node to which this
-          * mojit is attached.
-          */
           bind: function(node) {
             var thatNode = node;
             Y.log('NODE: ' + Y.dump(this.node));
@@ -916,6 +878,8 @@ To set up and run ``binding_events``:
 #. To view your application, go to the URL:
 
    http://localhost:8666
+
+.. _binding_events-src:
 
 Source Code
 ===========

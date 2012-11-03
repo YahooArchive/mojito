@@ -6,6 +6,8 @@ Attaching Assets with HTMLFrameMojit
 
 **Difficulty:** Intermediate
 
+.. _attach_assets-summary:
+
 Summary
 =======
 
@@ -18,6 +20,8 @@ The following topics will be covered:
 - configuring the application to use the ``HTMLFrameMojit``
 - configuring the ``HTMLFrameMojit`` to automatically include assets in the rendered 
   template
+
+.. _attach_assets-notes:
 
 Implementation Notes
 ====================
@@ -95,6 +99,8 @@ file exists, it will automatically be injected into the ``<head>`` tag.
           ``/mojits/{mojit_name}/assets/simple.css``, you can use the HTML 
           ``<link>`` tag to reference the CSS at the following location: 
           ``/static/{mojit_name}/assets/simple.css``
+
+.. _attach_assets-setup:
 
 Setting Up this Example
 =======================
@@ -224,6 +230,8 @@ To create and run ``framed_assets``:
 #. To view your application, go to the URL:
 
    http://localhost:8666
+
+.. _attach_assets-src:
 
 Source Code
 ===========

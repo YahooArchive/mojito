@@ -7,6 +7,8 @@ Calling YQL from a Mojit
 
 **Difficulty Level:** Intermediate
 
+.. _call_yql-summary:
+
 Summary
 =======
 
@@ -23,6 +25,8 @@ The following topics will be covered:
 - getting query string parameters with the ``Params`` addon
 - calling the YQL Web service with the `YQL Module of YUI <http://developer.yahoo.com/yui/3/yql/>`_
 
+.. _call_yql-notes:
+
 Implementation Notes
 ====================
 
@@ -31,6 +35,8 @@ The following screenshot shows the grid of Flickr images retrieved by YQL.
 .. image:: images/yql.flickr.preview.gif
    :height: 373px
    :width: 401px
+
+.. _call_yql_notes-form_statement:
 
 Forming the YQL Statement and Flickr Photo URI
 ----------------------------------------------
@@ -70,6 +76,8 @@ response, you form the photo URIs using the following URI scheme:
 
 Having formed the YQL statement and the Flickr photo URI to get data, we can create the 
 model.
+
+.. _call_yql_notes-create_model:
 
 Creating the Model
 ------------------
@@ -156,6 +164,8 @@ controller through the ``callback`` function.
           Because you don't know when the model is getting its data, you have to assume 
           that it may block.
 
+.. _call_yql_notes-call_model:
+
 Calling the Model from the Controller
 -------------------------------------
 
@@ -204,6 +214,8 @@ passed to ``search`` returns the array of photo objects, the ``done`` method sen
        }
      };
    }, '0.0.1', {requires: []});
+
+.. _call_yql-setup:
 
 Setting Up this Example
 =======================
@@ -422,6 +434,8 @@ To set up and run ``model_yql``:
 #. Get 50 Flickr photos using the search query "mojito" with the following URL:
 
    http://localhost:8666?q=mojito&size=50
+
+.. _call_yql-src:
 
 Source Code
 ===========
