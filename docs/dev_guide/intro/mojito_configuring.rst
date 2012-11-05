@@ -184,6 +184,15 @@ html5app Object
 | ``attachManifest``     | boolean       | no        | ``false``     | When ``true``, the ``manifest``           |
 |                        |               |           |               | attribute is added to ``<html>``.         |
 +------------------------+---------------+-----------+---------------+-------------------------------------------+
+| ``buildDir``           | string        | no        | none          | The path to the built HTML5 application.  |
+|                        |               |           |               | If not specified, the HTML5 application   |
+|                        |               |           |               | will be placed in                         |
+|                        |               |           |               | ``artifacts/build/html5app``. The         |
+|                        |               |           |               | specified path for ``buildDir`` will be   |
+|                        |               |           |               | overridden if a build path is given to    |
+|                        |               |           |               | the following command:                    |
+|                        |               |           |               | ``mojito build html5app [<build_path>]``  |
++------------------------+---------------+-----------+---------------+-------------------------------------------+
 | ``forceRelativePaths`` | boolean       | no        | ``false``     | When ``true``, the server-relative paths  |
 |                        |               |           |               | (those starting with "/") are converted   |
 |                        |               |           |               | into paths relative to the generated      |
@@ -201,6 +210,45 @@ html5app Object
 |                        |               |           |               | using the following:                      |
 |                        |               |           |               | ``urls: [ '/view.html']``                 |
 +------------------------+---------------+-----------+---------------+-------------------------------------------+
+
+.. _hybrid_obj:
+
+hybridapp Object
+################
+
+The ``hybridapp`` object is used to specify build information for hybrid applications,
+which are created with the command 
+``mojito build hybridapp -n <snapshot_name> -t <snapshot_tag> [<build_path>]``.
+Hybrid applications are HTML5 applications that are designed to work with future
+Cocktails components that will enable hybrid applications to use the native features
+of mobile devices. Currently, hybrid applications are strictly an experimental feature of 
+Mojito and Cocktails.
+
++------------------------+---------------+-----------+-------------------------------+--------------------------------------------------------------------------------+
+| Property               | Data Type     | Required? | Default Value                 | Description                                                                    |
++========================+===============+===========+===============================+================================================================================+
+| ``buildDir``           | string        | no        | none                          | The build path of the hybrid application. If not specified, the hybrid         |
+|                        |               |           |                               | application will be placed in ``artifacts/build/hybridapp``. The specified     |
+|                        |               |           |                               | path for ``buildDir`` will be overridden if a build path is given to the       |
+|                        |               |           |                               | following command:                                                             |
+|                        |               |           |                               | ``mojito build hybridapp -n <snapshot_name> -t <snapshot_tag> [<build_path>]`` |
++------------------------+---------------+-----------+-------------------------------+--------------------------------------------------------------------------------+
+| ``forceRelativePaths`` | boolean       | no        | ``false``                     | When ``true``, the server-relative paths (those starting with "/") are         |
+|                        |               |           |                               | converted into paths relative to the generated file.                           |
++------------------------+---------------+-----------+-------------------------------+--------------------------------------------------------------------------------+
+| ``packages``           | object        | yes       | none                          | An object containing key-value pairs that specify dependencies and their       |
+|                        |               |           |                               | associated versions. When you create a hybrid application with the command     |
+|                        |               |           |                               | ``mojito build hybridapp``, the dependencies listed in ``packages`` are added  |
+|                        |               |           |                               | to the ``packages.json`` of the built hybrid application.                      |
++------------------------+---------------+-----------+-------------------------------+--------------------------------------------------------------------------------+
+| ``urls``               | array of      | yes       | none                          | The routing paths to views that be rendered into static pages and then cached  | 
+|                        | strings       |           |                               | so that the page can be viewed offline. For example, if the running            |
+|                        |               |           |                               | application renders the view ``view.html``, you could configure the            |
+|                        |               |           |                               | application to statically create and cache ``view.html`` in                    |
+|                        |               |           |                               | ``{app_dir}/artifacts/builds/hybridapp`` (default location) using the          |
+|                        |               |           |                               | following: ``urls: [ '/view.html']``                                           |
++------------------------+---------------+-----------+-------------------------------+--------------------------------------------------------------------------------+
+
 
 log Object
 ##########
