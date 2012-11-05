@@ -14,8 +14,9 @@ This example shows how to configure a mojit and the routing for your application
 Implementation Notes
 ====================
 
-The ``application.json`` file is used to specify the mojits that your application can use. The 
-example ``application.json`` below specifies that the application use the mojit ``SimpleMojit``.
+The ``application.json`` file is used to specify the mojits that your application can use. 
+The example ``application.json`` below specifies that the application use the mojit 
+``SimpleMojit``.
 
 .. code-block:: javascript
 
@@ -30,9 +31,9 @@ example ``application.json`` below specifies that the application use the mojit 
      }
    ]
 
-The routing configuration for Mojito applications is contained in ``routes.json``. In this example 
-``routes.json``, the Mojito server is told to call the ``index`` method in the controller when an 
-HTTP GET is called on the root path.
+The routing configuration for Mojito applications is contained in ``routes.json``. In this 
+example ``routes.json``, the Mojito server is told to call the ``index`` method in the 
+controller when an HTTP GET is called on the root path.
 
 .. code-block:: javascript
 
@@ -47,8 +48,8 @@ HTTP GET is called on the root path.
      }
    ]
 
-The ``index`` method is a canned method in the controller when you create a mojit. To learn how to 
-create templates that get data from the controller, 
+The ``index`` method is a canned method in the controller when you create a mojit. To 
+learn how to create templates that get data from the controller, 
 see `Creating a Simple View with Handlebars <simple_view_template.html>`_.
 
 Setting Up this Example
@@ -63,8 +64,8 @@ To set up and run ``simple_config``:
 #. Create your mojit.
 
    ``$ mojito create mojit SimpleMojit``
-#. To specify that your application use ``SimpleMojit``, replace the code in ``application.json`` 
-   with the following:
+#. To specify that your application use ``SimpleMojit``, replace the code in 
+   ``application.json`` with the following:
 
    .. code-block:: javascript
 

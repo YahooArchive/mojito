@@ -24,37 +24,38 @@ The following topics will be covered:
 Implementation Notes
 ====================
 
-Before you create your application, you should take a look at the following sections to better 
-understand how the application works. The focus here is to give you a practical example that you can 
-use to add your own view engines and also to show some of important points of using view engines in 
-Mojito applications. For more comprehensive but less hands-on documentation, see 
-`Developer Topics: View Engines <../topics/mojito_extensions.html#view-engines>`_.
+Before you create your application, you should take a look at the following sections to 
+better understand how the application works. The focus here is to give you a practical 
+example that you can use to add your own view engines and also to show some of important 
+points of using view engines in Mojito applications. For more comprehensive but less 
+hands-on documentation, see `Developer Topics: View Engines <../topics/mojito_extensions.html#view-engines>`_.
 
 
 What Is a View Engine?
 ----------------------
 
-A view engine is code that applies data returned by the controller to a view. This is most often 
-done by interpreting the view as a template. View engines in Mojito can function at either the 
-application or mojit level. This example uses an application-level view engine addon, allowing 
-multiple mojits to use it although the example only uses one mojit.
+A view engine is code that applies data returned by the controller to a view. This is most 
+often done by interpreting the view as a template. View engines in Mojito can function at 
+either the application or mojit level. This example uses an application-level view engine 
+addon, allowing multiple mojits to use it although the example only uses one mojit.
 
 
 Installing a Rendering Engine
 -----------------------------
 
-You could write your own rendering engine or copy code into your Mojito application, but this 
-example follows the most common use case of installing a rendering engine with ``npm``. We will be 
-installing the rendering engine `EJS <http://embeddedjs.com/>`_ with ``npm``.
+You could write your own rendering engine or copy code into your Mojito application, but 
+this example follows the most common use case of installing a rendering engine with 
+``npm``. We will be installing the rendering engine `EJS <http://embeddedjs.com/>`_ with 
+``npm``.
 
 Because your Mojito application is simply a ``npm`` module, you can have a ``node_modules`` 
-directory for locally installing other modules. Thus, from your application directory, you would 
-use the following ``npm`` command to install ``ejs``:
+directory for locally installing other modules. Thus, from your application directory, you 
+would use the following ``npm`` command to install ``ejs``:
 
 ``{app_dir}/ $ npm install ejs``
 
-After you have installed ``ejs``, a ``node_modules`` directory will be created with the contents 
-similar to the following:
+After you have installed ``ejs``, a ``node_modules`` directory will be created with the 
+contents similar to the following:
 
 ::
 
@@ -88,16 +89,16 @@ Creating the View Engine Addon
 ------------------------------
 
 The view engine addon like other addons is simply a YUI module that lives in the 
-``addons/view-engines`` directory. For the application-level view engine addons that this example 
-is using, the view engine addon will be in ``{app_dir}/addons/view-engines``.
+``addons/view-engines`` directory. For the application-level view engine addons that this 
+example is using, the view engine addon will be in ``{app_dir}/addons/view-engines``.
 
 Requirements
 ############
 
 The view engine addon must have the following:
 
-- a ``YUI.add`` statement to register the addon. For example, we register the view engine addon with 
-  the name ``addons-viewengine-ejs`` in our code example as seen below.
+- a ``YUI.add`` statement to register the addon. For example, we register the view engine 
+  addon with the name ``addons-viewengine-ejs`` in our code example as seen below.
 
    .. code-block:: javascript
 
@@ -107,8 +108,9 @@ The view engine addon must have the following:
     
       }, '0.1.0', {requires: []});
       
-- a prototype of the object has the following two methods ``render`` and ``compiler`` as shown below. 
-  We will look at the ``render`` and ``compile`` methods more closely in the next section.
+- a prototype of the object has the following two methods ``render`` and ``compiler`` as 
+  shown below. We will look at the ``render`` and ``compile`` methods more closely in the 
+  next section.
 
    .. code-block:: javascript
    
@@ -124,8 +126,8 @@ The view engine addon must have the following:
         }
         ...      
         
-- an object that is assigned to ``Y.mojito.addons.viewEngines.{view_engine_name}``. In our example,
-  the constructor ``EjsAdapter`` is assigned to the namespace 
+- an object that is assigned to ``Y.mojito.addons.viewEngines.{view_engine_name}``. In our 
+  example, the constructor ``EjsAdapter`` is assigned to the namespace 
   ``Y.namespace('mojito.addons.viewEngines').ejs`` or ``Y.mojito.addons.viewEngines.ejs``.
    
    .. code-block:: javascript
@@ -142,12 +144,12 @@ The view engine addon must have the following:
 render and compile
 ##################
 
-The ``render`` method renders the template and sends the output to the methods ``adapter.flush`` or 
-``adapter.done`` that execute and return the page to the client.
+The ``render`` method renders the template and sends the output to the methods 
+``adapter.flush`` or ``adapter.done`` that execute and return the page to the client.
 
-The implementation of how the ``render`` method is up to the developer. You could write code or use 
-a library to render the template, but in this example we use the instance ``ejs`` to
-compile the view.
+The implementation of how the ``render`` method is up to the developer. You could write 
+code or use a library to render the template, but in this example we use the instance 
+``ejs`` to compile the view.
 
 .. code-block:: javascript
 
@@ -184,9 +186,9 @@ compile the view.
      },
      ...
         
-The ``compile`` method is required to run the command ``mojito compile views``. In our example, 
-the ``compile`` method also reads the template file and returns a string to ``render``
-so that it can be rendered by ``ejs``. 
+The ``compile`` method is required to run the command ``mojito compile views``. In our 
+example, the ``compile`` method also reads the template file and returns a string to 
+``render`` so that it can be rendered by ``ejs``. 
 
 .. code-block:: javascript
 
@@ -198,15 +200,15 @@ so that it can be rendered by ``ejs``.
 
 
 In the above code snippet, the ``compile`` method simply returns the template file to the
-``render`` method, where the instance of the EJS rendering engine calls ``render`` to render 
-the template file into a string. The implementation of the ``compile`` method in the 
-addon could have been written to call ``ejs.render``.
+``render`` method, where the instance of the EJS rendering engine calls ``render`` to 
+render the template file into a string. The implementation of the ``compile`` method in 
+the addon could have been written to call ``ejs.render``.
 
 EJS Templates
 -------------
 
-EJS is similar to ``ERB`` that is used by `Ruby on Rails <http://rubyonrails.org/>`_. The embedded 
-JavaScript is wrapped in ``<%`` and ``%>``. If you want to evaluate code so that
+EJS is similar to ``ERB`` that is used by `Ruby on Rails <http://rubyonrails.org/>`_. The 
+embedded JavaScript is wrapped in ``<%`` and ``%>``. If you want to evaluate code so that
 the returned value is inserted into the HTML string, you use ``<%=`` as seen
 below, where the variable ``title`` is substituted with a value.
 
@@ -226,12 +228,12 @@ you can iterate through an array in the same way as shown here:
    </ul>
 
 EJS also has view helpers for creating links and forms, much like ``ERB``. See 
-`Getting Started with EJS <http://embeddedjs.com/getting_started.html>`_ for more information.
+`Getting Started with EJS <http://embeddedjs.com/getting_started.html>`_ for more 
+information.
 
 
 Setting Up this Example
 =======================
-
 
 To set up and run ``adding_view_engines``:
 
@@ -406,8 +408,8 @@ To set up and run ``adding_view_engines``:
 #. Now see the template rendered by the EJS rendering engine at the following URL:
 
    `http://localhost:8666/ejs <http://localhost:8666/ejs>`_   
-#. Great, your application is using two different rendering engines. You should now be ready to add
-   your own view engine that uses a rendering engine such as Jade.   
+#. Great, your application is using two different rendering engines. You should now be 
+   ready to add your own view engine that uses a rendering engine such as Jade.   
 
 
 Source Code
