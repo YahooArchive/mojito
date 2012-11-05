@@ -260,9 +260,12 @@ hybridapp
 #########
 
 
-To build a hybrid application, use the following.
+To build a hybrid application, use either of the following.
 
-``$ mojito build hybridapp [-c <context> -n <snapshot_name> -t <snapshot_tag>] <path/to/app/>`` 
+``$ mojito build hybridapp [--context <context>] --snapshotName <snapshot_name> --snapshotTag <snapshot_tag> [<path/to/app/>]`` 
+
+``$ mojito build hybridapp [-c <context>] -n <snapshot_name> -t <snapshot_tag> [<path/to/app/>]`` 
+
 
 This generates a HTML5 application that is customized to work with a future component
 of the Cocktails suite that will allow you to write HTML5/JavaScript applications
