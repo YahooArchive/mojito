@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<project name="YUITest" default="build.all.jars" basedir="">
+  
+    <!-- ================================================================== -->
+    <!-- Property Loading                                                   -->
+    <!-- ================================================================== -->
+  
+    <target name="-load.properties">
+        <property file="ant.properties"/>
+    </target>    
+    
+    <!-- ================================================================== -->
+    <!-- Clean and Init                                                     -->
+    <!-- ================================================================== -->
+ 
+    <target name="clean" depends="-load.properties">
+        <delete dir="${build.dir}" quiet="true"/>
+        <delete dir="${tmp.dir}" quiet="true"/>
+    </target>
+ 
+    <target name="-init" depends="-load.properties">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${tmp.dir}"/>
+    </target>
+    
+    <!-- ================================================================== -->
+    <!-- Build Classes                                                      -->
+    <!-- ================================================================== -->
+
+    <target name="build.parsers" depends="-init">
+        <antlr-gen dir="${src.dir}/${codepath.root.dir}/coverage/grammar/" grammar="ES3YUITest.g"/>
+    </target>
+
+    <target name="build.classes" depends="-init">                    
+        <mkdir dir="${tmp.dir}/classes"/>
+        <javac srcdir="${src.dir}"
+               destdir="${tmp.dir}/classes"
+               includes="**/*.java"
+               deprecation="off"
+               debug="on"
+               target="${target.jvm.version}"
+               source="${target.jvm.version}">
+            <classpath>
+                <pathelement location="${lib.dir}/${jargs.jar}"/>
+                <pathelement location="${lib.dir}/${antlr.jar}"/>
+                <pathelement location="${lib.dir}/${selenium.jar}"/>
+            </classpath>
+        </javac>
+        
+    </target>
+ 
+    <!-- ================================================================== -->
+    <!-- Build Coverage JAR                                                 -->
+    <!-- ================================================================== -->
+
+    <target name="build.coverage.jar" depends="build.parsers,build.classes">
+        <mkdir dir="${tmp.dir}/coverage/jar"/>
+        <unjar src="${lib.dir}/${jargs.jar}" dest="${tmp.dir}/coverage/jar"/>
+        <unjar src="${lib.dir}/${antlr-runtime.jar}" dest="${tmp.dir}/coverage/jar"/>
+        <unjar src="${lib.dir}/${antlr2.jar}" dest="${tmp.dir}/coverage/jar"/>
+        <unjar src="${lib.dir}/${stringtemplate.jar}" dest="${tmp.dir}/coverage/jar"/>
+        <copy todir="${tmp.dir}/coverage/jar">
+            <fileset dir="${tmp.dir}/classes" includes="**/coverage/*.class"/>
+            <fileset dir="${tmp.dir}/classes" includes="**/json/*.class"/>
+        </copy>
+        <!-- copy string template files to JAR -->
+        <copy todir="${tmp.dir}/coverage/jar/${coverage.root.dir}">
+            <fileset dir="${src.dir}/${coverage.root.dir}" includes="**/*.stg"/>
+        </copy>
+        <jar destfile="${build.dir}/${coverage.jar.name}" basedir="${tmp.dir}/coverage/jar">
+            <manifest>
+                <attribute name="Main-Class" value="com.yahoo.platform.yuitest.coverage.YUITestCoverage"/>
+            </manifest>
+        </jar>
+
+    </target>
+
+    <!-- ================================================================== -->
+    <!-- Build Coverage Report JAR                                                 -->
+    <!-- ================================================================== -->
+
+    <target name="build.coverage-report.jar" depends="build.classes">
+        <mkdir dir="${tmp.dir}/coverage-report/jar"/>
+        <unjar src="${lib.dir}/${jargs.jar}" dest="${tmp.dir}/coverage-report/jar"/>
+        <unjar src="${lib.dir}/${antlr2.jar}" dest="${tmp.dir}/coverage-report/jar"/>
+        <unjar src="${lib.dir}/${stringtemplate.jar}" dest="${tmp.dir}/coverage-report/jar"/>
+        <copy todir="${tmp.dir}/coverage-report/jar">
+            <fileset dir="${tmp.dir}/classes" includes="**/coverage/**/*.class"/>
+            <fileset dir="${tmp.dir}/classes" includes="**/json/*.class"/>
+            <fileset dir="${tmp.dir}/classes" includes="**/writers/*.class"/>
+        </copy>
+        <!-- copy string template files to JAR -->
+        <copy todir="${tmp.dir}/coverage-report/jar/${codepath.root.dir}">
+            <fileset dir="${src.dir}/${codepath.root.dir}" includes="**/*.stg"/>
+        </copy>
+        <jar destfile="${build.dir}/${coverage-report.jar.name}" basedir="${tmp.dir}/coverage-report/jar">
+            <manifest>
+                <attribute name="Main-Class" value="com.yahoo.platform.yuitest.coverage.report.YUITestCoverageReport"/>
+            </manifest>
+        </jar>
+
+    </target>
+
+    <!-- ================================================================== -->
+    <!-- Build Selenium Driver JAR                                          -->
+    <!-- ================================================================== -->
+ 
+    <target name="build.selenium-driver.jar" depends="build.classes">
+        <mkdir dir="${tmp.dir}/selenium-driver/jar"/>
+        <unjar src="${lib.dir}/${jargs.jar}" dest="${tmp.dir}/selenium-driver/jar"/>
+        <unjar src="${lib.dir}/${antlr2.jar}" dest="${tmp.dir}/selenium-driver/jar"/>
+        <unjar src="${lib.dir}/${stringtemplate.jar}" dest="${tmp.dir}/selenium-driver/jar"/>
+        <copy todir="${tmp.dir}/selenium-driver/jar">
+            <fileset dir="${tmp.dir}/classes" includes="**/*.class"/>
+<!--
+            <fileset dir="${tmp.dir}/classes" includes="**/config/*.class"/>
+            <fileset dir="${tmp.dir}/classes" includes="**/selenium/*.class"/>
+            <fileset dir="${tmp.dir}/classes" includes="**/results/*.class"/>
+            <fileset dir="${tmp.dir}/classes" includes="**/writers/*.class"/>
+-->
+        </copy>
+
+        <copy todir="${tmp.dir}/selenium-driver/jar/${selenium-driver.root.dir}">
+            <fileset dir="${src.dir}/${selenium-driver.root.dir}" includes="**/*.properties"/>
+        </copy>
+
+        <copy todir="${tmp.dir}/selenium-driver/jar/${codepath.root.dir}">
+            <fileset dir="${src.dir}/${codepath.root.dir}" includes="**/*.stg"/>
+        </copy>
+
+        <jar destfile="${build.dir}/${selenium-driver.jar.name}" basedir="${tmp.dir}/selenium-driver/jar">
+            <manifest>
+                <attribute name="Main-Class" value="com.yahoo.platform.yuitest.selenium.YUITestSeleniumDriver"/>
+            </manifest>
+        </jar>
+       
+    </target>    
+
+
+    <!-- ================================================================== -->
+    <!-- Build All JARs                                                     -->
+    <!-- ================================================================== -->
+
+    <target name="build.all.jars" depends="build.coverage.jar,build.coverage-report.jar,build.selenium-driver.jar">
+    </target>
+
+    <!-- ================================================================== -->
+    <!-- Testing                                                            -->
+    <!-- ================================================================== -->
+
+    <target name="build.tests" depends="-init">
+        <mkdir dir="${tmp.dir}/testclasses"/>
+        <javac srcdir="${tests.dir}"
+               destdir="${tmp.dir}/testclasses"
+               includes="**/*.java"
+               deprecation="off"
+               debug="on"
+               source="${target.jvm.version}"
+               target="${target.jvm.version}">
+            <classpath>
+                <pathelement location="${lib.dir}/${jargs.jar}"/>
+                <pathelement location="${lib.dir}/${antlr.jar}"/>
+                <pathelement location="${lib.dir}/${selenium.jar}"/>
+                <pathelement location="${lib.dir}/${junit.jar}"/>
+                <pathelement location="${tmp.dir}/classes"/>
+            </classpath>
+        </javac>
+        
+        <!-- copy over XML/JSON files for testing-->
+        <copy todir="${tmp.dir}/testclasses/${codepath.root.dir}">
+            <fileset dir="${tests.dir}/${codepath.root.dir}" includes="**/*.xml"/>
+            <fileset dir="${tests.dir}/${codepath.root.dir}" includes="**/*.json"/>
+        </copy>
+    </target>
+
+    <target name="test.classes" depends="build.classes,build.tests">
+        <junit printsummary="yes" fork="yes"  errorproperty="junit.failure" failureproperty="junit.failure" showoutput="true">
+
+                <jvmarg value="-Duser.dir=${res.dir}"/>
+
+	       	<!-- classpath must include all jar dependencies and classes -->
+                <classpath>
+                    <pathelement location="${tmp.dir}/classes"/>
+                    <pathelement location="${tmp.dir}/testclasses"/>
+                    <pathelement location="${lib.dir}/${jargs.jar}"/>
+                    <pathelement location="${lib.dir}/${selenium.jar}"/>
+                    <pathelement location="${lib.dir}/${junit.jar}"/>
+                </classpath>
+
+	      	<!-- formatter to use for output -->
+        	<formatter type="plain" usefile="false"/>
+
+            <!-- fully qualified classname of testsuite -->
+            <batchtest>
+                <fileset dir="${tmp.dir}/testclasses">
+                    <include name="**/*Test.class" />
+                </fileset>
+            </batchtest>
+        </junit>
+    </target>
+ 
+    <!-- TODO
+    <target name="build.dist.package" depends="build.jar">
+        <mkdir dir="${build.dir}/${dist.package.name}"/>
+        <mkdir dir="${build.dir}/${dist.package.name}/build"/>
+        <copy file="${build.dir}/${jar.name}" todir="${build.dir}/${dist.package.name}/build"/>
+        <copy todir="${build.dir}/${dist.package.name}">
+            <fileset dir=".">
+                <include name="*.properties"/>
+                <include name="build.xml"/>
+                <include name="doc/**/*"/>
+                <include name="lib/**/*"/>
+                <include name="src/**/*"/>
+                <exclude name="**/.git"/>
+            </fileset>
+        </copy>
+        <zip destfile="${build.dir}/${dist.package.name}.zip"
+             basedir="${build.dir}"
+             includes="${dist.package.name}/**/*"/>
+    </target>
+    -->
+    
+    <!-- ================================================================== -->
+    <!-- Macros                                                             -->
+    <!-- ================================================================== -->
+    
+    <!-- macro to create antlr parser -->
+    <macrodef name="antlr-gen">
+        <attribute name="dir"/>
+        <attribute name="grammar"/>
+        <sequential>
+            <echo>Creating parser from @{grammar}</echo>
+            <apply executable="java" parallel="true" failonerror="true">
+                <arg line="-jar"/>
+                <arg path="${lib.dir}/${antlr.jar}"/>
+                <srcfile/>
+                <arg line="-o ${src.dir}/${coverage.root.dir}"/>
+                <fileset dir="@{dir}" includes="@{grammar}" />
+            </apply>        
+        </sequential>    
+    </macrodef>    
+
+</project>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report name="All Mock Tests" duration="729" passed="48" failed="0" ignored="0" total="48">
+    <testsuite name="Mock Tests" duration="727" passed="48" failed="0" ignored="0" total="48">
+        <testcase name="Call Count Tests" duration="13" passed="7" failed="0" ignored="0" total="7">
+            <test name="Call count should default to 1 and pass" duration="1" result="pass" message="Test passed"></test>
+            <test name="Call count should default to 1 and fail" duration="2" result="pass" message="Test passed"></test>
+            <test name="Call count set to 1 should pass when method is called once" duration="1" result="pass" message="Test passed"></test>
+            <test name="Call count set to 1 should fail when method isn&apos;t called" duration="3" result="pass" message="Test passed"></test>
+            <test name="Call count set to 1 should fail when method is called twice" duration="2" result="pass" message="Test passed"></test>
+            <test name="Call count set to 0 should fail when method is called once" duration="2" result="pass" message="Test passed"></test>
+            <test name="Call count set to 0 should pass when method isn&apos;t called" duration="1" result="pass" message="Test passed"></test>
+        </testcase>
+        <testcase name="Arguments Tests" duration="406" passed="40" failed="0" ignored="0" total="40">
+            <test name="Passing correct number of arguments should make the test pass" duration="1" result="pass" message="Test passed"></test>
+            <test name="Passing an incorrect number of arguments should make the test fail" duration="2" result="pass" message="Test passed"></test>
+            <test name="Passing the exact argument should make the test pass" duration="1" result="pass" message="Test passed"></test>
+            <test name="Passing an inexact argument should make the test fail" duration="2" result="pass" message="Test passed"></test>
+            <test name="Passing a number to an Any argument should make the test pass" duration="1" result="pass" message="Test passed"></test>
+            <test name="Passing a boolean to an Any argument should make the test pass" duration="0" result="pass" message="Test passed"></test>
+            <test name="Passing a string to an Any argument should make the test pass" duration="0" result="pass" message="Test passed"></test>
+            <test name="Passing a object to an Any argument should make the test pass" duration="1" result="pass" message="Test passed"></test>
+            <test name="Passing a function to an Any argument should make the test pass" duration="1" result="pass" message="Test passed"></test>
+            <test name="Passing a null to an Any argument should make the test pass" duration="1" result="pass" message="Test passed"></test>
+            <test name="Passing a number to an Boolean argument should make the test fail" duration="3" result="pass" message="Test passed"></test>
+            <test name="Passing a boolean to an Boolean argument should make the test pass" duration="1" result="pass" message="Test passed"></test>
+            <test name="Passing a string to an Boolean argument should make the test fail" duration="2" result="pass" message="Test passed"></test>
+            <test name="Passing a object to an Boolean argument should make the test fail" duration="2" result="pass" message="Test passed"></test>
+            <test name="Passing a function to an Boolean argument should make the test fail" duration="2" result="pass" message="Test passed"></test>
+            <test name="Passing a null to an Boolean argument should make the test fail" duration="3" result="pass" message="Test passed"></test>
+            <test name="Passing a number to an String argument should make the test fail" duration="2" result="pass" message="Test passed"></test>
+            <test name="Passing a boolean to an String argument should make the test fail" duration="2" result="pass" message="Test passed"></test>
+            <test name="Passing a string to an String argument should make the test pass" duration="1" result="pass" message="Test passed"></test>
+            <test name="Passing a object to an String argument should make the test fail" duration="3" result="pass" message="Test passed"></test>
+            <test name="Passing a function to an String argument should make the test fail" duration="3" result="pass" message="Test passed"></test>
+            <test name="Passing a null to an String argument should make the test fail" duration="2" result="pass" message="Test passed"></test>
+            <test name="Passing a number to an Number argument should make the test pass" duration="1" result="pass" message="Test passed"></test>
+            <test name="Passing a boolean to an Number argument should make the test fail" duration="2" result="pass" message="Test passed"></test>
+            <test name="Passing a string to an Number argument should make the test fail" duration="2" result="pass" message="Test passed"></test>
+            <test name="Passing a object to an Number argument should make the test fail" duration="3" result="pass" message="Test passed"></test>
+            <test name="Passing a function to an Number argument should make the test fail" duration="2" result="pass" message="Test passed"></test>
+            <test name="Passing a null to an Number argument should make the test fail" duration="2" result="pass" message="Test passed"></test>
+            <test name="Passing a number to an Function argument should make the test fail" duration="3" result="pass" message="Test passed"></test>
+            <test name="Passing a boolean to an Function argument should make the test fail" duration="2" result="pass" message="Test passed"></test>
+            <test name="Passing a string to an Function argument should make the test fail" duration="2" result="pass" message="Test passed"></test>
+            <test name="Passing a object to an Function argument should make the test fail" duration="3" result="pass" message="Test passed"></test>
+            <test name="Passing a function to an Function argument should make the test pass" duration="1" result="pass" message="Test passed"></test>
+            <test name="Passing a null to an Function argument should make the test fail" duration="2" result="pass" message="Test passed"></test>
+            <test name="Passing a number to an Object argument should make the test fail" duration="2" result="pass" message="Test passed"></test>
+            <test name="Passing a boolean to an Object argument should make the test fail" duration="2" result="pass" message="Test passed"></test>
+            <test name="Passing a string to an Object argument should make the test fail" duration="3" result="pass" message="Test passed"></test>
+            <test name="Passing a object to an Object argument should make the test pass" duration="1" result="pass" message="Test passed"></test>
+            <test name="Passing a function to an Object argument should make the test pass" duration="1" result="pass" message="Test passed"></test>
+            <test name="Passing a null to an Object argument should make the test fail" duration="2" result="pass" message="Test passed"></test>
+        </testcase>
+        <testcase name="Asynchronous Tests" duration="286" passed="1" failed="0" ignored="0" total="1">
+            <test name="A mock method called asynchronously shouldn&apos;t cause an error" duration="252" result="pass" message="Test passed"></test>
+        </testcase>
+    </testsuite>
+</report>
