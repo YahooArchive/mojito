@@ -16,7 +16,7 @@ YUI.add('framedModel-tests', function(Y) {
         name: 'framed model user tests',
         
         setUp: function() {
-            model = Y.mojito.models.framed;
+            model = Y.mojito.models.framedModel;
         },
         tearDown: function() {
             model = null;

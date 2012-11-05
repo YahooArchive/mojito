@@ -56,8 +56,8 @@ to the ``simple`` mojit:
        |-- tests/
        `-- views/
 
-This code example only uses local CSS, so the ``simple.css`` file is placed in the ``assets`` 
-directory under the ``simple`` mojit.
+This code example only uses local CSS, so the ``simple.css`` file is placed in the 
+``assets`` directory under the ``simple`` mojit.
 
 .. code-block:: css
 
@@ -136,7 +136,8 @@ To create and run ``simple_assets``:
 
    ``$ mojito create mojit simple``
 
-#. To configure your application to use the ``simple`` mojit, replace the code in ``application.json`` with the following:
+#. To configure your application to use the ``simple`` mojit, replace the code in 
+   ``application.json`` with the following:
 
    .. code-block:: javascript
 
@@ -151,7 +152,8 @@ To create and run ``simple_assets``:
         }
       ]
 
-#. To configure routing, create the file ``routes.json`` with the following:
+#. To configure routing, replace the code of the file ``routes.json`` with the 
+   following:
 
    .. code-block:: javascript
 
@@ -171,7 +173,8 @@ To create and run ``simple_assets``:
 
    ``$ cd mojits/simple``
 
-#. Modify your controller to pass an array of objects to the template by replacing the code in ``controller.server.js`` with the following:
+#. Modify your controller to pass an array of objects to the template by replacing the 
+   code in ``controller.server.js`` with the following:
 
    .. code-block:: javascript
 
@@ -189,7 +192,7 @@ To create and run ``simple_assets``:
         */
         Y.namespace('mojito.controllers')[NAME] = {     
           init: function(config) {
-          this.config = config;
+            this.config = config;
         },
         /**
         * Method corresponding to the 'index' action.
@@ -212,8 +215,8 @@ To create and run ``simple_assets``:
         };
       }, '0.0.1', {requires: []});
 
-#. Include the assets in your template by replacing the code in ``views/index.hb.html`` with the 
-   following:
+#. Include the assets in your template by replacing the code in ``views/index.hb.html`` 
+   with the following:
 
    .. code-block:: html
 

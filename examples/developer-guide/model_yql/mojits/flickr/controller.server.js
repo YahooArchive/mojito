@@ -26,7 +26,7 @@ YUI.add('flickr', function (Y, NAME) {
                 count = (ac.params.getFromUrl('count') || 20);
             }
             start = page * count;
-            model = ac.models.flickr;
+            model = ac.models.flickrModel;
             model.search(q, start, count, function (photos) {
                 ac.done({
                     photos: photos,
