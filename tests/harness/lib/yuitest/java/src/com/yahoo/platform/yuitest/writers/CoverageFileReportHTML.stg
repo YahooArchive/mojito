@@ -1,0 +1,173 @@
+group HTMLFileReportTemplates;
+
+report(report,date) ::= <<
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+    "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en-US">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>$report.filename$ Report</title>
+    <style type="text/css">
+/*
+Copyright (c) 2009, Yahoo! Inc. All rights reserved.
+Code licensed under the BSD License:
+http://developer.yahoo.net/yui/license.txt
+version: 3.0.0
+build: 1549
+*/
+html{color:#000;background:#FFF;}body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,textarea,p,blockquote,th,td{margin:0;padding:0;}table{border-collapse:collapse;border-spacing:0;}fieldset,img{border:0;}address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal;}li{list-style:none;}caption,th{text-align:left;}h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}q:before,q:after{content:'';}abbr,acronym{border:0;font-variant:normal;}sup{vertical-align:text-top;}sub{vertical-align:text-bottom;}input,textarea,select{font-family:inherit;font-size:inherit;font-weight:inherit;}input,textarea,select{*font-size:100%;}legend{color:#000;}
+body{font:13px/1.231 arial,helvetica,clean,sans-serif;*font-size:small;*font:x-small;}select,input,button,textarea{font:99% arial,helvetica,clean,sans-serif;}table{font-size:inherit;font:100%;}pre,code,kbd,samp,tt{font-family:monospace;*font-size:108%;line-height:100%;}
+h1{font-size:138.5%;}h2{font-size:123.1%;}h3{font-size:108%;}h1,h2,h3{margin:1em 0;}h1,h2,h3,h4,h5,h6,strong{font-weight:bold;}
+    </style>
+    <style type="text/css">
+
+    .page {
+        width: 63em;
+        margin: 0 auto;
+    }
+
+    .page .ft {
+        font-size: 85%;
+        margin-bottom: 1.5em;
+        padding-top: 0.3em;
+        border-top: 1px solid #d8d8d8;
+    }
+
+    .file-summary {
+        background: #f0f0f0;
+        border: 1px solid #d8d8d8;
+        margin-bottom: 1em;
+    }
+
+    .file-summary .category {
+        width: 10em;
+        border-right: 1px solid #d8d8d8;
+    }
+
+    .file-summary .results {
+        width: 4em;
+        text-align: center;
+    }
+
+    .file-summary td,
+    .file-summary th {
+        padding: 0.2em;
+    }
+
+    .file-summary td {
+        text-align: right;
+    }
+
+    .file-summary thead th {
+        font-weight: bold;
+        border-bottom: 1px solid #d8d8d8;
+    }
+
+    .source-code-sec {
+        overflow: auto;
+        border: 1px solid #d8d8d8;
+        margin-bottom: 1em;
+    }
+
+    .source-code {
+        width: 100%;
+        font-family: monospace;
+    }
+
+    .source-code .line-number {
+        text-align: right;
+        background: #f0f0f0;
+        border-right: 1px solid #d8d8d8;
+        width: 3em;
+        padding: 0 0.2em;
+    }
+
+    .source-code .line-calls {
+        text-align: right;
+        border-right: 1px solid #d8d8d8;
+        width: 3em;
+        padding: 0 0.2em;
+    }
+
+    .source-code .not-called {
+        background: #f99;
+    }
+
+    .source-code .called {
+        background: #9f9;
+    }
+    </style>
+</head>
+<body>
+    <div class="page">
+
+        <div class="hd">
+            <!-- title -->
+            <h1>$report.filename$ Report</h1>
+            <h2>Date Generated: $date$</h2>
+        </div>
+
+        <div class="bd">
+
+            <!-- summary table -->
+            <table class="file-summary">
+                <col class="category"></col>
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th class="results">Called</th>
+                        <th class="results">Total</th>
+                        <th class="results">Coverage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>Lines</th>
+                        <td class="results">$report.calledLineCount$</td>
+                        <td class="results">$report.coveredLineCount$</td>
+                        <td class="results">$report.calledLinePercentage$%</td>
+                    </tr>
+                    <tr>
+                        <th>Functions</th>
+                        <td class="results">$report.calledFunctionCount$</td>
+                        <td class="results">$report.coveredFunctionCount$</td>
+                        <td class="results">$report.calledFunctionPercentage$%</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- source code --->
+            <div class="source-code-sec">
+                <table class="source-code">
+                $report.lines:line()$
+                </table>
+            </div>
+        </div>
+
+        <!-- footer -->
+        <div class="ft">
+            <p>Code coverage for $report.filename$ generated on $date$ by YUI Test.</p>
+        </div>
+    </div>
+
+</body>
+</html>
+>>
+
+line() ::= <<
+    <tr class="$it:rowclass()$">
+        <td class="line-number">$it.lineNumber$</td><td class="line-calls">$it:callcount()$</td><td class="line-code">$it.text; format="htmlEscapeSpace"$</td>
+    </tr>
+>>
+
+rowclass() ::= <<
+$if(!it.covered)$uncovered$elseif(it.called)$called$else$not-called$endif$
+>>
+
+callcount() ::= <<
+$if(!it.covered)$
+&nbsp;
+$else$
+$it.callCount$
+$endif$
+>>

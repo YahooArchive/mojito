@@ -1,0 +1,630 @@
+group LCOVHTMLDirectoryReportTemplates;
+
+report(report,date) ::= <<
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+    <title>LCOV - lcov.info - $report.directory$</title>
+    <style type="text/css">
+/* All views: initial background and text color */
+body
+{
+  color: #000000;
+  background-color: #FFFFFF;
+}
+
+/* All views: standard link format*/
+a:link
+{
+  color: #284FA8;
+  text-decoration: underline;
+}
+
+/* All views: standard link - visited format */
+a:visited
+{
+  color: #00CB40;
+  text-decoration: underline;
+}
+
+/* All views: standard link - activated format */
+a:active
+{
+  color: #FF0040;
+  text-decoration: underline;
+}
+
+/* All views: main title format */
+td.title
+{
+  text-align: center;
+  padding-bottom: 10px;
+  font-family: sans-serif;
+  font-size: 20pt;
+  font-style: italic;
+  font-weight: bold;
+}
+
+/* All views: header item format */
+td.headerItem
+{
+  text-align: right;
+  padding-right: 6px;
+  font-family: sans-serif;
+  font-weight: bold;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+/* All views: header item value format */
+td.headerValue
+{
+  text-align: left;
+  color: #284FA8;
+  font-family: sans-serif;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+/* All views: header item coverage table heading */
+td.headerCovTableHead
+{
+  text-align: center;
+  padding-right: 6px;
+  padding-left: 6px;
+  padding-bottom: 0px;
+  font-family: sans-serif;
+  font-size: 80%;
+  white-space: nowrap;
+}
+
+/* All views: header item coverage table entry */
+td.headerCovTableEntry
+{
+  text-align: right;
+  color: #284FA8;
+  font-family: sans-serif;
+  font-weight: bold;
+  white-space: nowrap;
+  padding-left: 12px;
+  padding-right: 4px;
+  background-color: #DAE7FE;
+}
+
+/* All views: header item coverage table entry for high coverage rate */
+td.headerCovTableEntry-high
+{
+  text-align: right;
+  color: #000000;
+  font-family: sans-serif;
+  font-weight: bold;
+  white-space: nowrap;
+  padding-left: 12px;
+  padding-right: 4px;
+  background-color: #A7FC9D;
+}
+
+.progress-high {
+  background-color: #A7FC9D;
+}
+
+.progress-med {
+  background-color: #FFEA20;
+}
+
+.progress-low {
+  background-color: #FF0000;
+}
+
+/* All views: header item coverage table entry for medium coverage rate */
+td.headerCovTableEntry-med
+{
+  text-align: right;
+  color: #000000;
+  font-family: sans-serif;
+  font-weight: bold;
+  white-space: nowrap;
+  padding-left: 12px;
+  padding-right: 4px;
+  background-color: #FFEA20;
+}
+
+/* All views: header item coverage table entry for ow coverage rate */
+td.headerCovTableEntry-low
+{
+  text-align: right;
+  color: #000000;
+  font-family: sans-serif;
+  font-weight: bold;
+  white-space: nowrap;
+  padding-left: 12px;
+  padding-right: 4px;
+  background-color: #FF0000;
+}
+
+/* All views: header legend item for legend entry */
+td.headerItemLeg
+{
+  text-align: right;
+  padding-right: 6px;
+  font-family: sans-serif;
+  font-weight: bold;
+  vertical-align: bottom;
+  white-space: nowrap;
+}
+
+/* All views: header legend value for legend entry */
+td.headerValueLeg
+{
+  text-align: left;
+  color: #000000;
+  font-family: sans-serif;
+  font-size: 80%;
+  white-space: nowrap;
+  padding-top: 4px;
+}
+
+/* All views: color of horizontal ruler */
+td.ruler
+{
+  background-color: #6688D4;
+  height: 3px;
+  overflow: hidden;
+  font-size: 0;
+}
+
+/* All views: version string format */
+td.versionInfo
+{
+  text-align: center;
+  padding-top: 2px;
+  font-family: sans-serif;
+  font-style: italic;
+}
+
+/* Directory view/File view (all)/Test case descriptions:
+   table headline format */
+td.tableHead
+{
+  text-align: center;
+  color: #FFFFFF;
+  background-color: #6688D4;
+  font-family: sans-serif;
+  font-size: 120%;
+  font-weight: bold;
+  white-space: nowrap;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+span.tableHeadSort
+{
+  padding-right: 4px;
+}
+
+/* Directory view/File view (all): filename entry format */
+td.coverFile
+{
+  text-align: left;
+  padding-left: 10px;
+  padding-right: 20px;
+  color: #284FA8;
+  background-color: #DAE7FE;
+  font-family: monospace;
+}
+
+/* Directory view/File view (all): bar-graph entry format*/
+td.coverBar
+{
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: #DAE7FE;
+}
+
+/* Directory view/File view (all): bar-graph outline color */
+td.coverBarOutline
+{
+  background-color: #000000;
+}
+
+/* Directory view/File view (all): percentage entry for files with
+   high coverage rate */
+td.coverPer-high
+{
+  text-align: right;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: #A7FC9D;
+  font-weight: bold;
+}
+
+/* Directory view/File view (all): line count entry for files with
+   high coverage rate */
+td.coverNum-high
+{
+  text-align: right;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: #A7FC9D;
+  white-space: nowrap;
+}
+
+/* Directory view/File view (all): legend entry for high coverage
+   rate */
+span.coverLegendHi
+{
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 2px;
+  background-color: #A7FC9D;
+}
+
+/* Directory view/File view (all): percentage entry for files with
+   medium coverage rate */
+td.coverPer-med
+{
+  text-align: right;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: #FFEA20;
+  font-weight: bold;
+}
+
+/* Directory view/File view (all): line count entry for files with
+   medium coverage rate */
+td.coverNum-med
+{
+  text-align: right;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: #FFEA20;
+  white-space: nowrap;
+}
+
+/* Directory view/File view (all): legend entry for medium coverage
+   rate */
+span.coverLegendMed
+{
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 2px;
+  background-color: #FFEA20;
+}
+
+/* Directory view/File view (all): percentage entry for files with
+   low coverage rate */
+td.coverPer-low
+{
+  text-align: right;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: #FF0000;
+  font-weight: bold;
+}
+
+/* Directory view/File view (all): line count entry for files with
+   low coverage rate */
+td.coverNum-low
+{
+  text-align: right;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: #FF0000;
+  white-space: nowrap;
+}
+
+/* Directory view/File view (all): legend entry for low coverage
+   rate */
+span.coverLegendLo
+{
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 2px;
+  background-color: #FF0000;
+}
+
+/* File view (all): "show/hide details" link format */
+a.detail:link
+{
+  color: #B8D0FF;
+}
+
+/* File view (all): "show/hide details" link - visited format */
+a.detail:visited
+{
+  color: #B8D0FF;
+}
+
+/* File view (all): "show/hide details" link - activated format */
+a.detail:active
+{
+  color: #FFFFFF;
+}
+
+/* File view (detail): test name table headline format */
+td.testNameHead
+{
+  text-align: right;
+  padding-right: 10px;
+  background-color: #DAE7FE;
+  font-family: sans-serif;
+  font-weight: bold;
+}
+
+/* File view (detail): test lines table headline format */
+td.testLinesHead
+{
+  text-align: center;
+  background-color: #DAE7FE;
+  font-family: sans-serif;
+  font-weight: bold;
+}
+
+/* File view (detail): test name entry */
+td.testName
+{
+  text-align: right;
+  padding-right: 10px;
+  background-color: #DAE7FE;
+}
+
+/* File view (detail): test percentage entry */
+td.testPer
+{
+  text-align: right;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: #DAE7FE;
+}
+
+/* File view (detail): test lines count entry */
+td.testNum
+{
+  text-align: right;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: #DAE7FE;
+}
+
+/* Test case descriptions: test name format*/
+dt
+{
+  font-family: sans-serif;
+  font-weight: bold;
+}
+
+/* Test case descriptions: description table body */
+td.testDescription
+{
+  padding-top: 10px;
+  padding-left: 30px;
+  padding-bottom: 10px;
+  padding-right: 30px;
+  background-color: #DAE7FE;
+}
+
+/* Source code view: function entry */
+td.coverFn
+{
+  text-align: left;
+  padding-left: 10px;
+  padding-right: 20px;
+  color: #284FA8;
+  background-color: #DAE7FE;
+  font-family: monospace;
+}
+
+/* Source code view: function entry zero count*/
+td.coverFnLo
+{
+  text-align: right;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: #FF0000;
+  font-weight: bold;
+}
+
+/* Source code view: function entry nonzero count*/
+td.coverFnHi
+{
+  text-align: right;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: #DAE7FE;
+  font-weight: bold;
+}
+
+/* Source code view: source code format */
+/* Source code view: source code format */
+pre.source
+{
+  font-family: monospace;
+  white-space: pre;
+}
+
+/* Source code view: line number format */
+span.lineNum
+{
+  background-color: #EFE383;
+}
+
+/* Source code view: format for lines which were executed */
+td.lineCov,
+span.lineCov
+{
+  background-color: #CAD7FE;
+}
+
+/* Source code view: format for Cov legend */
+span.coverLegendCov
+{
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 2px;
+  background-color: #CAD7FE;
+}
+
+/* Source code view: format for lines which were not executed */
+td.lineNoCov,
+span.lineNoCov
+{
+  background-color: #FF6230;
+}
+
+/* Source code view: format for NoCov legend */
+span.coverLegendNoCov
+{
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 2px;
+  background-color: #FF0000;
+}
+
+/* Source code view (function table): standard link - visited format */
+td.lineNoCov > a:visited,
+td.lineCov > a:visited
+{
+  color: black;
+  text-decoration: underline;
+}
+
+/* Source code view: format for lines which were executed only in a
+   previous version */
+span.lineDiffCov
+{
+  background-color: #B5F7AF;
+}
+
+/* Source code view: format for DiffCov legend */
+span.LegendDiffCov
+{
+  text-align: center;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: #B5F7AF;
+}
+
+    </style>
+</head>
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler">&nbsp;</td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+        <tr>
+          <td width="5%"></td>
+          <td width="10%" class="headerItem">Current view:</td>
+
+          <td width="35%" class="headerValue"><a href="$report.directory;format="fullRelativePath"$/index.html">directory</a> - <a href="index.html">$report.directory$</a></td>
+          <td width="10%"></td>
+          <td width="10%" class="headerCovTableHead">Found</td>
+          <td width="10%" class="headerCovTableHead">Hit</td>
+
+          <td width="15%" class="headerCovTableHead">Coverage</td>
+          <td width="5%"></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td class="headerItem">Test:</td>
+          <td class="headerValue">lcov.info</td>
+
+          <td class="headerItem">Lines:</td>
+          <td class="headerCovTableEntry">$report.coveredLineCount$</td>
+          <td class="headerCovTableEntry">$report.calledLineCount$</td>
+          <td class="headerCovTableEntry-$report.calledLinePercentageName$">$report.calledLinePercentage$ %</td>
+        </tr>
+        <tr>
+          <td></td>
+
+          <td class="headerItem">Date:</td>
+          <td class="headerValue">$date$</td>
+          <td class="headerItem">Functions:</td>
+          <td class="headerCovTableEntry">$report.coveredFunctionCount$</td>
+          <td class="headerCovTableEntry">$report.calledFunctionCount$</td>
+          <td class="headerCovTableEntry-$report.calledFunctionPercentageName$">$report.calledFunctionPercentage$ %</td>
+
+        </tr>
+        <tr>
+          <td></td>
+
+          <td class="headerItemLeg">Colors:</td>
+          <td class="headerValueLeg">
+            Line coverage:<br>
+            <span class="coverLegendLo">0% to 15%</span>
+            <span class="coverLegendMed">15% to 50%</span>
+            <span class="coverLegendHi">50% to 100%</span>
+
+          </td>
+          <td></td>
+          <td class="headerValueLeg" colspan=3>
+            Function coverage:<br>
+            <span class="coverLegendLo">0% to 75%</span>
+            <span class="coverLegendMed">75% to 90%</span>
+            <span class="coverLegendHi">90% to 100%</span>
+
+          </td>
+        </tr>
+
+                <tr><td>&nbsp;</td></tr>
+        </table>
+      </td>
+    </tr>
+    <tr><td class="ruler">&nbsp;</td></tr>
+  </table>
+
+  <center>
+  <table width="80%" cellpadding=1 cellspacing=1 border=0>
+
+    <tr>
+      <td width="45%"><br></td>
+      <td width="15%"></td>
+      <td width="10%"></td>
+      <td width="10%"></td>
+      <td width="10%"></td>
+
+      <td width="10%"></td>
+    </tr>
+
+    <tr>
+      <td class="tableHead">Filename<!-- <span class="tableHeadSort"><img src="../../glass.png" width=10 height=14 alt="Sort by name" title="Sort by name" border=0></span>--></td>
+      <td class="tableHead" colspan=3>Line Coverage<!-- ( <a class="detail" href="index-detail.html">show details</a> ) <span class="tableHeadSort"><a href="index-sort-l.html"><img src="../../updown.png" width=10 height=14 alt="Sort by line coverage" title="Sort by line coverage" border=0></a></span>--></td>
+      <td class="tableHead" colspan=2>Functions<!-- <span class="tableHeadSort"><a href="index-sort-f.html"><img src="../../updown.png" width=10 height=14 alt="Sort by function coverage" title="Sort by function coverage" border=0></a></span>--></td>
+
+    </tr>
+    $report.fileReports:{
+        <tr>
+            <td class="coverFile"><a href="$it.file.name$.gcov.html">$it.file.name$</a></td>
+            <td class="coverBar" align="center">
+            <table border=0 cellspacing=0 cellpadding=1><tr><td class="coverBarOutline"><div style="width: 100px; height: 10px"><div class="progress-$it.calledLinePercentageName$" style="width: $it.calledLinePercentage$%; height: 100%"></div></div></td></tr></table>
+            </td>
+            <td class="coverPer-$it.calledLinePercentageName$">$it.calledLinePercentage$&nbsp;%</td>
+
+            <td class="coverNum-$it.calledLinePercentageName$">$it.calledLineCount$ / $it.coveredLineCount$</td>
+            <td class="coverPer-$it.calledFunctionPercentageName$">$it.calledFunctionPercentage$&nbsp;%</td>
+            <td class="coverNum-$it.calledFunctionPercentageName$">$it.calledFunctionCount$ / $it.coveredFunctionCount$</td>
+        </tr>
+    }$
+  </table>
+  </center>
+  <br>
+
+
+
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+  <tr><td class="ruler">&nbsp;</td></tr>
+
+  <tr><td class="versionInfo">Generated by: <a href="http://developer.yahoo.com/yui/" target="_parent">YUI Test</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
+>>

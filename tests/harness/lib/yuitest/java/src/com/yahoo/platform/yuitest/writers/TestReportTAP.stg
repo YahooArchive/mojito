@@ -1,0 +1,37 @@
+group TAPTemplates;
+
+report(report,date) ::= <<
+#Browser: $report.browser$
+#Date: $date$
+1..$report.total$
+#Begin report $report:atts()$
+$report.testSuites:testsuite()$
+$report.testCases:testcase()$
+#End report $report.name$
+>>
+
+testsuite() ::= <<
+#Begin testsuite $it:atts()$
+$it.testSuites:testsuite()$
+$it.testCases:testcase()$
+#End testsuite $it.name$
+
+>>
+
+testcase() ::= <<
+#Begin testcase $it:atts()$
+$it.tests:test()$
+#End testcase $it.name$
+
+>>
+
+test() ::= <<
+$if(it.passed)$
+ok $1; format="count"$ - $it.name$
+$elseif(it.failed)$
+not ok $1; format="count"$ - $it.name$ - $it.message$
+
+$endif$
+>>
+
+atts() ::= "$it.name$ ($it.failed$ failed of $it.total$)"
