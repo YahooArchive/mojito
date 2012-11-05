@@ -10,6 +10,22 @@
                 }
             },
             {
+                "environment": {
+                    "dev": {
+                        "development": null
+                    },
+                    "qa": {
+                        "smoke": null,
+                        "regression": null,
+                        "functional": null
+                    },
+                    "prod": {
+                        "staging": null,
+                        "production": null
+                    }
+                }
+            },
+			{
                 "device": {
                     "mobile": {
                         "android": null,
@@ -22,28 +38,8 @@
                     "tablet": {
                         "ipad": null,
                         "kindle": null
-                    },
-                    "desktop": null
                     }
                 } 
-            },
-            {
-                "environment": {
-                    "dev": {
-                        "development": null
-                    },
-                    "qa": {
-                        "smoke": null,
-                        "regression": null,
-                        "functional": null
-                    },
-                    "prod": {
-                        "staging": null,
-                        "manhattan-stage": null,
-                        "performance": null,
-                        "production": null
-                    }
-                }
             },
             {
                 "lang": {
@@ -188,18 +184,6 @@
                             "zh-Hant-TW": null
                         }
                     }
-                }
-            },
-            {
-                "network": {
-                    "ynet": null,
-                    "inet": null
-                }
-            },
-            {
-                "protocol": {
-                    "https": null,
-                    "http": null
                 }
             }
         ]
