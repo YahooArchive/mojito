@@ -16,7 +16,7 @@ YUI.add('HelloMojitModel-tests', function(Y) {
         name: 'HelloMojit model user tests',
         
         setUp: function() {
-            model = Y.mojito.models.HelloMojit;
+            model = Y.mojito.models.HelloMojitModel;
         },
         tearDown: function() {
             model = null;

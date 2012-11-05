@@ -15,7 +15,7 @@ YUI.add('i18nModel-tests', function(Y) {
         name: 'i18n model user tests',
         
         setUp: function() {
-            model = Y.mojito.models.i18n;
+            model = Y.mojito.models.i18nModel;
         },
         tearDown: function() {
             model = null;

@@ -16,7 +16,7 @@ YUI.add('RoutingMojitModel-tests', function(Y) {
         name: 'RoutingMojit model user tests',
         
         setUp: function() {
-            model = Y.mojito.models.RoutingMojit;
+            model = Y.mojito.models.RoutingMojitModel;
         },
         tearDown: function() {
             model = null;

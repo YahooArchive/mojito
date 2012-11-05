@@ -15,7 +15,7 @@ YUI.add('QueryMojitModel-tests', function(Y) {
         name: 'QueryMojit model user tests',
         
         setUp: function() {
-            model = Y.mojito.models.QueryMojit;
+            model = Y.mojito.models.QueryMojitModel;
         },
         tearDown: function() {
             model = null;
