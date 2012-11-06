@@ -42,4 +42,4 @@ YUI({
     Y.Test.Runner.add(suite);
   }
 
-});
+);
