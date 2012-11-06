@@ -307,10 +307,10 @@ function runMojitoApp (basePath, path, port, params, callback) {
     params = params || '';
     console.log('Starting ' + path + ' at port ' + port + ' with params ' + (params || 'empty'));
     var p;
-    if (params) {
-        p = runCommand(basePath + '/' + path, cwd + "/../bin/mojito", ["start", port, "--context", params], function () {});
-    } else {
+    if (params === '') {
         p = runCommand(basePath + '/' + path, cwd + "/../bin/mojito", ["start", port], function () {});
+    } else {
+        p = runCommand(basePath + '/' + path, cwd + "/../bin/mojito", ["start", port, "--context", params], function () {});
     }
     pids.push(p.pid);
     pidNames[p.pid] = libpath.basename(path) + ':' + port + (params ? '?' + params : '');
