@@ -1,0 +1,32 @@
+group GCOVFileReportTemplates;
+
+report(report,date) ::= <<
+    -:    0:Source:$report.filename$
+$report.lines:line()$
+>>
+
+line() ::= <<
+$if(!it.covered)$
+$it:uncoveredline()$
+$elseif(it.called)$
+$it:calledline()$
+$else$
+$it:uncalledline()$
+$endif$
+>>
+
+uncoveredline() ::= <<
+    -:$it:linedetail()$
+>>
+
+uncalledline() ::= <<
+#####:$it:linedetail()$$\n$
+>>
+
+calledline() ::= <<
+$it.callCount;format="padLeft5"$:$it:linedetail()$$\n$
+>>
+
+linedetail() ::= <<
+$it.lineNumber;format="padLeft5"$:$it.text$
+>>

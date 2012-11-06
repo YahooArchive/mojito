@@ -1,0 +1,33 @@
+YUI Test Java Tools
+Author: Nicholas C. Zakas <nzakas@yahoo-inc.com> 
+        www.nczonline.net
+Copyright (c) 2009, Yahoo! Inc. All rights reserved.
+
+Code licensed under the BSD License:
+     http://developer.yahoo.net/yui/license.txt
+
+
+This software contains an ANTLR grammar based off of work from a couple of sources:
+
+The original ES3 grammar is available under a BSD License.
+Copyright (c) 2008-2009 Xebic Reasearch BV. Original work by Patrick Hulsmeijer.
+
+The modified ES3 grammar contains portions from JsTestDriver
+(http://code.google.com/p/js-test-driver/) and is available under an
+Apache License, Version 2.0. Copyright (c) 2009 Google Inc. 
+
+          
+This software also requires access to software from the following sources:
+     
+The Jargs Library v 1.0 ( http://jargs.sourceforge.net/ ) is available
+under a BSD License. Copyright (c) 2001-2003 Steve Purcell,
+Copyright (c) 2002 Vidar Holen, Copyright (c) 2002 Michal Ceresna and
+Copyright (c) 2005 Ewan Mellor.
+
+The Antlr Library v3.2 (http://www.antlr.org) is available
+under a BSD License (http://www.antlr.org/license.html).
+Copyright (c) 2003-2008 Terrence Parr.
+
+The Selenium Java Client Driver Library v1.0.1 (http://www.seleniumhq.org)
+is available an Apache License (http://seleniumhq.org/about/license.html).
+
