@@ -416,7 +416,6 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
 
             var req = {
                     method: 'GET',
-                    // combining an existing file with an invalid one should trigger 400
                     url: '/combo?/compiled.css&/cacheable.css',
                     headers: {}
                 };
