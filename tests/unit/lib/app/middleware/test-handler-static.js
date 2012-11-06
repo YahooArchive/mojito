@@ -123,7 +123,8 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                 end,
                 req = {
                     url: '/foo/../bar.css',
-                    method: 'GET'
+                    method: 'GET',
+                    headers: {}
                 },
                 res = {
                     writeHead: function (c) {
@@ -277,14 +278,14 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                     context: {},
                     store:  store,
                     logger: {
-                        log: function() {}
+                        log: function () {}
                     }
                 });
                 store.getResourceContent = function(resource, cb) {
                     OA.areEqual(urlRess[req.url], resource, 'wrong resource');
                     resourceContentCalled = true;
                 };
-                handler(req, res, function() {
+                handler(req, res, function () {
                     callCount++;
                 });
                 A.areEqual(0, callCount, 'next() handler should not have been called');
@@ -382,7 +383,8 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
             var req = {
                     method: 'GET',
                     // combining an existing file with an invalid one should trigger 400
-                    url: '/combo?/compiled.css&PagedFlickrModel.js'
+                    url: '/combo?/compiled.css&PagedFlickrModel.js',
+                    headers: {}
                 };
             var writeHeadCalled = 0,
                 gotCode,
@@ -399,6 +401,39 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                         A.areSame(400, gotCode);
                         A.isUndefined(gotHeaders);
                         A.isUndefined(body);
+                    }
+                };
+            handler(req, res);
+        },
+
+
+        'valid combo url': function() {
+            var handler = factory({
+                    context: {},
+                    store: store,
+                    logger: { log: function() {} }
+                });
+
+            var req = {
+                    method: 'GET',
+                    // combining an existing file with an invalid one should trigger 400
+                    url: '/combo?/compiled.css&/cacheable.css',
+                    headers: {}
+                };
+            var writeHeadCalled = 0,
+                gotCode,
+                gotHeaders,
+                res = {
+                    writeHead: function(code, headers) {
+                        writeHeadCalled += 1;
+                        gotCode = code;
+                        gotHeaders = headers;
+                    },
+                    end: function(body) {
+                        var i;
+                        A.areSame(1, writeHeadCalled);
+                        A.areSame(200, gotCode);
+                        A.areSame(20, body.length, 'two segments of 10 digits according to getResourceContent method');
                     }
                 };
             handler(req, res);
