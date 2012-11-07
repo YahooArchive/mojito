@@ -49,7 +49,7 @@
         "async": "*",
         "commander": "1.0.1",
         "node-static": ">0.6",
-        "yahoo-arrow": "~0.0.64"
+        "yahoo-arrow": "0.0.67"
     },
     "homepage": "http://developer.yahoo.com/cocktails/mojito/",
     "repository": {
