@@ -20,12 +20,14 @@ program.command('test')
     .option('-d, --no-deploy', 'Don\'t deploy the apps')
     .option('-s, --no-selenium', 'Don\'t run arrow_selenium')
     .option('-a, --no-arrow', 'Don\'t run arrow_server')
+    .option('--debugApps', 'show STDOUT and STDERR from apps')
     .option('--logLevel <value>', 'Arrow logLevel')
     .option('--testName <value>', 'Arrow testName')
+    .option('--descriptor <value>', 'which descriptor to run. filename (or glob) relative to --path')
     .option('--group <value>', 'Arrow group')
     .option('--driver <value>', 'Arrow driver')
     .option('--browser <value>', 'Arrow browser')
-    .option('--path <value>', 'Path to find the tests')
+    .option('--path <value>', 'Path to find the tests. defaults to ./func or ./unit')
     .action(test);
 
 program.command('build')
@@ -173,9 +175,8 @@ function deploy (cmd, callback) {
         apps = appsConfig.applications;
 
     for (var i=0; i<apps.length; i++) {
-        (function () {
-            var app = apps[i],
-                port = app.port ? parseInt(app.port) : null,
+        (function (app) {
+            var port = app.port ? parseInt(app.port, 10) : null,
                 type = app.type || 'mojito';
 
             if ('mojito' === type) {
@@ -186,13 +187,13 @@ function deploy (cmd, callback) {
                             var test = mytests[j],
                                 port = test.port ? parseInt(test.port) : null;
                             appSeries.push(function (callback) {
-                                runMojitoApp(cmd.funcPath + '/applications', app.path, port, test.param, callback);
+                                runMojitoApp(cmd, cmd.funcPath + '/applications', app.path, port, test.param, callback);
                             });
                         })();
                     }
                 } else if (app.enabled === "true" && app.path && port) {
                     appSeries.push(function (callback) {
-                        runMojitoApp(cmd.funcPath + '/applications', app.path, port, app.param, callback);
+                        runMojitoApp(cmd, cmd.funcPath + '/applications', app.path, port, app.param, callback);
                     });
                 }
             } else if ('static' === type) {
@@ -200,7 +201,7 @@ function deploy (cmd, callback) {
                     runStaticApp(cmd.funcPath + '/applications', app.path, port, app.param, callback);
                 });
             }
-        })();
+        })(apps[i]);
     }
     async.series(appSeries, callback);
 }
@@ -222,9 +223,10 @@ function runFuncTests (cmd, callback) {
     } catch (e) {}
     wrench.mkdirSyncRecursive(arrowReportDir);
 
+    var descriptor = cmd.descriptor || '**/*_descriptor.json';
     var commandArgs = [
         cwd + "/../node_modules/yahoo-arrow/index.js",
-        cmd.funcPath + "/**/*_descriptor.json",
+        cmd.funcPath + '/' + descriptor,
         "--report=true",
         "--reportFolder=" + arrowReportDir
     ];
@@ -305,7 +307,18 @@ function runCommand (path, command, argv, callback) {
     return cmd;
 }
 
-function runMojitoApp (basePath, path, port, params, callback) {
+function runMojitoApp (cliOptions, basePath, path, port, params, callback) {
+    /* useful when debugging
+    var OK = {
+        4081: true,
+    };
+    if (! OK[port]) {
+        console.error('------------------------------- SKIPPING APP ON PORT ' + port);
+        callback();
+        return;
+    }
+    */
+
     params = params || '';
     console.log('Starting ' + path + ' at port ' + port + ' with params ' + (params || 'empty'));
     var p = runCommand(basePath + '/' + path, cwd + "/../bin/mojito", ["start", port, "--context", params], function () {});
@@ -313,6 +326,15 @@ function runMojitoApp (basePath, path, port, params, callback) {
     pidNames[p.pid] = libpath.basename(path) + ':' + port + (params ? '?' + params : '');
     // Give each app a second to start
     setTimeout(function () { callback(null) }, 1000);
+
+    if (cliOptions.debugApps) {
+        p.stdout.on('data', function(data) {
+            console.error('---DEBUG ' + port + ' STDOUT--- ' + data.toString());
+        });
+        p.stderr.on('data', function(data) {
+            console.error('---DEBUG ' + port + ' STDERR--- ' + data.toString());
+        });
+    }
 }
 
 function runStaticApp (basePath, path, port, params, callback) {
