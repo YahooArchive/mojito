@@ -4,7 +4,9 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('logBinderIndex', function(Y, NAME) {
+/*jslint anon:true, sloppy:true, nomen:true*/
+
+YUI.add('logBinderIndex', function (Y, NAME) {
 
 /**
  * The logBinderIndex module.
@@ -22,13 +24,13 @@ YUI.add('logBinderIndex', function(Y, NAME) {
      * @constructor
      */
     Y.namespace('mojito.binders')[NAME] = {
-		
+
         /**
          * Binder initialization method, invoked after all binders on the page
          * have been constructed.
          */
-        init: function(mojitProxy) {
-        Y.log('[BINDER]: Log message from init.',"info"); 
+        init: function (mojitProxy) {
+            Y.log('[BINDER]: Log message from init.', "info");
             this.mojitProxy = mojitProxy;
         },
 
@@ -38,8 +40,8 @@ YUI.add('logBinderIndex', function(Y, NAME) {
          *
          * @param node {Node} The DOM node to which this mojit is attached.
          */
-        bind: function(node) {
-        Y.log('[BINDER]: Log message from bind.',"info"); 
+        bind: function (node) {
+            Y.log('[BINDER]: Log message from bind.', "info");
             this.node = node;
         }
 

@@ -46,8 +46,8 @@ In the example controller below, the value for the ``name`` query string paramet
 
 .. code-block:: javascript
 
-   YUI.add('ParamsMojit', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('ParamsMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
        init: function(config) {
          this.config = config;
        },
@@ -67,12 +67,12 @@ All Parameters
 To get all of the query string parameters, you call ``getFromUrl`` or its alias ``url`` without passing a key as a parameter.
 
 In this example controller, all of the query string parameter are stored in the ``qs_params`` array, which ``ac.done`` makes available in 
-the view template.
+the template.
 
 .. code-block:: javascript
 
-   YUI.add('ParamsMojit', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('ParamsMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
        init: function(config) {
          this.config = config;
        },
@@ -103,12 +103,12 @@ Single
 To get a parameter from the POST body, call ``getFromBody`` with the key as the parameter. You can also use the alias ``body`` to get a parameter
 from the POST body.
 
-In the example controller below, the POST body parameter ``name`` is retrieved and then uses the ``done`` method to make it accessible to the view template.
+In the example controller below, the POST body parameter ``name`` is retrieved and then uses the ``done`` method to make it accessible to the template.
 
 .. code-block:: javascript
 
-   YUI.add('ParamsMojit', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('ParamsMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
        init: function(config) {
          this.config = config;
        },
@@ -132,8 +132,8 @@ template.
 
 .. code-block:: javascript
 
-   YUI.add('ParamsMojit', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('ParamsMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
        init: function(config) {
          this.config = config;
        },
@@ -204,8 +204,8 @@ In the example controller below, the routing parameter ``coupon`` is used to det
 
 .. code-block:: javascript
 
-   YUI.add('CouponMojit', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('CouponMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
        init: function(config) {
          this.config = config;
        },
@@ -234,8 +234,8 @@ In the example controller below, all of the routing routing parameters to create
 
 .. code-block:: javascript
 
-   YUI.add('LinkMojit', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('LinkMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
        init: function(config) {
          this.config = config;
        },
@@ -274,8 +274,8 @@ In the example controller below, the ``name`` parameter is obtained using ``getF
 
 .. code-block:: javascript
 
-   YUI.add('MergedParamsMojit', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('MergedParamsMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
        init: function(config) {
          this.config = config;
        },
@@ -296,8 +296,8 @@ To get all of the GET, POST, and routing parameters, call ``getFromMerged`` or `
 
 .. code-block:: javascript
 
-   YUI.add('MergedParamsMojit', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('MergedParamsMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
        init: function(config) {
          this.config = config;
        },
@@ -328,12 +328,12 @@ Getting Cookie Data
 -------------------
 
 The method ``cookie.get(name)`` is used to get the cookie value associated with ``name``. In the example controller below, the cookie value 
-for ``'user'`` is obtained and then used to pass user information to the view template.
+for ``'user'`` is obtained and then used to pass user information to the template.
 
 .. code-block:: javascript
 
-   YUI.add('CookieMojit', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('CookieMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
        init: function(config) {
          this.config = config;
      },
@@ -356,8 +356,8 @@ with the name ``'user'`` if one does not exist.
 
 .. code-block:: javascript
 
-   YUI.add('CookieMojit', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('CookieMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
        init: function(config) {
          this.config = config;
      },

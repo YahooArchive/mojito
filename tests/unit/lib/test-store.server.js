@@ -143,7 +143,7 @@ YUI().use(
                 });
             },
 
-            'server mojit config value via type & overrride': function() {
+            'server mojit config value via type and overrride': function() {
                 var instance = {
                     type:'test_mojit_1',
                     config:{testKey4: 'other'}
@@ -167,7 +167,7 @@ YUI().use(
                 });
             },
 
-            'server mojit instance views & binders': function() {
+            'server mojit instance views and binders': function() {
                 var instance = {type:'test_mojit_1'};
                 store.expandInstanceForEnv('client', instance, {}, function(err, instance) {
                     A.areSame(3, Y.Object.keys(instance.views).length);
@@ -287,11 +287,29 @@ YUI().use(
                 cmp(post, pre);
             },
 
+            'call getSpec()': function() {
+                store.getSpec('server', 'test1', {}, function(err, instance) {
+                    A.areSame('test_mojit_1', instance.type);
+                    A.areSame('test1', instance.id);
+                    // ... and all the type-specific parts...
+                    A.areSame('/static/test_mojit_1/assets', instance.assetsRoot);
+                });
+            },
+
+            'call getType()': function() {
+                store.getType('server', 'test_mojit_1', {}, function(err, instance) {
+                    A.areSame('test_mojit_1', instance.type);
+                    A.isUndefined(instance.id);
+                    // ... and all the type-specific parts...
+                    A.areSame('/static/test_mojit_1/assets', instance.assetsRoot);
+                });
+            },
+
             'instance with base pointing to non-existant spec': function() {
                 var spec = { base: 'nonexistant' };
                 store.expandInstance(spec, {}, function(err, instance) {
                     A.isNotUndefined(err);
-                    A.areSame('Unknown base of "nonexistant"', err.message);
+                    A.areSame('Unknown base "nonexistant". You should have configured "nonexistant" in application.json under specs or used "@nonexistant" if you wanted to specify a mojit name.', err.message);
                     A.isUndefined(instance);
                 });
             },

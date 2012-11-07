@@ -173,7 +173,7 @@ Articles
 		  <td><a class="ulink" href="http://www.wired.com/wiredenterprise/2012/04/yahoo-open-sources-mojito/" target="_top">Yahoo Open Sources Its Apple App Store Killer</a></td>
 		  <td><a class="ulink" href="http://www.wired.com" target="_top">Wired</a></td>
 		  <td>2012-04-02</td>
-		  <td><a href="http://www.wired.com/cloudline/members/cademetz/">Cade Metz</a></td>
+		  <td><a href="http://www.wired.com/wiredenterprise/author/cade_metz">Cade Metz</a></td>
 		</tr>		  
 	    <tr>
 	      <td><a class="ulink" href="http://cnet.co/FPVLPT" target="_top">Why Ambitious Developers Need More Than Just HTML5</a></td>
@@ -221,7 +221,7 @@ Articles
 		  <td><a class="ulink" href="http://www.wired.com/wiredenterprise/2011/11/yahoos-manhattan/" target="_top">Yahoo’s ‘Manhattan’ To Rescue Web From the iPad</a></td>
 		  <td><a class="ulink" href="http://www.wired.com" target="_top">Wired</a></td>
 		  <td>2011-11-02</td>
-		  <td><a href="http://www.wired.com/cloudline/members/cademetz/">Cade Metz</a></td>
+		  <td><a href="http://www.wired.com/wiredenterprise/author/cade_metz">Cade Metz</a></td>
 		</tr>
 	  </tbody>
 	</table>

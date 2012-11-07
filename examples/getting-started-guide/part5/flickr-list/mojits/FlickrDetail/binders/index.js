@@ -4,14 +4,14 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('FlickrDetailBinderIndex', function(Y, NAME) {
+YUI.add('FlickrDetailBinderIndex', function (Y, NAME) {
 
 /**
  * The FlickrDetailBinder module.
  *
  * @module FlickrDetailBinder
  */
-
+    "use strict";
     /**
      * Constructor for the Binder class.
      *
@@ -21,22 +21,22 @@ YUI.add('FlickrDetailBinderIndex', function(Y, NAME) {
      * @class Binder
      * @constructor
      */
-    
+
     Y.namespace('mojito.binders')[NAME] = {
 
         /**
          * Binder initialization method, invoked after all binders on the page
          * have been constructed.
          */
-        init: function(mojitProxy) {
+        init: function (mojitProxy) {
             var self = this;
             this.mojitProxy = mojitProxy;
-            this.mojitProxy.listen('flickr-image-detail', function(payload) {
+            this.mojitProxy.listen('flickr-image-detail', function (payload) {
                 Y.log('on flickr-image-detail ' + payload.data.id, 'debug', NAME);
-                var urlParams = Y.mojito.util.copy(mojitProxy.context);
-                var routeParams = {
-                    image: payload.data.id
-                };
+                var urlParams = Y.mojito.util.copy(mojitProxy.context),
+                    routeParams = {
+                        image: payload.data.id
+                    };
                 mojitProxy.refreshView({
                     params: {
                         url: urlParams,
@@ -52,7 +52,7 @@ YUI.add('FlickrDetailBinderIndex', function(Y, NAME) {
          *
          * @param node {Node} The DOM node to which this mojit is attached.
          */
-        bind: function(node) {
+        bind: function (node) {
             this.node = node;
         }
 

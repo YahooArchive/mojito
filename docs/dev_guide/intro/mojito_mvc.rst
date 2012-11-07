@@ -37,7 +37,7 @@ Thus, the ``YUI.add`` statement in ``photos/models/flickr.server.js`` would be t
 
 .. code-block:: javascript
 
-   YUI.add("photosModelFlickr", function(Y) {
+   YUI.add("photosModelFlickr", function(Y, NAME) {
       ...
    }
 
@@ -48,10 +48,10 @@ A model should have the basic structure shown below.
 
 .. code-block:: javascript
 
-   YUI.add('{mojit_name}Model{Model_name}', function(Y) {
+   YUI.add('{mojit_name}Model{Model_name}', function(Y, NAME) {
      // Models must register themselves in the
-     // Y.mojito.models namespace.
-     Y.namespace('mojito.models').{model_name} = {
+     // Namespace for models
+     Y.namespace('mojito.models')[NAME] = {
        // Optional init() method is given the
        // mojit configuration information.
        init: function(config) {
@@ -76,21 +76,21 @@ Model Objects and Methods
 The following objects and methods form the backbone of the model.
 
 - ``YUI.add`` - (required) adds the module 
-- ``Y.namespace('mojito.model')`` - (required) registers the model 
+- ``Y.namespace('mojito.models')[NAME]`` - (required) registers the model 
 - ``init`` - (optional) gets configuration information 
 
 
 The example model below shows you how the objects and methods are used. The ``galleryModelFlickr`` model is registered with ``YUI.add``, and the namespace for the 
-model is created with ``Y.namespace('mojito.models').flickr``. The ``init`` function stores the date so it can be used by other functions, and the ``requires`` array 
+model is created with ``Y.namespace('mojito.models')[NAME]``. The ``init`` function stores the date so it can be used by other functions, and the ``requires`` array 
 instructs Mojito to load the YUI module ``yql`` for getting data.
 
 .. code-block:: javascript
 
-   YUI.add('galleryModelFlickr', function(Y) {
+   YUI.add('galleryModelFlickr', function(Y, NAME) {
    
      // Models must register themselves in the 
-     // Y.mojito.models namespace.
-     Y.namespace('mojito.models').flickr = {
+     // Namespace for model
+     Y.namespace('mojito.models')[NAME] = {
        // Optional init() method is given the mojit 
        // configuration information.       
        init: function(config) {
@@ -121,8 +121,8 @@ see `Calling the Model`_ and `Calling YQL from a Mojit <../code_exs/calling_yql.
 
 .. code-block:: javascript
 
-   YUI.add('{mojit_name}', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('{mojit_name}', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
        index: function(ac) {
          // Use ac.models.{mojit_name} if the default model 'model.server.js' is being used.
          var model = ac.models.{model_name};
@@ -136,10 +136,10 @@ Example
 
 .. code-block:: javascript
 
-   YUI.add('weatherModelForecast', function(Y) {
+   YUI.add('weatherModelForecast', function(Y, NAME) {
      // Models must register themselves in the
-     // Y.mojito.models namespace.
-     Y.namespace('mojito.models').forecast = {
+     // Namespace for model
+     Y.namespace('mojito.models')[NAME] = {
        // Optional init() method is given the mojit
        // configuration information.
        init: function(config) {
@@ -183,10 +183,10 @@ A controller should have the following basic structure:
 
 .. code-block:: javascript
 
-   YUI.add('{mojit_name}', function(Y)
+   YUI.add('{mojit_name}', function(Y, NAME)
      // Module name is {mojit-name}
      // Constructor for the Controller class.
-     Y.mojito.controller = {
+     Y.namespace('mojito.controllers')[NAME] = {
        // The spec configuration is passed to init
        init: function(config) {
          this.config = config;
@@ -214,28 +214,27 @@ Controller Objects and Methods
 Several objects and methods form the backbone of the controller.
 
 - ``YUI.add`` - (required) registers the controller as a YUI module in the Mojito framework. 
-- ``Y.mojito.controller`` -  (required) creates a namespace that makes functions available as Mojito 
+- ``Y.namespace('mojito.controllers')[NAME]`` -  (required) creates a namespace that makes functions available as Mojito 
   actions.
 - ``init`` - (optional) if you provide an ``init`` function on your controller, Mojito will call it 
   as it creates a controller instance, passing in the mojit specification. You can store the 
   specification on the ``this`` reference for use within controller functions.
 - ``this`` - a reference pointing to an instance of the controller that the function is running 
-  within. This means that you can refer to other functions described within ``Y.mojito.controller`` 
+  within. This means that you can refer to other functions described within ``Y.namespace('mojito.controllers')[NAME]`` 
   using ``this.otherFunction``. This is helpful when you've added some utility functions onto your 
   controller that do not accept an ActionContext object.
 - ``requires`` - (optional) an array that lists additional YUI modules needed by the controller.
 
 The example controller below shows you how the components are used. The ``status`` mojit is 
-registered with ``YUI.add``, and the ``Y.mojito.controller`` namespace is created with the ``init`` 
-and other functions. The ``init`` function stores the date so it can be used by other functions, and 
+registered with ``YUI.add`` and the ``init`` function stores the date so it can be used by other functions, and 
 the ``this`` reference allows the ``index`` function to call ``create_status``. Lastly, the 
 ``requires`` array instructs Mojito to load the YUI module ``mojito-intl-addon`` for localizing the 
 date and title.
 
 .. code-block:: javascript
 
-   YUI.add('status', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('status', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = {  
        init: function(spec) {
          this.spec = spec;
          this.date = new Date();
@@ -298,15 +297,15 @@ properties as seen below.
      }
    ]
 
-In the controller, any function that is defined in the ``Y.mojito.controller`` namespace is 
+In the controller, any function that is defined in the ``Y.namespace('mojito.controllers')[NAME]`` is 
 available as a Mojito action. These functions can only accept the ``ActionContext`` object as an 
 argument. In the example controller below, the ``index`` and ``greeting`` functions are available as 
 Mojito actions.
 
 .. code-block:: javascript
 
-   YUI.add('Stateful', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('Stateful', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = {  
        init: function(config) {
          this.config = config;
        },
@@ -332,8 +331,8 @@ You can also use ``init`` to store other initialization data on ``this`` as seen
 
 .. code-block:: javascript
 
-   YUI.add('PlaceFinder', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('PlaceFinder', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = {  
        init: function(config) {
          this.config = config;
          this.geo_api = "http://where.yahooapis.com/geocode";
@@ -344,7 +343,7 @@ You can also use ``init`` to store other initialization data on ``this`` as seen
 
 Within your controller actions and the ``init`` action, the ``this`` reference points to an instance 
 of the controller the action is running within. This means that you can refer to other 
-functions or actions described within ``Y.mojito.controller`` using the syntax 
+functions or actions described within ``Y.namespace('mojito.controllers')[NAME]`` using the syntax 
 ``this.{otherFunction}``. This is helpful when you've added some utility functions onto your 
 controller that do not accept an ActionContext object as the argument, but you wish to use for 
 several actions.
@@ -354,8 +353,8 @@ In the example controller below, the ``health`` function uses ``this`` to call t
 
 .. code-block:: javascript
 
-   YUI.add('HealthStats', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('HealthStats', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = {  
        init: function(config) {
          this.config = config;
        },
@@ -399,8 +398,8 @@ the ``simple`` mojit.
 
 .. code-block:: javascript
 
-   YUI.add('simple', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('simple', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = {  
        init: function(config) {
          this.config = config;
        },
@@ -427,11 +426,11 @@ should only be called once. If neither ``done`` nor ``error`` is called,
 your application will hang waiting for output.
 
 In the example ``controller.server.js`` below, the ``index`` function sends the ``user`` object to 
-the ``index`` view template.
+the ``index`` template.
 
 .. code-block:: javascript
 
-   YUI.add('UserMojit', function(Y) {
+   YUI.add('UserMojit', function(Y, NAME) {
      /**
      * The HelloMojit module.
      * @module HelloMojit
@@ -441,7 +440,7 @@ the ``index`` view template.
      * @class Controller
      * @constructor
      */
-     Y.mojito.controller = {
+     Y.namespace('mojito.controllers')[NAME] = {  
        init: function(config) {
          this.config = config;
        },
@@ -463,19 +462,19 @@ Specifying the View
 The default behavior when you pass data from the controller to the view is for the data to be passed 
 to the view that has the same name as the controller function. For example, if 
 ``ac.done({ "title": "Default View" })`` is invoked in the controller ``index`` function, the data 
-is sent by default to the ``index`` view template. The ``index`` view template could be 
+is sent by default to the ``index`` template. The ``index`` template could be 
 ``index.hb.html``, ``index.iphone.hb.html``, etc., depending on the calling device and rendering 
 engine.
 
 To specify the view that receives the data, the controller function passes two parameters to 
 ``ac.done``: The first parameter is the data, and the second parameter specifies the view name in 
 the object ``{ "view": { "name": "name_of_view_receiving_data" } }``. In the example controller 
-below, the ``user`` function passes the ``data`` object to the ``profile`` view template 
-instead of the default ``user`` view template.
+below, the ``user`` function passes the ``data`` object to the ``profile`` template 
+instead of the default ``user`` template.
 
 .. code-block:: javascript
 
-   YUI.add('UserMojit', function(Y) {
+   YUI.add('UserMojit', function(Y, NAME) {
      /**
      * The HelloMojit module.
      * @module HelloMojit
@@ -485,7 +484,7 @@ instead of the default ``user`` view template.
      * @class Controller
      * @constructor
      */
-     Y.mojito.controller = {
+     Y.namespace('mojito.controllers')[NAME] = {  
        init: function(config) {
          this.config = config;
        },
@@ -495,11 +494,11 @@ instead of the default ``user`` view template.
        * provides access to the Mojito API.
        */
        index: function(ac) {
-         var data = { "title": "Going to default view template." }
+         var data = { "title": "Going to default template." }
          ac.done(data);
        },
        user: function(ac) {
-         var data = { "title": "Going to profile view template." }
+         var data = { "title": "Going to profile template." }
          ac.done(data, { "view": { "name": "profile" } });
        }
      };
@@ -548,8 +547,8 @@ sent back in a callback.
 
 .. code-block:: javascript
 
-   YUI.add('Stateful', function(Y) {
-     Y.mojito.controller = {
+   YUI.add('Stateful', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = {  
        init: function(config) {
          this.config = config;
          this.time = new Date().getTime();
@@ -588,40 +587,40 @@ Views
 #####
 
 The views are HTML files that can include templates, such as Handlebars expressions, and are located in 
-the ``views`` directory. We call these files *view templates* to differentiate 
+the ``views`` directory. We call these files *templates* to differentiate 
 them from the rendered views that have substituted values for the template tags.
 
 Naming Convention
 =================
 
-The naming convention of the view templates is based on the controller function that supplies data, 
+The naming convention of the templates is based on the controller function that supplies data, 
 the engine that renders the templates, and the device requesting the page. If the calling device is 
 determined not to be a portable device such as a cell phone, the ``{device}`` element of the syntax 
 below is omitted.
 
-**File Naming Convention for View Templates:**
+**File Naming Convention for Templates:**
 
 ``{controller_function}.[{device}].{rendering_engine}.html``
 
-For example, if the view template is receiving data from the ``index`` function of the controller 
-and has Handlebars expressions that need to be rendered, the name of the view template would be 
+For example, if the template is receiving data from the ``index`` function of the controller 
+and has Handlebars expressions that need to be rendered, the name of the template would be 
 ``index.hb.html``.
 
-Here are some other example view template names with descriptions:
+Here are some other example template names with descriptions:
 
-- ``greeting.hb.html`` - This view template gets data from the ``greeting`` function of the 
+- ``greeting.hb.html`` - This template gets data from the ``greeting`` function of the 
   controller and the calling device is determined to be a Web browser.
-- ``get_photos.iphone.hb.html`` - This view template gets data from the ``get_photos`` function of 
+- ``get_photos.iphone.hb.html`` - This template gets data from the ``get_photos`` function of 
   the controller and the calling device is an iPhone.
-- ``find_friend.android.hb.html`` - This view template gets data from the ``find_friend`` function 
+- ``find_friend.android.hb.html`` - This template gets data from the ``find_friend`` function 
   of the controller and the calling device is Android based.
 
-.. note:: Currently, Mojito comes with Handlebars, so the name of view templates 
+.. note:: Currently, Mojito comes with Handlebars, so the name of templates 
           always contains ``hb``. Users can use other 
           `view engines <../topics/mojito_extensions.html#view-engines>`_, but the
-          ``{rendering_engine}`` component of the view template name must change. An error will 
+          ``{rendering_engine}`` component of the template name must change. An error will 
           occur if the file names of different views are the same except the ``{rendering_engine}``. 
-          For example, having the two view templates ``index.hb.html`` and 
+          For example, having the two templates ``index.hb.html`` and 
           ``index.ejs.html`` (``ejs`` could be `Embedded JavaScript (EJS) <http://embeddedjs.com/>`_) would 
           cause an error.
 
@@ -632,7 +631,7 @@ Supported Devices
 Mojito can examine the HTTP header ``User Agent`` and detect the following devices/browsers: 
 
 +-----------------+---------------------------+
-| Device/Browser  | Example View Template     |
+| Device/Browser  | Example Template          |
 +=================+===========================+
 | Opera Mini      | index.opera-mini.hb.html  |
 +-----------------+---------------------------+
@@ -690,14 +689,14 @@ the property title is evaluated.
 Mojito-Supplied Data
 ====================
 
-Mojito supplies the following data that can be accessed as template tags in the view template:
+Mojito supplies the following data that can be accessed as template tags in the template:
 
 - ``{{mojit_view_id}}`` - a unique ID for the view being rendered. We recommend that this tag be 
   used as the value for the ``id`` attribute of the a top-level element (i.e., ``<div>``) of your 
   template because it is used to bind the binders to the DOM of the view.
 - ``{{mojit_assets}}`` - the partial URL to the ``assets`` directory of your mojit. You can use the 
   value of this tag to point to specific assets. For example, if your mojit has the 
-  image ``assets/spinner.gif``, then you can point to this image in your view template with the 
+  image ``assets/spinner.gif``, then you can point to this image in your template with the 
   following: ``<img src="{{mojit_assets}}/spinner.gif">``
 
 .. note:: The prefix ``mojit_`` is reserved for use by Mojito, and thus, user-defined variables 

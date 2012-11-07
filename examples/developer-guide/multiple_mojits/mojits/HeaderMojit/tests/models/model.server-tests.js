@@ -15,7 +15,7 @@ YUI.add('HeaderMojitModel-tests', function(Y) {
         name: 'HeaderMojit model user tests',
         
         setUp: function() {
-            model = Y.mojito.models.HeaderMojit;
+            model = Y.mojito.models.HeaderMojitModel;
         },
         tearDown: function() {
             model = null;

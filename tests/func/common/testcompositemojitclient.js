@@ -7,7 +7,7 @@ YUI({
     logInclude: { TestRunner: true }
 }).use('node', 'node-event-simulate', 'test', 'console', 'json-parse', function (Y) {
 
-    var suite = new Y.Test.Suite("Common");
+    var suite = new Y.Test.Suite("Common: compositemojitclient");
 
     suite.add(new Y.Test.Case({
 

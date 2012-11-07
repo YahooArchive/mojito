@@ -4,13 +4,15 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('MainMojitModel', function(Y) {
+/*jslint anon:true, sloppy:true, nomen:true*/
 
-    Y.mojito.models.MainMojit = {
+YUI.add('MainMojitModel', function (Y, NAME) {
 
-        getData: function(callback) {
-            callback({some:'data'});
+     Y.namespace('mojito.models')[NAME] = {
+
+        getData: function (callback) {
+            callback({some: 'data'});
         }
 
     };
-}, '0.0.1', {requires: ['']});
+}, '0.0.1', {requires: ['mojito']});

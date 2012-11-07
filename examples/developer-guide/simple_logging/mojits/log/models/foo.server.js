@@ -4,7 +4,9 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('logModelFoo', function(Y) {
+/*jslint anon:true, sloppy:true, nomen:true*/
+
+YUI.add('logModelFoo', function (Y, NAME) {
 
 /**
  * The logModelFoo module.
@@ -18,10 +20,10 @@ YUI.add('logModelFoo', function(Y) {
      * @class logModelFoo
      * @constructor
      */
-    Y.mojito.models.logModelFoo = {
- 
-        init: function(config) {
-        Y.log('model: entering into init (..)' +config,"INFO");
+     Y.namespace('mojito.models')[NAME] = {
+
+        init: function (config) {
+            Y.log('model: entering into init (..)' + config, "INFO");
             this.config = config;
         },
 
@@ -31,8 +33,8 @@ YUI.add('logModelFoo', function(Y) {
          * @param callback {Function} The callback function to call when the
          *        data has been retrieved.
          */
-        getData: function(callback) {
-            callback({some:'data'});
+        getData: function (callback) {
+            callback({some: 'data'});
         }
 
     };

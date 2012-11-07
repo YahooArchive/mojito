@@ -233,7 +233,7 @@ Metadata Object
 +---------------------------+---------------+---------------+---------------------+-----------------------------------+------------------------------------------------+
 | :ref:`view <view_ob>`     | object        | yes, if       | none                | N/A                               | Specifies the output format such as HTML, XML, |
 |                           |               | ``type:view`` |                     |                                   | JSON, etc., and the engine that renders the    |
-|                           |               |               |                     |                                   | view template into the output format.          |
+|                           |               |               |                     |                                   | template into the output format.               |
 +---------------------------+---------------+---------------+---------------------+-----------------------------------+------------------------------------------------+
 | :ref:`yui <yui_obj>`      | object        | no            | none                | N/A                               | The metadata about YUI modules. See the        |
 |                           |               |               |                     |                                   | :ref:`yui Object <yui_obj>` for more           |
@@ -322,14 +322,14 @@ view Object
 +------------------------+---------------+-----------+---------------+-------------------------------+-----------------------------------------------+
 | Property               | Data Type     | Required? | Default Value | Possible Values               | Description                                   |
 +========================+===============+===========+===============+===============================+===============================================+
-| ``engine``             | string        | yes       | none          | Any view engine found         | The engine that renders the view template.    |  
+| ``engine``             | string        | yes       | none          | Any view engine found         | The engine that renders the template.         |  
 |                        |               |           |               | in ``addons/view-engines/``   | Two examples of rendering engines are         |
 |                        |               |           |               | of the application.           | Dust and Handlebars.                          |
 +------------------------+---------------+-----------+---------------+-------------------------------+-----------------------------------------------+
-| ``outputFormat``       | string        | yes       | none          | N/A                           | The output format that a view template is     |
+| ``outputFormat``       | string        | yes       | none          | N/A                           | The output format that a template is          |
 |                        |               |           |               |                               | rendered into, such as HTML, XML, and JSON.   |
 |                        |               |           |               |                               | The ``outputFormat`` matches the file         |
-|                        |               |           |               |                               | extension of the view template. For example,  |
+|                        |               |           |               |                               | extension of the template. For example,       |
 |                        |               |           |               |                               | the output format for ``index.hb.html`` would |
 |                        |               |           |               |                               | be HTML.                                      |
 +------------------------+---------------+-----------+---------------+-------------------------------+-----------------------------------------------+
@@ -375,6 +375,7 @@ The ``type`` property of the ``metadata`` object can have any of the following v
 - ``binder``      - a binder for a mojit
 - ``asset``       - an asset (css, js, image, etc.)
 - ``addon``       - an addon to the mojito system
+- ``archetype``   - the commands to create resources as described in the output from ``mojito help create`` 
 - ``spec``        - the configuration for a mojit instance
 - ``yui-lang``    - a YUI 3 language bundle
 - ``yui-module``  - a YUI 3 module (that isn't one of the above)
@@ -388,9 +389,9 @@ You can use a subtype to specify types of a ``type``. For example, a
 resource of ``type:addon`` might have subtypes, such as ``subtype:ac`` for AC addons,  
 ``subtype:view-engine`` for view engines, or ``subtype:rs`` for |RS| addons. 
 
-For ``type:archetype``, the subtypes refers to the ``type`` described in the output from 
-the command ``mojito help create``.  So, you could have ``subtype:app``  or 
-``subtype:mojit``.  (There may be more in the future!)       
+For ``type:archetype``, the subtypes could be ``subtype:app``  or 
+``subtype:mojit``.  The subtype specifies what archetype Mojito should create,
+such as an application or mojit. (There may be more in the future!)       
 
 
 .. _sel_prop:
@@ -409,11 +410,39 @@ period (``'.'``) or slash (``'/'``) in it.  In practice, it's suggested to use a
 hyphen ('-') characters only.
  
 Only one selector can be used in each configuration object identified by the 
-``setting`` property, which defines the context.
- 
-The specified selectors must match the selector found in the 
-resource file names.  So, for example, the view ``views/index.iphone.hb.html`` has 
+``setting`` property, which defines the context. The specified selectors must match the selector 
+found in the resource file names.  So, for example, the template ``views/index.iphone.hb.html`` has 
 the selector ``iphone``.
+
+Example
+#######
+
+The selector is typically used in conjunction with a context to specify a resource
+for a particular device. In the example ``application.json`` below, the selector
+``ipad`` is defined when the context is ``device:ipad``. If an application
+is running in the ``device:ipad`` context, Mojito will select resources
+with ``ipad`` identifier. Thus, Mojito might render the template ``index.ipad.hb.html`` 
+and **not** ``index.iphone.hb.html``.
+
+.. code-block:: javascript
+
+   [
+     { 
+       "settings": ["master"],
+       ...
+     },
+     {
+       "settings": ["device:ipad"], 
+       "selector":"ipad",
+       "specs": {
+         "iPad": {
+           "type": "iPadReader",
+         }
+       }
+     }
+   ]  
+    
+
 
 
 .. _metatdata-versions:
@@ -920,8 +949,7 @@ Controller
 
    YUI.add('Viewer', function(Y, NAME) {
    
-     Y.mojito.controllers[NAME] = {
-
+     Y.namespace('mojito.controllers')[NAME] = { 
        init: function(config) {
          this.config = config;
        },
@@ -1082,7 +1110,7 @@ Your addon is required to do the following:
 .. |YUIPlugin| replace:: YUI Plugin
 .. _YUIPlugin: http://yuilibrary.com/yui/docs/plugin/
 .. |SS| replace:: server.store.js
-.. _SS: https://github.com/yahoo/mojito/blob/develop/source/lib/store.server.js     
+.. _SS: https://github.com/yahoo/mojito/blob/develop/lib/store.server.js
 .. |--| unicode:: U+2013   .. en dash
 .. |---| unicode:: U+2014  .. em dash
    :trim:

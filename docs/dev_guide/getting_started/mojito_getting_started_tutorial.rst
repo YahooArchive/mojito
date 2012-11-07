@@ -2,6 +2,13 @@
 Tutorial: Creating Your First Application
 =========================================
 
+Prerequisite
+############
+
+Complete the `Mojito Quickstart <../quickstart>`_, which instructs you
+how to install Mojito and use basic commands for the Mojito command-line tool.
+
+
 In this tutorial, you create a simple application that serves a single page and uses a controller to generate output. 
 
 You will learn how to do the following:
@@ -134,7 +141,7 @@ You will now modify the controller, so that the ``index`` function called in the
         * @class Controller
         * @constructor
         */
-        Y.mojito.controllers[NAME] = {
+        Y.namespace('mojito.controllers')[NAME] = {   
 
           init: function(config) {
             this.config = config;

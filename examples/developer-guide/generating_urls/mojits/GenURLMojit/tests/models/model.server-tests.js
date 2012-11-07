@@ -15,7 +15,7 @@ YUI.add('GenURLMojitModel-tests', function(Y) {
         name: 'GenURLMojit model user tests',
         
         setUp: function() {
-            model = Y.mojito.models.GenURLMojit;
+            model = Y.mojito.models.GenURLMojitModel;
         },
         tearDown: function() {
             model = null;

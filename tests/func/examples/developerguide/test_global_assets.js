@@ -7,11 +7,11 @@ YUI({
     logInclude: { TestRunner: true }
 }).use('node', 'node-event-simulate', 'test', 'console', function (Y) {
    
-         var suite = new Y.Test.Suite("Developerguide");
+         var suite = new Y.Test.Suite("DeveloperGuide: globalassets");
 
          suite.add(new Y.Test.Case({
          
-             "test generatingurls": function() { 
+             "test globalassets": function() { 
                  Y.Assert.areEqual("/static/global_assets/assets/ohhai.css", Y.one('link').getAttribute('href'));
                  Y.Assert.areEqual("/static/global_assets/assets/sadwalrus.jpeg", Y.one('img').getAttribute('src'));
              }

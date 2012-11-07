@@ -4,7 +4,9 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('flickrBinderIndex', function(Y, NAME) {
+/*jslint anon:true, sloppy:true, nomen:true*/
+
+YUI.add('flickrBinderIndex', function (Y, NAME) {
 
 /**
  * The flickrBinderIndex module.
@@ -37,7 +39,7 @@ YUI.add('flickrBinderIndex', function(Y, NAME) {
          *
          * @param node {Node} The DOM node to which this mojit is attached.
          */
-        bind: function(node) {
+        bind: function (node) {
             this.node = node;
         }
 
