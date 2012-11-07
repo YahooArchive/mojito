@@ -88,13 +88,6 @@ to the console and also to the file ``{CWD}/artifacts/test/result.xml``, where `
 the current working directory. Note that it is not (yet) possible to specify an alternative output 
 location.
 
-- To run tests for the Mojito framework itself:
-
-   ``$ mojito test``
-
-   Output is written to ``{CWD}/artifacts/test/result.xml``, where ``{CWD}`` is the current working 
-   directory.
-
 - To run tests for an application:
 
    ``$ mojito test app <application-path>``
@@ -105,6 +98,11 @@ location.
 
    If a mojit module (i.e., the YUI module for a portion of the mojit) is specified, only the tests f
    or that module will be run. Otherwise all tests for the mojit will be run.
+
+To run functional and unit tests for the Mojito framework,
+you would use the test framework `Yahoo! Arrow <https://github.com/yahoo/arrow>`_.
+Follow the instructions in `Running Mojito’s Built-In Tests <../topics/mojito_testing.html#running-mojito-s-built-in-tests>`_
+to run the framework tests for Mojito.
 
 .. _mj_cmdlne-code_coverage:
 
@@ -118,9 +116,9 @@ Coverage results are written to the console and also to file in the directory
 ``{CWD}/artifacts/framework/coverage/``.  As with unit tests,  it is not possible to specify an 
 alternative output location.
 
-- To run code coverage for the Mojito framework itself:
+- To run code coverage for a Mojito application:
 
-   ``$ mojito test --coverage``
+   ``$ mojito test --coverage app <app-path>``
 
 - To run code coverage for Mojito applications:
 
