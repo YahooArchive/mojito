@@ -11,6 +11,9 @@
             "tunnelProxy": {
                 "type": "TunnelProxy"
             }
+        },
+        "staticHandling": {
+            "prefix": "static"
         }
     },
     "defaultRoutes" : {
