@@ -1,5 +1,11 @@
 {
     "applications": [
+		{
+	        "name":"yaml-config",
+	        "path": "./frameworkapp/yaml-config",
+	        "enabled": "true",
+	        "group": "qeapp"
+	    },
         {
             "name":"usecase",
             "path": "./frameworkapp/usecase",
