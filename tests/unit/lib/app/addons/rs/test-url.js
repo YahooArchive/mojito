@@ -171,7 +171,7 @@ YUI().use('addon-rs-url', 'base', 'oop', 'test', function(Y) {
             A.areSame('/static/X/controller--controller.common.ext', store._mojitRVs.X[0].url);
             A.areSame(2, store._mojitRVs.Y.length);
             A.areSame('/static/Y/controller--controller.client.ext', store._mojitRVs.Y[0].url);
-            A.areSame('/static/Y/controller--controller.server.ext', store._mojitRVs.Y[1].url);
+            A.isUndefined(store._mojitRVs.Y[1].url);
         },
 
 
@@ -226,39 +226,8 @@ YUI().use('addon-rs-url', 'base', 'oop', 'test', function(Y) {
             store._makeResource('mojito', 'shared', 'x', 'y', 'common');
             store._makeResource('orange', 'shared', 'x', 'y', 'common');
             store.resolveResourceVersions();
-            A.areSame('/FFF/x--y.common.ext', store._mojitRVs.shared[0].url);
-            A.areSame('/AAA/x--y.common.ext', store._mojitRVs.shared[1].url);
-        },
-
-
-        'assume rollups': function() {
-            var fixtures = libpath.join(__dirname, '../../../../fixtures/store');
-            var store = new MockRS({
-                root: fixtures,
-                appConfig: {
-                    staticHandling: { assumeRollups: true }
-                }
-            });
-            store.plug(Y.mojito.addons.rs.url, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
-
-            store._makeResource('mojito', 'shared', 'x', 'y', 'common', 'red');
-            store._makeResource('orange', 'shared', 'x', 'y', 'common', 'red');
-            store._makeResource('orange', null, 'mojit', 'X', 'common');
-            store._makeResource('orange', 'X', 'x', 'y', 'common', 'red');
-            store._makeResource('orange', null, 'mojit', 'Y', 'common');
-            store._makeResource('orange', 'Y', 'x', 'y', 'common', 'red');
-            store._makeResource('orange', 'Y', 'not', 'yui', 'common');
-            store.resolveResourceVersions();
-            A.areSame('/static/store/rollup.client.js', store._mojitRVs.shared[0].url);
-            A.areSame(libpath.join(fixtures, 'rollup.client.js'), store._mojitRVs.shared[0].source.fs.rollupPath);
-            A.areSame('/static/store/rollup.client.js', store._mojitRVs.shared[1].url);
-            A.areSame(libpath.join(fixtures, 'rollup.client.js'), store._mojitRVs.shared[1].source.fs.rollupPath);
-            A.areSame('/static/X/rollup.client.js', store._mojitRVs.X[0].url);
-            A.areSame('path/for/mojit--X.common.ext/rollup.client.js', store._mojitRVs.X[0].source.fs.rollupPath);
-            A.areSame('/static/Y/rollup.client.js', store._mojitRVs.Y[0].url);
-            A.areSame('path/for/mojit--Y.common.ext/rollup.client.js', store._mojitRVs.Y[0].source.fs.rollupPath);
-            A.areSame('/static/Y/not--yui.common.ext', store._mojitRVs.Y[1].url);
-            A.isUndefined(store._mojitRVs.Y[1].source.fs.rollupPath);
+            A.areSame('/static/FFF/x--y.common.ext', store._mojitRVs.shared[0].url);
+            A.areSame('/static/AAA/x--y.common.ext', store._mojitRVs.shared[1].url);
         },
 
 
@@ -297,51 +266,51 @@ YUI().use('addon-rs-url', 'base', 'oop', 'test', function(Y) {
                 store.plug(Y.mojito.addons.rs.url, {appRoot: fixtures, mojitoRoot: mojitoRoot});
 
                 store._makeResource('mojito', 'shared', 'x', 'y', 'common', 'red');
-                store._makeResource('orange', 'shared', 'x', 'y', 'common', 'red');
+                store._makeResource('orange', 'shared', 'x', 'y', 'common', 'blue');
                 store.resolveResourceVersions();
                 cb(store);
             }
 
             runTest({appName: '/'}, function(store) {
-                A.areSame('/static/mojito/x--y.common.ext', store._mojitRVs.shared[0].url, 'mojito with appName /');
-                A.areSame('/static/x--y.common.ext', store._mojitRVs.shared[1].url, 'shared with /');
+                A.areSame('/static/red.js', store._mojitRVs.shared[0].url, 'mojito with appName /');
+                A.areSame('/static/blue.js', store._mojitRVs.shared[1].url, 'shared with /');
             });
             runTest({appName: '/AAA'}, function(store) {
-                A.areSame('/static/mojito/x--y.common.ext', store._mojitRVs.shared[0].url, 'mojito with appName /AAA');
-                A.areSame('/static/AAA/x--y.common.ext', store._mojitRVs.shared[1].url, 'shared with appName /AAA');
+                A.areSame('/static/red.js', store._mojitRVs.shared[0].url, 'mojito with appName /AAA');
+                A.areSame('/static/blue.js', store._mojitRVs.shared[1].url, 'shared with appName /AAA');
             });
             runTest({appName: 'AAA/'}, function(store) {
-                A.areSame('/static/mojito/x--y.common.ext', store._mojitRVs.shared[0].url, 'mojito with appName AAA/');
-                A.areSame('/static/AAA/x--y.common.ext', store._mojitRVs.shared[1].url, 'shared with appName AAA/');
+                A.areSame('/static/red.js', store._mojitRVs.shared[0].url, 'mojito with appName AAA/');
+                A.areSame('/static/blue.js', store._mojitRVs.shared[1].url, 'shared with appName AAA/');
             });
             runTest({appName: '/AAA/'}, function(store) {
-                A.areSame('/static/mojito/x--y.common.ext', store._mojitRVs.shared[0].url, 'mojito with appName /AAA/');
-                A.areSame('/static/AAA/x--y.common.ext', store._mojitRVs.shared[1].url, 'shared with appName /AAA/');
+                A.areSame('/static/red.js', store._mojitRVs.shared[0].url, 'mojito with appName /AAA/');
+                A.areSame('/static/blue.js', store._mojitRVs.shared[1].url, 'shared with appName /AAA/');
             });
             runTest({appName: '/AAA/BBB/'}, function(store) {
-                A.areSame('/static/mojito/x--y.common.ext', store._mojitRVs.shared[0].url, 'mojito with appName /AAA/BBB/');
-                A.areSame('/static/AAA/BBB/x--y.common.ext', store._mojitRVs.shared[1].url, 'shared with appName /AAA/BBB/');
+                A.areSame('/static/red.js', store._mojitRVs.shared[0].url, 'mojito with appName /AAA/BBB/');
+                A.areSame('/static/blue.js', store._mojitRVs.shared[1].url, 'shared with appName /AAA/BBB/');
             });
 
             runTest({frameworkName: '/'}, function(store) {
-                A.areSame('/static/x--y.common.ext', store._mojitRVs.shared[0].url, 'mojito with frameworkName /');
-                A.areSame('/static/store/x--y.common.ext', store._mojitRVs.shared[1].url, 'shared with frameworkName /');
+                A.areSame('/static/red.js', store._mojitRVs.shared[0].url, 'mojito with frameworkName /');
+                A.areSame('/static/blue.js', store._mojitRVs.shared[1].url, 'shared with frameworkName /');
             });
             runTest({frameworkName: '/FFF'}, function(store) {
-                A.areSame('/static/FFF/x--y.common.ext', store._mojitRVs.shared[0].url, 'mojito with frameworkName /FFF');
-                A.areSame('/static/store/x--y.common.ext', store._mojitRVs.shared[1].url, 'shared with frameworkName /FFF');
+                A.areSame('/static/red.js', store._mojitRVs.shared[0].url, 'mojito with frameworkName /FFF');
+                A.areSame('/static/blue.js', store._mojitRVs.shared[1].url, 'shared with frameworkName /FFF');
             });
             runTest({frameworkName: 'FFF/'}, function(store) {
-                A.areSame('/static/FFF/x--y.common.ext', store._mojitRVs.shared[0].url, 'mojito with frameworkName FFF/');
-                A.areSame('/static/store/x--y.common.ext', store._mojitRVs.shared[1].url, 'shared with frameworkName FFF/');
+                A.areSame('/static/red.js', store._mojitRVs.shared[0].url, 'mojito with frameworkName FFF/');
+                A.areSame('/static/blue.js', store._mojitRVs.shared[1].url, 'shared with frameworkName FFF/');
             });
             runTest({frameworkName: '/FFF/'}, function(store) {
-                A.areSame('/static/FFF/x--y.common.ext', store._mojitRVs.shared[0].url, 'mojito with frameworkName /FFF/');
-                A.areSame('/static/store/x--y.common.ext', store._mojitRVs.shared[1].url, 'shared with frameworkName /FFF/');
+                A.areSame('/static/red.js', store._mojitRVs.shared[0].url, 'mojito with frameworkName /FFF/');
+                A.areSame('/static/blue.js', store._mojitRVs.shared[1].url, 'shared with frameworkName /FFF/');
             });
             runTest({frameworkName: '/FFF/BBB/'}, function(store) {
-                A.areSame('/static/FFF/BBB/x--y.common.ext', store._mojitRVs.shared[0].url, 'mojito with frameworkName /FFF/BBB/');
-                A.areSame('/static/store/x--y.common.ext', store._mojitRVs.shared[1].url, 'shared with frameworkName /FFF/BBB/');
+                A.areSame('/static/red.js', store._mojitRVs.shared[0].url, 'mojito with frameworkName /FFF/BBB/');
+                A.areSame('/static/blue.js', store._mojitRVs.shared[1].url, 'shared with frameworkName /FFF/BBB/');
             });
         }
 
