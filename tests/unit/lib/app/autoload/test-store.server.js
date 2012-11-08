@@ -265,19 +265,16 @@ YUI().use(
             'expandInstance caching': function() {
                 var inInstance = {
                     base: 'a',
-                    action: 'b',
-                    type: 'c',
-                    id: 'd'
+                    type: 'c'
                 };
                 var context = {};
                 var key = Y.JSON.stringify([inInstance, ['*'], context.lang]);
                 store._expandInstanceCache.server[key] = { x: 'y' };
                 store.expandInstance(inInstance, context, function(err, outInstance) {
-                    A.areEqual(5, Object.keys(outInstance).length);
+                    A.isNull(err);
+                    A.areEqual(3, Object.keys(outInstance).length);
                     A.areEqual('a', outInstance.base);
-                    A.areEqual('b', outInstance.action);
                     A.areEqual('c', outInstance.type);
-                    A.areEqual('d', outInstance.id);
                     A.areEqual('y', outInstance.x);
                 });
             },
@@ -448,7 +445,7 @@ YUI().use(
             'appConfig staticHandling.prefix': function() {
                 var spec = { type: 'PagedFlickr' };
                 store.expandInstance(spec, {}, function(err, instance) {
-                    A.areSame('/PagedFlickr/assets', instance.assetsRoot);
+                    A.areSame('/static/PagedFlickr/assets', instance.assetsRoot);
                 });
             }
 
