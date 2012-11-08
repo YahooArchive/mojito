@@ -18,7 +18,10 @@ YUI().use('mojito-intl-addon', 'test', 'datatype-date', function(Y) {
                 adapter = null,
                 ac = {
                     type: 'acType',
-                    context: { lang: 'foo' }
+                    context: { lang: 'foo' },
+                    instance: {
+                        langs: { foo: true }
+                    }
                 };
 
             var mockYIntl = Mock();
@@ -50,7 +53,10 @@ YUI().use('mojito-intl-addon', 'test', 'datatype-date', function(Y) {
                 adapter = null,
                 ac = {
                     type: 'acType',
-                    context: { lang: 'foo' }
+                    context: { lang: 'foo' },
+                    instance: {
+                        langs: { foo: true }
+                    }
                 };
 
             var mockYIntl = Mock();
@@ -85,8 +91,9 @@ YUI().use('mojito-intl-addon', 'test', 'datatype-date', function(Y) {
 
             ac = {
                 type: 'acType',
-                context: {
-                    lang: 'foo'
+                context: { lang: 'foo' },
+                instance: {
+                    langs: { foo: true }
                 }
             };
 

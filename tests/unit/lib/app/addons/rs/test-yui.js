@@ -13,7 +13,7 @@ YUI().use(
     'json',
     'test',
     function(Y) {
-    
+
     var suite = new YUITest.TestSuite('mojito-addon-rs-yui-tests'),
         libasync = require('async'),
         libpath = require('path'),
@@ -24,7 +24,13 @@ YUI().use(
 
 
     function parseConfig(config) {
-        var ctx = { x: undefined };
+        var ctx = {
+            Y: {
+                config: {},
+                merge: Y.merge
+            },
+            x: undefined
+        };
         config = 'x = ' + config + ';';
         libvm.runInNewContext(config, ctx, 'config');
         return ctx.x;
@@ -549,20 +555,11 @@ YUI().use(
         },
 
 
-        'yui meta and getClosestLang': function() {
+        'yui meta': function() {
             var fixtures = libpath.join(__dirname, '../../../../../fixtures/gsg5'),
                 store = new Y.mojito.ResourceStore({ root: fixtures }),
                 series = [];
             store.preload();
-
-            A.areSame('en-US', store.yui.getClosestLang('en-US-midwest'), 'en-US-midwest');
-            A.areSame('en-US', store.yui.getClosestLang('en-US'), 'en-US');
-            A.areSame('en', store.yui.getClosestLang('en'), 'en');
-            A.areSame('de', store.yui.getClosestLang('de-DE'), 'de-DE');
-            A.areSame('de', store.yui.getClosestLang('de'), 'de');
-            A.areSame('', store.yui.getClosestLang('nl-NL'), 'nl-NL');
-            A.areSame('', store.yui.getClosestLang('nl'), 'nl');
-            A.areSame('', store.yui.getClosestLang(''), 'no lang');
 
             series.push(function(next) {
                 var res, ress;
