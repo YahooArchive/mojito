@@ -17,9 +17,9 @@ YUI().use('mojito-intl-addon', 'test', 'datatype-date', function(Y) {
             var command = {},
                 adapter = null,
                 ac = {
-                    type: 'acType',
                     context: { lang: 'foo' },
                     instance: {
+                        controller: 'controller-yui-module-name',
                         langs: { foo: true }
                     }
                 };
@@ -27,12 +27,12 @@ YUI().use('mojito-intl-addon', 'test', 'datatype-date', function(Y) {
             var mockYIntl = Mock();
             Mock.expect(mockYIntl, {
                 method: 'setLang',
-                args: [ac.type, 'foo'],
+                args: [ac.instance.controller, 'foo'],
                 returns: 'true'
             });
             Mock.expect(mockYIntl, {
                 method: 'get',
-                args: [ac.type, 'key'],
+                args: [ac.instance.controller, 'key'],
                 returns: 'translation'
             });
 
@@ -52,9 +52,9 @@ YUI().use('mojito-intl-addon', 'test', 'datatype-date', function(Y) {
             var command = {},
                 adapter = null,
                 ac = {
-                    type: 'acType',
                     context: { lang: 'foo' },
                     instance: {
+                        controller: 'controller-yui-module-name',
                         langs: { foo: true }
                     }
                 };
@@ -62,12 +62,12 @@ YUI().use('mojito-intl-addon', 'test', 'datatype-date', function(Y) {
             var mockYIntl = Mock();
             Mock.expect(mockYIntl, {
                 method: 'setLang',
-                args: [ac.type, 'foo'],
+                args: [ac.instance.controller, 'foo'],
                 returns: 'true'
             });
             Mock.expect(mockYIntl, {
                 method: 'get',
-                args: [ac.type, 'key'],
+                args: [ac.instance.controller, 'key'],
                 returns: 'translation {0} {1}'
             });
 
@@ -90,9 +90,9 @@ YUI().use('mojito-intl-addon', 'test', 'datatype-date', function(Y) {
                 argDate = new Date();
 
             ac = {
-                type: 'acType',
                 context: { lang: 'foo' },
                 instance: {
+                    controller: 'controller-yui-module-name',
                     langs: { foo: true }
                 }
             };
