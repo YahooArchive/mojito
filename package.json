@@ -27,7 +27,8 @@
         "ycb": "~1.0.0",
         "yui": "~3.5.1",
         "yuidocjs": "~0.3.14",
-        "yuitest": "~0.7.4"
+        "yuitest": "~0.7.4",
+        "yuitest-coverage": "~0.0.5"
     },
     "keywords": [
         "framework",
