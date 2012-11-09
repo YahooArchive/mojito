@@ -15,6 +15,10 @@
 YUI.add('mojito', function(Y, NAME) {
     Y.namespace('mojito');
     Y.namespace('mojito.addons.ac');
+    Y.namespace('mojito').perf = {
+        mark: function () {},
+        timeline: function () { return { done: function() {} }; }
+    };
 });
 
 /* AC ADDONS */
@@ -27,6 +31,7 @@ YUI.add('mojito-cookie-addon', function(Y, NAME) {});
 YUI.add('mojito-deploy-addon', function(Y, NAME) {});
 YUI.add('mojito-device-addon', function(Y, NAME) {});
 YUI.add('mojito-http-addon', function(Y, NAME) {});
+YUI.add('mojito-models-addon', function(Y, NAME) {});
 YUI.add('mojito-i13n-addon', function(Y, NAME) {});
 YUI.add('mojito-intl-addon', function(Y, NAME) {});
 YUI.add('mojito-meta-addon', function(Y, NAME) {});
@@ -37,6 +42,7 @@ YUI.add('mojito-url-addon', function(Y, NAME) {});
 
 /* RS ADDONS */
 YUI.add('addon-rs-config', function(Y, NAME) {});
+YUI.add('addon-rs-dispatch-helper', function(Y, NAME) {});
 YUI.add('addon-rs-selector', function(Y, NAME) {});
 YUI.add('addon-rs-url', function(Y, NAME) {});
 YUI.add('addon-rs-yui', function(Y, NAME) {});
@@ -53,11 +59,7 @@ YUI.add('mojito-loader', function(Y, NAME) {});
 YUI.add('mojito-logger', function(Y, NAME) {});
 YUI.add('mojito-mojit-proxy', function(Y, NAME) {});
 YUI.add('mojito-output-handler', function(Y, NAME) {});
-YUI.add('mojito-perf', function(Y, NAME) {
-    Y.namespace('mojito').perf = {
-        mark: function () {}
-    };
-});
+YUI.add('mojito-perf', function(Y, NAME) {});
 YUI.add('mojito-resource-store', function(Y, NAME) {});
 YUI.add('mojito-resource-store-adapter', function(Y, NAME) {});
 YUI.add('mojito-rest-lib', function(Y, NAME) {});

@@ -142,27 +142,28 @@ allow for the model code to run long-term processes for data storage and retriev
 matter of best practice, the model should be a YUI module and not include blocking code, 
 although blocking code can be used.
 
-To access a model from the controller, use the syntax ``ac.models.{model_name}`` as seen 
-in the code example below. For a more detailed example, see `Calling the Model`_ and 
-`Calling YQL from a Mojit <../code_exs/calling_yql.html>`_.
+To access a model from the controller, use the syntax ``ac.models.get('{model_name}')`` as seen in the code example below. For a more detailed example, 
+see `Calling the Model`_ and `Calling YQL from a Mojit <../code_exs/calling_yql.html>`_.
 
 .. code-block:: javascript
 
    YUI.add('{mojit_name}', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
        index: function(ac) {
-         // Use ac.models.{mojit_name} if the default model 'model.server.js' is being used.
-         var model = ac.models.{model_name};
+         // Use ac.models.get('{mojit_name}') if the default model 'model.server.js' is being used.
+         var model = ac.models.get('{model_name}');
        }
      };
-   }, '0.0.1', { requires:[ ] });
+   }, '0.0.1', { requires:[
+     'mojito-models-addon',
+     '{model_name}'
+   ]});
 
 
 .. _mvc_models-ex:    
 
 Example
 -------
-
 
 .. code-block:: javascript
 
@@ -435,14 +436,13 @@ Calling the Model
 -----------------
 
 The mojit controller communicates with the model through the 
-`ActionContext object <../api_overview/mojito_action_context.html>`_ and a syntax 
-convention. The ``ActionContext`` object allows controller functions to access framework 
-features such as API methods and addons that extend functionality. To access the model 
-from the ActionContext object ``ac``, you use the following syntax: 
-``ac.models.{model_name}.{model_function}``
+`ActionContext object <../api_overview/mojito_action_context.html>`_ and a syntax convention. The 
+``ActionContext`` object allows controller functions to access framework features such as API 
+methods and addons that extend functionality. To access the model from the ActionContext object 
+``ac``, you use the following syntax: ``ac.models.get('{model_name}').{model_function}``
 
-Thus, if you wanted to use the ``photo_search`` function in the model for the ``flickr`` 
-mojit, you would use the following: ``ac.models.flickrModel.photo_search(args, callback);``
+Thus, if you wanted to use the ``photo_search`` function in the model for the ``flickr`` mojit, you
+would use the following: ``ac.models.get('flickr').photo_search(args, callback);``
 
 The ``controller.server.js`` below shows a simple example of calling ``get_data`` from the 
 model of the ``simple`` mojit.
@@ -455,7 +455,7 @@ model of the ``simple`` mojit.
          this.config = config;
        },
        index: function(ac) {
-         var model = ac.models.simpleModel;
+         var model = ac.models.get('simpleModel');
          model.get_data (function(data) {
            ac.done (
              {
@@ -465,7 +465,10 @@ model of the ``simple`` mojit.
          });
        }
      };
-   }, '0.0.1', {requires: []});
+   }, '0.0.1', {requires: [
+     'mojito-models-addon',
+     'simpleModel'
+   ]});
 
 .. _mvc-controllers-pass_data:
 
@@ -579,7 +582,7 @@ post. The ``try-catch`` clause will catch any errors made calling ``getPost``, a
    ...
      index: function(ac) {
        try {
-         var post = ac.models.Blog.getPost();
+         var post = ac.models.get('BlogModel').getPost();
          ac.done({ "post": post });
        }catch(e) {
          console.log(e);
@@ -627,7 +630,7 @@ variable is retrieved and sent back in a callback.
          // for later use.
          var me = this;
          this.logit('catch');
-         ac.models.StatefulModel.getData(function(err, data) {
+         ac.models.get('StatefulModel').getData(function(err, data) {
            ac.done({
              ball: me.ball,
              time: me.time,
@@ -639,7 +642,10 @@ variable is retrieved and sent back in a callback.
          Y.log(msg + this.time, 'warn');
        }
      };
-   }, '0.0.1', {requires: []});
+   }, '0.0.1', {requires: [
+     'mojito-models-addon',
+     'StatefulModel'
+   ]});
 
 .. _mojito_mvc-views:
 

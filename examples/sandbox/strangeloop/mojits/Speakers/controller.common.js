@@ -27,11 +27,16 @@ YUI.add('Speakers', function(Y, NAME) {
          *        to the Mojito API.
          */
         index: function(ac) {
-            ac.models.strangeloop.getSpeakerData(function(err, speakerData) {
+// DOING
+            ac.models.get('strangeloop').getSpeakerData(function(err, speakerData) {
                 ac.done({speakers: speakerData});
             });
         }
 
     };
 
-}, '0.0.1', {requires: ['mojito']});
+}, '0.0.1', {requires: [
+    'mojito',
+    'mojito-models-addon',
+    'DOING'
+]});

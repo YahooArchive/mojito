@@ -22,7 +22,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
     };
 
     cases = {
-        name: 'basic',
+        name: 'contextualizer middleware tests',
 
         setUp: function() {
             handler = factory({

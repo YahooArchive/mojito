@@ -19,11 +19,14 @@ YUI.add('Flickr', function(Y, NAME) {
          * @return {}       
          */
         index: function(ac) {
-            ac.models.flickr.getFlickrImages('mojito', function(images) {
+            ac.models.get('FlickrModel').getFlickrImages('mojito', function(images) {
                 ac.done({images: images});
             });
         }
 
     };
 
-}, '0.0.1', {requires: ['mojito']});
+}, '0.0.1', {requires: [
+    'mojito',
+    'mojito-models-addon',
+    'FlickrModel']});

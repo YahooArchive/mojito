@@ -15,4 +15,4 @@ YUI.add('FooterMojit', function(Y, NAME) {
             actionContext.done({title: "Footer"});
         }
     };
-}, '0.0.1', {requires: ['mojito']});
+}, '0.0.1', {requires: ['mojito']})

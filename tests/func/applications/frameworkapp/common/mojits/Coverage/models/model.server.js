@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('CoverageModel', function(Y) {
+YUI.add('CoverageModel', function(Y, NAME) {
 
     Y.mojito.models.Coverage = {
 

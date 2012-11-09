@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('ExecuteCommandModel', function(Y) {
+YUI.add('ExecuteCommandModel', function(Y, NAME) {
 
 /**
  * The ExecuteCommandModel module.

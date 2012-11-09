@@ -178,7 +178,7 @@ controller outputs different results.
           *        to the Mojito API.
           **/
           index: function(ac) {
-            ac.models.HelloMojitModelFoo.getData(function(err, data) {
+            ac.models.get('HelloMojitModelFoo').getData(function(err, data) {
               if (err) {
                 ac.error(err);
                 return;
@@ -191,7 +191,12 @@ controller outputs different results.
             });
           }
         };
-      }, '0.0.1', {requires: ['mojito', 'HelloMojitModelFoo', 'mojito-assets-addon']});
+      }, '0.0.1', {requires: [
+        'mojito',
+        'mojito-models-addon', 
+        'mojito-assets-addon',
+        'HelloMojitModelFoo'
+      ]});
 
 
    As you can see the "controllers" are just an array of JavaScript objects, and the 
@@ -227,23 +232,20 @@ controller outputs different results.
                 doneResults;
             modelData = { x:'y' };
             ac = {
-                assets: {
-                    addCss: function(css) {
-                        assetsResults = css;
+              assets: {
+                addCss: function(css) {
+                  assetsResults = css;
+                }
+              },
+              models: {
+                get: function() {
+                  return {
+                    getData: function(cb) {
+                      cb(null, modelData);
                     }
-                },
-                models: {
-                    HelloMojitModelFoo: {
-                        getData: function(cb) {
-                            cb(null, modelData);
-                        }
-                    }
-                },
-                done: function(data) {
-                    doneResults = data;
+                  };
                 }
             };
-
             A.isNotNull(controller);
             A.isFunction(controller.index);
             controller.index(ac);

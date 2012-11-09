@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('HttpAddonParentModel', function(Y) {
+YUI.add('HttpAddonParentModel', function(Y, NAME) {
 
 /**
  * The HttpAddonParentModel module.
