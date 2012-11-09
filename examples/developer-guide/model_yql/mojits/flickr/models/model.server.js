@@ -8,9 +8,10 @@
 
 YUI.add('flickrModel', function (Y, NAME) {
     var API_KEY = '84921e87fb8f2fc338c3ff9bf51a412e';
-  
-    Y.mojito.models[NAME] = {
-        init: function(config) {
+
+    Y.namespace('mojito.models')[NAME] = {
+
+        init: function (config) {
             this.config = config;
         },
         getData: function (callback) {
