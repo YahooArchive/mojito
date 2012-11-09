@@ -2,9 +2,15 @@
 Adding CSS
 ==========
 
+.. raw:: html
+
+  <span class="testimate">Time Estimate: 10 minutes</span>&nbsp;&nbsp;&nbsp;<span class="difficulty">Difficulty: Beginner</span>
+	
 **Time Estimate:** 10 minutes
 
 **Difficulty:** Beginner
+
+.. _code_exs_css-summary:
 
 Summary
 =======
@@ -16,12 +22,14 @@ The following topics will be covered:
 - configuring an application to have assets
 - including assets in the template
 
+.. _code_exs_css-notes:
+
 Implementation Notes
 ====================
 
-Each application has an ``assets`` directory for placing global CSS files that can be accessed by 
-all of your mojits. Each mojit has its own ``assets`` directory for local CSS files that are only 
-accessible by the mojit.
+Each application has an ``assets`` directory for placing global CSS files that can be 
+accessed by all of your mojits. Each mojit has its own ``assets`` directory for local 
+CSS files that are only accessible by the mojit.
 
 The global assets are located in the ``{app_dir}/assets`` directory as shown here:
 
@@ -36,8 +44,8 @@ The global assets are located in the ``{app_dir}/assets`` directory as shown her
    |-- routes.json
    |-- server.js
 
-In the ``simple`` mojit below, you see the local ``assets`` directory for CSS files only available 
-to the ``simple`` mojit:
+In the ``simple`` mojit below, you see the local ``assets`` directory for CSS files only 
+available to the ``simple`` mojit:
 
 ::
 
@@ -52,8 +60,8 @@ to the ``simple`` mojit:
        |-- tests/
        `-- views/
 
-This code example only uses local CSS, so the ``simple.css`` file is placed in the ``assets`` 
-directory under the ``simple`` mojit.
+This code example only uses local CSS, so the ``simple.css`` file is placed in the 
+``assets`` directory under the ``simple`` mojit.
 
 .. code-block:: css
 
@@ -67,18 +75,18 @@ directory under the ``simple`` mojit.
    }
    .toolbar li { display:inline; }
 
-The CSS files in the mojit ``assets`` directory can be accessed in the template using the following 
-path syntax:
+The CSS files in the mojit ``assets`` directory can be accessed in the template using the 
+following path syntax:
 
 ``/static/{mojit}/assets/{css_file}.css``
 
-This code example uses the ``simple`` mojit and the ``simple.css`` asset. To access ``simple.css``, 
-you would use the following path:
+This code example uses the ``simple`` mojit and the ``simple.css`` asset. To access 
+``simple.css``, you would use the following path:
 
 ``/static/simple/assets/simple.css``
 
-The ``index.hb.html`` template below includes ``simple.css`` from the ``assets`` directory using the 
-path above.
+The ``index.hb.html`` template below includes ``simple.css`` from the ``assets`` directory 
+using the path above.
 
 .. code-block:: html
 
@@ -107,15 +115,19 @@ path above.
      </body>
    </html>
 
-To access the global assets for the application, you use a similar syntax, replacing the mojit name 
-with the application name. Thus, if the application name is ``simple_assets`` and ``simple.css`` 
-is in ``simple_assets/assets/``, you would access ``simple.css`` with the following path:
+To access the global assets for the application, you use a similar syntax, replacing the 
+mojit name with the application name. Thus, if the application name is ``simple_assets`` 
+and ``simple.css`` is in ``simple_assets/assets/``, you would access ``simple.css`` with 
+the following path:
 
 ``/static/simple_assets/assets/simple.css``
 
-.. note:: For the purpose of simplifying this code example, the ``setColor`` function was hardcoded 
-          into the template. In your Mojito applications, you should avoid mixing the business and 
-          presentation logic of your application by hardcoding JavaScript into your template.
+.. note:: For the purpose of simplifying this code example, the ``setColor`` function was 
+          hardcoded into the template. In your Mojito applications, you should avoid 
+          mixing the business and presentation logic of your application by hardcoding 
+          JavaScript into your template.
+
+.. _code_exs_css-setup:
 
 Setting Up this Example
 =======================
@@ -132,7 +144,8 @@ To create and run ``simple_assets``:
 
    ``$ mojito create mojit simple``
 
-#. To configure your application to use the ``simple`` mojit, replace the code in ``application.json`` with the following:
+#. To configure your application to use the ``simple`` mojit, replace the code in 
+   ``application.json`` with the following:
 
    .. code-block:: javascript
 
@@ -147,7 +160,8 @@ To create and run ``simple_assets``:
         }
       ]
 
-#. To configure routing, create the file ``routes.json`` with the following:
+#. To configure routing, replace the code of the file ``routes.json`` with the 
+   following:
 
    .. code-block:: javascript
 
@@ -167,7 +181,8 @@ To create and run ``simple_assets``:
 
    ``$ cd mojits/simple``
 
-#. Modify your controller to pass an array of objects to the template by replacing the code in ``controller.server.js`` with the following:
+#. Modify your controller to pass an array of objects to the template by replacing the 
+   code in ``controller.server.js`` with the following:
 
    .. code-block:: javascript
 
@@ -185,7 +200,7 @@ To create and run ``simple_assets``:
         */
         Y.namespace('mojito.controllers')[NAME] = {     
           init: function(config) {
-          this.config = config;
+            this.config = config;
         },
         /**
         * Method corresponding to the 'index' action.
@@ -208,8 +223,8 @@ To create and run ``simple_assets``:
         };
       }, '0.0.1', {requires: []});
 
-#. Include the assets in your template by replacing the code in ``views/index.hb.html`` with the 
-   following:
+#. Include the assets in your template by replacing the code in ``views/index.hb.html`` 
+   with the following:
 
    .. code-block:: html
 
@@ -258,6 +273,8 @@ To create and run ``simple_assets``:
 #. To view your application, go to the URL:
 
    http://localhost:8666
+
+.. _code_exs_css-src:
 
 Source Code
 ===========

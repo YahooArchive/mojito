@@ -6,12 +6,14 @@ Binding Events
 
 **Difficulty Level:** Advanced
 
+.. _code_exs_events-summary:
+
 Summary
 =======
 
-This example shows how to bind events to a mojit, configure code to run on the client, and make AJAX 
-calls to the YQL Web service. The application listens for events and then makes AJAX calls to 
-YQL to get Flickr photo information. 
+This example shows how to bind events to a mojit, configure code to run on the client, and 
+make AJAX calls to the YQL Web service. The application listens for events and then makes 
+AJAX calls to YQL to get Flickr photo information. 
 
 The following topics will be covered:
 
@@ -20,24 +22,30 @@ The following topics will be covered:
 - binding events through the ``mojitProxy`` object
 - making AJAX calls to YQL from the binder
 
-Prerequisite
+.. _events_summary-req:
+
+Requirements
 ------------
 
 You will need to `get a Flickr API key <http://www.flickr.com/services/api/keys/apply/>`_
 to run this example.
 
+.. _code_exs_events-notes:
+
 Implementation Notes
 ====================
+
+.. _events_notes-client:
 
 Configuring the Application to Run on the Client
 ------------------------------------------------
 
-Mojito lets you configure applications to run on either the server or client side. This example uses 
-binders that are deployed to the client, so we need to configure Mojito to deploy the application 
-to the client, where it will be executed by the browser.
+Mojito lets you configure applications to run on either the server or client side. This 
+example uses binders that are deployed to the client, so we need to configure Mojito to 
+deploy the application to the client, where it will be executed by the browser.
 
-To configure Mojito to run on the client, you simply set the ``"deploy"`` property to ``true`` in 
-``application.json`` as seen below.
+To configure Mojito to run on the client, you simply set the ``"deploy"`` property to 
+``true`` in ``application.json`` as seen below.
 
 .. code-block:: javascript
 
@@ -58,12 +66,14 @@ To configure Mojito to run on the client, you simply set the ``"deploy"`` proper
      }
    ]
 
+.. _events_notes-data:
+
 Getting Data with YQL in the Model
 ----------------------------------
 
-In the mojit model, the `YUI YQL Query Utility <http://developer.yahoo.com/yui/3/yql/>`_ is used to 
-get Flickr photo information. To access the utility in your model, specify ``'yql'`` in the 
-``requires`` array as seen in the code snippet below:
+In the mojit model, the `YUI YQL Query Utility <http://developer.yahoo.com/yui/3/yql/>`_ 
+is used to get Flickr photo information. To access the utility in your model, specify 
+``'yql'`` in the ``requires`` array as seen in the code snippet below:
 
 .. code-block:: javascript
 
@@ -73,10 +83,10 @@ get Flickr photo information. To access the utility in your model, specify ``'yq
      ...
    }, '0.0.1', {requires: ['yql']});
 
-This code example uses the ``flickr.photos.search`` table to get information for photos that have a 
-title, description, or tags containing a string. For example, the YQL statement below returns Flickr 
-photo information for those photos that have a title, description, or tags containing the string 
-"Manhattan". 
+This code example uses the ``flickr.photos.search`` table to get information for photos 
+that have a title, description, or tags containing a string. For example, the YQL 
+statement below returns Flickr photo information for those photos that have a title, 
+description, or tags containing the string "Manhattan". 
 
 Copy the query below into the `YQL Console <http://developer.yahoo.com/yql/console/>`_,
 replace ``{your_flickr_api_key}`` with your own Flickr API key, and then  click **TEST** 
@@ -84,16 +94,16 @@ to see the returned XML response.
 
 ``select * from flickr.photos.search where text="Manhattan" and api_key="{your_flickr_api_key}"``
 
-The returned response contains photo information in the ``photo`` element. You extract the ``farm``, 
-``server``, ``id``, and ``secret`` attributes from each photo element to create the photo URI as 
-seen here:
+The returned response contains photo information in the ``photo`` element. You extract the 
+``farm``, ``server``, ``id``, and ``secret`` attributes from each photo element to create 
+the photo URI as seen here:
 
 ``http://farm + {farm} + static.flickr.com/ + {server} + / + {id} + _ + {secret} + .jpg``
 
-In the ``model.js`` of ``PagerMojit`` shown below, the ``YQL`` function uses the YQL statement above 
-to get photo data, then parses the returned response to create the photo URIs. The model then wraps 
-the photo information in an object and stores those objects in the ``images`` array that is sent to 
-the controller through the ``callback`` function.
+In the ``model.server.js`` of ``PagerMojit`` shown below, the ``YQL`` function uses the YQL 
+statement above to get photo data, then parses the returned response to create the photo 
+URIs. The model then wraps the photo information in an object and stores those objects in 
+the ``images`` array that is sent to the controller through the ``callback`` function.
 
 .. code-block:: javascript
 
@@ -146,15 +156,19 @@ the controller through the ``callback`` function.
    }, '0.0.1', {requires: [ 'yql']});
 
 
-For a more detailed explanation about how to use YQL in your Mojito application, see `Calling YQL 
-from a Mojit <calling_yql.html>`_. For more information about YQL, see the 
+For a more detailed explanation about how to use YQL in your Mojito application, see 
+`Calling YQL from a Mojit <calling_yql.html>`_. For more information about YQL, see the 
 `YQL Guide <http://developer.yahoo.com/yql/guide>`_.
+
+.. _events_notes-bind_events:
 
 Binding Events
 --------------
 
 This section will discuss the basics of binding events in Mojito and then look at the 
 binder used in this code example.
+
+.. _bind_events-basics:
 
 Binder Basics
 #############
@@ -196,6 +210,8 @@ binder. For more information, see `Mojito Binders <../intro/mojito_binders.html>
      };
      Y.mojito.registerEventBinder('AwesomeMojit', Binder);
    }, '0.0.1', {requires: ['mojito']});
+
+.. _bind_events-pagemojitbinder:
 
 Examining the PageMojitBinder
 #############################
@@ -411,6 +427,9 @@ the ``requires`` array.
        }
      };
    }, '0.0.1', {requires: ['yql', 'io', 'dump']});
+
+.. _events_notes-paging:
+
 Using Paging
 ------------
 
@@ -593,7 +612,9 @@ create URLs for the **next** and **prev** links.
        }
        return actionContext.url.make('frame', 'index', Y.QueryString.stringify(mergedParams));
      }
-   }, '0.0.1', {requires: ['dump']});
+   }, '0.0.1', {requires: ['dump', 'mojito-url-addon', 'mojito-params-addon']});
+
+.. _code_exs_events-setup:
 
 Setting Up this Example
 =======================
@@ -688,7 +709,7 @@ To set up and run ``binding_events``:
                 },
                 next: {
                   link: createLink(actionContext, {page: page+1}),
-                  title: "next"
+	                  title: "next"
                 },
                 query: 'mojito'
               };
@@ -711,10 +732,11 @@ To set up and run ``binding_events``:
           }
           return actionContext.url.make('frame', 'index', Y.QueryString.stringify(mergedParams));
         }
-      }, '0.0.1', {requires: ['dump']});
+      }, '0.0.1', {requires: ['dump', 'mojito-url-addon', 'mojito-params-addon']});
 
-#. To get Flickr photo information using YQL, replace the code in ``model.server.js`` with 
-   the following:
+#. To get Flickr photo information using YQL, create the file ``models/model.server.js`` with 
+   the code below. Be sure to replace the ``'{your_flickr_api_key}'`` with your own
+   Flickr API key.
 
    .. code-block:: javascript
 
@@ -768,7 +790,8 @@ To set up and run ``binding_events``:
       }, '0.0.1', {requires: ['yql']});
 
 #. To create the binder for click events and invoke the ``index`` function of the 
-   controller, replace the code in ``binders/index.js`` with the following:
+   controller, replace the code in ``binders/index.js`` with the code below. Again,
+   Be sure to replace the ``'{your_flickr_api_key}'`` with your own Flickr API key.
 
    .. code-block:: javascript
 
@@ -913,6 +936,8 @@ To set up and run ``binding_events``:
 #. To view your application, go to the URL:
 
    http://localhost:8666
+
+.. _code_exs_events-src:
 
 Source Code
 ===========
