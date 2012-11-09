@@ -15,6 +15,7 @@ YUI.add('FlickrModel', function (Y, NAME) {
  *
  * @module FlickrModel
  */
+
     function buildFlickrUrlFromRecord(record) {
         return 'http://farm' + record.farm
             + '.static.flickr.com/' + record.server

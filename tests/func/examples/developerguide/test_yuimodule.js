@@ -14,7 +14,8 @@ YUI({
              "test yuimodule": function() {
                  Y.Assert.areEqual("Storage Lite: Simple Notepad Example", Y.one('h1').get('innerHTML'));
                  Y.Assert.areEqual("Storage Lite", Y.one('a').get('innerHTML'));
-                 Y.Assert.areEqual("\"/static/yui_module/autoload/storage-lite.client.js\"", Y.one('body').get('innerHTML').match(/"\/static\/yui_module\/autoload\/storage-lite.client.js"/gi)[0]);
+                 Y.Assert.areEqual("\"/static/yui_module/autoload/storage-lite.client.js\"",
+                                   Y.one('body').get('innerHTML').match(/"\/static\/yui_module\/autoload\/storage-lite.client.js"/gi)[0]);
              }
          }));    
 

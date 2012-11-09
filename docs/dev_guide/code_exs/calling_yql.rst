@@ -1,4 +1,3 @@
-
 ========================
 Calling YQL from a Mojit
 ========================
@@ -6,6 +5,8 @@ Calling YQL from a Mojit
 **Time Estimate:** 15 minutes
 
 **Difficulty Level:** Intermediate
+
+.. _code_exs_yql-summary:
 
 Summary
 =======
@@ -23,6 +24,9 @@ The following topics will be covered:
 - getting query string parameters with the ``Params`` addon
 - calling the YQL Web service with the `YQL Module of YUI <http://developer.yahoo.com/yui/3/yql/>`_
 
+
+.. _code_exs_yql-notes:
+
 Implementation Notes
 ====================
 
@@ -31,6 +35,8 @@ The following screenshot shows the grid of Flickr images retrieved by YQL.
 .. image:: images/yql.flickr.preview.gif
    :height: 373px
    :width: 401px
+
+.. _code_exs_yql-statement:
 
 Forming the YQL Statement and Flickr Photo URI
 ----------------------------------------------
@@ -70,6 +76,8 @@ response, you form the photo URIs using the following URI scheme:
 
 Having formed the YQL statement and the Flickr photo URI to get data, we can create the 
 model.
+
+.. _code_exs_yql-model:
 
 Creating the Model
 ------------------
@@ -156,6 +164,8 @@ controller through the ``callback`` function.
           Because you don't know when the model is getting its data, you have to assume 
           that it may block.
 
+.. _code_exs_yql-call_model:
+
 Calling the Model from the Controller
 -------------------------------------
 
@@ -172,12 +182,12 @@ statement. The YQL Statement and the
 `paging and limit parameters <http://developer.yahoo.com/yql/guide/paging.html>`_ are then 
 passed to the ``search`` function of the model.
 
-To access model functions from the controller, you use the Action Context (``ac``) object 
-with the following syntax: ``ac.models.{model_name}``. This code example uses the 
-``flickr`` mojit, so to access the model from the controller, you would use 
-``ac.models.flickr`` as seen in the ``model.server.js`` below. Once the callback function 
-passed to ``search`` returns the array of photo objects, the ``done`` method sends the 
-``photos`` array and the query string parameters to the ``index`` template.
+To access model functions from the controller, you use the Action Context (``ac``) object with the 
+following syntax: ``ac.models.get({model_name})``. This code example uses the ``flickr`` mojit, so to 
+access the model from the controller, you would use ``ac.models.get('flickrModel')`` as seen in the 
+``model.server.js`` below. Once the callback function passed to ``search`` returns the array of 
+photo objects, the ``done`` method sends the ``photos`` array and the query string parameters to 
+the ``index`` template.
 
 .. code-block:: javascript
 
@@ -191,7 +201,7 @@ passed to ``search`` returns the array of photo objects, the ``done`` method sen
          page = (ac.params.getFromUrl('page') || 0) / 1,
          count = (ac.params.getFromUrl('size') || 20) / 1,
          start = page * count;
-         var model = ac.models.flickr;
+         var model = ac.models.get('flickrModel');
          model.search (q, start, count, function(photos) {
          ac.done (
            {
@@ -203,7 +213,10 @@ passed to ``search`` returns the array of photo objects, the ``done`` method sen
          });
        }
      };
-   }, '0.0.1', {requires: []});
+   }, '0.0.1', {requires: [
+     'mojito-models-addon', 'mojito-params-addon',
+     'flickrModel'
+   ]});
 
 Setting Up this Example
 =======================
@@ -359,7 +372,7 @@ To set up and run ``model_yql``:
               count = (ac.params.getFromUrl('count') || 20) / 1;
             }
             var start = page * count;
-            var model = ac.models.flickrModel;
+            var model = ac.models.get('flickrModel');
             model.search (q, start, count, function(photos) {
               ac.done (
                 {
@@ -372,7 +385,10 @@ To set up and run ``model_yql``:
             });
           }
         };
-      }, '0.0.1', {requires: []});
+      }, '0.0.1', {requires: [
+        'mojito-models-addon', 'mojito-params-addon',
+        'flickrModel'
+      ]});
 
 #. Replace the contents of ``assets/index.css`` for the application's CSS with the following:
 
@@ -422,6 +438,9 @@ To set up and run ``model_yql``:
 #. Get 50 Flickr photos using the search query "mojito" with the following URL:
 
    http://localhost:8666?q=mojito&size=50
+
+
+.. _code_exs_yql-src:
 
 Source Code
 ===========

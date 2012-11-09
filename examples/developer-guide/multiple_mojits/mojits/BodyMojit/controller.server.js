@@ -16,4 +16,4 @@ YUI.add('BodyMojit', function (Y, NAME) {
             actionContext.done({title: "Body"});
         }
     };
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito']});

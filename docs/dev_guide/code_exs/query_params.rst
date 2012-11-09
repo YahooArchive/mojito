@@ -6,6 +6,8 @@ Using Query Parameters
 
 **Difficulty Level:** Intermediate
 
+.. _code_exs_qp-summary:
+
 Summary
 =======
 
@@ -16,6 +18,8 @@ The following topics will be covered:
 
 - using the `Params addon <../../api/classes/Params.common.html>`_ to access parameters
 - setting and getting parameters from your route configuration
+
+.. _code_exs_qp-notes:
 
 Implementation Notes
 ====================
@@ -59,6 +63,7 @@ name.
        );
      },
    ...
+   }, '0.0.1', {requires: ['dump', 'mojito-params-addon']});
 
 The ``example2`` function below uses ``params.getFromBody()`` to extract parameters from 
 the POST body. Once again, the array of objects containing the key-value pairs is passed 
@@ -85,6 +90,7 @@ variable.
        );
      },
    ...
+   }, '0.0.1', {requires: ['dump', 'mojito-params-addon']});
 
 The ``example3`` function below uses ``params.getFromRoute()`` to access the parameters 
 that are specified in ``routes.json``, which we will look at in the next code snippet.
@@ -108,6 +114,7 @@ that are specified in ``routes.json``, which we will look at in the next code sn
        );
      },
    ...
+   }, '0.0.1', {requires: ['dump', 'mojito-params-addon']});
 
 In the ``routes.json`` file below, you see parameters are set for the ``example3`` and 
 ``example4`` route. Notice that ``example3`` only accepts HTTP GET calls, whereas 
@@ -181,9 +188,12 @@ the value "routing" from the parameters set in the ``routes.json`` shown above.
        );
      }
    ...
+   }, '0.0.1', {requires: ['dump', 'mojito-params-addon']});
 
 For more information, see the `Params addon <../../api/classes/Params.common.html>`_ in 
 the Mojito API documentation.
+
+.. _code_exs_qp-ex:
 
 Setting Up this Example
 =======================
@@ -333,7 +343,7 @@ To set up and run ``using_parameters``:
             );
           }
         };
-      }, '0.0.1', {requires: ['dump']});
+      }, '0.0.1', {requires: ['dump', 'mojito-params-addon']});
 
 #. To display the key-value pairs from the query string parameters, create the template 
    ``views/example1.hb.html`` with the following:
@@ -443,6 +453,8 @@ To set up and run ``using_parameters``:
    ``routes.json``, go to the URL below and submit the form on the page:
 
    http://localhost:8666/example4?foo=bar&bar=foo
+
+.. _code_exs_qp-src:
 
 Source Code
 ===========

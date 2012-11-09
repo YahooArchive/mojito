@@ -21,19 +21,25 @@ YUI.add('Flickr', function (Y, NAME) {
          * @param ac {Object} The action context that provides access
          *        to the Mojito API.
          */
-        index: function (ac) {
-            ac.models.FlickrModel.getFlickrImages('mojito', function (images) {
-                var dateString = ac.intl.formatDate(new Date()),
-                    data = {
-                        images: images,
-                        date: dateString,
-                        greeting: ac.intl.lang("TITLE"),
-                        url: ac.url.make('flickr', 'index')
-                    };
+        index: function(ac) {
+            ac.models.get('FlickrModel').getFlickrImages('mojito', function(images) {
+                var dateString = ac.intl.formatDate(new Date());
+                var data = {
+                    images: images,
+                    date: dateString,
+                    greeting: ac.intl.lang("TITLE"),
+                    url: ac.url.make('flickr','index')
+                };
                 ac.done(data);
             });
         }
 
     };
 
-}, '0.0.1', {requires: ['mojito-intl-addon', 'FlickrModel']});
+}, '0.0.1', {requires: [
+    'mojito',
+    'mojito-models-addon',
+    'mojito-intl-addon',
+    'mojito-url-addon',
+    'FlickrModel'
+]});

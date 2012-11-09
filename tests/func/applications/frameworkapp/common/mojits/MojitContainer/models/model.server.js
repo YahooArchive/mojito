@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('MojitContainerModel', function(Y) {
+YUI.add('MojitContainerModel', function(Y, NAME) {
 
 /**
  * The MojitContainerModel module.

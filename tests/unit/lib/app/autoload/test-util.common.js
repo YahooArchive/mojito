@@ -14,6 +14,115 @@
     cases = {
         name: 'functional',
 
+        'blend should work on arrays': function() {
+            var base = [0, 1, 2, 3],
+                over = ['a', 'b'];
+
+            AA.itemsAreEqual([0, 1, 2, 3, 'a', 'b'],
+                Y.mojito.util.blend(base, over),
+                     'Array values should properly blend.');
+        },
+        
+        'blend should unique arrays': function() {
+            var base = [0, 1, 2, 3],
+                over = ['a', 'b', 1];
+
+            AA.itemsAreEqual([0, 1, 2, 3, 'a', 'b'],
+                Y.mojito.util.blend(base, over),
+                     'Array values should blend uniquely.');
+        },
+        
+        'blend should work on objects': function() {
+            var base = {
+                    a: 1,
+                    b: 2
+                },
+                over = {
+                    c: 3,
+                    d: 4
+                },
+                blended = {
+                    a: 1,
+                    b: 2,
+                    c: 3,
+                    d: 4
+                };
+
+            OA.areEqual(blended, Y.mojito.util.blend(base, over));
+        },
+
+        'blend should replace object values': function() {
+            var base = {
+                    a: 1,
+                    b: 2
+                },
+                over = {
+                    c: 3,
+                    a: 4
+                },
+                blended = {
+                    a: 4,
+                    b: 2,
+                    c: 3
+                };
+
+            OA.areEqual(blended, Y.mojito.util.blend(base, over));
+        },
+        
+        'blend should handle nested merges': function() {
+            var base = {
+                    a: 1,
+                    b: 2,
+                    c: {
+                        foo: 1
+                    }
+                },
+                over = {
+                    c: {
+                        bar: 2
+                    }
+                },
+                blended = {
+                    a: 1,
+                    b: 2,
+                    c: {
+                        foo: 1,
+                        bar: 2
+                    }
+                };
+
+            OA.areEqual(blended.c, Y.mojito.util.blend(base, over).c);
+        },
+
+        'blend should handle nested merges with replacements': function() {
+            var base = {
+                    a: 1,
+                    b: 2,
+                    c: {
+                        foo: 1,
+                        baz: 3
+                    }
+                },
+                over = {
+                    a: 4,
+                    c: {
+                        foo: 3,
+                        bar: 2
+                    }
+                },
+                blended = {
+                    a: 4,
+                    b: 2,
+                    c: {
+                        foo: 3,
+                        bar: 2,
+                        baz: 3
+                    }
+                };
+
+            OA.areEqual(blended.c, Y.mojito.util.blend(base, over).c);
+        },
+
         'cleanse should utf encode big 5 chars': function() {
             A.areSame(
                 'test \\u003Cscript\\u003Ealert(\\u0022hi, i\\u0027m a squid \\u0026 a happy one!\\u0022)\\u003C/script\\u003E',
@@ -418,58 +527,6 @@
             };
             var result = Y.mojito.util.metaMerge(to, from);
             OA.areEqual(expected['content-type'], result['content-type']);
-        },
-
-        'test shouldShareYUIInstance': function() {
-            var tests = [
-                    {
-                        desc: 'Test Defaults',
-                        appShare: undefined,
-                        instance: {shareYUIInstance: undefined},
-                        expected: false
-                    },
-                    {
-                        desc: 'Test App True',
-                        appShare: true,
-                        instance: {shareYUIInstance: undefined},
-                        expected: true
-                    },
-                    {
-                        desc: 'Test App False',
-                        appShare: false,
-                        instance: {shareYUIInstance: undefined},
-                        expected: false
-                    },
-                    {
-                        desc: 'Instance Override True',
-                        appShare: false,
-                        instance: {shareYUIInstance: true},
-                        expected: true
-                    },
-                    {
-                        desc: 'Instance Override False',
-                        appShare: true,
-                        instance: {shareYUIInstance: false},
-                        expected: false
-                    },
-                    {
-                        desc: 'Instance Override False',
-                        appShare: undefined,
-                        instance: {shareYUIInstance: false},
-                        expected: false
-                    },
-                    {
-                        desc: 'Instance Override True',
-                        appShare: undefined,
-                        instance: {shareYUIInstance: true},
-                        expected: true
-                    }
-                ],
-                result;
-            Y.Array.each(tests, function (test) {
-                result = Y.mojito.util.shouldShareYUIInstance(test.appShare, test.instance);
-                A.areEqual(test.expected, result, test.desc + ' failed.');
-            });
         }
 
     };

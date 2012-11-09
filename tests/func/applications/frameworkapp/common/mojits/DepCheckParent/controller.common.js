@@ -1,15 +1,15 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
- YUI.add('DepCheckParent', function(Y, NAME) {
+YUI.add('DepCheckParent', function(Y, NAME) {
 
     Y.namespace('mojito.controllers')[NAME] = {
          'index': function(ac) {
              ac.done();
          },
          'mytest': function(ac) {
-             ac.models.AppLevelMojit.getData(function(mydata){
-             //ac.models.DepCheckParent.getData(function(mydata){
+             //ac.models.AppLevelMojit.getData(function(mydata){
+             ac.models.get('DepCheckModel').getData(function(mydata){
                  Y.log("data....."+mydata);
                  ac.done({data:mydata});
              });
@@ -35,4 +35,13 @@
             }
      };
 
-}, '0.0.1', {requires: ['mojito', 'mojito-intl-addon', 'mojito-util','querystring-stringify','AppLevelMojitModel','mojito-meta-addon']});
+}, '0.0.1', {requires: [
+    'mojito',
+    'mojito-composite-addon',
+    'mojito-models-addon',
+    'mojito-intl-addon',
+    'mojito-util',
+    'querystring-stringify',
+    //'AppLevelMojitModel',
+    'DepCheckModel',
+    'mojito-meta-addon']});

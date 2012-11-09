@@ -37,4 +37,7 @@ YUI.add('ShelfController', function(Y, NAME) {
         }
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: [
+    'mojito',
+    'mojito-config-addon',
+    'mojito-composite-addon']});

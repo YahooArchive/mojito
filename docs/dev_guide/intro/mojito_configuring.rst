@@ -2,11 +2,15 @@
 Configuring Mojito
 ==================
 
+.. _config_mojito-basic:
+
 Basic Information
 =================
 
 Mojito can be configured at the framework, application, and mojit levels. Each level is 
 configured differently, but uses same general file format consisting of JSON.
+
+.. _config_mojito_basic-file:
 
 File Format
 -----------
@@ -475,6 +479,8 @@ Configuring Applications to Have Multiple Mojits
 Applications not only can specify multiple mojit instances in ``application.json``, but 
 mojits can have one or more child mojits as well.
 
+.. _config-multiple_mojits-ex:
+
 Application With Multiple Mojits
 ################################
 
@@ -497,6 +503,8 @@ mojit instances ``sign_in`` and ``sign_out`` are defined:
        }
      }
    ]
+
+.. _config-multiple_mojits-parent_child:
    
 Parent Mojit With Child Mojit
 #############################
@@ -522,6 +530,8 @@ the example ``application.json`` below, the mojit instance ``parent`` of type
        }
      }
    ]
+
+.. _config-multiple_mojits-parent_children:
 
 Parent Mojit With Children
 ##########################
@@ -557,6 +567,8 @@ In the example ``application.json`` below, the mojit instance ``father`` of type
        }
      }
    ]
+
+.. _config-multiple_mojits-child_children:
 
 Child Mojit With Children
 #########################
@@ -609,6 +621,8 @@ To configure Mojito to deploy code to the client, you must be using the ``HTMLFr
 as the parent mojit and also set the ``deploy`` property of the :ref:`app-configuration_obj` 
 object to ``true`` in the ``config`` object of your mojit instance.
 
+.. _deploy_app-what:
+
 What Gets Deployed?
 ###################
 
@@ -621,6 +635,8 @@ When a binder invokes its controller, if the controller has the ``client`` or ``
 affinity, then the controller and its dependencies are deployed to the client as well. If 
 the affinity of the controller is ``server``, the invocation occurs on the server. In 
 either case, the binder is able to seamlessly invoke the controller.
+
+.. _deploy_app-ex:
 
 Example
 #######
@@ -698,6 +714,8 @@ Although mojit instances are defined at the application level, you configure met
 defaults for the mojit at the mojit level. The following sections will cover configuration 
 at the mojit level as well as examine the configuration of the mojit instance.
 
+.. _configure_mj-mojit_metadata:
+
 Configuring Metadata
 --------------------
 
@@ -728,6 +746,8 @@ The table below describes the ``configuration`` object in ``definition.json``.
 |                  |                      |                   | <../topics/mojito_using_contexts.html>`_ for more      |
 |                  |                      |                   | information.                                           |
 +------------------+----------------------+-------------------+--------------------------------------------------------+
+
+.. _configure_mj-mojit_app-level_mojit:
 
 Configuring and Using an Application-Level Mojit
 ------------------------------------------------
@@ -768,6 +788,8 @@ the application-level ``Foo`` mojit, the controller of the Bar mojit would inclu
      };
    }, '0.0.1', {requires: ['FooMojitModel']});
 
+.. _configure_defaults-mojits:
+
 Configuring Defaults for Mojit Instances
 ----------------------------------------
 
@@ -775,6 +797,8 @@ The ``defaults.json`` file in the mojit type directory can be used to specify de
 each mojit instance of the type. The format is the same as the mojit instance as specified 
 in the ``specs`` object of ``application.json``. This means that you can specify a default 
 action, as well as any defaults you might want to put in the ``config`` object.
+
+.. _configure_mojit_instances:
 
 Mojit Instances
 ---------------
@@ -784,6 +808,8 @@ mojit type to use and configures an instance of that type. The mojit instances a
 in the ``specs`` object of the ``application.json`` file.
 
 See :ref:`configure_mj-app` and :ref:`app_config-ex` for details of the ``specs`` object.
+
+.. _configure_mojit_instances-using:
 
 Using Mojit Instances
 #####################
@@ -832,7 +858,7 @@ function in the controller of the ``Foo`` mojit.
 
 .. _configure_mj-routing:
 
-Routing
+routing
 =======
 
 In Mojito, routing is the mapping of URLs to specific mojit actions. This section will 
@@ -844,6 +870,8 @@ configure routing:
 
 See   `Code Examples: Configuring Routing <../code_exs/route_config.html>`_ to see an 
 example of configuring routing in a Mojito application.
+
+.. _config_routing-file:
 
 Routing Configuration File
 --------------------------
@@ -899,6 +927,8 @@ The table below describes the properties of the ``route`` object of  ``routes.js
 |                |                      |               | "post" ]``                                             |
 +----------------+----------------------+---------------+--------------------------------------------------------+
 
+.. _config_routing-map:
+
 Map Routes to Specific Mojit Instances and Actions
 --------------------------------------------------
 
@@ -907,6 +937,8 @@ applications. To map routes to a mojit instance and action, you create the file
 ``routes.json`` in your application directory. The ``routes.json`` file allows you to 
 configure a single or multiple routes and specify the HTTP method and action to use for 
 each route.
+
+.. _config_routing_map-single:
 
 Single Route
 ############
@@ -963,6 +995,8 @@ by prepending "@" to the mojit type.
        }
      }
    ]
+
+.. _config_routing_map-multiple:
 
 Multiple Routes
 ###############
@@ -1122,6 +1156,7 @@ would call the ``index`` action:
 - ``http://localhost:8666/1_mojito``
 - ``http://localhost:8666/99_Mojitos``
 
+.. _generate_urls:
 
 Generate URLs from the Controller
 ---------------------------------
@@ -1156,6 +1191,7 @@ with the ``make`` method use the mojit instance and function specified in the
 
 The ``index`` function above returns the following URL: ``http://localhost:8666/foo?foo=bar``
 
+.. _config_mojito-access_configs:
 
 Accessing Configurations from Mojits
 ====================================
@@ -1166,11 +1202,15 @@ can also access configuration from other functions through the ``actionContext``
 The ``init`` function in the binder instead of a configuration object is passed the 
 ``mojitProxy`` object, which enables you to get the configurations.  
 
+.. _access_configs-app-level:
+
 Application-Level Configurations
 --------------------------------
 
 Only the mojit controller has access to application-level configurations through the 
 ``actionContext`` object. 
+
+.. _access_app-level-applicationjson:
 
 application.json
 ################
@@ -1180,10 +1220,14 @@ application configurations in ``application.json`` with ``ac.app.config``. For e
 you wanted to access the ``specs`` object defined in ``application.json``,
 you would use ``ac.app.config.spec``. 
 
+.. _access_app-level-routesjson:
+
 routes.json
 ###########
 
 The routing configuration can be accessed with ``ac.app.routes``. 
+
+.. _access_configs-context:
 
 Application Context
 -------------------
@@ -1211,6 +1255,7 @@ Below is an example of the ``context`` object:
      tz: '' 
    }
 
+.. _access_configs-mojit-level:
 
 Mojit-Level Configurations
 --------------------------
@@ -1219,6 +1264,8 @@ Mojit-level configurations can be specified in two locations. You can specify mo
 configurations in the ``config`` object of a mojit instance in ``application.json`` or 
 default configurations for a mojit in ``mojits/{mojit_name}/defaults.json``. The 
 configurations of ``application.json`` override those in ``defaults.json``.
+
+.. _access_mojit-level-controller:
 
 Controller
 ##########
@@ -1230,6 +1277,8 @@ Use ``ac.config.get`` to access configuration values from ``application.json`` a
 ``defaults.json`` and ``ac.config.getDefinition`` to access definition values from 
 ``definition.json``.
 
+.. _access_mojit-level-model:
+
 Model
 #####
 
@@ -1237,6 +1286,8 @@ The ``init`` function in the model is also passed the mojit-level configurations
 model functions need the configurations, you need to save the configurations to the 
 ``this`` reference because no ``actionContext`` object is passed to the model, so your 
 model does not have access to the ``Config`` addon.
+
+.. _access_mojit-level-binder:
 
 Binder
 ######

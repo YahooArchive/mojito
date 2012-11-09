@@ -10,9 +10,9 @@ YUI.add('PagerMojitModel', function(Y, NAME) {
     var API_KEY = '84921e87fb8f2fc338c3ff9bf51a412e';
 
     /** 
-    * The PagerMojitModel module.
-    * @module PagerMojitModel 
-    */
+     * The PagerMojitModel module.
+     * @module PagerMojitModel 
+     */
     /**
     * Constructor for the Model class.
     * @class Model 
@@ -57,4 +57,8 @@ YUI.add('PagerMojitModel', function(Y, NAME) {
             });
         }
     };
-}, '0.0.1', {requires: ['mojito', 'yql']});
+}, '0.0.1', {requires: [
+    'mojito',
+    'mojito-models-addon',
+    'yql'
+]});

@@ -10,7 +10,7 @@ YUI.add('SimpleModel', function(Y, NAME) {
         },
 
         simpleModel: function(ac){
-            ac.models.SimpleModel.getTurkeyImages(function(turkeys) {
+            ac.models.get('SimpleModel').getTurkeyImages(function(turkeys) {
                 //ac.http.setHeader('content-type', 'text/html');
                 ac.done({turkeys: turkeys});
             });	
@@ -22,11 +22,14 @@ YUI.add('SimpleModel', function(Y, NAME) {
 		},
 		
 		configModel: function(ac){
-            ac.models.SimpleModel.getConfigFromModel(function(myconfig) {
+            ac.models.get('SimpleModel').getConfigFromModel(function(myconfig) {
                 ac.done({myconfig: myconfig});
            });	
 		}
         
     };
     
-}, '0.0.1', {requires: ['mojito']});
+}, '0.0.1', {requires: [
+    'mojito',
+    'mojito-models-addon',
+    'SimpleModelModel']});

@@ -6,13 +6,15 @@ Creating and Using a View Engine Addon
 
 **Difficulty Level:** Intermediate
 
+.. _code_exs_view_engine_addon-summary:
+
 Summary
 =======
 
-This example shows how to install a third-party rendering engine (Embedded Javascript), create a 
-view engine addon that uses the installed rendering engine, and create a template for the view 
-engine. Mojito uses the `Handlebars <https://github.com/wycats/handlebars.js/>`_ rendering engine 
-by default.
+This example shows how to install a third-party rendering engine (Embedded Javascript), 
+create a view engine addon that uses the installed rendering engine, and create a template 
+for the view engine. Mojito uses the 
+`Handlebars <https://github.com/wycats/handlebars.js/>`_ rendering engine by default.
 
 The following topics will be covered:
 
@@ -20,6 +22,7 @@ The following topics will be covered:
 - creating a view engine addon
 - using Embedded JavaScript (EJS) in the template
 
+.. _code_exs_view_engine_addon-notes:
 
 Implementation Notes
 ====================
@@ -28,8 +31,10 @@ Before you create your application, you should take a look at the following sect
 better understand how the application works. The focus here is to give you a practical 
 example that you can use to add your own view engines and also to show some of important 
 points of using view engines in Mojito applications. For more comprehensive but less 
-hands-on documentation, see `Developer Topics: View Engines <../topics/mojito_extensions.html#view-engines>`_.
+hands-on documentation, see 
+`Developer Topics: View Engines <../topics/mojito_extensions.html#view-engines>`_.
 
+.. _ve_addon_notes-what:
 
 What Is a View Engine?
 ----------------------
@@ -39,6 +44,7 @@ often done by interpreting the view as a template. View engines in Mojito can fu
 either the application or mojit level. This example uses an application-level view engine 
 addon, allowing multiple mojits to use it although the example only uses one mojit.
 
+.. _ve_addon_notes-install:
 
 Installing a Rendering Engine
 -----------------------------
@@ -84,6 +90,7 @@ contents similar to the following:
    │       └── fixtures/
    ...
        
+.. _ve_addon_notes-create:
        
 Creating the View Engine Addon
 ------------------------------
@@ -91,6 +98,8 @@ Creating the View Engine Addon
 The view engine addon like other addons is simply a YUI module that lives in the 
 ``addons/view-engines`` directory. For the application-level view engine addons that this 
 example is using, the view engine addon will be in ``{app_dir}/addons/view-engines``.
+
+.. _ve_addon_create-req:
 
 Requirements
 ############
@@ -139,7 +148,8 @@ The view engine addon must have the following:
       }
       ...
       Y.namespace('mojito.addons.viewEngines').ejs = EjsAdapter;
-      
+
+.. _ve_addon_create-render_compile:      
 
 render and compile
 ##################
@@ -204,6 +214,8 @@ In the above code snippet, the ``compile`` method simply returns the template fi
 render the template file into a string. The implementation of the ``compile`` method in 
 the addon could have been written to call ``ejs.render``.
 
+.. _ve_addon_notes-ejs_templates:
+
 EJS Templates
 -------------
 
@@ -231,6 +243,7 @@ EJS also has view helpers for creating links and forms, much like ``ERB``. See
 `Getting Started with EJS <http://embeddedjs.com/getting_started.html>`_ for more 
 information.
 
+.. _code_exs_view_engine_addon-setup:
 
 Setting Up this Example
 =======================
@@ -362,8 +375,8 @@ To set up and run ``adding_view_engines``:
         };
       }, '0.0.1', {requires: ['mojito', 'myMojitModelFoo']});
  
-#. Create the template ``views/default_ve.hb.html`` that uses Handlebar expressions with the 
-   following:
+#. Create the template ``views/default_ve.hb.html`` that uses Handlebar expressions with 
+   the following:
 
    .. code-block:: html
    
@@ -411,6 +424,7 @@ To set up and run ``adding_view_engines``:
 #. Great, your application is using two different rendering engines. You should now be 
    ready to add your own view engine that uses a rendering engine such as Jade.   
 
+.. _code_exs_view_engine_addon-src:
 
 Source Code
 ===========

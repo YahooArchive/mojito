@@ -13,7 +13,7 @@ YUI({
          
              "test framedconfig": function() {
                  Y.Assert.areEqual("HTML Frame Configuration Example", Y.one('h3').get('innerHTML').match(/HTML Frame Configuration Example/gi));
-                 Y.Assert.areEqual("This mojit should be framed with proper &lt;HTML&gt; tags.", Y.all('div').item(2).get('innerHTML').match(/This mojit should be framed with proper &lt;HTML&gt; tags./gi));
+                 Y.Assert.areEqual("This mojit should be framed with proper &lt;HTML&gt; tags.", Y.all('div').item(1).get('innerHTML').match(/This mojit should be framed with proper &lt;HTML&gt; tags./gi));
              }
          }));    
 

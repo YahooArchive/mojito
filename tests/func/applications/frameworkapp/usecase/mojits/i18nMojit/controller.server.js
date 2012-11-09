@@ -28,7 +28,7 @@ YUI.add('i18nMojit', function(Y, NAME) {
          *        to the Mojito API.
          */
         index: function(ac) {
-            ac.models.i18nTest.getFlickrImages('mojito', function(images) {
+            ac.models.get('i18nMojitModel').getFlickrImages('mojito', function(images) {
 	            var dateString = ac.intl.formatDate(new Date());
 	            var tempStr = ac.intl.lang("TITLE");
 	            console.log("*********************TITLE: " + tempStr);
@@ -46,4 +46,8 @@ YUI.add('i18nMojit', function(Y, NAME) {
         }
     };
 
-}, '0.0.1', {requires: ['mojito', 'mojito-intl-addon'], lang: ['de', 'en-US']});
+}, '0.0.1', {requires: [
+    'mojito',
+    'mojito-models-addon',
+    'mojito-intl-addon',
+    'i18nMojitModel'], lang: ['de', 'en-US']});

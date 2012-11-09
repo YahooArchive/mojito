@@ -3,227 +3,148 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-YUI().use('mojito-dispatcher', 'test', function(Y) {
+YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
 
-    var suite = new Y.Test.Suite('mojito-dispatcher-tests'),
+    var suite = new Y.Test.Suite(NAME),
         A = Y.Assert,
-        AA = Y.ArrayAssert,
-        OA = Y.ObjectAssert;
+        dispatcher = Y.mojito.Dispatcher,
+        store,
+        command,
+        adapter;
 
     suite.add(new Y.Test.Case({
 
-        'test dependencyCalculations precomputed': function() {
+        name: 'dispatch',
 
-            var store = {
-                getAppConfig: function() {
-                    return { yui: { dependencyCalculations: 'precomputed' } };
-                },
-                expandInstance: function(instance, context, cb) {
-                    cb(null, {
-                        type: instance.type,
-                        id: 'xyz123',
-                        instanceId: 'xyz123',
-                        yui: {
-                            config: {},
-                            langs: [],
-                            requires: [],
-                            sorted: [],
-                            sortedPaths: {}
-                        }
-                    });
-                }
-            };
-
-            var coreModules = [];
-
-            var logger = {
-                log: function(msg, lvl, src) {
-                    // not testing this
-                }
-            };
-
-            var loaderCalled = 0;
-            var loader = {
-                load: function(paths, cb) {
-                    loaderCalled++;
-                    cb();
-                }
-            };
-
-            var dispatcher = Y.mojito.Dispatcher;
-
-            var res = dispatcher.init(store, coreModules, logger, loader);
-            A.areSame(dispatcher, res);
-
-            var realCC = Y.mojito.ControllerContext;
-            Y.mojito.ControllerContext = function(cfg) {};
-            Y.mojito.ControllerContext.prototype.invoke = function(command, adapter) {};
-
-            var command = {
-                action: 'index',
-                instance: {
-                    type: 'M'
-                },
-                context: {
-                    lang: 'klingon',
-                    langs: 'klingon'
-                }
-            };
-            var adapter = {
-            };
-            try {
-                dispatcher.dispatch(command, adapter);
-            }
-            finally {
-                Y.mojito.ControllerContext = realCC;
-            }
-
-            // this is about all we can get at
-            A.areSame(1, loaderCalled);
-        },
-
-        'test dependencyCalculations ondemand': function() {
-
-            var store = {
+        'setUp': function() {
+            store = {
                 getAppConfig: function() {
                     return { yui: { dependencyCalculations: 'ondemand' } };
                 },
+                getStaticContext: function () {
+                },
+                getRoutes: function() {
+                },
+                validateContext: function() {
+                },
                 expandInstance: function(instance, context, cb) {
                     cb(null, {
                         type: instance.type,
                         id: 'xyz123',
                         instanceId: 'xyz123',
+                        'controller-module': 'dispatch',
+                        createController: function() {
+                            return { index: function() {} };
+                        },
                         yui: {
                             config: {},
                             langs: [],
                             requires: [],
-                            sorted: [],
+                            sorted: ['mojito', 'mojito-action-context'],
                             sortedPaths: {}
                         }
                     });
                 }
             };
 
-            var coreModules = [];
-
-            var logger = {
-                log: function(msg, lvl, src) {
-                    // not testing this
-                }
-            };
-
-            var loaderCalled = 0;
-            var loader = {
-                load: function(paths, cb) {
-                    loaderCalled++;
-                    cb();
-                }
-            };
-
-            var dispatcher = Y.mojito.Dispatcher;
-
-            var res = dispatcher.init(store, coreModules, logger, loader);
-            A.areSame(dispatcher, res);
-
-            var realCC = Y.mojito.ControllerContext;
-            Y.mojito.ControllerContext = function(cfg) {};
-            Y.mojito.ControllerContext.prototype.invoke = function(command, adapter) {};
-
-            var command = {
+            command = {
                 action: 'index',
                 instance: {
                     type: 'M'
                 },
-                context: {
+               context: {
                     lang: 'klingon',
                     langs: 'klingon'
                 }
             };
-            var adapter = {
-            };
-            try {
-                dispatcher.dispatch(command, adapter);
-            }
-            finally {
-                Y.mojito.ControllerContext = realCC;
-            }
 
-            // this is about all we can get at
-            A.areSame(0, loaderCalled);
+            adapter = {};
         },
 
-        'test dependencyCalculations precomputed+ondemand': function() {
+        'tearDown': function() {
+            store = null;
+            command = null;
+            adapter = null;
+        },
 
-            var store = {
-                getAppConfig: function() {
-                    return { yui: { dependencyCalculations: 'precomputed+ondemand' } };
-                },
-                expandInstance: function(instance, context, cb) {
+        'test dispatch uses supplied getter': function() {
+            var getterInvoked = false,
+                res;
+
+            var originalActionContext = Y.namespace('mojito').ActionContext;
+
+            Y.namespace('mojito').ActionContext = function(opts) {
+                return this;
+            };
+
+            store.expandInstance = function(instance, context, cb) {
                     cb(null, {
                         type: instance.type,
                         id: 'xyz123',
                         instanceId: 'xyz123',
+                        'controller-module': 'dispatch',
+                        createController: function() {
+                            getterInvoked = true;
+                            return { index: function() {} };
+                        },
                         yui: {
-                            config: {},
+                            config: {
+                                modules: ['mojito', 'mojito-action-context']
+                            },
                             langs: [],
                             requires: [],
-                            sorted: [],
+                            sorted: ['mojito', 'mojito-action-context'],
                             sortedPaths: {}
                         }
                     });
-                }
-            };
+                };
 
-            var coreModules = [];
+            Y.namespace('mojito').ActionContext = originalActionContext;
 
-            var logger = {
-                log: function(msg, lvl, src) {
-                    // not testing this
-                }
-            };
+            res = dispatcher.init(store);
+            A.areSame(res, dispatcher);
 
-            var loaderCalled = 0;
-            var loader = {
-                load: function(paths, cb) {
-                    loaderCalled++;
-                    cb();
-                }
-            };
+            res.dispatch(command, adapter);
+            A.isTrue(getterInvoked);
+        },
 
-            var dispatcher = Y.mojito.Dispatcher;
+        'test dispatch uses supplied action': function() {
+            var actionInvoked = false,
+                res;
 
-            var res = dispatcher.init(store, coreModules, logger, loader);
-            A.areSame(dispatcher, res);
+            store.expandInstance = function(instance, context, cb) {
+                    cb(null, {
+                        type: instance.type,
+                        id: 'xyz123',
+                        instanceId: 'xyz123',
+                        'controller-module': 'dispatch',
+                        createController: function() {
+                            return { index: function() {
+                                actionInvoked = true;
+                            } };
+                        },
+                        yui: {
+                            config: {
+                                modules: ['mojito', 'mojito-action-context']
+                            },
+                            langs: [],
+                            requires: [],
+                            sorted: ['mojito', 'mojito-action-context'],
+                            sortedPaths: {}
+                        }
+                    });
+                };
 
-            var realCC = Y.mojito.ControllerContext;
-            Y.mojito.ControllerContext = function(cfg) {};
-            Y.mojito.ControllerContext.prototype.invoke = function(command, adapter) {};
+            res = dispatcher.init(store);
+            A.areSame(res, dispatcher);
 
-            var command = {
-                action: 'index',
-                instance: {
-                    type: 'M'
-                },
-                context: {
-                    lang: 'klingon',
-                    langs: 'klingon'
-                }
-            };
-            var adapter = {
-            };
-            try {
-                dispatcher.dispatch(command, adapter);
-            }
-            finally {
-                Y.mojito.ControllerContext = realCC;
-            }
-
-            // this is about all we can get at
-            A.areSame(0, loaderCalled);
+            res.dispatch(command, adapter);
+            A.isTrue(actionInvoked);
         }
 
     }));
 
+
     Y.Test.Runner.add(suite);
 
-});
+}, '0.0.1', {requires: ['mojito-dispatcher']});

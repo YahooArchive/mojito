@@ -10,12 +10,12 @@ YUI.add('CookieMojit', function(Y, NAME) {
     init: function(config) {
       this.config = config;
     },
-    index: function(actionContext) {
-      var myCookieValue = actionContext.cookie.get('mycookie');
-      actionContext.cookie.set("city", "Cleveland");
-      actionContext.cookie.set("name", "Barbara");
-      actionContext.cookie.set("hello", "Hello from the server!\nContent-length:100\n\n\n<script>alert(1)</script>");
-      actionContext.done(
+    index: function(ac) {
+      var myCookieValue = ac.cookie.get('mycookie');
+      ac.cookie.set("city", "Cleveland");
+      ac.cookie.set("name", "Barbara");
+      ac.cookie.set("hello", "Hello from the server!\nContent-length:100\n\n\n<script>alert(1)</script>");
+      ac.done(
         {
           title: "Server Cookie Test",
           mycookievalue: myCookieValue
@@ -23,4 +23,6 @@ YUI.add('CookieMojit', function(Y, NAME) {
       );
     }    
   }; 
-}, '0.0.1', {requires: ['mojito']});
+}, '0.0.1', {requires: [
+    'mojito',
+    'mojito-cookie-addon']});

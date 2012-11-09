@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('test_applevelModel', function(Y) {
+YUI.add('test_applevelModel', function(Y, NAME) {
 
     Y.mojito.models.test_applevel = {
 
@@ -15,4 +15,4 @@ YUI.add('test_applevelModel', function(Y) {
 
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito']});

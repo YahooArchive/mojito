@@ -1,0 +1,28 @@
+group YUITestXMLTemplates;
+
+report(report,date) ::= <<
+<?xml version="1.0" encoding="UTF-8"?>
+<report browser="$report.browser;format="xmlEscape"$" $report:atts()$>
+$report.testSuites:testsuite()$
+$report.testCases:testcase()$
+</report>
+>>
+
+testsuite() ::= <<
+<testsuite $it:atts()$>
+$it.testSuites:testsuite()$
+$it.testCases:testcase()$
+</testsuite>
+>>
+
+testcase() ::= <<
+<testcase $it:atts()$>
+$it.tests:test()$
+</testcase>
+>>
+
+test() ::= <<
+<test name="$it.name$" result="$it.resultText$" message="$it.message$" duration="$it.duration$"/>
+>>
+
+atts() ::= "name=\"$it.name;format=\"xmlEscape\"$\" passed=\"$it.passed$\"  failed=\"$it.failed$\"  ignored=\"$it.ignored$\" total=\"$it.totalIncludingIgnored$\" duration=\"$it.duration$\""

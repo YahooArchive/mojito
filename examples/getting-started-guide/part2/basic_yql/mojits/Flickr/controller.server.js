@@ -22,8 +22,8 @@ YUI.add('Flickr', function (Y, NAME) {
          *        to the Mojito API.
          * @return {}       
          */
-        index: function (ac) {
-            ac.models.FlickrModel.getFlickrImages('mojito', function (images) {
+        index: function(ac) {
+            ac.models.get('FlickrModel').getFlickrImages('mojito', function(images) {
 
                 ac.flush({images: images});
 
@@ -33,4 +33,8 @@ YUI.add('Flickr', function (Y, NAME) {
 
     };
 
-}, '0.0.1', {requires: ['FlickrModel']});
+}, '0.0.1', {requires: [
+    'mojito',
+    'mojito-models-addon',
+    'FlickrModel'
+]});

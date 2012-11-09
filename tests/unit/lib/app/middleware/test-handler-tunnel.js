@@ -13,7 +13,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
         expandedContext;
 
     cases = {
-        name: 'handler tests',
+        name: 'tunnel handler tests',
 
         _handler: null,
 
@@ -35,6 +35,10 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                         });
                     },
                     expandInstance: function(instance, context, callback) {
+                        expandedContext = context;
+                        callback(null, instance);
+                    },
+                    expandInstanceForEnv: function(env, instance, context, callback) {
                         expandedContext = context;
                         callback(null, instance);
                     }
@@ -87,6 +91,10 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                         });
                     },
                     expandInstance: function(instance, context, callback) {
+                        expandedContext = context;
+                        callback(null, instance);
+                    },
+                    expandInstanceForEnv: function(env, instance, context, callback) {
                         expandedContext = context;
                         callback(null, instance);
                     }
@@ -180,8 +188,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                     },
                     end: function(data) {
                         var expected = {
-                            "env": "client",
-                            "id": "MojitA:orange"
+                            "base": "MojitA:orange"
                         };
                         endCalls++;
                         A.areEqual(Y.JSON.stringify(expected,null,4), data, 'should have gotten spec');
@@ -212,8 +219,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                     },
                     end: function(data) {
                         var expected = {
-                            "env": "client",
-                            "id": "MojitA:orange"
+                            "base": "MojitA:orange"
                         };
                         endCalls++;
                         A.areEqual(Y.JSON.stringify(expected,null,4), data, 'should have gotten spec');
@@ -244,7 +250,6 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                     },
                     end: function(data) {
                         var expected = {
-                            "env": "client",
                             "type": "MojitA"
                         };
                         endCalls++;
@@ -276,7 +281,6 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                     },
                     end: function(data) {
                         var expected = {
-                            "env": "client",
                             "type": "MojitA"
                         };
                         endCalls++;
