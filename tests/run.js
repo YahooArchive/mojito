@@ -307,7 +307,9 @@ function runMojitoApp (basePath, path, port, params, callback) {
     params = params || '';
     console.log('Starting ' + path + ' at port ' + port + ' with params ' + (params || 'empty'));
     var p;
-    if (params === '') {
+    if (!port) {
+        p = runCommand(basePath + '/' + path, cwd + "/../bin/mojito", ["start"], function () {});
+    } else if (params === '') {
         p = runCommand(basePath + '/' + path, cwd + "/../bin/mojito", ["start", port], function () {});
     } else {
         p = runCommand(basePath + '/' + path, cwd + "/../bin/mojito", ["start", port, "--context", params], function () {});
