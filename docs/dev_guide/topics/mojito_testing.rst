@@ -3,8 +3,8 @@ Testing
 =======
 
 Mojito provides a testing framework based on `YUI Test`_ that 
-allows you to run unit tests for the framework, modules, applications, mojit controllers, 
-mojit models, and mojit binders.
+allows you to run unit tests for modules, applications, mojit controllers, mojit 
+models, and mojit binders.
 
 The next few sections show you how to run specific tests with the ``mojito`` command.
 
@@ -37,18 +37,6 @@ Conventions
 .. note:: Test files that are **not** in a ``tests`` directory may be found by Mojito as 
           long as the file name has the suffix ``-tests``. The suggested practice though 
           is to place all test files in the ``tests`` directories shown above.
-
-.. _mojito_testing-framework:
-
-Framework Tests
-===============
-
-After you have installed Mojito, you should run the framework test to confirm that Mojito 
-installed correctly and that Node.js has been given permission to access the file system.
-
-To test the Mojito framework, run the following:
-
-``$ mojito test``
 
 .. _mojito_testing-application:
 
