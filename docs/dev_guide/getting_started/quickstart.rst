@@ -19,9 +19,9 @@ Installation Steps
 
    ``$ npm install mojito -g``
 
-#. Confirm that Mojito has been installed by running unit tests.
+#. Confirm that Mojito has been installed by running the help command.
 
-   ``$ mojito test``
+   ``$ mojito help``
 
 
 Create a Mojito Application

@@ -19,6 +19,7 @@
         "express": "2.5.10",
         "glob": "~3.1.11",
         "jslint": "~0.1.9",
+        "js-yaml": "1.0.2",
         "mkdirp": ">0.3",
         "mime": "1.2.4",
         "rimraf": ">2",
@@ -28,7 +29,8 @@
         "yui": "~3.7.3",
         "request": "2.9.202",
         "yuidocjs": "~0.3.14",
-        "yuitest": "~0.7.4"
+        "yuitest": "~0.7.4",
+        "yuitest-coverage": "~0.0.6"
     },
     "keywords": [
         "framework",
