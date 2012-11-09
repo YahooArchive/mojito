@@ -6,11 +6,15 @@ Configuring Routing
 
 **Difficulty Level:** Beginning
 
+.. _code_exs_routing-summary:
+
 Summary
 =======
 
 This example shows how to configure routing for your Mojito application. In Mojito, 
 routing is the mapping of URLs to mojit actions.
+
+.. _code_exs_routing-notes:
 
 Implementation Notes
 ====================
@@ -86,6 +90,8 @@ receiving any HTTP POST requests.
 
 - ``http://localhost:8666/custom-route``
 - ``http://localhost:8666/{any_path}``
+
+.. _code_exs_routing-setup:
 
 Setting Up this Example
 =======================
@@ -192,7 +198,7 @@ To set up and run ``configure_routing``:
             ac.done(route_info(ac));
           }
         };
-      }, '0.0.1', {requires: ['mojito-url-addon']});
+      }, '0.0.1', {requires: ['mojito-url-addon', 'mojito-http-addon']});
 
 #. To display your route information in your ``index`` template, replace the content of 
    ``index.hb.html`` with the following:
@@ -221,6 +227,8 @@ To set up and run ``configure_routing``:
 #. To see the ``show`` route, open the following URL in a browser:
 
    http://localhost:8666/show
+
+.. _code_exs_routing-src:
 
 Source Code
 ===========

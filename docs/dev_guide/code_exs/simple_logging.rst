@@ -6,6 +6,8 @@ Simple Logging
 
 **Difficulty:** Intermediate
 
+.. _code_exs_logging-summary:
+
 Summary
 =======
 
@@ -17,8 +19,12 @@ The following topics will be covered:
 - displaying client-side and server-side logging
 - using ``Y.log`` to set log levels
 
+.. _code_exs_logging-notes:
+
 Implementation Notes
 ====================
+
+.. _logging_notes-config:
 
 Log Configuration
 -----------------
@@ -45,6 +51,8 @@ properties and their default values.
      }
    }
 
+.. _logging_notes-levels:
+
 Log Levels
 ----------
 
@@ -62,6 +70,8 @@ Setting a log level of ``WARN`` will filter out all ``DEBUG`` and ``INFO`` messa
 messages, set the log level to ``DEBUG``. The ``MOJITO`` log level is for showing Mojito 
 framework-level logging that indicate important framework events are occurring.
 
+.. _logging_notes-set_levels:
+
 Setting Log Level with Y.log
 ----------------------------
 
@@ -77,6 +87,8 @@ will use the log level ``INFO``.
 
    Y.log("This message will be reported at the log level set in application.json or the default level.");
    Y.log("This log message will be reported at the INFO log level.", "info");
+
+.. _code_exs_logging-setup:
 
 Setting Up this Example
 =======================
@@ -229,6 +241,8 @@ To set up and run ``simple_logging``:
 
 #. Open your browser's developer console, such as Firebug, and view the console logs. You 
    should see the client log messages from the binder that start with the string "\[BINDER]".
+
+.. _code_exs_logging-src:
 
 Source Code
 ===========

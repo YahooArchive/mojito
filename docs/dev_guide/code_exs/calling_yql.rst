@@ -1,4 +1,3 @@
-
 ========================
 Calling YQL from a Mojit
 ========================
@@ -6,6 +5,8 @@ Calling YQL from a Mojit
 **Time Estimate:** 15 minutes
 
 **Difficulty Level:** Intermediate
+
+.. _code_exs_yql-summary:
 
 Summary
 =======
@@ -23,6 +24,9 @@ The following topics will be covered:
 - getting query string parameters with the ``Params`` addon
 - calling the YQL Web service with the `YQL Module of YUI <http://developer.yahoo.com/yui/3/yql/>`_
 
+
+.. _code_exs_yql-notes:
+
 Implementation Notes
 ====================
 
@@ -31,6 +35,8 @@ The following screenshot shows the grid of Flickr images retrieved by YQL.
 .. image:: images/yql.flickr.preview.gif
    :height: 373px
    :width: 401px
+
+.. _code_exs_yql-statement:
 
 Forming the YQL Statement and Flickr Photo URI
 ----------------------------------------------
@@ -70,6 +76,8 @@ response, you form the photo URIs using the following URI scheme:
 
 Having formed the YQL statement and the Flickr photo URI to get data, we can create the 
 model.
+
+.. _code_exs_yql-model:
 
 Creating the Model
 ------------------
@@ -156,6 +164,8 @@ controller through the ``callback`` function.
           Because you don't know when the model is getting its data, you have to assume 
           that it may block.
 
+.. _code_exs_yql-call_model:
+
 Calling the Model from the Controller
 -------------------------------------
 
@@ -203,7 +213,9 @@ passed to ``search`` returns the array of photo objects, the ``done`` method sen
          });
        }
      };
-   }, '0.0.1', {requires: []});
+   }, '0.0.1', {requires: ['mojito-params-addon']});
+
+.. _code_exs_yql-setup:
 
 Setting Up this Example
 =======================
@@ -372,7 +384,7 @@ To set up and run ``model_yql``:
             });
           }
         };
-      }, '0.0.1', {requires: []});
+      }, '0.0.1', {requires: ['mojito-params-addon']});
 
 #. Replace the contents of ``assets/index.css`` for the application's CSS with the following:
 
@@ -422,6 +434,9 @@ To set up and run ``model_yql``:
 #. Get 50 Flickr photos using the search query "mojito" with the following URL:
 
    http://localhost:8666?q=mojito&size=50
+
+
+.. _code_exs_yql-src:
 
 Source Code
 ===========

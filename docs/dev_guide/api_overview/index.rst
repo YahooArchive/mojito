@@ -13,7 +13,7 @@ The API contains the following five modules:
   features from within a controller function.
 - **Addons** - extensions that provide functionality that lives both on the server and/or client. 
   Each addon provides additional functions through a namespace that is attached directly to the 
-  ``Action Context`` object available in every controller function.
+  ``Action Context`` object available when required in a controller.
 - **CommonLibs** - is a utility library containing methods to handle cookies, access input 
   parameters, and make REST calls.
 - **MojitoClient** - is the client-side Mojito runtime module containing methods that allow 
