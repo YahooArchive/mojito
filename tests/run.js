@@ -306,12 +306,16 @@ function runCommand (path, command, argv, callback) {
 function runMojitoApp (basePath, path, port, params, callback) {
     params = params || '';
     console.log('Starting ' + path + ' at port ' + port + ' with params ' + (params || 'empty'));
-    var p;
-    if (params === '') {
-        p = runCommand(basePath + '/' + path, cwd + "/../bin/mojito", ["start", port], function () {});
-    } else {
-        p = runCommand(basePath + '/' + path, cwd + "/../bin/mojito", ["start", port, "--context", params], function () {});
-    }
+    var cmdArgs = ['start'];
+    if (port) {
+        cmdArgs.push(port);
+    } 
+    if (params) {
+        cmdArgs.push('--context');
+        cmdArgs.push(params);
+    } 
+    var p = runCommand(basePath + '/' + path, cwd + "/../bin/mojito", cmdArgs, function () {});
+    
     pids.push(p.pid);
     pidNames[p.pid] = libpath.basename(path) + ':' + port + (params ? '?' + params : '');
     // Give each app a second to start
