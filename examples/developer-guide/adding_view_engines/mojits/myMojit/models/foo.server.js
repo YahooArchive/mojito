@@ -16,7 +16,7 @@ YUI.add('myMojitModelFoo', function(Y, NAME) {
      * @class myMojitModelFoo
      * @constructor
      */
-    Y.namespace('mojito.models')[NAME] = {
+    Y.mojito.models[NAME] = {
 
         init: function(config) {
             this.config = config;

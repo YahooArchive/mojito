@@ -1,11 +1,10 @@
+
 ==============
 Mojito Binders
 ==============
 
-.. _mojito_binders-overview:
-
 Overview
-========
+########
 
 Each mojit you create can have some specific code called binders that is only deployed to the 
 browser. The code can perform the following three functions:
@@ -21,10 +20,9 @@ if the ``simple`` view is used, the binder ``simple.js`` is used. This can be ov
 ``view.binder`` in the ``meta`` argument to `ac.done <../../api/classes/ActionContext.html#method_done>`_. 
 If no binder matches the view, then no binder is used.
 
-.. _mojito_binders-app_reqs:
 
 Application Requirements for Using Binders
-==========================================
+##########################################
 
 To use binders, your application is required to have the following: 
 
@@ -44,18 +42,16 @@ To use binders, your application is required to have the following:
 See `Binding Events <../code_exs/binding_events.html>`_ for a documented example that uses
 binders.
 
-.. _mojito_binders-anatomy:
-
 Anatomy of the Binder
-=====================
+#####################
 
-A binder essentially has the two essential functions ``init`` and ``bind``. The ``init`` 
-function initializes the binder and contains the ``mojitProxy`` object. The ``bind`` 
-function allows the binder to be attached to the DOM.
+A binder essentially has the two essential functions ``init`` and ``bind``. The ``init`` function 
+initializes the binder and contains the ``mojitProxy`` object. The ``bind`` function allows the 
+binder to be attached to the DOM.
 
-The example binder below shows the basic structure of a binder. The binder is for the 
-``AwesomeMojit`` mojit and contains the ``init`` and ``bind`` functions that initialize 
-and allow the binder code to be attached to the DOM.
+The example binder below shows the basic structure of a binder. The binder is for the ``AwesomeMojit`` 
+mojit and contains the ``init`` and ``bind`` functions that initialize and allow the binder 
+code to be attached to the DOM.
 
 .. code-block:: javascript
 
@@ -69,43 +65,36 @@ and allow the binder code to be attached to the DOM.
      };
    }, '0.0.1', {requires: ['node']});
 
-An instance of the binder above will be created whenever the ``index`` function of 
-``AwesomeMojit`` is executed, and its corresponding DOM node is attached to a client page. 
-Mojito will select that DOM node and pass it into the ``bind`` function. This allows you 
-to write code to capture UI events and interact with Mojito or other mojit binders.
-
-.. _binders_anatomy-init:
+An instance of the binder above will be created whenever the ``index`` function of ``AwesomeMojit`` 
+is executed, and its corresponding DOM node is attached to a client page. Mojito will select that 
+DOM node and pass it into the ``bind`` function. This allows you to write code to capture UI events 
+and interact with Mojito or other mojit binders.
 
 init
-----
+====
 
-The ``init`` method is called with an instance of a mojit proxy specific for this mojit 
-binder instance. The mojit proxy can be used at this point to listen for events. It is 
-typical to store the mojit proxy for later use as well. The mojit proxy is the only 
-gateway back into the Mojito 
+The ``init`` method is called with an instance of a mojit proxy specific for this mojit binder 
+instance. The mojit proxy can be used at this point to listen for events. It is typical to store the 
+mojit proxy for later use as well. The mojit proxy is the only gateway back into the Mojito 
 framework for your binder.
 
-.. _binders_anatomy-bind:
-
 bind
-----
+====
 
-The ``bind`` method is passed a ``Y.Node`` instance that wraps the DOM node representing 
-this mojit instance within the DOM. It will be called after all other binders on the page 
-have been constructed and their ``init`` methods have been called. The mojit proxy can be 
-used at this point to broadcast events. Users should attach DOM event handlers in ``bind`` 
-to capture user interactions.
+The ``bind`` method is passed a ``Y.Node`` instance that wraps the DOM node representing this mojit 
+instance within the DOM. It will be called after all other binders on the page have been constructed 
+and their ``init`` methods have been called. The mojit proxy can be used at this point to 
+broadcast events. Users should attach DOM event handlers in ``bind`` to capture user interactions.
 
-For Mojito to reference the DOM node representing the mojit instance and pass it to the 
-``bind`` function, the root element of the mojit's template must have the ``id`` attribute 
-with the Handlebars expression ``{{mojit_view_id}}``. Mojito will render ``{{mojit_view_id}}``
+For Mojito to reference the DOM node representing the mojit instance and pass it to the ``bind`` 
+function, the root element of the mojit's template must have the ``id`` attribute with the 
+Handlebars expression ``{{mojit_view_id}}``. Mojito will render ``{{mojit_view_id}}``
 into a unique ID that can be used to select the DOM node.
 
-For example, the root element ``<div>`` in the template below has the ``id`` attribute 
-with the value ``{{mojit_view_id}}``. This ``id`` lets Mojito reference the ``Y.Node`` 
-instance wrapping the DOM node representing the mojit instance within the DOM. If this 
-``<div>`` element does not have this ``id`` value, no node will be passed to the ``bind`` 
-function.
+For example, the root element ``<div>`` in the template below has the ``id`` attribute with the 
+value ``{{mojit_view_id}}``. This ``id`` lets Mojito reference the ``Y.Node`` instance wrapping the 
+DOM node representing the mojit instance within the DOM. If this ``<div>`` element does not have 
+this ``id`` value, no node will be passed to the ``bind`` function.
 
 .. code-block:: html 
 
@@ -123,10 +112,8 @@ function.
      </div>
    </div>
 
-.. _binders_anatomy-mojitProxy:
-
 mojitProxy Object
------------------
+#################
 
 Each binder, when constructed by Mojito on the client, is given a proxy object for interactions with 
 the mojit it represents as well as with other mojits on the page. This ``mojitProxy`` should be saved 
@@ -159,7 +146,7 @@ information below:
 
    mojitProxy.type
 
-.. _mojito_binders-refresh_views:
+
 
 Refreshing Views
 ================
@@ -168,8 +155,6 @@ Often all you want your binder to do is to refresh its associated view. From the
 object, you can call the ``refreshView`` method to render a new DOM node for the current mojit and 
 its children, as well as reattach all of the existing binders to their new nodes within the new 
 markup. Because all binder instances are retained, state can be stored within a binder's scope.
-
-.. _refresh_views-ex:
 
 Example Usage
 -------------
@@ -195,8 +180,6 @@ invocation.
      });
    ...
 
-.. _mojito_binders-destroy_child:
-
 Destroying Child Mojits
 =======================
 
@@ -207,8 +190,6 @@ that identify the child mojit.
 
 After being destroyed, the child's DOM node is detached, destroyed, and its binder 
 life-cycle events (``unbind``, ``destroy``) are executed.
-
-.. _destroy_child-ex:
 
 Example Usage
 -------------
@@ -228,17 +209,13 @@ The code snippet below uses the ``destroyChild`` method to remove the child node
      }
    ...
 
-.. _mojito_binders-class_mojitProxy:
-
 Class MojitProxy
 ================
 
 See the `Class MojitProxy <../../api/classes/MojitProxy.html>`_ in the Mojito API Reference.
 
-.. _class_mojitProxy-exs:
-
 Binder Examples
----------------
+###############
 
 The following example shows a typical binder. To see how to use binders in a working example, see the 
 `Code Examples: Events <../code_exs/#events>`_.

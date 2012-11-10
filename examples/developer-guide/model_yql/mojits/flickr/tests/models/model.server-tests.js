@@ -16,7 +16,7 @@ YUI.add('flickrModel-tests', function(Y) {
         name: 'flickr model user tests',
         
         setUp: function() {
-            model = Y.mojito.models.flickrModel;
+            model = Y.mojito.models.flickr;
         },
         tearDown: function() {
             model = null;

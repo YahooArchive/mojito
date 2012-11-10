@@ -6,7 +6,7 @@
 
 /*jslint anon:true, sloppy:true, nomen:true*/
 
-YUI.add('FooterMojitModel', function(Y, NAME) {
+YUI.add('FooterMojitModel', function(Y) {
 
 /**
  * The FooterMojitModel module.
@@ -20,7 +20,7 @@ YUI.add('FooterMojitModel', function(Y, NAME) {
      * @class Model
      * @constructor
      */
-     Y.namespace('mojito.models')[NAME] = {
+    Y.mojito.models.FooterMojit = {
 
         init: function (config) {
             this.config = config;

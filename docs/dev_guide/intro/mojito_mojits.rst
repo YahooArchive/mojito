@@ -12,8 +12,7 @@ not show how to configure, create, or use mojits. For those implementation detai
 following:
 
 - `Mojit Configuration <mojito_configuring.html#mojit-configuration>`_
-- `Mojits <mojito_apps.html#mojits>`_ in the `Mojito Applications <mojito_apps.html>`_ 
-   chapter
+- `Mojits <mojito_apps.html#mojits>`_ in the `Mojito Applications <mojito_apps.html>`_ chapter
 - `MVC in Mojito <mojito_mvc.html>`_
 - `Mojito API Documentation <../../api>`_
 
@@ -64,8 +63,8 @@ Mojit Proxy
 ```````````
 
 The Mojit Proxy is the conduit for communication between the binder and the mojit's
-``ActionContext`` object and other mojits on the page. In code, the Mojit Proxy is 
-represented by the `mojitProxy object <mojito_binders.html#mojitproxy-object>`_. 
+``ActionContext`` object and other mojits on the page. In code, the Mojit Proxy is represented by 
+the `mojitProxy object <mojito_binders.html#mojitproxy-object>`_. 
 
 See `Mojito Binders <mojito_binders.html>`_ to learn how binders 
 use the ``mojitProxy`` object to communicate with server-side code.
@@ -111,8 +110,8 @@ View Files
 ##########
 
 View files are called templates in Mojito. View templates can contain both HTML
-and templating tags/expressions, such as Mustache or Handlebars, and are rendered into 
-markup that is outputted to the client.
+and templating tags/expressions, such as Mustache or Handlebars, and are rendered into markup that is
+outputted to the client.
 
 See `Views <mojito_mvc.html#views>`_ in the `MVC in Mojito <mojito_mvc.html>`_ chapter
 for more information.
@@ -206,8 +205,8 @@ itself incorporate other mojits in order to fulfill its role. Composite mojits
 encapsulate their children, such that, for all intents and purposes, an
 instance of a composite mojit cannot be distinguished from its child mojits.
 
-See the chapter `Composite Mojits <../topics/mojito_composite_mojits.html>`_ for more 
-information and to learn how to create composite mojits.
+See the chapter `Composite Mojits <../topics/mojito_composite_mojits.html>`_ for more information
+and to learn how to create composite mojits.
 
 .. |---| unicode:: U+2014  .. em dash, trimming surrounding whitespace
    :trim:

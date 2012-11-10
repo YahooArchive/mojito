@@ -167,7 +167,7 @@ YUI().use(
                 });
             },
 
-            'server mojit instance views and binders': function() {
+            'server mojit instance views & binders': function() {
                 var instance = {type:'test_mojit_1'};
                 store.expandInstanceForEnv('client', instance, {}, function(err, instance) {
                     A.areSame(3, Y.Object.keys(instance.views).length);

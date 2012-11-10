@@ -7,11 +7,11 @@ Resource Store
 Overview
 ========
 
-The Resource Store (RS) is the Mojito subsystem that manages metadata about the files in 
-your Mojito applications. Thus, it is responsible for finding and classifying code and 
-configuration files. When you start a Mojito application, Mojito can find, track, and 
-resolve versions of files in your application, such as mojits, configuration files, 
-binders, views, assets, addons, etc., because of the |RS|.
+The Resource Store (RS) is the Mojito subsystem that manages metadata about the files in your 
+Mojito applications. Thus, it is responsible for finding and classifying code and configuration 
+files. When you start a Mojito application, Mojito can find, track, and resolve versions of files 
+in your application, such as mojits, configuration files, binders, views, assets, addons, etc., 
+because of the |RS|.
 
 
 .. _intro-who:
@@ -20,14 +20,13 @@ Intended Audience
 -----------------
 
 Only advanced Mojito application developers needing finer grain control over the management 
-of resources or to extend the functionality of the resource store should read this 
-documentation.
+of resources or to extend the functionality of the resource store should read this documentation.
 
 Prerequisites
 -------------
 
-In addition to being an advanced Mojito user, you should also understand the following 
-before using the |RS|:
+In addition to being an advanced Mojito user, you should also understand the following before 
+using the |RS|:
 
 - |YUIPlugin|_
 - `Mojito addons <../topics/mojito_extensions.html#addons>`_
@@ -42,8 +41,8 @@ Reflection
 ##########
 
 The |RS| API has methods that can be used (as-is, no addons 
-required) to query for details about an application. For example, when you run the 
-commands ``mojito compile`` and ``mojito gv``, the |RS| API methods ``getResources`` and 
+required) to query for details about an application. For example, when you run the commands
+``mojito compile`` and ``mojito gv``, the |RS| API methods ``getResources`` and 
 ``getResourceVersions`` are called to get information about your application.
 
 
@@ -64,9 +63,8 @@ Extend/Modify Functionality of the |RS|
 
 You can also write addons or create custom versions of built-in |RS| addons to modify 
 how the resource store works. Your addon could map contexts to 
-:ref:`selectors <resolution-selectors>`, track new file types, augment the information 
-that the |RS| stores about files or code, or augment/replace the information returned by 
-the |RS|.          
+:ref:`selectors <resolution-selectors>`, track new file types, augment the information that the 
+|RS| stores about files or code, or augment/replace the information returned by the |RS|.          
          
 
 .. _rs-resources:
@@ -80,16 +78,15 @@ What is a Resource?
 -------------------
 
 In Mojito, the meaning of the term **resource** is different depending on the context. 
-Before we discuss the |RS| in more detail, let's differentiate and define the definition 
-of resource in the contexts of Mojito and the |RS|.
+Before we discuss the |RS| in more detail, let's differentiate and define the definition of 
+resource in the contexts of Mojito and the |RS|.
 
 .. _what-to_mojito:
 
 To Mojito
 #########
 
-The Mojito framework primarily views a **resource** as something useful found on the 
-filesystem.
+The Mojito framework primarily views a **resource** as something useful found on the filesystem.
 
 .. _what-to_rs:
 
@@ -97,9 +94,9 @@ To the Resource Store
 #####################
 
 The |RS| primarily cares about the *metadata* about each resource, so it sees the 
-metadata as the *resource*.  To the |RS|, the **resource** is just a JavaScript object 
-containing metadata.  The |RS| defines certain keys with specific meanings.  The |RS| 
-addons can add, remove, or modify those keys/values as they see fit.  
+metadata as the *resource*.  To the |RS|, the **resource** is just a JavaScript object containing 
+metadata.  The |RS| defines certain keys with specific meanings.  The |RS| addons 
+can add, remove, or modify those keys/values as they see fit.  
 For example, the YUI |RS| addon adds, for resources that are YUI modules, the ``yui`` 
 property with metadata about the YUI module aspect of the resource.
 The |RS| itself, however, doesn't populate the ``yui`` key of each resource.
@@ -111,8 +108,8 @@ Resource Versions
 -----------------
 
 Because there can be multiple files which are all conceptually different versions of the
-same thing (e.g., ``views/index.hb.html`` and ``views/index.iphone.hb.html``), the |RS| 
-defines **resource version** as the metadata about each file and resource as the metadata
+same thing (e.g., ``views/index.hb.html`` and ``views/index.iphone.hb.html``), the |RS| defines
+**resource version** as the metadata about each file and resource as the metadata
 about the file chosen among the possible choices.
 
 The process of choosing which version of a resource to use is called *resolution* (or
@@ -141,18 +138,18 @@ middleware.
 Mojit-Level Resources
 #####################
 
-At the mojit level, resources include controllers, models, binders, configuration files, 
-and views. These resources are limited in scope to a mojit.
+At the mojit level, resources include controllers, models, binders, configuration files, and views. 
+These resources are limited in scope to a mojit.
 
 .. _scope-shared:
 
 Shared Resources
 ################
 
-Some resources (and resource versions) are *shared*, meaning that they are included in 
-**all** mojits.  Most resource types that are mojit level can also be shared.  Examples 
-of mojit-level resource types that can't be shared are controllers, configuration files 
-(such as ``definition.json``), and YUI language bundles.
+Some resources (and resource versions) are *shared*, meaning that they are included in **all**
+mojits.  Most resource types that are mojit level can also be shared.  Examples of mojit-level
+resource types that can't be shared are controllers, configuration files (such as 
+``definition.json``), and YUI language bundles.
 
 .. _resources-types:
 
@@ -176,9 +173,9 @@ Resource Metadata
 Intro
 -----
 
-The RS uses metadata to track information about each resource. This metadata is used by 
-the rest of Mojito to find, load, and parse the resources. The metadata is generated by 
-the |RS| or by |RS| addons |---| it has no representation on the filesystem.  
+The RS uses metadata to track information about each resource. This metadata is used by the rest of 
+Mojito to find, load, and parse the resources. The metadata is generated by the |RS| or by |RS| 
+addons |---| it has no representation on the filesystem.  
 
 
 .. _metadata-obj:
@@ -344,8 +341,8 @@ yui Object
 
 The ``yui`` property of the ``metadata`` object is created by the ``yui`` |RS| addon. The
 ``yui`` property can be any data type, but in general, it is an object 
-containing metadata about YUI modules.  You can think of the ``yui`` object as a container 
-for the arguments to the ``YUI.add`` method that is used to register reusable YUI modules.
+containing metadata about YUI modules.  You can think of the ``yui`` object as a container for the 
+arguments to the ``YUI.add`` method that is used to register reusable YUI modules.
 
 The following table lists the typical properties that are 
 part of the ``yui`` object.
@@ -405,17 +402,17 @@ selector Property
 The  **selector** is an arbitrary user-defined string, which is used to 
 *select* which version of each resource to use.  The selector is defined in the 
 ``application.json`` with the ``selector`` property. Because the selector is a global
-entity, you cannot define it at the mojit level. For example, you cannot define the 
-selector in the ``defaults.json`` of a mojit.
+entity, you cannot define it at the mojit level. For example, you cannot define the selector
+in the ``defaults.json`` of a mojit.
 
 The value of the ``selector`` property is a string that must not have a 
-period (``'.'``) or slash (``'/'``) in it.  In practice, it's suggested to use alphanumeric 
-and hyphen ('-') characters only.
+period (``'.'``) or slash (``'/'``) in it.  In practice, it's suggested to use alphanumeric and 
+hyphen ('-') characters only.
  
 Only one selector can be used in each configuration object identified by the 
-``setting`` property, which defines the context. The specified selectors must match the 
-selector found in the resource file names.  So, for example, the template 
-``views/index.iphone.hb.html`` has the selector ``iphone``.
+``setting`` property, which defines the context. The specified selectors must match the selector 
+found in the resource file names.  So, for example, the template ``views/index.iphone.hb.html`` has 
+the selector ``iphone``.
 
 Example
 #######
@@ -454,13 +451,12 @@ Resource Versions
 -----------------
 
 Resources can have many versions that are identified by the 
-:ref:`selector property <sel_prop>` and the affinity. The selector is defined by the user 
-and indicates the version of the resource and the affinity is defined by the resource itself.
+:ref:`selector property <sel_prop>` and the affinity. The selector is defined by the user and 
+indicates the version of the resource and the affinity is defined by the resource itself.
 
 For example, developer might decide to use the selector ``selector: iphone`` for the 
-iPhone version  and ``selector: android`` for the Android version of a resource. Using 
-these two selectors, you could have the following two versions of the ``index`` resource 
-of type ``view``:
+iPhone version  and ``selector: android`` for the Android version of a resource. Using these two 
+selectors, you could have the following two versions of the ``index`` resource of type ``view``:
 
 - ``index.iphone.hb.html``
 - ``index.android.hb.html``
@@ -519,39 +515,34 @@ Overview
 --------
 
 In short, the resource store walks through the application-level, 
-mojit-level, and ``npm`` module files (in that order) of a Mojito application, determines 
-what type of resource each file is, creates metadata about the resource, and then 
-registers the resource.
+mojit-level, and ``npm`` module files (in that order) of a Mojito application, determines what type 
+of resource each file is, creates metadata about the resource, and then registers the resource.
 
 During this process, the resource store also does the following:
 
-- pre-calculates ("resolves") which resource versions are used for each version of the 
-  mojit.
+- pre-calculates ("resolves") which resource versions are used for each version of the mojit.
 - also keeps track of application-level resources (archetypes, commands, config files, 
   and middleware).
 - provides methods and events, including those specialized for AOP.
-- explicitly uses the addons :ref:`selector <intro-selector>` and 
-  :ref:`config <intro-config>`.
+- explicitly uses the addons :ref:`selector <intro-selector>` and :ref:`config <intro-config>`.
 
-In the following sections, we'll look at the process in a little more details. To see the 
-code for the resource store, see the |SS|_ file.
+In the following sections, we'll look at the process in a little more details. To see the code for 
+the resource store, see the |SS|_ file.
 
 .. _how-walk_fs:
 
 Walking the Filesystem
 ----------------------
 
-Resource versions are discovered by the |RS| at server-start time. The |RS| method 
-``preload`` first walks all the files in the application, excluding the ``node_modules`` 
-directory. Next, all the files in the packages in ``node_modules`` are walked.  The 
-packages are walked in breadth-first fashion, so that *shallower* packages have precedence 
-over *deeper* ones. (Not all the packages are used: only those that have declared 
-themselves as extensions to Mojito.) Finally, if Mojito wasn't found in ``node_modules``, 
-the globally-installed version of Mojito is walked.
+Resource versions are discovered by the |RS| at server-start time. The |RS| method ``preload``
+first walks all the files in the application, excluding the ``node_modules`` directory. Next, all 
+the files in the packages in ``node_modules`` are walked.  The packages are walked in breadth-first 
+fashion, so that *shallower* packages have precedence over *deeper* ones. (Not all the packages 
+are used: only those that have declared themselves as extensions to Mojito.) Finally, 
+if Mojito wasn't found in ``node_modules``, the globally-installed version of Mojito is walked.
 
-After all that, the |RS| knows about all the resource versions.  Then it resolves those 
-versions into the resources as described in 
-:ref:`Resolution and Priorities <how-resolution>`.  
+After all that, the |RS| knows about all the resource versions.  Then it resolves those versions
+into the resources as described in :ref:`Resolution and Priorities <how-resolution>`.  
 
 .. _how-resolution:
 
@@ -559,11 +550,10 @@ Resolution and Priorities
 -------------------------
 
 The resolving of resource version happens in the |RS| ``preload`` method as well.
-The act of resolving the resource versions is really just resolving the affinities and 
-selectors. See :ref:`Resource Versions <metatdata-versions>` for a brief explanation about 
-how affinities and selectors determine different versions of a resource. The following 
-sections discuss what the |RS| uses to resolve versions and create a 
-**priority-ordered selector list (POSL)**.
+The act of resolving the resource versions is really just resolving the affinities and selectors.
+See :ref:`Resource Versions <metatdata-versions>` for a brief explanation about how affinities
+and selectors determine different versions of a resource. The following sections discuss what the 
+|RS| uses to resolve versions and create a **priority-ordered selector list (POSL)**.
 
 .. _resolution-affinities:
 
@@ -589,27 +579,26 @@ Suppose an application has the following resources:
 - ``controller.server.phone.js``
 
 In this application, the POSL for context ``{device:browser}`` might 
-be ``['*']``, but the POSL 	for the context ``{device:iphone}`` might be 
-``['iphone','*']``. We need to use a (prioritized) list of selectors instead of just a 
-"selector that matches the context" because not all versions might exist for all 
-selectors.  In the example above, if ``controller.server.iphone.js`` didn't exist, we 
-should still do the right thing for context ``{device:iphone}``.
+be ``['*']``, but the POSL 	for the context ``{device:iphone}`` might be ``['iphone','*']``.
+We need to use a (prioritized) list of selectors instead of just a "selector that matches the 
+context" because not all versions might exist for all selectors.  In the example above, if
+``controller.server.iphone.js`` didn't exist, we should still do the right thing for context 
+``{device:iphone}``.
 
 .. _resolution-sources:
 
 Sources
 #######
 
-The final consideration for priority is the source. Mojit-level versions have higher 
-priority than shared versions.  Let's take a different application with the following 
-resources:
+The final consideration for priority is the source. Mojit-level versions have higher priority 
+than shared versions.  Let's take a different application with the following resources:
 
 - ``mojits/Foo/models/bar.common.js``
 - ``models/bar.common.js``
 
-In this application, the second resource is shared with all mojits. The mojit ``Foo``, 
-however, has defined its own version of the same resource (``id: model--bar``), and so 
-that should have higher priority than the shared one.
+In this application, the second resource is shared with all mojits. The mojit ``Foo``, however, has 
+defined its own version of the same resource (``id: model--bar``), and so that should have higher 
+priority than the shared one.
 
 .. _resolution-relationships:
 
@@ -623,37 +612,35 @@ Finally, there's a relationship between the different types of priority.
 #. The affinity has the least highest priority.
 
 That means that if there exists, for example, both a ``controller.server.js`` and 
-``controller.common.iphone.js``, for the server and context ``{device:iphone}``, the 
-second version will be used because its selector is a higher priority match than its 
-affinity.
+``controller.common.iphone.js``, for the server and context ``{device:iphone}``, the second version 
+will be used because its selector is a higher priority match than its affinity.
 
 
-All this is pre-calculated for each resource and for each possible runtime configuration 
-(client or server, and every appropriate runtime context).
+All this is pre-calculated for each resource and for each possible runtime configuration (client or 
+server, and every appropriate runtime context).
 
 .. _how-get_data:
 
 Getting Data from the Resource Store
 ------------------------------------
 
-Besides the standard ways that Mojito uses the resource store, there are two generic 
-methods for getting resources and resource versions from the |RS|.
+Besides the standard ways that Mojito uses the resource store, there are two generic methods for 
+getting resources and resource versions from the |RS|.
 
 - ``getResourceVersions(filter)``
 - ``getResources(env, ctx, filter)``
 
-The APIs are intentionally similar.  Both return an array of resources, and the ``filter`` 
-argument can be used to restrict the returned resources (or versions). The ``filter`` is 
-an object whose keys and values must match the returned resources (or versions).  Think of 
-it as a *template* or *partial resource* that all resources must match. For example, a 
-filter of ``{type:'view'}`` will return all the views.
+The APIs are intentionally similar.  Both return an array of resources, and the ``filter`` argument
+can be used to restrict the returned resources (or versions). The ``filter`` is an object  
+whose keys and values must match the returned resources (or versions).  Think of it as a *template*
+or *partial resource* that all resources must match. For example, a filter of ``{type:'view'}``
+will return all the views.
 
-For mojit-level resources or resource versions, specify the mojit name in the filter. For 
-example, filter ``{mojit:'Foo'}`` will return all resources (or versions) in the ``Foo`` 
-mojit.
+For mojit-level resources or resource versions, specify the mojit name in the filter.  For example,
+filter ``{mojit:'Foo'}`` will return all resources (or versions) in the ``Foo`` mojit.
 
-.. note:: Because of the resolution process, the resources returned for filter 
-          ``{mojit:'Foo'}`` might contain shared resources.
+.. note:: Because of the resolution process, the resources returned for filter ``{mojit:'Foo'}``
+          might contain shared resources.
 
 To get mojit-level resources (or versions) from multiple mojits, you'll have to call
 the method ``getResourceVersions`` or ``getResources`` for each mojit.  You can call 
@@ -670,18 +657,17 @@ Creating Your Own Resource Store Addons
 Intro
 -----
 
-In this section, we will discuss the key methods, events, and give a simple example of a 
-custom |RS| addon. By using the provided example as a model and referring to the |RSC|_ 
-in the API documentation, you should be able to create your own custom |RS| addons. 
+In this section, we will discuss the key methods, events, and give a simple example of a custom 
+|RS| addon. By using the provided example as a model and referring to the |RSC|_ in the API 
+documentation, you should be able to create your own custom |RS| addons. 
 
 .. _creating_rs_addons-anatomy:
 
 Anatomy of a |RS| Addon
 -----------------------
 
-The resource store addons are implemented using the |YUIPlugin|_ mechanism. In essence, a 
-Mojito addon is a YUI plugin, so the skeleton of a |RS| addon will be the same as a YUI 
-Plugin. 
+The resource store addons are implemented using the |YUIPlugin|_ mechanism. In essence, a Mojito 
+addon is a YUI plugin, so the skeleton of a |RS| addon will be the same as a YUI Plugin. 
 
 See the |RSC|_ for the parameters and return values for the |RS| methods.
 
@@ -694,8 +680,8 @@ Key Methods
 
 .. js:function:: initialize(config)
 
-    This method sets the paths to find the application, Mojito, and |RS| files. Addons 
-    should hook into |RS| methods (using AOP) or events fired by the |RS| in this method. 
+    This method sets the paths to find the application, Mojito, and |RS| files. Addons should hook  
+    into |RS| methods (using AOP) or events fired by the |RS| in this method. 
     
     The following host methods are called:
        
@@ -724,9 +710,9 @@ Key Methods
 
 .. js:function:: preloadResourceVersions()
 
-    The |RS| walks the filesystem in this method. Before ``preloadResourceVersions`` is 
-    called, not much is known, though the static application configuration is available 
-    using the method ``getStaticAppConfig``.
+    The |RS| walks the filesystem in this method. Before ``preloadResourceVersions`` is called, 
+    not much is known, though the static application configuration is available using the 
+    method ``getStaticAppConfig``.
     
     Within the ``preloadResourceVersions`` method, the following host methods are called:  
     
@@ -744,9 +730,9 @@ Key Methods
 
 .. js:function:: findResourceVersionByConvention()
 
-    This method is called on each directory or file being walked and is used to decide if 
-    the path is a resource version. The return value can be a bit confusing, so read the 
-    API documentation carefully and feel free to post any questions that you have to the 
+    This method is called on each directory or file being walked and is used to decide if the 
+    path is a resource version. The return value can be a bit confusing, so read the API 
+    documentation carefully and feel free to post any questions that you have to the 
     `Yahoo! Mojito Forum <http://developer.yahoo.com/forum/Yahoo-Mojito/>`_.
     
     Typically, you would hook into this method with the ``afterHostMethod`` method to register 
@@ -755,28 +741,27 @@ Key Methods
     
 .. js:function:: parseResourceVersion()    
 
-    This method creates an actual resource version. Typically, you would hook into this 
-    method with the ``beforeHostMethod`` method to create your own resource versions. This 
-    should work together with your own version of the 
-    :js:func:`findResourceVersionByConvention` method.
+    This method creates an actual resource version. Typically, you would hook into this method 
+    with the ``beforeHostMethod`` method to create your own resource versions. This should work 
+    together with your own version of the :js:func:`findResourceVersionByConvention` method.
 
 .. js:function:: addResourceVersion() 
 
-    This method is called to save the resource version into the |RS|. Typically, if you 
-    want to modify/augment an existing resource version, hook into this with the
+    This method is called to save the resource version into the |RS|. Typically, if you want to 
+    modify/augment an existing resource version, hook into this with the
     ``beforeHostMethod`` method.
 
 
 .. js:function:: resolveResourceVersions()
 
-    This method resolves the resource versions into resources. As a resource version is 
-    resolved, the ``mojitResourcesResolved`` event is called. After the method has been 
-    executed, all resource versions have been resolved.
+    This method resolves the resource versions into resources. As a resource version is resolved, 
+    the ``mojitResourcesResolved`` event is called. After the method has been executed, all 
+    resource versions have been resolved.
     
 .. js:function:: serializeClientStore()
 
-    This method is called during runtime as Mojito creates the configuration for the 
-    client-side Mojito.
+    This method is called during runtime as Mojito creates the configuration for the client-side 
+    Mojito.
 
 Accessing the Resource Store
 ````````````````````````````
@@ -801,8 +786,7 @@ This event is called when the resources in a mojit are resolved.
 getMojitTypeDetails
 ```````````````````
 
-This event is called during runtime as Mojito creates an *instance* used to dispatch a 
-mojit.
+This event is called during runtime as Mojito creates an *instance* used to dispatch a mojit.
 
 .. _creating_rs_addons-ex:
 
@@ -906,9 +890,9 @@ The following |RS| addon registers the new resource type ``text`` for text files
 Text ActionContext Addon
 ########################
 
-The Text Addon provides accessors so that the controller can access resources of type 
-``text``. You could use this example addon as a model for writing an addon that allows a 
-controller to access other resource types such as ``xml`` or ``yaml``.
+The Text Addon provides accessors so that the controller can access resources of type ``text``.
+You could use this example addon as a model for writing an addon that allows a controller
+to access other resource types such as ``xml`` or ``yaml``.
 
 ``addons/ac/text.server.js``
 
@@ -986,7 +970,7 @@ Controller
          });
        }
      };
-   }, '1.0.1', {requires: ['mojito', 'mojito-assets-addon', 'addon-ac-text']});
+   }, '1.0.1', {requires: ['mojito', 'addon-ac-text']});
    
 
 .. _rs-addons:
@@ -1026,9 +1010,8 @@ The |RS| comes with the following four built-in addons:
    - calculates the ``yui`` metadata for resource versions that are YUI modules
    - pre-calculates corresponding YUI module dependencies when resources are resolved
      for each version of each mojit 
-   - appends the pre-calculated YUI module dependencies for the controller and binders 
-     when Mojito queries the |RS| for the details of a mojit 
-     (``getMojitTypeDetails`` method) 
+   - appends the pre-calculated YUI module dependencies for the controller and binders when 
+     Mojito queries the |RS| for the details of a mojit (``getMojitTypeDetails`` method) 
    - provides methods used by Mojito to configure its YUI instances
   
 
@@ -1037,12 +1020,11 @@ The |RS| comes with the following four built-in addons:
 Creating Custom Versions of Built-In |RS| Addons
 ------------------------------------------------
 
-We will be examining the ``selector`` and ``url`` addons to help you create custom 
-versions of those addons. We do not recommend that you create custom versions of the 
-``config`` or ``yui`` addons, so we will not be looking at those addons. Also, this
- documentation explains what the |RS| expects the addon to do, so you can create your own 
-version of the addons. To learn what the |RS| built-in addons do, please refer to the 
-|RSC|_ in the API documentation.
+We will be examining the ``selector`` and ``url`` addons to help you create custom versions of 
+those addons. We do not recommend that you create custom versions of the 
+``config`` or ``yui`` addons, so we will not be looking at those addons. Also, this documentation 
+explains what the |RS| expects the addon to do, so you can create your own version of the addons. 
+To learn what the |RS| built-in addons do, please refer to the |RSC|_ in the API documentation.
 
 
 .. _custom-selector:
@@ -1065,8 +1047,8 @@ you can implement your own version of this |RS| addon in the
 Requirements
 ````````````
 
-Because the ``selector`` addon is used directly by the the resource store, all 
-implementations need to provide the following method:
+Because the ``selector`` addon is used directly by the the resource store, all implementations 
+need to provide the following method:
 
 - :js:func:`getPOSLFromContext(ctx)`
 

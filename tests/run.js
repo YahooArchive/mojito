@@ -144,7 +144,6 @@ function runUnitTests (cmd, callback) {
     cmd.driver && commandArgs.push('--driver=' + cmd.driver);
     cmd.testName && commandArgs.push('--testName=' + cmd.testName);
     cmd.group && commandArgs.push('--group=' + cmd.group);
-    cmd.coverage && commandArgs.push('--coverage=' + cmd.coverage);
 
     var p = runCommand(
         cmd.unitPath,
@@ -192,7 +191,7 @@ function deploy (cmd, callback) {
                             });
                         })();
                     }
-                } else if (app.enabled === "true" && app.path) {
+                } else if (app.enabled === "true" && app.path && port) {
                     appSeries.push(function (callback) {
                         runMojitoApp(cmd, cmd.funcPath + '/applications', app.path, port, app.param, callback);
                     });
@@ -239,7 +238,6 @@ function runFuncTests (cmd, callback) {
     cmd.driver && commandArgs.push('--driver=' + cmd.driver);
     cmd.testName && commandArgs.push('--testName=' + cmd.testName);
     cmd.group && commandArgs.push('--group=' + cmd.group);
-    cmd.coverage && commandArgs.push('--coverage=' + cmd.coverage);
 
     var p = runCommand(
         cmd.funcPath,
@@ -323,12 +321,7 @@ function runMojitoApp (cliOptions, basePath, path, port, params, callback) {
 
     params = params || '';
     console.log('Starting ' + path + ' at port ' + port + ' with params ' + (params || 'empty'));
-    var p;
-    if (params === '') {
-        p = runCommand(basePath + '/' + path, cwd + "/../bin/mojito", ["start", port], function () {});
-    } else {
-        p = runCommand(basePath + '/' + path, cwd + "/../bin/mojito", ["start", port, "--context", params], function () {});
-    }
+    var p = runCommand(basePath + '/' + path, cwd + "/../bin/mojito", ["start", port, "--context", params], function () {});
     pids.push(p.pid);
     pidNames[p.pid] = libpath.basename(path) + ':' + port + (params ? '?' + params : '');
     // Give each app a second to start

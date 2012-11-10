@@ -6,15 +6,13 @@ Creating a Simple View with Handlebars
 
 **Difficulty Level:** Beginning
 
-.. _code_exs_view-summary:
-
 Summary
 =======
 
 This example shows how to create a simple view for Mojito applications with 
 `Handlebars <http://handlebarsjs.com/>`_. Note that because Handlebars is a superset 
-of `Mustache <http://mustache.github.com/>`_, there is an overlap of some syntax and 
-nomenclature.
+of `Mustache <http://mustache.github.com/>`_, there is an overlap of some syntax and nomenclature.
+
 
 Mojito views are template files that are rendered into HTML and served to a device.
 These template files are simply called *templates* in this example and throughout the 
@@ -27,8 +25,6 @@ The following topics will be covered:
 - Handlebars template basics
 - passing data to the template
 
-.. _code_exs_view-notes:
-
 Implementation Notes
 ====================
 
@@ -38,11 +34,11 @@ In the following screenshot, you see the HTML page that was rendered from the te
    :height: 288px
    :width: 226px
 
-In Mojito applications, the controller is responsible for passing data to the template. 
-From the below code snippet taken from ``controller.server.js``, you see the ``index`` 
-function creating a ``data`` object and passing it to the ``done`` method. The ``done`` 
-method called on ``ac``, the `ActionContext <../../api/classes/ActionContext.html>`_ 
-object, sends the ``data`` object to the template ``index.hb.html``.
+In Mojito applications, the controller is responsible for passing data to the template. From 
+the below code snippet taken from ``controller.server.js``, you see the ``index`` function 
+creating a ``data`` object and passing it to the ``done`` method. The ``done`` method called on 
+``ac``, the `ActionContext <../../api/classes/ActionContext.html>`_ object, sends the ``data`` 
+object to the template ``index.hb.html``.
 
 .. code-block:: javascript
 
@@ -65,16 +61,14 @@ object, sends the ``data`` object to the template ``index.hb.html``.
 
 In the ``index`` template of this code example, the properties of the ``data`` object are 
 placed in Handlebars expressions that are evaluated by Mojito when the template is rendered. 
-In Handlebars templates, the property names in double braces, such as ``{{type}}``, are 
-expressions.
+In Handlebars templates, the property names in double braces, such as ``{{type}}``, are expressions.
 
 The double braces with a pound are used for lists or conditional 
-expression, such as ``{{#show}...{{/show}``. Handlebars also has a built-in conditional 
-structure that allow you to form the same conditional expression in the following 
-way: ``{{#if show}}...{{/if}}``
+expression, such as ``{{#show}...{{/show}``. Handlebars also has a built-in conditional structure
+that allow you to form the same conditional expression in the following way: ``{{#if show}}...{{/if}}``
 
-You also use double braces with a pound to access properties within an object, which is 
-how the ``hours`` property of the ``time`` object is accessed here.
+You also use double braces with a pound to access properties within an object, which is how the 
+``hours`` property of the ``time`` object is accessed here.
 
 
 .. code-block:: html
@@ -92,10 +86,8 @@ how the ``hours`` property of the ``time`` object is accessed here.
      <div>html: {{{html}}}</div>
    </div>
 
-See the `Handlebars expressions <http://handlebarsjs.com/expressions.html>`_ in the 
-Handlebars documentation for more information.
-
-.. _code_exs_view-setup:
+See the `Handlebars expressions <http://handlebarsjs.com/expressions.html>`_ in the Handlebars 
+documentation for more information.
 
 Setting Up This Example
 =======================
@@ -125,8 +117,8 @@ To set up and run ``simple_view``:
         }
       ]
 
-#. To configure the routing for your application, replace the code in ``routes.json`` with 
-   the following:
+#. To configure the routing for your application, replace the code in ``routes.json`` with the 
+   following:
 
    .. code-block:: javascript
 
@@ -168,8 +160,8 @@ To set up and run ``simple_view``:
         };
       }, '0.0.1', {requires: []});
 
-#. Modify your ``index`` template by replacing the code in ``views/index.hb.html`` with 
-   the following:
+#. Modify your ``index`` template by replacing the code in ``views/index.hb.html`` with the 
+   following:
 
    .. code-block:: html
 
@@ -192,8 +184,6 @@ To set up and run ``simple_view``:
 #. To view your application, go to the URL below:
 
    http://localhost:8666
-
-.. _code_exs_view-src:
 
 Source Code
 ===========

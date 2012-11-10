@@ -5,7 +5,7 @@
  */
 
 
-YUI.add('PagerMojitModel-tests', function(Y, NAME) {
+YUI.add('PagerMojitModel-tests', function(Y) {
     
     var suite = new YUITest.TestSuite('PagerMojitModel-tests'),
         model = null,
@@ -16,8 +16,7 @@ YUI.add('PagerMojitModel-tests', function(Y, NAME) {
         name: 'PagerMojit model user tests',
         
         setUp: function() {
-            Y.log(Y.mojito.models);
-            model = Y.mojito.models.PagerMojitModel;
+            model = Y.mojito.models.PagerMojit;
         },
         tearDown: function() {
             model = null;

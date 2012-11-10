@@ -15,7 +15,7 @@ YUI.add('deviceModel-tests', function(Y) {
         name: 'device model user tests',
         
         setUp: function() {
-            model = Y.mojito.models.deviceModel;
+            model = Y.mojito.models.device;
         },
         tearDown: function() {
             model = null;

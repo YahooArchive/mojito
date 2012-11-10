@@ -6,7 +6,7 @@
 
 /*jslint anon:true, sloppy:true, nomen:true*/
 
-YUI.add('PagerMojitModel', function(Y, NAME) {
+YUI.add('PagerMojitModel', function(Y) {
     var API_KEY = '84921e87fb8f2fc338c3ff9bf51a412e';
 
     /** 
@@ -14,11 +14,11 @@ YUI.add('PagerMojitModel', function(Y, NAME) {
      * @module PagerMojitModel 
      */
     /**
-    * Constructor for the Model class.
-    * @class Model 
-    * @constructor 
-    */
-    Y.namespace('mojito.models')[NAME] = {
+     * Constructor for the Model class.
+     * @class Model 
+     * @constructor 
+     */
+    Y.mojito.models.PagerMojitModel = {
         init: function(config) {
             this.config = config;
         },

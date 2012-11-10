@@ -1,3 +1,5 @@
+
+
 ====================
 Additional Resources
 ====================
@@ -13,7 +15,7 @@ The following sections provide supplementary material about Mojito:
 .. _additional_resources-presentations:
 
 Presentations/Slidecasts
-========================
+########################
 
 +--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+----------------------+
 | Title                                                  | Topics Covered                                         | Description                                            | Presenter            |
@@ -36,7 +38,7 @@ Presentations/Slidecasts
 .. _additional_resources-screencasts:
 
 Screencasts/Videos
-==================
+##################
 
 +--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+
 | Title                                                  | Topics Covered                                         | Description                                            | Narrator                                               |
@@ -68,37 +70,31 @@ Screencasts/Videos
 +--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+
 
 
-.. _additional_resources-community:
+
 
 Community
-=========
-
-.. _res_community-forums:
+#########
 
 Developer Forums
-----------------
+================
 
 `YDN: Mojito Forum <http://developer.yahoo.com/forum/Yahoo-Mojito/>`_
 
-.. _res_community-twitter:
-
 Twitter
--------
+=======
 
 - `@ydn <https://twitter.com/#!/ydn>`_
 - `@rw0 <https://twitter.com/#!/rw0>`_
 - `@olympum <https://twitter.com/#!/olympum>`_
 - `@add0n <https://twitter.com/#!/add0n>`_
 
-.. _res_community-pubs:
+
 
 Publications
-------------
-
-.. _res_community_pubs-articles:
+############
 
 Articles
-########
+========
 
 .. raw:: html
 	
@@ -177,7 +173,7 @@ Articles
 		  <td><a class="ulink" href="http://www.wired.com/wiredenterprise/2012/04/yahoo-open-sources-mojito/" target="_top">Yahoo Open Sources Its Apple App Store Killer</a></td>
 		  <td><a class="ulink" href="http://www.wired.com" target="_top">Wired</a></td>
 		  <td>2012-04-02</td>
-		  <td><a href="http://www.wired.com/wiredenterprise/author/cade_metz">Cade Metz</a></td>
+		  <td><a href="http://www.wired.com/cloudline/members/cademetz/">Cade Metz</a></td>
 		</tr>		  
 	    <tr>
 	      <td><a class="ulink" href="http://cnet.co/FPVLPT" target="_top">Why Ambitious Developers Need More Than Just HTML5</a></td>
@@ -225,16 +221,15 @@ Articles
 		  <td><a class="ulink" href="http://www.wired.com/wiredenterprise/2011/11/yahoos-manhattan/" target="_top">Yahoo’s ‘Manhattan’ To Rescue Web From the iPad</a></td>
 		  <td><a class="ulink" href="http://www.wired.com" target="_top">Wired</a></td>
 		  <td>2011-11-02</td>
-		  <td><a href="http://www.wired.com/wiredenterprise/author/cade_metz">Cade Metz</a></td>
+		  <td><a href="http://www.wired.com/cloudline/members/cademetz/">Cade Metz</a></td>
 		</tr>
 	  </tbody>
 	</table>
    </div>
 
-.. _res_community_pubs-blogs:
 
 Blogs
-#####
+=====
 
 - `Yahoo! Announces Cocktails – Shaken, Not Stirred <http://developer.yahoo.com/blogs/ydn/posts/2011/11/yahoo-announces-cocktails-%E2%80%93-shaken-not-stirred/>`_
 - `How YQL powers Cocktails, the technology behind Livestand <http://developer.yahoo.com/blogs/ydn/posts/2011/11/how-yql-powers-cocktails-the-technology-behind-livestand/>`_

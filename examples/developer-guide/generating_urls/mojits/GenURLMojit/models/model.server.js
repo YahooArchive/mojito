@@ -6,7 +6,7 @@
 
 /*jslint anon:true, sloppy:true, nomen:true*/
 
-YUI.add('GenURLMojitModel', function(Y, NAME) {
+YUI.add('GenURLMojitModel', function(Y) {
 
 /**
  * The GenURLMojitModel module.
@@ -20,7 +20,7 @@ YUI.add('GenURLMojitModel', function(Y, NAME) {
      * @class Model
      * @constructor
      */
-     Y.namespace('mojito.models')[NAME] = {
+    Y.mojito.models.GenURLMojit = {
 
         init: function (config) {
             this.config = config;

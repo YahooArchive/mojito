@@ -36,7 +36,7 @@ YUI.add('flickr-tests', function(Y) {
                   } 
                },
                models: {
-                	flickr: Y.mojito.models.flickrModel
+                	flickr: Y.mojito.models.flickr 
                 },
                done: function(data) {
                     photos = data.photos;

@@ -15,7 +15,7 @@ YUI.add('CookieMojitModel-tests', function(Y) {
         name: 'CookieMojit model user tests',
         
         setUp: function() {
-            model = Y.mojito.models.CookieMojitModel;
+            model = Y.mojito.models.CookieMojit;
         },
         tearDown: function() {
             model = null;

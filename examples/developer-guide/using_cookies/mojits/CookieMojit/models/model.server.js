@@ -6,7 +6,7 @@
 
 /*jslint anon:true, sloppy:true, nomen:true*/
 
-YUI.add('CookieMojitModel', function (Y, NAME) {
+YUI.add('CookieMojitModel', function (Y) {
 
 /**
  * The CookieMojitModel module.
@@ -20,7 +20,7 @@ YUI.add('CookieMojitModel', function (Y, NAME) {
      * @class Model
      * @constructor
      */
-     Y.namespace('mojito.models')[NAME] = {
+    Y.mojito.models.CookieMojit = {
 
         init: function (config) {
             this.config = config;
