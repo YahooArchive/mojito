@@ -21,8 +21,7 @@
     "yui": {
       "extraModules": ["plugin","jsonp"],
       "config": {
-        "root": "static/yui/build",
-        "base": "static/yui/build/",
+        "root": "static/yui",
         "combine": false
       }
     },

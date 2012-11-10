@@ -19,4 +19,4 @@ YUI.add('testdependencyclient-tests', function (Y) {
 
      Y.Test.Runner.add(suite);
 
-}, '0.0.1', { requires: ['node', 'node-event-simulate', 'test', 'console']});
+}, '0.0.1', { requires: ['node', 'node-event-simulate', 'test']});
