@@ -15,7 +15,7 @@ YUI.add('BodyMojitModel-tests', function(Y) {
         name: 'BodyMojit model user tests',
         
         setUp: function() {
-            model = Y.mojito.models.BodyMojitModel;
+            model = Y.mojito.models.BodyMojit;
         },
         tearDown: function() {
             model = null;

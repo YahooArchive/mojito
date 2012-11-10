@@ -6,7 +6,7 @@
 
 /*jslint anon:true, sloppy:true, nomen:true*/
 
-YUI.add('RoutingMojitModel', function (Y, NAME) {
+YUI.add('RoutingMojitModel', function (Y) {
 
 /**
  * The RoutingMojitModel module.
@@ -20,7 +20,7 @@ YUI.add('RoutingMojitModel', function (Y, NAME) {
      * @class Model
      * @constructor
      */
-    Y.namespace('mojito.models')[NAME] = {
+    Y.mojito.models.RoutingMojit = {
 
         init: function (config) {
             this.config = config;

@@ -6,7 +6,7 @@
 
 /*jslint anon:true, sloppy:true, nomen:true*/
 
-YUI.add('logModelFoo', function (Y, NAME) {
+YUI.add('logModelFoo', function (Y) {
 
 /**
  * The logModelFoo module.
@@ -20,7 +20,7 @@ YUI.add('logModelFoo', function (Y, NAME) {
      * @class logModelFoo
      * @constructor
      */
-     Y.namespace('mojito.models')[NAME] = {
+    Y.mojito.models.logModelFoo = {
 
         init: function (config) {
             Y.log('model: entering into init (..)' + config, "INFO");

@@ -15,7 +15,7 @@ YUI.add('FooterMojitModel-tests', function(Y) {
         name: 'FooterMojit model user tests',
         
         setUp: function() {
-            model = Y.mojito.models.FooterMojitModel;
+            model = Y.mojito.models.FooterMojit;
         },
         tearDown: function() {
             model = null;

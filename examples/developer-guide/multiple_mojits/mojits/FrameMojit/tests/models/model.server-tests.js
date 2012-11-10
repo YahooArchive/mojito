@@ -15,7 +15,7 @@ YUI.add('FrameMojitModel-tests', function(Y) {
         name: 'FrameMojit model user tests',
         
         setUp: function() {
-            model = Y.mojito.models.FrameMojitModel;
+            model = Y.mojito.models.FrameMojit;
         },
         tearDown: function() {
             model = null;
