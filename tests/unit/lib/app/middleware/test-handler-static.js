@@ -377,7 +377,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
             //
             // handle res of type array
             store.getAllURLResources = function() {
-                return {};
+                return mockResources;
             };
             store.getResources = function() {
                 return [mockResources["/robots.txt"]];
