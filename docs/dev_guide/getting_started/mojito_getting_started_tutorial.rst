@@ -2,14 +2,14 @@
 Tutorial: Creating Your First Application
 =========================================
 
-Prerequisite
-############
 
-Complete the `Mojito Quickstart <../quickstart>`_, which instructs you
-how to install Mojito and use basic commands for the Mojito command-line tool.
+.. _mojito_tutorial-intro:
 
+Introduction
+============
 
-In this tutorial, you create a simple application that serves a single page and uses a controller to generate output. 
+In this tutorial, you create a simple application that serves a single page 
+and uses a controller to generate output. 
 
 You will learn how to do the following:
 
@@ -19,9 +19,18 @@ You will learn how to do the following:
 - run an action (method) on the controller
 - run unit tests for your application
 
+.. _mojito_tutorial-prereq:
+
+Prerequisite
+============
+
+Complete the `Mojito Quickstart <../quickstart>`_, which instructs you
+how to install Mojito and use basic commands for the Mojito command-line tool.
+
+.. _mojito_tutorial-make_app:
 
 Make the Application
-####################
+====================
 
 #. Create a directory for your app and change to it.
 
@@ -37,28 +46,38 @@ Make the Application
 
    ``$ cd minty_app``
 
+.. _mojito_tutorial-make_mojit:
+
 Make the Sample Mojit
-#####################
+=====================
 
-The name *mojit* is a fusion of the words module and widget. The mojit, however, is neither a module nor a widget. Instead, it is best understood as 
-a unit of execution used to generate output. Mojits have an MVC structure and consist of two parts: the definition and the instance configuration.
+The name *mojit* is a fusion of the words module and widget. The mojit, however, 
+is neither a module nor a widget. Instead, it is best understood as 
+a unit of execution used to generate output. Mojits have an MVC structure 
+and consist of two parts: the definition and the instance configuration.
 
-The definition contains the controller and model code for the mojit, along with the views (and assets) used to render the output. The definition also 
+The definition contains the controller and model code for the mojit, along 
+with the views (and assets) used to render the output. The definition also 
 contains unit tests for the code.
 
-The instance configuration is what configures each instance of your mojit. For example, you might have an ``RSSMojit`` which is used to display an 
-RSS feed. The mojit definition would have the code and views for fetching and rendering a feed, and the instance configuration would have the RSS URL 
+The instance configuration is what configures each instance of your mojit. 
+For example, you might have an ``RSSMojit`` which is used to display an 
+RSS feed. The mojit definition would have the code and views for fetching and 
+rendering a feed, and the instance configuration would have the RSS URL 
 to fetch, how many items to show, and whether to show thumbnails, etc.
 
-Let's now begin by creating your mojit, but note that you won't be working with models or views in this tutorial.
+Let's now begin by creating your mojit, but note that you won't be working with 
+models or views in this tutorial.
 
 #. Create the mojit for your ``minty_app`` application.
 
    ``$ mojito create mojit HelloMojit``
 
-   The `Mojito command-line tool <../reference/mojito_cmdline.html>`_ creates a canned mojit definition named ``HelloMojit``.
+   The `Mojito command-line tool <../reference/mojito_cmdline.html>`_ creates a 
+   canned mojit definition named ``HelloMojit``.
 
-#. To configure your application to use ``HelloMojit``, replace the code in ``application.json`` with the following:
+#. To configure your application to use ``HelloMojit``, replace the code in 
+   ``application.json`` with the following:
 
    .. code-block:: javascript
 
@@ -74,9 +93,11 @@ Let's now begin by creating your mojit, but note that you won't be working with 
         }
       ]
 
-   Here you have defined the instance ``hello`` of the ``HelloMojit`` mojit, which will allow you to call the functions in the mojit controller.
+   Here you have defined the instance ``hello`` of the ``HelloMojit`` mojit, 
+   which will allow you to call the functions in the mojit controller.
 
-#. To set up a new route for executing your mojit, create the routing configuration file ``routes.json`` with the following:
+#. To set up a new route for executing your mojit, create the routing configuration 
+   file ``routes.json`` with the following:
 
    .. code-block:: javascript
 
@@ -91,17 +112,23 @@ Let's now begin by creating your mojit, but note that you won't be working with 
         }
       ]
 
-   This ``routes.json`` file defines the routing paths, the accepted HTTP methods, and what action to take. 
-   The action is what method to call from the mojit instance when a call is made on the defined path. 
-   The ``routes.json`` above configures Mojito to execute the ``index`` method from the ``hello`` 
-   instance (defined in ``application.json``) when receiving HTTP GET calls on the root path.
+   This ``routes.json`` file defines the routing paths, the accepted HTTP methods, 
+   and what action to take. The action is what method to call from the mojit instance 
+   when a call is made on the defined path. 
+   The ``routes.json`` above configures Mojito to execute the ``index`` method from 
+   the ``hello`` instance (defined in ``application.json``) when receiving HTTP GET 
+   calls on the root path.
+  
 
-#. From the application directory, test your application. You will notice that some tests are deferred.
+#. From the application directory, test your application. You will notice that some tests 
+   are deferred.
 
    ``$ mojito test app .``
 
+.. _mojito_tutorial-start:
+
 Start the Server
-################
+================
 
 #. Start the server.
 
@@ -109,7 +136,9 @@ Start the Server
 
 #. Open http://localhost:8666/ in a browser.
 
-#. The Web page should display "Mojito is working.". The text was served by the controller, the ``controller.server.js`` file in the ``minty_app/mojits/HelloMojit`` directory. You will learn more about the controller in `Modify the Sample Mojit`_.
+#. The Web page should display "Mojito is working.". The text was served by the controller, 
+   the ``controller.server.js`` file in the ``minty_app/mojits/HelloMojit`` directory. 
+   You will learn more about the controller in `Modify the Sample Mojit`_.
 
 #. Stop the server by going back to your terminal pressing **^C**.
 
@@ -119,11 +148,14 @@ Start the Server
 Modify the Sample Mojit
 #######################
 
-You will now modify the controller, so that the ``index`` function called in the controller outputs different results.
+You will now modify the controller, so that the ``index`` function called in the 
+controller outputs different results.
 
 #. Change to ``mojits/HelloMojit``.
 
-#. Edit ``controller.server.js`` and replace the string 'Just a simple mojit.' in the code with 'Hello World!'. Your ``controller.server.js`` should look similar to the following code:
+#. Edit ``controller.server.js`` and replace the string 'Just a simple mojit.' in 
+   the code with 'Hello World!'. Your ``controller.server.js`` should look similar 
+   to the following code:
 
    .. code-block:: javascript
 
@@ -170,12 +202,16 @@ You will now modify the controller, so that the ``index`` function called in the
       }, '0.0.1', {requires: ['mojito', 'HelloMojitModelFoo']});
 
 
-   As you can see the "controllers" are just an array of JavaScript objects, and the "action" is just a method called on the controller object. 
-   The result of the method are communicated back to Mojito through the ``actionContext`` object. 
+   As you can see the "controllers" are just an array of JavaScript objects, and the 
+   "action" is just a method called on the controller object. 
+   The result of the method are communicated back to Mojito through the ``actionContext`` 
+   object. 
 
 #. Change to the ``tests`` directory.
 
-#. Edit ``controller.server-tests.js`` and replace the string 'Mojito is working.' in the code with 'Hello World!'. Your ``controller.server-tests.js`` should look similar to the  following code:
+#. Edit ``controller.server-tests.js`` and replace the string 'Mojito is working.' in the 
+   code with 'Hello World!'. Your ``controller.server-tests.js`` should look similar to the  
+   following code:
 
    .. code-block:: javascript
 
@@ -231,7 +267,8 @@ You will now modify the controller, so that the ``index`` function called in the
 
       }, '0.0.1', {requires: ['mojito-test', 'HelloMojit']});
 
-   Mojito has the unit test given in ``controller.server-tests.js`` confirms that the output from the action index is the same as the 
+   Mojito has the unit test given in ``controller.server-tests.js`` confirms that the 
+   output from the action index is the same as the 
    string given in the assert statement.
 
 #. From the application directory, run the application test.

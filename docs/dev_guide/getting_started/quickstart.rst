@@ -1,18 +1,20 @@
-
-
 =================
 Mojito Quickstart
 =================
 
+.. _mojito_quickstart-prereqs:
+
 Prerequisites
-#############
+=============
 
 **System:** Unix-based system.
 
 **Software:** `Node.js (>= 0.6.0 < 0.8) <http://nodejs.org/>`_, `npm (> 1.0.0) <http://npmjs.org/>`_
 
+.. _mojito_quickstart-install:
+
 Installation Steps
-##################
+==================
 
 #. Get Mojito from the npm registry and globally install Mojito so that it can be run from the 
    command line. You may need to use ``sudo`` if you run into permission errors.
@@ -23,16 +25,19 @@ Installation Steps
 
    ``$ mojito test``
 
+.. _mojito_quickstart-create:
 
 Create a Mojito Application
-###########################
+===========================
 
 #. ``$ mojito create app hello_world``
 #. ``$ cd hello_world``
 #. ``$ mojito create mojit myMojit``
 
+.. _mojito_quickstart-modify:
+
 Modify Your Application
-#######################
+=======================
 
 To make the application return a string we want, replace the code in ``mojits/myMojit/controller.server.js`` with the following:
 
@@ -49,8 +54,10 @@ To make the application return a string we want, replace the code in ``mojits/my
     };
   });
 
-Running the Application
-#######################
+.. _mojito_quickstart-run:
+
+Run the Application
+===================
 
 #. From the ``hello_world`` application directory, start Mojito:
 
