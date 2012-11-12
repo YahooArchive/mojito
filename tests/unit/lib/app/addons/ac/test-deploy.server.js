@@ -61,7 +61,7 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
                     getAppSeedFiles: function () { return ['/static/seed.js']; },
                     getAppGroupConfig: function() { return {}; },
                     getConfigShared: function() { return {}; },
-                    getClosestLang: function(lang) { return lang; }
+                    langs: { klingon: true }
                 }
             });
 
@@ -155,7 +155,7 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
                     getAppSeedFiles: function () { return ['/static/seed.js']; },
                     getAppGroupConfig: function() { return {}; },
                     getConfigShared: function() { return {}; },
-                    getClosestLang: function(lang) { return lang; }
+                    langs: { klingon: true }
                 }
             });
 
@@ -229,7 +229,7 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
                     getAppSeedFiles: function () { return ['/static/seed.js']; },
                     getAppGroupConfig: function() { return {}; },
                     getConfigShared: function() { return {}; },
-                    getClosestLang: function(lang) { return lang; }
+                    langs: { klingon: true }
                 }
             });
 
@@ -309,7 +309,7 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
                     getAppSeedFiles: function () { return ['/static/seed.js']; },
                     getAppGroupConfig: function() { return {}; },
                     getConfigShared: function() { return {}; },
-                    getClosestLang: function(lang) { return lang; }
+                    langs: { klingon: true }
                 }
             });
 
@@ -373,7 +373,7 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
                     getAppSeedFiles: function () { return ['/static/seed.js']; },
                     getAppGroupConfig: function() { return {}; },
                     getConfigShared: function() { return {}; },
-                    getClosestLang: function(lang) { return lang; }
+                    langs: { klingon: true }
                 }
             });
 
@@ -437,7 +437,7 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
                     getAppSeedFiles: function () { return ['/static/seed.js']; },
                     getAppGroupConfig: function() { return {}; },
                     getConfigShared: function() { return {}; },
-                    getClosestLang: function(lang) { return lang; }
+                    langs: { klingon: true }
                 }
             });
 

@@ -527,6 +527,22 @@
             };
             var result = Y.mojito.util.metaMerge(to, from);
             OA.areEqual(expected['content-type'], result['content-type']);
+        },
+
+        'test findClosestLang': function() {
+            var have = {
+                'en-US': true,
+                'en': true,
+                'de': true,
+            };
+            A.areSame('en-US', Y.mojito.util.findClosestLang('en-US-midwest', have), 'en-US-midwest');
+            A.areSame('en-US', Y.mojito.util.findClosestLang('en-US', have), 'en-US');
+            A.areSame('en', Y.mojito.util.findClosestLang('en', have), 'en');
+            A.areSame('de', Y.mojito.util.findClosestLang('de-DE', have), 'de-DE');
+            A.areSame('de', Y.mojito.util.findClosestLang('de', have), 'de');
+            A.areSame('', Y.mojito.util.findClosestLang('nl-NL', have), 'nl-NL');
+            A.areSame('', Y.mojito.util.findClosestLang('nl', have), 'nl');
+            A.areSame('', Y.mojito.util.findClosestLang('', have), 'no lang');
         }
 
     };
