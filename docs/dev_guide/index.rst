@@ -19,9 +19,11 @@ Getting Started
 ===============
 
 Ready to start creating apps? You'll start with a quickstart that will show
-you how to install Mojito and then get up an running with your first Mojito app.
+you how to install Mojito and then get up an running with Mojito.
 Once you have Mojito installed and are familiar with the basic steps of creating
-an app, you can walk through the `Creating 
+an app, you can walk through 
+`Tutorial: Creating Your First Application <getting_started/mojito_getting_started_tutorial.html>`_
+to learn about mojits, how to configure routing, modify controller code, and run tests.
 
 .. _mojito_doc_directory-topics:
 
