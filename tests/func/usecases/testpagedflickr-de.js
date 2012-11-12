@@ -12,7 +12,7 @@ YUI({
          suite.add(new Y.Test.Case({
          
              "test pagedflickr": function() {
-                  Y.Assert.areEqual('Hallo! genießen Sie Ihre Bilder',Y.one('h2').get('innerHTML').match(/Hallo! genießen Sie Ihre Bilder/gi));
+                  Y.Assert.areEqual('Hallo!',Y.one('h2').get('innerHTML').match(/Hallo!/gi));
                   var imagelink = Y.all('a').item(1).get('href');
                   Y.Assert.areEqual('http:',imagelink.match(/http:/gi));
                   Y.Assert.areEqual('static.flickr.com',imagelink.match(/static.flickr.com/gi));

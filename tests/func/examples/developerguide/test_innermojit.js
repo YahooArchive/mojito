@@ -22,7 +22,7 @@ YUI({
        	         that.wait(function(){
                      Y.Assert.areEqual('Image matching the link clicked on the left.', Y.all('h3').item(1).get('innerHTML')); 
                      Y.Assert.areEqual("static.flickr.com", Y.one('img').getAttribute('src').match(/static.flickr.com/gi));
-                 }, 1000);
+                 }, 2000);
              }
          }));    
          Y.Test.Runner.add(suite);
