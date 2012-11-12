@@ -1,8 +1,8 @@
-
-
 ==================
 Configuring Mojito
 ==================
+
+.. _mojito_configuring-basic:
 
 Basic Information
 =================
@@ -10,13 +10,20 @@ Basic Information
 Mojito can be configured at the framework, application, and mojit levels. Each level is 
 configured differently, but uses same general file format consisting of JSON.
 
+.. _config_basic-file:
+
 File Format
 -----------
 
-All configuration files in Mojito have a general top-level structure and are in JSON format. 
-At the top level of each configuration file is an array. Each item of the array is an 
-object that configures one component of Mojito, such as logging, assets, mojits, static 
-resources, etc.
+.. _config_basic_file-json:
+
+JSON
+####
+
+By default, configuration files in Mojito have a general top-level structure and are 
+in JSON format. At the top level of each configuration file is an array. Each item of 
+the array is an object that configures one component of Mojito, such as logging, assets, 
+mojits, static resources, etc.
 
 Each configuration object is required to have a ``settings`` property that specifies 
 conditions for applying the configuration settings. These conditions could be used to 
@@ -37,6 +44,18 @@ Below is the skeleton of a configuration file. See `Application Configuration`_ 
      },
      ...
    ]
+
+.. _config_basic_file-yaml:
+
+YAML
+####
+
+Mojito also supports configuration files in YAML format. The YAML file extension could 
+be ``.yaml`` or ``.yml``. Mojito allows comments in the YAML files. When both JSON file 
+and YAML files are present, the YAML file is used and a warning is issued. For the data 
+types of the YAML elements, please see the JSON configuration tables in 
+:ref:`Application Configuration <configure_mj-app>`, :ref:`Routing <configure_mj-routing>`, 
+and :ref:`Mojit Configuration <configure_mj-mojit>`.
 
 .. _configure_mj-app:
 
@@ -165,24 +184,37 @@ configuration Object
 builds Object
 #############
 
-+-----------------------------+---------------+------------------------------------------------+
-| Property                    | Data Type     | Description                                    |
-+=============================+===============+================================================+
-| `html5app <#html5app-obj>`_ | object        | Specifies configuration for HTML5 applications |
-|                             |               | created with ``$ mojito build html5app``.      | 
-+-----------------------------+---------------+------------------------------------------------+
++---------------------------------+---------------+--------------------------------------------------------------------------------+
+| Property                        | Data Type     | Description                                                                    |
++=================================+===============+================================================================================+
+| `html5app <#html5app-obj>`_     | object        | Specifies configuration for HTML5 applications                                 |
+|                                 |               | created with ``$ mojito build html5app``.                                      | 
++---------------------------------+---------------+--------------------------------------------------------------------------------+
+| `hybridapp <#hybridapp-obj>`_   | object        | Specifies configuration for hybrid applications                                |
+|                                 |               | created with the following:                                                    |
+|                                 |               | ``mojito build hybridapp -n <snapshot_name> -t <snapshot_tag> [<build_path>]`` |
++---------------------------------+---------------+--------------------------------------------------------------------------------+
 
 
 .. _html5app_obj:
 
 html5app Object
-###############
+***************
 
 +------------------------+---------------+-----------+---------------+-------------------------------------------+
 | Property               | Data Type     | Required? | Default Value | Description                               |
 +========================+===============+===========+===============+===========================================+
 | ``attachManifest``     | boolean       | no        | ``false``     | When ``true``, the ``manifest``           |
 |                        |               |           |               | attribute is added to ``<html>``.         |
++------------------------+---------------+-----------+---------------+-------------------------------------------+
+| ``buildDir``           | string        | no        | none          | The path to the built HTML5 application.  |
+|                        |               |           |               | If not specified, the HTML5 application   |
+|                        |               |           |               | will be placed in                         |
+|                        |               |           |               | ``artifacts/build/html5app``. The         |
+|                        |               |           |               | specified path for ``buildDir`` will be   |
+|                        |               |           |               | overridden if a build path is given to    |
+|                        |               |           |               | the following command:                    |
+|                        |               |           |               | ``mojito build html5app [<build_path>]``  |
 +------------------------+---------------+-----------+---------------+-------------------------------------------+
 | ``forceRelativePaths`` | boolean       | no        | ``false``     | When ``true``, the server-relative paths  |
 |                        |               |           |               | (those starting with "/") are converted   |
@@ -202,45 +234,46 @@ html5app Object
 |                        |               |           |               | ``urls: [ '/view.html']``                 |
 +------------------------+---------------+-----------+---------------+-------------------------------------------+
 
-log Object
-##########
+.. _hybrid_obj:
 
-+----------------+---------------+-------------------------------------------+
-| Property       | Data Type     | Description                               |
-+================+===============+===========================================+
-| ``client``     | object        | The log configuration for the client.     |
-+----------------+---------------+-------------------------------------------+
-| ``server``     | object        | The log configuration for the server.     |
-+----------------+---------------+-------------------------------------------+
+hybridapp Object
+****************
 
-server/client Object
-####################
+The ``hybridapp`` object is used to specify build information for hybrid applications,
+which are created with the command 
+``mojito build hybridapp -n <snapshot_name> -t <snapshot_tag> [<build_path>]``.
+Hybrid applications are HTML5 applications that are designed to work with future
+Cocktails components that will enable hybrid applications to use the native features
+of mobile devices. Currently, hybrid applications are strictly an experimental feature of 
+Mojito and Cocktails.
 
-+----------------------+---------------+-------------------+-----------------------------------------------------------+
-| Property             | Data Type     | Default Value     | Description                                               |
-+======================+===============+===================+===========================================================+
-| ``buffer``           | boolean       | false             | Determines whether Mojito should buffer log               |
-|                      |               |                   | entries (``true``) or output each as they occur           |
-|                      |               |                   | (``false``).                                              |
-+----------------------+---------------+-------------------+-----------------------------------------------------------+
-| ``defaultLevel``     | string        | "info"            | Specifies the default log level to log entries. See       |
-|                      |               |                   | `Log Levels <../topics/mojito_logging.html#log-levels>`_. |
-+----------------------+---------------+-------------------+-----------------------------------------------------------+
-| ``level``            | string        | "info"            | Specifies the lowest log level to include in th           |
-|                      |               |                   | log output. See                                           |
-|                      |               |                   | `Log Levels <../topics/mojito_logging.html#log-levels>`_. |
-+----------------------+---------------+-------------------+-----------------------------------------------------------+
-| ``maxBufferSize``    | number        | 1024              | If ``buffer`` is set to ``true``, specifies the           |
-|                      |               |                   | number of log entries to store before flushing to         |
-|                      |               |                   | output.                                                   |
-+----------------------+---------------+-------------------+-----------------------------------------------------------+
-| ``timestamp``        | boolean       | true              | Determines whether the timestamp is included in           |
-|                      |               |                   | the log output.                                           |
-+----------------------+---------------+-------------------+-----------------------------------------------------------+
-| ``yui``              | boolean       | false             | Determines whether the log entries generated by           |
-|                      |               |                   | the YUI framework should be included in the Mojito        |
-|                      |               |                   | log output.                                               |
-+----------------------+---------------+-------------------+-----------------------------------------------------------+
++------------------------+---------------+-----------+-------------------------------+--------------------------------------------------------------------------------+
+| Property               | Data Type     | Required? | Default Value                 | Description                                                                    |
++========================+===============+===========+===============================+================================================================================+
+| ``buildDir``           | string        | no        | none                          | The build path of the hybrid application. If not specified, the hybrid         |
+|                        |               |           |                               | application will be placed in ``artifacts/build/hybridapp``. The specified     |
+|                        |               |           |                               | path for ``buildDir`` will be overridden if a build path is given to the       |
+|                        |               |           |                               | following command:                                                             |
+|                        |               |           |                               | ``mojito build hybridapp -n <snapshot_name> -t <snapshot_tag> [<build_path>]`` |
++------------------------+---------------+-----------+-------------------------------+--------------------------------------------------------------------------------+
+| ``forceRelativePaths`` | boolean       | no        | ``false``                     | When ``true``, the server-relative paths (those starting with "/") are         |
+|                        |               |           |                               | converted into paths relative to the generated file.                           |
++------------------------+---------------+-----------+-------------------------------+--------------------------------------------------------------------------------+
+| ``packages``           | object        | yes       | none                          | An object containing key-value pairs that specify dependencies and their       |
+|                        |               |           |                               | associated versions. When you create a hybrid application with the command     |
+|                        |               |           |                               | ``mojito build hybridapp``, the dependencies listed in ``packages`` are added  |
+|                        |               |           |                               | to the ``packages.json`` of the built hybrid application.                      |
++------------------------+---------------+-----------+-------------------------------+--------------------------------------------------------------------------------+
+| ``urls``               | array of      | yes       | none                          | The routing paths to views that be rendered into static pages and then cached  | 
+|                        | strings       |           |                               | so that the page can be viewed offline. For example, if the running            |
+|                        |               |           |                               | application renders the view ``view.html``, you could configure the            |
+|                        |               |           |                               | application to statically create and cache ``view.html`` in                    |
+|                        |               |           |                               | ``{app_dir}/artifacts/builds/hybridapp`` (default location) using the          |
+|                        |               |           |                               | following: ``urls: [ '/view.html']``                                           |
++------------------------+---------------+-----------+-------------------------------+--------------------------------------------------------------------------------+
+
+
+
 
 .. _specs_obj:
 
@@ -295,7 +328,7 @@ specs Object
 .. _config_obj:
 
 config Object
-#############
+*************
 
 +--------------------------+---------------+--------------------------------------------------------------------------------+
 | Property                 | Data Type     | Description                                                                    |
@@ -371,19 +404,18 @@ staticHandling Object
 yui Object
 ##########
 
-See `Example Application Configurations`_ for an example of the ``yui`` object. For 
-options for the ``config`` object, see the `YUI config Class <http://yuilibrary.com/yui/docs/api/classes/config.html>`_.
+See `Example Application Configurations`_ for an example of the ``yui`` object. 
 
 +--------------------------------+----------------------+------------------------------------------------------------------------+
 | Property                       | Data Type            | Description                                                            |
 +================================+======================+========================================================================+
 | ``base``                       | string               | Specifies the prefix from which to load all YUI 3 libraries.           |
 +--------------------------------+----------------------+------------------------------------------------------------------------+
-| ``config``                     | object               | Used to populate the `YUI_config <http://yuilibrary.com/yui/docs/yui/  |
+| :ref:`config <yui_config>`     | object               | Used to populate the `YUI_config <http://yuilibrary.com/yui/docs/yui/  |
 |                                |                      | #yui_config>`_ global variable that allows you to configure every YUI  |
 |                                |                      | instance on the page even before YUI is loaded. For example, you can   |
-|                                |                      | configure YUI not to load its default CSS with the following:          |
-|                                |                      | ``"yui": { "config": { "fetchCSS": false } }``                         |
+|                                |                      | configure logging or YUI not to load its default CSS with the          |
+|                                |                      | following: ``"yui": { "config": { "fetchCSS": false } }``              |
 +--------------------------------+----------------------+------------------------------------------------------------------------+
 | ``dependencyCalculations``     | string               | Specifies whether the YUI module dependencies are calculated at        |
 |                                |                      | server startup (pre-computed) or deferred until a particular           |
@@ -406,6 +438,39 @@ options for the ``config`` object, see the `YUI config Class <http://yuilibrary.
 +--------------------------------+----------------------+------------------------------------------------------------------------+
 
 
+.. _yui_config:
+
+config Object
+*************
+
+The ``config`` object is used to configure logging for both the client and the server. 
+The properties of the ``config`` object shown below are for configuring logging.
+For other options for the ``config`` object, see the 
+`YUI config Class <http://yuilibrary.com/yui/docs/api/classes/config.html>`_.
+
++----------------------+---------------+-------------------+-----------------------------------------------------------+
+| Property             | Data Type     | Default Value     | Description                                               |
++======================+===============+===================+===========================================================+
+| ``buffer``           | boolean       | false             | Determines whether Mojito should buffer log               |
+|                      |               |                   | entries (``true``) or output each as they occur           |
+|                      |               |                   | (``false``).                                              |
++----------------------+---------------+-------------------+-----------------------------------------------------------+
+| ``defaultLevel``     | string        | "info"            | Specifies the default log level to log entries. See       |
+|                      |               |                   | `Log Levels <../topics/mojito_logging.html#log-levels>`_. |
++----------------------+---------------+-------------------+-----------------------------------------------------------+
+| ``logLevel``         | string        | "info"            | Specifies the lowest log level to include in th           |
+|                      |               |                   | log output. See                                           |
+|                      |               |                   | `Log Levels <../topics/mojito_logging.html#log-levels>`_. |
++----------------------+---------------+-------------------+-----------------------------------------------------------+
+| ``maxBufferSize``    | number        | 1024              | If ``buffer`` is set to ``true``, specifies the           |
+|                      |               |                   | number of log entries to store before flushing to         |
+|                      |               |                   | output.                                                   |
++----------------------+---------------+-------------------+-----------------------------------------------------------+
+| ``timestamp``        | boolean       | true              | Determines whether the timestamp is included in           |
+|                      |               |                   | the log output.                                           |
++----------------------+---------------+-------------------+-----------------------------------------------------------+
+
+
 
 .. _config-multiple_mojits:
 
@@ -414,6 +479,8 @@ Configuring Applications to Have Multiple Mojits
 
 Applications not only can specify multiple mojit instances in ``application.json``, but 
 mojits can have one or more child mojits as well.
+
+.. _config_mult_mojits-app:
 
 Application With Multiple Mojits
 ################################
@@ -438,6 +505,8 @@ mojit instances ``sign_in`` and ``sign_out`` are defined:
      }
    ]
    
+.. _config_mult_mojits-parent_child:
+
 Parent Mojit With Child Mojit
 #############################
 
@@ -462,6 +531,8 @@ the example ``application.json`` below, the mojit instance ``parent`` of type
        }
      }
    ]
+
+.. _config_mult_mojits-parent_children:
 
 Parent Mojit With Children
 ##########################
@@ -497,6 +568,8 @@ In the example ``application.json`` below, the mojit instance ``father`` of type
        }
      }
    ]
+
+.. _config_mult_mojits-child_children:
 
 Child Mojit With Children
 #########################
@@ -549,6 +622,8 @@ To configure Mojito to deploy code to the client, you must be using the ``HTMLFr
 as the parent mojit and also set the ``deploy`` property of the :ref:`app-configuration_obj` 
 object to ``true`` in the ``config`` object of your mojit instance.
 
+.. _deploy_app-what:
+
 What Gets Deployed?
 ###################
 
@@ -561,6 +636,8 @@ When a binder invokes its controller, if the controller has the ``client`` or ``
 affinity, then the controller and its dependencies are deployed to the client as well. If 
 the affinity of the controller is ``server``, the invocation occurs on the server. In 
 either case, the binder is able to seamlessly invoke the controller.
+
+.. _deploy_app-ex:
 
 Example
 #######
@@ -638,6 +715,8 @@ Although mojit instances are defined at the application level, you configure met
 defaults for the mojit at the mojit level. The following sections will cover configuration 
 at the mojit level as well as examine the configuration of the mojit instance.
 
+.. _configure_mojit-metadata:
+
 Configuring Metadata
 --------------------
 
@@ -668,6 +747,8 @@ The table below describes the ``configuration`` object in ``definition.json``.
 |                  |                      |                   | <../topics/mojito_using_contexts.html>`_ for more      |
 |                  |                      |                   | information.                                           |
 +------------------+----------------------+-------------------+--------------------------------------------------------+
+
+.. _configure_mojit-app_level:
 
 Configuring and Using an Application-Level Mojit
 ------------------------------------------------
@@ -708,6 +789,9 @@ the application-level ``Foo`` mojit, the controller of the Bar mojit would inclu
      };
    }, '0.0.1', {requires: ['FooMojitModel']});
 
+
+.. _configure_mojit-defaults:
+
 Configuring Defaults for Mojit Instances
 ----------------------------------------
 
@@ -715,6 +799,8 @@ The ``defaults.json`` file in the mojit type directory can be used to specify de
 each mojit instance of the type. The format is the same as the mojit instance as specified 
 in the ``specs`` object of ``application.json``. This means that you can specify a default 
 action, as well as any defaults you might want to put in the ``config`` object.
+
+.. _configure_mojit-instances:
 
 Mojit Instances
 ---------------
@@ -724,6 +810,8 @@ mojit type to use and configures an instance of that type. The mojit instances a
 in the ``specs`` object of the ``application.json`` file.
 
 See :ref:`configure_mj-app` and :ref:`app_config-ex` for details of the ``specs`` object.
+
+.. _configure_mojit_instances-using:
 
 Using Mojit Instances
 #####################
@@ -770,6 +858,7 @@ function in the controller of the ``Foo`` mojit.
      }
    ]
 
+.. _configure_mj-routing:
 
 Routing
 =======
@@ -783,6 +872,8 @@ configure routing:
 
 See   `Code Examples: Configuring Routing <../code_exs/route_config.html>`_ to see an 
 example of configuring routing in a Mojito application.
+
+.. _configure_routing-file:
 
 Routing Configuration File
 --------------------------
@@ -838,6 +929,8 @@ The table below describes the properties of the ``route`` object of  ``routes.js
 |                |                      |               | "post" ]``                                             |
 +----------------+----------------------+---------------+--------------------------------------------------------+
 
+.. _configure_routing-mapping:
+
 Map Routes to Specific Mojit Instances and Actions
 --------------------------------------------------
 
@@ -846,6 +939,8 @@ applications. To map routes to a mojit instance and action, you create the file
 ``routes.json`` in your application directory. The ``routes.json`` file allows you to 
 configure a single or multiple routes and specify the HTTP method and action to use for 
 each route.
+
+.. _routing_mapping-single:
 
 Single Route
 ############
@@ -902,6 +997,8 @@ by prepending "@" to the mojit type.
        }
      }
    ]
+
+.. _routing_mapping-multiple:
 
 Multiple Routes
 ###############
@@ -1062,6 +1159,8 @@ would call the ``index`` action:
 - ``http://localhost:8666/99_Mojitos``
 
 
+.. _generate_urls:
+
 Generate URLs from the Controller
 ---------------------------------
 
@@ -1095,6 +1194,7 @@ with the ``make`` method use the mojit instance and function specified in the
 
 The ``index`` function above returns the following URL: ``http://localhost:8666/foo?foo=bar``
 
+.. _mojito_configuring-access:
 
 Accessing Configurations from Mojits
 ====================================
@@ -1105,11 +1205,15 @@ can also access configuration from other functions through the ``actionContext``
 The ``init`` function in the binder instead of a configuration object is passed the 
 ``mojitProxy`` object, which enables you to get the configurations.  
 
+.. _configuring_access-applevel:
+
 Application-Level Configurations
 --------------------------------
 
 Only the mojit controller has access to application-level configurations through the 
 ``actionContext`` object. 
+
+.. _access-applicationjson:
 
 application.json
 ################
@@ -1119,10 +1223,14 @@ application configurations in ``application.json`` with ``ac.app.config``. For e
 you wanted to access the ``specs`` object defined in ``application.json``,
 you would use ``ac.app.config.spec``. 
 
+.. _access-routesjson:
+
 routes.json
 ###########
 
 The routing configuration can be accessed with ``ac.app.routes``. 
+
+.. _configuring_access-context:
 
 Application Context
 -------------------
@@ -1150,6 +1258,7 @@ Below is an example of the ``context`` object:
      tz: '' 
    }
 
+.. _configuring_access-mojit:
 
 Mojit-Level Configurations
 --------------------------
@@ -1158,6 +1267,8 @@ Mojit-level configurations can be specified in two locations. You can specify mo
 configurations in the ``config`` object of a mojit instance in ``application.json`` or 
 default configurations for a mojit in ``mojits/{mojit_name}/defaults.json``. The 
 configurations of ``application.json`` override those in ``defaults.json``.
+
+.. _access_mojit-controller:
 
 Controller
 ##########
@@ -1169,6 +1280,8 @@ Use ``ac.config.get`` to access configuration values from ``application.json`` a
 ``defaults.json`` and ``ac.config.getDefinition`` to access definition values from 
 ``definition.json``.
 
+.. _access_mojit-model:
+
 Model
 #####
 
@@ -1176,6 +1289,8 @@ The ``init`` function in the model is also passed the mojit-level configurations
 model functions need the configurations, you need to save the configurations to the 
 ``this`` reference because no ``actionContext`` object is passed to the model, so your 
 model does not have access to the ``Config`` addon.
+
+.. _access_mojit-binder:
 
 Binder
 ######

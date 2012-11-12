@@ -2,16 +2,20 @@
 Framework Mojits
 ================
 
+.. _mojito_fw_mojits-intro:
+
 Introduction
-############
+============
 
 Mojito comes with the built-in utility mojits that make developing applications easier. Mojito 
 currently comes with the ``HTMLFrameMojit`` that constructs Web pages from the skeleton HTML to the 
 styling and content and the ``LazyLoadMojit`` that allows you to lazily load mojit code. Mojito 
 plans to offer additional framework mojits in the future.
 
+.. _mojito_fw_mojits-htmlframe:
+
 HTMLFrameMojit
-##############
+==============
 
 The ``HTMLFrameMojit`` builds the HTML skeleton of a Web page. When you use ``HTMLFrameMojit`` the 
 ``<html>``, ``<head>``, and ``<body>`` elements are automatically created and the content from child 
@@ -26,8 +30,10 @@ To create a Mojito application that uses the ``HTMLFrameMojit``, see the code ex
 `Using the HTML Frame Mojit <../code_exs/htmlframe_view.html>`_ 
 and `Attaching Assets with HTMLFrameMojit <../code_exs/framed_assets.html>`_.
 
+.. _fw_mojits_htmlframe-config:
+
 Configuration
-=============
+-------------
 
 As with defining instances of other mojit types, you define an instance of the ``HTMLFrameMojit`` in 
 `configuration object <../intro/mojito_configuring.html#configuration-object>`_ of 
@@ -96,8 +102,10 @@ content for the rendered view.
      }
    ]
 
+.. _htmlframe_config-deploy:
+
 Deploying to Client
-===================
+###################
 
 To configure Mojito to deploy code to the client, you set the ``deploy`` property of the 
 `config <../intro/mojito_configuring.html#configuration-object>`_ object to ``true`` 
@@ -122,8 +130,10 @@ as shown below.
      }
    ]
 
+.. _config_deploy-what:
+
 What Gets Deployed?
--------------------
+*******************
 
 The following is deployed to the client:
 
@@ -135,8 +145,10 @@ then the controller and its dependencies are deployed to the client as well. If 
 controller is ``server``, the invocation occurs on the server. In either case, the binder is able to 
 transparently invoke the controller.
 
+.. _fw_mojits_htmlframe-add:
+
 Adding Assets with HTMLFrameMojit
-=================================
+---------------------------------
 
 You specify the assets for ``HTMLFrameMojit`` just as you would specify assets for any mojit. The 
 basic difference is that  ``HTMLFrameMojit`` will automatically attach ``<link>`` elements for CSS 
@@ -193,16 +205,20 @@ below.
      </body>
    </html>
 
+.. _mojito_fw_mojits-lazyload:
+
 LazyLoadMojit
-#############
+=============
 
 ``LazyLoadMojit`` allows you to defer the loading of a mojit instance by first dispatching the 
 ``LazyLoadMoit`` as a proxy to the client. From the client, ``LazyLoadMojit`` can then request 
 Mojito to load the proxied mojit. This allows your Mojito application to load the page quickly and 
 then lazily load parts of the page.
 
+.. _fw_mojits_lazyload-how:
+
 How Does It Work?
-=================
+-----------------
 
 The ``LazyLoadMojit`` is really a proxy mojit that dispatches its binder and an empty DOM node to 
 the client. From the client, the binder sends a request to the controller to execute the code of 
@@ -210,8 +226,10 @@ the proxied (original) mojit. The output from the executed mojit is then returne
 the ``LazyLoadMojit``, which attaches the output to the empty DOM node. The binder of 
 ``LazyLoadMojit`` destroys itself, leaving the DOM intact with the new content.
 
+.. _fw_mojits_lazyload-config:
+
 Configuring Lazy Loading
-========================
+------------------------
 
 To use the ``LazyLoadMojit``, the ``application.json`` must do the following:
 
@@ -255,15 +273,19 @@ after lazy loading is complete.
      }
    ]
 
+.. _fw_mojits_lazyload-ex:
+
 Example
-=======
+-------
 
 This example shows you application configuration as well as the code for the parent mojit and the 
 child mojit that is lazy loaded.  If you were to run this lazy load example, you would see the 
 content of the parent mojit first and then see the child mojit's output loaded in the page. 
 
+.. _lazyload_ex-app_config:
+
 Application Configuration
--------------------------
+#########################
 
 The application configuration for this example (shown below) meets the requirements for using 
 ``LazyLoadMojit``:
@@ -309,8 +331,10 @@ page.
      }
    ]
 
+.. _lazyload_ex-container_mojit:
+
 Container Mojit
----------------
+###############
 
 The ``Container`` mojit uses ``ac.composite.done`` to execute its child mojits.
 
@@ -343,8 +367,10 @@ executed child replaces the Handlebars expression ``{{{myLazyMojit}}}``.
      <hr/>
    </div>
 
+.. _lazyload_ex-lazychild_mojit:
+
 LazyChild Mojit
----------------
+###############
 
 The ``LazyLoadMojit`` in the ``application.json`` is configured to lazily load the mojit instance 
 ``myLazyMojit`` and then call the action ``hello``. Thus, the ``index`` function in the 
