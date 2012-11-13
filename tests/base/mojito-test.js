@@ -13,12 +13,38 @@
  * Baseline Mojito client testing harness.
  */
 YUI.add('mojito', function(Y, NAME) {
+
+    // TODO: why does need to be in sync with autoload/mojito.common.js
+    // why don't we just attach that to every test?
+
     Y.namespace('mojito');
+    Y.namespace('mojito.trans');
+    Y.namespace('mojito.actions');
+    Y.namespace('mojito.binders');
+    Y.namespace('mojito.controllers');
+    Y.namespace('mojito.models');
+    Y.namespace('mojito.addons');
     Y.namespace('mojito.addons.ac');
-    Y.namespace('mojito').perf = {
-        mark: function () {},
-        timeline: function () { return { done: function() {} }; }
+    Y.namespace('mojito.addons.viewEngines');
+
+    // this is a facade for the real implementation from mojito-perf module
+    // that will have to be plugged manually to get the metrics in the
+    // console or a log file.
+    Y.mojito.perf = {
+        timeline: function () {
+            return {
+                done: function () {}
+            };
+        },
+        mark: function () {}
     };
+
+    // internal mojito framework cache (this is probably legacy)
+    YUI.namespace('_mojito._cache');
+
+    // setting the stage for all data-scopes implementation
+    YUI.namespace('Env.mojito');
+
 });
 
 /* AC ADDONS */
