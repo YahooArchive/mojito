@@ -2,15 +2,15 @@
  * Copyright (c) 2012 Yahoo! Inc. All rights reserved.
  */
 
-YUI.add('{{name}}Model-tests', function(Y) {
+YUI.add('{{name}}ModelFoo-tests', function(Y, NAME) {
     
-    var suite = new YUITest.TestSuite('{{name}}Model-tests'),
+    var suite = new YUITest.TestSuite(NAME),
         model = null,
         A = YUITest.Assert;
     
     suite.add(new YUITest.TestCase({
         
-        name: '{{name}} model user tests',
+        name: '{{name}}ModelFoo user tests',
         
         setUp: function() {
             model = Y.mojito.models.{{name}}ModelFoo;
@@ -20,8 +20,23 @@ YUI.add('{{name}}Model-tests', function(Y) {
         },
         
         'test mojit model': function() {
+            var called = false,
+                cfg = { color: 'red' };
+
             A.isNotNull(model);
+
+            A.isFunction(model.init);
+            model.init(cfg);
+            A.areSame(cfg, model.config);
+
             A.isFunction(model.getData);
+            model.getData(function(err, data) {
+                called = true;
+                A.isTrue(!err);
+                A.isObject(data);
+                A.areSame('data', data.some);
+            });
+            A.isTrue(called);
         }
         
     }));
