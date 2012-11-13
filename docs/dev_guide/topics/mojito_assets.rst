@@ -104,7 +104,6 @@ the CSS and JavaScript assets:
      }
    ]
 
-<<<<<<< HEAD
 
 This ``application.json`` configures Mojito to use the ``HTMLFrameMojit`` 
 that automatically inserts a ``<link>`` tag pointing to ``index.css`` into 
