@@ -3,11 +3,9 @@
 Developer Topics
 ==================
 
-The following sections provide conceptual information and instruction for some of the core components of the Mojito framework. 
-Although the developer topics are complemented by code snippets, for working code examples, see `Code Examples <../code_exs/>`_.
-
-Table of Contents
-#################
+The following sections provide conceptual information and instruction for some of the core 
+components of the Mojito framework. Although the developer topics are complemented by 
+code snippets, for working code examples, see `Code Examples <../code_exs/>`_.
 
 .. toctree::
    :maxdepth: 2
@@ -23,3 +21,4 @@ Table of Contents
    mojito_using_contexts
    mojito_npm
    mojito_resource_store
+   mojito_hosting_container_reqs
