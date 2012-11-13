@@ -8,14 +8,10 @@
       "myconfig3": "This is myconfig3 from top application.json"
     },
     "appPort": 4081,
-    "log": {
-      "config": {
-        "debug": true,
-        "logLevel": "debug"
-      }
-    },
     "yui": {
       "config": {
+        "debug": true,
+        "logLevel": "debug",
         "root": "static/yui",
         "combine": false
       }
