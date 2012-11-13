@@ -198,9 +198,6 @@ the ``<meta>`` tag and the ``addCss`` method adds the device-specific CSS.
 
    YUI.add('device', function(Y, NAME){
      Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(config) {
-         this.config = config;
-       },
        index: function(ac) {
          var device = ac.context.device, css = "./simple";
          if (device === 'iphone') {
@@ -260,9 +257,6 @@ array as seen in the example mojit controller below.
 
    YUI.add('textProcessor', function(Y, NAME){
      Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(config) {
-         this.config = config;
-       },
        index: function(ac) {
          // Use the 'substitute' module
          var name = Y.substitute("Welcome {name}!", {"name":ac.getFromMerged("name")});

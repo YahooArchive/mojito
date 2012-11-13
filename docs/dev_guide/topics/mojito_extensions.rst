@@ -367,21 +367,17 @@ Using the YUI Module
 ####################
 
 In the example mojit controller below, the YUI module ``hello-uid`` is loaded 
-because the module is in the ``requires`` array. An instance of the module 
-is created and saved in the ``init`` function. With the saved instance, the 
+because the module is in the ``requires`` array. With the saved instance, the 
 ``log`` method from the ``hello-uid`` module can be called:
 
 .. code-block:: javascript
 
    YUI.add('HelloMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(config) {
-         this.config = config;
-         this.uid = new Y.mojito.UID();
-       },
        index: function(ac) {
          var user_name = ac.params.getFromMerged("name") || "User";
-         this.uid.log(user_name);
+         var uid = new Y.mojito.UID();
+         uid.log(user_name);
          ac.done('Hello World!');
        }
      };
@@ -394,8 +390,8 @@ Other Libraries
 
 Non-YUI libraries can also be used at either the application or mojit level. 
 Because Node.js and **not** Mojito will read the contents of the library files, 
-you need to use ``require()`` to include the library. Mojito will only confirm 
-that the files exist.
+you need to use the Node.js function ``require`` to include the library. Mojito will 
+only confirm that the files exist.
 
 .. _libraries_other-loc:
 

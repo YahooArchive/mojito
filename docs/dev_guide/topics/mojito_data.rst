@@ -64,9 +64,6 @@ parameter is retrieved:
 
    YUI.add('ParamsMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(config) {
-         this.config = config;
-       },
        getNameParam: function(actionContext) {
          var nameParam = actionContext.params.getFromUrl('name');
          actionContext.done(
@@ -93,9 +90,6 @@ the ``qs_params`` array, which ``ac.done`` makes available in the template.
 
    YUI.add('ParamsMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(config) {
-         this.config = config;
-       },
        ...
        getAllParams: function(actionContext) {
          var qs_params = [];
@@ -137,9 +131,6 @@ and then uses the ``done`` method to make it accessible to the template.
 
    YUI.add('ParamsMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(config) {
-         this.config = config;
-       },
        getPostName: function(actionContext) {
          var postName = actionContext.params.getFromBody('name');
          actionContext.done(
@@ -166,9 +157,6 @@ template.
 
    YUI.add('ParamsMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(config) {
-         this.config = config;
-       },
        ...
        getAllParams: function(actionContext) {
          var post_params = [];
@@ -255,9 +243,6 @@ to determine whether the user gets a coupon.
 
    YUI.add('CouponMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(config) {
-         this.config = config;
-       },
        index: function(actionContext) {
          var sendCoupon = actionContext.params.getFromRoute('coupon');
          var name = actionContext.params.getFromBody("name");
@@ -290,9 +275,6 @@ a URL.
 
    YUI.add('LinkMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(config) {
-         this.config = config;
-       },
        index: function(actionContext) {
          var routeParams = actionContext.params.getFromRoute();
          var submitUrl = actionContext.url.make("myMojit", 'submit', routeParams);
@@ -339,9 +321,6 @@ In the example controller below, the ``name`` parameter is obtained using
 
    YUI.add('MergedParamsMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(config) {
-         this.config = config;
-       },
        getPostName: function(actionContext) {
          var mergedName = actionContext.params.getFromMerged('name');
          actionContext.done(
@@ -364,9 +343,6 @@ To get all of the GET, POST, and routing parameters, call ``getFromMerged`` or
 
    YUI.add('MergedParamsMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(config) {
-         this.config = config;
-       },
        ...
        getAllParams: function(actionContext) {
          var all_params = [];
@@ -409,19 +385,16 @@ template.
 
    YUI.add('CookieMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(config) {
-         this.config = config;
-     },
-     index: function(actionContext) {
-       var user = actionContext.cookie.get('user');
-        actionContext.done(
-           {
-             user: user && users[user] ? users[user] : ""
-           }
-         );
+       index: function(actionContext) {
+         var user = actionContext.cookie.get('user');
+           actionContext.done(
+             {
+               user: user && users[user] ? users[user] : ""
+             }
+           );
+         }
        }
-     }
-   }, '0.0.1', {requires: []});
+     }, '0.0.1', {requires: []});
 
 .. _data_cookie-write:
 
@@ -436,20 +409,17 @@ with the name ``'user'`` if one does not exist.
 
    YUI.add('CookieMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(config) {
-         this.config = config;
-     },
-     index: function(actionContext) {
-       var user = actionContext.cookie.get('user');
-        if(!user){
+       index: function(actionContext) {
+         var user = actionContext.cookie.get('user');
+         if(!user){
            actionContext.cookie.set('user',(new Date).getTime());
-        }
-        actionContext.done(
+         }
+         actionContext.done(
            {
              user: user
            }
          );
-       }
+        }
      }
    }, '0.0.1', {requires: []});
 

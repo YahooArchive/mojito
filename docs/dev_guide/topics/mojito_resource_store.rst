@@ -957,9 +957,6 @@ Controller
    YUI.add('Viewer', function(Y, NAME) {
    
      Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(config) {
-         this.config = config;
-       },
 
        index: function(ac) {
          var chosen; // TODO:  use form input to choose a text file

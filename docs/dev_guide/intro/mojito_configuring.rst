@@ -1218,14 +1218,44 @@ application configurations in ``application.json`` with the method ``getAppConfi
 of the ``Config`` addon.
 
 For example, if you wanted to access the ``specs`` object defined in ``application.json``,
-you would use ``ac.config.getAppConfig()``. 
+you would use ``ac.config.getAppConfig()`` as shown here:
+
+.. code-block:: javascript
+
+      YUI.add('myMojit', function(Y, NAME) {
+        Y.namespace('mojito.controllers')[NAME] = {
+          index: function(ac) {
+            // Get the application configuration through
+            // the Config addon.
+            var app_config = ac.config.getAppConfig();
+            Y.log(app_config);
+            ac.done({ status: "Showing app config in the log."});
+          }
+        };
+      }, '0.0.1', {requires: ['mojito', 'mojito-config-addon']});
 
 .. _access-routesjson:
 
 routes.json
 ###########
 
-The routing configuration can be accessed with ``ac.app.routes``. 
+The routing configuration can be accessed with the method ``getRoutes``
+of the ``Config`` addon.
+
+
+.. code-block:: javascript
+
+      YUI.add('myMojit', function(Y, NAME) {
+        Y.namespace('mojito.controllers')[NAME] = {
+          index: function(ac) {
+            // Get the routing configuration through
+            // the Config addon.
+            var route_config = ac.config.getRoutes();
+            Y.log(route_config);
+            ac.done({ status: "Showing routing config in the log."});
+          }
+        };
+      }, '0.0.1', {requires: ['mojito', 'mojito-config-addon']});
 
 .. _configuring_access-context:
 

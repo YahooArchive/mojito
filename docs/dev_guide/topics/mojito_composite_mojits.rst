@@ -62,25 +62,27 @@ Executing Child Mojits
 
 The parent mojit instance defined in ``application.json`` can access the 
 ``config`` object and execute the child mojits from the controller. 
-The ``init`` function of the controller is passed ``config``, which has 
-the ``children`` object listing the child mojits.
+The controller methods of the parent mojit can use the ``Config`` addon
+to get the application configuration with the method ``getAppConfig``.
+
 
 In the example controller of ``ParentMojit`` below, the ``init`` function saves 
 and displays the ``children`` object that lists the child mojits.
 
 .. code-block:: javascript
 
-   YUI.add('ParentMojit', function(Y, NAME) {
-     Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(config) {
-         this.config = config;
-         // Displays the 'children' object that is
-         // defined in application.json
-         Y.log(this.config);
-       },
-       ...
-     }
-   }
+      YUI.add('ParentMojit', function(Y, NAME) {
+        Y.namespace('mojito.controllers')[NAME] = { 
+          index: function(ac) {
+            var app_config = ac.config.getAppConfig();
+            // The app config contains the 'children' object that is
+            // defined in application.json
+            Y.log(app_config);
+          },
+          ...
+        };
+      }, '0.0.1', {requires: ['mojito', 'mojito-config-addon']});
+
 
 When the controller of the parent mojit calls ``ac.composite.done`` from the ``index`` 
 function, the controllers of the mojit children execute ``ac.done`` from their 
@@ -100,14 +102,11 @@ template.
 
    YUI.add('ParentMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(config) {
-         this.config = config;
-       },
        index: function(ac) {
          ac.composite.done({ template: { title: 'Recent News'}});
        }
      };
-   }, '0.1.0', {requires: []});
+   }, '0.1.0', {requires: ['mojito', 'mojito-composite-addon']});
 
 If ``ParentMojit`` above is the parent of ``ChildMojit``, the controller of 
 ``ChildMojit`` shown below will execute ``ac.done`` in the ``index`` function.

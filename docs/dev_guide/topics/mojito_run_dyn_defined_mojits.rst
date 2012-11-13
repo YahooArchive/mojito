@@ -144,9 +144,6 @@ available to the mojit's template.
 
    YUI.add('FrameMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(config) {
-         this.config = config;
-       },
        index: function(actionContext) {
          var cfg = { view: "index", 
                      children: { 
