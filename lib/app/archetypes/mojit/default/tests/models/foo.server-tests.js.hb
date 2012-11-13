@@ -20,8 +20,15 @@ YUI.add('{{name}}ModelFoo-tests', function(Y, NAME) {
         },
         
         'test mojit model': function() {
-            var called = false;
+            var called = false,
+                cfg = { color: 'red' };
+
             A.isNotNull(model);
+
+            A.isFunction(model.init);
+            model.init(cfg);
+            A.areSame(cfg, model.config);
+
             A.isFunction(model.getData);
             model.getData(function(err, data) {
                 called = true;
