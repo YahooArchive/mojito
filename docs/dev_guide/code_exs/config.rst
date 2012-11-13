@@ -3,8 +3,8 @@ Configuration
 =============
 
 
-These examples show you how to configure your applications, such as defining mojit instances, 
-routing paths, logging levels, and more.
+These examples show you how to configure your applications, such as defining mojit 
+instances, routing paths, logging levels, and more.
 
 .. toctree::
    :maxdepth: 1 
