@@ -13,7 +13,7 @@ YUI().use(
     'json',
     'test',
     function(Y) {
-    
+
     var suite = new YUITest.TestSuite('mojito-addon-rs-yui-tests'),
         libasync = require('async'),
         libpath = require('path'),
@@ -24,7 +24,13 @@ YUI().use(
 
 
     function parseConfig(config) {
-        var ctx = { x: undefined };
+        var ctx = {
+            Y: {
+                config: {},
+                merge: Y.merge
+            },
+            x: undefined
+        };
         config = 'x = ' + config + ';';
         libvm.runInNewContext(config, ctx, 'config');
         return ctx.x;
@@ -549,31 +555,22 @@ YUI().use(
         },
 
 
-        'yui meta and getClosestLang': function() {
+        'yui meta': function() {
             var fixtures = libpath.join(__dirname, '../../../../../fixtures/gsg5'),
                 store = new Y.mojito.ResourceStore({ root: fixtures }),
                 series = [];
             store.preload();
 
-            A.areSame('en-US', store.yui.getClosestLang('en-US-midwest'), 'en-US-midwest');
-            A.areSame('en-US', store.yui.getClosestLang('en-US'), 'en-US');
-            A.areSame('en', store.yui.getClosestLang('en'), 'en');
-            A.areSame('de', store.yui.getClosestLang('de-DE'), 'de-DE');
-            A.areSame('de', store.yui.getClosestLang('de'), 'de');
-            A.areSame('', store.yui.getClosestLang('nl-NL'), 'nl-NL');
-            A.areSame('', store.yui.getClosestLang('nl'), 'nl');
-            A.areSame('', store.yui.getClosestLang(''), 'no lang');
-
             series.push(function(next) {
                 var res, ress;
-                ress = store.getResourceVersions({type: 'yui-loader', subtype:'app-base', name:'en-US' });
+                ress = store.getResourceVersions({mojit: 'shared', type: 'yui-module', subtype:'synthetic', name:'loader-app-base-en-US' });
                 A.isArray(ress);
-                A.areSame(1, ress.length);
+                A.areSame(1, ress.length, "didn't find yui-module-synthetic-loader-app-base-en-US");
                 res = ress[0];
                 A.isObject(res);
                 store.getResourceContent(res, function(err, buffer, stat) {
-                    A.isNull(err);
-                    A.isNull(stat);
+                    A.isNull(err, 'error');
+                    A.isNotNull(stat, 'stat');
                     meta = buffer.toString();
                     var matches = meta.match(/Y\.applyConfig\(([\s\S]+?)\);/);
                     var config = parseConfig(matches[1]);
@@ -581,11 +578,6 @@ YUI().use(
                     A.isObject(config.groups);
                     A.areSame(1, Object.keys(config.groups).length);
                     A.isObject(config.groups.app);
-                    A.isTrue(config.groups.app.combine);
-                    A.areSame(1024, config.groups.app.maxURLLength);
-                    A.areSame('/static/', config.groups.app.base);
-                    A.areSame('/static/combo?', config.groups.app.comboBase);
-                    A.areSame('', config.groups.app.root);
                     // we'll just spot-check a few things
                     A.isObject(config.groups.app.modules);
                     A.isObject(config.groups.app.modules['lang/PagedFlickr_en-US']);
@@ -603,14 +595,14 @@ YUI().use(
             });
             series.push(function(next) {
                 var res, ress;
-                ress = store.getResourceVersions({type: 'yui-loader', subtype:'app-full', name:'en-US' });
+                ress = store.getResourceVersions({mojit: 'shared', type: 'yui-module', subtype:'synthetic', name:'loader-app-resolved-en-US' });
                 A.isArray(ress);
                 A.areSame(1, ress.length);
                 res = ress[0];
                 A.isObject(res);
                 store.getResourceContent(res, function(err, buffer, stat) {
-                    A.isNull(err);
-                    A.isNull(stat);
+                    A.isNull(err, 'err');
+                    A.isNotNull(stat, 'stat');
                     meta = buffer.toString();
                     var matches = meta.match(/Y\.applyConfig\(([\s\S]+?)\);/);
                     var config = parseConfig(matches[1]);
@@ -618,11 +610,6 @@ YUI().use(
                     A.isObject(config.groups);
                     A.areSame(1, Object.keys(config.groups).length);
                     A.isObject(config.groups.app);
-                    A.isTrue(config.groups.app.combine);
-                    A.areSame(1024, config.groups.app.maxURLLength);
-                    A.areSame('/static/', config.groups.app.base);
-                    A.areSame('/static/combo?', config.groups.app.comboBase);
-                    A.areSame('', config.groups.app.root);
                     // we'll just spot-check a few things
                     A.isObject(config.groups.app.modules);
                     A.isObject(config.groups.app.modules['lang/PagedFlickr_en-US']);
@@ -640,7 +627,7 @@ YUI().use(
                             obj = config.groups.app.modules[i];
                             A.isNotUndefined(obj.name);
                             A.isNotUndefined(obj.type);
-                            A.isNotUndefined(obj.fullpath);
+                            A.isNotUndefined(obj.path);
                             A.isNotUndefined(obj.requires);
                             A.isNotUndefined(obj.defaults);
                             // language bundles don't have expanded_map
@@ -656,29 +643,14 @@ YUI().use(
             });
             series.push(function(next) {
                 var res, ress;
-                ress = store.getResourceVersions({type: 'yui-loader', subtype:'rollup', name:'' });
+                ress = store.getResourceVersions({mojit: 'shared', type: 'yui-module', subtype:'synthetic', name:'loader-yui3-base-en-US' });
                 A.isArray(ress);
                 A.areSame(1, ress.length);
                 res = ress[0];
                 A.isObject(res);
                 store.getResourceContent(res, function(err, buffer, stat) {
                     A.isNull(err);
-                    A.isNull(stat);
-                    meta = buffer.toString();
-                    A.areSame('YUI.add("loader",function(Y){},"",{requires:["loader-base","loader-yui3","loader-app-base"]});', meta);
-                    next();
-                });
-            });
-            series.push(function(next) {
-                var res, ress;
-                ress = store.getResourceVersions({type: 'yui-loader', subtype:'yui-base', name:'en-US' });
-                A.isArray(ress);
-                A.areSame(1, ress.length);
-                res = ress[0];
-                A.isObject(res);
-                store.getResourceContent(res, function(err, buffer, stat) {
-                    A.isNull(err);
-                    A.isNull(stat);
+                    A.isNotNull(stat);
                     meta = buffer.toString();
                     var matches = meta.match(/\.modules=[^|]+\|\|([\s\S]+?);},"",{requires:/);
                     var config = parseConfig(matches[1]);
@@ -694,14 +666,14 @@ YUI().use(
             });
             series.push(function(next) {
                 var res, ress;
-                ress = store.getResourceVersions({type: 'yui-loader', subtype:'yui-full', name:'en-US' });
+                ress = store.getResourceVersions({mojit: 'shared', type: 'yui-module', subtype:'synthetic', name:'loader-yui3-resolved-en-US' });
                 A.isArray(ress);
                 A.areSame(1, ress.length);
                 res = ress[0];
                 A.isObject(res);
                 store.getResourceContent(res, function(err, buffer, stat) {
                     A.isNull(err);
-                    A.isNull(stat);
+                    A.isNotNull(stat);
                     meta = buffer.toString();
                     var matches = meta.match(/\.modules=[^|]+\|\|([\s\S]+?);},"",{requires:/);
                     var config = parseConfig(matches[1]);
@@ -722,6 +694,21 @@ YUI().use(
                     A.isObject(config['dom-style-ie']);
                     A.isObject(config['dom-style-ie'].condition);
                     A.areSame('function', typeof config['dom-style-ie'].condition.test);
+                    next();
+                });
+            });
+            series.push(function(next) {
+                var res, ress;
+                ress = store.getResourceVersions({mojit: 'shared', type: 'yui-module', subtype:'synthetic', name:'loader-app' });
+                A.isArray(ress);
+                A.areSame(1, ress.length);
+                res = ress[0];
+                A.isObject(res);
+                store.getResourceContent(res, function(err, buffer, stat) {
+                    A.isNull(err);
+                    A.isNotNull(stat);
+                    meta = buffer.toString();
+                    A.areSame('YUI.add("loader",function(Y){},"",{requires:["loader-base","loader-yui3","loader-app"]});', meta);
                     next();
                 });
             });
