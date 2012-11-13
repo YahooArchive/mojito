@@ -9,17 +9,12 @@
     },
     "appPort": 4081,
     "log": {
-      "client": {
-        "level": "debug",
-        "yui": false
-      },
-      "server": {
-        "level": "mojito",
-        "yui": false
+      "config": {
+        "debug": true,
+        "logLevel": "debug"
       }
     },
     "yui": {
-      "extraModules": ["plugin","jsonp"],
       "config": {
         "root": "static/yui",
         "combine": false
@@ -44,7 +39,6 @@
         "mojits_params/*"
         ],
         "staticHandling": {
-          "useRollups": true,
           "appName": "myNewAppName"
         },
         "specs": {
