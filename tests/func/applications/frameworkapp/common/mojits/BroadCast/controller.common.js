@@ -125,4 +125,8 @@ YUI.add('BroadCast', function(Y, NAME) {
 
     };
 
-}, '0.0.1', {requires: ['mojito']});
+}, '0.0.1', {requires: [
+    'mojito',
+    'mojito-composite-addon',
+    'mojito-assets-addon'
+]});
