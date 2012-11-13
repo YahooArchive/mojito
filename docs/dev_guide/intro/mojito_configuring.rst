@@ -273,8 +273,6 @@ Mojito and Cocktails.
 +------------------------+---------------+-----------+-------------------------------+--------------------------------------------------------------------------------+
 
 
-
-
 .. _specs_obj:
 
 specs Object
@@ -780,9 +778,6 @@ the application-level ``Foo`` mojit, the controller of the Bar mojit would inclu
 
    YUI.add('BarMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(config) {
-         this.config = config;
-       },
        index: function(actionContext) {
          actionContext.done({title: "Body"});
        }
@@ -1210,18 +1205,20 @@ The ``init`` function in the binder instead of a configuration object is passed 
 Application-Level Configurations
 --------------------------------
 
-Only the mojit controller has access to application-level configurations through the 
-``actionContext`` object. 
+Only the mojit controller has access to application-level configurations 
+using the ActionContext ``Config`` addon.
 
 .. _access-applicationjson:
 
 application.json
 ################
 
-The controller functions that are passed an ``actionContext`` object can reference the 
-application configurations in ``application.json`` with ``ac.app.config``. For example, if 
-you wanted to access the ``specs`` object defined in ``application.json``,
-you would use ``ac.app.config.spec``. 
+The controller functions that are passed an ``actionContext`` object can get the 
+application configurations in ``application.json`` with the method ``getAppConfig``
+of the ``Config`` addon.
+
+For example, if you wanted to access the ``specs`` object defined in ``application.json``,
+you would use ``ac.config.getAppConfig()``. 
 
 .. _access-routesjson:
 

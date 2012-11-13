@@ -9,9 +9,10 @@ Binding Events
 Summary
 =======
 
-This example shows how to bind events to a mojit, configure code to run on the client, and make AJAX 
-calls to the YQL Web service. The application listens for events and then makes AJAX calls to 
-YQL to get Flickr photo information. 
+This example shows how to bind events to a mojit, configure code to run 
+on the client, and make AJAX calls to the YQL Web service. The application 
+listens for events and then makes AJAX calls to YQL to get Flickr photo 
+information. 
 
 The following topics will be covered:
 
@@ -32,12 +33,13 @@ Implementation Notes
 Configuring the Application to Run on the Client
 ------------------------------------------------
 
-Mojito lets you configure applications to run on either the server or client side. This example uses 
-binders that are deployed to the client, so we need to configure Mojito to deploy the application 
-to the client, where it will be executed by the browser.
+Mojito lets you configure applications to run on either the server or client 
+side. This example uses binders that are deployed to the client, so we need 
+to configure Mojito to deploy the application to the client, where it will 
+be executed by the browser.
 
-To configure Mojito to run on the client, you simply set the ``"deploy"`` property to ``true`` in 
-``application.json`` as seen below.
+To configure Mojito to run on the client, you simply set the ``"deploy"`` 
+property to ``true`` in ``application.json`` as seen below.
 
 .. code-block:: javascript
 
@@ -61,9 +63,9 @@ To configure Mojito to run on the client, you simply set the ``"deploy"`` proper
 Getting Data with YQL in the Model
 ----------------------------------
 
-In the mojit model, the `YUI YQL Query Utility <http://developer.yahoo.com/yui/3/yql/>`_ is used to 
-get Flickr photo information. To access the utility in your model, specify ``'yql'`` in the 
-``requires`` array as seen in the code snippet below:
+In the mojit model, the `YUI YQL Query Utility <http://developer.yahoo.com/yui/3/yql/>`_ 
+is used to get Flickr photo information. To access the utility in your model, 
+specify ``'yql'`` in the ``requires`` array as seen in the code snippet below:
 
 .. code-block:: javascript
 
@@ -73,10 +75,10 @@ get Flickr photo information. To access the utility in your model, specify ``'yq
      ...
    }, '0.0.1', {requires: ['yql']});
 
-This code example uses the ``flickr.photos.search`` table to get information for photos that have a 
-title, description, or tags containing a string. For example, the YQL statement below returns Flickr 
-photo information for those photos that have a title, description, or tags containing the string 
-"Manhattan". 
+This code example uses the ``flickr.photos.search`` table to get information 
+for photos that have a title, description, or tags containing a string. For 
+example, the YQL statement below returns Flickr photo information for those 
+photos that have a title, description, or tags containing the string "Manhattan". 
 
 Copy the query below into the `YQL Console <http://developer.yahoo.com/yql/console/>`_,
 replace ``{your_flickr_api_key}`` with your own Flickr API key, and then  click **TEST** 
@@ -90,7 +92,7 @@ seen here:
 
 ``http://farm + {farm} + static.flickr.com/ + {server} + / + {id} + _ + {secret} + .jpg``
 
-In the ``model.js`` of ``PagerMojit`` shown below, the ``YQL`` function uses the YQL statement above 
+In the ``model.server.js`` of ``PagerMojit`` shown below, the ``YQL`` function uses the YQL statement above 
 to get photo data, then parses the returned response to create the photo URIs. The model then wraps 
 the photo information in an object and stores those objects in the ``images`` array that is sent to 
 the controller through the ``callback`` function.
@@ -663,54 +665,52 @@ To set up and run ``binding_events``:
         * @constructor
         */
           Y.namespace('mojito.controllers')[NAME] = {   
-            init: function(config) {
-              this.config = config;
-          },
-          index: function(actionContext) {
-            var page = actionContext.params.getFromMerged('page');
-            var start;
-            page = parseInt(page) || 1;
-            if ((!page) || (page<1)) {
-              page = 1;
-            }
-            // Page param is 1 based, but the model is 0 based
-            start = (page - 1) * PAGE_SIZE;
-            var model = actionContext.models.PagerMojit;
-            // Data is an array of images
-            model.getData('mojito', start, PAGE_SIZE, function(data) {
-              Y.log('DATA: ' + Y.dump(data));
-              var theData = {
-                data: data, // images
-                hasLink: false,
-                prev: {
-                  title: "prev" // opportunity to localize
-                },
-                next: {
-                  link: createLink(actionContext, {page: page+1}),
-                  title: "next"
-                },
-                query: 'mojito'
-              };
-              if (page > 1) {
-                theData.prev.link = createLink(actionContext, {page: page-1});
-                theData.hasLink = true;
+
+            index: function(actionContext) {
+              var page = actionContext.params.getFromMerged('page');
+              var start;
+              page = parseInt(page) || 1;
+              if ((!page) || (page<1)) {
+                page = 1;
               }
-              actionContext.done(theData);
-            });
+              // Page param is 1 based, but the model is 0 based
+              start = (page - 1) * PAGE_SIZE;
+              var model = actionContext.models.PagerMojit;
+              // Data is an array of images
+              model.getData('mojito', start, PAGE_SIZE, function(data) {
+                Y.log('DATA: ' + Y.dump(data));
+                var theData = {
+                  data: data, // images
+                  hasLink: false,
+                  prev: {
+                    title: "prev" // opportunity to localize
+                  },
+                  next: {
+                    link: createLink(actionContext, {page: page+1}),
+                    title: "next"
+                  },
+                  query: 'mojito'
+                };
+                if (page > 1) {
+                  theData.prev.link = createLink(actionContext, {page: page-1});
+                  theData.hasLink = true;
+                }
+                actionContext.done(theData);
+              });
+            }
+          };
+          // Generate the link to the next page based on:
+          // - mojit id
+          // - action
+          // - params
+          function createLink(actionContext, params) {
+            var mergedParams = Y.mojito.util.copy(actionContext.params.getFromMerged());
+            for (var k in params) {
+              mergedParams[k] = params[k];
+            }
+            return actionContext.url.make('frame', 'index', Y.QueryString.stringify(mergedParams));
           }
-        };
-        // Generate the link to the next page based on:
-        // - mojit id
-        // - action
-        // - params
-        function createLink(actionContext, params) {
-          var mergedParams = Y.mojito.util.copy(actionContext.params.getFromMerged());
-          for (var k in params) {
-            mergedParams[k] = params[k];
-          }
-          return actionContext.url.make('frame', 'index', Y.QueryString.stringify(mergedParams));
-        }
-      }, '0.0.1', {requires: ['dump']});
+        }, '0.0.1', {requires: ['dump']});
 
 #. To get Flickr photo information using YQL, replace the code in ``model.server.js`` with 
    the following:
