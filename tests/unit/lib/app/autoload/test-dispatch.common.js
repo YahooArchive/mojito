@@ -33,9 +33,6 @@ YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
                         id: 'xyz123',
                         instanceId: 'xyz123',
                         'controller-module': 'dispatch',
-                        createController: function() {
-                            return { index: function() {} };
-                        },
                         yui: {
                             config: {},
                             langs: [],
@@ -52,7 +49,7 @@ YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
                 instance: {
                     type: 'M'
                 },
-               context: {
+                context: {
                     lang: 'klingon',
                     langs: 'klingon'
                 }
@@ -67,79 +64,160 @@ YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
             adapter = null;
         },
 
-        'test dispatch uses supplied getter': function() {
-            var getterInvoked = false,
-                res;
+        'test rpc with tunnel': function () {
+            var tunnel,
+                errorTriggered,
+                tunnelCommand;
 
-            var originalActionContext = Y.namespace('mojito').ActionContext;
-
-            Y.namespace('mojito').ActionContext = function(opts) {
-                return this;
+            tunnel = {
+                rpc: function (c, a) {
+                    tunnelCommand = c;
+                }
             };
-
-            store.expandInstance = function(instance, context, cb) {
-                    cb(null, {
-                        type: instance.type,
-                        id: 'xyz123',
-                        instanceId: 'xyz123',
-                        'controller-module': 'dispatch',
-                        createController: function() {
-                            getterInvoked = true;
-                            return { index: function() {} };
-                        },
-                        yui: {
-                            config: {
-                                modules: ['mojito', 'mojito-action-context']
-                            },
-                            langs: [],
-                            requires: [],
-                            sorted: ['mojito', 'mojito-action-context'],
-                            sortedPaths: {}
-                        }
-                    });
-                };
-
-            Y.namespace('mojito').ActionContext = originalActionContext;
-
-            res = dispatcher.init(store);
-            A.areSame(res, dispatcher);
-
-            res.dispatch(command, adapter);
-            A.isTrue(getterInvoked);
+            errorTriggered = false;
+            dispatcher.init(store, tunnel);
+            dispatcher.rpc(command, {
+                error: function () {
+                    errorTriggered = true;
+                }
+            });
+            A.isFalse(errorTriggered, 'if tunnel is set, it should not call adapter.error');
+            A.areSame(command, tunnelCommand, 'delegate command to tunnel');
         },
 
-        'test dispatch uses supplied action': function() {
-            var actionInvoked = false,
-                res;
+        'test rpc without tunnel available': function () {
+            var tunnel,
+                errorTriggered,
+                tunnelCommand;
 
-            store.expandInstance = function(instance, context, cb) {
-                    cb(null, {
-                        type: instance.type,
-                        id: 'xyz123',
-                        instanceId: 'xyz123',
-                        'controller-module': 'dispatch',
-                        createController: function() {
-                            return { index: function() {
-                                actionInvoked = true;
-                            } };
-                        },
-                        yui: {
-                            config: {
-                                modules: ['mojito', 'mojito-action-context']
-                            },
-                            langs: [],
-                            requires: [],
-                            sorted: ['mojito', 'mojito-action-context'],
-                            sortedPaths: {}
-                        }
-                    });
-                };
+            tunnel = null;
+            errorTriggered = false;
+            dispatcher.init(store, tunnel);
+            dispatcher.rpc(command, {
+                error: function () {
+                    errorTriggered = true;
+                }
+            });
+            A.isTrue(errorTriggered, 'if tunnel is not set, it should call adapter.error');
+        },
 
-            res = dispatcher.init(store);
-            A.areSame(res, dispatcher);
+        'test dispatch with command.rpc=1': function () {
+            var tunnel,
+                errorTriggered,
+                tunnelCommand;
 
-            res.dispatch(command, adapter);
-            A.isTrue(actionInvoked);
+            tunnel = {
+                rpc: function (c, a) {
+                    tunnelCommand = c;
+                }
+            };
+            command.rpc = 1;
+            errorTriggered = false;
+            dispatcher.init(store, tunnel);
+            dispatcher.rpc(command, {
+                error: function () {
+                    errorTriggered = true;
+                }
+            });
+            A.isFalse(errorTriggered, 'tunnel should be called');
+            A.areSame(command, tunnelCommand, 'delegate command to tunnel');
+        },
+
+        'test dispatch with invalid mojit': function () {
+            var tunnel,
+                errorTriggered,
+                tunnelCommand;
+
+            tunnel = {
+                rpc: function (c, a) {
+                    tunnelCommand = c;
+                }
+            };
+            errorTriggered = false;
+            dispatcher.init(store, tunnel);
+            // if the expandInstance calls with an error, the tunnel
+            // should be tried.
+            store.expandInstance = function (instance, context, callback) {
+                callback({error: 1});
+            };
+            dispatcher.dispatch(command, {
+                error: function () {
+                    errorTriggered = true;
+                }
+            });
+            A.isFalse(errorTriggered, 'tunnel should be called');
+            A.areSame(command, tunnelCommand, 'delegate command to tunnel');
+        },
+
+        'test dispatch with valid controller': function () {
+            var tunnel,
+                errorTriggered,
+                useCommand,
+                acCommand,
+                _createActionContext = dispatcher._createActionContext,
+                _useController = dispatcher._useController;
+
+            errorTriggered = false;
+            dispatcher.init(store, tunnel);
+            // if the expandInstance calls with an error, the tunnel
+            // should be tried.
+            store.expandInstance = function (instance, context, callback) {
+                instance.controller = 'foo';
+                Y.mojito.controllers[instance.controller] = {};
+                callback(null, instance);
+            };
+            dispatcher._useController = function (c) {
+                useCommand = c;
+            };
+            dispatcher._createActionContext = function (c) {
+                acCommand = c;
+            };
+            dispatcher.dispatch(command, {
+                error: function () {
+                    errorTriggered = true;
+                }
+            });
+            A.isFalse(errorTriggered, '_createActionContext should be called');
+            A.areSame(command, acCommand, 'AC should be created based on the original command');
+
+            // restoring references
+            dispatcher._createActionContext = _createActionContext;
+        },
+
+        'test dispatch with invalid controller': function () {
+            var tunnel,
+                errorTriggered,
+                useCommand,
+                acCommand,
+                _createActionContext = dispatcher._createActionContext,
+                _useController = dispatcher._useController;
+
+            errorTriggered = false;
+            dispatcher.init(store, tunnel);
+            // if the expandInstance calls with an error, the tunnel
+            // should be tried.
+            store.expandInstance = function (instance, context, callback) {
+                instance.controller = 'foo';
+                Y.mojito.controllers[instance.controller] = null;
+                callback(null, instance);
+            };
+            dispatcher._useController = function (c) {
+                useCommand = c;
+            };
+            dispatcher._createActionContext = function (c) {
+                acCommand = c;
+            };
+            dispatcher.dispatch(command, {
+                error: function () {
+                    errorTriggered = true;
+                }
+            });
+            A.isFalse(errorTriggered, '_useController should be called');
+            A.areSame(command, useCommand, '_useController should be called based on the original command');
+
+            // restoring references
+            dispatcher._createActionContext = _createActionContext;
+            dispatcher._useController = _useController;
         }
 
     }));
