@@ -1,11 +1,7 @@
 /*
  * This is a basic func test for a Common application.
  */
-YUI({
-    useConsoleOutput: true,
-    useBrowserConsole: true,
-    logInclude: { TestRunner: true }
-}).use('node', 'node-event-simulate', 'test', 'console', function (Y) {
+YUI.add('compositemojit1client-tests', function (Y) {
    
     var suite = new Y.Test.Suite("Common: compositemojit1client");
 
@@ -32,4 +28,4 @@ YUI({
 
    Y.Test.Runner.add(suite);
 
-});
+}, '0.0.1', { requires: ['node', 'test', 'node-event-simulate', 'console']});

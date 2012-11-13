@@ -63,4 +63,4 @@ YUI.add('CM_NavBinderIndex', function(Y, NAME) {
 
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito-client', 'node']});
