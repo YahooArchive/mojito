@@ -411,6 +411,7 @@ the ``requires`` array.
        }
      };
    }, '0.0.1', {requires: ['yql', 'io', 'dump']});
+
 Using Paging
 ------------
 
@@ -546,9 +547,7 @@ create URLs for the **next** and **prev** links.
      * @constructor
      */
      Y.namespace('mojito.controllers')[NAME] = {   
-       init: function(config) {
-         this.config = config;
-       },
+
        index: function(actionContext) {
          var page = actionContext.params.getFromMerged('page');
          var start;
@@ -730,9 +729,7 @@ To set up and run ``binding_events``:
         * @constructor
         */
         Y.namespace('mojito.models')[NAME] = {
-          init: function(config) {
-            this.config = config;
-          },
+
           getData: function(query, start, count, callback) {
              var q = null;
             // Get Flickr API key: http://www.flickr.com/services/api/keys/apply/

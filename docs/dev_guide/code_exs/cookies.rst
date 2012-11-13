@@ -36,9 +36,6 @@ these methods for getting and setting cookies should be familiar as Mojito uses 
 
    YUI.add('CookieMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = {   
-       init: function(config) {
-         this.config = config;
-       },
        index: function(actionContext) {
          var requestCookieValue = actionContext.cookie.get('request_cookie');
          // Or use this API to set a session cookie
@@ -143,9 +140,7 @@ To set up and run ``using_cookies``:
 
       YUI.add('CookieMojit', function(Y, NAME) {
         Y.namespace('mojito.controllers')[NAME] = {   
-          init: function(config) {
-            this.config = config;
-          },
+
           index: function(actionContext) {
             var requestCookieValue = actionContext.cookie.get('request_cookie');
             // Or use this API to set a session cookie

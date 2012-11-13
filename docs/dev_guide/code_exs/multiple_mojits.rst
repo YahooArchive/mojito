@@ -105,9 +105,7 @@ which we will take a look at next.
 
    YUI.add('FrameMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = {   
-       init: function(config) {
-         this.config = config;
-       },
+
        index: function(actionContext) {
            actionContext.composite.done({template: {title: "Parent Frame"}});
          }
@@ -220,9 +218,7 @@ To set up and run ``multiple_mojits``:
 
       YUI.add('FrameMojit', function(Y, NAME) {
         Y.namespace('mojito.controllers')[NAME] = {   
-          init: function(config) {
-            this.config = config;
-          },
+
           index: function(actionContext) {
               actionContext.composite.done({template: {title: "Parent Frame"}});
           }
@@ -257,9 +253,7 @@ To set up and run ``multiple_mojits``:
 
       YUI.add('HeaderMojit', function(Y, NAME) {
         Y.namespace('mojito.controllers')[NAME] = {   
-          init: function(config) {
-            this.config = config;
-          },
+
           index: function(actionContext) {
             actionContext.done({title: "Header"});
           }
@@ -289,9 +283,7 @@ To set up and run ``multiple_mojits``:
 
       YUI.add('BodyMojit', function(Y, NAME) {
         Y.namespace('mojito.controllers')[NAME] = {   
-          init: function(config) {
-            this.config = config;
-          },
+
           index: function(actionContext) {
             actionContext.done({title: "Body"});
           }
@@ -318,9 +310,7 @@ To set up and run ``multiple_mojits``:
 
       YUI.add('FooterMojit', function(Y, NAME) {
         Y.namespace('mojito.controllers')[NAME] = {   
-          init: function(config) {
-            this.config = config;
-          },
+
           index: function(actionContext) {
             actionContext.done({title: "Footer"});
           }

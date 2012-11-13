@@ -1,5 +1,4 @@
 
-
 ======
 Addons
 ======
@@ -19,8 +18,10 @@ Addons allow you to do the following:
 - get and set HTTP headers
 - create URLs
 
+.. _mojito_addons-syntax:
+
 Syntax
-######
+======
 
 Using the ActionContext object ``ac``, you would call a ``{method}`` from an ``{addon}`` with the 
 following syntax:
@@ -32,8 +33,10 @@ For example, to get all of the query string parameters, you would use the ``Para
 
 ``ac.params.url()``
 
+.. _mojito_addons-exs:
+
 Addon Examples
-##############
+==============
 
 The following code examples use the addons in parentheses:
 
@@ -44,8 +47,10 @@ The following code examples use the addons in parentheses:
 - `Internationalizing Your Application <../code_exs/i18n_apps.html>`_ (``Intl``)
 - `Using Multiple Mojits <../code_exs/multiple_mojits.html>`_ (``Composite``)
 
+.. _mojito_addons-create:
+
 Creating Addons
-###############
+===============
 
 Because customized addons are not part of the standard API, but an extension of the API, the 
 instructions for creating addons can be found in 

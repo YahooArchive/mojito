@@ -255,9 +255,7 @@ To set up and run ``using_parameters``:
 
       YUI.add('QueryMojit', function(Y, NAME) {
         Y.namespace('mojito.controllers')[NAME] = {   
-          init: function(config) {
-            this.config = config;
-          },
+
           index: function(actionContext) {
           actionContext.done('Mojito is working.');
           },

@@ -63,9 +63,7 @@ the image ``alt`` attribute is passed to the ``index`` template.
 
    YUI.add('scroll', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = {   
-       init: function(config) {
-         this.config = config;
-       },
+
        index: function(ac) {
          // Populate Template
          ac.done({
@@ -209,9 +207,7 @@ To set up and run ``scroll_views``:
 
       YUI.add('scroll', function(Y, NAME) {
         Y.namespace('mojito.controllers')[NAME] = {   
-          init: function(config) {
-            this.config = config;
-          },
+
           index: function(ac) {
             // Populate Template
             ac.done({

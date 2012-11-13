@@ -184,14 +184,11 @@ To create and run ``simple_assets``:
         * @constructor
         */
         Y.namespace('mojito.controllers')[NAME] = {     
-          init: function(config) {
-          this.config = config;
-        },
-        /**
-        * Method corresponding to the 'index' action.
-        * @param ac {Object} The action context that
-        * provides access to the Mojito API.
-        */
+          /**
+          * Method corresponding to the 'index' action.
+          * @param ac {Object} The action context that
+          * provides access to the Mojito API.
+          */
           index: function(ac) {
             var data = {
               title: "Simple Assets",

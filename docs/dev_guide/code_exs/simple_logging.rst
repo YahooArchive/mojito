@@ -148,9 +148,7 @@ To set up and run ``simple_logging``:
 
       YUI.add('log', function(Y, NAME) {
         Y.namespace('mojito.controllers')[NAME] = {   
-          init: function(config) {
-            this.config = config;
-          },
+
           index: function(ac) {
             Y.log('[CONTROLLER]: entering into controller index (...)',"info");
             var today = new Date(),

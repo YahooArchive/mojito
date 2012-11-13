@@ -80,9 +80,7 @@ include the `Intl addon <../../api/classes/Intl.common.html>`_ by adding the str
 
    YUI.add('i18n', function(Y, NAME) {/
      Y.namespace('mojito.controllers')[NAME] = {   
-       init: function(config) {
-         this.config = config;
-       },
+
        index: function(ac) {
          // Default.
          ac.done(
@@ -187,9 +185,7 @@ To set up and run ``locale_i18n``:
 
       YUI.add('i18n', function(Y, NAME) {
         Y.namespace('mojito.controllers')[NAME] = {   
-          init: function(config) {
-            this.config = config;
-          },
+
           index: function(ac) {
             // Default.
             ac.done(

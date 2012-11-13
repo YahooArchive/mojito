@@ -94,9 +94,7 @@ The appropriate CSS file is dynamically attached to the template with ``ac.asset
 
    YUI.add('device', function(Y, NAME){
      Y.namespace('mojito.controllers')[NAME] = {   
-       init: function(config) {
-        this.config = config;
-       },
+
        index: function(ac) {
          var device = ac.context.device, css = '/static/device/assets/simple';
          if (device === 'iphone') {
@@ -233,9 +231,7 @@ To create and run ``device_assets``:
 
       YUI.add('device', function(Y, NAME){
         Y.namespace('mojito.controllers')[NAME] = {   
-          init: function(config) {
-           this.config = config;
-          },
+
           index: function(ac) {
             var device = ac.context.device, css = '/static/device/assets/simple';
             if (device === 'iphone') {

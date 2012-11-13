@@ -116,9 +116,6 @@ can execute the ``index`` functions of the child mojits by calling the ``done`` 
 
    YUI.add('MasterMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = {   
-       init: function(config) {
-         this.config = config;
-       },
        "index": function(actionContext) {
          actionContext.composite.done();
        }
@@ -258,9 +255,6 @@ binder, which we'll look at next.
 
    YUI.add('ReceiverMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = {   
-       init: function(config) {
-         this.config = config;
-       },
        index: function(actionContext) {
          actionContext.done({title: 'This is the receiver mojit'});
        },
@@ -395,9 +389,6 @@ To set up and run ``inter-mojit``:
 
       YUI.add('MasterMojit', function(Y, NAME) {
         Y.namespace('mojito.controllers')[NAME] = {   
-          init: function(spec) {
-            this.spec=spec;
-          },
           "index": function(actionContext) {
             actionContext.composite.done();
           }
@@ -462,9 +453,6 @@ To set up and run ``inter-mojit``:
 
       YUI.add('SenderMojit', function(Y, NAME) {
         Y.namespace('mojito.controllers')[NAME] = {   
-          init: function(config) {
-            this.config = config;
-          },
           index: function(actionContext) {
             actionContext.done({title: 'List of images for testing'});
           }
@@ -525,9 +513,6 @@ To set up and run ``inter-mojit``:
 
       YUI.add('ReceiverMojit', function(Y, NAME) {
         Y.namespace('mojito.controllers')[NAME] = {   
-          init: function(spec) {
-            this.spec = spec;
-          },
           "index": function(actionContext) {
             actionContext.done({title: 'This is the receiver mojit'});
           },

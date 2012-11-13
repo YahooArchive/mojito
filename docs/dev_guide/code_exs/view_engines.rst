@@ -335,9 +335,6 @@ To set up and run ``adding_view_engines``:
 
         Y.namespace('mojito.controllers')[NAME] = {   
   
-          init: function(config) {
-            this.config = config;
-          },
           default_ve: function(ac) {
             ac.done({
               "title": "Handlebars at work!",
