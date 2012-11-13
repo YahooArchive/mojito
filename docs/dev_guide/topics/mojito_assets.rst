@@ -7,7 +7,6 @@ Assets
 Introduction
 ============
 
-
 Assets are resources that are required on the clients. These resources are 
 primarily CSS but can also be JavaScript that is ancillary to and not a 
 core component of the Mojito application. This topic discusses the following:
@@ -23,7 +22,6 @@ To see code examples that demonstrate how to use assets, see
 
 Location of Asset Files
 =======================
-
 
 Assets can be used at the application level and the mojit level. For 
 application-level assets,  CSS and JavaScript files are placed in 
@@ -81,7 +79,6 @@ fields.
 Examples
 --------
 
-
 In the ``application.json`` below, the ``assets`` object specifies the paths to 
 the CSS and JavaScript assets:
 
@@ -107,6 +104,7 @@ the CSS and JavaScript assets:
      }
    ]
 
+<<<<<<< HEAD
 
 This ``application.json`` configures Mojito to use the ``HTMLFrameMojit`` 
 that automatically inserts a ``<link>`` tag pointing to ``index.css`` into 
@@ -205,9 +203,6 @@ the ``<meta>`` tag and the ``addCss`` method adds the device-specific CSS.
 
    YUI.add('device', function(Y, NAME){
      Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(config) {
-         this.config = config;
-       },
        index: function(ac) {
          var device = ac.context.device, css = "./simple";
          if (device === 'iphone') {
@@ -268,9 +263,6 @@ array as seen in the example mojit controller below.
 
    YUI.add('textProcessor', function(Y, NAME){
      Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(config) {
-         this.config = config;
-       },
        index: function(ac) {
          // Use the 'substitute' module
          var name = Y.substitute("Welcome {name}!", {"name":ac.getFromMerged("name")});

@@ -84,9 +84,7 @@ the path defined in ``routes.json``.
 
    YUI.add('GenURLMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = {   
-       init: function(config) {
-         this.config = config;
-       },
+
        index: function(actionContext) {
          var url = actionContext.url.make('mymojit', 'contactus', '');
          actionContext.done({contactus_url: url});
@@ -156,9 +154,7 @@ To set up and run ``generating_urls``:
 
       YUI.add('GenURLMojit', function(Y, NAME) {
         Y.namespace('mojito.controllers')[NAME] = {   
-          init: function(config) {
-            this.config = config;
-          },
+
           index: function(actionContext) {
             var url = actionContext.url.make('mymojit', 'contactus', '');
             actionContext.done({contactus_url: url});

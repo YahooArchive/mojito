@@ -2,12 +2,18 @@
 Getting Input and Cookie Data
 =============================
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> docs_remove_init_controllers
 .. _mojito_data-intro:
 
 Introduction
 ============
+<<<<<<< HEAD
 
+=======
+>>>>>>> docs_remove_init_controllers
 
 Mojito provides addons for accessing data from query string and routing 
 parameters, cookies, and the POST request body.
@@ -22,7 +28,10 @@ To see examples using these addons to get data, see
 `Using Query Parameters <../code_exs/query_params.html>`_ and 
 `Using Cookies <../code_exs/cookies.html>`_.
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> docs_remove_init_controllers
 .. _mojito_data-params:
 
 Getting Data from Parameters
@@ -52,7 +61,10 @@ addon would create the following object:
      bar: 2
    }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> docs_remove_init_controllers
 .. _data_params-get_single:
 
 Single Parameter
@@ -68,9 +80,6 @@ parameter is retrieved:
 
    YUI.add('ParamsMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(config) {
-         this.config = config;
-       },
        getNameParam: function(actionContext) {
          var nameParam = actionContext.params.getFromUrl('name');
          actionContext.done(
@@ -97,9 +106,6 @@ the ``qs_params`` array, which ``ac.done`` makes available in the template.
 
    YUI.add('ParamsMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(config) {
-         this.config = config;
-       },
        ...
        getAllParams: function(actionContext) {
          var qs_params = [];
@@ -115,7 +121,10 @@ the ``qs_params`` array, which ``ac.done`` makes available in the template.
      }
    }, '0.0.1', {requires: ['mojito-params-addon']});
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> docs_remove_init_controllers
 .. _mojito_data-params_post:
 
 POST
@@ -142,9 +151,6 @@ and then uses the ``done`` method to make it accessible to the template.
 
    YUI.add('ParamsMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(config) {
-         this.config = config;
-       },
        getPostName: function(actionContext) {
          var postName = actionContext.params.getFromBody('name');
          actionContext.done(
@@ -155,7 +161,10 @@ and then uses the ``done`` method to make it accessible to the template.
      }
    }, '0.0.1', {requires: ['mojito-params-addon']});
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> docs_remove_init_controllers
 .. _data_params-post_all:
 
 All
@@ -172,9 +181,6 @@ template.
 
    YUI.add('ParamsMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(config) {
-         this.config = config;
-       },
        ...
        getAllParams: function(actionContext) {
          var post_params = [];
@@ -191,7 +197,10 @@ template.
      }
    }, '0.0.1', {requires: ['mojito-params-addon']});
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> docs_remove_init_controllers
 .. _mojito_data-routing:
 
 Routing
@@ -238,13 +247,19 @@ a coupon to a user posting information.
      }
    ]
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> docs_remove_init_controllers
 .. _data_routing-get:
 
 Getting Routing Parameters
 --------------------------
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> docs_remove_init_controllers
 The Params addon has the method ``getFromRoutes`` that allows you to specify 
 a single parameter or get all of the routing parameters. You can also use 
 the alias ``route`` to get routing parameters.
@@ -264,9 +279,6 @@ to determine whether the user gets a coupon.
 
    YUI.add('CouponMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(config) {
-         this.config = config;
-       },
        index: function(actionContext) {
          var sendCoupon = actionContext.params.getFromRoute('coupon');
          var name = actionContext.params.getFromBody("name");
@@ -288,9 +300,15 @@ to determine whether the user gets a coupon.
 
 .. _data_routing-get_all:
 
+
+.. _data_routing-get_all:
+
 All
 ###
+<<<<<<< HEAD
 
+=======
+>>>>>>> docs_remove_init_controllers
 
 To get all of the routing parameters, call ``getFromRoute`` or ``route`` without 
 any arguments.
@@ -302,9 +320,6 @@ a URL.
 
    YUI.add('LinkMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(config) {
-         this.config = config;
-       },
        index: function(actionContext) {
          var routeParams = actionContext.params.getFromRoute();
          var submitUrl = actionContext.url.make("myMojit", 'submit', routeParams);
@@ -316,7 +331,10 @@ a URL.
      }
    }, '0.0.1', {requires: ['mojito-params-addon', 'mojito-url-addon']});
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> docs_remove_init_controllers
 .. _mojito_data-get_all:
 
 Getting All Parameters
@@ -334,7 +352,10 @@ Thus, the parameter types are given the following priority:
 #. GET parameters
 #. POST parameters
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> docs_remove_init_controllers
 For example, if each parameter type has a ``foo`` key, the ``foo`` routing 
 parameter will override both the GET and POST ``foo`` parameters.
 
@@ -353,9 +374,6 @@ In the example controller below, the ``name`` parameter is obtained using
 
    YUI.add('MergedParamsMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(config) {
-         this.config = config;
-       },
        getPostName: function(actionContext) {
          var mergedName = actionContext.params.getFromMerged('name');
          actionContext.done(
@@ -370,6 +388,8 @@ In the example controller below, the ``name`` parameter is obtained using
 
 .. _mojito_data-get_all:
 
+.. _mojito_data-get_all:
+
 All
 ---
 
@@ -380,9 +400,6 @@ To get all of the GET, POST, and routing parameters, call ``getFromMerged`` or
 
    YUI.add('MergedParamsMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(config) {
-         this.config = config;
-       },
        ...
        getAllParams: function(actionContext) {
          var all_params = [];
@@ -400,6 +417,9 @@ To get all of the GET, POST, and routing parameters, call ``getFromMerged`` or
    }, '0.0.1', {requires: ['mojito-params-addon']});
 
 .. _data-cookies:
+
+
+.. _mojito_data-cookie:
 
 
 .. _mojito_data-cookie:
@@ -427,16 +447,14 @@ template.
 
    YUI.add('CookieMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(config) {
-         this.config = config;
-     },
-     index: function(actionContext) {
-       var user = actionContext.cookie.get('user');
-        actionContext.done(
-           {
-             user: user && users[user] ? users[user] : ""
-           }
-         );
+       index: function(actionContext) {
+         var user = actionContext.cookie.get('user');
+           actionContext.done(
+             {
+               user: user && users[user] ? users[user] : ""
+             }
+           );
+         }
        }
      }
    }, '0.0.1', {requires: ['mojito-cookies-addon']});
@@ -446,7 +464,6 @@ template.
 Writing Data to Cookies
 -----------------------
 
-
 The method ``cookie.set(name, value)`` is used to set a cookie with the a 
 given name and value.  The following example controller sets a cookie 
 with the name ``'user'`` if one does not exist.
@@ -455,20 +472,18 @@ with the name ``'user'`` if one does not exist.
 
    YUI.add('CookieMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(config) {
-         this.config = config;
-     },
-     index: function(actionContext) {
-       var user = actionContext.cookie.get('user');
-        if(!user){
+       index: function(actionContext) {
+         var user = actionContext.cookie.get('user');
+         if(!user){
            actionContext.cookie.set('user',(new Date).getTime());
-        }
-        actionContext.done(
+         }
+         actionContext.done(
            {
              user: user
            }
          );
-       }
+        }
      }
    }, '0.0.1', {requires: ['mojito-cookies-addon']});
+
 

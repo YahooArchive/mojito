@@ -62,7 +62,6 @@ Mojit-level addons should be placed in the following directory:
 
 ``{mojit_dir}/addons/ac/``
 
-
 .. _extending_addons-writing:
 
 Writing the Addon
@@ -230,7 +229,6 @@ application by prefixing it with "./".
      }
    ]
 
-
 .. _extending_middleware-location:
 
 Location of Middleware
@@ -271,7 +269,6 @@ the ``require`` method for Node.js modules.
 
 YUI Library
 -----------
-
 YUI libraries can be made available at the application or the mojit level. 
 Each file can only have one ``YUI.add`` statement. Other components, such 
 as controllers, models, etc., needing the library should specify the YUI 
@@ -281,7 +278,6 @@ module name in the ``requires`` array.
 
 File Naming Convention
 ######################
-
 
 The file name of a YUI module should have the following syntax where 
 ``{yui_mod_name}`` is a unique YUI module name defined by the user and 
@@ -301,7 +297,6 @@ Application-level YUI modules should be placed in the following directory:
 Mojit-level YUI modules should be placed in the following directory:
 
 ``{mojit_dir}/autoload/``
-
 
 .. _libraries_yui-create:
 
@@ -383,13 +378,10 @@ is created and saved in the ``init`` function. With the saved instance, the
 
    YUI.add('HelloMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(config) {
-         this.config = config;
-         this.uid = new Y.mojito.UID();
-       },
        index: function(ac) {
          var user_name = ac.params.getFromMerged("name") || "User";
-         this.uid.log(user_name);
+         var uid = new Y.mojito.UID();
+         uid.log(user_name);
          ac.done('Hello World!');
        }
      };
@@ -506,8 +498,6 @@ the file name of the view engine addon.
 
 .. _extending_ve-loc:
 
-.. _view_engines-loc:
-
 File Locations
 --------------
 
@@ -520,13 +510,10 @@ Application-Level View Engine Addons
 
 .. _ve_loc-mojit_level:
 
-.. _view_engines_loc-mojit-level:
-
 Mojit-Level View Engine Addons
 ##############################
 
 ``{mojit_dir}/addons/view-engines``
-
 
 .. _ve_loc-rendering:
 
@@ -543,7 +530,6 @@ directory as shown below:
 ``{app_dir}/libs/{rendering_engine}``
 
 ``{mojit_dir}/libs/{rendering_engine}}``
-
 
 .. note:: If you are using mojit-level view engine addons, the rendering engine 
           should be at the mojit level as well, such as 
@@ -567,7 +553,6 @@ The view engine addon must have the following:
     
       }, '0.1.0', {requires: []});
 
-
 - an object that is assigned to ``Y.mojito.addons.viewEngines.{view_engine_name}`` 
   as seen below:
    
@@ -581,7 +566,6 @@ The view engine addon must have the following:
       ...
       Y.namespace('mojito.addons.viewEngines').ejs = EjsAdapter;
       
-
 - a prototype of the object has the following two methods ``render`` and ``compiler`` 
   as shown below:
 
@@ -640,6 +624,7 @@ Parameters
 - ``more`` (Boolean) - if ``true``, the addon should call the method 
   ``adapter.flush``, and if ``false``, call the method ``adapter.done``.
 
+
 .. _ve_render-return: 
 Return
 ******
@@ -666,7 +651,6 @@ Signature
 
 ``compile(tmpl)``
 
-
 .. _ve_compiler-params: 
 
 Parameters
@@ -681,7 +665,6 @@ Return
 ******
 
 ``String`` - compiled template
-
 
 .. _ve_engine_view: 
 
@@ -732,7 +715,6 @@ installed in the ``node_modules`` directory as seen below:
        ├── package.json
        ├── support
        └── test
-
 
 .. _ve_engine_ex-ejs_addon: 
 

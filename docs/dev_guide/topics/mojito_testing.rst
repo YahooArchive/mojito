@@ -208,9 +208,6 @@ The ``controller.server.js`` below requires the ``Foo`` module.
 
    YUI.add('Foo', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(mojitSpec) {
-         this.spec = mojitSpec;
-       },
        index: function(ac) {
          ac.done();
        }

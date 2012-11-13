@@ -2,7 +2,6 @@
 Developer Topics
 ================
 
-
 The following sections provide conceptual information and instruction for some 
 of the core components of the Mojito framework. Although the developer topics 
 are complemented by code snippets, for working code examples, see 

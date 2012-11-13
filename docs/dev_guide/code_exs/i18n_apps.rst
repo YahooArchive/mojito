@@ -89,9 +89,7 @@ language support. You also need to include the
 
    YUI.add('i18n', function(Y, NAME) {/
      Y.namespace('mojito.controllers')[NAME] = {   
-       init: function(config) {
-         this.config = config;
-       },
+
        index: function(ac) {
          // Default.
          ac.done(
@@ -200,9 +198,7 @@ To set up and run ``locale_i18n``:
 
       YUI.add('i18n', function(Y, NAME) {
         Y.namespace('mojito.controllers')[NAME] = {   
-          init: function(config) {
-            this.config = config;
-          },
+
           index: function(ac) {
             // Default.
             ac.done(

@@ -32,7 +32,6 @@ To create a Mojito application that uses the ``HTMLFrameMojit``, see the code ex
 `Using the HTML Frame Mojit <../code_exs/htmlframe_view.html>`_ 
 and `Attaching Assets with HTMLFrameMojit <../code_exs/framed_assets.html>`_.
 
-
 .. _fw_mojits_htmlframe-config:
 
 Configuration
@@ -154,6 +153,8 @@ either case, the binder is able to transparently invoke the controller.
 
 .. _htmlframemojit-assets:
 
+.. _fw_mojits_htmlframe-add:
+
 Adding Assets with HTMLFrameMojit
 ---------------------------------
 
@@ -225,6 +226,11 @@ the ``LazyLoadMoit`` as a proxy to the client. From the client, ``LazyLoadMojit`
 then request Mojito to load the proxied mojit. This allows your Mojito application to load 
 the page quickly and then lazily load parts of the page.
 
+.. _mojito_fw_mojits-lazyload:
+
+LazyLoadMojit
+=============
+
 
 .. _fw_mojits_lazyload-how:
 
@@ -237,6 +243,7 @@ execute the code of the proxied (original) mojit. The output from the executed m
 then returned to the binder of the ``LazyLoadMojit``, which attaches the output to the 
 empty DOM node. The binder of ``LazyLoadMojit`` destroys itself, leaving the DOM intact 
 with the new content.
+
 
 .. _fw_mojits_lazyload-config:
 
