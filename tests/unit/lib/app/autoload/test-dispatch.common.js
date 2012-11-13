@@ -66,7 +66,6 @@ YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
 
         'test rpc with tunnel': function () {
             var tunnel,
-                errorTriggered,
                 tunnelCommand;
 
             tunnel = {
@@ -78,10 +77,9 @@ YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
             dispatcher.init(store, tunnel);
             dispatcher.rpc(command, {
                 error: function () {
-                    errorTriggered = true;
+                    A.fail('tunnel should be called instead');
                 }
             });
-            A.isFalse(errorTriggered, 'if tunnel is set, it should not call adapter.error');
             A.areSame(command, tunnelCommand, 'delegate command to tunnel');
         },
 
@@ -103,7 +101,6 @@ YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
 
         'test dispatch with command.rpc=1': function () {
             var tunnel,
-                errorTriggered,
                 tunnelCommand;
 
             tunnel = {
@@ -116,16 +113,14 @@ YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
             dispatcher.init(store, tunnel);
             dispatcher.rpc(command, {
                 error: function () {
-                    errorTriggered = true;
+                    A.fail('tunnel should be called instead');
                 }
             });
-            A.isFalse(errorTriggered, 'tunnel should be called');
             A.areSame(command, tunnelCommand, 'delegate command to tunnel');
         },
 
         'test dispatch with invalid mojit': function () {
             var tunnel,
-                errorTriggered,
                 tunnelCommand;
 
             tunnel = {
@@ -142,16 +137,14 @@ YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
             };
             dispatcher.dispatch(command, {
                 error: function () {
-                    errorTriggered = true;
+                    A.fail('tunnel should be called instead');
                 }
             });
-            A.isFalse(errorTriggered, 'tunnel should be called');
             A.areSame(command, tunnelCommand, 'delegate command to tunnel');
         },
 
         'test dispatch with valid controller': function () {
             var tunnel,
-                errorTriggered,
                 useCommand,
                 acCommand,
                 _createActionContext = dispatcher._createActionContext,
@@ -163,30 +156,31 @@ YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
             // should be tried.
             store.expandInstance = function (instance, context, callback) {
                 instance.controller = 'foo';
-                Y.mojito.controllers[instance.controller] = {};
+                Y.mojito.controllers[instance.controller] = {
+                    fakeController: true
+                };
                 callback(null, instance);
             };
             dispatcher._useController = function (c) {
-                useCommand = c;
+                A.fail('_createActionContext should be called instead');
             };
             dispatcher._createActionContext = function (c) {
                 acCommand = c;
             };
             dispatcher.dispatch(command, {
                 error: function () {
-                    errorTriggered = true;
+                    A.fail('_createActionContext should be called instead');
                 }
             });
-            A.isFalse(errorTriggered, '_createActionContext should be called');
             A.areSame(command, acCommand, 'AC should be created based on the original command');
 
             // restoring references
             dispatcher._createActionContext = _createActionContext;
+            dispatcher._useController = _useController;
         },
 
         'test dispatch with invalid controller': function () {
             var tunnel,
-                errorTriggered,
                 useCommand,
                 acCommand,
                 _createActionContext = dispatcher._createActionContext,
@@ -205,14 +199,13 @@ YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
                 useCommand = c;
             };
             dispatcher._createActionContext = function (c) {
-                acCommand = c;
+                A.fail('_createActionContext should be called instead');
             };
             dispatcher.dispatch(command, {
                 error: function () {
-                    errorTriggered = true;
+                    A.fail('_useController should be called instead');
                 }
             });
-            A.isFalse(errorTriggered, '_useController should be called');
             A.areSame(command, useCommand, '_useController should be called based on the original command');
 
             // restoring references
