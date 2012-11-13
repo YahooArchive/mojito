@@ -689,7 +689,7 @@ Here are some other example template names with descriptions:
           ``{rendering_engine}`` component of the template name must change. An error will 
           occur if the file names of different views are the same except the 
           ``{rendering_engine}``. For example, having the two templates ``index.hb.html``
-         and ``index.ejs.html`` (``ejs`` could be 
+          and ``index.ejs.html`` (``ejs`` could be 
          `Embedded JavaScript (EJS) <http://embeddedjs.com/>`_) would 
           cause an error.
 
@@ -734,8 +734,8 @@ iterators, and access to object properties through the dot operator
 Handlebars expressions as an introduction. See the
 `Handlebars documentation <http://handlebarsjs.com/>`_ for more information examples.
 
-One of the things that we mentioned already is block helpers, which help you iterate through arrays. 
-You could use the block helper ``#each`` shown below to iterate through an
+One of the things that we mentioned already is block helpers, which help you iterate through 
+arrays. You could use the block helper ``#each`` shown below to iterate through an
 array of strings:
 
 .. code-block:: html

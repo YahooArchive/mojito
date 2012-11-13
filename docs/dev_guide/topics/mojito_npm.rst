@@ -2,6 +2,8 @@
 Mojito and npm Packaging
 ========================
 
+.. _mojito_package-overview:
+
 Overview
 ========
 
@@ -24,6 +26,7 @@ into two sections to meet the needs of the following two audiences:
 - :ref:`developers using shared mojits <using_shared_mojits>`
 - :ref:`authors creating npm modules that contain shared Mojito resources <author_npm_mod_shared_mojito_resource>`
 
+.. _package_overview-resource:
 
 Mojito Resources
 ----------------
@@ -66,9 +69,11 @@ may not need to install any npm modules.
     
     ``{app_dir}$ npm install``  
 #. When Mojito starts, your application will have access to the installed npm modules.    
+
+.. _process_spec_install_dependencies_ex:
     
 Example package.json
-````````````````````
+####################
 
 The dependencies include Mojito, the ``async`` module, and the shared mojit ``form_mojit`` 
 (example) that will be installed in ``node_modules`` when you run ``npm install`` from 
@@ -153,7 +158,7 @@ properties of the ``mojito`` object.
 .. _moj_object:
 
 mojito object
-`````````````
+#############
 
 The following table describes the properties of the ``mojito`` object that
 specifies the resource type and location.
@@ -182,12 +187,10 @@ specifies the resource type and location.
 +--------------+----------------+-----------+----------------------------+
 
                                    
-
-    
 .. _res_types:
 
 Mojito Package Types
-````````````````````
+####################
 
 Currently, Mojito packages can be of type ``mojit`` or ``bundle``. See the sections below 
 for more details. 
@@ -196,7 +199,7 @@ for more details.
 .. _mojit_type:
 
 mojit
-.....
+*****
 
 The ``mojit`` type specifies that the npm module contains a mojit. The resources in the 
 mojit (controller, views, etc.) will be looked for at the location specified by the 
@@ -207,7 +210,7 @@ for in the following location, where ``{name}`` is the name of the npm package:
 .. _bundle_type:
 
 bundle
-......
+******
 
 The ``bundle`` type specifies that the npm module contains several resources. 
 
@@ -242,6 +245,8 @@ the ``mojito`` object.
 |                    | ``{location}/autoload/``              |                                  |
 +--------------------+---------------------------------------+----------------------------------+
 
+
+.. _resource_def_examples:
 
 Examples
 --------

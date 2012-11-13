@@ -13,7 +13,6 @@ configuration files. When you start a Mojito application, Mojito can find, track
 resolve versions of files in your application, such as mojits, configuration files, 
 binders, views, assets, addons, etc., because of the |RS|.
 
-
 .. _intro-who:
 
 Intended Audience
@@ -22,6 +21,8 @@ Intended Audience
 Only advanced Mojito application developers needing finer grain control over the management 
 of resources or to extend the functionality of the resource store should read this 
 documentation.
+
+.. _intro-prereqs:
 
 Prerequisites
 -------------
@@ -38,6 +39,8 @@ before using the |RS|:
 How Can the Resource Store Help Developers?
 -------------------------------------------
 
+.. _intro_how-reflection:
+
 Reflection
 ##########
 
@@ -46,7 +49,7 @@ required) to query for details about an application. For example, when you run t
 commands ``mojito compile`` and ``mojito gv``, the |RS| API methods ``getResources`` and 
 ``getResourceVersions`` are called to get information about your application.
 
-
+.. _intro_how-define_types:
 
 Define/Register New Resource Types
 ##################################
@@ -58,6 +61,8 @@ implemented as an extension of `Y.Base <http://yuilibrary.com/yui/docs/base/>`_,
 
 For example, you could write your own |RS| addon so that the Mojito command-line tool 
 will register files and resources for your application. 
+
+.. _intro_how-extend:
 
 Extend/Modify Functionality of the |RS|
 #######################################
@@ -165,7 +170,6 @@ types. Developers can also create their own types of resources to fit the need o
 applications. 
 
 
-
 .. _rs-metadata:
 
 Resource Metadata
@@ -252,7 +256,6 @@ Metadata Object
    represented. For example, the affinity of views is ``common`` (because views are used 
    on both client and server); however, the affinity for controllers comes 
    from the file name, so there is no default.
-
 
 
 .. _src_obj:
@@ -417,6 +420,8 @@ Only one selector can be used in each configuration object identified by the
 selector found in the resource file names.  So, for example, the template 
 ``views/index.iphone.hb.html`` has the selector ``iphone``.
 
+.. _sel_prop-ex:
+
 Example
 #######
 
@@ -445,7 +450,6 @@ and **not** ``index.iphone.hb.html``.
      }
    ]  
     
-
 
 
 .. _metatdata-versions:
@@ -506,7 +510,7 @@ Example
    } 
      
 
-.. _rs-how:
+.. _rs-how_work:
 
 How Does the Resource Store Work?
 =================================
@@ -514,6 +518,7 @@ How Does the Resource Store Work?
 Understanding the |RS| will allow you to debug your 
 application and write |RS| addons to customize how it works.
 
+.. _how_work-overview:
 
 Overview
 --------
@@ -778,8 +783,10 @@ Key Methods
     This method is called during runtime as Mojito creates the configuration for the 
     client-side Mojito.
 
+.. _key_methods-access:
+
 Accessing the Resource Store
-````````````````````````````
+****************************
 
 To access the |RS|, you call ``this.get('host')``. The method returns the
 |RS|.
@@ -792,14 +799,14 @@ Key Events
 .. _key_events-mojitResourcesResolved:
 
 mojitResourcesResolved
-``````````````````````
+**********************
 
 This event is called when the resources in a mojit are resolved.
 
 .. _key_events-getMojitTypeDetails:
 
 getMojitTypeDetails
-```````````````````
+*******************
 
 This event is called during runtime as Mojito creates an *instance* used to dispatch a 
 mojit.
@@ -1053,7 +1060,7 @@ selector
 .. _selector-desc:
 
 Description
-```````````
+***********
 
 If you wish to use a different algorithm for to determine the selectors to use,
 you can implement your own version of this |RS| addon in the
@@ -1063,7 +1070,7 @@ you can implement your own version of this |RS| addon in the
 .. _selector-reqs:
 
 Requirements
-````````````
+************
 
 Because the ``selector`` addon is used directly by the the resource store, all 
 implementations need to provide the following method:
@@ -1073,7 +1080,7 @@ implementations need to provide the following method:
 .. _selector-methods:
 
 Methods
-```````
+*******
 
 .. js:function:: getPOSLFromContext(ctx)
 
@@ -1096,7 +1103,7 @@ url
 .. _url-desc:
 
 Description
-```````````
+***********
 
 The ``url`` addon calculates and manages the static handler URLs for resources.
 The addon is not used by resource store core, but used by the static handler middleware.
@@ -1113,7 +1120,7 @@ The static handler URL can be a rollup URL.
 .. _url-reqs:
 
 Requirements
-````````````
+************
 
 Your addon is required to do the following:
 

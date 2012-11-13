@@ -194,10 +194,10 @@ Example
 
 .. _dyn_defined_mojits_exs-controllers:
 
-
-
 Controllers
 ###########
+
+.. _dyn_controllers-parentmojit:
 
 ParentMojit
 ***********
@@ -228,7 +228,7 @@ ParentMojit
         };
       }, '0.0.1', {requires: ['mojito', 'mojito-composite-addon']});
 
-
+.. _dyn_controllers-dynchild:
 
 DynamicChildMojit
 *****************
@@ -250,9 +250,23 @@ DynamicChildMojit
    }, '0.0.1', {requires: ['mojito', 'mojito-params-addon']});
 
 
+.. _dyn_defined_mojits_exs-templates:
 
 Templates
 #########
+
+.. _dyn_templates-parentmojit:
+
+ParentMojit
+***********
+
+.. code-block:: html
+
+   <div id="{{mojit_view_id}}">
+     {{{dynamic_child}}}
+   </div>
+
+.. _dyn_templates-dynchild:
 
 DynamicChildMojit
 *****************
@@ -264,15 +278,7 @@ DynamicChildMojit
    </div>
 
 
-ParentMojit
-***********
-
-.. code-block:: html
-
-   <div id="{{mojit_view_id}}">
-     {{{dynamic_child}}}
-   </div>
-
+.. _dyn_defined_mojits_exs-rendered_views:
 
 Rendered Views
 ##############
@@ -289,6 +295,7 @@ Rendered Views
   
       I was called directly and have no parent.  
 
+.. _dyn_defined_mojits-dispatch:
 
 Using ac._dispatch
 ==================
@@ -299,6 +306,7 @@ how the child mojit instance runs. The content from the child mojit's controller
 passed to its template or the child mojit's rendered template is passed to the parent 
 mojit. 
 
+.. _dyn_dispatch-config:
 
 Configuring a Child Instance
 ----------------------------
@@ -313,6 +321,8 @@ Although you can also pass the ``ActionContext`` object as the ``adapter`` to us
 default ``flush``, ``done``, and ``error`` functions, it is not recommended because the 
 ``ActionContext`` object contains both parent and child mojit metadata, which could cause 
 unexpected results.
+
+.. _dyn_dispatch_config-command:
 
 Command Object
 ##############
@@ -335,7 +345,9 @@ action to execute are specified. The new mojit instance is also passed parameter
 
      }
    };
-   
+
+.. _dyn_dispatch-adapter:   
+
 Adapter Object
 ##############
 
@@ -354,7 +366,8 @@ See `Adapter Functions`_ for more information.
       },
       error: function(err){ Y.log(err); }
    }; 
-   
+
+.. _dyn_dispatch-adapter_funcs:   
 
 Adapter Functions
 #################
@@ -365,6 +378,7 @@ object are actually implemented by the Mojito framework. For example, before
 `output-adapter.common.js <https://github.com/yahoo/mojito/blob/develop/lib/app/addons/ac/output-adapter.common.js>`_,
 which collects metadata and configuration. 
 
+.. _dyn_dispatch-controller:
 
 Controller
 ----------
@@ -402,6 +416,7 @@ instance and passes custom versions of ``done``, ``flush``, and ``error``.
     };
   }, '0.0.1', {requires: ['mojito']});
 
+.. _dyn_dispatch-templates:
 
 Templates
 ---------
@@ -413,8 +428,13 @@ execute and its template will be rendered. If you pass a custom ``adapter`` obje
 defining ``done``, you can call ``ac.done`` inside your defined ``done`` method to pass 
 data to the parent mojit and render its template.
 
+
+.. _dyn_dispatch_templates-exs:
+
 Examples
 ########
+
+.. _dyn_dispatch-templates_ex_one:
 
 Example One
 ***********
@@ -423,6 +443,9 @@ In this example, the mojit ``CreatorMojit`` dynamically creates the child mojit 
 of type ``SpawnedMojit``. The child mojit instance gets data from its parent mojit and 
 then renders its template. The rendered template is returned to the parent mojit, which 
 inserts the content into its own template.
+
+
+.. _dyn_dispatch-templates_exs-app_config:
 
 Application Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -440,9 +463,12 @@ Application Configuration
      }
    ]
 
+.. _dyn_dispatch-templates_exs-controllers:
 
 Controllers  
 ^^^^^^^^^^^
+
+.. _templates_exs_controllers-creatormojit:
 
 CreatorMojit
 ````````````
@@ -488,6 +514,7 @@ CreatorMojit
      };
    }, '0.0.1', {requires: ['mojito']});
 
+.. _templates_exs_controllers-spawnedmojit:
 
 SpawnedMojit
 ````````````
@@ -508,8 +535,12 @@ SpawnedMojit
    }, '0.0.1', {requires: ['mojito']});
 
 
+.. _dyn_dispatch-templates_exs-templates:
+
 Templates
 ^^^^^^^^^ 
+
+.. _templates_exs-templates_spawnedmojit:
 
 SpawnedMojit
 ````````````
@@ -525,6 +556,7 @@ SpawnedMojit
      </ul>
    </div>
 
+.. _templates_exs-templates_creatormojit:
 
 CreatorMojit
 ````````````
@@ -536,7 +568,7 @@ CreatorMojit
      {{{child_slot}}}
    </div>
 
-
+.. _dyn_dispatch-templates_ex_two:
 
 Example Two
 ***********
@@ -545,6 +577,7 @@ In this example, the binder invokes its controller to dynamically define an inst
 another mojit. The dynamically defined mojit instance renders its view, which is then 
 sent to the binder to be attached to the DOM.
 
+.. _templates_ex_two-app_config:
 
 Application Configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -586,9 +619,12 @@ Application Configuration
      }  
    ]
 
+.. _templates_ex_two-controllers:
 
 Controllers  
 ^^^^^^^^^^^
+
+.. _templates_ex_two-controllers_parentmojit:
 
 ParentMojit
 ```````````
@@ -615,6 +651,8 @@ ParentMojit
    }, '0.0.1', {requires: ['mojito', 'mojito-assets-addon']});
 
 
+.. _templates_ex_two-controllers_childmojit:
+
 ChildMojit
 ``````````
 
@@ -630,9 +668,12 @@ ChildMojit
      };
    }, '0.0.1', {requires: ['mojito', 'mojito-assets-addon']});
    
+.. _templates_ex_two-binders:
    
 Binders
 ^^^^^^^
+
+.. _templates_ex_two-binders_parentmojit:
 
 ParentMojit
 ```````````
@@ -660,6 +701,7 @@ ParentMojit
      };
    }, '0.0.1', {requires: ['mojito-client']});
 
+.. _templates_ex_two-binders_childmojit:
 
 ChildMojit
 ``````````
@@ -682,9 +724,13 @@ ChildMojit
      };
    }, '0.0.1', {requires: ['mojito-client']});
    
+
+.. _templates_ex_two-templates:
    
 Templates
 ^^^^^^^^^
+
+.. _templates_ex_two-templates_parentmojit:
 
 ParentMojit
 ```````````
@@ -698,6 +744,7 @@ ParentMojit
      <div id="output"></div>
    </div>
 
+.. _templates_ex_two-templates_childmojit:
 
 ChildMojit
 ``````````
@@ -709,6 +756,7 @@ ChildMojit
      {{random_content}}
    </div>
 
+.. _dyn_defined_mojits-execute:
 
 Using ac._dispatch with ac.composite.execute
 ============================================
@@ -725,6 +773,9 @@ Because the configuration, controllers, and templates are the same when using
 ``ac._dispatch`` and ``ac.composite.execute`` independently or together, please see 
 `Using the Composite Addon`_ and `Using ac._dispatch`_ for implementation details. 
 
+
+.. _dyn_defined_mojits-execute_ex:
+
 Example
 -------
 
@@ -734,6 +785,9 @@ instance of type ``ParentMojit``, which in turn creates a child mojit instance o
 rendered view is returned to its parent mojit instance of type ``ParentMojit``. The 
 content is then attached to the parent mojit instance's template, which gets rendered 
 and returned as the response.
+
+
+.. _execute_ex-app_config:
 
 Application Configuration
 #########################
@@ -781,9 +835,12 @@ Application Configuration
     }   
    ]
 
+.. _execute_ex-controllers:
 
 Controllers  
 ###########   
+
+.. _execute_ex-controllers_grandparentmojit:
 
 GrandparentMojit
 ****************
@@ -811,7 +868,7 @@ GrandparentMojit
      };
    }, '0.0.1', {requires: ['mojito']});
    
-
+.. _execute_ex-controllers_parentmojit:
 
 ParentMojit
 ***********
@@ -842,6 +899,7 @@ ParentMojit
      };
    }, '0.0.1', {requires: ['mojito', 'mojito-composite-addon']});
 
+.. _execute_ex-controllers_grandchildmojit:
 
 GrandchildMojit
 ***************
@@ -858,9 +916,12 @@ GrandchildMojit
    }, '0.0.1', {requires: ['mojito']});
 
 
+.. _execute_ex-templates:
 
 Templates
 #########
+
+.. _execute_ex-templates_grandchildmojit:
 
 GrandchildMojit
 ***************
@@ -871,6 +932,7 @@ GrandchildMojit
      <h3>I am the {{whoami}} dynamically defined and run by {{creator}}.</h3>
    </div>
 
+.. _execute_ex-templates_parentmojit:
 
 ParentMojit
 ***********
