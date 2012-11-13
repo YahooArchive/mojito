@@ -45,4 +45,5 @@ YUI.add('SearchMojit', function(Y, NAME) {
     'mojito',
     'mojito-config-addon',
     'mojito-composite-addon',
+    'mojito-params-addon',
     'SearchMojitModel']});
