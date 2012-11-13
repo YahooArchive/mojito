@@ -28,11 +28,13 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
             }
         },
         "/favicon.ico": {
+            id: 'favicon.ico',
             mime: {
                 type: 'image/vnc.microsoft.com'
             }
         },
         "/robots.txt": {
+            id: 'robots.txt',
             mime: {
                 type: 'text/plain',
                 charset: 'UTF-8'
@@ -348,7 +350,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                 headers: {}
             };
             resp = {
-                writeHeader: function() { },
+                writeHead: function() { },
                 end: function() { }
             };
 
@@ -529,6 +531,117 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                     }
                 };
             handler(req, res);
+        },
+
+
+        'serve single binary file': function() {
+            var handler,
+                realGetResourceContent,
+                req, res,
+                writeHeadCalled = 0,
+                gotCode, gotHeaders, gotBody;
+
+            realGetResourceContent = store.getResourceContent;
+            store.getResourceContent = function(res, callback) {
+                var stat = {
+                        mtime: new Date(),
+                        ctime: new Date(),
+                        // this size -shouldn't- be used for content-length header
+                        size: 5
+                    };
+                callback(null, new Buffer('we ✔ are ∞ good', 'utf8'), stat);
+            };
+
+            req = {
+                url: '/favicon.ico',
+                method: 'GET',
+                headers: {}
+            };
+            res = {
+                writeHead: function(code, headers) {
+                    writeHeadCalled += 1;
+                    gotCode = code;
+                    gotHeaders = headers;
+                },
+                end: function(body) {
+                    A.areSame(1, writeHeadCalled);
+                    A.areSame(200, gotCode);
+                    A.isObject(gotHeaders);
+                    A.areSame(19, gotHeaders['Content-Length']);
+                    A.areSame('we ✔ are ∞ good', body.toString('utf8'));
+                }
+            };
+
+            handler = factory({
+                context: {},
+                store: store,
+                logger: { log: function() {} }
+            });
+            handler(req, res, function() {
+                A.fail('next() handler should not have been called');
+            });
+
+            store.getResourceContent = realGetResourceContent;
+        },
+
+
+        'combo binary file': function() {
+            var handler,
+                realGetResourceContent,
+                req, res,
+                writeHeadCalled = 0,
+                gotCode, gotHeaders, gotBody;
+
+            realGetResourceContent = store.getResourceContent;
+            store.getResourceContent = function(res, callback) {
+                var stat = {
+                        mtime: new Date(),
+                        ctime: new Date(),
+                        // this size -shouldn't- be used for content-length header
+                        size: 5
+                    };
+                var buffer;
+                if ('favicon.ico' === res.id) {
+                    callback(null, new Buffer('we ✔ are ∞ good', 'utf8'), stat);
+                    return;
+                }
+                if ('robots.txt' === res.id) {
+                    callback(null, new Buffer("aren't ∀ you ⸘ happy", 'utf8'), stat);
+                    return;
+                }
+                callback(new Error('unknown resource'));
+            };
+
+            req = {
+                url: '/combo~/favicon.ico~/robots.txt',
+                method: 'GET',
+                headers: {}
+            };
+            res = {
+                writeHead: function(code, headers) {
+                    writeHeadCalled += 1;
+                    gotCode = code;
+                    gotHeaders = headers;
+                },
+                end: function(body) {
+                    A.areSame(1, writeHeadCalled);
+                    A.areSame(200, gotCode);
+                    A.isObject(gotHeaders);
+                    A.areSame(43, gotHeaders['Content-Length']);
+                    A.areSame("we ✔ are ∞ goodaren't ∀ you ⸘ happy", body.toString('utf8'));
+                }
+            };
+
+            handler = factory({
+                context: {},
+                store: store,
+                logger: { log: function() {} }
+            });
+            handler(req, res, function() {
+                A.fail('next() handler should not have been called');
+            });
+
+            store.getResourceContent = realGetResourceContent;
         }
 
     };

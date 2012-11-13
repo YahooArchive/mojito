@@ -228,7 +228,8 @@ General
     `affinity <../reference/glossary.html#affinity>`_, of the controller, models, addons, 
     etc., that you want to run on both the client and the server. To configure Mojito to 
     deploy application code to the client, you set the ``deploy`` property of the 
-    application configuration to ``true``. See `Configuring Applications to Be Deployed to Client <../intro/mojito_configuring.html#configuring-applications-to-be-deployed-to-client>`_ 
+    application configuration to ``true``. 
+    See `Configuring Applications to Be Deployed to Client <../intro/mojito_configuring.html#configuring-applications-to-be-deployed-to-client>`_ 
     for more information.
     
     Mojito determines the client device based on the HTTP header ``User-Agent`` or the 
