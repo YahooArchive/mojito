@@ -4,11 +4,8 @@
 
         "appPort": 8666,
         "cacheViewTemplates": true,
-        "embedJsFilesInHtmlFrame": false,
-        "shareYUIInstance": false,
         "staticHandling": {
             "appName": "app",
-            "cache": false,
             "frameworkName": "mojito",
             "maxAge": 600000,
             "prefix": "static"
@@ -37,6 +34,7 @@
     {
         "settings": [ "environment:development" ],
         "staticHandling": {
+            "cache": false,
             "forceUpdate": true
         }
     }
