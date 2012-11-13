@@ -18,10 +18,11 @@ The Action Context addons allow you to do the following:
 - get and set HTTP headers
 - create URLs
 
-.. _addons-syntax:
+
+.. _mojito_addons-syntax:
 
 Syntax
-######
+======
 
 Using the ``ActionContext`` object ``ac``, you would call a ``{method}`` from an 
 ``{addon}`` with the following syntax:
@@ -33,10 +34,11 @@ with the ``url`` method as seen here:
 
 ``ac.params.url()``
 
+
 .. _addons-requiring:
 
 Requiring Addons
-################
+================
 
 Prior to version 0.5.0, Mojito attached addons to the ``ActionContext`` object for 
 every HTTP request and mojit instance. As a result, you were able to use
@@ -79,10 +81,11 @@ The list below shows what strings are used to require addons.
    and Assets.
 
 
-.. _addons-exs:
+
+.. _mojito_addons-exs:
 
 Addon Examples
-##############
+==============
 
 The following code examples use the addons in parentheses:
 
@@ -93,10 +96,11 @@ The following code examples use the addons in parentheses:
 - `Internationalizing Your Application <../code_exs/i18n_apps.html>`_ (``Intl``)
 - `Using Multiple Mojits <../code_exs/multiple_mojits.html>`_ (``Composite``)
 
-.. _addons-creating:
+
+.. _mojito_addons-create:
 
 Creating Addons
-###############
+===============
 
 Because customized addons are not part of the standard API, but an extension of the API, the 
 instructions for creating addons can be found in 

@@ -101,9 +101,7 @@ seen above. To add metadata for the iPhone, the ``addBlob`` method is called fro
 
    YUI.add('device', function(Y, NAME){
      Y.namespace('mojito.controllers')[NAME] = {   
-       init: function(config) {
-        this.config = config;
-       },
+
        index: function(ac) {
          var device = ac.context.device, css = '/static/device/assets/simple';
          if (device === 'iphone') {
@@ -243,9 +241,7 @@ To create and run ``device_assets``:
 
       YUI.add('device', function(Y, NAME){
         Y.namespace('mojito.controllers')[NAME] = {   
-          init: function(config) {
-           this.config = config;
-          },
+
           index: function(ac) {
             var device = ac.context.device, css = '/static/device/assets/simple';
             if (device === 'iphone') {

@@ -41,9 +41,6 @@ Mojito uses the `YUI 3 Cookie Module <http://developer.yahoo.com/yui/3/api/Cooki
 
    YUI.add('CookieMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = {   
-       init: function(config) {
-         this.config = config;
-       },
        index: function(actionContext) {
          var requestCookieValue = actionContext.cookie.get('request_cookie');
          // Or use this API to set a session cookie
@@ -155,9 +152,7 @@ To set up and run ``using_cookies``:
 
       YUI.add('CookieMojit', function(Y, NAME) {
         Y.namespace('mojito.controllers')[NAME] = {   
-          init: function(config) {
-            this.config = config;
-          },
+
           index: function(actionContext) {
             var requestCookieValue = actionContext.cookie.get('request_cookie');
             // Or use this API to set a session cookie

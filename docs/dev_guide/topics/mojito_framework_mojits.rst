@@ -12,7 +12,8 @@ Mojito currently comes with the ``HTMLFrameMojit`` that constructs Web pages fro
 skeleton HTML to the styling and content and the ``LazyLoadMojit`` that allows you to 
 lazily load mojit code. Mojito plans to offer additional framework mojits in the future.
 
-.. _mojito_fw_mojits-htmlframemojit:
+
+.. _mojito_fw_mojits-htmlframe:
 
 HTMLFrameMojit
 ==============
@@ -31,7 +32,7 @@ To create a Mojito application that uses the ``HTMLFrameMojit``, see the code ex
 `Using the HTML Frame Mojit <../code_exs/htmlframe_view.html>`_ 
 and `Attaching Assets with HTMLFrameMojit <../code_exs/framed_assets.html>`_.
 
-.. _htmlframemojit-config:
+.. _fw_mojits_htmlframe-config:
 
 Configuration
 -------------
@@ -105,10 +106,11 @@ child instances that can create content for the rendered view.
      }
    ]
 
-.. _htmlframemojit-deploy:
+
+.. _htmlframe_config-deploy:
 
 Deploying to Client
--------------------
+###################
 
 To configure Mojito to deploy code to the client, you set the ``deploy`` property of the 
 `config <../intro/mojito_configuring.html#configuration-object>`_ object to ``true`` 
@@ -133,10 +135,11 @@ as shown below.
      }
    ]
 
-.. _htmlframemojit_deploy-what:
+
+.. _config_deploy-what:
 
 What Gets Deployed?
-###################
+*******************
 
 The following is deployed to the client:
 
@@ -149,6 +152,8 @@ the affinity of the controller is ``server``, the invocation occurs on the serve
 either case, the binder is able to transparently invoke the controller.
 
 .. _htmlframemojit-assets:
+
+.. _fw_mojits_htmlframe-add:
 
 Adding Assets with HTMLFrameMojit
 ---------------------------------
@@ -210,6 +215,7 @@ the HTML below.
      </body>
    </html>
 
+
 .. _mojito_fw_mojits-lazyloadmojit:
 
 LazyLoadMojit
@@ -220,7 +226,13 @@ the ``LazyLoadMoit`` as a proxy to the client. From the client, ``LazyLoadMojit`
 then request Mojito to load the proxied mojit. This allows your Mojito application to load 
 the page quickly and then lazily load parts of the page.
 
-.. _lazyloadmojit-how:
+.. _mojito_fw_mojits-lazyload:
+
+LazyLoadMojit
+=============
+
+
+.. _fw_mojits_lazyload-how:
 
 How Does It Work?
 -----------------
@@ -232,7 +244,8 @@ then returned to the binder of the ``LazyLoadMojit``, which attaches the output 
 empty DOM node. The binder of ``LazyLoadMojit`` destroys itself, leaving the DOM intact 
 with the new content.
 
-.. _lazyloadmojit-configure:
+
+.. _fw_mojits_lazyload-config:
 
 Configuring Lazy Loading
 ------------------------
@@ -279,7 +292,8 @@ configured to be executed after lazy loading is complete.
      }
    ]
 
-.. _lazyloadmojit-ex:
+
+.. _fw_mojits_lazyload-ex:
 
 Example
 -------
@@ -289,7 +303,8 @@ and the child mojit that is lazy loaded.  If you were to run this lazy load exam
 would see the content of the parent mojit first and then see the child mojit's output 
 loaded in the page. 
 
-.. _lazyloadmojit_ex-app_config:
+
+.. _lazyload_ex-app_config:
 
 Application Configuration
 #########################
@@ -338,7 +353,8 @@ parent mojit instance is already loaded onto the page.
      }
    ]
 
-.. _lazyloadmojit_ex-container_mojit:
+
+.. _lazyload_ex-container_mojit:
 
 Container Mojit
 ###############
@@ -375,7 +391,8 @@ loaded, the content of the executed child replaces the Handlebars expression
      <hr/>
    </div>
 
-.. _lazyloadmojit_ex-lazychild_mojit:
+
+.. _lazyload_ex-lazychild_mojit:
 
 LazyChild Mojit
 ###############

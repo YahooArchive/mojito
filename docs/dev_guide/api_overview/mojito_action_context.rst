@@ -29,9 +29,6 @@ One of the most common methods used from an instance of the ``ActionContext`` cl
      * @constructor
      */
      Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(config) {
-         this.config = config;
-       },
        /**
        * Method corresponding to the 'index' action.
        *
