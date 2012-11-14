@@ -17,13 +17,13 @@ Overview
 
 Before looking at the details of Mojito, let's take a look at how Mojito
 fits in the Web application world. In the diagram below, the triangular symbol
-formed with three circles represents the Mojito MVC core; the circles represent the model,
-view, and controller. This common MVC core executes across devices and on both client
-and server and is one of the key elements which gives Mojito its power. As the
-diagram illustrates, Mojito runs on various clients, uses HTTP for all
-client-server communication, and typically accesses data with the Yahoo! Query
-Language (YQL) due to its power, ease-of-use, and ability to run from either
-the client or server.
+formed with three circles represents the Mojito MVC core; the circles represent 
+the model, view, and controller. This common MVC core executes across devices 
+and on both client and server and is one of the key elements which gives Mojito 
+its power. As the diagram illustrates, Mojito runs on various clients, uses 
+HTTP for all client-server communication, and typically accesses data with the 
+Yahoo! Query Language (YQL) due to its power, ease-of-use, and ability to run 
+from either the client or server.
 
 
 .. image:: images/mojito_architecture.png
@@ -57,13 +57,13 @@ client/runtime environments:
 Mojito Applications
 ===================
 
-A Mojito application is, quite simply, a set of module/widget components (called mojits)
-bound together with one or more JSON configuration files which describe the
-application model, view, and controller code used depending on context. A Mojito
-application is packaged to be distributed and deployed as a unit, and as such,
-it is deployment-independent. The mojits used by an application may be included
-directly within the package or may be included by reference from a cloud-based
-repository.
+A Mojito application is, quite simply, a set of module/widget components 
+(called mojits) bound together with one or more JSON configuration files 
+which describe the application model, view, and controller code used depending 
+on context. A Mojito application is packaged to be distributed and deployed 
+as a unit, and as such, it is deployment-independent. The mojits used by an 
+application may be included directly within the package or may be included 
+by reference from a cloud-based repository.
 
 See also `Mojito Applications <./mojito_apps.html>`_ for a more in-depth
 discussion.
@@ -102,8 +102,8 @@ elements in the diagram in more detail.
 
 .. image:: images/mojito_framework.png
    :scale: 85 %
-   :alt: Diagram showing the relationships between the Mojito application, Mojito core, mojits,
-         and runtime environments.
+   :alt: Diagram showing the relationships between the Mojito application, 
+         Mojito core, mojits, and runtime environments.
    :height: 513px
    :width: 718px
    :align: center
@@ -116,8 +116,8 @@ elements in the diagram in more detail.
 Mojito Server Runtime
 ---------------------
 
-The base server-only capabilities that support the Mojito Core include, but are
-not limited to, the following:
+The base server-only capabilities that support the Mojito Core include,
+but are not limited to, the following:
 
 - HTTP Server 
 - Routing Rules

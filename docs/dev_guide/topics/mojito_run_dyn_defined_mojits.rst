@@ -248,7 +248,7 @@ DynamicChildMojit
          }
        }
      };
-   }, '0.0.1', {requires: ['mojito', 'mojito-params-addon']});
+   }, '0.0.1', {requires: ['mojito', 'mojito-config-addon']});
 
 
 .. _dyn_defined_mojits_exs-templates:
@@ -301,33 +301,35 @@ Rendered Views
 Using ac._dispatch
 ==================
 
-Using ``ac._dispatch`` not only allows you to run a dynamically defined child mojit 
-instance like ``ac.composite.execute``, but you also have more fine-grained control over 
-how the child mojit instance runs. The content from the child mojit's controller may be 
-passed to its template or the child mojit's rendered template is passed to the parent 
-mojit. 
+Using ``ac._dispatch`` not only allows you to run a dynamically defined child 
+mojit instance like ``ac.composite.execute``, but you also have more 
+fine-grained control over how the child mojit instance runs. The content from 
+the child mojit's controller may be passed to its template or the child mojit's 
+rendered template is passed to the parent mojit. 
 
 .. _dyn_dispatch-config:
 
 Configuring a Child Instance
 ----------------------------
 
-Two configuration objects are passed to ``ac._dispatch``, each having a different 
-function. The ``command`` object defines the instance, the action to execute, the context, 
-and any parameters. This lets the parent mojit have greater control over its child 
-instances. The ``adapter`` object lets you define custom ``flush``, ``done``, and 
-``error`` functions for the child mojit instances. 
+Two configuration objects are passed to ``ac._dispatch``, each having a 
+different function. The ``command`` object defines the instance, the action 
+to execute, the context, and any parameters. This lets the parent mojit have 
+greater control over its child instances. The ``adapter`` object lets you 
+define custom ``flush``, ``done``, and ``error`` functions for the child mojit 
+instances. 
 
-Although you can also pass the ``ActionContext`` object as the ``adapter`` to use the 
-default ``flush``, ``done``, and ``error`` functions, it is not recommended because the 
-``ActionContext`` object contains both parent and child mojit metadata, which could cause 
-unexpected results.
+Although you can also pass the ``ActionContext`` object as the ``adapter`` to 
+use the default ``flush``, ``done``, and ``error`` functions, it is not 
+recommended because the ``ActionContext`` object contains both parent and child 
+mojit metadata, which could cause unexpected results.
 
 Command Object
 ##############
 
-In the ``command`` object below, a mojit instance of type ``MessengerMojit`` and the 
-action to execute are specified. The new mojit instance is also passed parameters.
+In the ``command`` object below, a mojit instance of type ``MessengerMojit`` and 
+the action to execute are specified. The new mojit instance is also passed 
+parameters.
 
 .. code-block:: javascript
 
@@ -350,8 +352,8 @@ action to execute are specified. The new mojit instance is also passed parameter
 Adapter Object
 ##############
 
-In the ``adapter`` object below, the ``ac.done``, ``ac.flush``, or ``ac.error`` are
-defined and will override those functions in the child mojit instance. 
+In the ``adapter`` object below, the ``ac.done``, ``ac.flush``, or ``ac.error`` 
+are defined and will override those functions in the child mojit instance. 
 See `Adapter Functions`_ for more information.
 
 .. code-block:: javascript
@@ -382,8 +384,9 @@ which collects metadata and configuration.
 Controller
 ----------
 
-The controller of the mojit that is dynamically creating mojit instances defines the mojit
-instance and passes custom versions of ``done``, ``flush``, and ``error``. 
+The controller of the mojit that is dynamically creating mojit instances 
+defines the mojit instance and passes custom versions of ``done``, ``flush``, 
+and ``error``. 
 
 .. code-block:: javascript
 
@@ -420,12 +423,13 @@ instance and passes custom versions of ``done``, ``flush``, and ``error``.
 Templates
 ---------
 
-The template that is rendered depends on the ``adapter`` object passed to ``ac._dispatch``.
-If you pass the ``ac`` object as the ``adapter`` parameter, as in 
-``ac._dispatch(command,ac)``, the ``ac.done`` in the dynamically defined mojit will 
-execute and its template will be rendered. If you pass a custom ``adapter`` object 
-defining ``done``, you can call ``ac.done`` inside your defined ``done`` method to pass 
-data to the parent mojit and render its template.
+The template that is rendered depends on the ``adapter`` object passed to 
+``ac._dispatch``. If you pass the ``ac`` object as the ``adapter`` parameter,
+as in ``ac._dispatch(command,ac)``, the ``ac.done`` in the dynamically defined 
+mojit will execute and its template will be rendered. If you pass a custom 
+``adapter`` object defining ``done``, you can call ``ac.done`` inside your 
+defined ``done`` method to pass data to the parent mojit and render its 
+template.
 
 .. _dyn_dispatch_templates-exs:
 
@@ -437,10 +441,11 @@ Examples
 Example One
 ***********
 
-In this example, the mojit ``CreatorMojit`` dynamically creates the child mojit instance 
-of type ``SpawnedMojit``. The child mojit instance gets data from its parent mojit and 
-then renders its template. The rendered template is returned to the parent mojit, which 
-inserts the content into its own template.
+In this example, the mojit ``CreatorMojit`` dynamically creates the child
+mojit instance of type ``SpawnedMojit``. The child mojit instance gets data 
+from its parent mojit and then renders its template. The rendered template 
+is returned to the parent mojit, which inserts the content into its own 
+template.
 
 
 .. _dyn_dispatch-templates_exs-app_config:
@@ -571,9 +576,9 @@ CreatorMojit
 Example Two
 ***********
 
-In this example, the binder invokes its controller to dynamically define an instance of 
-another mojit. The dynamically defined mojit instance renders its view, which is then 
-sent to the binder to be attached to the DOM.
+In this example, the binder invokes its controller to dynamically define an 
+instance of another mojit. The dynamically defined mojit instance renders its 
+view, which is then sent to the binder to be attached to the DOM.
 
 .. _templates_ex_two-app_config:
 
@@ -759,17 +764,18 @@ ChildMojit
 Using ac._dispatch with ac.composite.execute
 ============================================
 
-You can combine both methods to dynamically define and run a more complex set of mojits. 
-The mojit that initiates the process uses ``ac._dispatch`` to define and run a parent 
-mojit instance that uses ``ac.composite.execute`` in its controller to define and run 
-child mojit instances. This chain of running dynamically defined mojit instances can be 
-extended even further if one or more of the child mojit instances is using 
-``ac._dispatch`` or ``ac.composite.execute``. When running a set of dynamically defined 
-mojits, you should be aware that you may run into memory issues.
+You can combine both methods to dynamically define and run a more complex 
+set of mojits. The mojit that initiates the process uses ``ac._dispatch`` to 
+define and run a parent mojit instance that uses ``ac.composite.execute`` in 
+its controller to define and run child mojit instances. This chain of running 
+dynamically defined mojit instances can be extended even further if one or more 
+of the child mojit instances is using ``ac._dispatch`` or 
+``ac.composite.execute``. When running a set of dynamically defined mojits, 
+you should be aware that you may run into memory issues.
 
 Because the configuration, controllers, and templates are the same when using 
-``ac._dispatch`` and ``ac.composite.execute`` independently or together, please see 
-`Using the Composite Addon`_ and `Using ac._dispatch`_ for implementation details. 
+``ac._dispatch`` and ``ac.composite.execute`` independently or together, please 
+see `Using the Composite Addon`_ and `Using ac._dispatch`_ for implementation details. 
 
 
 .. _dyn_defined_mojits-execute_ex:
@@ -777,12 +783,13 @@ Because the configuration, controllers, and templates are the same when using
 Example
 -------
 
-In this example, the ``GrandparentMojit`` uses ``ac._dispatch`` to create a child mojit 
-instance of type ``ParentMojit``, which in turn creates a child mojit instance of type 
-``GrandchildMojit``. The child instance of type ``GrandchildMojit`` is executed and its
-rendered view is returned to its parent mojit instance of type ``ParentMojit``. The 
-content is then attached to the parent mojit instance's template, which gets rendered 
-and returned as the response.
+In this example, the ``GrandparentMojit`` uses ``ac._dispatch`` to create a 
+child mojit instance of type ``ParentMojit``, which in turn creates a child 
+mojit instance of type ``GrandchildMojit``. The child instance of type 
+``GrandchildMojit`` is executed and its rendered view is returned to its 
+parent mojit instance of type ``ParentMojit``. The content is then attached 
+to the parent mojit instance's template, which gets rendered and returned as 
+the response.
 
 
 .. _execute_ex-app_config:
