@@ -85,9 +85,20 @@ except the ``config`` object, which is user defined.
 configuration Object
 --------------------
 
+With this release there is a new timeout imposed on dispatched actions. Actions must call ac.done() or ac.error() 
+before the timer expires or the system will log a warning and invoke ac.error() with a Timeout error.
+
+You can change the default timeout value of 60000ms (60 seconds) by setting the 
+actionTimeout parameter in your application configuration.
+
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
 | Property                                               | Data Type            | Default Value     | Description                                            |
 +========================================================+======================+===================+========================================================+
+| ``actionTimeout``                                      | number               | 60000             | The number of milliseconds that an action can          |
+|                                                        |                      |                   | run without calling ``ac.done`` or ``ac.error`` before |
+|                                                        |                      |                   | Mojito logs a warning and invokes ``ac.error`` with a  |
+|                                                        |                      |                   | Timeout error.                                         |
++--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
 | ``appPort``                                            | number               | 8666              | The port number (1-65355) that the application         |
 |                                                        |                      |                   | will use.                                              |
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
@@ -102,14 +113,6 @@ configuration Object
 |                                                        |                      |                   | the client. This is an optimization setting and        |
 |                                                        |                      |                   | should generally only be set if you are building       |
 |                                                        |                      |                   | an offline application.                                |
-+--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
-| ``embedJsFilesInHtmlFrame``                            | boolean              | false             | When Mojito is deployed to the client, this property   |
-|                                                        |                      |                   | specifies whether the body of the JavaScript files     |
-|                                                        |                      |                   | should be embedded in the HTML page.                   |
-+--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
-| ``log``                                                | object               | N/A               | Specifies the configuration for the logging            |
-|                                                        |                      |                   | subsystem. The configuration is given                  |
-|                                                        |                      |                   | independently for the two different runtimes.          |
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
 | ``middleware``                                         | array of strings     | []                | A list of paths to the Node.js module that exports     |
 |                                                        |                      |                   | a Connect middleware function.                         |
@@ -154,12 +157,6 @@ configuration Object
 |                                                        |                      |                   | ``"lang:en"``. See `Using Context Configurations       |
 |                                                        |                      |                   | <../topics/mojito_using_contexts.html>`_.              |
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
-| ``shareYUIInstance``                                   | boolean              | false             | Specifies whether the use of a single shared YUI       |
-|                                                        |                      |                   | instance is enabled. Normally, each mojit runs in      |
-|                                                        |                      |                   | its own YUI instance. To use the shared YUI            |
-|                                                        |                      |                   | instance, each mojit has to be configured to use       |
-|                                                        |                      |                   | the shared instance.                                   |
-+--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
 | `specs <#specs-obj>`_                                  | object               | N/A               | Specifies the mojit instances. See the                 |
 |                                                        |                      |                   | :ref:`specs_obj` for details.                          |
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
@@ -173,8 +170,9 @@ configuration Object
 |                                                        |                      |                   | tunnel from the client back to the server.             |
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
 | `yui <#yui-obj>`_                                      | object               | N/A               | When Mojito is deployed to client, the                 |
-|                                                        |                      |                   | :ref:`yui_obj` specifies where                         |
-|                                                        |                      |                   | and how to obtain YUI 3.                               |
+|                                                        |                      |                   | :ref:`yui_obj` specifies where and how to obtain       |
+|                                                        |                      |                   | YUI 3. The ``yui.config`` object also contains         |
+|                                                        |                      |                   | logging configurations.                                |
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
 
 
@@ -314,11 +312,6 @@ specs Object
 |                              |               | spec will be attached as a *proxied* object on the proxy mojit's        |
 |                              |               | ``config`` for it to handle as necessary.                               |
 +------------------------------+---------------+-------------------------------------------------------------------------+
-| ``shareYUIInstance``         | boolean       | Determines whether the mojit should use the single shared YUI           |
-|                              |               | instance. To use the single shared YUI instance, the                    |
-|                              |               | ``shareYUIInstance`` in ``application.json`` must be set to             |
-|                              |               | ``true``. The default value is ``false``.                               |
-+------------------------------+---------------+-------------------------------------------------------------------------+
 | ``type``                     | string        | Specifies the mojit type. Either the ``type`` or ``base`` property is   |
 |                              |               | required in the ``specs`` object.                                       |
 +------------------------------+---------------+-------------------------------------------------------------------------+
@@ -415,11 +408,6 @@ See `Example Application Configurations`_ for an example of the ``yui`` object.
 |                                |                      | configure logging or YUI not to load its default CSS with the          |
 |                                |                      | following: ``"yui": { "config": { "fetchCSS": false } }``              |
 +--------------------------------+----------------------+------------------------------------------------------------------------+
-| ``dependencyCalculations``     | string               | Specifies whether the YUI module dependencies are calculated at        |
-|                                |                      | server startup (pre-computed) or deferred until a particular           |
-|                                |                      | module is needed (on demand). The following are the two allowed        |
-|                                |                      | values: ``precomputed``, ``ondemand``, ``precomputed+ondemand``        |
-+--------------------------------+----------------------+------------------------------------------------------------------------+
 | ``extraModules``               | array of strings     | Specifies additional YUI library modules that should be added to       |
 |                                |                      | the page when Mojito is sent to the client.                            |
 +--------------------------------+----------------------+------------------------------------------------------------------------+
@@ -441,10 +429,11 @@ See `Example Application Configurations`_ for an example of the ``yui`` object.
 config Object
 *************
 
-The ``config`` object is used to configure logging for both the client and the server. 
-The properties of the ``config`` object shown below are for configuring logging.
-For other options for the ``config`` object, see the 
+The ``config`` object can be used to configure all the options for the YUI instance. 
+To see all the options for the ``config`` object, see the 
 `YUI config Class <http://yuilibrary.com/yui/docs/api/classes/config.html>`_.
+Some of the properties of the ``config`` object used for configuring logging are shown below.
+
 
 +----------------------+---------------+-------------------+-----------------------------------------------------------+
 | Property             | Data Type     | Default Value     | Description                                               |
@@ -453,8 +442,17 @@ For other options for the ``config`` object, see the
 |                      |               |                   | entries (``true``) or output each as they occur           |
 |                      |               |                   | (``false``).                                              |
 +----------------------+---------------+-------------------+-----------------------------------------------------------+
+| ``debug``            | boolean       | true              | Determines whether ``Y.log`` messages are written to the  |    
+|                      |               |                   | browser console.                                          |
++----------------------+---------------+-------------------+-----------------------------------------------------------+
 | ``defaultLevel``     | string        | "info"            | Specifies the default log level to log entries. See       |
 |                      |               |                   | `Log Levels <../topics/mojito_logging.html#log-levels>`_. |
++----------------------+---------------+-------------------+-----------------------------------------------------------+
+| ``logExclude``       | object        | none              | Excludes the logging of the YUI module(s) specified.      |
+|                      |               |                   | For example: ``logExclude: { "logModel": true }``         |  
++----------------------+---------------+-------------------+-----------------------------------------------------------+
+| ``logInclude``       | object        | none              | Includes the logging of the YUI module(s) specified.      |
+|                      |               |                   | For example: ``logInclude: { "searchMojit": true }``      |  
 +----------------------+---------------+-------------------+-----------------------------------------------------------+
 | ``logLevel``         | string        | "info"            | Specifies the lowest log level to include in th           |
 |                      |               |                   | log output. See                                           |
