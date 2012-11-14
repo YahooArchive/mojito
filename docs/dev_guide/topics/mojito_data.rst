@@ -2,18 +2,11 @@
 Getting Input and Cookie Data
 =============================
 
-<<<<<<< HEAD
 
-=======
->>>>>>> docs_remove_init_controllers
 .. _mojito_data-intro:
 
 Introduction
 ============
-<<<<<<< HEAD
-
-=======
->>>>>>> docs_remove_init_controllers
 
 Mojito provides addons for accessing data from query string and routing 
 parameters, cookies, and the POST request body.
@@ -28,10 +21,7 @@ To see examples using these addons to get data, see
 `Using Query Parameters <../code_exs/query_params.html>`_ and 
 `Using Cookies <../code_exs/cookies.html>`_.
 
-<<<<<<< HEAD
 
-=======
->>>>>>> docs_remove_init_controllers
 .. _mojito_data-params:
 
 Getting Data from Parameters
@@ -61,10 +51,7 @@ addon would create the following object:
      bar: 2
    }
 
-<<<<<<< HEAD
 
-=======
->>>>>>> docs_remove_init_controllers
 .. _data_params-get_single:
 
 Single Parameter
@@ -121,10 +108,7 @@ the ``qs_params`` array, which ``ac.done`` makes available in the template.
      }
    }, '0.0.1', {requires: ['mojito-params-addon']});
 
-<<<<<<< HEAD
 
-=======
->>>>>>> docs_remove_init_controllers
 .. _mojito_data-params_post:
 
 POST
@@ -161,10 +145,7 @@ and then uses the ``done`` method to make it accessible to the template.
      }
    }, '0.0.1', {requires: ['mojito-params-addon']});
 
-<<<<<<< HEAD
 
-=======
->>>>>>> docs_remove_init_controllers
 .. _data_params-post_all:
 
 All
@@ -197,10 +178,7 @@ template.
      }
    }, '0.0.1', {requires: ['mojito-params-addon']});
 
-<<<<<<< HEAD
 
-=======
->>>>>>> docs_remove_init_controllers
 .. _mojito_data-routing:
 
 Routing
@@ -247,19 +225,13 @@ a coupon to a user posting information.
      }
    ]
 
-<<<<<<< HEAD
 
-=======
->>>>>>> docs_remove_init_controllers
 .. _data_routing-get:
 
 Getting Routing Parameters
 --------------------------
 
-<<<<<<< HEAD
 
-=======
->>>>>>> docs_remove_init_controllers
 The Params addon has the method ``getFromRoutes`` that allows you to specify 
 a single parameter or get all of the routing parameters. You can also use 
 the alias ``route`` to get routing parameters.
@@ -305,10 +277,6 @@ to determine whether the user gets a coupon.
 
 All
 ###
-<<<<<<< HEAD
-
-=======
->>>>>>> docs_remove_init_controllers
 
 To get all of the routing parameters, call ``getFromRoute`` or ``route`` without 
 any arguments.
@@ -331,10 +299,6 @@ a URL.
      }
    }, '0.0.1', {requires: ['mojito-params-addon', 'mojito-url-addon']});
 
-<<<<<<< HEAD
-
-=======
->>>>>>> docs_remove_init_controllers
 .. _mojito_data-get_all:
 
 Getting All Parameters
@@ -352,10 +316,7 @@ Thus, the parameter types are given the following priority:
 #. GET parameters
 #. POST parameters
 
-<<<<<<< HEAD
 
-=======
->>>>>>> docs_remove_init_controllers
 For example, if each parameter type has a ``foo`` key, the ``foo`` routing 
 parameter will override both the GET and POST ``foo`` parameters.
 
@@ -384,9 +345,6 @@ In the example controller below, the ``name`` parameter is obtained using
      }
    }, '0.0.1', {requires: ['mojito-params-addon']});
 
-.. _data_getting_all-all:
-
-.. _mojito_data-get_all:
 
 .. _mojito_data-get_all:
 
@@ -415,11 +373,6 @@ To get all of the GET, POST, and routing parameters, call ``getFromMerged`` or
        }
      }
    }, '0.0.1', {requires: ['mojito-params-addon']});
-
-.. _data-cookies:
-
-
-.. _mojito_data-cookie:
 
 
 .. _mojito_data-cookie:

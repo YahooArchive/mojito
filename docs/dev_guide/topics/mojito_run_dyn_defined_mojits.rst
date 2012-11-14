@@ -317,22 +317,11 @@ function. The ``command`` object defines the instance, the action to execute, th
 and any parameters. This lets the parent mojit have greater control over its child 
 instances. The ``adapter`` object lets you define custom ``flush``, ``done``, and 
 ``error`` functions for the child mojit instances. 
-<<<<<<< HEAD
 
 Although you can also pass the ``ActionContext`` object as the ``adapter`` to use the 
 default ``flush``, ``done``, and ``error`` functions, it is not recommended because the 
 ``ActionContext`` object contains both parent and child mojit metadata, which could cause 
 unexpected results.
-
-=======
-
-Although you can also pass the ``ActionContext`` object as the ``adapter`` to use the 
-default ``flush``, ``done``, and ``error`` functions, it is not recommended because the 
-``ActionContext`` object contains both parent and child mojit metadata, which could cause 
-unexpected results.
-
->>>>>>> docs_remove_init_controllers
-.. _dyn_dispatch_config-command:
 
 Command Object
 ##############
@@ -438,10 +427,6 @@ execute and its template will be rendered. If you pass a custom ``adapter`` obje
 defining ``done``, you can call ``ac.done`` inside your defined ``done`` method to pass 
 data to the parent mojit and render its template.
 
-<<<<<<< HEAD
-
-=======
->>>>>>> docs_remove_init_controllers
 .. _dyn_dispatch_templates-exs:
 
 Examples
@@ -457,10 +442,7 @@ of type ``SpawnedMojit``. The child mojit instance gets data from its parent moj
 then renders its template. The rendered template is returned to the parent mojit, which 
 inserts the content into its own template.
 
-<<<<<<< HEAD
 
-=======
->>>>>>> docs_remove_init_controllers
 .. _dyn_dispatch-templates_exs-app_config:
 
 Application Configuration
@@ -789,10 +771,7 @@ Because the configuration, controllers, and templates are the same when using
 ``ac._dispatch`` and ``ac.composite.execute`` independently or together, please see 
 `Using the Composite Addon`_ and `Using ac._dispatch`_ for implementation details. 
 
-<<<<<<< HEAD
 
-=======
->>>>>>> docs_remove_init_controllers
 .. _dyn_defined_mojits-execute_ex:
 
 Example
@@ -805,10 +784,7 @@ rendered view is returned to its parent mojit instance of type ``ParentMojit``. 
 content is then attached to the parent mojit instance's template, which gets rendered 
 and returned as the response.
 
-<<<<<<< HEAD
 
-=======
->>>>>>> docs_remove_init_controllers
 .. _execute_ex-app_config:
 
 Application Configuration
