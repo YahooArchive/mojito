@@ -442,8 +442,8 @@ config Object
 *************
 
 The ``config`` object is used to configure logging for both the client and the server. 
-The properties of the ``config`` object shown below are for configuring logging.
-For other options for the ``config`` object, see the 
+Some of the more often used properties of the ``config`` object for configuring logging are shown below.
+To see all the options for the ``config`` object, see the 
 `YUI config Class <http://yuilibrary.com/yui/docs/api/classes/config.html>`_.
 
 +----------------------+---------------+-------------------+-----------------------------------------------------------+
@@ -452,6 +452,9 @@ For other options for the ``config`` object, see the
 | ``buffer``           | boolean       | false             | Determines whether Mojito should buffer log               |
 |                      |               |                   | entries (``true``) or output each as they occur           |
 |                      |               |                   | (``false``).                                              |
++----------------------+---------------+-------------------+-----------------------------------------------------------+
+| ``debug``            | boolean       | true              | Determines whether ``Y.log`` messages are written to the  |    
+|                      |               |                   | browser console.                                          |
 +----------------------+---------------+-------------------+-----------------------------------------------------------+
 | ``defaultLevel``     | string        | "info"            | Specifies the default log level to log entries. See       |
 |                      |               |                   | `Log Levels <../topics/mojito_logging.html#log-levels>`_. |
