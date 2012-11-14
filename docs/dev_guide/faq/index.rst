@@ -34,7 +34,6 @@ Mojits
 * :ref:`What is a mojit? <mojit_exp>`
 * :ref:`Can mojits have child mojits? <moj_children>`
 * :ref:`How do mojits share objects? <moj_objects>`
-* :ref:`How can the same 'Y' instance be shared among mojits? <moj_share_y>`
 * :ref:`Can mojit instances be dynamically defined and then run? <moj_dynamic_creation>`
 * :ref:`Is there a way to make all of the resources, such as assets, addons, binders, models, of one mojit available to other mojits? <moj_resources>`
 * :ref:`Why does Mojito replace hyphens in the names of my mojits with underscores? <moj_names_hyphens>`
@@ -207,8 +206,7 @@ General
          module that selects the best available local storage API supported by the browser 
          it's running in.
        - `Create an addon <../topics/mojito_extensions.html#creating-new-addons>`_ that 
-         uses a singleton or attaches data to the YUI instance. See the ``shareYUIInstance`` 
-         property in the `configuration object <../intro/mojito_configuring.html#configuration-object>`_.
+         uses a singleton. 
        
     - **Server-Side Caching (implementation depends on server)**
     
@@ -400,15 +398,6 @@ Mojits
 
 ------------
     
-.. _moj_share_y:
-.. topic:: **How can the same 'Y' instance be shared among mojits?**
-
-    Mojito creates sandboxes for mojits, thus, each mojit has its own ``Y`` instance. 
-    To allow mojito to share one ``Y`` instance, you set the ``shareYUIInstance: true`` in the 
-    ``application.json`` configuration file. See the `configuration Object <../intro/mojito_configuring.html#configuration-object>`_ 
-    for more information.
-
-------------    
     
 .. _moj_objects:
 .. topic:: **How do mojits share objects?** 
