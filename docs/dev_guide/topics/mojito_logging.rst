@@ -188,6 +188,7 @@ the ``yui.config`` object.
    [
      {
        "settings": [ "runtime:client" ],
+       ...
 	   "yui": {
          "config": {
            "logLevel": "WARN"
@@ -196,6 +197,7 @@ the ``yui.config`` object.
      },
      {
        "settings": [ "runtime:server" ],
+       ...
 	   "yui": {
          "config": {
            "logLevel": "INFO"
@@ -210,8 +212,12 @@ the ``yui.config`` object.
 Including and Excluding Modules From Logging
 --------------------------------------------
 
-Also, you can now use logExclude and logInclude. More information at 
-http://yuilibrary.com/yui/docs/api/classes/config.html.
+You can use the ``logExclude`` and ``logInclude`` properties
+of the ``yui.config`` object to include or exclude logging
+from YUI modules of your application. 
+
+The configuration below excludes logging from the YUI module 
+``FinanceModel``:
 
 .. code-block:: javascript
 
@@ -219,7 +225,7 @@ http://yuilibrary.com/yui/docs/api/classes/config.html.
      "config": {
       "logLevel": "INFO",
       "buffer": true,
-      "logExclude": <some_source>
+      "logExclude": { "FinanceMode": true } 
      }
    }
 
