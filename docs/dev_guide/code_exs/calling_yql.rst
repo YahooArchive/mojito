@@ -193,9 +193,7 @@ the ``index`` template.
 
    YUI.add('flickr', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = {   
-       init: function(config) {
-         this.config = config;
-       },
+
        index: function(ac) {
          var q = ac.params.getFromUrl('q') || 'muppet',
          page = (ac.params.getFromUrl('page') || 0) / 1,
@@ -356,9 +354,7 @@ To set up and run ``model_yql``:
       YUI.add('flickr', function(Y, NAME) {
 
         Y.namespace('mojito.controllers')[NAME] = {
-          init: function(config) {
-            this.config = config;
-          },  
+ 
           index: function(ac) {
             // Use aliases to params addon
             // if they exist.
