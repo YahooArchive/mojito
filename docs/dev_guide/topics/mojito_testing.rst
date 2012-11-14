@@ -43,8 +43,7 @@ Conventions
 Application Tests
 =================
 
-Running applications tests is much like running the framework tests above. The following 
-command runs tests for all of the mojits of a Mojito application.
+The following command runs tests for all of the mojits of a Mojito application.
 
 ``$ mojito test app {path-to-app}/{application-name}``
 
@@ -539,20 +538,6 @@ module and the ``requires`` array contains the ``FooModel`` module.
      YUITest.TestRunner.add(suite);
    }, '0.0.1', {requires: ['mojito-test', 'FooModel']});
 
-.. _mojito_testing-module:
-
-Module Tests
-============
-
-You can run specific unit tests for modules of the Mojito framework. When you test a 
-module, Mojito will look for framework tests found in ``path-to-node/node/mojito/tests``.
-
-You can provide either the YUI module name of the test or the class it is testing. For 
-example, to test the module ``foo`` with the test called ``foo-test``, use either of 
-the following commands:
-
-- ``$ mojito test foo``
-- ``$ mojito test foo-test``
 
 .. _moj_tests-func_unit:
 
