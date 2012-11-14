@@ -1,6 +1,6 @@
-###########
+===========
 Mojito: FAQ
-###########
+===========
 
 This page answers some of the most common questions we get about Mojito. For 
 troubleshooting issues, see 
@@ -228,7 +228,8 @@ General
     `affinity <../reference/glossary.html#affinity>`_, of the controller, models, addons, 
     etc., that you want to run on both the client and the server. To configure Mojito to 
     deploy application code to the client, you set the ``deploy`` property of the 
-    application configuration to ``true``. See `Configuring Applications to Be Deployed to Client <../intro/mojito_configuring.html#configuring-applications-to-be-deployed-to-client>`_ 
+    application configuration to ``true``. 
+    See `Configuring Applications to Be Deployed to Client <../intro/mojito_configuring.html#configuring-applications-to-be-deployed-to-client>`_ 
     for more information.
     
     Mojito determines the client device based on the HTTP header ``User-Agent`` or the 
@@ -715,8 +716,8 @@ Logging/Testing
 .. _moj_log_level:
 .. topic:: **How do I change the logging levels for my Mojito application?** 
 
-    You can set log levels for your application using the ``log`` object in ``application.json``. 
-    You can also set default log levels using the ``log`` object in the ``defaults.json`` 
+    You can set log levels for your application using the ``yui.config`` object in ``application.json``. 
+    You can also set default log levels using the ``yui.config`` object in the ``defaults.json`` 
     at the application or mojit level.
 
     See `Logging <../topics/mojito_logging.html>`_ for details and the code example 
@@ -739,9 +740,12 @@ Logging/Testing
 .. _moj_client_server_logging:
 .. topic:: **Can logging be configured to be different for the client and server?** 
 
-    Yes, the ``application.json`` configuration file can contain a ``log`` object that has 
-    a ``client`` and a ``server`` object that allow you to independently configure logging 
-    for the client and server. See `log Object <../intro/mojito_configuring.html#log-object>`_ 
+    Yes, the ``application.json`` configuration file can contain a ``yui.config`` object that 
+    contain the properties ``logExclude`` and ``logInclude`` to log certain components
+    of your application. You can also use context configurations to have different
+    configurations depending on the runtime environment.
+
+    See `config Object <../intro/mojito_configuring.html#yui_config>`_ 
     and the `Log Configuration <../topics/mojito_logging.html#log-configuration>`_ for 
     implementation details.            
 

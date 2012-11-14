@@ -2,16 +2,16 @@
 Mojito Quickstart
 =================
 
-.. _mojito_quickstart-reqs:
+.. _mojito_qs-prereqs:
 
-Requirements
-============
+Prerequisites
+=============
 
 **System:** Unix-based system.
 
 **Software:** `Node.js (>= 0.6.0 < 0.8) <http://nodejs.org/>`_, `npm (> 1.0.0) <http://npmjs.org/>`_
 
-.. _mojito_quickstart-install:
+.. _mojito_qs-install:
 
 Installation Steps
 ==================
@@ -25,7 +25,7 @@ Installation Steps
 
    ``$ mojito help``
 
-.. _mojito_quickstart-create_app:
+.. _mojito_qs-create:
 
 Create a Mojito Application
 ===========================
@@ -34,13 +34,12 @@ Create a Mojito Application
 #. ``$ cd hello_world``
 #. ``$ mojito create mojit myMojit``
 
-.. _mojito_quickstart-modify_app:
+.. _mojito_qs-modify:
 
 Modify Your Application
 =======================
 
-To make the application return a string we want, replace the code in 
-``mojits/myMojit/controller.server.js`` with the following:
+To make the application return a string we want, replace the code in ``mojits/myMojit/controller.server.js`` with the following:
 
 .. code-block:: javascript
 
@@ -55,7 +54,7 @@ To make the application return a string we want, replace the code in
     };
   });
 
-.. _mojito_quickstart-run_app:
+.. _mojito_qs-running:
 
 Running the Application
 =======================
@@ -63,9 +62,11 @@ Running the Application
 #. From the ``hello_world`` application directory, start Mojito:
 
    ``$ mojito start``
+
 #. Go to http://localhost:8666/@myMojit/index to see your application.
+
 #. Stop your application by pressing **Ctrl-C**.
 
-For a more in-depth tutorial, please see `Mojito: Getting Started <../getting_started/>`_. 
-To learn more about Mojito, see the `Mojito Documentation <../>`_.
+For a more in-depth tutorial, please see `Mojito: Getting Started <../getting_started/>`_. To learn more about Mojito, see 
+the `Mojito Documentation <../>`_.
 

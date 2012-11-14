@@ -4,30 +4,19 @@
 
         "appPort": 8666,
         "cacheViewTemplates": true,
-        "deferAllOptionalAutoload": false,
-        "embedJsFilesInHtmlFrame": false,
-        "log": {
-            "client": {
-                "level": "info",
-                "yui": false
-            },
-            "server": {
-                "level": "info",
-                "yui": false
-            }
-        },
-        "shareYUIInstance": false,
         "staticHandling": {
             "appName": "app",
-            "cache": false,
             "frameworkName": "mojito",
+            "cache": true,
             "maxAge": 600000,
-            "prefix": "static",
-            "useRollups": false
+            "prefix": "static"
         },
         "tunnelPrefix": "/tunnel/",
         "yui": {
-            "dependencyCalculations": "precomputed"
+            "config": {
+                "debug": true,
+                "logLevel": "info"
+            }
         },
 
         "specs": {
@@ -46,6 +35,7 @@
     {
         "settings": [ "environment:development" ],
         "staticHandling": {
+            "cache": false,
             "forceUpdate": true
         }
     }
