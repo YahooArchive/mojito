@@ -11,15 +11,15 @@ Inter-Mojit Communication
 Summary
 =======
 
-This example shows how to configure mojits to communicate with each other through event 
-binding.
+This example shows how to configure mojits to communicate with each other 
+through event binding.
 
 The following topics will be covered:
 
 - structuring your mojits for intercommunication
 - implementing binders for each mojit to listen to and trigger events
-- using the `Composite addon <../../api/classes/Composite.common.html>`_ to execute code 
-  in child mojits
+- using the `Composite addon <../../api/classes/Composite.common.html>`_ 
+  to execute code in child mojits
 
 .. _code_exs_intermojit-notes:
 
@@ -31,12 +31,13 @@ Implementation Notes
 Application Configuration
 -------------------------
 
-The ``application.json`` for this example defines the hierarchy and relationship between 
-the mojits of this application and configures the application to run on the client. In the 
-``application.json`` below, the ``HTMLFrameMojit`` is the parent of the ``MasterMojit``, 
-which, in turn, is the parent of the ``SenderMojit`` and ``ReceiverMojit``. The 
-``"deploy"`` property of the ``"frame"`` object is assigned the value ``"true"`` to 
-configure Mojito to send code to the client for execution.
+The ``application.json`` for this example defines the hierarchy and 
+relationship between the mojits of this application and configures the 
+application to run on the client. In the ``application.json`` below, 
+the ``HTMLFrameMojit`` is the parent of the ``MasterMojit``, 
+which, in turn, is the parent of the ``SenderMojit`` and ``ReceiverMojit``. 
+The ``"deploy"`` property of the ``"frame"`` object is assigned the value 
+``"true"`` to configure Mojito to send code to the client for execution.
 
 .. code-block:: javascript
 
@@ -81,12 +82,12 @@ configure Mojito to send code to the client for execution.
 Routing Configuration
 ---------------------
 
-In the ``routes.json`` below, two route paths are defined . The route configuration for 
-the root path specifies that the ``index`` method of the ``frame`` instance of 
-``HTMLFrameMojit`` be called when HTTP GET calls are received. Recall that the 
-``HTMLFrameMojit`` is the parent of the other mojits. Because the ``HTMLFrameMojit`` 
-has no ``index`` function,  the ``index`` function in the controller of the child mojit 
-``MasterMojit`` is called instead.
+In the ``routes.json`` below, two route paths are defined . The route 
+configuration for the root path specifies that the ``index`` method of 
+the ``frame`` instance of ``HTMLFrameMojit`` be called when HTTP GET calls 
+are received. Recall that the ``HTMLFrameMojit`` is the parent of the other 
+mojits. Because the ``HTMLFrameMojit`` has no ``index`` function,  the ``index`` 
+function in the controller of the child mojit ``MasterMojit`` is called instead.
 
 .. code-block:: javascript
 
@@ -111,41 +112,41 @@ has no ``index`` function,  the ``index`` function in the controller of the chil
 Master Mojit
 ------------
 
-The ``MasterMojit`` performs three major functions, each handled by a different file. The 
-controller executes the ``index`` methods of the children mojits. The binder listens for 
-events and then broadcasts those events to its children. Lastly, the ``index`` template 
-displays the content created by the child mojits. We'll now take a look at each of the 
-files to understand how they perform these three functions.
+The ``MasterMojit`` performs three major functions, each handled by a different 
+file. The controller executes the ``index`` methods of the children mojits. The 
+binder listens for events and then broadcasts those events to its children. 
+Lastly, the ``index`` template displays the content created by the child 
+mojits. We'll now take a look at each of the files to understand how they 
+perform these three functions.
 
-The ``controller.server.js`` below is very simple because the main purpose is to execute 
-the ``index`` functions of the child mojits. The Action Context object ``actionContext`` 
-is vital because it gives the ``MasterMojit`` access to the child mojits through addons. 
-The ``MasterMojit`` can execute the ``index`` functions of the child mojits by calling 
-the ``done`` method from the ``Composite`` addon.
+The ``controller.server.js`` below is very simple because the main purpose 
+is to execute the ``index`` functions of the child mojits. The Action Context 
+object ``actionContext`` is vital because it gives the ``MasterMojit`` access 
+to the child mojits through addons. The ``MasterMojit`` can execute the 
+``index`` functions of the child mojits by calling the ``done`` method from 
+the ``Composite`` addon.
 
 .. code-block:: javascript
 
    YUI.add('MasterMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = {   
-       init: function(config) {
-         this.config = config;
-       },
        "index": function(actionContext) {
          actionContext.composite.done();
        }
      };
    }, '0.0.1', {requires: ['mojito', 'mojito-composite-addon']});
 
-The binder for the ``MasterMojit`` listens for events from the ``SenderMojit``. Once an 
-event is received, the ``MasterMojit`` then broadcasts that event to its child mojits. The 
-child mojit ``ReceiverMojit`` will then intercept the broadcasted events, which we look at 
-later in:ref:`impl_notes-receiver_mojit`.
+The binder for the ``MasterMojit`` listens for events from the ``SenderMojit``. 
+Once an event is received, the ``MasterMojit`` then broadcasts that event to 
+its child mojits. The child mojit ``ReceiverMojit`` will then intercept the 
+broadcasted events, which we look at later in:ref:`impl_notes-receiver_mojit`.
 
-So, how do mojits listen to events from other mojits or broadcast events? On the client, 
-each mojit binder can use the ``mojitProxy`` object to interact with other mojits on the 
-page. In the ``binders/index.js`` of the ``MasterMojit`` below, the ``mojitProxy`` object 
-is used to listen to hyperlink events and then to broadcast an event to the child mojits. 
-The first arguments passed to the ``listen`` and ``fire`` methods are the event types.
+So, how do mojits listen to events from other mojits or broadcast events? On 
+the client, each mojit binder can use the ``mojitProxy`` object to interact 
+with other mojits on the page. In the ``binders/index.js`` of the 
+``MasterMojit`` below, the ``mojitProxy`` object is used to listen to hyperlink 
+events and then to broadcast an event to the child mojits. The first arguments 
+passed to the ``listen`` and ``fire`` methods are the event types.
 
 .. code-block:: javascript
 
@@ -175,13 +176,14 @@ The first arguments passed to the ``listen`` and ``fire`` methods are the event 
      };
    }, '0.0.1', {requires: ['mojito-client']});
 
-In the ``application.json`` file discussed in :ref:`impl_notes-app_config`, four mojit 
-instances were declared: ``frame``, ``child``, ``sender``, and ``receiver``. Because the 
-``child`` instance of ``MasterMojit`` is the parent of the ``sender`` and ``receiver`` 
-mojit instances, the controller can execute the code in the child mojit instances by 
-calling ``actionContext.composite.done`` in the controller. As you can see below, the 
-output from the ``sender`` and ``receiver`` instances can be inserted into the template 
-through Handlebars expressions.
+In the ``application.json`` file discussed in :ref:`impl_notes-app_config`, 
+four mojit instances were declared: ``frame``, ``child``, ``sender``, and 
+``receiver``. Because the ``child`` instance of ``MasterMojit`` is the parent 
+of the ``sender`` and ``receiver`` mojit instances, the controller can execute 
+the code in the child mojit instances by calling ``actionContext.composite.done`` 
+in the controller. As you can see below, the output from the ``sender`` and 
+``receiver`` instances can be inserted into the template through Handlebars 
+expressions.
 
 .. code-block:: html
 
@@ -204,14 +206,15 @@ through Handlebars expressions.
 Sender Mojit
 ------------
 
-The ``SenderMojit`` listens for click events and then forwards them and an associated URL 
-to the ``MasterMojit``. Because the controller for the ``SenderMojit`` does little but 
-send some text, we will only examine the binder and index template.
+The ``SenderMojit`` listens for click events and then forwards them and 
+an associated URL to the ``MasterMojit``. Because the controller for the 
+``SenderMojit`` does little but send some text, we will only examine the 
+binder and index template.
 
-The binder for the ``SenderMojit`` binds and attaches event handlers to the DOM. In the 
-``binders/index.js`` below, the handler for click events uses the ``mojitProxy`` object 
-to fire the event to the binder for the ``MasterMojit``. The URL of the clicked link is 
-passed to the ``MasterMojit``.
+The binder for the ``SenderMojit`` binds and attaches event handlers to the 
+DOM. In the ``binders/index.js`` below, the handler for click events uses 
+the ``mojitProxy`` object to fire the event to the binder for the 
+``MasterMojit``. The URL of the clicked link is passed to the ``MasterMojit``.
 
 
 .. code-block:: javascript
@@ -235,9 +238,9 @@ passed to the ``MasterMojit``.
      };
    }, '0.0.1', {requires: ['node','mojito-client']});
 
-The ``index`` template for the ``SenderMojit`` has an unordered list of links to Flickr 
-photos. As we saw in the binder, the handler for click events passes the event and the 
-link URL to the ``MasterMojit``.
+The ``index`` template for the ``SenderMojit`` has an unordered list of links 
+to Flickr photos. As we saw in the binder, the handler for click events passes 
+the event and the link URL to the ``MasterMojit``.
 
 .. code-block:: html
 
@@ -261,20 +264,18 @@ link URL to the ``MasterMojit``.
 Receiver Mojit
 --------------
 
-The ``ReceiverMojit`` is responsible for capturing events that were broadcasted by 
-``MasterMojit`` and then displaying the photo associated with the link that was clicked.
+The ``ReceiverMojit`` is responsible for capturing events that were broadcasted 
+by ``MasterMojit`` and then displaying the photo associated with the link that 
+was clicked.
 
-In the controller for ``ReceiverMojit``, the additional function ``show`` displays a photo 
-based on the query string parameter ``url`` or a default photo. The ``show`` function gets 
-invoked from the binder, which we'll look at next.
+In the controller for ``ReceiverMojit``, the additional function ``show`` displays 
+a photo based on the query string parameter ``url`` or a default photo. The ``show`` 
+function gets invoked from the binder, which we'll look at next.
 
 .. code-block:: javascript
 
    YUI.add('ReceiverMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = {   
-       init: function(config) {
-         this.config = config;
-       },
        index: function(actionContext) {
          actionContext.done({title: 'This is the receiver mojit'});
        },
@@ -411,9 +412,6 @@ To set up and run ``inter-mojit``:
 
       YUI.add('MasterMojit', function(Y, NAME) {
         Y.namespace('mojito.controllers')[NAME] = {   
-          init: function(spec) {
-            this.spec=spec;
-          },
           "index": function(actionContext) {
             actionContext.composite.done();
           }
@@ -480,9 +478,6 @@ To set up and run ``inter-mojit``:
 
       YUI.add('SenderMojit', function(Y, NAME) {
         Y.namespace('mojito.controllers')[NAME] = {   
-          init: function(config) {
-            this.config = config;
-          },
           index: function(actionContext) {
             actionContext.done({title: 'List of images for testing'});
           }
@@ -543,9 +538,6 @@ To set up and run ``inter-mojit``:
 
       YUI.add('ReceiverMojit', function(Y, NAME) {
         Y.namespace('mojito.controllers')[NAME] = {   
-          init: function(spec) {
-            this.spec = spec;
-          },
           "index": function(actionContext) {
             actionContext.done({title: 'This is the receiver mojit'});
           },

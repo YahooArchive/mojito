@@ -13,7 +13,7 @@ debug your Mojito applications more effectively.
 .. _mj_arch-overview:
 
 Overview
---------
+========
 
 Before looking at the details of Mojito, let's take a look at how Mojito
 fits in the Web application world. In the diagram below, the triangular symbol
@@ -39,7 +39,7 @@ the client or server.
 .. _overview-clients:
 
 Clients and Runtimes
-####################
+====================
 
 Mojito was designed with the goal of running in multiple runtime environments
 and supporting online and offline experiences. The following are the supported
@@ -55,7 +55,7 @@ client/runtime environments:
 .. _overview-apps:  
 
 Mojito Applications
-###################
+===================
 
 A Mojito application is, quite simply, a set of module/widget components (called mojits)
 bound together with one or more JSON configuration files which describe the
@@ -71,7 +71,7 @@ discussion.
 .. _overview-data:
 
 Data
-####
+====
 
 To support seamless operation and migration of components between client and
 server, Mojito application data is typically obtained with YQL. In most cases,
@@ -82,7 +82,7 @@ retrieved from YQL.
 .. _mj_arch-framework:
 
 Mojito Framework
-----------------
+================
 
 The Mojito Framework consists of both module-level and application-level framing,
 which taken together provide the infrastructure upon which applications are
@@ -114,7 +114,7 @@ elements in the diagram in more detail.
 .. _framework-server_runtime:
 
 Mojito Server Runtime
-#####################
+---------------------
 
 The base server-only capabilities that support the Mojito Core include, but are
 not limited to, the following:
@@ -127,7 +127,7 @@ not limited to, the following:
 .. _framework-client_runtime:
 
 Mojito Client Runtime
-#####################
+---------------------
 
 The base client-only capabilities that support the Mojito Core include, but are
 not limited to, the following:
@@ -138,7 +138,7 @@ not limited to, the following:
 .. _framework-core:
 
 Mojito Core
-###########
+-----------
 
 The Mojito Core is the common functionality of Mojito that runs on both server
 and client. The core is initialized (or bootstrapped, if you will) by either the
@@ -153,7 +153,7 @@ the Mojito Core include, but are not limited to, the following:
 .. _framework-mojit_container:
 
 Mojit Container
-###############
+---------------
 
 The Mojit Container is where mojit instances live. This is analogous in a
 traditional Java Web framework to the servlet container. In Mojito the
@@ -165,7 +165,7 @@ container logic includes, but is not limited to, the following:
 .. _framework-mojit_ac:
 
 "API" (Action Context)
-######################
+----------------------
 
 The "API" block of the diagram represents the common API object provided to each
 Mojit. This common API object is properly referred to as the Action Context.
@@ -177,7 +177,7 @@ running within the client).
 .. _framework-mojito_services:
 
 Mojito Services
-###############
+---------------
 
 The Services block is a customizable layer within Mojito, typically created with a
 combination of custom middleware and ``ActionContext`` addons, which allow your
@@ -204,7 +204,7 @@ services to be developed as extensions to the core framework.
 .. _framework-view_factory:
 
 View Factory
-############
+------------
 
 The View Factory creates the view instance for a
 mojit instance based on a mojit's configuration and on its corresponding mojit
@@ -218,7 +218,7 @@ capability for a mojit developer to define a custom view type:
 .. _framework-view_cache:
 
 View Cache
-##########
+----------
 
 The View Cache provides applications with the ability to cache. For example,
 because of the View Cache, an application can cache partially rendered views to
@@ -229,7 +229,7 @@ requested.
 
 
 Mojito Framework Components
----------------------------
+===========================
 
 Box A in the flowchart below represents the Application Container at its most
 basic level. Here we focus on the servicing of page requests and user
@@ -249,7 +249,7 @@ sections.
 .. _framework_components-dispatcher:
 
 Dispatcher/Mapper
-#################
+-----------------
 
 This component processes incoming URLs and determines how to map these to the
 appropriate application functionality. This is similar in many ways to the front
@@ -260,7 +260,7 @@ mojit identifiers.
 .. _framework_components-nav_manager:
 
 Navigation Manager
-##################
+------------------
 
 In some applications, it is important that certain *destinations* within the
 application be URL addressable (e.g., to allow the user to create bookmarks to
@@ -273,7 +273,7 @@ management, so this component may not be used in such cases.
 .. _framework_components-mojit_host:
 
 Mojit Host
-##########
+----------
 
 The mojits themselves are not part of the Application Container per se. The
 container provides the facilities to host, support, and manage mojits while the
@@ -283,7 +283,7 @@ mojits collectively provide the functionality of the application. See also
 .. _framework_components-app_config:
 
 Application Configuration
-#########################
+-------------------------
 
 A particular instance of the Application Container is initialized through an
 externally managed configuration. This configuration includes, among other

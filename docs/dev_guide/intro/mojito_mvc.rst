@@ -227,10 +227,7 @@ A controller should have the following basic structure:
      // Module name is {mojit-name}
      // Constructor for the Controller class.
      Y.namespace('mojito.controllers')[NAME] = {
-       // The spec configuration is passed to init
-       init: function(config) {
-         this.config = config;
-       },
+
        /**
        * Method corresponding to the 'index' action.
        * @param ac {Object} The ActionContext object
@@ -258,10 +255,6 @@ Several objects and methods form the backbone of the controller.
   framework. 
 - ``Y.namespace('mojito.controllers')[NAME]`` -  (required) creates a namespace that makes 
   functions available as Mojito actions.
-- ``init`` - (optional) if you provide an ``init`` function on your controller, Mojito 
-  will call it as it creates a controller instance, passing in the mojit specification. 
-  You can store the specification on the ``this`` reference for use within controller 
-  functions.
 - ``this`` - a reference pointing to an instance of the controller that the function is 
   running within. This means that you can refer to other functions described within 
   ``Y.namespace('mojito.controllers')[NAME]`` using ``this.otherFunction``. This is 
@@ -280,12 +273,9 @@ by other functions, and the ``this`` reference allows the ``index`` function to 
 
    YUI.add('status', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = {  
-       init: function(spec) {
-         this.spec = spec;
-         this.date = new Date();
-       },
+
        index: function(ac) {
-         var dateString = ac.intl.formatDate(this.date);
+         var dateString = ac.intl.formatDate(new Date());
          var status = ac.params.getFromMerged('status');
          var user = ac.params.getFromMerged('user');
          var status = {
@@ -353,9 +343,7 @@ actions.
 
    YUI.add('Stateful', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = {  
-       init: function(config) {
-         this.config = config;
-       },
+
        index: function(ac) {
          ac.done({id: this.config.id});
        },
@@ -366,69 +354,7 @@ actions.
      // The requires array list the YUI module dependencies
    }, '0.0.1', {requires: []});
 
-.. _mvc-controllers-ref:
 
-Initializing and Referencing a Controller Instance
---------------------------------------------------
-
-If the controller has an ``init`` function, Mojito will call it as it creates a controller 
-instance. The ``init`` function is passed the mojit ``config`` object, which is
-defined in ``application.json`` or ``defaults.json``. See the 
-`config Object <./mojito_configuring.html#config-object>`_ for the specifications.
-
-You can also use ``init`` to store other initialization data on ``this`` as seen below:
-
-.. code-block:: javascript
-
-   YUI.add('PlaceFinder', function(Y, NAME) {
-     Y.namespace('mojito.controllers')[NAME] = {  
-       init: function(config) {
-         this.config = config;
-         this.geo_api = "http://where.yahooapis.com/geocode";
-       },
-       ...
-     };
-   }, '0.0.1', {requires: []});
-
-Within your controller actions and the ``init`` action, the ``this`` reference points to 
-an instance of the controller the action is running within. This means that you can refer 
-to other functions or actions described within ``Y.namespace('mojito.controllers')[NAME]`` 
-using the syntax ``this.{otherFunction}``. This is helpful when you've added some utility 
-functions onto your controller that do not accept an ActionContext object as the argument, 
-but you wish to use for several actions.
-
-In the example controller below, the ``health`` function uses ``this`` to call the utility 
-function ``get_bmi``.
-
-.. code-block:: javascript
-
-   YUI.add('HealthStats', function(Y, NAME) {
-     Y.namespace('mojito.controllers')[NAME] = {  
-       init: function(config) {
-         this.config = config;
-       },
-       index: function(ac) {
-         ac.done({id: this.config.id});
-       },
-       health: function(ac) {
-         var health_stats = ac.params.getAll();
-         var weight=health_stats['weight'],height = health_stats['height'],  metric=health_stats['metric'];
-          var bmi = this.get_bmi(weight,height,metric)
-         ac.done({ bmi: bmi });
-       },
-     };
-     function get_bmi(weight, height, metric){
-        var bmi = 0;
-        if(metric) {
-          bmi = weight/(height*height);
-        } else {
-          bmi = (weight*703)/(height*height);
-        }
-        return bmi;
-       }
-   }, '0.0.1', {requires: []});
-
-.. _controllers-calling_models:
 
 .. _mvc-controllers-call_model:
 
@@ -451,9 +377,7 @@ model of the ``simple`` mojit.
 
    YUI.add('simple', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = {  
-       init: function(config) {
-         this.config = config;
-       },
+
        index: function(ac) {
          var model = ac.models.get('simpleModel');
          model.get_data (function(data) {
@@ -497,9 +421,7 @@ object to the ``index`` template.
      * @constructor
      */
      Y.namespace('mojito.controllers')[NAME] = {  
-       init: function(config) {
-         this.config = config;
-       },
+
        /**
        * Method corresponding to the 'index' action.
        * @param ac {Object} The action context that
@@ -542,9 +464,7 @@ object to the ``profile`` template instead of the default ``user`` template.
      * @constructor
      */
      Y.namespace('mojito.controllers')[NAME] = {  
-       init: function(config) {
-         this.config = config;
-       },
+
        /**
        * Method corresponding to the 'index' action.
        * @param ac {Object} The action context that
@@ -593,59 +513,6 @@ post. The ``try-catch`` clause will catch any errors made calling ``getPost``, a
 
 .. _mvc-controllers-save_state:
 
-Saving State
-------------
-
-You can maintain the state within controllers when they are running on the client because 
-the client-side Mojito runtime is long-lived. You **cannot** maintain state within server 
-controllers because the controller is discarded after the page has been generated and 
-served to the client.
-
-In the example ``controller.client.js`` below, the ``pitch`` function stores the variable 
-``ball`` on ``this``. If client code invokes ``pitch``, the ``ball`` parameter it sends 
-will be stored in controller instance state. If ``catch`` function is invoked, that state 
-variable is retrieved and sent back in a callback.
-
-.. code-block:: javascript
-
-   YUI.add('Stateful', function(Y, NAME) {
-     Y.namespace('mojito.controllers')[NAME] = {  
-       init: function(config) {
-         this.config = config;
-         this.time = new Date().getTime();
-       },
-       index: function(ac) {
-         ac.done({id: this.config.id});
-       },
-       pitch: function(ac) {
-         this.logit('pitch');
-         // Use the Params addon to get the 'ball' parameter.
-         // getFromMerged() allows you to retrieve routing,
-         // request, and query string parameters.
-         this.ball = ac.params.getFromMerged('ball');
-         ac.done();
-       },
-       catch: function(ac) {
-         // Save a reference to the current object
-         // for later use.
-         var me = this;
-         this.logit('catch');
-         ac.models.get('StatefulModel').getData(function(err, data) {
-           ac.done({
-             ball: me.ball,
-             time: me.time,
-             model: data.modelId
-           });
-         });
-       },
-       logit: function(msg) {
-         Y.log(msg + this.time, 'warn');
-       }
-     };
-   }, '0.0.1', {requires: [
-     'mojito-models-addon',
-     'StatefulModel'
-   ]});
 
 .. _mojito_mvc-views:
 
@@ -689,7 +556,7 @@ Here are some other example template names with descriptions:
           ``{rendering_engine}`` component of the template name must change. An error will 
           occur if the file names of different views are the same except the 
           ``{rendering_engine}``. For example, having the two templates ``index.hb.html``
-         and ``index.ejs.html`` (``ejs`` could be 
+          and ``index.ejs.html`` (``ejs`` could be 
          `Embedded JavaScript (EJS) <http://embeddedjs.com/>`_) would 
           cause an error.
 
@@ -734,8 +601,8 @@ iterators, and access to object properties through the dot operator
 Handlebars expressions as an introduction. See the
 `Handlebars documentation <http://handlebarsjs.com/>`_ for more information examples.
 
-One of the things that we mentioned already is block helpers, which help you iterate through arrays. 
-You could use the block helper ``#each`` shown below to iterate through an
+One of the things that we mentioned already is block helpers, which help you iterate through 
+arrays. You could use the block helper ``#each`` shown below to iterate through an
 array of strings:
 
 .. code-block:: html
