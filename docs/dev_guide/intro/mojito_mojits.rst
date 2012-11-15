@@ -50,6 +50,8 @@ shaded in green.
    :width: 610px
    :align: center 
 
+
+
 .. _mojit_arch-binders:
 
 Binders
@@ -62,7 +64,7 @@ on the page, and execute actions on the mojit that the binder is attached to.
 .. _binders-mojitProxy:
 
 Mojit Proxy
-```````````
+***********
 
 The Mojit Proxy is the conduit for communication between the binder and the mojit's
 ``ActionContext`` object and other mojits on the page. In code, the Mojit Proxy is 
