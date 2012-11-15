@@ -38,8 +38,8 @@ From the diagram below, you can see that the mojit has an MVC structure
 centered around the `Action Context <mojito_architecture.html#api-action-context>`_
 and can be deployed to the client or run on the server. Also note that the Mojit Proxy
 allows client-side code (binders) to communicate with server-side code through the
-Action Context. The sections below describe the main components in the diagram that are 
-shaded in green.
+Action Context. The sections below describe the main components in the diagram that 
+are shaded in green.
 
 
 
@@ -49,6 +49,8 @@ shaded in green.
    :height: 483px
    :width: 610px
    :align: center 
+
+
 
 .. _mojit_arch-binders:
 
@@ -62,11 +64,12 @@ on the page, and execute actions on the mojit that the binder is attached to.
 .. _binders-mojitProxy:
 
 Mojit Proxy
-```````````
+***********
 
-The Mojit Proxy is the conduit for communication between the binder and the mojit's
-``ActionContext`` object and other mojits on the page. In code, the Mojit Proxy is 
-represented by the `mojitProxy object <mojito_binders.html#mojitproxy-object>`_. 
+The Mojit Proxy is the conduit for communication between the binder and the 
+mojit's ``ActionContext`` object and other mojits on the page. In code, the 
+Mojit Proxy is represented by the 
+`mojitProxy object <mojito_binders.html#mojitproxy-object>`_. 
 
 See `Mojito Binders <mojito_binders.html>`_ to learn how binders 
 use the ``mojitProxy`` object to communicate with server-side code.
