@@ -179,12 +179,12 @@ General
 .. _moj_lazyloading:
 .. topic:: **Does Mojito support lazy loading?** 
 
-    Yes, the Mojito framework comes with the framework mojit ``LazyLoadMojit`` specifically 
+    Yes, the Mojito framework comes with the frame mojit ``LazyLoadMojit`` specifically 
     for lazy loading. The ``LazyLoadMojit`` allows you to defer the loading of a mojit 
     instance by first dispatching the ``LazyLoadMojit`` as a proxy to the client. From the 
     client, ``LazyLoadMojit`` can then request Mojito to load the proxied mojit. This 
     allows your Mojito application to load the page quickly and then lazily load parts of 
-    the page. See `LazyLoadMojit <../topics/mojito_framework_mojits.html#lazyloadmojit>`_ 
+    the page. See `LazyLoadMojit <../topics/mojito_frame_mojits.html#lazyloadmojit>`_ 
     to learn more.
 
 ------------
@@ -312,7 +312,7 @@ General
        * Assets and data can be shared through the 
          `template <../reference/glossary.html#view-template>`_ of a parent mojit or 
          through a frame mojit such as 
-         `HTMLFrameMojit <../topics/mojito_framework_mojits.html#htmlframemojit>`_ that 
+         `HTMLFrameMojit <../topics/mojito_frame_mojits.html#htmlframemojit>`_ that 
          creates a parent template.
     
     **Rollup/Minify Assets** 
@@ -343,7 +343,7 @@ General
     From the client, your Mojito application should lazy load assets as often as possible.
     For example, the `YUI ImageLoader Utility <http://yuilibrary.com/yui/docs/imageloader/>`_ 
     can be used to help you lazy load images. You can even lazy load a mojit from the client
-    using the `LazyLoadMojit <../topics/mojito_framework_mojits.html#lazyloadmojit>`_.
+    using the `LazyLoadMojit <../topics/mojito_frame_mojits.html#lazyloadmojit>`_.
    
 
 ------------
@@ -393,7 +393,7 @@ Mojits
     See `Configuring Applications to Have Multiple Mojit <../intro/mojito_configuring.html#configuring-applications-to-have-multiple-mojits>`_ 
     and `Composite Mojits <../topics/mojito_composite_mojits.html#composite-mojits>`_. 
 
-    You can also use framework mojits, such as `HTMLFrameMojit <../topics/mojito_framework_mojits.html#htmlframemojit>`_ 
+    You can also use frame mojits, such as `HTMLFrameMojit <../topics/mojito_frame_mojits.html#htmlframemojit>`_ 
     that can execute one or more child mojits.       
 
 ------------
@@ -458,9 +458,9 @@ Configuration
 .. topic:: **How do I configure Mojito to deploy my application to the client?**
 
     Binders always get deployed to the client, but to deploy your controller to the
-    client, you need to use the `HTMLFrameMojit <../topics/mojito_framework_mojits.html#htmlframemojit>`_ 
+    client, you need to use the `HTMLFrameMojit <../topics/mojito_frame_mojits.html#htmlframemojit>`_ 
     and set the ``deploy`` field to ``true`` in the ``application.json`` file. See 
-    `Deploying to Client <../topics/mojito_framework_mojits.html#deploying-to-client>`_ 
+    `Deploying to Client <../topics/mojito_frame_mojits.html#deploying-to-client>`_ 
     for more details.
 
 ------------ 

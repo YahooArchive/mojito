@@ -296,7 +296,7 @@ specs Object
 | ``defer``                    | boolean       | If true and the mojit instance is a child of the ``HTMLFrameMojit``,    |
 |                              |               | an empty node will initially be rendered and then content will be       |
 |                              |               | lazily loaded. See                                                      |
-|                              |               | `LazyLoadMojit <../topics/mojito_framework_mojits.html#lazyloadmojit>`_ |
+|                              |               | `LazyLoadMojit <../topics/mojito_frame_mojits.html#lazyloadmojit>`_     |
 |                              |               | for more information.                                                   |
 +------------------------------+---------------+-------------------------------------------------------------------------+
 | ``proxy``                    | object        | This is a normal mojit spec to proxy this mojit's execution             |
@@ -323,7 +323,7 @@ config Object
 | ``child``                | object        | Contains the ``type`` property that specifies mojit type and may also          |
 |                          |               | contain a ``config`` object. This property can only be used when the mojit     |
 |                          |               | instance is a child of the ``HTMLFrameMojit``. See                             |
-|                          |               | `HTMLFrameMojit <../topics/mojito_framework_mojits.html#htmlframemojit>`_ for  |              
+|                          |               | `HTMLFrameMojit <../topics/mojito_frame_mojits.html#htmlframemojit>`_ for      |              
 |                          |               | more information.                                                              |
 +--------------------------+---------------+--------------------------------------------------------------------------------+
 | ``children``             | object        | Contains one or more mojit instances that specify the mojit type with          |
@@ -334,9 +334,9 @@ config Object
 |                          |               | See :ref:`deploy_app` for details. The default value is ``false``. Your        |
 |                          |               | mojit code will only be deployed if it is a child of ``HTMLFrameMojit``.       |
 +--------------------------+---------------+--------------------------------------------------------------------------------+
-| ``title``                | string        | If application is using the framework mojit ``HTMLFrameMojit``,                |
+| ``title``                | string        | If application is using the frame mojit ``HTMLFrameMojit``,                    |
 |                          |               | the value will be used for the HTML ``<title>`` element.                       |    
-|                          |               | See `HTMLFrameMojit <../topics/mojito_framework_mojits.html#htmlframemojit>`_  |
+|                          |               | See `HTMLFrameMojit <../topics/mojito_frame_mojits.html#htmlframemojit>`_      |
 |                          |               | for more information.                                                          |
 +--------------------------+---------------+--------------------------------------------------------------------------------+
 | ``{key}``                | any           | The ``{key}`` is user defined and can have any type of configuration value.    |

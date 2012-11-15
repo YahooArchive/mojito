@@ -498,42 +498,43 @@ calculate the index of the first photo to display:
    ...
 
 To get the photo data, the controller depends on the model to call YQL to query the 
-Flickr API. Using ``actionContext.models.{model_name}`` lets you get a reference to the 
-model. In this example controller,  the model of the ``PagerMojit`` is accessed through 
-``actionContext.models.PageMojit``, allowing you to call ``getData`` and get the returned 
-data from YQL in the callback function.
+Flickr API. Using ``actionContext.get({model_name})`` lets you get a reference to the 
+model. The example controller below calls the ``getData`` from the model 
+``PagerMojitModel`` with ``actionContext.models.get('PagerMojitModel').getData`, which 
+will get the returned data from YQL in the callback function. To use methods from models, you need
+to require the model in the ``requires`` array of the controller. 
 
 .. code-block:: javascript
 
    ...
-     index: function(actionContext) {
-     ...
-       var model = actionContext.models.PagerMojit;
+       index: function(actionContext) {
+       ...
          // Data is an array of images
-       model.getData('mojito', start, PAGE_SIZE, function(data) {
-         Y.log('DATA: ' + Y.dump(data));
-         var theData = {
-         data: data, // images
-         hasLink: false,
-         prev: {
-           title: "prev" // opportunity to localize
-         },
-         next: {
-           link: createLink(actionContext, {page: page+1}),
-             title: "next"
+         actionContext.models.get('PagerMojitModel').getData('mojito', start, PAGE_SIZE, function(data) {
+           Y.log('DATA: ' + Y.dump(data));
+           var theData = {
+           data: data, // images
+           hasLink: false,
+           prev: {
+             title: "prev" // opportunity to localize
            },
-           query: 'mojito'
-         };
-         if (page > 1) {
-           theData.prev.link = createLink(actionContext, {page: page-1});
-           theData.hasLink = true;
-         }
-         actionContext.done(theData);
-       });
-     }
-     ...
-   };
-   ...
+           next: {
+             link: createLink(actionContext, {page: page+1}),
+               title: "next"
+             },
+             query: 'mojito'
+           };
+           if (page > 1) {
+             theData.prev.link = createLink(actionContext, {page: page-1});
+             theData.hasLink = true;
+           }
+           actionContext.done(theData);
+         });
+       }
+       ...
+     };
+   }, '0.0.1', {requires: ['dump', 'mojito-url-addon', 'mojito-params-addon', 'PagerMojitModel']});
+
 
 The URLs for the **prev** and **next** links are created by passing the mojit instance, 
 the method, and the query string parameters to the ``make`` method from the ``Url`` addon. 
@@ -581,9 +582,8 @@ create URLs for the **next** and **prev** links.
          }
          // Page param is 1 based, but the model is 0 based
          start = (page - 1) * PAGE_SIZE;
-         var model = actionContext.models.PagerMojit;
          // Data is an array of images
-         model.getData('mojito', start, PAGE_SIZE, function(data) {
+         actionContext.models.get('PagerMojitModel').getData('mojito', start, PAGE_SIZE, function(data) {
            Y.log('DATA: ' + Y.dump(data));
            var theData = {
              data: data, // images
@@ -616,7 +616,7 @@ create URLs for the **next** and **prev** links.
        }
        return actionContext.url.make('frame', 'index', Y.QueryString.stringify(mergedParams));
      }
-   }, '0.0.1', {requires: ['dump', 'mojito-url-addon', 'mojito-params-addon']});
+   }, '0.0.1', {requires: ['dump', 'mojito-url-addon', 'mojito-params-addon', 'PagerMojitModel']});
 
 .. _code_exs_events-setup:
 
@@ -699,9 +699,8 @@ To set up and run ``binding_events``:
               }
               // Page param is 1 based, but the model is 0 based
               start = (page - 1) * PAGE_SIZE;
-              var model = actionContext.models.PagerMojit;
               // Data is an array of images
-              model.getData('mojito', start, PAGE_SIZE, function(data) {
+              actionContext.models.get('PagerMojitModel').getData('mojito', start, PAGE_SIZE, function(data) {
                 Y.log('DATA: ' + Y.dump(data));
                 var theData = {
                   data: data, // images
@@ -734,7 +733,7 @@ To set up and run ``binding_events``:
             }
             return actionContext.url.make('frame', 'index', Y.QueryString.stringify(mergedParams));
           }
-      }, '0.0.1', {requires: ['dump', 'mojito-url-addon', 'mojito-params-addon']});
+      }, '0.0.1', {requires: ['dump', 'mojito-url-addon', 'mojito-params-addon', 'PagerMojitModel']});
 
 
 #. To get Flickr photo information using YQL, create the file ``models/model.server.js`` with 

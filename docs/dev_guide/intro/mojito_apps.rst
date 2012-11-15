@@ -152,8 +152,6 @@ rendering engine.
    |-- index.js
    |-- mojits/
    |   `-- [mojit_name]
-   |       |-- actions/
-   |       |   `-- *.{affinity}.js
    |       |-- assets/
    |       |-- autoload/
    |       |   `-- *.{affinity}.js
@@ -169,8 +167,6 @@ rendering engine.
    |       |-- tests/
    |       |   |-- autoload/
    |       |   |   `-- {module_name}.{affinity}-tests.js
-   |       |   |-- binders/
-   |       |   |   `-- {view_name}.client-tests.js
    |       |   |-- controller.{affinity}-tests.js
    |       |   `-- models/
    |       |      `-- {model_name}.{affinity}-tests.js

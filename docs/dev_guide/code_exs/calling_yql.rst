@@ -185,7 +185,7 @@ passed to the ``search`` function of the model.
 To access model functions from the controller, you use the Action Context (``ac``) object with the 
 following syntax: ``ac.models.get({model_name})``. This code example uses the ``flickr`` mojit, so to 
 access the model from the controller, you would use ``ac.models.get('flickrModel')`` as seen in the 
-``model.server.js`` below. Once the callback function passed to ``search`` returns the array of 
+``controller.server.js`` below. Once the callback function passed to ``search`` returns the array of 
 photo objects, the ``done`` method sends the ``photos`` array and the query string parameters to 
 the ``index`` template.
 
@@ -201,17 +201,17 @@ the ``index`` template.
          start = page * count;
          var model = ac.models.get('flickrModel');
          model.search (q, start, count, function(photos) {
-         ac.done (
-           {
-             photos: photos,
-             page: page,
-             count: count,
-             start: start
+           ac.done (
+             {
+               photos: photos,
+               page: page,
+               count: count,
+               start: start
+             });
            });
-         });
-       }
-     };
-   }, '0.0.1', {requires: [
+         }
+       };
+     }, '0.0.1', {requires: [
      'mojito-models-addon', 'mojito-params-addon',
      'flickrModel'
    ]});

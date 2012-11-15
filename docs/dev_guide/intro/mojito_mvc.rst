@@ -141,30 +141,14 @@ getting data.
 Using Models
 ------------
 
-The function of the model is to get information and send it to the controller. When 
-calling model functions from a mojit controller, a callback function must be provided to 
-allow for the model code to run long-term processes for data storage and retrieval. As a 
-matter of best practice, the model should be a YUI module and not include blocking code, 
-although blocking code can be used.
+The function of the model is to get information and send it to the controller. 
+When calling model functions from a mojit controller, a callback function must 
+be provided to allow for the model code to run long-term processes for data 
+storage and retrieval. As a matter of best practice, the model should be a YUI 
+module and not include blocking code, although blocking code can be used.
 
-To access a model from the controller, use the syntax ``ac.models.get('{model_name}')`` 
-as seen in the code example below. For a more detailed example, 
-see `Calling the Model`_ and `Calling YQL from a Mojit <../code_exs/calling_yql.html>`_.
-
-.. code-block:: javascript
-
-   YUI.add('{mojit_name}', function(Y, NAME) {
-     Y.namespace('mojito.controllers')[NAME] = { 
-       index: function(ac) {
-         // Use ac.models.get('{mojit_name}') if the default model 'model.server.js' is being used.
-         var model = ac.models.get('{model_name}');
-       }
-     };
-   }, '0.0.1', { requires:[
-     'mojito-models-addon',
-     '{model_name}'
-   ]});
-
+See :ref:`Calling the Model <mvc-controllers-call_model>` to learn how
+to call the model from the controller.
 
 .. _mvc_models-ex:    
 
@@ -266,15 +250,15 @@ Several objects and methods form the backbone of the controller.
   described within ``Y.namespace('mojito.controllers')[NAME]`` using 
   ``this.otherFunction``. This is helpful when you've added some utility functions 
   onto your controller that do not accept an ActionContext object.
-- ``requires`` - (optional) an array that lists additional YUI modules needed 
+- ``requires`` - (optional) an array that lists any addons that are needed 
   by the controller.
 
 The example controller below shows you how the components are used. The 
 ``status`` mojit is registered with ``YUI.add`` and the ``init`` function 
 stores the date so it can be used by other functions, and the ``this`` 
 reference allows the ``index`` function to call ``create_status``. Lastly, 
-the ``requires`` array instructs Mojito to load the YUI module 
-``mojito-intl-addon`` for localizing the date and title.
+the ``requires`` array loads the addons ``Intl``, ``Params``, and ``Url``
+that are needed by the controller. 
 
 .. code-block:: javascript
 
@@ -296,7 +280,7 @@ the ``requires`` array instructs Mojito to load the YUI module
          return user + ': ' +  status + ' - ' + time;
        }
      };
-   }, '0.0.1', {requires: ['mojito-intl-addon']});
+   }, '0.0.1', {requires: ['mojito-intl-addon', 'mojito-params-addon', mojito-url-addon']});
 
 .. _mvc-controllers-actions:
 
@@ -376,7 +360,25 @@ to access framework features such as API methods and addons that extend
 functionality. To access the model from the ActionContext object ``ac``, 
 you use the following syntax: ``ac.models.get('{model_name}').{model_function}``
 
-Thus, if you wanted to use the ``photo_search`` function in the model for the 
+
+The ``{model_name}`` is the YUI module name that is passed to ``YUI.add`` of the 
+model file, not the model file name. The example controller below shows the 
+syntax for calling the model from a controller. 
+
+.. code-block:: javascript
+
+   YUI.add('{mojit_name}', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
+       index: function(ac) {
+         var model = ac.models.get('{model_name}');
+       }
+     };
+   }, '0.0.1', { requires:[
+     'mojito-models-addon',
+     '{model_name}'
+   ]});
+
+For example, if you wanted to use the ``photo_search`` function in the model for the 
 ``flickr`` mojit, you would use the following: ``ac.models.get('flickr').photo_search(args, callback);``
 
 The ``controller.server.js`` below shows a simple example of calling 
@@ -402,6 +404,9 @@ The ``controller.server.js`` below shows a simple example of calling
      'mojito-models-addon',
      'simpleModel'
    ]});
+
+For a more detailed example, see `Calling the Model`_ and 
+`Calling YQL from a Mojit <../code_exs/calling_yql.html>`_.
 
 .. _mvc-controllers-pass_data:
 

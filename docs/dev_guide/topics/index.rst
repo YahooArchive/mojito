@@ -17,7 +17,7 @@ are complemented by code snippets, for working code examples, see
    mojito_testing
    mojito_composite_mojits
    mojito_run_dyn_defined_mojits
-   mojito_framework_mojits
+   mojito_frame_mojits
    mojito_extensions
    mojito_using_contexts
    mojito_npm
