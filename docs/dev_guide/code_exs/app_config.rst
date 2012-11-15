@@ -35,9 +35,9 @@ The example ``application.json`` below specifies that the application use the mo
      }
    ]
 
-The routing configuration for Mojito applications is contained in ``routes.json``. In this 
-example ``routes.json``, the Mojito server is told to call the ``index`` method in the 
-controller when an HTTP GET is called on the root path.
+The routing configuration for Mojito applications is contained in ``routes.json``. 
+In this example ``routes.json``, the Mojito server is told to call the ``index`` 
+method in the controller when an HTTP GET is called on the root path.
 
 .. code-block:: javascript
 
@@ -52,8 +52,8 @@ controller when an HTTP GET is called on the root path.
      }
    ]
 
-The ``index`` method is a canned method in the controller when you create a mojit. To 
-learn how to create templates that get data from the controller, 
+The ``index`` method is a canned method in the controller when you create a 
+mojit. To learn how to create templates that get data from the controller, 
 see `Creating a Simple View with Handlebars <simple_view_template.html>`_.
 
 .. _code_exs_basic_config-setup:

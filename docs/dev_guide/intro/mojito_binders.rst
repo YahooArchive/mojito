@@ -31,7 +31,7 @@ To use binders, your application is required to have the following:
 
 - The top-level mojit instance defined in ``application.json`` is of type 
   ``HTMLFrameMojit`` or your own frame mojit. See 
-  `HTMLFrameMojit <../topics/mojito_framework_mojits.html#htmlframemojit>`_ 
+  `HTMLFrameMojit <../topics/mojito_frame_mojits.html#htmlframemojit>`_ 
   for an introduction and example configuration.
 - Your application is configured to deploy code to the client with the 
   ``deploy`` property in ``application.json``. See 

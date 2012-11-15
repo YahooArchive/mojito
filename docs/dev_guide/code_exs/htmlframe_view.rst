@@ -19,7 +19,7 @@ tag. To be clear, although the name ``HTMLFrameMojit`` contains the string
 "frame", the ``HTMLFrameMojit`` does **not** create HTML ``frame`` or ``iframe`` 
 elements. This example only uses one child mojit, but you can configure the 
 application to use many child mojits. For more information, see 
-`HTMLFrameMojit <../topics/mojito_framework_mojits.html#htmlframemojit>`_.
+`HTMLFrameMojit <../topics/mojito_frame_mojits.html#htmlframemojit>`_.
 
 The following topics will be covered:
 
