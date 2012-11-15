@@ -39,15 +39,15 @@ Models are found in the ``models`` directory of each mojit. For the application
 
 .. _mvc_models-naming:
 
-Naming Conventions
-------------------
+Naming Convention
+-----------------
 
-The name of the model files depend on the affinity, which is the location where 
-a resource is available. Thus, the name of the model file is 
-``{model_name}.{affinity}.js``, where ``{affinity}`` can be ``common``, ``server``, 
-or ``client``. 
+The name of the model files depend on the affinity, which is the location 
+where a resource is available. Thus, the name of the model file is 
+``{model_name}.{affinity}.js``, where ``{affinity}`` can be ``common``, 
+``server``, or ``client``. 
 
-When adding model as a module with ``YUI.add`` in the model file,  we suggest 
+When adding the model as a module with ``YUI.add``,  we suggest 
 you use the following syntax: ``{mojit_name}Model{Model_name}``
 
 For the default model ``model.server.js``, the suggested convention is 
@@ -198,18 +198,56 @@ do all of the work or delegate the work to models and/or views. In the typical c
 mojit controller requests the model to retrieve data and then the controller serves that 
 data to the views.
 
+Location
+--------
+
+Controllers are found in the mojit directory. For the application 
+``hello`` with the mojit ``HelloMojit``, the path to the controller would be 
+``hello/mojits/HelloMojit/controller.server.js``.
+
+.. _mvc_controllers-naming:
+
+Naming Convention
+-----------------
+
+.. _controllers_naming-files:
+
+Files
+#####
+
 A mojit can only use one controller, but may have a different controller for each 
 environment (client vs server). The name of the mojit controllers uses the syntax 
 ``controller.{affinity}.js``, where the value can be ``common``, ``server``, or 
 ``client``. The affinity is simply the location of the resource, which is important 
 because code can be deployed to the client.
 
+.. _controllers_naming-yui_mod:
+
+YUI Module
+##########
+
+When registering the controller as a module with ``YUI.add`` in the controller,  
+you need to use the mojit name, which is also the same as the mojit directory 
+name: ``YUI.add({mojit_name}, ...);``
+
+Thus, the ``YUI.add`` statement in ``mojits/flickr/controller.server.js`` would 
+be the following:
+
+.. code-block:: javascript
+
+   YUI.add("flickr", function(Y, NAME) {
+      ...
+   });
+
+.. _mvc_models-structure:
+
+
 .. _mvc-controllers-structure:
 
 Basic Structure
 ---------------
 
-A controller should have the following basic structure:
+A controller should have the basic structure shown below. 
 
 .. code-block:: javascript
 
