@@ -272,7 +272,7 @@ YUI().use(
                 store._expandInstanceCache.server[key] = { x: 'y' };
                 store.expandInstance(inInstance, context, function(err, outInstance) {
                     A.isNull(err);
-                    A.areEqual(3, Object.keys(outInstance).length);
+                    A.areEqual(4, Object.keys(outInstance).length);
                     A.areEqual('a', outInstance.base);
                     A.areEqual('c', outInstance.type);
                     A.areEqual('y', outInstance.x);
