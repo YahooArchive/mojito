@@ -226,12 +226,20 @@ because code can be deployed to the client.
 YUI Module
 ##########
 
-When registering the controller as a module with ``YUI.add`` in the model file,  
-you need to use the mojit name: ``YUI.add({mojit_name}, ...);``
+When registering the controller as a module with ``YUI.add`` in the controller,  
+you need to use the mojit name, which is also the same as the mojit directory 
+name: ``YUI.add({mojit_name}, ...);``
 
-For example, to register the controller of the mojit ``HelloMojit``,
-you would use ``YUI.add('HelloMojit',...);``. The mojit name is
-also the same as the mojit directory name: ``{app_name}/mojits/{mojit_name}``
+Thus, the ``YUI.add`` statement in ``mojits/flickr/controller.server.js`` would 
+be the following:
+
+.. code-block:: javascript
+
+   YUI.add("flickr", function(Y, NAME) {
+      ...
+   });
+
+.. _mvc_models-structure:
 
 
 .. _mvc-controllers-structure:
@@ -239,8 +247,7 @@ also the same as the mojit directory name: ``{app_name}/mojits/{mojit_name}``
 Basic Structure
 ---------------
 
-A controller should have the basic structure shown below. The ``{mojit_name}`` must
-be the same as the mojit directory name. 
+A controller should have the basic structure shown below. 
 
 .. code-block:: javascript
 

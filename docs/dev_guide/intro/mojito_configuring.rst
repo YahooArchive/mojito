@@ -26,12 +26,12 @@ structure and are in JSON format. At the top level of each configuration
 file is an array. Each item of the array is an object that configures 
 one component of Mojito, such as logging, assets, mojits, static resources, etc.
 
-Each configuration object is required to have a ``settings`` property that specifies 
-conditions for applying the configuration settings. These conditions could be used to 
-determine the configurations in different environments. 
+Each configuration object is required to have a ``settings`` property that 
+specifies conditions for applying the configuration settings. These conditions 
+could be used to determine the configurations in different environments. 
 
-Below is the skeleton of a configuration file. See `Application Configuration`_ and 
-`Mojit Configuration`_ for details about specific configuration files.
+Below is the skeleton of a configuration file. See `Application Configuration`_ 
+and `Mojit Configuration`_ for details about specific configuration files.
 
 .. code-block:: javascript
 
@@ -502,9 +502,9 @@ mojit instances ``sign_in`` and ``sign_out`` are defined:
 Parent Mojit With Child Mojit
 #############################
 
-A mojit instance can be configured to have a child mojit using the ``child`` object. In 
-the example ``application.json`` below, the mojit instance ``parent`` of type 
-``ParentMojit`` has a child mojit of type ``ChildMojit``.
+A mojit instance can be configured to have a child mojit using the ``child`` 
+object. In the example ``application.json`` below, the mojit instance ``parent`` 
+of type ``ParentMojit`` has a child mojit of type ``ChildMojit``.
 
 .. code-block:: javascript
 
@@ -529,9 +529,9 @@ the example ``application.json`` below, the mojit instance ``parent`` of type
 Parent Mojit With Children
 ##########################
 
-A mojit instance can also be configured to have more than one child mojits using the 
-``children`` object that contains mojit instances. To execute the children, the parent 
-mojit would use the ``Composite addon``. 
+A mojit instance can also be configured to have more than one child mojits using 
+the ``children`` object that contains mojit instances. To execute the children, 
+the parent mojit would use the ``Composite addon``. 
 See `Composite Mojits <../topics/mojito_composite_mojits.html#composite-mojits>`_
 for more information.
 

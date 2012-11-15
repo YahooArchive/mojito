@@ -101,8 +101,8 @@ is available.
 - ``binders`` - directory containing event binding files for the mojit.
 - ``controller.server.js`` - the mojit controller that runs on the server. You 
   can also create the file ``controller.client.js`` to have a mojit controller 
-  that runs on the 
-  client or the file ``controller.common.js`` that can run on the client or server.
+  that runs on the client or the file ``controller.common.js`` that can run 
+  on the client or server.
 - ``models`` - directory containing the model scripts.
 
    - ``model.server.js`` - default model that runs on the server. You can also 

@@ -104,7 +104,7 @@ plugin name (``'addon-ac-cheese'``) and the constructor (``CheeseAcAddon``) with
 
 .. code-block:: javascript
 
-   // Register the plugin name
+   // Register the plugin name (must be unique)
    YUI.add('addon-ac-cheese', function(Y, NAME) {
      // Constructor for addon
      function CheeseAcAddon(command, adapter, ac) {
@@ -151,7 +151,9 @@ added through the ``prototype`` property.
      }
      CheeseAcAddon.prototype = {
        // The "namespace" is where in the ActionContext
-       // the user can find this addon.
+       // the user can find this addon. The namespace
+       // must be the same as the first part of the addon file.
+       // Thus, this addon file must be named 'cheese'.{affinity}.js'
        namespace: 'cheese',
        cheesify: function(obj) {
          var n;
@@ -182,8 +184,8 @@ Using Your Addon
 
 The addon in `Example Addon`_ registered the plugin ``addon-ac-cheese`` and 
 made its constructor available through the namespace ``cheese``. This namespace
-must match the first part of the addon file name, so
-the addon file name is ``cheese.common.js``.
+must match the first part of the addon file name, so the addon file name is 
+``cheese.common.js``.
 
 Addons are not automatically added to the ActionContext, so to access an 
 addon, your controller needs to add the YUI plugin name to the ``requires`` 
