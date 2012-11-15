@@ -1,6 +1,6 @@
-###########
+===========
 Mojito: FAQ
-###########
+===========
 
 This page answers some of the most common questions we get about Mojito. For 
 troubleshooting issues, see 
@@ -34,7 +34,6 @@ Mojits
 * :ref:`What is a mojit? <mojit_exp>`
 * :ref:`Can mojits have child mojits? <moj_children>`
 * :ref:`How do mojits share objects? <moj_objects>`
-* :ref:`How can the same 'Y' instance be shared among mojits? <moj_share_y>`
 * :ref:`Can mojit instances be dynamically defined and then run? <moj_dynamic_creation>`
 * :ref:`Is there a way to make all of the resources, such as assets, addons, binders, models, of one mojit available to other mojits? <moj_resources>`
 * :ref:`Why does Mojito replace hyphens in the names of my mojits with underscores? <moj_names_hyphens>`
@@ -180,12 +179,12 @@ General
 .. _moj_lazyloading:
 .. topic:: **Does Mojito support lazy loading?** 
 
-    Yes, the Mojito framework comes with the framework mojit ``LazyLoadMojit`` specifically 
+    Yes, the Mojito framework comes with the frame mojit ``LazyLoadMojit`` specifically 
     for lazy loading. The ``LazyLoadMojit`` allows you to defer the loading of a mojit 
     instance by first dispatching the ``LazyLoadMojit`` as a proxy to the client. From the 
     client, ``LazyLoadMojit`` can then request Mojito to load the proxied mojit. This 
     allows your Mojito application to load the page quickly and then lazily load parts of 
-    the page. See `LazyLoadMojit <../topics/mojito_framework_mojits.html#lazyloadmojit>`_ 
+    the page. See `LazyLoadMojit <../topics/mojito_frame_mojits.html#lazyloadmojit>`_ 
     to learn more.
 
 ------------
@@ -207,8 +206,7 @@ General
          module that selects the best available local storage API supported by the browser 
          it's running in.
        - `Create an addon <../topics/mojito_extensions.html#creating-new-addons>`_ that 
-         uses a singleton or attaches data to the YUI instance. See the ``shareYUIInstance`` 
-         property in the `configuration object <../intro/mojito_configuring.html#configuration-object>`_.
+         uses a singleton. 
        
     - **Server-Side Caching (implementation depends on server)**
     
@@ -228,7 +226,8 @@ General
     `affinity <../reference/glossary.html#affinity>`_, of the controller, models, addons, 
     etc., that you want to run on both the client and the server. To configure Mojito to 
     deploy application code to the client, you set the ``deploy`` property of the 
-    application configuration to ``true``. See `Configuring Applications to Be Deployed to Client <../intro/mojito_configuring.html#configuring-applications-to-be-deployed-to-client>`_ 
+    application configuration to ``true``. 
+    See `Configuring Applications to Be Deployed to Client <../intro/mojito_configuring.html#configuring-applications-to-be-deployed-to-client>`_ 
     for more information.
     
     Mojito determines the client device based on the HTTP header ``User-Agent`` or the 
@@ -313,7 +312,7 @@ General
        * Assets and data can be shared through the 
          `template <../reference/glossary.html#view-template>`_ of a parent mojit or 
          through a frame mojit such as 
-         `HTMLFrameMojit <../topics/mojito_framework_mojits.html#htmlframemojit>`_ that 
+         `HTMLFrameMojit <../topics/mojito_frame_mojits.html#htmlframemojit>`_ that 
          creates a parent template.
     
     **Rollup/Minify Assets** 
@@ -344,7 +343,7 @@ General
     From the client, your Mojito application should lazy load assets as often as possible.
     For example, the `YUI ImageLoader Utility <http://yuilibrary.com/yui/docs/imageloader/>`_ 
     can be used to help you lazy load images. You can even lazy load a mojit from the client
-    using the `LazyLoadMojit <../topics/mojito_framework_mojits.html#lazyloadmojit>`_.
+    using the `LazyLoadMojit <../topics/mojito_frame_mojits.html#lazyloadmojit>`_.
    
 
 ------------
@@ -394,20 +393,11 @@ Mojits
     See `Configuring Applications to Have Multiple Mojit <../intro/mojito_configuring.html#configuring-applications-to-have-multiple-mojits>`_ 
     and `Composite Mojits <../topics/mojito_composite_mojits.html#composite-mojits>`_. 
 
-    You can also use framework mojits, such as `HTMLFrameMojit <../topics/mojito_framework_mojits.html#htmlframemojit>`_ 
+    You can also use frame mojits, such as `HTMLFrameMojit <../topics/mojito_frame_mojits.html#htmlframemojit>`_ 
     that can execute one or more child mojits.       
 
 ------------
     
-.. _moj_share_y:
-.. topic:: **How can the same 'Y' instance be shared among mojits?**
-
-    Mojito creates sandboxes for mojits, thus, each mojit has its own ``Y`` instance. 
-    To allow mojito to share one ``Y`` instance, you set the ``shareYUIInstance: true`` in the 
-    ``application.json`` configuration file. See the `configuration Object <../intro/mojito_configuring.html#configuration-object>`_ 
-    for more information.
-
-------------    
     
 .. _moj_objects:
 .. topic:: **How do mojits share objects?** 
@@ -468,9 +458,9 @@ Configuration
 .. topic:: **How do I configure Mojito to deploy my application to the client?**
 
     Binders always get deployed to the client, but to deploy your controller to the
-    client, you need to use the `HTMLFrameMojit <../topics/mojito_framework_mojits.html#htmlframemojit>`_ 
+    client, you need to use the `HTMLFrameMojit <../topics/mojito_frame_mojits.html#htmlframemojit>`_ 
     and set the ``deploy`` field to ``true`` in the ``application.json`` file. See 
-    `Deploying to Client <../topics/mojito_framework_mojits.html#deploying-to-client>`_ 
+    `Deploying to Client <../topics/mojito_frame_mojits.html#deploying-to-client>`_ 
     for more details.
 
 ------------ 
@@ -507,8 +497,6 @@ Configuration
     file. See `Configuring Defaults for Mojit Instances <../intro/mojito_configuring.html#configuring-defaults-for-mojit-instances>`_
     and `Configuring Defaults for Mojit Instances <../intro/mojito_configuring.html#configuring-defaults-for-mojit-instances>`_ 
     for more information.
-
-
 
 
 
@@ -715,8 +703,8 @@ Logging/Testing
 .. _moj_log_level:
 .. topic:: **How do I change the logging levels for my Mojito application?** 
 
-    You can set log levels for your application using the ``log`` object in ``application.json``. 
-    You can also set default log levels using the ``log`` object in the ``defaults.json`` 
+    You can set log levels for your application using the ``yui.config`` object in ``application.json``. 
+    You can also set default log levels using the ``yui.config`` object in the ``defaults.json`` 
     at the application or mojit level.
 
     See `Logging <../topics/mojito_logging.html>`_ for details and the code example 
@@ -739,9 +727,12 @@ Logging/Testing
 .. _moj_client_server_logging:
 .. topic:: **Can logging be configured to be different for the client and server?** 
 
-    Yes, the ``application.json`` configuration file can contain a ``log`` object that has 
-    a ``client`` and a ``server`` object that allow you to independently configure logging 
-    for the client and server. See `log Object <../intro/mojito_configuring.html#log-object>`_ 
+    Yes, the ``application.json`` configuration file can contain a ``yui.config`` object that 
+    contain the properties ``logExclude`` and ``logInclude`` to log certain components
+    of your application. You can also use context configurations to have different
+    configurations depending on the runtime environment.
+
+    See `config Object <../intro/mojito_configuring.html#yui_config>`_ 
     and the `Log Configuration <../topics/mojito_logging.html#log-configuration>`_ for 
     implementation details.            
 

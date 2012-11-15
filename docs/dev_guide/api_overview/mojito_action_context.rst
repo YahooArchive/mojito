@@ -1,18 +1,18 @@
-
-
 ==============
 Action Context
 ==============
 
-The Action Context is an essential element of the Mojito framework that gives you access to the 
-frameworks features from within a controller function. To use the Action Context, you create an 
-instance of the ``ActionContext`` class, which we will call ``ac`` for short. From ``ac``, you can 
-call methods to execute mojit actions within either a server or client context. See the 
-`ActionContext Class <../../api/classes/ActionContext.html>`_ for the methods available from ``ac``.
+The Action Context is an essential element of the Mojito framework that gives you access 
+to the frameworks features from within a controller function. To use the Action Context, 
+you create an instance of the ``ActionContext`` class, which we will call ``ac`` for 
+short. From ``ac``, you can call methods to execute mojit actions within either a server 
+or client context. See the `ActionContext Class <../../api/classes/ActionContext.html>`_ 
+for the methods available from ``ac``.
 
-One of the most common methods used from an instance of the ``ActionContext`` class is ``done``, 
-which lets you pass data from the controller to a view. In the example ``controller.server.js`` below, 
-the ``done`` method sends the ``data`` object to the ``index`` template.
+One of the most common methods used from an instance of the ``ActionContext`` class is 
+``done``, which lets you pass data from the controller to a view. In the example 
+``controller.server.js`` below, the ``done`` method sends the ``data`` object to the 
+``index`` template.
 
 .. code-block:: javascript
 
@@ -29,9 +29,6 @@ the ``done`` method sends the ``data`` object to the ``index`` template.
      * @constructor
      */
      Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(config) {
-         this.config = config;
-       },
        /**
        * Method corresponding to the 'index' action.
        *

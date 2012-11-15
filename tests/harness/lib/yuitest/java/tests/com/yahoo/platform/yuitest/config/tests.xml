@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<yuitest version="3">
+    <tests base="http://www.example.com/tests/" timeout="10000">
+        <url>test1</url>
+        <url timeout="50000">test2/more</url>
+        <url version="2">test3/more?a=b</url>
+        <url>test4/more?a=b&amp;c=d</url>
+    </tests>
+    <tests>
+        <url>http://www.example.com:8080/tests/test1</url>
+        <url>http://www.example.net/tests/test2</url>
+        <url>http://www.example.cc/tests/test3</url>
+    </tests>
+</yuitest>

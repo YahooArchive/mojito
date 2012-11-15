@@ -13,12 +13,28 @@ YUI().use(
     'json',
     'test',
     function(Y) {
-    
+
     var suite = new YUITest.TestSuite('mojito-addon-rs-yui-tests'),
+        libasync = require('async'),
         libpath = require('path'),
+        libvm = require('vm'),
         mojitoRoot = libpath.join(__dirname, '../../../../../../lib'),
         A = Y.Assert,
         AA = Y.ArrayAssert;
+
+
+    function parseConfig(config) {
+        var ctx = {
+            Y: {
+                config: {},
+                merge: Y.merge
+            },
+            x: undefined
+        };
+        config = 'x = ' + config + ';';
+        libvm.runInNewContext(config, ctx, 'config');
+        return ctx.x;
+    }
 
 
     function MockRS(config) {
@@ -539,13 +555,166 @@ YUI().use(
         },
 
 
-        'ignore: makeResourceVersions()': function() {
-            // TODO
-        },
+        'yui meta': function() {
+            var fixtures = libpath.join(__dirname, '../../../../../fixtures/gsg5'),
+                store = new Y.mojito.ResourceStore({ root: fixtures }),
+                series = [];
+            store.preload();
 
-
-        'ignore: getResourceContent()': function() {
-            // TODO
+            series.push(function(next) {
+                var res, ress;
+                ress = store.getResourceVersions({mojit: 'shared', type: 'yui-module', subtype:'synthetic', name:'loader-app-base-en-US' });
+                A.isArray(ress);
+                A.areSame(1, ress.length, "didn't find yui-module-synthetic-loader-app-base-en-US");
+                res = ress[0];
+                A.isObject(res);
+                store.getResourceContent(res, function(err, buffer, stat) {
+                    A.isNull(err, 'error');
+                    A.isNotNull(stat, 'stat');
+                    meta = buffer.toString();
+                    var matches = meta.match(/Y\.applyConfig\(([\s\S]+?)\);/);
+                    var config = parseConfig(matches[1]);
+                    A.isObject(config);
+                    A.isObject(config.groups);
+                    A.areSame(1, Object.keys(config.groups).length);
+                    A.isObject(config.groups.app);
+                    // we'll just spot-check a few things
+                    A.isObject(config.groups.app.modules);
+                    A.isObject(config.groups.app.modules['lang/PagedFlickr_en-US']);
+                    A.isArray(config.groups.app.modules['lang/PagedFlickr_en-US'].requires);
+                    AA.itemsAreEqual(['intl'], config.groups.app.modules['lang/PagedFlickr_en-US'].requires);
+                    A.isObject(config.groups.app.modules['mojito-client']);
+                    A.isArray(config.groups.app.modules['mojito-client'].requires);
+                    A.isUndefined(config.groups.app.modules['mojito-client'].expanded_map);
+                    A.isTrue(Object.keys(config.groups.app.modules['mojito-client'].requires).length > 0);
+                    A.isObject(config.groups.app.modules['PagedFlickrBinderIndex']);
+                    A.isArray(config.groups.app.modules['PagedFlickrBinderIndex'].requires);
+                    A.isUndefined(config.groups.app.modules['lang/PagedFlickr_de']);
+                    next();
+                });
+            });
+            series.push(function(next) {
+                var res, ress;
+                ress = store.getResourceVersions({mojit: 'shared', type: 'yui-module', subtype:'synthetic', name:'loader-app-resolved-en-US' });
+                A.isArray(ress);
+                A.areSame(1, ress.length);
+                res = ress[0];
+                A.isObject(res);
+                store.getResourceContent(res, function(err, buffer, stat) {
+                    A.isNull(err, 'err');
+                    A.isNotNull(stat, 'stat');
+                    meta = buffer.toString();
+                    var matches = meta.match(/Y\.applyConfig\(([\s\S]+?)\);/);
+                    var config = parseConfig(matches[1]);
+                    A.isObject(config);
+                    A.isObject(config.groups);
+                    A.areSame(1, Object.keys(config.groups).length);
+                    A.isObject(config.groups.app);
+                    // we'll just spot-check a few things
+                    A.isObject(config.groups.app.modules);
+                    A.isObject(config.groups.app.modules['lang/PagedFlickr_en-US']);
+                    A.isArray(config.groups.app.modules['lang/PagedFlickr_en-US'].requires);
+                    AA.itemsAreEqual(['intl'], config.groups.app.modules['lang/PagedFlickr_en-US'].requires);
+                    A.isObject(config.groups.app.modules['mojito-client']);
+                    A.isArray(config.groups.app.modules['mojito-client'].requires);
+                    A.isTrue(Object.keys(config.groups.app.modules['mojito-client'].requires).length > 0);
+                    A.isObject(config.groups.app.modules['PagedFlickrBinderIndex']);
+                    A.isArray(config.groups.app.modules['PagedFlickrBinderIndex'].requires);
+                    A.isUndefined(config.groups.app.modules['lang/PagedFlickr_de']);
+                    var i, j, obj;
+                    for (i in config.groups.app.modules) {
+                        if (config.groups.app.modules.hasOwnProperty(i)) {
+                            obj = config.groups.app.modules[i];
+                            A.isNotUndefined(obj.name);
+                            A.isNotUndefined(obj.type);
+                            A.isNotUndefined(obj.path);
+                            A.isNotUndefined(obj.requires);
+                            A.isNotUndefined(obj.defaults);
+                            // language bundles don't have expanded_map
+                            if (!obj.langPack) {
+                                for (j = 0; j < obj.requires.length; j += 1) {
+                                    A.isNotUndefined(obj.expanded_map[obj.requires[j]]);
+                                }
+                            }
+                        }
+                    }
+                    next();
+                });
+            });
+            series.push(function(next) {
+                var res, ress;
+                ress = store.getResourceVersions({mojit: 'shared', type: 'yui-module', subtype:'synthetic', name:'loader-yui3-base-en-US' });
+                A.isArray(ress);
+                A.areSame(1, ress.length);
+                res = ress[0];
+                A.isObject(res);
+                store.getResourceContent(res, function(err, buffer, stat) {
+                    A.isNull(err);
+                    A.isNotNull(stat);
+                    meta = buffer.toString();
+                    var matches = meta.match(/\.modules=[^|]+\|\|([\s\S]+?);},"",{requires:/);
+                    var config = parseConfig(matches[1]);
+                    A.isObject(config);
+                    A.isObject(config.intl);
+                    A.isUndefined(config.intl.expanded_map);
+                    A.isObject(config['dom-style-ie']);
+                    A.isObject(config['dom-style-ie'].condition);
+                    A.areSame('function', typeof config['dom-style-ie'].condition.test);
+                    A.isUndefined(config['dom-style-ie'].expanded_map);
+                    next();
+                });
+            });
+            series.push(function(next) {
+                var res, ress;
+                ress = store.getResourceVersions({mojit: 'shared', type: 'yui-module', subtype:'synthetic', name:'loader-yui3-resolved-en-US' });
+                A.isArray(ress);
+                A.areSame(1, ress.length);
+                res = ress[0];
+                A.isObject(res);
+                store.getResourceContent(res, function(err, buffer, stat) {
+                    A.isNull(err);
+                    A.isNotNull(stat);
+                    meta = buffer.toString();
+                    var matches = meta.match(/\.modules=[^|]+\|\|([\s\S]+?);},"",{requires:/);
+                    var config = parseConfig(matches[1]);
+                    for (i in config) {
+                        if (config.hasOwnProperty(i)) {
+                            obj = config[i];
+                            A.isNotUndefined(obj.name, 'name');
+                            A.isNotUndefined(obj.type, 'type');
+                            A.isNotUndefined(obj.requires, 'requires');
+                            A.isNotUndefined(obj.defaults, 'defaults');
+                            // language bundles don't have expanded_map
+                            if (!obj.langPack) {
+                                A.isNotUndefined(obj.expanded_map);
+                            }
+                        }
+                    }
+                    A.isObject(config.intl);
+                    A.isObject(config['dom-style-ie']);
+                    A.isObject(config['dom-style-ie'].condition);
+                    A.areSame('function', typeof config['dom-style-ie'].condition.test);
+                    next();
+                });
+            });
+            series.push(function(next) {
+                var res, ress;
+                ress = store.getResourceVersions({mojit: 'shared', type: 'yui-module', subtype:'synthetic', name:'loader-app' });
+                A.isArray(ress);
+                A.areSame(1, ress.length);
+                res = ress[0];
+                A.isObject(res);
+                store.getResourceContent(res, function(err, buffer, stat) {
+                    A.isNull(err);
+                    A.isNotNull(stat);
+                    meta = buffer.toString();
+                    A.areSame('YUI.add("loader",function(Y){},"",{requires:["loader-base","loader-yui3","loader-app"]});', meta);
+                    next();
+                });
+            });
+            libasync.series(series, function(err) {
+                A.isNull(err, 'no errors for all tests');
+            });
         },
 
 

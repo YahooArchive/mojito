@@ -4,8 +4,6 @@
 
         "name" : "html5app",
 
-        "commonlib" : "../../base/yui-test.js",
-
         "config" :{
             "baseUrl" : "http://localhost:4084"
         },
