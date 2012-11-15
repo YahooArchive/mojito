@@ -47,7 +47,7 @@ any of the Action Context addons by default.
 In Mojito versions 0.5.0 and later, you need to explicitly require an addon before you
 can use it. You require an addon by including an associated string in the 
 ``requires`` array of your controller. For example, in the controller below, 
-the Params addon is required by adding the string ``'mojito-params-addon'`` to the 
+the ``Params`` addon is required by adding the string ``'mojito-params-addon'`` to the 
 ``requires`` array. 
 
 
@@ -64,21 +64,21 @@ the Params addon is required by adding the string ``'mojito-params-addon'`` to t
 
 The list below shows what strings are used to require addons.
 
-- Assets addon - ``requires ['mojito-assets-addon']``
-- Composite addon - ``requires ['mojito-composite-addon']``
-- Config addon - ``requires ['mojito-config-addon']``
-- Cookies addon - ``requires ['mojito-cookie-addon']``
-- Http addon - ``requires ['mojito-http-addon']``
-- Intl addon - ``requires ['mojito-intl-addon']``
-- Params addon - ``requires ['mojito-params-addon']``
-- Url addon - ``requires ['mojito-url-addon']``
+- ``Assets`` addon - ``requires ['mojito-assets-addon']``
+- ``Composite`` addon - ``requires ['mojito-composite-addon']``
+- ``Config`` addon - ``requires ['mojito-config-addon']``
+- ``Cookies`` addon - ``requires ['mojito-cookie-addon']``
+- ``Http`` addon - ``requires ['mojito-http-addon']``
+- ``Intl`` addon - ``requires ['mojito-intl-addon']``
+- ``Params`` addon - ``requires ['mojito-params-addon']``
+- ``Url`` addon - ``requires ['mojito-url-addon']``
 
 
 .. note:: 
    To run older applications with Mojito v0.5.0 and later, you will need to
    modify your controllers so that the ActionContext addons that are being 
-   used are required. The most common addons are Config, Params, Url, 
-   and Assets.
+   used are required. The most common addons are ``Config``, ``Params``, ``Url``, 
+   and ``Assets``.
 
 
 

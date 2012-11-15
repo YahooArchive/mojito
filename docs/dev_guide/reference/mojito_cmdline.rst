@@ -2,9 +2,10 @@
 Mojito Command Line
 ===================
 
-Mojito comes with a command line tool that provides a number of key capabilities for the 
-developer, from generating code skeletons, to running tests and test coverage, to cleaning 
-up and documenting the code base.
+Mojito comes with a command line tool that provides a number of key 
+capabilities for the developer, from generating code skeletons, to 
+running tests and test coverage, to cleaning up and documenting the 
+code base.
 
 .. _mj_cmdlne-help:
 
@@ -24,30 +25,33 @@ To show help for a specific command:
 Creating Code from Archetypes
 #############################
 
-Archetypes are used to create skeletons for the different types of artifacts in a Mojito 
-application. The skeletons only contain stripped down boilerplate code that is easier to 
-create using the command-line tool rather than by hand.
+Archetypes are used to create skeletons for the different types of artifacts 
+in a Mojito application. The skeletons only contain stripped down boilerplate 
+code that is easier to create using the command-line tool rather than by hand.
 
 To create a skeleton for a Mojito application:
 
 ``$ mojito create app [<archetype-name>] <app-name>``
 
-This will create an empty application (i.e. one with no mojits) with the name provided. 
-The application is created in a directory named ``<app-name>`` within the current 
-directory. If no archetype name is provided, the default archetype is used.
+This will create an empty application (i.e. one with no mojits) with the name 
+provided. The application is created in a directory named ``<app-name>`` within 
+the current directory. If no archetype name is provided, the default archetype 
+is used.
 
-From the application directory, use the following command to create a skeleton for a mojit:
+From the application directory, use the following command to create a skeleton 
+for a mojit:
 
 ``$ mojito create mojit [<archetype-name>] <mojit-name>``
 
-This will create an empty mojit with the name provided. The command assumes it is being 
-executed within an application directory. Thus, the mojit is created in a directory named 
-``<mojit-name>`` within a ``mojits`` subdirectory of the application directory. For 
-example, the mojit ``MyMojit`` would be created in ``mojits/MyMojit``.
+This will create an empty mojit with the name provided. The command assumes it 
+is being executed within an application directory. Thus, the mojit is created 
+in a directory named ``<mojit-name>`` within a ``mojits`` subdirectory of the 
+application directory. For example, the mojit ``MyMojit`` would be created in 
+``mojits/MyMojit``.
 
-As with application creation, if no archetype name is provided, the default archetype is 
-used. Depending upon the archetype, the skeleton may include any or all of controller, 
-model, view, and binder.
+As with application creation, if no archetype name is provided, the default 
+archetype is used. Depending upon the archetype, the skeleton may include any 
+or all of controller, model, view, and binder.
 
 
 .. _mj_cmdlne-archetype:
@@ -58,22 +62,23 @@ Mojito Archetypes
 Mojito offers the following three archetypes for applications and mojits.
 
 - ``simple`` - The minimal configuration and code needed to run an application.
-- ``default`` - This archetype is run if no command line archetype option is specified. It 
-  is a happy medium between ``simple`` and ``full``.
-- ``full`` - Provides the most comprehensive configuration and code for applications.
-- ``hybrid`` - Creates a hybrid HTML5 application that can be plugged into a future 
-  component of Cocktails that will allow HTML5/JavaScript applications to access 
-  the features of native devices. 
+- ``default`` - This archetype is run if no command line archetype option is 
+  specified. It is a happy medium between ``simple`` and ``full``.
+- ``full`` - Provides the most comprehensive configuration and code for 
+  applications.
+- ``hybrid`` - Creates a hybrid HTML5 application that can be plugged into 
+  a future component of Cocktails that will allow HTML5/JavaScript applications 
+  to access the features of native devices. 
 
 .. _mj_cmdlne-testing:
 
 Testing
 #######
 
-Unit tests are run using YUI Test invoked using the Mojito command-line tool. Test output 
-is written to the console and also to the file ``{CWD}/artifacts/test/result.xml``, 
-where ``{CWD}`` is the current working directory. Note that it is not (yet) possible to 
-specify an alternative output location.
+Unit tests are run using YUI Test invoked using the Mojito command-line tool. 
+Test output is written to the console and also to the file ``{CWD}/artifacts/test/result.xml``, 
+where ``{CWD}`` is the current working directory. Note that it is not (yet) 
+possible to specify an alternative output location.
 
 - To run tests for an application:
 
@@ -83,8 +88,9 @@ specify an alternative output location.
 
    ``$ mojito test mojit <mojit-path> [<mojit-module>]``
 
-   If a mojit module (i.e., the YUI module for a portion of the mojit) is specified, only 
-   the tests for that module will be run. Otherwise all tests for the mojit will be run.
+   If a mojit module (i.e., the YUI module for a portion of the mojit) is 
+   specified, only the tests for that module will be run. Otherwise all tests 
+   for the mojit will be run.
 
 To run functional and unit tests for the Mojito framework,
 you would use the test framework `Yahoo! Arrow <https://github.com/yahoo/arrow>`_.
@@ -96,12 +102,13 @@ to run the framework tests for Mojito.
 Code Coverage
 #############
 
-Code coverage is invoked in the same way as unit testing, but with the added option 
-``--coverage`` or ``-c``. To run code coverage tests, you need to have Java installed.
+Code coverage is invoked in the same way as unit testing, but with the added 
+option ``--coverage`` or ``-c``. To run code coverage tests, you need to have 
+Java installed.
 
 Coverage results are written to the console and also to file in the directory 
-``{CWD}/artifacts/framework/coverage/``.  As with unit tests,  it is not possible to 
-specify an alternative output location.
+``{CWD}/artifacts/framework/coverage/``.  As with unit tests,  it is not 
+possible to specify an alternative output location.
 
 - To run code coverage for a Mojito application:
 
@@ -124,26 +131,27 @@ Use the following to start the server and run the application.
 
 ``$ mojito start [<port>] [--context "key1:value1,key2:value2,key3:value3"]``
 
-The port number specified in the command above overrides the port number in the application 
-configuration file, ``application.json``. The default port number is 8666. See 
-:ref:`Specifying Context <mj_cmdline-context>` to learn how to use the ``--context`` option.
+The port number specified in the command above overrides the port number in 
+the application configuration file, ``application.json``. The default port 
+number is 8666. See :ref:`Specifying Context <mj_cmdline-context>` to learn 
+how to use the ``--context`` option.
 
 
 
 Sanitizing Code
 ###############
 
-Static code analysis is run using JSLint invoked using the Mojito command-line tool. 
-JSLint output is written to text files and to a ``jslint.html`` file, making it easier to 
-view the results. The output file locations are specified below. Note that it is not 
-possible to specify an alternative output location.
+Static code analysis is run using JSLint invoked using the Mojito command-line 
+tool. JSLint output is written to text files and to a ``jslint.html`` file, 
+making it easier to view the results. The output file locations are specified 
+below. Note that it is not possible to specify an alternative output location.
 
 - To run JSLint on the Mojito framework code:
 
    ``$ mojito jslint``
 
-   Output is written to ``{CWD}/artifacts/framework/jslint/``, where ``{CWD}`` is the 
-   current working directory.
+   Output is written to ``{CWD}/artifacts/framework/jslint/``, where ``{CWD}`` 
+   is the current working directory.
 
 - To run JSLint on an application, including all of its (owned) mojits:
 
@@ -163,26 +171,26 @@ Documenting Code
 ################
 
 API documentation is generated using `YUI Doc <http://developer.yahoo.com/yui/yuidoc/>`_, 
-which is invoked using the Mojito command-line tool. Documentation output is written to 
-files in the locations specified below. Note that it is not (yet) possible to specify an 
-alternative output location.
+which is invoked using the Mojito command-line tool. Documentation output is 
+written to files in the locations specified below. Note that it is not (yet) 
+possible to specify an alternative output location.
 
 - To generate documentation for the Mojito framework itself:
 
    ``$ mojito docs mojito``
 
-   Output is written to ``{CWD}/artifacts/docs/mojito/``, where ``{CWD}`` is the current 
-   working directory.
+   Output is written to ``{CWD}/artifacts/docs/mojito/``, where ``{CWD}`` is 
+   the current working directory.
 
-- To generate documentation for an application, including all of its (owned) mojits, run 
-  the following from the application directory:
+- To generate documentation for an application, including all of its (owned) 
+  mojits, run the following from the application directory:
 
    ``$ mojito docs app``
 
    Output is written to ``{app-dir}/artifacts/docs/``.
 
-- To generate documentation for a specific mojit, run the following from the application 
-  directory:
+- To generate documentation for a specific mojit, run the following from the 
+  application directory:
 
    ``$ mojito docs mojit <mojit-name>``
 
@@ -197,11 +205,13 @@ Version Information
 
    ``$ mojito version``
 
-- To show the version for an application, run the following from the application directory: 
+- To show the version for an application, run the following from the 
+  application directory: 
 
    ``$ mojito version app <app-name>``
 
-- To show the version for a mojit, run the following from the application directory:
+- To show the version for a mojit, run the following from the application 
+  directory:
 
    ``$ mojito version mojit <mojit-name>``
 
@@ -213,14 +223,15 @@ Version Information
 Build System
 ############
 
-Mojito comes with a build command for generating an HTML5 offline Mojito application that 
-runs in different environments. The command must be run inside of the application you want 
-built.
+Mojito comes with a build command for generating an HTML5 offline Mojito 
+application that runs in different environments. The command must be run inside 
+of the application you want built.
 
 ``$ mojito build <type> [<output-path>] [--context "key1:value1,key2:value2,key3:value3"]``
 
 Output is written to ``{app-dir}/artifacts/builds/{type}`` by default. See 
-:ref:`Specifying Context <mj_cmdline-context>` to learn about the ``--context`` option.
+:ref:`Specifying Context <mj_cmdline-context>` to learn about the ``--context`` 
+option.
 
 .. _build_sys-types:
 
@@ -238,13 +249,14 @@ To build an HTML 5 application, use the the following:
 
 ``$ mojito build html5app``
 
-This generates a HTML5 Offline Application with a ``cache.manifest`` listing all the files 
-that will be available offline. An ``index.hb.html`` page is generated from the result of 
-calling the Web root ``/`` of the Mojito application that this command was run within. You 
-can build other pages by specifying the pages in the ``"builds": "html5app"`` object in 
+This generates a HTML5 Offline Application with a ``cache.manifest`` listing 
+all the files that will be available offline. An ``index.hb.html`` page is 
+generated from the result of calling the Web root ``/`` of the Mojito 
+application that this command was run within. You can build other pages by 
+specifying the pages in the ``"builds": "html5app"`` object in 
 ``application.json``. The `html5 <../intro/mojito_configuring.html#html5app-object>`_ 
-object lets you add the ``manifest`` attribute to the ``html`` element, configure relative 
-paths, and specify a list of URLs to pages to generate.
+object lets you add the ``manifest`` attribute to the ``html`` element, 
+configure relative paths, and specify a list of URLs to pages to generate.
 
 .. _build_types-hybridapp:
 
@@ -259,13 +271,13 @@ To build a hybrid application, use either of the following.
 ``$ mojito build hybridapp [-c <context>] -n <snapshot_name> -t <snapshot_tag> [<path/to/app/>]`` 
 
 
-This generates a HTML5 application that is customized to work with a future component
-of the Cocktails suite that will allow you to write HTML5/JavaScript applications
-that can access native features of mobile devices.
+This generates a HTML5 application that is customized to work with a future 
+component of the Cocktails suite that will allow you to write HTML5/JavaScript 
+applications that can access native features of mobile devices.
 
-The generated application contains Mojito, frame mojits, the default mojit ``top_frame``,
-your created mojits, and application configuration. The command will also create 
-a ``snapshot.json`` file that can be used tracking and updating applications.
+The generated application contains Mojito, frame mojits, the default mojit 
+``top_frame``, your created mojits, and application configuration. The command 
+will also create a ``snapshot.json`` file that can be used tracking and updating applications.
 
 
 .. _mj_cmdlne-compile_sys:
@@ -382,15 +394,16 @@ The ``mojito gv`` command has the following options:
 Specifying Context
 ##################
 
-When configuration files are read, a context is applied to determine which values will be 
-used for a given key. The applied context is a combination of the dynamic context 
-determined for each HTTP request and a static context specified when the server is 
-started. See `Using Context Configurations <../topics/mojito_using_contexts.html>`_ for 
+When configuration files are read, a context is applied to determine which 
+values will be used for a given key. The applied context is a combination of 
+the dynamic context determined for each HTTP request and a static context 
+specified when the server is started. See 
+`Using Context Configurations <../topics/mojito_using_contexts.html>`_ for 
 more information.
 
-The static context can be specified by a command-line option whose value is a 
-comma-separated list of key-value pairs. Each key-value pair is separated by a colon. 
-Try to avoid using whitespace, commas, and colons in the keys and values.
+The static context can be specified by a command-line option whose value 
+is a comma-separated list of key-value pairs. Each key-value pair is separated 
+by a colon. Try to avoid using whitespace, commas, and colons in the keys and values.
 
 ``$ mojito start --context "key1:value1,key2:value2,key3:value3"``
 

@@ -3,10 +3,11 @@ Testing
 =======
 
 Mojito provides a testing framework based on `YUI Test`_ that 
-allows you to run unit tests for modules, applications, mojit controllers, mojit 
-models, and mojit binders.
+allows you to run unit tests for modules, applications, mojit controllers, 
+mojit models, and mojit binders.
 
-The next few sections show you how to run specific tests with the ``mojito`` command.
+The next few sections show you how to run specific tests with the ``mojito`` 
+command.
 
 .. _mojito_testing-conventions:
 
@@ -17,26 +18,27 @@ Conventions
 
      - ``{app_name}/tests`` - application tests
      - ``{app_name}/mojits/{mojit_name}/tests`` - mojit tests
-     - ``{app_name}/autoload/{yui_module}/tests`` - tests for application-level YUI 
-       modules
+     - ``{app_name}/autoload/{yui_module}/tests`` - tests for 
+       application-level YUI modules
      - ``{app_name}/mojits/{mojit_name}/autoload/{yui_module}/tests`` - tests for 
        mojit-level YUI modules
 - Syntax for the name of the test file: ``{yui_module}.{affinity}-tests.js``
 
-  For example, the name of the unit test YUI module for the ``HelloMojit`` mojit with the 
-  ``server``   affinity would be ``HelloMojit-tests.server.js``.
+  For example, the name of the unit test YUI module for the ``HelloMojit`` mojit 
+  with the ``server``   affinity would be ``HelloMojit-tests.server.js``.
 
-- The unit test YUI module should include the target module and the ``mojito-test`` module 
-  in the ``requires`` array. The requires array includes the ``mojito-test`` module and 
-  the target module ``HelloMojit``:
+- The unit test YUI module should include the target module and the ``mojito-test`` 
+  module in the ``requires`` array. The requires array includes the ``mojito-test`` 
+  module and the target module ``HelloMojit``:
 
   .. code-block:: javascript
 
      { requires: [ 'mojito-test', 'HelloMojit' ] }
 
-.. note:: Test files that are **not** in a ``tests`` directory may be found by Mojito as 
-          long as the file name has the suffix ``-tests``. The suggested practice though 
-          is to place all test files in the ``tests`` directories shown above.
+.. note:: Test files that are **not** in a ``tests`` directory may be found by 
+          Mojito as long as the file name has the suffix ``-tests``. The 
+          suggested practice though is to place all test files in the ``tests`` 
+          directories shown above.
 
 .. _mojito_testing-application:
 
@@ -57,16 +59,18 @@ either the YUI module or the module to be tested.
 Mojit Tests
 ===========
 
-You create unit tests for your mojits and execute them also using the ``mojito`` command. 
-Mojit tests must require (included in the YUI ``require`` array) the module undergoing 
-testing and the Mojito Test module ``mojito-test``. For example, if the ``Foo`` module 
-was being tested, the ``requires`` array would include the ``Foo`` and ``mojit-test`` 
-modules as seen here: ``requires: [ 'Foo', 'mojit-test']``
+You create unit tests for your mojits and execute them also using the ``mojito`` 
+command. Mojit tests must require (included in the YUI ``require`` array) the 
+module undergoing testing and the Mojito Test module ``mojito-test``. For 
+example, if the ``Foo`` module was being tested, the ``requires`` array would 
+include the ``Foo`` and ``mojit-test`` modules as seen here: 
+``requires: [ 'Foo', 'mojit-test']``
 
-By default, Mojito uses the `YUI Test <http://yuilibrary.com/yuitest/>`_ framework for the 
-`test harness <http://en.wikipedia.org/wiki/Test_harness>`_ and assertion functions. 
-Each mojit test will be executed within a YUI instance along with its required 
-dependencies, so you can be assured to only have properly scoped values.
+By default, Mojito uses the `YUI Test <http://yuilibrary.com/yuitest/>`_ 
+framework for the `test harness <http://en.wikipedia.org/wiki/Test_harness>`_ 
+and assertion functions. Each mojit test will be executed within a YUI 
+instance along with its required dependencies, so you can be assured to only 
+have properly scoped values.
 
 .. _mojit_testing-types:
 
@@ -84,12 +88,12 @@ The following three types of mojit tests exist:
 Testing Standards
 =================
 
-To use the Mojito test harness, you are required to name files and testing modules 
-according to certain rules. The name of the test file must have the same 
-`affinity <../reference/glossary.html>`_ as the file being tested and have the string 
-``-tests`` appended to the affinity. For example, the mojit controller with the ``common`` 
-affinity would be ``controller.common.js``, so the name of the test file must be 
-``controller.common-tests.js``.
+To use the Mojito test harness, you are required to name files and testing 
+modules according to certain rules. The name of the test file must have the 
+same `affinity <../reference/glossary.html>`_ as the file being tested and 
+have the string ``-tests`` appended to the affinity. For example, the mojit 
+controller with the ``common`` affinity would be ``controller.common.js``, 
+so the name of the test file must be ``controller.common-tests.js``.
 
 The ``controller.common.js`` below requires the ``Foo`` module.
 
@@ -113,10 +117,11 @@ require the ``Foo-tests`` module as seen below.
 Binder Tests
 ============
 
-You can create multiple binder tests and place them in the ``tests/binders`` directory. 
-For example, if your binder is ``binders/index.js``, the test file would be 
-``tests/binders/index.common-test.js``. Notice that the affinity is ``common``, which can 
-be used for binders on the client or server and is also the default binder test file.
+You can create multiple binder tests and place them in the ``tests/binders`` 
+directory. For example, if your binder is ``binders/index.js``, the test file 
+would be ``tests/binders/index.common-test.js``. Notice that the affinity is 
+``common``, which can be used for binders on the client or server and is also 
+the default binder test file.
 
 .. _binders_test-ex:
 
@@ -153,8 +158,9 @@ Below is the binder ``index.js`` that includes the ``FooBinderIndex`` module:
      };
    }, '0.0.1', {requires: []});
 
-The test binder file ``tests/binders/index-common-tests.js`` below includes the module 
-``FooBinderIndex-tests`` and the requires ``array`` includes the ``FooBinderIndex`` module:
+The test binder file ``tests/binders/index-common-tests.js`` below includes the 
+module ``FooBinderIndex-tests`` and the requires ``array`` includes the 
+``FooBinderIndex`` module:
 
 .. code-block:: javascript
 
@@ -213,10 +219,10 @@ The ``controller.server.js`` below requires the ``Foo`` module.
      };
    }, '0.0.1', {requires: []});
 
-To test the controller of the ``Foo`` mojit, create a file in the tests directory called 
-``controller.common-tests.js`` that includes the ``Foo-tests`` module as seen below. Note
-that the reference to the controller is gotten using ``Y.mojito.controller`` or 
-``Y.mojito.controllers[NAME]``.
+To test the controller of the ``Foo`` mojit, create a file in the tests 
+directory called ``controller.common-tests.js`` that includes the ``Foo-tests`` 
+module as seen below. Note that the reference to the controller is gotten 
+using ``Y.mojito.controller`` or ``Y.mojito.controllers[NAME]``.
 
 .. code-block:: javascript
 
@@ -254,9 +260,10 @@ that the reference to the controller is gotten using ``Y.mojito.controller`` or
 Testing with the MockActionContext Object
 =========================================
 
-The ``mojito-test`` YUI module allows you to create the mock object ``MockActionContext`` 
-to test without dependencies. Using the ``MockActionContext`` object, you can easily build 
-an ``ActionContext`` for your controller, addon, and model tests. To learn more information 
+The ``mojito-test`` YUI module allows you to create the mock object
+``MockActionContext`` to test without dependencies. Using the 
+``MockActionContext`` object, you can easily build an ``ActionContext`` 
+for your controller, addon, and model tests. To learn more information 
 about using YUI to create mock objects, see 
 `YUI Test Standalone Library: Mock Objects <http://yuilibrary.com/yuitest/#mockobjects>`_.
 
@@ -265,9 +272,9 @@ about using YUI to create mock objects, see
 Using the Mock ActionContext
 ----------------------------
 
-The following sections will explain the below example code that creates a simple 
-``MockActionContext`` that tests the ``done`` function and verifies it was called 
-correctly.
+The following sections will explain the below example code that creates a 
+simple ``MockActionContext`` that tests the ``done`` function and verifies 
+it was called correctly.
 
 .. code-block:: javascript
 
@@ -291,7 +298,8 @@ Creating the MockActionContext Object
 #####################################
 
 To mock the ``ActionContext``, the ``mojito-test`` YUI module provides the 
-``MockActionContext`` constructor that returns a mocked ``ActionContext`` as shown below:
+``MockActionContext`` constructor that returns a mocked ``ActionContext`` 
+as shown below:
 
 .. code-block:: javascript
 
@@ -302,14 +310,14 @@ To mock the ``ActionContext``, the ``mojito-test`` YUI module provides the
 Setting Test Expectations
 #########################
 
-To test with the ``MockActionContext`` object, you use the ``expect`` method and pass it 
-an ``expectation`` object containing the properties ``method``, ``args``, and ``run``. 
-These properties, in turn, contain the controller method to test, the function parameters, 
-and the test function.
+To test with the ``MockActionContext`` object, you use the ``expect`` method 
+and pass it an ``expectation`` object containing the properties ``method``, 
+``args``, and ``run``. These properties, in turn, contain the controller 
+method to test, the function parameters, and the test function.
 
-In the code snippet below, the ``expect`` method creates a test for the controller method 
-``done``, using the ``YUITest`` module to perform an assertion on the function's return 
-value.
+In the code snippet below, the ``expect`` method creates a test for the 
+controller method ``done``, using the ``YUITest`` module to perform an 
+assertion on the function's return value.
 
 .. code-block:: javascript
 
@@ -326,32 +334,33 @@ value.
 Configuring Mojito to Test MockActionContext Object
 ###################################################
 
-To configure Mojito to use your ``MockActionContext`` object to run test, use the 
-following:
+To configure Mojito to use your ``MockActionContext`` object to run test, 
+use the following:
 
 .. code-block:: javascript
 
    Y.mojito.controller.actionUnderTest(ac);
 
-If ``actionUnderTest`` function fails to call the ``done`` function, calls it more than 
-one time, or calls it with the wrong parameters, the test will fail.
+If ``actionUnderTest`` function fails to call the ``done`` function, calls 
+it more than one time, or calls it with the wrong parameters, the test will 
+fail.
 
 .. _mockactioncontext_testing-run:
 
 Running the Test
 ****************
 
-Finally, run the expectation by call the ``verify`` method from the ``MockActionContext`` 
-object as seen here:
+Finally, run the expectation by call the ``verify`` method from the 
+``MockActionContext`` object as seen here:
 
 .. code-block:: javascript
 
    ac.verify();
 
 
-.. note:: Expectations for addons, models, and extras will be be verified automatically 
-          when you call the main ``verify`` function from the  ``MockActionContext`` 
-          object.
+.. note:: Expectations for addons, models, and extras will be be verified 
+          automatically when you call the main ``verify`` function from the 
+          ``MockActionContext`` object.
 
 .. _mockac_testing_expectations-ex:
 
@@ -419,8 +428,8 @@ You can also chain ``expect`` methods:
 Mocking Addons
 --------------
 
-To use the MockActionContext object to test different addons, you specify the namespaces 
-of the addons within the ``MockActionContext`` constructor:
+To use the MockActionContext object to test different addons, you specify 
+the namespaces of the addons within the ``MockActionContext`` constructor:
 
 .. code-block:: javascript
 
@@ -438,15 +447,15 @@ of the addons within the ``MockActionContext`` constructor:
 Mocking Custom Addons
 #####################
 
-To create a custom addon that contains functions within a property, you might have an 
-addon that is used in the following way:
+To create a custom addon that contains functions within a property, you might 
+have an addon that is used in the following way:
 
 .. code-block:: javascript
 
    ac.customAddon.params.get('key');
 
-To test the addon, you pass the ``addons`` array with a list of the addons you want to 
-test to the ``MockActionContext`` constructor as seen below:
+To test the addon, you pass the ``addons`` array with a list of the addons 
+you want to test to the ``MockActionContext`` constructor as seen below:
 
 .. code-block:: javascript
 
@@ -457,16 +466,16 @@ test to the ``MockActionContext`` constructor as seen below:
      }
    );
 
-This will give you a mock object at ``ac.customAddon.params`` from which you can call 
-``expect``.
+This will give you a mock object at ``ac.customAddon.params`` from which you can 
+call ``expect``.
 
 .. _mock_models:
 
 Mocking Models
 ##############
 
-To test models with the ``MockActionContext`` object, you pass the ``models`` array with 
-the model YUI modules as is done with addons:
+To test models with the ``MockActionContext`` object, you pass the ``models`` 
+array with the model YUI modules as is done with addons:
 
 .. code-block:: javascript
 
@@ -492,9 +501,10 @@ the model YUI modules as is done with addons:
 Model Tests
 ===========
 
-Model tests are largely the same as controller tests, except there can be many of them. 
-The model tests are placed in the ``tests/models`` directory. You can create multiple 
-model tests or use ``models.common-tests.js`` to test both server and client models.
+Model tests are largely the same as controller tests, except there can be 
+many of them. The model tests are placed in the ``tests/models`` directory. 
+You can create multiple model tests or use ``models.common-tests.js`` to test 
+both server and client models.
 
 .. _mojito_testing_models-ex:
 
@@ -513,8 +523,9 @@ The ``model.server.js`` below includes the ``FooModel`` module.
      };
    }, '0.0.1', {requires: []});
 
-The ``tests/models/models.common-tests.js`` test below includes the ``FooModel-tests`` 
-module and the ``requires`` array contains the ``FooModel`` module.
+The ``tests/models/models.common-tests.js`` test below includes the 
+``FooModel-tests`` module and the ``requires`` array contains the ``FooModel`` 
+module.
 
 .. code-block:: javascript
 
@@ -545,16 +556,16 @@ Functional/Unit Tests
 =====================
 
 Mojito comes with functional tests that you can run with the npm module 
-`Arrow <https://github.com/yahoo/arrow/>`_, a testing framework that fuses together 
-JavaScript, Node.js, PhantomJS, and Selenium. Arrow lets you write tests in 
-`YUI Test`_ that can be executed on the client or server. 
-You can also write your own functional/unit tests with Arrow. Mojito recommends that 
-contributors write Arrow functional/unit tests for their code to accelerate the process of 
-merging pull requests.
+`Arrow <https://github.com/yahoo/arrow/>`_, a testing framework that fuses
+together JavaScript, Node.js, PhantomJS, and Selenium. Arrow lets you write 
+tests in `YUI Test`_ that can be executed on the client or server. 
+You can also write your own functional/unit tests with Arrow. Mojito recommends 
+that contributors write Arrow functional/unit tests for their code to accelerate 
+the process of merging pull requests.
 
-The following sections show you how to set up your environment and run the unit and 
-functional tests that come with Mojito. In the future, we will also provide you with 
-instructions for writing Arrow tests for your code contributions.
+The following sections show you how to set up your environment and run the unit 
+and functional tests that come with Mojito. In the future, we will also provide 
+you with instructions for writing Arrow tests for your code contributions.
 
 .. _func_unit-builtin:
 
@@ -639,9 +650,10 @@ Running Tests
 Running Batch Tests
 *******************
 
-The following instructions show you how to run Arrow tests with the wrapper script 
-``run.js``, which allows you to run batch tests. For example, you can use ``run.js`` to 
-run all of the Mojito functional or unit tests with one command.
+The following instructions show you how to run Arrow tests with the 
+wrapper script ``run.js``, which allows you to run batch tests. For 
+example, you can use ``run.js`` to run all of the Mojito functional 
+or unit tests with one command.
 
 #. Clone the Mojito repository.
 
@@ -658,8 +670,9 @@ run all of the Mojito functional or unit tests with one command.
 #. Run the unit tests for the framework and client: 
 
    ``$ ./run.js test -u --path unit --group fw,client,server``
-#. You can also run all the functional tests with the below command. The functional tests 
-   may take some time to complete, so you may want to terminate the tests with **Ctl-C**.
+#. You can also run all the functional tests with the below command. The 
+   functional tests may take some time to complete, so you may want to 
+   terminate the tests with **Ctl-C**.
 
    ``$ ./run.js test -f --path func``
 #. To view the test reports (in JSON or XML) in the following directories: 
@@ -667,9 +680,10 @@ run all of the Mojito functional or unit tests with one command.
       - ``$ ./unit/artifacts/arrowreport/``
       - ``$ ./func/artifacts/arrowreport/``
 
-.. note:: You will not get a report if you terminated any tests before they completed. 
-          Also, Selenium will display the error message ``SeleniumDriver - Failed to 
-          collect the test report`` if a previously generated report exists.
+.. note:: You will not get a report if you terminated any tests before they 
+          completed. Also, Selenium will display the error message 
+          ``SeleniumDriver - Failed to collect the test report`` if a 
+          previously generated report exists.
 
    
 .. _func_unit_run-arrow:
@@ -683,12 +697,12 @@ is a JSON configuration file that describes and organizes your tests.
 For an overview of Arrow and the command-line options, see 
 the `Arrow README <https://github.com/yahoo/arrow/blob/master/README.md>`_.
 
-In the following steps, you'll start a routing application, run a test with Arrow,
-and then look at the test reports. Afterward, you should be able to
+In the following steps, you'll start a routing application, run a test with 
+Arrow, and then look at the test reports. Afterward, you should be able to
 run some of the other tests included with Mojito.
 
-#. Start Selenium in the background if it is not running already. You can confirm that 
-   it's running by going to http://127.0.0.1:4444/wd/hub/static/resource/hub.html.
+#. Start Selenium in the background if it is not running already. You can 
+   confirm that it's running by going to http://127.0.0.1:4444/wd/hub/static/resource/hub.html.
 #. Change to the directory containing the routing test application.
    
    ``$ cd mojito/tests/func/applications/frameworkapp/routing``
@@ -701,11 +715,13 @@ run some of the other tests included with Mojito.
 #. Launch Firefox with ``arrow_selenium``. 
    
    ``$ arrow_selenium --open=firefox``
-#. After Firefox has launched, run the functional routing tests with Arrow with the 
-   ``arrow`` command, the test descriptor, and the option ``--browser=reuse``:
+#. After Firefox has launched, run the functional routing tests with Arrow 
+   with the ``arrow`` command, the test descriptor, and the option 
+   ``--browser=reuse``:
  
    ``$ arrow routingtest_descriptor.json --browser=reuse``
-#. You should see the functional tests running in Firefox testing different routing paths.
+#. You should see the functional tests running in Firefox testing different 
+   routing paths.
 #. As with running the ``run.js`` script, Arrow will generate reports containing  
    the results of the tests, but the report names will match the name of the 
    test descriptor and be located in the current working directory. Thus,

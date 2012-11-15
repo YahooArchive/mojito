@@ -11,14 +11,15 @@ Using the HTML Frame Mojit
 Summary
 =======
 
-This example shows how to use the HTML Frame Mojit ( ``HTMLFrameMojit``) to create the 
-skeleton of an HTML page and embed rendered template into the page. The ``HTMLFrameMojit`` 
-creates the ``<html>``, ``<head>``, and ``<body>`` tags and embeds the rendered templates 
-of the child mojits into the ``<body>`` tag. To be clear, although the name 
-``HTMLFrameMojit`` contains the string "frame", the ``HTMLFrameMojit`` does **not** 
-create HTML ``frame`` or ``iframe`` elements. This example only uses one child mojit, 
-but you can configure the application to use many child mojits. For more information, 
-see `HTMLFrameMojit <../topics/mojito_framework_mojits.html#htmlframemojit>`_.
+This example shows how to use the HTML Frame Mojit ( ``HTMLFrameMojit``) to 
+create the skeleton of an HTML page and embed rendered template into the 
+page. The ``HTMLFrameMojit`` creates the ``<html>``, ``<head>``, and ``<body>`` 
+tags and embeds the rendered templates of the child mojits into the ``<body>`` 
+tag. To be clear, although the name ``HTMLFrameMojit`` contains the string 
+"frame", the ``HTMLFrameMojit`` does **not** create HTML ``frame`` or ``iframe`` 
+elements. This example only uses one child mojit, but you can configure the 
+application to use many child mojits. For more information, see 
+`HTMLFrameMojit <../topics/mojito_framework_mojits.html#htmlframemojit>`_.
 
 The following topics will be covered:
 
@@ -30,8 +31,8 @@ The following topics will be covered:
 Implementation Notes
 ====================
 
-The screenshot below shows the page served by your application, where the visible content 
-is created by the child mojit of ``HTMLFrameMojit``.
+The screenshot below shows the page served by your application, where the visible 
+content is created by the child mojit of ``HTMLFrameMojit``.
 
 Tab 2 Selected
 
@@ -40,10 +41,10 @@ Tab 2 Selected
    :height: 368px
 
 The ``HTMLFrameMojit`` is a reusable component that is available in every Mojito 
-application. To configure the ``HTMLFrameMojit``, you use the ``application.json`` file. 
-In this example ``application.json``, the ``frame`` object has a ``type`` property that 
-specifies that ``HTMLFrameMojit`` create the HTML framework and embed the rendered view 
-from the ``child`` mojit.
+application. To configure the ``HTMLFrameMojit``, you use the ``application.json`` 
+file. In this example ``application.json``, the ``frame`` object has a ``type`` 
+property that specifies that ``HTMLFrameMojit`` create the HTML framework and 
+embed the rendered view from the ``child`` mojit.
 
 .. code-block:: javascript
 

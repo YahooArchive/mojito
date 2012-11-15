@@ -6,10 +6,10 @@ The basic unit of composition and reuse in a Mojito application is a mojit.
 Visually, you can think of a mojit as the rectangular area of a page that was 
 constructed by a Mojito application. 
 
-The following sections explain why we chose the name *mojit* and then examine the 
-mojit's architecture and structure. This chapter is meant as an overview of mojits and does
-not show how to configure, create, or use mojits. For those implementation details, see the 
-following:
+The following sections explain why we chose the name *mojit* and then examine 
+the mojit's architecture and structure. This chapter is meant as an overview 
+of mojits and does not show how to configure, create, or use mojits. For those 
+implementation details, see the following:
 
 - `Mojit Configuration <mojito_configuring.html#mojit-configuration>`_
 - `Mojits <mojito_apps.html#mojits>`_ in the `Mojito Applications <mojito_apps.html>`_ 
@@ -26,7 +26,8 @@ There are (at least) two very commonly used names given to the basic portions
 of a page, site, or application, viz. module and widget. Depending upon
 the context, each of these terms will be interpreted in different ways by
 different people. In the hope of alleviating misinterpretation, we have chosen
-to create our own word: mojit (derived from module + widget and pronounced "mod-jit").
+to create our own word: mojit (derived from module + widget and pronounced 
+"mod-jit").
 
 .. _mojit-architecture:
 
@@ -137,8 +138,9 @@ centralizes the representation and management of the Mojit's data. The
 Active View provides for presentation and user interaction. 
 
 See `MVC in Mojito <mojito_mvc.html>`_ for a detailed explanation of how MVC works
-in Mojito and `Mojits <mojito_apps.html#mojits>`_ in the `Mojito Applications <mojito_apps.html>`_
-chapter for information about the directory structure and files of a mojit.
+in Mojito and `Mojits <mojito_apps.html#mojits>`_ in the 
+`Mojito Applications <mojito_apps.html>`_ chapter for information about the 
+directory structure and files of a mojit.
 
 .. _structure-active_view:
 

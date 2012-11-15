@@ -2,21 +2,23 @@
 Startup Requirements for Mojito in Hosting Environments
 =======================================================
 
-This chapter discusses the startup files needed to launch Mojito applications in a 
-hosting environment. Because different versions of Mojito use different startup files, 
-you may need to modify or even remove certain startup files in your applications,
-so that they may be launched in hosting environments. We will look at what startup files 
-are required for each version and provide code examples.
+This chapter discusses the startup files needed to launch Mojito applications 
+in a hosting environment. Because different versions of Mojito use different 
+startup files, you may need to modify or even remove certain startup files in 
+your applications, so that they may be launched in hosting environments. We 
+will look at what startup files are required for each version and provide 
+code examples.
 
 .. _startup_reqs-v0.4.5:
 
 Mojito v0.4.5 and Earlier Versions
 ==================================
 
-Version 0.4.5 and earlier versions rely exclusively on ``mojito start`` to run a
-new Mojito server instance, which means the ``index.js`` and ``server.js`` files are 
-both required. Applications using Mojito version 0.4.5 and prior versions should use
-``index.js`` and ``server.js`` files matching those below.
+Version 0.4.5 and earlier versions rely exclusively on ``mojito start`` to 
+run a new Mojito server instance, which means the ``index.js`` and ``server.js`` 
+files are both required. Applications using Mojito version 0.4.5 and prior 
+versions should use ``index.js`` and ``server.js`` files matching those 
+below.
 
 .. _startup_reqs_v0.4.5-index:
 
@@ -209,11 +211,11 @@ Mojito v0.4.8 and Later
 =======================
 
 Version 0.4.8 solidifies the changes made in version 0.4.7, removing the
-``index.js`` file from any application archetypes (the files used to create new
-applications) and the unnecessary commented-out code in the ``server.js``
+``index.js`` file from any application archetypes (the files used to create 
+new applications) and the unnecessary commented-out code in the ``server.js``
 file. As with applications created by version 0.4.7, you should remove 
-the ``index.js`` file from any applications using version 0.4.8 or later versions 
-and update your ``server.js`` file to match the one provided below.
+the ``index.js`` file from any applications using version 0.4.8 or later 
+versions and update your ``server.js`` file to match the one provided below.
 
 .. _startup_reqs_v0.4.8-index:
 
@@ -222,8 +224,8 @@ index.js
 
 **OBSOLETE**
 
-The ``index.js`` file is not created by version 0.4.7. Remove from any applications
-that are using versions 0.4.7 or greater.
+The ``index.js`` file is not created by version 0.4.7. Remove from any 
+applicationsthat are using versions 0.4.7 or greater.
 
 .. _startup_reqs_v0.4.8-server:
 
