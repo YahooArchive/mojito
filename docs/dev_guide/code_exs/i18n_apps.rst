@@ -176,7 +176,8 @@ To set up and run ``locale_i18n``:
         }
       ]
 
-#. To configure routing, replace the code in ``routes.json`` with the following:
+#. To configure routing, replace the code in ``routes.json`` with the 
+   following:
 
    .. code-block:: javascript
 

@@ -267,10 +267,6 @@ to determine whether the user gets a coupon.
      }
    }, '0.0.1', {requires: ['mojito-params-addon']});
 
-.. _routing-getting-all:
-
-
-.. _data_routing-get_all:
 
 
 .. _data_routing-get_all:

@@ -16,8 +16,9 @@ Requirements
 Installation Steps
 ==================
 
-#. Get Mojito from the npm registry and globally install Mojito so that it can be run from the 
-   command line. You may need to use ``sudo`` if you run into permission errors.
+#. Get Mojito from the npm registry and globally install Mojito so that 
+   it can be run from the command line. You may need to use ``sudo`` if 
+   you run into permission errors.
 
    ``$ npm install mojito -g``
 

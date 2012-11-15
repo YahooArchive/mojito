@@ -225,7 +225,7 @@ The configuration below excludes logging from the YUI module
      "config": {
       "logLevel": "INFO",
       "buffer": true,
-      "logExclude": { "FinanceMode": true } 
+      "logExclude": { "FinanceModel": true } 
      }
    }
 

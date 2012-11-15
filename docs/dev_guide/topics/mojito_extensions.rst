@@ -435,7 +435,8 @@ In the latter case, the view engine addon acts as an interface between the
 Mojito framework and the rendering engine. 
 
 In the following sections, we will be discussing how to create a view engine 
-addon that relies on a rendering engine, not how to write code that renders templates.
+addon that relies on a rendering engine, not how to write code that renders
+ templates.
 
 .. _ve_overview-term:
 
