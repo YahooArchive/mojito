@@ -8,9 +8,6 @@
 
 YUI.add('simple', function (Y, NAME) {
     Y.namespace('mojito.controllers')[NAME] = {
-        init: function(config) {
-            this.config = config;
-        },
         index: function(ac) {
             var today = new Date(),
                 hours = today.getHours(),
