@@ -292,7 +292,7 @@ Inline CSS
 
 You can use the Mojito command-line tool to compile a mojit's CSS so that the 
 CSS is automatically inlined in rendered views. The mojit, however, **must** 
-be a child of the `HTMLFrameMojit <../topics/mojito_framework_mojits.html#htmlframemojit>`_.
+be a child of the `HTMLFrameMojit <../topics/mojito_frame_mojits.html#htmlframemojit>`_.
 
 When you run ``mojito compile inlinecss``, the CSS files in 
 ``/mojits/{mojit_name}/assets/`` are compiled into the YUI module 

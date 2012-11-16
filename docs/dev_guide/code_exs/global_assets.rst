@@ -11,9 +11,11 @@ Using Global Assets
 Summary
 =======
 
-This example shows how to configure and use global assets in Mojito applications. In this 
-example, the ``HTMLFrameMojit`` inserts global assets into the rendered view. See 
-`Adding CSS <./adding_assets.html>`_ for an example that uses mojit-level assets.
+This example shows how to configure and use global assets in Mojito 
+applications. In this 
+example, the ``HTMLFrameMojit`` inserts global assets into the rendered 
+view. See `Adding CSS <./adding_assets.html>`_ for an example that uses 
+mojit-level assets.
 
 The following topics will be covered:
 
@@ -31,21 +33,21 @@ Implementation Notes
 What Are Assets?
 ----------------
 
-Assets are resources that are required on the clients. These resources are primarily CSS 
-but can also be JavaScript. Your assets should not be the core components of your 
-application.
+Assets are resources that are required on the clients. These resources 
+are primarily CSS but can also be JavaScript. Your assets should not be 
+the core components of your application.
 
 .. _assets-notes-loc:
 
 Location of Assets
 ------------------
 
-Mojito applications can have both global and local assets. Global assets are placed in the 
-``assets`` directory under the application directory. Assets at the mojit level are placed 
-in the ``assets`` directory under the mojit directory.
+Mojito applications can have both global and local assets. Global assets are 
+placed in the ``assets`` directory under the application directory. Assets at 
+the mojit level are placed in the ``assets`` directory under the mojit directory.
 
-The directory structure of this example below shows the location of the global ``assets`` 
-directory with the asset files.
+The directory structure of this example below shows the location of the global 
+``assets`` directory with the asset files.
 
 ::
 
@@ -73,9 +75,10 @@ directory with the asset files.
 Static URLs to Assets
 ---------------------
 
-Mojito provides static URLs to application-level and mojit-level assets. You can refer to 
-these assets in your templates, or if you are using the ``HTMLFrameMojit``, you configure 
-your application to automatically insert the assets into the rendered view.
+Mojito provides static URLs to application-level and mojit-level assets. You 
+can refer to these assets in your templates, or if you are using the 
+``HTMLFrameMojit``, you configure your application to automatically insert 
+the assets into the rendered view.
 
 .. _static_url-syntax:
 
@@ -96,8 +99,8 @@ application would be the following:
 
 ``/static/global_assets/assets/sadwalrus.jpeg``
 
-In the template, the application-level assets above can be referred to using the static 
-URLs as seen here.
+In the template, the application-level assets above can be referred to using the 
+static URLs as seen here.
 
 .. code-block:: html
 
@@ -113,11 +116,12 @@ Configuring HTMLFrameMojit to Include Assets
 When using the ``HTMLFrameMojit``,  assets are listed in the ``assets`` object in 
 ``application.json.`` The ``assets`` object can contain a ``top`` object and/or a 
 ``bottom`` object. The assets listed in ``top`` will be inserted into the ``head`` 
-element of the HTML page. The assets listed in ``bottom`` are inserted at the bottom of 
-the ``body`` element.
+element of the HTML page. The assets listed in ``bottom`` are inserted at the 
+bottom of the ``body`` element.
 
-In the example ``application.json`` below, which is taken from this code example, the 
-global asset ``ohhai.css`` is inserted into the ``head`` element of the rendered view.
+In the example ``application.json`` below, which is taken from this code example, 
+the global asset ``ohhai.css`` is inserted into the ``head`` element of the rendered 
+view.
 
 .. code-block:: javascript
 

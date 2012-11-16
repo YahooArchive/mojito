@@ -90,7 +90,7 @@ the path defined in ``routes.json``.
          actionContext.done({contactus_url: url});
        },
        contactus: function(actionContext) {
-         var currentTime = actionContext.i18n.formatDate(new Date());
+         var currentTime = actionContext.intl.formatDate(new Date());
          actionContext.done({currentTime: currentTime});
        }
      };

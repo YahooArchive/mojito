@@ -37,7 +37,14 @@ Resources Bundles for Languages
 Mojito uses the `YUI 3 Internationalization <http://developer.yahoo.com/yui/3/intl/#switchingLangs>`_ 
 utility to support internationalization. To use the YUI Internationalization utility in 
 Mojito, you create resource bundles in JSON that specify the keys and values for the 
-strings that need localizing. These resource bundles are JavaScript files that are placed 
+strings that need localizing. 
+
+.. _res_bundles-loc:
+
+Location of Resource Bundles
+############################
+
+These resource bundles are JavaScript files that are placed 
 in the ``lang`` directory of the mojit.
 
 This code example has the following three resource bundles in ``lang`` directory of the 
@@ -50,14 +57,39 @@ This code example has the following three resource bundles in ``lang`` directory
                /i18n_en-AU.js
                /i18n_fr-FR.js
 
-Notice that the resource bundle files above use the following naming convention:
+.. _res_bundles-naming:
 
-``{mojit}_{BCP 47 tag}.js``
+Naming Conventions
+##################
+
+.. _res_bundles_naming-file:
+
+File Names
+**********
+
+Resource bundle files use the following naming convention:
+
+``{mojit_name}_{BCP 47 tag}.js``
+
+.. _res_bundles_naming-yui:
+
+YUI Module Name
+***************
+
+The YUI module name that is registered in the resource bundle file with ``YUI.add``
+must have the following syntax: ``'lang/{mojit_name}_{BCP 47 Tag}.js'``
+
+For example, the YUI module name of the resource bundle for US English 
+of the mojit ``i18n`` would be ``'lang/i18n_en-US'``.
+
+Example
+#######
 
 From the content of the ``i18n_en-US.js`` resource bundle below, you see that the ``add`` 
 method specifies the module, the `BCP 47 <ftp://ftp.rfc-editor.org/in-notes/bcp/bcp47.txt>`_ 
 language tag, and the ``TITLE`` key with its value. The YUI Internationalization utility 
-is included by adding the string ``'intl'`` to the ``requires`` array.
+is included by adding the string ``'intl'`` to the ``requires`` array. The
+YUI module name also 
 
 .. code-block:: javascript
 
@@ -176,7 +208,8 @@ To set up and run ``locale_i18n``:
         }
       ]
 
-#. To configure routing, replace the code in ``routes.json`` with the following:
+#. To configure routing, replace the code in ``routes.json`` with the 
+   following:
 
    .. code-block:: javascript
 

@@ -6,10 +6,10 @@ The basic unit of composition and reuse in a Mojito application is a mojit.
 Visually, you can think of a mojit as the rectangular area of a page that was 
 constructed by a Mojito application. 
 
-The following sections explain why we chose the name *mojit* and then examine the 
-mojit's architecture and structure. This chapter is meant as an overview of mojits and does
-not show how to configure, create, or use mojits. For those implementation details, see the 
-following:
+The following sections explain why we chose the name *mojit* and then examine 
+the mojit's architecture and structure. This chapter is meant as an overview 
+of mojits and does not show how to configure, create, or use mojits. For those 
+implementation details, see the following:
 
 - `Mojit Configuration <mojito_configuring.html#mojit-configuration>`_
 - `Mojits <mojito_apps.html#mojits>`_ in the `Mojito Applications <mojito_apps.html>`_ 
@@ -26,7 +26,8 @@ There are (at least) two very commonly used names given to the basic portions
 of a page, site, or application, viz. module and widget. Depending upon
 the context, each of these terms will be interpreted in different ways by
 different people. In the hope of alleviating misinterpretation, we have chosen
-to create our own word: mojit (derived from module + widget and pronounced "mod-jit").
+to create our own word: mojit (derived from module + widget and pronounced 
+"mod-jit").
 
 .. _mojit-architecture:
 
@@ -37,8 +38,8 @@ From the diagram below, you can see that the mojit has an MVC structure
 centered around the `Action Context <mojito_architecture.html#api-action-context>`_
 and can be deployed to the client or run on the server. Also note that the Mojit Proxy
 allows client-side code (binders) to communicate with server-side code through the
-Action Context. The sections below describe the main components in the diagram that are 
-shaded in green.
+Action Context. The sections below describe the main components in the diagram that 
+are shaded in green.
 
 
 
@@ -48,6 +49,8 @@ shaded in green.
    :height: 483px
    :width: 610px
    :align: center 
+
+
 
 .. _mojit_arch-binders:
 
@@ -61,11 +64,12 @@ on the page, and execute actions on the mojit that the binder is attached to.
 .. _binders-mojitProxy:
 
 Mojit Proxy
-```````````
+***********
 
-The Mojit Proxy is the conduit for communication between the binder and the mojit's
-``ActionContext`` object and other mojits on the page. In code, the Mojit Proxy is 
-represented by the `mojitProxy object <mojito_binders.html#mojitproxy-object>`_. 
+The Mojit Proxy is the conduit for communication between the binder and the 
+mojit's ``ActionContext`` object and other mojits on the page. In code, the 
+Mojit Proxy is represented by the 
+`mojitProxy object <mojito_binders.html#mojitproxy-object>`_. 
 
 See `Mojito Binders <mojito_binders.html>`_ to learn how binders 
 use the ``mojitProxy`` object to communicate with server-side code.
@@ -137,8 +141,9 @@ centralizes the representation and management of the Mojit's data. The
 Active View provides for presentation and user interaction. 
 
 See `MVC in Mojito <mojito_mvc.html>`_ for a detailed explanation of how MVC works
-in Mojito and `Mojits <mojito_apps.html#mojits>`_ in the `Mojito Applications <mojito_apps.html>`_
-chapter for information about the directory structure and files of a mojit.
+in Mojito and `Mojits <mojito_apps.html#mojits>`_ in the 
+`Mojito Applications <mojito_apps.html>`_ chapter for information about the 
+directory structure and files of a mojit.
 
 .. _structure-active_view:
 

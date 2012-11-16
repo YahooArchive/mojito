@@ -35,7 +35,7 @@ Log Defaults
 
 The server and client log settings have the following default values:
 
-- ``level:`` ``DEBUG`` - log level filter.
+- ``logLevel:`` ``DEBUG`` - log level filter.
 - ``yui:`` ``true`` - determines whether YUI library logs are displayed.
 - ``buffer:`` ``false`` -  determines whether logs are buffered.
 - ``maxBufferSize: 1024`` - the number of logs the buffer holds before auto-flushing.
@@ -68,110 +68,28 @@ overrides the defaults for ``logLevel`` and ``buffer``.
      }
    ]
 
-.. Commenting out Mutator Log Function documentation because as of 10/03/12, you
-.. cannot create log mutator functions.
+.. _logging_config-prod:
 
-    .. _mojito_logging-mutator:   
- 
-	Mutator Log Functions
-	=====================
-	
-	You can create different write function to change the format of log messages and 
-    control where the logs are written. The logger has functions for formatting, writing, 
-    and publishing log messages that can be provided by a Mojito application. The function 
-    names are defined by users. For example, you could name the log formatter either 
-    ``formatLogs`` or ``log_formatter``.
+Recommended Logging Configuration for Production
+------------------------------------------------
 
-    .. _logging_mutator-custom_formatter:   
-	
-	Custom Log Formatter
-	--------------------
-	
-	The log formatter function accepts the log message, the log level, a string 
-    identifying the source of the log (usually the YUI module name emitting the log), a 
-    timestamp, and the complete ``logOptions`` object. The function returns a string, 
-    which is passed to the log writer.
-	
-	.. code-block:: javascript
-	
-	   function {log_formatter_name}(message, logLevel, source, timestamp, logOptions) {
-		 return "formatted message";
-	   }
-	
-    .. _logging_mutator-custom_writer:  
+For production, we recommend that you use the ``environment:production``
+context with the log configuration shown below:
 
-	Custom Log Writer
-	-----------------
-	
-	The log writer function accepts a string and does something with it. You can provide 
-    a function that does whatever you want with the log string. The default log writer 
-    calls ``console.log``.
-	
-	.. code-block:: javascript
-	
-	   function {log_writer_name}(logMessage[s]) {}
-	
-	.. note:: Your log writer function must be able to handle a string or an array of 
-              strings. If you have set buffered logging, it may be sent an array of 
-              formatted log messages.
+.. code-block:: javascript
 
-    .. _logging_mutator-custom_pub:  
-	
-	Custom Log Publisher
-	--------------------
-	
-	If a log publisher function is provided, it is expected to format and write logs. 
-    Thus, a log publisher function takes the place of the log formatter and the log writer 
-    functions and accepts the same parameters as the log formatter function.
-	
-	.. code-block:: javascript
-	
-	   function {log_publisher_name}(message, logLevel, source, timestamp, logOptions) {
-
-    .. _logging_mutator-custom_client:  
-	
-	Custom Log Functions on the Client
-	----------------------------------
-	
-	To provide custom log function on the client, you add the log function to a JavaScript 
-    asset that your application will load.
-	
-	In the example JavaScript asset below, the log function ``formatter`` is first defined 
-    and then set as the log formatter function.
-	
-	.. code-block:: javascript
-	
-	   function formatter(msg, lvl, src, ts, opts) {
-		 return "LOG MSG: " + msg.toLowerCase() + " -[" + lvl.toUpperCase() + "]- (" + ts + ")";
-	   }
-	   YUI._mojito.logger.set('formatter', formatter);
-	
-	Using the ``formatter`` function above, the log messages will have the following format:
-	
-	``>LOG MSG: dispatcher loaded and waiting to rock! -[INFO]- (1305666208939)``
-
-    .. _logging_mutator-custom_server:  
-	
-	Custom Log Functions on the Server
-	----------------------------------
-	
-	On the server, you must add log mutator functions to ``server.js``, so that Mojito 
-    will set them as the log functions before starting the server.
-	
-	In this example ``server.js``, ``writeLog`` writes logs to the file system.
-	
-	.. code-block:: javascript
-	
-	   var mojito = require('mojito'), fs = require('fs'), logPath = "/tmp/mojitolog.txt";
-	   function writeLog(msg) {
-		 fs.writeFile(logPath, msg, 'utf-8');
-	   }
-	   // You can access log formatter, writer, or
-	   // publisher for the server here.
-	   mojito.setLogWriter(function(logMessage) {
-		 writeLog(logMessage + '\n');
-	   });
-	   module.exports = mojito.createServer();
+   [
+     {
+       "settings": [ "environment:production" ],
+       "yui": {
+         "config": {
+           "debug": false,
+           "logLevel": "none"
+         }
+       },
+       ...
+     }
+   ]
 
 .. _mojito_logging-buffering:
 
@@ -236,25 +154,70 @@ log cache is 1024 bytes.
 
 .. _mojito_logging-custom:
 
-Customizing Logging for Client/Server
-=====================================
+Customizing Logging
+===================
 
 .. _logging_custom-rt_context:
 
-Using Runtime Contexts
-----------------------
-TBD: Need more info.
+Client and Server Logging
+-------------------------
 
-To customize this for client or server, you can use the runtime context. 
+You can use the ``runtime:client`` and ``runtime:server`` contexts to create different logging
+settings for the client and server.
+
+In the ``application.json`` file, create two configuration
+objects that use the ``runtime:client`` and ``runtime:server``
+contexts as shown below. 
+
+.. code-block:: javascript
+
+   [
+     {
+       "settings": [ "runtime:client" ],
+     },
+     {
+       "settings": [ "runtime:server" ],
+     }
+   ]
+
+For each context, configure your logging with
+the ``yui.config`` object.
+
+.. code-block:: javascript
+
+   [
+     {
+       "settings": [ "runtime:client" ],
+       ...
+	   "yui": {
+         "config": {
+           "logLevel": "WARN"
+         }
+       }
+     },
+     {
+       "settings": [ "runtime:server" ],
+       ...
+	   "yui": {
+         "config": {
+           "logLevel": "INFO"
+         }
+       }
+     }
+   ]
+
 
 .. _logging_custom-include_exclude_src:
 
-Including and Excluding Sources From Logging
+Including and Excluding Modules From Logging
 --------------------------------------------
 
-Also, you can 
-now use logExclude and logInclude. More information at 
-http://yuilibrary.com/yui/docs/api/classes/config.html.
+You can use the ``logExclude`` and ``logInclude`` properties
+of the ``yui.config`` object to include or exclude logging
+from YUI modules of your application. 
+
+The configuration below excludes logging from the YUI module 
+``FinanceModel``:
 
 .. code-block:: javascript
 
@@ -262,7 +225,7 @@ http://yuilibrary.com/yui/docs/api/classes/config.html.
      "config": {
       "logLevel": "INFO",
       "buffer": true,
-      "logExclude": <some_source>
+      "logExclude": { "FinanceModel": true } 
      }
    }
 

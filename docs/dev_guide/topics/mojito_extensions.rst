@@ -49,6 +49,7 @@ is a unique YUI module name defined by the user and ``{affinity}`` is
 
 ``{addon_name}.{affinity}.js``
 
+
 .. _extending_addons-loc:
 
 Location of Addons
@@ -61,6 +62,23 @@ Application-level addons should be placed in the following directory:
 Mojit-level addons should be placed in the following directory:
 
 ``{mojit_dir}/addons/ac/``
+
+
+.. _extending_addons-namespace:
+
+Namespace of Addon
+##################
+
+To access addon methods and properties, you use the Action Context object 
+(i.e., ``ac``) and the addon namespace. The namespace of an addon must be 
+the same as ``{addon_name}`` in the addon file name ``{addon_name}.{affinity}.js``. 
+For example, the namespace of the addon ``addons/ac/foo.common.js`` would be 
+``foo``.  Thus, to call the method ``save`` of the ``foo`` addon, you would 
+use ``ac.foo.save``.
+
+See :ref:`Using Your Addon <extending_addons-using>` for an example
+of how to call methods from the addon namespace.
+
 
 .. _extending_addons-writing:
 
@@ -86,7 +104,7 @@ plugin name (``'addon-ac-cheese'``) and the constructor (``CheeseAcAddon``) with
 
 .. code-block:: javascript
 
-   // Register the plugin name
+   // Register the plugin name (must be unique)
    YUI.add('addon-ac-cheese', function(Y, NAME) {
      // Constructor for addon
      function CheeseAcAddon(command, adapter, ac) {
@@ -115,9 +133,10 @@ plugin name (``'addon-ac-cheese'``) and the constructor (``CheeseAcAddon``) with
 Example Addon
 *************
 
-In this example addon, the ``YUI.add`` method registers the ``addon-ac-cheese`` 
-plugin. The addon has the namespace ``cheese`` and the method ``cheesify``, 
-which is added through the ``prototype`` property.
+In the example addon ``cheese.common.js`` below, the ``YUI.add`` method 
+registers the ``addon-ac-cheese`` plugin. The addon namespace 
+is ``cheese``, and the addon has the one method ``cheesify``, which is 
+added through the ``prototype`` property.
 
 .. code-block:: javascript
 
@@ -132,7 +151,9 @@ which is added through the ``prototype`` property.
      }
      CheeseAcAddon.prototype = {
        // The "namespace" is where in the ActionContext
-       // the user can find this addon.
+       // the user can find this addon. The namespace
+       // must be the same as the first part of the addon file.
+       // Thus, this addon file must be named 'cheese'.{affinity}.js'
        namespace: 'cheese',
        cheesify: function(obj) {
          var n;
@@ -161,21 +182,25 @@ which is added through the ``prototype`` property.
 Using Your Addon
 ################
 
-The addon in `Example Addon`_ registered the plugin ``addon-ac-cheese`` and made 
-its constructor available through the namespace ``cheese``. The addons are not 
-automatically added to the ActionContext, but to access an addon, your controller 
-needs to add the YUI plugin name to the ``requires`` array. The YUI plugin name 
-is the string passed to ``YUI.add`` in the addon. To invoke the addon methods, 
-call the methods from the namespace defined in the ``prototype`` property of the 
-addon's constructor. In our addon, we defined the namespace 
-``cheese`` (``"namespace": "cheese"``).
+The addon in `Example Addon`_ registered the plugin ``addon-ac-cheese`` and 
+made its constructor available through the namespace ``cheese``. This namespace
+must match the first part of the addon file name, so the addon file name is 
+``cheese.common.js``.
+
+Addons are not automatically added to the ActionContext, so to access an 
+addon, your controller needs to add the YUI plugin name to the ``requires`` 
+array. The YUI plugin name is the string passed to ``YUI.add`` in the addon. 
+To invoke the addon methods, you use the Action Context object (``ac``) with 
+the addon namespace: ``ac.cheese.{addon_method}``
+
 
 .. code-block:: javascript
 
    YUI.add('Foo', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
        index: function(ac) {
-         // Use the type 'cheese' and then the
+         // Use the namespace defined by the 
+         // addon file name ('cheese') with
          // the addon function 'cheesify'
          var cheesy = ac.cheese.cheesify({
            food: "nachos",
@@ -435,7 +460,8 @@ In the latter case, the view engine addon acts as an interface between the
 Mojito framework and the rendering engine. 
 
 In the following sections, we will be discussing how to create a view engine 
-addon that relies on a rendering engine, not how to write code that renders templates.
+addon that relies on a rendering engine, not how to write code that renders
+ templates.
 
 .. _ve_overview-term:
 

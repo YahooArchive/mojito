@@ -7,20 +7,21 @@ Resource Store
 Overview
 ========
 
-The Resource Store (RS) is the Mojito subsystem that manages metadata about the files in 
-your Mojito applications. Thus, it is responsible for finding and classifying code and 
-configuration files. When you start a Mojito application, Mojito can find, track, and 
-resolve versions of files in your application, such as mojits, configuration files, 
-binders, views, assets, addons, etc., because of the |RS|.
+The Resource Store (RS) is the Mojito subsystem that manages metadata about 
+the files in your Mojito applications. Thus, it is responsible for finding 
+and classifying code and configuration files. When you start a Mojito 
+application, Mojito can find, track, and resolve versions of files in your 
+application, such as mojits, configuration files, binders, views, assets, 
+addons, etc., because of the |RS|.
 
 .. _intro-who:
 
 Intended Audience
 -----------------
 
-Only advanced Mojito application developers needing finer grain control over the management 
-of resources or to extend the functionality of the resource store should read this 
-documentation.
+Only advanced Mojito application developers needing finer grain control over 
+the management of resources or to extend the functionality of the resource 
+store should read this documentation.
 
 .. _intro-prereqs:
 
@@ -392,7 +393,8 @@ values:
 - ``binder``      - a binder for a mojit
 - ``asset``       - an asset (css, js, image, etc.)
 - ``addon``       - an addon to the mojito system
-- ``archetype``   - the commands to create resources as described in the output from ``mojito help create`` 
+- ``archetype``   - the commands to create resources as described in the output from 
+  ``mojito help create`` 
 - ``spec``        - the configuration for a mojit instance
 - ``yui-lang``    - a YUI 3 language bundle
 - ``yui-module``  - a YUI 3 module (that isn't one of the above)

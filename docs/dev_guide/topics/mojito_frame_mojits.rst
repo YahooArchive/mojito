@@ -1,6 +1,6 @@
-================
-Framework Mojits
-================
+============
+Frame Mojits
+============
 
 .. _mojito_fw_mojits-intro:
 
@@ -10,7 +10,7 @@ Introduction
 Mojito comes with the built-in utility mojits that make developing applications easier. 
 Mojito currently comes with the ``HTMLFrameMojit`` that constructs Web pages from the 
 skeleton HTML to the styling and content and the ``LazyLoadMojit`` that allows you to 
-lazily load mojit code. Mojito plans to offer additional framework mojits in the future.
+lazily load mojit code. Mojito plans to offer additional frame mojits in the future.
 
 
 .. _mojito_fw_mojits-htmlframe:
@@ -39,15 +39,16 @@ Configuration
 
 As with defining instances of other mojit types, you define an instance of the 
 ``HTMLFrameMojit`` in 
-`configuration object <../intro/mojito_configuring.html#configuration-object>`_ of 
-``application.json``. Because ``HTMLFrameMojit`` must be the top-level mojit, its instance cannot 
-have a parent instance, but may have one or more child instances.
+`configuration object <../intro/mojito_configuring.html#configuration-object>`_ 
+of ``application.json``. Because ``HTMLFrameMojit`` must be the top-level mojit, 
+its instance cannot have a parent instance, but may have one or more child 
+instances.
 
-In the example ``application.json`` below, ``frame`` is an instance of ``HTMLFrameMojit`` 
-that has the ``child`` instance of the ``framed`` mojit. After the HTML skeleton is 
-created, the ``HTMLFrameMojit`` will insert the value of the ``title`` property into 
-the ``<title>`` element and the content created by the ``frame`` mojit into the 
-``<body>`` element.
+In the example ``application.json`` below, ``frame`` is an instance of 
+``HTMLFrameMojit`` that has the ``child`` instance of the ``framed`` mojit. 
+After the HTML skeleton is created, the ``HTMLFrameMojit`` will insert the 
+value of the ``title`` property into the ``<title>`` element and the content 
+created by the ``frame`` mojit into the ``<body>`` element.
 
 .. code-block:: javascript
 
@@ -153,22 +154,21 @@ either case, the binder is able to transparently invoke the controller.
 
 .. _htmlframemojit-assets:
 
-.. _fw_mojits_htmlframe-add:
-
 Adding Assets with HTMLFrameMojit
 ---------------------------------
 
-You specify the assets for ``HTMLFrameMojit`` just as you would specify assets for any 
-mojit. The basic difference is that  ``HTMLFrameMojit`` will automatically attach 
-``<link>`` elements for CSS and ``<script>`` elements for JavaScript files to the HTML 
-page. When using assets with other mojits, you have to manually add ``<link>`` elements 
-that refer to assets to templates.  See `Assets <./mojito_assets.html>`_ for general 
-information about using assets in Mojito.
+You specify the assets for ``HTMLFrameMojit`` just as you would specify assets 
+for any mojit. The basic difference is that ``HTMLFrameMojit`` will 
+automatically attach ``<link>`` elements for CSS and ``<script>`` elements 
+for JavaScript files to the HTML page. When using assets with other mojits, 
+you have to manually add ``<link>`` elements that refer to assets to templates.  
+See `Assets <./mojito_assets.html>`_ for general information about using 
+assets in Mojito.
 
-In the example ``application.json`` below, the ``HTMLFrameMojit`` instance ``frame`` has 
-one child mojit with a CSS asset. Because the assets are listed in the ``top`` object, 
-the ``HTMLFrameMojit`` will attach the ``<link>`` element pointing to ``index.css`` to 
-the ``<head>`` element.
+In the example ``application.json`` below, the ``HTMLFrameMojit`` instance 
+``frame`` has one child mojit with a CSS asset. Because the assets are 
+listed in the ``top`` object, the ``HTMLFrameMojit`` will attach the ``<link>`` 
+element pointing to ``index.css`` to the ``<head>`` element.
 
 .. code-block:: javascript
 
@@ -195,8 +195,8 @@ the ``<head>`` element.
      }
    ]
 
-The rendered view that was constructed by the ``HTMLFrameMojit`` should look similar to 
-the HTML below.
+The rendered view that was constructed by the ``HTMLFrameMojit`` should look 
+similar to the HTML below.
 
 .. code-block:: html
 
@@ -221,10 +221,11 @@ the HTML below.
 LazyLoadMojit
 =============
 
-``LazyLoadMojit`` allows you to defer the loading of a mojit instance by first dispatching 
-the ``LazyLoadMoit`` as a proxy to the client. From the client, ``LazyLoadMojit`` can 
-then request Mojito to load the proxied mojit. This allows your Mojito application to load 
-the page quickly and then lazily load parts of the page.
+``LazyLoadMojit`` allows you to defer the loading of a mojit instance by first 
+dispatching the ``LazyLoadMoit`` as a proxy to the client. From the client, 
+``LazyLoadMojit`` can then request Mojito to load the proxied mojit. This allows 
+your Mojito application to load the page quickly and then lazily load parts of 
+the page.
 
 .. _mojito_fw_mojits-lazyload:
 
@@ -237,12 +238,12 @@ LazyLoadMojit
 How Does It Work?
 -----------------
 
-The ``LazyLoadMojit`` is really a proxy mojit that dispatches its binder and an empty DOM 
-node to the client. From the client, the binder sends a request to the controller to 
-execute the code of the proxied (original) mojit. The output from the executed mojit is 
-then returned to the binder of the ``LazyLoadMojit``, which attaches the output to the 
-empty DOM node. The binder of ``LazyLoadMojit`` destroys itself, leaving the DOM intact 
-with the new content.
+The ``LazyLoadMojit`` is really a proxy mojit that dispatches its binder and an 
+empty DOM node to the client. From the client, the binder sends a request to the 
+controller to execute the code of the proxied (original) mojit. The output from 
+the executed mojit is then returned to the binder of the ``LazyLoadMojit``, which 
+attaches the output to the empty DOM node. The binder of ``LazyLoadMojit`` destroys 
+itself, leaving the DOM intact with the new content.
 
 
 .. _fw_mojits_lazyload-config:
@@ -298,10 +299,10 @@ configured to be executed after lazy loading is complete.
 Example
 -------
 
-This example shows you application configuration as well as the code for the parent mojit 
-and the child mojit that is lazy loaded.  If you were to run this lazy load example, you 
-would see the content of the parent mojit first and then see the child mojit's output 
-loaded in the page. 
+This example shows you application configuration as well as the code for the 
+parent mojit and the child mojit that is lazy loaded.  If you were to run 
+this lazy load example, you would see the content of the parent mojit first 
+and then see the child mojit's output loaded in the page. 
 
 
 .. _lazyload_ex-app_config:
@@ -309,21 +310,23 @@ loaded in the page.
 Application Configuration
 #########################
 
-The application configuration for this example (shown below) meets the requirements for 
-using ``LazyLoadMojit``:
+The application configuration for this example (shown below) meets the 
+requirements for using ``LazyLoadMojit``:
 
 - creates the ``frame`` mojit instance of type ``HTMLFrameMojit``
-- sets ``"deploy"`` to ``true`` for ``frame`` so that the code is deployed to the client
-- creates the ``child`` mojit instance that has the ``children`` object specifying child 
-  mojit instance
-- configures the ``myLazyMojit`` instance to defer being dispatched, which causes it to 
-  be lazily loaded by ``LazyLoadMojit``
+- sets ``"deploy"`` to ``true`` for ``frame`` so that the code is deployed 
+  to the client
+- creates the ``child`` mojit instance that has the ``children`` object 
+  specifying child mojit instance
+- configures the ``myLazyMojit`` instance to defer being dispatched, which 
+  causes it to be lazily loaded by ``LazyLoadMojit``
 
 In this ``application.json``, the ``parent`` mojit instance has the one child 
-``myLazyMojit``. The ``myLazyMojit`` mojit instance of type ``LazyChild`` is the mojit 
-that will be lazily loaded by ``LazyLoadMojit``. In a production application, you could 
-configure the application to have many child instances that are lazily loaded after the 
-parent mojit instance is already loaded onto the page.
+``myLazyMojit``. The ``myLazyMojit`` mojit instance of type ``LazyChild`` is 
+the mojit that will be lazily loaded by ``LazyLoadMojit``. In a production 
+application, you could configure the application to have many child instances 
+that are lazily loaded after the parent mojit instance is already loaded onto 
+the page.
 
 .. code-block:: javascript
 
@@ -377,10 +380,10 @@ The ``Container`` mojit uses ``ac.composite.done`` to execute its child mojits.
      };
    }, '0.0.1', {requires: ['mojito', 'mojito-composite-addon']});
 
-Instead of waiting for the child mojit to execute, the partially rendered view of the 
-``Container`` mojit is immediately sent to the client. After the child mojit is lazily 
-loaded, the content of the executed child replaces the Handlebars expression 
-``{{{myLazyMojit}}}``.
+Instead of waiting for the child mojit to execute, the partially rendered view 
+of the ``Container`` mojit is immediately sent to the client. After the child 
+mojit is lazily loaded, the content of the executed child replaces the Handlebars 
+expression ``{{{myLazyMojit}}}``.
 
 .. code-block:: html
 
@@ -397,9 +400,9 @@ loaded, the content of the executed child replaces the Handlebars expression
 LazyChild Mojit
 ###############
 
-The ``LazyLoadMojit`` in the ``application.json`` is configured to lazily load the mojit 
-instance ``myLazyMojit`` and then call the action ``hello``. Thus, the ``index`` function 
-in the ``LazyChild`` mojit below is never called.
+The ``LazyLoadMojit`` in the ``application.json`` is configured to lazily load 
+the mojit instance ``myLazyMojit`` and then call the action ``hello``. Thus, 
+the ``index`` function in the ``LazyChild`` mojit below is never called.
 
 .. code-block:: javascript
 
@@ -414,8 +417,8 @@ in the ``LazyChild`` mojit below is never called.
      };
    }, '0.0.1', {requires: ['mojito']});
 
-The template ``hello.hb.html`` is rendered on the server and then lazily loaded to the 
-client.
+The template ``hello.hb.html`` is rendered on the server and then lazily loaded 
+to the client.
 
 .. code-block:: html
 
