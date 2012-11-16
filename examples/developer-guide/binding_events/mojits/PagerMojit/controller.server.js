@@ -38,9 +38,6 @@ YUI.add('PagerMojit', function (Y, NAME) {
      * @constructor     
      */    
     Y.namespace('mojito.controllers')[NAME] = {
-        init: function(config) {
-            this.config = config;
-        },
         index: function(actionContext) {
             var page = 0,
                 start,

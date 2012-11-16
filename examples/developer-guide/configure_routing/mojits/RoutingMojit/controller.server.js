@@ -38,14 +38,15 @@ YUI.add('RoutingMojit', function(Y, NAME) {
         };
     }
     Y.namespace('mojito.controllers')[NAME] = {
-        init: function (config) {
-            this.config = config;
-        },
         index: function (ac) {
-            ac.done(route_info(ac));
+            var r = route_info(ac);
+            Y.log(r);
+            ac.done(r);
         },
         show: function (ac) {
-            ac.done(route_info(ac));
+            var r = route_info(ac);
+            Y.log(r);
+            ac.done(r);
         }
     };
 }, '0.0.1', {requires: ['mojito-config-addon', 'mojito-http-addon']});

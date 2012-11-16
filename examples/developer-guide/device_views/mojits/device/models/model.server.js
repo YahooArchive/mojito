@@ -5,8 +5,7 @@
  */
 
 /*jslint anon:true, sloppy:true, nomen:true*/
-
-YUI.add('deviceModel', function (Y) {
+YUI.add('deviceModel', function (Y, NAME) {
 
 /**
  * The deviceModel module.
@@ -20,7 +19,7 @@ YUI.add('deviceModel', function (Y) {
      * @class Model
      * @constructor
      */
-    Y.mojito.models.device = {
+     Y.namespace('mojito.models')[NAME] = {
 
         init: function (config) {
             this.config = config;
