@@ -39,4 +39,4 @@ YUI.add('MetaChild', function(Y, NAME) {
         }
     };
 
-}, '0.0.1', {requires: ['mojito', 'mojito-meta-addon']});
+}, '0.0.1', {requires: ['mojito', 'mojito-meta-addon', 'mojito-params-addon']});

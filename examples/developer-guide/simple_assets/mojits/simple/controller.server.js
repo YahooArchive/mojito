@@ -19,9 +19,6 @@ YUI.add('simple', function (Y, NAME) {
     * @constructor     
     */
     Y.namespace('mojito.controllers')[NAME] = {
-        init: function (config) {
-            this.config = config;
-        },
         /**
         * Method corresponding to the 'index' action.
         * @param ac {Object} The action context that 

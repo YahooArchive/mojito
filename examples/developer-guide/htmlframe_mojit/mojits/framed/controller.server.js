@@ -9,9 +9,6 @@
 YUI.add('framed', function (Y, NAME) {
 
     Y.namespace('mojito.controllers')[NAME] = {
-        init: function (config) {
-            this.config = config;
-        },
         index: function (ac) {
             ac.done({app_name: 'Framed Mojit'});
         }

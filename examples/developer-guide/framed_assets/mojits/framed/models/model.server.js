@@ -6,7 +6,7 @@
 
 /*jslint anon:true, sloppy:true, nomen:true*/
 
-YUI.add('framedModel', function (Y) {
+YUI.add('framedModel', function (Y, NAME) {
 
 /**
  * The framedModel module.
@@ -20,7 +20,7 @@ YUI.add('framedModel', function (Y) {
      * @class Model
      * @constructor
      */
-    Y.mojito.models.framed = {
+     Y.namespace('mojito.models')[NAME] = {
 
         init: function (config) {
             this.config = config;

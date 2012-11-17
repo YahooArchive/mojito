@@ -9,9 +9,6 @@
 YUI.add('flickr', function (Y, NAME) {
 
     Y.namespace('mojito.controllers')[NAME] = {
-        init: function (config) {
-            this.config = config;
-        },
         index: function (ac) {
             var q = ac.params.getFromUrl('q') || 'muppet',
                 page = (ac.params.getFromUrl('page') || 0),

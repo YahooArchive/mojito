@@ -76,4 +76,4 @@ YUI.add('PartialMojit', function(Y, NAME) {
         }
     };
 
-}, '0.0.1', {requires: ['mojito', 'mojito-partial-addon']});
+}, '0.0.1', {requires: ['mojito', 'mojito-params-addon', 'mojito-partial-addon']});

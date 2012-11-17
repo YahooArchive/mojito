@@ -38,9 +38,6 @@ YUI.add('RoutingMojit', function(Y, NAME) {
         };
     }
     Y.namespace('mojito.controllers')[NAME] = {
-        init: function (config) {
-            this.config = config;
-        },
         index: function (ac) {
             ac.done(route_info(ac));
         },
