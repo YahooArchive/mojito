@@ -73,7 +73,6 @@ YUI.add('mojito-dispatcher-client-tests', function(Y, NAME) {
                     tunnelCommand = c;
                 }
             };
-            errorTriggered = false;
             dispatcher.init(store, tunnel);
             dispatcher.rpc(command, {
                 error: function () {
@@ -109,7 +108,6 @@ YUI.add('mojito-dispatcher-client-tests', function(Y, NAME) {
                 }
             };
             command.rpc = 1;
-            errorTriggered = false;
             dispatcher.init(store, tunnel);
             dispatcher.rpc(command, {
                 error: function () {
@@ -128,7 +126,6 @@ YUI.add('mojito-dispatcher-client-tests', function(Y, NAME) {
                     tunnelCommand = c;
                 }
             };
-            errorTriggered = false;
             dispatcher.init(store, tunnel);
             // if the expandInstance calls with an error, the tunnel
             // should be tried.
@@ -148,7 +145,6 @@ YUI.add('mojito-dispatcher-client-tests', function(Y, NAME) {
                 useCommand,
                 _useController = dispatcher._useController;
 
-            errorTriggered = false;
             dispatcher.init(store, tunnel);
             // if the expandInstance calls with an error, the tunnel
             // should be tried.
@@ -180,7 +176,6 @@ YUI.add('mojito-dispatcher-client-tests', function(Y, NAME) {
                 _createActionContext = dispatcher._createActionContext,
                 _useController = dispatcher._useController;
 
-            errorTriggered = false;
             dispatcher.init(store, tunnel);
             // if the expandInstance calls with an error, the tunnel
             // should be tried.
@@ -204,6 +199,63 @@ YUI.add('mojito-dispatcher-client-tests', function(Y, NAME) {
 
             // restoring references
             dispatcher._createActionContext = _createActionContext;
+            dispatcher._useController = _useController;
+        },
+
+        'test instance caching workflow': function () {
+            var tunnel,
+                useCommand,
+                _useController = dispatcher._useController;
+
+            dispatcher.init(store, tunnel);
+            // if the expandInstance calls with an error, the tunnel
+            // should be tried.
+            store.expandInstance = function (instance, context, callback) {
+                instance.controller = 'foo';
+                Y.mojito.controllers[instance.controller] = {
+                    foo: function () {
+                        // synthetic controller
+                    },
+                    bar: function () {
+                        // synthetic controller
+                    }
+                };
+                callback(null, instance);
+            };
+            dispatcher._useController = function (c) {
+                useCommand = c;
+            };
+            dispatcher.dispatch({
+                action: 'foo',
+                instance: {
+                    instanceId: 123,
+                    type: 'M'
+                }
+            }, {
+                error: function () {
+                    A.fail('_useController should be called instead');
+                }
+            });
+            A.areSame(123, useCommand.instance.instanceId, 'instanceId should be preserved during the first round.');
+
+            // triggering the second round
+            useCommand.instance.cacheFlag = true;
+            useCommand = null;
+            dispatcher.dispatch({
+                action: 'bar',
+                instance: {
+                    instanceId: 123,
+                    type: 'M'
+                }
+            }, {
+                error: function () {
+                    A.fail('_useController should be called instead');
+                }
+            });
+            A.areSame(123, useCommand.instance.instanceId, 'instanceId should be preserved during the second round.');
+            A.isTrue(useCommand.instance.cacheFlag, 'command.instance should be re-use if the instanceId is the same.');
+
+            // restoring references
             dispatcher._useController = _useController;
         }
 
