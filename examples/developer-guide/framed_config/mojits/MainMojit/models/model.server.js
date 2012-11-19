@@ -6,9 +6,9 @@
 
 /*jslint anon:true, sloppy:true, nomen:true*/
 
-YUI.add('MainMojitModel', function (Y) {
+YUI.add('MainMojitModel', function (Y, NAME) {
 
-    Y.mojito.models.MainMojit = {
+     Y.namespace('mojito.models')[NAME] = {
 
         getData: function (callback) {
             callback({some: 'data'});

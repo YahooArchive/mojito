@@ -6,7 +6,7 @@
 
 /*jslint anon:true, sloppy:true, nomen:true*/
 
-YUI.add('i18nModel', function (Y) {
+YUI.add('i18nModel', function (Y, NAME) {
 
 /**
  * The i18nModel module.
@@ -20,7 +20,7 @@ YUI.add('i18nModel', function (Y) {
      * @class Model
      * @constructor
      */
-    Y.mojito.models.i18n = {
+     Y.namespace('mojito.models')[NAME] = {
 
         init: function (config) {
             this.config = config;

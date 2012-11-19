@@ -6,19 +6,19 @@
 
 /*jslint anon:true, sloppy:true, nomen:true*/
 
-YUI.add('PagerMojitModel', function(Y) {
+YUI.add('PagerMojitModel', function(Y, NAME) {
     var API_KEY = '84921e87fb8f2fc338c3ff9bf51a412e';
 
     /** 
-     * The PagerMojitModel module.
-     * @module PagerMojitModel 
-     */
+    * The PagerMojitModel module.
+    * @module PagerMojitModel 
+    */
     /**
-     * Constructor for the Model class.
-     * @class Model 
-     * @constructor 
-     */
-    Y.mojito.models.PagerMojitModel = {
+    * Constructor for the Model class.
+    * @class Model 
+    * @constructor 
+    */
+    Y.namespace('mojito.models')[NAME] = {
         init: function(config) {
             this.config = config;
         },
@@ -57,8 +57,4 @@ YUI.add('PagerMojitModel', function(Y) {
             });
         }
     };
-}, '0.0.1', {requires: [
-    'mojito',
-    'mojito-models-addon',
-    'yql'
-]});
+}, '0.0.1', {requires: ['mojito', 'yql']});

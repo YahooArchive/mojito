@@ -8,9 +8,7 @@
 
 YUI.add('device', function (Y, NAME) {
     Y.namespace('mojito.controllers')[NAME] = {
-        init: function(config) {
-            this.config = config;
-        },
+
         index: function(ac) {
             var device = ac.context.device, css = '/static/device/assets/simple';
             if (device === 'iphone') {

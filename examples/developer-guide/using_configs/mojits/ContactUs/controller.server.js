@@ -10,16 +10,12 @@ YUI.add('ContactUs', function (Y, NAME) {
 
     Y.namespace('mojito.controllers')[NAME] = {
 
-        init: function (config) {
-            this.config = config;
-        },
-
         index: function (ac) {
             var vudata = {
                 'company': ac.config.get("company"),
                 'copyright': ac.config.get("copyright"),
-                'depts': ac.config.getDefinition(ac.config.key)
-            }
+                'depts': ac.config.getDefinition(ac.config.get("key"))
+            };
 
             ac.done(vudata);
         }
