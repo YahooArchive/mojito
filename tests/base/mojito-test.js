@@ -79,7 +79,6 @@ YUI.add('mojito-mu', function(Y, NAME) {});
 
 /* AUTOLOAD */
 YUI.add('mojito-action-context', function(Y, NAME) {});
-YUI.add('mojito-controller-context', function(Y, NAME) {});
 YUI.add('mojito-dispatcher', function(Y, NAME) {});
 YUI.add('mojito-loader', function(Y, NAME) {});
 YUI.add('mojito-logger', function(Y, NAME) {});
