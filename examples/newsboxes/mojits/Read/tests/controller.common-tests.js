@@ -222,6 +222,9 @@ YUI.add('ReadController-tests', function(Y) {
 
         return {
             config: {
+                getAppConfig: function() {
+                    return {spaceid: '999', limit: 10};
+                },
                 getDefinition: function(ignored) {
                     return _definitions;
                 }
@@ -235,10 +238,12 @@ YUI.add('ReadController-tests', function(Y) {
                 }
             },
             models: {
-                rss: {
-                    get: function(feedmeta, cb) {
-                        cb(null, feedmeta, boomtown_vudata_out);
-                    }
+                get: function() {
+                    return {
+                        get: function(feedmeta, cb) {
+                            cb(null, feedmeta, boomtown_vudata_out);
+                        }
+                    };
                 }
             }
         };
@@ -295,14 +300,20 @@ YUI.add('ReadController-tests', function(Y) {
         },
 
         'compose spaceid set': function() {
+            controller.config = controller.config || {};
+            controller.config.spaceid = '999';
             A.areSame('999', controller.compose(boomtown_feedmeta, boomtown_stories_in).spaceid);
         },
 
         'compose feedname': function() {
+            controller.config = controller.config || {};
+            controller.config.spaceid = '999';
             A.areSame('BoomTown', controller.compose(boomtown_feedmeta, boomtown_stories_in).feedname);
         },
 
         'compose navdots for every story': function() {
+            controller.config = controller.config || {};
+            controller.config.spaceid = '999';
             var vu = controller.compose(boomtown_feedmeta, boomtown_stories_in);
 
             A.areSame(10, vu.navdots.length);
@@ -310,6 +321,8 @@ YUI.add('ReadController-tests', function(Y) {
         },
 
         'compose adds css': function() {
+            controller.config = controller.config || {};
+            controller.config.spaceid = '999';
             var vu = controller.compose(boomtown_feedmeta, boomtown_stories_in);
             Y.each(vu.stories, function(story, i) {
                 A.isTypeOf('string', story.css_style);
