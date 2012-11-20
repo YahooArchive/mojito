@@ -74,7 +74,7 @@
             },
             "deploy.server": {
                 "params": {
-                    "lib": "$$config.lib$$/app/addons/ac/deploy.server.js,../../../../../../lib/app/autoload/loader.common.js,../../../../../../lib/app/addons/ac/http.server.js",
+                    "lib": "$$config.lib$$/app/addons/ac/deploy.server.js,../../../../../../lib/app/addons/ac/http.server.js",
                     "test": "./test-deploy.server.js",
                     "driver": "nodejs"
                 },
@@ -100,14 +100,6 @@
                 "params": {
                     "lib": "$$config.lib$$/app/addons/ac/meta.common.js",
                     "test": "./test-meta.common.js",
-                    "page": "$$config.base$$/mojito-test.html"
-                },
-                "group": "fw,client,server"
-            },
-            "output-adapter.common": {
-                "params": {
-                    "lib": "$$config.lib$$/app/addons/ac/output-adapter.common.js",
-                    "test": "./test-output-adapter.common.js",
                     "page": "$$config.base$$/mojito-test.html"
                 },
                 "group": "fw,client,server"

@@ -376,7 +376,7 @@ Adapter Functions
 The functions ``ac.done``, ``ac.flush``, and ``ac.error`` defined in the ``adapter``
 object are actually implemented by the Mojito framework. For example, before 
 ``adapter.done`` is executed, Mojito runs the ``done`` function defined in 
-`output-adapter.common.js <https://github.com/yahoo/mojito/blob/develop/lib/app/addons/ac/output-adapter.common.js>`_,
+`action-context.common.js <https://github.com/yahoo/mojito/blob/develop/lib/app/autoload/action-context.common.js>`_,
 which collects metadata and configuration. 
 
 .. _dyn_dispatch-controller:
