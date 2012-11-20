@@ -4,8 +4,6 @@
 
         "name" : "newsboxes",
 
-        "commonlib" : "../../../base/yui-test.js",
-
         "config" :{
             "baseUrl" : "http://localhost"
         },
