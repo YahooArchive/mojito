@@ -461,7 +461,7 @@ Mojito framework and the rendering engine.
 
 In the following sections, we will be discussing how to create a view engine 
 addon that relies on a rendering engine, not how to write code that renders
- templates.
+templates.
 
 .. _ve_overview-term:
 
@@ -571,42 +571,42 @@ The view engine addon must have the following:
 
 - a ``YUI.add`` statement to register the addon. For example:
 
-   .. code-block:: javascript
+  .. code-block:: javascript
 
-      YUI.add('addons-viewengine-hb', function(Y, NAME) {
+     YUI.add('addons-viewengine-hb', function(Y, NAME) {
     
-        // The addon name 'addons-viewengine-hb' is registered by YUI.add
+       // The addon name 'addons-viewengine-hb' is registered by YUI.add
     
-      }, '0.1.0', {requires: []});
+     }, '0.1.0', {requires: []});
 
 - an object that is assigned to ``Y.mojito.addons.viewEngines.{view_engine_name}`` 
   as seen below:
    
-   .. code-block:: javascript
+  .. code-block:: javascript
       
-      ...
+     ...
         
-        function EjsAdapter(viewId) {
-          this.viewId = viewId;
-        }
-      ...
-      Y.namespace('mojito.addons.viewEngines').ejs = EjsAdapter;
+       function EjsAdapter(viewId) {
+         this.viewId = viewId;
+       }
+       ...
+       Y.namespace('mojito.addons.viewEngines').ejs = EjsAdapter;
       
 - a prototype of the object has the following two methods ``render`` and ``compiler`` 
   as shown below:
 
-   .. code-block:: javascript
+  .. code-block:: javascript
    
-      ...
+     ...
         
-        EjsAdapter.prototype = {
+       EjsAdapter.prototype = {
        
-          render: function(data, mojitType, tmpl, adapter, meta, more) {
+         render: function(data, mojitType, tmpl, adapter, meta, more) {
            ...
-          },
-          compiler: function(tmpl) {
+         },
+         compiler: function(tmpl) {
             ...
-          }
+         }
           ...
 
     

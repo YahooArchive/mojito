@@ -54,14 +54,14 @@ Installing a Rendering Engine
 You could write your own rendering engine or copy code into your Mojito 
 application, but this example follows the most common use case of installing 
 a rendering engine with ``npm``. We will be installing the rendering engine
- `EJS <http://embeddedjs.com/>`_ with ``npm``.
+`EJS <http://embeddedjs.com/>`_ with ``npm``.
 
 Because your Mojito application is simply a ``npm`` module, you can have a 
 ``node_modules`` directory for locally installing other modules. Thus, from 
 your application directory, you would use the following ``npm`` command to 
 install ``ejs``:
 
-``{app_dir}/ $ npm install ejs``
+``$ npm install ejs``
 
 After you have installed ``ejs``, a ``node_modules`` directory will be created 
 with the contents similar to the following:
@@ -114,29 +114,29 @@ The view engine addon must have the following:
   view engine addon with the name ``addons-viewengine-ejs`` in our code example 
   as seen below.
 
-   .. code-block:: javascript
+  .. code-block:: javascript
 
-      YUI.add('addons-viewengine-ejs', function(Y, NAME) {
+     YUI.add('addons-viewengine-ejs', function(Y, NAME) {
     
-        // The addon name 'addons-viewengine-hb' is registered by YUI.add
+       // The addon name 'addons-viewengine-hb' is registered by YUI.add
     
-      }, '0.1.0', {requires: []});
+     }, '0.1.0', {requires: []});
       
 - a prototype of the object has the following two methods ``render`` and 
   ``compiler`` as shown below. We will look at the ``render`` and ``compile`` 
   methods more closely in the next section.
 
-   .. code-block:: javascript
+  .. code-block:: javascript
    
-      ...
+     ...
         
-      EjsAdapter.prototype = {
+       EjsAdapter.prototype = {
        
-        render: function(data, mojitType, tmpl, adapter, meta, more) {
-          ...
-        },
-        compiler: function(tmpl) {
-          ...
+         render: function(data, mojitType, tmpl, adapter, meta, more) {
+           ...
+         },
+         compiler: function(tmpl) {
+           ...
         }
         ...      
         
@@ -144,15 +144,15 @@ The view engine addon must have the following:
   In our example, the constructor ``EjsAdapter`` is assigned to the namespace 
   ``Y.namespace('mojito.addons.viewEngines').ejs`` or ``Y.mojito.addons.viewEngines.ejs``.
    
-   .. code-block:: javascript
+  .. code-block:: javascript
       
-      ...
+     ...
         
-      function EjsAdapter(viewId) {
-        this.viewId = viewId;
-      }
-      ...
-      Y.namespace('mojito.addons.viewEngines').ejs = EjsAdapter;
+       function EjsAdapter(viewId) {
+         this.viewId = viewId;
+       }
+       ...
+       Y.namespace('mojito.addons.viewEngines').ejs = EjsAdapter;
 
 .. _ve_addon_create-render_compile:      
 

@@ -11,9 +11,7 @@ URL that contains the following three components:
   application, or the mojit depending on the level of the resource.
 - **relative path** - the path relative to the source path.
 
-The URL of the static URL has the following syntax:
-
-``/static/{source_path}/{relative_path}``
+The URL of the static URL has the following syntax: ``/static/{source_path}/{relative_path}``
 
 .. _static_resources-prefix:
 
