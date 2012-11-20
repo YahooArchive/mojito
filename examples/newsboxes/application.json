@@ -12,10 +12,6 @@
             "urls": ["/read.html"]
         }
     },
-    "log": {
-        "client": { "level": "warn", "yui": true },
-        "server": { "level": "info", "yui": true }
-    },
     "cacheViewTemplates": false,
 
     "specs": {

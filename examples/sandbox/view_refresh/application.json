@@ -1,12 +1,6 @@
 [
     {
         "settings": [ "master" ],
-        "log": {
-            "client": {
-                "level": "debug",
-                "yui": false
-            }
-        },
         "specs": {
             "frame": {
                 "type": "HTMLFrameMojit",
