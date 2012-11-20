@@ -203,7 +203,7 @@ function deploy (cmd, callback) {
             }
         })(apps[i]);
     }
-    async.series(appSeries, callback);
+    async.parallel(appSeries, callback);
 }
 
 function startArrowSelenium (cmd, callback) {
@@ -319,14 +319,20 @@ function runMojitoApp (cliOptions, basePath, path, port, params, callback) {
     }
     */
 
+    var p, listener;
+    listener = function(data) {
+        if (data.toString().match(/Mojito started /)) {
+            p.stdout.removeListener('data', listener);
+            console.log('Started ' + path + ' at port ' + port + ' with params ' + (params || 'empty'));
+            callback();
+        }
+    }
     params = params || '';
     console.log('Starting ' + path + ' at port ' + port + ' with params ' + (params || 'empty'));
-    var p = runCommand(basePath + '/' + path, cwd + "/../bin/mojito", ["start", port, "--context", params], function () {});
+    p = runCommand(basePath + '/' + path, cwd + "/../bin/mojito", ["start", port, "--context", params], function () {});
     pids.push(p.pid);
     pidNames[p.pid] = libpath.basename(path) + ':' + port + (params ? '?' + params : '');
-    // Give each app a second to start
-    setTimeout(function () { callback(null) }, 1000);
-
+    p.stdout.on('data', listener);
     if (cliOptions.debugApps) {
         p.stdout.on('data', function(data) {
             console.error('---DEBUG ' + port + ' STDOUT--- ' + data.toString());
