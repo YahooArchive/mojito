@@ -17,10 +17,6 @@ YUI.add('TestsLayout', function(Y, NAME) {
      */
     Y.namespace('mojito.controllers')[NAME] = {
 
-        init: function(mojitSpec) {
-            this.spec = mojitSpec;
-        },
-
         /**
          * Method corresponding to the 'index' action.
          *

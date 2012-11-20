@@ -17,10 +17,6 @@ YUI.add('BroadCast', function(Y, NAME) {
      */
     Y.namespace('mojito.controllers')[NAME] = {
 
-        init: function(spec) {
-            this.spec = spec;
-        },
-
         'index': function(ac) {
             ac.done();
         },

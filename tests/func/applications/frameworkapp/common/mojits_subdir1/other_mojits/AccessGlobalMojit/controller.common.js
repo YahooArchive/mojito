@@ -5,10 +5,6 @@ YUI.add('AccessGlobalMojit', function(Y, NAME) {
 
     Y.namespace('mojito.controllers')[NAME] = {
 
-        init: function(config) {
-            this.config = config;
-        },
-
         accessModel: function(ac) {
 			ac.models.get('GlobalMojit').myGlobalModelFunction(function(data) {
 				Y.log(data.some, "info");
