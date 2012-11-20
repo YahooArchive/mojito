@@ -61,7 +61,6 @@ YUI.add('mojito-models-addon', function(Y, NAME) {});
 YUI.add('mojito-i13n-addon', function(Y, NAME) {});
 YUI.add('mojito-intl-addon', function(Y, NAME) {});
 YUI.add('mojito-meta-addon', function(Y, NAME) {});
-YUI.add('mojito-output-adapter-addon', function(Y, NAME) {});
 YUI.add('mojito-params-addon', function(Y, NAME) {});
 YUI.add('mojito-partial-addon', function(Y, NAME) {});
 YUI.add('mojito-url-addon', function(Y, NAME) {});
