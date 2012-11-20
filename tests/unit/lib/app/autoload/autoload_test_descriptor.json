@@ -11,7 +11,7 @@
             "action-context.common": {
                 "params": {
                     "page": "$$config.base$$/mojito-test.html",
-                    "lib": "$$config.lib$$/app/autoload/action-context.common.js,./../../../../../lib/app/addons/ac/output-adapter.common.js",
+                    "lib": "$$config.lib$$/app/autoload/action-context.common.js",
                     "test": "./test-action-context.common.js"
                 },
                 "group": "fw,unit,client,server"

@@ -6,7 +6,6 @@
 YUI().use(
     'oop',
     'mojito-resource-store',
-    'mojito-resource-store-adapter',
     'addon-rs-config',
     'addon-rs-selector',
     'addon-rs-url',
