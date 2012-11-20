@@ -83,7 +83,6 @@ YUI.add('mojito-mojit-proxy', function(Y, NAME) {});
 YUI.add('mojito-output-handler', function(Y, NAME) {});
 YUI.add('mojito-perf', function(Y, NAME) {});
 YUI.add('mojito-resource-store', function(Y, NAME) {});
-YUI.add('mojito-resource-store-adapter', function(Y, NAME) {});
 YUI.add('mojito-rest-lib', function(Y, NAME) {});
 YUI.add('mojito-route-maker', function(Y, NAME) {});
 YUI.add('mojito-client-store', function(Y, NAME) {});
