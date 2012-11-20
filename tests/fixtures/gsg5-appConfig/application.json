@@ -8,11 +8,6 @@
             "frameworkName": "fw"
         },
 
-        "yui": {
-            "base": "/foo/",
-            "logLevel": "warn"
-        },
-
         "specs": {
             "flickr": {
                 "type": "HTMLFrameMojit",

@@ -2,7 +2,7 @@
     "settings": [ "master" ],
     "yui": {
         "config": {
-            "debug": false,
+            "debug": true,
             "logLevel": "error"
         }
     }
