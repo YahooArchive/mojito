@@ -13,7 +13,7 @@ implementation details, see the following:
 
 - `Mojit Configuration <mojito_configuring.html#mojit-configuration>`_
 - `Mojits <mojito_apps.html#mojits>`_ in the `Mojito Applications <mojito_apps.html>`_ 
-   chapter
+  chapter
 - `MVC in Mojito <mojito_mvc.html>`_
 - `Mojito API Documentation <../../api>`_
 
@@ -176,6 +176,7 @@ and has the following characteristics:
 - versioned and immutable for a given version.
 
 Metadata can be packaged as a unit (e.g., as a zip file) for:
+
 - configuration schema
 - data requirements
 - mojit dependencies

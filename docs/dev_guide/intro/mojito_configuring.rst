@@ -434,15 +434,8 @@ Some of the properties of the ``config`` object used for configuring logging are
 +----------------------+---------------+-------------------+-----------------------------------------------------------+
 | Property             | Data Type     | Default Value     | Description                                               |
 +======================+===============+===================+===========================================================+
-| ``buffer``           | boolean       | false             | Determines whether Mojito should buffer log               |
-|                      |               |                   | entries (``true``) or output each as they occur           |
-|                      |               |                   | (``false``).                                              |
-+----------------------+---------------+-------------------+-----------------------------------------------------------+
 | ``debug``            | boolean       | true              | Determines whether ``Y.log`` messages are written to the  |    
 |                      |               |                   | browser console.                                          |
-+----------------------+---------------+-------------------+-----------------------------------------------------------+
-| ``defaultLevel``     | string        | "info"            | Specifies the default log level to log entries. See       |
-|                      |               |                   | `Log Levels <../topics/mojito_logging.html#log-levels>`_. |
 +----------------------+---------------+-------------------+-----------------------------------------------------------+
 | ``logExclude``       | object        | none              | Excludes the logging of the YUI module(s) specified.      |
 |                      |               |                   | For example: ``logExclude: { "logModel": true }``         |  
@@ -454,13 +447,7 @@ Some of the properties of the ``config`` object used for configuring logging are
 |                      |               |                   | log output. See                                           |
 |                      |               |                   | `Log Levels <../topics/mojito_logging.html#log-levels>`_. |
 +----------------------+---------------+-------------------+-----------------------------------------------------------+
-| ``maxBufferSize``    | number        | 1024              | If ``buffer`` is set to ``true``, specifies the           |
-|                      |               |                   | number of log entries to store before flushing to         |
-|                      |               |                   | output.                                                   |
-+----------------------+---------------+-------------------+-----------------------------------------------------------+
-| ``timestamp``        | boolean       | true              | Determines whether the timestamp is included in           |
-|                      |               |                   | the log output.                                           |
-+----------------------+---------------+-------------------+-----------------------------------------------------------+
+
 
 
 
@@ -1182,7 +1169,7 @@ the action are specified in the ``"foo_default"`` object.
      "call": "foo-1.index"
    }
 
-In this code snippet from ``controller.js``,  the `Url addon <../../api/classes/Url.common.html>`_ 
+In this code snippet from ``controller.js``, the `Url addon <../../api/classes/Url.common.html>`_ 
 with the ``make`` method use the mojit instance and function specified in the 
 ``routes.json`` above to create the URL ``/foo`` with the query string parameters 
 ``?foo=bar``.
@@ -1202,9 +1189,9 @@ The ``index`` function above returns the following URL: ``http://localhost:8666/
 Accessing Configurations from Mojits
 ====================================
 
-The controller, model, and binder can access mojit configurations from the ``init`` 
+The model, and binder can access mojit configurations from the ``init`` 
 function. The controller and model are passed ``configuration`` objects. The controller 
-can also access configuration from other functions through the ``actionContext`` object. 
+can access configuration the ``actionContext`` object and the ``Config`` addon. 
 The ``init`` function in the binder instead of a configuration object is passed the 
 ``mojitProxy`` object, which enables you to get the configurations.  
 
@@ -1310,9 +1297,8 @@ configurations of ``application.json`` override those in ``defaults.json``.
 Controller
 ##########
 
-In the controller, the mojit-level configurations are passed to the ``init`` function. In 
-other controller functions, you can access mojit-level configurations from the 
-``actionContext`` object using the `Config addon <../../api/classes/Config.common.html>`_. 
+Controllers can access mojit-level configurations from the ``actionContext`` object 
+using the `Config addon <../../api/classes/Config.common.html>`_. 
 Use ``ac.config.get`` to access configuration values from ``application.json`` and 
 ``defaults.json`` and ``ac.config.getDefinition`` to access definition values from 
 ``definition.json``.
@@ -1323,10 +1309,10 @@ Use ``ac.config.get`` to access configuration values from ``application.json`` a
 Model
 #####
 
-The ``init`` function in the model is also passed the mojit-level configurations. If other 
-model functions need the configurations, you need to save the configurations to the 
-``this`` reference because no ``actionContext`` object is passed to the model, so your 
-model does not have access to the ``Config`` addon.
+The ``init`` function in the model is also passed the mojit-level configurations. 
+If other model functions need the configurations, you need to save the 
+configurations to the ``this`` reference because no ``actionContext`` object is 
+passed to the model, so your model does not have access to the ``Config`` addon.
 
 
 .. _access_mojit-binder:
