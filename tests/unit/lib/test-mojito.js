@@ -15,7 +15,6 @@ YUI().use('mojito', 'test', function (Y) {
         AA = Y.ArrayAssert,
         OA = Y.ObjectAssert,
         Mojito = require(path.join(__dirname, '../../../lib/mojito')),
-        noop = function() {},
         realServer,
         realConfig,
         realListen,
@@ -23,11 +22,12 @@ YUI().use('mojito', 'test', function (Y) {
         app;
 
     function cmp(x, y, msg) {
+        var i;
         if (Y.Lang.isArray(x)) {
             A.isArray(x, msg || 'first arg should be an array');
             A.isArray(y, msg || 'second arg should be an array');
             A.areSame(x.length, y.length, msg || 'arrays are different lengths');
-            for (var i = 0; i < x.length; i += 1) {
+            for (i = 0; i < x.length; i += 1) {
                 cmp(x[i], y[i], msg);
             }
             return;
@@ -36,7 +36,7 @@ YUI().use('mojito', 'test', function (Y) {
             A.isObject(x, msg || 'first arg should be an object');
             A.isObject(y, msg || 'second arg should be an object');
             A.areSame(Object.keys(x).length, Object.keys(y).length, msg || 'object keys are different lengths');
-            for (var i in x) {
+            for (i in x) {
                 if (x.hasOwnProperty(i)) {
                     cmp(x[i], y[i], msg);
                 }
@@ -121,12 +121,12 @@ YUI().use('mojito', 'test', function (Y) {
             server = new Mojito.Server();
             A.isObject(server._app);
         },
-        
+
         'new Mojito.Server() defaults options properly': function() {
             server = new Mojito.Server();
             A.isObject(server._options);
         },
-        
+
         'new Mojito.Server() accepts options properly': function() {
             var options = {
                     port: 2222
@@ -135,33 +135,13 @@ YUI().use('mojito', 'test', function (Y) {
             server = new Mojito.Server(options);
             A.areEqual(server._options.port, 2222);
         },
- 
+
         'new Mojito.Server() defaults port properly': function() {
             process.env.PORT = 2222;
             server = new Mojito.Server();
             A.areEqual(server._options.port, 2222);
-        },
-
-        'setLogFormatter() accepts a log formatter': function() {
-            server = new Mojito.Server();
-            server.setLogFormatter(noop);
-
-            OA.areEqual(noop, server._logFormatter);
-        },
-
-        'setLogPublisher() accepts a log publisher': function() {
-            server = new Mojito.Server();
-            server.setLogPublisher(noop);
-
-            OA.areEqual(noop, server._logPublisher);
-        },
-
-        'setLogWriter() accepts a log writer': function() {
-            server = new Mojito.Server();
-            server.setLogWriter(noop);
-
-            OA.areEqual(noop, server._logWriter);
         }
+
     }));
 
     suite.add(new Y.Test.Case({
@@ -174,7 +154,7 @@ YUI().use('mojito', 'test', function (Y) {
             realListen = app.listen;
             app.listen = function() {
                 listened = true;
-            }
+            };
         },
 
         tearDown: function() {
@@ -201,7 +181,7 @@ YUI().use('mojito', 'test', function (Y) {
 
             Mojito.Server.prototype._configureAppInstance = function() {
                 configured = true;
-            }
+            };
 
             server = new Mojito.Server();
             A.isTrue(configured);
@@ -239,7 +219,7 @@ YUI().use('mojito', 'test', function (Y) {
                         };
                     }
                 }
-            }
+            };
 
             A.isFunction(server._configureYUI);
 
