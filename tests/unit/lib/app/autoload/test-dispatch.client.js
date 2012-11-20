@@ -19,7 +19,7 @@ YUI.add('mojito-dispatcher-client-tests', function(Y, NAME) {
         'setUp': function() {
             store = {
                 getAppConfig: function() {
-                    return { yui: { dependencyCalculations: 'ondemand' } };
+                    return { yui: {} };
                 },
                 getStaticContext: function () {
                 },

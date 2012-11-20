@@ -2,10 +2,6 @@
     {
         "settings": [ "master" ],
 
-		"staticHandling": {
-			"useRollups": true
-		},
-        
         "specs": {
             "frame": {
                 "type": "HTMLFrameMojit",

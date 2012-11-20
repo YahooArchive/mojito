@@ -5,10 +5,6 @@ YUI.add('i18n_Mojit', function(Y, NAME) {
 
     Y.namespace('mojito.controllers')[NAME] = {
 
-        init: function(mojitSpec) {
-            this.spec = mojitSpec;
-        },
-
         index: function(ac) {
             ac.models.get('i18n_MojitModel').getFlickrImages('mojito', function(images) {
 	            var dateString = ac.intl.formatDate(new Date());

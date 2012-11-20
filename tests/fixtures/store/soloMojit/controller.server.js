@@ -3,11 +3,7 @@
  */
 YUI.add('soloMojit', function(Y, NAME) {
 
-    Y.mojito.controller = {
-
-        init: function(config) {
-            this.config = config;
-        },
+    Y.namespace('mojito.controllers')[NAME] = {
 
         index: function(ac) {
             ac.done('Mojito is working.');

@@ -7,9 +7,6 @@
 YUI.add('CookieMojit', function(Y, NAME) {
 
     Y.namespace('mojito.controllers')[NAME] = {
-    init: function(config) {
-      this.config = config;
-    },
     index: function(ac) {
       var myCookieValue = ac.cookie.get('mycookie');
       ac.cookie.set("city", "Cleveland");
