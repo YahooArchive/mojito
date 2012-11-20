@@ -2,9 +2,6 @@
     "settings": ["master"],
 
     "appPort": 8000,
-    "staticHandling": {
-        "useRollups": true
-    },
     "builds": {
         "html5app": {
             "attachManifest": true,
