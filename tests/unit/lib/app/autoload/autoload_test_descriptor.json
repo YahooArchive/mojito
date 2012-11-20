@@ -114,7 +114,7 @@
             "tunnel.client": {
                 "params": {
                     "page": "$$config.base$$/mojito-test.html",
-                    "lib": "$$config.lib$$/app/autoload/tunnel.common.js",
+                    "lib": "$$config.lib$$/app/autoload/tunnel-client.common.js",
                     "test": "./test-tunnel.common.js"
                 },
                 "group": "fw,unit,client"
