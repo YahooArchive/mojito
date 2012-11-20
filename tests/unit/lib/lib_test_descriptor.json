@@ -23,13 +23,6 @@
                     "driver": "nodejs"
                 },
                 "group": "fw,unit,server"
-            },
-            "server-log.server": {
-                "params": {
-                    "test": "./test-server-log.server.js",
-                    "driver": "nodejs"
-                },
-                "group": "fw,unit,server"
             }
         }
     },
