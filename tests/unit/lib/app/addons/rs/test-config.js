@@ -235,9 +235,6 @@ YUI().use('addon-rs-config', 'mojito-util', 'base', 'oop', 'test', function(Y) {
                 "mojitDirs": [
                     "soloMojit"
                 ],
-                "staticHandling": {
-                    "useRollups": true
-                },
 
                 "testKey1": "testVal1-server",
                 "testKey2": "testVal2",

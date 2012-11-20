@@ -10,7 +10,6 @@
 		        "fetchCSS": false,
 		        "testingyuiconfig": "myyuiconfig"
 		    },
-		    "dependencyCalculations": "ondemand",
 			"extraModules": ["plugin","jsonp","piechart","profiler","record","timeaxis","curveutil","axis","circle","column","cookie","dial","fills","graph","intl","panel","plots","node-event-delegate","transition","event-move","calendar","Array","ArrayList","ArraySort"]
 		},
         "specs": {

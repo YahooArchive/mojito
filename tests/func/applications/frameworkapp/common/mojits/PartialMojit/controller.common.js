@@ -17,10 +17,6 @@ YUI.add('PartialMojit', function(Y, NAME) {
      */
     Y.namespace('mojito.controllers')[NAME] = {
 
-        init: function(spec) {
-            this.spec = spec;
-        },
-
         /**
          * Method corresponding to the 'index' action.
          *

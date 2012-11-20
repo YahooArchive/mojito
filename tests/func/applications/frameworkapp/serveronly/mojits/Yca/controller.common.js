@@ -5,10 +5,6 @@ YUI.add('Yca', function(Y, NAME) {
 
     Y.namespace('mojito.controllers')[NAME] = {
 
-        init: function(config) {
-            this.config = config;
-        },
-
         index: function(ac) {
             var test = ac.params.getFromUrl('testname');
             var title = "This is the certificate";

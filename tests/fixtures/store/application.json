@@ -4,9 +4,6 @@
         "mojitDirs": [
             "soloMojit"
         ],
-        "staticHandling": {
-            "useRollups": true
-        },
 
         "testKey1": "testVal1",
         "testKey2": "testVal2",

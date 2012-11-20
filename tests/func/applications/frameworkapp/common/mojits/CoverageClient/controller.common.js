@@ -5,10 +5,6 @@ YUI.add('CoverageClient', function(Y, NAME) {
 
     Y.namespace('mojito.controllers')[NAME] = {
 
-        init: function(config) {
-            this.config = config;
-        },
-
         index: function(ac) {
 	        var data = {
         		hostname: ac.http.getRequest().headers.host

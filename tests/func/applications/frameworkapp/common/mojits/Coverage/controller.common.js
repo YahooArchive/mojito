@@ -5,10 +5,6 @@ YUI.add('Coverage', function(Y, NAME) {
 
     Y.namespace('mojito.controllers')[NAME] = {
 
-        init: function(config) {
-            this.config = config;
-        },
-
         index: function(ac) {
 	    	var fs = require('fs');
 	    	var mojitoVer = Y.mojito.version;
