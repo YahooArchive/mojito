@@ -3,7 +3,7 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
+YUI.add('mojito-dispatcher-server-tests', function(Y, NAME) {
 
     var suite = new Y.Test.Suite(NAME),
         A = Y.Assert,
@@ -119,36 +119,10 @@ YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
             A.areSame(command, tunnelCommand, 'delegate command to tunnel');
         },
 
-        'test dispatch with invalid mojit': function () {
-            var tunnel,
-                tunnelCommand;
-
-            tunnel = {
-                rpc: function (c, a) {
-                    tunnelCommand = c;
-                }
-            };
-            errorTriggered = false;
-            dispatcher.init(store, tunnel);
-            // if the expandInstance calls with an error, the tunnel
-            // should be tried.
-            store.expandInstance = function (instance, context, callback) {
-                callback({error: 1});
-            };
-            dispatcher.dispatch(command, {
-                error: function () {
-                    A.fail('tunnel should be called instead');
-                }
-            });
-            A.areSame(command, tunnelCommand, 'delegate command to tunnel');
-        },
-
         'test dispatch with valid controller': function () {
             var tunnel,
-                useCommand,
                 acCommand,
-                _createActionContext = dispatcher._createActionContext,
-                _useController = dispatcher._useController;
+                _createActionContext = dispatcher._createActionContext;
 
             errorTriggered = false;
             dispatcher.init(store, tunnel);
@@ -160,9 +134,6 @@ YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
                     fakeController: true
                 };
                 callback(null, instance);
-            };
-            dispatcher._useController = function (c) {
-                A.fail('_createActionContext should be called instead');
             };
             dispatcher._createActionContext = function (c) {
                 acCommand = c;
@@ -176,15 +147,12 @@ YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
 
             // restoring references
             dispatcher._createActionContext = _createActionContext;
-            dispatcher._useController = _useController;
         },
 
         'test dispatch with invalid controller': function () {
             var tunnel,
-                useCommand,
-                acCommand,
-                _createActionContext = dispatcher._createActionContext,
-                _useController = dispatcher._useController;
+                adapterErrorCalled,
+                _createActionContext = dispatcher._createActionContext;
 
             errorTriggered = false;
             dispatcher.init(store, tunnel);
@@ -195,22 +163,18 @@ YUI.add('mojito-dispatcher-tests', function(Y, NAME) {
                 Y.mojito.controllers[instance.controller] = null;
                 callback(null, instance);
             };
-            dispatcher._useController = function (c) {
-                useCommand = c;
-            };
             dispatcher._createActionContext = function (c) {
-                A.fail('_createActionContext should be called instead');
+                A.fail('adapter.error should be called instead');
             };
             dispatcher.dispatch(command, {
                 error: function () {
-                    A.fail('_useController should be called instead');
+                    adapterErrorCalled = true;
                 }
             });
-            A.areSame(command, useCommand, '_useController should be called based on the original command');
+            A.isTrue(adapterErrorCalled, 'adapter.error should be called for invalid controllers');
 
             // restoring references
             dispatcher._createActionContext = _createActionContext;
-            dispatcher._useController = _useController;
         }
 
     }));

@@ -16,13 +16,21 @@
                 },
                 "group": "fw,unit,client,server"
             },
-            "dispatch.common": {
+            "dispatch.server": {
                 "params": {
                     "page": "$$config.base$$/mojito-test.html",
-                    "lib": "$$config.lib$$/app/autoload/action-context.common.js,./../../../../../lib/app/autoload/dispatch.common.js",
-                    "test": "./test-dispatch.common.js"
+                    "lib": "$$config.lib$$/app/autoload/action-context.common.js,./../../../../../lib/app/autoload/dispatch.server.js",
+                    "test": "./test-dispatch.server.js"
                 },
-                "group": "fw,unit,client,server"
+                "group": "fw,unit,server"
+            },
+            "dispatch.client": {
+                "params": {
+                    "page": "$$config.base$$/mojito-test.html",
+                    "lib": "$$config.lib$$/app/autoload/action-context.common.js,./../../../../../lib/app/autoload/dispatch.client.js",
+                    "test": "./test-dispatch.client.js"
+                },
+                "group": "fw,unit,client"
             },
             "mojit-proxy.client": {
                 "params": {
