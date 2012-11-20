@@ -74,7 +74,7 @@
             },
             "deploy.server": {
                 "params": {
-                    "lib": "$$config.lib$$/app/addons/ac/deploy.server.js,../../../../../../lib/app/autoload/loader.common.js,../../../../../../lib/app/addons/ac/http.server.js",
+                    "lib": "$$config.lib$$/app/addons/ac/deploy.server.js,../../../../../../lib/app/addons/ac/http.server.js",
                     "test": "./test-deploy.server.js",
                     "driver": "nodejs"
                 },
