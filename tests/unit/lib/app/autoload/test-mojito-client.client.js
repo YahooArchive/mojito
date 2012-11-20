@@ -8,8 +8,6 @@
 /*jslint anon:true, sloppy:true, nomen:true, node:true*/
 /*global YUI*/
 
-YUI.add('mojito-tunnel-client', function(Y, NAME) {});
-
 /*
  * Test suite for the mojito-client.client.js file functionality.
  */

@@ -13,12 +13,12 @@
  * Test suite for the tunnel.common.js file functionality.
  */
 YUI({useBrowserConsole: true}).use(
-    "mojito-tunnel-client",
+    "mojito-tunnel-common",
     "test",
     "json-parse",
     function(Y) {
 
-        var suite = new Y.Test.Suite("mojito-tunnel-client tests");
+        var suite = new Y.Test.Suite("mojito-tunnel-common tests");
 
         suite.add(new Y.Test.Case({
             setUp: function () {
@@ -26,18 +26,18 @@ YUI({useBrowserConsole: true}).use(
                     tunnelPrefix: '/tunnel',
                     tunnelTimeout: 10000
                 };
-                this.tunnelClient = new Y.mojito.TunnelClient(this.appConfig);
+                this.tunnelCommon = new Y.mojito.TunnelCommon(this.appConfig);
             },
 
             "test constructor": function () {
-                var tunnelClient = this.tunnelClient;
+                var tunnelCommon = this.tunnelCommon;
 
-                Y.Assert.areEqual(this.appConfig, tunnelClient._appConfig);
+                Y.Assert.areEqual(this.appConfig, tunnelCommon._appConfig);
             },
 
             "test rpc success": function () {
                 var appConfig = this.appConfig,
-                    tunnelClient = this.tunnelClient,
+                    tunnelCommon = this.tunnelCommon,
                     adapter = Y.Mock(),
                     command = {},
                     response = {
@@ -53,7 +53,7 @@ YUI({useBrowserConsole: true}).use(
                         })
                     };
 
-                tunnelClient._makeRequest = function (url, config) {
+                tunnelCommon._makeRequest = function (url, config) {
                     Y.Assert.isString(url);
                     Y.Assert.areEqual(appConfig.tunnelPrefix, url);
                     Y.Assert.isObject(config);
@@ -61,8 +61,8 @@ YUI({useBrowserConsole: true}).use(
                     Y.Assert.areEqual(Y.JSON.stringify(command), config.data);
                     Y.Assert.isFunction(config.on.success);
                     Y.Assert.isFunction(config.on.failure);
-                    Y.Assert.areEqual(config.on.scope, tunnelClient);
-                    Y.Assert.areEqual(tunnelClient, config.context);
+                    Y.Assert.areEqual(config.on.scope, tunnelCommon);
+                    Y.Assert.areEqual(tunnelCommon, config.context);
                     Y.Assert.areEqual(appConfig.tunnelTimeout, config.timeout);
                     Y.Assert.isObject(config.headers);
                     Y.Assert.areEqual('application/json', config.headers['Content-Type']);
@@ -77,13 +77,13 @@ YUI({useBrowserConsole: true}).use(
                         Y.Assert.areEqual(200, meta.http.code);
                     }
                 });
-                tunnelClient.rpc(command, adapter);
+                tunnelCommon.rpc(command, adapter);
                 Y.Mock.verify(adapter);
             },
 
             "test rpc failure": function () {
                 var appConfig = this.appConfig,
-                    tunnelClient = this.tunnelClient,
+                    tunnelCommon = this.tunnelCommon,
                     adapter = Y.Mock(),
                     command = {},
                     response = {
@@ -99,7 +99,7 @@ YUI({useBrowserConsole: true}).use(
                         })
                     };
 
-                tunnelClient._makeRequest = function (url, config) {
+                tunnelCommon._makeRequest = function (url, config) {
                     Y.Assert.isString(url);
                     Y.Assert.areEqual(appConfig.tunnelPrefix, url);
                     Y.Assert.isObject(config);
@@ -107,8 +107,8 @@ YUI({useBrowserConsole: true}).use(
                     Y.Assert.areEqual(Y.JSON.stringify(command), config.data);
                     Y.Assert.isFunction(config.on.success);
                     Y.Assert.isFunction(config.on.failure);
-                    Y.Assert.areEqual(config.on.scope, tunnelClient);
-                    Y.Assert.areEqual(tunnelClient, config.context);
+                    Y.Assert.areEqual(config.on.scope, tunnelCommon);
+                    Y.Assert.areEqual(tunnelCommon, config.context);
                     Y.Assert.areEqual(appConfig.tunnelTimeout, config.timeout);
                     Y.Assert.isObject(config.headers);
                     Y.Assert.areEqual('application/json', config.headers['Content-Type']);
@@ -122,7 +122,7 @@ YUI({useBrowserConsole: true}).use(
                         Y.Assert.areEqual('<div></div>', html);
                     }
                 });
-                tunnelClient.rpc({}, adapter);
+                tunnelCommon.rpc({}, adapter);
                 Y.Mock.verify(adapter);
             }
         }));
