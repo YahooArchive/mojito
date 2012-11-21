@@ -24,6 +24,7 @@ program.command('test')
     .option('--logLevel <value>', 'Arrow logLevel')
     .option('--testName <value>', 'Arrow testName')
     .option('--descriptor <value>', 'which descriptor to run. filename (or glob) relative to --path')
+    .option('--coverage', 'Arrow code coverage')
     .option('--group <value>', 'Arrow group')
     .option('--driver <value>', 'Arrow driver')
     .option('--browser <value>', 'Arrow browser')
@@ -132,7 +133,6 @@ function runUnitTests (cmd, callback) {
     var commandArgs = [
         cwd + "/../node_modules/yahoo-arrow/index.js",
         "--descriptor=" + cmd.unitPath + "/**/*_descriptor.json",
-        "--coverage=true",
         "--report=true",
         "--reportFolder=" + arrowReportDir
     ];
@@ -144,6 +144,7 @@ function runUnitTests (cmd, callback) {
     cmd.driver && commandArgs.push('--driver=' + cmd.driver);
     cmd.testName && commandArgs.push('--testName=' + cmd.testName);
     cmd.group && commandArgs.push('--group=' + cmd.group);
+    cmd.coverage && commandArgs.push('--coverage=' + cmd.coverage);
 
     var p = runCommand(
         cmd.unitPath,
@@ -178,7 +179,7 @@ function deploy (cmd, callback) {
         (function (app) {
             var port = app.port ? parseInt(app.port, 10) : null,
                 type = app.type || 'mojito';
-
+                
             if ('mojito' === type) {
                 if (app.tests) {
                     var mytests = app.tests;
@@ -191,7 +192,7 @@ function deploy (cmd, callback) {
                             });
                         })();
                     }
-                } else if (app.enabled === "true" && app.path && port) {
+                } else if (app.enabled === "true" && app.path) {
                     appSeries.push(function (callback) {
                         runMojitoApp(cmd, cmd.funcPath + '/applications', app.path, port, app.param, callback);
                     });
@@ -203,7 +204,7 @@ function deploy (cmd, callback) {
             }
         })(apps[i]);
     }
-    async.parallel(appSeries, callback);
+    async.series(appSeries, callback);
 }
 
 function startArrowSelenium (cmd, callback) {
@@ -238,6 +239,7 @@ function runFuncTests (cmd, callback) {
     cmd.driver && commandArgs.push('--driver=' + cmd.driver);
     cmd.testName && commandArgs.push('--testName=' + cmd.testName);
     cmd.group && commandArgs.push('--group=' + cmd.group);
+    cmd.coverage && commandArgs.push('--coverage=' + cmd.coverage);
 
     var p = runCommand(
         cmd.funcPath,
@@ -318,15 +320,6 @@ function runMojitoApp (cliOptions, basePath, path, port, params, callback) {
         return;
     }
     */
-
-    var p, listener;
-    listener = function(data) {
-        if (data.toString().match(/Mojito started /)) {
-            p.stdout.removeListener('data', listener);
-            console.log('Started ' + path + ' at port ' + port + ' with params ' + (params || 'empty'));
-            callback();
-        }
-    }
     params = params || '';
     console.log('Starting ' + path + ' at port ' + port + ' with params ' + (params || 'empty'));
     var cmdArgs = ['start'];
@@ -336,11 +329,11 @@ function runMojitoApp (cliOptions, basePath, path, port, params, callback) {
     if (params) {
         cmdArgs.push('--context');
         cmdArgs.push(params);
-    }
-    p = runCommand(basePath + '/' + path, cwd + "/../bin/mojito", cmdArgs, function () {});
+    } 
+    var p = runCommand(basePath + '/' + path, cwd + "/../bin/mojito", cmdArgs, function () {});
+    
     pids.push(p.pid);
     pidNames[p.pid] = libpath.basename(path) + ':' + port + (params ? '?' + params : '');
-    p.stdout.on('data', listener);
     if (cliOptions.debugApps) {
         p.stdout.on('data', function(data) {
             console.error('---DEBUG ' + port + ' STDOUT--- ' + data.toString());
@@ -349,6 +342,8 @@ function runMojitoApp (cliOptions, basePath, path, port, params, callback) {
             console.error('---DEBUG ' + port + ' STDERR--- ' + data.toString());
         });
     }
+    // Give each app a second to start
+    setTimeout(function () { callback(null) }, 1000);
 }
 
 function runStaticApp (basePath, path, port, params, callback) {
