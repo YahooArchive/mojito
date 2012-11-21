@@ -50,9 +50,6 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
                 getAppConfig: function() {
                     return { yui:{ config:{ foo:'bar' } } };
                 },
-                serializeClientStore: function() {
-                    return 'clientstore';
-                },
                 getAllURLs: function() { return {}; },
                 getFrameworkConfig: function() {
                     return { ondemandBaseYuiModules:[] };
@@ -144,9 +141,6 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
                 getAppConfig: function() {
                     return { yui:{ config:{ foo:'bar' } } };
                 },
-                serializeClientStore: function() {
-                    return 'clientstore';
-                },
                 getAllURLs: function() { return {}; },
                 getFrameworkConfig: function() {
                     return { ondemandBaseYuiModules:[] };
@@ -217,9 +211,6 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
             addon.setStore({
                 getAppConfig: function() {
                     return { yui:{ config:{ fetchCSS:false } } };
-                },
-                serializeClientStore: function() {
-                    return 'clientstore';
                 },
                 getAllURLs: function() { return {}; },
                 getFrameworkConfig: function() {
