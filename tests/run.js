@@ -131,7 +131,7 @@ function runUnitTests (cmd, callback) {
 
     var commandArgs = [
         cwd + "/../node_modules/yahoo-arrow/index.js",
-        cmd.unitPath + "/**/*_descriptor.json",
+        "--descriptor=" + cmd.unitPath + "/**/*_descriptor.json",
         "--coverage=true",
         "--report=true",
         "--reportFolder=" + arrowReportDir
@@ -226,7 +226,7 @@ function runFuncTests (cmd, callback) {
     var descriptor = cmd.descriptor || '**/*_descriptor.json';
     var commandArgs = [
         cwd + "/../node_modules/yahoo-arrow/index.js",
-        cmd.funcPath + '/' + descriptor,
+        "--descriptor=" + cmd.funcPath + '/' + descriptor,
         "--report=true",
         "--reportFolder=" + arrowReportDir
     ];
