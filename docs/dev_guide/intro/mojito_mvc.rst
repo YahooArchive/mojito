@@ -420,7 +420,7 @@ For example, if you wanted to use the ``photo_search`` function in the model for
 ``flickr`` mojit, you would use the following: ``ac.models.get('flickr').photo_search(args, callback);``
 
 The ``controller.server.js`` below shows a simple example of calling 
-``get_data`` from the model of the ``simple`` mojit.
+``get_data`` from the model ``simpleModel``.
 
 .. code-block:: javascript
 
@@ -455,8 +455,10 @@ The controller also uses the ActionContext object to send data to the view.
 Calling the ``done`` method from the ActionContext object, you can send literal 
 strings or objects, with the latter being interpolated in template tags that are 
 rendered by the appropriate view engine. The ``done`` method should only be 
-called once. If neither ``done`` nor ``error`` is called, your application will 
-hang waiting for output.
+called once. If neither ``done`` nor ``error`` is called within 60 seconds, Mojito 
+will log a warning and invoke ``error`` with a Timeout error.  
+You can change the default timeout value of 60000ms (60 seconds) by setting the 
+``actionTimeout`` property of your application configuration.
 
 In the example ``controller.server.js`` below, the ``index`` function sends the ``user`` 
 object to the ``index`` template.

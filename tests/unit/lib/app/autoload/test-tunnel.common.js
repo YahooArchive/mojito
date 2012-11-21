@@ -10,7 +10,7 @@
 
 
 /*
- * Test suite for the tunnel.common.js file functionality.
+ * Test suite for the tunnel-client.common.js file functionality.
  */
 YUI({useBrowserConsole: true}).use(
     "mojito-tunnel-client",

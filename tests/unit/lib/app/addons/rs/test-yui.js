@@ -51,11 +51,7 @@ YUI().use(
             this._appResources = {};    // env: ctx: list of resources
             this._mojits = {};
             this.publish('getMojitTypeDetails', {emitFacade: true, preventable: false});
-            this._appConfig = {
-                yui: {
-                    dependencyCalculations: 'precomputed'
-                }
-            };
+            this._appConfig = { yui: {} };
         },
 
         listAllMojits: function() {

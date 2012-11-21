@@ -4,8 +4,6 @@
 
         "name" : "input",
 
-        "commonlib" : "../../../base/yui-test.js",
-
         "config" :{
             "baseUrl" : "http://localhost"
         },

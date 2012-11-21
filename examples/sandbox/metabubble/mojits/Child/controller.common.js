@@ -8,10 +8,6 @@ YUI.add('Child', function(Y, NAME) {
 
     Y.namespace('mojito.controllers')[NAME] = {
 
-        init: function(config) {
-            this.config = config;
-        },
-
         index: function(ac) {
             var color = ac.config.get('color');
             // store some analytics stuff

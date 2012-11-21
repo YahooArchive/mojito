@@ -61,7 +61,6 @@ YUI.add('mojito-models-addon', function(Y, NAME) {});
 YUI.add('mojito-i13n-addon', function(Y, NAME) {});
 YUI.add('mojito-intl-addon', function(Y, NAME) {});
 YUI.add('mojito-meta-addon', function(Y, NAME) {});
-YUI.add('mojito-output-adapter-addon', function(Y, NAME) {});
 YUI.add('mojito-params-addon', function(Y, NAME) {});
 YUI.add('mojito-partial-addon', function(Y, NAME) {});
 YUI.add('mojito-url-addon', function(Y, NAME) {});
@@ -79,20 +78,15 @@ YUI.add('mojito-mu', function(Y, NAME) {});
 
 /* AUTOLOAD */
 YUI.add('mojito-action-context', function(Y, NAME) {});
-YUI.add('mojito-controller-context', function(Y, NAME) {});
 YUI.add('mojito-dispatcher', function(Y, NAME) {});
-YUI.add('mojito-loader', function(Y, NAME) {});
-YUI.add('mojito-logger', function(Y, NAME) {});
 YUI.add('mojito-mojit-proxy', function(Y, NAME) {});
 YUI.add('mojito-output-handler', function(Y, NAME) {});
 YUI.add('mojito-perf', function(Y, NAME) {});
 YUI.add('mojito-resource-store', function(Y, NAME) {});
-YUI.add('mojito-resource-store-adapter', function(Y, NAME) {});
 YUI.add('mojito-rest-lib', function(Y, NAME) {});
 YUI.add('mojito-route-maker', function(Y, NAME) {});
 YUI.add('mojito-client-store', function(Y, NAME) {});
-// Don't add mojito-tunnel-client.  It's optional, so adding always will
-// confuse our test that makes sure it's not loaded sometimes :)
+YUI.add('mojito-tunnel-client', function(Y, NAME) {});
 YUI.add('mojito-util', function(Y, NAME) {});
 YUI.add('mojito-view-renderer', function(Y, NAME) {});
 

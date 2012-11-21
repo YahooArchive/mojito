@@ -6,7 +6,6 @@
 YUI().use(
     'oop',
     'mojito-resource-store',
-    'mojito-resource-store-adapter',
     'addon-rs-config',
     'addon-rs-selector',
     'addon-rs-url',
@@ -143,7 +142,7 @@ YUI().use(
                 });
             },
 
-            'server mojit config value via type & override': function() {
+            'server mojit config value via type and override': function() {
                 var instance = {
                     type:'test_mojit_1',
                     config:{testKey4: 'other'}
@@ -167,7 +166,7 @@ YUI().use(
                 });
             },
 
-            'server mojit instance views & binders': function() {
+            'server mojit instance views and binders': function() {
                 var instance = {type:'test_mojit_1'};
                 store.expandInstanceForEnv('client', instance, {}, function(err, instance) {
                     A.areSame(3, Y.Object.keys(instance.views).length);

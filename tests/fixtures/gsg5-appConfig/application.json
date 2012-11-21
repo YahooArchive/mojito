@@ -2,27 +2,10 @@
     {
         "settings": [ "master" ],
 
-        "deferAllOptionalAutoloads": true,
-
         "staticHandling": {
             "prefix": "",
             "appName": "app",
             "frameworkName": "fw"
-        },
-
-        "yui": {
-            "base": "/foo/"
-        },
-
-        "log": {
-            "client": {
-                "level": "warn",
-                "yui": false
-            },
-            "server": {
-                "level": "warn",
-                "yui": false
-            }
         },
 
         "specs": {

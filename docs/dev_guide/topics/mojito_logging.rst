@@ -36,12 +36,6 @@ Log Defaults
 The server and client log settings have the following default values:
 
 - ``logLevel:`` ``DEBUG`` - log level filter.
-- ``yui:`` ``true`` - determines whether YUI library logs are displayed.
-- ``buffer:`` ``false`` -  determines whether logs are buffered.
-- ``maxBufferSize: 1024`` - the number of logs the buffer holds before auto-flushing.
-- ``timestamp: true`` -  log statements are given a timestamp if value is true.
-- ``defaultLevel: 'info'`` - if ``Y.log`` is called without a log level, this is the 
-  default.
 
 .. _mojito_logging-config:
 
@@ -61,7 +55,6 @@ overrides the defaults for ``logLevel`` and ``buffer``.
        "yui": {
          "config": {
            "level": "error",
-           "buffer": true
          }
        },
        ...
@@ -91,66 +84,7 @@ context with the log configuration shown below:
      }
    ]
 
-.. _mojito_logging-buffering:
 
-Log Buffering
-=============
-
-To avoid performance issues caused by logging, you can enable buffering, which will 
-configure Mojito to cache all logs in memory. You can force Mojito to flush the logs with 
-the ``Y.log`` function or setting the maximum buffer size. The following sections show you 
-how to enable buffering and force Mojito to flush the cached logs.
-
-.. _logging_buffering-enable:
-
-Enable Buffering
-----------------
-
-To configure Mojito to buffer your logs,  set the ``buffer`` property to ``true`` in the 
-``yui.config`` object as shown in the example ``application.json`` below.
-
-.. code-block:: javascript
-
-   [
-     {
-       "settings": [ "master" ],
-       "yui": {
-         "config": {
-           "buffer": true
-         }
-       },
-       ...
-     }
-   ]
-
-.. _logging_buffering-flush:
-
-Flush Cached Logs
------------------
-
-Mojito provides you with two ways to forcefully flush cached logs. When you have buffering 
-enabled, you can force Mojito to flush the cached logs with ``Y.log(({flush: true})``. 
-You can also set the maximum buffer size, so that Mojito will flush cached logs after the 
-cache has reached the maximum buffer size.
-
-In the example ``application.json`` below, the maximum buffer size is set to be 4096 bytes. 
-Once the log cache reaches this size, the logs are then flushed. The default size of the 
-log cache is 1024 bytes.
-
-.. code-block:: javascript
-
-   [
-     {
-       "settings": [ "master" ],
-       "yui": {
-         "config": {
-           "buffer": true,
-           "maxBufferSize": 4096
-         }
-       },
-       ...
-     }
-   ]
 
 .. _mojito_logging-custom:
 

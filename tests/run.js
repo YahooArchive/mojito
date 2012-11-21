@@ -131,7 +131,7 @@ function runUnitTests (cmd, callback) {
 
     var commandArgs = [
         cwd + "/../node_modules/yahoo-arrow/index.js",
-        cmd.unitPath + "/**/*_descriptor.json",
+        "--descriptor=" + cmd.unitPath + "/**/*_descriptor.json",
         "--coverage=true",
         "--report=true",
         "--reportFolder=" + arrowReportDir
@@ -226,7 +226,7 @@ function runFuncTests (cmd, callback) {
     var descriptor = cmd.descriptor || '**/*_descriptor.json';
     var commandArgs = [
         cwd + "/../node_modules/yahoo-arrow/index.js",
-        cmd.funcPath + '/' + descriptor,
+        "--descriptor=" + cmd.funcPath + '/' + descriptor,
         "--report=true",
         "--reportFolder=" + arrowReportDir
     ];
@@ -329,7 +329,15 @@ function runMojitoApp (cliOptions, basePath, path, port, params, callback) {
     }
     params = params || '';
     console.log('Starting ' + path + ' at port ' + port + ' with params ' + (params || 'empty'));
-    p = runCommand(basePath + '/' + path, cwd + "/../bin/mojito", ["start", port, "--context", params], function () {});
+    var cmdArgs = ['start'];
+    if (port) {
+        cmdArgs.push(port);
+    }
+    if (params) {
+        cmdArgs.push('--context');
+        cmdArgs.push(params);
+    }
+    p = runCommand(basePath + '/' + path, cwd + "/../bin/mojito", cmdArgs, function () {});
     pids.push(p.pid);
     pidNames[p.pid] = libpath.basename(path) + ':' + port + (params ? '?' + params : '');
     p.stdout.on('data', listener);
