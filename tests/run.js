@@ -133,7 +133,7 @@ function runUnitTests (cmd, callback) {
     var commandArgs = [
         cwd + "/../node_modules/yahoo-arrow/index.js",
         "--descriptor=" + cmd.unitPath + "/**/*_descriptor.json",
-        "--coverage=true",
+        "--report=true",
         "--reportFolder=" + arrowReportDir
     ];
     if ('phantomjs' !== cmd.unitBrowser) {
@@ -176,11 +176,10 @@ function deploy (cmd, callback) {
         apps = appsConfig.applications;
 
     for (var i=0; i<apps.length; i++) {
-        (function () {
-            var app = apps[i],
-                port = app.port ? parseInt(app.port) : null,
+        (function (app) {
+            var port = app.port ? parseInt(app.port, 10) : null,
                 type = app.type || 'mojito';
-
+                
             if ('mojito' === type) {
                 if (app.tests) {
                     var mytests = app.tests;
@@ -189,13 +188,13 @@ function deploy (cmd, callback) {
                             var test = mytests[j],
                                 port = test.port ? parseInt(test.port) : null;
                             appSeries.push(function (callback) {
-                                runMojitoApp(cmd.funcPath + '/applications', app.path, port, test.param, callback);
+                                runMojitoApp(cmd, cmd.funcPath + '/applications', app.path, port, test.param, callback);
                             });
                         })();
                     }
                 } else if (app.enabled === "true" && app.path) {
                     appSeries.push(function (callback) {
-                        runMojitoApp(cmd.funcPath + '/applications', app.path, port, app.param, callback);
+                        runMojitoApp(cmd, cmd.funcPath + '/applications', app.path, port, app.param, callback);
                     });
                 }
             } else if ('static' === type) {
@@ -203,7 +202,7 @@ function deploy (cmd, callback) {
                     runStaticApp(cmd.funcPath + '/applications', app.path, port, app.param, callback);
                 });
             }
-        })();
+        })(apps[i]);
     }
     async.series(appSeries, callback);
 }
@@ -310,7 +309,7 @@ function runCommand (path, command, argv, callback) {
     return cmd;
 }
 
-function runMojitoApp (basePath, path, port, params, callback) {
+function runMojitoApp (cliOptions, basePath, path, port, params, callback) {
     /* useful when debugging
     var OK = {
         4081: true,
@@ -326,7 +325,7 @@ function runMojitoApp (basePath, path, port, params, callback) {
     var cmdArgs = ['start'];
     if (port) {
         cmdArgs.push(port);
-    } 
+    }
     if (params) {
         cmdArgs.push('--context');
         cmdArgs.push(params);
@@ -335,6 +334,14 @@ function runMojitoApp (basePath, path, port, params, callback) {
     
     pids.push(p.pid);
     pidNames[p.pid] = libpath.basename(path) + ':' + port + (params ? '?' + params : '');
+    if (cliOptions.debugApps) {
+        p.stdout.on('data', function(data) {
+            console.error('---DEBUG ' + port + ' STDOUT--- ' + data.toString());
+        });
+        p.stderr.on('data', function(data) {
+            console.error('---DEBUG ' + port + ' STDERR--- ' + data.toString());
+        });
+    }
     // Give each app a second to start
     setTimeout(function () { callback(null) }, 1000);
 }
