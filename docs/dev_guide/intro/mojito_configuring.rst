@@ -27,7 +27,7 @@ file is an array. Each item of the array is an object that configures
 one component of Mojito, such as logging, assets, mojits, static resources, etc.
 
 Each configuration object is required to have a ``settings`` property that 
-specifies conditions for applying the configuration settings. These conditions 
+specifies contexts for applying the configuration settings. These conditions 
 could be used to determine the configurations in different environments. 
 
 Below is the skeleton of a configuration file. See `Application Configuration`_ 
@@ -850,7 +850,7 @@ two ways to configure routing:
 - Map Routes to Specific Mojit Instances and Actions
 - Generate URLs from the Controller
 
-See   `Code Examples: Configuring Routing <../code_exs/route_config.html>`_ to 
+See `Code Examples: Configuring Routing <../code_exs/route_config.html>`_ to 
 see an example of configuring routing in a Mojito application.
 
 
@@ -1214,17 +1214,17 @@ application configurations in ``application.json`` with the method ``getAppConfi
 of the ``Config`` addon.
 
 For example, if you wanted to access the ``specs`` object defined in ``application.json``,
-you would use ``ac.config.getAppConfig()`` as shown here:
+you would use ``ac.config.getAppConfig().specs`` as shown here:
 
 .. code-block:: javascript
 
       YUI.add('myMojit', function(Y, NAME) {
         Y.namespace('mojito.controllers')[NAME] = {
           index: function(ac) {
-            // Get the application configuration through
-            // the Config addon.
-            var app_config = ac.config.getAppConfig();
-            Y.log(app_config);
+            // Get the 'specs' object from teh application configuration 
+            // through the Config addon.
+            var app_specs = ac.config.getAppConfig().specs;
+            Y.log(app_specs);
             ac.done({ status: "Showing app config in the log."});
           }
         };

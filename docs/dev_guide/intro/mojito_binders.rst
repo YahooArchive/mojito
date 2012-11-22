@@ -19,7 +19,8 @@ Each binder will be deployed to the browser along with the rest of the mojit
 code, where the client-side Mojito runtime will call it appropriately. The view 
 used to generate output determines which binder is used. Thus, if the ``simple`` 
 view is used, the binder ``simple.js`` is used. This can be overridden by setting  
-``view.binder`` in the ``meta`` argument to `ac.done <../../api/classes/ActionContext.html#method_done>`_. 
+``view.binder`` in the ``meta`` argument to 
+`ac.done <../../api/classes/ActionContext.html#method_done>`_. 
 If no binder matches the view, then no binder is used.
 
 .. _mojito_binders-app_reqs:

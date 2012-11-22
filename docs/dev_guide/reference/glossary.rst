@@ -28,7 +28,8 @@ addon
 
    A namespacing object attached directly to the Action Context object that provides 
    additional functions. The ``ActionContext`` object is available in every controller 
-   function. See `Mojito API Overview: Addons <../api_overview/mojito_addons.html>`_ for more information.
+   function. See `Mojito API Overview: Addons <../api_overview/mojito_addons.html>`_ for 
+   more information.
 
 affinity
 --------
@@ -138,6 +139,14 @@ OAuth
    another site without giving out the user ID and password. See the 
    `Yahoo! OAuth Quick Start Guide <http://developer.yahoo.com/oauth/guide/oauth-guide.html>`_ 
    for more information.
+
+template
+--------
+
+   Template files that are rendered into HTML and served to a device. These templates can 
+   contain expressions (Handlebars) or tags (Mustache) that are replaced with values by a 
+   view rendering engine.
+   
    
 view
 ----
@@ -154,13 +163,7 @@ view partial
    partial, you can create that document fragment instead of iterating through the 
    collection in the view.
 
-template
--------------
 
-   Template files that are rendered into HTML and served to a device. These templates can 
-   contain expressions (Handlebars) or tags (Mustache) that are replaced with values by a 
-   view rendering engine.
-   
 YUI
 ---
 

@@ -4,29 +4,31 @@ Logging
 
 Mojito has its own logging system. When you call ``Y.log`` from within your mojits, your 
 log messages are intercepted and processed by Mojito. You can set logging levels
-to control the degree of detail in your log reports. You can also configure Mojito to enable 
-log buffering, so performance during crucial runtime periods is not adversely affected.
+to control the degree of detail in your log reports. You can also configure Mojito to 
+enable log buffering, so performance during crucial runtime periods is not adversely 
+affected.
 
 .. _mojito_logging-levels:
 
 Log Levels
 ==========
 
-Mojito has the following five log levels:
+Mojito has the following six log levels:
 
-- ``DEBUG``
-- ``INFO``
-- ``WARN``
-- ``ERROR``
-- ``MOJITO``
+- ``debug``
+- ``info``
+- ``warn``
+- ``error``
+- ``mojito``
+- ``none``
 
 All of them should be familiar except the last, which are framework-level messages that 
 indicate that an important framework event is occurring (one that users might want to 
 track).
 
-Setting a log level of ``WARN`` will filter out all ``DEBUG`` and ``INFO`` messages, while 
-``WARN``, ``ERROR``, and ``MOJITO`` log messages will be processed. To see all 
-log messages, set the log level to ``DEBUG``.
+Setting a log level of ``warn`` will filter out all ``debug`` and ``info`` messages, while 
+``warn``, ``error``, and ``mojito`` log messages will be processed. To see all 
+log messages, set the log level to ``debug``.
 
 .. _mojito_logging-defaults:
 
@@ -45,7 +47,7 @@ Log Configuration
 All the values above are configurable through the 
 `yui.config object <../intro/mojito_configuring.html#yui_config>`_ in the ``application.json`` 
 file. In the example ``application.json`` below, the ``yui.config`` object 
-overrides the defaults for ``logLevel`` and ``buffer``.
+overrides the default for ``logLevel``.
 
 .. code-block:: javascript
 
@@ -54,7 +56,7 @@ overrides the defaults for ``logLevel`` and ``buffer``.
        "settings": [ "master" ],
        "yui": {
          "config": {
-           "level": "error",
+           "logLevel": "error",
          }
        },
        ...
@@ -125,7 +127,7 @@ the ``yui.config`` object.
        ...
 	   "yui": {
          "config": {
-           "logLevel": "WARN"
+           "logLevel": "warn"
          }
        }
      },
@@ -134,7 +136,7 @@ the ``yui.config`` object.
        ...
 	   "yui": {
          "config": {
-           "logLevel": "INFO"
+           "logLevel": "info"
          }
        }
      }
@@ -158,7 +160,6 @@ The configuration below excludes logging from the YUI module
    "yui": {
      "config": {
       "logLevel": "INFO",
-      "buffer": true,
       "logExclude": { "FinanceModel": true } 
      }
    }

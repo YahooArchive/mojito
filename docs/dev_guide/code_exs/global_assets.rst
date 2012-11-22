@@ -12,10 +12,9 @@ Summary
 =======
 
 This example shows how to configure and use global assets in Mojito 
-applications. In this 
-example, the ``HTMLFrameMojit`` inserts global assets into the rendered 
-view. See `Adding CSS <./adding_assets.html>`_ for an example that uses 
-mojit-level assets.
+applications. In this example, the ``HTMLFrameMojit`` inserts global assets 
+into the rendered view. See `Adding CSS <./adding_assets.html>`_ for an example 
+that uses mojit-level assets.
 
 The following topics will be covered:
 

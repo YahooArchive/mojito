@@ -205,7 +205,8 @@ To create and run ``framed_assets``:
         </ul>
       </div>
 
-#. Replace the contents of ``assets/index.css`` for the CSS of your page with the following:
+#. Replace the contents of ``assets/index.css`` for the CSS of your page with the 
+   following:
 
    .. code-block:: css
 

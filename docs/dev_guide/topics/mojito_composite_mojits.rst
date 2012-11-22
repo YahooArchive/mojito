@@ -86,8 +86,7 @@ and displays the ``children`` object that lists the child mojits.
 When the controller of the parent mojit calls ``ac.composite.done`` from the ``index`` 
 function, the controllers of the mojit children execute ``ac.done`` from their 
 ``index`` functions. The rendered views from the child mojits are then available 
-as Handlebars expressions in the ``index`` template of the 
-parent mojit.
+as Handlebars expressions in the ``index`` template of the parent mojit.
 
 For example, in the example controller of the parent mojit below, the ``index`` 
 function calls ``ac.composite.done``, which executes ``ac.done`` in the 

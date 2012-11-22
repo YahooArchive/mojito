@@ -121,7 +121,7 @@ populate the ``yui`` key of each resource.
 Resource Versions
 -----------------
 
-Because there can be multiple files which are all conceptually different 
+Because there can be multiple files that are all conceptually different 
 versions of the same thing (e.g., ``views/index.hb.html`` and 
 ``views/index.iphone.hb.html``), the |RS| defines **resource version** 
 as the metadata about each file and resource as the metadata about the file 
@@ -608,7 +608,7 @@ Suppose an application has the following resources:
 - ``controller.common.js``
 - ``controller.common.iphone.js``
 - ``controller.server.js``
-- ``controller.server.phone.js``
+- ``controller.server.iphone.js``
 
 In this application, the POSL for context ``{device:browser}`` might 
 be ``['*']``, but the POSL 	for the context ``{device:iphone}`` might be 
@@ -679,8 +679,8 @@ filter. For example, filter ``{mojit:'Foo'}`` will return all resources
 .. note:: Because of the resolution process, the resources returned for filter 
           ``{mojit:'Foo'}`` might contain shared resources.
 
-To get mojit-level resources (or versions) from multiple mojits, you'll have to c
-all the method ``getResourceVersions`` or ``getResources`` for each mojit.  
+To get mojit-level resources (or versions) from multiple mojits, you'll have to 
+call the method ``getResourceVersions`` or ``getResources`` for each mojit.  
 You can call ``listAllMojits`` to get a list of all mojits.
 
 
@@ -706,7 +706,7 @@ Anatomy of a |RS| Addon
 
 The resource store addons are implemented using the |YUIPlugin|_ mechanism. 
 In essence, a Mojito addon is a YUI plugin, so the skeleton of a |RS| addon 
-will be the same as a YUI Plugin. 
+will be the same as that of a YUI Plugin. 
 
 See the |RSC|_ for the parameters and return values for the |RS| methods.
 
@@ -775,8 +775,8 @@ Key Methods
     API documentation carefully and feel free to post any questions that you have to the 
     `Yahoo! Mojito Forum <http://developer.yahoo.com/forum/Yahoo-Mojito/>`_.
     
-    Typically, you would hook into this method with the ``afterHostMethod`` method to register 
-    your own resource version types. This method should work together with your 
+    Typically, you would hook into this method with the ``afterHostMethod`` method to 
+    register your own resource version types. This method should work together with your 
     own version of the ``parseResourceVersion`` method.
     
 .. js:function:: parseResourceVersion()    
@@ -860,7 +860,7 @@ files.
        RSAddonText.superclass.constructor.apply(this, arguments);
      },
      RSAddonText.NS = 'text';
-     RSAddonText.ATT|RS| = {};
+     RSAddonText.ATTResourceStore = {};
 
      Y.extend(RSAddonText, Y.Plugin.Base, {
 
@@ -928,7 +928,7 @@ files.
        }
      });
      Y.namespace('mojito.addons.rs');
-     Y.mojito.addons.rs.text = |RS|AddonText;
+     Y.mojito.addons.rs.text = ResourceStoreAddonText;
 
    }, '0.0.1', { requires: ['plugin', 'oop']});
 
