@@ -677,7 +677,7 @@ to iterate through an array of strings:
      {{/each}}
    </ul>
 
-Another interesting block helper used in this example is #with, which will 
+Another interesting block helper used in this example is ``#with``, which will 
 invoke a block when given a specified context. For example, in the code 
 snippet below, if the ``ul`` object is given, the property title is evaluated.
 

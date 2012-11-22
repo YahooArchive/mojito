@@ -2,9 +2,10 @@
 REST Library
 ============
 
-Mojito has a library to make it easier to make a REST calls to Web services from your model. For 
-implementation details, see `Class Y.mojito.lib.REST <../../api/classes/Y.mojito.lib.REST.html>`_ 
-in the Mojito API documentation.
+Mojito has a library to make it easier to make a REST calls to Web services from your 
+model. For implementation details, see 
+`Class Y.mojito.lib.REST <../../api/classes/Y.mojito.lib.REST.html>`_ in the Mojito API 
+documentation.
 
 .. _mojito_rest_lib-incl:
 
@@ -31,8 +32,8 @@ which instructs YUI to load the library. Once the library is loaded,  you can us
 Example
 =======
 
-In the model for the ``recipeSearch`` mojit below, the REST library is used to make a GET call to 
-the Recipe Puppy API.
+In the model for the ``recipeSearch`` mojit below, the REST library is used to make a 
+GET call to the Recipe Puppy API.
 
 .. code-block:: javascript
 

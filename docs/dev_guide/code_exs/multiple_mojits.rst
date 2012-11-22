@@ -21,8 +21,8 @@ The following topics will be covered:
 - embedding the rendered template into the HTML frame
 
 .. tip:: 
-         To learn how to use the Mojito built-in mojit ``HTMLFrameMojit`` to aggregate and 
-         display the output from child mojits, see 
+         To learn how to use the Mojito built-in mojit ``HTMLFrameMojit`` to aggregate 
+         and display the output from child mojits, see 
          `Using the HTML Frame Mojit <./htmlframe_view.html>`_.
 
 .. _code_exs_multiple_mojits-notes:
