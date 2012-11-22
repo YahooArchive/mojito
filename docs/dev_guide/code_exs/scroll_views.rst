@@ -33,7 +33,7 @@ devices.
    :width: 401px
 
 In the ``application.json`` file for this code example, the customized 
-CSS are specified in the ``assets`` array as seen below.
+CSS is specified in the ``assets`` array as seen below.
 
 .. code-block:: javascript
 
@@ -99,11 +99,10 @@ photo URLs and the text for the image ``alt`` attribute is passed to the
    }, '0.0.1', {requires: ['mojito']});
 
 In the ``index.hb.html`` below, the YUI ScrollView module is included with 
-``YUI.use``. To create the scrolling content widget,  you need to create a 
+``YUI.use``. To create the scrolling content widget, you need to create a 
 container, a header, and content frame with ``div`` tags that use YUI-specific 
 IDs and render a ScrollView object. For detailed instructions, see the 
-`Getting Started <http://developer.yahoo.com/yui/3/scrollview/#start>`_ section 
-on the YUI 3: ScrollView page.
+`ScrollView: Getting Started <http://developer.yahoo.com/yui/3/scrollview/#start>`_.
 
 .. code-block:: html
 

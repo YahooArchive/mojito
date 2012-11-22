@@ -145,8 +145,8 @@ To set up and run ``using_cookies``:
       ]
 
 #. Change to ``mojits/CookieMojit``.
-#. To set a cookie from your controller, replace the code in ``controller.server.js`` with the 
-   following:
+#. To set a cookie from your controller, replace the code in ``controller.server.js`` with 
+   the following:
 
    .. code-block:: javascript
 
@@ -168,8 +168,8 @@ To set up and run ``using_cookies``:
         };
       }, '0.0.1', {requires: ['mojito-cookie-addon']});
 
-#. To display the cookie values set in your controller, replace the code in ``views/index.hb.html`` 
-   with the following:
+#. To display the cookie values set in your controller, replace the code in 
+   ``views/index.hb.html`` with the following:
 
    .. code-block:: html
 

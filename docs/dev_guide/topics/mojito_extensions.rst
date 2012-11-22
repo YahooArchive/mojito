@@ -294,6 +294,7 @@ the ``require`` method for Node.js modules.
 
 YUI Library
 -----------
+
 YUI libraries can be made available at the application or the mojit level. 
 Each file can only have one ``YUI.add`` statement. Other components, such 
 as controllers, models, etc., needing the library should specify the YUI 
