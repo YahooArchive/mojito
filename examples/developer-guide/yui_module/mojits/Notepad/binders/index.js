@@ -32,6 +32,8 @@ YUI.add('NotepadBinderIndex', function (Y, NAME) {
                 Y.StorageLite.setItem(keyname, notes.get('value'));
             });
 
+            // adding a classname to the notes element to facilitate func tests
+            notes.addClass('ready');
         }
     };
 
