@@ -77,9 +77,8 @@ have properly scoped values.
 Types of Mojit Tests
 --------------------
 
-The following three types of mojit tests exist:
+The following two types of mojit tests exist:
 
-- binder tests
 - controller tests
 - model tests
 
@@ -111,84 +110,6 @@ require the ``Foo-tests`` module as seen below.
    YUI.add('Foo-tests', function(Y) {
      ...
    }, 'VERSION', {requires: ['mojito-test', 'Foo']});
-
-.. _mojito_testing-binders:
-
-Binder Tests
-============
-
-You can create multiple binder tests and place them in the ``tests/binders`` 
-directory. For example, if your binder is ``binders/index.js``, the test file 
-would be ``tests/binders/index.common-test.js``. Notice that the affinity is 
-``common``, which can be used for binders on the client or server and is also 
-the default binder test file.
-
-.. _binders_test-ex:
-
-Example
--------
-
-Below is the binder ``index.js`` that includes the ``FooBinderIndex`` module:
-
-.. code-block:: javascript
-
-   YUI.add('FooBinderIndex', function(Y, NAME) {
-     Y.namespace('mojito.binders')[NAME] = {
-       init: function(mojitProxy) {
-         this.mojitProxy = mojitProxy;
-       },
-       bind: function(node) {
-         this.node = node;
-         var nodeId = node.get('id');
-         var binderId = this.mojitProxy._viewId;
-         Y.log(nodeId + ' node bound', 'debug', NAME);
-         if (nodeId !== binderId) {
-           throw new Error("bad node binding to binder!");
-         }
-         this.node.append("<p>" + nodeId + " bound</p>");
-       },
-       _updateId: function(msg) {
-         var nodeId = this.node.get('id');
-         msg = msg || 'bound';
-         this.node.one("p").set('innerHTML', nodeId + ' ' + msg);
-       },
-       handleClick: function(evt) {
-         this.node.one('div').set('innerHTML', "clicked on " + new Date());
-       }
-     };
-   }, '0.0.1', {requires: []});
-
-The test binder file ``tests/binders/index-common-tests.js`` below includes the 
-module ``FooBinderIndex-tests`` and the requires ``array`` includes the 
-``FooBinderIndex`` module:
-
-.. code-block:: javascript
-
-   YUI.add('FooBinderIndex-tests', function(Y, NAME) {
-     var suite = new YUITest.TestSuite(NAME),
-     binder, A = YUITest.Assert;
-     suite.add(new YUITest.TestCase({
-       name: 'Foo binder index tests',
-       setUp: function() {
-         binder = Y.mojito.binders.FooBinderIndex;
-       },
-       tearDown: function() {
-         binder = null;
-       },
-       'test update id': function() {
-         var node = Y.Node.create("<div id='guid123'></div>");        
-         binder.init({
-           _guid: 'guid123'
-         });
-         binder.bind(node);
-         binder._updateId('hello');
-         var content = node.one('p').getContent();
-         Y.log(content);
-         A.areSame(content, 'guid123 hello', 'the node was not updated');
-       }
-     }));
-     YUITest.TestRunner.add(suite);
-   }, '0.0.1', {requires: ['mojito-test', 'node', 'FooBinderIndex']});
 
 
 .. _mojito_testing-controller:
@@ -335,13 +256,13 @@ Configuring Mojito to Test MockActionContext Object
 ###################################################
 
 To configure Mojito to use your ``MockActionContext`` object to run test, 
-use the following:
+use the following, where ``{actionUnderTest}`` is the action you are testing.
 
 .. code-block:: javascript
 
-   Y.mojito.controller.actionUnderTest(ac);
+   Y.mojito.controller.{actionUnderTest}(ac);
 
-If ``actionUnderTest`` function fails to call the ``done`` function, calls 
+If the ``{actionUnderTest}`` function fails to call the ``done`` function, calls 
 it more than one time, or calls it with the wrong parameters, the test will 
 fail.
 
@@ -536,7 +457,7 @@ module.
      suite.add(new YUITest.TestCase({
        name: 'Foo model tests',
        setUp: function() {
-         model = Y.mojito.models.Layout;
+         model = Y.mojito.models.FooModel;
        },
        tearDown: function() {
          model = null;

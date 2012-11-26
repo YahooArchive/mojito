@@ -147,8 +147,8 @@ You will now modify the controller, so that the ``index`` function called in the
 controller outputs different results.
 
 #. Change to ``mojits/HelloMojit``.
-#. Edit ``controller.server.js`` and replace the string 'Just a simple mojit.' in 
-   the code with 'Hello World!'. Your ``controller.server.js`` should look similar 
+#. Edit ``controller.server.js`` and replace the string 'Mojito is working.' in 
+   the code with 'Doing well, thanks.'. Your ``controller.server.js`` should look similar 
    to the following code:
 
    .. code-block:: javascript

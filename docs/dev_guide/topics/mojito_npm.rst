@@ -206,7 +206,7 @@ mojit
 *****
 
 The ``mojit`` type specifies that the npm module contains a mojit. The 
-resources in the mojit (controller, views, etc.) will be looked for at 
+resources in the mojit (controller, models, views, etc.) will be looked for at 
 the location specified by the ``"location"`` field of the ``mojito`` object. 
 For example, the controller will be looked for in the following location, 
 where ``{name}`` is the name of the npm package: 

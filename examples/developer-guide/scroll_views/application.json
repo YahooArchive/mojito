@@ -9,7 +9,7 @@
                     "child" : {
                         "type" : "scroll"
                     },
-                    "assets": { 
+                    "assets": {
                         "top": {
                             "css":[
                                 "/static/scroll/assets/index.css"
