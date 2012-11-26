@@ -721,8 +721,88 @@ YUI().use(
 
         'ignore: _precomputeConfigApp()': function() {
             // TODO
-        }
+        },
 
+        'test getAppGroupConfig': function() {
+            var fixtures,
+                store,
+                config;
+            fixtures = libpath.join(__dirname, '../../../../../fixtures/store');
+            store = new MockRS({ root: fixtures });
+            store.plug(Y.mojito.addons.rs.yui, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
+
+            store.getAppConfig = function () {
+                return {};
+            };
+            config = store.yui.getAppGroupConfig({});
+            A.isTrue(config.combine, 'combine should be true by default');
+            A.areSame(1024, config.maxURLLength, 'maxURLLength should be 1024 by default');
+
+            store.getAppConfig = function () {
+                return {
+                    yui: {
+                        config: {
+                            combine: false,
+                            groups: {
+                                app: {
+                                    maxURLLength: 'maxURLLength',
+                                    base: "base",
+                                    comboBase: "comboBase",
+                                    comboSep: "comboSep",
+                                    root: "root"
+                                }
+                            }
+                        }
+                    }
+                };
+            };
+            config = store.yui.getAppGroupConfig({});
+            A.isFalse(config.combine, 'yui->config->combine should be the fallback for yui->config->groups->app->combine');
+            A.areSame('maxURLLength', config.maxURLLength, 'yui->config->groups->app->maxURLLength should be honored');
+            A.areSame('base', config.base, 'yui->config->groups->app->base should be honored');
+            A.areSame('comboBase', config.comboBase, 'yui->config->groups->app->comboBase should be honored');
+            A.areSame('comboSep', config.comboSep, 'yui->config->groups->app->comboSep should be honored');
+            A.areSame('root', config.root, 'yui->config->groups->app->root should be honored');
+        },
+
+        'test getAppSeedFiles': function() {
+            var fixtures,
+                store,
+                seed;
+            fixtures = libpath.join(__dirname, '../../../../../fixtures/store');
+            store = new MockRS({ root: fixtures });
+            store.plug(Y.mojito.addons.rs.yui, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
+            store.yui.langs = {
+                'en-US': true
+            }; // hack to avoid failures if langs array is undefined
+
+            store.getAppConfig = function () {
+                return {};
+            };
+            seed = store.yui.getAppSeedFiles({
+                lang: 'en-US'
+            });
+            A.isArray(seed);
+            A.areSame(5, seed.length, '');
+
+            store.getAppConfig = function () {
+                return {
+                    yui: {
+                        config: {
+                            seed: ['yui-base', 'loader-app', 'foo{langPath}']
+                        }
+                    }
+                };
+            };
+            seed = store.yui.getAppSeedFiles({
+                lang: 'en-US'
+            });
+            A.isArray(seed);
+            A.areSame(3, seed.length, '');
+            A.areSame('yui-base', seed[0], 'regular modules should be in honored');
+            A.areSame('loader-app', seed[1], 'regular modules should be in honored');
+            A.areSame('foo_en-US', seed[2], 'lang should also be honored if the seed is using {langPath} token');
+        }
 
     }));
 
