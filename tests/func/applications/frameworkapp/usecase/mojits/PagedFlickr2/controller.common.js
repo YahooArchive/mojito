@@ -23,7 +23,7 @@ YUI.add('PagedFlickr2', function(Y, NAME) {
 
             ac.models.get('PagedFlickr2Model').getFlickrImages('mojito', start, PAGESIZE, function(images) {
                 var dateString = ac.intl.formatDate(new Date());
-                Y.log("config1 from controller----"+JSON.stringify(ac.config.get('config1')));
+                Y.log("config1 from controller----"+Y.JSON.stringify(ac.config.get('config1')));
                 var data = {
                     images: images,
                     date: dateString,
@@ -35,18 +35,17 @@ YUI.add('PagedFlickr2', function(Y, NAME) {
                         url: selfUrl(ac, { page: page+1 }),
                         title: ac.intl.lang("NEXT") || 'next'
                     },
-                    config1: JSON.stringify(ac.config.get('config1')),
+                    config1: Y.JSON.stringify(ac.config.get('config1'))
                 };
                 if (page > 1) {
                     data.prev.url = selfUrl(ac, { page: page-1 });
                     data.has_prev = true;
                 }
                 ac.done(data);
-                
             });
         }
     };
-    
+
    function selfUrl(ac, mods) {
         var params = Y.mojito.util.copy(ac.params.getFromMerged());
         for (var k in mods) {
@@ -58,6 +57,7 @@ YUI.add('PagedFlickr2', function(Y, NAME) {
 
 }, '0.0.1', {requires: [
     'mojito',
+    'json',
     'mojito-config-addon',
     'mojito-models-addon',
     'mojito-url-addon',
