@@ -31,11 +31,11 @@ YUI.add('PagedFlickr2Binder', function(Y, NAME) {
                         route: {page: page}
                     }
                 });
-                
+
             };
             this.node.all('#paginate a').on('click', paginator, this);
         }
-        
+
     };
-    
-}, '0.0.1', {requires: ['mojito']});
+
+}, '0.0.1', {requires: ['mojito', 'lifecycle']});
