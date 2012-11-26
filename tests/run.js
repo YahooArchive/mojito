@@ -229,7 +229,8 @@ function runFuncTests (cmd, callback) {
         cwd + "/../node_modules/yahoo-arrow/index.js",
         "--descriptor=" + cmd.funcPath + '/' + descriptor,
         "--report=true",
-        "--reportFolder=" + arrowReportDir
+        "--reportFolder=" + arrowReportDir,
+        "--config=" + cwd + "/config/config.js"
     ];
     if ('phantomjs' !== cmd.funcBrowser) {
         commandArgs.push('--reuseSession');
