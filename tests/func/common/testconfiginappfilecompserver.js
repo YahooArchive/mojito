@@ -20,7 +20,7 @@ YUI({
             } catch(e) {
             }
             Y.Assert.isObject(json);
-            Y.Assert.areEqual(8, Object.keys(json).length);
+            Y.Assert.areEqual(8, Y.Object.keys(json).length);
             Y.Assert.areSame('Value of commonKey1 in application.yaml', json.commonKey1);
             Y.Assert.areSame('This is the config for config1 in application.yaml', json.config1);
             Y.Assert.areSame('This is the value from the default.yaml for key1', json.key1);

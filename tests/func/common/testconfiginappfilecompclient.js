@@ -19,7 +19,7 @@ YUI({
                     'ac.config.get\(\) -',
                     Y.one('#completeConfig').get('innerHTML').match(/ac.config.get\(\) -/gi)
                 );
-                console.log(Y.one('#completeConfig').get('innerHTML'));
+                //console.log(Y.one('#completeConfig').get('innerHTML'));
                 Y.Assert.areEqual(
                     '\"key1\":\"This is the value from the default.yaml for key1\"',
                     Y.one('#completeConfig').get('innerHTML').match(/\"key1\":\"This is the value from the default.yaml for key1\"/gi)
