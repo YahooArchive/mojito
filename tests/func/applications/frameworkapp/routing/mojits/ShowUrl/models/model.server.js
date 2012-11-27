@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('ShowUrlModel', function(Y) {
+YUI.add('ShowUrlModel', function(Y, NAME) {
 
 /**
  * The ShowUrlModel module.

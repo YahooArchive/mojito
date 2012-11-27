@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('RedChildModel', function(Y) {
+YUI.add('RedChildModel', function(Y, NAME) {
 
 /**
  * The RedChildModel module.

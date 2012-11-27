@@ -60,4 +60,4 @@ YUI.add('BindersModel', function(Y) {
 	    return chickens[Math.floor(Math.random()*10)];
 	}
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito']});

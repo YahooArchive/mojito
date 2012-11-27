@@ -9,6 +9,11 @@
 YUI.add('PagerMojit', function (Y, NAME) {
 
     var PAGE_SIZE = 10;
+
+    // Generate the link to the next page based on:   
+    // - mojit id 
+    // - action 
+    // - params
     function createLink(actionContext, params) {
         var params_to_copy,
             mergedParams,
@@ -26,19 +31,17 @@ YUI.add('PagerMojit', function (Y, NAME) {
         }
         return actionContext.url.make('frame', 'index', Y.QueryString.stringify(mergedParams));
     }
+
     /**
-    * Constructor for the Controller class.
-    * @class Controller     
-    * @constructor     
-    */
+     * Constructor for the Controller class.
+     * @class Controller     
+     * @constructor     
+     */    
     Y.namespace('mojito.controllers')[NAME] = {
-        init: function(config) {
-            this.config = config;
-        },
         index: function(actionContext) {
             var page = 0,
                 start,
-                model = actionContext.models.PagerMojitModel;
+                model = actionContext.models.get('PagerMojitModel');
             if (actionContext.params.hasOwnProperty('merged')) {
                 page = actionContext.params.merged('page');
             } else {
@@ -73,9 +76,11 @@ YUI.add('PagerMojit', function (Y, NAME) {
             });
         }
     };
-    // Generate the link to the next page based on:   
-    // - mojit id 
-    // - action 
-    // - params
-
-}, '0.0.1', {requires: ['dump']});
+}, '0.0.1', {requires: [
+    'mojito',
+    'mojito-models-addon',
+    'mojito-params-addon',
+    'mojito-url-addon',
+    'PagerMojitModel',
+    'dump'
+]});

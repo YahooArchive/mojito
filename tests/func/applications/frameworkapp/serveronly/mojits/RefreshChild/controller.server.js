@@ -18,10 +18,6 @@ YUI.add('RefreshChild', function(Y, NAME) {
      */
     Y.namespace('mojito.controllers')[NAME] = {
 
-        init: function(config) {
-            this.config = config;
-        },
-
         /**
          * Method corresponding to the 'index' action.
          *
@@ -29,7 +25,7 @@ YUI.add('RefreshChild', function(Y, NAME) {
          *        to the Mojito API.
          */
         index: function(ac) {
-            ac.models.RefreshChildModelFoo.getData(function(err, data) {
+            ac.models.get('RefreshChildModelFoo').getData(function(err, data) {
                 if (err) {
                     ac.error(err);
                     return;
@@ -44,4 +40,8 @@ YUI.add('RefreshChild', function(Y, NAME) {
 
     };
 
-}, '0.0.1', {requires: ['mojito', 'RefreshChildModelFoo']});
+}, '0.0.1', {requires: [
+    'mojito',
+    'mojito-assets-addon',
+    'mojito-models-addon',
+    'RefreshChildModelFoo']});

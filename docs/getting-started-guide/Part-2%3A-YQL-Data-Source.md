@@ -47,9 +47,9 @@ It looks like there some canned function called `getData`, so let's just remove 
 
 `mojits/Flickr/models/model.server.js`:
 
-    YUI.add('FlickrModel', function(Y) {
+    YUI.add('FlickrModel', function(Y, NAME) {
 
-        Y.mojito.models.Flickr = {
+        Y.mojito.models[NAME] = {
 
             init: function(config) {
                 this.config = config;
@@ -102,23 +102,26 @@ We are doing some processing and creating our own array of photo objects for the
 
 Let's take a quick look at the controller at `mojits/Flickr/controller.server.js`:
 
-    YUI.add('Flickr', function(Y) {
+    YUI.add('Flickr', function(Y, NAME) {
 
-        Y.mojito.controller = {
+        Y.mojito.controllers[NAME] = {
 
             init: function(config) {
                 this.config = config;
             },
 
             index: function(ac) {
-                ac.models.Flickr.getFlickrImages('mojito', function(images) {
+                ac.models.get('ModelFlickr').getFlickrImages('mojito', function(images) {
                     ac.done({images: images});
                 });
             }
 
         };
 
-    }, '0.0.1', {requires: []});
+    }, '0.0.1', {requires: [
+        'mojito-models-addon',
+        'ModelFlickr'
+    ]});
 
 Our controller is getting data from its model and passing it back into the Mojito framework via the **Action Context**.
 

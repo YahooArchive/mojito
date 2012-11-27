@@ -20,4 +20,8 @@ YUI.add('GenURLMojit', function(Y, NAME) {
             actionContext.done({currentTime: currentTime});
         }
     };
-}, '0.0.1', {requires: ['mojito-intl-addon']});
+}, '0.0.1', {requires: [
+    'mojito',
+    'mojito-url-addon',
+    'mojito-intl-addon'
+]});

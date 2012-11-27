@@ -12,7 +12,7 @@ YUI({
      suite.add(new Y.Test.Case({
 	  "test bz5264755": function(){
           var pagesource= window.document.documentElement.innerHTML;
-          Y.Assert.isTrue((pagesource.search("\"dependencyCalculations\":\"ondemand\"")!=-1)||(pagesource.search("\"dependencyCalculations\": \"ondemand\"")!=-1));
+          Y.Assert.isTrue((pagesource.search("\"appPort\":4083")!=-1)||(pagesource.search("\"appPort\": 4083")!=-1));
       }
   }));
 

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('SimpleRoute2Model', function(Y) {
+YUI.add('SimpleRoute2Model', function(Y, NAME) {
 
 /**
  * The SimpleRoute2Model module.

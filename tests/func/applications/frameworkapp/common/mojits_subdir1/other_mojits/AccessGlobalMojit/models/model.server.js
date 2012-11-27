@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('AccessGlobalMojitModel', function(Y) {
+YUI.add('AccessGlobalMojitModel', function(Y, NAME) {
 
     Y.mojito.models.AccessGlobalMojit = {
 

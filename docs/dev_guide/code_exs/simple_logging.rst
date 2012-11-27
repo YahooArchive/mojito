@@ -6,10 +6,13 @@ Simple Logging
 
 **Difficulty:** Intermediate
 
+.. _code_exs_logging-summary:
+
 Summary
 =======
 
-This example shows how to configure the log levels for the client and the server in Mojito.
+This example shows how to configure the log levels for the client and the 
+server in Mojito.
 
 The following topics will be covered:
 
@@ -17,16 +20,21 @@ The following topics will be covered:
 - displaying client-side and server-side logging
 - using ``Y.log`` to set log levels
 
+.. _code_exs_logging-notes:
+
 Implementation Notes
 ====================
+
+.. _logging_notes-config:
 
 Log Configuration
 -----------------
 
-Logging is configured in the ``application.json`` file with the ``log`` object. The 
-``log`` object can contain a ``client`` object and/or a ``server`` object to configure 
-logging for the client and server respectively. In the example ``log`` object below, you 
-can see that you can configure the levels and some elements of the output for logs. See 
+Logging is configured in the ``application.json`` file with the ``log`` 
+object. The ``log`` object can contain a ``client`` object and/or a 
+``server`` object to configure logging for the client and server respectively. 
+In the example ``log`` object below, you can see that you can configure the 
+levels and some elements of the output for logs. See 
 `Log Defaults <../topics/mojito_logging.html#log-defaults>`_ for the list of configuration 
 properties and their default values.
 
@@ -45,11 +53,13 @@ properties and their default values.
      }
    }
 
+.. _logging_notes-levels:
+
 Log Levels
 ----------
 
-Mojito has the following five log levels that you configure in ``application.json`` or set 
-with ``Y.log``.
+Mojito has the following five log levels that you configure in 
+``application.json`` or set with ``Y.log``.
 
 - ``DEBUG``
 - ``INFO``
@@ -57,26 +67,32 @@ with ``Y.log``.
 - ``ERROR``
 - ``MOJITO``
 
-Setting a log level of ``WARN`` will filter out all ``DEBUG`` and ``INFO`` messages, while 
-``WARN``, ``ERROR``, and ``MOJITO`` log messages will be processed. To see all log 
-messages, set the log level to ``DEBUG``. The ``MOJITO`` log level is for showing Mojito 
-framework-level logging that indicate important framework events are occurring.
+Setting a log level of ``WARN`` will filter out all ``DEBUG`` and ``INFO`` 
+messages, while ``WARN``, ``ERROR``, and ``MOJITO`` log messages will be processed. 
+To see all log messages, set the log level to ``DEBUG``. The ``MOJITO`` log level 
+is for showing Mojito framework-level logging that indicate important framework 
+events are occurring.
+
+.. _logging_notes-set_levels:
 
 Setting Log Level with Y.log
 ----------------------------
 
-The function ``Y.log`` takes two parameters. The first parameter is the log message, and 
-the second parameter is used to indicate the log level. When the second parameter is 
-omitted, the log message will be reported at the default or configured log level.
+The function ``Y.log`` takes two parameters. The first parameter is the log 
+message, and the second parameter is used to indicate the log level. When the 
+second parameter is omitted, the log message will be reported at the default 
+or configured log level.
 
-For example, the first use of ``Y.log`` below will report the message at the log level 
-that is configured in ``application.json`` or use the default. The second use of ``Y.log`` 
-will use the log level ``INFO``.
+For example, the first use of ``Y.log`` below will report the message at the 
+log level that is configured in ``application.json`` or use the default. The 
+second use of ``Y.log`` will use the log level ``INFO``.
 
 .. code-block:: javascript
 
    Y.log("This message will be reported at the log level set in application.json or the default level.");
    Y.log("This log message will be reported at the INFO log level.", "info");
+
+.. _code_exs_logging-setup:
 
 Setting Up this Example
 =======================
@@ -148,9 +164,7 @@ To set up and run ``simple_logging``:
 
       YUI.add('log', function(Y, NAME) {
         Y.namespace('mojito.controllers')[NAME] = {   
-          init: function(config) {
-            this.config = config;
-          },
+
           index: function(ac) {
             Y.log('[CONTROLLER]: entering into controller index (...)',"info");
             var today = new Date(),
@@ -221,14 +235,18 @@ To set up and run ``simple_logging``:
 #. From the application directory, run the server.
 
    ``$ mojito start``
-#. Open the URL below in a browser and look at the output from the Mojito server. You 
-   should see the log messages from the controller that start with the string 
-   "\[CONTROLLER]:". Notice that the two messages have different log levels.
+#. Open the URL below in a browser and look at the output from the Mojito 
+   server. You should see the log messages from the controller that start 
+   with the string "\[CONTROLLER]:". Notice that the two messages have 
+   different log levels.
 
    http://localhost:8666/
 
-#. Open your browser's developer console, such as Firebug, and view the console logs. You 
-   should see the client log messages from the binder that start with the string "\[BINDER]".
+#. Open your browser's developer console, such as Firebug, and view the console 
+   logs. You should see the client log messages from the binder that start with 
+   the string "\[BINDER]".
+
+.. _code_exs_logging-src:
 
 Source Code
 ===========

@@ -54,6 +54,8 @@ Reference
 The reference includes a glossary for Mojito and Cocktails terminology, a comprehensive
 treatment of the Mojito command-line tool, and troubleshooting tips. 
 
+.. _mojito_doc_directory-additional:
+
 Additional Resources
 ====================
 

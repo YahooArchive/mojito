@@ -12,14 +12,39 @@ YUI().use('mojito', 'test', function (Y) {
     var suite = new Y.Test.Suite('mojito tests'),
         path = require('path'),
         A = Y.Assert,
+        AA = Y.ArrayAssert,
         OA = Y.ObjectAssert,
         Mojito = require(path.join(__dirname, '../../../lib/mojito')),
-        noop = function() {},
         realServer,
         realConfig,
         realListen,
         server,
         app;
+
+    function cmp(x, y, msg) {
+        var i;
+        if (Y.Lang.isArray(x)) {
+            A.isArray(x, msg || 'first arg should be an array');
+            A.isArray(y, msg || 'second arg should be an array');
+            A.areSame(x.length, y.length, msg || 'arrays are different lengths');
+            for (i = 0; i < x.length; i += 1) {
+                cmp(x[i], y[i], msg);
+            }
+            return;
+        }
+        if (Y.Lang.isObject(x)) {
+            A.isObject(x, msg || 'first arg should be an object');
+            A.isObject(y, msg || 'second arg should be an object');
+            A.areSame(Object.keys(x).length, Object.keys(y).length, msg || 'object keys are different lengths');
+            for (i in x) {
+                if (x.hasOwnProperty(i)) {
+                    cmp(x[i], y[i], msg);
+                }
+            }
+            return;
+        }
+        A.areSame(x, y, msg || 'args should be the same');
+    }
 
     suite.add(new Y.Test.Case({
 
@@ -96,12 +121,12 @@ YUI().use('mojito', 'test', function (Y) {
             server = new Mojito.Server();
             A.isObject(server._app);
         },
-        
+
         'new Mojito.Server() defaults options properly': function() {
             server = new Mojito.Server();
             A.isObject(server._options);
         },
-        
+
         'new Mojito.Server() accepts options properly': function() {
             var options = {
                     port: 2222
@@ -110,33 +135,13 @@ YUI().use('mojito', 'test', function (Y) {
             server = new Mojito.Server(options);
             A.areEqual(server._options.port, 2222);
         },
- 
+
         'new Mojito.Server() defaults port properly': function() {
             process.env.PORT = 2222;
             server = new Mojito.Server();
             A.areEqual(server._options.port, 2222);
-        },
-
-        'setLogFormatter() accepts a log formatter': function() {
-            server = new Mojito.Server();
-            server.setLogFormatter(noop);
-
-            OA.areEqual(noop, server._logFormatter);
-        },
-
-        'setLogPublisher() accepts a log publisher': function() {
-            server = new Mojito.Server();
-            server.setLogPublisher(noop);
-
-            OA.areEqual(noop, server._logPublisher);
-        },
-
-        'setLogWriter() accepts a log writer': function() {
-            server = new Mojito.Server();
-            server.setLogWriter(noop);
-
-            OA.areEqual(noop, server._logWriter);
         }
+
     }));
 
     suite.add(new Y.Test.Case({
@@ -149,7 +154,7 @@ YUI().use('mojito', 'test', function (Y) {
             realListen = app.listen;
             app.listen = function() {
                 listened = true;
-            }
+            };
         },
 
         tearDown: function() {
@@ -176,11 +181,69 @@ YUI().use('mojito', 'test', function (Y) {
 
             Mojito.Server.prototype._configureAppInstance = function() {
                 configured = true;
-            }
+            };
 
             server = new Mojito.Server();
             A.isTrue(configured);
         },
+
+        'configure YUI': function() {
+            var mockY, mockStore, load = [];
+            var haveConfig, wantConfig;
+            mockY = {
+                merge: Y.merge,
+                applyConfig: function(cfg) {
+                    haveConfig = cfg;
+                }
+            };
+            mockStore = {
+                yui: {
+                    langs: {
+                        'xx-00': true,
+                        'yy-11': true
+                    },
+                    getConfigAllMojits: function() {
+                        return {
+                            modules: {
+                                'mojits-A': 'mojits-A-val',
+                                'mojits-B': 'mojits-B-val'
+                            }
+                        };
+                    },
+                    getConfigShared: function() {
+                        return {
+                            modules: {
+                                'shared-A': 'shared-A-val',
+                                'shared-B': 'shared-B-val'
+                            }
+                        };
+                    }
+                }
+            };
+
+            A.isFunction(server._configureYUI);
+
+            var res = server._configureYUI(mockY, mockStore, load);
+            A.isUndefined(res);
+
+            A.areSame(6, load.length);
+            AA.contains('mojits-A', load);
+            AA.contains('mojits-B', load);
+            AA.contains('shared-A', load);
+            AA.contains('shared-B', load);
+            AA.contains('lang/datatype-date-format_xx-00', load);
+            AA.contains('lang/datatype-date-format_yy-11', load);
+
+            wantConfig = {
+                modules: {
+                    'mojits-A': 'mojits-A-val',
+                    'mojits-B': 'mojits-B-val',
+                    'shared-A': 'shared-A-val',
+                    'shared-B': 'shared-B-val'
+                }
+            };
+            cmp(wantConfig, haveConfig);
+        }
 
     }));
 

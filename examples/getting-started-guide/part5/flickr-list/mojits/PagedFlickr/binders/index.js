@@ -5,6 +5,7 @@
  */
 
 YUI.add('PagedFlickrBinderIndex', function (Y, NAME) {
+    "use strict";
 
 /**
  * The PagedFlickrBinder module.
@@ -21,7 +22,6 @@ YUI.add('PagedFlickrBinderIndex', function (Y, NAME) {
      * @class Binder
      * @constructor
      */
-    "use strict";
     Y.namespace('mojito.binders')[NAME] = {
 
         /**

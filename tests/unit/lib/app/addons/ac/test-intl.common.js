@@ -17,19 +17,22 @@ YUI().use('mojito-intl-addon', 'test', 'datatype-date', function(Y) {
             var command = {},
                 adapter = null,
                 ac = {
-                    type: 'acType',
-                    context: { lang: 'foo' }
+                    context: { lang: 'foo' },
+                    instance: {
+                        controller: 'controller-yui-module-name',
+                        langs: { foo: true }
+                    }
                 };
 
             var mockYIntl = Mock();
             Mock.expect(mockYIntl, {
                 method: 'setLang',
-                args: [ac.type, 'foo'],
+                args: [ac.instance.controller, 'foo'],
                 returns: 'true'
             });
             Mock.expect(mockYIntl, {
                 method: 'get',
-                args: [ac.type, 'key'],
+                args: [ac.instance.controller, 'key'],
                 returns: 'translation'
             });
 
@@ -49,19 +52,22 @@ YUI().use('mojito-intl-addon', 'test', 'datatype-date', function(Y) {
             var command = {},
                 adapter = null,
                 ac = {
-                    type: 'acType',
-                    context: { lang: 'foo' }
+                    context: { lang: 'foo' },
+                    instance: {
+                        controller: 'controller-yui-module-name',
+                        langs: { foo: true }
+                    }
                 };
 
             var mockYIntl = Mock();
             Mock.expect(mockYIntl, {
                 method: 'setLang',
-                args: [ac.type, 'foo'],
+                args: [ac.instance.controller, 'foo'],
                 returns: 'true'
             });
             Mock.expect(mockYIntl, {
                 method: 'get',
-                args: [ac.type, 'key'],
+                args: [ac.instance.controller, 'key'],
                 returns: 'translation {0} {1}'
             });
 
@@ -80,8 +86,25 @@ YUI().use('mojito-intl-addon', 'test', 'datatype-date', function(Y) {
         'test formatDate() delegates to Y.DataType.Date.format': function() {
             var command = {},
                 adapter = null,
-                ac = { type: 'acType' },
+                ac,
                 argDate = new Date();
+
+            ac = {
+                context: { lang: 'foo' },
+                instance: {
+                    controller: 'controller-yui-module-name',
+                    langs: { foo: true }
+                }
+            };
+
+            var mockYIntl = Mock();
+            Mock.expect(mockYIntl, {
+                method: 'setLang',
+                args: ['datatype-date-format', 'foo'],
+                returns: 'true'
+            });
+            var yIntl = Y.Intl;
+            Y.Intl = mockYIntl;
 
             var mockYDataTypeDate = Mock();
             Mock.expect(mockYDataTypeDate, {
@@ -96,11 +119,16 @@ YUI().use('mojito-intl-addon', 'test', 'datatype-date', function(Y) {
             Y.DataType.Date = mockYDataTypeDate;
 
             var addon = new Y.mojito.addons.ac.intl(command, adapter, ac);
-            var value = addon.formatDate(argDate);
-
-            Y.DataType.Date = yDataTypeDate;
+            var value;
+            try {
+                value = addon.formatDate(argDate);
+            } finally {
+                Y.Intl = yIntl;
+                Y.DataType.Date = yDataTypeDate;
+            }
 
             Assert.areEqual('formattedDate', value, 'The return value of Y.DataType.Date.format() was not used');
+            Mock.verify(mockYIntl);
             Mock.verify(mockYDataTypeDate);
         }
 

@@ -37,7 +37,7 @@ YUI.add('FlickrDetail', function(Y, NAME) {
                 return;
             }
 
-            ac.models.flickr.getFlickrDetail(image, function(details) {
+            ac.models.get('FlickrDetailModelFlickr').getFlickrDetail(image, function(details) {
                 if (!details) {
                     ac.done({ type: 'error', message: ac.intl.lang('ERROR_NO_DETAILS') }, { name:'message' });
                     return;
@@ -75,4 +75,9 @@ YUI.add('FlickrDetail', function(Y, NAME) {
 
     };
 
-}, '0.0.1', {requires: ['mojito', 'mojito-intl-addon'], lang: ['de', 'en-US']});
+}, '0.0.1', {requires: [
+    'mojito',
+    'mojito-params-addon',
+    'mojito-models-addon',
+    'mojito-intl-addon',
+    'FlickrDetailModelFlickr'], lang: ['de', 'en-US']});

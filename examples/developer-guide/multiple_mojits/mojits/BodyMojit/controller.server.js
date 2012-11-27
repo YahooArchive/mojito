@@ -9,11 +9,8 @@
 YUI.add('BodyMojit', function (Y, NAME) {
 
     Y.namespace('mojito.controllers')[NAME] = {
-        init: function (config) {
-            this.config = config;
-        },
         index: function (actionContext) {
             actionContext.done({title: "Body"});
         }
     };
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito']});

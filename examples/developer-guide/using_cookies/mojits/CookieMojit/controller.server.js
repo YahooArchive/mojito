@@ -9,9 +9,6 @@
 YUI.add('CookieMojit', function (Y, NAME) {
 
     Y.namespace('mojito.controllers')[NAME] = {
-        init: function (config) {
-            this.config = config;
-        },
         index: function (actionContext) {
             var requestCookieValue = actionContext.cookie.get('request_cookie');
 
@@ -26,4 +23,4 @@ YUI.add('CookieMojit', function (Y, NAME) {
             );
         }
     };
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito', 'mojito-cookie-addon']});
