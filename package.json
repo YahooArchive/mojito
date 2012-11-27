@@ -15,21 +15,22 @@
         "Caridy Patino <caridy@yahoo-inc.com>"
     ],
     "dependencies": {
-        "async": "*",
         "colors": "*",
-        "commander": "1.0.1",
         "express": "2.5.10",
         "glob": "~3.1.11",
+        "js-yaml": "1.0.2",
         "jslint": "~0.1.9",
         "mime": "1.2.4",
-        "node-static": "*",
+        "mkdirp": ">0.3",
+        "request": "2.9.202",
+        "rimraf": ">2",
         "semver": "1.0.14",
         "wrench": "~1.3.9",
         "ycb": "~1.0.0",
         "yui": "~3.7.3",
-        "request": "2.9.202",
         "yuidocjs": "~0.3.14",
-        "yuitest": "~0.7.4"
+        "yuitest": "~0.7.4",
+        "yuitest-coverage": "~0.0.6"
     },
     "keywords": [
         "framework",
@@ -49,8 +50,10 @@
         "npm": ">1.0"
     },
     "devDependencies": {
-        "node-static": "~0.6.1",
-        "yahoo-arrow": "~0.0.69"
+        "async": "*",
+        "commander": "1.0.1",
+        "node-static": ">0.6",
+        "yahoo-arrow": "~0.0.67"
     },
     "homepage": "http://developer.yahoo.com/cocktails/mojito/",
     "repository": {
