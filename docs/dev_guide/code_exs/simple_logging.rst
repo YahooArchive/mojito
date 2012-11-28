@@ -12,7 +12,8 @@ Summary
 =======
 
 This example shows how to configure the log levels for the client and the 
-server in Mojito.
+server in Mojito. Also, see `Logging <../topics/mojito_logging.html>`_
+for more information.
 
 The following topics will be covered:
 

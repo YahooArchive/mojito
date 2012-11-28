@@ -114,7 +114,6 @@ context with the log configuration shown below:
    ]
 
 
-
 .. _mojito_logging-custom:
 
 Customizing Logging
@@ -125,22 +124,24 @@ Customizing Logging
 Client and Server Logging
 -------------------------
 
-You can use the ``runtime:client`` and ``runtime:server`` contexts to create different logging
-settings for the client and server.
+You can use the ``master and  the ``runtime:client`` contexts to create different 
+logging settings for the client and server.
 
 In the ``application.json`` file, create two configuration
-objects that use the ``runtime:client`` and ``runtime:server``
-contexts as shown below. 
+objects that use the ``master`` context for the server-side log configuration
+and the ``runtime:client`` context for the client-side log configuration 
+as shown below. 
 
 .. code-block:: javascript
 
    [
      {
-       "settings": [ "runtime:client" ],
+       "settings": [ "master" ],
      },
      {
-       "settings": [ "runtime:server" ],
-     }
+       "settings": [ "runtime:client" ],
+     },
+
    ]
 
 For each context, configure your logging with
@@ -150,20 +151,20 @@ the ``yui.config`` object.
 
    [
      {
-       "settings": [ "runtime:client" ],
+       "settings": [ "master" ],
        ...
-	   "yui": {
+	     "yui": {
          "config": {
-           "logLevel": "warn"
+           "logLevel": "info"
          }
        }
      },
      {
-       "settings": [ "runtime:server" ],
+       "settings": [ "runtime:client" ],
        ...
-	   "yui": {
+	     "yui": {
          "config": {
-           "logLevel": "info"
+           "logLevel": "warn"
          }
        }
      }
