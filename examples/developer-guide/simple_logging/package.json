@@ -1,5 +1,5 @@
 {
-    "name": "log",
+    "name": "simple_logging",
     "description": "My Mojito application",
     "version": "0.0.1",
     "author": {
@@ -13,12 +13,9 @@
           }
     ],
     "dependencies": {
-        "mojito": ">= 0.1.0"
+        "mojito": "0.4.x"
     },
     "engines": {
-        "node": ">= 0.4.2 < 0.5.0"
-    },
-    "scripts": {
-        "start": "mojito start"
+        "node": "0.6.x"
     }
 }
