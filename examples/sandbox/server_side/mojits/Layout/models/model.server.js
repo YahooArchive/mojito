@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('LayoutModel', function(Y) {
+YUI.add('LayoutModel', function(Y, NAME) {
 
 /**
  * The LayoutModel module.

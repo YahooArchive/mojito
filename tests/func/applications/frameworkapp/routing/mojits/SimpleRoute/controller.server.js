@@ -17,10 +17,6 @@ YUI.add('SimpleRoute', function(Y, NAME) {
      */
     Y.namespace('mojito.controllers')[NAME] = {
 
-        init: function(mojitSpec) {
-            this.spec = mojitSpec;
-        },
-
         /**
          * Method corresponding to the 'index' action.
          *
@@ -28,19 +24,23 @@ YUI.add('SimpleRoute', function(Y, NAME) {
          *        to the Mojito API.
          */
 
-        index: function(actionContext) {
-            var config = actionContext.config.get();
-			var type = actionContext.type;
+        index: function(ac) {
+            var config = ac.config.get();
+			var type = ac.type;
 			var id = config.id;
-			//actionContext.http.setHeader('content-type', 'text/html');
-	        actionContext.done({displaytext: 'This is a simple mojit for testing routing - ' + type + " (" + id + ")"});
+			//ac.http.setHeader('content-type', 'text/html');
+	        ac.done({displaytext: 'This is a simple mojit for testing routing - ' + type + " (" + id + ")"});
         },
 
-		myAction: function(actionContext) {
-        	//actionContext.http.setHeader('content-type', 'text/html');
-		    actionContext.done({displaytext: 'myAction output - This is another action'});
+		myAction: function(ac) {
+        	//ac.http.setHeader('content-type', 'text/html');
+		    ac.done({displaytext: 'myAction output - This is another action'});
 		}
 
     };
 
-}, '0.0.1', {requires: ['mojito', 'mojito-http-addon']});
+}, '0.0.1', {requires: [
+    'mojito',
+    'mojito-config-addon',
+    'mojito-type-addon',
+    'mojito-http-addon']});

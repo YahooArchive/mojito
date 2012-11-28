@@ -17,25 +17,20 @@ YUI.add('HttpAddonParent', function(Y, NAME) {
      */
     Y.namespace('mojito.controllers')[NAME] = {
 
-        init: function(mojitSpec) {
-            this.spec = mojitSpec;
-        },
-
         /**
          * Method corresponding to the 'index' action.
          *
          * @param ac {Object} The action context that provides access
          *        to the Mojito API.
          */
-        index: function(actionContext) {
-	        //actionContext.http.addHeader('x-generated-by', 'Mojito');
-	        actionContext.http.addHeader('set-cookie', 'UserID=abc; Max-Age=3600');
+        index: function(ac) {
+	        //ac.http.addHeader('x-generated-by', 'Mojito');
+	        ac.http.addHeader('set-cookie', 'UserID=abc; Max-Age=3600');
 	        var header = "";
-	        var header = actionContext.http.getHeader('set-cookie'); //('x-generated-by');
+	        var header = ac.http.getHeader('set-cookie'); //('x-generated-by');
 
 	        // done:
             var template,
-                ac = actionContext,
                 cfg = ac.mojit.config,
                 children = cfg.children;
 
@@ -66,97 +61,97 @@ YUI.add('HttpAddonParent', function(Y, NAME) {
         	});
         },
 
-        testSimpleRedirect: function(actionContext){
-        	var testMethod = actionContext.params.getFromUrl('method');
-        	var mojitName = actionContext.params.getFromUrl('mojit');
-        	var action = actionContext.params.getFromUrl('action');
-        	//actionContext.http.redirect(mojitName, action, {}, testMethod);
-        	actionContext.http.redirect('/' + mojitName + "/" + action);
+        testSimpleRedirect: function(ac){
+        	var testMethod = ac.params.getFromUrl('method');
+        	var mojitName = ac.params.getFromUrl('mojit');
+        	var action = ac.params.getFromUrl('action');
+        	//ac.http.redirect(mojitName, action, {}, testMethod);
+        	ac.http.redirect('/' + mojitName + "/" + action);
         },
         
-        callWSWithXhr: function(actionContext){
-        	var reqObj = actionContext.http.getRequest();
+        callWSWithXhr: function(ac){
+        	var reqObj = ac.http.getRequest();
             var hostPort = reqObj.headers.host;
-            var isXhr = actionContext.params.getFromUrl('isXhr') || 'false';
-            actionContext.models.HttpAddonParent.callWS(hostPort, isXhr, function(error, response){
+            var isXhr = ac.params.getFromUrl('isXhr') || 'false';
+            ac.models.get('HttpAddonParent').callWS(hostPort, isXhr, function(error, response){
                 if (!error)
                 {
-                	actionContext.http.setHeader('content-type', 'text/html');
-                    actionContext.done(response.getBody());
+                	ac.http.setHeader('content-type', 'text/html');
+                    ac.done(response.getBody());
                 }
                 else
                 {
-                    actionContext.done(error.responseText);
+                    ac.done(error.responseText);
                 }
             });
         },
         
-        checkingXhr: function(actionContext) {
-        	var isXhr = actionContext.http.isXhr();
-        	actionContext.done("<p id=\"xhrValue\">This is the Xhr value: " + isXhr + "</p>");
+        checkingXhr: function(ac) {
+        	var isXhr = ac.http.isXhr();
+        	ac.done("<p id=\"xhrValue\">This is the Xhr value: " + isXhr + "</p>");
         },
         
-        testResponseObj: function(actionContext){
-        	var response = actionContext.http.getResponse();
+        testResponseObj: function(ac){
+        	var response = ac.http.getResponse();
         	
         	var data = {
         		headers : JSON.stringify(response._headers),
         		shouldKeepAlive : response.shouldKeepAlive,
         		hasBody : response._hasBody
         	};
-        	actionContext.http.setHeader('content-type', 'text/html');
-        	actionContext.done(data);
+        	ac.http.setHeader('content-type', 'text/html');
+        	ac.done(data);
         },
         
-        testAddSetHeader: function(actionContext){
-        	actionContext.http.addHeader('my_header', 'my_header1_value');
-        	var option = actionContext.params.getFromUrl('header_option') || "add";
+        testAddSetHeader: function(ac){
+        	ac.http.addHeader('my_header', 'my_header1_value');
+        	var option = ac.params.getFromUrl('header_option') || "add";
         	if (option == 'add')
         	{
         		console.log("I am adding the header");
-        		actionContext.http.addHeader('my_header', 'my_header2_value');
+        		ac.http.addHeader('my_header', 'my_header2_value');
         	}
         	else if (option == "set")
         	{
-        		actionContext.http.setHeader('my_header', 'my_final_header_value');
+        		ac.http.setHeader('my_header', 'my_final_header_value');
         	}
-        	actionContext.http.setHeader('content-type', 'text/html');
-        	actionContext.done("<p>I am done...Please check for the headers.</p>");
+        	ac.http.setHeader('content-type', 'text/html');
+        	ac.done("<p>I am done...Please check for the headers.</p>");
         },
         
-        testAddSetHeaders: function(actionContext){
+        testAddSetHeaders: function(ac){
         	var headers = {
         			"foo": "bar",
         			"foo1": "bar1",
         			"foo2": "bar2"
         	};
-        	actionContext.http.addHeaders(headers);
-        	var option = actionContext.params.getFromUrl('header_option') || "add";
+        	ac.http.addHeaders(headers);
+        	var option = ac.params.getFromUrl('header_option') || "add";
         	if (option == 'add')
         	{
-        		actionContext.http.addHeaders({
+        		ac.http.addHeaders({
         			"foo": "bar_one_more",
         			"foo1": "bar1_one_more"
         		});
         	}
         	else if (option == "set")
         	{
-        		actionContext.http.setHeaders({
+        		ac.http.setHeaders({
         			"foo": "bar_final",
         			"foo1": "bar1_final",
         			"foo2": "" //this will remove the header
         		});
         	}
-        	actionContext.http.setHeader('content-type', 'text/html');
-        	actionContext.done("I am done...Please check for the headers.");
+        	ac.http.setHeader('content-type', 'text/html');
+        	ac.done("I am done...Please check for the headers.");
         },
         
-        testGetHeaders: function(actionContext){
-        	var allHeaders = actionContext.http.getHeaders();
+        testGetHeaders: function(ac){
+        	var allHeaders = ac.http.getHeaders();
         	var valueMatch = "true";
         	
         	Y.Object.each(allHeaders, function(headerValue, headerKey) {
-        		var valueFromCommand = actionContext.http.getHeader(headerKey);
+        		var valueFromCommand = ac.http.getHeader(headerKey);
         		if (valueFromCommand == headerValue)
         		{
         			valueMatch = valueMatch + "true";
@@ -167,20 +162,19 @@ YUI.add('HttpAddonParent', function(Y, NAME) {
         		}
             });
         	
-        	actionContext.http.setHeader('content-type', 'text/html');
+        	ac.http.setHeader('content-type', 'text/html');
         	if (valueMatch.indexOf("false") == -1)
         	{
-        		actionContext.done("<p id=\"output\">All Headers match</p>");
+        		ac.done("<p id=\"output\">All Headers match</p>");
         	}
         	else
         	{
-        		actionContext.done("<p id=\"output\">All Headers DOES NOT match</p>");
+        		ac.done("<p id=\"output\">All Headers DOES NOT match</p>");
         	}
         },
         
-        testHeadersWithChild: function(actionContext){
+        testHeadersWithChild: function(ac){
         	var template,
-	            ac = actionContext,
 	            cfg = ac.mojit.config,
 	            children = cfg.children;
 
@@ -196,4 +190,10 @@ YUI.add('HttpAddonParent', function(Y, NAME) {
         }
     };
 
-}, '0.0.1', {requires: ['mojito', 'mojito-http-addon']});
+}, '0.0.1', {requires: [
+    'mojito',
+    'mojito-http-addon',
+    'mojito-models-addon',
+    'mojito-composite-addon',
+    'HttpAddonParentModel']});
+

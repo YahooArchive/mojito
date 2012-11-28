@@ -2,17 +2,6 @@
     {
         "settings": [ "master" ],
 
-        "log": {
-            "client": {
-                "level": "warn",
-                "yui": false
-            },
-            "server": {
-                "level": "warn",
-                "yui": false
-            }
-        },
-
         "specs": {
             "flickr": {
                 "type": "HTMLFrameMojit",

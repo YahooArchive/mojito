@@ -17,10 +17,6 @@ YUI.add('BlueChild', function(Y, NAME) {
      */
     Y.namespace('mojito.controllers')[NAME] = {
 
-        init: function(spec) {
-            this.spec = spec;
-        },
-
         /**
          * Method corresponding to the 'index' action.
          *
@@ -33,4 +29,4 @@ YUI.add('BlueChild', function(Y, NAME) {
 
     };
 
-}, '0.0.1', {requires: ['mojito']});
+}, '0.0.1', {requires: ['mojito', 'mojito-config-addon']});

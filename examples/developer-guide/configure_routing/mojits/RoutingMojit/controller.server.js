@@ -6,30 +6,31 @@
 
 /*jslint anon:true, sloppy:true, nomen:true*/
 
-YUI.add('RoutingMojit', function (Y, NAME) {
+YUI.add('RoutingMojit', function(Y, NAME) {
     // Builds object containing route information
     function route_info(ac) {
         var methods = "",
             name = "",
             action = ac.action,
-            path = ac.http.getRequest().url;
-        ac.url.getRouteMaker();
+            path = ac.http.getRequest().url,
+            routes = ac.config.getRoutes();
         if (action === "index" && path === "/") {
-            name = ac.app.routes.root_route.name;
-            Object.keys(ac.app.routes.root_route.verbs).forEach(function(n) {
+            name = "root_route";
+            routes.root_route.verbs.forEach(function(n) {
                 methods += n + ", ";
             });
-        } else if (action === "index") {
-            name = ac.app.routes.index_route.name;
-            Object.keys(ac.app.routes.index_route.verbs).forEach(function(n) {
+        } else if (action==="index") {
+            name = "index_route";
+            routes.index_route.verbs.forEach(function(n) {
                 methods += n + ", ";
             });
         } else {
-            name = ac.app.routes.show_route.name;
-            Object.keys(ac.app.routes.show_route.verbs).forEach(function(n) {
+            name = "show_route";
+            routes.show_route.verbs.forEach(function(n) {
                 methods += n + ", ";
             });
         }
+        methods = methods.toUpperCase();
         return {
             "path": path,
             "name": name,
@@ -37,14 +38,11 @@ YUI.add('RoutingMojit', function (Y, NAME) {
         };
     }
     Y.namespace('mojito.controllers')[NAME] = {
-        init: function  (config) {
-            this.config = config;
-        },
         index: function (ac) {
             ac.done(route_info(ac));
         },
-        show: function  (ac) {
+        show: function (ac) {
             ac.done(route_info(ac));
         }
     };
-}, '0.0.1', {requires: ['mojito-url-addon']});
+}, '0.0.1', {requires: ['mojito-config-addon', 'mojito-http-addon']});

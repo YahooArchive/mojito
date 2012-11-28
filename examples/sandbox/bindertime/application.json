@@ -4,17 +4,6 @@
 
         "allowQueryStringRouting": true,
 
-        "log": {
-            "server": {
-                "level": "debug",
-                "yui": true
-            },
-            "client": {
-                "level": "mojito",
-                "yui": true
-            }
-        },
-
         "specs": {
             "frame": {
                 "type": "HTMLFrameMojit",

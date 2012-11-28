@@ -1,7 +1,7 @@
 /*
 * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
 */
-YUI.add('myMojitModel', function(Y) {
+YUI.add('myMojitModel', function(Y, NAME) {
 
     Y.mojito.models.message = {
 

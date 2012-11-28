@@ -2,18 +2,15 @@
 
 YUI.add('myMojit', function (Y, NAME) {
 
-    Y.mojito.controllers[NAME] = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
-        init: function (config) {
-            this.config = config;
-        },
         default_ve: function (ac) {
             ac.done({
                 "title": "Handlebars at work!",
                 "view_engines": [
                     {"name": "EJS"},
                     {"name": "Jade"},
-                    {"name": "dust"},
+                    {"name": "Dust"},
                     {"name": "underscore" }
                 ],
                 "ul": { "title": 'Here are some of the other available rendering engines:' }

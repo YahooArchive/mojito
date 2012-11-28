@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('MyServerModel', function(Y) {
+YUI.add('MyServerModel', function(Y, NAME) {
 
 /**
  * The MyServerModel module.

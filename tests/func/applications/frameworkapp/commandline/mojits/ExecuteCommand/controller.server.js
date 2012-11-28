@@ -17,19 +17,15 @@ YUI.add('ExecuteCommand', function(Y, NAME) {
      */
     Y.namespace('mojito.controllers')[NAME] = {
 
-        init: function(spec) {
-            this.spec = spec;
-        },
-
         /**
          * Method corresponding to the 'index' action.
          *
          * @param ac {Object} The action context that provides access
          *        to the Mojito API.
          */
-        runCommand: function(actionContext) {
-            var commandKey = actionContext.params.getFromBody("cmdKey");
-			var commands = actionContext.config.get("commands." + commandKey + ".cmd");
+        runCommand: function(ac) {
+            var commandKey = ac.params.getFromBody("cmdKey");
+			var commands = ac.config.get("commands." + commandKey + ".cmd");
 			Y.log("These are the commands: ", 'INFO', NAME);
 			Y.log(commands);
 			var cmdToExecute = "";
@@ -46,8 +42,8 @@ YUI.add('ExecuteCommand', function(Y, NAME) {
 	        	    Y.log('exec error: ' + error);
 	        	}
 				var cmdOutput = {cmdOut: response};
-	        	actionContext.done(cmdOutput);
+	        	ac.done(cmdOutput);
 	        });
         }
     };
-}, '0.0.1', {requires: ['mojito']});
+}, '0.0.1', {requires: ['mojito', 'mojito-params-addon', 'mojito-config-addon']});

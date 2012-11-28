@@ -5,30 +5,26 @@ YUI.add('CoverageClient', function(Y, NAME) {
 
     Y.namespace('mojito.controllers')[NAME] = {
 
-        init: function(config) {
-            this.config = config;
-        },
-
-        index: function(actionContext) {
+        index: function(ac) {
 	        var data = {
-        		hostname: actionContext.http.getRequest().headers.host
+        		hostname: ac.http.getRequest().headers.host
         	};
-            actionContext.done(data);
+            ac.done(data);
         },
-        myIndex: function(actionContext) {
+        myIndex: function(ac) {
 			Y.log("I am in the myIndex function");
 			var coverageResult = _yuitest_coverage;
 			var jsonData = JSON.stringify(coverageResult);
-			actionContext.done(jsonData);
+			ac.done(jsonData);
         },
 
-		collectClientCodeCoverageData: function(actionContext) {
+		collectClientCodeCoverageData: function(ac) {
 			var fs = require('fs');
 	    	var mojitoVer = Y.mojito.version;
-	        var postedDataRaw = actionContext.yiv.getData('body', 'coverageData','unsafe_raw');
-	        //console.log(actionContext.yiv.getData('body', 'coverageData','unsafe_raw'));
-	    	var applicationName = actionContext.params.getFromBody('application');
-			var jsonData = actionContext.params.getFromBody('coverageData');
+	        var postedDataRaw = ac.yiv.getData('body', 'coverageData','unsafe_raw');
+	        //console.log(ac.yiv.getData('body', 'coverageData','unsafe_raw'));
+	    	var applicationName = ac.params.getFromBody('application');
+			var jsonData = ac.params.getFromBody('coverageData');
 			if (!jsonData)
 			{
 				jsonData = postedDataRaw;
@@ -52,11 +48,15 @@ YUI.add('CoverageClient', function(Y, NAME) {
 	        	  if (err) throw err;
 	        	  Y.log('File is saved!' + coverageData, "INFO");
 	        	});
-				actionContext.done("Executed the coverage mojit for " + applicationName + " application");
+				ac.done("Executed the coverage mojit for " + applicationName + " application");
 			});
 		}
 
 
     };
 
-}, '0.0.1', {requires: ['mojito', 'mojito-http-addon', 'yiv-ac-plugin']});
+}, '0.0.1', {requires: [
+    'mojito',
+    'mojito-params-addon',
+    'mojito-http-addon',
+    'yiv-ac-plugin']});

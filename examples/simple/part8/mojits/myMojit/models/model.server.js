@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('myMojitModel', function(Y) {
+YUI.add('myMojitModel', function(Y, NAME) {
 
     Y.mojito.models.message = {
 

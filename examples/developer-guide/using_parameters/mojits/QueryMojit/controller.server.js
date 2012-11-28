@@ -8,9 +8,6 @@
 
 YUI.add('QueryMojit', function (Y, NAME) {
     Y.namespace('mojito.controllers')[NAME] = {
-        init: function(config) {
-            this.config = config;
-        },
         index: function (actionContext) {
             actionContext.done('Mojito is working.');
         },
@@ -79,4 +76,4 @@ YUI.add('QueryMojit', function (Y, NAME) {
             );
         }
     };
-}, '0.0.1', {requires: ['dump']});
+}, '0.0.1', {requires: ['mojito', 'mojito-params-addon', 'dump']});

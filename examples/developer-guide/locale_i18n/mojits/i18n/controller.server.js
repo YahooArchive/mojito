@@ -8,9 +8,6 @@
 
 YUI.add('i18n', function (Y, NAME) {
     Y.namespace('mojito.controllers')[NAME] = {
-        init: function(config) {
-            this.config = config;
-        },
         index: function (ac) {
             // Default.
             ac.done({
