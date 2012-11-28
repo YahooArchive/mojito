@@ -23,28 +23,6 @@
                     "driver": "nodejs"
                 },
                 "group": "fw,unit,server"
-            },
-            "package-walker.server": {
-                "params": {
-                    "test": "./test-package-walker.server.js",
-                    "driver": "nodejs"
-                },
-                "group": "fw,unit,server"
-            },
-            "server-log.server": {
-                "params": {
-                    "test": "./test-server-log.server.js",
-                    "driver": "nodejs"
-                },
-                "group": "fw,unit,server"
-            },
-            "store.server": {
-                "params": {
-                    "lib": "$$config.lib$$/store.server.js,../../../lib/app/addons/rs/config.server.js,../../../lib/app/addons/rs/selector.server.js,../../../lib/app/addons/rs/url.server.js,../../../lib/app/addons/rs/yui.server.js",
-                    "test": "./test-store.server.js",
-                    "driver": "nodejs"
-                },
-                "group": "fw,unit,server"
             }
         }
     },

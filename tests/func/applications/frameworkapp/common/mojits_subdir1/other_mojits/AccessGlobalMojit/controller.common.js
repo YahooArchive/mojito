@@ -5,15 +5,11 @@ YUI.add('AccessGlobalMojit', function(Y, NAME) {
 
     Y.namespace('mojito.controllers')[NAME] = {
 
-        init: function(config) {
-            this.config = config;
-        },
-
         accessModel: function(ac) {
-			ac.models.GlobalMojit.myGlobalModelFunction(function(data) {
+			ac.models.get('GlobalMojit').myGlobalModelFunction(function(data) {
 				Y.log(data.some, "info");
 			});
-			ac.models.Binders.getTaco(function(data) {
+			ac.models.get('Binders').getTaco(function(data) {
 				Y.log(data.message, "info");
 			});
 			
@@ -23,4 +19,9 @@ YUI.add('AccessGlobalMojit', function(Y, NAME) {
 
     };
 
-}, '0.0.1', {requires: ['mojito', 'GlobalMojitModel', 'mojito-mytest-addon', 'BindersModel']});
+}, '0.0.1', {requires: [
+    'mojito',
+    'mojito-models-addon',
+    'GlobalMojitModel',
+    'mojito-mytest-addon',
+    'BindersModel']});

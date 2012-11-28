@@ -22,7 +22,6 @@ YUI.add('deviceModel', function (Y, NAME) {
      */
      Y.namespace('mojito.models')[NAME] = {
 
-
         init: function (config) {
             this.config = config;
         },

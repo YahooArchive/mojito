@@ -20,10 +20,6 @@ YUI.add('RedChild', function(Y, NAME) {
      */
     Y.namespace('mojito.controllers')[NAME] = {
 
-        init: function(config) {
-            this.config = config;
-        },
-
         /**
          * Method corresponding to the 'index' action.
          *
@@ -31,7 +27,6 @@ YUI.add('RedChild', function(Y, NAME) {
          *        to the Mojito API.
          */
         index: function(ac) {
-            Y.log(this.config);
             ac.done({id: ac.config.get('id')});
         }
 

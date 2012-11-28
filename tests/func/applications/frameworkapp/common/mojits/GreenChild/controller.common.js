@@ -17,10 +17,6 @@ YUI.add('GreenChild', function(Y, NAME) {
      */
     Y.namespace('mojito.controllers')[NAME] = {
 
-        init: function(spec) {
-            this.spec = spec;
-        },
-
         /**
          * Method corresponding to the 'index' action.
          *
@@ -28,10 +24,9 @@ YUI.add('GreenChild', function(Y, NAME) {
          *        to the Mojito API.
          */
         index: function(ac) {
-            Y.log(this.spec);
             ac.done({id: ac.config.get('id')});
         }
 
     };
 
-}, '0.0.1', {requires: ['mojito']});
+}, '0.0.1', {requires: ['mojito', 'mojito-config-addon']});

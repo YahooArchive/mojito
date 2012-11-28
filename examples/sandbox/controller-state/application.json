@@ -2,12 +2,6 @@
     {
         "settings": [ "master" ],
 
-        "log": {
-            "server": {
-                "level": "debug"
-            }
-        },
-
         "specs": {
 
             "frame": {

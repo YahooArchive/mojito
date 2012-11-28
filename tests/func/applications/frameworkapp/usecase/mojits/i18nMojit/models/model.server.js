@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('i18nMojitModel', function(Y) {
+YUI.add('i18nMojitModel', function(Y, NAME) {
 
 /**
  * The i18nMojitModel module.
@@ -15,7 +15,7 @@ YUI.add('i18nMojitModel', function(Y) {
      * @class Model
      * @constructor
      */
-    Y.mojito.models.i18nTest = {
+    Y.mojito.models[NAME] = {
 
         init: function(mojitSpec) {
             this.spec = mojitSpec;

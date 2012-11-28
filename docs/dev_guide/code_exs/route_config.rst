@@ -6,19 +6,23 @@ Configuring Routing
 
 **Difficulty Level:** Beginning
 
+.. _code_exs_routing-summary:
+
 Summary
 =======
 
-This example shows how to configure routing for your Mojito application. In Mojito, 
-routing is the mapping of URLs to mojit actions.
+This example shows how to configure routing for your Mojito application. 
+In Mojito, routing is the mapping of URLs to mojit actions.
+
+.. _code_exs_routing-notes:
 
 Implementation Notes
 ====================
 
-Before you create routes for your application, you need to specify one or more mojit 
-instances that can be mapped to URLs. In the ``application.json`` below, the 
-``mapped_mojit`` instance of ``RoutingMojit`` is created, which can then be associated in 
-a route defined in ``routes.json``.
+Before you create routes for your application, you need to specify one or 
+more mojit instances that can be mapped to URLs. In the ``application.json`` 
+below, the ``mapped_mojit`` instance of ``RoutingMojit`` is created, which 
+can then be associated in a route defined in ``routes.json``.
 
 .. code-block:: javascript
 
@@ -33,12 +37,13 @@ a route defined in ``routes.json``.
      }
    ]
 
-The example ``routes.json`` below associates the ``mapped_mojit`` instance defined in 
-``application.json`` with a path and explicitly calls the ``index`` action. If the 
-controller for ``RoutingMojit`` had the function ``myFunction``, you would use the 
-following to call it: ``mapped_mojit.myFunction``.  Based on the ``custom-route`` route 
-below, when an HTTP GET call is made on the URL ``http:{domain}:8666/custom-route``, the 
-``index`` action is called from the ``custom-route`` instance.
+The example ``routes.json`` below associates the ``mapped_mojit`` instance 
+defined in ``application.json`` with a path and explicitly calls the 
+``index`` action. If the controller for ``RoutingMojit`` had the function 
+``myFunction``, you would use the following to call it: ``mapped_mojit.myFunction``.  
+Based on the ``custom-route`` route below, when an HTTP GET call is made on 
+the URL ``http:{domain}:8666/custom-route``, the ``index`` action is called 
+from the ``custom-route`` instance.
 
 .. code-block:: javascript
 
@@ -54,13 +59,14 @@ below, when an HTTP GET call is made on the URL ``http:{domain}:8666/custom-rout
    ]
 
 The name of the mojit instance is arbitrary. For example, the mojit instance 
-``mapped_mojit`` above could have just as well been called ``mojit-route``. Just remember 
-that the name of the mojit instance in ``routes.json`` has to be defined and have a mojit 
-type in ``application.json``.
+``mapped_mojit`` above could have just as well been called ``mojit-route``. 
+Just remember that the name of the mojit instance in ``routes.json`` has to 
+be defined and have a mojit type in ``application.json``.
 
-You can also configure multiple routes and use wildcards in ``routes.json``. The modified 
-``routes.json`` below uses the wildcard to configure a route for handling HTTP POST 
-requests and calls the method ``post_params`` from the ``post-route`` mojit instance.
+You can also configure multiple routes and use wildcards in ``routes.json``. 
+The modified ``routes.json`` below uses the wildcard to configure a route 
+for handling HTTP POST requests and calls the method ``post_params`` from the 
+``post-route`` mojit instance.
 
 .. code-block:: javascript
 
@@ -80,12 +86,14 @@ requests and calls the method ``post_params`` from the ``post-route`` mojit inst
      }
    ]
 
-The ``routes.json`` above configures the routes below. Notice that the wildcard used for 
-the path of ``"another-route"`` configures Mojito to execute ``post_params`` when 
-receiving any HTTP POST requests.
+The ``routes.json`` above configures the routes below. Notice that the wildcard 
+used for the path of ``"another-route"`` configures Mojito to execute 
+``post_params`` when receiving any HTTP POST requests.
 
 - ``http://localhost:8666/custom-route``
 - ``http://localhost:8666/{any_path}``
+
+.. _code_exs_routing-setup:
 
 Setting Up this Example
 =======================
@@ -99,8 +107,8 @@ To set up and run ``configure_routing``:
 #. Create your mojit.
 
    ``$ mojito create mojit RoutingMojit``
-#. To create an instance of ``RoutingMojit``, replace the code in ``application.json`` 
-   with the following:
+#. To create an instance of ``RoutingMojit``, replace the code in 
+   ``application.json`` with the following:
 
    .. code-block:: javascript
 
@@ -116,8 +124,8 @@ To set up and run ``configure_routing``:
         }
       ]
 
-#. To map routes to specific actions of the mojit instance, replace the code in 
-   ``routes.json`` with the following:
+#. To map routes to specific actions of the mojit instance, replace the 
+   code in ``routes.json`` with the following:
 
    .. code-block:: javascript
 
@@ -142,39 +150,41 @@ To set up and run ``configure_routing``:
         }
       ]
 
-   The ``mapped_mojit`` instance is created in ``application.json`` and configured here to 
-   be used when HTTP GET calls are made on the paths ``/index`` or ``/show``.
+   The ``mapped_mojit`` instance is created in ``application.json`` and 
+   configured here to be used when HTTP GET calls are made on the paths 
+   ``/index`` or ``/show``.
 
 #. Change to ``mojits/RoutingMojit``.
-#. Modify your controller to contain the ``index`` and ``show`` actions by replacing the 
-   code in ``controller.server.js`` with the following:
+#. Modify your controller to contain the ``index`` and ``show`` actions by 
+   replacing the code in ``controller.server.js`` with the following:
 
    .. code-block:: javascript
 
-      YUI.add('RoutingMojit', function (Y, NAME) {
+      YUI.add('RoutingMojit', function(Y, NAME) {
         // Builds object containing route information
         function route_info(ac) {
           var methods = "",
               name = "",
               action = ac.action,
-              path = ac.http.getRequest().url;
-          ac.url.getRouteMaker();
+              path = ac.http.getRequest().url,
+              routes = ac.config.getRoutes();
           if (action === "index" && path === "/") {
-            name = ac.app.routes.root_route.name;
-            Object.keys(ac.app.routes.root_route.verbs).forEach(function(n) {
+            name = "root_route";
+            routes.root_route.verbs.forEach(function(n) {
                 methods += n + ", ";
             });
-          } else if (action === "index") {
-            name = ac.app.routes.index_route.name;
-            Object.keys(ac.app.routes.index_route.verbs).forEach(function(n) {
-              methods += n + ", ";
+          } else if (action==="index") {
+            name = "index_route";
+            routes.index_route.verbs.forEach(function(n) {
+                methods += n + ", ";
             });
           } else {
-            name = ac.app.routes.show_route.name;
-            Object.keys(ac.app.routes.show_route.verbs).forEach(function(n) {
-              methods += n + ", ";
+            name = "show_route";
+            routes.show_route.verbs.forEach(function(n) {
+                methods += n + ", ";
             });
           }
+          methods = methods.toUpperCase();
           return {
             "path": path,
             "name": name,
@@ -182,17 +192,14 @@ To set up and run ``configure_routing``:
           };
         }
         Y.namespace('mojito.controllers')[NAME] = {
-          init: function  (config) {
-            this.config = config;
-          },
           index: function (ac) {
             ac.done(route_info(ac));
           },
-          show: function  (ac) {
+          show: function (ac) {
             ac.done(route_info(ac));
           }
         };
-      }, '0.0.1', {requires: ['mojito-url-addon']});
+      }, '0.0.1', {requires: ['mojito-config-addon', 'mojito-http-addon']});
 
 #. To display your route information in your ``index`` template, replace the content of 
    ``index.hb.html`` with the following:
@@ -222,11 +229,12 @@ To set up and run ``configure_routing``:
 
    http://localhost:8666/show
 
+.. _code_exs_routing-src:
+
 Source Code
 ===========
 
 - `Application Configuration <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/configure_routing/application.json>`_
 - `Route Configuration <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/configure_routing/routes.json>`_
 - `Configure Routing Application <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/configure_routing/>`_
-
 

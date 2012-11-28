@@ -6,6 +6,8 @@ Attaching Assets with HTMLFrameMojit
 
 **Difficulty:** Intermediate
 
+.. _code_exs_frame_assets-summary:
+
 Summary
 =======
 
@@ -18,6 +20,8 @@ The following topics will be covered:
 - configuring the application to use the ``HTMLFrameMojit``
 - configuring the ``HTMLFrameMojit`` to automatically include assets in the rendered 
   template
+
+.. _code_exs_frame_assets-notes:
 
 Implementation Notes
 ====================
@@ -96,6 +100,8 @@ file exists, it will automatically be injected into the ``<head>`` tag.
           ``<link>`` tag to reference the CSS at the following location: 
           ``/static/{mojit_name}/assets/simple.css``
 
+.. _code_exs_frame_assets-setup:
+
 Setting Up this Example
 =======================
 
@@ -159,9 +165,7 @@ To create and run ``framed_assets``:
 
       YUI.add('framed', function(Y, NAME) {
         Y.namespace('mojito.controllers')[NAME] = {   
-          init: function(config) {
-            this.config = config;
-          },
+
           index: function(ac) {
             var data = {
               title: "Framed Assets",
@@ -201,7 +205,8 @@ To create and run ``framed_assets``:
         </ul>
       </div>
 
-#. Replace the contents of ``assets/index.css`` for the CSS of your page with the following:
+#. Replace the contents of ``assets/index.css`` for the CSS of your page with the 
+   following:
 
    .. code-block:: css
 
@@ -224,6 +229,8 @@ To create and run ``framed_assets``:
 #. To view your application, go to the URL:
 
    http://localhost:8666
+
+.. _code_exs_frame_assets-src:
 
 Source Code
 ===========

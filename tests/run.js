@@ -20,13 +20,15 @@ program.command('test')
     .option('-d, --no-deploy', 'Don\'t deploy the apps')
     .option('-s, --no-selenium', 'Don\'t run arrow_selenium')
     .option('-a, --no-arrow', 'Don\'t run arrow_server')
+    .option('--debugApps', 'show STDOUT and STDERR from apps')
     .option('--logLevel <value>', 'Arrow logLevel')
     .option('--testName <value>', 'Arrow testName')
+    .option('--descriptor <value>', 'which descriptor to run. filename (or glob) relative to --path')
     .option('--coverage', 'Arrow code coverage')
     .option('--group <value>', 'Arrow group')
     .option('--driver <value>', 'Arrow driver')
     .option('--browser <value>', 'Arrow browser')
-    .option('--path <value>', 'Path to find the tests')
+    .option('--path <value>', 'Path to find the tests. defaults to ./func or ./unit')
     .action(test);
 
 program.command('build')
@@ -36,6 +38,10 @@ program.command('build')
 program.command('deploy')
     .description('Deploy all apps')
     .action(deploy);
+
+// report how we're called, mainly to help debug CI environments
+console.log(process.argv.join(' '));
+console.log();
 
 program.parse(process.argv);
 
@@ -126,7 +132,7 @@ function runUnitTests (cmd, callback) {
 
     var commandArgs = [
         cwd + "/../node_modules/yahoo-arrow/index.js",
-        cmd.unitPath + "/**/*_descriptor.json",
+        "--descriptor=" + cmd.unitPath + "/**/*_descriptor.json",
         "--report=true",
         "--reportFolder=" + arrowReportDir
     ];
@@ -170,11 +176,10 @@ function deploy (cmd, callback) {
         apps = appsConfig.applications;
 
     for (var i=0; i<apps.length; i++) {
-        (function () {
-            var app = apps[i],
-                port = app.port ? parseInt(app.port) : null,
+        (function (app) {
+            var port = app.port ? parseInt(app.port, 10) : null,
                 type = app.type || 'mojito';
-
+                
             if ('mojito' === type) {
                 if (app.tests) {
                     var mytests = app.tests;
@@ -183,13 +188,13 @@ function deploy (cmd, callback) {
                             var test = mytests[j],
                                 port = test.port ? parseInt(test.port) : null;
                             appSeries.push(function (callback) {
-                                runMojitoApp(cmd.funcPath + '/applications', app.path, port, test.param, callback);
+                                runMojitoApp(cmd, cmd.funcPath + '/applications', app.path, port, test.param, callback);
                             });
                         })();
                     }
                 } else if (app.enabled === "true" && app.path) {
                     appSeries.push(function (callback) {
-                        runMojitoApp(cmd.funcPath + '/applications', app.path, port, app.param, callback);
+                        runMojitoApp(cmd, cmd.funcPath + '/applications', app.path, port, app.param, callback);
                     });
                 }
             } else if ('static' === type) {
@@ -197,7 +202,7 @@ function deploy (cmd, callback) {
                     runStaticApp(cmd.funcPath + '/applications', app.path, port, app.param, callback);
                 });
             }
-        })();
+        })(apps[i]);
     }
     async.series(appSeries, callback);
 }
@@ -219,11 +224,13 @@ function runFuncTests (cmd, callback) {
     } catch (e) {}
     wrench.mkdirSyncRecursive(arrowReportDir);
 
+    var descriptor = cmd.descriptor || '**/*_descriptor.json';
     var commandArgs = [
         cwd + "/../node_modules/yahoo-arrow/index.js",
-        cmd.funcPath + "/**/*_descriptor.json",
+        "--descriptor=" + cmd.funcPath + '/' + descriptor,
         "--report=true",
-        "--reportFolder=" + arrowReportDir
+        "--reportFolder=" + arrowReportDir,
+        "--config=" + cwd + "/config/config.js"
     ];
     if ('phantomjs' !== cmd.funcBrowser) {
         commandArgs.push('--reuseSession');
@@ -303,17 +310,39 @@ function runCommand (path, command, argv, callback) {
     return cmd;
 }
 
-function runMojitoApp (basePath, path, port, params, callback) {
+function runMojitoApp (cliOptions, basePath, path, port, params, callback) {
+    /* useful when debugging
+    var OK = {
+        4081: true,
+    };
+    if (! OK[port]) {
+        console.error('------------------------------- SKIPPING APP ON PORT ' + port);
+        callback();
+        return;
+    }
+    */
     params = params || '';
     console.log('Starting ' + path + ' at port ' + port + ' with params ' + (params || 'empty'));
-    var p;
-    if (params === '') {
-        p = runCommand(basePath + '/' + path, cwd + "/../bin/mojito", ["start", port], function () {});
-    } else {
-        p = runCommand(basePath + '/' + path, cwd + "/../bin/mojito", ["start", port, "--context", params], function () {});
+    var cmdArgs = ['start'];
+    if (port) {
+        cmdArgs.push(port);
     }
+    if (params) {
+        cmdArgs.push('--context');
+        cmdArgs.push(params);
+    } 
+    var p = runCommand(basePath + '/' + path, cwd + "/../bin/mojito", cmdArgs, function () {});
+    
     pids.push(p.pid);
     pidNames[p.pid] = libpath.basename(path) + ':' + port + (params ? '?' + params : '');
+    if (cliOptions.debugApps) {
+        p.stdout.on('data', function(data) {
+            console.error('---DEBUG ' + port + ' STDOUT--- ' + data.toString());
+        });
+        p.stderr.on('data', function(data) {
+            console.error('---DEBUG ' + port + ' STDERR--- ' + data.toString());
+        });
+    }
     // Give each app a second to start
     setTimeout(function () { callback(null) }, 1000);
 }

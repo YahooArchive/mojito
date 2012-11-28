@@ -2,19 +2,12 @@
     "settings": ["master"],
 
     "appPort": 8000,
-    "staticHandling": {
-        "useRollups": true
-    },
     "builds": {
         "html5app": {
             "attachManifest": true,
             "forceRelativePaths": true,
             "urls": ["/read.html"]
         }
-    },
-    "log": {
-        "client": { "level": "warn", "yui": true },
-        "server": { "level": "info", "yui": true }
     },
     "cacheViewTemplates": false,
 

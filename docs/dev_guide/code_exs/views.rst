@@ -2,8 +2,8 @@
 Views
 =====
 
-These examples show you how to create templates, use Handlebars expressions, and pass data from the 
-mojit controller to the templates.
+These examples show you how to create templates, use Handlebars expressions, 
+and pass data from the mojit controller to the templates.
 
 .. toctree::
    :maxdepth: 1

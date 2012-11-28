@@ -9,9 +9,6 @@
 YUI.add('ReceiverMojit', function (Y, NAME) {
 
     Y.namespace('mojito.controllers')[NAME] = {
-        init: function(config) {
-            this.config = config;
-        },
         index: function (actionContext) {
             actionContext.done({title: 'This is the receiver mojit'});
         },
@@ -27,4 +24,4 @@ YUI.add('ReceiverMojit', function (Y, NAME) {
         }
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito', 'mojito-params-addon']});

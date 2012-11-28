@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('BlueChildModel', function(Y) {
+YUI.add('BlueChildModel', function(Y, NAME) {
 
 /**
  * The BlueChildModel module.

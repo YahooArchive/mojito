@@ -8,10 +8,10 @@
 
 YUI.add('flickrModel', function (Y, NAME) {
     var API_KEY = '84921e87fb8f2fc338c3ff9bf51a412e';
-
+  
     Y.namespace('mojito.models')[NAME] = {
 
-        init: function (config) {
+        init: function(config) {
             this.config = config;
         },
         getData: function (callback) {
@@ -29,7 +29,7 @@ YUI.add('flickrModel', function (Y, NAME) {
             // Execute against YQL
             Y.YQL(select, function(rawYql) {
             // Handle empty response.
-                if (null === rawYql || 0 === rawYql.query.count) {
+                if (null === rawYql || !rawYql.query.count || !rawYql.query.results) {
                     callback([]);
                 }
                 // Process data.
