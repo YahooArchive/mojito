@@ -1,10 +1,10 @@
-[
-    {
-        "settings": ["master"],
-        "root": {
+      [
+        {
+          "settings": ["master"],
+          "root": {
             "verb": ["get"],
             "path": "/",
             "call": "frame.index"
+          }
         }
-    }
-]
+      ]
