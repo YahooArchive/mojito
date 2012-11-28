@@ -17,10 +17,6 @@ YUI.add('PartialMojit', function(Y, NAME) {
      */
     Y.namespace('mojito.controllers')[NAME] = {
 
-        init: function(spec) {
-            this.spec = spec;
-        },
-
         /**
          * Method corresponding to the 'index' action.
          *
@@ -76,4 +72,4 @@ YUI.add('PartialMojit', function(Y, NAME) {
         }
     };
 
-}, '0.0.1', {requires: ['mojito', 'mojito-partial-addon']});
+}, '0.0.1', {requires: ['mojito', 'mojito-params-addon', 'mojito-partial-addon']});

@@ -42,12 +42,12 @@ We now expect two additional template values: `prev` and `next`, which should bo
 
 We can also update our controller to provide some mock values now just to ensure this is working:
 
-    YUI.add('Flickr', function(Y) {
+    YUI.add('Flickr', function(Y, NAME) {
 
-        Y.mojito.controller = {
+        Y.mojito.controllers[NAME] = {
 
             index: function(ac) {
-                ac.models.Flickr.getFlickrImages('mojito', function(images) {
+                ac.models.get('ModelFlickr').getFlickrImages('mojito', function(images) {
                     var dateString = ac.intl.formatDate(new Date());
                     data = {
                         images: images,
@@ -70,7 +70,9 @@ We can also update our controller to provide some mock values now just to ensure
         };
 
     }, '0.0.1',  {requires: [
-        'mojito-intl-addon'
+        'mojito-intl-addon',
+        'mojito-models-addon',
+        'ModelFlickr'
     ], lang: ['de', 'en-US']});
 
 In order for the proper internationalization features to work, we also need to add the language files in a `lang` directory, just like we did in the previous guide:
@@ -205,9 +207,9 @@ Let's start by modifying the model to take "start" and "count" parameters:
 
 `mojits/Flickr/models/model.server.js`:
 
-    YUI.add('FlickrModel', function(Y) {
+    YUI.add('FlickrModel', function(Y, NAME) {
 
-        Y.mojito.models.flickr = {
+        Y.mojito.models[NAME] = {
 
             getFlickrImages: function(queryString, start, count, callback) {
                 var q;
@@ -264,11 +266,11 @@ For the controller, we'll make things a little simpler. We'll just expose a "pag
 
 `mojits/Flickr/controller.server.js`:
 
-    YUI.add('Flickr', function(Y) {
+    YUI.add('Flickr', function(Y, NAME) {
 
         var PAGESIZE = 9;
 
-        Y.mojito.controller = {
+        Y.mojito.controllers[NAME] = {
 
             index: function(ac) {
                 var page = ac.params.getFromMerged('page'),
@@ -284,7 +286,7 @@ For the controller, we'll make things a little simpler. We'll just expose a "pag
                 // parameter is base-0.
                 start = (page-1) * PAGESIZE;
 
-                ac.models.flickr.getFlickrImages('mojito', start, PAGESIZE, function(err, images) {
+                ac.models.get('ModelFlickr').getFlickrImages('mojito', start, PAGESIZE, function(err, images) {
 
                     var dateString, data;
 
@@ -326,7 +328,9 @@ For the controller, we'll make things a little simpler. We'll just expose a "pag
 
 
     }, '0.0.1', {requires: [
-        'mojito-intl-addon'
+        'mojito-intl-addon',
+        'mojito-models-addon',
+        'ModelFlickr'
     ], lang: ['de', 'en-US']});
 
 The controller is now providing the proper url string for the `previous` and `next` links to the view template. Inside the `selfUrl()` function, you can see we're calling `ac.url.make()` to create each URL. This [make](http://developer.yahoo.com/cocktails/mojito/api/Url.common.html#method_make) function is provided by an [**Action Context Addon**](http://developer.yahoo.com/cocktails/mojito/api/module_actioncontextaddon.html) called [`url`](http://developer.yahoo.com/cocktails/mojito/api/Url.common.html). It accepts the 'base' and 'action' of the mojit to route to, as well as stringified parameters to use to generate the route. In this case, we're making sure the current URL parameters are retained, except for the `page` parameter, which is overridden with the page we want to navigate to on click.

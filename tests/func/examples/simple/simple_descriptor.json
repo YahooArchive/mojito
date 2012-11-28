@@ -4,8 +4,6 @@
 
         "name" : "developerguide",
 
-        "commonlib" : "../../../base/yui-test.js",
-
         "config" :{
             "baseUrl" : "http://localhost"
         },

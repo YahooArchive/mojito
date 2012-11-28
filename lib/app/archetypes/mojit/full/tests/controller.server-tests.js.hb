@@ -26,9 +26,12 @@ YUI.add('{{name}}-tests', function(Y) {
             A.isFunction(controller.index);
             ac = {
                 models: {
-                    '{{name}}ModelFoo': {
-                        getData: function(cb) {
-                            cb(null, 'Congrats!');
+                    get: function(modelName) {
+                        A.areEqual('{{name}}ModelFoo', modelName, 'wrong model name');
+                        return {
+                            getData: function(cb) {
+                                cb(null, 'Congrats!');
+                            }
                         }
                     }
                 },

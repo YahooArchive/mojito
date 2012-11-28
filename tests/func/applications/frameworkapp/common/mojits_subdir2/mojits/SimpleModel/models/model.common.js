@@ -62,4 +62,7 @@ YUI.add('SimpleModelModel', function(Y) {
             + '/' + record.id + '_' + record.secret + '.jpg';
     }
     
-}, '0.0.1', {requires: ['yql', 'jsonp-url']}); 
+}, '0.0.1', {requires: [
+    'mojito',
+    'yql',
+    'jsonp-url']}); 

@@ -12,7 +12,7 @@ YUI().use('mojito-route-maker', 'mojito-test-extra', 'test', function(Y) {
         factory = require(Y.MOJITO_DIR + 'lib/app/middleware/mojito-router');
 
     cases = {
-        name: 'Handler route matching',
+        name: 'router middleware tests',
 
         'dynamic id and action': function() {
             autoRouteMatchTester(
@@ -155,7 +155,6 @@ YUI().use('mojito-route-maker', 'mojito-test-extra', 'test', function(Y) {
         },
 
         'router find URL weather zip and rad': function() {
-
             var match = autoRouteMatchTester({
                 url: '/weather/at/23456/within/23/'
             }, {
@@ -169,7 +168,6 @@ YUI().use('mojito-route-maker', 'mojito-test-extra', 'test', function(Y) {
         },
 
         'router find URL weather zip and rad and page': function() {
-
             var match = autoRouteMatchTester({
                 url: '/weather/at/23456/within/23/section/2'
             }, {
@@ -181,8 +179,8 @@ YUI().use('mojito-route-maker', 'mojito-test-extra', 'test', function(Y) {
             A.areSame('23456', match.query.zip, "Bad route param for zip");
             A.areSame('23', match.query.rad, "Bad route param for rad");
             A.areSame('2', match.query.page, "Bad route param for page");
-
         }
+
     };
 
     function getRoutes() {
@@ -255,7 +253,7 @@ YUI().use('mojito-route-maker', 'mojito-test-extra', 'test', function(Y) {
             store:      store,
             logger:     function() {}
         });
-        var route = factory.getRoute(input.method || 'GET', input.url, new Y.mojito.RouteMaker(routes));
+        var route = factory.getRoute(input.method || 'GET', input.url, new Y.mojito.RouteMaker(routes, true));
         A.isNotNull(route, 'No match was found for route');
         A.areSame(expected.call[0], route.call[0], "Bad first call value");
         A.areSame(expected.call[1], route.call[1], "Bad second call value");

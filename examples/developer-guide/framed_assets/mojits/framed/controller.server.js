@@ -8,9 +8,6 @@
 
 YUI.add('framed', function (Y, NAME) {
     Y.namespace('mojito.controllers')[NAME] = {
-        init: function (config) {
-            this.config = config;
-        },
         index: function (ac) {
             var data = {
                 title: "Framed Assets",

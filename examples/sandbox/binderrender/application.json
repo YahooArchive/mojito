@@ -2,15 +2,6 @@
     {
         "settings": [ "master" ],
 
-        "log": {
-            "client": { "level": "warn", "yui": false },
-            "server": { "level": "warn", "yui": false }
-        },
-
-        "staticHandling": {
-            "useRollups": true
-        },
-
         "specs": {
             "home": {
                 "type": "HTMLFrameMojit",

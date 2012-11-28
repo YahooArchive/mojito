@@ -1,14 +1,9 @@
 [{
     "settings": [ "master" ],
-
-    "log": {
-		"client": {
-			"level": "none",
-			"yui": false
-		},
-		"server": {
-			"level": "none",
-			"yui": false
-		}
-	}
+    "yui": {
+        "config": {
+            "debug": true,
+            "logLevel": "error"
+        }
+    }
 }]

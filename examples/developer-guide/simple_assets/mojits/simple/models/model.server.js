@@ -21,7 +21,6 @@ YUI.add('simpleModel', function (Y, NAME) {
      * @constructor
      */
      Y.namespace('mojito.models')[NAME] = {
-
         init: function (config) {
             this.config = config;
         },

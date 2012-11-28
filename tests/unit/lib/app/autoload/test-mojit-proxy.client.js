@@ -123,7 +123,6 @@ YUI({useBrowserConsole: true}).use(
                     run: function (command, id, cb) {
                         Y.Assert.areEqual(mojitProxyConfig.base, command.instance.base, 'instance base does not match');
                         Y.Assert.areEqual(mojitProxyConfig.type, command.instance.type, 'instance type does not match');
-                        Y.Assert.areEqual(mojitProxyConfig.instanceId, command.instance.guid, 'instance guid does not match');
                         Y.Assert.areEqual(mojitProxyConfig.instanceId, command.instance.instanceId, 'instance id does not match');
                         Y.Assert.areEqual('index', command.action, 'incorrect action');
                         Y.Assert.isObject(command.params.body, 'body params should be an object');

@@ -9,11 +9,8 @@
 YUI.add('SenderMojit', function (Y, NAME) {
 
     Y.namespace('mojito.controllers')[NAME] = {
-        init: function(config) {
-            this.config = config;
-        },
         "index": function (actionContext) {
             actionContext.done({title: 'List of images for testing'});
         }
     };
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito']});

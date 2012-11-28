@@ -6,15 +6,12 @@
 
 YUI.add('Stateful', function(Y, NAME) {
 
+    var time = new Date().getTime();
+
     Y.namespace('mojito.controllers')[NAME] = {
 
-        init: function(config) {
-            this.config = config;
-            this.time = new Date().getTime();
-        },
-
         index: function(ac) {
-            ac.done({id: this.config.id});
+            ac.done({id: ac.config.get('id')});
         },
 
         pitch: function(ac) {
@@ -26,10 +23,10 @@ YUI.add('Stateful', function(Y, NAME) {
         'catch': function(ac) {
             var self = this;
             this.logit('catch');
-            ac.models.Stateful.getData(function(err, data) {
+            ac.models.get('Stateful').getData(function(err, data) {
                 ac.done({
                     ball: self.ball,
-                    time: self.time,
+                    time: time,
                     model: data.modelId
                 }, 'json');
             });
@@ -37,9 +34,12 @@ YUI.add('Stateful', function(Y, NAME) {
 
 
         logit: function(msg) {
-            Y.log(msg + this.time, 'warn', NAME);
+            Y.log(msg + time, 'warn', NAME);
         }
 
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: [
+    'mojito-models-addon',
+    'DOING'
+]});

@@ -8,11 +8,8 @@
 
 YUI.add('FooterMojit', function(Y, NAME) {
     Y.namespace('mojito.controllers')[NAME] = {
-        init: function (config) {
-            this.config = config;
-        },
         index: function (actionContext) {
             actionContext.done({title: "Footer"});
         }
     };
-}, '0.0.1', {requires: ['mojito']});
+}, '0.0.1', {requires: ['mojito']})

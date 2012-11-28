@@ -4,9 +4,6 @@
         "mojitDirs": [
             "soloMojit"
         ],
-        "staticHandling": {
-            "useRollups": true
-        },
 
         "testKey1": "testVal1",
         "testKey2": "testVal2",
@@ -14,7 +11,37 @@
         "specs": {
             "test1": {
                 "type": "test_mojit_1"
+            },
+            "single": {
+                "type": "HTMLFrameMojit",
+                "config": {
+                    "child": {
+                        "type": "page",
+                        "config": {
+                            "children": {
+                                "weather": {
+                                    "type": "weather",
+                                    "action": "index"
+                                },
+                                "stream": {
+                                    "type": "stream",
+                                    "action": "stream"
+                                }
+                            }
+                        }
+
+                    }
+                }
+            },
+            "multiple": {
+                "type": "HTMLFrameMojit",
+                "config": {
+                    "child": {
+                        "type": "page"
+                    }
+                }
             }
+
         }
     },
     {

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('SimpleRouteModel', function(Y) {
+YUI.add('SimpleRouteModel', function(Y, NAME) {
 
 /**
  * The SimpleRouteModel module.

@@ -16,9 +16,6 @@ YUI.add('Cookies', function(Y, NAME) {
      * @constructor
      */
     Y.namespace('mojito.controllers')[NAME] = {
-        init: function(config) {
-            this.config = config;
-         },
 
         /**
          * Method corresponding to the 'index' action.
@@ -45,4 +42,6 @@ YUI.add('Cookies', function(Y, NAME) {
 
     };
 
-}, '0.0.1', {requires: ['mojito']});
+}, '0.0.1', {requires: [
+    'mojito',
+    'mojito-cookie-addon']});

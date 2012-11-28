@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('ColoredChildModel', function(Y) {
+YUI.add('ColoredChildModel', function(Y, NAME) {
 
     Y.mojito.models.ColoredChild = {
 

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('StatefulModel', function(Y) {
+YUI.add('StatefulModel', function(Y, NAME) {
 
 /**
  * The StatefulModel module.
