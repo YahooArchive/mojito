@@ -37,6 +37,7 @@ Log Defaults
 
 The server and client log settings have the following default values:
 
+- ``debug: true`` - turns logging on so that messages are displayed in the console.
 - ``logLevel: "debug"`` - log level filter.
 - ``logLevelOrder: ['debug', 'mojito', 'info', 'warn', 'error', 'none']`` - the order of 
   that log levels are evaluated. 
@@ -74,7 +75,7 @@ Log Configuration
 All the values above are configurable through the 
 `yui.config object <../intro/mojito_configuring.html#yui_config>`_ in the ``application.json`` 
 file. In the example ``application.json`` below, the ``yui.config`` object 
-overrides the default for ``logLevel``.
+overrides the default for ``logLevel``. 
 
 .. code-block:: javascript
 
@@ -89,6 +90,9 @@ overrides the default for ``logLevel``.
        ...
      }
    ]
+
+.. note:: To set ``logLevel``, the property ``debug`` must be set to ``true``, which
+          is the default.
 
 .. _logging_config-prod:
 

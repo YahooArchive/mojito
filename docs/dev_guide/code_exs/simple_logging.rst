@@ -13,7 +13,8 @@ Summary
 
 This example shows how to configure the log levels for the client and the 
 server in Mojito. Also, see `Logging <../topics/mojito_logging.html>`_
-for more information.
+for more information such as including and excluding log messages from 
+specified modules.
 
 The following topics will be covered:
 
@@ -66,8 +67,8 @@ indicate important framework events are occurring.
 Example Log Configuration
 -------------------------
 
-In the example ``log`` object below, you can see that you can configure the 
-levels and whether the log message has a time stamp.
+In the example ``log`` object below, you can see that you use the ``yui.config``
+object to configure the log level.
 
 .. code-block:: javascript
 
@@ -76,6 +77,10 @@ levels and whether the log message has a time stamp.
            "logLevel": "info"
          }
        }
+
+To configure log levels, the property ``debug`` must be set to ``true``, which
+is the default value. For example, if ``yui.config`` contained ``debug: false``,
+then the ``logLevel`` property would be ignored.
 
 .. _logging_notes-client_server:
 
