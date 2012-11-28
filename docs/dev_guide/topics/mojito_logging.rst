@@ -16,10 +16,10 @@ Log Levels
 Mojito has the following six log levels:
 
 - ``debug``
+- ``mojito``
 - ``info``
 - ``warn``
 - ``error``
-- ``mojito``
 - ``none``
 
 All of them should be familiar except the last, which are framework-level messages that 
@@ -37,7 +37,34 @@ Log Defaults
 
 The server and client log settings have the following default values:
 
-- ``logLevel:`` ``DEBUG`` - log level filter.
+- ``logLevel: "debug"`` - log level filter.
+- ``logLevelOrder: ['debug', 'mojito', 'info', 'warn', 'error', 'none']`` - the order of 
+  that log levels are evaluated. 
+  
+
+.. logging_levels-define:
+
+Customizing the Log Level Order
+-------------------------------
+
+You can reorder and create log levels with ``logLevelOrder`` property of the 
+``yui.config`` object. In the example ``yui.config`` object below,
+the order of the log levels are switched for ``warn`` and ``info`` and 
+the new log level ``danger`` is created.
+
+.. code-block:: javascript
+
+   [
+     {
+       "settings": [ "master" ],
+       "yui": {
+         "config": {
+           "logLevelOrder": [ "debug", "warn", "info", "error", "danger", "none" ]
+         }
+       },
+       ...
+     }
+   ]
 
 .. _mojito_logging-config:
 
