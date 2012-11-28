@@ -13,7 +13,7 @@ Summary
 
 This example shows how to include the 
 `YUI ScrollView Module <http://developer.yahoo.com/yui/3/scrollview/>`_ 
-in your mojit's template.
+in your view.
 
 The following topics will be covered:
 
@@ -103,30 +103,53 @@ photo URLs and the text for the image ``alt`` attribute is passed to the
 		}, '0.0.1', {requires: []});
 
 
-In the ``index.hb.html`` below, the YUI ScrollView module is included with 
-``YUI.use``. To create the scrolling content widget, you need to create a 
-container, a header, and content frame with ``div`` tags that use YUI-specific 
-IDs and render a ScrollView object. For detailed instructions, see the 
-`ScrollView: Getting Started <http://developer.yahoo.com/yui/3/scrollview/#start>`_.
+In the binder ``index.js`` below, the YUI ScrollView module is required
+by adding the string ``scrollview`` to the ``required`` array. To create the scrolling 
+content widget, you need to instantiate a ScrollView object by passing an object 
+containing parameters for the container (``srcNode``), an ID, dimensions, and 
+scroll behavior (``flick``) and then use the method ``render`` to attach the scroll
+view to the HTML DOM. 
+
+      YUI.add('scrollBinderIndex', function (Y, NAME) {
+
+        Y.namespace('mojito.binders')[NAME] = {
+          init: function (mojitProxy) {
+            this.mojitProxy = mojitProxy;
+          },
+          bind: function (node) {
+            var scrollView = new Y.ScrollView({
+                id: 'scrollview',
+                srcNode: node.one('#scrollview-content'),
+                width: 320,
+                flick: {
+                    minDistance:10,
+                    minVelocity:0.3,
+                    axis: "x"
+                }
+            });
+            scrollView.render();
+
+            // Prevent default image drag behavior
+            scrollView.get("contentBox").delegate("mousedown", function(e) {
+                e.preventDefault();
+            }, "img");
+          }
+        };
+      }, '0.0.1', {requires: ['scrollview']});
+
+The container (value for ``srcNode``) for the scroll view must be an existing HTML
+node, so the template ``index.hb.html`` must have a ``div`` element with the
+``id`` attribute of ``scrollview-content`` as shown below.
 
 .. code-block:: html
 
-	 <style>
-		 /* Avoid resource latency for these, since they hide unenhanced content */
-		 .yui3-js-enabled .yui3-scrollview-loading {
-			 visibility:hidden;
-		 }
-		 #additional-content {
-			 display:none;
-		 }
-	 </style>
 	 <div id="{{mojit_view_id}}" class="mojit">
-		 <div id="scrollview-container">
-			 <div id="scrollview-header">
-			 	 <h1>{{title}}</h1>
+	   <div id="scrollview-container">
+		   <div id="scrollview-header">
+			   <h1>{{title}}</h1>
 			 </div>
 			 <div id="scrollview-content" class="yui3-scrollview-loading">
-				 <ul>
+			   <ul>
 				 {{#photos}}
 				   <li><img src="{{url}}" alt="{{alt}}"></li>
 				 {{/photos}}
@@ -134,6 +157,11 @@ IDs and render a ScrollView object. For detailed instructions, see the
 			 </div>
 		 </div>
 	 </div>
+
+For detailed instructions about YUI ScrollView, see 
+`ScrollView: Getting Started <http://developer.yahoo.com/yui/3/scrollview/#start>`_.
+
+   .. code-block:: javascript
 
 .. _code_exs_yui_views-setup:
 
