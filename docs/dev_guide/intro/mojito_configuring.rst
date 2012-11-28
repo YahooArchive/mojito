@@ -431,22 +431,29 @@ To see all the options for the ``config`` object, see the
 Some of the properties of the ``config`` object used for configuring logging are shown below.
 
 
-+----------------------+---------------+-------------------+-----------------------------------------------------------+
-| Property             | Data Type     | Default Value     | Description                                               |
-+======================+===============+===================+===========================================================+
-| ``debug``            | boolean       | true              | Determines whether ``Y.log`` messages are written to the  |    
-|                      |               |                   | browser console.                                          |
-+----------------------+---------------+-------------------+-----------------------------------------------------------+
-| ``logExclude``       | object        | none              | Excludes the logging of the YUI module(s) specified.      |
-|                      |               |                   | For example: ``logExclude: { "logModel": true }``         |  
-+----------------------+---------------+-------------------+-----------------------------------------------------------+
-| ``logInclude``       | object        | none              | Includes the logging of the YUI module(s) specified.      |
-|                      |               |                   | For example: ``logInclude: { "searchMojit": true }``      |  
-+----------------------+---------------+-------------------+-----------------------------------------------------------+
-| ``logLevel``         | string        | "info"            | Specifies the lowest log level to include in th           |
-|                      |               |                   | log output. See                                           |
-|                      |               |                   | `Log Levels <../topics/mojito_logging.html#log-levels>`_. |
-+----------------------+---------------+-------------------+-----------------------------------------------------------+
++----------------------+------------------+--------------------------+--------------------------------------------------------------+
+| Property             | Data Type        | Default Value            | Description                                                  |
++======================+==================+==========================+==============================================================+
+| ``debug``            | boolean          | true                     | Determines whether ``Y.log`` messages are written to the     |    
+|                      |                  |                          | browser console.                                             |
++----------------------+------------------+--------------------------+--------------------------------------------------------------+
+| ``logExclude``       | object           | none                     | Excludes the logging of the YUI module(s) specified.         |
+|                      |                  |                          | For example: ``logExclude: { "logModel": true }``            |  
++----------------------+------------------+--------------------------+--------------------------------------------------------------+
+| ``logInclude``       | object           | none                     | Includes the logging of the YUI module(s) specified.         |
+|                      |                  |                          | For example: ``logInclude: { "searchMojit": true }``         |  
++----------------------+------------------+--------------------------+--------------------------------------------------------------+
+| ``logLevel``         | string           | "debug"                  | Specifies the lowest log level to include in the             |
+|                      |                  |                          | log output. See                                              |
+|                      |                  |                          | `Log Levels <../topics/mojito_logging.html#log-levels>`_.    |
++----------------------+------------------+--------------------------+--------------------------------------------------------------+
+| ``logLevelOrder``    | array of strings | ``['debug', 'mojito',    | Defines the order of evaluating log levels. Each log         |
+|                      |                  | 'info', 'warn', 'error'  | level is a superset of the levels that follow, so messages   |
+|                      |                  | 'none']``                | at levels within the set will be displayed. Thus, at the     |
+|                      |                  |                          | ``debug`` level, messages at all levels will be displayed,   |
+|                      |                  |                          | and at the ``mojito`` level, levels ``info``, ``warn``,      |
+|                      |                  |                          | ``error`` will be displayed, etc.                            |
++----------------------+------------------+--------------------------+--------------------------------------------------------------+
 
 
 

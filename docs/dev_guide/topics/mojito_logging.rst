@@ -16,10 +16,10 @@ Log Levels
 Mojito has the following six log levels:
 
 - ``debug``
+- ``mojito``
 - ``info``
 - ``warn``
 - ``error``
-- ``mojito``
 - ``none``
 
 All of them should be familiar except the last, which are framework-level messages that 
@@ -37,7 +37,34 @@ Log Defaults
 
 The server and client log settings have the following default values:
 
-- ``logLevel:`` ``DEBUG`` - log level filter.
+- ``logLevel: "debug"`` - log level filter.
+- ``logLevelOrder: ['debug', 'mojito', 'info', 'warn', 'error', 'none']`` - the order of 
+  that log levels are evaluated. 
+  
+
+.. logging_levels-define:
+
+Customizing the Log Level Order
+-------------------------------
+
+You can reorder and create log levels with ``logLevelOrder`` property of the 
+``yui.config`` object. In the example ``yui.config`` object below,
+the order of the log levels are switched for ``warn`` and ``info`` and 
+the new log level ``danger`` is created.
+
+.. code-block:: javascript
+
+   [
+     {
+       "settings": [ "master" ],
+       "yui": {
+         "config": {
+           "logLevelOrder": [ "debug", "warn", "info", "error", "danger", "none" ]
+         }
+       },
+       ...
+     }
+   ]
 
 .. _mojito_logging-config:
 
@@ -87,7 +114,6 @@ context with the log configuration shown below:
    ]
 
 
-
 .. _mojito_logging-custom:
 
 Customizing Logging
@@ -98,22 +124,24 @@ Customizing Logging
 Client and Server Logging
 -------------------------
 
-You can use the ``runtime:client`` and ``runtime:server`` contexts to create different logging
-settings for the client and server.
+You can use the ``master and  the ``runtime:client`` contexts to create different 
+logging settings for the client and server.
 
 In the ``application.json`` file, create two configuration
-objects that use the ``runtime:client`` and ``runtime:server``
-contexts as shown below. 
+objects that use the ``master`` context for the server-side log configuration
+and the ``runtime:client`` context for the client-side log configuration 
+as shown below. 
 
 .. code-block:: javascript
 
    [
      {
-       "settings": [ "runtime:client" ],
+       "settings": [ "master" ],
      },
      {
-       "settings": [ "runtime:server" ],
-     }
+       "settings": [ "runtime:client" ],
+     },
+
    ]
 
 For each context, configure your logging with
@@ -123,20 +151,20 @@ the ``yui.config`` object.
 
    [
      {
-       "settings": [ "runtime:client" ],
+       "settings": [ "master" ],
        ...
-	   "yui": {
+	     "yui": {
          "config": {
-           "logLevel": "warn"
+           "logLevel": "info"
          }
        }
      },
      {
-       "settings": [ "runtime:server" ],
+       "settings": [ "runtime:client" ],
        ...
-	   "yui": {
+	     "yui": {
          "config": {
-           "logLevel": "info"
+           "logLevel": "warn"
          }
        }
      }
