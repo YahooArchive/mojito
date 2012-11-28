@@ -15,7 +15,7 @@
     "yui": {
       "config": {
         "debug": true,
-        "logLevel": "debug"
+        "logLevel": "debug",
       }
     }
   },
