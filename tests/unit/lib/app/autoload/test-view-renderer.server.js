@@ -8,14 +8,15 @@
 /*jslint anon:true, sloppy:true, nomen:true, node:true*/
 /*global YUI*/
 
-YUI().use('mojito-view-renderer', 'test', function(Y) {
-    var A = Y.Assert,
+YUI.add('mojito-view-renderer-server-tests', function(Y, NAME) {
+    var suite = new Y.Test.Suite(NAME),
+        A = Y.Assert,
         AA = Y.ArrayAssert,
-        OA = Y.ObjectAssert,
-        cases;
+        OA = Y.ObjectAssert;
 
-    cases = {
-        name: 'mojito-view-renderer cases',
+    suite.add(new Y.Test.Case({
+
+        name: 'mojito-view-renderer',
 
         setUp: function() {
             var ve = Y.namespace('mojito.addons.viewEngines');
@@ -49,7 +50,9 @@ YUI().use('mojito-view-renderer', 'test', function(Y) {
             var vr = new Y.mojito.ViewRenderer('foo', 'someviewid', {z:99});
             vr.render(1,2,3,4,5,6);
         }
-    };
 
-    Y.Test.Runner.add(new Y.Test.Case(cases));
-});
+    }));
+
+    Y.Test.Runner.add(suite);
+
+}, '0.0.1', {requires: ['mojito-view-renderer']});
