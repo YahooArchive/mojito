@@ -18,37 +18,87 @@ YUI().use('mojito-view-renderer-client-tests', 'test', function(Y) {
         name: 'mojito-view-renderer cases',
 
         setUp: function() {
-            var ve = Y.namespace('mojito.addons.viewEngines');
-
-            ve.foo = function(viewId, options) {
-                A.areSame('someviewid', viewId);
-                A.areSame(99, options.z);
-            };
-
-            ve.foo.prototype.render = function(data, mojitType, tmpl, adapter, meta, more) {
-                A.areSame(6, arguments.length);
-                A.areSame(1, arguments[0]);
-                A.areSame(2, arguments[1]);
-                A.areSame(3, arguments[2]);
-                A.areSame(4, arguments[3]);
-                A.areSame(5, arguments[4]);
-                A.areSame(6, arguments[5]);
-            };
+            Y.namespace('mojito.addons.viewEngines');
+            // resetting engines
+            Y.mojito.addons.viewEngines = {};
         },
 
         tearDown: function() {},
 
-        'test instantiating a mock renderer': function () {
+        'test instantiating a renderer engine': function () {
+            var vr;
 
-            A.isObject(Y.mojito.addons);
-            A.isFunction(Y.mojito.ViewRenderer);
-            var vr = new Y.mojito.ViewRenderer('foo', 'someviewid', {z:99});
+            vr = new Y.mojito.ViewRenderer('foo', 'someviewid', {z:99});
+            A.isObject(vr);
+            // less restrictive initialization
+            vr = new Y.mojito.ViewRenderer('bar');
+            A.isObject(vr);
         },
 
-        'test mock render method': function () {
+        'test render method with valid engine': function () {
+            var args;
+            var ve = Y.namespace('mojito.addons.viewEngines');
+            ve.foo = function(viewId, options) {
+                A.areSame('someviewid', viewId);
+                A.areSame(99, options.z);
+            };
+            ve.foo.prototype.render = function(data, mojitType, tmpl, adapter, meta, more) {
+                args = arguments;
+            };
+
             var vr = new Y.mojito.ViewRenderer('foo', 'someviewid', {z:99});
             vr.render(1,2,3,4,5,6);
+            A.areSame(6, args.length);
+            A.areSame(1, args[0]);
+            A.areSame(2, args[1]);
+            A.areSame(3, args[2]);
+            A.areSame(4, args[3]);
+            A.areSame(5, args[4]);
+            A.areSame(6, args[5]);
+        },
+
+        'test render method with ondemand engine': function () {
+            var args;
+
+            YUI.add('mojito-fakebarengine', function (Y) {
+                var ve = Y.namespace('mojito.addons.viewEngines');
+                ve.fakebarengine = function(viewId, options) {
+                    A.areSame('someviewid', viewId);
+                    A.areSame(99, options.z);
+                };
+                ve.fakebarengine.prototype.render = function(data, mojitType, tmpl, adapter, meta, more) {
+                    args = arguments;
+                };
+            });
+
+            var vr = new Y.mojito.ViewRenderer('fakebarengine', 'someviewid', {z:99});
+            vr.render(1,2,3,4,5,6);
+            this.wait(function () {
+                A.areSame(6, args.length);
+                A.areSame(1, args[0]);
+                A.areSame(2, args[1]);
+                A.areSame(3, args[2]);
+                A.areSame(4, args[3]);
+                A.areSame(5, args[4]);
+                A.areSame(6, args[5]);
+            }, 300);
+        },
+
+
+        'test render method with invalid ondemand engine': function () {
+            var err;
+
+            var vr = new Y.mojito.ViewRenderer('fakebazengine', 'someviewid', {z:99});
+            vr.render(1,2,3, {
+                error: function () {
+                    err = true;
+                }
+            },5,6);
+            this.wait(function () {
+                A.isTrue(err, 'an error should occurr when the engine is invalid');
+            }, 300);
         }
+
     };
 
     Y.Test.Runner.add(new Y.Test.Case(cases));
