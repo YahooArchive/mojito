@@ -271,6 +271,71 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
             A.areSame(2, Object.keys(counts).length, 'too many type:location pairs');
             A.areSame(1, counts['js top'], 'wrong number of js:top');
             A.areSame(1, counts['blob bottom'], 'wrong number of blob:bottom');
+        },
+
+
+        'test constructMojitoClientRuntime processes yui config correctly': function() {
+            addon.ac = {
+                http: {
+                    getHeader: function(h) {
+                        return null;
+                    }
+                },
+                url: {
+                    getRouteMaker: function() {
+                        return {
+                            getComputedRoutes: function() {
+                                return ['routes'];
+                            }
+                        };
+                    }
+                }
+            };
+            addon.ac.context = {
+                lang: 'klingon'
+            };
+            addon.setStore({
+                getAppConfig: function() {
+                    return { yui:{ config:{ comboSep:'&' } } };
+                },
+                serializeClientStore: function() {
+                    return 'clientstore';
+                },
+                getAllURLs: function() { return {}; },
+                getFrameworkConfig: function() {
+                    return { ondemandBaseYuiModules:[] };
+                },
+                yui: {
+                    getAppSeedFiles: function () { return ['/static/seed.js']; },
+                    getAppGroupConfig: function() { return {}; },
+                    getConfigShared: function() { return {}; },
+                    langs: { klingon: true }
+                }
+            });
+
+            var blobs = [];
+            var assetHandler = {
+                    addCss: function(path, location) {
+                        // not testing this
+                        return;
+                    },
+                    addAssets: function(type, location, content) {
+                        // not testing this
+                        return;
+                    },
+                    addAsset: function(type, location, content) {
+                        if ('blob' === type) {
+                            blobs.push(content);
+                        }
+                    }
+                };
+            var binderMap = {};
+            addon.constructMojitoClientRuntime(assetHandler, binderMap);
+
+            var matches = blobs[0].match(/YUI\.applyConfig\((.+?)\);/);
+            A.isNotUndefined(matches[1], 'failed to find YUI.applyConfig() in blob');
+            var config = Y.JSON.parse(matches[1]);
+            A.areSame('&', config.comboSep, 'comboSep got mangled');
         }
 
 
