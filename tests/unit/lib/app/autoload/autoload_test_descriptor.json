@@ -134,13 +134,21 @@
                 },
                 "group": "fw,unit,client,server"
             },
-            "view-renderer.common": {
+            "view-renderer.server": {
                 "params": {
                     "page": "$$config.base$$/mojito-test.html",
-                    "lib": "$$config.lib$$/app/autoload/view-renderer.common.js",
-                    "test": "./test-view-renderer.common.js"
+                    "lib": "$$config.lib$$/app/autoload/view-renderer.server.js",
+                    "test": "./test-view-renderer.server.js"
                 },
-                "group": "fw,unit,client,server"
+                "group": "fw,unit,server"
+            },
+            "view-renderer.client": {
+                "params": {
+                    "page": "$$config.base$$/mojito-test.html",
+                    "lib": "$$config.lib$$/app/autoload/view-renderer.client.js",
+                    "test": "./test-view-renderer.client.js"
+                },
+                "group": "fw,unit,client"
             }
         }
     },
