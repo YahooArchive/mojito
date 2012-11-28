@@ -452,7 +452,7 @@ Some of the properties of the ``config`` object used for configuring logging are
 |                      |                  | 'none']``                | at levels within the set will be displayed. Thus, at the     |
 |                      |                  |                          | ``debug`` level, messages at all levels will be displayed,   |
 |                      |                  |                          | and at the ``mojito`` level, levels ``info``, ``warn``,      |
-|                      |                  |                          | ``error`` will be  displayed, etc.                           |
+|                      |                  |                          | ``error`` will be displayed, etc.                            |
 +----------------------+------------------+--------------------------+--------------------------------------------------------------+
 
 
