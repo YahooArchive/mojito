@@ -15,7 +15,7 @@
     "yui": {
       "config": {
         "debug": true,
-        "logLevel": "info"
+        "logLevel": "debug"
       }
     }
   },
@@ -23,8 +23,7 @@
     "settings": [ "runtime:client" ],
     "yui": {
       "config": {
-        "logLevelOrder": [ "moron", "warn", "error" ],
-        "logLevel": "error"
+        "logLevel": "info"
       }
     }
   }

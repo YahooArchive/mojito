@@ -5,7 +5,7 @@ YUI.add('logBinderIndex', function(Y, NAME) {
         },
         bind: function(node) {
             Y.log("[BINDER]: Default Log level: " + Y.config.logLevel);
-            Y.log('[BINDER]:  Info log message.', "info");
+            Y.log('[BINDER]: Error log message.', "error");
             Y.one("#client_config").all("b").item(0).insert(Y.config.logLevel,"after");
             this.node = node;
         }

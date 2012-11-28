@@ -83,14 +83,14 @@ Configuring Client and Server Logging
 
 You can use context configurations to set different logging configurations
 for the client and server. More specifically, you use the 
-the ``runtime:client`` and ``runtime:server`` contexts, each with their
+the ``master`` and ``runtime:client`` contexts, each with their
 own ``yui.config`` object as shown below:
 
 .. code-block:: javascript
 
    [
      {
-       "settings": [ "runtime:server" ],
+       "settings": [ "master" ],
        "yui": {
          "config": {
            "logLevel": "debug"
@@ -163,14 +163,7 @@ To set up and run ``simple_logging``:
           },
           "yui": {
             "config": {
-              "debug": true
-            }
-          }
-        },
-        {
-          "settings": [ "runtime:server" ],
-          "yui": {
-            "config": {
+              "debug": true,
               "logLevel": "debug"
             }
           }
@@ -265,7 +258,7 @@ To set up and run ``simple_logging``:
    server. You should see the log messages from the controller that start 
    with the string "\[CONTROLLER]:". Notice that the two messages have 
    different log levels: one is the default (``debug``) and the other sets
-   the log level ``error`` with ``Y.log``. 
+   the log level ``warn`` with ``Y.log``. 
 
    http://localhost:8666/
 
