@@ -67,7 +67,7 @@ indicate important framework events are occurring.
 Example Log Configuration
 -------------------------
 
-In the example ``log`` object below, you can see that you use the ``yui.config``
+In the example, you can see that you use the ``yui.config``
 object to configure the log level.
 
 .. code-block:: javascript
@@ -212,7 +212,7 @@ To set up and run ``simple_logging``:
             Y.log('[CONTROLLER]: Default log-level message with date: ' + new Date());
             Y.log('[CONTROLLER]: Warn message.','warn');
             var data = {
-                log_config: ac.config.getAppConfig().yui.config.logLevel,
+                log_config: Y.config.logLevel,
             };
             ac.done(data);
           }

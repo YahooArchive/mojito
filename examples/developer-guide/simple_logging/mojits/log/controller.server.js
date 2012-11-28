@@ -4,7 +4,7 @@ YUI.add('log', function(Y, NAME) {
             Y.log('[CONTROLLER]: Default log-level message with date: ' + new Date());
             Y.log('[CONTROLLER]: Warn message.','warn');
             var data = {
-                log_config: ac.config.getAppConfig().yui.config.logLevel,
+                log_config: Y.config.logLevel,
             };
             ac.done(data);
         }

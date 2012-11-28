@@ -441,7 +441,7 @@ Some of the properties of the ``config`` object used for configuring logging are
 |                      |                  |                          | For example: ``logExclude: { "logModel": true }``             |  
 +----------------------+------------------+--------------------------+---------------------------------------------------------------+
 | ``logInclude``       | object           | none                     | Includes the logging of the YUI module(s) specified.          |
-|                      |                  |                          | For example: ``logInclude: { "searchMojit": true }``          |  
+|                      |                  |                          | For example: ``logInclude: { "DemoBinderIndex": true }``      |  
 +----------------------+------------------+--------------------------+---------------------------------------------------------------+
 | ``logLevel``         | string           | "debug"                  | Specifies the lowest log level to include in the              |
 |                      |                  |                          | log output. The log level can only be set with ``logLevel``   |
