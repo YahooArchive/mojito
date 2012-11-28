@@ -20,7 +20,7 @@ YUI.add('RoutingMojitModel', function (Y, NAME) {
      * @class Model
      * @constructor
      */
-     Y.namespace('mojito.models')[NAME] = {
+    Y.namespace('mojito.models')[NAME] = {
 
         init: function (config) {
             this.config = config;

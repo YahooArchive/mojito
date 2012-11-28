@@ -280,6 +280,28 @@ The generated application contains Mojito, frame mojits, the default mojit
 will also create a ``snapshot.json`` file that can be used tracking and updating applications.
 
 
+.. _build_types-hybridapp:
+
+hybridapp
+#########
+
+
+To build a hybrid application, use either of the following.
+
+``$ mojito build hybridapp [--context <context>] --snapshotName <snapshot_name> --snapshotTag <snapshot_tag> [<path/to/app/>]`` 
+
+``$ mojito build hybridapp [-c <context>] -n <snapshot_name> -t <snapshot_tag> [<path/to/app/>]`` 
+
+
+This generates a HTML5 application that is customized to work with a future component
+of the Cocktails suite that will allow you to write HTML5/JavaScript applications
+that can access native features of mobile devices.
+
+The generated application contains Mojito, frame mojits, the default mojit ``top_frame``,
+your created mojits, and application configuration. The command will also create 
+a ``snapshot.json`` file that can be used tracking and updating applications.
+
+
 .. _mj_cmdlne-compile_sys:
 
 Compile System

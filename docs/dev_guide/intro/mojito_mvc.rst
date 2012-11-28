@@ -124,7 +124,7 @@ getting data.
          this.config = config;        
        },
        // Model function to get data
-       get_photos: function(flickr_query){
+       get_photos: function(flickr_query, callback){
          Y.YQL (flickr_query, function(rawYql) {
            // Handle empty response.
            if (null == rawYql || 0 == rawYql.query.count) {

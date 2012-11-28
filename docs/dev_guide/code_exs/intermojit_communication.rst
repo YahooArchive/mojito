@@ -598,7 +598,7 @@ To set up and run ``inter-mojit``:
    .. code-block:: html
 
       <div id="{{mojit_view_id}}" class="ReceiverMojit">
-        <h3></h3>
+        <h3>{{title}}</h3>
         <div id="view">
           <img src="{{url}}" width="200px" alt="Missing Image"/>
         </div>
