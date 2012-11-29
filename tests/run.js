@@ -177,24 +177,23 @@ function deploy (cmd, callback) {
 
     for (var i=0; i<apps.length; i++) {
         (function (app) {
-            var port = app.port ? parseInt(app.port, 10) : null,
+            var port = app.port || null,
                 type = app.type || 'mojito';
-                
+
             if ('mojito' === type) {
                 if (app.tests) {
                     var mytests = app.tests;
                     for(var j=0; j<mytests.length; j++) {
-                        (function () {
-                            var test = mytests[j],
-                                port = test.port ? parseInt(test.port) : null;
+                        (function (test) {
+                            var port = test.port || app.port || null;
                             appSeries.push(function (callback) {
-                                runMojitoApp(cmd, cmd.funcPath + '/applications', app.path, port, test.param, callback);
+                                runMojitoApp(app, cmd, cmd.funcPath + '/applications', port, test.param, callback);
                             });
-                        })();
+                        })(mytests[j]);
                     }
-                } else if (app.enabled === "true" && app.path) {
+                } else {
                     appSeries.push(function (callback) {
-                        runMojitoApp(cmd, cmd.funcPath + '/applications', app.path, port, app.param, callback);
+                        runMojitoApp(app, cmd, cmd.funcPath + '/applications', port, app.param, callback);
                     });
                 }
             } else if ('static' === type) {
@@ -310,19 +309,24 @@ function runCommand (path, command, argv, callback) {
     return cmd;
 }
 
-function runMojitoApp (cliOptions, basePath, path, port, params, callback) {
+function runMojitoApp (app, cliOptions, basePath, port, params, callback) {
+    if (!app.enabled) {
+        console.error('------------------------------- DISABLED APP ' + app.name + ':' + port);
+        callback();
+        return;
+    }
     /* useful when debugging
     var OK = {
         4081: true,
     };
     if (! OK[port]) {
-        console.error('------------------------------- SKIPPING APP ON PORT ' + port);
+        console.error('------------------------------- SKIPPING APP ' + app.name);
         callback();
         return;
     }
     */
     params = params || '';
-    console.log('Starting ' + path + ' at port ' + port + ' with params ' + (params || 'empty'));
+    console.log('Starting ' + app.name + ' at port ' + port + ' with params ' + (params || 'empty'));
     var cmdArgs = ['start'];
     if (port) {
         cmdArgs.push(port);
@@ -330,11 +334,11 @@ function runMojitoApp (cliOptions, basePath, path, port, params, callback) {
     if (params) {
         cmdArgs.push('--context');
         cmdArgs.push(params);
-    } 
-    var p = runCommand(basePath + '/' + path, cwd + "/../bin/mojito", cmdArgs, function () {});
-    
+    }
+    var p = runCommand(basePath + '/' + app.path, cwd + "/../bin/mojito", cmdArgs, function () {});
+
     pids.push(p.pid);
-    pidNames[p.pid] = libpath.basename(path) + ':' + port + (params ? '?' + params : '');
+    pidNames[p.pid] = app.name + ':' + port + (params ? '?' + params : '');
     if (cliOptions.debugApps) {
         p.stdout.on('data', function(data) {
             console.error('---DEBUG ' + port + ' STDOUT--- ' + data.toString());
