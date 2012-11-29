@@ -105,17 +105,22 @@ instance to access the module.
 .. code-block:: javascript
 
    ...
-     bind: function(node) {
+     bind: function (node) {
+
        // Based on http://yuilibrary.com/gallery/show/storage-lite
-       var keyname = 'storage-lite-example', notes = node.one('#notes');
-       // Populate the textarea with the stored note
-       // text on page load.
-       notes.set('value', Y.StorageLite.getItem(keyname) || '');   
-       // Save the contents of the textarea after
-       // each keystroke.
-       notes.on('keyup', function() {
-         Y.StorageLite.setItem(keyname, notes.get('value')); 
+       var keyname = 'storage-lite-example',
+           notes = node.one('#notes');
+
+       // Populate the textarea with the stored note text on page load.
+       notes.set('value', Y.StorageLite.getItem(keyname) || '');
+
+       // Save the contents of the textarea after each keystroke.
+       notes.on('keyup', function () {
+         Y.StorageLite.setItem(keyname, notes.get('value'));
        });
+
+       // adding a classname to the notes element to facilitate func tests
+       notes.addClass('ready');
      }
    ...
 
@@ -197,29 +202,34 @@ To set up and run ``yui_module``:
    .. code-block:: javascript
 
       YUI.add('NotepadBinderIndex', function (Y, NAME) {
+
         Y.namespace('mojito.binders')[NAME] = {
-          init: function(mojitProxy) {
+          init: function (mojitProxy) {
             this.mp = mojitProxy;
           },
-          /**
-          * @method bind
-          * @param {Node} YUI Node
-          */
-          bind: function(node) {
+          bind: function (node) {
+
             // Based on http://yuilibrary.com/gallery/show/storage-lite
-            var keyname = 'storage-lite-example', notes = node.one('#notes');
-            // Populate the textarea with the stored
-            // note text on page load.
+            var keyname = 'storage-lite-example',
+                notes = node.one('#notes');
+
+            // Populate the textarea with the stored note text on page load.
             notes.set('value', Y.StorageLite.getItem(keyname) || '');
-            // Save the contents of the textarea after
-            // each keystroke.
-            notes.on('keyup', function() {
-              Y.StorageLite.setItem(keyname, notes.get('value'));
+
+            // Save the contents of the textarea after each keystroke.
+            notes.on('keyup', function () {
+                Y.StorageLite.setItem(keyname, notes.get('value'));
             });
+
+            // adding a classname to the notes element to facilitate func tests
+            notes.addClass('ready');
           }
         };
-        // See autoload/storage-lite.client.js
-      }, '0.0.1', {requires: [ 'gallery-storage-lite' ]});
+      }, '0.0.1', {
+        requires: [ 
+          'gallery-storage-lite' //see autoload/storage-lite.client.js
+        ]
+      });
 
 #. To display a form that allows users to input text, replace the code in 
    ``views/index.hb.html`` with the following:
