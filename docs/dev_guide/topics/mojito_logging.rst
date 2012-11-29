@@ -202,26 +202,19 @@ through ``NAME``, which in this case contains the value "DemoBinderIndex``.
 
 .. code-block:: javascript
 
-   YUI.add('logBinderIndex', function(Y, NAME) {
+   YUI.add('DemoBinderIndex', function(Y, NAME) {
     Y.namespace('mojito.binders')[NAME] = {
         init: function(mojitProxy) {
             this.mojitProxy = mojitProxy;
         },
         bind: function(node) {
-            Y.log("[BINDER]: Default Log level: " + Y.config.logLevel);
-            Y.log('[BINDER]: Error log message.', "error");
-            Y.one("#client_config").all("b").item(0).insert(Y.config.logLevel,"after");
+            Y.log("Log message", "info", NAME);
             this.node = node;
         }
     };
 }, '0.0.1', {requires: ['mojito-client']});
 
 ..
-
-the log level, the reporting module.it is recommended
-that you specify the log level and the module doing the logging.
-
-``Y.log("{message}", "{log level}', '{module name}');``
 
  
 
@@ -248,33 +241,24 @@ The configuration below excludes logging from the YUI module
    }
 
 
-The ``Y.log`` messages in the model below will be excluded
-from the logging:
+Based on the logging configurations above, the
+``Y.log`` messages in the model below will be excluded
+from the log:
 
-.. code-block::
+.. code-block:: javascript
 
    YUI.add('FinanceModelStocks', function (Y, NAME) {
 
      Y.namespace('mojito.models')[NAME] = {
 
-        init: function (config) {
-            // The following log message will be excluded from the log
-            // because "logExclude": { "FinanceModelStocks" }.
-            // NAME => "FinanceModelStocks"
-            Y.log('this message will be excluded', 'info', NAME);
-            this.config = config;
-        },
+       init: function (config) {
+         // The following log message will be excluded from the log
+         // because "logExclude": { "FinanceModelStocks" }.
+         // NAME => "FinanceModelStocks"
+         Y.log('this message will be excluded', 'info', NAME);
+         this.config = config;
+       },
+       ...
+     };
 
-        /**
-         * Method that will be invoked by the mojit controller to obtain data.
-         *
-         * @param callback {Function} The callback function to call when the
-         *        data has been retrieved.
-         */
-        getData: function (callback) {
-            callback({some: 'data'});
-        }
-
-    };
-
-}, '0.0.1', {requires: []});
+   }, '0.0.1', {requires: []});
