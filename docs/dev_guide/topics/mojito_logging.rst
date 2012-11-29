@@ -60,6 +60,7 @@ the new log level ``danger`` is created.
        "settings": [ "master" ],
        "yui": {
          "config": {
+           "debug": true,
            "logLevelOrder": [ "debug", "warn", "info", "error", "danger", "none" ]
          }
        },
@@ -73,9 +74,9 @@ Log Configuration
 =================
 
 All the values above are configurable through the 
-`yui.config object <../intro/mojito_configuring.html#yui_config>`_ in the ``application.json`` 
-file. In the example ``application.json`` below, the ``yui.config`` object 
-overrides the default for ``logLevel``. 
+`yui.config object <../intro/mojito_configuring.html#yui_config>`_ in the 
+``application.json`` file. In the example ``application.json`` below, the ``yui.config`` 
+object overrides the default for ``logLevel``. 
 
 .. code-block:: javascript
 
@@ -84,7 +85,8 @@ overrides the default for ``logLevel``.
        "settings": [ "master" ],
        "yui": {
          "config": {
-           "logLevel": "error",
+           "debug": true,
+           "logLevel": "error"
          }
        },
        ...
@@ -159,6 +161,7 @@ the ``yui.config`` object.
        ...
 	     "yui": {
          "config": {
+           "debug": true,
            "logLevel": "info"
          }
        }
@@ -168,12 +171,59 @@ the ``yui.config`` object.
        ...
 	     "yui": {
          "config": {
+           "debug": true,
            "logLevel": "warn"
          }
        }
      }
    ]
 
+
+.. _logging_custom-using_ylog:
+
+Using Y.log in Mojito Applications
+----------------------------------
+
+You use ``Y.log`` in Mojito as you would in any application
+using YUI. See the YUI API documentation for
+`log <http://yuilibrary.com/yui/docs/api/classes/YUI.html#method_log>`_ for
+details about the parameters and return values.
+
+We recommend that you pass the first three parameters to
+``Y.log`` in your Mojito application:
+
+- ``msg`` - the message to log
+- ``cat`` - the log level or category, such as 'info', 'error', 'warn'
+- ``src`` - the module reporting the error
+
+In the example binder below, ``Y.log`` logs
+a message at the ``info`` level and specifies the module
+through ``NAME``, which in this case contains the value "DemoBinderIndex``.
+
+.. code-block:: javascript
+
+   YUI.add('logBinderIndex', function(Y, NAME) {
+    Y.namespace('mojito.binders')[NAME] = {
+        init: function(mojitProxy) {
+            this.mojitProxy = mojitProxy;
+        },
+        bind: function(node) {
+            Y.log("[BINDER]: Default Log level: " + Y.config.logLevel);
+            Y.log('[BINDER]: Error log message.', "error");
+            Y.one("#client_config").all("b").item(0).insert(Y.config.logLevel,"after");
+            this.node = node;
+        }
+    };
+}, '0.0.1', {requires: ['mojito-client']});
+
+..
+
+the log level, the reporting module.it is recommended
+that you specify the log level and the module doing the logging.
+
+``Y.log("{message}", "{log level}', '{module name}');``
+
+ 
 
 .. _logging_custom-include_exclude_src:
 
@@ -191,8 +241,40 @@ The configuration below excludes logging from the YUI module
 
    "yui": {
      "config": {
-      "logLevel": "INFO",
-      "logExclude": { "FinanceModel": true } 
+      "debug": true,
+      "logLevel": "info",
+      "logExclude": { "FinanceModelStocks": true } 
      }
    }
 
+
+The ``Y.log`` messages in the model below will be excluded
+from the logging:
+
+.. code-block::
+
+   YUI.add('FinanceModelStocks', function (Y, NAME) {
+
+     Y.namespace('mojito.models')[NAME] = {
+
+        init: function (config) {
+            // The following log message will be excluded from the log
+            // because "logExclude": { "FinanceModelStocks" }.
+            // NAME => "FinanceModelStocks"
+            Y.log('this message will be excluded', 'info', NAME);
+            this.config = config;
+        },
+
+        /**
+         * Method that will be invoked by the mojit controller to obtain data.
+         *
+         * @param callback {Function} The callback function to call when the
+         *        data has been retrieved.
+         */
+        getData: function (callback) {
+            callback({some: 'data'});
+        }
+
+    };
+
+}, '0.0.1', {requires: []});

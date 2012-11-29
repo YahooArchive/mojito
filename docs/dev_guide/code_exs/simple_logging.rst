@@ -20,7 +20,7 @@ The following topics will be covered:
 
 - configuring the logging levels
 - configuring client-side and server-side logging
-- using ``Y.log`` to set log levels
+- using ``Y.log`` to set log levels, specify reporting modules
 
 .. _code_exs_logging-notes:
 
@@ -74,6 +74,7 @@ object to configure the log level.
 
        "yui": {
          "config": {
+           "debug": true,
            "logLevel": "info"
          }
        }
@@ -116,23 +117,27 @@ own ``yui.config`` object as shown below:
 
 .. _logging_notes-set_levels:
 
-Setting Log Level with Y.log
-----------------------------
+Using Y.log
+-----------
 
-The function ``Y.log`` takes two parameters. The first parameter is the log 
-message, and the second parameter is used to indicate the log level. When the 
-second parameter is omitted, the log message will be reported at the default 
-or configured log level.
+The function ``Y.log`` allows you to not only log messages,
+but to also set the log level, specify the reporting module,
+and suppress a logging event. See the YUI API documentation for
+`log <http://yuilibrary.com/yui/docs/api/classes/YUI.html#method_log>`_ for
+more information.
 
-For example, the first use of ``Y.log`` below will report the message at the 
-log level that is configured in ``application.json`` or use the default if
-no log level is set with ``logLevel``. The second use of ``Y.log`` will use the 
-log level ``info``.
+In Mojito applications, we recommend that you specify the log level and
+the reporting module. For example, the first use of ``Y.log`` 
+below will report the message at the log level that is configured in 
+``application.json`` or use the default (``debug``) if
+no log level is set with ``logLevel``. The second use of ``Y.log`` will 
+use the log level ``info``. Both statements specify the reporting module 
+``logBinderIndex``.
 
 .. code-block:: javascript
 
-   Y.log("This message will be reported at the log level set in application.json or the default level.");
-   Y.log("This log message will be reported at the INFO log level.", "info");
+   Y.log("This message will be reported at the log level set in application.json or the default level.", null, "logBinderIndex");
+   Y.log("This log message will be reported at the INFO log level.", "info", "logBinderIndex");
 
 .. _code_exs_logging-setup:
 
@@ -178,6 +183,7 @@ To set up and run ``simple_logging``:
           "settings": [ "runtime:client" ],
           "yui": {
             "config": {
+              "debug": true,
               "logLevel": "info"
             }
           }
@@ -209,8 +215,8 @@ To set up and run ``simple_logging``:
       YUI.add('log', function(Y, NAME) {
         Y.namespace('mojito.controllers')[NAME] = {   
           index: function(ac) {
-            Y.log('[CONTROLLER]: Default log-level message with date: ' + new Date());
-            Y.log('[CONTROLLER]: Warn message.','warn');
+            Y.log('[CONTROLLER]: Default log-level message with date: ' + new Date(), null NAME);
+            Y.log('[CONTROLLER]: Warn message.','warn', NAME);
             var data = {
                 log_config: Y.config.logLevel,
             };
@@ -230,8 +236,8 @@ To set up and run ``simple_logging``:
             this.mojitProxy = mojitProxy;
           },
           bind: function(node) {
-            Y.log("[BINDER]: Default Log level: " + Y.config.logLevel);
-            Y.log('[BINDER]:  Error log message.', "error");
+            Y.log("[BINDER]: Default Log level: " + Y.config.logLevel, null, NAME);
+            Y.log('[BINDER]:  Error log message.', "error", NAME);
             Y.one("#client_config").all("b").item(0).insert(Y.config.logLevel,"after");
             this.node = node;
           }
