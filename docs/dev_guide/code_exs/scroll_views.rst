@@ -72,35 +72,35 @@ photo URLs and the text for the image ``alt`` attribute is passed to the
 
 .. code-block:: javascript
 
-		YUI.add('scroll', function (Y, NAME) {
+	 YUI.add('scroll', function (Y, NAME) {
 
-			Y.namespace('mojito.controllers')[NAME] = {
-				index: function (ac) {
-					// Populate Template
-					ac.done({
-						title: 'Scroll View',
-						photos: [
-							{
-								url: 'http://farm5.static.flickr.com/4136/4802088086_c621e0b501.jpg',
-								alt: 'Above The City II'
-							},
-							{
-								url: 'http://farm5.static.flickr.com/4114/4801461321_1373a0ef89.jpg',
-								alt: 'Walls and Canyon'
-							},
-							{
-								url: 'http://farm5.static.flickr.com/4100/4801614015_4303e8eaea.jpg',
-								alt: 'Stairs Using In Situ Stone'
-							},
-							{
-								url: 'http://farm5.static.flickr.com/4076/4801368583_854e8c0ef3.jpg',
-								alt: 'Tree Silhouette'
-							}
-						]
-					});
-				}
-			};
-		}, '0.0.1', {requires: []});
+	   Y.namespace('mojito.controllers')[NAME] = {
+		   index: function (ac) {
+			   // Populate Template
+			   ac.done({
+				   title: 'Scroll View',
+					 photos: [
+					   {
+						   url: 'http://farm5.static.flickr.com/4136/4802088086_c621e0b501.jpg',
+							 alt: 'Above The City II'
+						 },
+						 { 
+               url: 'http://farm5.static.flickr.com/4114/4801461321_1373a0ef89.jpg',
+							 alt: 'Walls and Canyon'
+						 },
+						 {
+							 url: 'http://farm5.static.flickr.com/4100/4801614015_4303e8eaea.jpg',
+							 alt: 'Stairs Using In Situ Stone'
+						 },
+						 {
+							 url: 'http://farm5.static.flickr.com/4076/4801368583_854e8c0ef3.jpg',
+							 alt: 'Tree Silhouette'
+						 }
+					 ]
+				 });
+			 }
+		 };
+	 }, '0.0.1', {requires: []});
 
 
 In the binder ``index.js`` below, the YUI ScrollView module is required
@@ -110,32 +110,34 @@ containing parameters for the container (``srcNode``), an ID, dimensions, and
 scroll behavior (``flick``) and then use the method ``render`` to attach the scroll
 view to the HTML DOM. 
 
-      YUI.add('scrollBinderIndex', function (Y, NAME) {
+.. code-block:: javascript
 
-        Y.namespace('mojito.binders')[NAME] = {
-          init: function (mojitProxy) {
-            this.mojitProxy = mojitProxy;
-          },
-          bind: function (node) {
-            var scrollView = new Y.ScrollView({
-                id: 'scrollview',
-                srcNode: node.one('#scrollview-content'),
-                width: 320,
-                flick: {
-                    minDistance:10,
-                    minVelocity:0.3,
-                    axis: "x"
-                }
-            });
-            scrollView.render();
+   YUI.add('scrollBinderIndex', function (Y, NAME) {
 
-            // Prevent default image drag behavior
-            scrollView.get("contentBox").delegate("mousedown", function(e) {
-                e.preventDefault();
-            }, "img");
-          }
-        };
-      }, '0.0.1', {requires: ['scrollview']});
+     Y.namespace('mojito.binders')[NAME] = {
+       init: function (mojitProxy) {
+         this.mojitProxy = mojitProxy;
+       },
+       bind: function (node) {
+         var scrollView = new Y.ScrollView({
+             id: 'scrollview',
+             srcNode: node.one('#scrollview-content'),
+             width: 320,
+             flick: {
+               minDistance:10,
+               minVelocity:0.3,
+               axis: "x"
+             }
+           });
+           scrollView.render();
+
+           // Prevent default image drag behavior
+           scrollView.get("contentBox").delegate("mousedown", function(e) {
+             e.preventDefault();
+           }, "img");
+         }
+       };
+     }, '0.0.1', {requires: ['scrollview']});
 
 The container (value for ``srcNode``) for the scroll view must be an existing HTML
 node, so the template ``index.hb.html`` must have a ``div`` element with the
