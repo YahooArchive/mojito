@@ -185,12 +185,12 @@ To set up and run ``scroll_views``:
    .. code-block:: javascript
 
       [
-			  {
-				  "settings": [ "master" ],
-					"specs": {
-					  "frame" : {
-						  "type" : "HTMLFrameMojit",
-							"config": {
+        {
+          "settings": [ "master" ],
+          "specs": {
+            "frame" : {
+              "type" : "HTMLFrameMojit",
+						  "config": {
 						    "deploy": true,
 								"child" : {
 									 "type" : "scroll"
