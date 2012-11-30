@@ -14,6 +14,7 @@ var fs = require('fs'),
 
 program.command('test')
     .description('Run unit and functional tests')
+    .option('-c, --cli', 'Run command line tests')
     .option('-u, --unit', 'Run unit tests')
     .option('-f, --func', 'Run functional tests')
     .option('-b, --no-build', 'Don\'t build the apps')
@@ -49,16 +50,27 @@ function test (cmd) {
     var series = [];
     cmd.logLevel = cmd.logLevel || 'WARN';
     // Default to all tests
-    if (!cmd.unit && !cmd.func) {
+    if (!cmd.unit && !cmd.func && !cmd.cli) {
+        cmd.cli = true;
         cmd.unit = true;
         cmd.func = true;
     }
     cmd.unitBrowser = cmd.unitBrowser || cmd.browser || 'firefox';
     cmd.funcBrowser = cmd.funcBrowser || cmd.browser || 'firefox';
+    cmd.cliPath = path.resolve(cwd, cmd.cliPath || cmd.path || './cli');
     cmd.unitPath = path.resolve(cwd, cmd.unitPath || cmd.path || './unit');
     cmd.funcPath = path.resolve(cwd, cmd.funcPath || cmd.path || './func');
-    if (cmd.arrow) {
+
+    // We only start the Arrow server when we're running unit or functional
+    // tests. If we're only running cli tests we skip that since it slows things
+    // down without adding value.
+    if (cmd.arrow && (!cmd.cli || (!cmd.cli && !cmd.unit && !cmd.func))) {
         series.push(startArrowServer);
+    }
+    if (cmd.cli) {
+        series.push(function (callback) {
+            runCliTests(cmd, callback)
+        });
     }
     if (cmd.unit) {
         if ('phantomjs' !== cmd.unitBrowser) {
@@ -120,6 +132,42 @@ function startArrowServer (callback) {
         p.stdout.removeListener('data', listener); // Stop printing output from arrow_server
         callback(null);
     }, 5000);
+}
+
+function runCliTests (cmd, callback) {
+    console.log('---Running CLI Tests---');
+    var arrowReportDir = cmd.cliPath + '/artifacts/arrowreport/';
+    try {
+        wrench.rmdirSyncRecursive(arrowReportDir);
+    } catch (e) {}
+    wrench.mkdirSyncRecursive(arrowReportDir);
+
+    var commandArgs = [
+        cwd + "/../node_modules/yahoo-arrow/index.js",
+        "--descriptor=" + cmd.cliPath + "/**/*_descriptor.json",
+        "--report=true",
+        "--reportFolder=" + arrowReportDir
+    ];
+    // Unlike other test types the CLI tests force use of the nodejs driver and
+    // do not specify a browser since one won't be useful for CLI testing.
+    commandArgs.push('--driver=nodejs');
+
+    commandArgs.push('--logLevel=' + cmd.logLevel);
+    cmd.testName && commandArgs.push('--testName=' + cmd.testName);
+    cmd.group && commandArgs.push('--group=' + cmd.group);
+    cmd.coverage && commandArgs.push('--coverage=' + cmd.coverage);
+
+    var p = runCommand(
+        cmd.cliPath,
+        "node",
+        commandArgs,
+        function (code) {
+            callback(code);
+        }
+    );
+    p.stdout.on('data', function (data) {
+        process.stdout.write(data);
+    });
 }
 
 function runUnitTests (cmd, callback) {

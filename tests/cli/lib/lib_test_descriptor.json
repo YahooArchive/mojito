@@ -1,0 +1,23 @@
+[
+    {
+        "settings": [ "master" ],
+        "name": "lib-cli-tests",
+        "config": {
+            "lib": "../../../lib",
+            "base": "../../base"
+        },
+        "commonlib": "$$config.base$$/mojito-test.js",
+        "dataprovider" : {
+            "cli.js": {
+                "params": {
+                    "test": "./management/test-cli.js",
+                    "driver": "nodejs"
+                },
+                "group": "fw,cli"
+            }
+        }
+    },
+    {
+        "settings": [ "environment:development" ]
+    }
+]
