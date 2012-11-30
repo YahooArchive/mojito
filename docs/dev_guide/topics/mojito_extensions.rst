@@ -586,20 +586,19 @@ The view engine addon must have the following:
   .. code-block:: javascript
       
      ...
-        
        function EjsAdapter(viewId) {
          this.viewId = viewId;
        }
        ...
        Y.namespace('mojito.addons.viewEngines').ejs = EjsAdapter;
-      
+     ...      
+
 - a prototype of the object has the following two methods ``render`` and ``compiler`` 
   as shown below:
 
   .. code-block:: javascript
    
      ...
-        
        EjsAdapter.prototype = {
        
          render: function(data, mojitType, tmpl, adapter, meta, more) {
@@ -608,7 +607,7 @@ The view engine addon must have the following:
          compiler: function(tmpl) {
             ...
          }
-          ...
+     ...
 
     
 .. _reqs_ve-methods: 

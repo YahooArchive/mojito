@@ -532,11 +532,10 @@ Data
     as seen below. The ``template`` object can contain key-value pairs that can be added 
     to the view template as Handlebars expressions. For example, the key ``foo`` in the 
     ``template`` object shown here can be used in the template as ``{{foo}}``, which will 
-    be replaced by the value 'bar' when the template is rendered.
+    be replaced by the value 'bar' when the template is rendered.::
     
-    ``// Inside parent mojit``
-    
-    ``ac.done({ template: { "foo": "bar" }});``
+      // Inside parent mojit
+      ac.done({ template: { "foo": "bar" }});
     
 ------------    
     
@@ -736,8 +735,8 @@ Logging/Testing
           }
       ...
 
-      See `Including and Excluding Modules From Logging <../topics/mojito_logging.rst#logging_custom-include_exclude_src>`_
-      for more information.
+    See `Including and Excluding Modules From Logging <../topics/mojito_logging.rst#logging_custom-include_exclude_src>`_
+    for more information.
 
 ------------
     

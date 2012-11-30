@@ -144,25 +144,23 @@ node, so the template ``index.hb.html`` must have a ``div`` element with the
 
 .. code-block:: html
 
-	 <div id="{{mojit_view_id}}" class="mojit">
-	   <div id="scrollview-container">
-		   <div id="scrollview-header">
-			   <h1>{{title}}</h1>
-			 </div>
-			 <div id="scrollview-content" class="yui3-scrollview-loading">
-			   <ul>
-				 {{#photos}}
-				   <li><img src="{{url}}" alt="{{alt}}"></li>
-				 {{/photos}}
-				 </ul>
-			 </div>
-		 </div>
-	 </div>
+   <div id="{{mojit_view_id}}" class="mojit">
+     <div id="scrollview-container">
+       <div id="scrollview-header">
+         <h1>{{title}}</h1>
+       </div>
+       <div id="scrollview-content" class="yui3-scrollview-loading">
+         <ul>
+         {{#photos}}
+           <li><img src="{{url}}" alt="{{alt}}"></li>
+         {{/photos}}
+         </ul>
+       </div>
+     </div>
+   </div>
 
 For detailed instructions about YUI ScrollView, see 
 `ScrollView: Getting Started <http://developer.yahoo.com/yui/3/scrollview/#start>`_.
-
-   .. code-block:: javascript
 
 .. _code_exs_yui_views-setup:
 
@@ -206,10 +204,10 @@ To set up and run ``scroll_views``:
           }
         },
         { 
-			    "settings": [ "device:iphone" ], 
-			    "selector": "iphone" 
-			  }
-		  ]
+          "settings": [ "device:iphone" ], 
+          "selector": "iphone"
+        }
+      ]
 
 #. To configure routing to call the ``index`` action from the instance of the 
    ``HTMLFrameMojit`` when an HTTP GET call is made on the route path, replace 

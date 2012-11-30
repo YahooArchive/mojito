@@ -154,7 +154,7 @@ using ``Y.mojito.controllers[NAME]``.
      suite.add(new YUITest.TestCase({
        name: 'Foo tests',
        setUp: function() {
-         controller = Y.mojito.controllers[NAME];
+         controller = Y.mojito.controllers.Foo;
        },
        tearDown: function() {
          controller = null;

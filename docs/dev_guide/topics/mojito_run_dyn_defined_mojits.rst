@@ -532,7 +532,7 @@ SpawnedMojit
           ac.done({ "route": ac.params.route('name'), 
                     "url": ac.params.url('path'), 
                     "body": ac.params.body("message")
-                 });
+          });
         }
      };
    }, '0.0.1', {requires: ['mojito']});
