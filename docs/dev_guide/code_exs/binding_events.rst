@@ -552,7 +552,7 @@ If the query string created by ``Y.QueryString.stringify`` is "page=2" ,
 .. code-block:: javascript
 
    ...
-   function createLink(actionContext, params) {
+     function createLink(actionContext, params) {
        var mergedParams = Y.mojito.util.copy(actionContext.params.getFromMerged());        
        for (var k in params) {
          mergedParams[k] = params[k];

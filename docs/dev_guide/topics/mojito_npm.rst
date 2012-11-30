@@ -70,7 +70,7 @@ Your application may not need to install any npm modules.
 #. Add any needed dependencies to ``dependencies`` object in ``package.json``.
 #. Install dependencies with npm.
     
-    ``{app_dir}$ npm install``  
+   ``{app_dir}$ npm install``  
 #. When Mojito starts, your application will have access to the installed 
    npm modules.    
 
