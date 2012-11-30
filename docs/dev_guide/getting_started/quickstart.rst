@@ -16,8 +16,8 @@ Prerequisites
 Installation Steps
 ==================
 
-#. Get Mojito from the npm registry and globally install Mojito so that it can be run from the 
-   command line. You may need to use ``sudo`` if you run into permission errors.
+#. Get Mojito from the npm registry and globally install Mojito so that it can be run from 
+   the command line. You may need to use ``sudo`` if you run into permission errors.
 
    ``$ npm install mojito -g``
 
@@ -39,7 +39,8 @@ Create a Mojito Application
 Modify Your Application
 =======================
 
-To make the application return a string we want, replace the code in ``mojits/myMojit/controller.server.js`` with the following:
+To make the application return a string we want, replace the code in 
+``mojits/myMojit/controller.server.js`` with the following:
 
 .. code-block:: javascript
 

@@ -37,7 +37,7 @@ The example ``application.json`` below specifies that the application use the mo
 
 The routing configuration for Mojito applications is contained in ``routes.json``. 
 In this example ``routes.json``, the Mojito server is told to call the ``index`` 
-method in the controller when an HTTP GET is called on the root path.
+method in the controller when HTTP GET called on the root path.
 
 .. code-block:: javascript
 
