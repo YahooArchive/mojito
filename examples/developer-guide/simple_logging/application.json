@@ -1,28 +1,31 @@
 [
-    {
-        "settings": [ "master" ],
-        "specs": {
-          "frame": {
-	    "type": "HTMLFrameMojit",
-	    "config":{
-	      "deploy": true,
-	      "child":{
-	        "type": "log"
-	      }
-            }
-	  }
-	},
-        "log":{
-         "client":{
-            "level":"debug",
-            "yui":true,
-           "timestamp": false
-         },
-         "server":{
-            "level":"debug",
-            "yui":true,
-           "timestamp": true
-         }
+  {
+    "settings": [ "master" ],
+    "specs": {
+      "frame": {
+        "type": "HTMLFrameMojit",
+        "config":{
+          "deploy": true,
+          "child":{
+            "type": "log"
+          }
+        }
+      }
+    },
+    "yui": {
+      "config": {
+        "debug": true,
+        "logLevel": "debug"
       }
     }
+  },
+  {
+    "settings": [ "runtime:client" ],
+    "yui": {
+      "config": {
+        "debug": true,
+        "logLevel": "info"
+      }
+    }
+  }
 ]
