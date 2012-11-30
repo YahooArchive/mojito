@@ -24,8 +24,8 @@ You will learn how to do the following:
 
 .. _getting_started-make_app:
 
-Make the Application
-====================
+Create the Application
+======================
 
 #. Create the Mojito application ``minty_app``.
 
@@ -37,8 +37,8 @@ Make the Application
 
 .. _getting_started-make_mojit:
 
-Make the Sample Mojit
-=====================
+Create the Sample Mojit
+=======================
 
 
 The name *mojit* is a fusion of the words module and widget. The mojit, 
@@ -64,7 +64,7 @@ models or views in this tutorial.
    ``$ mojito create mojit HelloMojit``
 
    The `Mojito command-line tool <../reference/mojito_cmdline.html>`_ creates 
-   a canned mojit definition named ``HelloMojit``.
+   a canned mojit named ``HelloMojit``.
 
 #. To configure your application to use ``HelloMojit``, replace the code in 
    ``application.json`` with the following:
@@ -245,6 +245,10 @@ controller outputs different results.
                     }
                   };
                 }
+              },
+              done: function(data) {
+                doneResults = data;
+              }
             };
             A.isNotNull(controller);
             A.isFunction(controller.index);
