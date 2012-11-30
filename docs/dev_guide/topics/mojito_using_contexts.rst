@@ -523,8 +523,9 @@ configurations of the current context.
 
 .. code-block:: javascript
 
-   YUI.add('TestMojit', function(Y) {
-     Y.mojito.controller = {
+
+   YUI.add('TestMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = {
        index: function(ac) {
          var cfg = {
            children: {
@@ -540,11 +541,11 @@ configurations of the current context.
            }
          };
          var child = ac.params.getFromMerged('child');
-         if(child){
+         if (child){
            ac.composite.execute(cfg, function (data,meta){
              ac.done(data["one"]);
            });
-         }else{
+         } else{
            ac.done(
              'config key "alpha": ' + ac.config.get('alpha', '[alpha not found]')
            );

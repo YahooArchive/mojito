@@ -130,7 +130,7 @@ Customizing Logging
 Client and Server Logging
 -------------------------
 
-You can use the ``master and  the ``runtime:client`` contexts to create different 
+You can use the ``master`` and  the ``runtime:client`` contexts to create different 
 logging settings for the client and server.
 
 In the ``application.json`` file, create two configuration
@@ -159,7 +159,7 @@ the ``yui.config`` object.
      {
        "settings": [ "master" ],
        ...
-	     "yui": {
+       "yui": {
          "config": {
            "debug": true,
            "logLevel": "info"
@@ -169,7 +169,7 @@ the ``yui.config`` object.
      {
        "settings": [ "runtime:client" ],
        ...
-	     "yui": {
+       "yui": {
          "config": {
            "debug": true,
            "logLevel": "warn"
@@ -198,7 +198,7 @@ We recommend that you pass the first three parameters to
 
 In the example binder below, ``Y.log`` logs
 a message at the ``info`` level and specifies the module
-through ``NAME``, which in this case contains the value "DemoBinderIndex``.
+through ``NAME``, which in this case contains the value ``DemoBinderIndex``.
 
 .. code-block:: javascript
 
@@ -212,9 +212,9 @@ through ``NAME``, which in this case contains the value "DemoBinderIndex``.
             this.node = node;
         }
     };
-}, '0.0.1', {requires: ['mojito-client']});
+  }, '0.0.1', {requires: ['mojito-client']});
 
-..
+
 
  
 
