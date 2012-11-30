@@ -286,7 +286,7 @@ To set up and run ``using_parameters``:
 
 #. Change to ``mojits/QueryMojit``.
 #. Modify the controller to access different query parameters by replacing the code in 
-  ``controller.server.js`` with the following:
+   ``controller.server.js`` with the following:
 
    .. code-block:: javascript
 

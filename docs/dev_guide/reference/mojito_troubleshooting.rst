@@ -189,9 +189,9 @@ Try doing the following:
 .. code-block:: javascript 
   
    ...
-   ac.composite.execute(cfg, function(data, meta){
-     ac.done(data, meta);
-   });
+     ac.composite.execute(cfg, function(data, meta){
+       ac.done(data, meta);
+     });
    ...
    
    

@@ -144,10 +144,10 @@ are embedded using Handlebars expressions.
 .. code-block:: html
 
    <div id="{{mojit_view_id}}" class="mojit" style="border: dashed black 1px;">
-   <h1>{{title}}</h1>
-   <div class="nav" style="border: dashed black 1px; margin: 10px 10px 10px 10px;">{{{nav}}}</div>
-   <div class="body" style="border: dashed black 1px; margin: 10px 10px 10px 10px;">{{{body}}}</div>
-   <div class="footer" style="border: dashed black 1px; margin: 10px 10px 10px 10px;">{{{footer}}}</div>
+     <h1>{{title}}</h1>
+     <div class="nav" style="border: dashed black 1px; margin: 10px 10px 10px 10px;">{{{nav}}}</div>
+     <div class="body" style="border: dashed black 1px; margin: 10px 10px 10px 10px;">{{{body}}}</div>
+     <div class="footer" style="border: dashed black 1px; margin: 10px 10px 10px 10px;">{{{footer}}}</div>
    </div>
 
    
