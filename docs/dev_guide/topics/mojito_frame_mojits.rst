@@ -28,8 +28,8 @@ Because it builds the Web page from the framework to the content and styling, th
 ``HTMLFrameMojit`` must be the top-level mojit in a Mojito application. As the top-level 
 or parent mojit, the ``HTMLFrameMojit`` may have one or more child mojits.
 
-To create a Mojito application that uses the ``HTMLFrameMojit``, see the code examples 
-`Using the HTML Frame Mojit <../code_exs/htmlframe_view.html>`_ 
+To see examples of applications using ``HTMLFrameMojit``, see the 
+code examples `Using the HTML Frame Mojit <../code_exs/htmlframe_view.html>`_ 
 and `Attaching Assets with HTMLFrameMojit <../code_exs/framed_assets.html>`_.
 
 .. _fw_mojits_htmlframe-config:
@@ -302,7 +302,7 @@ Example
 This example shows you application configuration as well as the code for the 
 parent mojit and the child mojit that is lazy loaded.  If you were to run 
 this lazy load example, you would see the content of the parent mojit first 
-and then see the child mojit's output loaded in the page. 
+and then see the rendered view of the child mojit loaded onto the page. 
 
 
 .. _lazyload_ex-app_config:

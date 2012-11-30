@@ -171,7 +171,8 @@ Calling the Model from the Controller
 
 The controller in this code example performs the following functions:
 
-- gets the query string parameters using the `Params addon <../../api/classes/Params.common.html>`_
+- gets the query string parameters using the 
+  `Params addon <../../api/classes/Params.common.html>`_
 - passes the query string parameters to the ``search`` function of the model
 - receives the ``photos`` array from the ``search`` function and sends an object to the 
   template
@@ -257,8 +258,8 @@ To set up and run ``model_yql``:
         }
       ]
 
-#. To configure the routing to call the ``index`` method an instance of ``HTMLFrameMojit``, 
-   replace the code in ``routes.json`` with the following:
+#. To configure the routing to call the ``index`` method an instance of 
+   ``HTMLFrameMojit``, replace the code in ``routes.json`` with the following:
 
    .. code-block:: javascript
 

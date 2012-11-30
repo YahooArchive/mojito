@@ -198,7 +198,6 @@ To set up and run ``device_views``:
 #. Create your mojit.
 
    ``$ mojito create mojit device``
-
 #. To configure you application, replace the code in ``application.json`` 
    with the following:
 
