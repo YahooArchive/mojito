@@ -3,21 +3,18 @@ MVC in Mojito
 =============
 
 The MVC architecture in Mojito incorporates a clear separation of the 
-controller, model, and view. The controller retrieves data from the model 
+controller, model, and view. The controller is pivotal in the sense that it controls 
+all interactions in the MVC of Mojito.The controller retrieves data from the model 
 and passes it to the view. Client requests for data are sent to the controller, 
 which in turn fetches data from the model and passes the data to the client. 
-The controller is pivotal in the sense that it controls all interactions in 
-the MVC of Mojito.
 
 The controller, model, and view are found in the mojit of Mojito. The mojit 
 is a single unit of execution of a Mojito application. An application may 
-have one or more mojits, which are physically represented by directory 
-structure. The mojit has one controller, any number or no models, and one 
+have one or more mojits, which are physically represented by a directory 
+structure. Each mojit has one controller, any number or no models, and one 
 or more views. When Mojito receives an HTTP request, an application invokes 
 a mojit controller that can then execute, pass data to the view, or get data 
-from the model. Now that we have described the general characteristics and 
-implementation of the MVC in Mojito, let's look at each of the components in 
-more detail.
+from the model. Let's look now at each of the MVC components in more detail.
 
 .. _mojito_mvc-models:
 
@@ -72,7 +69,7 @@ A model should have the basic structure shown below.
 .. code-block:: javascript
 
    YUI.add('{mojit_name}Model{Model_name}', function(Y, NAME) {
-     // Models must register themselves in the
+     // Models must register themselves with YUI.add
      // Namespace for models
      Y.namespace('mojito.models')[NAME] = {
        // Optional init() method is given the
@@ -291,6 +288,11 @@ Several objects and methods form the backbone of the controller.
 - ``requires`` - (optional) an array that lists any addons that are needed 
   by the controller.
 
+.. _mvc_controller-ex:    
+
+Example
+-------
+
 The example controller below shows you how the components are used. The 
 ``status`` mojit is registered with ``YUI.add`` and the ``init`` function 
 stores the date so it can be used by other functions, and the ``this`` 
@@ -397,7 +399,8 @@ syntax convention. The ``ActionContext`` object allows controller functions
 to access framework features such as API methods and addons that extend 
 functionality. To access the model from the ActionContext object ``ac``, 
 you use the following syntax: ``ac.models.get('{model_name}').{model_function}``
-
+You also need to require the ``Models`` addon by adding the string 
+``"mojito-models-addon"`` to the ``requires`` array.
 
 The ``{model_name}`` is the YUI module name that is passed to ``YUI.add`` of the 
 model file, not the model file name. The example controller below shows the 
@@ -546,7 +549,7 @@ Reporting Errors
 The ``ActionContext`` object has an ``error`` method for reporting errors. 
 Like the ``done`` method, ``error`` should only be called once. Also, you 
 cannot call both ``done`` and ``error``. The error requires an ``Error`` 
-object as a parameter. The ``Error`` object is just the standard JavasScript 
+object as a parameter. The ``Error`` object is just the standard JavaScript 
 ``Error`` object that can have a ``code`` property specifying the HTTP response 
 code that will be used if the error bubbles to the top of the 
 page (i.e., not caught by a parent mojit).
@@ -562,7 +565,7 @@ to get a blog post. The ``try-catch`` clause will catch any errors made calling
        try {
          var post = ac.models.get('BlogModel').getPost();
          ac.done({ "post": post });
-       }catch(e) {
+       } catch(e) {
          console.log(e);
          ac.error(e);
        }
@@ -587,7 +590,7 @@ have substituted values for the template tags.
 Naming Convention
 -----------------
 
-The naming convention of the templates is based on the controller function 
+The naming convention of the templates is based on the controller function (action)
 that supplies data, the engine that renders the templates, and the device 
 requesting the page. If the calling device is determined not to be a portable 
 device such as a cell phone, the ``{device}`` element of the syntax below 
@@ -607,8 +610,7 @@ Here are some other example template names with descriptions:
   function of the controller and the calling device is determined to 
   be a Web browser.
 - ``get_photos.iphone.hb.html`` - This template gets data from the 
-  ``get_photos`` function 
-  of the controller and the calling device is an iPhone.
+  ``get_photos`` function of the controller and the calling device is an iPhone.
 - ``find_friend.android.hb.html`` - This template gets data from the 
   ``find_friend`` function of the controller and the calling device is Android 
   based.

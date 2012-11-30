@@ -20,9 +20,9 @@ Overview
 Mojito applications contains JSON configuration files and directories for 
 storing JavaScript, HTML, and CSS. The configuration files can be used to 
 define relationships between code components, assets, routing paths, defaults 
-and are available at the application and mojit-level. The directory structure 
+and are available at the application and mojit level. The directory structure 
 of a Mojito application reflects the MVC architecture and separates resources, 
-such assets, libraries, middleware, etc.
+such as assets, libraries, middleware, etc.
 
 To create a Mojito application, you use the command-line tool ``mojito``. When 
 the command below is run, Mojito creates a directory structure with files for 
@@ -37,7 +37,7 @@ that create the rectangular areas of a page.
 
 To create a mojit, you run the command below from the application directory, 
 which creates another directory structure and files that include the mojit 
-controller, model, binders, and views.
+controller, model, binder, and view.
 
 ``$ mojito create mojit <mojito_app>``
 

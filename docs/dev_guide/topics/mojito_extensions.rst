@@ -131,7 +131,7 @@ plugin name (``'addon-ac-cheese'``) and the constructor (``CheeseAcAddon``) with
 .. _extending_addons-writing_ex:
 
 Example Addon
-*************
+#############
 
 In the example addon ``cheese.common.js`` below, the ``YUI.add`` method 
 registers the ``addon-ac-cheese`` plugin. The addon namespace 
@@ -477,7 +477,7 @@ section.
 - **view engine addon** - The Mojito addon that compiles and renders templates. 
   The addon typically relies on a rendering engine to compile and render templates, 
   but may include code to do the compilation and rendering. 
-- **rendering engine** - The rendering engine is typically an off-the-shelf 
+- **rendering engine** - The rendering engine is typically off-the-shelf 
   technology, such as `Dust <http://akdubya.github.com/dustjs>`_, 
   `Jade <http://jade-lang.com/>`_, or `EJS <http://embeddedjs.com/>`_, that 
   renders the template into markup for an HTML page.
@@ -521,7 +521,7 @@ The name of the template should have the following syntax where
 ``{view_engine_name}`` should be the same as the ``{view_engine_name}`` in 
 the file name of the view engine addon.
 
-``{view}.{view_engine_name}.html``
+``{action}.[{device}].{view_engine_name}.html``
 
 .. _extending_ve-loc:
 
@@ -574,9 +574,9 @@ The view engine addon must have the following:
 
   .. code-block:: javascript
 
-     YUI.add('addons-viewengine-hb', function(Y, NAME) {
+     YUI.add('addons-viewengine-ejs', function(Y, NAME) {
     
-       // The addon name 'addons-viewengine-hb' is registered by YUI.add
+       // The addon name 'addons-viewengine-ejs' is registered by YUI.add
     
      }, '0.1.0', {requires: []});
 

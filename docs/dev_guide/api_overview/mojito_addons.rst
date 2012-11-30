@@ -49,8 +49,8 @@ any of the Action Context addons by default.
 In Mojito versions 0.5.0 and later, you need to explicitly require an addon before you
 can use it. You require an addon by including an associated string in the 
 ``requires`` array of your controller. For example, in the controller below, 
-the ``Params`` addon is required by adding the string ``'mojito-params-addon'`` to the 
-``requires`` array. 
+the ``Params`` addon is required by adding the string ``'mojito-params-addon'`` 
+to the ``requires`` array. 
 
 
 .. code-block:: javascript
@@ -91,7 +91,8 @@ Addon Examples
 
 The following code examples use the addons in parentheses:
 
-- `Dynamically Adding CSS to Different Devices <../code_exs/dynamic_assets.html>`_  (``Assets``)
+- `Dynamically Adding CSS to Different Devices <../code_exs/dynamic_assets.html>`_  
+  (``Assets``)
 - `Using Cookies <../code_exs/cookies.html>`_ (``Cookie``)
 - `Using Query Parameters <../code_exs/query_params.html>`_ (``Params``)
 - `Generating URLs <../code_exs/generating_urls.html>`_ (``Url``)
@@ -104,8 +105,8 @@ The following code examples use the addons in parentheses:
 Creating Addons
 ===============
 
-Because customized addons are not part of the standard API, but an extension of the API, the 
-instructions for creating addons can be found in 
+Because customized addons are not part of the standard API, but an extension of the API, 
+the instructions for creating addons can be found in 
 `Creating New Addons <../topics/mojito_extensions.html#creating-new-addons>`_.
 
 

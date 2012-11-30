@@ -90,11 +90,11 @@ as Handlebars expressions in the ``index`` template of the parent mojit.
 
 For example, in the example controller of the parent mojit below, the ``index`` 
 function calls ``ac.composite.done``, which executes ``ac.done`` in the 
-``index`` functions of the child mojits. The rendered ``index`` views for 
-each of the child mojits is then available to as a Handlebars expression, such 
-as ``{{{child_mojit}}}``. Notice that the ``template`` object allows the parent 
-mojit to send data to the template, so that ``{{title}}`` can be used in the 
-template.
+``index`` functions of the child mojits. The rendered ``index`` templates for 
+each of the child mojits is then available as a Handlebars expression, such 
+as ``{{{child_mojit}}}`` in the parent template. Notice that the ``template`` object 
+allows the parent mojit to send data to the template, so that ``{{title}}`` can be 
+used in the template.
 
 .. code-block:: javascript
 

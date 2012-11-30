@@ -96,7 +96,7 @@ with the HTTP header ``"User-Agent: Mozilla/5.0 (Linux; U; Android 2.3; en-us)"`
 Query String Parameters
 #######################
 
-The key and value pairs in the context are dynamically set by the query string.
+The  query string can also dynamically set the context.
 
 .. _request_query_str-syntax:
 
@@ -255,9 +255,7 @@ then mapped to configurations.
 Default Configurations
 **********************
 
-Default configurations are used when no context is given. These configurations 
-are found in the object where the settings array has the string ``"master"`` as 
-seen below.
+The configurations for the ``"master"`` context are used when no context is given. 
 
 .. code-block:: javascript
 

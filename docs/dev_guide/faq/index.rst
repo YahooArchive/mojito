@@ -449,9 +449,10 @@ Mojits
 .. .. _moj_reuse:
 .. .. topic:: **Can I share or re-use mojits?**
 
-..    Although not available yet, Y Cocktails mojit gallery/repository will let developers 
-..    share, discover, and select mojits to re-use in building their experiences. A 
-..    common packaging format for mojits is used, based on the CommonJS specification.    
+..    Although not available yet, the Cocktails mojit gallery/repository will let 
+..    developers share, discover, and select mojits to re-use in building their 
+..    experiences. A common packaging format for mojits is used, based on the CommonJS 
+..    specification.    
 
 Configuration
 -------------
@@ -470,10 +471,10 @@ Configuration
 .. _moj_client:
 .. topic:: **How do you configure mojits to run on the client?** 
 
-    Run Mojito at build time to generate the html page using ``mojito build html5app``. 
+    Run Mojito at build time to generate the HTML page using ``mojito build html5app``. 
     This runs the Mojito infrastructure as if it were a running server instance and prints 
-    out the resulting HTML+JSON required to bootstrap a client-side mojit. This is what 
-    Livestand does. Among other things, it leads down a path where it's very hard to do 
+    out the resulting HTML+JSON required to bootstrap a client-side mojit. 
+    Among other things, it leads down a path where it's very hard to do 
     incremental builds because the Web server abstraction makes it hard to do the timestamp 
     resolution that incremental builds require. A better approach would be to allow people 
     to hard-code the top-level mojit bootstrap code by publishing mojit creation APIs that 
@@ -657,12 +658,12 @@ Views
 .. _moj_devices:
 .. topic:: **Do I have to create separate mojits for different devices?**
 
-    The platformâs capabilities allow mojits to be executed (and their results displayed) 
+    The platform's capabilities allow mojits to be executed (and their results displayed) 
     on every device in either set. For a module developer, the benefit is obvious: a single 
-    codebase that can address a wide range of devices. Mojits may still need to be customized 
-    for a specific device (or device class), however, to take advantage of device-specific 
-    capabilities. The platform does not perform an automated translation/degradation of 
-    HTML5 views to simpler layouts, for example. 
+    codebase that can address a wide range of devices. Mojits may still need to be 
+    customized for a specific device (or device class), however, to take advantage of 
+    device-specific capabilities. The platform does not perform an automated 
+    translation/degradation of HTML5 views to simpler layouts, for example. 
 
 ------------
 
@@ -743,10 +744,13 @@ Logging/Testing
 .. _moj_client_server_logging:
 .. topic:: **Can logging be configured to be different for the client and server?** 
 
-    Yes, the ``application.json`` configuration file can contain a ``yui.config`` object 
-    that contain the properties ``logExclude`` and ``logInclude`` to log certain components
-    of your application. You can also use context configurations to have different
-    configurations depending on the runtime environment.
+    Yes, the ``application.json`` configuration file uses the ``yui.config`` object 
+    for configuring logging. You can use contexts to customize logging for 
+    different runtime environments. For instance, you could use the ``"runtime:client"``
+    context to configure client-side logging and the ``"master"`` context to configure
+    server-side logging. You can also use the properties ``logExclude`` and ``logInclude`` 
+    of the ``yui.config`` object to log or not log certain components
+    of your application. 
 
     See `config Object <../intro/mojito_configuring.html#yui_config>`_ 
     and the `Log Configuration <../topics/mojito_logging.html#log-configuration>`_ for 

@@ -499,7 +499,7 @@ calculate the index of the first photo to display:
 To get the photo data, the controller depends on the model to call YQL to query the 
 Flickr API. Using ``actionContext.get({model_name})`` lets you get a reference to the 
 model. The example controller below calls the ``getData`` from the model 
-``PagerMojitModel`` with ``actionContext.models.get('PagerMojitModel').getData`, which 
+``PagerMojitModel`` with ``actionContext.models.get('PagerMojitModel').getData``, which 
 will get the returned data from YQL in the callback function. To use methods from models, 
 you need to require the model in the ``requires`` array of the controller. 
 
@@ -532,7 +532,14 @@ you need to require the model in the ``requires`` array of the controller.
        }
        ...
      };
-   }, '0.0.1', {requires: ['dump', 'mojito-url-addon', 'mojito-params-addon', 'PagerMojitModel']});
+   }, '0.0.1', {requires: [
+     'mojito', 
+     'mojito-models-addon', 
+     'mojito-url-addon', 
+     'mojito-params-addon', 
+     'PagerMojitModel',
+     'dump'
+   ]});
 
 
 The URLs for the **prev** and **next** links are created by passing the mojit instance, 
@@ -615,7 +622,14 @@ create URLs for the **next** and **prev** links.
        }
        return actionContext.url.make('frame', 'index', Y.QueryString.stringify(mergedParams));
      }
-   }, '0.0.1', {requires: ['dump', 'mojito-url-addon', 'mojito-params-addon', 'PagerMojitModel']});
+   }, '0.0.1', {requires: [
+     'mojito', 
+     'mojito-models-addon', 
+     'mojito-url-addon', 
+     'mojito-params-addon', 
+     'PagerMojitModel',
+     'dump'
+   ]});
 
 .. _code_exs_events-setup:
 
@@ -732,7 +746,14 @@ To set up and run ``binding_events``:
             }
             return actionContext.url.make('frame', 'index', Y.QueryString.stringify(mergedParams));
           }
-      }, '0.0.1', {requires: ['dump', 'mojito-url-addon', 'mojito-params-addon', 'mojito-models-addon', 'PagerMojitModel']});
+      }, '0.0.1', {requires: [
+        'mojito', 
+        'mojito-models-addon', 
+        'mojito-url-addon', 
+        'mojito-params-addon', 
+        'PagerMojitModel',
+        'dump'
+      ]});
 
 
 #. To get Flickr photo information using YQL, create the file ``models/model.server.js`` 

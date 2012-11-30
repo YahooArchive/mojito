@@ -51,10 +51,11 @@ and `Mojit Configuration`_ for details about specific configuration files.
 YAML
 ####
 
-Mojito also supports configuration files in YAML format. The YAML file extension could 
-be ``.yaml`` or ``.yml``. Mojito allows comments in the YAML files. When both JSON file 
-and YAML files are present, the YAML file is used and a warning is issued. For the data 
-types of the YAML elements, please see the JSON configuration tables in 
+Mojito also supports configuration files in YAML format (JSON is a subset of YAML). 
+The YAML file extension could be ``.yaml`` or ``.yml``. Mojito allows comments in the 
+YAML files. When both  the JSON file (e.g., ``application.json``) and the YAML file 
+(e.g., ``application.yaml``) are present, the YAML file is used and a warning is issued. 
+For the data types of the YAML elements, please see the JSON configuration tables in 
 :ref:`Application Configuration <configure_mj-app>`, 
 :ref:`Routing <configure_mj-routing>`, and :ref:`Mojit Configuration <configure_mj-mojit>`.
 
@@ -614,7 +615,7 @@ The following is deployed to the client:
 When a binder invokes its controller, if the controller has the ``client`` or ``common`` 
 affinity, then the controller and its dependencies are deployed to the client as well. If 
 the affinity of the controller is ``server``, the invocation occurs on the server. In 
-either case, the binder is able to seamlessly invoke the controller.
+either case, the binder can invoke the controller.
 
 .. _deploy_app-ex:
 
@@ -784,7 +785,7 @@ put in the ``config`` object.
 Mojit Instances
 ---------------
 
-A mojit instance is made entirely of configuration. This configuration specifies 
+A mojit instance is defined with configuration. This configuration specifies 
 which mojit type to use and configures an instance of that type. The mojit 
 instances are defined in the ``specs`` object of the ``application.json`` file.
 
@@ -1145,9 +1146,6 @@ would call the ``index`` action:
 - ``http://localhost:8666/1_mojito``
 - ``http://localhost:8666/99_Mojitos``
 
-.. _generate_urls:
-
-.. _generate_urls:
 
 .. _generate_urls:
 
@@ -1189,11 +1187,11 @@ The ``index`` function above returns the following URL: ``http://localhost:8666/
 Accessing Configurations from Mojits
 ====================================
 
-The model, and binder can access mojit configurations from the ``init`` 
+The model and binder can access mojit configurations from the ``init`` 
 function. The controller and model are passed ``configuration`` objects. The controller 
 can access configuration the ``actionContext`` object and the ``Config`` addon. 
-The ``init`` function in the binder instead of a configuration object is passed the 
-``mojitProxy`` object, which enables you to get the configurations.  
+The ``init`` function in the binder, instead of a configuration object, is passed the 
+``mojitProxy`` object, which enables you to access configurations.  
 
 
 .. _configuring_access-applevel:

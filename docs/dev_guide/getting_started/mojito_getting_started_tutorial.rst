@@ -27,7 +27,7 @@ You will learn how to do the following:
 Make the Application
 ====================
 
-#. Create the Mojito application  ``minty_app``.
+#. Create the Mojito application ``minty_app``.
 
    ``$ mojito create app minty_app``
 

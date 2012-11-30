@@ -12,7 +12,7 @@ documentation.
 Including Library
 =================
 
-To use the REST library,  include the string 'mojito-rest-lib' in the ``requires`` array, 
+To use the REST library, include the string 'mojito-rest-lib' in the ``requires`` array, 
 which instructs YUI to load the library. Once the library is loaded,  you can use 
 `Y.mojito.lib.REST <../../api/classes/Y.mojito.lib.REST.html>`_ to make REST calls..
 

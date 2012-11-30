@@ -123,8 +123,6 @@ others can package the Mojito resources in an npm module. The npm module is
 simply a container for the Mojito resource(s). The npm module must specify that 
 it contains a Mojito resource in its ``package.json``.  
 
-
-
 .. _res_def_metadata:
 
 General Process of Authoring an npm Module Containing Shared Mojito Resources
@@ -156,7 +154,6 @@ for details about the properties of the ``mojito`` object.
        "location": "{location_of_resource}" 
      }
    }
-
 
 
 .. _moj_object:
@@ -208,8 +205,8 @@ mojit
 The ``mojit`` type specifies that the npm module contains a mojit. The 
 resources in the mojit (controller, models, views, etc.) will be looked for at 
 the location specified by the ``"location"`` field of the ``mojito`` object. 
-For example, the controller will be looked for in the following location, 
-where ``{name}`` is the name of the npm package: 
+For example, the controller will be looked for in the following location:
+
 ``{location}/controller.{affinity}.{selector}.js``
 
 .. _bundle_type:

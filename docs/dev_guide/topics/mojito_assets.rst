@@ -180,8 +180,8 @@ the ``<link>`` tag refers to the static URL to the asset ``index.css``.
      </ul>
    </div>
 
-From the static URL, you cannot tell the asset is mojit or application level, 
-but you do know that either the application or the mojit is ``simple``.
+From the static URL, you cannot tell whether the asset is at the mojit or application 
+level, but you do know that either the application or the mojit is ``simple``.
 
 .. _mojito_assets-using:
 

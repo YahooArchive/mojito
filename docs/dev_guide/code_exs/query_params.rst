@@ -194,6 +194,25 @@ a key to ``params.getFromMerged(key)``. For example,
    ...
    }, '0.0.1', {requires: ['dump', 'mojito-params-addon']});
 
+The methods of the ``Params`` addon have the following aliases for simplification:
+
++---------------------+--------------+
+| Method              | Alias        | 
++=====================+==============+
+| ``getAll()``        | ``all()``    | 
++---------------------+--------------+
+| ``getFromBody()``   | ``body()``   |
++---------------------+--------------+
+| ``getFromFiles()``  | ``files()``  |
++---------------------+--------------+
+| ``getFromMerged()`` | ``merged()`` |
++---------------------+--------------+
+| ``getfromRoute()``  | ``route()``  | 
++---------------------+--------------+
+| ``getFromUrl()``    | ``url()``    |
++---------------------+--------------+
+
+
 For more information, see the `Params addon <../../api/classes/Params.common.html>`_ in 
 the Mojito API documentation.
 

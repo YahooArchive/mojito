@@ -183,17 +183,7 @@ To create and run ``simple_assets``:
    .. code-block:: javascript
 
       YUI.add('simple', function(Y, NAME) {
-        /**
-        * The simple module.
-        *
-        * @module simple
-        */
-        /**
-        * Constructor for the Controller class.
-        *
-        * @class Controller
-        * @constructor
-        */
+
         Y.namespace('mojito.controllers')[NAME] = {     
 
           /**
