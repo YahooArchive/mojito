@@ -38,5 +38,5 @@ YUI.add('NotepadBinderIndex', function (Y, NAME) {
     };
 
 }, '0.0.1', {requires: [
-    'gallery-storage-lite' //see autoload/storage-lite.client.js
+    'gallery-storage-lite' //see yui_modules/storage-lite.client.js
 ]});

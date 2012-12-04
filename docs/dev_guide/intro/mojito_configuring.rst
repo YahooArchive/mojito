@@ -105,11 +105,11 @@ configuration Object
 |                                                        |                      |                   | to cache the view. Note that not all view engines      |
 |                                                        |                      |                   | support caching.                                       |
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
-| ``deferAllOptionalAutoloads``                          | boolean              | false             | Specifies whether optional YUI modules found in        |
-|                                                        |                      |                   | the ``/autoload/`` directories are not shipped to      |
-|                                                        |                      |                   | the client. This is an optimization setting and        |
-|                                                        |                      |                   | should generally only be set if you are building       |
-|                                                        |                      |                   | an offline application.                                |
+| ``deferAllOptionalAutoloads``                          | boolean              | false             | Specifies whether optional YUI modules found in the    |
+|                                                        |                      |                   | ``/autoload/`` and ``/yui_modules/`` directories are   |
+|                                                        |                      |                   | not shipped to the client. This is an optimization     |
+|                                                        |                      |                   | setting and should generally only be set if you are    |
+|                                                        |                      |                   | building an offline application.                       |
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
 | ``middleware``                                         | array of strings     | []                | A list of paths to the Node.js module that exports     |
 |                                                        |                      |                   | a Connect middleware function.                         |

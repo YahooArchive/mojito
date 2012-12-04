@@ -318,11 +318,11 @@ Location of YUI Modules
 
 Application-level YUI modules should be placed in the following directory:
 
-``{app_dir}/autoload/``
+``{app_dir}/yui_modules/``
 
 Mojit-level YUI modules should be placed in the following directory:
 
-``{mojit_dir}/autoload/``
+``{mojit_dir}/yui_modules/``
 
 
 .. _libraries_yui-using:
@@ -343,7 +343,7 @@ for the ``UID`` namespace. This will let you create an instance, and the
 ``prototype`` object then allows you to access the method ``log`` from that 
 instance.
 
-``{mojit_dir}/autoload/hello-uid.server.js``
+``{mojit_dir}/yui_modules/hello-uid.server.js``
 
 .. code-block:: javascript
 
