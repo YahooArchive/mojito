@@ -23,10 +23,9 @@ JSON
 
 By default, configuration files in Mojito have a general top-level 
 structure and are in JSON format. At the top level of each configuration 
-file is an array. Each item of the array is an object containing configurations 
-for a runtime environment that we call a *context*. This allows you
-to have discrete configurations for different regions, devices, and development 
-environments.
+file is an array. Each item of the array is an object containing configuration that 
+targets a specific context and runtime. This allows you to have discrete configurations 
+for different regions, devices, and development environments.
 
 The context for a configuration object is specified by the ``settings`` property. For
 each configuration object in a file, the ``settings`` property must specify a unique 
@@ -712,8 +711,8 @@ The table below describes the ``configuration`` object in ``definition.json``.
 +==================+======================+===================+========================================================+
 | ``appLevel``     | boolean              | false             | When set to ``true``, the actions, addons, assets,     |
 |                  |                      |                   | binders, models, and view of the mojit are             |
-|                  |                      |                   | available to other mojits. Mojits wanting to use       |
-|                  |                      |                   | the resources of application-level mojit must          |
+|                  |                      |                   | *shared* with other mojits. Mojits wanting to use      |
+|                  |                      |                   | the resources of the shared mojit must                 |
 |                  |                      |                   | include the YUI module of the application-level        |
 |                  |                      |                   | mojit in the ``requires`` array.                       |
 +------------------+----------------------+-------------------+--------------------------------------------------------+
