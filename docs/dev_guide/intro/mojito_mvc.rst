@@ -39,7 +39,7 @@ Models are found in the ``models`` directory of each mojit. For the application
 Naming Convention
 -----------------
 
-The name of the model files depend on the affinity, which is the location 
+The name of the model file depend on the affinity, which is the location 
 where a resource is available. Thus, the name of the model file is 
 ``{model_name}.{affinity}.js``, where ``{affinity}`` can be ``common``, 
 ``server``, or ``client``. 
