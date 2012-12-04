@@ -294,11 +294,10 @@ Example
 -------
 
 The example controller below shows you how the components are used. The 
-``status`` mojit is registered with ``YUI.add`` and the ``init`` function 
-stores the date so it can be used by other functions, and the ``this`` 
-reference allows the ``index`` function to call ``create_status``. Lastly, 
-the ``requires`` array loads the addons ``Intl``, ``Params``, and ``Url``
-that are needed by the controller. 
+``status`` mojit is registered with ``YUI.add``, and the ``index`` function 
+creates a status calling the function ``create_status``. Lastly, the ``requires`` 
+array loads the addons ``Intl``, ``Params``, and ``Url``that are needed by the 
+controller. 
 
 .. code-block:: javascript
 
@@ -320,7 +319,7 @@ that are needed by the controller.
          return user + ': ' +  status + ' - ' + time;
        }
      };
-   }, '0.0.1', {requires: ['mojito-intl-addon', 'mojito-params-addon', mojito-url-addon']});
+   }, '0.0.1', {requires: ['mojito-intl-addon', 'mojito-params-addon', 'mojito-url-addon']});
 
 .. _mvc-controllers-actions:
 
@@ -562,15 +561,16 @@ to get a blog post. The ``try-catch`` clause will catch any errors made calling
 
    ...
      index: function(ac) {
-       try {
-         var post = ac.models.get('BlogModel').getPost();
-         ac.done({ "post": post });
-       } catch(e) {
-         console.log(e);
-         ac.error(e);
+       var company  = ac.params.url('company'),
+           company_info = ac.config.get(company);
+       if (company_info) {
+         ac.done({ "company_info": company_info });
+       } else {
+         ac.error("Could not find info for " + company);
        }
      }
    ...
+   }, '0.0.1', {requires: ['mojito-params-addon', 'mojito-config-addon']});
 
 .. _mvc-controllers-save_state:
 
@@ -590,15 +590,19 @@ have substituted values for the template tags.
 Naming Convention
 -----------------
 
-The naming convention of the templates is based on the controller function (action)
-that supplies data, the engine that renders the templates, and the device 
-requesting the page. If the calling device is determined not to be a portable 
-device such as a cell phone, the ``{device}`` element of the syntax below 
-is omitted.
+Template files have the following naming convention:
 
-**File Naming Convention for Templates:**
+``{controller_function}.[{selector}].{rendering_engine}.html``
 
-``{controller_function}.[{device}].{rendering_engine}.html``
+The following list describes the elements of the template file name:
+
+- ``{controller_function}`` - the controller function (action)
+  that supplies data.
+- ``{selector}`` - an arbitrary  string used to select
+  a specific template. For example, you could use the selector
+  ``iphone`` for the iPhone template. 
+- ``{rendering_engine}`` - the engine that renders the templates.
+
 
 For example, if the template is receiving data from the ``index`` function 
 of the controller and has Handlebars expressions that need to be rendered, 
