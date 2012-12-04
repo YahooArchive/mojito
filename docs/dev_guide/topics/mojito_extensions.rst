@@ -83,18 +83,19 @@ of how to call methods from the addon namespace.
 Writing the Addon
 #################
 
-The ActionContext simulates the `YUI Base <http://developer.yahoo.com/yui/3/base/>`_ 
-and `YUI Plugin <http://developer.yahoo.com/yui/3/plugin/>`_ infrastructure, so  
+The ActionContext object and ActionContext addons simulate the 
+`YUI Base <http://developer.yahoo.com/yui/3/base/>`_ and 
+`YUI Plugin <http://developer.yahoo.com/yui/3/plugin/>`_ infrastructure, so  
 creating a new addon is similar to creating a new YUI Plugin.
 
-The addon must have the following:
+The addon must do the following:
 
-- registered plugin name, which is the string passed to ``YUI.add``
+- register a plugin name, which is the string passed to ``YUI.add``
 - constructor with a ``prototype`` property
-- statement assigning the constructor to a namespace of ``Y.mojito.addons.ac``, 
+- assign the constructor to a namespace of ``Y.mojito.addons.ac``, 
   so Mojito can access your addon
 - require the 'mojito' module, otherwise the namespace ``Y.mojito.addons.ac`` might 
-  not be available, unless you use Y.namespace().
+  not be available (unless you use ``Y.namespace()``).
 
 **Optional:** ``requires`` array to include other modules.
 The code snippet below shows the skeleton of an addon with the registered 
