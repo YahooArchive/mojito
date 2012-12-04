@@ -553,9 +553,11 @@ object as a parameter. The ``Error`` object is just the standard JavaScript
 code that will be used if the error bubbles to the top of the 
 page (i.e., not caught by a parent mojit).
 
-In the code snippet below from ``controller.server.js``, the model is asked 
-to get a blog post. The ``try-catch`` clause will catch any errors made calling 
-``getPost``, and the ``error`` method will display the error message.
+In the code snippet below from ``controller.server.js``, the ``index``
+method uses the query string parameter ``company`` to fetch company information
+stored in a configuration file. The ``if-else`` clause either sends
+the company information to the ``index`` template or reports 
+an error that information for the specified company could not be found.
 
 .. code-block:: javascript
 
