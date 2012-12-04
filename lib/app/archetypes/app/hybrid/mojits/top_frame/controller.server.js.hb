@@ -2,8 +2,6 @@
  * Copyright (c) 2012 Yahoo! Inc. All rights reserved.
  */
 /*jslint anon:true, sloppy:true, nomen:true*/
-/*globals YUI*/
-
 YUI.add('top_frame', function(Y, NAME) {
 
 /**
@@ -20,6 +18,10 @@ YUI.add('top_frame', function(Y, NAME) {
      */
     Y.namespace('mojito.controllers')[NAME] = {
 
+        init: function(config) {
+            this.config = config;
+        },
+
         /**
          * Method corresponding to the 'index' action.
          *
@@ -27,10 +29,9 @@ YUI.add('top_frame', function(Y, NAME) {
          *        to the Mojito API.
          */
         index: function(ac) {
-            ac.models.get('top_frameModelFoo').getData(function(err, data) {
+            ac.models.top_frameModelFoo.getData(function(err, data) {
                 if (err) {
-                    ac.error(err);
-                    return;
+                    return ac.error(err);
                 }
 
                 ac.done({
@@ -42,9 +43,4 @@ YUI.add('top_frame', function(Y, NAME) {
 
     };
 
-}, '0.0.1', {requires: [
-    'mojito',
-    'mojito-assets-addon',
-    'mojito-models-addon',
-    'top_frameModelFoo'
-]});
+}, '0.0.1', {requires: ['mojito', 'top_frameModelFoo']});
