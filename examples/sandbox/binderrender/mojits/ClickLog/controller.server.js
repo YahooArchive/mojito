@@ -8,7 +8,7 @@ YUI.add('ClickLog', function(Y, NAME) {
 
 /**
  * The ClickLog mojit which just shows running log of user clicks.
- * This mojit primarily exists to demonstrate rendering of views
+ * This mojit primarily exists to demonstrate rendering of templates
  * in the binder.
  *
  * @module ClickLog
@@ -21,7 +21,7 @@ YUI.add('ClickLog', function(Y, NAME) {
 
         /**
          * This "index" action generates the initial view.
-         * The binder attached to this view is what does most of the work
+         * The binder attached to this template is what does most of the work
          * of this mojit.
          *
          * @param ac {Object} The action context that provides access

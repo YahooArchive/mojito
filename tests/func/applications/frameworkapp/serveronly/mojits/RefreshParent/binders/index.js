@@ -35,12 +35,12 @@ YUI.add('RefreshParentBinderIndex', function(Y, NAME) {
         bind: function(node) {
             var me = this;
             this.node = node;
-            this.handle = me.node.one('#refreshViewButton').on('click', function(){
+            this.handle = me.node.one('#refreshTemplateButton').on('click', function(){
                 Y.log("***********************I am in the click function");
-                me.mojitProxy.refreshView();
+                me.mojitProxy.refreshTemplate();
             }, this);
         },
-        onRefreshView: function() {
+        onRefreshTemplate: function() {
             this.handle.detach();
             this.bind.apply(this, arguments);
         }

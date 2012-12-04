@@ -36,9 +36,9 @@ YUI.add('ParentBinderDyno', function(Y, NAME) {
                 for (i=0; i<surrounding.length; i++) {
                     mp.broadcast('explode',
                             {order: order},
-                            {target: {viewId: surrounding[i].viewId}});
+                            {target: {templateId: surrounding[i].templateId}});
                 }
-                mp.broadcast('recover', {}, {target: {viewId: child.viewId}});
+                mp.broadcast('recover', {}, {target: {templateId: child.templateId}});
             });
         },
 
@@ -57,7 +57,7 @@ YUI.add('ParentBinderDyno', function(Y, NAME) {
     function findChild(guid, children) {
         var n;
         for (n in children) {
-            if (children[n].viewId === guid) {
+            if (children[n].templateId === guid) {
                 return children[n];
             }
         }

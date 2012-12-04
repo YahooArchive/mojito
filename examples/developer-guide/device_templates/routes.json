@@ -1,0 +1,10 @@
+[
+  {
+    "settings": [ "master" ],
+    "_device_template": {
+      "verbs": ["get"],
+      "path": "/",
+      "call": "device.index"
+    }
+  }
+]

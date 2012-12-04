@@ -43,7 +43,7 @@ YUI.add('TweetViewBinderIndex', function(Y, NAME) {
                 mp = this.mojitProxy;
             mp.listen('show-tweets', function(event) {
                 me.node.setContent('Loading...');
-                mp.refreshView({
+                mp.refreshTemplate({
                     rpc: true,
                     params: {
                         url: {
@@ -54,7 +54,7 @@ YUI.add('TweetViewBinderIndex', function(Y, NAME) {
             });
         },
 
-        onRefreshView: function(node) {
+        onRefreshTemplate: function(node) {
             this.node = node;
         }
 

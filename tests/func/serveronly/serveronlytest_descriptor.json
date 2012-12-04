@@ -487,11 +487,11 @@
                     "page" : "$$config.baseUrl$$/inst2"
                 }
             },
-			"refreshview" : {
+			"refreshtemplate" : {
                 "group" : "smoke,restlib,serveronly",
                 "params" : {
-					"test" : "testRefreshview.js",
-	                "page" : "$$config.baseUrl$$/refreshview"
+					"test" : "testRefreshtemplate.js",
+	                "page" : "$$config.baseUrl$$/refreshtemplate"
                 }
             }
         }     

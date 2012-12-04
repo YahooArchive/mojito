@@ -167,28 +167,28 @@ YUI().use(
                 });
             },
 
-            'server mojit instance views & binders': function() {
+            'server mojit instance templates & binders': function() {
                 var instance = {type:'test_mojit_1'};
                 store.expandInstanceForEnv('client', instance, {}, function(err, instance) {
-                    A.areSame(3, Y.Object.keys(instance.views).length);
+                    A.areSame(3, Y.Object.keys(instance.templates).length);
 
-                    A.isObject(instance.views['test_1']);
-                    A.areSame('/static/test_mojit_1/views/test_1.hb.html', instance.views['test_1']['content-path']);
-                    A.areSame('hb', instance.views['test_1']['engine']);
-                    A.areSame('/static/test_mojit_1/binders/test_1.js', instance.views['test_1']['binder-path']);
-                    A.areSame('test_mojit_1Bindertest_1', instance.views['test_1']['binder-module']);
-                    A.isNotUndefined(instance.views['test_1']['binder-yui-sorted']['mojito-client']);
+                    A.isObject(instance.templates['test_1']);
+                    A.areSame('/static/test_mojit_1/templates/test_1.hb.html', instance.templates['test_1']['content-path']);
+                    A.areSame('hb', instance.templates['test_1']['engine']);
+                    A.areSame('/static/test_mojit_1/binders/test_1.js', instance.templates['test_1']['binder-path']);
+                    A.areSame('test_mojit_1Bindertest_1', instance.templates['test_1']['binder-module']);
+                    A.isNotUndefined(instance.templates['test_1']['binder-yui-sorted']['mojito-client']);
 
-                    A.isObject(instance.views['test_2']);
-                    A.areSame('/static/test_mojit_1/views/test_2.hb.html', instance.views['test_2']['content-path']);
-                    A.areSame('hb', instance.views['test_2']['engine']);
+                    A.isObject(instance.templates['test_2']);
+                    A.areSame('/static/test_mojit_1/templates/test_2.hb.html', instance.templates['test_2']['content-path']);
+                    A.areSame('hb', instance.templates['test_2']['engine']);
 
-                    A.isObject(instance.views['subdir/test_1']);
-                    A.areSame('/static/test_mojit_1/views/subdir/test_1.hb.html', instance.views['subdir/test_1']['content-path']);
-                    A.areSame('hb', instance.views['subdir/test_1']['engine']);
-                    A.areSame('/static/test_mojit_1/binders/subdir/test_1.js', instance.views['subdir/test_1']['binder-path']);
-                    A.areSame('test_mojit_1Bindersubdir/test_1', instance.views['subdir/test_1']['binder-module']);
-                    A.isNotUndefined(instance.views['subdir/test_1']['binder-yui-sorted']['mojito-client']);
+                    A.isObject(instance.templates['subdir/test_1']);
+                    A.areSame('/static/test_mojit_1/templates/subdir/test_1.hb.html', instance.templates['subdir/test_1']['content-path']);
+                    A.areSame('hb', instance.templates['subdir/test_1']['engine']);
+                    A.areSame('/static/test_mojit_1/binders/subdir/test_1.js', instance.templates['subdir/test_1']['binder-path']);
+                    A.areSame('test_mojit_1Bindersubdir/test_1', instance.templates['subdir/test_1']['binder-module']);
+                    A.isNotUndefined(instance.templates['subdir/test_1']['binder-yui-sorted']['mojito-client']);
                 });
             },
 
@@ -232,17 +232,17 @@ YUI().use(
                 A.isUndefined(urls['/static/TestMojit5/package.json']);
             },
 
-            'server mojit view index.hb.html is loaded correctly': function() {
+            'server mojit template index.hb.html is loaded correctly': function() {
                 var instance = {type:'TestMojit3'};
                 store.expandInstance(instance, {}, function(err, instance){
-                    A.areSame('index.hb.html', instance.views.index['content-path'].split('/').pop());
+                    A.areSame('index.hb.html', instance.templates.index['content-path'].split('/').pop());
                 });
             },
 
-            'server mojit view index.iphone.hb.html is loaded correctly': function(){
+            'server mojit template index.iphone.hb.html is loaded correctly': function(){
                 var instance = {type:'TestMojit3'};
                 store.expandInstance(instance, {device:'iphone'}, function(err, instance){
-                    A.areSame('index.iphone.hb.html', instance.views.index['content-path'].split('/').pop());
+                    A.areSame('index.iphone.hb.html', instance.templates.index['content-path'].split('/').pop());
                 });
             },
 
@@ -409,7 +409,7 @@ YUI().use(
                 var spec = { type: 'PagedFlickr' };
                 var ctx = { device: 'iphone' };
                 store.expandInstance(spec, ctx, function(err, instance) {
-                    A.areSame(libpath.join(fixtures, 'mojits/PagedFlickr/views/index.iphone.hb.html'), instance.views.index['content-path']);
+                    A.areSame(libpath.join(fixtures, 'mojits/PagedFlickr/templates/index.iphone.hb.html'), instance.templates.index['content-path']);
                 });
             }
 
@@ -429,7 +429,7 @@ YUI().use(
             'appConfig deferAllOptionalAutoloads': function() {
                 var spec = { type: 'PagedFlickr' };
                 store.expandInstanceForEnv('client', spec, {}, function(err, instance) {
-                    A.isUndefined(instance.views.index['binder-yui-sorted']['mojito-tunnel-client'], 'mojito-tunnel-client');
+                    A.isUndefined(instance.templates.index['binder-yui-sorted']['mojito-tunnel-client'], 'mojito-tunnel-client');
                 });
             },
 
@@ -488,7 +488,7 @@ YUI().use(
                     A.isUndefined(instance.yui.sortedPaths['addon-ac-not']);
                     A.isUndefined(instance.yui.sortedPaths['MAutoloadNot']);
                     A.isUndefined(instance.yui.sortedPaths['MModelNot']);
-                    A.isUndefined(instance.views['not']['binder-url']);
+                    A.isUndefined(instance.templates['not']['binder-url']);
                 });
             },
 
@@ -748,12 +748,12 @@ YUI().use(
                             A.areSame('x', res.source.fs.basename);
                             A.areSame('.json', res.source.fs.ext);
                             break;
-                        case 'view--x':
+                        case 'template--x':
                             A.areSame(pkg, res.source.pkg);
-                            A.areSame('view', res.type);
+                            A.areSame('template', res.type);
                             A.areSame('x', res.name);
-                            A.areSame('html', res.view.outputFormat);
-                            A.areSame('hb', res.view.engine);
+                            A.areSame('html', res.template.outputFormat);
+                            A.areSame('hb', res.template.engine);
                             switch (res.source.fs.basename) {
                                 case 'x.hb':
                                     A.areSame('*', res.selector);

@@ -29,12 +29,12 @@ YUI.add('SearchMojitBinderIndex', function(Y, NAME) {
             
             node.one('.results').replace('<div class="results">Searching...</div>');
             
-            this.mojitProxy.refreshView(args, function () {
-                Y.log('*****************The view has been refreshed!');
+            this.mojitProxy.refreshTemplate(args, function () {
+                Y.log('*****************The template has been refreshed!');
             });
         },
         
-        onRefreshView: function (node) {
+        onRefreshTemplate: function (node) {
             this.submitHandler.detach();
             this.bind(node);
         }

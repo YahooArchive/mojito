@@ -20,7 +20,7 @@ YUI.add('ReceiverMojit', function(Y, NAME) {
                     title: 'Image matching the link clicked on the left.',
                     url: url
                 },
-                { view: { binder: 'index' } }
+                { template: { binder: 'index' } }
             );
         }
     };

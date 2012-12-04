@@ -50,7 +50,7 @@ YUI.add('Samuel', function(Y, NAME) {
 
         datatest2: function(ac) {
             ac.models['default'].getData(function(data) {
-                ac.done(data, {view: {name: 'datatest'}});
+                ac.done(data, {template: {name: 'datatest'}});
             });
         },
 

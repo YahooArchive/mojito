@@ -73,8 +73,8 @@
     },
     "refresh": {
         "verbs": ["get"],
-        "path": "/refreshview",
-        "call": "refreshViewFrame.index"
+        "path": "/refreshtemplate",
+        "call": "refreshTemplateFrame.index"
     },
     "default": {
         "verbs": ["get", "post", "put", "head", "delete"],

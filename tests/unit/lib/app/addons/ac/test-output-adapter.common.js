@@ -42,7 +42,7 @@ YUI().use('mojito-output-adapter-addon', 'test', function(Y) {
                     A.areSame('text/plain; charset=utf-8', ct[0]);
                 }
             };
-            var instance = {views: {}};
+            var instance = {templates: {}};
             ac.command = {instance: instance};
             new Y.mojito.addons.ac.core(null, null, ac);
 
@@ -64,7 +64,7 @@ YUI().use('mojito-output-adapter-addon', 'test', function(Y) {
                     A.areSame('my favorite type', ct[0]);
                 }
             };
-            ac.command = {instance: {views: {}}};
+            ac.command = {instance: {templates: {}}};
             new Y.mojito.addons.ac.core(null, null, ac);
 
             ac.done('hi', {
@@ -93,7 +93,7 @@ YUI().use('mojito-output-adapter-addon', 'test', function(Y) {
                     A.areSame('application/json; charset=utf-8', ct[0]);
                 }
             };
-            ac.command = {instance: {views: {}}};
+            ac.command = {instance: {templates: {}}};
             new Y.mojito.addons.ac.core(null, null, ac);
 
             ac.done(json, 'json');
@@ -115,7 +115,7 @@ YUI().use('mojito-output-adapter-addon', 'test', function(Y) {
                     A.areSame('application/xml; charset=utf-8', ct[0]);
                 }
             };
-            ac.command = {instance: {views: {}}};
+            ac.command = {instance: {templates: {}}};
             new Y.mojito.addons.ac.core(null, null, ac);
 
             ac.done(json, 'xml');
@@ -124,7 +124,7 @@ YUI().use('mojito-output-adapter-addon', 'test', function(Y) {
 
         },
 
-        'test when there is no view meta, adapter is called directly': function() {
+        'test when there is no template meta, adapter is called directly': function() {
             var ac = {};
             var doneCalled;
             var data = 'data';
@@ -136,7 +136,7 @@ YUI().use('mojito-output-adapter-addon', 'test', function(Y) {
                     A.areSame(meta, m, 'bad meta to done');
                 }
             };
-            ac.command = {instance: {views: {}}};
+            ac.command = {instance: {templates: {}}};
             new Y.mojito.addons.ac.core(null, null, ac);
 
             ac.done(data, meta);
@@ -145,37 +145,37 @@ YUI().use('mojito-output-adapter-addon', 'test', function(Y) {
 
         },
 
-        'test device-specific view is used for render': function() {
+        'test device-specific template is used for render': function() {
             var vrRendered;
-            // mock view renderer
-            var VR = Y.mojito.ViewRenderer;
-            Y.mojito.ViewRenderer = function(engine) {
-                A.areSame('engine', engine, 'bad view engine');
+            // mock template renderer
+            var VR = Y.mojito.TemplateRenderer;
+            Y.mojito.TemplateRenderer = function(engine) {
+                A.areSame('engine', engine, 'bad template engine');
                 return {
                     render: function(d, type, v, a, m, more) {
                         vrRendered = true;
-                        A.areSame(data, d, 'bad data to view');
-                        A.areSame('t', type, 'bad mojitType to view');
-                        A.areSame(meta, m, 'bad meta to view');
-                        A.areSame('path', v, 'bad view content path to view engine');
-                        A.areSame(ac._adapter, a, 'bad adapter to view');
+                        A.areSame(data, d, 'bad data to template');
+                        A.areSame('t', type, 'bad mojitType to template');
+                        A.areSame(meta, m, 'bad meta to template');
+                        A.areSame('path', v, 'bad template content path to template engine');
+                        A.areSame(ac._adapter, a, 'bad adapter to template');
                         A.isFalse(more);
                     }
                 };
             };
             var ac = { app: { config: {} } };
             var data = {};
-            var meta = { view: {name: 'viewName'} };
+            var meta = { template: {name: 'templateName'} };
             ac._adapter = {
                 done: function() {
-                    A.fail('done should not be called, the view renderer should be calling it');
+                    A.fail('done should not be called, the template renderer should be calling it');
                 }
             };
             ac.command = {
                 instance: {
                     type: 't',
-                    views: {
-                        viewName: {
+                    templates: {
+                        templateName: {
                             engine: 'engine',
                             'content-path': 'path'
                         }
@@ -186,10 +186,10 @@ YUI().use('mojito-output-adapter-addon', 'test', function(Y) {
 
             ac.done(data, meta, false);
 
-            A.isTrue(vrRendered, 'view render never called');
+            A.isTrue(vrRendered, 'template render never called');
 
             // replace mock
-            Y.mojito.ViewRenderer = VR;
+            Y.mojito.TemplateRenderer = VR;
 
         },
 
@@ -207,8 +207,8 @@ YUI().use('mojito-output-adapter-addon', 'test', function(Y) {
                         config: {
                             children: children
                         },
-                        views: {
-                            mockView: {
+                        templates: {
+                            mockTemplate: {
                             }
                         }
                     }
@@ -222,9 +222,9 @@ YUI().use('mojito-output-adapter-addon', 'test', function(Y) {
                     A.isUndefined(meta.binders.binderid.children.params, 'children.params should be undefined');
                 }
             };
-            // mock view renderer
-            var VR = Y.mojito.ViewRenderer;
-            Y.mojito.ViewRenderer = function(engine) {
+            // mock template renderer
+            var VR = Y.mojito.TemplateRenderer;
+            Y.mojito.TemplateRenderer = function(engine) {
                 return {
                     render: function(d, type, v, a, m, more) {
                         a.done('html', m);
@@ -237,13 +237,13 @@ YUI().use('mojito-output-adapter-addon', 'test', function(Y) {
             Y.guid = function() {
                 return 'binderid';
             };
-            ac.done({data: 'data'}, { view: {name: 'mockView'}, children: children});
+            ac.done({data: 'data'}, { template: {name: 'mockTemplate'}, children: children});
 
             A.isTrue(doneCalled, 'never called done');
 
             // replace
             Y.guid = yguid;
-            Y.mojito.ViewRenderer = VR;
+            Y.mojito.TemplateRenderer = VR;
         }
 
     }));

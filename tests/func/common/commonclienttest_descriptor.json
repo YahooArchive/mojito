@@ -333,10 +333,10 @@
                     "page" : "$$config.baseUrl$$/?test=abc"
                 }
             },
-			"testmojitproxyrefreshview" : {
+			"testmojitproxyrefreshtemplate" : {
                 "group" : "smoke,common",
                 "params" : {
-                    "test" : "testmojitproxyrefreshview.js",
+                    "test" : "testmojitproxyrefreshtemplate.js",
                     "page" : "$$config.baseUrl$$/"
                 }
             },

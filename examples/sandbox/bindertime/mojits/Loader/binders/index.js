@@ -32,7 +32,7 @@ YUI.add('LoaderBinderIndex', function(Y, NAME) {
         bind: function(node) {
             this.node = node;
             var nodeId = node.get('id');
-            var binderId = this.mojitProxy._viewId;
+            var binderId = this.mojitProxy._templateId;
             var instanceId = this.mojitProxy._instanceId;
             Y.log('mojit ' + instanceId + ' binder ' + binderId + ' bound to node: #' + nodeId, 'debug', NAME);
             if (nodeId !== binderId) {
@@ -50,7 +50,7 @@ YUI.add('LoaderBinderIndex', function(Y, NAME) {
         handleClick: function(evt) {
             var self = this;
             if (evt.currentTarget.get('tagName') === 'BUTTON') {
-                Y.log('button click on ' + self.mojitProxy._viewId, 'debug', NAME);
+                Y.log('button click on ' + self.mojitProxy._templateId, 'debug', NAME);
                 self._updateId('button click');
                 this.mojitProxy.invoke('foo', {
                     rpc: true

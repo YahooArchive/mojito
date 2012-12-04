@@ -63,7 +63,7 @@
             "call": "json.jsonReturn"
         },
 
-        "view_dup": {
+        "template": {
             "verbs": ["get"],
             "path": "/v2",
             "call": "json.datatest2"

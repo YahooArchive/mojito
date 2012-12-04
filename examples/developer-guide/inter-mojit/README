@@ -25,22 +25,22 @@ Specifics:
 - mojits/MasterMojit/binders/binder.js
 - mojits/ReceiverMojit/controller.server.js 
 - mojits/ReceiverMojit/binders/binder.js
-- mojits/ReceiverMojit/views/index.html
+- mojits/ReceiverMojit/templates/index.html
 - mojits/SenderMojit/controller.serverjs 
 - mojits/SenderMojit/binders/binder.js
-- mojits/SenderMojit/views/index.html
+- mojits/SenderMojit/templates/index.html
 
 
 Relevant Files:
 ./mojits/SenderMojit/controller.server.js
 ./routes.json
 ./application.json
-./mojits/SenderMojit/views/index.html
+./mojits/SenderMojit/templates/index.html
 - mojits/SenderMojit/binders/binder.js
 
 Modified Files:
 ./application.json
 ./routes.json
 ./mojits/SenderMojit/controller.server.js
-./mojits/SenderMojit/views/index.html
+./mojits/SenderMojit/templates/index.html
 - mojits/SenderMojit/binders/binder.js

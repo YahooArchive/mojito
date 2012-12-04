@@ -13,7 +13,7 @@ YUI.add('scroll', function(Y, NAME) {
     index: function(ac) {
       // Populate Template
       ac.done({
-         title: 'Scroll View',
+         title: 'Scroll Template',
          photos: [
                {
                   url: 'http://farm5.static.flickr.com/4136/4802088086_c621e0b501.jpg',

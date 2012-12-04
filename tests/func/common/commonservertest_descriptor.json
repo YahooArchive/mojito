@@ -431,24 +431,24 @@
                     "page" : "$$config.baseUrl$$/RouteParamsSimple"
                 }
             },
-			"testmobiledevicedefaultview" : {
+			"testmobiledevicedefaulttemplate" : {
                 "group" : "smoke,common,new",
                 "params" : {
-                    "test" : "testmobiledevicedefaultview.js",
+                    "test" : "testmobiledevicedefaulttemplate.js",
                     "page" : "$$config.baseUrl$$/mobiledevices/index"
                 }
             },
-			"testmobiledeviceiphoneview" : {
+			"testmobiledeviceiphonetemplate" : {
                 "group" : "smoke,common,new",
                 "params" : {
-                    "test" : "testmobiledeviceiphoneview.js",
+                    "test" : "testmobiledeviceiphonetemplate.js",
                     "page" : "$$config.baseUrl$$/mobiledevices/index?device=iphone"
                 }
             },
-			"testmobiledevicekindleview" : {
+			"testmobiledevicekindletemplate" : {
                 "group" : "smoke,common,new",
                 "params" : {
-                    "test" : "testmobiledevicekindleview.js",
+                    "test" : "testmobiledevicekindletemplate.js",
                     "page" : "$$config.baseUrl$$/mobiledevices/index?device=kindle"
                 }
             }

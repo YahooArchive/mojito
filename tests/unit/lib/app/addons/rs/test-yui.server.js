@@ -354,7 +354,7 @@ YUI().use(
             store._makeResource('server', {}, 'Foo', 'binder', 'index', 'FooBinderIndex');
             store._makeResource('server', {}, 'Foo', 'binder', 'list', 'FooBinderList');
             store._makeResource('server', {}, 'Foo', 'controller', 'controller', 'FooController');
-            var mojit = { views: {} };
+            var mojit = { templates: {} };
             store.fire('getMojitTypeDetails', {
                 args: {
                     env: 'server',
@@ -363,10 +363,10 @@ YUI().use(
                 },
                 mojit: mojit
             });
-            A.isNotUndefined(mojit.views.index);
-            A.areSame('FooBinderIndex', mojit.views.index['binder-module']);
-            A.isNotUndefined(mojit.views.list);
-            A.areSame('FooBinderList', mojit.views.list['binder-module']);
+            A.isNotUndefined(mojit.templates.index);
+            A.areSame('FooBinderIndex', mojit.templates.index['binder-module']);
+            A.isNotUndefined(mojit.templates.list);
+            A.areSame('FooBinderList', mojit.templates.list['binder-module']);
             A.areSame('FooController', mojit['controller-module']);
         },
 
@@ -402,7 +402,7 @@ YUI().use(
                     case 'middleware--x':
                     case 'spec--default':
                     case 'spec--x':
-                    case 'view--x':
+                    case 'template--x':
                         break;
                     case 'yui-lang--':
                         A.areSame(pkg, res.source.pkg);
@@ -532,7 +532,7 @@ YUI().use(
                 A.isNotUndefined(instance.yui.config.modules['test_mojit_2']);
                 A.areSame(libpath.join(fixtures, 'mojits/test_mojit_2/controller.server.js'), instance.yui.config.modules['test_mojit_2'].fullpath);
                 A.isNotUndefined(instance.yui.config.modules['mojito-mu']);
-                A.areSame(libpath.join(mojitoRoot, 'app/addons/view-engines/mu.server.js'), instance.yui.config.modules['mojito-mu'].fullpath);
+                A.areSame(libpath.join(mojitoRoot, 'app/addons/template-engines/mu.server.js'), instance.yui.config.modules['mojito-mu'].fullpath);
 
                 A.isArray(instance.yui.sorted);
                 AA.contains('test_mojit_2', instance.yui.sorted);
@@ -545,7 +545,7 @@ YUI().use(
                 A.areSame(libpath.join(fixtures, 'mojits/test_mojit_2/controller.server.js'), instance.yui.sortedPaths['test_mojit_2']);
                 A.isUndefined(instance.yui.sortedPaths['test_applevelModel']);
                 A.isUndefined(instance.yui.sortedPaths['ModelFlickr']);
-                A.areSame(libpath.join(mojitoRoot, 'app/addons/view-engines/mu.server.js'), instance.yui.sortedPaths['mojito-mu']);
+                A.areSame(libpath.join(mojitoRoot, 'app/addons/template-engines/mu.server.js'), instance.yui.sortedPaths['mojito-mu']);
                 A.areSame(libpath.join(mojitoRoot, 'app/autoload/mojito.common.js'), instance.yui.sortedPaths['mojito']);
             });
         },

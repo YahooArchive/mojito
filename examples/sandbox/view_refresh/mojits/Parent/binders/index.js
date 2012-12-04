@@ -17,14 +17,14 @@ YUI.add('ParentBinderIndex', function(Y, NAME) {
             var mp = this.mojitProxy;
             var id = this.myid;
             this.node = node;
-            this.buttonClickHandler = node.one('#' + mp._viewId + '_ParentRefresh').on('click', function() {
-//                mp.refreshView();
-                mp.refreshView(function(data, meta) {
+            this.buttonClickHandler = node.one('#' + mp._templateId + '_ParentRefresh').on('click', function() {
+//                mp.refreshTemplate();
+                mp.refreshTemplate(function(data, meta) {
                     Y.log('refresh complete', 'warn', NAME);
                 });
             });
-            this.destroyHandler = node.one('#' + mp._viewId + '_destroyButton').on('click', function() {
-                var childId = this.node.one('#' + mp._viewId + '_destroyInput').get('value');
+            this.destroyHandler = node.one('#' + mp._templateId + '_destroyButton').on('click', function() {
+                var childId = this.node.one('#' + mp._templateId + '_destroyInput').get('value');
                 mp.destroyChild(childId);
             }, this);
             this.moHandler = node.one('h3').on('mouseover', function() {
@@ -32,7 +32,7 @@ YUI.add('ParentBinderIndex', function(Y, NAME) {
             });
         },
 
-        onRefreshView: function(node, element) {
+        onRefreshTemplate: function(node, element) {
             Y.log(this.myid + ' refreshed', 'info', NAME);
             this.buttonClickHandler.detach();
             this.destroyHandler.detach();

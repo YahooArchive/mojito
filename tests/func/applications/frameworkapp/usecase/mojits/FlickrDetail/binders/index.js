@@ -34,7 +34,7 @@ YUI.add('FlickrDetailBinder', function(Y, NAME) {
                 var routeParams = {
                     image: payload.data.id
                 };
-                mojitProxy.refreshView({
+                mojitProxy.refreshTemplate({
                     params: {
                         url: urlParams,
                         route: routeParams
