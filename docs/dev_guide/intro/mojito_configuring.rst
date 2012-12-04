@@ -9,7 +9,7 @@ Basic Information
 
 Mojito can be configured at the framework, application, and mojit levels. 
 Each level is configured differently, but uses same general file format 
-consisting of JSON.
+consisting of JSON or YAML.
 
 .. _config_basic-file:
 
@@ -23,15 +23,22 @@ JSON
 
 By default, configuration files in Mojito have a general top-level 
 structure and are in JSON format. At the top level of each configuration 
-file is an array. Each item of the array is an object that configures 
-one component of Mojito, such as logging, assets, mojits, static resources, etc.
+file is an array. Each item of the array is an object containing configurations 
+for a runtime environment that we call a *context*. This allows you
+to have discrete configurations for different regions, devices, and development 
+environments.
 
-Each configuration object is required to have a ``settings`` property that 
-specifies contexts for applying the configuration settings. These conditions 
-could be used to determine the configurations in different environments. 
+The context for a configuration object is specified by the ``settings`` property. For
+each configuration object in a file, the ``settings`` property must specify a unique 
+context, otherwise Mojito fails. For example, the ``application.json``  file
+cannot have two configuration objects specifying the context ``environment:development``. 
+See `Using Context Configurations <../topics/mojito_using_contexts.html>`_
+for more information about contexts.
 
-Below is the skeleton of a configuration file. See `Application Configuration`_ 
-and `Mojit Configuration`_ for details about specific configuration files.
+Below is the skeleton of a configuration file with two configuration
+objects, each identified by contexts defined by the ``settings`` property. 
+See `Application Configuration`_ and `Mojit Configuration`_ for details about specific 
+configuration files.
 
 .. code-block:: javascript
 
@@ -39,6 +46,12 @@ and `Mojit Configuration`_ for details about specific configuration files.
      // Configuration object
      {
        "settings": [ "master" ],
+       "specs": {
+         ...
+       }
+     },
+     {
+       "settings": [ "environment:development" ],
        "specs": {
          ...
        }
@@ -104,12 +117,6 @@ configuration Object
 | ``cacheViewTemplates``                                 | boolean              | true              | Specifies whether the view engine should attempt       |
 |                                                        |                      |                   | to cache the view. Note that not all view engines      |
 |                                                        |                      |                   | support caching.                                       |
-+--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
-| ``deferAllOptionalAutoloads``                          | boolean              | false             | Specifies whether optional YUI modules found in the    |
-|                                                        |                      |                   | ``/autoload/`` and ``/yui_modules/`` directories are   |
-|                                                        |                      |                   | not shipped to the client. This is an optimization     |
-|                                                        |                      |                   | setting and should generally only be set if you are    |
-|                                                        |                      |                   | building an offline application.                       |
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
 | ``middleware``                                         | array of strings     | []                | A list of paths to the Node.js module that exports     |
 |                                                        |                      |                   | a Connect middleware function.                         |
@@ -380,12 +387,6 @@ staticHandling Object
 |                       |               |                             | ``/static/``. An empty string can be given if no       |
 |                       |               |                             | prefix is desired.                                     |
 +-----------------------+---------------+-----------------------------+--------------------------------------------------------+
-| ``useRollups``        | boolean       | false                       | When true, the client will use the rollup file (if     |
-|                       |               |                             | it exists) to load the YUI modules in the mojit.       |
-|                       |               |                             | The command `mojito compile rollups <../reference/     |
-|                       |               |                             | mojito_cmdline.html#compiling-rollups>`_ can be used   |
-|                       |               |                             | to generate the rollups.                               |
-+-----------------------+---------------+-----------------------------+--------------------------------------------------------+
 
 .. _yui_obj:
 
@@ -397,27 +398,14 @@ See `Example Application Configurations`_ for an example of the ``yui`` object.
 +--------------------------------+----------------------+------------------------------------------------------------------------+
 | Property                       | Data Type            | Description                                                            |
 +================================+======================+========================================================================+
-| ``base``                       | string               | Specifies the prefix from which to load all YUI 3 libraries.           |
-+--------------------------------+----------------------+------------------------------------------------------------------------+
 | :ref:`config <yui_config>`     | object               | Used to populate the `YUI_config <http://yuilibrary.com/yui/docs/yui/  |
 |                                |                      | #yui_config>`_ global variable that allows you to configure every YUI  |
 |                                |                      | instance on the page even before YUI is loaded. For example, you can   |
 |                                |                      | configure logging or YUI not to load its default CSS with the          |
 |                                |                      | following: ``"yui": { "config": { "fetchCSS": false } }``              |
 +--------------------------------+----------------------+------------------------------------------------------------------------+
-| ``extraModules``               | array of strings     | Specifies additional YUI library modules that should be added to       |
-|                                |                      | the page when Mojito is sent to the client.                            |
-+--------------------------------+----------------------+------------------------------------------------------------------------+
-| ``loader``                     | string               | Specifies the path (appended to ``base`` above) for the loader to      |
-|                                |                      | use.                                                                   |
-+--------------------------------+----------------------+------------------------------------------------------------------------+
 | ``showConsoleInClient``        | boolean              | Determines if the YUI debugging console will be shown on the           |
 |                                |                      | client.                                                                |
-+--------------------------------+----------------------+------------------------------------------------------------------------+
-| ``url``                        | string               | Specifies the location of the `YUI 3 seed file <http://yuilibrary.com/ |
-|                                |                      | yui/docs/yui/#base-seed>`_.                                            |  
-+--------------------------------+----------------------+------------------------------------------------------------------------+
-| ``urlContains``                | array of strings     | Specifies the YUI modules that are delivered by ``url``.               |
 +--------------------------------+----------------------+------------------------------------------------------------------------+
 
 
