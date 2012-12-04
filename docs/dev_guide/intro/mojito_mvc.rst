@@ -295,9 +295,9 @@ Example
 
 The example controller below shows you how the components are used. The 
 ``status`` mojit is registered with ``YUI.add``, and the ``index`` function 
-creates a status calling the function ``create_status``. Lastly, the ``requires`` 
-array loads the addons ``Intl``, ``Params``, and ``Url``that are needed by the 
-controller. 
+uses the ``this`` reference to call the function ``create_status``. Lastly, the 
+``requires`` array loads the addons ``Intl``, ``Params``, and ``Url``that are 
+needed by the controller. 
 
 .. code-block:: javascript
 
