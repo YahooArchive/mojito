@@ -550,7 +550,7 @@ In the example ``application.json`` below, the mojit instance ``father`` of type
 Child Mojit With Children
 #########################
 
-A parent mojit can have a single child that has its own children. The parent mojit 
+A parent mojit can have a child that has its own children. The parent mojit 
 specifies a child with the ``child`` object, which in turn lists children in the 
 ``children`` object. For the child to execute its children,it would use the ``Composite`` 
 addon. See `Composite Mojits <../topics/mojito_composite_mojits.html#composite-mojits>`_ 
@@ -586,6 +586,48 @@ child ``son``, which has the children ``grandson`` and ``granddaughter``.
        }
      }
    ]
+
+The child mojits can also have their own children, but beware that 
+having so many child mojits may cause memory issues. In our updated 
+example ``application.json`` below, the ``grandaughter`` mojit now has
+its own children mojits:
+
+.. code-block:: javascript
+
+   [
+     {
+       "settings": [ "master" ],
+       "specs": {
+         "grandfather": {
+           "type": "GrandparentMojit",
+           "config": {
+             "child": {
+               "son": {
+                 "type": "ChildMojit",
+                 "children": {
+                   "grandson": {
+                     "type": "GrandchildMojit"
+                   },
+                   "grandaughter": {
+                     "type": "GrandchildMojit",
+                     "children": {
+                       "girl_doll": {
+                          "type": "GirlDollMojit"
+                       },
+                       "boy_doll": {
+                          "type": "BoyDollMojit"
+                       }
+                     }
+                   }
+                 }
+               }
+             }
+           }
+         }
+       }
+     }
+   ]
+
 
 
 .. _deploy_app:
