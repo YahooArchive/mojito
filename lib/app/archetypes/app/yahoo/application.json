@@ -1,6 +1,7 @@
 [
     {
         "settings": [ "master" ],
+        "appPort": "{{port}}",
         "specs": {}
     },
     {
