@@ -18,8 +18,8 @@ Issues
   called? <moj_binder_init>`
 * :ref:`I am getting Handlebars rendering errors. Is this a client-side or server-side 
   issue with Handlebars and can it be fixed? <handlebars_rendering_error>`
-* :ref:`Why can't my controller access the YUI modules in the "autoload" directory? 
-  <controller_access_autoload>`
+* :ref:`Why can't my controller access the YUI modules in the "yui_modules" directory? 
+  <controller_access_yui_modules>`
 * :ref:`Why am I getting the error message "EADDRINUSE, Address already in use" when I try 
   to start Mojito? <eaddriuse_err>`
 * :ref:`When I execute child mojits with "composite.execute", the views are being rendered, 
@@ -148,9 +148,9 @@ prototype so that your templates can be rendered. Try doing the following:
 
 ------------
 
-.. _controller_access_autoload:
+.. _controller_access_yui_modules:
 
-**Q:** *Why can't my controller access the YUI modules in the "autoload" directory?*
+**Q:** *Why can't my controller access the YUI modules in the "yui_modules" directory?*
 
 **A:**
 A common problem is that the YUI module is missing the 
