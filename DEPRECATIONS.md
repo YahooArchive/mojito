@@ -193,7 +193,13 @@ The following are gone:
 
 * `embedJsFilesInHtmlFrame`
 * `shareYUIInstance`
-* `dependencyCalculations` in `yui`
+* in the `yui` section:
+    * `base`
+    * `dependencyCalculations`
+    * `extraModules`
+    * `loader`
+    * `url`
+    * `urlContains`
 
 
 
