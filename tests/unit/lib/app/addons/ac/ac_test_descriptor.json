@@ -74,7 +74,7 @@
             },
             "deploy.server": {
                 "params": {
-                    "lib": "$$config.lib$$/app/addons/ac/deploy.server.js,../../../../../../lib/app/autoload/loader.common.js,../../../../../../lib/app/addons/ac/http.server.js",
+                    "lib": "$$config.lib$$/app/addons/ac/deploy.server.js,../../../../../../lib/app/addons/ac/http.server.js",
                     "test": "./test-deploy.server.js",
                     "driver": "nodejs"
                 },
@@ -104,14 +104,6 @@
                 },
                 "group": "fw,client,server"
             },
-            "output-adapter.common": {
-                "params": {
-                    "lib": "$$config.lib$$/app/addons/ac/output-adapter.common.js",
-                    "test": "./test-output-adapter.common.js",
-                    "page": "$$config.base$$/mojito-test.html"
-                },
-                "group": "fw,client,server"
-            },
             "params.common": {
                 "params": {
                     "lib": "$$config.lib$$/app/addons/ac/params.common.js",
@@ -132,6 +124,14 @@
                 "params": {
                     "lib": "$$config.lib$$/app/addons/ac/url.common.js,../../../../../../lib/app/autoload/route-maker.common.js",
                     "test": "./test-url.common.js",
+                    "page": "$$config.base$$/mojito-test.html"
+                },
+                "group": "fw,client,server"
+            },
+            "models.common": {
+                "params": {
+                    "lib": "$$config.lib$$/app/addons/ac/models.common.js",
+                    "test": "./test-models.common.js",
                     "page": "$$config.base$$/mojito-test.html"
                 },
                 "group": "fw,client,server"

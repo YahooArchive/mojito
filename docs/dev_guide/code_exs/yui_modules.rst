@@ -1,5 +1,3 @@
-
-
 =====================
 Including YUI Modules
 =====================
@@ -8,59 +6,83 @@ Including YUI Modules
 
 **Difficulty:** Intermediate
 
-Summary
-#######
+.. _code_exs-incl_yui_mods-summary:
 
-This example shows how to include the YUI module `Storage Lite <http://yuilibrary.com/gallery/show/storage-lite>`_ in a Mojito application. The example uses the Storage Lite module to 
-create a notepad application. Any text that you input into the application will persist between page views and browser sessions.
+Summary
+=======
+
+This example shows how to include the YUI module 
+`Storage Lite <http://yuilibrary.com/gallery/show/storage-lite>`_ in a Mojito 
+application. The example uses the Storage Lite module to create a notepad 
+application. Any text that you input into the application will persist between 
+page views and browser sessions.
 
 The following topics will be covered:
 
-- adding YUI modules to the ``autoload`` directory
+- adding YUI modules to the ``yui_modules`` directory
 - accessing YUI modules from a mojit
 
+.. _code_exs-incl_yui_mods-notes:
+
 Implementation Notes
-####################
+====================
 
 .. _yui_mod_impl-add:
 
 Adding YUI Modules
-==================
+------------------
+
+.. _yui_mod_impl_add-loc:
 
 Location
---------
+########
 
-To add YUI modules that all your mojits can access, place the modules in the ``autoload`` directory under the application directory. For example, YUI modules in the ``hello_world`` application 
-would be placed in ``hello_world/autoload``.
+To add YUI modules that all your mojits can access, place the modules in the 
+``yui_modules`` directory under the application directory. For example, YUI 
+modules in the ``hello_world`` application would be placed in 
+``hello_world/yui_modules``.
+
+.. _yui_mod_impl_add-naming:
 
 File Naming Convention
-----------------------
+######################
 
-YUI modules must use the following naming convention, where where ``{module_name}`` is an arbitrary string for identifying the module and ``{affinity}`` is either ``common``, ``server``, or ``client``.
+YUI modules must use the following naming convention, where where 
+``{module_name}`` is an arbitrary string for identifying the module and 
+``{affinity}`` is either ``common``, ``server``, or ``client``.
 
 ``{module_name}.{affinity}.js``
 
-In this code example, code is being deployed to the client, so the affinity must be either ``common`` or ``client``.
+In this code example, code is being deployed to the client, so the affinity 
+must be either ``common`` or ``client``.
 
 .. _registering_module:
 
 Registering Module
-------------------
+##################
 
-To register a module so that it is available to your mojits, pass a string that identifies the module to the ``YUI.add`` method. From the skeleton of ``storage-lite.client.js`` below, you can see 
-that ``add`` method registers the module identified by the string ``'gallery-storage-lite'``.
+To register a module so that it is available to your mojits, pass a string that 
+identifies the module to the ``YUI.add`` method. From the skeleton of 
+``storage-lite.client.js`` below, you can see that ``add`` method registers 
+the module identified by the string ``'gallery-storage-lite'``.
 
 .. code-block:: javascript
 
    YUI.add('gallery-storage-lite', function (Y) {
       ...
-   }, '1.0.0', { requires: ['event-base', 'event-custom', 'event-custom-complex', 'json']});
+   }, '1.0.0', { requires: [ 'event-base', 'event-custom', 'event-custom-complex', 'json']});
+
+
+.. _yui_mod_impl-using:
 
 Using a YUI Module from Mojits
-==============================
+------------------------------
 
-After registered YUI modules have been added to the ``autoload`` directory, you can load them into your mojit code by listing them as dependencies in the ``requires`` array. 
-In the binder ``index.js`` below, you can see that the Storage Lite module that we created and registered in :ref:`registering_module` is listed as a dependency in the ``requires`` array.
+After registered YUI modules have been added to the ``yui_modules`` directory, you 
+can load them into your mojit code by listing them as dependencies in the 
+``requires`` array. In the binder ``index.js`` below, you can see that the 
+Storage Lite module that we created and registered in :ref:`registering_module` 
+is listed as a dependency in the ``requires`` array.
 
 .. code-block:: javascript
 
@@ -73,43 +95,51 @@ In the binder ``index.js`` below, you can see that the Storage Lite module that 
          ...
        }
      };
-     // See autoload/storage-lite.client.js
+     // See yui_modules/storage-lite.client.js
    }, '0.0.1', {requires: [  'gallery-storage-lite' ]});
 
-In the ``bind`` method, ``Y.StorageLite.getItem`` and ``Y.StorageLite.setItem`` are used to get and set persistent data. Note that you must use the ``Y`` instance to access the module.
+In the ``bind`` method, ``Y.StorageLite.getItem`` and ``Y.StorageLite.setItem`` 
+are used to get and set persistent data. Note that you must use the ``Y`` 
+instance to access the module.
 
 .. code-block:: javascript
 
    ...
-     bind: function(node) {
+     bind: function (node) {
+
        // Based on http://yuilibrary.com/gallery/show/storage-lite
-       var keyname = 'storage-lite-example', notes = node.one('#notes');
-       // Populate the textarea with the stored note
-       // text on page load.
-       notes.set('value', Y.StorageLite.getItem(keyname) || '');    // Save the contents of the textarea after
-       // each keystroke.
-       notes.on('keyup', function() {
-         Y.StorageLite.setItem(keyname, notes.get('value')); 
+       var keyname = 'storage-lite-example',
+           notes = node.one('#notes');
+
+       // Populate the textarea with the stored note text on page load.
+       notes.set('value', Y.StorageLite.getItem(keyname) || '');
+
+       // Save the contents of the textarea after each keystroke.
+       notes.on('keyup', function () {
+         Y.StorageLite.setItem(keyname, notes.get('value'));
        });
+
+       // adding a classname to the notes element to facilitate func tests
+       notes.addClass('ready');
      }
    ...
 
+.. _code_exs-incl_yui_mods-setup:
+
 Setting Up this Example
-#######################
+=======================
 
 To set up and run ``yui_module``:
 
 #. Create your application.
 
    ``$ mojito create app yui_module``
-
 #. Change to the application directory.
-
 #. Create your mojit.
 
    ``$ mojito create mojit Notepad``
-
-#. To specify that your application use the ``Notepad`` mojit and be deployed to the client, replace the code in ``application.json`` with the following:
+#. To specify that your application use the ``Notepad`` mojit and be deployed 
+   to the client, replace the code in ``application.json`` with the following:
 
    .. code-block:: javascript
 
@@ -131,7 +161,8 @@ To set up and run ``yui_module``:
         }
       ]
 
-#. To configure the routing for your application, create the file ``routes.json`` with the following:
+#. To configure the routing for your application, replace the code in 
+   ``routes.json`` with the following:
 
    .. code-block:: javascript
 
@@ -146,58 +177,62 @@ To set up and run ``yui_module``:
         }
       ]
 
-#. Create the autoload directory for storing the Storage Lite module.
+#. Create the ``yui_modules`` directory for storing the Storage Lite module.
 
-   ``$ mkdir autoload``
+   ``$ mkdir yui_modules``
+#. Get the Storage Lite module and place it in the ``yui_modules`` directory.
 
-#. Get the Storage Lite module and place it in the ``autoload`` directory.
-
-   ``$ wget -O autoload/storage-lite.client.js https://raw.github.com/rgrove/storage-lite/master/src/storage-lite.js --no-check-certificate``
-
+   ``$ wget -O yui_modules/storage-lite.client.js https://raw.github.com/rgrove/storage-lite/master/src/storage-lite.js --no-check-certificate``
 #. Change to ``mojits/Notepad``.
-
 #. Replace the code in ``controller.server.js`` with the following:
 
    .. code-block:: javascript
 
-      YUI.add('Notepad', function(Y,NAME) {
-        Y.mojito.controllers[NAME] = {
+      YUI.add('Notepad', function(Y, NAME) {
+        Y.namespace('mojito.controllers')[NAME] = {   
           index: function(ac) {
             ac.done();
           }
         };
       }, '0.0.1', {requires: ['mojito']});
 
-#. To create the binder for getting user input and storing it with the Storage Lite module, create the file ``binders/index.js`` with the following:
+#. To create the binder for getting user input and storing it with the 
+   Storage Lite module, replace the code in ``binders/index.js`` with the following:
 
    .. code-block:: javascript
 
       YUI.add('NotepadBinderIndex', function (Y, NAME) {
+
         Y.namespace('mojito.binders')[NAME] = {
-          init: function(mojitProxy) {
+          init: function (mojitProxy) {
             this.mp = mojitProxy;
           },
-          /**
-          * @method bind
-          * @param {Node} YUI Node
-          */
-          bind: function(node) {
+          bind: function (node) {
+
             // Based on http://yuilibrary.com/gallery/show/storage-lite
-            var keyname = 'storage-lite-example', notes = node.one('#notes');
-            // Populate the textarea with the stored
-            // note text on page load.
+            var keyname = 'storage-lite-example',
+                notes = node.one('#notes');
+
+            // Populate the textarea with the stored note text on page load.
             notes.set('value', Y.StorageLite.getItem(keyname) || '');
-            // Save the contents of the textarea after
-            // each keystroke.
-            notes.on('keyup', function() {
-              Y.StorageLite.setItem(keyname, notes.get('value'));
+
+            // Save the contents of the textarea after each keystroke.
+            notes.on('keyup', function () {
+                Y.StorageLite.setItem(keyname, notes.get('value'));
             });
+
+            // adding a classname to the notes element to facilitate func tests
+            notes.addClass('ready');
           }
         };
-        // See autoload/storage-lite.client.js
-      }, '0.0.1', {requires: [ 'gallery-storage-lite' ]});
+      }, '0.0.1', {
+        requires: [ 
+          'gallery-storage-lite' //see yui_modules/storage-lite.client.js
+        ]
+      });
 
-#. To display a form that allows users to input text, replace the code in ``views/index.hb.html`` with the following:
+#. To display a form that allows users to input text, replace the code in 
+   ``views/index.hb.html`` with the following:
 
    .. code-block:: html
 
@@ -205,7 +240,9 @@ To set up and run ``yui_module``:
         <h1>Storage Lite: Simple Notepad Example</h1>
         <form>
           <p>Anything you type in this textarea will
-          be stored and persisted between page views and browser sessions using the <a href="http://github.com/rgrove/storage-lite/">Storage Lite</a> YUI module by Ryan Grove.</p>
+          be stored and persisted between page views and browser sessions using the 
+          <a href="http://github.com/rgrove/storage-lite/">Storage Lite</a> YUI module by 
+          Ryan Grove.</p>
           <p><textarea id="notes" cols="80" rows="8"></textarea>
           </p>
         </form>
@@ -214,17 +251,19 @@ To set up and run ``yui_module``:
 #. From the application directory, run the server.
 
    ``$ mojito start``
-
 #. Go to the application at the URL below and enter some text into the form.
 
    http://localhost:8666/
+#. Point to the same URL in a new tab. You should see the same text that you entered in 
+   the form before.
+#. Open the same URL in a new browser window. Once again, you should see the same text 
+   that you entered earlier.
 
-#. Point to the same URL in a new tab. You should see the same text that you entered in the form before.
 
-#. Open the same URL in a new browser window. Once again, you should see the same text that you entered earlier.
+.. _code_exs-incl_yui_mods-src:
 
 Source Code
-###########
+===========
 
 - `YUI Module App <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/yui_module/>`_
 - `Mojit Binder <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/yui_module/mojits/Notepad/binders/index.js>`_

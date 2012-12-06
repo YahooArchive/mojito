@@ -1,7 +1,7 @@
 /*
 * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
 */
-YUI.add('PagedFlickr5Model', function(Y) {
+YUI.add('PagedFlickr5Model', function(Y, NAME) {
 
 /**
  * The PagedFlickr5Model module.
@@ -15,7 +15,7 @@ YUI.add('PagedFlickr5Model', function(Y) {
      * @class PagedFlickr5Model
      * @constructor
      */
-    Y.mojito.models.flickr = {
+    Y.mojito.models[NAME] = {
 
         /**
          * Method that will be invoked by the mojit controller to obtain data.
@@ -24,7 +24,7 @@ YUI.add('PagedFlickr5Model', function(Y) {
          *        data has been retrieved.
          */
         getFlickrImages: function(queryString, start, count, callback) {
-            var APP_KEY = '9cc79c8bf1942c683b0d4e30b838ee9c';
+            var APP_KEY = '84921e87fb8f2fc338c3ff9bf51a412e';
             var q;
             start = parseInt(start) || 0;
             count = parseInt(count) || 10;

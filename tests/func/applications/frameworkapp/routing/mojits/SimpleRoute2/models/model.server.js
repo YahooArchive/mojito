@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('SimpleRoute2Model', function(Y) {
+YUI.add('SimpleRoute2Model', function(Y, NAME) {
 
 /**
  * The SimpleRoute2Model module.
@@ -33,4 +33,4 @@ YUI.add('SimpleRoute2Model', function(Y) {
 
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito']});

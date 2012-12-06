@@ -13,7 +13,7 @@ YUI().use('mojito-http-addon', 'test', function (Y) {
 
         name: 'all functions',
 
-        'getRequest and getResponse use adapter request & response': function() {
+        'getRequest and getResponse use adapter request and response': function() {
             var addon = new Y.mojito.addons.ac.http(null, {
                 req: 'req',
                 res: 'res'

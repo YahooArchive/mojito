@@ -4,12 +4,14 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('MainMojitBinder', function(Y) {
+/*jslint anon:true, sloppy:true, nomen:true*/
+
+YUI.add('MainMojitBinder', function (Y, NAME) {
 
 /**
- * The MainMojitBinder module.
+ * The HelloMojitBinderIndex module.
  *
- * @module MainMojitBinder
+ * @module HelloMojitBinderIndex
  */
 
     /**
@@ -21,17 +23,14 @@ YUI.add('MainMojitBinder', function(Y) {
      * @class Binder
      * @constructor
      */
-    function Binder(mojitProxy) {
-        this.mojitProxy = mojitProxy;
-    }
-
-    Binder.prototype = {
+    Y.namespace('mojito.binders')[NAME] = {
 
         /**
          * Binder initialization method, invoked after all binders on the page
          * have been constructed.
          */
-        init: function() {
+        init: function (mojitProxy) {
+            this.mojitProxy = mojitProxy;
         },
 
         /**
@@ -40,12 +39,10 @@ YUI.add('MainMojitBinder', function(Y) {
          *
          * @param node {Node} The DOM node to which this mojit is attached.
          */
-        bind: function(node) {
+        bind: function (node) {
             this.node = node;
         }
 
     };
 
-    Y.mojito.registerEventBinder('MainMojit', Binder);
-
-}, '0.0.1', {requires: ['mojito']});
+}, '0.0.1', {requires: []});

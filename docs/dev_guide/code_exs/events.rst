@@ -1,7 +1,9 @@
+======
 Events
-######
+======
 
-These examples show you how to create, bind, listen to, and use events in your applications.
+These examples show you how to create, bind, listen to, and use events in your 
+applications.
 
 .. toctree::
    :maxdepth: 1

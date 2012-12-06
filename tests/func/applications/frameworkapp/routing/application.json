@@ -2,16 +2,6 @@
     {
         "settings": [ "master" ],
 		"appPort": 4082,
-		"log": {
-			"client": {
-				"level": "warn",
-				"yui": "false"
-			},
-			"server": {
-				"level": "info",
-				"yui": "false"
-			}
-		},
         "specs": {
             "route-1": {
                 "type": "SimpleRoute",

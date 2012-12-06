@@ -1,7 +1,7 @@
 /*
 * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
 */
-YUI.add('myMojitModel', function(Y) {
+YUI.add('myMojitModel', function(Y, NAME) {
 
     Y.mojito.models.message = {
 
@@ -15,4 +15,4 @@ YUI.add('myMojitModel', function(Y) {
         }
     };
 
-});
+}, '0.0.1', {requires: ['mojito']});

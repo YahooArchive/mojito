@@ -1,7 +1,7 @@
 /*
 * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
 */
-YUI.add('FlickrDetailModelFlickr', function(Y) {
+YUI.add('FlickrDetailModelFlickr', function(Y, NAME) {
 
 /**
  * The FlickrDetailModelFlickr module.
@@ -15,7 +15,7 @@ YUI.add('FlickrDetailModelFlickr', function(Y) {
      * @class FlickrDetailModelFlickr
      * @constructor
      */
-    Y.mojito.models.flickr = {
+    Y.mojito.models[NAME] = {
 
         /**
          * Method that will be invoked by the mojit controller to obtain data.
@@ -24,7 +24,7 @@ YUI.add('FlickrDetailModelFlickr', function(Y) {
          *        data has been retrieved.
          */
         getFlickrDetail: function(imageId, callback) {
-            var API_KEY = '9cc79c8bf1942c683b0d4e30b838ee9c';
+            var API_KEY = '84921e87fb8f2fc338c3ff9bf51a412e';
             var q = 'select * from flickr.photos.info where photo_id="' + imageId + '" and api_key="' + API_KEY + '"';
             Y.YQL(q, function(rawYqlData) {
                 if (!rawYqlData || !rawYqlData.query || !rawYqlData.query.results) {

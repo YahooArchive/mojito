@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('i18nMojitModel', function(Y) {
+YUI.add('i18nMojitModel', function(Y, NAME) {
 
 /**
  * The i18nMojitModel module.
@@ -15,7 +15,7 @@ YUI.add('i18nMojitModel', function(Y) {
      * @class Model
      * @constructor
      */
-    Y.mojito.models.i18nTest = {
+    Y.mojito.models[NAME] = {
 
         init: function(mojitSpec) {
             this.spec = mojitSpec;
@@ -28,7 +28,7 @@ YUI.add('i18nMojitModel', function(Y) {
          *        data has been retrieved.
          */
          getFlickrImages: function(queryString, callback) {
-             var API_KEY = '9cc79c8bf1942c683b0d4e30b838ee9c';
+             var API_KEY = '84921e87fb8f2fc338c3ff9bf51a412e';
              var q = 'select * from flickr.photos.search where text="%' + queryString + '" and api_key="' + API_KEY + '"';
              Y.YQL(q, function(rawYqlData) {
                  var rawPhotos = rawYqlData.query.results.photo,
@@ -58,4 +58,4 @@ YUI.add('i18nMojitModel', function(Y) {
             + '/' + record.id + '_' + record.secret + '.jpg';
     }
 
-}, '0.0.1', {requires: ['yql']});
+}, '0.0.1', {requires: ['mojito', 'yql']});

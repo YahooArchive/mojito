@@ -152,7 +152,7 @@ YUI.add('ReadModelRss-tests', function(Y, NAME) {
     suite.add(new YUITest.TestCase({
         name: 'rss model tests',
         setUp: function() {
-            rss = Y.mojito.models.rss;
+            rss = Y.mojito.models.ReadModelRss;
             rss.init({limit: 10});
         },
 

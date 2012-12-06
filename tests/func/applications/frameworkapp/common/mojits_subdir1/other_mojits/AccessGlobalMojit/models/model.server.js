@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('AccessGlobalMojitModel', function(Y) {
+YUI.add('AccessGlobalMojitModel', function(Y, NAME) {
 
     Y.mojito.models.AccessGlobalMojit = {
 
@@ -15,4 +15,4 @@ YUI.add('AccessGlobalMojitModel', function(Y) {
 
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito']});

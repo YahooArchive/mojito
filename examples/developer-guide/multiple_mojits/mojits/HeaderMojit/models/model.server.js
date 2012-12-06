@@ -4,7 +4,9 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('HeaderMojitModel', function(Y) {
+/*jslint anon:true, sloppy:true, nomen:true*/
+
+YUI.add('HeaderMojitModel', function (Y, NAME) {
 
 /**
  * The HeaderMojitModel module.
@@ -18,9 +20,8 @@ YUI.add('HeaderMojitModel', function(Y) {
      * @class Model
      * @constructor
      */
-    Y.mojito.models.HeaderMojit = {
-
-        init: function(config) {
+     Y.namespace('mojito.models')[NAME] = {
+        init: function (config) {
             this.config = config;
         },
 
@@ -30,10 +31,10 @@ YUI.add('HeaderMojitModel', function(Y) {
          * @param callback {Function} The callback function to call when the
          *        data has been retrieved.
          */
-        getData: function(callback) {
-            callback({some:'data'});
+        getData: function (callback) {
+            callback({some: 'data'});
         }
 
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito']});

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('CoverageModel', function(Y) {
+YUI.add('CoverageModel', function(Y, NAME) {
 
 /**
  * The CoverageModel module.
@@ -15,7 +15,7 @@ YUI.add('CoverageModel', function(Y) {
      * @class Model
      * @constructor
      */
-    Y.mojito.models.default = {
+    Y.mojito.models[NAME] = {
 
         init: function(mojitSpec) {
             this.spec = mojitSpec;
@@ -33,4 +33,4 @@ YUI.add('CoverageModel', function(Y) {
 
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito']});

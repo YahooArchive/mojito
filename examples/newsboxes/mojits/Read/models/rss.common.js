@@ -15,7 +15,7 @@ YUI.add('ReadModelRss', function(Y, NAME) {
      * Fetch normalized RSS feed data as JSON via YQL.
      * @class ReadModelRss
      */
-    Y.mojito.models.rss = {
+    Y.mojito.models[NAME] = {
 
         /**
          * Initialize the model.
@@ -150,6 +150,7 @@ YUI.add('ReadModelRss', function(Y, NAME) {
     };
 
 }, '0.0.1', {requires: [
+    'mojito',
     'yql',
     'jsonp-url'
 ]});

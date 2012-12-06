@@ -4,14 +4,17 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('scrollModel', function(Y) {
+/*jslint anon:true, sloppy:true, nomen:true*/
 
-  Y.mojito.models.scrollMojit = {
-     init: function(config) {
-       this.config = config;
-      },
-      getData: function(callback) {
-        callback({some:'data'});
-      }
-  };
-}, '0.0.1', {requires: []});
+YUI.add('scrollModel', function (Y, NAME) {
+
+    Y.namespace('mojito.models')[NAME] = {
+
+        init: function (config) {
+            this.config = config;
+        },
+        getData: function (callback) {
+            callback({some: 'data'});
+        }
+    };
+}, '0.0.1', {requires: ['mojito']});

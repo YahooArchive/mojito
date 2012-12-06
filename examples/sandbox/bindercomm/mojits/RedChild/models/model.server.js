@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('RedChildModel', function(Y) {
+YUI.add('RedChildModel', function(Y, NAME) {
 
 /**
  * The RedChildModel module.
@@ -36,4 +36,4 @@ YUI.add('RedChildModel', function(Y) {
 
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito']});

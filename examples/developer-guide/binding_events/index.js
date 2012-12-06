@@ -4,13 +4,15 @@
  * See the accompanying LICENSE file for terms.
  */
 
+/*jslint anon:true, sloppy:true, nomen:true*/
+
 process.chdir(__dirname);
 
 /**
  * @param {object} config The configuration object containing processing params.
  * @param {object} token Token used to identify the application.
  */
-module.exports = function(config, token) {
+module.exports = function (config, token) {
     var app = require('./server.js');
 
     // Signal the application is ready, providing the token and app references.

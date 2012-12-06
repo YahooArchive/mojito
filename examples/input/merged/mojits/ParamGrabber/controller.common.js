@@ -54,4 +54,4 @@ YUI.add('ParamGrabber', function(Y, NAME) {
         return paramsArray;
     }
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito', 'mojito-params-addon']});

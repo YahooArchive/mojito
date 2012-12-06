@@ -4,7 +4,9 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('FooterMojitModel', function(Y) {
+/*jslint anon:true, sloppy:true, nomen:true*/
+
+YUI.add('FooterMojitModel', function(Y, NAME) {
 
 /**
  * The FooterMojitModel module.
@@ -18,9 +20,9 @@ YUI.add('FooterMojitModel', function(Y) {
      * @class Model
      * @constructor
      */
-    Y.mojito.models.FooterMojit = {
+     Y.namespace('mojito.models')[NAME] = {
 
-        init: function(config) {
+        init: function (config) {
             this.config = config;
         },
 
@@ -30,10 +32,10 @@ YUI.add('FooterMojitModel', function(Y) {
          * @param callback {Function} The callback function to call when the
          *        data has been retrieved.
          */
-        getData: function(callback) {
-            callback({some:'data'});
+        getData: function (callback) {
+            callback({some: 'data'});
         }
 
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito']});

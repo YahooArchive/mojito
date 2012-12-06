@@ -14,18 +14,22 @@ var fs = require('fs'),
 
 program.command('test')
     .description('Run unit and functional tests')
+    .option('-c, --cli', 'Run command line tests')
     .option('-u, --unit', 'Run unit tests')
     .option('-f, --func', 'Run functional tests')
     .option('-b, --no-build', 'Don\'t build the apps')
     .option('-d, --no-deploy', 'Don\'t deploy the apps')
     .option('-s, --no-selenium', 'Don\'t run arrow_selenium')
     .option('-a, --no-arrow', 'Don\'t run arrow_server')
+    .option('--debugApps', 'show STDOUT and STDERR from apps')
     .option('--logLevel <value>', 'Arrow logLevel')
     .option('--testName <value>', 'Arrow testName')
+    .option('--descriptor <value>', 'which descriptor to run. filename (or glob) relative to --path')
+    .option('--coverage', 'Arrow code coverage')
     .option('--group <value>', 'Arrow group')
     .option('--driver <value>', 'Arrow driver')
     .option('--browser <value>', 'Arrow browser')
-    .option('--path <value>', 'Path to find the tests')
+    .option('--path <value>', 'Path to find the tests. defaults to ./func or ./unit')
     .action(test);
 
 program.command('build')
@@ -36,22 +40,37 @@ program.command('deploy')
     .description('Deploy all apps')
     .action(deploy);
 
+// report how we're called, mainly to help debug CI environments
+console.log(process.argv.join(' '));
+console.log();
+
 program.parse(process.argv);
 
 function test (cmd) {
     var series = [];
     cmd.logLevel = cmd.logLevel || 'WARN';
     // Default to all tests
-    if (!cmd.unit && !cmd.func) {
+    if (!cmd.unit && !cmd.func && !cmd.cli) {
+        cmd.cli = true;
         cmd.unit = true;
         cmd.func = true;
     }
     cmd.unitBrowser = cmd.unitBrowser || cmd.browser || 'firefox';
     cmd.funcBrowser = cmd.funcBrowser || cmd.browser || 'firefox';
+    cmd.cliPath = path.resolve(cwd, cmd.cliPath || cmd.path || './cli');
     cmd.unitPath = path.resolve(cwd, cmd.unitPath || cmd.path || './unit');
     cmd.funcPath = path.resolve(cwd, cmd.funcPath || cmd.path || './func');
-    if (cmd.arrow) {
+
+    // We only start the Arrow server when we're running unit or functional
+    // tests. If we're only running cli tests we skip that since it slows things
+    // down without adding value.
+    if (cmd.arrow && (!cmd.cli || (!cmd.cli && !cmd.unit && !cmd.func))) {
         series.push(startArrowServer);
+    }
+    if (cmd.cli) {
+        series.push(function (callback) {
+            runCliTests(cmd, callback)
+        });
     }
     if (cmd.unit) {
         if ('phantomjs' !== cmd.unitBrowser) {
@@ -115,6 +134,42 @@ function startArrowServer (callback) {
     }, 5000);
 }
 
+function runCliTests (cmd, callback) {
+    console.log('---Running CLI Tests---');
+    var arrowReportDir = cmd.cliPath + '/artifacts/arrowreport/';
+    try {
+        wrench.rmdirSyncRecursive(arrowReportDir);
+    } catch (e) {}
+    wrench.mkdirSyncRecursive(arrowReportDir);
+
+    var commandArgs = [
+        cwd + "/../node_modules/yahoo-arrow/index.js",
+        "--descriptor=" + cmd.cliPath + "/**/*_descriptor.json",
+        "--report=true",
+        "--reportFolder=" + arrowReportDir
+    ];
+    // Unlike other test types the CLI tests force use of the nodejs driver and
+    // do not specify a browser since one won't be useful for CLI testing.
+    commandArgs.push('--driver=nodejs');
+
+    commandArgs.push('--logLevel=' + cmd.logLevel);
+    cmd.testName && commandArgs.push('--testName=' + cmd.testName);
+    cmd.group && commandArgs.push('--group=' + cmd.group);
+    cmd.coverage && commandArgs.push('--coverage=' + cmd.coverage);
+
+    var p = runCommand(
+        cmd.cliPath,
+        "node",
+        commandArgs,
+        function (code) {
+            callback(code);
+        }
+    );
+    p.stdout.on('data', function (data) {
+        process.stdout.write(data);
+    });
+}
+
 function runUnitTests (cmd, callback) {
     console.log('---Running Unit Tests---');
     var arrowReportDir = cmd.unitPath + '/artifacts/arrowreport/';
@@ -125,7 +180,7 @@ function runUnitTests (cmd, callback) {
 
     var commandArgs = [
         cwd + "/../node_modules/yahoo-arrow/index.js",
-        cmd.unitPath + "/**/*_descriptor.json",
+        "--descriptor=" + cmd.unitPath + "/**/*_descriptor.json",
         "--report=true",
         "--reportFolder=" + arrowReportDir
     ];
@@ -137,6 +192,7 @@ function runUnitTests (cmd, callback) {
     cmd.driver && commandArgs.push('--driver=' + cmd.driver);
     cmd.testName && commandArgs.push('--testName=' + cmd.testName);
     cmd.group && commandArgs.push('--group=' + cmd.group);
+    cmd.coverage && commandArgs.push('--coverage=' + cmd.coverage);
 
     var p = runCommand(
         cmd.unitPath,
@@ -168,26 +224,24 @@ function deploy (cmd, callback) {
         apps = appsConfig.applications;
 
     for (var i=0; i<apps.length; i++) {
-        (function () {
-            var app = apps[i],
-                port = app.port ? parseInt(app.port) : null,
+        (function (app) {
+            var port = app.port || null,
                 type = app.type || 'mojito';
 
             if ('mojito' === type) {
                 if (app.tests) {
                     var mytests = app.tests;
                     for(var j=0; j<mytests.length; j++) {
-                        (function () {
-                            var test = mytests[j],
-                                port = test.port ? parseInt(test.port) : null;
+                        (function (test) {
+                            var port = test.port || app.port || null;
                             appSeries.push(function (callback) {
-                                runMojitoApp(cmd.funcPath + '/applications', app.path, port, test.param, callback);
+                                runMojitoApp(app, cmd, cmd.funcPath + '/applications', port, test.param, callback);
                             });
-                        })();
+                        })(mytests[j]);
                     }
-                } else if (app.enabled === "true" && app.path && port) {
+                } else {
                     appSeries.push(function (callback) {
-                        runMojitoApp(cmd.funcPath + '/applications', app.path, port, app.param, callback);
+                        runMojitoApp(app, cmd, cmd.funcPath + '/applications', port, app.param, callback);
                     });
                 }
             } else if ('static' === type) {
@@ -195,7 +249,7 @@ function deploy (cmd, callback) {
                     runStaticApp(cmd.funcPath + '/applications', app.path, port, app.param, callback);
                 });
             }
-        })();
+        })(apps[i]);
     }
     async.series(appSeries, callback);
 }
@@ -217,11 +271,13 @@ function runFuncTests (cmd, callback) {
     } catch (e) {}
     wrench.mkdirSyncRecursive(arrowReportDir);
 
+    var descriptor = cmd.descriptor || '**/*_descriptor.json';
     var commandArgs = [
         cwd + "/../node_modules/yahoo-arrow/index.js",
-        cmd.funcPath + "/**/*_descriptor.json",
+        "--descriptor=" + cmd.funcPath + '/' + descriptor,
         "--report=true",
-        "--reportFolder=" + arrowReportDir
+        "--reportFolder=" + arrowReportDir,
+        "--config=" + cwd + "/config/config.js"
     ];
     if ('phantomjs' !== cmd.funcBrowser) {
         commandArgs.push('--reuseSession');
@@ -231,6 +287,7 @@ function runFuncTests (cmd, callback) {
     cmd.driver && commandArgs.push('--driver=' + cmd.driver);
     cmd.testName && commandArgs.push('--testName=' + cmd.testName);
     cmd.group && commandArgs.push('--group=' + cmd.group);
+    cmd.coverage && commandArgs.push('--coverage=' + cmd.coverage);
 
     var p = runCommand(
         cmd.funcPath,
@@ -300,12 +357,44 @@ function runCommand (path, command, argv, callback) {
     return cmd;
 }
 
-function runMojitoApp (basePath, path, port, params, callback) {
+function runMojitoApp (app, cliOptions, basePath, port, params, callback) {
+    if (!app.enabled) {
+        console.error('------------------------------- DISABLED APP ' + app.name + ':' + port);
+        callback();
+        return;
+    }
+    /* useful when debugging
+    var OK = {
+        4081: true,
+    };
+    if (! OK[port]) {
+        console.error('------------------------------- SKIPPING APP ' + app.name);
+        callback();
+        return;
+    }
+    */
     params = params || '';
-    console.log('Starting ' + path + ' at port ' + port + ' with params ' + (params || 'empty'));
-    var p = runCommand(basePath + '/' + path, cwd + "/../bin/mojito", ["start", port, "--context", params], function () {});
+    console.log('Starting ' + app.name + ' at port ' + port + ' with params ' + (params || 'empty'));
+    var cmdArgs = ['start'];
+    if (port) {
+        cmdArgs.push(port);
+    }
+    if (params) {
+        cmdArgs.push('--context');
+        cmdArgs.push(params);
+    }
+    var p = runCommand(basePath + '/' + app.path, cwd + "/../bin/mojito", cmdArgs, function () {});
+
     pids.push(p.pid);
-    pidNames[p.pid] = libpath.basename(path) + ':' + port + (params ? '?' + params : '');
+    pidNames[p.pid] = app.name + ':' + port + (params ? '?' + params : '');
+    if (cliOptions.debugApps) {
+        p.stdout.on('data', function(data) {
+            console.error('---DEBUG ' + port + ' STDOUT--- ' + data.toString());
+        });
+        p.stderr.on('data', function(data) {
+            console.error('---DEBUG ' + port + ' STDERR--- ' + data.toString());
+        });
+    }
     // Give each app a second to start
     setTimeout(function () { callback(null) }, 1000);
 }
