@@ -24,12 +24,17 @@ root folder:
 Deprecated with Warnings
 ========================
 
+* (2012-12-05) the `mojito compile` command will be removed in future releases, in favor of [Shaker](/yahoo/mojito-shaker).
 * (2012-04-23) `ac.dispatch()` will be going away.
 Currently the best alternative is `ac._dispatch()`.
 
 
 Removed
 =======
+
+### (0.5.0) Mojito `compile` command line tool no longer needs a `rollup` command
+
+Javascript file concatenation/combo'ing of mojito files is now built-in.
 
 ### (0.5.0) Mojito No Longer Adds Common ActionContext Addons
 
