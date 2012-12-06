@@ -1,6 +1,6 @@
 {
     "name": "yui_module",
-    "description": "example mojit showing how to load YUI modules that are in the autoload directory.",
+    "description": "example mojit showing how to load YUI modules that are in the yui_modules directory.",
     "version": "0.0.1",
     "author": {
         "name": "Isao Yagi",

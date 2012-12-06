@@ -18,9 +18,9 @@ Conventions
 
      - ``{app_name}/tests`` - application tests
      - ``{app_name}/mojits/{mojit_name}/tests`` - mojit tests
-     - ``{app_name}/autoload/{yui_module}/tests`` - tests for 
+     - ``{app_name}/yui_modules/{yui_module}/tests`` - tests for 
        application-level YUI modules
-     - ``{app_name}/mojits/{mojit_name}/autoload/{yui_module}/tests`` - tests for 
+     - ``{app_name}/mojits/{mojit_name}/yui_modules/{yui_module}/tests`` - tests for 
        mojit-level YUI modules
 - Syntax for the name of the test file: ``{yui_module}.{affinity}-tests.js``
 
@@ -77,9 +77,8 @@ have properly scoped values.
 Types of Mojit Tests
 --------------------
 
-The following three types of mojit tests exist:
+The following two types of mojit tests exist:
 
-- binder tests
 - controller tests
 - model tests
 
@@ -95,7 +94,7 @@ have the string ``-tests`` appended to the affinity. For example, the mojit
 controller with the ``common`` affinity would be ``controller.common.js``, 
 so the name of the test file must be ``controller.common-tests.js``.
 
-The ``controller.common.js`` below requires the ``Foo`` module.
+The ``controller.common.js`` below registers the ``Foo`` module.
 
 .. code-block:: javascript
 
@@ -104,91 +103,13 @@ The ``controller.common.js`` below requires the ``Foo`` module.
    });
 
 To test the ``Foo``, module, the the test file ``controller.common-tests.js`` would 
-require the ``Foo-tests`` module as seen below.
+require the ``Foo`` and 'mojito-test' modules as seen below.
 
 .. code-block:: javascript
 
    YUI.add('Foo-tests', function(Y) {
      ...
    }, 'VERSION', {requires: ['mojito-test', 'Foo']});
-
-.. _mojito_testing-binders:
-
-Binder Tests
-============
-
-You can create multiple binder tests and place them in the ``tests/binders`` 
-directory. For example, if your binder is ``binders/index.js``, the test file 
-would be ``tests/binders/index.common-test.js``. Notice that the affinity is 
-``common``, which can be used for binders on the client or server and is also 
-the default binder test file.
-
-.. _binders_test-ex:
-
-Example
--------
-
-Below is the binder ``index.js`` that includes the ``FooBinderIndex`` module:
-
-.. code-block:: javascript
-
-   YUI.add('FooBinderIndex', function(Y, NAME) {
-     Y.namespace('mojito.binders')[NAME] = {
-       init: function(mojitProxy) {
-         this.mojitProxy = mojitProxy;
-       },
-       bind: function(node) {
-         this.node = node;
-         var nodeId = node.get('id');
-         var binderId = this.mojitProxy._viewId;
-         Y.log(nodeId + ' node bound', 'debug', NAME);
-         if (nodeId !== binderId) {
-           throw new Error("bad node binding to binder!");
-         }
-         this.node.append("<p>" + nodeId + " bound</p>");
-       },
-       _updateId: function(msg) {
-         var nodeId = this.node.get('id');
-         msg = msg || 'bound';
-         this.node.one("p").set('innerHTML', nodeId + ' ' + msg);
-       },
-       handleClick: function(evt) {
-         this.node.one('div').set('innerHTML', "clicked on " + new Date());
-       }
-     };
-   }, '0.0.1', {requires: []});
-
-The test binder file ``tests/binders/index-common-tests.js`` below includes the 
-module ``FooBinderIndex-tests`` and the requires ``array`` includes the 
-``FooBinderIndex`` module:
-
-.. code-block:: javascript
-
-   YUI.add('FooBinderIndex-tests', function(Y, NAME) {
-     var suite = new YUITest.TestSuite(NAME),
-     binder, A = YUITest.Assert;
-     suite.add(new YUITest.TestCase({
-       name: 'Foo binder index tests',
-       setUp: function() {
-         binder = Y.mojito.binders.FooBinderIndex;
-       },
-       tearDown: function() {
-         binder = null;
-       },
-       'test update id': function() {
-         var node = Y.Node.create("<div id='guid123'></div>");        
-         binder.init({
-           _guid: 'guid123'
-         });
-         binder.bind(node);
-         binder._updateId('hello');
-         var content = node.one('p').getContent();
-         Y.log(content);
-         A.areSame(content, 'guid123 hello', 'the node was not updated');
-       }
-     }));
-     YUITest.TestRunner.add(suite);
-   }, '0.0.1', {requires: ['mojito-test', 'node', 'FooBinderIndex']});
 
 
 .. _mojito_testing-controller:
@@ -222,7 +143,7 @@ The ``controller.server.js`` below requires the ``Foo`` module.
 To test the controller of the ``Foo`` mojit, create a file in the tests 
 directory called ``controller.common-tests.js`` that includes the ``Foo-tests`` 
 module as seen below. Note that the reference to the controller is gotten 
-using ``Y.mojito.controller`` or ``Y.mojito.controllers[NAME]``.
+using ``Y.mojito.controllers[NAME]``.
 
 .. code-block:: javascript
 
@@ -233,7 +154,7 @@ using ``Y.mojito.controller`` or ``Y.mojito.controllers[NAME]``.
      suite.add(new YUITest.TestCase({
        name: 'Foo tests',
        setUp: function() {
-         controller = Y.mojito.controller;
+         controller = Y.mojito.controllers.Foo;
        },
        tearDown: function() {
          controller = null;
@@ -335,13 +256,13 @@ Configuring Mojito to Test MockActionContext Object
 ###################################################
 
 To configure Mojito to use your ``MockActionContext`` object to run test, 
-use the following:
+use the following, where ``{actionUnderTest}`` is the action you are testing.
 
 .. code-block:: javascript
 
-   Y.mojito.controller.actionUnderTest(ac);
+   Y.mojito.controller.{actionUnderTest}(ac);
 
-If ``actionUnderTest`` function fails to call the ``done`` function, calls 
+If the ``{actionUnderTest}`` function fails to call the ``done`` function, calls 
 it more than one time, or calls it with the wrong parameters, the test will 
 fail.
 
@@ -442,6 +363,9 @@ the namespaces of the addons within the ``MockActionContext`` constructor:
      returns: 'updating, yo'
    });
 
+
+
+
 .. _mock_custom_addons:
 
 Mocking Custom Addons
@@ -496,6 +420,69 @@ array with the model YUI modules as is done with addons:
      }
    );
 
+.. _mock_addons-ex:
+
+Example MockAction Test
+-----------------------
+
+.. _mock_addons_ex-controller:
+
+controller.server.js
+####################
+
+
+.. code-block:: javascript
+
+   YUI.add('myMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = {
+       index: function(ac) {
+           ac.done({
+              status: 'Mojito is working.',
+           });
+         }
+       };
+   }, '0.0.1', {requires: ['mojito', 'myMojitModelFoo']});
+
+.. _mock_addons_ex-controller_test:
+
+controller.server-tests.js
+##########################
+
+.. code-block:: javascript
+
+   YUI.add('tester-tests', function(Y) {
+     var suite = new YUITest.TestSuite('tester-tests'),
+         controller = null,
+         A = YUITest.Assert;
+
+     suite.add(new YUITest.TestCase({
+       name: 'tester user tests',
+       setUp: function() {
+         controller = Y.mojito.controllers.tester;
+       },
+       tearDown: function() {
+         controller = null;
+       },
+       'test mojit': function() {
+         var ac = new Y.mojito.MockActionContext({});
+         A.isNotNull(controller);
+         A.isFunction(controller.index);
+         ac.expect({
+           method: 'done',
+           args: [YUITest.Mock.Value.Object],
+           callCount: 1,
+           run: function(data){
+             YUITest.ObjectAssert.areEqual({ status: 'Mojito is working.' },data);
+           }
+         });
+         controller.index(ac);
+         ac.verify();
+       }
+     }));
+     YUITest.TestRunner.add(suite);
+   }, '0.0.1', {requires: ['mojito-test', 'myMojit']});
+
+
 .. _mojito_testing-models:
 
 Model Tests
@@ -536,7 +523,7 @@ module.
      suite.add(new YUITest.TestCase({
        name: 'Foo model tests',
        setUp: function() {
-         model = Y.mojito.models.Layout;
+         model = Y.mojito.models.FooModel;
        },
        tearDown: function() {
          model = null;
@@ -691,8 +678,8 @@ or unit tests with one command.
 Using Arrow to Run Tests
 ************************
 
-You can also separately run unit and functional tests directly 
-with the ``arrow`` command. You pass Arrow a test descriptor, which
+You can also run individual unit and functional tests  
+with the ``arrow`` command. You just pass Arrow a test descriptor, which
 is a JSON configuration file that describes and organizes your tests.
 For an overview of Arrow and the command-line options, see 
 the `Arrow README <https://github.com/yahoo/arrow/blob/master/README.md>`_.

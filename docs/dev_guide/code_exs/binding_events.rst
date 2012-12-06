@@ -11,7 +11,6 @@ Binding Events
 Summary
 =======
 
-
 This example shows how to bind events to a mojit, configure code to run 
 on the client, and make AJAX calls to the YQL Web service. The application 
 listens for events and then makes AJAX calls to YQL to get Flickr photo 
@@ -179,11 +178,11 @@ Binder Basics
 #############
 
 A mojit may have zero, one, or many binders within the ``binders`` directory. Each binder 
-will be deployed to the browser along with the rest of the mojit code, where the client-side 
-Mojito runtime will call it appropriately.  On the client, the binder has a proxy 
-object (``mojitProxy``) for interacting with the mojit it represents as well as with other 
-mojits on the page. Methods can be called from the ``mojitProxy`` object that allow 
-binders to listen for and fire events.
+will be deployed to the browser along with the rest of the mojit code, where the 
+client-side Mojito runtime will call it appropriately.  On the client, the binder has a 
+proxy object (``mojitProxy``) for interacting with the mojit it represents as well as 
+with other mojits on the page. Methods can be called from the ``mojitProxy`` object 
+that allow binders to listen for and fire events.
 
 The binder consists of a constructor, an initializer, and a bind function. The following 
 describes each component and indicates when the ``mojitProxy`` object can be used.
@@ -233,8 +232,8 @@ dissect and analyze the code.  Let's begin by looking at the ``bind`` function o
 
 In this code snippet of ``binders/index.js``, the ``bind`` function contains the nested 
 ``updateDOM`` function that updates node content and attaches event handlers. Using the 
-``mojitProxy`` object, the nested ``flipper`` function calls the ``index`` function of the 
-controller. The callback ``updateDOM`` is passed to ``index`` to update the content.
+``mojitProxy`` object, the nested ``flipper`` function calls the ``index`` function of 
+the controller. The callback ``updateDOM`` is passed to ``index`` to update the content.
 
 .. code-block:: javascript
 
@@ -261,10 +260,10 @@ controller. The callback ``updateDOM`` is passed to ``index`` to update the cont
    ...
 
 
-The event handler for mouseovers and mouseouts are handled by the ``showOverlay`` function, 
-which creates the overlay containing photo information. In the code snippet below, 
-``showOverlay`` makes an AJAX call to YQL to get photo data that is placed in an unordered 
-list for the overlay.
+The event handler for mouseovers and mouseouts are handled by the ``showOverlay`` 
+function, which creates the overlay containing photo information. In the code snippet 
+below, ``showOverlay`` makes an AJAX call to YQL to get photo data that is placed in an 
+unordered list for the overlay.
 
 .. code-block:: javascript
 
@@ -500,9 +499,9 @@ calculate the index of the first photo to display:
 To get the photo data, the controller depends on the model to call YQL to query the 
 Flickr API. Using ``actionContext.get({model_name})`` lets you get a reference to the 
 model. The example controller below calls the ``getData`` from the model 
-``PagerMojitModel`` with ``actionContext.models.get('PagerMojitModel').getData`, which 
-will get the returned data from YQL in the callback function. To use methods from models, you need
-to require the model in the ``requires`` array of the controller. 
+``PagerMojitModel`` with ``actionContext.models.get('PagerMojitModel').getData``, which 
+will get the returned data from YQL in the callback function. To use methods from models, 
+you need to require the model in the ``requires`` array of the controller. 
 
 .. code-block:: javascript
 
@@ -533,7 +532,14 @@ to require the model in the ``requires`` array of the controller.
        }
        ...
      };
-   }, '0.0.1', {requires: ['dump', 'mojito-url-addon', 'mojito-params-addon', 'PagerMojitModel']});
+   }, '0.0.1', {requires: [
+     'mojito', 
+     'mojito-models-addon', 
+     'mojito-url-addon', 
+     'mojito-params-addon', 
+     'PagerMojitModel',
+     'dump'
+   ]});
 
 
 The URLs for the **prev** and **next** links are created by passing the mojit instance, 
@@ -546,7 +552,7 @@ If the query string created by ``Y.QueryString.stringify`` is "page=2" ,
 .. code-block:: javascript
 
    ...
-   function createLink(actionContext, params) {
+     function createLink(actionContext, params) {
        var mergedParams = Y.mojito.util.copy(actionContext.params.getFromMerged());        
        for (var k in params) {
          mergedParams[k] = params[k];
@@ -616,7 +622,14 @@ create URLs for the **next** and **prev** links.
        }
        return actionContext.url.make('frame', 'index', Y.QueryString.stringify(mergedParams));
      }
-   }, '0.0.1', {requires: ['dump', 'mojito-url-addon', 'mojito-params-addon', 'PagerMojitModel']});
+   }, '0.0.1', {requires: [
+     'mojito', 
+     'mojito-models-addon', 
+     'mojito-url-addon', 
+     'mojito-params-addon', 
+     'PagerMojitModel',
+     'dump'
+   ]});
 
 .. _code_exs_events-setup:
 
@@ -733,11 +746,18 @@ To set up and run ``binding_events``:
             }
             return actionContext.url.make('frame', 'index', Y.QueryString.stringify(mergedParams));
           }
-      }, '0.0.1', {requires: ['dump', 'mojito-url-addon', 'mojito-params-addon', 'PagerMojitModel']});
+      }, '0.0.1', {requires: [
+        'mojito', 
+        'mojito-models-addon', 
+        'mojito-url-addon', 
+        'mojito-params-addon', 
+        'PagerMojitModel',
+        'dump'
+      ]});
 
 
-#. To get Flickr photo information using YQL, create the file ``models/model.server.js`` with 
-   the code below. Be sure to replace the ``'{your_flickr_api_key}'`` with your own
+#. To get Flickr photo information using YQL, create the file ``models/model.server.js`` 
+   with the code below. Be sure to replace the ``'{your_flickr_api_key}'`` with your own
    Flickr API key.
 
    .. code-block:: javascript

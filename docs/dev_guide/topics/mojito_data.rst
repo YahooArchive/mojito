@@ -115,7 +115,7 @@ POST
 ----
 
 The POST parameters come from the HTTP POST request body and often consist of 
-form data. As with query string parameters, the Params addon has the method 
+form data. As with query string parameters, the ``Params`` addon has the method 
 ``getFromBody`` that allows you to specify a single parameter or get all of 
 the POST body parameters.
 
@@ -256,7 +256,7 @@ to determine whether the user gets a coupon.
          var name = actionContext.params.getFromBody("name");
          if(sendCoupon){
             // Display coupon to user
-             var coupon = getCoupon;
+             var coupon = sendCoupon;
          }
          actionContext.done(
            {
@@ -369,6 +369,32 @@ To get all of the GET, POST, and routing parameters, call ``getFromMerged`` or
        }
      }
    }, '0.0.1', {requires: ['mojito-params-addon']});
+
+.. _mojito_params_addon-aliases:
+
+Params Addon Method Aliases
+===========================
+
+We have looked at the methods of the ``Params`` addon for getting query string
+parameter, query string parameters, and HTTP body data. For simplicity,
+the ``Params`` addon also provides the aliases below
+for the methods that we have covered thus far.
+
++---------------------+--------------+
+| Method              | Alias        | 
++=====================+==============+
+| ``getAll()``        | ``all()``    | 
++---------------------+--------------+
+| ``getFromBody()``   | ``body()``   |
++---------------------+--------------+
+| ``getFromFiles()``  | ``files()``  |
++---------------------+--------------+
+| ``getFromMerged()`` | ``merged()`` |
++---------------------+--------------+
+| ``getfromRoute()``  | ``route()``  | 
++---------------------+--------------+
+| ``getFromUrl()``    | ``url()``    |
++---------------------+--------------+
 
 
 .. _mojito_data-cookie:

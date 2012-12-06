@@ -5,6 +5,7 @@
  */
 
 /*jslint anon:true, sloppy:true, nomen:true*/
+
 YUI.add('deviceModel', function (Y, NAME) {
 
 /**

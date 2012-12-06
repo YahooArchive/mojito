@@ -19,7 +19,7 @@ page views and browser sessions.
 
 The following topics will be covered:
 
-- adding YUI modules to the ``autoload`` directory
+- adding YUI modules to the ``yui_modules`` directory
 - accessing YUI modules from a mojit
 
 .. _code_exs-incl_yui_mods-notes:
@@ -38,9 +38,9 @@ Location
 ########
 
 To add YUI modules that all your mojits can access, place the modules in the 
-``autoload`` directory under the application directory. For example, YUI 
+``yui_modules`` directory under the application directory. For example, YUI 
 modules in the ``hello_world`` application would be placed in 
-``hello_world/autoload``.
+``hello_world/yui_modules``.
 
 .. _yui_mod_impl_add-naming:
 
@@ -70,7 +70,7 @@ the module identified by the string ``'gallery-storage-lite'``.
 
    YUI.add('gallery-storage-lite', function (Y) {
       ...
-   }, '1.0.0', { requires: ['event-base', 'event-custom', 'event-custom-complex', 'json']});
+   }, '1.0.0', { requires: [ 'event-base', 'event-custom', 'event-custom-complex', 'json']});
 
 
 .. _yui_mod_impl-using:
@@ -78,7 +78,7 @@ the module identified by the string ``'gallery-storage-lite'``.
 Using a YUI Module from Mojits
 ------------------------------
 
-After registered YUI modules have been added to the ``autoload`` directory, you 
+After registered YUI modules have been added to the ``yui_modules`` directory, you 
 can load them into your mojit code by listing them as dependencies in the 
 ``requires`` array. In the binder ``index.js`` below, you can see that the 
 Storage Lite module that we created and registered in :ref:`registering_module` 
@@ -95,7 +95,7 @@ is listed as a dependency in the ``requires`` array.
          ...
        }
      };
-     // See autoload/storage-lite.client.js
+     // See yui_modules/storage-lite.client.js
    }, '0.0.1', {requires: [  'gallery-storage-lite' ]});
 
 In the ``bind`` method, ``Y.StorageLite.getItem`` and ``Y.StorageLite.setItem`` 
@@ -105,17 +105,22 @@ instance to access the module.
 .. code-block:: javascript
 
    ...
-     bind: function(node) {
+     bind: function (node) {
+
        // Based on http://yuilibrary.com/gallery/show/storage-lite
-       var keyname = 'storage-lite-example', notes = node.one('#notes');
-       // Populate the textarea with the stored note
-       // text on page load.
-       notes.set('value', Y.StorageLite.getItem(keyname) || '');   
-       // Save the contents of the textarea after
-       // each keystroke.
-       notes.on('keyup', function() {
-         Y.StorageLite.setItem(keyname, notes.get('value')); 
+       var keyname = 'storage-lite-example',
+           notes = node.one('#notes');
+
+       // Populate the textarea with the stored note text on page load.
+       notes.set('value', Y.StorageLite.getItem(keyname) || '');
+
+       // Save the contents of the textarea after each keystroke.
+       notes.on('keyup', function () {
+         Y.StorageLite.setItem(keyname, notes.get('value'));
        });
+
+       // adding a classname to the notes element to facilitate func tests
+       notes.addClass('ready');
      }
    ...
 
@@ -172,12 +177,12 @@ To set up and run ``yui_module``:
         }
       ]
 
-#. Create the autoload directory for storing the Storage Lite module.
+#. Create the ``yui_modules`` directory for storing the Storage Lite module.
 
-   ``$ mkdir autoload``
-#. Get the Storage Lite module and place it in the ``autoload`` directory.
+   ``$ mkdir yui_modules``
+#. Get the Storage Lite module and place it in the ``yui_modules`` directory.
 
-   ``$ wget -O autoload/storage-lite.client.js https://raw.github.com/rgrove/storage-lite/master/src/storage-lite.js --no-check-certificate``
+   ``$ wget -O yui_modules/storage-lite.client.js https://raw.github.com/rgrove/storage-lite/master/src/storage-lite.js --no-check-certificate``
 #. Change to ``mojits/Notepad``.
 #. Replace the code in ``controller.server.js`` with the following:
 
@@ -197,29 +202,34 @@ To set up and run ``yui_module``:
    .. code-block:: javascript
 
       YUI.add('NotepadBinderIndex', function (Y, NAME) {
+
         Y.namespace('mojito.binders')[NAME] = {
-          init: function(mojitProxy) {
+          init: function (mojitProxy) {
             this.mp = mojitProxy;
           },
-          /**
-          * @method bind
-          * @param {Node} YUI Node
-          */
-          bind: function(node) {
+          bind: function (node) {
+
             // Based on http://yuilibrary.com/gallery/show/storage-lite
-            var keyname = 'storage-lite-example', notes = node.one('#notes');
-            // Populate the textarea with the stored
-            // note text on page load.
+            var keyname = 'storage-lite-example',
+                notes = node.one('#notes');
+
+            // Populate the textarea with the stored note text on page load.
             notes.set('value', Y.StorageLite.getItem(keyname) || '');
-            // Save the contents of the textarea after
-            // each keystroke.
-            notes.on('keyup', function() {
-              Y.StorageLite.setItem(keyname, notes.get('value'));
+
+            // Save the contents of the textarea after each keystroke.
+            notes.on('keyup', function () {
+                Y.StorageLite.setItem(keyname, notes.get('value'));
             });
+
+            // adding a classname to the notes element to facilitate func tests
+            notes.addClass('ready');
           }
         };
-        // See autoload/storage-lite.client.js
-      }, '0.0.1', {requires: [ 'gallery-storage-lite' ]});
+      }, '0.0.1', {
+        requires: [ 
+          'gallery-storage-lite' //see yui_modules/storage-lite.client.js
+        ]
+      });
 
 #. To display a form that allows users to input text, replace the code in 
    ``views/index.hb.html`` with the following:

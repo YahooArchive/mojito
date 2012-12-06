@@ -24,10 +24,10 @@ You will learn how to do the following:
 
 .. _getting_started-make_app:
 
-Make the Application
-====================
+Create the Application
+======================
 
-#. Create the Mojito application  ``minty_app``.
+#. Create the Mojito application ``minty_app``.
 
    ``$ mojito create app minty_app``
 
@@ -37,8 +37,8 @@ Make the Application
 
 .. _getting_started-make_mojit:
 
-Make the Sample Mojit
-=====================
+Create the Sample Mojit
+=======================
 
 
 The name *mojit* is a fusion of the words module and widget. The mojit, 
@@ -64,7 +64,7 @@ models or views in this tutorial.
    ``$ mojito create mojit HelloMojit``
 
    The `Mojito command-line tool <../reference/mojito_cmdline.html>`_ creates 
-   a canned mojit definition named ``HelloMojit``.
+   a canned mojit named ``HelloMojit``.
 
 #. To configure your application to use ``HelloMojit``, replace the code in 
    ``application.json`` with the following:
@@ -147,8 +147,8 @@ You will now modify the controller, so that the ``index`` function called in the
 controller outputs different results.
 
 #. Change to ``mojits/HelloMojit``.
-#. Edit ``controller.server.js`` and replace the string 'Just a simple mojit.' in 
-   the code with 'Hello World!'. Your ``controller.server.js`` should look similar 
+#. Edit ``controller.server.js`` and replace the string 'Mojito is working.' in 
+   the code with 'Doing well, thanks.'. Your ``controller.server.js`` should look similar 
    to the following code:
 
    .. code-block:: javascript
@@ -245,6 +245,10 @@ controller outputs different results.
                     }
                   };
                 }
+              },
+              done: function(data) {
+                doneResults = data;
+              }
             };
             A.isNotNull(controller);
             A.isFunction(controller.index);

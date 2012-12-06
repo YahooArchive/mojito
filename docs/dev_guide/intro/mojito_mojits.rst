@@ -114,7 +114,7 @@ See `Addons <../api_overview/mojito_addons.html>`_ in the
 View Files
 ##########
 
-View files are called templates in Mojito. View templates can contain both HTML
+View files are called templates in Mojito. Templates can contain both HTML
 and templating tags/expressions, such as Mustache or Handlebars, and are rendered into 
 markup that is outputted to the client.
 
@@ -150,11 +150,11 @@ directory structure and files of a mojit.
 Active View
 ###########
 
-The combination of a Mojit's view together with its user event handlers (as
+The combination of a mojit's view together with its user event handlers (as
 distinct from system event handlers) is called its Active View. The Active View
-is that portion of a Mojit that always resides within the client, in order to
+is that portion of a mojit that always resides within the client, in order to
 provide the actual presentation together with the immediate event handling that
-makes the Mojit responsive.
+makes the mojit responsive.
 
 The event handlers within the Active View are intended to be very "thin"; they
 perform translation of user gestures to mojit capabilities (e.g., button click

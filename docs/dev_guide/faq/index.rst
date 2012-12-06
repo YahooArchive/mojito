@@ -104,9 +104,9 @@ General
 .. _moj_langs:
 .. topic::  **What languages can I use to develop mojits?**
 
-    JavaScript is the programming language of Cocktails. All modules are written in JavaScript, 
-    and JavaScript only. Modules that require server-side execution do so through a server-side 
-    JavaScript execution engine. 
+    JavaScript is the programming language of Cocktails. All modules are written in 
+    JavaScript, and JavaScript only. Modules that require server-side execution do so 
+    through a server-side JavaScript execution engine. 
     
 ------------    
 
@@ -115,7 +115,7 @@ General
 
     The tools used in developing mojit modules (mojits) work offline, without requiring 
     access to networked resources. When networked (cloud) resources are required due to the 
-    moduleâs own nature, e.g., retrieving data from a back-end service, Cocktails provides 
+    modules own nature, e.g., retrieving data from a back-end service, Cocktails provides 
     facilities to mock these resources and simulate their behavior with dummy (local) 
     implementations.
 
@@ -134,7 +134,8 @@ General
     
     1. Install ``nodemon``:  ``$ sudo npm install nodemon -g``
     
-    2. In your Mojito application directory, create the file ``devel.js`` with the following:
+    2. In your Mojito application directory, create the file ``devel.js`` with the 
+       following:
     
        .. code-block:: javascript
     
@@ -190,12 +191,12 @@ General
 ------------
 
 .. _moj_caching:
-.. topic:: **Does Mojito have API methods for handling caching? If not, what's the best way for Mojito 
-           applications to handle caching?** 
+.. topic:: **Does Mojito have API methods for handling caching? If not, what's the best 
+           way for Mojito applications to handle caching?** 
 
-    Mojito currently does not have any API methods for handling caching. Although there is no 
-    definitive solution for caching for Mojito, here are a few possible ways to cache for Mojito 
-    applications:
+    Mojito currently does not have any API methods for handling caching. Although there is 
+    no definitive solution for caching for Mojito, here are a few possible ways to cache 
+    for Mojito applications:
     
     - **Client-Side Caching**
     
@@ -288,8 +289,9 @@ General
 .. topic:: **How can I improve the performance of my Mojito application?**
 
     The following sections offer some ideas about how to improve the performance of your 
-    Mojito application, but are by no means exhaustive. You should also review online articles 
-    about improving Node.js performance, such as `Blazing fast node.js: 10 performance tips 
+    Mojito application, but are by no means exhaustive. You should also review online 
+    articles about improving Node.js performance, such as 
+    `Blazing fast node.js: 10 performance tips 
     from LinkedIn Mobile <http://bit.ly/uFyio2>`_ written by software engineer Shravya 
     Garlapati.
     
@@ -447,9 +449,10 @@ Mojits
 .. .. _moj_reuse:
 .. .. topic:: **Can I share or re-use mojits?**
 
-..    Although not available yet, Y Cocktails mojit gallery/repository will let developers share, 
-..    discover, and select mojits to re-use in building their experiences. A common packaging format 
-..    for mojits is used, based on the CommonJS specification.    
+..    Although not available yet, the Cocktails mojit gallery/repository will let 
+..    developers share, discover, and select mojits to re-use in building their 
+..    experiences. A common packaging format for mojits is used, based on the CommonJS 
+..    specification.    
 
 Configuration
 -------------
@@ -468,10 +471,10 @@ Configuration
 .. _moj_client:
 .. topic:: **How do you configure mojits to run on the client?** 
 
-    Run Mojito at build time to generate the html page using "mojito build html5app". This 
-    runs the Mojito infrastructure as if it were a running server instance and prints out 
-    the resulting HTML+JSON required to bootstrap a client-side mojit. This is what 
-    Livestand does. Among other things, it leads down a path where it's very hard to do 
+    Run Mojito at build time to generate the HTML page using ``mojito build html5app``. 
+    This runs the Mojito infrastructure as if it were a running server instance and prints 
+    out the resulting HTML+JSON required to bootstrap a client-side mojit. 
+    Among other things, it leads down a path where it's very hard to do 
     incremental builds because the Web server abstraction makes it hard to do the timestamp 
     resolution that incremental builds require. A better approach would be to allow people 
     to hard-code the top-level mojit bootstrap code by publishing mojit creation APIs that 
@@ -529,11 +532,10 @@ Data
     as seen below. The ``template`` object can contain key-value pairs that can be added 
     to the view template as Handlebars expressions. For example, the key ``foo`` in the 
     ``template`` object shown here can be used in the template as ``{{foo}}``, which will 
-    be replaced by the value 'bar' when the template is rendered.
+    be replaced by the value 'bar' when the template is rendered.::
     
-    ``// Inside parent mojit``
-    
-    ``ac.done({ template: { "foo": "bar" }});``
+      // Inside parent mojit
+      ac.done({ template: { "foo": "bar" }});
     
 ------------    
     
@@ -655,12 +657,12 @@ Views
 .. _moj_devices:
 .. topic:: **Do I have to create separate mojits for different devices?**
 
-    The platformâs capabilities allow mojits to be executed (and their results displayed) 
+    The platform's capabilities allow mojits to be executed (and their results displayed) 
     on every device in either set. For a module developer, the benefit is obvious: a single 
-    codebase that can address a wide range of devices. Mojits may still need to be customized 
-    for a specific device (or device class), however, to take advantage of device-specific 
-    capabilities. The platform does not perform an automated translation/degradation of 
-    HTML5 views to simpler layouts, for example. 
+    codebase that can address a wide range of devices. Mojits may still need to be 
+    customized for a specific device (or device class), however, to take advantage of 
+    device-specific capabilities. The platform does not perform an automated 
+    translation/degradation of HTML5 views to simpler layouts, for example. 
 
 ------------
 
@@ -703,9 +705,9 @@ Logging/Testing
 .. _moj_log_level:
 .. topic:: **How do I change the logging levels for my Mojito application?** 
 
-    You can set log levels for your application using the ``yui.config`` object in ``application.json``. 
-    You can also set default log levels using the ``yui.config`` object in the ``defaults.json`` 
-    at the application or mojit level.
+    You can set log levels for your application using the ``yui.config`` object in 
+    ``application.json``. You can also set default log levels using the ``yui.config`` 
+    object in the ``defaults.json`` at the application or mojit level.
 
     See `Logging <../topics/mojito_logging.html>`_ for details and the code example 
     `Simple Logging <../code_exs/simple_logging.html>`_.
@@ -716,21 +718,38 @@ Logging/Testing
 .. _moj_mod_log_exclusion:
 .. topic:: **Is there a way to exclude specific modules from logging on the client?** 
 
-    Mojito does not offer such a fine-grain control over logging. Because each log 
-    statement tends to be associated with a module name, you could start Mojito with the 
-    following command to exclude the logs for certain modules:
+    Yes, you can use the ``logExclude`` property of the ``yui.config`` object to
+    exclude the logging of specified modules.
 
-    ``$ mojito start 2>&1 | grep -v ModuleName``
+    For example, the logging configuration set by ``yui.config`` below excludes 
+    logging from the module ``pagingBinder``:
+
+    .. code-block:: javascript
+
+       ...
+          "yui": {
+            "config": {
+              "logExclude": "pagingBinder",
+              "logLevel": "info"
+            }
+          }
+      ...
+
+    See `Including and Excluding Modules From Logging <../topics/mojito_logging.rst#logging_custom-include_exclude_src>`_
+    for more information.
 
 ------------
     
 .. _moj_client_server_logging:
 .. topic:: **Can logging be configured to be different for the client and server?** 
 
-    Yes, the ``application.json`` configuration file can contain a ``yui.config`` object that 
-    contain the properties ``logExclude`` and ``logInclude`` to log certain components
-    of your application. You can also use context configurations to have different
-    configurations depending on the runtime environment.
+    Yes, the ``application.json`` configuration file uses the ``yui.config`` object 
+    for configuring logging. You can use contexts to customize logging for 
+    different runtime environments. For instance, you could use the ``"runtime:client"``
+    context to configure client-side logging and the ``"master"`` context to configure
+    server-side logging. You can also use the properties ``logExclude`` and ``logInclude`` 
+    of the ``yui.config`` object to log or not log certain components
+    of your application. 
 
     See `config Object <../intro/mojito_configuring.html#yui_config>`_ 
     and the `Log Configuration <../topics/mojito_logging.html#log-configuration>`_ for 

@@ -1,50 +1,13 @@
-/*
- * Copyright (c) 2011-2012, Yahoo! Inc.  All rights reserved.
- * Copyrights licensed under the New BSD License.
- * See the accompanying LICENSE file for terms.
- */
-
-/*jslint anon:true, sloppy:true, nomen:true*/
-
-YUI.add('logBinderIndex', function (Y, NAME) {
-
-/**
- * The logBinderIndex module.
- *
- * @module logBinderIndex
- */
-
-    /**
-     * Constructor for the Binder class.
-     *
-     * @param mojitProxy {Object} The proxy to allow the binder to interact
-     *        with its owning mojit.
-     *
-     * @class Binder
-     * @constructor
-     */
+YUI.add('logBinderIndex', function(Y, NAME) {
     Y.namespace('mojito.binders')[NAME] = {
-
-        /**
-         * Binder initialization method, invoked after all binders on the page
-         * have been constructed.
-         */
-        init: function (mojitProxy) {
-            Y.log('[BINDER]: Log message from init.', "info");
+        init: function(mojitProxy) {
             this.mojitProxy = mojitProxy;
         },
-
-        /**
-         * The binder method, invoked to allow the mojit to attach DOM event
-         * handlers.
-         *
-         * @param node {Node} The DOM node to which this mojit is attached.
-         */
-        bind: function (node) {
-            Y.log('[BINDER]: Log message from bind.', "info");
+        bind: function(node) {
+            Y.log("[BINDER]: Default Log level: " + Y.config.logLevel, null, NAME);
+            Y.log('[BINDER]: Error log message.', "error", NAME);
+            Y.one("#client_config").all("b").item(0).insert(Y.config.logLevel,"after");
             this.node = node;
         }
-
     };
-
 }, '0.0.1', {requires: ['mojito-client']});

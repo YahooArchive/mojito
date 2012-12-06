@@ -93,7 +93,7 @@ Configuring Child Instances
 ---------------------------
 
 The configuration object passed to ``ac.composite.execute`` must have the
- ``children`` object to defines one or more mojit instances. In the ``cfg`` 
+``children`` object to defines one or more mojit instances. In the ``cfg`` 
 object below, the child mojit instances ``news`` and ``sidebar`` are defined. 
 You can also specify the action to execute and pass configuration information 
 that includes parameters and assets.
@@ -532,7 +532,7 @@ SpawnedMojit
           ac.done({ "route": ac.params.route('name'), 
                     "url": ac.params.url('path'), 
                     "body": ac.params.body("message")
-                 });
+          });
         }
      };
    }, '0.0.1', {requires: ['mojito']});

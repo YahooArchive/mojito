@@ -102,7 +102,7 @@ example, the child mojit creates the ``<div>`` tag and its content.
      </body>
    </html>
 
-The ``HTMLFrameMojit`` mojit can be used to allow dynamic run-time selection of running 
+The ``HTMLFrameMojit`` mojit can be used to allow dynamic runtime selection of running 
 on the client or server. You can also use ``HTMLFrameMojit`` to include assets and control 
 language defaults. These subjects are discussed in 
 `Internationalizing Your Application <i18n_apps.html>`_.

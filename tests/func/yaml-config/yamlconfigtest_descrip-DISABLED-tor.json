@@ -1,0 +1,36 @@
+
+see trello mojito-perf card #204
+
+[
+    {
+        "settings": [ "master" ],
+
+        "name" : "yaml-config",
+
+        "config" :{
+            "baseUrl" : "http://localhost:4000"
+        },
+
+        "dataprovider" : {
+           "yamlconfig1" : {
+                "group" : "smoke,yaml",
+                "params" : {
+                    "test" : "testyamlconfig1.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "yamlconfig2" : {
+                 "group" : "smoke,yaml",
+                 "params" : {
+                     "test" : "testyamlconfig2.js",
+                     "page" : "$$config.baseUrl$$/spec"
+                }
+            }
+        }
+    },
+
+    {
+        "settings": [ "environment:development" ]
+    }
+
+]

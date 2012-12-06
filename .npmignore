@@ -5,7 +5,6 @@
 *.bak
 *~
 /tests
-!/tests/harness/lib/yuitest/java/build
 arrowreport
 artifacts
 examples

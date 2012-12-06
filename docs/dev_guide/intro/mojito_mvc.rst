@@ -3,21 +3,18 @@ MVC in Mojito
 =============
 
 The MVC architecture in Mojito incorporates a clear separation of the 
-controller, model, and view. The controller retrieves data from the model 
+controller, model, and view. The controller is pivotal in the sense that it controls 
+all interactions in the MVC of Mojito.The controller retrieves data from the model 
 and passes it to the view. Client requests for data are sent to the controller, 
 which in turn fetches data from the model and passes the data to the client. 
-The controller is pivotal in the sense that it controls all interactions in 
-the MVC of Mojito.
 
 The controller, model, and view are found in the mojit of Mojito. The mojit 
 is a single unit of execution of a Mojito application. An application may 
-have one or more mojits, which are physically represented by directory 
-structure. The mojit has one controller, any number or no models, and one 
+have one or more mojits, which are physically represented by a directory 
+structure. Each mojit has one controller, any number or no models, and one 
 or more views. When Mojito receives an HTTP request, an application invokes 
 a mojit controller that can then execute, pass data to the view, or get data 
-from the model. Now that we have described the general characteristics and 
-implementation of the MVC in Mojito, let's look at each of the components in 
-more detail.
+from the model. Let's look now at each of the MVC components in more detail.
 
 .. _mojito_mvc-models:
 
@@ -42,7 +39,7 @@ Models are found in the ``models`` directory of each mojit. For the application
 Naming Convention
 -----------------
 
-The name of the model files depend on the affinity, which is the location 
+The name of the model file depend on the affinity, which is the location 
 where a resource is available. Thus, the name of the model file is 
 ``{model_name}.{affinity}.js``, where ``{affinity}`` can be ``common``, 
 ``server``, or ``client``. 
@@ -72,7 +69,7 @@ A model should have the basic structure shown below.
 .. code-block:: javascript
 
    YUI.add('{mojit_name}Model{Model_name}', function(Y, NAME) {
-     // Models must register themselves in the
+     // Models must register themselves with YUI.add
      // Namespace for models
      Y.namespace('mojito.models')[NAME] = {
        // Optional init() method is given the
@@ -124,7 +121,7 @@ getting data.
          this.config = config;        
        },
        // Model function to get data
-       get_photos: function(flickr_query){
+       get_photos: function(flickr_query, callback){
          Y.YQL (flickr_query, function(rawYql) {
            // Handle empty response.
            if (null == rawYql || 0 == rawYql.query.count) {
@@ -291,12 +288,16 @@ Several objects and methods form the backbone of the controller.
 - ``requires`` - (optional) an array that lists any addons that are needed 
   by the controller.
 
+.. _mvc_controller-ex:    
+
+Example
+-------
+
 The example controller below shows you how the components are used. The 
-``status`` mojit is registered with ``YUI.add`` and the ``init`` function 
-stores the date so it can be used by other functions, and the ``this`` 
-reference allows the ``index`` function to call ``create_status``. Lastly, 
-the ``requires`` array loads the addons ``Intl``, ``Params``, and ``Url``
-that are needed by the controller. 
+``status`` mojit is registered with ``YUI.add``, and the ``index`` function 
+uses the ``this`` reference to call the function ``create_status``. Lastly, the 
+``requires`` array loads the addons ``Intl``, ``Params``, and ``Url``that are 
+needed by the controller. 
 
 .. code-block:: javascript
 
@@ -318,7 +319,7 @@ that are needed by the controller.
          return user + ': ' +  status + ' - ' + time;
        }
      };
-   }, '0.0.1', {requires: ['mojito-intl-addon', 'mojito-params-addon', mojito-url-addon']});
+   }, '0.0.1', {requires: ['mojito-intl-addon', 'mojito-params-addon', 'mojito-url-addon']});
 
 .. _mvc-controllers-actions:
 
@@ -397,7 +398,8 @@ syntax convention. The ``ActionContext`` object allows controller functions
 to access framework features such as API methods and addons that extend 
 functionality. To access the model from the ActionContext object ``ac``, 
 you use the following syntax: ``ac.models.get('{model_name}').{model_function}``
-
+You also need to require the ``Models`` addon by adding the string 
+``"mojito-models-addon"`` to the ``requires`` array.
 
 The ``{model_name}`` is the YUI module name that is passed to ``YUI.add`` of the 
 model file, not the model file name. The example controller below shows the 
@@ -546,28 +548,31 @@ Reporting Errors
 The ``ActionContext`` object has an ``error`` method for reporting errors. 
 Like the ``done`` method, ``error`` should only be called once. Also, you 
 cannot call both ``done`` and ``error``. The error requires an ``Error`` 
-object as a parameter. The ``Error`` object is just the standard JavasScript 
+object as a parameter. The ``Error`` object is just the standard JavaScript 
 ``Error`` object that can have a ``code`` property specifying the HTTP response 
 code that will be used if the error bubbles to the top of the 
 page (i.e., not caught by a parent mojit).
 
-In the code snippet below from ``controller.server.js``, the model is asked 
-to get a blog post. The ``try-catch`` clause will catch any errors made calling 
-``getPost``, and the ``error`` method will display the error message.
+In the code snippet below from ``controller.server.js``, the ``index``
+method uses the query string parameter ``company`` to fetch company information
+stored in a configuration file. The ``if-else`` clause either sends
+the company information to the ``index`` template or reports 
+an error that information for the specified company could not be found.
 
 .. code-block:: javascript
 
    ...
      index: function(ac) {
-       try {
-         var post = ac.models.get('BlogModel').getPost();
-         ac.done({ "post": post });
-       }catch(e) {
-         console.log(e);
-         ac.error(e);
+       var company  = ac.params.url('company'),
+           company_info = ac.config.get(company);
+       if (company_info) {
+         ac.done({ "company_info": company_info });
+       } else {
+         ac.error("Could not find info for " + company);
        }
      }
    ...
+   }, '0.0.1', {requires: ['mojito-params-addon', 'mojito-config-addon']});
 
 .. _mvc-controllers-save_state:
 
@@ -587,15 +592,19 @@ have substituted values for the template tags.
 Naming Convention
 -----------------
 
-The naming convention of the templates is based on the controller function 
-that supplies data, the engine that renders the templates, and the device 
-requesting the page. If the calling device is determined not to be a portable 
-device such as a cell phone, the ``{device}`` element of the syntax below 
-is omitted.
+Template files have the following naming convention:
 
-**File Naming Convention for Templates:**
+``{controller_function}.[{selector}].{rendering_engine}.html``
 
-``{controller_function}.[{device}].{rendering_engine}.html``
+The following list describes the elements of the template file name:
+
+- ``{controller_function}`` - the controller function (action)
+  that supplies data.
+- ``{selector}`` - an arbitrary  string used to select
+  a specific template. For example, you could use the selector
+  ``iphone`` for the iPhone template. 
+- ``{rendering_engine}`` - the engine that renders the templates.
+
 
 For example, if the template is receiving data from the ``index`` function 
 of the controller and has Handlebars expressions that need to be rendered, 
@@ -607,8 +616,7 @@ Here are some other example template names with descriptions:
   function of the controller and the calling device is determined to 
   be a Web browser.
 - ``get_photos.iphone.hb.html`` - This template gets data from the 
-  ``get_photos`` function 
-  of the controller and the calling device is an iPhone.
+  ``get_photos`` function of the controller and the calling device is an iPhone.
 - ``find_friend.android.hb.html`` - This template gets data from the 
   ``find_friend`` function of the controller and the calling device is Android 
   based.
@@ -677,7 +685,7 @@ to iterate through an array of strings:
      {{/each}}
    </ul>
 
-Another interesting block helper used in this example is #with, which will 
+Another interesting block helper used in this example is ``#with``, which will 
 invoke a block when given a specified context. For example, in the code 
 snippet below, if the ``ul`` object is given, the property title is evaluated.
 

@@ -3,7 +3,6 @@
 .yui3-js-enabled .yui3-scrollview-loading {
     visibility:hidden;
 }
-            
 #additional-content {
     display:none;
 }
@@ -24,25 +23,4 @@
         </div>
     </div>
 </div>
-
-<script type="text/javascript" charset="utf-8">
-YUI().use('scrollview', function(Y) {
-    var scrollView = new Y.ScrollView({
-        id: 'scrollview',
-        srcNode: '#scrollview-content',
-        width: 320,
-        flick: {
-            minDistance:10,
-            minVelocity:0.3,
-            axis: "x"
-        }
-    });
-    scrollView.render();
-
-    // Prevent default image drag behavior
-    scrollView.get("contentBox").delegate("mousedown", function(e) {
-        e.preventDefault();
-    }, "img");
-});
-</script>
 

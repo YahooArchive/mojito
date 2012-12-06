@@ -12,7 +12,7 @@ used based on various runtime factors. Many factors are predefined such as
 language and device, but you can create custom ones as well. These runtime 
 factors are called **contexts** in Mojito and are mapped to user-defined 
 configurations. For example, you could set the configuration 
-``logLevel`` to ``ERROR`` in the production context and set it to ``INFO`` 
+``logLevel`` to ``error`` in the production context and set it to ``info`` 
 in the development context.
 
 .. _context_configs_intro-why:
@@ -96,7 +96,7 @@ with the HTTP header ``"User-Agent: Mozilla/5.0 (Linux; U; Android 2.3; en-us)"`
 Query String Parameters
 #######################
 
-The key and value pairs in the context are dynamically set by the query string.
+The  query string can also dynamically set the context.
 
 .. _request_query_str-syntax:
 
@@ -145,6 +145,9 @@ the following compound context: ``"environment:test,device:android"``
 - ``device:opera-mini``
 - ``device:palm``
 - ``lang:{BCP 47 language tag}``
+- ``runtime:client``
+- ``runtime:server``
+
 
 
 You can view the supported BCP 47 language tags and default contexts in the 
@@ -250,11 +253,9 @@ then mapped to configurations.
 .. _context_obj_setting-default:
 
 Default Configurations
-``````````````````````
+**********************
 
-Default configurations are used when no context is given. These configurations 
-are found in the object where the settings array has the string "master" as 
-seen below.
+The configurations for the ``"master"`` context are used when no context is given. 
 
 .. code-block:: javascript
 
@@ -271,7 +272,7 @@ seen below.
 .. _context_obj_setting-simple:
 
 Simple Context Configuration
-````````````````````````````
+****************************
 
 The context is specified in the ``settings`` array of the configuration object.
 
@@ -291,7 +292,7 @@ The context is specified in the ``settings`` array of the configuration object.
 .. _context_obj_setting-compound:
 
 Compound Context Configuration
-``````````````````````````````
+******************************
 
 Compound contexts are specified in the settings array as a series of contexts 
 separated by commas as seen below.
@@ -312,7 +313,7 @@ separated by commas as seen below.
 .. _context_obj_setting-routing:
    
 Routing Context Configuration
-`````````````````````````````
+*****************************
 
 .. code-block:: javascript
 
@@ -522,8 +523,9 @@ configurations of the current context.
 
 .. code-block:: javascript
 
-   YUI.add('TestMojit', function(Y) {
-     Y.mojito.controller = {
+
+   YUI.add('TestMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = {
        index: function(ac) {
          var cfg = {
            children: {
@@ -539,11 +541,11 @@ configurations of the current context.
            }
          };
          var child = ac.params.getFromMerged('child');
-         if(child){
+         if (child){
            ac.composite.execute(cfg, function (data,meta){
              ac.done(data["one"]);
            });
-         }else{
+         } else{
            ac.done(
              'config key "alpha": ' + ac.config.get('alpha', '[alpha not found]')
            );

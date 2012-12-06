@@ -9,9 +9,6 @@
 YUI.add('scroll', function (Y, NAME) {
 
     Y.namespace('mojito.controllers')[NAME] = {
-        init: function (config) {
-            this.config = config;
-        },
         index: function (ac) {
             // Populate Template
             ac.done({

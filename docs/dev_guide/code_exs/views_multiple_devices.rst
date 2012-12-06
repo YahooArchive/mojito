@@ -55,7 +55,7 @@ Context Configurations
 Mojito allows you to map contexts to a set of configurations based on runtime 
 factors. The context is defined by the ``setting`` property in the JSON 
 configuration files. The default value for ``setting`` is ``master``. 
-Mojito will first look to see if a base context wasset on the command line 
+Mojito will first look to see if a base context was set on the command line 
 with the ``--context`` option, then at the HTTP headers and query string. 
 In this example, we want contexts defined for different devices, so, in 
 the ``application.json`` file, we'll define contexts for Android, Blackberry, 
@@ -198,7 +198,6 @@ To set up and run ``device_views``:
 #. Create your mojit.
 
    ``$ mojito create mojit device``
-
 #. To configure you application, replace the code in ``application.json`` 
    with the following:
 
@@ -228,7 +227,7 @@ To set up and run ``device_views``:
         }
       ]
 
-#. To configure routing, replace the code in  ``routes.json`` with the 
+#. To configure routing, replace the code in ``routes.json`` with the 
    following:
 
    .. code-block:: javascript

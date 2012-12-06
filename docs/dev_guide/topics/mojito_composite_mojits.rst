@@ -86,16 +86,15 @@ and displays the ``children`` object that lists the child mojits.
 When the controller of the parent mojit calls ``ac.composite.done`` from the ``index`` 
 function, the controllers of the mojit children execute ``ac.done`` from their 
 ``index`` functions. The rendered views from the child mojits are then available 
-as Handlebars expressions in the ``index`` template of the 
-parent mojit.
+as Handlebars expressions in the ``index`` template of the parent mojit.
 
 For example, in the example controller of the parent mojit below, the ``index`` 
 function calls ``ac.composite.done``, which executes ``ac.done`` in the 
-``index`` functions of the child mojits. The rendered ``index`` views for 
-each of the child mojits is then available to as a Handlebars expression, such 
-as ``{{{child_mojit}}}``. Notice that the ``template`` object allows the parent 
-mojit to send data to the template, so that ``{{title}}`` can be used in the 
-template.
+``index`` functions of the child mojits. The rendered ``index`` templates for 
+each of the child mojits is then available as a Handlebars expression, such 
+as ``{{{child_mojit}}}`` in the parent template. Notice that the ``template`` object 
+allows the parent mojit to send data to the template, so that ``{{title}}`` can be 
+used in the template.
 
 .. code-block:: javascript
 
@@ -145,10 +144,10 @@ are embedded using Handlebars expressions.
 .. code-block:: html
 
    <div id="{{mojit_view_id}}" class="mojit" style="border: dashed black 1px;">
-   <h1>{{title}}</h1>
-   <div class="nav" style="border: dashed black 1px; margin: 10px 10px 10px 10px;">{{{nav}}}</div>
-   <div class="body" style="border: dashed black 1px; margin: 10px 10px 10px 10px;">{{{body}}}</div>
-   <div class="footer" style="border: dashed black 1px; margin: 10px 10px 10px 10px;">{{{footer}}}</div>
+     <h1>{{title}}</h1>
+     <div class="nav" style="border: dashed black 1px; margin: 10px 10px 10px 10px;">{{{nav}}}</div>
+     <div class="body" style="border: dashed black 1px; margin: 10px 10px 10px 10px;">{{{body}}}</div>
+     <div class="footer" style="border: dashed black 1px; margin: 10px 10px 10px 10px;">{{{footer}}}</div>
    </div>
 
    

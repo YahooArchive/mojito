@@ -9,7 +9,7 @@ Basic Information
 
 Mojito can be configured at the framework, application, and mojit levels. 
 Each level is configured differently, but uses same general file format 
-consisting of JSON.
+consisting of JSON or YAML.
 
 .. _config_basic-file:
 
@@ -23,15 +23,21 @@ JSON
 
 By default, configuration files in Mojito have a general top-level 
 structure and are in JSON format. At the top level of each configuration 
-file is an array. Each item of the array is an object that configures 
-one component of Mojito, such as logging, assets, mojits, static resources, etc.
+file is an array. Each item of the array is an object containing configuration that 
+targets a specific context and runtime. This allows you to have discrete configurations 
+for different regions, devices, and development environments.
 
-Each configuration object is required to have a ``settings`` property that 
-specifies conditions for applying the configuration settings. These conditions 
-could be used to determine the configurations in different environments. 
+The context for a configuration object is specified by the ``settings`` property. For
+each configuration object in a file, the ``settings`` property must specify a unique 
+context, otherwise Mojito fails. For example, the ``application.json``  file
+cannot have two configuration objects specifying the context ``environment:development``. 
+See `Using Context Configurations <../topics/mojito_using_contexts.html>`_
+for more information about contexts.
 
-Below is the skeleton of a configuration file. See `Application Configuration`_ 
-and `Mojit Configuration`_ for details about specific configuration files.
+Below is the skeleton of a configuration file with two configuration
+objects, each identified by contexts defined by the ``settings`` property. 
+See `Application Configuration`_ and `Mojit Configuration`_ for details about specific 
+configuration files.
 
 .. code-block:: javascript
 
@@ -39,6 +45,12 @@ and `Mojit Configuration`_ for details about specific configuration files.
      // Configuration object
      {
        "settings": [ "master" ],
+       "specs": {
+         ...
+       }
+     },
+     {
+       "settings": [ "environment:development" ],
        "specs": {
          ...
        }
@@ -51,10 +63,11 @@ and `Mojit Configuration`_ for details about specific configuration files.
 YAML
 ####
 
-Mojito also supports configuration files in YAML format. The YAML file extension could 
-be ``.yaml`` or ``.yml``. Mojito allows comments in the YAML files. When both JSON file 
-and YAML files are present, the YAML file is used and a warning is issued. For the data 
-types of the YAML elements, please see the JSON configuration tables in 
+Mojito also supports configuration files in YAML format (JSON is a subset of YAML). 
+The YAML file extension could be ``.yaml`` or ``.yml``. Mojito allows comments in the 
+YAML files. When both  the JSON file (e.g., ``application.json``) and the YAML file 
+(e.g., ``application.yaml``) are present, the YAML file is used and a warning is issued. 
+For the data types of the YAML elements, please see the JSON configuration tables in 
 :ref:`Application Configuration <configure_mj-app>`, 
 :ref:`Routing <configure_mj-routing>`, and :ref:`Mojit Configuration <configure_mj-mojit>`.
 
@@ -103,12 +116,6 @@ configuration Object
 | ``cacheViewTemplates``                                 | boolean              | true              | Specifies whether the view engine should attempt       |
 |                                                        |                      |                   | to cache the view. Note that not all view engines      |
 |                                                        |                      |                   | support caching.                                       |
-+--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
-| ``deferAllOptionalAutoloads``                          | boolean              | false             | Specifies whether optional YUI modules found in        |
-|                                                        |                      |                   | the ``/autoload/`` directories are not shipped to      |
-|                                                        |                      |                   | the client. This is an optimization setting and        |
-|                                                        |                      |                   | should generally only be set if you are building       |
-|                                                        |                      |                   | an offline application.                                |
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
 | ``middleware``                                         | array of strings     | []                | A list of paths to the Node.js module that exports     |
 |                                                        |                      |                   | a Connect middleware function.                         |
@@ -379,12 +386,6 @@ staticHandling Object
 |                       |               |                             | ``/static/``. An empty string can be given if no       |
 |                       |               |                             | prefix is desired.                                     |
 +-----------------------+---------------+-----------------------------+--------------------------------------------------------+
-| ``useRollups``        | boolean       | false                       | When true, the client will use the rollup file (if     |
-|                       |               |                             | it exists) to load the YUI modules in the mojit.       |
-|                       |               |                             | The command `mojito compile rollups <../reference/     |
-|                       |               |                             | mojito_cmdline.html#compiling-rollups>`_ can be used   |
-|                       |               |                             | to generate the rollups.                               |
-+-----------------------+---------------+-----------------------------+--------------------------------------------------------+
 
 .. _yui_obj:
 
@@ -396,27 +397,14 @@ See `Example Application Configurations`_ for an example of the ``yui`` object.
 +--------------------------------+----------------------+------------------------------------------------------------------------+
 | Property                       | Data Type            | Description                                                            |
 +================================+======================+========================================================================+
-| ``base``                       | string               | Specifies the prefix from which to load all YUI 3 libraries.           |
-+--------------------------------+----------------------+------------------------------------------------------------------------+
 | :ref:`config <yui_config>`     | object               | Used to populate the `YUI_config <http://yuilibrary.com/yui/docs/yui/  |
 |                                |                      | #yui_config>`_ global variable that allows you to configure every YUI  |
 |                                |                      | instance on the page even before YUI is loaded. For example, you can   |
 |                                |                      | configure logging or YUI not to load its default CSS with the          |
 |                                |                      | following: ``"yui": { "config": { "fetchCSS": false } }``              |
 +--------------------------------+----------------------+------------------------------------------------------------------------+
-| ``extraModules``               | array of strings     | Specifies additional YUI library modules that should be added to       |
-|                                |                      | the page when Mojito is sent to the client.                            |
-+--------------------------------+----------------------+------------------------------------------------------------------------+
-| ``loader``                     | string               | Specifies the path (appended to ``base`` above) for the loader to      |
-|                                |                      | use.                                                                   |
-+--------------------------------+----------------------+------------------------------------------------------------------------+
 | ``showConsoleInClient``        | boolean              | Determines if the YUI debugging console will be shown on the           |
 |                                |                      | client.                                                                |
-+--------------------------------+----------------------+------------------------------------------------------------------------+
-| ``url``                        | string               | Specifies the location of the `YUI 3 seed file <http://yuilibrary.com/ |
-|                                |                      | yui/docs/yui/#base-seed>`_.                                            |  
-+--------------------------------+----------------------+------------------------------------------------------------------------+
-| ``urlContains``                | array of strings     | Specifies the YUI modules that are delivered by ``url``.               |
 +--------------------------------+----------------------+------------------------------------------------------------------------+
 
 
@@ -431,22 +419,30 @@ To see all the options for the ``config`` object, see the
 Some of the properties of the ``config`` object used for configuring logging are shown below.
 
 
-+----------------------+---------------+-------------------+-----------------------------------------------------------+
-| Property             | Data Type     | Default Value     | Description                                               |
-+======================+===============+===================+===========================================================+
-| ``debug``            | boolean       | true              | Determines whether ``Y.log`` messages are written to the  |    
-|                      |               |                   | browser console.                                          |
-+----------------------+---------------+-------------------+-----------------------------------------------------------+
-| ``logExclude``       | object        | none              | Excludes the logging of the YUI module(s) specified.      |
-|                      |               |                   | For example: ``logExclude: { "logModel": true }``         |  
-+----------------------+---------------+-------------------+-----------------------------------------------------------+
-| ``logInclude``       | object        | none              | Includes the logging of the YUI module(s) specified.      |
-|                      |               |                   | For example: ``logInclude: { "searchMojit": true }``      |  
-+----------------------+---------------+-------------------+-----------------------------------------------------------+
-| ``logLevel``         | string        | "info"            | Specifies the lowest log level to include in th           |
-|                      |               |                   | log output. See                                           |
-|                      |               |                   | `Log Levels <../topics/mojito_logging.html#log-levels>`_. |
-+----------------------+---------------+-------------------+-----------------------------------------------------------+
++----------------------+------------------+--------------------------+---------------------------------------------------------------+
+| Property             | Data Type        | Default Value            | Description                                                   |
++======================+==================+==========================+===============================================================+
+| ``debug``            | boolean          | true                     | Determines whether ``Y.log`` messages are written to the      |    
+|                      |                  |                          | browser console.                                              |
++----------------------+------------------+--------------------------+---------------------------------------------------------------+
+| ``logExclude``       | object           | none                     | Excludes the logging of the YUI module(s) specified.          |
+|                      |                  |                          | For example: ``logExclude: { "logModel": true }``             |  
++----------------------+------------------+--------------------------+---------------------------------------------------------------+
+| ``logInclude``       | object           | none                     | Includes the logging of the YUI module(s) specified.          |
+|                      |                  |                          | For example: ``logInclude: { "DemoBinderIndex": true }``      |  
++----------------------+------------------+--------------------------+---------------------------------------------------------------+
+| ``logLevel``         | string           | "debug"                  | Specifies the lowest log level to include in the              |
+|                      |                  |                          | log output. The log level can only be set with ``logLevel``   |
+|                      |                  |                          | if ``debug`` is set to ``true``. For more information,        | 
+|                      |                  |                          | see `Log Levels <../topics/mojito_logging.html#log-levels>`_. |
++----------------------+------------------+--------------------------+---------------------------------------------------------------+
+| ``logLevelOrder``    | array of strings | ``['debug', 'mojito',    | Defines the order of evaluating log levels. Each log          |
+|                      |                  | 'info', 'warn', 'error'  | level is a superset of the levels that follow, so messages    |
+|                      |                  | 'none']``                | at levels within the set will be displayed. Thus, at the      |
+|                      |                  |                          | ``debug`` level, messages at all levels will be displayed,    |
+|                      |                  |                          | and at the ``mojito`` level, levels ``info``, ``warn``,       |
+|                      |                  |                          | ``error`` will be displayed, etc.                             |
++----------------------+------------------+--------------------------+---------------------------------------------------------------+
 
 
 
@@ -554,7 +550,7 @@ In the example ``application.json`` below, the mojit instance ``father`` of type
 Child Mojit With Children
 #########################
 
-A parent mojit can have a single child that has its own children. The parent mojit 
+A parent mojit can have a child that has its own children. The parent mojit 
 specifies a child with the ``child`` object, which in turn lists children in the 
 ``children`` object. For the child to execute its children,it would use the ``Composite`` 
 addon. See `Composite Mojits <../topics/mojito_composite_mojits.html#composite-mojits>`_ 
@@ -591,6 +587,48 @@ child ``son``, which has the children ``grandson`` and ``granddaughter``.
      }
    ]
 
+The child mojits can also have their own children, but beware that 
+having so many child mojits may cause memory issues. In our updated 
+example ``application.json`` below, the ``grandaughter`` mojit now has
+its own children mojits:
+
+.. code-block:: javascript
+
+   [
+     {
+       "settings": [ "master" ],
+       "specs": {
+         "grandfather": {
+           "type": "GrandparentMojit",
+           "config": {
+             "child": {
+               "son": {
+                 "type": "ChildMojit",
+                 "children": {
+                   "grandson": {
+                     "type": "GrandchildMojit"
+                   },
+                   "grandaughter": {
+                     "type": "GrandchildMojit",
+                     "children": {
+                       "girl_doll": {
+                          "type": "GirlDollMojit"
+                       },
+                       "boy_doll": {
+                          "type": "BoyDollMojit"
+                       }
+                     }
+                   }
+                 }
+               }
+             }
+           }
+         }
+       }
+     }
+   ]
+
+
 
 .. _deploy_app:
 
@@ -614,7 +652,7 @@ The following is deployed to the client:
 When a binder invokes its controller, if the controller has the ``client`` or ``common`` 
 affinity, then the controller and its dependencies are deployed to the client as well. If 
 the affinity of the controller is ``server``, the invocation occurs on the server. In 
-either case, the binder is able to seamlessly invoke the controller.
+either case, the binder can invoke the controller.
 
 .. _deploy_app-ex:
 
@@ -715,8 +753,8 @@ The table below describes the ``configuration`` object in ``definition.json``.
 +==================+======================+===================+========================================================+
 | ``appLevel``     | boolean              | false             | When set to ``true``, the actions, addons, assets,     |
 |                  |                      |                   | binders, models, and view of the mojit are             |
-|                  |                      |                   | available to other mojits. Mojits wanting to use       |
-|                  |                      |                   | the resources of application-level mojit must          |
+|                  |                      |                   | *shared* with other mojits. Mojits wanting to use      |
+|                  |                      |                   | the resources of the shared mojit must                 |
 |                  |                      |                   | include the YUI module of the application-level        |
 |                  |                      |                   | mojit in the ``requires`` array.                       |
 +------------------+----------------------+-------------------+--------------------------------------------------------+
@@ -784,7 +822,7 @@ put in the ``config`` object.
 Mojit Instances
 ---------------
 
-A mojit instance is made entirely of configuration. This configuration specifies 
+A mojit instance is defined with configuration. This configuration specifies 
 which mojit type to use and configures an instance of that type. The mojit 
 instances are defined in the ``specs`` object of the ``application.json`` file.
 
@@ -840,7 +878,7 @@ the ``index`` function in the controller of the ``Foo`` mojit.
 
 .. _configure_mj-routing:
 
-routing
+Routing
 =======
 
 In Mojito, routing is the mapping of URLs to specific mojit actions. This section 
@@ -850,7 +888,7 @@ two ways to configure routing:
 - Map Routes to Specific Mojit Instances and Actions
 - Generate URLs from the Controller
 
-See   `Code Examples: Configuring Routing <../code_exs/route_config.html>`_ to 
+See `Code Examples: Configuring Routing <../code_exs/route_config.html>`_ to 
 see an example of configuring routing in a Mojito application.
 
 
@@ -1071,7 +1109,7 @@ Using Parameterized Paths to Call a Mojit Action
 Your routing configuration can also use parameterized paths to call mojit 
 actions. In the ``routes.json`` below, the ``path`` property uses parameters 
 to capture a part of the matched URL and then uses that captured part to 
-replace ``{{mojit-action}}`` in the value for the ``call``property.  Any 
+replace ``{{mojit-action}}`` in the value for the ``call`` property. Any 
 value can be used for the parameter as long as it is prepended with a 
 colon (e.g., ``:foo``). After the parameter has been replaced by a value 
 given in the path, the call to the action should have the following syntax: 
@@ -1113,7 +1151,7 @@ The following URLs call the ``index`` and ``myAction`` functions in the controll
 Using Regular Expressions to Match Routing Paths
 ------------------------------------------------
 
-You can use the ``regex`` property of the ``routing`` object to define a key-value 
+You can use the ``regex`` property of a routing object to define a key-value 
 pair that defines a path parameter and a regular expression. The key is prepended 
 with a colon when represented as a path parameter. For example, the key ``name`` 
 would be represented as ``:name`` as a path parameter: ``"path": "/:name"``.
@@ -1145,9 +1183,6 @@ would call the ``index`` action:
 - ``http://localhost:8666/1_mojito``
 - ``http://localhost:8666/99_Mojitos``
 
-.. _generate_urls:
-
-.. _generate_urls:
 
 .. _generate_urls:
 
@@ -1189,11 +1224,11 @@ The ``index`` function above returns the following URL: ``http://localhost:8666/
 Accessing Configurations from Mojits
 ====================================
 
-The model, and binder can access mojit configurations from the ``init`` 
+The model and binder can access mojit configurations from the ``init`` 
 function. The controller and model are passed ``configuration`` objects. The controller 
-can access configuration the ``actionContext`` object and the ``Config`` addon. 
-The ``init`` function in the binder instead of a configuration object is passed the 
-``mojitProxy`` object, which enables you to get the configurations.  
+can access configuration with the ``Config`` addon. 
+The ``init`` function in the binder, instead of a configuration object, is passed the 
+``mojitProxy`` object, which enables you to access configurations.  
 
 
 .. _configuring_access-applevel:
@@ -1214,17 +1249,17 @@ application configurations in ``application.json`` with the method ``getAppConfi
 of the ``Config`` addon.
 
 For example, if you wanted to access the ``specs`` object defined in ``application.json``,
-you would use ``ac.config.getAppConfig()`` as shown here:
+you would use ``ac.config.getAppConfig().specs`` as shown here:
 
 .. code-block:: javascript
 
       YUI.add('myMojit', function(Y, NAME) {
         Y.namespace('mojito.controllers')[NAME] = {
           index: function(ac) {
-            // Get the application configuration through
-            // the Config addon.
-            var app_config = ac.config.getAppConfig();
-            Y.log(app_config);
+            // Get the 'specs' object from teh application configuration 
+            // through the Config addon.
+            var app_specs = ac.config.getAppConfig().specs;
+            Y.log(app_specs);
             ac.done({ status: "Showing app config in the log."});
           }
         };
