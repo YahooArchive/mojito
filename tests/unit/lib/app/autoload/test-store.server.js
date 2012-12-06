@@ -322,23 +322,6 @@ YUI().use(
                 A.isObject(routes.flickr_base, 'missing route flickr_base');
             },
 
-            'call serializeClientStore()': function() {
-                var client = store.serializeClientStore({});
-                A.isObject(client, 'config is missing');
-                A.isObject(client.appConfig, 'missing appConfig');
-                A.areSame('/tunnel', client.appConfig.tunnelPrefix);
-                A.areSame('testVal1', client.appConfig.testKey1);
-                A.areSame('testVal2', client.appConfig.testKey2);
-                A.areSame('testVal3', client.appConfig.testKey3);
-                A.isObject(client.specs, 'missing specs');
-                A.areSame(0, Object.keys(client.specs).length);
-                A.isObject(client.mojits, 'missing mojits');
-                A.areSame(0, Object.keys(client.mojits).length);
-                A.isObject(client.routes, 'missing routes');
-                A.isObject(client.routes.flickr_by_page, 'missing route flickr_by_page');
-                A.isObject(client.routes.flickr_base, 'missing route flickr_base');
-            },
-
             'call listAllMojits()': function() {
                 var list = store.listAllMojits('server');
                 A.areSame(11, list.length, 'found the wrong number of mojits');

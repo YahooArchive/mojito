@@ -127,6 +127,14 @@
                     "page": "$$config.base$$/mojito-test.html"
                 },
                 "group": "fw,client,server"
+            },
+            "models.common": {
+                "params": {
+                    "lib": "$$config.lib$$/app/addons/ac/models.common.js",
+                    "test": "./test-models.common.js",
+                    "page": "$$config.base$$/mojito-test.html"
+                },
+                "group": "fw,client,server"
             }
         }
     },
