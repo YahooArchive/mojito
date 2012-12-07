@@ -285,6 +285,16 @@ YUI().use(
                 A.areEqual('y', details.x);
             },
 
+            'expandInstanceForEnv preserves instanceId': function() {
+                var inInstance = {
+                    type: 'test_mojit_1',
+                    instanceId: 'foo'
+                };
+                store.expandInstanceForEnv('server', inInstance, {}, function(err, outInstance) {
+                    A.areSame('foo', outInstance.instanceId);
+                });
+            },
+
             'multi preload': function() {
                 var pre = {
                     appRVs: Y.clone(store._appRVs, true),
