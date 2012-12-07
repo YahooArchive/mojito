@@ -261,20 +261,37 @@ YUI().use(
                 });
             },
 
-            'expandInstance caching': function() {
-                var inInstance = {
+            'expandSpec caching': function() {
+                var inSpec = {
                     base: 'a',
                     type: 'c'
                 };
-                var context = {};
-                var key = Y.JSON.stringify([inInstance, ['*'], context.lang]);
-                store._expandInstanceCache.server[key] = { x: 'y' };
-                store.expandInstance(inInstance, context, function(err, outInstance) {
-                    A.isNull(err);
-                    A.areEqual(4, Object.keys(outInstance).length);
-                    A.areEqual('a', outInstance.base);
-                    A.areEqual('c', outInstance.type);
-                    A.areEqual('y', outInstance.x);
+                var env = 'server';
+                var ctx = {};
+                var key = Y.JSON.stringify([env, ctx, inSpec]);
+                store._expandSpecCache[key] = { x: 'y' };
+                var outSpec = store._expandSpec(env, ctx, inSpec);
+                A.isObject(outSpec);
+                A.areEqual(1, Object.keys(outSpec).length);
+                A.areEqual('y', outSpec.x);
+            },
+
+            'getMojitTypeDetails caching': function() {
+                var key = Y.JSON.stringify(['server', ['*'], 'en', 'x']);
+                store._getMojitTypeDetailsCache[key] = { x: 'y' };
+                var details = store.getMojitTypeDetails('server', {lang: 'en'}, 'x');
+                A.isObject(details);
+                A.areEqual(1, Object.keys(details).length);
+                A.areEqual('y', details.x);
+            },
+
+            'expandInstanceForEnv preserves instanceId': function() {
+                var inInstance = {
+                    type: 'test_mojit_1',
+                    instanceId: 'foo'
+                };
+                store.expandInstanceForEnv('server', inInstance, {}, function(err, outInstance) {
+                    A.areSame('foo', outInstance.instanceId);
                 });
             },
 
