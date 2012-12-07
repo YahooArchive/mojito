@@ -8,15 +8,23 @@ YUI().use('mojito-partial-addon', 'test', function (Y) {
     var suite = new Y.Test.Suite('mojito-partial-addon tests'),
         Assert = Y.Assert,
         ObjectAssert = Y.ObjectAssert,
-        Mock = Y.Mock;
+        Mock = Y.Mock,
+        ac;
 
     suite.add(new Y.Test.Case({
 
         name: 'render() tests',
 
+        'setUp': function () {
+            ac = {
+                staticAppConfig: {
+                    viewEngine: {}
+                }
+            };
+        },
+
         'test callback called with error when view is not found': function() {
-            var ac = {},
-                command = {
+            var command = {
                     instance: {
                         views: {}
                     }
@@ -35,8 +43,7 @@ YUI().use('mojito-partial-addon', 'test', function (Y) {
         },
 
         'test correctly invokes named view engine': function() {
-            var ac = {},
-                data = { key: 'value' },
+            var data = { key: 'value' },
                 command = {
                     instance: {
                         type: 'myInstanceType',
@@ -60,7 +67,7 @@ YUI().use('mojito-partial-addon', 'test', function (Y) {
             var mockYMojito = Mock();
             Mock.expect(mockYMojito, {
                 method: 'ViewRenderer',
-                args: ['myViewEngine'],
+                args: ['myViewEngine', ac.staticAppConfig.viewEngine],
                 returns: mockRenderer
             });
 
@@ -76,8 +83,7 @@ YUI().use('mojito-partial-addon', 'test', function (Y) {
         },
 
         'test passes a valid adapter to the view engine': function() {
-            var ac = {},
-                command = {
+            var command = {
                     instance: {
                         views: {
                             myView: {}
@@ -138,11 +144,9 @@ YUI().use('mojito-partial-addon', 'test', function (Y) {
                     Mock.Value.Object
                 ]
             });
-            var ac = {
-                command: command,
-                context: 'myContext',
-                _dispatch: mockDispatch.dispatch
-            };
+            ac.command = command;
+            ac.context = 'myContext';
+            ac._dispatch = mockDispatch.dispatch;
 
             var addon = new Y.mojito.addons.ac.partial(command, null, ac);
             addon.invoke('myAction', options, null);

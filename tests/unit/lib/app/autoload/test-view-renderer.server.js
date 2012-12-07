@@ -21,8 +21,7 @@ YUI.add('mojito-view-renderer-server-tests', function(Y, NAME) {
         setUp: function() {
             var ve = Y.namespace('mojito.addons.viewEngines');
 
-            ve.foo = function(viewId, options) {
-                A.areSame('someviewid', viewId);
+            ve.foo = function(options) {
                 A.areSame(99, options.z);
             };
 
@@ -43,11 +42,11 @@ YUI.add('mojito-view-renderer-server-tests', function(Y, NAME) {
 
             A.isObject(Y.mojito.addons);
             A.isFunction(Y.mojito.ViewRenderer);
-            var vr = new Y.mojito.ViewRenderer('foo', 'someviewid', {z:99});
+            var vr = new Y.mojito.ViewRenderer('foo', {z:99});
         },
 
         'test mock render method': function () {
-            var vr = new Y.mojito.ViewRenderer('foo', 'someviewid', {z:99});
+            var vr = new Y.mojito.ViewRenderer('foo', {z:99});
             vr.render(1,2,3,4,5,6);
         }
 

@@ -467,12 +467,14 @@ YUI().use('mojito-action-context', 'test', function (Y) {
             Y.mojito.ViewRenderer = function(engine) {
                 A.areSame('engine', engine, 'bad view engine');
                 return {
-                    render: function(d, type, v, a, m, more) {
+                    render: function(d, mojitType, v, a, m, more) {
                         vrRendered = true;
                         A.areSame(data, d, 'bad data to view');
-                        A.areSame('t', type, 'bad mojitType to view');
+                        A.isObject(mojitType, 'mojitType should be the expanded instance');
+                        A.areSame('t', mojitType.type, 'bad mojitType to view');
                         A.areSame(meta, m, 'bad meta to view');
-                        A.areSame('path', v, 'bad view content path to view engine');
+                        A.isObject(v, 'view object from store with the proper view info');
+                        A.areSame('path', v['content-path'], 'bad view content path to view engine');
                         A.areSame(ac._adapter, a, 'bad adapter to view');
                         A.isFalse(more);
                     }
