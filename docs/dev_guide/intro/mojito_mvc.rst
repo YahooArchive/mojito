@@ -236,8 +236,6 @@ be the following:
       ...
    });
 
-.. _mvc_models-structure:
-
 
 .. _mvc-controllers-structure:
 
