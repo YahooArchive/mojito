@@ -74,7 +74,7 @@ YUI.add('PagedFlickr5', function(Y, NAME) {
         for (var k in mods) {
             params[k] = mods[k];
         }
-        return ac.url.make('flickr5', 'index', Y.QueryString.stringify(params));
+        return ac.url.make('flickr5', 'index', params);
     }
 
 }, '0.0.1', {requires: [
@@ -84,5 +84,4 @@ YUI.add('PagedFlickr5', function(Y, NAME) {
     'mojito-url-addon',
     'mojito-intl-addon',
     'mojito-util',
-    'querystring-stringify',
     'PagedFlickr5Model'], lang: ['de', 'en-US']});
