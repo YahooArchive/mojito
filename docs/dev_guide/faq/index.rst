@@ -735,7 +735,7 @@ Logging/Testing
           }
       ...
 
-    See `Including and Excluding Modules From Logging <../topics/mojito_logging.rst#logging_custom-include_exclude_src>`_
+    See `Including and Excluding Modules From Logging <../topics/mojito_logging.html#including-and-excluding-modules-from-logging>`_
     for more information.
 
 ------------
