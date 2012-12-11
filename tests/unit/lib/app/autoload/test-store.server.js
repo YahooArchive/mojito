@@ -261,21 +261,6 @@ YUI().use(
                 });
             },
 
-            'expandSpec caching': function() {
-                var inSpec = {
-                    base: 'a',
-                    type: 'c'
-                };
-                var env = 'server';
-                var ctx = {};
-                var key = Y.JSON.stringify([env, ctx, inSpec]);
-                store._expandSpecCache[key] = { x: 'y' };
-                var outSpec = store._expandSpec(env, ctx, inSpec);
-                A.isObject(outSpec);
-                A.areEqual(1, Object.keys(outSpec).length);
-                A.areEqual('y', outSpec.x);
-            },
-
             'getMojitTypeDetails caching': function() {
                 var key = Y.JSON.stringify(['server', ['*'], 'en', 'x']);
                 store._getMojitTypeDetailsCache[key] = { x: 'y' };
