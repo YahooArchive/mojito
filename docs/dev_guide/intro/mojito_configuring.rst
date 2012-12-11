@@ -550,7 +550,7 @@ In the example ``application.json`` below, the mojit instance ``father`` of type
 Child Mojit With Children
 #########################
 
-A parent mojit can have a single child that has its own children. The parent mojit 
+A parent mojit can have a child that has its own children. The parent mojit 
 specifies a child with the ``child`` object, which in turn lists children in the 
 ``children`` object. For the child to execute its children,it would use the ``Composite`` 
 addon. See `Composite Mojits <../topics/mojito_composite_mojits.html#composite-mojits>`_ 
@@ -586,6 +586,48 @@ child ``son``, which has the children ``grandson`` and ``granddaughter``.
        }
      }
    ]
+
+The child mojits can also have their own children, but beware that 
+having so many child mojits may cause memory issues. In our updated 
+example ``application.json`` below, the ``grandaughter`` mojit now has
+its own children mojits:
+
+.. code-block:: javascript
+
+   [
+     {
+       "settings": [ "master" ],
+       "specs": {
+         "grandfather": {
+           "type": "GrandparentMojit",
+           "config": {
+             "child": {
+               "son": {
+                 "type": "ChildMojit",
+                 "children": {
+                   "grandson": {
+                     "type": "GrandchildMojit"
+                   },
+                   "grandaughter": {
+                     "type": "GrandchildMojit",
+                     "children": {
+                       "girl_doll": {
+                          "type": "GirlDollMojit"
+                       },
+                       "boy_doll": {
+                          "type": "BoyDollMojit"
+                       }
+                     }
+                   }
+                 }
+               }
+             }
+           }
+         }
+       }
+     }
+   ]
+
 
 
 .. _deploy_app:
@@ -836,7 +878,7 @@ the ``index`` function in the controller of the ``Foo`` mojit.
 
 .. _configure_mj-routing:
 
-routing
+Routing
 =======
 
 In Mojito, routing is the mapping of URLs to specific mojit actions. This section 
@@ -1067,7 +1109,7 @@ Using Parameterized Paths to Call a Mojit Action
 Your routing configuration can also use parameterized paths to call mojit 
 actions. In the ``routes.json`` below, the ``path`` property uses parameters 
 to capture a part of the matched URL and then uses that captured part to 
-replace ``{{mojit-action}}`` in the value for the ``call``property.  Any 
+replace ``{{mojit-action}}`` in the value for the ``call`` property. Any 
 value can be used for the parameter as long as it is prepended with a 
 colon (e.g., ``:foo``). After the parameter has been replaced by a value 
 given in the path, the call to the action should have the following syntax: 
@@ -1109,7 +1151,7 @@ The following URLs call the ``index`` and ``myAction`` functions in the controll
 Using Regular Expressions to Match Routing Paths
 ------------------------------------------------
 
-You can use the ``regex`` property of the ``routing`` object to define a key-value 
+You can use the ``regex`` property of a routing object to define a key-value 
 pair that defines a path parameter and a regular expression. The key is prepended 
 with a colon when represented as a path parameter. For example, the key ``name`` 
 would be represented as ``:name`` as a path parameter: ``"path": "/:name"``.
@@ -1184,7 +1226,7 @@ Accessing Configurations from Mojits
 
 The model and binder can access mojit configurations from the ``init`` 
 function. The controller and model are passed ``configuration`` objects. The controller 
-can access configuration the ``actionContext`` object and the ``Config`` addon. 
+can access configuration with the ``Config`` addon. 
 The ``init`` function in the binder, instead of a configuration object, is passed the 
 ``mojitProxy`` object, which enables you to access configurations.  
 
