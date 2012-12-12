@@ -30,10 +30,12 @@
         "settings": ["build:debug"],
 
         "yui": {
-            "dependencyCalculations": "precomputed",
-            "base": "/yahoo.libs.yui/",
-            "url": "$$yui.base$$yui/yui-debug.js",
-            "loader": "loader/loader-debug.js"
+            "config": {
+                "combine": false,
+                "base": "/yahoo.libs.yui/",
+                "url": "$$yui.base$$yui/yui-debug.js",
+                "loader": "loader/loader-debug.js"
+            }
         }
     }
 ]
