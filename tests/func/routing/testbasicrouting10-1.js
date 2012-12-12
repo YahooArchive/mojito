@@ -11,7 +11,7 @@ YUI({
     suite.add(new Y.Test.Case({
          "test BasicRouting10-1": function(){
              Y.Assert.areEqual('Click to execute the action \'route-2\' for the mojit \'nothing\'', Y.one('#mylink').get('innerHTML'));
-             Y.Assert.areEqual("error:%20No%20route%20match%20found%20for%20'route-2.nothing'%20(get)", Y.one('#mylink').get('href'), 'invalid routes should trigger an error');
+             Y.Assert.areEqual('/route-2/nothing', Y.one('#mylink').get('href').match(/\/route-2\/nothing/gi));
              Y.Assert.areEqual('route-2', Y.one('#name').get('innerHTML'));
          }
    }));

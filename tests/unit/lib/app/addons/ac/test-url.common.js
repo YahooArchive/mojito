@@ -35,7 +35,7 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
                 return {
                     find: function(url, verb) {
                         A.areSame('myid.myaction', url);
-                        A.areSame('get', verb);
+                        A.areSame('GET', verb);
                         return 'ohhai url';
                     }
                 };
@@ -117,7 +117,7 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
                 return {
                     find: function(url, verb) {
                         A.areSame('myid.myaction', url);
-                        A.areSame('post', verb);
+                        A.areSame('POST', verb);
                         return 'ohhai url';
                     }
                 };
@@ -138,7 +138,7 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
                     make: function(query, verb, params) {
                         A.areSame('myid.myaction', query);
                         A.areSame('bar', params.foo);
-                        A.areSame('get', verb);
+                        A.areSame('GET', verb);
                         return 'ohhai url';
                     }
                 };
@@ -162,7 +162,7 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
                         A.areSame('bar', params.foo);
                         A.areSame(1, params.a);
                         A.areSame(2, params.b);
-                        A.areSame('get', verb);
+                        A.areSame('GET', verb);
                         return 'ohhai url';
                     }
                 };
@@ -183,7 +183,7 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
                     make: function(query, verb, params) {
                         A.areSame('myid.myaction', query);
                         A.areSame('bar', params.foo);
-                        A.areSame('post', verb);
+                        A.areSame('POST', verb);
                         return 'ohhai url';
                     }
                 };
@@ -203,7 +203,7 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
                 return {
                     make: function(query, verb) {
                         A.areSame('myid.myaction', query);
-                        A.isUndefined(verb);
+                        A.areSame('GET', verb);
                         return 'ohhai url';
                     }
                 };
@@ -224,7 +224,7 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
                     make: function(query, verb, params) {
                         A.areSame('myid.myaction', query);
                         A.areSame('bar', params.foo);
-                        A.areSame('get', verb);
+                        A.areSame('GET', verb);
                         return 'ohhai url';
                     }
                 };
@@ -235,6 +235,98 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
             });
 
             url = addon.make('myid', 'myaction', {foo:'bar'}, 'get');
+            A.areSame('ohhai url', url);
+        },
+
+        'test default verb': function() {
+            Y.mojito.RouteMaker = function(rtes) {
+                A.areSame('routes', rtes);
+                return {
+                    make: function(query, verb, params) {
+                        A.areSame('myid.myaction', query);
+                        A.areSame('GET', verb);
+                        return 'ohhai url';
+                    }
+                };
+            };
+            var addon = new Y.mojito.addons.ac.url({}, null, acMock);
+            addon.setStore({
+                getRoutes: function() { return 'routes'; }
+            });
+
+            url = addon.make('myid', 'myaction');
+            A.areSame('ohhai url', url);
+        },
+
+        'test routeParams and queryParams priorities': function() {
+            Y.mojito.RouteMaker = function(rtes) {
+                A.areSame('routes', rtes);
+                return {
+                    make: function(query, verb, params) {
+                        A.areSame('myid.myaction', query);
+                        A.areSame('baz', params.foo, 'queryParams should have the priority');
+                        A.areSame('GET', verb);
+                        return 'ohhai url';
+                    }
+                };
+            };
+            var addon = new Y.mojito.addons.ac.url({}, null, acMock);
+            addon.setStore({
+                getRoutes: function() { return 'routes'; }
+            });
+
+            url = addon.make('myid', 'myaction', {foo: 'bar'}, 'get', {foo: 'baz'});
+            A.areSame('ohhai url', url);
+        },
+
+        'test routeParams and queryParams as strings': function() {
+            Y.mojito.RouteMaker = function(rtes) {
+                A.areSame('routes', rtes);
+                return {
+                    make: function(query, verb, params) {
+                        A.areSame('myid.myaction', query);
+                        A.areSame('bar', params.foo);
+                        A.areSame('baz', params.bar);
+                        A.areSame('1', params.a);
+                        A.areSame('2', params.b);
+                        A.areSame('GET', verb);
+                        return 'ohhai url';
+                    }
+                };
+            };
+            var addon = new Y.mojito.addons.ac.url({}, null, acMock);
+            addon.setStore({
+                getRoutes: function() { return 'routes'; }
+            });
+
+            url = addon.make('myid', 'myaction', 'foo=bar&bar=baz', 'get', 'a=1&b=2');
+            A.areSame('ohhai url', url);
+        },
+
+        'test routeParams and queryParams as arrays': function() {
+            Y.mojito.RouteMaker = function(rtes) {
+                A.areSame('routes', rtes);
+                return {
+                    make: function(query, verb, params) {
+                        console.error(params);
+                        A.areSame('myid.myaction', query);
+                        A.areSame('a', params['0']);
+                        A.areSame('b', params['1']);
+                        A.isUndefined(params.foo);
+                        A.isUndefined(params.bar);
+                        A.isUndefined(params.a);
+                        A.isUndefined(params.b);
+                        A.areSame('GET', verb);
+                        return 'ohhai url';
+                    }
+                };
+            };
+            var addon = new Y.mojito.addons.ac.url({}, null, acMock);
+            addon.setStore({
+                getRoutes: function() { return 'routes'; }
+            });
+
+            url = addon.make('myid', 'myaction', ['foo', 'bar'], 'get', ['a', 'b']);
             A.areSame('ohhai url', url);
         }
 

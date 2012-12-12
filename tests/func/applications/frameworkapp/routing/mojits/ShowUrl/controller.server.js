@@ -28,7 +28,7 @@ YUI.add('ShowUrl', function (Y, NAME) {
                 mojitAction = ac.params.getFromUrl('mojit_action'),
                 mojitUrlParams = ac.params.getFromUrl('mojit_urlparams'),
                 mojitUrl = ac.params.getFromUrl('mojit_url'),
-                mojitVerb = (ac.params.getFromUrl('mojit_verb') || 'get').toLowerCase(),
+                mojitVerb = ac.params.getFromUrl('mojit_verb'),
                 nameExists = mojitName ? "YES" : "NO",
                 actionExists = mojitAction ? "YES" : "NO",
                 urlparamsExists = mojitUrlParams ? "YES" : "NO",
