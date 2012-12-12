@@ -51,7 +51,7 @@ YUI.add('PagedFlickr2', function(Y, NAME) {
         for (var k in mods) {
             params[k] = mods[k];
         }
-        return ac.url.make('flickr2', 'index', Y.QueryString.stringify(params));
+        return ac.url.make('flickr2', 'index', params);
     }
 
 
