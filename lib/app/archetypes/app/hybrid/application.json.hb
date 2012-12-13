@@ -31,10 +31,20 @@
 
         "yui": {
             "config": {
+                "base": "../yahoo.libs.yui/",
                 "combine": false,
-                "base": "/yahoo.libs.yui/",
+                "comboBase": "",
+                "loader": "loader/loader-debug.js",
+                "root": "",
                 "url": "$$yui.base$$yui/yui-debug.js",
-                "loader": "loader/loader-debug.js"
+                "groups": {
+                	"app": {
+                        "combine": false,
+                        "comboBase": "",
+                        "base": "",
+                        "root": ""
+                	}
+                }
             }
         }
     }
