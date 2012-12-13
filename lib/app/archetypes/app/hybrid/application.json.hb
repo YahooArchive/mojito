@@ -25,7 +25,7 @@
         "settings": ["build:debug"],
         "yui": {
             "config": {
-                "base": "/yahoo.lib.yui/",
+                "base": "/yui/",
                 "combine": false,
                 "comboBase": "",
                 "root": "",
