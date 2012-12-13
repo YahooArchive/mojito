@@ -308,7 +308,6 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
                 A.areSame('routes', rtes);
                 return {
                     make: function(query, verb, params) {
-                        console.error(params);
                         A.areSame('myid.myaction', query);
                         A.areSame('a', params['0']);
                         A.areSame('b', params['1']);
