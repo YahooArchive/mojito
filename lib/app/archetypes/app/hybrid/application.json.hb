@@ -34,12 +34,10 @@
                 ],
                 "base": "../yahoo.libs.yui/",
                 "combine": false,
-                "comboBase": "",
                 "root": "",
                 "groups": {
                     "app": {
                         "combine": false,
-                        "comboBase": "",
                         "base": "..",
                         "root": ""
                     }
