@@ -1,20 +1,16 @@
 [
     {
         "settings": [ "master" ],
-
         "appPort": "{{port}}",
-
         "specs": {
             "frame": {
                 "base": "top_frame"
             }
         },
-
         "staticHandling": {
             "appName": "yahoo.application.{{name}}",
             "prefix": "yahoo.application.{{name}}"
         },
-
         "builds": {
             "hybridapp": {
                 "forceRelativePaths": true,
@@ -25,23 +21,19 @@
             }
         }
     },
-
     {
         "settings": ["build:debug"],
-
         "yui": {
             "config": {
-                "base": "../yahoo.libs.yui/",
+                "base": "/yahoo.lib.yui/",
                 "combine": false,
                 "comboBase": "",
-                "loader": "loader/loader-debug.js",
                 "root": "",
-                "url": "$$yui.base$$yui/yui-debug.js",
                 "groups": {
                 	"app": {
                         "combine": false,
                         "comboBase": "",
-                        "base": "",
+                        "base": "/",
                         "root": ""
                 	}
                 }
