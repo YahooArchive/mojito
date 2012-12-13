@@ -262,9 +262,10 @@ YUI().use('mojito-composite-addon', 'test', function(Y) {
             A.isTrue(exeCbCalled, "execute callback never called");
         },
 
-        'test null or undefined child should be discarded': function() {
+        'test null or undefined child should be skipped': function() {
             var command = {instance: {}},
                 adapter = null,
+                countDispatched = 0,
                 ac = {
                     _dispatch: function(command, adapter) {
                         A.isObject(command, "bad command object to dispatch");
@@ -272,6 +273,7 @@ YUI().use('mojito-composite-addon', 'test', function(Y) {
                         var id = command.instance.id;
                         var meta = {};
                         meta[id] = id + '__meta';
+                        countDispatched += 1;
                         adapter.done(id + '__data', meta);
                     }, _notify: function() {}
                 },
@@ -286,6 +288,7 @@ YUI().use('mojito-composite-addon', 'test', function(Y) {
 
             c.execute(config, function(data, meta) {
                 exeCbCalled = true;
+                A.areSame(1, countDispatched, "dispatched wrong number of children");
                 A.isUndefined(data.kid_a, "unexpected kid_a data for null child");
                 A.isString(data.kid_b, "missing kid_b data");
                 A.areSame('kid_b__data', data.kid_b, "wrong kid_b data");
