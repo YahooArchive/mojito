@@ -30,7 +30,7 @@
                     "/yahoo.libs.yui/loader-base/loader-base-min.js",
                     "loader-yui3-resolved{langPath}",
                     "loader-app",
-                    "loader-app-base{langPath}"
+                    "loader-app-resolved{langPath}"
                 ],
                 "base": "../yahoo.libs.yui/",
                 "combine": false,
