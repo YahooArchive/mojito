@@ -3,7 +3,7 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
- YUI().use('mojito-util', 'mojito-test-extra', 'test', 'array-extras', function(Y) {
+YUI().use('mojito-util', 'mojito-test-extra', 'test', 'array-extras', function(Y) {
 
     var suite = new Y.Test.Suite('util tests'),
         cases = {},

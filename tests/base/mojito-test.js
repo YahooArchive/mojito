@@ -214,7 +214,7 @@ YUI.add('mojito-test', function(Y, NAME) {
 YUI.add('mojito-test-extra', function(Y, NAME) {
     var A = Y.Assert;
 
-	Y.MOJITO_DIR = require ?
+	Y.MOJITO_DIR = ('undefined' !== typeof require) ?
 	    require('path').resolve(__dirname, '../../') + '/' : null;
 
     // path doesn't need to be given, mainly used during recursion
