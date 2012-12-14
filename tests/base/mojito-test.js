@@ -233,7 +233,7 @@ YUI.add('mojito-test-extra', function(Y, NAME) {
         if (Y.Lang.isObject(x)) {
             A.isObject(x, path + ': ' + (msg || 'first arg should be an object'));
             A.isObject(y, path + ': ' + (msg || 'second arg should be an object'));
-            A.areSame(Object.keys(x).length, Object.keys(y).length, path + ': ' + (msg || 'object keys are different lengths'));
+            A.areSame(Y.Object.keys(x).length, Y.Object.keys(y).length, path + ': ' + (msg || 'object keys are different lengths'));
             for (i in x) {
                 if (x.hasOwnProperty(i)) {
                     Y.TEST_CMP(x[i], y[i], msg, path + '{' + i + '}');
