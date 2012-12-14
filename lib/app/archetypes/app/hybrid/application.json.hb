@@ -13,7 +13,7 @@
         },
         "builds": {
             "hybridapp": {
-                "forceRelativePaths": true,
+                "forceRelativePaths": false,
                 "urls": ["/yahoo.application.{{name}}/index.html"],
                 "packages": {
                     "yahoo.libs.yui": "*"
@@ -32,13 +32,13 @@
                     "loader-app",
                     "loader-app-resolved{langPath}"
                 ],
-                "base": "../yahoo.libs.yui/",
+                "base": "/yahoo.libs.yui/",
                 "combine": false,
                 "root": "",
                 "groups": {
                     "app": {
                         "combine": false,
-                        "base": "..",
+                        "base": "/",
                         "root": ""
                     }
                 }
