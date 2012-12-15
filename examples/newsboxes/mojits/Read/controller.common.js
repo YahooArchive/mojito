@@ -30,7 +30,7 @@ YUI.add('ReadController', function(Y, NAME) {
                 error = null,
                 my = this;
 
-            this.config = ac.config.getAppConfig();
+            this.config = ac.config.get();
 
             if (feedmeta) {
                 feedmeta.id = id;
