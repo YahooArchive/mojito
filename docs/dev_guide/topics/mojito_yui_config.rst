@@ -2,7 +2,7 @@
 Configuring YUI in Mojito
 =========================
 
-.. _YUI_config-intro:
+.. _yui_config-intro:
 
 Overview
 ========
@@ -10,8 +10,12 @@ Overview
 Mojito allows you to configure the YUI seed file and use YUI groups for dynamically
 loading in the ``application.json`` file. 
 
+.. _yui_config-seed:
+
 YUI Seed File
 =============
+
+.. _seed-yui:
 
 YUI Applications
 ----------------
@@ -25,6 +29,8 @@ The seed file is added to your Web page by with following ``<script>`` tag.
 From the URL to the seed file, the YUI library can infer the version of the library that 
 should be used, the filter that you want to use (min, debug or raw), and the CDN that is 
 serving the library. 
+
+.. _seed-mojito:
 
 Mojito Applications
 -------------------
@@ -45,6 +51,8 @@ The following are the reasons Mojito uses configuration for the YUI seed:
   application code are loaded in the same way as the YUI Core modules, so
   it is difficult to use the YUI seed file in a Mojito application.
 
+.. _seed-default:
+
 Default Seed File
 -----------------
 
@@ -53,6 +61,8 @@ need to configure the YUI seed as the default configuration is sufficient.
 Developers who want finer grain control over the loader for performance 
 optimization should consider customizing the configuration for the YUI seed.
 
+.. _seed-configure:
+
 Configuring the Seed File
 -------------------------
 
@@ -60,7 +70,8 @@ Starting from Mojito v0.5.0, developers can configure the YUI seed
 using the ``yui.config.seed`` object in ``application.json`` file. 
 
 In the example ``application.json`` below, the YUI seed includes
-the modules specified in the ``seed`` object. The modules ``loader-app`` and 
+the modules specified in the ``seed`` object. Besides the YUI modules
+``loader-app`` and 
 ``loader-app-base{langPath}``, which we will discuss in ` <>`_. The other
 modules are just YUI Core modules.
 
@@ -83,7 +94,7 @@ modules are just YUI Core modules.
      }
    ]
 
-
+.. _seed_configure-modules:
 
 What Modules Should Be in the Seed?
 ###################################
@@ -99,36 +110,64 @@ at any given time. So, unless you have a strong reason for adding a new module t
 the seed array, try to keep it simple.
 
 
+.. _seed_configure-synthetic:
+
 Synthetic Modules in Mojito
 ###########################
+
+.. _synthetic_mods-what:
 
 What Are Synthetic Modules?
 ***************************
 
-Synthetic modules generate application metadata that can be used by the YUI loader
-to load application and Mojito modules on demand, which are critical for the application 
-to function. Synthetic modules are not physical files except in the case
-of hybrid applications, when synthetic modules are generated as files during
-the build process. You can also use `Shaker <>`_ to generate and bundle physical files
-from synthetic files as part of the content to upload to a CDN. 
+When you run ``mojito start`` or use an alternative way to boot your application, 
+the Mojito store analyzes the directory structure and dependencies to try to understand the 
+structure and then make assumptions. From this analysis, the synthetic modules 
+create application metadata that can be used by YUI Loader to load the application and Mojito 
+modules on demand. Without this metadata, the application cannot function.
 
-Each of those 
-synthetic modules will be computed and will not represent physical files at all, 
-so, when it comes to production, you might want to use Shaker to generate and bundle 
-them as part of the content you want to upload to CDN, and when it comes to hybrid 
-applications, those files will be generated into the build artifact as part of the Mojito 
-build command.
+Synthetic modules are not physical files except in the case of hybrid applications, 
+when synthetic modules are generated as files during the build process. You can also 
+use `Shaker <>`_ to generate and bundle physical files from synthetic files as part of 
+the content to upload to a CDN. For production, we recommend using Shaker, especially
+in the case that your mojits contain language resource bundles.
 
-When Are Synthetic Modules Created?
+.. _synthetic_mods-base_resolved:
+
+Base and Resolved Synthetic Modules
 ***********************************
 
-Every time you run ``mojito start`` or use any alternative way to boot your application, 
-the Mojito store will analyze the folder structure and dependencies to try to understand the 
-structure and then make assumptions along the way. Part of that analysis is to generate 
-application metadata that could be used by YUI loader to load application and Mojito 
-modules on demand, and that part is critical for the application to function, and 
-that's what synthetic modules do. 
+Synthetic modules can have *base* and *resolved* versions. The **base** synthetic
+modules have the suffix ``-base``, and the **resolved** synthetic modules have the suffix
+``-resolved``. 
 
+In general, the base synthetic modules contain basic metadata that 
+is digested and processed recursively by the YUI Loader on the client side 
+to generate the file or files that need to be loaded when a particular module is used.
+
+The resolved synthetic modules have the expanded metada, so no 
+process is needed to determine which file or files need to be loaded when a 
+particular module is used. 
+
+The base synthetic module requires less memory than the resolved synthetic module,
+but requires more CPU power to process because the YUI loader has to recursively
+digest and process metadata. The resolved synthetic module, in contrast, requires 
+more memory but less CPU power because the metadata is expanded.
+See the `resolve <http://yuilibrary.com/yui/docs/api/classes/Loader.html#method_resolve>`_
+method of the `Loader <http://yuilibrary.com/yui/docs/api/classes/Loader.html>`_
+class in the YUI API documentation for more information.
+
+When using resolved synthetic modules, your application is restricted to using 
+YUI Core modules that are required in Mojito or application modules. 
+For example, if the YUI Core modules ``autocomplete-list`` is not required by 
+a binder, controller, module, or any other custom YUI module in your application, 
+Mojito will assume that the ``autocomplete-list`` metadata is not really needed 
+and will not include it in the resolved metadata to keep the size of the 
+expanded metadata as small as possible. This is important if you have integration 
+tests or functional tests that are meant to inject dynamic modules and dependencies, 
+or if you have custom ``Y.use`` statements that are not controlled by Mojito.
+
+.. _synthetic_mods-mult_langs:
 
 Using Synthetic Modules for Multiple Languages
 **********************************************
@@ -139,6 +178,8 @@ specify synthetic modules that will load modules based on the request informatio
 user preferences. Mojito will locate the corresponding synthetic name 
 based on the language context. 
 
+.. _synthetic_mult_langs-syntax:
+
 Syntax
 ^^^^^^
 
@@ -147,98 +188,125 @@ Syntax
 For example, the US English form of the ``loader-app-base`` synthetic module
 is ``loader-app-base_en-US``.
 
+.. _synthetic_mult_langs-restriction:
+
 Restrictions
 ^^^^^^^^^^^^
+
 Not all synthetic modules can be customized per language. 
 Only the synthentic modules that have the suffix ``-base`` and ``-resolved`` 
 can have language versions. The default synthetic modules, such as ``loader-app``,
 always exists. So, if no language is specified, but many language resource bundles 
-exist for a mojit, then the default synthetic module will load the meta data for all of 
+exist for a mojit, then the default synthetic module will load the metadata for all of 
 the modules. If an application has multiple mojits each with dozens of language bundles,
-the amount of meta data can be considerable, so you'd want to make sure that
+the amount of metadata can be considerable, so you'd want to make sure that
 the synthetic modules have all the different language versions.
 
+.. _synthetic_mods-create:
 
 Creating Synthetic Files
-------------------------
+************************
 
 In terms of extending Mojito functionalities, if you create a Resource Store addon, you 
 can create new synthetic files, as well as control the seed generation by piping into 
 ``store.YUI.getAppSeedFiles`` method. Check the API documentation for more details on the 
 signature of that method.
 
-base v. resolved
-----------------
-
-https://github.com/yahoo/Mojito/blob/develop/lib/app/addons/rs/YUI.js#L48
-In general, *base files will have basic metadata, which needs to be digested/processed in 
-a recursive way by the YUI Loader in the client side in order to generate the file or 
-files that need to be loaded when a particular module is used.
-In the other hand, *resolved files will have the expanded metada, which do not require any 
-process to determine which file or files need to be loaded when a particular module is used. 
-Check the documentation about "loader.resolve" from YUI api. the problem is that it is 
-HUGE compared with the *base, but it performance better down the road, specially on mobile.
-
-resolved is bigger, way bigger. In desktop, where we have a lot of CPU power, we normally 
-use the *base, but when it comes to mobile, *resolved is probably a better choice, also when 
-you don't have network latency (like hybrid apps), *resolved is better as well.
-
-When Not to Use Them
-####################
-
-
-Extending Mojito with Synthetic Modules
-#######################################
-
-Building Synthetic Modules with Shaker
-#######################################
-
-Synthetic Modules in Hybrid Applications
-#########################################
 
 
 Optimizing Performance
 ----------------------
 
-In mobile, and in some high performance applications, relying on the Loader to compute and 
-resolve dependencies that are needed in a recursive way could affect booting time on the 
-runtime drastically. For that, Mojito is smart enough to use 
-Y.Loader->resolve feature [http://YUIlibrary.com/YUI/docs/api/classes/Loader.html#method_resolve] 
+Default Application Optimization
+################################
+
+In mobile and applications required high performance, relying on the Loader to compute and 
+resolve dependencies that are needed in a recursive way could drastically affect booting 
+time on the runtime. For that, Mojito is smart enough to use 
+`Y.Loader->resolve <http://yuilibrary.com/yui/docs/api/classes/Loader.html#method_resolve]>`_
 to expand the loader metadata, which is considerable bigger than the regular metadata 
 computed through loader-app-base{langPath}. 
 
-Here is an example:
 
-[
-    {
-        "settings": [ "master" ],
-        "YUI": {
-            "config": {
-                "seed": [
-                    "YUI-base",
-                    "loader-base",
-                    "loader-YUI3",
-                    "loader-app",
-                    "loader-app-resolved{langPath}"
-                ]
-            }
-        }
-    }
-]
+Minimize Seed File Small
+########################
 
-Reducing Latency
-################
+Use only include critical modules in the seed. Mojito can load other required module at 
+any given time.
 
- So, *base is more network friendly because it is
- considerable smaller so it loads faster initially,
 
-Reducing Memory
-###############
+Use Synthetic Modules for YUI Core Modules
+##########################################
 
-Yes, that's the idea, just keep in mind the difference between the size of the metadata, 
-which can also affect the boot time.  but *rebase is more CPU friendly on 
-the runtime because it does not require recursive computation to fulfill requirements 
-since that computation was already done at the server side. 
+
+
+
+Use Base Synthetic Modules to Reduce Latency and Memory
+#######################################################
+
+The base synthetic modules are small, making them ideal for applications that 
+may have connectivity issues. You should also take into consideration that
+your application will require more CPU power when using base synthetic modules.
+For desktop applications,  when you have more CPU power, you should use 
+base synthetic modules.  
+
+Use Resolved Synthetic Modules to Use Less CPU Power
+####################################################
+
+Resolved synthetic modules require less CPU power because they do not require recursive 
+computation as the computation was already done at the server side. The size of the 
+resolved synthetic module in memory, however, is much larger than
+the base synthetic module. For mobile devices, which have less CPU power, you
+would want to use resolved synthetic modules. 
+
+
+Use Contexts to Customize Seed to Runtime Environment
+#####################################################
+
+Contexts allow you to have different configurations for different runtime environments.
+As we have discussed, base synthetic modules are better suited for desktop applications
+because of the high demand for CPU power, while resolved synthetic modules are better
+suited for mobile devices that do not have as much CPU power. With context configuratons,
+you can configure the runtime to use the better suited synthetic module.
+
+In the 
+
+.. code-block:: javascript
+
+   [
+     {
+       "settings": [ "master" ],
+       "yui": {
+         "config": {
+           "seed": [
+             "yui-base",
+             "loader-base",
+             "loader-yui3",
+             "loader-app",
+             "loader-app-base{langPath}"
+           ]
+         }
+       }
+     },
+     {
+       "settings": [ "runtime:client" ],
+       "yui": {
+         "config": {
+           "seed": [
+             "yui-base",
+             "loader-base",
+             "loader-yui3",
+             "loader-app",
+             "loader-app-resolved{langPath}"
+           ]
+         }
+       }
+     }
+   ]
+
+Use Language Paths for Base and Resolved Synthetic Modules
+##########################################################
+
 
 
 YUI App Groups
@@ -247,64 +315,67 @@ YUI App Groups
 Introduction
 ------------
 
-Starting on Mojito 0.5.0, we introduced a special group called ``app`` as part of the 
+Starting from Mojito v0.5.0, we introduce the group ``app`` as part of the 
 loader metadata. This new setting will group all the YUI modules defined in Mojito core 
-and in the application, and will hold a series of settings and configurations that will 
+and in the application and hold a series of settings and configurations that will 
 define how YUI will deal with those modules when they are needed.
 
 Groups are an important part of the YUI Loader configuration because they allow us to 
 define buckets of files that could be loaded from different mediums and sources. For more 
-details about the group configuration, reference to the 
-YUI Groups config API: http://YUIlibrary.com/YUI/docs/api/classes/config.html#property_groups
-
-Why Use App Groups
-##################
-
-  - allows you to load YUI modules from a CDN
-  - allows you to change the group configurations for a particular environment
+details about the group configuration, refer to the 
+`groups <http://YUIlibrary.com/YUI/docs/api/classes/config.html#property_groups>`_
+property of the `YUI config Class <http://yuilibrary.com/YUI/docs/api/classes/config.html>`_.
 
 
-Default App Groups
-------------------
+Why Use the app Group
+#####################
 
-By default, YUI defines the three groups ``default``, ``gallery``, and ``YUI2``. 
-In Mojito, we introduce a fourth one, called `app`, and it defines anything that is part 
-of the application or any of its dependencies, including ``mojito`` core modules. As a 
-regular practice, Mojito will assume few things about this group, and in many case, you 
-don't need to worry about customize it, but if you need to, you can do it  through the 
-regular ``application.json`` configuration, using the YUI.config structure. 
+By using the ``app`` group, you can load YUI modules from a CDN
+and change the group configurations for a particular environment. 
 
 
-Example
-#######
+Default Groups
+--------------
 
-[
-    {
-        "settings": [ "master" ],
-        "yui": {
-            "config": {
-                "groups": {
-                    "app": {
-                        "combine": false,
-                        "maxURLLength": 516,
-                        "base": "http://companycdn.com/path/to/files"
-                    }
-                }
-            }
-        }
-    }
-]
+By default, YUI defines the three groups ``default``, ``gallery``, and ``yui2``. 
+As mentioned, Mojito introduces a fourth one called ``app``. In general, you don't need 
+to configure groups, but if needed, you can use the ``yui.config.groups`` object
+in the ``application.json``. 
+
+In the example ``application.json``, the ``app`` group is configured
+so that YUI modules are loaded from a CDN.
+
+.. code-block:: javascript
+
+   [
+     {
+       "settings": [ "master" ],
+       "yui": {
+         "config": {
+           "groups": {
+             "app": {
+               "combine": false,
+               "maxURLLength": 516,
+               "base": "http://companycdn.com/path/to/files"
+             }
+           }
+         }
+       }
+     }
+   ]
 
 Default Combo Handler Bundle with Mojito
 ----------------------------------------
 
-As part of Mojito 0.5.0 release, we also ship an extended version of the 
-`Mojito-handler-static` middleware that implements a fully functional, fully capable 
-combo handler, which supports cache, fallback when proxies cut the URL, etc. This combo 
-follows the recommendations described in this blogpost 
-[http://www.YUIblog.com/blog/2012/11/06/managing-your-javascript-modules-with-YUI-3-stockpile-2/] 
-from John Lindal (@jafl5272), and it is the default configuration used for the Mojito 
-application if the `app` group is not configured, and it will have these default settings:
+As part of v0.5.0 release, Mojito comes with an extended version of the 
+``mojito-handler-static`` middleware that implements a fully functional
+combo handler that supports cache, fallbacks when proxies cut the URL, etc. This combo 
+follows the recommendations described in the blog post 
+`Managing your JavaScript Modules with YUI 3 Stockpile <http://www.YUIblog.com/blog/2012/11/06/managing-your-javascript-modules-with-YUI-3-stockpile-2/>`_
+by `John Lindal <http://jjlindal.net/jafl/>`_, and it is the default configuration used 
+for the Mojito application if the ``app`` group is not configured. 
+ 
+The following are the default configurations for the ``app`` group:
 
 * ``comboBase: "/combo~"``
 * ``comboSep: "~"``
@@ -314,33 +385,60 @@ application if the `app` group is not configured, and it will have these default
 Inheriting Default Group Configurations
 ---------------------------------------
 
-Another useful mechanism to control the ``app`` group is by inheriting some of the settings 
-from the default configuration, like the `combine` flag. Here is another example where we 
-disable the combo handler while in development environment:
+You can inherit the default configurations of the ``app`` group by setting
+the ``combine`` property to ``true``. 
 
-[
-    {
-        "settings": [ "environment:development" ],
-        "YUI": {
-            "config": {
-                ""combine": false
-            }
-        }
-    }
-]
+.. code-block:: javascript
 
-By doing that, YUI Core modules will not be using the combo handler, but also the `app` 
-group will inherit that configuration, but only then your application is running in the 
-`development` `environment`.
+   [
+     {
+       "settings": [ "environment:development" ],
+       "yui": {
+         "config": {
+           "combine": true
+         }
+       }
+     }
+   ]
+
+
+
+You can also use the ``combo`` property to disable the combo handler. In the 
+example ``application.json`` below, the combo handler is disabled in
+the ``environment:development`` context:
+
+.. code-block:: javascript
+
+   [
+     {
+       "settings": [ "environment:development" ],
+       "yui": {
+         "config": {
+           "combine": true
+         }
+       }
+     },
+     {
+       "settings": [ "environment:development" ],
+       "yui": {
+         "config": {
+           "combine": false
+         }
+       }
+     }
+   ]
+
+By disabling the combo handler, the YUI Core modules will not be using the combo handler, 
+and the ``app`` group will also inherit that configuration.
 
 Shaker Integration
 ------------------
 
-`Mojito-shaker` 3.x extension will be able to control this setting if you decide to push 
-your assets into a CDN like amazon. Shaker will also version the files and create the 
-necessary rollups to speed up the caching and booting process in the client runtime, in 
-case you decide to use it, you will not need to specify much though. Reference to 
-`shaker` documentation for more details.
+The ``mojito-shaker`` 3.x extension will be able to control the configurations defined
+by the ``app`` group if you decide to push your assets into a CDN like Amazon. Shaker will 
+also version the files and create the necessary rollups to speed up the caching and booting 
+process in the client runtime. To learn how to use the ``mojito-shaker`` extension, 
+see `Shaker documentation <http://developer.yahoo.com/cocktails/shaker/>`_.
 
 
 My Notes
