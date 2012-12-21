@@ -5,7 +5,7 @@
  */
 
 
-/*jslint anon:true, sloppy:true*/
+/*jslint anon:true, unparam:true*/
 /*global YUI, YUITest*/
 
 
@@ -257,7 +257,7 @@ YUI.add('ReadController-tests', function(Y) {
                     return definitions;
                 },
                 get: function() {
-                	return conf;
+                    return conf;
                 }
             },
             params: {
@@ -270,11 +270,11 @@ YUI.add('ReadController-tests', function(Y) {
             },
             models: {
                 get: function (model) {
-                	return {
+                    return {
                         get: function(feedmeta, cb) {
                             cb(null, feedmeta, boomtown_vudata_out);
                         }
-                    }
+                    };
                 }
             }
         };
@@ -294,58 +294,58 @@ YUI.add('ReadController-tests', function(Y) {
         },
 
         'sizing test 1': function() {
-            A.areSame('xx-large', controller._test.size(100, 100));
+            A.areSame('xx-large', controller.test.size(100, 100));
         },
 
         'sizing test 2': function() {
-            A.areSame('xx-large', controller._test.size(100, 160));
+            A.areSame('xx-large', controller.test.size(100, 160));
         },
 
         'sizing test 3': function() {
-            A.areSame('x-large', controller._test.size(150, 100));
+            A.areSame('x-large', controller.test.size(150, 100));
         },
 
         'sizing test 4': function() {
-            A.areSame('xx-large', controller._test.size(71, 200));
+            A.areSame('xx-large', controller.test.size(71, 200));
         },
 
         'sizing test 5': function() {
-            A.areSame('x-large', controller._test.size(71, 400));
+            A.areSame('x-large', controller.test.size(71, 400));
         },
 
         'sizing test 6': function() {
-            A.areSame('large', controller._test.size(71, 750));
+            A.areSame('large', controller.test.size(71, 750));
         },
 
         'sizing test 6b': function() {
-            A.areSame('large', controller._test.size(30, 750));
+            A.areSame('large', controller.test.size(30, 750));
         },
 
         'sizing test 7': function() {
-            A.areSame('medium', controller._test.size(1000, 100));
+            A.areSame('medium', controller.test.size(1000, 100));
         },
 
         'sizing test 8': function() {
-            A.areSame('medium', controller._test.size(1, 850));
+            A.areSame('medium', controller.test.size(1, 850));
         },
 
         'compose spaceid not set yet': function() {
-            A.areSame(undefined, controller._test.compose(boomtown_feedmeta, boomtown_stories_in).spaceid);
+            A.areSame(undefined, controller.test.compose(boomtown_feedmeta, boomtown_stories_in).spaceid);
         },
 
         'compose feedname': function() {
-            A.areSame('BoomTown', controller._test.compose(boomtown_feedmeta, boomtown_stories_in).feedname);
+            A.areSame('BoomTown', controller.test.compose(boomtown_feedmeta, boomtown_stories_in).feedname);
         },
 
         'compose navdots for every story': function() {
-            var vu = controller._test.compose(boomtown_feedmeta, boomtown_stories_in);
+            var vu = controller.test.compose(boomtown_feedmeta, boomtown_stories_in);
 
             A.areSame(10, vu.navdots.length);
             A.areSame(vu.stories.length, vu.navdots.length);
         },
 
         'compose adds css': function() {
-            var vu = controller._test.compose(boomtown_feedmeta, boomtown_stories_in);
+            var vu = controller.test.compose(boomtown_feedmeta, boomtown_stories_in);
             Y.each(vu.stories, function(story, i) {
                 A.isTypeOf('string', story.css_style);
             });
@@ -367,7 +367,7 @@ YUI.add('ReadController-tests', function(Y) {
                 i,
                 n = stories.length - 1;
 
-            for (i = 0; i < n; i++) {
+            for (i = 0; i < n; i += 1) {
                 A.areSame('?start=' + (i + 1), stories[i].next);
             }
         },
@@ -377,7 +377,7 @@ YUI.add('ReadController-tests', function(Y) {
                 i,
                 n = stories.length;
 
-            for (i = 2; i < n; i++) {
+            for (i = 2; i < n; i += 1) {
                 A.areSame('?start=' + (i - 1), stories[i].prev);
             }
         },

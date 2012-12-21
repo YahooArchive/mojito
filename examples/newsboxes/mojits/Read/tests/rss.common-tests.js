@@ -163,12 +163,12 @@ YUI.add('ReadModelRss-tests', function(Y, NAME) {
         },
 
         'empty response': function() {
-            A.areSame(0, rss._test.processResponse({}).length);
+            A.areSame(0, rss.test.processResponse({}).length);
         },
 
         'process 20 in, 10 out': function() {
             A.areSame(20, mockresp().query.results.item.length);
-            A.areSame(10, rss._test.processResponse(mockresp(), 10).length);
+            A.areSame(10, rss.test.processResponse(mockresp(), 10).length);
         },
 
         'skipped 2 stories': function() {
@@ -177,21 +177,22 @@ YUI.add('ReadModelRss-tests', function(Y, NAME) {
             A.areSame(10, resp.query.results.item.length);
             resp.query.results.item.pop();
             delete resp.query.results.item[0].title;
-            A.areSame(8, rss._test.processResponse(resp).length);
+            A.areSame(8, rss.test.processResponse(resp).length);
         },
 
         'processError exists': function() {
-            A.areSame('no foo in your bar', rss._test.processError({query: {diagnostics: {url: {'http-status-message': 'no foo in your bar'}}}}));
+            A.areSame('no foo in your bar', rss.test.processError({query: {diagnostics: {url: {'http-status-message': 'no foo in your bar'}}}}));
         },
 
         'processError not exists is falsey': function() {
-            A.isFalse(!!rss._test.processError({query: {}}));
-            A.isFalse(!!rss._test.processError({}));
-            A.isFalse(!!rss._test.processError(''));
+            A.isFalse(!!rss.test.processError({query: {}}));
+            A.isFalse(!!rss.test.processError({}));
+            A.isFalse(!!rss.test.processError(''));
         },
 
         'processResponse strips tags': function() {
-            var list = rss._test.processResponse(mockresp());
+            var list = rss.test.processResponse(mockresp());
+            /*jslint unparam:true*/
             Y.each(list, function(story, i) {
                 A.areNotEqual(mockresp().query.results.item[i].description, list[i].description);
             });
@@ -200,7 +201,7 @@ YUI.add('ReadModelRss-tests', function(Y, NAME) {
         'strip tags': function() {
             A.areSame(
                 'no  tags\ntags  found  or',
-                rss._test.stripTags('  no <b>tags\ntags</b> found <here style="asasda">or</here > ')
+                rss.test.stripTags('  no <b>tags\ntags</b> found <here style="asasda">or</here > ')
             );
         }
 

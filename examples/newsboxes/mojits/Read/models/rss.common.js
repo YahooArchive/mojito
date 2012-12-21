@@ -4,12 +4,36 @@
  * See the accompanying LICENSE file for terms.
  */
 
-
-/*jslint anon:true, sloppy:true, regexp: true*/
 /*global YUI*/
 
 
-YUI.add('ReadModelRss', function(Y, NAME) {
+YUI.add('ReadModelRss', function (Y, NAME) {
+    'use strict';
+
+    /**
+     * Pass video url to player.
+     * @param {Object} enclosure An object of the form:
+     *     {length:"123", type:"video/mp4", url:".."} | undefined.
+     * @param {Number} num int story number, starting from 0.
+     * @return {String} An appropriate HTML chunk for the URL.
+     */
+    function getLink(enclosure, num) {
+        var url = enclosure && enclosure.url,
+            pad = new Array(900).join(' '); // For small headline css size.
+
+        return url ?
+                '<div id="videobox' + num + '">' + url + '</div>' + pad :
+                '';
+    }
+
+    /**
+     * Strip HTML tags from the content string provided.
+     * @param {String} content The content, possibly containing markup.
+     * @return {String} Plain text.
+     */
+    function stripTags(content) {
+        return Y.Lang.trim(content.replace(/<\/?\w+[\s\S]*?>/gmi, ' '));
+    }
 
     /**
      * Handle result data processing.
@@ -70,33 +94,6 @@ YUI.add('ReadModelRss', function(Y, NAME) {
     }
 
     /**
-     * Pass video url to player.
-     * @param {Object} enclosure An object of the form:
-     *     {length:"123", type:"video/mp4", url:".."} | undefined.
-     * @param {Number} num int story number, starting from 0.
-     * @return {String} An appropriate HTML chunk for the URL.
-     */
-    function getLink(enclosure, num) {
-        var url = enclosure && enclosure.url,
-            pad = new Array(900).join(' '); // For small headline css size.
-
-        return url ?
-                '<div id="videobox' + num + '">' + url + '</div>' + pad :
-                '';
-    }
-
-    /**
-     * Strip HTML tags from the content string provided.
-     * @param {String} content The content, possibly containing markup.
-     * @return {String} Plain text.
-     */
-    function stripTags(content) {
-        // TODO: retain/massage relevant media element(s).
-        // i.e. Y.node.convert(content).all(imgs w/ min h x w), pick one.
-        return Y.Lang.trim(content.replace(/<\/?\w+[^>]*>/gmi, ' '));
-    }
-
-    /**
      * Fetch YQL RSS response as normalized json.
      * @param {Object} feedmeta Metadata for the selected feed.
      * @param {Function} callback The callback function to invoke.
@@ -135,7 +132,7 @@ YUI.add('ReadModelRss', function(Y, NAME) {
      */
     Y.mojito.models[NAME] = {
         get: get,
-        _test: {
+        test: {
             processResponse: processResponse,
             processError: processError,
             stripTags: stripTags

@@ -84,6 +84,7 @@ YUI.add('ReadController', function(Y, NAME) {
             error;
 
         if (feeds) {
+            // Add metadata to feeds object before we pass it on
             feeds.id = id;
             feeds.start = +(ac.params.url('start')) || 1;
             feeds.limit = conf.limit;
@@ -110,9 +111,9 @@ YUI.add('ReadController', function(Y, NAME) {
      */
     Y.namespace('mojito.controllers')[NAME] = {
         index: index,
-        _test: {
-        	size: size,
-        	compose: compose
+        test: {
+            size: size,
+            compose: compose
         }
     };
 
