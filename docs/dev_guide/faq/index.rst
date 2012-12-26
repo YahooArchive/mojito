@@ -20,24 +20,9 @@ General
 * :ref:`Does Mojito have API methods for handling caching? If not, what's the best way for Mojito 
   applications to handle caching? <moj_caching>`
 * :ref:`Can Mojito make runtime decisions to run client-side or server-side code? <moj_run_client_server>`
-* :ref:`Can Mojito applications access the 'request' or 'response' instances of the Node.js classes 
-  'http.ServerRequest' and 'http.ServerResponse'? <moj_req_res_instances>`
-* :ref:`Is it possible to access headers from a Mojito application? <moj_access_headers>`
 * :ref:`Can Mojito be started with Node.js instead of using "mojito start"? <moj_node_start>`
 * :ref:`How can I improve the performance of my Mojito application? <moj_optimize_performance>`
 * :ref:`When I run 'mojito version', why is the version different than the version I installed? <moj_version_conflict>`
-
-
-Mojits
-------
-
-* :ref:`What is a mojit? <mojit_exp>`
-* :ref:`Can mojits have child mojits? <moj_children>`
-* :ref:`How do mojits share objects? <moj_objects>`
-* :ref:`Can mojit instances be dynamically defined and then run? <moj_dynamic_creation>`
-* :ref:`Is there a way to make all of the resources, such as assets, addons, binders, models, of one mojit available to other mojits? <moj_resources>`
-* :ref:`Why does Mojito replace hyphens in the names of my mojits with underscores? <moj_names_hyphens>`
-.. * :ref:`Can I share or re-use mojits? <moj_reuse>`   
 
 
 Configuration
@@ -69,6 +54,28 @@ CSS/JavaScript Assets
 
 * :ref:`How do I add assets templates? <moj_assets>`
 * :ref:`How are assets dynamically added to views? <moj_dyn_assets>`
+
+
+HTTP Headers/Responses
+----------------------
+
+* :ref:`Can Mojito applications access the 'request' or 'response' instances of the Node.js classes 
+  'http.ServerRequest' and 'http.ServerResponse'? <moj_req_res_instances>`
+* :ref:`Is it possible to access HTTP headers from a Mojito application? <moj_access_headers>`
+* :ref:`How does a Mojito application set the expiration of a cookie in the HTTP response? <moj_cookie_exp>`
+
+
+Mojits
+------
+
+* :ref:`What is a mojit? <mojit_exp>`
+* :ref:`Can mojits have child mojits? <moj_children>`
+* :ref:`How do mojits share objects? <moj_objects>`
+* :ref:`Can mojit instances be dynamically defined and then run? <moj_dynamic_creation>`
+* :ref:`Is there a way to make all of the resources, such as assets, addons, binders, models, of one mojit available to other mojits? <moj_resources>`
+* :ref:`Why does Mojito replace hyphens in the names of my mojits with underscores? <moj_names_hyphens>`
+.. * :ref:`Can I share or re-use mojits? <moj_reuse>`   
+
 
 Views
 -----
@@ -239,34 +246,7 @@ General
     for more information.    
 
 ------------
-
-.. _moj_req_res_instances:    
-.. topic:: **Can Mojito applications access the 'request' or 'response' instances of the 
-           Node.js classes 'http.ServerRequest' and 'http.ServerResponse'?**
-
-    Yes, the Mojito API has the ``ActionContext`` addon ``Http.server`` that has methods 
-    for getting the ``request`` and ``response`` instances of the Node.js classes 
-    ``http.ServerRequest`` and ``http.ServerResponse``. From the ``ActionContext`` object 
-    ``ac`` shown below, you call ``http.getRequest`` and ``http.getResponse`` to get the 
-    ``request`` and ``response`` instances. See `Class Http.server <../../api/classes/Http.server.html>`_ 
-    for more information.
-    
-    .. code-block:: javascript
-    
-       var request = ac.http.getRequest();
-       var response = ac.http.getResponse();
-
-
-------------
-
-.. _moj_access_headers:
-.. topic:: **Is it possible to access HTTP headers from a Mojito application?**
-
-    Yes, the Mojito API has the ``ActionContext`` addon ``Http.server`` that allows you to 
-    get, set, and add HTTP headers. See `Class Http.server <../../api/classes/Http.server.html>`_ 
-    for the available methods.
-
-------------    
+  
     
 .. _moj_node_start:
 .. topic:: **Can Mojito be started with Node.js instead of using "mojito start"?**
@@ -375,84 +355,6 @@ General
     
     
 
-Mojits
-------
-
-.. _mojit_exp:
-.. topic:: **What is a mojit?** 
-
-    The basic unit of composition and reuse in a Mojito application. It typically 
-    corresponds to a rectangular area of a page and uses MVC.
-
-------------
-    
-.. _moj_children:
-.. topic:: **Can mojits have child mojits?** 
-
-    Yes, you can configure your application to have mojits that have one or more child 
-    mojits. The parent mojit can execute the child mojits using the 
-    `Composite addon <../../api/classes/Composite.common.html>`_. 
-    See `Configuring Applications to Have Multiple Mojit <../intro/mojito_configuring.html#configuring-applications-to-have-multiple-mojits>`_ 
-    and `Composite Mojits <../topics/mojito_composite_mojits.html#composite-mojits>`_. 
-
-    You can also use frame mojits, such as `HTMLFrameMojit <../topics/mojito_frame_mojits.html#htmlframemojit>`_ 
-    that can execute one or more child mojits.       
-
-------------
-    
-    
-.. _moj_objects:
-.. topic:: **How do mojits share objects?** 
-
-    You create an application-level middleware or an ActionContext addon that all mojits 
-    can access. Your mojits can use this middleware or the ActionContext addon to share 
-    objects. See `Creating Addons <../topics/mojito_extensions.html#creating-new-addons>`_ 
-    and `Middleware <../topics/mojito_extensions.html#middleware>`_ for implementation 
-    details.
-
-------------
-    
-.. _moj_dynamic_creation:
-.. topic:: **Can mojit instances be dynamically defined and then run?** 
-
-    You can run dynamically defined instances of mojits that you created with the Mojito 
-    command-line tool. You would create these instances in a mojit controller using the 
-    ``ActionContext`` object with either the ``_dispatch`` or ``execute`` methods. 
-    See `Running Dynamically Defined Mojit Instances <../topics/mojito_run_dyn_defined_mojits.html>`_ 
-    for more information.
-
-------------
-    
-.. _moj_resources: 
-.. topic:: **Is there a way to make all of the resources, such as assets, addons, binders, 
-           models, of one mojit available to other mojits?**
-
-    To make the resources of one mojit available to other mojits, you set the ``appLevel`` 
-    property in the ``application.json`` file to ``true``. Mojits wanting to use the 
-    resources of application-level mojit must include the YUI module of the 
-    application-level mojit in the ``requires`` array. 
-    See `Configuring Metadata <../intro/mojito_configuring.html#configuring-metadata>`_ 
-    for more information.
-
-------------
-
-.. _moj_names_hyphens:
-.. topic:: **Why does Mojito replace hyphens in the names of my mojits with underscores?** 
-
-    The ECMAScript syntax for ``Identifiers`` does not allow hyphens, so Mojito replaces 
-    them with underscores. See the section **Identifier Names and Identifiers** in the 
-    `ECMAScript Documentation <http://www.ecmascript.org/docs.php>`_ for the syntax rules 
-    for ``Identifier`` and ``IdentifierName``.
-
-
-    
-.. .. _moj_reuse:
-.. .. topic:: **Can I share or re-use mojits?**
-
-..    Although not available yet, the Cocktails mojit gallery/repository will let 
-..    developers share, discover, and select mojits to re-use in building their 
-..    experiences. A common packaging format for mojits is used, based on the CommonJS 
-..    specification.    
 
 Configuration
 -------------
@@ -633,6 +535,142 @@ CSS/JavaScript Assets
     ``Assets addon``. See 
     `Using the Assets Addon <../topics/mojito_assets.html#using-the-assets-addon>`_ for 
     more information.
+
+HTTP Headers/Responses
+----------------------
+
+.. _moj_req_res_instances:    
+.. topic:: **Can Mojito applications access the 'request' or 'response' instances of the 
+           Node.js classes 'http.ServerRequest' and 'http.ServerResponse'?**
+
+    Yes, the Mojito API has the ``ActionContext`` addon ``Http.server`` that has methods 
+    for getting the ``request`` and ``response`` instances of the Node.js classes 
+    ``http.ServerRequest`` and ``http.ServerResponse``. From the ``ActionContext`` object 
+    ``ac`` shown below, you call ``http.getRequest`` and ``http.getResponse`` to get the 
+    ``request`` and ``response`` instances. See `Class Http.server <../../api/classes/Http.server.html>`_ 
+    for more information.
+    
+    .. code-block:: javascript
+    
+       var request = ac.http.getRequest();
+       var response = ac.http.getResponse();
+
+
+------------
+
+.. _moj_access_headers:
+.. topic:: **Is it possible to access HTTP headers from a Mojito application?**
+
+    Yes, the Mojito API has the ``ActionContext`` addon ``Http.server`` that allows you to 
+    get, set, and add HTTP headers. See `Class Http.server <../../api/classes/Http.server.html>`_ 
+    for the available methods.
+
+------------
+
+.. _moj_cookie_exp:
+.. topic:: **How does a Mojito application set the expiration of a cookie in the HTTP response?**
+
+    The controller of your application can get the HTTP response with the ``Http``
+    addon and then set the cookie and the max age (expiration) with the ``Cookie`` addon.
+    In the example controller below, the cookie is set to expire in two weeks. 
+    Note that the value for ``maxAge`` is in milliseconds and that you need to
+    require ``mojito-cookie-addon`` and ``mojito-http-addon`` to use the addons.
+ 
+    .. code-block:: javascript
+
+  
+       YUI.add('setCookie', function(Y, NAME) {
+
+         Y.namespace('mojito.controllers')[NAME] = {
+
+           index: function(ac) {
+            ac.http.getResponse().cookie("cookie_set", "true", { "maxAge": 1209600000 });
+            ac.done({
+                status: 'Cookie set to expire in two weeks (maxAge in milliseconds).',
+            });
+          }
+        };
+      }, '0.0.1', {requires: ['mojito', 'mojito-cookie-addon', 'mojito-http-addon']});
+
+
+Mojits
+------
+
+.. _mojit_exp:
+.. topic:: **What is a mojit?** 
+
+    The basic unit of composition and reuse in a Mojito application. It typically 
+    corresponds to a rectangular area of a page and uses MVC.
+
+------------
+    
+.. _moj_children:
+.. topic:: **Can mojits have child mojits?** 
+
+    Yes, you can configure your application to have mojits that have one or more child 
+    mojits. The parent mojit can execute the child mojits using the 
+    `Composite addon <../../api/classes/Composite.common.html>`_. 
+    See `Configuring Applications to Have Multiple Mojit <../intro/mojito_configuring.html#configuring-applications-to-have-multiple-mojits>`_ 
+    and `Composite Mojits <../topics/mojito_composite_mojits.html#composite-mojits>`_. 
+
+    You can also use frame mojits, such as `HTMLFrameMojit <../topics/mojito_frame_mojits.html#htmlframemojit>`_ 
+    that can execute one or more child mojits.       
+
+------------
+    
+    
+.. _moj_objects:
+.. topic:: **How do mojits share objects?** 
+
+    You create an application-level middleware or an ActionContext addon that all mojits 
+    can access. Your mojits can use this middleware or the ActionContext addon to share 
+    objects. See `Creating Addons <../topics/mojito_extensions.html#creating-new-addons>`_ 
+    and `Middleware <../topics/mojito_extensions.html#middleware>`_ for implementation 
+    details.
+
+------------
+    
+.. _moj_dynamic_creation:
+.. topic:: **Can mojit instances be dynamically defined and then run?** 
+
+    You can run dynamically defined instances of mojits that you created with the Mojito 
+    command-line tool. You would create these instances in a mojit controller using the 
+    ``ActionContext`` object with either the ``_dispatch`` or ``execute`` methods. 
+    See `Running Dynamically Defined Mojit Instances <../topics/mojito_run_dyn_defined_mojits.html>`_ 
+    for more information.
+
+------------
+    
+.. _moj_resources: 
+.. topic:: **Is there a way to make all of the resources, such as assets, addons, binders, 
+           models, of one mojit available to other mojits?**
+
+    To make the resources of one mojit available to other mojits, you set the ``appLevel`` 
+    property in the ``application.json`` file to ``true``. Mojits wanting to use the 
+    resources of application-level mojit must include the YUI module of the 
+    application-level mojit in the ``requires`` array. 
+    See `Configuring Metadata <../intro/mojito_configuring.html#configuring-metadata>`_ 
+    for more information.
+
+------------
+
+.. _moj_names_hyphens:
+.. topic:: **Why does Mojito replace hyphens in the names of my mojits with underscores?** 
+
+    The ECMAScript syntax for ``Identifiers`` does not allow hyphens, so Mojito replaces 
+    them with underscores. See the section **Identifier Names and Identifiers** in the 
+    `ECMAScript Documentation <http://www.ecmascript.org/docs.php>`_ for the syntax rules 
+    for ``Identifier`` and ``IdentifierName``.
+
+
+    
+.. .. _moj_reuse:
+.. .. topic:: **Can I share or re-use mojits?**
+
+..    Although not available yet, the Cocktails mojit gallery/repository will let 
+..    developers share, discover, and select mojits to re-use in building their 
+..    experiences. A common packaging format for mojits is used, based on the CommonJS 
+..    specification.    
 
 
 Views
