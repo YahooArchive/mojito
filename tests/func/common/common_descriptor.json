@@ -7,9 +7,9 @@
         "config" :{
             "baseUrl" : "http://localhost:8666",
             "application" : {
-        	"name":"common",
-	        "path": "./frameworkapp/common",
-		"type": "mojito"
+                 "name":"common",
+                 "path": "./frameworkapp/common",
+                 "type": "mojito"
             }
         },
 

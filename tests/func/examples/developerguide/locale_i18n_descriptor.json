@@ -5,7 +5,7 @@
         "name" : "locale_i18n",
 
         "config" :{
-			"baseUrl" : "http://localhost:8666",
+            "baseUrl" : "http://localhost:8666",
             "application" : {
                 "name":"locale_i18n",
                 "path": "../../../examples/developer-guide/locale_i18n"

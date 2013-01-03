@@ -5,7 +5,7 @@
         "name" : "htmlframe_mojit",
 
         "config" :{
-			"baseUrl" : "http://localhost:8666",
+            "baseUrl" : "http://localhost:8666",
             "application" : {
                 "name":"htmlframe_mojit",
                 "path": "../../../examples/developer-guide/htmlframe_mojit"

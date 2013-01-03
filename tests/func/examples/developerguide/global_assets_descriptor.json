@@ -5,7 +5,7 @@
         "name" : "global_assets",
 
         "config" :{
-			"baseUrl" : "http://localhost:8666",
+            "baseUrl" : "http://localhost:8666",
             "application" : {
                 "name":"global_assets",
                 "path": "../../../examples/developer-guide/global_assets"

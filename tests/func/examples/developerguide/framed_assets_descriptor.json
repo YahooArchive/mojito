@@ -5,7 +5,7 @@
         "name" : "framed_assets",
 
         "config" :{
-			"baseUrl" : "http://localhost:8666",
+            "baseUrl" : "http://localhost:8666",
             "application" : {
                 "name":"framed_assets",
                 "path": "../../../examples/developer-guide/framed_assets"

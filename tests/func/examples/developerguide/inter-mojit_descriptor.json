@@ -5,7 +5,7 @@
         "name" : "inter-mojit",
 
         "config" :{
-			"baseUrl" : "http://localhost:8666",
+            "baseUrl" : "http://localhost:8666",
             "application" : {
                 "name":"inter-mojit",
                 "path": "../../../examples/developer-guide/inter-mojit"
