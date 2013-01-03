@@ -9,9 +9,9 @@
 /*global YUI,YUITest*/
 
 
-YUI.add('ShelfController-tests', function(Y) {
+YUI.add('ShelfController-tests', function(Y, NAME) {
 
-    var suite = new YUITest.TestSuite('ShelfController-tests'),
+    var suite = new YUITest.TestSuite(NAME),
         controller = null,
         A = YUITest.Assert;
 
