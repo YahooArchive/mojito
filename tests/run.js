@@ -274,12 +274,12 @@ function runFuncTests (cmd, desc, port, thispid, arrowReportDir, callback) {
         commandArgs,
         function (code) {
             try {
-                console.log('shutting down pid '+ thePid + ' -- ' + thePidName);
+                console.log('Shutting down pid '+ thePid + ' -- ' + thePidName);
                 process.kill(thePid);
                 pids.pop(thePid);
             }
             catch(e) {
-                console.log('FAILED to shut down pid ============' + thePid);
+                console.log('FAILED to shut down pid:' + thePid);
             }
             callback(code);
         }
@@ -375,7 +375,6 @@ function runMojitoApp (app, cliOptions, basePath, port, params, callback) {
     listener = function(data) {
         if (data.toString().match(/✔ 	Mojito\(v/)) {
             p.stdout.removeListener('data', listener);
-            console.log('Started ' + path + ' at port ' + port + ' with params ' + (params || 'empty'));
             callback(thePid);
         }
     }
