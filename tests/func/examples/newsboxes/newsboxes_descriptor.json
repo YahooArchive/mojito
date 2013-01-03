@@ -6,10 +6,10 @@
 
         "config" :{
             "baseUrl" : "http://localhost:8666",
-			"application" : {
-				"name":"input",
-	            "path": "../../../examples/newsboxes"
-			}
+            "application" : {
+                "name":"input",
+                "path": "../../../examples/newsboxes"
+            }
         },
 
         "dataprovider" : { 

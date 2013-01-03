@@ -6,10 +6,10 @@
 
         "config" :{
 			"baseUrl" : "http://localhost:8666",
-			"application" : {
-            	"name":"scroll_views",
-            	"path": "../../../examples/developer-guide/scroll_views"
-			}
+            "application" : {
+                "name":"scroll_views",
+                "path": "../../../examples/developer-guide/scroll_views"
+            }
         },
 
         "dataprovider" : {    

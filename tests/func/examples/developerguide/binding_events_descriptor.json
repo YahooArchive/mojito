@@ -6,10 +6,10 @@
 
         "config" :{
             "baseUrl" : "http://localhost:8666",
-			"application" : {
-				"name":"binding_events",
-	            "path": "../../../examples/developer-guide/binding_events"
-			}
+            "application" : {
+                "name":"binding_events",
+                "path": "../../../examples/developer-guide/binding_events"
+            }
         },
 
         "dataprovider" : {    

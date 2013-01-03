@@ -6,10 +6,10 @@
 
         "config" :{
 			"baseUrl" : "http://localhost:8666",
-			"application" : {
-            	"name":"inter-mojit",
-	            "path": "../../../examples/developer-guide/inter-mojit"
-			}
+            "application" : {
+                "name":"inter-mojit",
+                "path": "../../../examples/developer-guide/inter-mojit"
+            }
         },
 
         "dataprovider" : {    

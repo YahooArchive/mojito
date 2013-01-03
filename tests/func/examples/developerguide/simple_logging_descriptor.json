@@ -6,10 +6,10 @@
 
         "config" :{
 			"baseUrl" : "http://localhost:8666",
-			"application" : {
-            	"name":"simple_logging",
-	            "path": "../../../examples/developer-guide/simple_logging"
-			}
+            "application" : {
+                "name":"simple_logging",
+                "path": "../../../examples/developer-guide/simple_logging"
+            }
         },
 
         "dataprovider" : {    

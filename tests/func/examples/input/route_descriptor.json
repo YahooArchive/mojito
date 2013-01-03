@@ -6,10 +6,10 @@
 
         "config" :{
             "baseUrl" : "http://localhost:8666",
-			"application" : {
-				"name":"route",
-	            "path": "../../../examples/input/route"
-			}
+            "application" : {
+                "name":"route",
+                "path": "../../../examples/input/route"
+            }
         },
 
         "dataprovider" : { 

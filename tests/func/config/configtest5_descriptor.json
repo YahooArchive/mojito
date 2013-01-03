@@ -6,11 +6,11 @@
 
         "config" :{
             "baseUrl" : "http://localhost:8666",
-			"application" : {
-				"name":"configapp",
-	            "path": "./frameworkapp/configapp",
-	            "param": "environment:testing,lang:de,subject:math"
-			}
+            "application" : {
+                "name":"configapp",
+                "path": "./frameworkapp/configapp",
+                "param": "environment:testing,lang:de,subject:math"
+            }
         },
 
         "dataprovider" : {     

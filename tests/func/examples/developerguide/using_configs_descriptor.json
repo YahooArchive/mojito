@@ -6,10 +6,10 @@
 
         "config" :{
 			"baseUrl" : "http://localhost:8666",
-			"application" : {
-            	"name":"using_configs",
-	            "path": "../../../examples/developer-guide/using_configs"
-			}
+            "application" : {
+                "name":"using_configs",
+                "path": "../../../examples/developer-guide/using_configs"
+            }
         },
 
         "dataprovider" : {    

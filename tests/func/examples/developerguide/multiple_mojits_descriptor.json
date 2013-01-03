@@ -6,10 +6,10 @@
 
         "config" :{
 			"baseUrl" : "http://localhost:8666",
-			"application" : {
-            	"name":"multiple_mojits",
-	            "path": "../../../examples/developer-guide/multiple_mojits"
-			}
+            "application" : {
+                "name":"multiple_mojits",
+                "path": "../../../examples/developer-guide/multiple_mojits"
+            }
         },
 
         "dataprovider" : {    

@@ -6,10 +6,10 @@
 
         "config" :{
             "baseUrl" : "http://localhost:8666",
-			"application" : {
-				"name":"serveronly",
-	            "path": "./frameworkapp/serveronly"
-			}
+            "application" : {
+                "name":"serveronly",
+                "path": "./frameworkapp/serveronly"
+            }
         },
 
         "dataprovider" : {     

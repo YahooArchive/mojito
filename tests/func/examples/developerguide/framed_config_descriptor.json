@@ -6,10 +6,10 @@
 
         "config" :{
 			"baseUrl" : "http://localhost:8666",
-			"application" : {
-            	"name":"framed_config",
-	            "path": "../../../examples/developer-guide/framed_config"
-			}
+            "application" : {
+                "name":"framed_config",
+                "path": "../../../examples/developer-guide/framed_config"
+            }
         },
 
         "dataprovider" : {    

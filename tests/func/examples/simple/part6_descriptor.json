@@ -6,10 +6,10 @@
 
         "config" :{
             "baseUrl" : "http://localhost:8666",
-			"application" : {
-				"name":"part6",
-	            "path": "../../../examples/simple/part6"
-			}
+            "application" : {
+                "name":"part6",
+                "path": "../../../examples/simple/part6"
+            }
         },
 
         "dataprovider" : { 

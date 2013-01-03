@@ -6,10 +6,10 @@
 
         "config" :{
 			"baseUrl" : "http://localhost:8666",
-			"application" : {
-            	"name":"yui_module",
-	            "path": "../../../examples/developer-guide/yui_module"
-			}
+            "application" : {
+                "name":"yui_module",
+                "path": "../../../examples/developer-guide/yui_module"
+            }
         },
 
         "dataprovider" : {    
