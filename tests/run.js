@@ -392,10 +392,8 @@ function runStaticApp (basePath, path, port, callback) {
     
     var listener;
     listener = function(data) {
-        console.log('here.......'+data.toString());
         if (data.toString().match(/serving \".\" at http:\/\//)) {
             p.stdout.removeListener('data', listener);
-            console.log('Started ' + path + ' at port ' + port + 'here.......');
             callback(thePid);
         }
     }
