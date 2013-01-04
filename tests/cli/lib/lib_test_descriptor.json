@@ -14,6 +14,13 @@
                     "driver": "nodejs"
                 },
                 "group": "fw,cli"
+            },
+            "jslint.js": {
+                "params": {
+                    "test": "./app/commands/test-jslint.js",
+                    "driver": "nodejs"
+                },
+                "group": "fw,cli"
             }
         }
     },
