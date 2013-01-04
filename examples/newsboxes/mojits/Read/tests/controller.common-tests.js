@@ -9,10 +9,10 @@
 /*global YUI, YUITest*/
 
 
-YUI.add('ReadController-tests', function(Y) {
+YUI.add('ReadController-tests', function(Y, NAME) {
     'use strict';
 
-    var suite = new YUITest.TestSuite('ShelfController-tests'),
+    var suite = new YUITest.TestSuite(NAME),
         A = YUITest.Assert,
 
         boomtown_feedmeta = {
