@@ -56,9 +56,9 @@ globally available to all mojits. Those marked with an asterisk are not created 
 - ``assets`` - general directory containing CSS files for all mojits.
 - ``application.json`` - application configuration file that lets you specify 
   the port and the mojits used by the application.
-- ``autoload`` - directory of JavaScript files that contain YUI modules added 
-  with ``YUI.add``. These files aren't actually *auto-loaded*, but are merely 
-  automatically included if required by a YUI module.
+- ``yui_modules`` - directory of JavaScript files that contain YUI modules added 
+  with ``YUI.add``. These files are automatically included if required by a 
+  YUI module.
 - ``default.json`` - file that sets default values for all specifications.
 - ``mojits`` - directory storing the mojits. See `Mojit Files and Directories`_ 
   for a description of the directory contents.
@@ -94,10 +94,10 @@ is available.
 - ``actions`` - directory of JavaScript files containing methods to add to the 
   controller. Actions are useful for maintaining large controllers.
 - ``assets`` - directory for storing CSS or JavaScript files.
-- ``autoload`` - directory containing JavaScript files that contain YUI 
-  modules added with ``YUI.add``. These files aren't actually *autoloaded*, 
-  but are merely automatically included if required by a YUI module. Both 
-  the application directory and mojit directory can have ``autoload`` directories.
+- ``yui_modules`` - directory containing JavaScript files that contain YUI 
+  modules added with ``YUI.add``. These files are automatically included if required by a 
+  YUI module. Both the application directory and mojit directory can have ``yui_modules`` 
+  directories.
 - ``binders`` - directory containing event binding files for the mojit.
 - ``controller.server.js`` - the mojit controller that runs on the server. You 
   can also create the file ``controller.client.js`` to have a mojit controller 
@@ -117,11 +117,11 @@ is available.
    - ``{model_name}.{affinity}-tests.js`` - the unit tests for the mojit 
      models.
    - ``{module_name}.{affinity}-tests.js`` - the unit tests for YUI modules, 
-     which are located in ``mojits/{mojit_name}/autoload`` directory.
+     which are located in ``mojits/{mojit_name}/yui_modules`` directory.
    - Example of module and corresponding test:
-   - ``{app_name}/mojits/{mojit_name}/autoload/{module_name}.{affinity}.js``
+   - ``{app_name}/mojits/{mojit_name}/yui_modules/{module_name}.{affinity}.js``
 
-- ``{app_name}/mojits/{mojit_name}/tests/autoload/{module_name}.{affinity}-tests.js``
+- ``{app_name}/mojits/{mojit_name}/tests/yui_modules/{module_name}.{affinity}-tests.js``
 
 - ``views`` - directory containing the templates.
 
@@ -147,13 +147,13 @@ rendering engine.
    |-- application.json
    |-- assets/
    |   `-- favicon.icon
-   |-- autoload/
+   |-- yui_modules/
    |   `-- *.{affinity}.js
    |-- index.js
    |-- mojits/
    |   `-- [mojit_name]
    |       |-- assets/
-   |       |-- autoload/
+   |       |-- yui_modules/
    |       |   `-- *.{affinity}.js
    |       |-- binders/
    |       |   `-- {view_name}.js
@@ -165,7 +165,7 @@ rendering engine.
    |       |-- models/
    |       |   `-- {model_name}.{affinity}.js
    |       |-- tests/
-   |       |   |-- autoload/
+   |       |   |-- yui_modules/
    |       |   |   `-- {module_name}.{affinity}-tests.js
    |       |   |-- controller.{affinity}-tests.js
    |       |   `-- models/

@@ -8,7 +8,7 @@
             "baseUrl" : "http://localhost:4082"
         },
 
-        "dataprovider" : {     
+        "dataprovider" : {
             "BasicRouting1" : {
                 "group" : "functional,smoke,routing",
                 "params" : {
@@ -202,7 +202,7 @@
                     "page" : "$$config.baseUrl$$/showurl?mojit_name=route-2&mojit_action=nothing"
                 }
             }
-        }     
+        }
     },
 
     {

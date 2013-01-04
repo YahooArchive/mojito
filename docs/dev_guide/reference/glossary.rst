@@ -51,13 +51,6 @@ assets
    application. See `Mojito Developer Topics: Assets <../topics/mojito_assets.html>`_ to 
    learn how to use assets in Mojito applications.
 
-autoload
---------
-
-   A directory of a Mojito application containing JavaScript files that use YUI modules 
-   added with ``YUI.add``. These files aren't actually *auto-loaded*, but are merely 
-   automatically included if required by a YUI module.
-
 
 binder
 ------

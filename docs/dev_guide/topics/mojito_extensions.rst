@@ -33,7 +33,7 @@ Addons allows you to do the following:
 Creating New Addons
 -------------------
 
-An addon is simply a JavaScript files that contains a YUI module. You can create 
+An addon is simply a JavaScript file that contains a YUI module. You can create 
 addons at the application and mojit level. Application-level addons are 
 available to all mojits in the application, whereas, mojit-level addons are 
 only available to its mojit.
@@ -43,11 +43,11 @@ only available to its mojit.
 Naming Convention
 #################
 
-The name of an addon should have the following syntax where ``{addon_name}`` 
-is a unique YUI module name defined by the user and ``{affinity}`` is 
-``server``, ``common``, or ``client``.
+The name of an addon should have the following syntax where ``{addon_namespace}`` 
+is the namespace of the addon and ``{affinity}`` is 
+``server``, ``common``, or ``client``. 
 
-``{addon_name}.{affinity}.js``
+``{addon_namespace}.{affinity}.js``
 
 
 .. _extending_addons-loc:
@@ -70,11 +70,9 @@ Namespace of Addon
 ##################
 
 To access addon methods and properties, you use the Action Context object 
-(i.e., ``ac``) and the addon namespace. The namespace of an addon must be 
-the same as ``{addon_name}`` in the addon file name ``{addon_name}.{affinity}.js``. 
-For example, the namespace of the addon ``addons/ac/foo.common.js`` would be 
-``foo``.  Thus, to call the method ``save`` of the ``foo`` addon, you would 
-use ``ac.foo.save``.
+(i.e., ``ac``) and the addon namespace. For example, the namespace of the 
+addon ``addons/ac/foo.common.js`` would be ``foo``.  Thus, to call the method 
+``save`` of the ``foo`` addon, you would use ``ac.foo.save``.
 
 See :ref:`Using Your Addon <extending_addons-using>` for an example
 of how to call methods from the addon namespace.
@@ -85,22 +83,24 @@ of how to call methods from the addon namespace.
 Writing the Addon
 #################
 
-The ActionContext is a `YUI Base <http://developer.yahoo.com/yui/3/base/>`_ 
-object, and ActionContext addons are 
-`YUI Plugins <http://developer.yahoo.com/yui/3/plugin/>`_. To create a new addon, you 
-write a new YUI Plugin and register it with Mojito.
+The ActionContext object and ActionContext addons simulate the 
+`YUI Base <http://developer.yahoo.com/yui/3/base/>`_ and 
+`YUI Plugin <http://developer.yahoo.com/yui/3/plugin/>`_ infrastructure, so  
+creating a new addon is similar to creating a new YUI Plugin.
 
-The addon must have the following:
+The addon must do the following:
 
-- registered plugin name, which is the string passed to ``YUI.add``
+- register a plugin name, which is the string passed to ``YUI.add``
 - constructor with a ``prototype`` property
-- statement assigning the constructor to a namespace of ``Y.mojito.addons.ac``, 
+- assign the constructor to a namespace of ``Y.mojito.addons.ac``, 
   so Mojito can access your addon
+- require the 'mojito' module, otherwise the namespace ``Y.mojito.addons.ac`` might 
+  not be available (unless you use ``Y.namespace()``).
 
 **Optional:** ``requires`` array to include other modules.
 The code snippet below shows the skeleton of an addon with the registered 
-plugin name (``'addon-ac-cheese'``) and the constructor (``CheeseAcAddon``) with its
-``prototype`` property:
+plugin name (``'addon-ac-cheese'``), the constructor (``CheeseAcAddon``) with its
+``prototype`` property, and requires the ``mojito`` module.
 
 .. code-block:: javascript
 
@@ -125,7 +125,7 @@ plugin name (``'addon-ac-cheese'``) and the constructor (``CheeseAcAddon``) with
      Y.mojito.addons.ac.cheddar = CheeseAcAddon;
      // Optional: 'requires' array could include other
      // YUI modules if needed.
-   }, '0.0.1', {requires: ['']});
+   }, '0.0.1', {requires: ['mojito']});
 
 
 .. _extending_addons-writing_ex:
@@ -174,7 +174,7 @@ added through the ``prototype`` property.
      // so please be careful.
      CheeseAcAddon.dependsOn = ['http'];
      Y.mojito.addons.ac.cheddar = CheeseAcAddon;
-   }, '0.0.1', {});
+   }, '0.0.1', {requires: ['mojito']});
 
 
 .. _extending_addons-using:
@@ -287,7 +287,7 @@ Libraries
 
 Mojito allows you to use YUI libraries, external libraries, or customized 
 libraries. To use any library in Mojito, you need to specify the module in 
-either the ``requires`` array in the controller for YUI libraries or using 
+either the ``requires`` array in the controller for YUI libraries or by using 
 the ``require`` method for Node.js modules.
 
 .. _extending_libraries-yui:
@@ -318,62 +318,32 @@ Location of YUI Modules
 
 Application-level YUI modules should be placed in the following directory:
 
-``{app_dir}/autoload/``
+``{app_dir}/yui_modules/``
 
 Mojit-level YUI modules should be placed in the following directory:
 
-``{mojit_dir}/autoload/``
-
-.. _libraries_yui-create:
-
-Creating a YUI Module
-#####################
-
-To create a YUI module, your code needs to have the following:
-
-- ``YUI.add`` statement to add the module to YUI
-- constructor for the module
-- methods created through the ``prototype`` object
+``{mojit_dir}/yui_modules/``
 
 
-.. _yui_create-add:
+.. _libraries_yui-using:
 
-Adding the Module to YUI
-************************
+Using the YUI Module
+####################
 
-Your YUI module must have a ``YUI.add`` statement that adds the module to YUI. 
-Below is the basic syntax of the ``YUI.add`` statement:
+In the sections below, we provide an example YUI module and then show how
+to require and use that YUI module from a controller.
 
-``YUI.add('{module-name', function(Y){ ... }``
+.. _yui_using-hello-uid:
 
-For example, the ``send-photos`` YUI module would use the following:
-
-``YUI.add('send-photos', function(Y){ ... }``
-
-.. _yui_create-constructor:
-
-Constructor
-***********
-
-The constructor of a YUI module is basically a new namespace that is assigned a 
-function. The new namespace is created with the following syntax:
-
-``Y.namespace('mojito').{constructor_name} = function() { ... }``
-
-For example, to create the constructor ``HELLO`` for a YUI module, you would 
-could use the following:
-
-``Y.namespace('mojito').HELLO = function() { this.greeting="hello"; }``
-
-.. _yui_create-ex:
-
-Example
-*******
+hello-uid Module
+****************
 
 In the code example below, the ``create_id`` function becomes the constructor 
 for the ``UID`` namespace. This will let you create an instance, and the 
 ``prototype`` object then allows you to access the method ``log`` from that 
 instance.
+
+``{mojit_dir}/yui_modules/hello-uid.server.js``
 
 .. code-block:: javascript
 
@@ -386,19 +356,19 @@ instance.
        log: function(user_name){
          Y.log(user_name + "'s UID is " + '['+this.uid+']');
        }
-     }
+     };
      Y.namespace('mojito').UID = create_id;
    });
 
-.. _libraries_yui-using:
 
-Using the YUI Module
-####################
+Using the hello-uid Module
+**************************
 
 In the example mojit controller below, the YUI module ``hello-uid`` is loaded 
-because the module is in the ``requires`` array. An instance of the module 
-is created and saved in the ``init`` function. With the saved instance, the 
-``log`` method from the ``hello-uid`` module can be called:
+because the module is in the ``requires`` array. The ``log`` method can then be 
+called from an instance (i.e., ``uid``) of the module.
+
+``{mojit_dir}/controller.server.js``
 
 .. code-block:: javascript
 
@@ -421,7 +391,7 @@ Other Libraries
 
 Non-YUI libraries can also be used at either the application or mojit level. 
 Because Node.js and **not** Mojito will read the contents of the library files, 
-you need to use ``require()`` to include the library. Mojito will only confirm 
+you need to use the function ``require`` to include the library. Mojito will only confirm 
 that the files exist.
 
 .. _libraries_other-loc:
@@ -521,7 +491,7 @@ The name of the template should have the following syntax where
 ``{view_engine_name}`` should be the same as the ``{view_engine_name}`` in 
 the file name of the view engine addon.
 
-``{action}.[{device}].{view_engine_name}.html``
+``{action}.{view_engine_name}.html``
 
 .. _extending_ve-loc:
 

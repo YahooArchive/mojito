@@ -41,17 +41,17 @@ YUI.add('PagedFlickr', function(Y, NAME) {
                     data.has_prev = true;
                 }
                 ac.done(data);
-                
+
             });
         }
     };
-    
+
    function selfUrl(ac, mods) {
         var params = Y.mojito.util.copy(ac.params.getFromMerged());
         for (var k in mods) {
             params[k] = mods[k];
         }
-        return ac.url.make('flickr', 'index', Y.QueryString.stringify(params));
+        return ac.url.make('flickr', 'index', params);
     }
 
 
