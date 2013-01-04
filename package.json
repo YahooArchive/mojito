@@ -54,7 +54,6 @@
         "commander": "1.0.1",
         "mockery": "~1.4.0",
         "node-static": ">0.6",
-        "shelljs": "*",
         "yahoo-arrow": "~0.0.67"
     },
     "homepage": "http://developer.yahoo.com/cocktails/mojito/",
