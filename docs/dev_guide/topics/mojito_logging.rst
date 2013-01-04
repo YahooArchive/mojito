@@ -21,9 +21,9 @@ Mojito has the following six log levels:
 - ``error``
 - ``none``
 
-All of them should be familiar except the last, which are framework-level messages that 
-indicate that an important framework event is occurring (one that users might want to 
-track).
+All of them should be familiar except ``mojito``, which is the logging level for
+capturing framework-level messages that indicate that an important framework event is 
+occurring (one that users might want to track).
 
 Setting a log level of ``warn`` will filter out all ``debug`` and ``info`` messages, while 
 ``warn``, ``error``, and ``mojito`` log messages will be processed. To see all 
@@ -38,8 +38,8 @@ The server and client log settings have the following default values:
 
 - ``debug: true`` - turns logging on so that messages are displayed in the console.
 - ``logLevel: "debug"`` - log level filter.
-- ``logLevelOrder: ['debug', 'mojito', 'info', 'warn', 'error', 'none']`` - the order of 
-  that log levels are evaluated. 
+- ``logLevelOrder: ['debug', 'mojito', 'info', 'warn', 'error', 'none']`` - the order in 
+  which the log levels are evaluated. 
   
 
 
@@ -195,9 +195,9 @@ through ``NAME``, which in this case contains the value ``DemoBinderIndex``.
 Customizing the Log Level Order
 -------------------------------
 
-You can reorder and create log levels with ``logLevelOrder`` property of the 
+You can reorder and create log levels with the ``logLevelOrder`` property of the 
 ``yui.config`` object. In the example ``yui.config`` object below,
-the order of the log levels are switched for ``warn`` and ``info`` and 
+the order of the log levels is switched for ``warn`` and ``info`` and 
 the new log level ``danger`` is created.
 
 .. code-block:: javascript

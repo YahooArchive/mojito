@@ -8,7 +8,7 @@
             "baseUrl" : "http://localhost:4084"
         },
 
-        "dataprovider" : {     
+        "dataprovider" : {
             "acmojitdone1client" : {
                 "group" : "smoke,html5app,acmojit",
                 "params" : {
@@ -422,7 +422,7 @@
                     "page" : "$$config.baseUrl$$/mytestpath/index.html"
                 }
             }
-        }     
+        }
     },
 
     {

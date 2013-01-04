@@ -33,7 +33,7 @@ Addons allows you to do the following:
 Creating New Addons
 -------------------
 
-An addon is simply a JavaScript files that contains a YUI module. You can create 
+An addon is simply a JavaScript file that contains a YUI module. You can create 
 addons at the application and mojit level. Application-level addons are 
 available to all mojits in the application, whereas, mojit-level addons are 
 only available to its mojit.
@@ -287,7 +287,7 @@ Libraries
 
 Mojito allows you to use YUI libraries, external libraries, or customized 
 libraries. To use any library in Mojito, you need to specify the module in 
-either the ``requires`` array in the controller for YUI libraries or using 
+either the ``requires`` array in the controller for YUI libraries or by using 
 the ``require`` method for Node.js modules.
 
 .. _extending_libraries-yui:
@@ -356,7 +356,7 @@ instance.
        log: function(user_name){
          Y.log(user_name + "'s UID is " + '['+this.uid+']');
        }
-     }
+     };
      Y.namespace('mojito').UID = create_id;
    });
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2012, Yahoo! Inc.  All rights reserved.
+ * Copyright (c) 2011-2013, Yahoo! Inc.  All rights reserved.
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
@@ -212,6 +212,36 @@ YUI.add('mojito-test', function(Y, NAME) {
 
 
 YUI.add('mojito-test-extra', function(Y, NAME) {
-	Y.MOJITO_DIR = require ?
+    var A = Y.Assert;
+
+	Y.MOJITO_DIR = ('undefined' !== typeof require) ?
 	    require('path').resolve(__dirname, '../../') + '/' : null;
-});
+
+    // path doesn't need to be given, mainly used during recursion
+    Y.TEST_CMP = function (x, y, msg, path) {
+        path = path || 'obj';
+        var i;
+        if (Y.Lang.isArray(x)) {
+            A.isArray(x, path + ': ' + (msg || 'first arg should be an array'));
+            A.isArray(y, path + ': ' + (msg || 'second arg should be an array'));
+            A.areSame(x.length, y.length, path + ': ' + (msg || 'arrays are different lengths'));
+            for (i = 0; i < x.length; i += 1) {
+                Y.TEST_CMP(x[i], y[i], msg, path + '[' + i + ']');
+            }
+            return;
+        }
+        if (Y.Lang.isObject(x)) {
+            A.isObject(x, path + ': ' + (msg || 'first arg should be an object'));
+            A.isObject(y, path + ': ' + (msg || 'second arg should be an object'));
+            A.areSame(Y.Object.keys(x).length, Y.Object.keys(y).length, path + ': ' + (msg || 'object keys are different lengths'));
+            for (i in x) {
+                if (x.hasOwnProperty(i)) {
+                    Y.TEST_CMP(x[i], y[i], msg, path + '{' + i + '}');
+                }
+            }
+            return;
+        }
+        A.areSame(x, y, path + ': ' + (msg || 'args should be the same'));
+    };
+
+}, '0.1.0', {requires: ['test']});

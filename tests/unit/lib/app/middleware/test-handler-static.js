@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2012, Yahoo! Inc.  All rights reserved.
+ * Copyright (c) 2011-2013, Yahoo! Inc.  All rights reserved.
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
@@ -642,6 +642,100 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
             });
 
             store.getResourceContent = realGetResourceContent;
+        },
+
+
+        'test modified()': function() {
+            var reqHeaders, resHeaders, mod;
+            A.isFunction(factory._modified);
+
+            // 1. date same
+            reqHeaders = {
+                'if-modified-since': 'Fri, 30 Nov 2012 21:07:52 GMT',
+                'if-none-match': 123
+            };
+            resHeaders = {
+                'Last-Modified': 'Fri, 30 Nov 2012 21:07:52 GMT',
+                'ETag': 123
+            };
+            mod = factory._modified({headers: reqHeaders}, resHeaders);
+            A.areSame(false, mod, 'date same');
+            
+            // 2. date req is older
+            reqHeaders = {
+                'if-modified-since': 'Fri, 30 Nov 2012 21:01:52 GMT',
+                'if-none-match': 123
+            };
+            resHeaders = {
+                'Last-Modified': 'Fri, 30 Nov 2012 21:07:52 GMT',
+                'ETag': 123
+            };
+            mod = factory._modified({headers: reqHeaders}, resHeaders);
+            A.areSame(true, mod, 'date req is older');
+            
+            // 3. date req is newer
+            reqHeaders = {
+                'if-modified-since': 'Fri, 30 Nov 2012 21:09:52 GMT',
+                'if-none-match': 123
+            };
+            resHeaders = {
+                'Last-Modified': 'Fri, 30 Nov 2012 21:07:52 GMT',
+                'ETag': 123
+            };
+            mod = factory._modified({headers: reqHeaders}, resHeaders);
+            A.areSame(false, mod, 'date req is newer');
+            
+            // 4. date invalid
+            reqHeaders = {
+                'if-none-match': 123
+            };
+            resHeaders = {
+                'Last-Modified': 'Fri, 30 Nov 2012 21:07:52 GMT',
+                'ETag': 123
+            };
+            mod = factory._modified({headers: reqHeaders}, resHeaders);
+            A.areSame(true, mod, 'date invalid');
+            
+            // 5. etag same (yes duplicated)
+            reqHeaders = {
+                'if-modified-since': 'Fri, 30 Nov 2012 21:07:52 GMT',
+                'if-none-match': 123
+            };
+            resHeaders = {
+                'Last-Modified': 'Fri, 30 Nov 2012 21:07:52 GMT',
+                'ETag': 123
+            };
+            mod = factory._modified({headers: reqHeaders}, resHeaders);
+            A.areSame(false, mod, 'etag same (yes duplicated)');
+            
+            // 6. etag different
+            reqHeaders = {
+                'if-modified-since': 'Fri, 30 Nov 2012 21:07:52 GMT',
+                'if-none-match': 123
+            };
+            resHeaders = {
+                'Last-Modified': 'Fri, 30 Nov 2012 21:07:52 GMT',
+                'ETag': 321
+            };
+            mod = factory._modified({headers: reqHeaders}, resHeaders);
+            A.areSame(true, mod, 'etag different');
+            
+            // 7. etag invalid
+            reqHeaders = {
+                'if-modified-since': 'Fri, 30 Nov 2012 21:07:52 GMT'
+            };
+            resHeaders = {
+                'Last-Modified': 'Fri, 30 Nov 2012 21:07:52 GMT',
+                'ETag': 321
+            };
+            mod = factory._modified({headers: reqHeaders}, resHeaders);
+            A.areSame(true, mod, 'etag invalid');
+
+            // 8. degenerate
+            reqHeaders = {};
+            resHeaders = {};
+            mod = factory._modified({headers: reqHeaders}, resHeaders);
+            A.areSame(true, mod, 'degenerate');
         }
 
     };
