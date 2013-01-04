@@ -18,9 +18,9 @@ Conventions
 
      - ``{app_name}/tests`` - application tests
      - ``{app_name}/mojits/{mojit_name}/tests`` - mojit tests
-     - ``{app_name}/autoload/{yui_module}/tests`` - tests for 
+     - ``{app_name}/yui_modules/{yui_module}/tests`` - tests for 
        application-level YUI modules
-     - ``{app_name}/mojits/{mojit_name}/autoload/{yui_module}/tests`` - tests for 
+     - ``{app_name}/mojits/{mojit_name}/yui_modules/{yui_module}/tests`` - tests for 
        mojit-level YUI modules
 - Syntax for the name of the test file: ``{yui_module}.{affinity}-tests.js``
 

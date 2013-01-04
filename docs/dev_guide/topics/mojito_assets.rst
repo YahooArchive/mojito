@@ -248,14 +248,14 @@ the ``<meta>`` tag and the ``addCss`` method adds the device-specific CSS.
 YUI Assets
 ==========
 
-YUI modules should be placed in the  ``autoload`` directory and **not** 
+YUI modules should be placed in the  ``yui_modules`` directory and **not** 
 the ``assets`` directory. When your mojit code wants to use one of the YUI 
-modules in the ``autoload`` directory, you add the module name in the 
+modules in the ``yui_modules`` directory, you add the module name in the 
 ``requires`` array, and Mojito will automatically load the module.
 
 For example, to use a YUI module called ``substitute`` in your mojit 
 controller, you would place the ``substitute.js`` file in the 
-``autoload`` directory and then add the module name in the ``requires`` 
+``yui_modules`` directory and then add the module name in the ``requires`` 
 array as seen in the example mojit controller below.
 
 .. code-block:: javascript
@@ -296,7 +296,7 @@ be a child of the `HTMLFrameMojit <../topics/mojito_frame_mojits.html#htmlframem
 
 When you run ``mojito compile inlinecss``, the CSS files in 
 ``/mojits/{mojit_name}/assets/`` are compiled into the YUI module 
-``/mojits/{mojit_name}/autoload/compiled/inlinecss.common.js``.
+``/mojits/{mojit_name}/yui_modules/compiled/inlinecss.common.js``.
 Mojito will use the compiled CSS and insert inline CSS into the ``<head>`` 
 element of the rendered view. See also 
 `Compiling Inline CSS <../reference/mojito_cmdline.html#compiling-inline-css>`_.

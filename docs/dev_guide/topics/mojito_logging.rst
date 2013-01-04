@@ -2,11 +2,10 @@
 Logging
 =======
 
-Mojito has its own logging system. When you call ``Y.log`` from within your mojits, your 
-log messages are intercepted and processed by Mojito. You can set logging levels
-to control the degree of detail in your log reports. You can also configure Mojito to 
-enable log buffering, so performance during crucial runtime periods is not adversely 
-affected.
+Mojito relies on YUI for logging. When you call ``Y.log`` from within your mojits, your 
+log messages are handled by a YUI instance that Mojito creates based on YUI configurations 
+defined in ``application.json`` or ``application.yaml``. You can set logging levels to 
+control the degree of detail in your log reports. 
 
 .. _mojito_logging-levels:
 
@@ -22,9 +21,9 @@ Mojito has the following six log levels:
 - ``error``
 - ``none``
 
-All of them should be familiar except the last, which are framework-level messages that 
-indicate that an important framework event is occurring (one that users might want to 
-track).
+All of them should be familiar except ``mojito``, which is the logging level for
+capturing framework-level messages that indicate that an important framework event is 
+occurring (one that users might want to track).
 
 Setting a log level of ``warn`` will filter out all ``debug`` and ``info`` messages, while 
 ``warn``, ``error``, and ``mojito`` log messages will be processed. To see all 
@@ -39,34 +38,10 @@ The server and client log settings have the following default values:
 
 - ``debug: true`` - turns logging on so that messages are displayed in the console.
 - ``logLevel: "debug"`` - log level filter.
-- ``logLevelOrder: ['debug', 'mojito', 'info', 'warn', 'error', 'none']`` - the order of 
-  that log levels are evaluated. 
+- ``logLevelOrder: ['debug', 'mojito', 'info', 'warn', 'error', 'none']`` - the order in 
+  which the log levels are evaluated. 
   
 
-.. logging_levels-define:
-
-Customizing the Log Level Order
--------------------------------
-
-You can reorder and create log levels with ``logLevelOrder`` property of the 
-``yui.config`` object. In the example ``yui.config`` object below,
-the order of the log levels are switched for ``warn`` and ``info`` and 
-the new log level ``danger`` is created.
-
-.. code-block:: javascript
-
-   [
-     {
-       "settings": [ "master" ],
-       "yui": {
-         "config": {
-           "debug": true,
-           "logLevelOrder": [ "debug", "warn", "info", "error", "danger", "none" ]
-         }
-       },
-       ...
-     }
-   ]
 
 .. _mojito_logging-config:
 
@@ -194,7 +169,7 @@ We recommend that you pass the first three parameters to
 
 - ``msg`` - the message to log
 - ``cat`` - the log level or category, such as 'info', 'error', 'warn'
-- ``src`` - the module reporting the error
+- ``src`` - the name of the module reporting the error
 
 In the example binder below, ``Y.log`` logs
 a message at the ``info`` level and specifies the module
@@ -215,8 +190,31 @@ through ``NAME``, which in this case contains the value ``DemoBinderIndex``.
   }, '0.0.1', {requires: ['mojito-client']});
 
 
+.. logging_levels-define:
 
- 
+Customizing the Log Level Order
+-------------------------------
+
+You can reorder and create log levels with the ``logLevelOrder`` property of the 
+``yui.config`` object. In the example ``yui.config`` object below,
+the order of the log levels is switched for ``warn`` and ``info`` and 
+the new log level ``danger`` is created.
+
+.. code-block:: javascript
+
+   [
+     {
+       "settings": [ "master" ],
+       "yui": {
+         "config": {
+           "debug": true,
+           "logLevelOrder": [ "debug", "warn", "info", "error", "danger", "none" ]
+         }
+       },
+       ...
+     }
+   ]
+
 
 .. _logging_custom-include_exclude_src:
 
@@ -228,7 +226,7 @@ of the ``yui.config`` object to include or exclude logging
 from YUI modules of your application. 
 
 The configuration below excludes logging from the YUI module 
-``FinanceModel``:
+``FinanceModelStocks``:
 
 .. code-block:: javascript
 

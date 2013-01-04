@@ -227,11 +227,6 @@ dispatching the ``LazyLoadMoit`` as a proxy to the client. From the client,
 your Mojito application to load the page quickly and then lazily load parts of 
 the page.
 
-.. _mojito_fw_mojits-lazyload:
-
-LazyLoadMojit
-=============
-
 
 .. _fw_mojits_lazyload-how:
 

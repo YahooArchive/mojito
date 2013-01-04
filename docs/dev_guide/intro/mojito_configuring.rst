@@ -9,7 +9,7 @@ Basic Information
 
 Mojito can be configured at the framework, application, and mojit levels. 
 Each level is configured differently, but uses same general file format 
-consisting of JSON.
+consisting of JSON or YAML.
 
 .. _config_basic-file:
 
@@ -23,15 +23,21 @@ JSON
 
 By default, configuration files in Mojito have a general top-level 
 structure and are in JSON format. At the top level of each configuration 
-file is an array. Each item of the array is an object that configures 
-one component of Mojito, such as logging, assets, mojits, static resources, etc.
+file is an array. Each item of the array is an object containing configuration that 
+targets a specific context and runtime. This allows you to have discrete configurations 
+for different regions, devices, and development environments.
 
-Each configuration object is required to have a ``settings`` property that 
-specifies contexts for applying the configuration settings. These conditions 
-could be used to determine the configurations in different environments. 
+The context for a configuration object is specified by the ``settings`` property. For
+each configuration object in a file, the ``settings`` property must specify a unique 
+context, otherwise Mojito fails. For example, the ``application.json``  file
+cannot have two configuration objects specifying the context ``environment:development``. 
+See `Using Context Configurations <../topics/mojito_using_contexts.html>`_
+for more information about contexts.
 
-Below is the skeleton of a configuration file. See `Application Configuration`_ 
-and `Mojit Configuration`_ for details about specific configuration files.
+Below is the skeleton of a configuration file with two configuration
+objects, each identified by contexts defined by the ``settings`` property. 
+See `Application Configuration`_ and `Mojit Configuration`_ for details about specific 
+configuration files.
 
 .. code-block:: javascript
 
@@ -39,6 +45,12 @@ and `Mojit Configuration`_ for details about specific configuration files.
      // Configuration object
      {
        "settings": [ "master" ],
+       "specs": {
+         ...
+       }
+     },
+     {
+       "settings": [ "environment:development" ],
        "specs": {
          ...
        }
@@ -104,12 +116,6 @@ configuration Object
 | ``cacheViewTemplates``                                 | boolean              | true              | Specifies whether the view engine should attempt       |
 |                                                        |                      |                   | to cache the view. Note that not all view engines      |
 |                                                        |                      |                   | support caching.                                       |
-+--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
-| ``deferAllOptionalAutoloads``                          | boolean              | false             | Specifies whether optional YUI modules found in        |
-|                                                        |                      |                   | the ``/autoload/`` directories are not shipped to      |
-|                                                        |                      |                   | the client. This is an optimization setting and        |
-|                                                        |                      |                   | should generally only be set if you are building       |
-|                                                        |                      |                   | an offline application.                                |
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
 | ``middleware``                                         | array of strings     | []                | A list of paths to the Node.js module that exports     |
 |                                                        |                      |                   | a Connect middleware function.                         |
@@ -380,12 +386,6 @@ staticHandling Object
 |                       |               |                             | ``/static/``. An empty string can be given if no       |
 |                       |               |                             | prefix is desired.                                     |
 +-----------------------+---------------+-----------------------------+--------------------------------------------------------+
-| ``useRollups``        | boolean       | false                       | When true, the client will use the rollup file (if     |
-|                       |               |                             | it exists) to load the YUI modules in the mojit.       |
-|                       |               |                             | The command `mojito compile rollups <../reference/     |
-|                       |               |                             | mojito_cmdline.html#compiling-rollups>`_ can be used   |
-|                       |               |                             | to generate the rollups.                               |
-+-----------------------+---------------+-----------------------------+--------------------------------------------------------+
 
 .. _yui_obj:
 
@@ -397,27 +397,14 @@ See `Example Application Configurations`_ for an example of the ``yui`` object.
 +--------------------------------+----------------------+------------------------------------------------------------------------+
 | Property                       | Data Type            | Description                                                            |
 +================================+======================+========================================================================+
-| ``base``                       | string               | Specifies the prefix from which to load all YUI 3 libraries.           |
-+--------------------------------+----------------------+------------------------------------------------------------------------+
 | :ref:`config <yui_config>`     | object               | Used to populate the `YUI_config <http://yuilibrary.com/yui/docs/yui/  |
 |                                |                      | #yui_config>`_ global variable that allows you to configure every YUI  |
 |                                |                      | instance on the page even before YUI is loaded. For example, you can   |
 |                                |                      | configure logging or YUI not to load its default CSS with the          |
 |                                |                      | following: ``"yui": { "config": { "fetchCSS": false } }``              |
 +--------------------------------+----------------------+------------------------------------------------------------------------+
-| ``extraModules``               | array of strings     | Specifies additional YUI library modules that should be added to       |
-|                                |                      | the page when Mojito is sent to the client.                            |
-+--------------------------------+----------------------+------------------------------------------------------------------------+
-| ``loader``                     | string               | Specifies the path (appended to ``base`` above) for the loader to      |
-|                                |                      | use.                                                                   |
-+--------------------------------+----------------------+------------------------------------------------------------------------+
 | ``showConsoleInClient``        | boolean              | Determines if the YUI debugging console will be shown on the           |
 |                                |                      | client.                                                                |
-+--------------------------------+----------------------+------------------------------------------------------------------------+
-| ``url``                        | string               | Specifies the location of the `YUI 3 seed file <http://yuilibrary.com/ |
-|                                |                      | yui/docs/yui/#base-seed>`_.                                            |  
-+--------------------------------+----------------------+------------------------------------------------------------------------+
-| ``urlContains``                | array of strings     | Specifies the YUI modules that are delivered by ``url``.               |
 +--------------------------------+----------------------+------------------------------------------------------------------------+
 
 
@@ -563,7 +550,7 @@ In the example ``application.json`` below, the mojit instance ``father`` of type
 Child Mojit With Children
 #########################
 
-A parent mojit can have a single child that has its own children. The parent mojit 
+A parent mojit can have a child that has its own children. The parent mojit 
 specifies a child with the ``child`` object, which in turn lists children in the 
 ``children`` object. For the child to execute its children,it would use the ``Composite`` 
 addon. See `Composite Mojits <../topics/mojito_composite_mojits.html#composite-mojits>`_ 
@@ -599,6 +586,48 @@ child ``son``, which has the children ``grandson`` and ``granddaughter``.
        }
      }
    ]
+
+The child mojits can also have their own children, but beware that 
+having so many child mojits may cause memory issues. In our updated 
+example ``application.json`` below, the ``grandaughter`` mojit now has
+its own children mojits:
+
+.. code-block:: javascript
+
+   [
+     {
+       "settings": [ "master" ],
+       "specs": {
+         "grandfather": {
+           "type": "GrandparentMojit",
+           "config": {
+             "child": {
+               "son": {
+                 "type": "ChildMojit",
+                 "children": {
+                   "grandson": {
+                     "type": "GrandchildMojit"
+                   },
+                   "grandaughter": {
+                     "type": "GrandchildMojit",
+                     "children": {
+                       "girl_doll": {
+                          "type": "GirlDollMojit"
+                       },
+                       "boy_doll": {
+                          "type": "BoyDollMojit"
+                       }
+                     }
+                   }
+                 }
+               }
+             }
+           }
+         }
+       }
+     }
+   ]
+
 
 
 .. _deploy_app:
@@ -724,8 +753,8 @@ The table below describes the ``configuration`` object in ``definition.json``.
 +==================+======================+===================+========================================================+
 | ``appLevel``     | boolean              | false             | When set to ``true``, the actions, addons, assets,     |
 |                  |                      |                   | binders, models, and view of the mojit are             |
-|                  |                      |                   | available to other mojits. Mojits wanting to use       |
-|                  |                      |                   | the resources of application-level mojit must          |
+|                  |                      |                   | *shared* with other mojits. Mojits wanting to use      |
+|                  |                      |                   | the resources of the shared mojit must                 |
 |                  |                      |                   | include the YUI module of the application-level        |
 |                  |                      |                   | mojit in the ``requires`` array.                       |
 +------------------+----------------------+-------------------+--------------------------------------------------------+
@@ -849,7 +878,7 @@ the ``index`` function in the controller of the ``Foo`` mojit.
 
 .. _configure_mj-routing:
 
-routing
+Routing
 =======
 
 In Mojito, routing is the mapping of URLs to specific mojit actions. This section 
@@ -1080,7 +1109,7 @@ Using Parameterized Paths to Call a Mojit Action
 Your routing configuration can also use parameterized paths to call mojit 
 actions. In the ``routes.json`` below, the ``path`` property uses parameters 
 to capture a part of the matched URL and then uses that captured part to 
-replace ``{{mojit-action}}`` in the value for the ``call``property.  Any 
+replace ``{{mojit-action}}`` in the value for the ``call`` property. Any 
 value can be used for the parameter as long as it is prepended with a 
 colon (e.g., ``:foo``). After the parameter has been replaced by a value 
 given in the path, the call to the action should have the following syntax: 
@@ -1122,7 +1151,7 @@ The following URLs call the ``index`` and ``myAction`` functions in the controll
 Using Regular Expressions to Match Routing Paths
 ------------------------------------------------
 
-You can use the ``regex`` property of the ``routing`` object to define a key-value 
+You can use the ``regex`` property of a routing object to define a key-value 
 pair that defines a path parameter and a regular expression. The key is prepended 
 with a colon when represented as a path parameter. For example, the key ``name`` 
 would be represented as ``:name`` as a path parameter: ``"path": "/:name"``.
@@ -1197,7 +1226,7 @@ Accessing Configurations from Mojits
 
 The model and binder can access mojit configurations from the ``init`` 
 function. The controller and model are passed ``configuration`` objects. The controller 
-can access configuration the ``actionContext`` object and the ``Config`` addon. 
+can access configuration with the ``Config`` addon. 
 The ``init`` function in the binder, instead of a configuration object, is passed the 
 ``mojitProxy`` object, which enables you to access configurations.  
 

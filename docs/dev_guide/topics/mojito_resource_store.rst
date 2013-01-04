@@ -1048,7 +1048,7 @@ The |RS| comes with the following four built-in addons:
    - calculates the asset URL base for each mojit
 - ``yui``
    - registers new resource type ``yui-module`` found in the directories 
-     ``autoload`` or ``yui_modules``
+     ``yui_modules`` or ``autoload``
    - registers new resource type ``yui-lang`` found in the ``lang`` directory
    - calculates the ``yui`` metadata for resource versions that are YUI modules
    - pre-calculates corresponding YUI module dependencies when resources are 

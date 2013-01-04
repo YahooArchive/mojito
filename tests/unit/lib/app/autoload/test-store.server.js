@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2012, Yahoo! Inc.  All rights reserved.
+ * Copyright (c) 2011-2013, Yahoo! Inc.  All rights reserved.
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
@@ -261,20 +261,22 @@ YUI().use(
                 });
             },
 
-            'expandInstance caching': function() {
+            'getMojitTypeDetails caching': function() {
+                var key = Y.JSON.stringify(['server', ['*'], 'en', 'x']);
+                store._getMojitTypeDetailsCache[key] = { x: 'y' };
+                var details = store.getMojitTypeDetails('server', {lang: 'en'}, 'x');
+                A.isObject(details);
+                A.areEqual(1, Object.keys(details).length);
+                A.areEqual('y', details.x);
+            },
+
+            'expandInstanceForEnv preserves instanceId': function() {
                 var inInstance = {
-                    base: 'a',
-                    type: 'c'
+                    type: 'test_mojit_1',
+                    instanceId: 'foo'
                 };
-                var context = {};
-                var key = Y.JSON.stringify([inInstance, ['*'], context.lang]);
-                store._expandInstanceCache.server[key] = { x: 'y' };
-                store.expandInstance(inInstance, context, function(err, outInstance) {
-                    A.isNull(err);
-                    A.areEqual(4, Object.keys(outInstance).length);
-                    A.areEqual('a', outInstance.base);
-                    A.areEqual('c', outInstance.type);
-                    A.areEqual('y', outInstance.x);
+                store.expandInstanceForEnv('server', inInstance, {}, function(err, outInstance) {
+                    A.areSame('foo', outInstance.instanceId);
                 });
             },
 
@@ -320,23 +322,6 @@ YUI().use(
                 A.isObject(routes, 'no routes at all');
                 A.isObject(routes.flickr_by_page, 'missing route flickr_by_page');
                 A.isObject(routes.flickr_base, 'missing route flickr_base');
-            },
-
-            'call serializeClientStore()': function() {
-                var client = store.serializeClientStore({});
-                A.isObject(client, 'config is missing');
-                A.isObject(client.appConfig, 'missing appConfig');
-                A.areSame('/tunnel', client.appConfig.tunnelPrefix);
-                A.areSame('testVal1', client.appConfig.testKey1);
-                A.areSame('testVal2', client.appConfig.testKey2);
-                A.areSame('testVal3', client.appConfig.testKey3);
-                A.isObject(client.specs, 'missing specs');
-                A.areSame(0, Object.keys(client.specs).length);
-                A.isObject(client.mojits, 'missing mojits');
-                A.areSame(0, Object.keys(client.mojits).length);
-                A.isObject(client.routes, 'missing routes');
-                A.isObject(client.routes.flickr_by_page, 'missing route flickr_by_page');
-                A.isObject(client.routes.flickr_base, 'missing route flickr_base');
             },
 
             'call listAllMojits()': function() {
