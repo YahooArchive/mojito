@@ -38,7 +38,7 @@
                 "groups": {
                     "app": {
                         "combine": false,
-                        "base": "/",
+                        "base": "//yahoo.com",
                         "root": ""
                     }
                 }
