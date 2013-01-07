@@ -126,9 +126,10 @@ function runCliTests (cmd, callback) {
     } catch (e) {}
     wrench.mkdirSyncRecursive(arrowReportDir);
 
+    var descriptor = cmd.descriptor || '**/*_descriptor.json';
     var commandArgs = [
         cwd + "/../node_modules/yahoo-arrow/index.js",
-        "--descriptor=" + cmd.cliPath + "/**/*_descriptor.json",
+        "--descriptor=" + cmd.cliPath + '/' + descriptor,
         "--report=true",
         "--reportFolder=" + arrowReportDir
     ];
@@ -162,9 +163,10 @@ function runUnitTests (cmd, callback) {
     } catch (e) {}
     wrench.mkdirSyncRecursive(arrowReportDir);
 
+    var descriptor = cmd.descriptor || '**/*_descriptor.json';
     var commandArgs = [
         cwd + "/../node_modules/yahoo-arrow/index.js",
-        "--descriptor=" + cmd.unitPath + "/**/*_descriptor.json",
+        "--descriptor=" + cmd.unitPath + '/' + descriptor,
         "--report=true",
         "--reportFolder=" + arrowReportDir
     ];
