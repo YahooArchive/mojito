@@ -1,0 +1,30 @@
+[
+    {
+        "settings": [ "master" ],
+
+        "name" : "device_assets",
+
+        "config" :{
+            "baseUrl" : "http://localhost:8666",
+            "application" : {
+                "name":"device_assets",
+                "path": "../../../examples/developer-guide/device_assets"
+            }
+        },
+
+        "dataprovider" : {    
+            "deviceassets" : {
+			    "group" : "developerguide,device_assets",
+                "params" : {
+					"test" : "test_device_assets.js",
+                    "page" : "$$config.baseUrl$$"
+                }
+            }
+        }     
+    },
+
+    {
+        "settings": [ "environment:development" ]
+    }
+
+]

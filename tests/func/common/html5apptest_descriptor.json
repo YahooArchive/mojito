@@ -5,7 +5,12 @@
         "name" : "html5app",
 
         "config" :{
-            "baseUrl" : "http://localhost:4084"
+            "baseUrl" : "http://localhost:8666",
+            "application" : {
+                "name":"html5app",
+                "path": "./frameworkapp/flatfile",
+                "type": "static"
+            }
         },
 
         "dataprovider" : {
