@@ -110,10 +110,11 @@ the modules specified in the ``seed`` object.
    ]
 
 If your application has language bundles, Mojito will also auto-generate language versions 
-of the ``loader-app`` module. 
-``loader-app`` and ``loader-app-base{_lang tag}``, which we will discuss in 
-:ref:`Synthetic Modules in Mojito <seed_configure-modules>`, the other modules are 
-just YUI Core modules. The ``
+of the ``loader-app`` module (e.g, ``loader-app_en-US``). The ``loader-app`` module and 
+its language versions are synthetic modules, which are different than
+the other modules in the example ``application.json`` above that are just YUI Core modules. 
+We will discuss the differences in more detail in 
+:ref:`Synthetic Modules in Mojito <seed_configure-modules>`.
 
 .. _seed_configure-modules:
 
