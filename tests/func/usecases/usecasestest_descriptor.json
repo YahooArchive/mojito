@@ -5,7 +5,11 @@
         "name" : "usecase",
 
         "config" :{
-            "baseUrl" : "http://localhost:4085"
+            "baseUrl" : "http://localhost:8666",
+            "application" : {
+                "name":"usecase",
+                "path": "./frameworkapp/usecase"
+            }
         },
 
         "dataprovider" : {     
