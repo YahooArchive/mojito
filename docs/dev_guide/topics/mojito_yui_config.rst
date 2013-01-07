@@ -58,7 +58,7 @@ In Mojito applications, the YUI seed is configured in ``application.json`` rathe
 including a ``<script>`` tag in templates. Thus, the information inferred from 
 the URL to the YUI seed file in YUI applications is instead provided 
 in the ``yui.config.seed`` object of ``application.json`` in Mojito applications.
-We will look at ``yui.config.seed`` in `Configuring the Seed File <>`_.
+We will look at ``yui.config.seed`` in `Configuration of the Seed File <seed-configure>`_.
 
 Mojito uses configuration for the YUI seed because of the following reasons:
 
@@ -89,10 +89,7 @@ Starting from Mojito v0.5.0, developers can configure the YUI seed
 using the ``yui.config.seed`` object in ``application.json`` file. 
 
 In the example ``application.json`` below, the YUI seed includes
-the modules specified in the ``seed`` object. Besides the YUI modules
-``loader-app`` and ``loader-app-base_{BCP 47 lang tag}``, which we will discuss in 
-:ref:`Synthetic Modules in Mojito <seed_configure-modules>`. The other modules are 
-just YUI Core modules.
+the modules specified in the ``seed`` object. 
 
 .. code-block:: javascript
 
@@ -105,13 +102,18 @@ just YUI Core modules.
              "yui-base",
              "loader-base",
              "loader-yui3",
-             "loader-app",
-             "loader-app-base_{BCP 47 lang tag}"
+             "loader-app"
            ]
          }
        }
      }
    ]
+
+If your application has language bundles, Mojito will also auto-generate language versions 
+of the ``loader-app`` module. 
+``loader-app`` and ``loader-app-base{_lang tag}``, which we will discuss in 
+:ref:`Synthetic Modules in Mojito <seed_configure-modules>`, the other modules are 
+just YUI Core modules. The ``
 
 .. _seed_configure-modules:
 
@@ -323,8 +325,9 @@ because of the high demand for CPU power, while resolved synthetic modules are b
 suited for mobile devices that do not have as much CPU power. With context configurations,
 you can configure the runtime to use the better suited synthetic module.
 
-In this example ``application.json``, the context ``runtime:client`` uses
-a resolved synthetic module that expands metadata so that 
+In this example ``application.json``, the context ``device:iphone`` uses
+a resolved synthetic module that expands metadata to reduce the CPU power
+needed by iPhone clients.
 
 .. code-block:: javascript
 
@@ -338,13 +341,13 @@ a resolved synthetic module that expands metadata so that
              "loader-base",
              "loader-yui3",
              "loader-app",
-             "loader-app-base_{BCP 47 lang tag}"
+             "loader-app-base_{lang tag}"
            ]
          }
        }
      },
      {
-       "settings": [ "runtime:client" ],
+       "settings": [ "device:iphone" ],
        "yui": {
          "config": {
            "seed": [
@@ -352,7 +355,7 @@ a resolved synthetic module that expands metadata so that
              "loader-base",
              "loader-yui3",
              "loader-app",
-             "loader-app-resolved_{BCP 47 lang tag}"
+             "loader-app-resolved_{lang tag}"
            ]
          }
        }
@@ -425,11 +428,11 @@ to configure the following properties for the combo handler.
 +--------------------+------------+---------------------------------------------------+---------------------------+
 | ``base``           | string     | ``base: 'http://yui.yahooapis.com/3.8.0/build/'`` | The base path/URL for     |
 |                    |            |                                                   | non-combo paths.          |
-+--------------------+------------+---------------------------------------------------+-+-------------------------+
-| ``comboBase``      | string     | ``comboBase: 'http://yui.yahooapis.com/combo?'``  | The path/URL to the combo |
++--------------------+------------+---------------------------------------------------+---------------------------+
+| ``comboBase``      | string     | ``comboBase: 'http://mycompany.com/cdn/'``        | The path/URL to the combo |
 |                    |            |                                                   | service.                  |              
 +--------------------+------------+---------------------------------------------------+---------------------------+
-| ``root``           | string     | ``root: '3.8.0/build/'``                          | A prefix to the path      |
+| ``root``           | string     | ``root: '0.1.0/mybuild/'``                        | A prefix to the path      |
 |                    |            |                                                   | attribute when building   |
 |                    |            |                                                   | combo URLs.               |
 +--------------------+------------+---------------------------------------------------+---------------------------+
@@ -508,7 +511,7 @@ the ``environment:development`` context:
 
    [
      {
-       "settings": [ "environment:development" ],
+       "settings": [ "master" ],
        "yui": {
          "config": {
            "combine": true
