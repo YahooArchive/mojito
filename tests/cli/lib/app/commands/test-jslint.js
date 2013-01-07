@@ -80,8 +80,8 @@ YUI().use('test', function(Y) {
             writeFileSync: function(file, str) {
                 this.writeFileSyncCalled = true;
             }
-        },
-        shelljs = require('shelljs');
+        };
+        
 
     suite.add(new Y.Test.Case({
 
