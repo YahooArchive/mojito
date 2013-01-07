@@ -1,5 +1,5 @@
 #!/bin/sh -e
-# -e exits on any error; exit code is preserved
+# -e causes sh to exit on any error; exit code is preserved
 
 # get abs path to mojito base dir
 basedir=$(cd $(dirname $0)/../ && pwd)
