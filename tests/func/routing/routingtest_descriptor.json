@@ -5,7 +5,12 @@
         "name" : "routing",
 
         "config" :{
-            "baseUrl" : "http://localhost:4082"
+            "baseUrl" : "http://localhost:8666",
+			"application" : {
+				"name":"routing",
+	            "path": "./frameworkapp/routing",
+				"type": "mojito"
+			}
         },
 
         "dataprovider" : {

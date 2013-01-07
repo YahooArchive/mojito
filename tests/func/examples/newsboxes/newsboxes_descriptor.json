@@ -5,7 +5,11 @@
         "name" : "newsboxes",
 
         "config" :{
-            "baseUrl" : "http://localhost"
+            "baseUrl" : "http://localhost:8666",
+            "application" : {
+                "name":"input",
+                "path": "../../../examples/newsboxes"
+            }
         },
 
         "dataprovider" : { 
@@ -15,7 +19,7 @@
                     "scenario": [
                         {
                             "test" : "test_newsboxes1.js",
-                            "page" : "$$config.baseUrl$$:4125/"
+                            "page" : "$$config.baseUrl$$"
                         },
                         {
                            "controller": "locator",
