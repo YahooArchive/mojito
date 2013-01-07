@@ -205,7 +205,7 @@ controller outputs different results.
 #. Change to the ``tests`` directory.
 
 #. Edit ``controller.server-tests.js`` and replace the string 'Mojito is working.' 
-   in the code with 'Hello World!'. Your ``controller.server-tests.js`` should 
+   in the code with 'Doing well, thanks.'. Your ``controller.server-tests.js`` should 
    look similar to the  following code:
 
    .. code-block:: javascript
