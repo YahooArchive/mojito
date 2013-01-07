@@ -4,7 +4,7 @@ var fs = require('fs'),
     path = require('path'),
     wrench = require('wrench'),
     libpath = require('path'),
-    glob = require("glob");
+    glob = require("glob"),
     program = require('commander'),
     async = require('async'),
     child = require('child_process'),
@@ -126,9 +126,10 @@ function runCliTests (cmd, callback) {
     } catch (e) {}
     wrench.mkdirSyncRecursive(arrowReportDir);
 
+    var descriptor = cmd.descriptor || '**/*_descriptor.json';
     var commandArgs = [
         cwd + "/../node_modules/yahoo-arrow/index.js",
-        "--descriptor=" + cmd.cliPath + "/**/*_descriptor.json",
+        "--descriptor=" + cmd.cliPath + '/' + descriptor,
         "--report=true",
         "--reportFolder=" + arrowReportDir
     ];
@@ -162,9 +163,10 @@ function runUnitTests (cmd, callback) {
     } catch (e) {}
     wrench.mkdirSyncRecursive(arrowReportDir);
 
+    var descriptor = cmd.descriptor || '**/*_descriptor.json';
     var commandArgs = [
         cwd + "/../node_modules/yahoo-arrow/index.js",
-        "--descriptor=" + cmd.unitPath + "/**/*_descriptor.json",
+        "--descriptor=" + cmd.unitPath + '/' + descriptor,
         "--report=true",
         "--reportFolder=" + arrowReportDir
     ];
@@ -233,13 +235,19 @@ function runFuncAppTests(cmd, callback){
             port = cmd.port || 8666,
             param = app.param || null,
             type = app.type || 'mojito';
-        if(type === "static"){
-            exeSeries.push(build(cmd, function(){runStaticApp(cmd.funcPath + '/applications', app.path, port, function(thispid) {runFuncTests(cmd, des, port, thispid, arrowReportDir, callback);});}))
+        if (type === "static") {
+            exeSeries.push(build(cmd, function() {
+                runStaticApp(cmd.funcPath + '/applications', app.path, port, function(thispid) {
+                    runFuncTests(cmd, des, port, thispid, arrowReportDir, callback);
+                });
+            }))
         } else {
-            exeSeries.push(runMojitoApp(app, cmd, cmd.funcPath + '/applications', port, app.param, function(thispid) {runFuncTests(cmd, des, port, thispid, arrowReportDir, callback);})); 
+            exeSeries.push(runMojitoApp(app, cmd, cmd.funcPath + '/applications', port, app.param, function(thispid) {
+                runFuncTests(cmd, des, port, thispid, arrowReportDir, callback);
+            })); 
         }
-    }, function(){
-          callback();
+    }, function(err) {
+          callback(err);
     }); 
     async.series(exeSeries, callback);
 }
