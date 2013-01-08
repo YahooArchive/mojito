@@ -666,17 +666,21 @@ or unit tests with one command.
 #. Run the unit tests for the framework and client: 
 
    ``$ ./run.js test -u --path unit --group fw,client,server``
-#. You can also run all the functional tests with the below command. The 
-   functional tests may take some time to complete, so you may want to 
-   terminate the tests with **Ctl-C**.
+#. You can also run all the functional tests with the below command. 
 
    ``$ ./run.js test -f --path func --port 4000``
+
+   The functional tests may take some time to complete, so you may want to 
+   terminate the tests with **Ctl-C**. Also, you do not need to specify the port
+   with ``--port``, but the command above does to show you the option.
 #. To run individual unit and functional tests, you pass the test descriptor
-   to ``run.js``. The command below runs the functional test for the
-   ``newsboxes`` application:
+   to ``run.js``. 
 
-   ``./run.js test -f --path func --descriptor examples/newsboxes/newsboxes_descriptor.json --port 4000``
+   ``$ ./run.js test -f --path func --descriptor examples/newsboxes/newsboxes_descriptor.json --port 4000``
 
+   The command above runs the functional test for the
+   ``newsboxes`` application. The ``--path`` option indicates that the 
+   path to the test descriptor is located in the ``func`` directory: ``func/examples/newsboxes/newsboxes_descriptor.json`` 
 
 ..
       - ``$ ./unit/artifacts/arrowreport/``
