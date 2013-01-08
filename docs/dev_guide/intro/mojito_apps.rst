@@ -52,14 +52,14 @@ and assets.
 The principal files and directories of a Mojito application are listed below are 
 globally available to all mojits. Those marked with an asterisk are not created by default.
 
-- ``addons`` * - directory containing additional addons for Mojito.
+- ``addons``* - directory containing additional addons for Mojito.
 - ``assets`` - general directory containing CSS files for all mojits.
 - ``application.json`` - application configuration file that lets you specify 
   the port and the mojits used by the application.
-- ``yui_modules`` * - directory of JavaScript files that contain YUI modules added 
+- ``yui_modules``* - directory of JavaScript files that contain YUI modules added 
   with ``YUI.add``. These files are automatically included if required by a 
   YUI module.
-- ``default.json`` * - file that sets default values for all specifications.
+- ``default.json``* - file that sets default values for all specifications.
 - ``mojits`` - directory storing the mojits. See `Mojit Files and Directories`_ 
   for a description of the directory contents.
 - ``package.json`` - configuration file for deploying the application.
