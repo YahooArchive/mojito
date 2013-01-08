@@ -171,8 +171,8 @@ rendering engine.
    |       |   `-- models/
    |       |      `-- {model_name}.{affinity}-tests.js
    |       `-- views/
-   |           `-- {view_name}.{view_engine}.html
-                -- {view_name}.{device}.{view_engine}.html
+   |           |-- {view_name}.{view_engine}.html
+   |           `-- {view_name}.{device}.{view_engine}.html
    |-- package.json
    |-- routes.json
    |-- server.js
