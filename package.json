@@ -63,7 +63,7 @@
     },
     "bugs": "https://github.com/yahoo/mojito/issues",
     "scripts": {
-        "test": "./tests/run.js test -u --group server --driver nodejs && ./tests/run.js test -u --group client --driver selenium"
+        "test": "./tests/runall.sh"
     },
     "yahoo": {
         "mojito": {

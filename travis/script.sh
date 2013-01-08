@@ -1,1 +1,0 @@
-./bin/mojito jslint -p && ./tests/run.js test -u --group server --driver nodejs && ./tests/run.js test -u --group client --driver selenium && ./tests/run.js test -f
