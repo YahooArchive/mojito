@@ -730,6 +730,88 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                     }
                 }
             });
+        },
+
+        'test JSON serializer': function() {
+            var ac = new Y.mojito.ActionContext({
+                dispatch: 'the dispatch',
+                command: {
+                    action: 'index',
+                    instance: {
+                        id: 'id',
+                        type: 'TypeGeneral',
+                        acAddons: [],
+                        views: {}
+                    }
+                },
+                controller: {index: function() {}},
+                store: store
+            });
+            var good = true;
+            var obj = {
+                toJSON: function() {
+                    throw new Error('no way');
+                }
+            };
+            try {
+                ac.done(obj, 'json');
+            } catch(err) {
+                good = false;
+            }
+            A.isFalse(good, 'handle exceptions during toJSON()');
+        },
+
+        'test controller noaction': function() {
+            var ac;
+                command = {
+                    action: 'index',
+                    instance: {
+                        id: 'id',
+                        type: 'TypeGeneral',
+                        acAddons: [],
+                        views: {}
+                    }
+                };
+            var error;
+            try {
+                ac = new Y.mojito.ActionContext({
+                    dispatch: 'the dispatch',
+                    command: command,
+                    controller: {
+                        // no index() action
+                    },
+                    store: store
+                });
+            } catch(err) {
+                error = err;
+            }
+            A.isNotUndefined(error);
+            A.areSame("No method 'index' on controller type 'TypeGeneral'", error.message.toString());
+        },
+
+        'test controller __call': function() {
+            var ac;
+                command = {
+                    action: 'index',
+                    instance: {
+                        id: 'id',
+                        type: 'TypeGeneral',
+                        acAddons: [],
+                        views: {}
+                    }
+                };
+            var callCalled = false;
+                ac = new Y.mojito.ActionContext({
+                    dispatch: 'the dispatch',
+                    command: command,
+                    controller: {
+                        __call: function() {
+                            callCalled = true;
+                        }
+                    },
+                    store: store
+                });
+            A.isTrue(callCalled);
         }
 
     }));
