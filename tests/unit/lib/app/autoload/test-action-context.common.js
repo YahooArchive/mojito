@@ -572,6 +572,164 @@ YUI().use('mojito-action-context', 'test', function (Y) {
             // replace
             Y.guid = yguid;
             Y.mojito.ViewRenderer = VR;
+        },
+
+        'test timer trigger done': function() {
+            var store = {
+                getAppConfig: function() {
+                    return {
+                        actionTimeout: 1
+                    };
+                },
+                getStaticContext: function() {
+                    return 'static context';
+                },
+                getRoutes: function(ctx) {
+                    return 'routes';
+                }
+            };
+            var adapterDoneCalled = false;
+            var adapterErrorCalled = false;
+            var ac = new Y.mojito.ActionContext({
+                dispatch: 'the dispatch',
+                command: {
+                    action: 'index',
+                    instance: {
+                        id: 'id',
+                        type: 'TypeGeneral',
+                        acAddons: [],
+                        views: {
+                            mockView: {}
+                        },
+                        binders: {
+                            mockView: {}
+                        },
+                        config: {}
+                    }
+                },
+                controller: {
+                    index: function(ac) {
+                        setTimeout(function() {
+                            ac.done('done');
+                            A.isFalse(adapterDoneCalled, 'dont call adapter.done()');
+                            A.isTrue(adapterErrorCalled, 'timer calls adapter.error()');
+                        }, 1);
+                    }
+                },
+                store: store,
+                adapter: {
+                    done: function(data, meta) {
+                        adapterDoneCalled = true;
+                    },
+                    error: function(err) {
+                        adapterErrorCalled = true;
+                    }
+                }
+            });
+        },
+
+        'test timer notrigger done': function() {
+            var store = {
+                getAppConfig: function() {
+                    return {
+                        actionTimeout: 1000
+                    };
+                },
+                getStaticContext: function() {
+                    return 'static context';
+                },
+                getRoutes: function(ctx) {
+                    return 'routes';
+                }
+            };
+            var adapterDoneCalled = false;
+            var adapterErrorCalled = false;
+            var ac = new Y.mojito.ActionContext({
+                dispatch: 'the dispatch',
+                command: {
+                    action: 'index',
+                    instance: {
+                        id: 'id',
+                        type: 'TypeGeneral',
+                        acAddons: [],
+                        views: {
+                            mockView: {}
+                        },
+                        binders: {
+                            mockView: {}
+                        },
+                        config: {}
+                    }
+                },
+                controller: {
+                    index: function(ac) {
+                        ac.done('done');
+                        A.isTrue(adapterDoneCalled, 'call adapter.done()');
+                        A.isFalse(adapterErrorCalled, 'dont call adapter.error()');
+                    }
+                },
+                store: store,
+                adapter: {
+                    done: function(data, meta) {
+                        adapterDoneCalled = true;
+                    },
+                    error: function(err) {
+                        adapterErrorCalled = true;
+                    }
+                }
+            });
+        },
+
+        'test timer notrigger error': function() {
+            var store = {
+                getAppConfig: function() {
+                    return {
+                        actionTimeout: 1000
+                    };
+                },
+                getStaticContext: function() {
+                    return 'static context';
+                },
+                getRoutes: function(ctx) {
+                    return 'routes';
+                }
+            };
+            var adapterDoneCalled = false;
+            var adapterErrorCalled = false;
+            var ac = new Y.mojito.ActionContext({
+                dispatch: 'the dispatch',
+                command: {
+                    action: 'index',
+                    instance: {
+                        id: 'id',
+                        type: 'TypeGeneral',
+                        acAddons: [],
+                        views: {
+                            mockView: {}
+                        },
+                        binders: {
+                            mockView: {}
+                        },
+                        config: {}
+                    }
+                },
+                controller: {
+                    index: function(ac) {
+                        ac.error('rats');
+                        A.isFalse(adapterDoneCalled, 'dont call adapter.done()');
+                        A.isTrue(adapterErrorCalled, 'timer calls adapter.error()');
+                    }
+                },
+                store: store,
+                adapter: {
+                    done: function(data, meta) {
+                        adapterDoneCalled = true;
+                    },
+                    error: function(err) {
+                        adapterErrorCalled = true;
+                    }
+                }
+            });
         }
 
     }));
