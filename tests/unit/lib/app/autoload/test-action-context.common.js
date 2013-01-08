@@ -762,7 +762,7 @@ YUI().use('mojito-action-context', 'test', function (Y) {
         },
 
         'test controller noaction': function() {
-            var ac;
+            var ac,
                 command = {
                     action: 'index',
                     instance: {
@@ -790,8 +790,7 @@ YUI().use('mojito-action-context', 'test', function (Y) {
         },
 
         'test controller __call': function() {
-            var ac;
-                command = {
+            var command = {
                     action: 'index',
                     instance: {
                         id: 'id',
@@ -801,7 +800,7 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                     }
                 };
             var callCalled = false;
-                ac = new Y.mojito.ActionContext({
+            var ac = new Y.mojito.ActionContext({
                     dispatch: 'the dispatch',
                     command: command,
                     controller: {
@@ -812,6 +811,150 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                     store: store
                 });
             A.isTrue(callCalled);
+        },
+
+        'test no view': function() {
+            var store = {
+                getAppConfig: function() {
+                    return {};
+                },
+                getStaticContext: function() {
+                    return {};
+                },
+                getRoutes: function(ctx) {
+                    return {};
+                }
+            };
+            var command = {
+                    action: 'index',
+                    instance: {
+                        id: 'id',
+                        type: 'TypeGeneral',
+                        acAddons: [],
+                        views: {}
+                    }
+                };
+            var adapter = {
+                    done: function(data, meta) {},
+                    error: function(err) {}
+                };
+
+            var ac, error;
+            try {
+                ac = new Y.mojito.ActionContext({
+                    dispatch: 'the dispatch',
+                    command: command,
+                    controller: {
+                        index: function(ac) {
+                            ac.done(null);
+                        }
+                    },
+                    store: store,
+                    adapter: adapter
+                });
+            } catch(err) {
+                error = err;
+            }
+            // ac.done(null) doesn't trigger an error
+            A.isUndefined(error);
+
+            try {
+                ac = new Y.mojito.ActionContext({
+                    dispatch: 'the dispatch',
+                    command: command,
+                    controller: {
+                        index: function(ac) {
+                            ac.done({status: 'done'});
+                        }
+                    },
+                    store: store,
+                    adapter: adapter
+                });
+            } catch(err) {
+                error = err;
+            }
+            A.isNotUndefined(error);
+            A.areSame("Missing view template: 'index'", error.message.toString());
+        },
+
+        'test server-side view caching': function() {
+            var command = {
+                    action: 'index',
+                    context: {
+                        runtime: 'server'
+                    },
+                    instance: {
+                        id: 'id',
+                        type: 'TypeGeneral',
+                        acAddons: [],
+                        views: {
+                            index: {
+                                engine: 'mockViewEngine',
+                                'content-path': 'path'
+                            }
+                        }
+                    }
+                };
+            var adapter = {
+                    done: function(data, meta) {},
+                    error: function(err) {}
+                };
+
+            var ac, error;
+            var rendererCtorCalled = 0,
+                rendererRenderCalled = 0;
+            Y.mojito.addons.viewEngines.mockViewEngine = function() {
+                rendererCtorCalled += 1;
+                this.render = function(data, type, path, in_adapter, meta, more) {
+                    rendererRenderCalled += 1;
+                    A.areSame('done', data.status);
+                    A.areSame('TypeGeneral', type);
+                    A.areSame(adapter, in_adapter);
+                    A.areSame('index', meta.view.name);
+                    A.isFalse(!!more);
+                };
+                return this;
+            };
+            try {
+                ac = new Y.mojito.ActionContext({
+                    dispatch: 'the dispatch',
+                    command: command,
+                    controller: {
+                        index: function(ac) {
+                            ac.done({status: 'done'});
+                        }
+                    },
+                    store: store,
+                    adapter: adapter
+                });
+            } catch(err) {
+                error = err;
+            }
+            // ac.done(null) doesn't trigger an error
+            A.isUndefined(error);
+            A.areSame(1, rendererCtorCalled);
+            A.areSame(1, rendererRenderCalled);
+
+            // second time, should use cache
+            try {
+                ac = new Y.mojito.ActionContext({
+                    dispatch: 'the dispatch',
+                    command: command,
+                    controller: {
+                        index: function(ac) {
+                            ac.done({status: 'done'});
+                        }
+                    },
+                    store: store,
+                    adapter: adapter
+                });
+            } catch(err) {
+                error = err;
+            }
+            // ac.done(null) doesn't trigger an error
+            A.isUndefined(error);
+            A.areSame(1, rendererCtorCalled);
+            A.areSame(2, rendererRenderCalled);
         }
 
     }));
