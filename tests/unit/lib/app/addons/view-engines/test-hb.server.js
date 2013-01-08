@@ -77,7 +77,62 @@ YUI({useBrowserConsole: true}).use(
                     args: ['<div>test</div>', meta]
                 });
                 this.viewEngine.render(data, 'test', 'dotNotation.hb.html', adapter, meta);
+            },
+
+            'test render more': function () {
+                var data = {
+                        tester: {
+                            test: 'test'
+                        }
+                    },
+                    adapter = Y.Mock(),
+                    meta = {
+                        view: {}
+                    };
+                Y.Mock.expect(adapter, {
+                    method: 'flush',
+                    args: [Y.Mock.Value.String, meta],
+                    run: function (output, metaResult) {
+                        Y.Assert.areEqual('<div>test</div>', output);
+                    }
+                });
+                this.viewEngine.render(data, 'test', 'dotNotation.hb.html', adapter, meta, true);
+            },
+
+            'test render cacheTemplate': function () {
+                var data = {
+                        tester: {
+                            test: 'test'
+                        }
+                    },
+                    adapter = Y.Mock(),
+                    meta = {
+                        view: {
+                            cacheTemplates: true
+                        }
+                    };
+                Y.Mock.expect(adapter, {
+                    method: 'done',
+                    args: [Y.Mock.Value.String, meta],
+                    run: function (output, metaResult) {
+                        Y.Assert.areEqual('<div>test</div>', output);
+                    }
+                });
+                this.viewEngine.render(data, 'test', 'dotNotation.hb.html', adapter, meta);
+            },
+
+            'test compiler': function () {
+                this.viewEngine.compiler('dotNotation.hb.html', function(err) {
+                    Y.Assert.isNull(err);
+                });
+            },
+
+            'test precompile': function () {
+                this.viewEngine.precompile('dotNotation.hb.html', function(err) {
+                    Y.Assert.isNull(err);
+                });
             }
+
         }));
 
         Y.Test.Runner.add(suite);
