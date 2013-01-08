@@ -558,15 +558,15 @@ Before making pull requests, we recommend contributors do the following:
 #. Make your code changes.
 #. Run the built-in unit and functional tests to make sure your code changes haven't
    broken Mojito.
-#. Link Mojito with ``npm link`` and run your own applications with your fork of 
-   Mojito.
-#. Everything working? Make your pull request and unlink your version of Mojito.
+#. Create a global symbolic link to your Mojito fork with ``npm link`` and then 
+   try running your own applications.
+#. Everything working? Great, make your pull request and don't forget to 
+   unlink your fork of Mojito.
 
 
 The following sections show you how to set up your environment and run the unit 
 and functional tests that come with Mojito. 
 
-Why Run 
 
 .. _func_unit-builtin:
 
