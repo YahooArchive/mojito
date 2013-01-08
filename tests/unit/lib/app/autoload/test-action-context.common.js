@@ -909,6 +909,7 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                     rendererRenderCalled += 1;
                     A.areSame('done', data.status);
                     A.areSame('TypeGeneral', type);
+                    A.areSame('path', path);
                     A.areSame(adapter, in_adapter);
                     A.areSame('index', meta.view.name);
                     A.isFalse(!!more);
@@ -930,7 +931,6 @@ YUI().use('mojito-action-context', 'test', function (Y) {
             } catch(err) {
                 error = err;
             }
-            // ac.done(null) doesn't trigger an error
             A.isUndefined(error);
             A.areSame(1, rendererCtorCalled);
             A.areSame(1, rendererRenderCalled);
@@ -951,10 +951,84 @@ YUI().use('mojito-action-context', 'test', function (Y) {
             } catch(err) {
                 error = err;
             }
-            // ac.done(null) doesn't trigger an error
             A.isUndefined(error);
             A.areSame(1, rendererCtorCalled);
             A.areSame(2, rendererRenderCalled);
+        },
+
+        'test pathToRoot for views': function() {
+            var store = {
+                    getAppConfig: function() {
+                        return {
+                            pathToRoot: '/path/to/root/'
+                        };
+                    },
+                    getStaticContext: function() {
+                        return 'static context';
+                    },
+                    getRoutes: function(ctx) {
+                        return 'routes';
+                    }
+                };
+            var command = {
+                    action: 'index',
+                    context: {
+                        runtime: 'server'
+                    },
+                    instance: {
+                        id: 'id',
+                        type: 'TypeGeneral',
+                        acAddons: [],
+                        views: {
+                            index: {
+                                engine: 'engine-in-instance',
+                                'content-path': 'path/in/instance'
+                            }
+                        }
+                    }
+                };
+            var adapter = {
+                    done: function(data, meta) {},
+                    error: function(err) {}
+                };
+            var renderCalled = false;
+            Y.mojito.addons.viewEngines.mockViewEngine2 = function() {
+                this.render = function(data, type, path, in_adapter, meta, more) {
+                    renderCalled = true;
+                    A.areSame('done', data.status);
+                    A.areSame('TypeGeneral', type);
+                    A.areSame('/path/to/root/path/in/meta', path);
+                    A.areSame(adapter, in_adapter);
+                    A.areSame('index', meta.view.name);
+                    A.isFalse(!!more);
+                };
+                return this;
+            };
+            var ac, error;
+            try {
+                ac = new Y.mojito.ActionContext({
+                    dispatch: 'the dispatch',
+                    command: command,
+                    controller: {
+                        index: function(ac) {
+                            ac.done({
+                                status: 'done'
+                            }, {
+                                view: {
+                                    engine: 'mockViewEngine2',
+                                    'content-path': 'path/in/meta'
+                                }
+                            });
+                        }
+                    },
+                    store: store,
+                    adapter: adapter
+                });
+            } catch(err) {
+                error = err;
+            }
+            A.isUndefined(error, 'no error');
+            A.isTrue(renderCalled, 'render called');
         }
 
     }));
