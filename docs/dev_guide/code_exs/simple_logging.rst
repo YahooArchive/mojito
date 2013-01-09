@@ -35,7 +35,7 @@ Log Configuration
 Logging is configured in the ``application.json`` file with the ``yui.config`` 
 object. With the ``yui.config`` object, you can configure the log levels and some 
 elements of the output for logs. See the 
-`config object <../intro/mojito_configuring.html#yui_config>`_ for the 
+`config object <../intro/mojito_configuring.html#config-object>`_ for the 
 configurations that can be set.
 
 
