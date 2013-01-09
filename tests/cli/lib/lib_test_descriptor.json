@@ -33,6 +33,12 @@
             		"test": "./app/commands/build/test-shared.js",
             		"driver": "nodejs"
             	}
+            },
+            "build/scraper.js": {
+            	"params": {
+            		"test": "./app/commands/build/test-scraper.js",
+            		"driver": "nodejs"
+            	}
             }
         }
     }
