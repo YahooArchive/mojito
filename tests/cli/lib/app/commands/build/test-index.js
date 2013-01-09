@@ -17,6 +17,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
         index;
 
 
+    // curry/factory for simple cb functions
     function valfn(val/*return value*/, assert/*arg type assertion cb*/) {
         return function(arg) {
             if (assert) {
@@ -26,26 +27,47 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
         };
     }
 
-    mocks = {
-        store: {
-            createStore: valfn({}, function (opts) {
-                A.isObject(opts);
-                A.isString(opts.root);
-                A.isObject(opts.context);
-            })
-        },
-        util: {
-            contextCsvToObject: valfn({}, A.isString),
-            isMojitoApp: valfn(true, A.isString)
-        },
-        writer: {
-            rmrf: function (dir, cb) {
-                A.isString(dir);
-                cb();
-            }
-        }
-    };
+    // so we can mutate mocks, and refresh
+    function getMocks() {
+        return {
+            store: {
+                createStore: function (opts) {
+                    A.isObject(opts);
+                    A.isString(opts.root);
+                    A.isObject(opts.context);
 
+                    return {
+                        getAppConfig: valfn({}, A.isObject),
+                        getResourceVersions: function(obj) {
+                            A.areSame(obj.name, 'package');
+                            return [{
+                                source:{
+                                    pkg:{
+                                        name:'name',
+                                        version:'0.0',
+                                    },
+                                    fs: 'some/dir'
+                                }
+                            }];
+                        }
+                    };
+                },
+            },
+            util: {
+                contextCsvToObject: valfn({}, A.isString),
+                isMojitoApp: valfn(true, A.isString)
+            },
+            writer: {
+                rmrf: function (dir, cb) {
+                    A.isString(dir);
+                    cb();
+                }
+            }
+        };
+    }
+
+    // mock functions within the modules require()'d by index.js
+    mocks = getMocks();
     mockery.registerAllowable(srcpath);
     mockery.registerMock(Y.MOJITO_DIR + 'lib/store', mocks.store);
     mockery.registerMock(Y.MOJITO_DIR + 'lib/management/utils', mocks.util);
@@ -55,8 +77,20 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
 
     cases = {
         name: 'build/index.js cases',
-        setUp: function() {},
-        tearDown: function() {},
+
+        setUp: function() {
+        },
+
+        tearDown: function() {
+            // need to update just the leaf values so references in mockery are
+            // preserved
+            var cleanmocks = getMocks();
+            Object.keys(cleanmocks).forEach(function(key1) {
+                Object.keys(cleanmocks[key1]).forEach(function(key2) {
+                    mocks[key1][key2] = cleanmocks[key1][key2];
+                });
+            });
+        },
 
         'test exports': function () {
             A.isArray(index.options);
@@ -93,10 +127,9 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
         },
 
         'test valid type, invalid cwd': function () {
-            var old = mocks.util.isMojitoApp,
-                expected = 'Not a Mojito directory';
+            var expected = 'Not a Mojito directory';
 
-            // purposely having run() "fail" early
+            // purposely having run() "fail" early to limit test scope
             mocks.util.isMojitoApp = valfn(false, A.isString);
 
             index.run(['html5app'], {}, function(err, usg, seppuku) {
@@ -105,15 +138,12 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                 A.isTrue(seppuku);
                 A.areSame(expected, err);
             });
-
-            mocks.util.isMojitoApp = old;
         },
 
         'test type is case-insensitive': function () {
-            var old = mocks.util.isMojitoApp,
-                expected = 'Not a Mojito directory';// this msg says
+            var expected = 'Not a Mojito directory';// this msg says
 
-            // purposely having run() "fail" early
+            // purposely having run() "fail" early to limit test scope
             mocks.util.isMojitoApp = valfn(false, A.isString);
 
             index.run(['HTML5APP'], {}, function(err, usg, seppuku) {
@@ -123,21 +153,18 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                 A.areSame(expected, err);
             });
 
-            index.run(['HtmL5aPP'], {}, function(err, usg, seppuku) {
+            index.run(['htML5apP'], {}, function(err, usg, seppuku) {
                 A.isString(err);
                 A.isNull(usg);
                 A.isTrue(seppuku);
                 A.areSame(expected, err);
             });
-
-            mocks.util.isMojitoApp = old;
         },
 
         'test hybridapp requires snapshot options': function () {
-            var old = mocks.util.isMojitoApp,
-                expected = 'Not a Mojito directory';
+            var expected = 'Not a Mojito directory';
 
-            // purposely having run() "fail" early
+            // purposely having run() "fail" early to limit test scope
             mocks.util.isMojitoApp = valfn(false, A.isString);
 
             index.run(['hybridapp'], {}, function(err, usg, seppuku) {
@@ -152,22 +179,26 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                 A.isString(err);
                 A.isNull(usg);
                 A.isTrue(seppuku);
-                // options checked out for hybridapp
+                // no options error
                 A.areSame(expected, err);
             });
-
-            mocks.util.isMojitoApp = old;
         },
 
-//         'test -r invokes rmrf': function () {
-//             
-//             index.run(['html5app'], {replace: true}, function(err, usg, seppuku) {
-//                 A.isString(err);
-//                 A.isNull(usg);
-//                 A.isTrue(seppuku);
-//                 //A.areSame();
-//             });
-//         },
+        'test -r invokes rmrf': function () {
+
+            mocks.writer.rmrf = function(dir, cb) {
+                A.isTrue(/artifacts\/builds/.test(dir), 'expected default build dir str');
+                cb('fake rm -rf error');
+            }
+
+            index.run(['html5app'], {replace: true}, function(err, usg, seppuku) {
+                A.isString(err);
+                A.isNull(usg);
+                A.isTrue(seppuku);
+                A.isTrue(/Error removing /.test(err));
+                A.isTrue(/fake rm -rf error/.test(err));
+            });
+        },
 
     };
 
