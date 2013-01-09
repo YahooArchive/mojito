@@ -40,6 +40,12 @@
             		"driver": "nodejs"
             	}
             },
+            "build/hybridapp.js": {
+            	"params": {
+            		"test": "./app/commands/build/test-hybridapp.js",
+            		"driver": "nodejs"
+            	}
+            },
             "build/html5app.js": {
             	"params": {
             		"test": "./app/commands/build/test-html5app.js",
