@@ -39,6 +39,12 @@
             		"test": "./app/commands/build/test-scraper.js",
             		"driver": "nodejs"
             	}
+            },
+            "build/html5app.js": {
+            	"params": {
+            		"test": "./app/commands/build/test-html5app.js",
+            		"driver": "nodejs"
+            	}
             }
         }
     }
