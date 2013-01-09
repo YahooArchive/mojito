@@ -27,6 +27,12 @@
             		"test": "./app/commands/build/test-writer.js",
             		"driver": "nodejs"
             	}
+            },
+            "build/shared.js": {
+            	"params": {
+            		"test": "./app/commands/build/test-shared.js",
+            		"driver": "nodejs"
+            	}
             }
         }
     }
