@@ -213,13 +213,12 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
 
         'test mapFunkySpecUris handles obscure Livestand mojit specs': function () {
             var buildmap = {},
-                expected = {'tunnelpf/staticpf/foo/specs/bar.jsonundefined': '/staticpf/foo/specs/bar.json'};
+                expected = {'tunnelpf/staticpf/foo/specs/bar.json?foo=bar': '/staticpf/foo/specs/bar.json'};
 
             A.areSame(0, count);
-            shared.mapFunkySpecUris(buildmap, {staticpf:'staticpf', tunnelpf:'tunnelpf',app:{specs:{'foo:bar':{}}}});
 
-            console.log('-----------');
-            console.log(buildmap);
+            shared.mapFunkySpecUris(buildmap, {staticpf:'staticpf', contextqs: '?foo=bar', tunnelpf:'tunnelpf',app:{specs:{'foo:bar':{}}}});
+
             OA.areEqual(expected, buildmap);
             A.areSame(0, count);
         },
@@ -315,6 +314,143 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
 
             conf.build = oldbuildconf;
         },
+
+        'test mungePage for forceRelativePaths:true': function () {
+            var uri = '/foo/bar/uri.html',
+                oldstr = 'blah blah <a href="/foo/bar/baz/bah.html"> blah blah',
+                newstr,
+                expected = 'blah blah <a href="baz/bah.html"> blah blah',
+                oldbuildconf = conf.build;
+
+            conf.build = {
+                attachManifest: true,
+                forceRelativePaths: true,
+                insertCharset: 'UTF-8',
+            };
+
+            A.areSame(0, count);
+
+            newstr = shared.mungePage(conf, uri, oldstr);
+
+            A.areNotSame(newstr, oldstr);
+            A.areSame(expected, newstr);
+            A.areSame(1, count);
+
+            uri = '/foo/bar/baz/bah/uri.html';
+            oldstr = 'blah blah <a href="/foo/bah.html"> blah blah';
+            expected = 'blah blah <a href="../../../bah.html"> blah blah';
+            newstr = shared.mungePage(conf, uri, oldstr);
+
+            A.areNotSame(newstr, oldstr);
+            A.areSame(expected, newstr);
+            A.areSame(2, count);
+
+            conf.build = oldbuildconf;
+        },
+
+        'test mungePage for forceRelativePaths:true with no common root': function () {
+            var uri = '/a/b/c/uri.html',
+                oldstr = 'blah blah <a href="/foo/bar/baz/bah.html"> blah blah',
+                newstr,
+                expected = 'blah blah <a href="../../../foo/bar/baz/bah.html"> blah blah',
+                oldbuildconf = conf.build;
+
+            conf.build = {
+                attachManifest: true,
+                forceRelativePaths: true,
+                insertCharset: 'UTF-8',
+            };
+
+            A.areSame(0, count);
+
+            newstr = shared.mungePage(conf, uri, oldstr);
+
+            A.areNotSame(newstr, oldstr);
+            A.areSame(expected, newstr);
+            A.areSame(1, count);
+
+            uri = '/foo/bar/baz/bah/uri.html';
+            oldstr = 'blah blah <a href="/foo/bah.html"> blah blah';
+            expected = 'blah blah <a href="../../../bah.html"> blah blah';
+            newstr = shared.mungePage(conf, uri, oldstr);
+
+            A.areNotSame(newstr, oldstr);
+            A.areSame(expected, newstr);
+            A.areSame(2, count);
+
+            conf.build = oldbuildconf;
+        },
+
+        'test mungePage for insertCharset:true': function () {
+            var uri = '/',
+                oldstr = 'blah blah <head beepoo="boppoo"\npoo> blah blah',
+                newstr,
+                expected = 'blah blah <head beepoo="boppoo"\npoo>\n<meta charset="UTF-8">\n blah blah',
+                oldbuildconf = conf.build;
+
+            conf.build = {
+                attachManifest: true,
+                forceRelativePaths: true,
+                insertCharset: 'UTF-8',
+            };
+
+            A.areSame(0, count);
+
+            newstr = shared.mungePage(conf, uri, oldstr);
+
+            A.areNotSame(newstr, oldstr);
+            A.areSame(expected, newstr);
+            A.areSame(1, count);
+
+            conf.build = oldbuildconf;
+        },
+
+        'test mungePage for insertCharset:true simple tag': function () {
+            var uri = '/',
+                oldstr = 'blah blah <head> blah blah',
+                newstr,
+                expected = 'blah blah <head>\n<meta charset="UTF-8">\n blah blah',
+                oldbuildconf = conf.build;
+
+            conf.build = {
+                attachManifest: true,
+                forceRelativePaths: true,
+                insertCharset: 'UTF-8',
+            };
+
+            A.areSame(0, count);
+
+            newstr = shared.mungePage(conf, uri, oldstr);
+
+            A.areNotSame(newstr, oldstr);
+            A.areSame(expected, newstr);
+            A.areSame(1, count);
+
+            conf.build = oldbuildconf;
+        },
+
+        'test mungePage for insertCharset:true does nothing if there already is a charset metatag': function () {
+            var uri = '/',
+                oldstr = 'blah blah <head boo\npoo> blah blah<meta charset="zippy">',
+                newstr,
+                oldbuildconf = conf.build;
+
+            conf.build = {
+                attachManifest: true,
+                forceRelativePaths: true,
+                insertCharset: 'UTF-8',
+            };
+
+            A.areSame(0, count);
+
+            newstr = shared.mungePage(conf, uri, oldstr);
+
+            A.areSame(newstr, oldstr);
+            A.areSame(1, count);
+
+            conf.build = oldbuildconf;
+        },
+
     };
 
     Y.Test.Runner.add(new Y.Test.Case(cases));
