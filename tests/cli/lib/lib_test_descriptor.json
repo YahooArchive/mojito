@@ -21,10 +21,13 @@
                     "driver": "nodejs"
                 },
                 "group": "fw,cli"
+            },
+            "build/writer.js": {
+            	"params": {
+            		"test": "./app/commands/build/test-writer.js",
+            		"driver": "nodejs"
+            	}
             }
         }
-    },
-    {
-        "settings": [ "environment:development" ]
     }
 ]
