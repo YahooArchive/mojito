@@ -223,8 +223,8 @@ Creation of Synthetic Files
 
 In terms of extending Mojito's functionality, if you create a Resource Store addon, you 
 can create new synthetic modules and control the seed generation by piping into 
-`getAppSeedFiles <../../../api/classes/RSAddonYUI.html#method_getAppSeedFiles>`_ 
-method of the `RSAddonYUI Class <../../../api/classes/RSAddonYUI.html>`_. 
+`getAppSeedFiles <http://developer.yahoo.com/cocktails/mojito/api/classes/RSAddonYUI.html#method_getAppSeedFiles>`_ 
+method of the `RSAddonYUI Class <http://developer.yahoo.com/cocktails/mojito/api/classes/RSAddonYUI.html>`_. 
 
 .. _seed_configure-optimize_perf:
 
