@@ -57,8 +57,8 @@ Seed File in Mojito Applications
 In Mojito applications, the YUI seed is configured in ``application.json`` rather than 
 including a ``<script>`` tag in templates. Thus, the information inferred from 
 the URL to the YUI seed file in YUI applications is instead provided 
-in the ``yui.config.seed`` object of ``application.json`` in Mojito applications.
-We will look at ``yui.config.seed`` in `Configuration of the Seed File <seed-configure>`_.
+in the ``yui.config.seed`` object of ``application.json``.
+We will look at ``yui.config.seed`` in :ref:`Configuration of the Seed File <seed-configure>`.
 
 Mojito uses configuration for the YUI seed because of the following reasons:
 
@@ -122,12 +122,11 @@ What Modules Should Be in the Seed?
 -----------------------------------
 
 When including modules as part of the seed, developers need to decide
-which modules are critical and understand what modules are available for 
+which modules are critical and understand what modules are available to 
 Mojito applications. In theory, all YUI modules that are part of Mojito core, YUI core, 
-and your own application are available to be used as part of the seed. You 
-can also add non-core YUI modules to be part of the seed, but we recommend  
-that you don't unless you have a strong reason to do so because the seed file
-should be as small as possible. 
+and your application can be part of the seed. You can also add non-core YUI modules to 
+be part of the seed, but we recommend that you don't unless you have a strong reason to 
+do so because the seed file should be as small as possible. 
 
 In addition, Mojito generates a few more virtual files (in memory, not actual physical 
 files) that we will call *synthetic* modules, which you can also include in the ``seed``
@@ -203,15 +202,6 @@ synthetic modules to load modules based on the languages specified in the reques
 information and the user preferences. Mojito will locate the corresponding synthetic 
 module name based on the language context. 
 
-.. _synthetic_mult_langs-syntax:
-
-Syntax
-******
-
-``{yui_module}-{base|resolved}_{BCP 47 lang tag}``
-
-For example, the US English form of the base synthetic module ``loader-app-base``
-is ``loader-app-base_en-US``.
 
 .. _synthetic_mult_langs-restriction:
 
@@ -224,8 +214,7 @@ Also, the default synthetic modules, such as ``loader-app``,
 always exists, so, if no language is specified, but many language resource bundles 
 exist for a mojit, then the default synthetic module will load the metadata for all of 
 the modules. If an application has multiple mojits each with dozens of language bundles,
-the amount of metadata can be considerable, so be sure that
-the synthetic modules have all the different language versions.
+the amount of metadata can be considerable.
 
 .. _synthetic_mods-create:
 
@@ -233,9 +222,9 @@ Creation of Synthetic Files
 ###########################
 
 In terms of extending Mojito's functionality, if you create a Resource Store addon, you 
-can create new synthetic modules, as well as control the seed generation by piping into 
-``store.YUI.getAppSeedFiles`` method. Check the API documentation for more details on the 
-signature of that method.
+can create new synthetic modules and control the seed generation by piping into 
+`getAppSeedFiles <../../../api/classes/RSAddonYUI.html#method_getAppSeedFiles>`_ 
+method of the `RSAddonYUI Class <../../../api/classes/RSAddonYUI.html>`_. 
 
 .. _seed_configure-optimize_perf:
 
@@ -248,19 +237,19 @@ Default Application Optimization
 ################################
 
 In mobile and applications requiring high performance, relying on the YUI Loader to compute 
-and resolve dependencies that are needed in a recursive way could drastically affect booting 
-time on the runtime. For that, Mojito is smart enough to use 
+and resolve dependencies recursively could drastically affect the
+boot time. For that, Mojito is smart enough to use 
 `Y.Loader->resolve <http://yuilibrary.com/yui/docs/api/classes/Loader.html#method_resolve]>`_
-to expand the loader application metadata, which is considerable bigger than the regular 
-metadata computed through ``loader-app-base_{BCP 47 lang tag}``. 
+to expand the loader application metadata, which is considerable larger than the regular 
+metadata computed through ``loader-app-base_{lang_tag}``. 
 
 .. _optimize_perf-seed_size:
 
 Minimize the Size of the Seed File
 ##################################
 
-Use only include critical modules in the seed. Mojito can load other required module at 
-any given time.
+Only include critical modules in the seed. Mojito can load other 
+required modules later.
 
 .. _optimize_perf-synth_mods:
 
@@ -272,7 +261,7 @@ can use base and synthetic modules to optimize performance for YUI Core modules
 as well.
 
 In the ``application.json`` below, a resolved synthetic module is 
-use to optimize the YUI Core module ``loader-yui3``.
+used to optimize the YUI Core module ``loader-yui3``.
 
 .. code-block:: javascript
 
@@ -301,7 +290,7 @@ Use Base Synthetic Modules to Reduce Latency and Memory
 The base synthetic modules are small, making them ideal for applications that 
 may have connectivity issues. You should also take into consideration that
 your application will require more CPU power when using base synthetic modules.
-For desktop applications,  when you have more CPU power, you should use 
+For desktop applications, when you have more CPU power, you should use 
 base synthetic modules.  
 
 .. _optimize_perf-resolved_synth:
@@ -313,7 +302,7 @@ Resolved synthetic modules require less CPU power because they do not require re
 computation as the computation was already done at the server side. The size of the 
 resolved synthetic module in memory, however, is much larger than
 the base synthetic module. For mobile devices, which have less CPU power, you
-would want to use resolved synthetic modules. 
+should use resolved synthetic modules. 
 
 .. _optimize_perf-contexts:
 
@@ -341,8 +330,7 @@ needed by iPhone clients.
              "yui-base",
              "loader-base",
              "loader-yui3",
-             "loader-app",
-             "loader-app-base_{lang tag}"
+             "loader-app"
            ]
          }
        }
@@ -355,27 +343,13 @@ needed by iPhone clients.
              "yui-base",
              "loader-base",
              "loader-yui3",
-             "loader-app",
-             "loader-app-resolved_{lang tag}"
+             "loader-app"
            ]
          }
        }
      }
    ]
 
-.. _optimize_perf-lang_tags:
-
-Use Language Tags for Base and Resolved Synthetic Modules
-#########################################################
-
-Use base and resolved synthetic modules to load modules based on the languages 
-specified in the request information and the user preferences by adding the language tag
-to the name of the synthetic module. Instead of the default of loading all the 
-modules for the language resource bundles, Mojito will only load the corresponding 
-synthetic module name based on the language context. 
-
-See :ref:`Using Synthetic Modules for Multiple Languages <synthetic_mods-mult_langs>`
-for more information.
 
 
 .. _yui_config-app_grp:
@@ -415,28 +389,28 @@ Configuration of  the App Group
 In the ``application.json`` file, you can use the ``yui.config.groups`` object
 to configure the following properties for the combo handler.
 
-+--------------------+------------+---------------------------------------------------+---------------------------+
-| Property           | Data Type  | Example                                           | Description               |
-+====================+============+===================================================+===========================+
-| ``combine``        | boolean    | ``combine: true``                                 | Determines whether this   |
-|                    |            |                                                   | group has a combo service |
-+--------------------+------------+---------------------------------------------------+---------------------------+
-| ``comboSep``       | string     | ``comboSep: ';'``                                 | The separator for this    |
-|                    |            |                                                   | group's combo handler.    |   
-+--------------------+------------+---------------------------------------------------+---------------------------+
-| ``maxURLLength``   | number     | ``maxURLLength: 500``                             | The maximum length of the |
-|                    |            |                                                   | URL for this server.      |
-+--------------------+------------+---------------------------------------------------+---------------------------+
-| ``base``           | string     | ``base: 'http://yui.yahooapis.com/3.8.0/build/'`` | The base path/URL for     |
-|                    |            |                                                   | non-combo paths.          |
-+--------------------+------------+---------------------------------------------------+---------------------------+
-| ``comboBase``      | string     | ``comboBase: 'http://mycompany.com/cdn/'``        | The path/URL to the combo |
-|                    |            |                                                   | service.                  |              
-+--------------------+------------+---------------------------------------------------+---------------------------+
-| ``root``           | string     | ``root: '0.1.0/mybuild/'``                        | A prefix to the path      |
-|                    |            |                                                   | attribute when building   |
-|                    |            |                                                   | combo URLs.               |
-+--------------------+------------+---------------------------------------------------+---------------------------+
++--------------------+------------+---------------------------------------------------+----------------------------+
+| Property           | Data Type  | Example                                           | Description                |
++====================+============+===================================================+============================+
+| ``combine``        | boolean    | ``combine: true``                                 | Determines whether this    |
+|                    |            |                                                   | group has a combo service. |
++--------------------+------------+---------------------------------------------------+----------------------------+
+| ``comboSep``       | string     | ``comboSep: ';'``                                 | The separator for this     |
+|                    |            |                                                   | group's combo handler.     |   
++--------------------+------------+---------------------------------------------------+----------------------------+
+| ``maxURLLength``   | number     | ``maxURLLength: 500``                             | The maximum length of the  |
+|                    |            |                                                   | URL for this server.       |
++--------------------+------------+---------------------------------------------------+----------------------------+
+| ``base``           | string     | ``base: 'http://yui.yahooapis.com/3.8.0/build/'`` | The base path/URL for      |
+|                    |            |                                                   | non-combo paths.           |
++--------------------+------------+---------------------------------------------------+----------------------------+
+| ``comboBase``      | string     | ``comboBase: 'http://mycompany.com/cdn/'``        | The path/URL to the combo  |
+|                    |            |                                                   | service.                   |              
++--------------------+------------+---------------------------------------------------+----------------------------+
+| ``root``           | string     | ``root: '0.1.0/mybuild/'``                        | A prefix to the path       |
+|                    |            |                                                   | attribute when building    |
+|                    |            |                                                   | combo URLs.                |
++--------------------+------------+---------------------------------------------------+----------------------------+
 
 
 In the example ``application.json``, the ``app`` group is configured
@@ -469,7 +443,7 @@ Default Combo Handler of Mojito
 Mojito comes with an extended version of the 
 ``mojito-handler-static`` middleware that implements a fully functional
 combo handler that supports cache, fallbacks when proxies cut the URL, and more. This 
-combo handler adheres the recommendations in the blog post 
+combo handler adheres to the recommendations in the blog post 
 `Managing your JavaScript Modules with YUI 3 Stockpile <http://www.YUIblog.com/blog/2012/11/06/managing-your-javascript-modules-with-YUI-3-stockpile-2/>`_
 by `John Lindal <http://jjlindal.net/jafl/>`_, and it is the default configuration used 
 for the Mojito application if the ``app`` group is not configured. 
@@ -539,8 +513,8 @@ Shaker Integration
 
 The ``mojito-shaker`` 3.x extension will be able to control the configurations defined
 by the ``app`` group if you decide to push your assets into a CDN like Amazon. Shaker will 
-also version the files and create the necessary rollups to speed up the caching and booting 
-process in the client runtime. To learn how to use the ``mojito-shaker`` extension, 
+also version the files and create the necessary rollups to accelerate caching and booting 
+in the client runtime. To learn how to use the ``mojito-shaker`` extension, 
 see the `Shaker documentation <http://developer.yahoo.com/cocktails/shaker/>`_.
 
 
