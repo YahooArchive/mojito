@@ -34,6 +34,12 @@
             		"driver": "nodejs"
             	}
             },
+            "build/index.js": {
+            	"params": {
+            		"test": "./app/commands/build/test-index.js",
+            		"driver": "nodejs"
+            	}
+            },
             "build/scraper.js": {
             	"params": {
             		"test": "./app/commands/build/test-scraper.js",
