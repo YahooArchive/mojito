@@ -434,7 +434,7 @@ The ``controller.server.js`` below shows a simple example of calling
              {
                simple_data: data
              }
-           )'
+           )
          });
        }
      };
