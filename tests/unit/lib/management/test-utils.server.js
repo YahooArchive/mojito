@@ -61,7 +61,7 @@ YUI().use('test', function(Y) {
                       A.isTrue(/test log/.test(message));
                   }
               });
-              libutils.setConsole(mockConsole);
+              libutils._setConsole(mockConsole);
               libutils.log("test log");
          },
           
@@ -74,7 +74,7 @@ YUI().use('test', function(Y) {
                       A.isTrue(/Error found/.test(message));
                   }
               });
-              libutils.setConsole(mockConsole);
+              libutils._setConsole(mockConsole);
               libutils.error("Error found");
           },
            
@@ -89,7 +89,7 @@ YUI().use('test', function(Y) {
                        A.isTrue(/for this test/.test(message));
                    }
                });
-               libutils.setConsole(mockConsole);
+               libutils._setConsole(mockConsole);
                libutils.error("Error found", "for this test", false);
            },
            
@@ -106,7 +106,7 @@ YUI().use('test', function(Y) {
                err.name = "myerr";
                err.stack = true;
                err.message = "Error found";
-               libutils.setConsole(mockConsole);
+               libutils._setConsole(mockConsole);
                libutils.error(err);
            },
             
@@ -119,7 +119,7 @@ YUI().use('test', function(Y) {
                       A.isTrue(/Successed!/.test(message));
                   }
               });
-              libutils.setConsole(mockConsole);
+              libutils._setConsole(mockConsole);
               libutils.success("Successed!");
           },
 
@@ -132,7 +132,7 @@ YUI().use('test', function(Y) {
                       A.isTrue(/AlertAlert/.test(message));
                   }
               });
-              libutils.setConsole(mockConsole);
+              libutils._setConsole(mockConsole);
               libutils.warn("AlertAlert");
           }         
 
