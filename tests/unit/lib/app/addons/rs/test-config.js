@@ -304,15 +304,21 @@ YUI().use('addon-rs-config', 'mojito-util', 'base', 'oop', 'test', function(Y) {
             var have = store.config.readConfigYCB(path, {});
             var want = {};
             cmp(have, want);
-        }
+        },
+
+
+        "readConfigJSON JSON file": function() {
+            var fixtures = libpath.join(__dirname, '../../../../../fixtures/gsg5');
+            var store = new MockRS({ root: fixtures });
+            store.plug(Y.mojito.addons.rs.config, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
+
+            var path = libpath.join(fixtures, 'package.json');
+            var have = store.config.readConfigJSON(path);
+            var want = readJSON(fixtures, 'package.json');
+            cmp(have, want);
+        },
 
         
-    }));
-    
-    suite.add(new YUITest.TestCase({
-        
-        name: 'config rs addon tests',
-
         "readConfigSync JSON file":  function () {
 
             var fixtures = libpath.join(__dirname, '../../../../../fixtures'),
@@ -326,6 +332,7 @@ YUI().use('addon-rs-config', 'mojito-util', 'base', 'oop', 'test', function(Y) {
 
             A.areSame("val", obj.key);
         },
+
 
         "readConfigSync YAML file":  function () {
 
@@ -341,6 +348,7 @@ YUI().use('addon-rs-config', 'mojito-util', 'base', 'oop', 'test', function(Y) {
             A.areSame("val", obj.key);
         },
 
+
         "readConfigSync YML file":  function () {
 
             var fixtures = libpath.join(__dirname, '../../../../../fixtures'),
@@ -355,6 +363,7 @@ YUI().use('addon-rs-config', 'mojito-util', 'base', 'oop', 'test', function(Y) {
             A.areSame("val", obj.key);
         },
 
+
         "readConfigSync no ext file":  function () {
 
             var fixtures = libpath.join(__dirname, '../../../../../fixtures'),
@@ -368,6 +377,7 @@ YUI().use('addon-rs-config', 'mojito-util', 'base', 'oop', 'test', function(Y) {
 
             A.areSame("val", obj.key);
         },
+
 
         "readConfigSync YAML file with TAB not space":  function () {
 
