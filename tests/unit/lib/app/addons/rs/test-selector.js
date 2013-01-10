@@ -36,10 +36,8 @@ YUI().use(
                     '*': true
                 };
             },
-            getAppConfigYCB: function() {
-                return this.config.createMultipartYCB([
-                    libpath.join(fixtures, 'application.json')
-                ]);
+            blendStaticContext: function() {
+                return {};
             },
             validateContext: function() {},
             cloneObj: function(o) {

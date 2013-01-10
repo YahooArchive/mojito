@@ -81,9 +81,9 @@ YUI().use('addon-rs-config', 'mojito-util', 'mojito-test-extra', 'base', 'oop', 
 
 
     suite.add(new YUITest.TestCase({
-        
+
         name: 'config rs addon tests',
-        
+
         'read dimensions': function() {
             // from mojito
             var fixtures = libpath.join(__dirname, '../../../../../fixtures/store');
@@ -155,28 +155,6 @@ YUI().use('addon-rs-config', 'mojito-util', 'mojito-test-extra', 'base', 'oop', 
             have = store.findResourceVersionByConvention(source, 'shared');
             want = { type: 'config' };
             Y.TEST_CMP(have, want, 'include package.json in the "shared" mojit');
-
-            // include application.json in packages
-            source = {
-                fs: {
-                    fullPath: libpath.join(fixtures, 'node_modules', 'foo', 'application.json'),
-                    rootDir: libpath.join(fixtures, 'node_modules', 'foo'),
-                    rootType: 'bundle',
-                    subDir: '.',
-                    subDirArray: ['.'],
-                    isFile: true,
-                    basename: 'application',
-                    ext: '.json'
-                },
-                pkg: {
-                    name: 'foo',
-                    version: '999.666.999',
-                    depth: 999
-                }
-            };
-            have = store.findResourceVersionByConvention(source, 'shared');
-            want = { type: 'config' };
-            Y.TEST_CMP(have, want, 'include application.json in NPM modules');
         },
 
 
@@ -303,7 +281,7 @@ YUI().use('addon-rs-config', 'mojito-util', 'mojito-test-extra', 'base', 'oop', 
             Y.TEST_CMP(have, want);
         },
 
-        
+
         "readConfigSync JSON file":  function () {
 
             var fixtures = libpath.join(__dirname, '../../../../../fixtures'),
@@ -390,7 +368,7 @@ YUI().use('addon-rs-config', 'mojito-util', 'mojito-test-extra', 'base', 'oop', 
             paths = [
                 libpath.join(fixtures, 'application.json'),
                 libpath.join(fixtures, 'node_modules', 'devices', 'application.json'),
-                libpath.join(fixtures, 'node_modules', 'runtimes', 'application.json'),
+                libpath.join(fixtures, 'node_modules', 'runtimes', 'application.json')
             ];
             ycb = store.config.createMultipartYCB(paths);
             A.isObject(ycb);
@@ -424,11 +402,27 @@ YUI().use('addon-rs-config', 'mojito-util', 'mojito-test-extra', 'base', 'oop', 
             ];
             ycb = store.config.createMultipartYCB(paths);
             A.isUndefined(ycb);
+        },
+
+
+        'test applicationExtras in _readYcbAppConfig': function () {
+            var fixtures = libpath.join(__dirname, '../../../../../fixtures/app-jsons'),
+                store = new MockRS({ root: fixtures });
+            store.plug(Y.mojito.addons.rs.config, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
+
+            var ycb, config;
+            ycb = store.config._readYcbAppConfig();
+            A.isObject(ycb);
+            config = ycb.read({runtime: 'client'});
+            A.isObject(config);
+            A.areSame('testVal2-client', config.testKey2);
+            config = ycb.read({device: 'android'});
+            A.isObject(config);
+            A.areSame('droid', config.selector);
         }
 
-
     }));
-    
+
     Y.Test.Runner.add(suite);
-    
+
 });
