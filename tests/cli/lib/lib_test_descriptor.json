@@ -21,10 +21,43 @@
                     "driver": "nodejs"
                 },
                 "group": "fw,cli"
+            },
+            "build/writer.js": {
+            	"params": {
+            		"test": "./app/commands/build/test-writer.js",
+            		"driver": "nodejs"
+            	}
+            },
+            "build/shared.js": {
+            	"params": {
+            		"test": "./app/commands/build/test-shared.js",
+            		"driver": "nodejs"
+            	}
+            },
+            "build/index.js": {
+            	"params": {
+            		"test": "./app/commands/build/test-index.js",
+            		"driver": "nodejs"
+            	}
+            },
+            "build/scraper.js": {
+            	"params": {
+            		"test": "./app/commands/build/test-scraper.js",
+            		"driver": "nodejs"
+            	}
+            },
+            "build/hybridapp.js": {
+            	"params": {
+            		"test": "./app/commands/build/test-hybridapp.js",
+            		"driver": "nodejs"
+            	}
+            },
+            "build/html5app.js": {
+            	"params": {
+            		"test": "./app/commands/build/test-html5app.js",
+            		"driver": "nodejs"
+            	}
             }
         }
-    },
-    {
-        "settings": [ "environment:development" ]
     }
 ]
