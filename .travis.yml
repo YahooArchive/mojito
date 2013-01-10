@@ -5,6 +5,6 @@ node_js:
 before_install:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
-  - "wget -nv http://selenium.googlecode.com/files/selenium-server-standalone-2.25.0.jar"
-  - "java -jar selenium-server-standalone-2.25.0.jar -p 4444 > /dev/null &"
-  - "sleep 8"
+  - "wget -nv http://selenium.googlecode.com/files/selenium-server-standalone-2.28.0.jar"
+  - "java -jar selenium-server-standalone-2.28.0.jar -p 4444 > /dev/null &"
+  - "sleep 6"
