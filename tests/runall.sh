@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/sh -ex
 # -e exits on any error; exit code is preserved
 
 fail() {
