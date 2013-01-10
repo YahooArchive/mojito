@@ -3,7 +3,7 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-YUI().use('addon-rs-config', 'mojito-util', 'base', 'oop', 'test', function(Y) {
+YUI().use('addon-rs-config', 'mojito-util', 'mojito-test-extra', 'base', 'oop', 'test', function(Y) {
 
     var suite = new YUITest.TestSuite('mojito-addon-rs-config-tests'),
         libfs = require('fs'),
@@ -58,31 +58,6 @@ YUI().use('addon-rs-config', 'mojito-util', 'base', 'oop', 'test', function(Y) {
     }
 
 
-    function cmp(x, y, msg, path) {
-        if (Y.Lang.isArray(x)) {
-            A.isArray(x, msg || 'first arg should be an array');
-            A.isArray(y, msg || 'second arg should be an array');
-            A.areSame(x.length, y.length, msg || 'arrays are different lengths');
-            for (var i = 0; i < x.length; i += 1) {
-                cmp(x[i], y[i], msg);
-            }
-            return;
-        }
-        if (Y.Lang.isObject(x)) {
-            A.isObject(x, msg || 'first arg should be an object');
-            A.isObject(y, msg || 'second arg should be an object');
-            A.areSame(Object.keys(x).length, Object.keys(y).length, msg || 'object keys are different lengths');
-            for (var i in x) {
-                if (x.hasOwnProperty(i)) {
-                    cmp(x[i], y[i], msg);
-                }
-            }
-            return;
-        }
-        A.areSame(x, y, msg || 'args should be the same');
-    }
-
-
     function makeSource(dir, dirType, subdir, file, isFile) {
         var source = {
             fs: {
@@ -116,7 +91,7 @@ YUI().use('addon-rs-config', 'mojito-util', 'base', 'oop', 'test', function(Y) {
             store.plug(Y.mojito.addons.rs.config, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
             var have = store.config.getDimensions();
             var want = readJSON(mojitoRoot, 'dimensions.json');
-            cmp(want, have);
+            Y.TEST_CMP(want, have);
 
             // app-specified
             fixtures = libpath.join(__dirname, '../../../../../fixtures/ycb');
@@ -124,7 +99,7 @@ YUI().use('addon-rs-config', 'mojito-util', 'base', 'oop', 'test', function(Y) {
             store.plug(Y.mojito.addons.rs.config, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
             have = store.config.getDimensions();
             want = readJSON(fixtures, 'dimensions.json');
-            cmp(want, have);
+            Y.TEST_CMP(want, have);
         },
 
 
@@ -137,49 +112,71 @@ YUI().use('addon-rs-config', 'mojito-util', 'base', 'oop', 'test', function(Y) {
             var source = makeSource(fixtures, 'app', '.', 'server.js', true);
             var have = store.findResourceVersionByConvention(source, null);
             var want = undefined;
-            cmp(have, want, 'skip non-json files');
+            Y.TEST_CMP(have, want, 'skip non-json files');
 
             // include all json files in the app
             source = makeSource(fixtures, 'app', '.', 'x.json', true);
             have = store.findResourceVersionByConvention(source, null);
             want = { type: 'config' };
-            cmp(have, want, 'include all json files in the app');
+            Y.TEST_CMP(have, want, 'include all json files in the app');
 
             // ... explicitly including package.json
             source = makeSource(fixtures, 'app', '.', 'package.json', true);
             have = store.findResourceVersionByConvention(source, null);
             want = { type: 'config' };
-            cmp(have, want, 'include package.json in the app');
+            Y.TEST_CMP(have, want, 'include package.json in the app');
 
             // exclude all json files in a bundle
             source = makeSource(fixtures, 'bundle', '.', 'x.json', true);
             have = store.findResourceVersionByConvention(source, null);
             want = undefined;
-            cmp(have, want, 'exclude all json files in a bundle');
+            Y.TEST_CMP(have, want, 'exclude all json files in a bundle');
 
             // ... explicitly excluding package.json
             source = makeSource(fixtures, 'bundle', '.', 'package.json', true);
             have = store.findResourceVersionByConvention(source, null);
             want = undefined;
-            cmp(have, want, 'exclude package.json in a bundle');
+            Y.TEST_CMP(have, want, 'exclude package.json in a bundle');
 
             // include all json files in a mojit
             source = makeSource(fixtures, 'mojit', '.', 'x.json', true);
             have = store.findResourceVersionByConvention(source, 'foo');
             want = { type: 'config' };
-            cmp(have, want, 'include all json files in a mojit');
+            Y.TEST_CMP(have, want, 'include all json files in a mojit');
 
             // ... except for the 'shared' mojit
             source = makeSource(fixtures, 'mojit', '.', 'x.json', true);
             have = store.findResourceVersionByConvention(source, 'shared');
             want = undefined;
-            cmp(have, want, 'exclude all json files in the "shared" mojit');
+            Y.TEST_CMP(have, want, 'exclude all json files in the "shared" mojit');
 
             // ... explicitly including package.json
             source = makeSource(fixtures, 'mojit', '.', 'package.json', true);
             have = store.findResourceVersionByConvention(source, 'shared');
             want = { type: 'config' };
-            cmp(have, want, 'include package.json in the "shared" mojit');
+            Y.TEST_CMP(have, want, 'include package.json in the "shared" mojit');
+
+            // include application.json in packages
+            source = {
+                fs: {
+                    fullPath: libpath.join(fixtures, 'node_modules', 'foo', 'application.json'),
+                    rootDir: libpath.join(fixtures, 'node_modules', 'foo'),
+                    rootType: 'bundle',
+                    subDir: '.',
+                    subDirArray: ['.'],
+                    isFile: true,
+                    basename: 'application',
+                    ext: '.json'
+                },
+                pkg: {
+                    name: 'foo',
+                    version: '999.666.999',
+                    depth: 999
+                }
+            };
+            have = store.findResourceVersionByConvention(source, 'shared');
+            want = { type: 'config' };
+            Y.TEST_CMP(have, want, 'include application.json in NPM modules');
         },
 
 
@@ -191,7 +188,7 @@ YUI().use('addon-rs-config', 'mojito-util', 'base', 'oop', 'test', function(Y) {
             var source = makeSource(fixtures, 'app', '.', 'application.json', true);
             var res = store.parseResourceVersion(source, 'config');
             A.isNotUndefined(res);
-            cmp(res.source, source);
+            Y.TEST_CMP(res.source, source);
             A.areSame('config', res.type);
             A.areSame('common', res.affinity);
             A.areSame('*', res.selector);
@@ -202,7 +199,7 @@ YUI().use('addon-rs-config', 'mojito-util', 'base', 'oop', 'test', function(Y) {
             source = makeSource(fixtures, 'mojit', '.', 'defaults.json', true);
             res = store.parseResourceVersion(source, 'config', undefined, 'x');
             A.isNotUndefined(res);
-            cmp(res.source, source);
+            Y.TEST_CMP(res.source, source);
             A.areSame('config', res.type);
             A.areSame('common', res.affinity);
             A.areSame('*', res.selector);
@@ -220,7 +217,7 @@ YUI().use('addon-rs-config', 'mojito-util', 'base', 'oop', 'test', function(Y) {
             var path = libpath.join(fixtures, 'application.json');
             var have = store.config.readConfigSimple(path);
             var want = readJSON(fixtures, 'application.json');
-            cmp(have, want);
+            Y.TEST_CMP(have, want);
         },
 
 
@@ -276,7 +273,7 @@ YUI().use('addon-rs-config', 'mojito-util', 'base', 'oop', 'test', function(Y) {
                 "selector": "shelves",
                 "pathos": "portended"
             };
-            cmp(have, want);
+            Y.TEST_CMP(have, want);
         },
 
 
@@ -303,16 +300,10 @@ YUI().use('addon-rs-config', 'mojito-util', 'base', 'oop', 'test', function(Y) {
             var path = libpath.join(fixtures, 'routes.json');
             var have = store.config.readConfigYCB(path, {});
             var want = {};
-            cmp(have, want);
-        }
+            Y.TEST_CMP(have, want);
+        },
 
         
-    }));
-    
-    suite.add(new YUITest.TestCase({
-        
-        name: 'config rs addon tests',
-
         "readConfigSync JSON file":  function () {
 
             var fixtures = libpath.join(__dirname, '../../../../../fixtures'),
@@ -326,6 +317,7 @@ YUI().use('addon-rs-config', 'mojito-util', 'base', 'oop', 'test', function(Y) {
 
             A.areSame("val", obj.key);
         },
+
 
         "readConfigSync YAML file":  function () {
 
@@ -341,6 +333,7 @@ YUI().use('addon-rs-config', 'mojito-util', 'base', 'oop', 'test', function(Y) {
             A.areSame("val", obj.key);
         },
 
+
         "readConfigSync YML file":  function () {
 
             var fixtures = libpath.join(__dirname, '../../../../../fixtures'),
@@ -354,6 +347,7 @@ YUI().use('addon-rs-config', 'mojito-util', 'base', 'oop', 'test', function(Y) {
 
             A.areSame("val", obj.key);
         },
+
 
         "readConfigSync no ext file":  function () {
 
@@ -369,6 +363,7 @@ YUI().use('addon-rs-config', 'mojito-util', 'base', 'oop', 'test', function(Y) {
             A.areSame("val", obj.key);
         },
 
+
         "readConfigSync YAML file with TAB not space":  function () {
 
             var fixtures = libpath.join(__dirname, '../../../../../fixtures'),
@@ -383,7 +378,55 @@ YUI().use('addon-rs-config', 'mojito-util', 'base', 'oop', 'test', function(Y) {
             catch (err) {
                 A.areSame('Error parsing file:', err.message.substr(0, 19));
             }
+        },
+
+
+        'create multipart ycb': function () {
+            var fixtures = libpath.join(__dirname, '../../../../../fixtures/app-jsons'),
+                store = new MockRS({ root: fixtures });
+            store.plug(Y.mojito.addons.rs.config, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
+
+            var paths, ycb, config;
+            paths = [
+                libpath.join(fixtures, 'application.json'),
+                libpath.join(fixtures, 'node_modules', 'devices', 'application.json'),
+                libpath.join(fixtures, 'node_modules', 'runtimes', 'application.json'),
+            ];
+            ycb = store.config.createMultipartYCB(paths);
+            A.isObject(ycb);
+            config = ycb.read({runtime: 'client'});
+            A.isObject(config);
+            A.areSame('testVal2-client', config.testKey2);
+            config = ycb.read({device: 'android'});
+            A.isObject(config);
+            A.areSame('droid', config.selector);
+
+            // detect non-ycb file
+            paths = [
+                libpath.join(fixtures, 'application.json'),
+                libpath.join(fixtures, 'application-notycb.json')
+            ];
+            ycb = store.config.createMultipartYCB(paths);
+            A.isUndefined(ycb);
+
+            // detect missing settings
+            paths = [
+                libpath.join(fixtures, 'application.json'),
+                libpath.join(fixtures, 'application-nosettings.json')
+            ];
+            ycb = store.config.createMultipartYCB(paths);
+            A.isUndefined(ycb);
+
+            // detect duplicate settings
+            paths = [
+                libpath.join(fixtures, 'application.json'),
+                libpath.join(fixtures, 'application2.json')
+            ];
+            ycb = store.config.createMultipartYCB(paths);
+            A.isUndefined(ycb);
         }
+
+
     }));
     
     Y.Test.Runner.add(suite);
