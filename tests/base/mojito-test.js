@@ -29,7 +29,8 @@ YUI.add('mojito', function(Y, NAME) {
     // HookSystem::StartBlock
     Y.mojito.hooks = {
         hook: function () {},
-        registerHook: function () {}
+        registerHook: function () {},
+        enableHookGroup: function () {}
     };
     // HookSystem::EndBlock
 
