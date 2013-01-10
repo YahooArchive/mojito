@@ -4,6 +4,7 @@
 *.bak
 *~
 node_modules
+!tests/fixtures/app-jsons/node_modules
 !tests/fixtures/packages/node_modules
 !tests/fixtures/packages/node_modules/*/node_modules
 arrowreport
