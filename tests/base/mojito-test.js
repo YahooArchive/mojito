@@ -215,7 +215,7 @@ YUI.add('mojito-test-extra', function(Y, NAME) {
     var A = Y.Assert;
 
     // move to mojito-test, under Y.mojito namespace? i.e. Y.mojito.BASEDIR
-    if (require && ('function' === typeof require.resolve)) {
+    if (('undefined' !== typeof require) && ('function' === typeof require.resolve)) {
         // define the abs path to the mojito base dir on nodejs only
         Y.MOJITO_DIR = require('path').resolve(__dirname, '../../') + '/';
     }
