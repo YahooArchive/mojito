@@ -28,8 +28,8 @@ Presentations/Slidecasts
 |                                                        | client/server runtimes, Mojito MVC, ActionContext API, | issues, reduce code duplication, and                   |                      |
 |                                                        | Mojito library, mojits, binders                        | enables progressive enhancement.                       |                      |
 +--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+----------------------+
-| `Your Stuff Runs on Both Sides                         | See topics covered for **JS Conf 2012 - Bruno          | The slides that accompany the talk given by            | Bruno Fernandez-Ruiz |
-| <http://olympum.github.com/decks/2012-your-stuff-runs  | Fernandez-Ruiz**.                                      | Bruno Fernandez-Ruiz at JS Conf 2012. See              |                      |
+| `Your Stuff Runs on Both Sides                         | See the topics covered above for **JS Conf 2012 -      | The slides that accompany the talk given by            | Bruno Fernandez-Ruiz |
+| <http://olympum.github.com/decks/2012-your-stuff-runs  | Bruno Fernandez-Ruiz**.                                | Bruno Fernandez-Ruiz at JS Conf 2012. See              |                      |
 | -on-both-sides>`_                                      |                                                        | **JS Conf 2012 - Bruno Fernandez-Ruiz** above to       |                      |
 |                                                        |                                                        | see the presentation.                                  |                      |
 +--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+----------------------+
@@ -40,9 +40,10 @@ Presentations/Slidecasts
 |                                                        |                                                        | build at scale using the YUI library and YUI tool      |                      | 
 |                                                        |                                                        | chains.                                                |                      |
 +--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+----------------------+
-| `YUIConf2012: Mojito for YUI Developers <http://www.sl | See topics covered for **Caridy Patiño: Mojito for YUI | The slides that accompany the talk given by Caridy     | Caridy Patiño        |
-| ideshare.net/caridy/yuiconf2012-mojito-for-yui-develop | Developers**.                                          | Patiño at YUIConf 2012. See **Caridy Patiño: Mojito    |                      |
-| ers>`_                                                 |                                                        | for YUI Developers** above to see the talk.            |                      |
+| `YUIConf2012: Mojito for YUI Developers <http://www.sl | See the topics covered above for **Caridy Patiño:      | The slides that accompany the talk given by Caridy     | Caridy Patiño        |
+| ideshare.net/caridy/yuiconf2012-mojito-for-yui-develop | Mojito for YUI Developers**.                           | Patiño at YUIConf 2012. See the above presentation     |                      |
+| ers>`_                                                 |                                                        | **Caridy Patiño: Mojito for YUI Developers** to        |                      |
+|                                                        |                                                        | view the talk.                                         |                      |
 +--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+----------------------+
 
 
