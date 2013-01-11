@@ -28,11 +28,23 @@ Presentations/Slidecasts
 |                                                        | client/server runtimes, Mojito MVC, ActionContext API, | issues, reduce code duplication, and                   |                      |
 |                                                        | Mojito library, mojits, binders                        | enables progressive enhancement.                       |                      |
 +--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+----------------------+
-| `Your Stuff Runs on Both Sides                         | See above.                                             | The slides that accompany the talk given by            | Bruno Fernandez-Ruiz |
-| <http://olympum.github.com/decks/2012-your-stuff-runs  |                                                        | Bruno Fernandez-Ruiz at JS Conf 2012. See              |                      |
+| `Your Stuff Runs on Both Sides                         | See topics covered for **JS Conf 2012 - Bruno          | The slides that accompany the talk given by            | Bruno Fernandez-Ruiz |
+| <http://olympum.github.com/decks/2012-your-stuff-runs  | Fernandez-Ruiz**.                                      | Bruno Fernandez-Ruiz at JS Conf 2012. See              |                      |
 | -on-both-sides>`_                                      |                                                        | **JS Conf 2012 - Bruno Fernandez-Ruiz** above to       |                      |
 |                                                        |                                                        | see the presentation.                                  |                      |
 +--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+----------------------+
+| `Caridy Patiño: Mojito for YUI Developers <http://www. | Mojito, mojits, Mojito CLI/store/core/server/client,   | In this YUIConf 2012 presentation, Mojito engineer     | Caridy Patiño        |
+| youtube.com/watch?feature=player_embedded&v=e-wspy6Dic | extending Mojito, context configurations, Node.js,     | Caridy Patiño discusses how YUI developers can use     |                      |
+| E>`_                                                   | YUI, YUI apps, YUI seed, server/client runtime         | Mojito to build both traditional Web and mobile        |                      |
+|                                                        | workflow, affinities, selectors                        | applications. He also explains how Mojito is able to   |                      |
+|                                                        |                                                        | build at scale using the YUI library and YUI tool      |                      | 
+|                                                        |                                                        | chains.                                                |                      |
++--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+----------------------+
+| `YUIConf2012: Mojito for YUI Developers <http://www.sl | See topics covered for **Caridy Patiño: Mojito for YUI | The slides that accompany the talk given by Caridy     | Caridy Patiño        |
+| ideshare.net/caridy/yuiconf2012-mojito-for-yui-develop | Developers**.                                          | Patiño at YUIConf 2012. See **Caridy Patiño: Mojito    |                      |
+| ers>`_                                                 |                                                        | for YUI Developers** above to see the talk.            |                      |
++--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+----------------------+
+
 
 .. _additional_resources-screencasts:
 
@@ -50,15 +62,15 @@ Screencasts/Videos
 | ://video.yahoo.com/yahoonet-24189541/yodel-2469732     | enhancement                                            | application locally, to the cloud, and to a mobile     |                                                        |
 | 8/cocktails-in-action-27127763.html>`_                 |                                                        | device.                                                |                                                        |
 +--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+
-| `Expanding Yahoo! Axis Across 3 Screens <http://www.yo | Axis, Cocktails, YUI, Mojito, Shaker, Node.js,         | The talk covers the Mojito-based implementation of     | Caridy Patino                                          |
+| `Expanding Yahoo! Axis Across 3 Screens <http://www.yo | Axis, Cocktails, YUI, Mojito, Shaker, Node.js,         | The talk covers the Mojito-based implementation of     | Caridy Patiño                                          |
 | utube.com/watch?v=oNki-D0lCsM&list=UUTHcgWOTU6gPje1g_U | Express, HTML5, optimization, adaptation, multiple     | Axis, the "Reuse-Reduce-Replace" software philosophy,  |                                                        |
 | 29tfQ&index=1&feature=plcp>`_                          | runtimes, application context, device connectivity     | and the notions of optimization and adaptation.        |                                                        |
 +--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+
-| `YUI Open Hours: Yahoo! Axis: Mojito <http://www.youtu | Mojito, YUI plugins,  code reuse,                      | Yahoo! engineers Caridy Patiño and Eugene Kashida      | Caridy Patino, Eugene Kashida                          |
+| `YUI Open Hours: Yahoo! Axis: Mojito <http://www.youtu | Mojito, YUI plugins,  code reuse,                      | Yahoo! engineers Caridy Patiño and Eugene Kashida      | Caridy Patiño, Eugene Kashida                          |
 | be.com/watch?v=vIvFbJo1Fj8&list=UUTHcgWOTU6gPje1g_U29t | Y.CL (communication layer)                             | discuss what Y! Axis is and the architecture decisions |                                                        |
 | fQ&index=5&feature=plc>`_                              |                                                        | that were made, such as hybrid vs native vs web.       |                                                        |
 +--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+
-| `YUI Open Hours: Yahoo! Axis Part 2: Mojito <http://ww | Mojito, app/routing/context configurations, models,    | Yahoo! engineer Caridy Patiño discusses how Y! Axis    | Caridy Patino                                          |
+| `YUI Open Hours: Yahoo! Axis Part 2: Mojito <http://ww | Mojito, app/routing/context configurations, models,    | Yahoo! engineer Caridy Patiño discusses how Y! Axis    | Caridy Patiño                                          |
 | w.youtube.com/watch?v=1T5KMozs6Sc&list=UUTHcgWOTU6gPj  | binders, dimensions                                    | uses some of the advanced configuration features of    |                                                        |
 | e1g_U29tfQ&index=4&feature=plcp>`_                     |                                                        | Mojito.                                                |                                                        |
 +--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+
@@ -67,6 +79,9 @@ Screencasts/Videos
 | &feature=plcp>`_                                       | ActionContext object, mojitProxy object, binders,      | Mojito app.                                            |                                                        |
 |                                                        | testing, JSLint, creating documentation                |                                                        |                                                        |
 +--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+
+
+
+
 
 
 .. _additional_resources-community:
