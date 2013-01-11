@@ -6,9 +6,9 @@ The following sections provide supplementary material about Mojito:
 
 - :ref:`additional_resources-presentations`
 - :ref:`additional_resources-screencasts`
-- `Community`_
-- `Publications`_
-- :ref:`Archived Documentation <additional_resources-archive_docs>`
+- :ref:`additional_resources-community`
+- :ref:`res_community-pubs`
+- :ref:`additional_resources-archived_docs`
 
 
 .. _additional_resources-presentations:
