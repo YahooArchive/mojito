@@ -245,7 +245,5 @@ Blogs
 Archived Documentation
 ======================
 
-- `Mojito v0.3 General Documentation <http://developer.yahoo.com/cocktails/mojito/v0.3/docs/>`_
-- `Mojito v0.3 API Documentation <http://developer.yahoo.com/cocktails/mojito/v0.3/api/>`_
-- `Mojito v0.4 General Documentation <http://developer.yahoo.com/cocktails/mojito/v0.4/docs/>`_
-- `Mojito v0.4 API Documentation <http://developer.yahoo.com/cocktails/mojito/v0.4/api/>`_
+- Mojito v0.3 (`General <http://developer.yahoo.com/cocktails/mojito/v0.3/docs/>`_\/`API <http://developer.yahoo.com/cocktails/mojito/v0.3/docs/>`_)
+- Mojito v0.4 (`General <http://developer.yahoo.com/cocktails/mojito/v0.4/docs/>`_\/`API <http://developer.yahoo.com/cocktails/mojito/v0.4/api/>`_)
