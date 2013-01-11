@@ -85,7 +85,7 @@ will insert the assets into the ``head`` element if you include the assets in th
 array or at the bottom within the ``body`` element if you include the assets in the 
 ``bottom`` array. 
 
-In the example ``application.json`` below, the ``simple.css`` file will be included in the 
+In the example ``application.json`` below, the ``index.css`` file will be included in the 
 ``head`` element of the HTML page. Note that the ``assets`` object is inside the ``frame`` 
 mojit instance. which is of type ``HTMLFrameMojit``.
 
