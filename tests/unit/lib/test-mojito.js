@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-/*jslint anon:true, sloppy:true, nomen:true */
+/*jslint anon:true, sloppy:true, nomen:true, unparam: true, node:true */
 /*global YUI*/
 
 YUI().use('mojito', 'test', function (Y) {
@@ -12,14 +12,20 @@ YUI().use('mojito', 'test', function (Y) {
     var suite = new Y.Test.Suite('mojito tests'),
         path = require('path'),
         A = Y.Assert,
+        V = Y.Mock.Value,
         AA = Y.ArrayAssert,
         OA = Y.ObjectAssert,
-        Mojito = require(path.join(__dirname, '../../../lib/mojito')),
+
+        mojito_src = path.join(__dirname, '../../../lib/mojito'),
+        Mojito = require(mojito_src),
+
         realServer,
         realConfig,
         realListen,
+        listened,
         server,
         app;
+
 
     function cmp(x, y, msg) {
         var i;
@@ -108,8 +114,7 @@ YUI().use('mojito', 'test', function (Y) {
             // Mock the configure function so majority of tests don't have to.
             realConfig = Mojito.Server.prototype._configureAppInstance;
             Mojito.Server.prototype._configureAppInstance =
-                function(app, opts) {
-                };
+                function(app, opts) {};
         },
 
         tearDown: function() {
@@ -152,6 +157,7 @@ YUI().use('mojito', 'test', function (Y) {
             server = new Mojito.Server();
             app = server._app;
             realListen = app.listen;
+            listened = false;
             app.listen = function() {
                 listened = true;
             };
@@ -161,7 +167,7 @@ YUI().use('mojito', 'test', function (Y) {
             app.listen = realListen;
         },
 
-        'close() ': function() {
+        'test close()': function() {
             var closed = false,
                 closer;
 
@@ -185,11 +191,17 @@ YUI().use('mojito', 'test', function (Y) {
 
             server = new Mojito.Server();
             A.isTrue(configured);
+            Mojito.Server.prototype._configureAppInstance = realConfig;
         },
 
         'configure YUI': function() {
-            var mockY, mockStore, load = [];
-            var haveConfig, wantConfig;
+            var mockY,
+                mockStore,
+                load = [],
+                haveConfig,
+                wantConfig,
+                res;
+
             mockY = {
                 merge: Y.merge,
                 applyConfig: function(cfg) {
@@ -223,7 +235,7 @@ YUI().use('mojito', 'test', function (Y) {
 
             A.isFunction(server._configureYUI);
 
-            var res = server._configureYUI(mockY, mockStore, load);
+            res = server._configureYUI(mockY, mockStore, load);
             A.isUndefined(res);
 
             A.areSame(6, load.length);
@@ -243,6 +255,212 @@ YUI().use('mojito', 'test', function (Y) {
                 }
             };
             cmp(wantConfig, haveConfig);
+        }
+
+    }));
+
+    suite.add(new Y.Test.Case({
+        name: 'makeMwList suite',
+        setUp: function() {},
+        tearDown: function() {},
+
+        'test makeMwList, no app mw': function () {
+            var actual,
+                expected,
+                mojito_list = ['mojito-mw1', 'mojito-mw2', 'mojito-mw3'];
+
+            actual = Mojito.Server.prototype._makeMwList([], mojito_list);
+            expected = ['mojito-mw1', 'mojito-mw2', 'mojito-mw3'];
+            AA.itemsAreEqual(expected, actual);
+
+        },
+
+        'test makeMwList, some generic app mw': function () {
+            var actual,
+                expected,
+                app_list = ['chocolate', 'vanilla', 'strawberry'],
+                mojito_list = ['mojito-mw1', 'mojito-mw2', 'mojito-mw3'];
+
+            actual = Mojito.Server.prototype._makeMwList(app_list, mojito_list);
+            expected = app_list.concat(mojito_list);
+            AA.itemsAreEqual(expected, actual);
+        },
+
+        'test makeMwList, some generic app mw by path': function () {
+            var actual,
+                expected,
+                app_list = ['/foo/chocolate', './bar/vanilla', '../baz/strawberry'],
+                mojito_list = ['mojito-mw1', 'mojito-mw2', 'mojito-mw3'];
+
+            actual = Mojito.Server.prototype._makeMwList(app_list, mojito_list);
+            expected = app_list.concat(mojito_list);
+            AA.itemsAreEqual(expected, actual);
+        },
+
+        'test makeMwList, app mw w/ custom mojito-*': function () {
+            var actual,
+                expected = ['chocolate', 'mojito-mint', 'vanilla'],
+                app_list = ['chocolate', 'mojito-mint', 'vanilla'],
+                mojito_list = ['mojito-mw1', 'mojito-mw2', 'mojito-mw3'];
+
+            actual = Mojito.Server.prototype._makeMwList(app_list, mojito_list);
+            AA.itemsAreEqual(expected, actual);
+        }
+
+    }));
+
+    suite.add(new Y.Test.Case({
+        name: '_useMw suite',
+        setUp: function() {},
+        tearDown: function() {},
+
+        'test _useMw, app mw w/ custom mojito-*': function () {
+            var actual,
+                mw = ['chocolate', 'mojito-mint', '/foo/mojito-cherry', 'vanilla'],
+                mockapp = Y.Mock();
+
+            Y.Mock.expect(mockapp, {
+                method: 'use',
+                parameters: [V.String]
+            });
+
+            function disp(something) {
+                A.isNotUndefined(something);
+            }
+
+            try {
+                Mojito.Server.prototype._useMw(mockapp, disp, {}, {}, mw);
+            } catch (err) {
+            }
+        }
+
+    }));
+
+    suite.add(new Y.Test.Case({
+        name: 'listen test hack',
+        
+        'test listen 1': function () {
+            var port = 1234,
+                host = 'letterman',
+                cb,
+                app = Y.Mock();
+
+            cb = function(err, app) {
+            	
+            }
+
+            this._startupTime = +new Date();
+            this._options = {verbose: true};
+
+            Y.Mock.expect(app, {
+            	method: 'listen',
+            	arguments: [port, host, cb]
+            });
+
+        	Mojito.Server.prototype.listen.call(this, port, host, cb);
+        },
+
+        'test listen 2': function () {
+            var port = 1234,
+                host = 'letterman',
+                cb,
+                app = Y.Mock();
+
+            cb = function(err, app) {
+            	A.isObject(err);
+            	A.isUndefined(app);
+            	A.areSame("TypeError: Cannot call method 'listen' of undefined", err.toString());
+            }
+
+            this._startupTime = null;
+            this._options = {verbose: false};
+
+            Y.Mock.expect(app, {
+            	method: 'listen',
+            	arguments: [port, host, cb]
+            });
+
+        	Mojito.Server.prototype.listen.call(this, port, host, cb);
+        },
+
+        'test listen 3': function () {
+            var port = 1234,
+                host = 'letterman',
+                app = Y.Mock();
+
+            this._startupTime = null;
+            this._options = {verbose: false};
+
+            Y.Mock.expect(app, {
+            	method: 'listen',
+            	arguments: [port, host, cb]
+            });
+
+        	Mojito.Server.prototype.listen.call(this, port, host, null);
+        },
+
+        'test listen 3': function () {
+            var port = 1234,
+                host = 'letterman',
+                cb = function(err, app) {},
+                app = Y.Mock();
+
+            Y.Mock.expect(app, {
+            	method: 'listen',
+            	arguments: [port, host, cb]
+            });
+
+        	Mojito.Server.prototype.listen.call(this, port, host, cb);
+
+            this._startupTime = null;
+        	Mojito.Server.prototype.listen.call(this, port, host, cb);
+        }
+
+    }));
+
+    suite.add(new Y.Test.Case({
+        name: '_configureAppInstance suite',
+
+        'test configureAppInstance': function () {
+            A.isTrue(true);        
+        },
+
+        'test configureAppInstance': function () {
+            var appwtf = {
+                    store: {
+                        getAppConfig: function() {
+                            A.isTrue(true);
+                            return {
+                                debugMemory: true,
+                                middleware: ['mojito-router'],
+                                perf: {}
+                            };
+                        },
+                        getStaticContext: function(){
+                            A.isTrue(true);
+                        },
+                        yui: {
+                            getConfigAllMojits: function() {
+                                return {};
+                            },
+                            getConfigShared: function() {
+                                return {};
+                            },
+                        }
+                     },
+                    use: function() {}
+                };
+
+            Y.namespace('mojito.Dispatcher').init = function(store) {
+                Y.isObject(store);
+                return {
+                    dispatch: function (cmd, outputHandler) {}
+                };
+            }
+
+            try {
+                Mojito.Server.prototype._configureAppInstance(appwtf);
+            } catch (err) {}
         }
 
     }));
