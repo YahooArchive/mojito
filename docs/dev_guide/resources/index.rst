@@ -8,6 +8,7 @@ The following sections provide supplementary material about Mojito:
 - :ref:`additional_resources-screencasts`
 - `Community`_
 - `Publications`_
+- :ref:`Archived Documentation <additional_resources-archive_docs>`
 
 
 .. _additional_resources-presentations:
@@ -239,4 +240,12 @@ Blogs
 - `Yahoo! Announces Cocktails – Shaken, Not Stirred <http://developer.yahoo.com/blogs/ydn/posts/2011/11/yahoo-announces-cocktails-%E2%80%93-shaken-not-stirred/>`_
 - `How YQL powers Cocktails, the technology behind Livestand <http://developer.yahoo.com/blogs/ydn/posts/2011/11/how-yql-powers-cocktails-the-technology-behind-livestand/>`_
 
+.. _additional_resources-archived_docs:
 
+Archived Documentation
+======================
+
+- `Mojito v0.3 General Documentation <http://developer.yahoo.com/cocktails/mojito/v0.3/docs/>`_
+- `Mojito v0.3 API Documentation <http://developer.yahoo.com/cocktails/mojito/v0.3/api/>`_
+- `Mojito v0.4 General Documentation <http://developer.yahoo.com/cocktails/mojito/v0.4/docs/>`_
+- `Mojito v0.4 API Documentation <http://developer.yahoo.com/cocktails/mojito/v0.4/api/>`_
