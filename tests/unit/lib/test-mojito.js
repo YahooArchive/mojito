@@ -341,23 +341,12 @@ YUI().use('mojito', 'test', function (Y) {
         
         'test listen 1': function () {
             var port = 1234,
-                host = 'letterman',
-                cb,
-                app = Y.Mock();
-
-            cb = function(err, app) {
-            	
-            }
+                host = 'letterman';
 
             this._startupTime = +new Date();
             this._options = {verbose: true};
 
-            Y.Mock.expect(app, {
-            	method: 'listen',
-            	arguments: [port, host, cb]
-            });
-
-        	Mojito.Server.prototype.listen.call(this, port, host, cb);
+        	Mojito.Server.prototype.listen.call(this, port, host);
         },
 
         'test listen 2': function () {
@@ -369,18 +358,20 @@ YUI().use('mojito', 'test', function (Y) {
             cb = function(err, app) {
             	A.isObject(err);
             	A.isUndefined(app);
-            	A.areSame("TypeError: Cannot call method 'listen' of undefined", err.toString());
+            	//A.areSame("TypeError: Cannot call method 'listen' of undefined", err.toString());
             }
-
-            this._startupTime = null;
-            this._options = {verbose: false};
 
             Y.Mock.expect(app, {
             	method: 'listen',
             	arguments: [port, host, cb]
             });
 
+            this._startupTime = null;
+            this._options = {verbose: false};
+        	this._app = app;
+
         	Mojito.Server.prototype.listen.call(this, port, host, cb);
+        	Y.Mock.verify(app);
         },
 
         'test listen 3': function () {
@@ -388,18 +379,73 @@ YUI().use('mojito', 'test', function (Y) {
                 host = 'letterman',
                 app = Y.Mock();
 
+            Y.Mock.expect(app, {
+            	method: 'listen',
+            	arguments: [port, host, V.Function]
+            });
+
+            this._startupTime = null;
+            this._options = {verbose: false};
+        	this._app = app;
+
+        	this._app = app;
+        	Mojito.Server.prototype.listen.call(this, port, host, null);
+        	Y.Mock.verify(app);
+        },
+
+        'test listen 4': function () {
+            this._options.port = 9876;
+            this._options.host = 'conan';
+
             this._startupTime = null;
             this._options = {verbose: false};
 
-            Y.Mock.expect(app, {
-            	method: 'listen',
-            	arguments: [port, host, cb]
-            });
-
-        	Mojito.Server.prototype.listen.call(this, port, host, null);
+        	Mojito.Server.prototype.listen.call(this);
         },
 
-        'test listen 3': function () {
+
+        'test listen 5': function () {
+            var app = Y.Mock();
+
+            this._options.port = 9876;
+            this._options.host = 'conan';
+
+            Y.Mock.expect(app, {
+            	method: 'listen',
+            	arguments: [this._options.port, this._options.host, V.Function]
+            });
+
+            this._startupTime = null;
+            this._options = {verbose: true};
+            this._app = app;
+
+        	Mojito.Server.prototype.listen.call(this);
+        	Y.Mock.verify(app);
+        },
+
+        'test listen 6': function () {
+            var port = 1234,
+                host = 'letterman';
+
+            function handlerCb(err) {
+        		//A.areSame('WTF', err);
+            }
+
+            this._app = {
+                    listen: function(p, h, cb) {
+                        A.areSame(port, p);
+                        A.areSame(host, h);
+                        A.isFunction(cb);
+                        cb('fake error');
+                    }
+                };
+            
+            this._startupTime = null;
+
+        	Mojito.Server.prototype.listen.call(this, port, host, handlerCb);
+        },
+
+        'test listen 7': function () {
             var port = 1234,
                 host = 'letterman',
                 cb = function(err, app) {},
@@ -410,10 +456,12 @@ YUI().use('mojito', 'test', function (Y) {
             	arguments: [port, host, cb]
             });
 
+            this._app = app;
         	Mojito.Server.prototype.listen.call(this, port, host, cb);
 
             this._startupTime = null;
         	Mojito.Server.prototype.listen.call(this, port, host, cb);
+        	Y.Mock.verify(app);
         }
 
     }));
