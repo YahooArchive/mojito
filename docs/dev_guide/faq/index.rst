@@ -662,7 +662,7 @@ Mojits
     `ECMAScript Documentation <http://www.ecmascript.org/docs.php>`_ for the syntax rules 
     for ``Identifier`` and ``IdentifierName``.
 
-
+------------
     
 .. _moj_reuse:
 .. topic:: **Can I extend or re-use mojits?**
