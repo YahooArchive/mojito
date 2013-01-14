@@ -20,7 +20,8 @@ YUI({useBrowserConsole: true}).use(
         var suite = new Y.Test.Suite("mojito-hb server tests"),
             TEMPLATES = {
                 'oldObjNotation.hb.html': '<div>{{#tester}}{{test}}{{/tester}}</div>',
-                'dotNotation.hb.html': '<div>{{tester.test}}</div>'
+                'dotNotation.hb.html': '<div>{{tester.test}}</div>',
+                'helperMethod.hb.html': '<div>{{helper}}</div>'
             };
 
         suite.add(new Y.Test.Case({
@@ -77,6 +78,28 @@ YUI({useBrowserConsole: true}).use(
                     args: ['<div>test</div>', meta]
                 });
                 this.viewEngine.render(data, 'test', 'dotNotation.hb.html', adapter, meta);
+            },
+
+            'test register helper method': function () {
+                var adapter = Y.Mock(),
+                    meta = {
+                        view: {}
+                    };
+                Y.mojito.addons.viewEngines.hb.register('helper', function (options) {
+                    return 'helperTest';
+                });
+                Y.Mock.expect(adapter, {
+                    method: 'flush',
+                    args: [Y.Mock.Value.String, meta],
+                    run: function (output, metaResult) {
+                        Y.Assert.areEqual('<div>helperTest</div>', output);
+                    }
+                });
+                Y.Mock.expect(adapter, {
+                    method: 'done',
+                    args: ['<div>helperTest</div>', meta]
+                });
+                this.viewEngine.render({}, 'test', 'helperMethod.hb.html', adapter, meta);
             }
         }));
 
