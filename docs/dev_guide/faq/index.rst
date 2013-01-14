@@ -779,7 +779,7 @@ Mojits
     The mojit configuration files ``definition.json`` and ``defaults.json`` cannot be
     re-used like the controller, binder(s), and model(s). In the near future, you will
     be able to re-use these configurations with the help of the ``import_settings`` 
-    directive in JSON and YQML files. Assets are also not extensible, so they will 
+    directive in JSON and YAML files. Assets are also not extensible, so they will 
     have to be included manually.
 
 
