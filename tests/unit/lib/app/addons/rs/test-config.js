@@ -187,18 +187,6 @@ YUI().use('addon-rs-config', 'mojito-util', 'mojito-test-extra', 'base', 'oop', 
         },
 
 
-        'read JSON files': function() {
-            var fixtures = libpath.join(__dirname, '../../../../../fixtures/store');
-            var store = new MockRS({ root: fixtures });
-            store.plug(Y.mojito.addons.rs.config, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
-
-            var path = libpath.join(fixtures, 'application.json');
-            var have = store.config.readConfigSimple(path);
-            var want = readJSON(fixtures, 'application.json');
-            Y.TEST_CMP(have, want);
-        },
-
-
         'read YCB files': function() {
             var fixtures = libpath.join(__dirname, '../../../../../fixtures/store');
             var store = new MockRS({ root: fixtures });
@@ -263,9 +251,10 @@ YUI().use('addon-rs-config', 'mojito-util', 'mojito-test-extra', 'base', 'oop', 
             var path = libpath.join(fixtures, 'routes.json');
             try {
                 store.config.readConfigSimple(path);
+                A.fail("should throw an error");
             }
             catch (err) {
-                A.areSame('Error parsing JSON file:', err.message.substr(0, 24));
+                A.areSame('Error parsing file:', err.message.substr(0, 19));
             }
         },
 
@@ -282,22 +271,30 @@ YUI().use('addon-rs-config', 'mojito-util', 'mojito-test-extra', 'base', 'oop', 
         },
 
 
-        "readConfigSync JSON file":  function () {
+        "readConfigJSON JSON file": function() {
+            var fixtures = libpath.join(__dirname, '../../../../../fixtures/gsg5');
+            var store = new MockRS({ root: fixtures });
+            store.plug(Y.mojito.addons.rs.config, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
 
+            var path = libpath.join(fixtures, 'package.json');
+            var have = store.config.readConfigJSON(path);
+            var want = readJSON(fixtures, 'package.json');
+            Y.TEST_CMP(have, want);
+        },
+
+
+        "readConfigSimple JSON file":  function () {
             var fixtures = libpath.join(__dirname, '../../../../../fixtures'),
                 store = new MockRS({ root: fixtures }),
                 path = libpath.join(fixtures, "/config/", "json.json"),
                 obj;
-
             store.plug(Y.mojito.addons.rs.config, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
-
-            obj = store.config.readConfigSync(path);
-
+            obj = store.config.readConfigSimple(path);
             A.areSame("val", obj.key);
         },
 
 
-        "readConfigSync YAML file":  function () {
+        "readConfigSimple YAML file":  function () {
 
             var fixtures = libpath.join(__dirname, '../../../../../fixtures'),
                 store = new MockRS({ root: fixtures }),
@@ -306,13 +303,13 @@ YUI().use('addon-rs-config', 'mojito-util', 'mojito-test-extra', 'base', 'oop', 
 
             store.plug(Y.mojito.addons.rs.config, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
 
-            obj = store.config.readConfigSync(path);
+            obj = store.config.readConfigSimple(path);
 
             A.areSame("val", obj.key);
         },
 
 
-        "readConfigSync YML file":  function () {
+        "readConfigSimple YML file":  function () {
 
             var fixtures = libpath.join(__dirname, '../../../../../fixtures'),
                 store = new MockRS({ root: fixtures }),
@@ -321,13 +318,13 @@ YUI().use('addon-rs-config', 'mojito-util', 'mojito-test-extra', 'base', 'oop', 
 
             store.plug(Y.mojito.addons.rs.config, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
 
-            obj = store.config.readConfigSync(path);
+            obj = store.config.readConfigSimple(path);
 
             A.areSame("val", obj.key);
         },
 
 
-        "readConfigSync no ext file":  function () {
+        "readConfigSimple no ext file":  function () {
 
             var fixtures = libpath.join(__dirname, '../../../../../fixtures'),
                 store = new MockRS({ root: fixtures }),
@@ -336,13 +333,13 @@ YUI().use('addon-rs-config', 'mojito-util', 'mojito-test-extra', 'base', 'oop', 
 
             store.plug(Y.mojito.addons.rs.config, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
 
-            obj = store.config.readConfigSync(path);
+            obj = store.config.readConfigSimple(path);
 
             A.areSame("val", obj.key);
         },
 
 
-        "readConfigSync YAML file with TAB not space":  function () {
+        "readConfigSimple YAML file with TAB not space":  function () {
 
             var fixtures = libpath.join(__dirname, '../../../../../fixtures'),
                 store = new MockRS({ root: fixtures }),
@@ -351,7 +348,7 @@ YUI().use('addon-rs-config', 'mojito-util', 'mojito-test-extra', 'base', 'oop', 
             store.plug(Y.mojito.addons.rs.config, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
 
             try {
-                store.config.readConfigSync(path);
+                store.config.readConfigSimple(path);
             }
             catch (err) {
                 A.areSame('Error parsing file:', err.message.substr(0, 19));
@@ -405,7 +402,7 @@ YUI().use('addon-rs-config', 'mojito-util', 'mojito-test-extra', 'base', 'oop', 
         },
 
 
-        'test applicationExtras in _readYcbAppConfig': function () {
+        'test applicationConfigFiles in _readYcbAppConfig': function () {
             var fixtures = libpath.join(__dirname, '../../../../../fixtures/app-jsons'),
                 store = new MockRS({ root: fixtures });
             store.plug(Y.mojito.addons.rs.config, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
