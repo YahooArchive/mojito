@@ -25,7 +25,7 @@ Conventions
 - Syntax for the name of the test file: ``{yui_module}.{affinity}-tests.js``
 
   For example, the name of the unit test YUI module for the ``HelloMojit`` mojit 
-  with the ``server``   affinity would be ``HelloMojit-tests.server.js``.
+  with the ``server``   affinity would be ``HelloMojit.server-tests.js``.
 
 - The unit test YUI module should include the target module and the ``mojito-test`` 
   module in the ``requires`` array. The requires array includes the ``mojito-test`` 
