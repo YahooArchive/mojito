@@ -359,11 +359,11 @@ To set up and run ``model_yql``:
           index: function(ac) {
             // Use aliases to params addon
             // if they exist.
-            if(ac.params.hasOwnProperty('url')){
+            if (ac.params.hasOwnProperty('url')){
               var q =ac.params.url('q') || 'muppet',
 	          page = (ac.params.url('page') || 0) /1,
 	          count = (ac.params.url('size') || 20) /1;
-            }else{
+            } else {
               var q =ac.params.getFromUrl('q') || 'muppet',
               page = (ac.params.getFromUrl('page') || 0) / 1,
               count = (ac.params.getFromUrl('count') || 20) / 1;
