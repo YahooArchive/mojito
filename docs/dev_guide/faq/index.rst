@@ -74,7 +74,7 @@ Mojits
 * :ref:`Can mojit instances be dynamically defined and then run? <moj_dynamic_creation>`
 * :ref:`Is there a way to make all of the resources, such as assets, addons, binders, models, of one mojit available to other mojits? <moj_resources>`
 * :ref:`Why does Mojito replace hyphens in the names of my mojits with underscores? <moj_names_hyphens>`
-.. * :ref:`Can I share or re-use mojits? <moj_reuse>`   
+* :ref:`Can I extend or re-use mojits? <moj_reuse>`   
 
 
 Views
@@ -662,15 +662,125 @@ Mojits
     `ECMAScript Documentation <http://www.ecmascript.org/docs.php>`_ for the syntax rules 
     for ``Identifier`` and ``IdentifierName``.
 
-
+------------
     
-.. .. _moj_reuse:
-.. .. topic:: **Can I share or re-use mojits?**
+.. _moj_reuse:
+.. topic:: **Can I extend or re-use mojits?**
 
-..    Although not available yet, the Cocktails mojit gallery/repository will let 
-..    developers share, discover, and select mojits to re-use in building their 
-..    experiences. A common packaging format for mojits is used, based on the CommonJS 
-..    specification.    
+    Although inheritance isn't supported in mojits, there are ways of 
+    re-using mojit definitions and configuration, application building blocks, and 
+    extending mojits. 
+
+    The following sections offer a brief introduction to re-use and extension in Mojito 
+    as well as what cannot be re-used or extended.
+    
+    **Re-Using Mojit Definitions**
+
+    You can re-use a mojit definition by using the `specs.base <../intro/mojito_configuring.html#specs-object>`_ 
+    property in ``application.json``, so that mojit instance uses the same mojit 
+    definition of another mojit instance. This allows you to define a mojit instance
+    once and have many instances use it. 
+
+    For example, the mojit instances ``index_page`` and ``profile_page`` use the
+    re-use the ``basic_page`` mojit definition in the ``application.json``
+    below:
+
+    .. code-block:: javascript
+
+       [
+         {
+           "settings": [ "master" ],
+           "specs": {
+             "basic_page": {
+	             "type": "HTMLFrameMojit",
+	             "config": {
+	               "child" : {
+	                "config" : {
+	                  "children" : {
+	                    "header" : {
+	                      "type" : "Header"
+	                    },
+	                    "footer" : {
+	                      "type" : "Footer"
+	                    }
+	                  }
+	                }
+	              },
+               "index_page": {
+                 "base" : "basic_page",
+                   "config": {
+	                   "title": "Home Page",
+	                   "child" : {
+	                     "type" : "Index"
+                     }
+                   }
+                 }
+               },
+               "profile_page": {
+                 "base" : "basic_page",
+                   "config": {
+	                   "title": "Your Profile",
+	                   "child" : {
+	                     "type" : "Profile"
+                     }
+                   }
+                 }
+               }
+             }
+           }
+         }
+       ]
+
+    **Re-Using Application Building Blocks**
+
+    In general, instead of extending a mojit, you would create a new 
+    mojit and then re-use building blocks such as YUI modules, assets,
+    models, etc. For example, instead of having the ``stockProfile`` mojit
+    extend the ``stockQuote`` mojit to get stock quotes, your ``stockProfile`` 
+    mojit could use the same addon, YUI module, or model to get the stock quotes.
+    
+    See the following chapters on assets, extending Mojito, and models:
+   
+       - `Assets <../topics/mojito_assets.html>`_ - learn how to configure, access, and 
+         use the ``Assets`` addon.
+       - `Extending Mojito <../topics/mojito_extensions.html>`_ - learn how
+         to create addons and add YUI modules.
+       - `Models <../intro/mojito_mvc.html#models>`_ - learn how to create and access
+         models.
+
+
+    **Requiring the Controller of Another Mojit**
+
+    Starting with Mojito v0.5, you can create a new controller that requires 
+    the controller from another mojit. You simply require and merge the controller
+    of the other mojit as shown below:
+  
+    .. code-block:: javascript
+
+       YUI.add('bar', function(Y, NAME) {
+
+         Y.namespace('mojito.controllers')[NAME] = Y.merge(Y.mojito.controllers.Foo, {
+           anotherNewAction: function (ac){
+            // do something
+           },
+           redefinedAction: function (ac) {
+             // do something
+             // you can also play with:
+             // Y.mojito.controllers.Foo.redefinedAction.apply()
+           }
+         });
+
+       }, '0.0.1', {requires: ['foo']});
+
+    The same principle applies to binders and models.
+
+    **What Can't Be Re-Used/Extended?**
+  
+    The mojit configuration files ``definition.json`` and ``defaults.json`` cannot be
+    re-used like the controller, binder(s), and model(s). In the near future, you will
+    be able to re-use these configurations with the help of the ``import_settings`` 
+    directive in JSON and YAML files. Assets are also not extensible, so they will 
+    have to be included manually.
 
 
 Views
