@@ -667,10 +667,12 @@ Mojits
 .. _moj_reuse:
 .. topic:: **Can I extend or re-use mojits?**
 
-    Although Mojito doesn't support inheritance, there are ways of 
+    Although inheritance isn't supported in mojits, there are ways of 
     re-using mojit definitions and configuration, application building blocks, and 
-    extending mojits. The following sections offer a brief introduction 
-    to re-use and extension in Mojito.
+    extending mojits. 
+
+    The following sections offer a brief introduction to re-use and extension in Mojito 
+    as well as what cannot be re-used or extended.
     
     **Re-Using Mojit Definitions**
 
@@ -772,8 +774,13 @@ Mojits
 
     The same principle applies to binders and models.
 
-
-
+    **What Can't Be Re-Used/Extended?**
+  
+    The mojit configuration files ``definition.json`` and ``defaults.json`` cannot be
+    re-used like the controller, binder(s), and model(s). In the near future, you will
+    be able to re-use these configurations with the help of the ``import_settings`` 
+    directive in JSON and YQML files. Assets are also not extensible, so they will 
+    have to be included manually.
 
 
 Views
