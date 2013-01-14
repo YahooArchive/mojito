@@ -260,7 +260,7 @@ YUI().use('mojito', 'test', function (Y) {
     }));
 
     suite.add(new Y.Test.Case({
-        name: 'makeMwList suite',
+        name: '_makeMiddewareList suite',
         setUp: function () {},
         tearDown: function () {},
 
@@ -269,7 +269,7 @@ YUI().use('mojito', 'test', function (Y) {
                 expected,
                 mojito_list = ['mojito-mw1', 'mojito-mw2', 'mojito-mw3'];
 
-            actual = Mojito.Server.prototype._makeMwList([], mojito_list);
+            actual = Mojito.Server.prototype._makeMiddewareList([], mojito_list);
             expected = ['mojito-mw1', 'mojito-mw2', 'mojito-mw3'];
             AA.itemsAreEqual(expected, actual);
 
@@ -281,7 +281,7 @@ YUI().use('mojito', 'test', function (Y) {
                 app_list = ['chocolate', 'vanilla', 'strawberry'],
                 mojito_list = ['mojito-mw1', 'mojito-mw2', 'mojito-mw3'];
 
-            actual = Mojito.Server.prototype._makeMwList(app_list, mojito_list);
+            actual = Mojito.Server.prototype._makeMiddewareList(app_list, mojito_list);
             expected = app_list.concat(mojito_list);
             AA.itemsAreEqual(expected, actual);
         },
@@ -292,7 +292,7 @@ YUI().use('mojito', 'test', function (Y) {
                 app_list = ['/foo/chocolate', './bar/vanilla', '../baz/strawberry'],
                 mojito_list = ['mojito-mw1', 'mojito-mw2', 'mojito-mw3'];
 
-            actual = Mojito.Server.prototype._makeMwList(app_list, mojito_list);
+            actual = Mojito.Server.prototype._makeMiddewareList(app_list, mojito_list);
             expected = app_list.concat(mojito_list);
             AA.itemsAreEqual(expected, actual);
         },
@@ -303,18 +303,18 @@ YUI().use('mojito', 'test', function (Y) {
                 app_list = ['chocolate', 'mojito-mint', 'vanilla'],
                 mojito_list = ['mojito-mw1', 'mojito-mw2', 'mojito-mw3'];
 
-            actual = Mojito.Server.prototype._makeMwList(app_list, mojito_list);
+            actual = Mojito.Server.prototype._makeMiddewareList(app_list, mojito_list);
             AA.itemsAreEqual(expected, actual);
         }
 
     }));
 
     suite.add(new Y.Test.Case({
-        name: '_useMw suite',
+        name: '_useMiddleware suite',
         setUp: function () {},
         tearDown: function () {},
 
-        'test _useMw, app mw w/ custom mojito-*': function () {
+        'test _useMiddleware, app mw w/ custom mojito-*': function () {
             var actual,
                 mw = ['chocolate', 'mojito-mint', '/foo/mojito-cherry', 'vanilla'],
                 mockapp = Y.Mock();
@@ -329,7 +329,7 @@ YUI().use('mojito', 'test', function (Y) {
             }
 
             try {
-                Mojito.Server.prototype._useMw(mockapp, disp, {}, {}, mw);
+                Mojito.Server.prototype._useMiddleware(mockapp, disp, {}, {}, mw);
             } catch (err) {
             }
         }
