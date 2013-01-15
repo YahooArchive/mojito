@@ -26,6 +26,13 @@ YUI.add('mojito', function(Y, NAME) {
     Y.namespace('mojito.addons');
     Y.namespace('mojito.addons.ac');
     Y.namespace('mojito.addons.viewEngines');
+    // HookSystem::StartBlock
+    Y.mojito.hooks = {
+        hook: function () {},
+        registerHook: function () {},
+        enableHookGroup: function () {}
+    };
+    // HookSystem::EndBlock
 
     // this is a facade for the real implementation from mojito-perf module
     // that will have to be plugged manually to get the metrics in the
