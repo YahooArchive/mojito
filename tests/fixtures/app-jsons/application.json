@@ -1,0 +1,12 @@
+[
+    {
+        "settings": [ "master" ],
+        "applicationConfigFiles": [
+            "node_modules/devices/application.json",
+            "node_modules/runtimes/application.json"
+        ],
+        "testKey1": "testVal1",
+        "testKey2": "testVal2",
+        "testKey3": "testVal3"
+    }
+]

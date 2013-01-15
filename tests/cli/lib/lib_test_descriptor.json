@@ -15,12 +15,19 @@
                 },
                 "group": "fw,cli"
             },
+            "version.js": {
+                "params": {
+                    "test": "./app/commands/test-version.js",
+                    "driver": "nodejs"
+                },
+                "group": "fw,cli,version"
+            },
             "jslint.js": {
                 "params": {
                     "test": "./app/commands/test-jslint.js",
                     "driver": "nodejs"
                 },
-                "group": "fw,cli"
+                "group": "fw,cli,jslint"
             },
             "build/writer.js": {
             	"params": {

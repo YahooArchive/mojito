@@ -26,6 +26,8 @@ YUI().use('mojito', 'test', function (Y) {
         server,
         app;
 
+    // workaround for issue with arrow when isatty===false
+    process.stdout.isTTY = true
 
     function cmp(x, y, msg) {
         var i;

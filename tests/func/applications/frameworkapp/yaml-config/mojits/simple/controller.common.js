@@ -10,4 +10,6 @@ YUI.add("simple-ctrl", function (Y, NAME) {
             ac.done(ac.config.get("message"));
         }
     };
+}, '0.0.1', {
+    requires: ['mojito-config-addon']
 });
