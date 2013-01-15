@@ -21,11 +21,21 @@ YUI().use('test', function(Y) {
         mockPath,
         info;
 
+    mockPath = {
+        resolve: function(file) {
+            return libpath.join(__dirname, '../../../../../package.json');
+        }
+    };
+
     suite.add(new Y.Test.Case({
 
-        name: 'info test cases',
+        name: 'info1 test cases',
 
         setUp: function() {
+            mockery.registerAllowable(cmdpath);
+            mockery.registerMock('path', mockPath);
+            mockery.enable({'warnOnUnregistered': false});
+            info = require(cmdpath);
         },
 
         tearDown: function() {
@@ -38,15 +48,6 @@ YUI().use('test', function(Y) {
         },
 
         'test run info': function() {
-            mockPath = {
-                resolve: function(file) {
-                    return libpath.join(__dirname, '../../../../../package.json');
-                }
-            };
-            mockery.registerAllowable(cmdpath);
-            mockery.registerMock('path', mockPath);
-            mockery.enable({'warnOnUnregistered': false});
-            info = require(cmdpath);
             info.run(null, null, function() {});
         }
     }));
