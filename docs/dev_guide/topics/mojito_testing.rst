@@ -602,7 +602,7 @@ Setting Up
 #. Start the Arrow server to confirm it was installed:
 
    ``$ arrow_server``
-#. Shut down the Arrow server with ``Ctrl-C^`` command.   
+#. Shut down the Arrow server with ``Ctrl-C``.   
 
 .. _func_unit_reqs-linux:
 
@@ -622,7 +622,7 @@ Setting Up
 #. Start the Arrow server to confirm it was installed:
 
    ``$ arrow_server``
-#. Shut down the Arrow server with ``Ctrl-C^`` command.  
+#. Shut down the Arrow server with ``Ctrl-C``.  
 
    
 .. _func_unit-install_selenium:
@@ -639,7 +639,7 @@ The following instructions work for both Macs and Linux.
 #. Confirm Selenium is running by going to the following URL: 
 
    `http://localhost:4444/wd/hub/static/resource/hub.html <http://localhost:4444/wd/hub/static/resource/hub.html>`_   
-#. Shut down the Selenium server with ``Ctrl-C^`` command.  
+#. Shut down the Selenium server with ``Ctrl-C``.  
 
 .. _func_unit-run:
 
@@ -671,7 +671,7 @@ or unit tests with one command.
    ``$ ./run.js test -f --path func --port 4000``
 
    The functional tests may take some time to complete, so you may want to 
-   terminate the tests with **Ctl-C**. Also, you do not need to specify the port
+   terminate the tests with **Ctrl-C**. Also, you do not need to specify the port
    with ``--port``, but the command above does to show you the option.
 #. To run individual unit and functional tests, you pass the test descriptor
    to ``run.js``. 
