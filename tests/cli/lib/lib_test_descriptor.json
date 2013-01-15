@@ -15,6 +15,20 @@
                 },
                 "group": "fw,cli"
             },
+            "info.js": {
+                "params": {
+                    "test": "./app/commands/test-info.js",
+                    "driver": "nodejs"
+                },
+                "group": "fw,cli,info"
+            },
+            "info1.js": {
+                "params": {
+                    "test": "./app/commands/test-info1.js",
+                    "driver": "nodejs"
+                },
+                "group": "fw,cli,info"
+            },
             "help.js": {
                 "params": {
                     "test": "./app/commands/test-help.js",
