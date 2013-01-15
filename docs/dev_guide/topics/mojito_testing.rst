@@ -602,7 +602,7 @@ Setting Up
 #. Start the Arrow server to confirm it was installed:
 
    ``$ arrow_server``
-#. Shut down the Arrow server with ``Ctrl-C^`` command.   
+#. Shut down the Arrow server with ``Ctrl-C`` command.   
 
 .. _func_unit_reqs-linux:
 
@@ -622,7 +622,7 @@ Setting Up
 #. Start the Arrow server to confirm it was installed:
 
    ``$ arrow_server``
-#. Shut down the Arrow server with ``Ctrl-C^`` command.  
+#. Shut down the Arrow server with ``Ctrl-C`` command.  
 
    
 .. _func_unit-install_selenium:
@@ -639,7 +639,7 @@ The following instructions work for both Macs and Linux.
 #. Confirm Selenium is running by going to the following URL: 
 
    `http://localhost:4444/wd/hub/static/resource/hub.html <http://localhost:4444/wd/hub/static/resource/hub.html>`_   
-#. Shut down the Selenium server with ``Ctrl-C^`` command.  
+#. Shut down the Selenium server with ``Ctrl-C`` command.  
 
 .. _func_unit-run:
 
