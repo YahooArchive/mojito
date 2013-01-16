@@ -400,7 +400,7 @@ Configuration
     storing metadata. The ``defaults.json`` file stories default configurations for your 
     mojit instance that will be overridden if they are found in the ``application.json`` 
     file. See `Configuring Defaults for Mojit Instances <../intro/mojito_configuring.html#configuring-defaults-for-mojit-instances>`_
-    and `Configuring Defaults for Mojit Instances <../intro/mojito_configuring.html#configuring-defaults-for-mojit-instances>`_ 
+    and `Mojit Configuration: Configuring Metadata <../intro/mojito_configuring.html#mojit-configuration>`_ 
     for more information.
 
 
