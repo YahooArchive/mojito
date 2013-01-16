@@ -357,90 +357,100 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
         'test listen 3': function () {
             var port = 1234,
                 host = 'letterman',
-                app = Y.Mock();
+                app = Y.Mock(),
+                this_scope = {
+                    _startupTime: null,
+                    _options: {verbose: false}
+                };
 
             Y.Mock.expect(app, {
                 method: 'listen',
                 args: [port, host, V.Function]
             });
 
-            this._startupTime = null;
-            this._options = {verbose: false};
-            this._app = app;
+            this_scope._app = app;
+            Mojito.Server.prototype.listen.call(this_scope, port, host, null);
 
-            this._app = app;
-            Mojito.Server.prototype.listen.call(this, port, host, null);
             Y.Mock.verify(app);
         },
 
         'test listen 4': function () {
-            this._options.port = 9876;
-            this._options.host = 'conan';
+            var this_scope = {
+                    _startupTime: null,
+                    _options: {
+                        verbose: false,
+                        port: 9876,
+                        host: 'conan'
+                    }
+                },
+                actual,
+                expected = undefined;
 
-            this._startupTime = null;
-            this._options = {verbose: false};
-
-            Mojito.Server.prototype.listen.call(this);
+            actual = Mojito.Server.prototype.listen.call(this_scope);
+            A.areSame(expected, actual);
         },
 
 
         'test listen 5': function () {
-            var app = Y.Mock();
-
-            this._options.port = 9876;
-            this._options.host = 'conan';
+            var app = Y.Mock(),
+                this_scope = {
+                    _startupTime: null,
+                    _options: {verbose: false}
+                };
 
             Y.Mock.expect(app, {
                 method: 'listen',
-                args: [this._options.port, this._options.host, V.Function]
+                args: [this_scope._options.port, this_scope._options.host, V.Function]
             });
 
-            this._startupTime = null;
-            this._options = {verbose: true};
-            this._app = app;
+            this_scope._app = app;
 
-            Mojito.Server.prototype.listen.call(this);
+            Mojito.Server.prototype.listen.call(this_scope);
             Y.Mock.verify(app);
         },
 
         'test listen 6': function () {
             var port = 1234,
-                host = 'letterman';
+                host = 'letterman',
+                this_scope = {
+                    _startupTime: null,
+                    _options: {verbose: false},
+                    _app: {
+                        listen: function(p, h, cb) {
+                            A.areSame(port, p);
+                            A.areSame(host, h);
+                            A.isFunction(cb);
+                            cb('fake error');
+                        }
+                    }
+                };
 
             function handlerCb(err) {
-                //A.areSame('WTF', err);
+                A.areSame('fake error', err);
             }
 
-            this._app = {
-                listen: function(p, h, cb) {
-                    A.areSame(port, p);
-                    A.areSame(host, h);
-                    A.isFunction(cb);
-                    cb('fake error');
-                }
-            };
-
-            this._startupTime = null;
-
-            Mojito.Server.prototype.listen.call(this, port, host, handlerCb);
+            Mojito.Server.prototype.listen.call(this_scope, port, host, handlerCb);
         },
 
         'test listen 7': function () {
             var port = 1234,
                 host = 'letterman',
                 cb = function(err, app) {},
-                app = Y.Mock();
+                app = Y.Mock(),
+                this_scope = {
+                    _startupTime: null,
+                    _options: {verbose: false},
+                    _app: 'mocked'
+                };
 
             Y.Mock.expect(app, {
                 method: 'listen',
                 args: [port, host, cb]
             });
 
-            this._app = app;
-            Mojito.Server.prototype.listen.call(this, port, host, cb);
+            this_scope._app = app;
+            Mojito.Server.prototype.listen.call(this_scope, port, host, cb);
 
-            this._startupTime = null;
-            Mojito.Server.prototype.listen.call(this, port, host, cb);
             Y.Mock.verify(app);
         }
 
@@ -450,44 +460,62 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
         name: 'getWebPage tests',
 
         'test getWebPage': function () {
-            var path = '??';
+            var path = '??',
+                this_scope = {
+                    _startupTime: null,
+                    _options: {
+                        port: 9999999,
+                        verbose: false
+                    },
+                };
 
             function cb(err, uri) {
                 // this is not a good idea...
                 A.areSame('ECONNREFUSED', err.code);
             }
 
-            this._options = {port: 9999999};
-            Mojito.Server.prototype.getWebPage.call(this, path, {a: 1}, cb);
+            Mojito.Server.prototype.getWebPage.call(this_scope, path, {a: 1}, cb);
         },
 
         'test getWebPage 2': function () {
-            var path = '??';
+            var path = '??',
+                this_scope = {
+                    _startupTime: null,
+                    _options: {
+                        port: 9999999,
+                        verbose: false
+                    },
+                };
 
             function cb(err, uri) {
                 // this is not a good idea...
                 A.areSame('ECONNREFUSED', err.code);
             }
 
-            this._options = {port: 9999999};
-            Mojito.Server.prototype.getWebPage.call(this, path, cb);
+            Mojito.Server.prototype.getWebPage.call(this_scope, path, cb);
         },
 
         'test getWebPages': function () {
-            var path = '??';
+            var path = '??',
+                this_scope = {
+                    _startupTime: null,
+                    _options: {
+                        port: 999999,
+                        verbose: false
+                    },
+                };
 
             function cb(err, uri) {
                 A.areSame('oh noes.', err);
             }
 
-            this._options = {port: 9999999};
-            this.getWebPage = function (uri, cb) {
+            this_scope.getWebPage = function (uri, cb) {
                 A.areSame('??', uri);
                 A.isFunction(cb);
                 cb('oh noes.');
             };
 
-            Mojito.Server.prototype.getWebPages.call(this, [path], cb);
+            Mojito.Server.prototype.getWebPages.call(this_scope, [path], cb);
         },
 
         'test close': function () {
@@ -500,27 +528,41 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
 
         'test getHttpServer': function () {
             var actual,
-                expected = 'oh hai!';
+                expected = 'oh hai!',
+                this_scope = {
+                    _startupTime: null,
+                    _options: {
+                        port: 99999999,
+                        verbose: true
+                    },
+                };
 
-            this._app = expected;
-            this._options = {
-                verbose: true
-            };
+            this_scope._app = expected;
 
-            actual = Mojito.Server.prototype.getHttpServer.call(this);
+            actual = Mojito.Server.prototype.getHttpServer.call(this_scope);
             A.areSame(expected, actual);
         },
 
         'test close': function () {
-            this._app = Y.Mock();
+            var actual,
+                expected = 'oh hai!',
+                this_scope = {
+                    _startupTime: null,
+                    _options: {
+                        port: 99999999,
+                        verbose: true
+                    },
+                };
 
-            Y.Mock.expect(this._app, {
+            this_scope._app = Y.Mock();
+
+            Y.Mock.expect(this_scope._app, {
                 method: 'close',
                 args: []
             });
 
-            Mojito.Server.prototype.close.call(this);
-            Y.Mock.verify(this._app);
+            Mojito.Server.prototype.close.call(this_scope);
+            Y.Mock.verify(this_scope._app);
         }
     }));
 
