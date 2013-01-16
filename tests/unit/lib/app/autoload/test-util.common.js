@@ -1230,7 +1230,7 @@ YUI().use('mojito-util', 'mojito-test-extra', 'test', 'array-extras', function(Y
                 foo: function() { return 'foo-1'; }
             };
             var h = Y.mojito.util.heir(base);
-            A.areSame(0, Object.keys(h).length);
+            A.areSame(0, Y.Object.keys(h).length);
             A.areSame('foo-1', h.foo());
         },
 
