@@ -318,12 +318,17 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
 
         'test listen 1': function () {
             var port = 1234,
-                host = 'letterman';
+                host = 'letterman',
+                app = Y.Mock(),
+                this_scope = {
+                    _startupTime: 1358377484874,
+                    _options: {verbose: true}
+                },
+                actual,
+                expected = undefined;
 
-            this._startupTime = +new Date();
-            this._options = {verbose: true};
-
-            Mojito.Server.prototype.listen.call(this, port, host);
+            actual = Mojito.Server.prototype.listen.call(this_scope, port, host, null);
+            A.areSame(expected, actual);
         },
 
         'test listen 2': function () {
