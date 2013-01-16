@@ -7,7 +7,7 @@
 /*jslint anon:true, sloppy:true, nomen:true, unparam: true, node:true */
 /*global YUI*/
 
-YUI().use('mojito', 'test', function (Y) {
+YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
 
     var suite = new Y.Test.Suite('mojito tests'),
         path = require('path'),
@@ -16,7 +16,7 @@ YUI().use('mojito', 'test', function (Y) {
         AA = Y.ArrayAssert,
         OA = Y.ObjectAssert,
 
-        mojito_src = path.join(__dirname, '../../../lib/mojito'),
+        mojito_src = Y.MOJITO_DIR + 'lib/mojito',
         Mojito = require(mojito_src),
 
         realServer,
@@ -27,32 +27,6 @@ YUI().use('mojito', 'test', function (Y) {
         app;
 
     // workaround for issue with arrow when isatty===false
-    process.stdout.isTTY = true
-
-    function cmp(x, y, msg) {
-        var i;
-        if (Y.Lang.isArray(x)) {
-            A.isArray(x, msg || 'first arg should be an array');
-            A.isArray(y, msg || 'second arg should be an array');
-            A.areSame(x.length, y.length, msg || 'arrays are different lengths');
-            for (i = 0; i < x.length; i += 1) {
-                cmp(x[i], y[i], msg);
-            }
-            return;
-        }
-        if (Y.Lang.isObject(x)) {
-            A.isObject(x, msg || 'first arg should be an object');
-            A.isObject(y, msg || 'second arg should be an object');
-            A.areSame(Object.keys(x).length, Object.keys(y).length, msg || 'object keys are different lengths');
-            for (i in x) {
-                if (x.hasOwnProperty(i)) {
-                    cmp(x[i], y[i], msg);
-                }
-            }
-            return;
-        }
-        A.areSame(x, y, msg || 'args should be the same');
-    }
     process.stdout.isTTY = true;
 
     suite.add(new Y.Test.Case({
@@ -257,7 +231,7 @@ YUI().use('mojito', 'test', function (Y) {
                     'shared-B': 'shared-B-val'
                 }
             };
-            cmp(wantConfig, haveConfig);
+            Y.TEST_CMP(wantConfig, haveConfig);
         }
 
     }));
