@@ -340,7 +340,7 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
 
             Y.Mock.expect(app, {
                 method: 'listen',
-                arguments: [port, host, cb]
+                args: [port, host, V.Function]
             });
 
             this._startupTime = null;
@@ -358,7 +358,7 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
 
             Y.Mock.expect(app, {
                 method: 'listen',
-                arguments: [port, host, V.Function]
+                args: [port, host, V.Function]
             });
 
             this._startupTime = null;
@@ -389,7 +389,7 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
 
             Y.Mock.expect(app, {
                 method: 'listen',
-                arguments: [this._options.port, this._options.host, V.Function]
+                args: [this._options.port, this._options.host, V.Function]
             });
 
             this._startupTime = null;
@@ -430,7 +430,7 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
 
             Y.Mock.expect(app, {
                 method: 'listen',
-                arguments: [port, host, cb]
+                args: [port, host, cb]
             });
 
             this._app = app;
@@ -513,7 +513,7 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
 
             Y.Mock.expect(this._app, {
                 method: 'close',
-                arguments: []
+                args: []
             });
 
             Mojito.Server.prototype.close.call(this);
