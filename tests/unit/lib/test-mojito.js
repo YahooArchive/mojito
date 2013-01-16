@@ -330,24 +330,22 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
             var port = 1234,
                 host = 'letterman',
                 cb,
-                app = Y.Mock();
+                app = Y.Mock(),
+                this_scope = {
+                    _startupTime: null,
+                    _options: {verbose: false}
+                };
 
-            cb = function(err, app) {
-                A.isObject(err);
-                A.isUndefined(app);
-                //A.areSame("TypeError: Cannot call method 'listen' of undefined", err.toString());
-            };
+            cb = function(/*err, app*/) {};
 
             Y.Mock.expect(app, {
                 method: 'listen',
                 args: [port, host, V.Function]
             });
 
-            this._startupTime = null;
-            this._options = {verbose: false};
-            this._app = app;
+            this_scope._app = app;
+            Mojito.Server.prototype.listen.call(this_scope, port, host, cb);
 
-            Mojito.Server.prototype.listen.call(this, port, host, cb);
             Y.Mock.verify(app);
         },
 
