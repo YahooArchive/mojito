@@ -53,6 +53,7 @@ YUI().use('mojito', 'test', function (Y) {
         }
         A.areSame(x, y, msg || 'args should be the same');
     }
+    process.stdout.isTTY = true;
 
     suite.add(new Y.Test.Case({
 
