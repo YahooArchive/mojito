@@ -1225,6 +1225,15 @@ YUI().use('mojito-util', 'mojito-test-extra', 'test', 'array-extras', function(Y
             A.areSame(obj.inner.fn, copy.inner.fn);
         },
 
+        'test heir': function() {
+            var base = {
+                foo: function() { return 'foo-1'; }
+            };
+            var h = Y.mojito.util.heir(base);
+            A.areSame(0, Y.Object.keys(h).length);
+            A.areSame('foo-1', h.foo());
+        },
+
         'test metaMerge empty to empty': function() {
             var to = {};
             var from = {};
@@ -1428,15 +1437,6 @@ YUI().use('mojito-util', 'mojito-test-extra', 'test', 'array-extras', function(Y
             A.areSame(expected.view, result.view, "meta view data should be retained");
         },
 
-        // is util.array.remove() dead code? no contructor but this.push.apply()
-
-        'test util.array.contains() lcov': function() {
-            var arr = [1,2,3,4,5,6];
-            A.isTrue(Y.mojito.util.array.contains(arr, 5));
-            A.isFalse(Y.mojito.util.array.contains(arr, '5'));
-            A.isFalse(Y.mojito.util.array.contains(arr, 'yo mama'));
-        },
-
         'ignore: metaMerge copies objects lower cases all keys': function() {
             var to = {};
             var from = {
@@ -1477,6 +1477,362 @@ YUI().use('mojito-util', 'mojito-test-extra', 'test', 'array-extras', function(Y
             A.areSame('', Y.mojito.util.findClosestLang('nl-NL', have), 'nl-NL');
             A.areSame('', Y.mojito.util.findClosestLang('nl', have), 'nl');
             A.areSame('', Y.mojito.util.findClosestLang('', have), 'no lang');
+        },
+
+        'mergeRecursive should work on arrays': function() {
+            var base = [0, 1, 2, 3],
+                over = ['a', 'b'];
+            Y.mojito.util.mergeRecursive(base, over);
+            AA.itemsAreEqual([0, 1, 2, 3, 'a', 'b'], base,
+                     'Array values should properly mergeRecursive.');
+        },
+
+        'mergeRecursive should unique arrays': function() {
+            var base = [0, 1, 2, 3],
+                over = ['a', 'b', 1];
+
+            Y.mojito.util.mergeRecursive(base, over);
+            AA.itemsAreEqual([0, 1, 2, 3, 'a', 'b'], base,
+                     'Array values should mergeRecursive uniquely.');
+        },
+        
+        'mergeRecursive should work on objects': function() {
+            var base = {
+                    a: 1,
+                    b: 2
+                },
+                over = {
+                    c: 3,
+                    d: 4
+                },
+                want = {
+                    a: 1,
+                    b: 2,
+                    c: 3,
+                    d: 4
+                };
+
+            Y.mojito.util.mergeRecursive(base, over);
+            OA.areEqual(want, base);
+        },
+
+        'mergeRecursive should replace object values': function() {
+            var base = {
+                    a: 1,
+                    b: 2
+                },
+                over = {
+                    c: 3,
+                    a: 4
+                },
+                want = {
+                    a: 4,
+                    b: 2,
+                    c: 3
+                };
+
+            Y.mojito.util.mergeRecursive(base, over);
+            OA.areEqual(want, base);
+        },
+        
+        'mergeRecursive should handle nested merges': function() {
+            var base = {
+                    a: 1,
+                    b: 2,
+                    c: {
+                        foo: 1
+                    }
+                },
+                over = {
+                    c: {
+                        bar: 2
+                    }
+                },
+                want = {
+                    a: 1,
+                    b: 2,
+                    c: {
+                        foo: 1,
+                        bar: 2
+                    }
+                };
+
+            Y.mojito.util.mergeRecursive(base, over);
+            OA.areEqual(want.c, base.c);
+        },
+
+        'mergeRecursive should handle nested merges with replacements': function() {
+            var base = {
+                    a: 1,
+                    b: 2,
+                    c: {
+                        foo: 1,
+                        baz: 3
+                    }
+                },
+                over = {
+                    a: 4,
+                    c: {
+                        foo: 3,
+                        bar: 2
+                    }
+                },
+                want = {
+                    a: 4,
+                    b: 2,
+                    c: {
+                        foo: 3,
+                        bar: 2,
+                        baz: 3
+                    }
+                };
+
+            Y.mojito.util.mergeRecursive(base, over);
+            OA.areEqual(want.c, base.c);
+        },
+
+        'mergeRecursive value type matrix': function() {
+            // positions:  base, overlay
+            // s = scalar
+            // o = object
+            // a = array
+            // n = null
+            // u = undefined
+            // m = missing (not given)
+            var base = {
+                'ss': 'base-ss',
+                'so': 'base-so',
+                'sa': 'base-sa',
+                'sn': 'base-sn',
+                'su': 'base-su',
+                'sm': 'base-sm',
+                'os': { 'base': 'os' },
+                'oo': { 'base': 'oo' },
+                'oa': { 'base': 'oa' },
+                'on': { 'base': 'on' },
+                'ou': { 'base': 'ou' },
+                'om': { 'base': 'om' },
+                'as': [ 'base-as' ],
+                'ao': [ 'base-ao' ],
+                'aa': [ 'base-aa' ],
+                'an': [ 'base-an' ],
+                'au': [ 'base-au' ],
+                'am': [ 'base-am' ],
+                'ns': null,
+                'no': null,
+                'na': null,
+                'nn': null,
+                'nu': null,
+                'nm': null,
+                'us': undefined,
+                'uo': undefined,
+                'ua': undefined,
+                'un': undefined,
+                'uu': undefined,
+                'um': undefined,
+            };
+            var overlay = {
+                'ss': 'overlay-ss',
+                'so': { 'overlay': 'so' },
+                'sa': [ 'overlay-sa' ],
+                'sn': null,
+                'su': undefined,
+                'os': 'overlay-os',
+                'oo': { 'overlay': 'oo' },
+                'oa': [ 'overlay-oa' ],
+                'on': null,
+                'ou': undefined,
+                'as': 'overlay-as',
+                'ao': { 'overlay': 'ao' },
+                'aa': [ 'overlay-aa' ],
+                'an': null,
+                'au': undefined,
+                'ns': 'overlay-ns',
+                'no': { 'overlay': 'no' },
+                'na': [ 'overlay-na' ],
+                'nn': null,
+                'nu': undefined,
+                'us': 'overlay-us',
+                'uo': { 'overlay': 'uo' },
+                'ua': [ 'overlay-ua' ],
+                'un': null,
+                'uu': undefined,
+                'ms': 'overlay-ms',
+                'mo': { 'overlay': 'mo' },
+                'ma': [ 'overlay-ma' ],
+                'mn': null,
+                'mu': undefined,
+            };
+            Y.mojito.util.mergeRecursive(base, overlay);
+            var want = {
+                'ss': 'overlay-ss',
+                'so': 'base-so',
+                'sa': [ 'overlay-sa' ],
+                'sn': 'base-sn',
+                'su': 'base-su',
+                'os': 'overlay-os',
+                'oo': { 'overlay': 'oo', 'base': 'oo' },
+                'oa': [ 'overlay-oa' ],
+                'on': { 'base': 'on' },
+                'ou': { 'base': 'ou' },
+                'as': 'overlay-as',
+                'ao': { 0: 'base-ao', 'overlay': 'ao' },
+                'aa': [ 'overlay-aa' ],
+                'an': [ 'base-an' ],
+                'au': [ 'base-au' ],
+                'ns': 'overlay-ns',
+                'no': { 'overlay': 'no' },
+                'na': [ 'overlay-na' ],
+                'nn': null,
+                'nu': null,
+                'us': 'overlay-us',
+                'uo': { 'overlay': 'uo' },
+                'ua': [ 'overlay-ua' ],
+                'un': null,
+                'uu': undefined,
+                'ms': 'overlay-ms',
+                'mo': { 'overlay': 'mo' },
+                'ma': [ 'overlay-ma' ],
+                'mn': null,
+                'sm': 'base-sm',
+                'om': { 'base': 'om' },
+                'am': [ 'base-am' ],
+                'nm': null,
+                'um': undefined
+            };
+            Y.TEST_CMP(want, base);
+        },
+
+        'mergeRecursive value type matrix with typeMatch': function() {
+            // positions:  base, overlay
+            // s = scalar
+            // o = object
+            // a = array
+            // n = null
+            // u = undefined
+            // m = missing (not given)
+            var base = {
+                'ss': 'base-ss',
+                'so': 'base-so',
+                'sa': 'base-sa',
+                'sn': 'base-sn',
+                'su': 'base-su',
+                'sm': 'base-sm',
+                'os': { 'base': 'os' },
+                'oo': { 'base': 'oo' },
+                'oa': { 'base': 'oa' },
+                'on': { 'base': 'on' },
+                'ou': { 'base': 'ou' },
+                'om': { 'base': 'om' },
+                'as': [ 'base-as' ],
+                'ao': [ 'base-ao' ],
+                'aa': [ 'base-aa' ],
+                'an': [ 'base-an' ],
+                'au': [ 'base-au' ],
+                'am': [ 'base-am' ],
+                'ns': null,
+                'no': null,
+                'na': null,
+                'nn': null,
+                'nu': null,
+                'nm': null,
+                'us': undefined,
+                'uo': undefined,
+                'ua': undefined,
+                'un': undefined,
+                'uu': undefined,
+                'um': undefined,
+            };
+            var overlay = {
+                'ss': 'overlay-ss',
+                'so': { 'overlay': 'so' },
+                'sa': [ 'overlay-sa' ],
+                'sn': null,
+                'su': undefined,
+                'os': 'overlay-os',
+                'oo': { 'overlay': 'oo' },
+                'oa': [ 'overlay-oa' ],
+                'on': null,
+                'ou': undefined,
+                'as': 'overlay-as',
+                'ao': { 'overlay': 'ao' },
+                'aa': [ 'overlay-aa' ],
+                'an': null,
+                'au': undefined,
+                'ns': 'overlay-ns',
+                'no': { 'overlay': 'no' },
+                'na': [ 'overlay-na' ],
+                'nn': null,
+                'nu': undefined,
+                'us': 'overlay-us',
+                'uo': { 'overlay': 'uo' },
+                'ua': [ 'overlay-ua' ],
+                'un': null,
+                'uu': undefined,
+                'ms': 'overlay-ms',
+                'mo': { 'overlay': 'mo' },
+                'ma': [ 'overlay-ma' ],
+                'mn': null,
+                'mu': undefined,
+            };
+            Y.mojito.util.mergeRecursive(base, overlay, true);
+            var want = {
+                'ss': 'overlay-ss',
+                'so': 'base-so',
+                'sa': 'base-sa',
+                'sn': 'base-sn',
+                'su': 'base-su',
+                'os': { 'base': 'os' },
+                'oo': { 'overlay': 'oo', 'base': 'oo' },
+                'oa': [ 'overlay-oa' ],
+                'on': null,
+                'ou': { 'base': 'ou' },
+                'as': [ 'base-as' ],
+                'ao': { 0: 'base-ao', 'overlay': 'ao' },
+                'aa': [ 'overlay-aa' ],
+                'an': null,
+                'au': [ 'base-au' ],
+                'ns': 'overlay-ns',
+                'no': { 'overlay': 'no' },
+                'na': [ 'overlay-na' ],
+                'nn': null,
+                'nu': null,
+                'us': 'overlay-us',
+                'uo': { 'overlay': 'uo' },
+                'ua': [ 'overlay-ua' ],
+                'un': null,
+                'uu': undefined,
+                'ms': 'overlay-ms',
+                'mo': { 'overlay': 'mo' },
+                'ma': [ 'overlay-ma' ],
+                'mn': null,
+                'sm': 'base-sm',
+                'om': { 'base': 'om' },
+                'am': [ 'base-am' ],
+                'nm': null,
+                'um': undefined
+            };
+            Y.TEST_CMP(want, base);
+        },
+
+        'test createCacheKey': function() {
+            var obj1 = { foo: 'bar1' };
+            var obj2 = { foo: 'bar2' };
+            var key1 = Y.mojito.util.createCacheKey(obj1);
+            var key2 = Y.mojito.util.createCacheKey(obj2);
+            A.isNotUndefined(key1);
+            A.isNotUndefined(key2);
+            A.areNotSame(key1, key2);
+            var obj3 = {
+                foo: 'bar3',
+                toJSON: function() {
+                    throw new Exception('failed to stringify');
+                }
+            }
+            var key3 = Y.mojito.util.createCacheKey(obj3);
+            A.isNotUndefined(key3);
+            A.areNotSame(key1, key3);
+            A.areNotSame(key2, key3);
         }
 
     };
