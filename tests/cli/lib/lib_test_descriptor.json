@@ -15,6 +15,20 @@
                 },
                 "group": "fw,cli"
             },
+            "docs.js": {
+                "params": {
+                    "test": "./app/commands/test-docs.js",
+                    "driver": "nodejs"
+                },
+                "group": "fw,cli,docs"
+            },
+            "docs1.js": {
+                "params": {
+                    "test": "./app/commands/test-docs1.js",
+                    "driver": "nodejs"
+                },
+                "group": "fw,cli,docs"
+            },
             "info.js": {
                 "params": {
                     "test": "./app/commands/test-info.js",
