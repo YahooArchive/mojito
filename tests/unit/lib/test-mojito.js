@@ -293,7 +293,7 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
 
         'test _useMiddleware, app mw w/ custom mojito-*': function () {
             var actual,
-                mw = ['chocolate', 'mojito-mint', '/foo/mojito-cherry', 'vanilla'],
+                mw = ['chocolate', 'mojito-mint', 'foo/mojito-cherry', 'vanilla'],
                 mockapp = Y.Mock();
 
             Y.Mock.expect(mockapp, {
