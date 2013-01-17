@@ -94,7 +94,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
         },
 
         'test mock store': function () {
-            var store = Y.Mock,
+            var store = Y.Mock(),
                 scraper = {
                     on: function() {
                         return scraper;
@@ -115,7 +115,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
         },
 
         'test exec calls shared.js X times': function () {
-            var store = Y.Mock,
+            var store = Y.Mock(),
                 scraper = {
                     on: function() {
                         return scraper;
@@ -140,7 +140,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
         },
 
         'test exec calls scraper.js X times': function () {
-            var store = Y.Mock,
+            var store = Y.Mock(),
                 scraper = {
                     on: function() {
                         count++;
