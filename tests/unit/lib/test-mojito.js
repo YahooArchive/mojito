@@ -459,7 +459,7 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
     suite.add(new Y.Test.Case({
         name: 'getWebPage tests',
 
-        'test getWebPage': function () {
+        'test getWebPage 1': function () {
             var path = '??',
                 this_scope = {
                     _startupTime: null,
@@ -475,6 +475,43 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
             }
 
             Mojito.Server.prototype.getWebPage.call(this_scope, path, {a: 1}, cb);
+        },
+
+        'test getWebPage 1.1': function () {
+            var path = '??',
+                this_scope = {
+                    _startupTime: null,
+                    _options: {
+                        port: 9999999,
+                        verbose: false
+                    },
+                };
+
+            function cb(err, uri) {
+                // this is not a good idea...
+                A.areSame('ECONNREFUSED', err.code);
+            }
+
+            Mojito.Server.prototype.getWebPage.call(this_scope, null, cb);
+            Mojito.Server.prototype.getWebPage.call(this_scope, [], cb);
+        },
+
+        'test getWebPage 1.2': function () {
+            var path = '??',
+                this_scope = {
+                    _startupTime: null,
+                    _options: {
+                        port: 9999999,
+                        verbose: false
+                    },
+                };
+
+            function cb(err, uri) {
+                // this is not a good idea...
+                A.areSame('ECONNREFUSED', err.code);
+            }
+
+            Mojito.Server.prototype.getWebPage.call(this_scope);
         },
 
         'test getWebPage 2': function () {
