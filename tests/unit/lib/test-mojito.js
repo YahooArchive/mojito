@@ -511,7 +511,7 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
                 A.areSame('ECONNREFUSED', err.code);
             }
 
-            Mojito.Server.prototype.getWebPage.call(this_scope);
+            Mojito.Server.prototype.getWebPage.call(this_scope, '', {});
         },
 
         'test getWebPage 2': function () {
@@ -553,11 +553,7 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
             };
 
             Mojito.Server.prototype.getWebPages.call(this_scope, [path], cb);
-        },
-
-        'test close': function () {
         }
-
     }));
 
     suite.add(new Y.Test.Case({
@@ -579,6 +575,23 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
             actual = Mojito.Server.prototype.getHttpServer.call(this_scope);
             A.areSame(expected, actual);
         },
+
+//         'test _configureLogger': function () {
+//          var y = Y.Mock();
+//
+//          y.config = {
+//              logLevel: null,
+//              logLevelOrder: [],
+//              debug: false
+//          };
+//
+//          Y.Mock(y, {
+//              method: 'use',
+//              agrs: ['base']
+//          });
+//
+//          Mojito.Server.prototype._configureLogger.call(null, y, )
+//         },
 
         'test close': function () {
             var actual,
