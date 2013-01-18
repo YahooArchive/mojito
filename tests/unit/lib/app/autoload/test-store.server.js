@@ -16,6 +16,7 @@ YUI().use(
 
         var suite = new Y.Test.Suite('mojito-store-server-tests'),
             libpath = require('path'),
+            libfs = require('fs'),
             mojitoRoot = libpath.join(__dirname, '../../../lib'),
             store,
             Mock = Y.Mock,
@@ -744,9 +745,80 @@ YUI().use(
                     }
                 }
                 A.areSame(21, ress.length, 'wrong number of resources');
+            },
+
+            'resource cache': function() {
+                var fixtures = libpath.join(__dirname, '../../../../fixtures/store');
+
+                // use cache
+                var store = new Y.mojito.ResourceStore({ root: fixtures });
+                var cache = {
+                    rs: {
+                        _appRVs:            'cached-appRVs',
+                        _mojitRVs:          'cached-mojitRVs',
+                        _appResources:      'cached-appResources',
+                        _mojitResources:    'cached-mojitResources',
+                        _appPkg:            'cached-appPkg',
+                        selectors:          'cached-selectors'
+                    },
+                    // plugins
+                    yui: { langs: 'cached-langs' }
+                };
+                store._libs.fs = {
+                    readdirSync: libfs.readdirSync,
+
+                    readFileSync: function(path, encoding) {
+                        if (path === store._resCachePath) {
+                            return JSON.stringify(cache, null, 4);
+                        } else {
+                            return libfs.readFileSync(path, encoding);
+                        }
+                    }
+                };
+                store.preload();
+                A.areSame('cached-appRVs', store._appRVs);
+                A.areSame('cached-mojitRVs', store._mojitRVs);
+                A.areSame('cached-appResources', store._appResources);
+                A.areSame('cached-mojitResources', store._mojitResources);
+                A.areSame('cached-appPkg', store._appPkg);
+                A.areSame('cached-selectors', store.selectors);
+                A.isObject(store.yui);
+                // make sure that resourceCacheLoad() is called on addons
+                A.areSame('cached-langs', store.yui.langs);
+
+                // create cache
+                store = new Y.mojito.ResourceStore({ root: fixtures });
+                store.preload();
+                var writeCalled = false;
+                store._libs.fs = {
+                    writeFileSync: function(path, content, encoding) {
+                        var cache;
+                        writeCalled = true;
+                        try {
+                            cache = JSON.parse(content);
+                        } catch(err) {
+                            A.fail("cache file isn't valid JSON");
+                        }
+                        A.isObject(cache, 'cache');
+                        A.isObject(cache.rs, 'cache.rs');
+                        A.areSame(6, Object.keys(cache.rs).length, 'five entries in RS cache');
+                        A.isObject(cache.rs._appRVs, 'appRVs');
+                        A.isObject(cache.rs._mojitRVs, 'mojitRVs');
+                        A.isObject(cache.rs._appResources, 'appResources');
+                        A.isObject(cache.rs._mojitResources, 'mojitResources');
+                        A.isObject(cache.rs._appPkg, 'appPkg');
+                        A.isObject(cache.rs.selectors, 'selectors');
+                        // make sure that resourceCacheSave() is called on addons
+                        A.isObject(cache.yui, 'cache.yui');
+                        A.isObject(cache.yui.langs, 'cache.yui.langs');
+                    }
+                };
+                store.resourceCacheSave();
+                A.isTrue(writeCalled, 'writeFileSync called');
             }
 
         }));
+
 
         suite.add(new Y.Test.Case({
 
