@@ -48,7 +48,9 @@ YUI().use('test', function(Y) {
         },
 
         'test run info': function() {
-            info.run(null, null, function() {});
+            info.run(null, null, function(err, usage, die) {
+                A.isUndefined(err);
+            });
         }
     }));
 
