@@ -23,6 +23,22 @@
                 },
                 "group": "fw,cli,info"
             },
+            "docs.js": {
+                "params": {
+                    "test": "./test-docs.js",
+                    "lib": "$$config.mojitodir$$/lib/app/commands/docs.js",
+                    "driver": "nodejs"
+                },
+                "group": "fw,cli,docs"
+            },
+            "docs1.js": {
+                "params": {
+                    "test": "./test-docs1.js",
+                    "lib": "$$config.mojitodir$$/lib/app/commands/docs1.js",
+                    "driver": "nodejs"
+                },
+                "group": "fw,cli,docs"
+            },
             "help.js": {
                 "params": {
                     "test": "./test-help.js",
