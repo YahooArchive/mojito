@@ -34,7 +34,7 @@ YUI().use('mojito-composite-addon', 'test', function(Y) {
                 },
                 datamock = {data: 'mock'},
                 metamock = {meta: 'mock'},
-                adapter = null,
+                adapter = Y.Mock(),
                 ac = {
                     done: function(data, meta) {
                         doneCalled = true;
@@ -82,7 +82,7 @@ YUI().use('mojito-composite-addon', 'test', function(Y) {
 
         'test execute dispatches each child': function() {
             var command = {instance: {}},
-                adapter = null,
+                adapter = Y.Mock(),
                 ac = {
                     _dispatch: function(command, adapter) {
                         A.isObject(command, "bad command object to dispatch");
@@ -130,7 +130,7 @@ YUI().use('mojito-composite-addon', 'test', function(Y) {
                         }
                     }
                 },
-                adapter = null,
+                adapter = Y.Mock(),
                 ac = {
                     done: function(data, meta) {
                         doneCalled = true;
@@ -161,7 +161,7 @@ YUI().use('mojito-composite-addon', 'test', function(Y) {
 
         'test error is thrown when children is an array': function() {
             var command = {instance: {}},
-                adapter = null,
+                adapter = Y.Mock(),
                 ac = {},
                 c = new Y.mojito.addons.ac.composite(command, adapter, ac),
                 config = {
@@ -182,7 +182,7 @@ YUI().use('mojito-composite-addon', 'test', function(Y) {
 
         'test proxied mojits are processed properly': function() {
             var command = {instance: {}},
-                adapter = null,
+                adapter = Y.Mock(),
                 ac = {
                     _dispatch: function(command, adapter) {
                         A.isObject(command, "bad command object to dispatch");
@@ -223,7 +223,7 @@ YUI().use('mojito-composite-addon', 'test', function(Y) {
 
         'test defered mojits are processed properly': function() {
             var command = {instance: {}},
-                adapter = null,
+                adapter = Y.Mock(),
                 ac = {
                     _dispatch: function(command, adapter) {
                         A.isObject(command, "bad command object to dispatch");
@@ -264,7 +264,7 @@ YUI().use('mojito-composite-addon', 'test', function(Y) {
 
         'test null or undefined child should be skipped': function() {
             var command = {instance: {}},
-                adapter = null,
+                adapter = Y.Mock(),
                 countDispatched = 0,
                 ac = {
                     _dispatch: function(command, adapter) {

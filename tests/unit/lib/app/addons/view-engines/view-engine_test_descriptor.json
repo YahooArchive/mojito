@@ -18,7 +18,7 @@
             },
             "hb.server" : {
                 "params" : {
-                    "lib": "$$config.lib$$/app/autoload/perf.server.js,./../../../../../../lib/app/addons/view-engines/hb.server.js",
+                    "lib": "./../../../../../../lib/app/addons/view-engines/hb.server.js",
                     "test" : "./test-hb.server.js",
                     "driver": "nodejs"
                 },
