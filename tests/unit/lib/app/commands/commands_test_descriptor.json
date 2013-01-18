@@ -13,7 +13,7 @@
                     "lib": "$$config.mojitodir$$/lib/app/commands/info.js",
                     "driver": "nodejs"
                 },
-                "group": "fw,cli,info"
+                "group": "fw,unit,server"
             },
             "info1.js": {
                 "params": {
@@ -21,7 +21,7 @@
                     "lib-DISABLED-BZ6046277": "$$config.mojitodir$$/lib/app/commands/info.js",
                     "driver": "nodejs"
                 },
-                "group": "fw,cli,info"
+                "group": "fw,unit,server"
             },
             "docs.js": {
                 "params": {
@@ -29,7 +29,7 @@
                     "lib": "$$config.mojitodir$$/lib/app/commands/docs.js",
                     "driver": "nodejs"
                 },
-                "group": "fw,cli,docs"
+                "group": "fw,unit,server"
             },
             "docs1.js": {
                 "params": {
@@ -37,7 +37,7 @@
                     "lib": "$$config.mojitodir$$/lib/app/commands/docs1.js",
                     "driver": "nodejs"
                 },
-                "group": "fw,cli,docs"
+                "group": "fw,unit,server"
             },
             "help.js": {
                 "params": {
@@ -45,7 +45,7 @@
                     "lib": "$$config.mojitodir$$/lib/app/commands/help.js",
                     "driver": "nodejs"
                 },
-                "group": "fw,cli,help"
+                "group": "fw,unit,server"
             },
             "version.js": {
                 "params": {
@@ -53,7 +53,7 @@
                     "lib": "$$config.mojitodir$$/lib/app/commands/version.js",
                     "driver": "nodejs"
                 },
-                "group": "fw,cli,version"
+                "group": "fw,unit,server"
             },
             "jslint.js": {
                 "params": {
@@ -61,7 +61,7 @@
                     "lib-DISABLED-BZ6046277": "$$config.mojitodir$$/lib/app/commands/jslint.js",
                     "driver": "nodejs"
                 },
-                "group": "fw,cli,jslint"
+                "group": "fw,unit,server"
             }
         }
     }

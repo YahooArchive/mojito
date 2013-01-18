@@ -13,7 +13,7 @@
                     "lib": "$$config.mojitodir$$/lib/management/cli.js",
                     "driver": "nodejs"
                 },
-                "group": "fw,cli"
+                "group": "fw,unit,server"
             },
             "utils.server": {
                 "params": {

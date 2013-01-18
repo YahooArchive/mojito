@@ -15,7 +15,7 @@
                     "page": "$$config.base$$/mojito-test.html",
                     "driver": "nodejs"
                 },
-                "group": "fw,server"
+                "group": "fw,unit,server"
             },
             "output-handler.server": {
                 "params": {
