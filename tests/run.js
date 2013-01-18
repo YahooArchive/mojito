@@ -130,6 +130,7 @@ function runCliTests (cmd, callback) {
     var commandArgs = [
         cwd + "/../node_modules/yahoo-arrow/index.js",
         "--descriptor=" + cmd.cliPath + '/' + descriptor,
+        "--exitCode=true",
         "--report=true",
         "--reportFolder=" + arrowReportDir
     ];
@@ -167,6 +168,7 @@ function runUnitTests (cmd, callback) {
     var commandArgs = [
         cwd + "/../node_modules/yahoo-arrow/index.js",
         "--descriptor=" + cmd.unitPath + '/' + descriptor,
+        "--exitCode=true",
         "--report=true",
         "--reportFolder=" + arrowReportDir
     ];
@@ -262,6 +264,7 @@ function runFuncTests (cmd, desc, port, thispid, arrowReportDir, callback) {
         cwd + "/../node_modules/yahoo-arrow/index.js",
         "--descriptor=" + desc,
         "--baseUrl=" + baseUrl,
+        "--exitCode=true",
         "--report=true",
         "--reportFolder=" + arrowReportDir,
         "--config=" + cwd + "/config/config.js"
