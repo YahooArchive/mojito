@@ -29,13 +29,16 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
 
     // so we can mutate mocks, and refresh
     function getMocks() {
-        return {
+        var mocks;
+        mocks = {
             store: {
                 createStore: function (opts) {
-                    A.isObject(opts);
-                    A.isString(opts.root);
-                    A.isObject(opts.context);
+                    A.isObject(opts, 'store.createStore opts');
+                    A.isString(opts.root, 'store.createStore opts.root');
+                    A.isObject(opts.context, 'store.createStore opts.context');
 
+                    mocks.store.createStore._test_opts = opts;
+                    mocks.store.createStore._test_called = {};
                     return {
                         getAppConfig: valfn({}, A.isObject),
                         getResourceVersions: function(obj) {
@@ -49,6 +52,9 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                                     fs: 'some/dir'
                                 }
                             }];
+                        },
+                        resourceCacheSave: function() {
+                            mocks.store.createStore._test_called.resourceCacheSave = true;
                         }
                     };
                 },
@@ -64,6 +70,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                 }
             }
         };
+        return mocks;
     }
 
     // mock functions within the modules require()'d by index.js
@@ -100,30 +107,39 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
         },
 
         'test missing type arg': function () {
+            var called = false;
             index.run([], {}, function(err, usg, seppuku) {
                 A.isString(err);
                 A.isNull(usg);
                 A.isTrue(seppuku);
                 A.areSame('Missing type', err);
+                called = true;
             });
+            A.isTrue(called, 'callback called');
         },
 
         'test invalid type arg': function () {
+            var called = false;
             index.run(['chubby'], {}, function(err, usg, seppuku) {
                 A.isString(err);
                 A.isNull(usg);
                 A.isTrue(seppuku);
                 A.areSame('Invalid type', err);
+                called = true;
             });
+            A.isTrue(called, 'callback called');
         },
 
         'test missing type arg': function () {
+            var called = false;
             index.run([], {}, function(err, usg, seppuku) {
                 A.isString(err);
                 A.isNull(usg);
                 A.isTrue(seppuku);
                 A.areSame('Missing type', err);
+                called = true;
             });
+            A.isTrue(called, 'callback called');
         },
 
         'test valid type, invalid cwd': function () {
@@ -132,12 +148,15 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
             // purposely having run() "fail" early to limit test scope
             mocks.util.isMojitoApp = valfn(false, A.isString);
 
+            var called = false;
             index.run(['html5app'], {}, function(err, usg, seppuku) {
                 A.isString(err);
                 A.isNull(usg);
                 A.isTrue(seppuku);
                 A.areSame(expected, err);
+                called = true;
             });
+            A.isTrue(called, 'callback called');
         },
 
         'test type is case-insensitive': function () {
@@ -146,19 +165,25 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
             // purposely having run() "fail" early to limit test scope
             mocks.util.isMojitoApp = valfn(false, A.isString);
 
+            var called = false;
             index.run(['HTML5APP'], {}, function(err, usg, seppuku) {
                 A.isString(err);
                 A.isNull(usg);
                 A.isTrue(seppuku);
                 A.areSame(expected, err);
+                called = true;
             });
+            A.isTrue(called, 'callback called');
 
+            called = false;
             index.run(['htML5apP'], {}, function(err, usg, seppuku) {
                 A.isString(err);
                 A.isNull(usg);
                 A.isTrue(seppuku);
                 A.areSame(expected, err);
+                called = true;
             });
+            A.isTrue(called, 'callback called');
         },
 
         'test hybridapp requires snapshot options': function () {
@@ -167,21 +192,27 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
             // purposely having run() "fail" early to limit test scope
             mocks.util.isMojitoApp = valfn(false, A.isString);
 
+            var called = false;
             index.run(['hybridapp'], {}, function(err, usg, seppuku) {
                 A.isString(err);
                 A.isNull(usg);
                 A.isTrue(seppuku);
                 // err is from options check
                 A.areSame('Build hybridapp requires --snapshotName and --snapshotTag', err);
+                called = true;
             });
+            A.isTrue(called, 'callback called');
 
+            called = false;
             index.run(['hybridapp'], {snapshotName: 1, snapshotTag:1}, function(err, usg, seppuku) {
                 A.isString(err);
                 A.isNull(usg);
                 A.isTrue(seppuku);
                 // no options error
                 A.areSame(expected, err);
+                called = true;
             });
+            A.isTrue(called, 'callback called');
         },
 
         'test -r invokes rmrf': function () {
@@ -191,14 +222,27 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                 cb('fake rm -rf error');
             }
 
+            var called = false;
             index.run(['html5app'], {replace: true}, function(err, usg, seppuku) {
                 A.isString(err);
                 A.isNull(usg);
                 A.isTrue(seppuku);
                 A.isTrue(/Error removing /.test(err));
                 A.isTrue(/fake rm -rf error/.test(err));
+                called = true;
             });
+            A.isTrue(called, 'callback called');
         },
+
+        'test rescache': function() {
+            var called = false;
+            index.run(['rescache'], {}, function(err, usg, seppuku) {
+                A.isTrue(mocks.store.createStore._test_called.resourceCacheSave, 'resourceCacheSave() called');
+                A.isTrue(mocks.store.createStore._test_opts.skipCache, 'skip cache');
+                called = true;
+            });
+            A.isTrue(called, 'callback called');
+        }
 
     };
 

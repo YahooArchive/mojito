@@ -723,6 +723,7 @@ YUI().use(
             // TODO
         },
 
+
         'test getAppGroupConfig': function() {
             var fixtures,
                 store,
@@ -765,6 +766,7 @@ YUI().use(
             A.areSame('root', config.root, 'yui->config->groups->app->root should be honored');
         },
 
+
         'test getAppSeedFiles': function() {
             var fixtures,
                 store,
@@ -802,7 +804,36 @@ YUI().use(
             A.areSame('yui-base', seed[0], 'regular modules should be in honored');
             A.areSame('loader-app', seed[1], 'regular modules should be in honored');
             A.areSame('foo_en-US', seed[2], 'lang should also be honored if the seed is using {langPath} token');
+        },
+
+
+        'resource cache support': function() {
+            var fixtures = libpath.join(__dirname, '../../../../../fixtures/store');
+            var store = new MockRS({ root: fixtures });
+            store.plug(Y.mojito.addons.rs.yui, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
+            var plugin = store.yui;
+
+            var cache = {};
+            plugin.resourceCacheSave(cache);
+            A.areSame(4, Y.Object.keys(cache).length);
+            A.isObject(cache.langs);
+            A.isObject(cache.resContents);
+            A.isObject(cache.appModulesRess);
+            A.isObject(cache.yuiModulesRess);
+
+            cache = {
+                langs: 'x1',
+                resContents: 'x2',
+                appModulesRess: 'x3',
+                yuiModulesRess: 'x4'
+            };
+            plugin.resourceCacheLoad(cache);
+            A.areSame('x1', plugin.langs);
+            A.areSame('x2', plugin.resContents);
+            A.areSame('x3', plugin.appModulesRess);
+            A.areSame('x4', plugin.yuiModulesRess);
         }
+
 
     }));
 

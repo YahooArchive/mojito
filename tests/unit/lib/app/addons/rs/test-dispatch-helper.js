@@ -19,6 +19,18 @@ YUI().use(
         A = Y.Assert;
 
 
+    function MockRS(config) {
+        MockRS.superclass.constructor.apply(this, arguments);
+    }
+    MockRS.NAME = 'MockResourceStore';
+    MockRS.ATTRS = {};
+    Y.extend(MockRS, Y.Base, {
+        initializer: function(cfg) {
+            this._config = cfg || {};
+        }
+    });
+
+
     suite.add(new YUITest.TestCase({
 
         name: 'dispatch-helper rs addon tests',
@@ -33,6 +45,25 @@ YUI().use(
             // order matters
             A.areSame(4, details.acAddons.length, 'number of AC addons');
             A.areSame(JSON.stringify(['config','intl','params','url']), JSON.stringify(details.acAddons), 'correct order');
+        },
+
+
+        'resource cache support': function() {
+            var fixtures = libpath.join(__dirname, '../../../../../fixtures/store');
+            var store = new MockRS({ root: fixtures });
+            store.plug(Y.mojito.addons.rs['dispatch-helper'], { appRoot: fixtures, mojitoRoot: mojitoRoot } );
+            var plugin = store['dispatch-helper'];
+
+            var cache = {};
+            plugin.resourceCacheSave(cache);
+            A.areSame(1, Y.Object.keys(cache).length);
+            A.isObject(cache.acAddons);
+
+            cache = {acAddons: { x: 'y' }};
+            plugin.resourceCacheLoad(cache);
+            A.isObject(plugin.acAddons);
+            A.areSame(1, Y.Object.keys(plugin.acAddons).length);
+            A.areSame('y', plugin.acAddons.x);
         }
 
 
