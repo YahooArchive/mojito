@@ -26,25 +26,6 @@ YUI.add('mojito', function(Y, NAME) {
     Y.namespace('mojito.addons');
     Y.namespace('mojito.addons.ac');
     Y.namespace('mojito.addons.viewEngines');
-    // HookSystem::StartBlock
-    Y.mojito.hooks = {
-        hook: function () {},
-        registerHook: function () {},
-        enableHookGroup: function () {}
-    };
-    // HookSystem::EndBlock
-
-    // this is a facade for the real implementation from mojito-perf module
-    // that will have to be plugged manually to get the metrics in the
-    // console or a log file.
-    Y.mojito.perf = {
-        timeline: function () {
-            return {
-                done: function () {}
-            };
-        },
-        mark: function () {}
-    };
 
     // internal mojito framework cache (this is probably legacy)
     YUI.namespace('_mojito._cache');
@@ -89,6 +70,15 @@ YUI.add('mojito-dispatcher', function(Y, NAME) {});
 YUI.add('mojito-mojit-proxy', function(Y, NAME) {});
 YUI.add('mojito-output-handler', function(Y, NAME) {});
 YUI.add('mojito-perf', function(Y, NAME) {});
+YUI.add('mojito-hooks', function(Y, NAME) {
+
+    Y.namespace('mojito').hooks = {
+        hook: function () {},
+        registerHook: function () {},
+        enableHookGroup: function () {}
+    };
+
+});
 YUI.add('mojito-resource-store', function(Y, NAME) {});
 YUI.add('mojito-rest-lib', function(Y, NAME) {});
 YUI.add('mojito-route-maker', function(Y, NAME) {});
