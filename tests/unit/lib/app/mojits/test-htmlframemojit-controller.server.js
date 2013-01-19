@@ -46,33 +46,131 @@ YUI().use('HTMLFrameMojit', 'test', function(Y, NAME) {
             Y.Mock.verify(composite);
         },
 
-        'test index()': function() {
-            var composite = Y.Mock();
+        'test default action on child mojit': function() {
 
-            Y.Mock.expect(composite, {
-                method: 'execute',
-                args: [Y.Mock.Value.Object, Y.Mock.Value.Function],
-                run: function (cfg, cb) {
-                    A.isObject(cfg);
-                    A.areEqual('foo', cfg.children.child, 'children structure incomplete');
-                    // cb(); TODO: if we call back, there are another bunch of stuff to mock
-                }
-            });
-
-            var ac = {
-                config: {
-                    get: function (name) {
-                        return {
-                            child: "foo",
-                            assets: {}
-                        }[name];
+            var dispatchCalled,
+                executeCalled,
+                ac = {
+                    action: 'index',
+                    config: {
+                        get: function (name) {
+                            return {
+                                child: {
+                                    base: "child-1"
+                                },
+                                assets: {}
+                            }[name];
+                        }
+                    },
+                    composite: {
+                        execute: function (cfg, callback) {
+                            executeCalled = {
+                                cfg: cfg
+                            };
+                        }
                     }
-                },
-                composite: composite
-            };
-            Y.mojito.controllers.HTMLFrameMojit.index(ac);
+                };
 
-            Y.Mock.verify(composite);
+            Y.mojito.controllers.HTMLFrameMojit.index(ac);
+            A.isObject(executeCalled, 'ac.composite.execute was not executed');
+            A.areEqual('index', executeCalled.cfg.children.child.action, 'the default action index was not set');
+        },
+
+        'test custom action on child mojit': function() {
+
+            var dispatchCalled,
+                executeCalled,
+                ac = {
+                    action: 'index',
+                    config: {
+                        get: function (name) {
+                            return {
+                                child: {
+                                    base: "child-1",
+                                    action: "custom"
+                                },
+                                assets: {}
+                            }[name];
+                        }
+                    },
+                    composite: {
+                        execute: function (cfg, callback) {
+                            executeCalled = {
+                                cfg: cfg
+                            };
+                        }
+                    }
+                };
+
+            Y.mojito.controllers.HTMLFrameMojit.index(ac);
+            A.isObject(executeCalled, 'ac.composite.execute was not executed');
+            A.areEqual('custom', executeCalled.cfg.children.child.action, 'the custom action was not honored');
+
+        },
+
+        'test index()': function() {
+
+            var dispatchCalled,
+                doneCalled,
+                executeCalled,
+                assetsAdded,
+                ac = {
+                    config: {
+                        get: function (name) {
+                            return {
+                                child: {
+                                    base: "child-1"
+                                },
+                                assets: {},
+                                deploy: false
+                            }[name];
+                        }
+                    },
+                    composite: {
+                        execute: function (cfg, callback) {
+                            executeCalled = {
+                                cfg: cfg
+                            };
+                            callback({}, {
+                                metaFromChildGoesHere: true,
+                                assets: {
+                                    bottom: {}
+                                }
+                            });
+                        }
+                    },
+                    done: function(data, viewMeta) {
+                        doneCalled = {
+                            data: data,
+                            viewMeta: viewMeta
+                        };
+                    },
+                    assets: {
+                        renderLocations: function() {
+                            return {};
+                        },
+                        getAssets: function() {
+                            return [];
+                        },
+                        addAssets: function(assets) {
+                            assetsAdded = assets;
+                        }
+                    }
+                };
+
+            Y.mojito.controllers.HTMLFrameMojit.index(ac);
+            A.isObject(executeCalled, 'ac.composite.execute was not called');
+            A.areEqual('child-1', executeCalled.cfg.children.child.base,   'the child base config was not honored');
+
+            A.isObject(doneCalled, 'ac.done was not called');
+
+            A.isString(doneCalled.data.title, 'title is required');
+
+            A.isTrue(doneCalled.viewMeta.metaFromChildGoesHere, 'meta should be passed into done');
+            A.areEqual('index', doneCalled.viewMeta.view.name, 'the view name should always be index');
+
+            A.isObject(assetsAdded, 'ac.assets.addAssets was not called');
+            A.isObject(doneCalled.viewMeta.assets.bottom, 'assets coming from the child should be inserted in the correct position');
         }
 
     }));
