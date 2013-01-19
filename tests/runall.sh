@@ -19,8 +19,5 @@ $basedir/bin/mojito jslint -p
 $basedir/tests/run.js test -u --group server --driver nodejs
 $basedir/tests/run.js test -u --group client --driver selenium
 
-# cli tests are distinct for now; ideally these should be unit tests
-$basedir/tests/run.js test -c --driver nodejs
-
 # func tests
 $basedir/tests/run.js test -f
