@@ -384,7 +384,7 @@ YUI().use('mojito-assets-addon', 'test', 'array-extras', function(Y, NAME) {
             fragments = addon.renderLocations();
 
             A.isObject(fragments, 'should always be an object, even when empty');
-            A.areEqual(0, Object.keys(fragments).length, 'empty assets means nothing to render as fragment');
+            A.areEqual(0, Y.Object.keys(fragments).length, 'empty assets means nothing to render as fragment');
 
             // testing with some assets in place
             addon.addAsset('js', 'top', 'foo.js');
