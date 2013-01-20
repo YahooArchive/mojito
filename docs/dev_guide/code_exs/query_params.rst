@@ -6,31 +6,37 @@ Using Query Parameters
 
 **Difficulty Level:** Intermediate
 
+.. _code_exs_qp-summary:
+
 Summary
 =======
 
-This example shows how to access query parameters from the URL, the POST body, and the 
-routing configuration of your Mojito application.
+This example shows how to access query parameters from the URL, the POST body, 
+and the routing configuration of your Mojito application.
 
 The following topics will be covered:
 
-- using the `Params addon <../../api/classes/Params.common.html>`_ to access parameters
+- using the `Params addon <../../api/classes/Params.common.html>`_ to access 
+  parameters
 - setting and getting parameters from your route configuration
+
+.. _code_exs_qp-notes:
 
 Implementation Notes
 ====================
 
-The mojit controller of this code example has four functions, each using methods from the 
-``Params`` addon to access different types of parameters. Let's start by learning how 
-to access the query string parameters in the first function.
+The mojit controller of this code example has four functions, each using
+methods from the ``Params`` addon to access different types of parameters. 
+Let's start by learning how to access the query string parameters in the 
+first function.
 
 The ``example1`` function below gets all of the query string parameters using 
 ``params.getFromUrl``. To get a specific parameter, just pass a key to 
-``params.getFromUrl(key)``. In the code below, the key-value pairs that are fetched by 
-``params.getFromUrl()`` are wrapped in objects that are pushed to the array 
-``paramsArray``. The array is assigned to ``params``, which is then passed to the 
-``example1`` template. By default, the function sends data to the template with the same 
-name.
+``params.getFromUrl(key)``. In the code below, the key-value pairs that are 
+fetched by ``params.getFromUrl()`` are wrapped in objects that are pushed to 
+the array ``paramsArray``. The array is assigned to ``params``, which is then 
+passed to the ``example1`` template. By default, the function sends data to the 
+template with the same name.
 
 .. code-block:: javascript
 
@@ -59,11 +65,12 @@ name.
        );
      },
    ...
+   }, '0.0.1', {requires: ['dump', 'mojito-params-addon']});
 
-The ``example2`` function below uses ``params.getFromBody()`` to extract parameters from 
-the POST body. Once again, the array of objects containing the key-value pairs is passed 
-to the ``example2`` template, where the array is available through the ``params`` 
-variable.
+The ``example2`` function below uses ``params.getFromBody()`` to extract
+parameters from the POST body. Once again, the array of objects containing 
+the key-value pairs is passed to the ``example2`` template, where the array 
+is available through the ``params`` variable.
 
 .. code-block:: javascript
 
@@ -85,9 +92,11 @@ variable.
        );
      },
    ...
+   }, '0.0.1', {requires: ['dump', 'mojito-params-addon']});
 
-The ``example3`` function below uses ``params.getFromRoute()`` to access the parameters 
-that are specified in ``routes.json``, which we will look at in the next code snippet.
+The ``example3`` function below uses ``params.getFromRoute()`` to access the 
+parameters that are specified in ``routes.json``, which we will look at in 
+the next code snippet.
 
 .. code-block:: javascript
 
@@ -108,12 +117,13 @@ that are specified in ``routes.json``, which we will look at in the next code sn
        );
      },
    ...
+   }, '0.0.1', {requires: ['dump', 'mojito-params-addon']});
 
-In the ``routes.json`` file below, you see parameters are set for the ``example3`` and 
-``example4`` route. Notice that ``example3`` only accepts HTTP GET calls, whereas 
-``example4`` allows both HTTP GET and POST calls. Storing parameters in your routing 
-configuration allows you to associate them with a function, an HTTP method, and a URL 
-path.
+In the ``routes.json`` file below, you see parameters are set for the 
+``example3`` and ``example4`` route. Notice that ``example3`` only accepts 
+HTTP GET calls, whereas ``example4`` allows both HTTP GET and POST calls. 
+Storing parameters in your routing configuration allows you to associate 
+them with a function, an HTTP method, and a URL path.
 
 .. code-block:: javascript
 
@@ -152,11 +162,12 @@ path.
    
 
 In the ``example4`` function below, you find the parameters catch-all method 
-``params.getFromMerged``. Using ``params.getFromMerged``, you can get the query string 
-parameters, the POST body parameters, and the parameters set in ``routes.json`` at one 
-time. You can also get a specific parameter by passing a key to 
-``params.getFromMerged(key)``. For example, ``params.getFromMerged("from")`` would return 
-the value "routing" from the parameters set in the ``routes.json`` shown above.
+``params.getFromMerged``. Using ``params.getFromMerged``, you can get the query 
+string parameters, the POST body parameters, and the parameters set in 
+``routes.json`` at one time. You can also get a specific parameter by passing 
+a key to ``params.getFromMerged(key)``. For example, 
+``params.getFromMerged("from")`` would return the value "routing" from the
+ parameters set in the ``routes.json`` shown above.
 
 .. code-block:: javascript
 
@@ -181,9 +192,31 @@ the value "routing" from the parameters set in the ``routes.json`` shown above.
        );
      }
    ...
+   }, '0.0.1', {requires: ['dump', 'mojito-params-addon']});
+
+The methods of the ``Params`` addon have the following aliases for simplification:
+
++---------------------+--------------+
+| Method              | Alias        | 
++=====================+==============+
+| ``getAll()``        | ``all()``    | 
++---------------------+--------------+
+| ``getFromBody()``   | ``body()``   |
++---------------------+--------------+
+| ``getFromFiles()``  | ``files()``  |
++---------------------+--------------+
+| ``getFromMerged()`` | ``merged()`` |
++---------------------+--------------+
+| ``getfromRoute()``  | ``route()``  | 
++---------------------+--------------+
+| ``getFromUrl()``    | ``url()``    |
++---------------------+--------------+
+
 
 For more information, see the `Params addon <../../api/classes/Params.common.html>`_ in 
 the Mojito API documentation.
+
+.. _code_exs_qp-ex:
 
 Setting Up this Example
 =======================
@@ -253,15 +286,13 @@ To set up and run ``using_parameters``:
 
 #. Change to ``mojits/QueryMojit``.
 #. Modify the controller to access different query parameters by replacing the code in 
-  ``controller.server.js`` with the following:
+   ``controller.server.js`` with the following:
 
    .. code-block:: javascript
 
       YUI.add('QueryMojit', function(Y, NAME) {
         Y.namespace('mojito.controllers')[NAME] = {   
-          init: function(config) {
-            this.config = config;
-          },
+
           index: function(actionContext) {
           actionContext.done('Mojito is working.');
           },
@@ -333,7 +364,7 @@ To set up and run ``using_parameters``:
             );
           }
         };
-      }, '0.0.1', {requires: ['dump']});
+      }, '0.0.1', {requires: ['dump', 'mojito-params-addon']});
 
 #. To display the key-value pairs from the query string parameters, create the template 
    ``views/example1.hb.html`` with the following:
@@ -443,6 +474,8 @@ To set up and run ``using_parameters``:
    ``routes.json``, go to the URL below and submit the form on the page:
 
    http://localhost:8666/example4?foo=bar&bar=foo
+
+.. _code_exs_qp-src:
 
 Source Code
 ===========

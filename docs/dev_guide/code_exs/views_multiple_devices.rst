@@ -6,12 +6,14 @@ Creating Views for Different Devices
 
 **Difficulty Level:** Intermediate
 
+.. _code_exs_device_views-summary:
+
 Summary
 =======
 
-This example shows how to create specialized views for different wireless devices, such as 
-iPhones, BlackBerries, and Android phones. Each device uses different templates but the 
-same data from the controller.
+This example shows how to create specialized views for different wireless
+devices, such as iPhones, BlackBerries, and Android phones. Each device 
+uses different templates but the same data from the controller.
 
 The following topics will be covered:
 
@@ -20,10 +22,13 @@ The following topics will be covered:
 - using query parameters to select the device view
 - using the user agent to select the device view
 
+.. _code_exs_device_views-notes:
+
 Implementation Notes
 ====================
 
-The following screenshots show you how the application appears on different devices.
+The following screenshots show you how the application appears on different 
+devices.
 
 .. image:: images/preview.iphone.gif
    :height: 368px
@@ -37,19 +42,24 @@ The following screenshots show you how the application appears on different devi
    :height: 368px
    :width: 401px
 
+.. _device_views_notes-config:
+
 Configuring Application to Use Device-Specific Templates
 --------------------------------------------------------
+
+.. _device_views-device_contexts:
 
 Context Configurations
 ######################
 
-Mojito allows you to map contexts to a set of configurations based on runtime factors.
-The context is defined by the ``setting`` property in the JSON configuration files.
-The default value for ``setting`` is ``master``. Mojito will first look to see if a base 
-context wasset on the command line with the ``--context`` option, then at the HTTP headers 
-and query string. In this example, we want contexts defined for different devices,
-so, in the ``application.json`` file, we'll define contexts 
-for Android, Blackberry, and iPhone with the following:
+Mojito allows you to map contexts to a set of configurations based on runtime 
+factors. The context is defined by the ``setting`` property in the JSON 
+configuration files. The default value for ``setting`` is ``master``. 
+Mojito will first look to see if a base context was set on the command line 
+with the ``--context`` option, then at the HTTP headers and query string. 
+In this example, we want contexts defined for different devices, so, in 
+the ``application.json`` file, we'll define contexts for Android, Blackberry, 
+and iPhone with the following:
 
 .. code-block:: javascript
 
@@ -72,16 +82,20 @@ for Android, Blackberry, and iPhone with the following:
      }
    ]
    
-You can also have contexts for environment, language, and region configurations, or create
-custom contexts. See `Using Context Configurations <../topics/mojito_using_contexts.html>`_.
+You can also have contexts for environment, language, and region configurations, 
+or create custom contexts. 
+See `Using Context Configurations <../topics/mojito_using_contexts.html>`_.
+
+.. _device_context-select:
 
 selector Property
 #################
 
-How does Mojito know which template file to use for a device? Mojito identifies files 
-resources using the ``selector`` property in configuration files. In the 
-``application.json`` file, we can use the contexts for our devices with the ``selector`` 
-property so Mojito knows what file resources to use for contexts associated with devices.
+How does Mojito know which template file to use for a device? Mojito identifies 
+files resources using the ``selector`` property in configuration files. In the 
+``application.json`` file, we can use the contexts for our devices with the 
+``selector`` property so Mojito knows what file resources to use for contexts 
+associated with devices.
 
 .. code-block:: javascript
 
@@ -98,26 +112,30 @@ property so Mojito knows what file resources to use for contexts associated with
      "selector": "iphone" 
    }
 
-For example, when given the context ``device:iphone``, Mojito will look for file resources 
-that have the identifier ``iphone``. For more information about the ``selector`` property, 
+For example, when given the context ``device:iphone``, Mojito will look for 
+file resources that have the identifier ``iphone``. For more information about 
+the ``selector`` property, 
 see `Resource Store: selector Property <../topics/mojito_resource_store.html#selector-property>`_.
+
+.. _device_context-determine:
 
 Determining Context
 ###################
 
-Mojito uses two ways to determine which device is making an HTTP request for a page. The 
-first way is to use the value assigned to the query string parameter ``device``. For 
-example, if Mojito received an HTTP GET request on the URL below, it would render the 
-iPhone view into HTML and serve the page to the device.
+Mojito uses two ways to determine which device is making an HTTP request for a 
+page. The first way is to use the value assigned to the query string parameter 
+``device``. For example, if Mojito received an HTTP GET request on the URL 
+below, it would render the iPhone view into HTML and serve the page to the 
+device.
 
 ::
 
    http://localhost:8666?device=iphone
 
-Mojito also uses the HTTP User-Agent header field to decide which view to render and serve. 
-In this example HTTP header, the User-Agent field indicates that the HTTP request is 
-coming from an Android device, so Mojito would use the Android template and serve the 
-rendered HTML to the device.
+Mojito also uses the HTTP User-Agent header field to decide which view to 
+render and serve. In this example HTTP header, the User-Agent field indicates 
+that the HTTP request is coming from an Android device, so Mojito would use 
+the Android template and serve the rendered HTML to the device.
 
 ::
 
@@ -129,37 +147,44 @@ rendered HTML to the device.
    Accept: application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
    Accept-Charset: utf-8, iso-8859-1, utf-16, *;q=0.7
 
+.. _device_views_notes-create_templates:
 
 Creating Templates for Devices
 ------------------------------
 
 For each device's customized view, you need to create a template. 
-This code example uses the templates to create customized views for iPhones, Android 
-phones, and BlackBerries. 
+This code example uses the templates to create customized views for 
+iPhones, Android phones, and BlackBerries. 
+
+.. _device_views_templates-naming:
 
 Naming Convention for Templates
 ###############################
 
-The naming convention for template files has the following syntax, where ``{selector}``
-is the string identifier (defined by the ``selector`` property) of a device, such as 
-"iphone":
+The naming convention for template files has the following syntax, where 
+``{selector}``is the string identifier (defined by the ``selector`` property) 
+of a device, such as "iphone":
 
 ``{action}.{selector}.{rendering_engine}.html``
+
+.. _device_views_templates-ex:
 
 Templates for This Example
 ##########################
 
-This code example uses the following template files, where ``hb`` represents
-the Handlebars rendering engine:
+This code example uses the following template files, where ``hb`` 
+represents the Handlebars rendering engine:
 
 - ``index.iphone.hb.html``
 - ``index.android.hb.html``
 - ``index.blackberry.hb.html`` 
 
-Thus, if an iPhone was making an HTTP GET request on the ``index`` (action) file and the 
-template was being rendered by the Handlebars rendering engine, Mojito would use 
-``index.iphone.hb.html`` and serve the rendered view to the iPhone.
+Thus, if an iPhone was making an HTTP GET request on the ``index`` (action) 
+file and the template was being rendered by the Handlebars rendering engine, 
+Mojito would use ``index.iphone.hb.html`` and serve the rendered view to the 
+iPhone.
 
+.. _code_exs_device_views-setup:
 
 Setting Up this Example
 =======================
@@ -173,9 +198,8 @@ To set up and run ``device_views``:
 #. Create your mojit.
 
    ``$ mojito create mojit device``
-
-#. To configure you application, replace the code in ``application.json`` with the 
-   following:
+#. To configure you application, replace the code in ``application.json`` 
+   with the following:
 
    .. code-block:: javascript
 
@@ -203,7 +227,8 @@ To set up and run ``device_views``:
         }
       ]
 
-#. To configure routing, replace the code in  ``routes.json`` with the following:
+#. To configure routing, replace the code in ``routes.json`` with the 
+   following:
 
    .. code-block:: javascript
 
@@ -225,9 +250,7 @@ To set up and run ``device_views``:
 
       YUI.add('device', function(Y, NAME) {
         Y.namespace('mojito.controllers')[NAME] = {   
-          init: function(config) {
-            this.config = config;
-          },
+
           /* Method corresponding to the 'index' action.
           *
           * @param ac {Object} The action context that
@@ -239,8 +262,8 @@ To set up and run ``device_views``:
         };
       }, '0.0.1', {requires: []});
 
-#. To modify the default template, replace the code in ``views/index.hb.html`` with the 
-   following:
+#. To modify the default template, replace the code in ``views/index.hb.html`` 
+   with the following:
 
    .. code-block:: html
 
@@ -272,7 +295,8 @@ To set up and run ``device_views``:
         </body>
       </html>
 
-#. For the iPhone view, create the ``views/index.iphone.hb.html`` file with the following:
+#. For the iPhone view, create the ``views/index.iphone.hb.html`` file with the 
+   following:
    
    .. code-block:: html
    
@@ -304,8 +328,8 @@ To set up and run ``device_views``:
         </body>
       </html>
 
-#. For the Android view, create the ``views/index.android.hb.html`` file with the 
-   following:
+#. For the Android view, create the ``views/index.android.hb.html`` file with
+   the following:
 
    .. code-block:: html
 
@@ -337,8 +361,8 @@ To set up and run ``device_views``:
         </body>
       </html>
 
-#. For the BlackBerry view, create the ``views/index.blackberry.hb.html`` file with the 
-   following:
+#. For the BlackBerry view, create the ``views/index.blackberry.hb.html`` file 
+   with the following:
 
    .. code-block:: html
 
@@ -380,6 +404,8 @@ To set up and run ``device_views``:
 #. Request the iPhone view by adding query string parameter ``?device=iphone``:
 
    http://localhost:8666?device=iphone
+
+.. _code_exs_device_views-src:
 
 Source Code
 ===========

@@ -6,17 +6,16 @@ YUI({
     useBrowserConsole: true,
     logInclude: { TestRunner: true }
 }).use('node', 'node-event-simulate', 'test', 'console', function (Y) {
-   
+
          var suite = new Y.Test.Suite("DeveloperGuide: yuimodule");
 
          suite.add(new Y.Test.Case({
-         
+
              "test yuimodule": function() {
-                 Y.Assert.areEqual("Storage Lite: Simple Notepad Example", Y.one('h1').get('innerHTML'));
                  Y.Assert.areEqual("Storage Lite", Y.one('a').get('innerHTML'));
-                 Y.Assert.areEqual("\"/static/yui_module/autoload/storage-lite.client.js\"", Y.one('body').get('innerHTML').match(/"\/static\/yui_module\/autoload\/storage-lite.client.js"/gi)[0]);
+                 Y.Assert.isTrue(Y.one('#notes').hasClass('ready'), 'the classname [ready] should be applied if Y.StorageLite works');
              }
-         }));    
+         }));
 
          Y.Test.Runner.add(suite);
 });

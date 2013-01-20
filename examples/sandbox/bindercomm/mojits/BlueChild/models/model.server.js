@@ -1,10 +1,10 @@
 /*
- * Copyright (c) 2011-2012, Yahoo! Inc.  All rights reserved.
+ * Copyright (c) 2011-2013, Yahoo! Inc.  All rights reserved.
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('BlueChildModel', function(Y) {
+YUI.add('BlueChildModel', function(Y, NAME) {
 
 /**
  * The BlueChildModel module.

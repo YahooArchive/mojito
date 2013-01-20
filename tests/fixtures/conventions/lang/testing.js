@@ -1,3 +1,3 @@
-YUI.add('lang/testing_de', function(Y, NAME) {
+YUI.add('lang/testing', function(Y, NAME) {
     // just needs to exist
 });

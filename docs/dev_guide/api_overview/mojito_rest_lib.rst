@@ -1,18 +1,19 @@
-
-
 ============
 REST Library
 ============
 
-Mojito has a library to make it easier to make a REST calls to Web services from your model. For 
-implementation details, see `Class Y.mojito.lib.REST <../../api/classes/Y.mojito.lib.REST.html>`_ 
-in the Mojito API documentation.
+Mojito has a library to make it easier to make a REST calls to Web services from your 
+model. For implementation details, see 
+`Class Y.mojito.lib.REST <../../api/classes/Y.mojito.lib.REST.html>`_ in the Mojito API 
+documentation.
+
+.. _mojito_rest_lib-incl:
 
 Including Library
-#################
+=================
 
-To use the REST library,  include the string 'mojito-rest-lib' in the ``requires`` array, which 
-instructs YUI to load the library. Once the library is loaded,  you can use 
+To use the REST library, include the string 'mojito-rest-lib' in the ``requires`` array, 
+which instructs YUI to load the library. Once the library is loaded,  you can use 
 `Y.mojito.lib.REST <../../api/classes/Y.mojito.lib.REST.html>`_ to make REST calls..
 
 .. code-block:: javascript
@@ -25,19 +26,19 @@ instructs YUI to load the library. Once the library is loaded,  you can use
      // Ask YUI to load the library w/ 'mojito-rest-lib'.
    }, '0.0.1', {requires: ['mojito', 'mojito-rest-lib']});
 
-Example
-#######
 
-In the model for the ``recipeSearch`` mojit below, the REST library is used to make a GET call to 
-the Recipe Puppy API.
+.. _mojito_rest_lib-ex:
+
+Example
+=======
+
+In the model for the ``recipeSearch`` mojit below, the REST library is used to make a 
+GET call to the Recipe Puppy API.
 
 .. code-block:: javascript
 
    YUI.add('ProductSearchModel', function(Y, NAME) {
       Y.namespace('mojito.models')[NAME] = {
-        init: function(config) {
-           this.config = config;
-       },
        recipeSearch: function(count, cb) {
          var url = 'http://www.recipepuppy.com/api/';
          var params = {

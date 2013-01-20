@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2012, Yahoo! Inc.  All rights reserved.
+ * Copyright (c) 2011-2013, Yahoo! Inc.  All rights reserved.
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
@@ -15,6 +15,7 @@ YUI.add('FlickrModel', function (Y, NAME) {
  *
  * @module FlickrModel
  */
+
     function buildFlickrUrlFromRecord(record) {
         return 'http://farm' + record.farm
             + '.static.flickr.com/' + record.server

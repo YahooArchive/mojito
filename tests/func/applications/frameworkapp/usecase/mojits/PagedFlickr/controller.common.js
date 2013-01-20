@@ -21,7 +21,7 @@ YUI.add('PagedFlickr', function(Y, NAME) {
             // parameter is base-0.
             start = (page-1) * PAGESIZE;
 
-            ac.models.flickr.getFlickrImages('mojito', start, PAGESIZE, function(images) {
+            ac.models.get('PagedFlickrModel').getFlickrImages('mojito', start, PAGESIZE, function(images) {
 
                 var dateString = ac.intl.formatDate(new Date());
                 var data = {
@@ -41,18 +41,25 @@ YUI.add('PagedFlickr', function(Y, NAME) {
                     data.has_prev = true;
                 }
                 ac.done(data);
-                
+
             });
         }
     };
-    
+
    function selfUrl(ac, mods) {
         var params = Y.mojito.util.copy(ac.params.getFromMerged());
         for (var k in mods) {
             params[k] = mods[k];
         }
-        return ac.url.make('flickr', 'index', Y.QueryString.stringify(params));
+        return ac.url.make('flickr', 'index', params);
     }
 
 
-}, '0.0.1', {requires: ['mojito', 'mojito-intl-addon', 'mojito-util'], lang: ['de', 'en-US']});
+}, '0.0.1', {requires: [
+    'mojito',
+    'mojito-models-addon',
+    'mojito-params-addon',
+    'mojito-url-addon',
+    'mojito-intl-addon',
+    'mojito-util',
+    'PagedFlickrModel'], lang: ['de', 'en-US']});

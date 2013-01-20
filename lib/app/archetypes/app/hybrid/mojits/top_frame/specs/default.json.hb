@@ -23,7 +23,7 @@
         "config": {
             "assets": {
                 "bottom": {
-                    "js": ["/yahoo.crt.lib/yui-cfg.js"]
+                    "js": ["//yahoo.com/yahoo.crt.lib/yui-cfg.js"]
                 }
             }
         }

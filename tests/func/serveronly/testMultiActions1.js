@@ -7,10 +7,10 @@ YUI({
     logInclude: { TestRunner: true }
 }).use('node', 'node-event-simulate', 'test', 'console', function (Y) {
    
-     var suite = new Y.Test.Suite("ServerOnly: multiaction");
+     var suite = new Y.Test.Suite("ServerOnly: multiaction1");
 
      suite.add(new Y.Test.Case({
-	  "test multiaction": function(){
+	  "test multiaction1": function(){
           Y.Assert.areEqual('Index', Y.all('h3').item(0).get('innerHTML'));
           Y.Assert.areEqual('hello from index', Y.all('h3').item(1).get('innerHTML'));
       }

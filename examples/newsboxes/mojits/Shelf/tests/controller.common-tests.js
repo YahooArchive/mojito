@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2012, Yahoo! Inc.  All rights reserved.
+ * Copyright (c) 2011-2013, Yahoo! Inc.  All rights reserved.
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
@@ -9,9 +9,9 @@
 /*global YUI,YUITest*/
 
 
-YUI.add('ShelfController-tests', function(Y) {
+YUI.add('ShelfController-tests', function(Y, NAME) {
 
-    var suite = new YUITest.TestSuite('ShelfController-tests'),
+    var suite = new YUITest.TestSuite(NAME),
         controller = null,
         A = YUITest.Assert;
 

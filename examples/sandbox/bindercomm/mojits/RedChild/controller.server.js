@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2012, Yahoo! Inc.  All rights reserved.
+ * Copyright (c) 2011-2013, Yahoo! Inc.  All rights reserved.
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
@@ -20,10 +20,6 @@ YUI.add('RedChild', function(Y, NAME) {
      */
     Y.namespace('mojito.controllers')[NAME] = {
 
-        init: function(config) {
-            this.config = config;
-        },
-
         /**
          * Method corresponding to the 'index' action.
          *
@@ -31,7 +27,6 @@ YUI.add('RedChild', function(Y, NAME) {
          *        to the Mojito API.
          */
         index: function(ac) {
-            Y.log(this.config);
             ac.done({id: ac.config.get('id')});
         }
 

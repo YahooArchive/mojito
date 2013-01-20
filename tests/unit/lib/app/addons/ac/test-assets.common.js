@@ -1,6 +1,6 @@
 //-*- x-counterpart: ../../../../../../source/lib/app/addons/ac/assets.common.js; -*-
 /*
- * Copyright (c) 2011-2012, Yahoo! Inc.  All rights reserved.
+ * Copyright (c) 2011-2013, Yahoo! Inc.  All rights reserved.
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
@@ -374,7 +374,36 @@ YUI().use('mojito-assets-addon', 'test', 'array-extras', function(Y, NAME) {
             var expected = { top: { blob: [ '<style type="text/css">\nfile-contents</style>\n' ] } };
 
             A.areEqual(Y.JSON.stringify(expected), Y.JSON.stringify(results));
+        },
+
+        'test renderLocations': function() {
+
+            var fragments;
+
+            // empty assets
+            fragments = addon.renderLocations();
+
+            A.isObject(fragments, 'should always be an object, even when empty');
+            A.areEqual(0, Y.Object.keys(fragments).length, 'empty assets means nothing to render as fragment');
+
+            // testing with some assets in place
+            addon.addAsset('js', 'top', 'foo.js');
+            addon.addAsset('js', 'top', 'bar.js');
+            addon.addAsset('js', 'bottom', 'baz.js');
+            addon.addAsset('css', 'top', 'foo.css');
+            fragments = addon.renderLocations();
+
+            A.areEqual(2, Object.keys(fragments).length, 'bottom and top should be in place');
+            A.isString(fragments.bottom, 'bottom fragment is missing');
+            A.isString(fragments.top, 'top fragment is missing');
+
+            // TODO: test the content of the fragments
+            A.areEqual(2, fragments.top.match(/<script/g).length, 'two scripts tags should be generated at the top');
+            A.areEqual(1, fragments.top.match(/<link/g).length, 'three link tags should be generated at the top');
+            A.areEqual(1, fragments.bottom.match(/<script/g).length, 'bottom fragment should have one script tag');
+            A.isNull(fragments.bottom.match(/<link/g), 'bottom fragment should have no link tag');
         }
+
     };
 
     suite.add(new Y.Test.Case(cases));

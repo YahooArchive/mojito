@@ -17,10 +17,6 @@ YUI.add('GlobalMojit', function(Y, NAME) {
      */
     Y.namespace('mojito.controllers')[NAME] = {
 
-        init: function(config) {
-            this.config = config;
-        },
-
         /**
          * Method corresponding to the 'index' action.
          *

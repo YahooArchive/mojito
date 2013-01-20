@@ -1,34 +1,48 @@
-
-
 =============================
 Getting Input and Cookie Data
 =============================
 
+
+.. _mojito_data-intro:
+
 Introduction
-############
+============
 
-Mojito provides addons for accessing data from query string and routing parameters, cookies, and the POST request body.
+Mojito provides addons for accessing data from query string and routing 
+parameters, cookies, and the POST request body.
 
-This section will provide an overview of the following addons that allow you to access data:
+This section will provide an overview of the following addons that allow you 
+to access data:
 
 - `Params addon <../../api/classes/Params.common.html>`_
 - `Cookies addon <../../api/classes/Cookie.server.html>`_
 
-To see examples using these addons to get data, see `Using Query Parameters <../code_exs/query_params.html>`_ and `Using Cookies <../code_exs/cookies.html>`_.
+To see examples using these addons to get data, see 
+`Using Query Parameters <../code_exs/query_params.html>`_ and 
+`Using Cookies <../code_exs/cookies.html>`_.
+
+
+.. _mojito_data-params:
 
 Getting Data from Parameters
-############################
+============================
 
-The methods in the Params addon are called from the ``params`` namespace. As a result, the call will have the following syntax where ``ac`` is the 
+The methods in the Params addon are called from the ``params`` namespace. 
+As a result, the call will have the following syntax where ``ac`` is the 
 ActionContext object: ``ac.params.*``
 
+.. _mojito_data-params_get:
+
 GET
-===
+---
 
-The GET parameters are the URL query string parameters. The Params addon creates JSON using the URL query string parameters. The method ``getFromUrl`` 
-allows you to specify a GET parameter or get all of the GET parameters. You can also use the alias ``url`` to get URL query string parameters.
+The GET parameters are the URL query string parameters. The Params addon 
+creates JSON using the URL query string parameters. The method ``getFromUrl`` 
+allows you to specify a GET parameter or get all of the GET parameters. You 
+can also use the alias ``url`` to get URL query string parameters.
 
-For example, for the URL ``http://www.yahoo.com?foo=1&bar=2``, the Params addon would create the following object:
+For example, for the URL ``http://www.yahoo.com?foo=1&bar=2``, the Params 
+addon would create the following object:
 
 .. code-block:: javascript
 
@@ -37,20 +51,22 @@ For example, for the URL ``http://www.yahoo.com?foo=1&bar=2``, the Params addon 
      bar: 2
    }
 
+
+.. _data_params-get_single:
+
 Single Parameter
-----------------
+################
 
-To get the value for a specific parameter, you pass the key to the ``getFromUrl`` method, which returns the associated value.
+To get the value for a specific parameter, you pass the key to the ``getFromUrl`` 
+method, which returns the associated value.
 
-In the example controller below, the value for the ``name`` query string parameter is retrieved:
+In the example controller below, the value for the ``name`` query string 
+parameter is retrieved:
 
 .. code-block:: javascript
 
    YUI.add('ParamsMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(config) {
-         this.config = config;
-       },
        getNameParam: function(actionContext) {
          var nameParam = actionContext.params.getFromUrl('name');
          actionContext.done(
@@ -59,23 +75,24 @@ In the example controller below, the value for the ``name`` query string paramet
            },
        }
      }
-   }, '0.0.1', {requires: []});
+   }, '0.0.1', {requires: ['mojito-params-addon']});
+
+
+.. _data_params-get_all:
 
 All Parameters
---------------
+##############
 
-To get all of the query string parameters, you call ``getFromUrl`` or its alias ``url`` without passing a key as a parameter.
+To get all of the query string parameters, you call ``getFromUrl`` or its alias 
+``url`` without passing a key as a parameter.
 
-In this example controller, all of the query string parameter are stored in the ``qs_params`` array, which ``ac.done`` makes available in 
-the template.
+In this example controller, all of the query string parameter are stored in 
+the ``qs_params`` array, which ``ac.done`` makes available in the template.
 
 .. code-block:: javascript
 
    YUI.add('ParamsMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(config) {
-         this.config = config;
-       },
        ...
        getAllParams: function(actionContext) {
          var qs_params = [];
@@ -89,29 +106,35 @@ the template.
            },
        }
      }
-   }, '0.0.1', {requires: []});
+   }, '0.0.1', {requires: ['mojito-params-addon']});
+
+
+.. _mojito_data-params_post:
 
 POST
-====
+----
 
-The POST parameters come from the HTTP POST request body and often consist of form data. As with query string parameters, the Params addon has the 
-method ``getFromBody`` that allows you to specify a single parameter or get all of the POST body parameters.
+The POST parameters come from the HTTP POST request body and often consist of 
+form data. As with query string parameters, the ``Params`` addon has the method 
+``getFromBody`` that allows you to specify a single parameter or get all of 
+the POST body parameters.
+
+.. _data_params-post_single:
 
 Single
-------
+######
 
-To get a parameter from the POST body, call ``getFromBody`` with the key as the parameter. You can also use the alias ``body`` to get a parameter
-from the POST body.
+To get a parameter from the POST body, call ``getFromBody`` with the key as the 
+parameter. You can also use the alias ``body`` to get a parameter from the POST 
+body.
 
-In the example controller below, the POST body parameter ``name`` is retrieved and then uses the ``done`` method to make it accessible to the template.
+In the example controller below, the POST body parameter ``name`` is retrieved 
+and then uses the ``done`` method to make it accessible to the template.
 
 .. code-block:: javascript
 
    YUI.add('ParamsMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(config) {
-         this.config = config;
-       },
        getPostName: function(actionContext) {
          var postName = actionContext.params.getFromBody('name');
          actionContext.done(
@@ -120,23 +143,25 @@ In the example controller below, the POST body parameter ``name`` is retrieved a
            });
        }
      }
-   }, '0.0.1', {requires: []});
+   }, '0.0.1', {requires: ['mojito-params-addon']});
+
+
+.. _data_params-post_all:
 
 All
----
+###
 
-To get all of the parameters from the POST body, call ``getFromBody`` or ``body`` without any parameters.
+To get all of the parameters from the POST body, call ``getFromBody`` or ``body`` 
+without any parameters.
 
-In the example controller below, ``getFromBody`` gets all of the POST body parameters, which are then stored in an array and made accessible to the view 
+In the example controller below, ``getFromBody`` gets all of the POST body 
+parameters, which are then stored in an array and made accessible to the view 
 template.
 
 .. code-block:: javascript
 
    YUI.add('ParamsMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(config) {
-         this.config = config;
-       },
        ...
        getAllParams: function(actionContext) {
          var post_params = [];
@@ -151,23 +176,33 @@ template.
          )
        }
      }
-   }, '0.0.1', {requires: []});
+   }, '0.0.1', {requires: ['mojito-params-addon']});
+
+
+.. _mojito_data-routing:
 
 Routing
 =======
 
-Routing parameters are mapped to routing paths, actions, and HTTP methods. You can use the routing parameters to provide data to mojit actions when 
+Routing parameters are mapped to routing paths, actions, and HTTP methods. 
+You can use the routing parameters to provide data to mojit actions when 
 specific routing conditions have been met.
+
+.. _data_routing-set:
 
 Setting Routing Parameters
 --------------------------
 
-The routing parameters are set in the routing configuration file ``routes.json``. For each defined route, you can use the ``params`` property to set 
-routing parameters. Because ``routes.json`` allows you to specify mojit actions for different paths and HTTP methods, you can set routing parameters 
-based on the routing configuration.
+The routing parameters are set in the routing configuration file 
+``routes.json``. For each defined route, you can use the ``params`` 
+property to set routing parameters. Because ``routes.json`` allows you 
+to specify mojit actions for different paths and HTTP methods, you can 
+set routing parameters based on the routing configuration.
 
-For instance, in the ``routes.json`` below, the routing parameter ``coupon`` is ``true`` when a POST call is made on the ``/coupon/form``, but when a 
-GET call is made on the same path, ``coupon`` is ``false``. The ``coupon`` parameter could be used by the mojit controller to do something such as give 
+For instance, in the ``routes.json`` below, the routing parameter ``coupon`` 
+is ``true`` when a POST call is made on the ``/coupon/form``, but when a 
+GET call is made on the same path, ``coupon`` is ``false``. The ``coupon`` 
+parameter could be used by the mojit controller to do something such as give 
 a coupon to a user posting information.
 
 .. code-block:: javascript
@@ -190,31 +225,38 @@ a coupon to a user posting information.
      }
    ]
 
+
+.. _data_routing-get:
+
 Getting Routing Parameters
 --------------------------
 
-The Params addon has the method ``getFromRoutes`` that allows you to specify a single parameter or get all of the 
-routing parameters. You can also use the alias ``route`` to get routing parameters.
+
+The Params addon has the method ``getFromRoutes`` that allows you to specify 
+a single parameter or get all of the routing parameters. You can also use 
+the alias ``route`` to get routing parameters.
+
+.. _data_routing-get_single:
 
 Single
-~~~~~~
-To get a routing parameter, call ``getFromRoute`` with the key as the parameter.
+######
 
-In the example controller below, the routing parameter ``coupon`` is used to determine whether the user gets a coupon.
+To get a routing parameter, call ``getFromRoute`` with the key as the 
+parameter.
+
+In the example controller below, the routing parameter ``coupon`` is used 
+to determine whether the user gets a coupon.
 
 .. code-block:: javascript
 
    YUI.add('CouponMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(config) {
-         this.config = config;
-       },
        index: function(actionContext) {
          var sendCoupon = actionContext.params.getFromRoute('coupon');
          var name = actionContext.params.getFromBody("name");
          if(sendCoupon){
             // Display coupon to user
-             var coupon = getCoupon;
+             var coupon = sendCoupon;
          }
          actionContext.done(
            {
@@ -223,22 +265,25 @@ In the example controller below, the routing parameter ``coupon`` is used to det
            });
        }
      }
-   }, '0.0.1', {requires: []});
+   }, '0.0.1', {requires: ['mojito-params-addon']});
+
+
+
+.. _data_routing-get_all:
 
 All
-~~~
+###
 
-To get all of the routing parameters, call ``getFromRoute`` or ``route`` without any arguments.
+To get all of the routing parameters, call ``getFromRoute`` or ``route`` without 
+any arguments.
 
-In the example controller below, all of the routing routing parameters to create a URL.
+In the example controller below, all of the routing routing parameters to create 
+a URL.
 
 .. code-block:: javascript
 
    YUI.add('LinkMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(config) {
-         this.config = config;
-       },
        index: function(actionContext) {
          var routeParams = actionContext.params.getFromRoute();
          var submitUrl = actionContext.url.make("myMojit", 'submit', routeParams);
@@ -248,13 +293,17 @@ In the example controller below, all of the routing routing parameters to create
            });
        }
      }
-   }, '0.0.1', {requires: []});
+   }, '0.0.1', {requires: ['mojito-params-addon', 'mojito-url-addon']});
+
+.. _mojito_data-get_all:
 
 Getting All Parameters
 ======================
 
-The Params addon also has the method ``getFromMerged`` that lets you get one or all of the GET, POST, and routing parameters. Because all of the 
-parameters are merged into one collection, one parameter might be overridden by another with the same key. You can also use the alias ``merged`` to
+The Params addon also has the method ``getFromMerged`` that lets you get one or 
+all of the GET, POST, and routing parameters. Because all of the parameters are 
+merged into one collection, one parameter might be overridden by another with 
+the same key. You can also use the alias ``merged`` to
 get one or all of the GET, POST, and routing parameters.
 
 Thus, the parameter types are given the following priority:
@@ -263,22 +312,25 @@ Thus, the parameter types are given the following priority:
 #. GET parameters
 #. POST parameters
 
-For example, if each parameter type has a ``foo`` key, the ``foo`` routing parameter will override both the GET and POST ``foo`` parameters.
+
+For example, if each parameter type has a ``foo`` key, the ``foo`` routing 
+parameter will override both the GET and POST ``foo`` parameters.
+
+.. _mojito_data-get_single:
 
 Single
 ------
 
-To get one of any of the different type of parameters, call ``getFromMerged`` or ``merged`` with the key as the parameter.
+To get one of any of the different type of parameters, call ``getFromMerged`` 
+or ``merged`` with the key as the parameter.
 
-In the example controller below, the ``name`` parameter is obtained using ``getFromMerged``.
+In the example controller below, the ``name`` parameter is obtained using 
+``getFromMerged``.
 
 .. code-block:: javascript
 
    YUI.add('MergedParamsMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(config) {
-         this.config = config;
-       },
        getPostName: function(actionContext) {
          var mergedName = actionContext.params.getFromMerged('name');
          actionContext.done(
@@ -287,20 +339,21 @@ In the example controller below, the ``name`` parameter is obtained using ``getF
            });
        }
      }
-   }, '0.0.1', {requires: []});
+   }, '0.0.1', {requires: ['mojito-params-addon']});
+
+
+.. _mojito_data-get_all:
 
 All
 ---
 
-To get all of the GET, POST, and routing parameters, call ``getFromMerged`` or ``merged`` without any arguments.
+To get all of the GET, POST, and routing parameters, call ``getFromMerged`` or 
+``merged`` without any arguments.
 
 .. code-block:: javascript
 
    YUI.add('MergedParamsMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(config) {
-         this.config = config;
-       },
        ...
        getAllParams: function(actionContext) {
          var all_params = [];
@@ -315,64 +368,97 @@ To get all of the GET, POST, and routing parameters, call ``getFromMerged`` or `
          )
        }
      }
-   }, '0.0.1', {requires: []});
+   }, '0.0.1', {requires: ['mojito-params-addon']});
+
+.. _mojito_params_addon-aliases:
+
+Params Addon Method Aliases
+===========================
+
+We have looked at the methods of the ``Params`` addon for getting query string
+parameter, query string parameters, and HTTP body data. For simplicity,
+the ``Params`` addon also provides the aliases below
+for the methods that we have covered thus far.
+
++---------------------+--------------+
+| Method              | Alias        | 
++=====================+==============+
+| ``getAll()``        | ``all()``    | 
++---------------------+--------------+
+| ``getFromBody()``   | ``body()``   |
++---------------------+--------------+
+| ``getFromFiles()``  | ``files()``  |
++---------------------+--------------+
+| ``getFromMerged()`` | ``merged()`` |
++---------------------+--------------+
+| ``getfromRoute()``  | ``route()``  | 
++---------------------+--------------+
+| ``getFromUrl()``    | ``url()``    |
++---------------------+--------------+
+
+
+.. _mojito_data-cookie:
 
 Cookies
 =======
 
-The `Cookies addon <../../api/classes/Cookie.server.html>`_ offers methods for reading and writing cookies. The API of the Cookie addon is the same as 
-the `YUI 3 Cookie Utility <http://yuilibrary.com/yui/docs/api/classes/Cookie.html>`_. For a code example showing how to use the Cookies addon, 
+The `Cookies addon <../../api/classes/Cookie.server.html>`_ offers methods for 
+reading and writing cookies. The API of the Cookie addon is the same as 
+the `YUI 3 Cookie Utility <http://yuilibrary.com/yui/docs/api/classes/Cookie.html>`_. 
+For a code example showing how to use the Cookies addon, 
 see `Using Cookies <../code_exs/cookies.html>`_.
+
+.. _data_cookie-get:
 
 Getting Cookie Data
 -------------------
 
-The method ``cookie.get(name)`` is used to get the cookie value associated with ``name``. In the example controller below, the cookie value 
-for ``'user'`` is obtained and then used to pass user information to the template.
+The method ``cookie.get(name)`` is used to get the cookie value associated 
+with ``name``. In the example controller below, the cookie value 
+for ``'user'`` is obtained and then used to pass user information to the 
+template.
 
 .. code-block:: javascript
 
    YUI.add('CookieMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(config) {
-         this.config = config;
-     },
-     index: function(actionContext) {
-       var user = actionContext.cookie.get('user');
-        actionContext.done(
-           {
-             user: user && users[user] ? users[user] : ""
-           }
-         );
+       index: function(actionContext) {
+         var user = actionContext.cookie.get('user');
+           actionContext.done(
+             {
+               user: user && users[user] ? users[user] : ""
+             }
+           );
+         }
        }
      }
-   }, '0.0.1', {requires: []});
+   }, '0.0.1', {requires: ['mojito-cookies-addon']});
+
+.. _data_cookies-write:
 
 Writing Data to Cookies
 -----------------------
 
-The method ``cookie.set(name, value)`` is used to set a cookie with the a given name and value.  The following example controller sets a cookie 
+The method ``cookie.set(name, value)`` is used to set a cookie with the a 
+given name and value.  The following example controller sets a cookie 
 with the name ``'user'`` if one does not exist.
 
 .. code-block:: javascript
 
    YUI.add('CookieMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(config) {
-         this.config = config;
-     },
-     index: function(actionContext) {
-       var user = actionContext.cookie.get('user');
-        if(!user){
+       index: function(actionContext) {
+         var user = actionContext.cookie.get('user');
+         if(!user){
            actionContext.cookie.set('user',(new Date).getTime());
-        }
-        actionContext.done(
+         }
+         actionContext.done(
            {
              user: user
            }
          );
-       }
+        }
      }
-   }, '0.0.1', {requires: []});
+   }, '0.0.1', {requires: ['mojito-cookies-addon']});
 
 

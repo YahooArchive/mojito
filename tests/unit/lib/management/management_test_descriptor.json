@@ -3,14 +3,21 @@
         "settings": [ "master" ],
         "name": "mojito-unit-tests",
         "config": {
-            "lib": "../../../../lib",
-            "base": "../../../base"
+            "mojitodir": "../../../.."
         },
-        "commonlib": "$$config.base$$/mojito-test.js",
+        "commonlib": "$$config.mojitodir$$/tests/base/mojito-test.js",
         "dataprovider" : {
+            "cli.js": {
+                "params": {
+                    "test": "./test-cli.js",
+                    "lib": "$$config.mojitodir$$/lib/management/cli.js",
+                    "driver": "nodejs"
+                },
+                "group": "fw,unit,server"
+            },
             "utils.server": {
                 "params": {
-                    "lib": "$$config.lib$$/management/utils.js",
+                    "lib": "$$config.mojitodir$$/lib/management/utils.js",
                     "test": "./test-utils.server.js",
                     "driver": "nodejs"
                 },

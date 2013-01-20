@@ -1,13 +1,9 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('test_mojit_2', function(Y) {
+YUI.add('test_mojit_2', function(Y, NAME) {
 
-    Y.mojito.controller = {
-
-        init: function(config) {
-            this.config = config;
-        },
+    Y.namespace('mojito.controllers')[NAME] = {
 
         index: function(ac) {
             ac.done('Mojito is working.');
@@ -15,4 +11,4 @@ YUI.add('test_mojit_2', function(Y) {
 
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito']});

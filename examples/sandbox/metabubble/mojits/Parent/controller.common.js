@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2012, Yahoo! Inc.  All rights reserved.
+ * Copyright (c) 2011-2013, Yahoo! Inc.  All rights reserved.
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
@@ -7,10 +7,6 @@
 YUI.add('Parent', function(Y, NAME) {
 
     Y.namespace('mojito.controllers')[NAME] = {
-
-        init: function(config) {
-            this.config = config;
-        },
 
         index: function(ac) {
 

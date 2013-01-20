@@ -2,7 +2,7 @@
 Mojito Quickstart
 =================
 
-.. _mojito_quickstart-prereqs:
+.. _mojito_qs-prereqs:
 
 Prerequisites
 =============
@@ -11,21 +11,21 @@ Prerequisites
 
 **Software:** `Node.js (>= 0.6.0 < 0.8) <http://nodejs.org/>`_, `npm (> 1.0.0) <http://npmjs.org/>`_
 
-.. _mojito_quickstart-install:
+.. _mojito_qs-install:
 
 Installation Steps
 ==================
 
-#. Get Mojito from the npm registry and globally install Mojito so that it can be run from the 
-   command line. You may need to use ``sudo`` if you run into permission errors.
+#. Get Mojito from the npm registry and globally install Mojito so that it can be run from 
+   the command line. You may need to use ``sudo`` if you run into permission errors.
 
    ``$ npm install mojito -g``
 
-#. Confirm that Mojito has been installed by running unit tests.
+#. Confirm that Mojito has been installed by running the help command.
 
-   ``$ mojito test``
+   ``$ mojito help``
 
-.. _mojito_quickstart-create:
+.. _mojito_qs-create:
 
 Create a Mojito Application
 ===========================
@@ -34,12 +34,13 @@ Create a Mojito Application
 #. ``$ cd hello_world``
 #. ``$ mojito create mojit myMojit``
 
-.. _mojito_quickstart-modify:
+.. _mojito_qs-modify:
 
 Modify Your Application
 =======================
 
-To make the application return a string we want, replace the code in ``mojits/myMojit/controller.server.js`` with the following:
+To make the application return a string we want, replace the code in 
+``mojits/myMojit/controller.server.js`` with the following:
 
 .. code-block:: javascript
 
@@ -54,10 +55,10 @@ To make the application return a string we want, replace the code in ``mojits/my
     };
   });
 
-.. _mojito_quickstart-run:
+.. _mojito_qs-running:
 
-Run the Application
-===================
+Running the Application
+=======================
 
 #. From the ``hello_world`` application directory, start Mojito:
 

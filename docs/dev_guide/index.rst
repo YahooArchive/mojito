@@ -31,9 +31,9 @@ Developer Topics
 ================
 
 This chapter is intended for developers who have gotten their feet wet and
-intend to get in deeper with Mojito. We'll start the discussion with  assets, cookies, 
-logging, testing and then move onto more advanced topics such as 
-composite/framework mojits, extending Mojito, and context configuration.
+intend to get in deeper with Mojito. We'll start the discussion with assets, cookies, 
+logging, testing, and then move onto more advanced topics such as 
+composite/framework mojits, extending Mojito, and context configurations.
 
 .. _mojito_doc_directory-code_exs:
 
@@ -54,6 +54,8 @@ Reference
 The reference includes a glossary for Mojito and Cocktails terminology, a comprehensive
 treatment of the Mojito command-line tool, and troubleshooting tips. 
 
+.. _mojito_doc_directory-additional:
+
 Additional Resources
 ====================
 
@@ -61,7 +63,7 @@ Besides reading documentation and working through code examples, there
 are many other ways to learn about Mojito, so we've compiled a page where
 you can find presentations, videos, screencasts, articles, and blogs.
 You can also find Twitter handles to follow for the latest news and 
-the YDN forum for Mojito. 
+the YDN forum for Mojito, where you can post questions. 
 
 .. toctree::
    :maxdepth: 4 

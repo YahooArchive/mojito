@@ -1,10 +1,11 @@
 /*
- * Copyright (c) 2011-2012, Yahoo! Inc.  All rights reserved.
+ * Copyright (c) 2011-2013, Yahoo! Inc.  All rights reserved.
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
 
 YUI.add('PagedFlickrBinderIndex', function (Y, NAME) {
+    "use strict";
 
 /**
  * The PagedFlickrBinder module.
@@ -21,7 +22,6 @@ YUI.add('PagedFlickrBinderIndex', function (Y, NAME) {
      * @class Binder
      * @constructor
      */
-    "use strict";
     Y.namespace('mojito.binders')[NAME] = {
 
         /**

@@ -1,8 +1,12 @@
 /*
- * Copyright (c) 2011-2012, Yahoo! Inc.  All rights reserved.
+ * Copyright (c) 2011-2013, Yahoo! Inc.  All rights reserved.
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
+
+/*jslint anon:true, sloppy:true, nomen:true, node:true*/
+/*global YUI*/
+
 YUI().use('mojito-params-addon', 'test', function(Y) {
 
     var suite = new Y.Test.Suite('mojito-params-addon tests'),
@@ -37,9 +41,8 @@ YUI().use('mojito-params-addon', 'test', function(Y) {
                 file: {
                     foo: 'filefooval'
                 }
-            });
-
-            var params = p.getAll();
+            }),
+                params = p.getAll();
 
             A.isNotUndefined(params.body.foo);
             A.isNotUndefined(params.body.bar);
@@ -72,9 +75,8 @@ YUI().use('mojito-params-addon', 'test', function(Y) {
                 file: {
                     foo: 'filefooval'
                 }
-            });
-
-            var params = p.all();
+            }),
+                params = p.all();
 
             A.isNotUndefined(params.body.foo);
             A.isNotUndefined(params.body.bar);
@@ -104,9 +106,9 @@ YUI().use('mojito-params-addon', 'test', function(Y) {
                     foo: 'routefooval',
                     bar: 'routebarval'
                 }
-            });
-
-            var params = p.getFromBody();
+            }),
+                params = p.getFromBody(),
+                foovalue = p.getFromBody("foo");
 
             A.isNotUndefined(params.foo);
             A.isNotUndefined(params.bar);
@@ -117,6 +119,8 @@ YUI().use('mojito-params-addon', 'test', function(Y) {
             A.areSame('postbarval', params.bar);
             A.areSame('postbazval', params.baz);
             A.areSame('postbooval', params.boo);
+
+            A.areSame('postfooval', foovalue);
         },
 
         'test body function: accessing body params': function() {
@@ -136,9 +140,8 @@ YUI().use('mojito-params-addon', 'test', function(Y) {
                     foo: 'routefooval',
                     bar: 'routebarval'
                 }
-            });
-
-            var params = p.body();
+            }),
+                params = p.body();
 
             A.isNotUndefined(params.foo);
             A.isNotUndefined(params.bar);
@@ -158,14 +161,16 @@ YUI().use('mojito-params-addon', 'test', function(Y) {
                     foo: 'fooval',
                     bar: 'barval'
                 }
-            });
-
-            var params = p.getFromMerged();
+            }),
+                params = p.getFromMerged(),
+                foovalue = p.getFromMerged("foo");
 
             A.isNotUndefined(params.foo);
             A.isNotUndefined(params.bar);
             A.areSame('fooval', params.foo);
             A.areSame('barval', params.bar);
+
+            A.areSame('fooval', foovalue);
         },
 
         'test getFromMerged function: accessing the post parameters': function() {
@@ -174,13 +179,16 @@ YUI().use('mojito-params-addon', 'test', function(Y) {
                     foo: 'fooval',
                     bar: 'barval'
                 }
-            });
-            var params = p.getFromMerged();
+            }),
+                params = p.getFromMerged(),
+                foovalue = p.getFromMerged("foo");
 
             A.isNotUndefined(params.foo);
             A.isNotUndefined(params.bar);
             A.areSame('fooval', params.foo);
             A.areSame('barval', params.bar);
+
+            A.areSame('fooval', foovalue);
         },
 
         'test getFromMerged function: accessing the routes data': function() {
@@ -189,14 +197,16 @@ YUI().use('mojito-params-addon', 'test', function(Y) {
                     foo: 'fooval',
                     bar: 'barval'
                 }
-            });
-
-            var params = p.getFromMerged();
+            }),
+                params = p.getFromMerged(),
+                foovalue = p.getFromMerged("foo");
 
             A.isNotUndefined(params.foo);
             A.isNotUndefined(params.bar);
             A.areSame('fooval', params.foo);
             A.areSame('barval', params.bar);
+
+            A.areSame('fooval', foovalue);
         },
 
         'test getFromMerged function: get params override post params': function() {
@@ -209,14 +219,16 @@ YUI().use('mojito-params-addon', 'test', function(Y) {
                 url: {
                     foo: 'getfooval'
                 }
-            });
-
-            var params = p.getFromMerged();
+            }),
+                params = p.getFromMerged(),
+                foovalue = p.getFromMerged("foo");
 
             A.isNotUndefined(params.foo);
             A.isNotUndefined(params.bar);
             A.areSame('getfooval', params.foo);
             A.areSame('postbarval', params.bar);
+
+            A.areSame('getfooval', foovalue);
         },
 
         'test getFromMerged function: route params override get and post params': function() {
@@ -233,9 +245,9 @@ YUI().use('mojito-params-addon', 'test', function(Y) {
                 route: {
                     foo: 'routefooval'
                 }
-            });
-
-            var params = p.getFromMerged();
+            }),
+                params = p.getFromMerged(),
+                foovalue = p.getFromMerged("foo");
 
             A.isNotUndefined(params.foo);
             A.isNotUndefined(params.bar);
@@ -243,6 +255,8 @@ YUI().use('mojito-params-addon', 'test', function(Y) {
             A.areSame('routefooval', params.foo);
             A.areSame('getbarval', params.bar);
             A.areSame('postbazval', params.baz);
+
+            A.areSame('routefooval', foovalue);
         },
 
         'test getFromMerged function: get params are accessible directly': function() {
@@ -252,15 +266,17 @@ YUI().use('mojito-params-addon', 'test', function(Y) {
                     foo: 'fooval',
                     bar: 'barval'
                 }
-            });
-
-            var params = p.getFromMerged();
+            }),
+                params = p.getFromMerged(),
+                foovalue = p.getFromMerged("foo");
 
 
             A.isNotUndefined(params.foo);
             A.isNotUndefined(params.bar);
             A.areSame('fooval', params.foo);
             A.areSame('barval', params.bar);
+
+            A.areSame('fooval', foovalue);
         },
 
         'test getFromMerged function: post params are accessible directly': function() {
@@ -269,14 +285,16 @@ YUI().use('mojito-params-addon', 'test', function(Y) {
                     foo: 'fooval',
                     bar: 'barval'
                 }
-            });
-
-            var params = p.getFromMerged();
+            }),
+                params = p.getFromMerged(),
+                foovalue = p.getFromMerged("foo");
 
             A.isNotUndefined(params.foo);
             A.isNotUndefined(params.bar);
             A.areSame('fooval', params.foo);
             A.areSame('barval', params.bar);
+
+            A.areSame('fooval', foovalue);
         },
 
         'test getFromMerged function: routes data is accessible directly': function() {
@@ -285,14 +303,16 @@ YUI().use('mojito-params-addon', 'test', function(Y) {
                     foo: 'fooval',
                     bar: 'barval'
                 }
-            });
-
-            var params = p.getFromMerged();
+            }),
+                params = p.getFromMerged(),
+                foovalue = p.getFromMerged("foo");
 
             A.isNotUndefined(params.foo);
             A.isNotUndefined(params.bar);
             A.areSame('fooval', params.foo);
             A.areSame('barval', params.bar);
+
+            A.areSame('fooval', foovalue);
         },
 
         'test merged function: accessing url params': function() {
@@ -302,9 +322,8 @@ YUI().use('mojito-params-addon', 'test', function(Y) {
                     foo: 'fooval',
                     bar: 'barval'
                 }
-            });
-
-            var params = p.merged();
+            }),
+                params = p.merged();
 
             A.isNotUndefined(params.foo);
             A.isNotUndefined(params.bar);
@@ -318,8 +337,8 @@ YUI().use('mojito-params-addon', 'test', function(Y) {
                     foo: 'fooval',
                     bar: 'barval'
                 }
-            });
-            var params = p.merged();
+            }),
+                params = p.merged();
 
             A.isNotUndefined(params.foo);
             A.isNotUndefined(params.bar);
@@ -333,9 +352,8 @@ YUI().use('mojito-params-addon', 'test', function(Y) {
                     foo: 'fooval',
                     bar: 'barval'
                 }
-            });
-
-            var params = p.merged();
+            }),
+                params = p.merged();
 
             A.isNotUndefined(params.foo);
             A.isNotUndefined(params.bar);
@@ -353,9 +371,8 @@ YUI().use('mojito-params-addon', 'test', function(Y) {
                 url: {
                     foo: 'getfooval'
                 }
-            });
-
-            var params = p.merged();
+            }),
+                params = p.merged();
 
             A.isNotUndefined(params.foo);
             A.isNotUndefined(params.bar);
@@ -377,9 +394,8 @@ YUI().use('mojito-params-addon', 'test', function(Y) {
                 route: {
                     foo: 'routefooval'
                 }
-            });
-
-            var params = p.merged();
+            }),
+                params = p.merged();
 
             A.isNotUndefined(params.foo);
             A.isNotUndefined(params.bar);
@@ -396,9 +412,8 @@ YUI().use('mojito-params-addon', 'test', function(Y) {
                     foo: 'fooval',
                     bar: 'barval'
                 }
-            });
-
-            var params = p.merged();
+            }),
+                params = p.merged();
 
 
             A.isNotUndefined(params.foo);
@@ -413,9 +428,8 @@ YUI().use('mojito-params-addon', 'test', function(Y) {
                     foo: 'fooval',
                     bar: 'barval'
                 }
-            });
-
-            var params = p.merged();
+            }),
+                params = p.merged();
 
             A.isNotUndefined(params.foo);
             A.isNotUndefined(params.bar);
@@ -429,9 +443,8 @@ YUI().use('mojito-params-addon', 'test', function(Y) {
                     foo: 'fooval',
                     bar: 'barval'
                 }
-            });
-
-            var params = p.merged();
+            }),
+                params = p.merged();
 
             A.isNotUndefined(params.foo);
             A.isNotUndefined(params.bar);
@@ -456,15 +469,17 @@ YUI().use('mojito-params-addon', 'test', function(Y) {
                     foo: 'routefooval',
                     bar: 'routebarval'
                 }
-            });
-
-            var params = p.getFromRoute();
+            }),
+                params = p.getFromRoute(),
+                foovalue = p.getFromRoute("foo");
 
             A.isNotUndefined(params.foo);
             A.isNotUndefined(params.bar);
 
             A.areSame('routefooval', params.foo);
             A.areSame('routebarval', params.bar);
+
+            A.areSame('routefooval', foovalue);
         },
 
         'test route function: accessing route params': function() {
@@ -484,9 +499,8 @@ YUI().use('mojito-params-addon', 'test', function(Y) {
                     foo: 'routefooval',
                     bar: 'routebarval'
                 }
-            });
-
-            var params = p.route();
+            }),
+                params = p.route();
 
             A.isNotUndefined(params.foo);
             A.isNotUndefined(params.bar);
@@ -512,9 +526,9 @@ YUI().use('mojito-params-addon', 'test', function(Y) {
                     foo: 'routefooval',
                     bar: 'routebarval'
                 }
-            });
-
-            var params = p.getFromUrl();
+            }),
+                params = p.getFromUrl(),
+                foovalue = p.getFromUrl("foo");
 
             A.isNotUndefined(params.foo);
             A.isNotUndefined(params.bar);
@@ -523,6 +537,8 @@ YUI().use('mojito-params-addon', 'test', function(Y) {
             A.areSame('getfooval', params.foo);
             A.areSame('getbarval', params.bar);
             A.areSame('getbazval', params.baz);
+
+            A.areSame('getfooval', foovalue);
         },
 
         'test url function: accessing url params': function() {
@@ -542,9 +558,8 @@ YUI().use('mojito-params-addon', 'test', function(Y) {
                     foo: 'routefooval',
                     bar: 'routebarval'
                 }
-            });
-
-            var params = p.url();
+            }),
+                params = p.url();
 
             A.isNotUndefined(params.foo);
             A.isNotUndefined(params.bar);

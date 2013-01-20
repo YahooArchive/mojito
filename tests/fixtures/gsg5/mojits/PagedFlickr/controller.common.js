@@ -84,7 +84,13 @@ YUI.add('PagedFlickr', function(Y) {
         for (var k in mods) {
             params[k] = mods[k];
         }
-        return ac.url.make(mojitType, 'index', Y.QueryString.stringify(params));
+        return ac.url.make(mojitType, 'index', params);
     }
 
-}, '0.0.1', {requires: ['mojito-intl-addon', 'mojito-util', 'querystring-stringify', 'ModelFlickr'], lang: ['de', 'en-US']});
+}, '0.0.1', {requires: [
+    'mojito-intl-addon',
+    'mojito-params-addon',
+    'mojito-url-addon',
+    'mojito-util',
+    'ModelFlickr'
+], lang: ['de', 'en-US']});

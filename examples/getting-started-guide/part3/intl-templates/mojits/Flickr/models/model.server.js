@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2012, Yahoo! Inc.  All rights reserved.
+ * Copyright (c) 2011-2013, Yahoo! Inc.  All rights reserved.
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
@@ -8,6 +8,7 @@
 YUI.add('FlickrModel', function (Y, NAME) {
     "use strict";
     var API_KEY = '84921e87fb8f2fc338c3ff9bf51a412e';
+
 /**
  * The FlickrModel module.
  *

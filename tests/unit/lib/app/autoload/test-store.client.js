@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2012, Yahoo! Inc.  All rights reserved.
+ * Copyright (c) 2011-2013, Yahoo! Inc.  All rights reserved.
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
@@ -13,7 +13,9 @@ YUI().use('mojito-client-store', 'test', 'querystring-stringify-simple', functio
 
         setUp: function () {
             this.store = new Y.mojito.ResourceStore({
-                appConfig: {},
+                appConfig: {
+                    foo: 1
+                },
                 pathToRoot: '/root'
             });
         },
@@ -51,9 +53,14 @@ YUI().use('mojito-client-store', 'test', 'querystring-stringify-simple', functio
                 ];
 
             Y.Array.each(tests, function (test) {
-                var output = this.store.buildUrl(test.input, test.context);
+                var output = this.store._buildUrl(test.input, test.context);
                 A.areEqual(test.expectation, output, 'buildUrl did not create the correct url');
             }, this);
+        },
+
+        'test app config value': function() {
+            var config = this.store.getAppConfig();
+            A.areEqual(1, config.foo);
         }
 
     }));

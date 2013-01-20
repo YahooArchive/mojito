@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2012, Yahoo! Inc.  All rights reserved.
+ * Copyright (c) 2011-2013, Yahoo! Inc.  All rights reserved.
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
@@ -8,7 +8,18 @@ YUI().use('mojito-action-context', 'test', function (Y) {
     var suite = new Y.Test.Suite('mojito-action-context tests'),
         acStash = {},
         A = Y.Assert,
-        OA = Y.ObjectAssert;
+        OA = Y.ObjectAssert,
+        store = {
+            getAppConfig: function() {
+                return 'app config';
+            },
+            getStaticContext: function() {
+                return 'static context';
+            },
+            getRoutes: function(ctx) {
+                return "routes";
+            }
+        };
 
     suite.add(new Y.Test.Case({
 
@@ -34,21 +45,8 @@ YUI().use('mojito-action-context', 'test', function (Y) {
             Y.namespace('mojito').controller = {
                 index: function() {}
             };
-            // fake out the http plugin so the others will load
-            Y.namespace('mojito.addons.ac').http = function() {
-                this.namespace = 'http';
-                this.getRequest = function() {};
-            };
-            // fake out the url plugin so it won't try to load routes
-            Y.namespace('mojito.addons.ac').url = function() {
-                this.namespace = 'url';
-            };
-            // fake out the intl plugin so the others will load
-            Y.namespace('mojito.addons.ac').intl = function() {
-                this.namespace = 'intl';
-            };
             ac = new Y.mojito.ActionContext({
-                dispatch: 'the dispatch',
+                dispatcher: 'the dispatcher',
                 command: {
                     action: 'index',
                     context: 'context',
@@ -58,17 +56,10 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                         views: 'views'
                     }
                 },
+                adapter: Y.Mock(),
                 models: {},
                 controller: {index: function() {}},
-                store: {
-                    getAppConfig: function() {
-                        return 'app config';
-                    },
-                    getRoutes: function(ctx) {
-                        A.areSame('context', ctx, "wrong context for getRoutes");
-                        return "routes";
-                    }
-                }
+                store: store
             });
 
             ac._adapter = {
@@ -86,21 +77,8 @@ YUI().use('mojito-action-context', 'test', function (Y) {
             Y.namespace('mojito').controller = {
                 index: function() {}
             };
-            // fake out the http plugin so the others will load
-            Y.namespace('mojito.addons.ac').http = function() {
-                this.namespace = 'http';
-                this.getRequest = function() {};
-            };
-            // fake out the url plugin so it won't try to load routes
-            Y.namespace('mojito.addons.ac').url = function() {
-                this.namespace = 'url';
-            };
-            // fake out the intl plugin so the others will load
-            Y.namespace('mojito.addons.ac').intl = function() {
-                this.namespace = 'intl';
-            };
             ac = new Y.mojito.ActionContext({
-                dispatch: 'the dispatch',
+                dispatcher: 'the dispatcher',
                 command: {
                     action: 'index',
                     context: 'context',
@@ -110,17 +88,10 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                         views: 'views'
                     }
                 },
+                adapter: Y.Mock(),
                 models: {},
                 controller: {index: function() {}},
-                store: {
-                    getAppConfig: function() {
-                        return 'app config';
-                    },
-                    getRoutes: function(ctx) {
-                        A.areSame('context', ctx, "wrong context for getRoutes");
-                        return "routes";
-                    }
-                }
+                store: store
             });
 
             ac._adapter = {
@@ -138,21 +109,8 @@ YUI().use('mojito-action-context', 'test', function (Y) {
             Y.namespace('mojito').controller = {
                 index: function() {}
             };
-            // fake out the http plugin so the others will load
-            Y.namespace('mojito.addons.ac').http = function() {
-                this.namespace = 'http';
-                this.getRequest = function() {};
-            };
-            // fake out the url plugin so it won't try to load routes
-            Y.namespace('mojito.addons.ac').url = function() {
-                this.namespace = 'url';
-            };
-            // fake out the intl plugin so the others will load
-            Y.namespace('mojito.addons.ac').intl = function() {
-                this.namespace = 'intl';
-            };
             ac = new Y.mojito.ActionContext({
-                dispatch: 'the dispatch',
+                dispatcher: 'the dispatcher',
                 command: {
                     action: 'index',
                     context: 'context',
@@ -162,17 +120,10 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                         views: 'views'
                     }
                 },
+                adapter: Y.Mock(),
                 models: {},
                 controller: {index: function() {}},
-                store: {
-                    getAppConfig: function() {
-                        return 'app config';
-                    },
-                    getRoutes: function(ctx) {
-                        A.areSame('context', ctx, "wrong context for getRoutes");
-                        return "routes";
-                    }
-                }
+                store: store
             });
 
             ac._adapter = {
@@ -190,21 +141,7 @@ YUI().use('mojito-action-context', 'test', function (Y) {
             Y.namespace('mojito').controller = {
                 index: function() {}
             };
-            // fake out the http plugin so the others will load
-            Y.namespace('mojito.addons.ac').http = function() {
-                this.namespace = 'http';
-                this.getRequest = function() {};
-            };
-            // fake out the url plugin so it won't try to load routes
-            Y.namespace('mojito.addons.ac').url = function() {
-                this.namespace = 'url';
-            };
-            // fake out the intl plugin so the others will load
-            Y.namespace('mojito.addons.ac').intl = function() {
-                this.namespace = 'intl';
-            };
             ac = new Y.mojito.ActionContext({
-                dispatch: 'the dispatch',
                 command: {
                     action: 'index',
                     context: 'context',
@@ -214,62 +151,38 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                         views: 'views'
                     }
                 },
+                adapter: Y.Mock(),
                 models: {},
                 controller: {index: function() {}},
-                store: {
-                    getAppConfig: function() {
-                        return 'app config';
-                    },
-                    getRoutes: function(ctx) {
-                        A.areSame('context', ctx, "wrong context for getRoutes");
-                        return "routes";
-                    }
-                }
+                dispatcher: 'the dispatcher',
+                adapter: { },
+                store: store
             });
 
-            A.areSame('the dispatch', ac._dispatch, "dispatch function wasn't stashed.");
+            A.areSame('the dispatcher', ac.dispatcher,
+                "dispatcher wasn't stashed.");
         },
 
-        'test all default plugins are preloaded and plugged': function() {
-            Y.namespace('mojito').controller = { index: function() {} };
-            Y.namespace('mojito.addons').ac = {
-                core: function () {},
-                http: function () {},
-                intl: function () {},
-                config: function () {},
-                url: function () {},
-                cookie: function () {},
-                params: function () {},
-                composite: function () {},
-                assets: function () {}
+        'test all required (was: default) plugins are preloaded and plugged': function() {
+            Y.namespace('mojito.addons.ac').custom = function() {
+                return { namespace: 'custom' };
             };
-            Y.Object.each(Y.namespace('mojito.addons').ac, function (addon, namespace) {
-                addon.prototype.namespace = namespace;
-            });
             var ac = new Y.mojito.ActionContext({
-                dispatch: 'the dispatch',
+                dispatcher: 'the dispatcher',
                 command: {
                     action: 'index',
                     instance: {
                         id: 'id',
-                        type: 'Type42'
+                        type: 'Type666',
+                        acAddons: ['custom']
                     }
                 },
+                adapter: Y.Mock(),
                 controller: {index: function() {}},
-                store: {
-                    getAppConfig: function() {
-                    },
-                    getRoutes: function() {
-                    }
-                }
+                store: store
             });
 
-            A.isObject(ac.config, 'Missing config addon');
-            A.isObject(ac.url, 'Missing url addon');
-            A.isObject(ac.cookie, 'Missing cookie addon');
-            A.isObject(ac.params, 'Missing config params');
-            A.isObject(ac.composite, 'Missing config composite');
-
+            A.isObject(ac.custom, 'custom required addon is missing');
         },
 
         'test AC properties': function() {
@@ -277,21 +190,8 @@ YUI().use('mojito-action-context', 'test', function (Y) {
             Y.namespace('mojito').controller = {
                 index: function() {}
             };
-            // fake out the http plugin so the others will load
-            Y.namespace('mojito.addons.ac').http = function() {
-                this.namespace = 'http';
-                this.getRequest = function() {};
-            };
-            // fake out the url plugin so it won't try to load routes
-            Y.namespace('mojito.addons.ac').url = function() {
-                this.namespace = 'url';
-            };
-            // fake out the intl plugin so the others will load
-            Y.namespace('mojito.addons.ac').intl = function() {
-                this.namespace = 'intl';
-            };
             ac = new Y.mojito.ActionContext({
-                dispatch: 'the dispatch',
+                dispatcher: 'the dispatcher',
                 command: {
                     action: 'index',
                     context: 'context',
@@ -301,154 +201,19 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                         views: 'views'
                     }
                 },
+                adapter: Y.Mock(),
                 models: {},
                 controller: {index: function() {}},
-                store: {
-                    getAppConfig: function() {
-                        return 'app config';
-                    },
-                    getRoutes: function(ctx) {
-                        A.areSame('context', ctx, "wrong context for getRoutes");
-                        return "routes";
-                    }
-                }
+                store: store
             });
 
             A.areSame('Type', ac.type, 'bad type');
             A.areSame('index', ac.action, 'bad action');
             A.areSame('context', ac.context, 'bad context');
 
-            OA.areEqual({config: 'app config', routes: 'routes'}, ac.app, 'bad app property');
-            A.areSame(ac.app.config, 'app config', 'bad app config');
-            A.areSame('the dispatch', ac._dispatch, "dispatch function wasn't stashed.");
-            A.isObject(ac.models, 'bad models');
-
+            A.areSame('the dispatcher', ac.dispatcher,
+                "dispatcher wasn't stashed.");
         },
-
-        // TODO: move to controller context tests
-//        'controller is initialized': function() {
-//            var controllerInit = false;
-//            var controller = {
-//                init: function(cfg) {
-//                    controllerInit = true;
-//                    A.areSame('instance config', cfg, 'controller init bad config object');
-//                },
-//                index: function() {}
-//            };
-//            // fake out the http plugin so the others will load
-//            Y.mojito.addons.ac.http = function() {
-//                this.namespace = 'http';
-//                this.getRequest = function() {};
-//            };
-//            var ac = new Y.mojito.ActionContext({
-//                dispatch: 'the dispatch',
-//                command: {
-//                    instance: {
-//                        id: 'id',
-//                        type: 'Type',
-//                        action: 'index',
-//                        config: 'instance config'
-//                    }
-//                },
-//                controller: controller,
-//                store: {
-//                    getAppConfig: function() {
-//                    },
-//                    getRoutes: function() {
-//                    }
-//                }
-//            });
-//
-//            A.isTrue(controllerInit, 'controller not initalized');
-//        },
-
-        // TODO: move to controller context tests
-//        'models are initialized': function() {
-//            var fooModelInit = false;
-//            var barModelInit = false;
-//            Y.mojito.controller = {
-//                index: function() {}
-//            };
-//            Y.mojito.models.foo = {
-//                init: function(cfg) {
-//                    fooModelInit = true;
-//                    A.areSame('instance config', cfg, 'model init bad config object');
-//                }
-//            };
-//            Y.mojito.models.bar = {
-//                init: function(cfg) {
-//                    barModelInit = true;
-//                    A.areSame('instance config', cfg, 'model init bad config object');
-//                }
-//            };
-//            // fake out the http plugin so the others will load
-//            Y.mojito.addons.ac.http = function() {
-//                this.namespace = 'http';
-//                this.getRequest = function() {};
-//            };
-//            var ac = new Y.mojito.ActionContext({
-//                dispatch: 'the dispatch',
-//                command: {
-//                    instance: {
-//                        id: 'id',
-//                        type: 'Type',
-//                        action: 'index',
-//                        config: 'instance config'
-//                    }
-//                },
-//                controller: {index: function() {}},
-//                store: {
-//                    getAppConfig: function() {
-//                    },
-//                    getRoutes: function() {
-//                    }
-//                }
-//            });
-//
-//            A.isTrue(fooModelInit, 'controller not initalized');
-//            A.isTrue(barModelInit, 'controller not initalized');
-//
-//        },
-
-        // TODO: move to controller context tests
-//        'actions are mixed into controller': function() {
-//            var actionCalled = false;
-//            var controller = {
-//                index: function() {}
-//            };
-//            Y.mojito.actions = {
-//                foo: function(ac) {
-//                    actionCalled = true;
-//                    A.areSame(Y.mojito.controller, this, 'action not executed within the scope of the controller');
-//                }
-//            };
-//            // fake out the http plugin so the others will load
-//            Y.mojito.addons.ac.http = function() {
-//                this.namespace = 'http';
-//                this.getRequest = function() {};
-//            };
-//            var ac = new Y.mojito.ActionContext({
-//                dispatch: 'the dispatch',
-//                command: {
-//                    instance: {
-//                        id: 'id',
-//                        type: 'Type',
-//                        action: 'foo',
-//                        config: 'instance config'
-//                    }
-//                },
-//                controller: controller,
-//                store: {
-//                    getAppConfig: function() {
-//                    },
-//                    getRoutes: function() {
-//                    }
-//                }
-//            });
-//
-//            A.isTrue(actionCalled, 'action never called');
-//
-//        },
 
         'test ac plugins plugged in proper order': function() {
             var mixes = [];
@@ -476,9 +241,6 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                 mixes.push(4);
                 return { namespace: 'fourth' };
             };
-            Y.namespace('mojito.addons.ac').first.dependsOn = ['second'];
-            Y.namespace('mojito.addons.ac').second.dependsOn = ['third'];
-            Y.namespace('mojito.addons.ac').third.dependsOn = ['fourth'];
 
             new Y.mojito.ActionContext({
                 dispatch: 'the dispatch',
@@ -486,20 +248,805 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                     action: 'index',
                     instance: {
                         id: 'id',
-                        type: 'Type2' // Need to clear the addons cache
+                        type: 'Type2', // Need to clear the addons cache
+                        acAddons: [
+                            'first',
+                            'second',
+                            'third',
+                            'fourth'
+                        ]
                     }
                 },
+                adapter: Y.Mock(),
                 controller: {index: function() {}},
-                store: {
-                    getAppConfig: function() {
-                    },
-                    getRoutes: function() {
+                store: store
+            });
+
+            OA.areEqual([1,2,3,4], mixes, 'wrong addon attach order, should be based on acAddons');
+        }
+
+    }));
+
+    suite.add(new Y.Test.Case({
+
+        name: 'general tests',
+
+        'test flush calls done with "more"': function() {
+            var doneCalled;
+            var ac = new Y.mojito.ActionContext({
+                dispatch: 'the dispatch',
+                command: {
+                    action: 'index',
+                    instance: {
+                        id: 'id',
+                        type: 'TypeGeneral',
+                        acAddons: []
+                    }
+                },
+                adapter: Y.Mock(),
+                controller: {index: function() {}},
+                store: store
+            });
+
+            ac.done = function(data, meta, more) {
+                A.areSame('data', data, 'bad data for done');
+                A.areSame('meta', meta, 'bad meta for done');
+                A.isTrue(more, "flush should've send 'more' = true to done");
+                doneCalled = true;
+            };
+
+            ac.flush('data', 'meta');
+
+            A.isTrue(doneCalled, 'flush never called done');
+        },
+
+        'test when called with string data, done renders a string without templating': function() {
+            var doneCalled;
+            var ac = new Y.mojito.ActionContext({
+                dispatch: 'the dispatch',
+                command: {
+                    action: 'index',
+                    instance: {
+                        id: 'id',
+                        type: 'TypeGeneral',
+                        acAddons: [],
+                        views: {}
+                    }
+                },
+                adapter: Y.Mock(),
+                controller: {index: function() {}},
+                store: store
+            });
+
+            ac._adapter = {
+                done: function(data, meta) {
+                    var ct = meta.http.headers['content-type'];
+                    doneCalled = true;
+                    A.areSame('hi',data, 'bad string to done');
+                    A.areSame(1, ct.length, "should be only one content-type header");
+                    A.areSame('text/plain; charset=utf-8', ct[0]);
+                }
+            };
+
+            ac.done('hi');
+
+            A.isTrue(doneCalled, 'done never called');
+        },
+
+        'test when called with string data and Content-Type header set, done respects the type': function() {
+            var doneCalled;
+            var ac = new Y.mojito.ActionContext({
+                dispatch: 'the dispatch',
+                command: {
+                    action: 'index',
+                    instance: {
+                        id: 'id',
+                        type: 'TypeGeneral',
+                        acAddons: [],
+                        views: {}
+                    }
+                },
+                adapter: Y.Mock(),
+                controller: {index: function() {}},
+                store: store
+            });
+
+            ac._adapter = {
+                done: function(data, meta) {
+                    var ct = meta.http.headers['content-type'];
+                    doneCalled = true;
+                    A.areSame('hi',data, 'bad string to done');
+                    A.areSame(1, ct.length, "should be only one content-type header");
+                    A.areSame('my favorite type', ct[0]);
+                }
+            };
+
+            ac.done('hi', {
+                http: {
+                    headers: {
+                        'content-type': ['my favorite type']
                     }
                 }
             });
 
-            OA.areEqual([4,3,2,1], mixes, 'wrong addon load order');
+            A.isTrue(doneCalled, 'done never called');
+        },
 
+        'test when called with "json" meta string, done renders a string with json content type': function() {
+            var doneCalled;
+            var ac = new Y.mojito.ActionContext({
+                dispatch: 'the dispatch',
+                command: {
+                    action: 'index',
+                    instance: {
+                        id: 'id',
+                        type: 'TypeGeneral',
+                        acAddons: [],
+                        views: {}
+                    }
+                },
+                adapter: Y.Mock(),
+                controller: {index: function() {}},
+                store: store
+            });
+            var json = {hi:'there'};
+
+            ac._adapter = {
+                done: function(data, meta) {
+                    var ct = meta.http.headers['content-type'];
+                    doneCalled = true;
+                    A.areSame(Y.JSON.stringify(json), data, 'bad string to done');
+                    A.areSame(1, ct.length, "should be only one content-type header");
+                    A.areSame('application/json; charset=utf-8', ct[0]);
+                }
+            };
+
+            ac.done(json, 'json');
+
+            A.isTrue(doneCalled, 'done never called');
+        },
+
+        'test when called with "xml" meta string, done renders a string with xml content type': function() {
+            var doneCalled;
+            var ac = new Y.mojito.ActionContext({
+                dispatch: 'the dispatch',
+                command: {
+                    action: 'index',
+                    instance: {
+                        id: 'id',
+                        type: 'TypeGeneral',
+                        acAddons: [],
+                        views: {}
+                    }
+                },
+                adapter: Y.Mock(),
+                controller: {index: function() {}},
+                store: store
+            });
+            var json = {hi:'there'};
+
+            ac._adapter = {
+                done: function(data, meta) {
+                    var ct = meta.http.headers['content-type'];
+                    doneCalled = true;
+                    A.areSame('<xml><hi>there</hi></xml>', data, 'bad string to done');
+                    A.areSame(1, ct.length, "should be only one content-type header");
+                    A.areSame('application/xml; charset=utf-8', ct[0]);
+                }
+            };
+
+            ac.done(json, 'xml');
+
+            A.isTrue(doneCalled, 'done never called');
+        },
+
+        'test when there is no view meta, adapter is called directly': function() {
+            var doneCalled;
+            var ac = new Y.mojito.ActionContext({
+                dispatch: 'the dispatch',
+                command: {
+                    action: 'index',
+                    instance: {
+                        id: 'id',
+                        type: 'TypeGeneral',
+                        acAddons: [],
+                        views: {}
+                    }
+                },
+                adapter: Y.Mock(),
+                controller: {index: function() {}},
+                store: store
+            });
+            var data = 'data';
+            var meta = {};
+
+            ac._adapter = {
+                done: function(d, m) {
+                    doneCalled = true;
+                    A.areSame(data, d, 'bad data to done');
+                    A.areSame(meta, m, 'bad meta to done');
+                }
+            };
+
+            ac.done(data, meta);
+
+            A.isTrue(doneCalled, 'done never called');
+        },
+
+        'test device-specific view is used for render': function() {
+            var vrRendered;
+            // mock view renderer
+            var VR = Y.mojito.ViewRenderer;
+            Y.mojito.ViewRenderer = function(engine) {
+                A.areSame('engine', engine, 'bad view engine');
+                return {
+                    render: function(d, type, v, a, m, more) {
+                        vrRendered = true;
+                        A.areSame(data, d, 'bad data to view');
+                        A.areSame('t', type, 'bad mojitType to view');
+                        A.areSame(meta, m, 'bad meta to view');
+                        A.areSame('path', v, 'bad view content path to view engine');
+                        A.areSame(ac._adapter, a, 'bad adapter to view');
+                        A.isFalse(more);
+                    }
+                };
+            };
+            var ac = new Y.mojito.ActionContext({
+                dispatch: 'the dispatch',
+                command: {
+                    action: 'index',
+                    instance: {
+                        id: 'id',
+                        type: 't',
+                        acAddons: [],
+                        views: {
+                            viewName: {
+                                engine: 'engine',
+                                'content-path': 'path'
+                            }
+                        }
+                    }
+                },
+                adapter: Y.Mock(),
+                controller: {index: function() {}},
+                store: store
+            });
+            var data = {};
+            var meta = { view: {name: 'viewName'} };
+            ac._adapter = {
+                done: function() {
+                    A.fail('done should not be called, the view renderer should be calling it');
+                }
+            };
+
+            ac.done(data, meta, false);
+
+            A.isTrue(vrRendered, 'view render never called');
+
+            // replace mock
+            Y.mojito.ViewRenderer = VR;
+        },
+
+        'test config children params are stripped': function() {
+            var doneCalled;
+            var children = {
+                foo: {
+                    params: 'params'
+                }
+            };
+            var ac = new Y.mojito.ActionContext({
+                dispatch: 'the dispatch',
+                command: {
+                    action: 'index',
+                    instance: {
+                        id: 'id',
+                        type: 'TypeGeneral',
+                        acAddons: [],
+                        views: {
+                            mockView: {}
+                        },
+                        binders: {
+                            mockView: {}
+                        },
+                        config: {
+                            children: children
+                        }
+                    }
+                },
+                adapter: Y.Mock(),
+                controller: {index: function() {}},
+                store: store
+            });
+
+            ac._adapter = {
+                done: function(data, meta) {
+                    doneCalled = true;
+                    A.isObject(meta.binders.binderid, 'no binder id');
+                    A.isUndefined(meta.binders.binderid.config.children.params, 'config.children.params should be undefined');
+                    A.isUndefined(meta.binders.binderid.children.params, 'children.params should be undefined');
+                }
+            };
+            // mock view renderer
+            var VR = Y.mojito.ViewRenderer;
+            Y.mojito.ViewRenderer = function(engine) {
+                return {
+                    render: function(d, type, v, a, m, more) {
+                        a.done('html', m);
+                    }
+                };
+            };
+
+            var yguid = Y.guid;
+            Y.guid = function() {
+                return 'binderid';
+            };
+            ac.done({data: 'data'}, { view: {name: 'mockView'}, children: children});
+
+            A.isTrue(doneCalled, 'never called done');
+
+            // replace
+            Y.guid = yguid;
+            Y.mojito.ViewRenderer = VR;
+        },
+
+        'test timer trigger done': function() {
+            var store = {
+                getAppConfig: function() {
+                    return {
+                        actionTimeout: 1
+                    };
+                },
+                getStaticContext: function() {
+                    return 'static context';
+                },
+                getRoutes: function(ctx) {
+                    return 'routes';
+                }
+            };
+            var adapterDoneCalled = false;
+            var adapterErrorCalled = false;
+            var ac = new Y.mojito.ActionContext({
+                dispatch: 'the dispatch',
+                command: {
+                    action: 'index',
+                    instance: {
+                        id: 'id',
+                        type: 'TypeGeneral',
+                        acAddons: [],
+                        views: {
+                            mockView: {}
+                        },
+                        binders: {
+                            mockView: {}
+                        },
+                        config: {}
+                    }
+                },
+                controller: {
+                    index: function(ac) {
+                        setTimeout(function() {
+                            ac.done('done');
+                            A.isFalse(adapterDoneCalled, 'dont call adapter.done()');
+                            A.isTrue(adapterErrorCalled, 'timer calls adapter.error()');
+                        }, 1);
+                    }
+                },
+                store: store,
+                adapter: {
+                    done: function(data, meta) {
+                        adapterDoneCalled = true;
+                    },
+                    error: function(err) {
+                        adapterErrorCalled = true;
+                    }
+                }
+            });
+        },
+
+        'test timer notrigger done': function() {
+            var store = {
+                getAppConfig: function() {
+                    return {
+                        actionTimeout: 1000
+                    };
+                },
+                getStaticContext: function() {
+                    return 'static context';
+                },
+                getRoutes: function(ctx) {
+                    return 'routes';
+                }
+            };
+            var adapterDoneCalled = false;
+            var adapterErrorCalled = false;
+            var ac = new Y.mojito.ActionContext({
+                dispatch: 'the dispatch',
+                command: {
+                    action: 'index',
+                    instance: {
+                        id: 'id',
+                        type: 'TypeGeneral',
+                        acAddons: [],
+                        views: {
+                            mockView: {}
+                        },
+                        binders: {
+                            mockView: {}
+                        },
+                        config: {}
+                    }
+                },
+                controller: {
+                    index: function(ac) {
+                        ac.done('done');
+                        A.isTrue(adapterDoneCalled, 'call adapter.done()');
+                        A.isFalse(adapterErrorCalled, 'dont call adapter.error()');
+                    }
+                },
+                store: store,
+                adapter: {
+                    done: function(data, meta) {
+                        adapterDoneCalled = true;
+                    },
+                    error: function(err) {
+                        adapterErrorCalled = true;
+                    }
+                }
+            });
+        },
+
+        'test timer notrigger error': function() {
+            var store = {
+                getAppConfig: function() {
+                    return {
+                        actionTimeout: 1000
+                    };
+                },
+                getStaticContext: function() {
+                    return 'static context';
+                },
+                getRoutes: function(ctx) {
+                    return 'routes';
+                }
+            };
+            var adapterDoneCalled = false;
+            var adapterErrorCalled = false;
+            var ac = new Y.mojito.ActionContext({
+                dispatch: 'the dispatch',
+                command: {
+                    action: 'index',
+                    instance: {
+                        id: 'id',
+                        type: 'TypeGeneral',
+                        acAddons: [],
+                        views: {
+                            mockView: {}
+                        },
+                        binders: {
+                            mockView: {}
+                        },
+                        config: {}
+                    }
+                },
+                controller: {
+                    index: function(ac) {
+                        ac.error('rats');
+                        A.isFalse(adapterDoneCalled, 'dont call adapter.done()');
+                        A.isTrue(adapterErrorCalled, 'timer calls adapter.error()');
+                    }
+                },
+                store: store,
+                adapter: {
+                    done: function(data, meta) {
+                        adapterDoneCalled = true;
+                    },
+                    error: function(err) {
+                        adapterErrorCalled = true;
+                    }
+                }
+            });
+        },
+
+        'test JSON serializer': function() {
+            var ac = new Y.mojito.ActionContext({
+                dispatch: 'the dispatch',
+                command: {
+                    action: 'index',
+                    instance: {
+                        id: 'id',
+                        type: 'TypeGeneral',
+                        acAddons: [],
+                        views: {}
+                    }
+                },
+                adapter: Y.Mock(),
+                controller: {index: function() {}},
+                store: store
+            });
+            var good = true;
+            var obj = {
+                toJSON: function() {
+                    throw new Error('no way');
+                }
+            };
+            try {
+                ac.done(obj, 'json');
+            } catch(err) {
+                good = false;
+            }
+            A.isFalse(good, 'handle exceptions during toJSON()');
+        },
+
+        'test controller noaction': function() {
+            var ac,
+                command = {
+                    action: 'index',
+                    instance: {
+                        id: 'id',
+                        type: 'TypeGeneral',
+                        acAddons: [],
+                        views: {}
+                    }
+                };
+            var error;
+            try {
+                ac = new Y.mojito.ActionContext({
+                    dispatch: 'the dispatch',
+                    command: command,
+                    adapter: Y.Mock(),
+                    controller: {
+                        // no index() action
+                    },
+                    store: store
+                });
+            } catch(err) {
+                error = err;
+            }
+            A.isNotUndefined(error);
+            A.areSame("No method 'index' on controller type 'TypeGeneral'", error.message.toString());
+        },
+
+        'test controller __call': function() {
+            var command = {
+                    action: 'index',
+                    instance: {
+                        id: 'id',
+                        type: 'TypeGeneral',
+                        acAddons: [],
+                        views: {}
+                    }
+                };
+            var callCalled = false;
+            var ac = new Y.mojito.ActionContext({
+                    dispatch: 'the dispatch',
+                    command: command,
+                    adapter: Y.Mock(),
+                    controller: {
+                        __call: function() {
+                            callCalled = true;
+                        }
+                    },
+                    store: store
+                });
+            A.isTrue(callCalled);
+        },
+
+        'test no view': function() {
+            var store = {
+                getAppConfig: function() {
+                    return {};
+                },
+                getStaticContext: function() {
+                    return {};
+                },
+                getRoutes: function(ctx) {
+                    return {};
+                }
+            };
+            var command = {
+                    action: 'index',
+                    instance: {
+                        id: 'id',
+                        type: 'TypeGeneral',
+                        acAddons: [],
+                        views: {}
+                    }
+                };
+            var adapter = {
+                    done: function(data, meta) {},
+                    error: function(err) {}
+                };
+
+            var ac, error;
+            try {
+                ac = new Y.mojito.ActionContext({
+                    dispatch: 'the dispatch',
+                    command: command,
+                    controller: {
+                        index: function(ac) {
+                            ac.done(null);
+                        }
+                    },
+                    store: store,
+                    adapter: adapter
+                });
+            } catch(err) {
+                error = err;
+            }
+            // ac.done(null) doesn't trigger an error
+            A.isUndefined(error);
+
+            try {
+                ac = new Y.mojito.ActionContext({
+                    dispatch: 'the dispatch',
+                    command: command,
+                    controller: {
+                        index: function(ac) {
+                            ac.done({status: 'done'});
+                        }
+                    },
+                    store: store,
+                    adapter: adapter
+                });
+            } catch(err) {
+                error = err;
+            }
+            A.isNotUndefined(error);
+            A.areSame("Missing view template: 'index'", error.message.toString());
+        },
+
+        'test server-side view caching': function() {
+            var command = {
+                    action: 'index',
+                    context: {
+                        runtime: 'server'
+                    },
+                    instance: {
+                        id: 'id',
+                        type: 'TypeGeneral',
+                        acAddons: [],
+                        views: {
+                            index: {
+                                engine: 'mockViewEngine',
+                                'content-path': 'path'
+                            }
+                        }
+                    }
+                };
+            var adapter = {
+                    done: function(data, meta) {},
+                    error: function(err) {}
+                };
+
+            var ac, error;
+            var rendererCtorCalled = 0,
+                rendererRenderCalled = 0;
+            Y.mojito.addons.viewEngines.mockViewEngine = function() {
+                rendererCtorCalled += 1;
+                this.render = function(data, type, path, in_adapter, meta, more) {
+                    rendererRenderCalled += 1;
+                    A.areSame('done', data.status);
+                    A.areSame('TypeGeneral', type);
+                    A.areSame('path', path);
+                    A.areSame(adapter, in_adapter);
+                    A.areSame('index', meta.view.name);
+                    A.isFalse(!!more);
+                };
+                return this;
+            };
+            try {
+                ac = new Y.mojito.ActionContext({
+                    dispatch: 'the dispatch',
+                    command: command,
+                    controller: {
+                        index: function(ac) {
+                            ac.done({status: 'done'});
+                        }
+                    },
+                    store: store,
+                    adapter: adapter
+                });
+            } catch(err) {
+                error = err;
+            }
+            A.isUndefined(error);
+            A.areSame(1, rendererCtorCalled);
+            A.areSame(1, rendererRenderCalled);
+
+            // second time, should use cache
+            try {
+                ac = new Y.mojito.ActionContext({
+                    dispatch: 'the dispatch',
+                    command: command,
+                    controller: {
+                        index: function(ac) {
+                            ac.done({status: 'done'});
+                        }
+                    },
+                    store: store,
+                    adapter: adapter
+                });
+            } catch(err) {
+                error = err;
+            }
+            A.isUndefined(error);
+            A.areSame(1, rendererCtorCalled);
+            A.areSame(2, rendererRenderCalled);
+        },
+
+        'test pathToRoot for views': function() {
+            var store = {
+                    getAppConfig: function() {
+                        return {
+                            pathToRoot: '/path/to/root/'
+                        };
+                    },
+                    getStaticContext: function() {
+                        return 'static context';
+                    },
+                    getRoutes: function(ctx) {
+                        return 'routes';
+                    }
+                };
+            var command = {
+                    action: 'index',
+                    context: {
+                        runtime: 'server'
+                    },
+                    instance: {
+                        id: 'id',
+                        type: 'TypeGeneral',
+                        acAddons: [],
+                        views: {
+                            index: {
+                                engine: 'engine-in-instance',
+                                'content-path': 'path/in/instance'
+                            }
+                        }
+                    }
+                };
+            var adapter = {
+                    done: function(data, meta) {},
+                    error: function(err) {}
+                };
+            var renderCalled = false;
+            Y.mojito.addons.viewEngines.mockViewEngine2 = function() {
+                this.render = function(data, type, path, in_adapter, meta, more) {
+                    renderCalled = true;
+                    A.areSame('done', data.status);
+                    A.areSame('TypeGeneral', type);
+                    A.areSame('/path/to/root/path/in/meta', path);
+                    A.areSame(adapter, in_adapter);
+                    A.areSame('index', meta.view.name);
+                    A.isFalse(!!more);
+                };
+                return this;
+            };
+            var ac, error;
+            try {
+                ac = new Y.mojito.ActionContext({
+                    dispatch: 'the dispatch',
+                    command: command,
+                    controller: {
+                        index: function(ac) {
+                            ac.done({
+                                status: 'done'
+                            }, {
+                                view: {
+                                    engine: 'mockViewEngine2',
+                                    'content-path': 'path/in/meta'
+                                }
+                            });
+                        }
+                    },
+                    store: store,
+                    adapter: adapter
+                });
+            } catch(err) {
+                error = err;
+            }
+            A.isUndefined(error, 'no error');
+            A.isTrue(renderCalled, 'render called');
         }
 
     }));

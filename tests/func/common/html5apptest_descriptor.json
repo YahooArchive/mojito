@@ -4,13 +4,16 @@
 
         "name" : "html5app",
 
-        "commonlib" : "../../base/yui-test.js",
-
         "config" :{
-            "baseUrl" : "http://localhost:4084"
+            "baseUrl" : "http://localhost:8666",
+            "application" : {
+                "name":"html5app",
+                "path": "./frameworkapp/flatfile",
+                "type": "static"
+            }
         },
 
-        "dataprovider" : {     
+        "dataprovider" : {
             "acmojitdone1client" : {
                 "group" : "smoke,html5app,acmojit",
                 "params" : {
@@ -424,7 +427,7 @@
                     "page" : "$$config.baseUrl$$/mytestpath/index.html"
                 }
             }
-        }     
+        }
     },
 
     {

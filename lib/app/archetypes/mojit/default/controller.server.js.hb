@@ -1,6 +1,3 @@
-/*
- * Copyright (c) 2012 Yahoo! Inc. All rights reserved.
- */
 /*jslint anon:true, sloppy:true, nomen:true*/
 YUI.add('{{name}}', function(Y, NAME) {
 
@@ -18,10 +15,6 @@ YUI.add('{{name}}', function(Y, NAME) {
      */
     Y.namespace('mojito.controllers')[NAME] = {
 
-        init: function(config) {
-            this.config = config;
-        },
-
         /**
          * Method corresponding to the 'index' action.
          *
@@ -29,7 +22,7 @@ YUI.add('{{name}}', function(Y, NAME) {
          *        to the Mojito API.
          */
         index: function(ac) {
-            ac.models.{{name}}ModelFoo.getData(function(err, data) {
+            ac.models.get('{{name}}ModelFoo').getData(function(err, data) {
                 if (err) {
                     ac.error(err);
                     return;
@@ -44,4 +37,4 @@ YUI.add('{{name}}', function(Y, NAME) {
 
     };
 
-}, '0.0.1', {requires: ['mojito', '{{name}}ModelFoo']});
+}, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', '{{name}}ModelFoo']});

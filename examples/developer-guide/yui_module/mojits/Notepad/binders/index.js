@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2012, Yahoo! Inc.  All rights reserved.
+ * Copyright (c) 2011-2013, Yahoo! Inc.  All rights reserved.
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
@@ -32,9 +32,11 @@ YUI.add('NotepadBinderIndex', function (Y, NAME) {
                 Y.StorageLite.setItem(keyname, notes.get('value'));
             });
 
+            // adding a classname to the notes element to facilitate func tests
+            notes.addClass('ready');
         }
     };
 
 }, '0.0.1', {requires: [
-    'gallery-storage-lite' //see autoload/storage-lite.client.js
+    'gallery-storage-lite' //see yui_modules/storage-lite.client.js
 ]});

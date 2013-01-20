@@ -1,6 +1,6 @@
 {
     "name": "mojito",
-    "version": "0.4.9-2",
+    "version": "0.5.2",
     "description": "Mojito provides an architecture, components and tools for developers to build complex web applications faster.",
     "preferGlobal": true,
     "author": "Drew Folta <folta@yahoo-inc.com>",
@@ -11,21 +11,23 @@
         "Drew Folta <folta@yahoo-inc.com>",
         "Martin Cooper <mcooper@yahoo-inc.com>",
         "Isao Yagi <isao@yahoo-inc.com>",
-        "Michael Ridgway <mridgway@yahoo-inc.com>"
+        "Michael Ridgway <mridgway@yahoo-inc.com>",
+        "Caridy Patino <caridy@yahoo-inc.com>"
     ],
     "dependencies": {
         "colors": "*",
         "express": "2.5.10",
         "glob": "~3.1.11",
-        "jslint": "~0.1.9",
         "js-yaml": "1.0.2",
-        "mkdirp": ">0.3",
+        "jslint": "~0.1.9",
         "mime": "1.2.4",
+        "mkdirp": ">0.3",
+        "request": "2.9.202",
         "rimraf": ">2",
         "semver": "1.0.14",
         "wrench": "~1.3.9",
         "ycb": "~1.0.0",
-        "yui": "~3.5.1",
+        "yui": "~3.7.3",
         "yuidocjs": "~0.3.14",
         "yuitest": "~0.7.4",
         "yuitest-coverage": "~0.0.6"
@@ -50,8 +52,9 @@
     "devDependencies": {
         "async": "*",
         "commander": "1.0.1",
+        "mockery": "~1.4.0",
         "node-static": ">0.6",
-        "yahoo-arrow": "~0.0.67"
+        "yahoo-arrow": "~0.0.73"
     },
     "homepage": "http://developer.yahoo.com/cocktails/mojito/",
     "repository": {
@@ -60,7 +63,7 @@
     },
     "bugs": "https://github.com/yahoo/mojito/issues",
     "scripts": {
-        "test": "./tests/run.js test -u --group server --driver nodejs && ./tests/run.js test -u --group client --driver selenium"
+        "test": "./tests/runall.sh"
     },
     "yahoo": {
         "mojito": {

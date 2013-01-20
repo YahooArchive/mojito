@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2012, Yahoo! Inc.  All rights reserved.
+ * Copyright (c) 2011-2013, Yahoo! Inc.  All rights reserved.
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
@@ -27,7 +27,7 @@ YUI.add('FlickrDetail', function (Y, NAME) {
                 return;
             }
 
-            ac.models.ModelFlickr.getFlickrDetail(image, function (err, details) {
+            ac.models.get('ModelFlickr').getFlickrDetail(image, function(err, details) {
                 if (err) {
                     ac.error(new Error("YQL Error"));
                     return;
@@ -66,4 +66,10 @@ YUI.add('FlickrDetail', function (Y, NAME) {
 
     };
 
-}, '0.0.1', {requires: ['mojito-intl-addon', 'ModelFlickr'], lang: ['de', 'en-US']});
+}, '0.0.1', {requires: [
+    'mojito-assets-addon',
+    'mojito-params-addon',
+    'mojito-intl-addon',
+    'mojito-models-addon',
+    'ModelFlickr'
+], lang: ['de', 'en-US']});

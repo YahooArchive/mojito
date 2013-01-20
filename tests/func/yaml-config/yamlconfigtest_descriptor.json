@@ -5,10 +5,15 @@
         "name" : "yaml-config",
 
         "config" :{
-            "baseUrl" : "http://localhost:4000"
+            "baseUrl" : "http://localhost:8666",
+            "application" : {
+                 "name":"yaml-config",
+                 "path": "./frameworkapp/yaml-config",
+                 "type": "mojito"
+            }
         },
 
-        "dataprovider" : {     
+        "dataprovider" : {
            "yamlconfig1" : {
                 "group" : "smoke,yaml",
                 "params" : {
@@ -23,7 +28,7 @@
                      "page" : "$$config.baseUrl$$/spec"
                 }
             }
-        }     
+        }
     },
 
     {

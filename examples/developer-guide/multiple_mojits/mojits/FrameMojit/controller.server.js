@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2012, Yahoo! Inc.  All rights reserved.
+ * Copyright (c) 2011-2013, Yahoo! Inc.  All rights reserved.
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
@@ -16,4 +16,4 @@ YUI.add('FrameMojit', function(Y, NAME) {
             actionContext.composite.done({template: {title: "Parent Frame"}});
         }
     };
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito', 'mojito-composite-addon']});

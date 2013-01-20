@@ -17,48 +17,44 @@ YUI.add('RESTLib', function(Y, NAME) {
      */
     Y.namespace('mojito.controllers')[NAME] = {
 
-        init: function(config) {
-            this.config = config;
-        },
-
         /**
          * Method corresponding to the 'index' action.
          *
          * @param ac {Object} The action context that provides access
          *        to the Mojito API.
          */
-	        index: function(actionContext) {
-		        //console.log(actionContext.http.getRequest());
+	        index: function(ac) {
+		        //console.log(ac.http.getRequest());
 	        	var data = {
-	        		hostname: actionContext.http.getRequest().headers.host
+	        		hostname: ac.http.getRequest().headers.host
 	        	};
-	        	actionContext.done(data);
-        		//actionContext.done();
+	        	ac.done(data);
+        		//ac.done();
 	        },
 
-	        simpleWSCall: function(actionContext) {
-	        	var hostPort = getHostNameAndPort(actionContext);
-	            actionContext.models.RESTLib.callWSGET(hostPort, function(error, response){
+	        simpleWSCall: function(ac) {
+	        	var hostPort = getHostNameAndPort(ac);
+	            ac.models.get('RESTLib').callWSGET(hostPort, function(error, response){
 	                if (!error)
 	                {
 	                    //console.log("This is the response: " + response);
-	                	actionContext.http.setHeader('content-type', 'text/html');
-	                    actionContext.done(response.getBody());
+	                	ac.http.setHeader('content-type', 'text/html');
+	                    ac.done(response.getBody());
 	                }
 	                else
 	                {
 	                    //console.log("This is error: " + JSON.stringify(error));
-	               		//actionContext.http.setStatusCode(error.status);
-	                    actionContext.done(error.responseText);
+	               		//ac.http.setStatusCode(error.status);
+	                    ac.done(error.responseText);
 	                }
 
 	            });
 	        },
 
-	        inspectResponse: function(actionContext) {
-	        	var hostPort = getHostNameAndPort(actionContext);
+	        inspectResponse: function(ac) {
+	        	var hostPort = getHostNameAndPort(ac);
 	            //console.log("***************************HostPort: " + hostPort);
-	            actionContext.models.RESTLib.callWSGET(hostPort, function(error, response){
+	            ac.models.get('RESTLib').callWSGET(hostPort, function(error, response){
 	                if (!error)
 	                {
 	                    //console.log(response.getHeaders());
@@ -72,302 +68,307 @@ YUI.add('RESTLib', function(Y, NAME) {
 	                        header_encoding: response.getHeader('transfer-encoding'),
 	                        header_not_exist: response.getHeader('custom-header')
 	                    };
-	                    actionContext.done(responseParts);
+	                    ac.done(responseParts);
 	                }
 	                else
 	                {
-	               		//actionContext.http.setStatusCode(error.status);
-	                    actionContext.done(error.responseText);
+	               		//ac.http.setStatusCode(error.status);
+	                    ac.done(error.responseText);
 	                }
 	            });
 	        },
-	        WSTimeout: function(actionContext)
+	        WSTimeout: function(ac)
 	        {
-	        	var hostPort = getHostNameAndPort(actionContext);
-	            actionContext.models.RESTLib.callTimeoutWS(hostPort, function(error, response){
+	        	var hostPort = getHostNameAndPort(ac);
+	            ac.models.get('RESTLib').callTimeoutWS(hostPort, function(error, response){
 	                if (!error)
 	                {
-	                    actionContext.done(response);
+	                    ac.done(response);
 	                }
 	                else
 	                {
-	                    actionContext.done(error.responseText);
+	                    ac.done(error.responseText);
 	                    //console.log("This is the error: " + JSON.stringify(error));
 	                }
 
 	            });
 	        },
 
-	        inspectError: function(actionContext)
+	        inspectError: function(ac)
 	        {
-	        	var hostPort = getHostNameAndPort(actionContext);
-	            actionContext.models.RESTLib.callInvalidWS(hostPort, function(error, response){
+	        	var hostPort = getHostNameAndPort(ac);
+	            ac.models.get('RESTLib').callInvalidWS(hostPort, function(error, response){
 	                if (!error)
 	                {
-	                	actionContext.http.setHeader('content-type', 'text/html');
-	                    actionContext.done(response);
+	                	ac.http.setHeader('content-type', 'text/html');
+	                    ac.done(response);
 	                }
 	                else
 	                {
-	               		//actionContext.http.setStatusCode(error.status);
+	               		//ac.http.setStatusCode(error.status);
 	                	console.log(error);
 	                	var err = new Error("This is my error message");
 	                	err.code = 404;
-	                	actionContext.error(err);
-	                    //actionContext.done(error.responseText);
+	                	ac.error(err);
+	                    //ac.done(error.responseText);
 	                    //console.log("This is the error: " + JSON.stringify(error));
 	                }
 
 	            });
 	        },
 
-	        testGETParam: function(actionContext)
+	        testGETParam: function(ac)
 	        {
-	        	var hostPort = getHostNameAndPort(actionContext);
-	            var sprintNumToPass = actionContext.params.getFromMerged("sprint_num");
-	            var negativeTest = actionContext.params.getFromMerged("negative_test");
+	        	var hostPort = getHostNameAndPort(ac);
+	            var sprintNumToPass = ac.params.getFromMerged("sprint_num");
+	            var negativeTest = ac.params.getFromMerged("negative_test");
 	            var outFunction = function(error, response)
 	            {
 	                if (!error)
 	                {
-	                	actionContext.http.setHeader('content-type', 'text/html');
-	                    actionContext.done(response);
+	                	ac.http.setHeader('content-type', 'text/html');
+	                    ac.done(response);
 	                }
 	                else
 	                {
-	                    actionContext.done(error.responseText);
+	                    ac.done(error.responseText);
 	                    //console.log("This is the error: " + JSON.stringify(error));
 	                }
 	            };
 
 	            if (negativeTest === "true")
 	            {
-	                actionContext.models.RESTLib.wsWithGETParamsNeg(hostPort, sprintNumToPass, outFunction);
+	                ac.models.get('RESTLib').wsWithGETParamsNeg(hostPort, sprintNumToPass, outFunction);
 	            }
 	            else
 	            {
-	                actionContext.models.RESTLib.wsWithGETParams(hostPort, sprintNumToPass, outFunction);
+	                ac.models.get('RESTLib').wsWithGETParams(hostPort, sprintNumToPass, outFunction);
 	            }
 	        },
 
-	        testPOSTParam: function(actionContext)
+	        testPOSTParam: function(ac)
 	        {
-	        	var hostPort = getHostNameAndPort(actionContext);
-	            var sprintNumToPass = actionContext.params.getFromMerged("sprint_num");
-	            var negativeTest = actionContext.params.getFromMerged("negative_test");
+	        	var hostPort = getHostNameAndPort(ac);
+	            var sprintNumToPass = ac.params.getFromMerged("sprint_num");
+	            var negativeTest = ac.params.getFromMerged("negative_test");
 	            var outFunction = function(error, response)
 	            {
 	                if (!error)
 	                {
-	                	actionContext.http.setHeader('content-type', 'text/html');
-	                    actionContext.done(response);
+	                	ac.http.setHeader('content-type', 'text/html');
+	                    ac.done(response);
 	                }
 	                else
 	                {
-	                    actionContext.done(error.responseText);
+	                    ac.done(error.responseText);
 	                    //console.log("This is the error: " + JSON.stringify(error));
 	                }
 	            };
 
 	            if (negativeTest === "true")
 	            {
-	                actionContext.models.RESTLib.wsWithPOSTParamsNeg(hostPort, sprintNumToPass, outFunction);
+	                ac.models.get('RESTLib').wsWithPOSTParamsNeg(hostPort, sprintNumToPass, outFunction);
 	            }
 	            else
 	            {
-	                actionContext.models.RESTLib.wsWithPOSTParams(hostPort, sprintNumToPass, outFunction);
+	                ac.models.get('RESTLib').wsWithPOSTParams(hostPort, sprintNumToPass, outFunction);
 	            }
 	        },
 
-	        testPUTParam: function(actionContext)
+	        testPUTParam: function(ac)
 	        {
-	        	var hostPort = getHostNameAndPort(actionContext);
-	            var sprintNumToPass = actionContext.params.getFromMerged("sprint_num");
-	            //var negativeTest = actionContext.params.getFromMerged("negative_test");
+	        	var hostPort = getHostNameAndPort(ac);
+	            var sprintNumToPass = ac.params.getFromMerged("sprint_num");
+	            //var negativeTest = ac.params.getFromMerged("negative_test");
 	            var outFunction = function(error, response)
 	            {
 	                if (!error)
 	                {
-	                	actionContext.http.setHeader('content-type', 'text/html');
+	                	ac.http.setHeader('content-type', 'text/html');
 	                    var statusCode = response.getStatusCode();
-	                    actionContext.done("<p id=\"status\">" + statusCode + "</p>" + response.getBody());
+	                    ac.done("<p id=\"status\">" + statusCode + "</p>" + response.getBody());
 	                }
 	                else
 	                {
-	                    actionContext.done(error.responseText);
+	                    ac.done(error.responseText);
 	                    console.log("This is the error: " + JSON.stringify(error));
 	                }
 	            };
 
-	            actionContext.models.RESTLib.wsWithPUTParams(hostPort, sprintNumToPass, outFunction);
+	            ac.models.get('RESTLib').wsWithPUTParams(hostPort, sprintNumToPass, outFunction);
 
 	            /*if (negativeTest === "true")
 	            {
-	                actionContext.models.RESTLib.wsWithPUTParamsNeg(hostPort, sprintNumToPass, outFunction);
+	                ac.models.get('RESTLib').wsWithPUTParamsNeg(hostPort, sprintNumToPass, outFunction);
 	            }
 	            else
 	            {
-	                actionContext.models.RESTLib.wsWithPUTParams(hostPort, sprintNumToPass, outFunction);
+	                ac.models.get('RESTLib').wsWithPUTParams(hostPort, sprintNumToPass, outFunction);
 	            }*/
 	        },
 
-	        testDELETEParam: function(actionContext)
+	        testDELETEParam: function(ac)
 	        {
-	        	var hostPort = getHostNameAndPort(actionContext);
-	            var sprintNumToPass = actionContext.params.getFromMerged("sprint_num");
-	            //var negativeTest = actionContext.params.getFromMerged("negative_test");
+	        	var hostPort = getHostNameAndPort(ac);
+	            var sprintNumToPass = ac.params.getFromMerged("sprint_num");
+	            //var negativeTest = ac.params.getFromMerged("negative_test");
 	            var outFunction = function(error, response)
 	            {
 	                if (!error)
 	                {
-	                	actionContext.http.setHeader('content-type', 'text/html');
+	                	ac.http.setHeader('content-type', 'text/html');
 	                    var statusCode = response.getStatusCode();
-	                    actionContext.done("<p id=\"status\">" + statusCode + "</p>" + response.getBody());
+	                    ac.done("<p id=\"status\">" + statusCode + "</p>" + response.getBody());
 	                }
 	                else
 	                {
-	                    actionContext.done(error.responseText);
+	                    ac.done(error.responseText);
 	                    console.log("This is the error: " + JSON.stringify(error));
 	                }
 	            };
 
-	            actionContext.models.RESTLib.wsWithDELETEParams(hostPort, sprintNumToPass, outFunction);
+	            ac.models.get('RESTLib').wsWithDELETEParams(hostPort, sprintNumToPass, outFunction);
 	        },
 
-	        testHEAD: function(actionContext)
+	        testHEAD: function(ac)
 	        {
-	        	var hostPort = getHostNameAndPort(actionContext);
-	            var sprintNumToPass = actionContext.params.getFromMerged("sprint_num");
+	        	var hostPort = getHostNameAndPort(ac);
+	            var sprintNumToPass = ac.params.getFromMerged("sprint_num");
 	            var outFunction = function(error, response)
 	            {
 	                if (!error)
 	                {
-	                	actionContext.http.setHeader('content-type', 'text/html');
+	                	ac.http.setHeader('content-type', 'text/html');
 	                    var statusCode = response.getStatusCode();
 	                    var headerInfo = response._resp.headers.new_header;
-	                    actionContext.done("<p id=\"status\">"+ statusCode +"</p><p id=\"header\">new_header = " + headerInfo + "</p>" + response.getBody());
+	                    ac.done("<p id=\"status\">"+ statusCode +"</p><p id=\"header\">new_header = " + headerInfo + "</p>" + response.getBody());
 	                }
 	                else
 	                {
-	                    actionContext.done(error.responseText);
+	                    ac.done(error.responseText);
 	                    console.log("This is the error: " + JSON.stringify(error));
 	                }
 	            };
 
-	            actionContext.models.RESTLib.wsWithHEAD(hostPort, sprintNumToPass, outFunction);
+	            ac.models.get('RESTLib').wsWithHEAD(hostPort, sprintNumToPass, outFunction);
 	        },
 
-	        testHeaders: function(actionContext)
+	        testHeaders: function(ac)
 	        {
-	        	var hostPort = getHostNameAndPort(actionContext);
+	        	var hostPort = getHostNameAndPort(ac);
 	            var outFunction = function(error, response)
 	            {
 	                if (!error)
 	                {
-	                	actionContext.http.setHeader('content-type', 'text/html');
-	                    actionContext.done(response);
+	                	ac.http.setHeader('content-type', 'text/html');
+	                    ac.done(response);
 	                }
 	                else
 	                {
-	                    actionContext.done(error.responseText);
+	                    ac.done(error.responseText);
 	                    console.log("This is the error: " + JSON.stringify(error));
 	                }
 	            };
-	            actionContext.models.RESTLib.wsWithHeadersSettings(hostPort, outFunction);
+	            ac.models.get('RESTLib').wsWithHeadersSettings(hostPort, outFunction);
 
 	        },
 
 	        //My WebServices
 
-	        simpleWS: function(actionContext) {
+	        simpleWS: function(ac) {
 	        	//console.log("I am here");
-	        	//actionContext.http.setHeader('content-type', 'text/html');
-	        	//actionContext.done("<p id=\"output\">This is a very simple web service</p>");
-	        	actionContext.done({output: "This is a very simple web service"}, {view: {name: "wsOutput"}});
+	        	//ac.http.setHeader('content-type', 'text/html');
+	        	//ac.done("<p id=\"output\">This is a very simple web service</p>");
+	        	ac.done({output: "This is a very simple web service"}, {view: {name: "wsOutput"}});
 	        },
 
-	        myWS: function(actionContext){
-	            actionContext.models.RESTLib.myTimeConsumingWS(function (output){
-	            	actionContext.http.setHeader('content-type', 'text/html');
-	                actionContext.done(output);
+	        myWS: function(ac){
+	            ac.models.get('RESTLib').myTimeConsumingWS(function (output){
+	            	ac.http.setHeader('content-type', 'text/html');
+	                ac.done(output);
 	            });
 	        },
 
-	        printGETParams: function(actionContext){
-	            var project = actionContext.params.getFromUrl("project");
-	            var sprint = actionContext.params.getFromUrl("sprint");
-	            var method = actionContext.http.getRequest().method;
+	        printGETParams: function(ac){
+	            var project = ac.params.getFromUrl("project");
+	            var sprint = ac.params.getFromUrl("sprint");
+	            var method = ac.http.getRequest().method;
 
 	            var output = "<p id=\"output\">(METHOD: " + method + ") This is sprint " + sprint + " for the project " + project + "</p>";
-	            actionContext.http.setHeader('content-type', 'text/html');
-	            actionContext.done(output);
+	            ac.http.setHeader('content-type', 'text/html');
+	            ac.done(output);
 	        },
 
-	        printPOSTParams: function(actionContext){
-	            var project = actionContext.params.getFromBody("project");
-	            var sprint = actionContext.params.getFromBody("sprint");
-	            var method = actionContext.http.getRequest().method;
+	        printPOSTParams: function(ac){
+	            var project = ac.params.getFromBody("project");
+	            var sprint = ac.params.getFromBody("sprint");
+	            var method = ac.http.getRequest().method;
 
 	            var output = "<p id=\"output\">(METHOD: " + method + ") This is sprint " + sprint + " for the project " + project + "</p>";
-	            actionContext.http.setHeader('content-type', 'text/html');
-	            actionContext.done(output);
+	            ac.http.setHeader('content-type', 'text/html');
+	            ac.done(output);
 	        },
 
-	        printPUTParams: function(actionContext){
-	            var project = actionContext.params.getFromBody("project");
-	            var sprint = actionContext.params.getFromBody("sprint");
-	            var method = actionContext.http.getRequest().method;
+	        printPUTParams: function(ac){
+	            var project = ac.params.getFromBody("project");
+	            var sprint = ac.params.getFromBody("sprint");
+	            var method = ac.http.getRequest().method;
 
 	            var output = "<p id=\"output\">(METHOD: " + method + ") This is sprint " + sprint + " for the project " + project + "</p>";
-	            actionContext.http.setHeader('content-type', 'text/html');
-	            actionContext.done(output);
+	            ac.http.setHeader('content-type', 'text/html');
+	            ac.done(output);
 	        },
 
-	        printDELETEParams: function(actionContext){
-	            var project = actionContext.params.getFromMerged("project");
-	            var sprint = actionContext.params.getFromMerged("sprint");
-	            var method = actionContext.http.getRequest().method;
+	        printDELETEParams: function(ac){
+	            var project = ac.params.getFromMerged("project");
+	            var sprint = ac.params.getFromMerged("sprint");
+	            var method = ac.http.getRequest().method;
 
 	            //var output = "<p id=\"output\">(METHOD: " + method + ") This is sprint " + sprint + " for the project " + project + "</p>";
 	            var output = "<p id=\"output\">(METHOD: " + method + ")</p>";
-	            actionContext.http.setHeader('content-type', 'text/html');
-	            actionContext.done(output);
+	            ac.http.setHeader('content-type', 'text/html');
+	            ac.done(output);
 	        },
 
-	        printHEADParams: function(actionContext){
-	            /*var project = actionContext.params.getFromMerged("project");
-	            var sprint = actionContext.params.getFromMerged("sprint");
+	        printHEADParams: function(ac){
+	            /*var project = ac.params.getFromMerged("project");
+	            var sprint = ac.params.getFromMerged("sprint");
 
 	            var output = "<p id=\"output\">This is sprint " + sprint + " for the project " + project + "</p>";
 	            */
-	            actionContext.http.addHeader('new_header','dummy_value');
-	            actionContext.done();
+	            ac.http.addHeader('new_header','dummy_value');
+	            ac.done();
 	        },
 
-	        getParticularHeader: function(actionContext){
-	            var reqObj = actionContext.http.getRequest();
+	        getParticularHeader: function(ac){
+	            var reqObj = ac.http.getRequest();
 	            var headers = reqObj.headers;
-	            actionContext.http.setHeader('content-type', 'text/html');
-	            actionContext.done("<p id=\"something\">" + JSON.stringify(headers) + "</p>" + "<p id=\"my_header\">" + headers.myheader + "</p>" + "<p id=\"connection\">" + headers.connection + "</p>");
+	            ac.http.setHeader('content-type', 'text/html');
+	            ac.done("<p id=\"something\">" + JSON.stringify(headers) + "</p>" + "<p id=\"my_header\">" + headers.myheader + "</p>" + "<p id=\"connection\">" + headers.connection + "</p>");
 	        }
 	    };
 
-	    function getHostNameAndPort(actionContext) {
+	    function getHostNameAndPort(ac) {
 	    	var hostPort;
-	    	/*fromClient = actionContext.params.getFromMerged('fromClient');
+	    	/*fromClient = ac.params.getFromMerged('fromClient');
 	    	if (fromClient === "true")
 	    	{
-	    		hostPort = actionContext.params.getFromMerged('hostPort');
+	    		hostPort = ac.params.getFromMerged('hostPort');
 	    	}
 	    	else
 	    	{
-	    		var reqObj = actionContext.http.getRequest();
+	    		var reqObj = ac.http.getRequest();
 	    		hostPort = reqObj.headers.host;
 	    	}*/
-	    	var reqObj = actionContext.http.getRequest();
+	    	var reqObj = ac.http.getRequest();
 			hostPort = reqObj.headers.host;
 			
 	    	return hostPort;
 	    }
 	
-}, '0.0.1', {requires: ['mojito', 'mojito-http-addon']});
+}, '0.0.1', {requires: [
+    'mojito',
+    'mojito-models-addon',
+    'mojito-http-addon',
+    'mojito-params-addon',
+    'RESTLibModel']});

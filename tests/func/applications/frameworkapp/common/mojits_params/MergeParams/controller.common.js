@@ -103,4 +103,4 @@ YUI.add('MergeParams', function(Y, NAME) {
         return paramsArray;
     }
 
-}, '0.0.1', {requires: ['mojito']});
+}, '0.0.1', {requires: ['mojito', 'mojito-params-addon']});

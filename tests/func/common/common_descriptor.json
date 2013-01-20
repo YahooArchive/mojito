@@ -1,0 +1,871 @@
+[
+    {
+        "settings": [ "master" ],
+
+        "name" : "common",
+
+        "config" :{
+            "baseUrl" : "http://localhost:8666",
+            "application" : {
+                 "name":"common",
+                 "path": "./frameworkapp/common",
+                 "type": "mojito"
+            }
+        },
+
+        "dataprovider" : {     
+            "acmojitdone1client" : {
+                "group" : "smoke,common,acmojit",
+                "params" : {
+                    "test" : "testacmojitdone1client.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "acmojitdone2client" : {
+                "group" : "smoke,common,acmojit",
+                "params" : {
+                    "test" : "testacmojitdone2client.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "acmojitdone3client" : {
+                "group" : "smoke,common,acmojit",
+                "params" : {
+                    "test" : "testacmojitdone3client.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "acmojitdone4client" : {
+                "group" : "smoke,common,acmojit",
+                "params" : {
+                    "test" : "testacmojitdone4client.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "acmojitdone5client" : {
+                "group" : "smoke,common,acmojit",
+                "params" : {
+                    "test" : "testacmojitdone5client.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "acmojitdone6client" : {
+                "group" : "smoke,common,acmojit",
+                "params" : {
+                    "test" : "testacmojitdone6client.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "acmojitdone7client" : {
+                "group" : "smoke,common,acmojit",
+                "params" : {
+                    "test" : "testacmojitdone7client.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "acmojitdone8client" : {
+                "group" : "smoke,common,acmojit",
+                "params" : {
+                    "test" : "testacmojitdone8client.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "acmojitdone9client" : {
+                "group" : "smoke,common,acmojit",
+                "params" : {
+                    "test" : "testacmojitdone9client.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "acmojitdone10client" : {
+                "group" : "smoke,common,acmojit",
+                "params" : {
+                    "test" : "testacmojitdone10client.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "acmojitnoparamclient" : {
+                "group" : "smoke,common,acmojit",
+                "params" : {
+                    "test" : "testacmojitnoparamclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testacpartialrenderclient" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testacpartialrenderclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testacpartialinvokeclient" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testacpartialinvokeclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testassetwithlocationclient" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testassetwithlocationclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testassetjswithlocationclient" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testassetjswithlocationclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testassetcsswithlocationclient" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testassetcsswithlocationclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testassetwithdefaultlocationclient" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testassetwithdefaultlocationclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testassetjswithdefaultlocationclient" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testassetjswithdefaultlocationclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testassetcsswithdefaultlocationclient" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testassetcsswithdefaultlocationclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testbinderclient" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testbinderclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testcompositemojitclient" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testcompositemojitclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testcompositemojit1client" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testcompositemojit1client.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testcompositemojit2client" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testcompositemojit2client.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testcompositemojitrefreshclient" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testcompositemojitrefreshclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testcompositemojitrefresh1client" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testcompositemojitrefresh1client.js",
+                    "page" : "$$config.baseUrl$$/cmframe?run_from_server=false"
+                }
+            },
+            "testconfiginappfileclient" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testconfiginappfileclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testconfiginappfilecompclient" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testconfiginappfilecompclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testconfiginappfilenegclient" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testconfiginappfilenegclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testconfigindefaultfileclient" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testconfigindefaultfileclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testconfigindefinitionfileclient" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testconfigindefinitionfileclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testconfigindefinitionfilenegclient" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testconfigindefinitionfilenegclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testmojitproxydestroychild" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testmojitproxydestroychild.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testcontrollercachingclient" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testcontrollercachingclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "teststatefulclient" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "teststatefulclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testdependencyclient" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testdependencyclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testlazyloadclient" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testlazyloadclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testclientresume" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testclientresume.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testclientpause" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testclientpause.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testsimplemodelclient" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testsimplemodelclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testmojitproxybroadcaststaticlistenall" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testmojitproxybroadcaststaticlistenall.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testmojitproxybroadcaststaticlisten2" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testmojitproxybroadcaststaticlisten2.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testmojitproxybroadcaststaticlisten1" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testmojitproxybroadcaststaticlisten1.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testmojitproxybroadcaststaticlisten" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testmojitproxybroadcaststaticlisten.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testmojitproxybroadcastdynamic" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testmojitproxybroadcastdynamic.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testmojitproxyrender" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testmojitproxyrender.js",
+                    "page" : "$$config.baseUrl$$/?test=abc"
+                }
+            },
+            "testmojitproxyrefreshview" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testmojitproxyrefreshview.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testmojitproxygetid" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testmojitproxygetid.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testmojitproxygetfromurl" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testmojitproxygetfromurl.js",
+                    "page" : "$$config.baseUrl$$/?test=abc"
+                }
+            },
+            "testgetparamsclient" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testgetparamsclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testgetparamssimpleclient" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testgetparamssimpleclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testgetparamsbyvalueclient" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testgetparamsbyvalueclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testgetparamsbyvaluesimpleclient" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testgetparamsbyvaluesimpleclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testmergeparamsclient" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testmergeparamsclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testmergeparamssimpleclient" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testmergeparamssimpleclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testpostparamsclient" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testpostparamsclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testpostparamssimpleclient" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testpostparamssimpleclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testrouteparamsclient" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testrouteparamsclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "testrouteparamssimpleclient" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testrouteparamssimpleclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+			"acmojitserver" : {
+                "group" : "smoke,common,acmojit",
+                "params" : {
+                    "test" : "testacmojitserver.js",
+                    "page" : "$$config.baseUrl$$/ACMojit/acMojit"
+                }
+            },   
+            "acmojitdone1server" : {
+                "group" : "smoke,common,acmojit",
+                "params" : {
+                    "test" : "testacmojitdone1server.js",
+                    "page" : "$$config.baseUrl$$/ACMojit/acMojit?test=done1"
+                }
+            },
+            "acmojitdone2server" : {
+                "group" : "smoke,common,acmojit",
+                "params" : {
+                    "test" : "testacmojitdone2server.js",
+                    "page" : "$$config.baseUrl$$/ACMojit/acMojit?test=done2"
+                }
+            },
+            "acmojitdone3server" : {
+                "group" : "smoke,common,acmojit",
+                "params" : {
+                    "test" : "testacmojitdone3server.js",
+                    "page" : "$$config.baseUrl$$/ACMojit/acMojit?test=done3"
+                }
+            },
+            "acmojitdone4server" : {
+                "group" : "smoke,common,acmojit",
+                "params" : {
+                    "test" : "testacmojitdone4server.js",
+                    "page" : "$$config.baseUrl$$/ACMojit/acMojit?test=done4"
+                }
+            },
+            "acmojitdone6server" : {
+                "group" : "smoke,common,acmojit",
+                "params" : {
+                    "test" : "testacmojitdone6server.js",
+                    "page" : "$$config.baseUrl$$/ACMojit/acMojit?test=done6"
+                }
+            },
+            "acmojitdone8server" : {
+                "group" : "smoke,common,acmojit",
+                "params" : {
+                    "test" : "testacmojitdone8server.js",
+                    "page" : "$$config.baseUrl$$/ACMojit/acMojit?test=done8"
+                }
+            },
+            "acmojitdone9server" : {
+                "group" : "smoke,common,acmojit",
+                "params" : {
+                    "test" : "testacmojitdone9server.js",
+                    "page" : "$$config.baseUrl$$/ACMojit/acMojit?test=done9"
+                }
+            },
+            "acmojitdone10server" : {
+                "group" : "smoke,common,acmojit",
+                "params" : {
+                    "test" : "testacmojitdone10server.js",
+                    "page" : "$$config.baseUrl$$/ACMojit/acMojit?test=done10"
+                }
+            },
+            "acmojitflushdoneserver" : {
+                "group" : "smoke,common,acmojit",
+                "params" : {
+                    "test" : "testacmojitflushdoneserver.js",
+                    "page" : "$$config.baseUrl$$/ACMojit/acMojit?test=flushdone"
+                }
+            },
+            "acmojitflush1server" : {
+                "group" : "smoke,common,acmojit",
+                "params" : {
+                    "test" : "testacmojitflush1server.js",
+                    "page" : "$$config.baseUrl$$/ACMojit/acMojit?test=flush1"
+                }
+            },
+            "acmojitflush3server" : {
+                "group" : "smoke,common,acmojit",
+                "params" : {
+                    "test" : "testacmojitflush3server.js",
+                    "page" : "$$config.baseUrl$$/ACMojit/acMojit?test=flush3"
+                }
+            },
+            "acmojitflush4server" : {
+                "group" : "smoke,common,acmojit",
+                "params" : {
+                    "test" : "testacmojitflush4server.js",
+                    "page" : "$$config.baseUrl$$/ACMojit/acMojit?test=flush4"
+                }
+            },
+            "acmojitflush6server" : {
+                "group" : "smoke,common,acmojit",
+                "params" : {
+                    "test" : "testacmojitflush6server.js",
+                    "page" : "$$config.baseUrl$$/ACMojit/acMojit?test=flush6"
+                }
+            },
+            "acmojitflush8server" : {
+                "group" : "smoke,common,acmojit",
+                "params" : {
+                    "test" : "testacmojitflush8server.js",
+                    "page" : "$$config.baseUrl$$/ACMojit/acMojit?test=flush8"
+                }
+            },
+            "acmojitflush9server" : {
+                "group" : "smoke,common,acmojit",
+                "params" : {
+                    "test" : "testacmojitflush9server.js",
+                    "page" : "$$config.baseUrl$$/ACMojit/acMojit?test=flush9"
+                }
+            },
+            "acmojitflush10server" : {
+                "group" : "smoke,common,acmojit",
+                "params" : {
+                    "test" : "testacmojitflush10server.js",
+                    "page" : "$$config.baseUrl$$/ACMojit/acMojit?test=flush10"
+                }
+            },
+            "testdependencyserver" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testdependencyserver.js",
+                    "page" : "$$config.baseUrl$$/@DepCheckParent/mytest"
+                }
+            },
+            "testacpartialrenderserver" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testacpartialrenderserver.js",
+                    "page" : "$$config.baseUrl$$/@PartialMojit/mytest"
+                }
+            },
+            "testacpartialinvokeserver" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testacpartialinvokeserver.js",
+                    "page" : "$$config.baseUrl$$/@PartialMojit/myinvoke"
+                }
+            },
+            "testassetwithlocationserver" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testassetwithlocationserver.js",
+                    "page" : "$$config.baseUrl$$/assetsframeloc"
+                }
+            },
+            "testassetjswithlocationheaderserver" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testassetjswithlocationheaderserver.js",
+                    "page" : "$$config.baseUrl$$/assetsframeloc"
+                }
+            },
+            "testassetjswithlocationbodyserver" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testassetjswithlocationbodyserver.js",
+                    "page" : "$$config.baseUrl$$/assetsframeloc"
+                }
+            },
+            "testassetcsswithlocationheaderserver" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testassetcsswithlocationheaderserver.js",
+                    "page" : "$$config.baseUrl$$/assetsframeloc"
+                }
+            },
+            "testassetcsswithlocationbodyserver" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testassetcsswithlocationbodyserver.js",
+                    "page" : "$$config.baseUrl$$/assetsframeloc"
+                }
+            },
+            "testassetwithdefaultlocationserver" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testassetwithdefaultlocationserver.js",
+                    "page" : "$$config.baseUrl$$/assetsframedefault"
+                }
+            },
+            "testassetjswithdefaultlocationheaderserver" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testassetjswithdefaultlocationheaderserver.js",
+                    "page" : "$$config.baseUrl$$/assetsframedefault"
+                }
+            },
+            "testassetjswithdefaultlocationbodyserver" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testassetjswithdefaultlocationbodyserver.js",
+                    "page" : "$$config.baseUrl$$/assetsframedefault"
+                }
+            },
+            "testassetcsswithdefaultlocationheaderserver" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testassetcsswithdefaultlocationheaderserver.js",
+                    "page" : "$$config.baseUrl$$/assetsframedefault"
+                }
+            },
+            "testassetcsswithdefaultlocationbodyserver" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testassetcsswithdefaultlocationbodyserver.js",
+                    "page" : "$$config.baseUrl$$/assetsframedefault"
+                }
+            },
+            "testbinderserver" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testbinderserver.js",
+                    "page" : "$$config.baseUrl$$/binderframe"
+                }
+            },
+            "testcompositemojitserver" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testcompositemojitserver.js",
+                    "page" : "$$config.baseUrl$$/cmframe"
+                }
+            },
+            "testcompositemojit1server" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testcompositemojit1server.js",
+                    "page" : "$$config.baseUrl$$/cmframe"
+                }
+            },
+            "testcompositemojit2server" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testcompositemojit2server.js",
+                    "page" : "$$config.baseUrl$$/cmframe"
+                }
+            },
+            "testcompositemojitrefreshserver" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testcompositemojitrefreshserver.js",
+                    "page" : "$$config.baseUrl$$/cmframe?run_from_server=true"
+                }
+            },
+            "testconfiginappfileserver" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testconfiginappfileserver.js",
+                    "page" : "$$config.baseUrl$$/MyConfig/myIndex"
+                }
+            },
+            "testconfiginappfilecompserver" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testconfiginappfilecompserver.js",
+                    "page" : "$$config.baseUrl$$/MyConfig/myIndex"
+                }
+            },
+            "testconfiginappfilenegserver" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testconfiginappfilenegserver.js",
+                    "page" : "$$config.baseUrl$$/MyConfig/myIndex"
+                }
+            },
+            "testconfigindefaultfileserver" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testconfigindefaultfileserver.js",
+                    "page" : "$$config.baseUrl$$/MyConfig/myIndex"
+                }
+            },
+            "testconfigindefinitionfileserver" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testconfigindefinitionfileserver.js",
+                    "page" : "$$config.baseUrl$$/MyConfig/myIndex"
+                }
+            },
+            "testconfigindefinitionfilenegserver" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testconfigindefinitionfilenegserver.js",
+                    "page" : "$$config.baseUrl$$/MyConfig/myIndex"
+                }
+            },
+            "testsimplemodelserver" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testsimplemodelserver.js",
+                    "page" : "$$config.baseUrl$$/SimpleModel/simpleModel"
+                }
+            },
+            "testgetparamsserver" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testgetparamsserver.js",
+                    "page" : "$$config.baseUrl$$/GetParams/allParams?foo=123&bar=2&test=no"
+                }
+            },
+            "testgetparamssimpleserver" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testgetparamssimpleserver.js",
+                    "page" : "$$config.baseUrl$$/GetParams/allParamsSimple?foo=123&bar=2&test=no"
+                }
+            },
+            "testgetparamsbyvalueserver" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testgetparamsbyvalueserver.js",
+                    "page" : "$$config.baseUrl$$/GetParams/paramsByValue?foo=abc"
+                }
+            },
+            "testgetparamsbyvaluesimpleserver" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testgetparamsbyvaluesimpleserver.js",
+                    "page" : "$$config.baseUrl$$/GetParams/paramsByValueSimple?foo=abc"
+                }
+            },
+            "testmergeparamsserver" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "scenario": [
+                        {
+                           "test" : "testmergeparamsserver.js",
+                           "page" : "$$config.baseUrl$$/MergePoster/index"
+                        },
+                        {
+                           "controller": "locator",
+                           "params": {
+                                  "value": "#submitbutton",
+                                  "click": true
+                           }
+                        },
+                        {
+                           "test" : "testmergeparams1server.js"
+                        }
+                     ]
+                }
+            },
+            "testmergeparamssimpleserver" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "scenario": [
+                        {
+                           "test" : "testmergeparamssimpleserver.js",
+                           "page" : "$$config.baseUrl$$/MergePoster/index"
+                        },
+                        {
+                           "controller": "locator",
+                           "params": {
+                                  "value": "#submitsimplebutton",
+                                  "click": true
+                           }
+                        },
+                        {
+                           "test" : "testmergeparamssimple1server.js"
+                        }
+                     ]
+                }
+            },
+            "testpostparamsserver" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "scenario": [
+                        {
+                           "test" : "testpostparamsserver.js",
+                           "page" : "$$config.baseUrl$$/Poster/index"
+                        },
+                        {
+                           "controller": "locator",
+                           "params": {
+                                  "value": "#submitbutton",
+                                  "click": true
+                           }
+                        },
+                        {
+                           "test" : "testpostparams1server.js"
+                        }
+                     ]
+                }
+            },
+            "testpostparamssimpleserver" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "scenario": [
+                        {
+                           "test" : "testpostparamssimpleserver.js",
+                           "page" : "$$config.baseUrl$$/Poster/index"
+                        },
+                        {
+                           "controller": "locator",
+                           "params": {
+                                  "value": "#submitsimplebutton",
+                                  "click": true
+                           }
+                        },
+                        {
+                           "test" : "testpostparamssimple1server.js"
+                        }
+                     ]
+                }
+            },
+            "testrouteparamsserver" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testrouteparamsserver.js",
+                    "page" : "$$config.baseUrl$$/RouteParams"
+                }
+            },
+            "testrouteparamssimpleserver" : {
+                "group" : "smoke,common",
+                "params" : {
+                    "test" : "testrouteparamssimpleserver.js",
+                    "page" : "$$config.baseUrl$$/RouteParamsSimple"
+                }
+            },
+            "testmobiledevicedefaultview" : {
+                "group" : "smoke,common,new",
+                "params" : {
+                    "test" : "testmobiledevicedefaultview.js",
+                    "page" : "$$config.baseUrl$$/mobiledevices/index"
+                }
+            },
+            "testmobiledeviceiphoneview" : {
+                "group" : "smoke,common,new",
+                "params" : {
+                    "test" : "testmobiledeviceiphoneview.js",
+                    "page" : "$$config.baseUrl$$/mobiledevices/index?device=iphone"
+                }
+            },
+            "testmobiledevicekindleview" : {
+                "group" : "smoke,common,new",
+                "params" : {
+                    "test" : "testmobiledevicekindleview.js",
+                    "page" : "$$config.baseUrl$$/mobiledevices/index?device=kindle"
+                }
+            }
+        }     
+    },
+
+    {
+        "settings": [ "environment:development" ]
+    }
+
+]

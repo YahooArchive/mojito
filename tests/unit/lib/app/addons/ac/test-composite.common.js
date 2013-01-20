@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2012, Yahoo! Inc.  All rights reserved.
+ * Copyright (c) 2011-2013, Yahoo! Inc.  All rights reserved.
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
@@ -34,7 +34,7 @@ YUI().use('mojito-composite-addon', 'test', function(Y) {
                 },
                 datamock = {data: 'mock'},
                 metamock = {meta: 'mock'},
-                adapter = null,
+                adapter = Y.Mock(),
                 ac = {
                     done: function(data, meta) {
                         doneCalled = true;
@@ -82,7 +82,7 @@ YUI().use('mojito-composite-addon', 'test', function(Y) {
 
         'test execute dispatches each child': function() {
             var command = {instance: {}},
-                adapter = null,
+                adapter = Y.Mock(),
                 ac = {
                     _dispatch: function(command, adapter) {
                         A.isObject(command, "bad command object to dispatch");
@@ -130,7 +130,7 @@ YUI().use('mojito-composite-addon', 'test', function(Y) {
                         }
                     }
                 },
-                adapter = null,
+                adapter = Y.Mock(),
                 ac = {
                     done: function(data, meta) {
                         doneCalled = true;
@@ -161,7 +161,7 @@ YUI().use('mojito-composite-addon', 'test', function(Y) {
 
         'test error is thrown when children is an array': function() {
             var command = {instance: {}},
-                adapter = null,
+                adapter = Y.Mock(),
                 ac = {},
                 c = new Y.mojito.addons.ac.composite(command, adapter, ac),
                 config = {
@@ -182,7 +182,7 @@ YUI().use('mojito-composite-addon', 'test', function(Y) {
 
         'test proxied mojits are processed properly': function() {
             var command = {instance: {}},
-                adapter = null,
+                adapter = Y.Mock(),
                 ac = {
                     _dispatch: function(command, adapter) {
                         A.isObject(command, "bad command object to dispatch");
@@ -223,7 +223,7 @@ YUI().use('mojito-composite-addon', 'test', function(Y) {
 
         'test defered mojits are processed properly': function() {
             var command = {instance: {}},
-                adapter = null,
+                adapter = Y.Mock(),
                 ac = {
                     _dispatch: function(command, adapter) {
                         A.isObject(command, "bad command object to dispatch");
@@ -262,9 +262,10 @@ YUI().use('mojito-composite-addon', 'test', function(Y) {
             A.isTrue(exeCbCalled, "execute callback never called");
         },
 
-        'test null or undefined child should be discarded': function() {
+        'test null or undefined child should be skipped': function() {
             var command = {instance: {}},
-                adapter = null,
+                adapter = Y.Mock(),
+                countDispatched = 0,
                 ac = {
                     _dispatch: function(command, adapter) {
                         A.isObject(command, "bad command object to dispatch");
@@ -272,6 +273,7 @@ YUI().use('mojito-composite-addon', 'test', function(Y) {
                         var id = command.instance.id;
                         var meta = {};
                         meta[id] = id + '__meta';
+                        countDispatched += 1;
                         adapter.done(id + '__data', meta);
                     }, _notify: function() {}
                 },
@@ -286,6 +288,7 @@ YUI().use('mojito-composite-addon', 'test', function(Y) {
 
             c.execute(config, function(data, meta) {
                 exeCbCalled = true;
+                A.areSame(1, countDispatched, "dispatched wrong number of children");
                 A.isUndefined(data.kid_a, "unexpected kid_a data for null child");
                 A.isString(data.kid_b, "missing kid_b data");
                 A.areSame('kid_b__data', data.kid_b, "wrong kid_b data");

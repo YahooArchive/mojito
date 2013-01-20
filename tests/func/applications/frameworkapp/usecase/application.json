@@ -45,12 +45,7 @@
                             "css":[
                                 "/static/PagedFlickr2/assets/css/style.css"
                             ]
-                        },
-						"bottom": {
-						    "js": [
-						        "/static/PagedFlickr2/autoload/lifecycle.client.js"
-						    ]
-						}
+                        }
                     }
                 }
             },

@@ -6,6 +6,8 @@ Dynamically Adding CSS to Different Devices
 
 **Difficulty:** Intermediate
 
+.. _code_exs_dynamic_css-summary:
+
 Summary
 =======
 
@@ -18,6 +20,8 @@ The following topics will be covered:
 - configuring an application to dynamically include assets
 - using the ``addAssets`` method in the controller to dynamically add assets to both the
   rendered default and device-specific templates
+
+.. _code_exs_dynamic_css-notes:
 
 Implementation Notes
 ====================
@@ -97,9 +101,7 @@ seen above. To add metadata for the iPhone, the ``addBlob`` method is called fro
 
    YUI.add('device', function(Y, NAME){
      Y.namespace('mojito.controllers')[NAME] = {   
-       init: function(config) {
-        this.config = config;
-       },
+
        index: function(ac) {
          var device = ac.context.device, css = '/static/device/assets/simple';
          if (device === 'iphone') {
@@ -125,7 +127,7 @@ seen above. To add metadata for the iPhone, the ``addBlob`` method is called fro
          });
        }
      };
-   }, '0.0.1', {requires: []});
+   }, '0.0.1', {requires: ['mojito-assets-addon']});
 
 The ``index.iphone`` template below contains CSS for controlling the orientation of the 
 page, which is needed for displaying the page correctly on an iPhone. When the template is 
@@ -174,6 +176,8 @@ be added dynamically.
      {{/colors}}
      </ul>
    </div>
+
+.. _code_exs_dynamic_css-exs:
 
 Setting Up this Example
 =======================
@@ -237,9 +241,7 @@ To create and run ``device_assets``:
 
       YUI.add('device', function(Y, NAME){
         Y.namespace('mojito.controllers')[NAME] = {   
-          init: function(config) {
-           this.config = config;
-          },
+
           index: function(ac) {
             var device = ac.context.device, css = '/static/device/assets/simple';
             if (device === 'iphone') {
@@ -265,7 +267,7 @@ To create and run ``device_assets``:
             });
           }
         };
-      }, '0.0.1', {requires: []});
+      }, '0.0.1', {requires: ['mojito-assets-addon']});
 
 #. To create the default ``index`` template, replace the code in ``views/index.hb.html`` 
    with the following:
@@ -393,6 +395,8 @@ To create and run ``device_assets``:
    URL below with the device parameter:
 
    http://localhost:8666?device=iphone
+
+.. _code_exs_dynamic_css-src:
 
 Source Code
 ===========

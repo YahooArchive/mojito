@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2012, Yahoo! Inc.  All rights reserved.
+ * Copyright (c) 2011-2013, Yahoo! Inc.  All rights reserved.
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
@@ -27,11 +27,15 @@ YUI.add('YuiTweets', function(Y, NAME) {
          *        to the Mojito API.
          */
         index: function(ac) {
-            ac.models.yuiTweets.getTweets(function(err, yuiTweets) {
+// DOING
+            ac.models.get('yuiTweets').getTweets(function(err, yuiTweets) {
                 ac.done({tweets: yuiTweets});
             });
         }
 
     };
 
-}, '0.0.1', {requires: ['mojito']});
+}, '0.0.1', {requires: [
+    'mojito',
+    'mojito-models-addon'
+]});

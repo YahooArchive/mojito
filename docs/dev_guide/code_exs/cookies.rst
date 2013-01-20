@@ -6,6 +6,8 @@ Using Cookies
 
 **Difficulty Level:** Beginning
 
+.. _code_exs_cookies-summary:
+
 Summary
 =======
 
@@ -18,6 +20,8 @@ The following topics will be covered:
 - getting and setting cookies from the mojit controller
 - using the `Cookie addon <../../api/classes/Cookie.server.html>`_ and the 
 `YUI Cookie module <http://developer.yahoo.com/yui/3/cookie/>`_ to get and set cookies
+
+.. _code_exs_cookies-notes:
 
 Implementation Notes
 ====================
@@ -37,9 +41,6 @@ Mojito uses the `YUI 3 Cookie Module <http://developer.yahoo.com/yui/3/api/Cooki
 
    YUI.add('CookieMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = {   
-       init: function(config) {
-         this.config = config;
-       },
        index: function(actionContext) {
          var requestCookieValue = actionContext.cookie.get('request_cookie');
          // Or use this API to set a session cookie
@@ -53,7 +54,7 @@ Mojito uses the `YUI 3 Cookie Module <http://developer.yahoo.com/yui/3/api/Cooki
          );
        }
      };
-   }, '0.0.1', {requires: []});
+   }, '0.0.1', {requires: ['mojito-cookie-addon']});
 
 The code below from the ``index`` template interpolates the value of the variable 
 ``{{request_cookie_value}}`` from the controller and uses the 
@@ -87,6 +88,8 @@ and then call ``Y.Cookie.get`` and ``Y.Cookie.set``.
      Y.on('domready', showResponseCookie);
      });
    </script>
+
+.. _code_exs_cookies-setup:
 
 Setting Up this Example
 =======================
@@ -142,16 +145,14 @@ To set up and run ``using_cookies``:
       ]
 
 #. Change to ``mojits/CookieMojit``.
-#. To set a cookie from your controller, replace the code in ``controller.server.js`` with the 
-   following:
+#. To set a cookie from your controller, replace the code in ``controller.server.js`` with 
+   the following:
 
    .. code-block:: javascript
 
       YUI.add('CookieMojit', function(Y, NAME) {
         Y.namespace('mojito.controllers')[NAME] = {   
-          init: function(config) {
-            this.config = config;
-          },
+
           index: function(actionContext) {
             var requestCookieValue = actionContext.cookie.get('request_cookie');
             // Or use this API to set a session cookie
@@ -165,10 +166,10 @@ To set up and run ``using_cookies``:
             );
           }
         };
-      }, '0.0.1', {requires: []});
+      }, '0.0.1', {requires: ['mojito-cookie-addon']});
 
-#. To display the cookie values set in your controller, replace the code in ``views/index.hb.html`` 
-   with the following:
+#. To display the cookie values set in your controller, replace the code in 
+   ``views/index.hb.html`` with the following:
 
    .. code-block:: html
 
@@ -203,6 +204,8 @@ To set up and run ``using_cookies``:
 #. To view your application, go to the URL below:
 
    http://localhost:8666
+
+.. _code_exs_cookies-src:
 
 Source Code
 ===========
