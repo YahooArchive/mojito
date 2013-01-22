@@ -15,9 +15,8 @@ basedir=$(cd $(dirname $0)/../ && pwd)
 # lint
 $basedir/bin/mojito jslint -p
 
-# unit tests
-$basedir/tests/run.js test -u --group server --driver nodejs
-$basedir/tests/run.js test -u --group client --driver selenium
+# unit tests (--path is made relative to run.js)
+$basedir/tests/run.js test -u --coverage --path unit
 
 # func tests
-$basedir/tests/run.js test -f
+$basedir/tests/run.js test -f --coverage --path func
