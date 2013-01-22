@@ -393,7 +393,7 @@ YUI().use('mojito-assets-addon', 'test', 'array-extras', function(Y, NAME) {
             addon.addAsset('css', 'top', 'foo.css');
             fragments = addon.renderLocations();
 
-            A.areEqual(2, Object.keys(fragments).length, 'bottom and top should be in place');
+            A.areEqual(2, Y.Object.keys(fragments).length, 'bottom and top should be in place');
             A.isString(fragments.bottom, 'bottom fragment is missing');
             A.isString(fragments.top, 'top fragment is missing');
 
