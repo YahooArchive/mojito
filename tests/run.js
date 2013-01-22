@@ -52,9 +52,7 @@ function test (cmd) {
     cmd.unitPath = path.resolve(cwd, cmd.unitPath || cmd.path || './unit');
     cmd.funcPath = path.resolve(cwd, cmd.funcPath || cmd.path || './func');
 
-    // We only start the Arrow server when we're running unit or functional
-    // tests.
-    if (cmd.arrow && (!cmd.unit && !cmd.func)) {
+    if (cmd.arrow) {
         series.push(startArrowServer);
     }
     if (cmd.unit) {
