@@ -170,7 +170,7 @@ using ``Y.mojito.controllers[NAME]``.
            }
          };
          controller.index(ac);
-         A.isTrue(compCalled);
+         A.isTrue(doneCalled);
        }
      }));
      YUITest.TestRunner.add(suite);
