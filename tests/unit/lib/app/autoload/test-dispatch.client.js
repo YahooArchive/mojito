@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2012, Yahoo! Inc.  All rights reserved.
+ * Copyright (c) 2011-2013, Yahoo! Inc.  All rights reserved.
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
@@ -7,6 +7,7 @@ YUI.add('mojito-dispatcher-client-tests', function(Y, NAME) {
 
     var suite = new Y.Test.Suite(NAME),
         A = Y.Assert,
+        Mock = Y.Mock,
         dispatcher = Y.mojito.Dispatcher,
         store,
         command,
@@ -109,7 +110,7 @@ YUI.add('mojito-dispatcher-client-tests', function(Y, NAME) {
             };
             command.rpc = 1;
             dispatcher.init(store, tunnel);
-            dispatcher.rpc(command, {
+            dispatcher.dispatch(command, {
                 error: function () {
                     A.fail('tunnel should be called instead');
                 }
@@ -257,6 +258,76 @@ YUI.add('mojito-dispatcher-client-tests', function(Y, NAME) {
 
             // restoring references
             dispatcher._useController = _useController;
+        },
+
+        'test _createActionContext': function () {
+            var config,
+                ac,
+                failure;
+
+            dispatcher.init(store, null);
+
+            Y.mojito.ActionContext = function (c) {
+                config = c;
+                ac = this;
+            };
+
+            // testing proper AC
+            dispatcher._createActionContext(command, {
+                error: function () {
+                    A.fail('ActionContext should be created');
+                }
+            });
+            A.isObject(ac, 'AC object should be created based');
+            A.areSame(command, config.command, 'command should be propagated to ActionContext instance');
+
+            // testing failure AC
+            Y.mojito.ActionContext = function (c) {
+                throw new Error('manually triggering an error to test invalid ac initialization');
+            };
+            dispatcher._createActionContext(command, {
+                error: function () {
+                    failure = true;
+                }
+            });
+            A.isTrue(failure, 'adapter.error should be executed if AC fails to initialize');
+
+        },
+
+        'test _useController on demand': function () {
+            var config,
+                ac,
+                _createActionContext = dispatcher._createActionContext,
+                used,
+                failure,
+                adapter = {
+                    error: function () {
+                        A.fail('_createActionContext should be called instead');
+                    }
+                };
+
+            dispatcher._createActionContext = Mock();
+
+            Mock.expect(dispatcher, {
+                method: '_createActionContext',
+                args: [command, adapter],
+                returns: []
+            });
+
+            dispatcher.init(store, null);
+
+            YUI.add('fooControllerName', function () {
+                Y.mojito.controllers.fooControllerName = {};
+            });
+
+            command.instance.controller = 'fooControllerName';
+
+            // testing proper AC
+            dispatcher._useController(command, adapter);
+            Mock.verify(dispatcher);
+
+            // restoring
+            dispatcher._createActionContext = _createActionContext;
         }
 
     }));

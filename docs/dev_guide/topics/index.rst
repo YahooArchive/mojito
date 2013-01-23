@@ -20,6 +20,7 @@ are complemented by code snippets, for working code examples, see
    mojito_frame_mojits
    mojito_extensions
    mojito_using_contexts
+   mojito_yui_config
    mojito_npm
    mojito_resource_store
    mojito_hosting_container_reqs

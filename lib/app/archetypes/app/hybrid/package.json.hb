@@ -6,11 +6,11 @@
     "type": "application",
     "pkg_type": "application",
     "dependencies": {
-        "mojito": ">0.4"
+        "mojito": "0.5.x"
     },
     "engines": {
         "node": ">0.6",
         "npm": ">1.0",
-        "mojito": ">0.4"
+        "mojito": ">0.5"
     }
 }

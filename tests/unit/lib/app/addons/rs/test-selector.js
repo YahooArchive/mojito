@@ -1,9 +1,10 @@
 /*
- * Copyright (c) 2011-2012, Yahoo! Inc.  All rights reserved.
+ * Copyright (c) 2011-2013, Yahoo! Inc.  All rights reserved.
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
 YUI().use(
+    'mojito-test-extra',
     'base',
     'oop',
     'addon-rs-config',
@@ -13,7 +14,9 @@ YUI().use(
     
         var suite = new Y.Test.Suite('mojito-addon-rs-selector-tests'),
             libpath = require('path'),
+            libycb = require('ycb'),
             mojitoRoot = libpath.join(__dirname, '../../../../../../lib'),
+            fixtures = libpath.join(__dirname, '../../../../../fixtures/store');
             A = Y.Assert;
 
 
@@ -33,36 +36,14 @@ YUI().use(
                     '*': true
                 };
             },
+            blendStaticContext: function() {
+                return {};
+            },
             validateContext: function() {},
             cloneObj: function(o) {
                 return Y.clone(o);
             }
         });
-
-
-        function cmp(x, y, msg, path) {
-            if (Y.Lang.isArray(x)) {
-                A.isArray(x, msg || 'first arg should be an array');
-                A.isArray(y, msg || 'second arg should be an array');
-                A.areSame(x.length, y.length, msg || 'arrays are different lengths');
-                for (var i = 0; i < x.length; i += 1) {
-                    cmp(x[i], y[i], msg);
-                }
-                return;
-            }
-            if (Y.Lang.isObject(x)) {
-                A.isObject(x, msg || 'first arg should be an object');
-                A.isObject(y, msg || 'second arg should be an object');
-                A.areSame(Object.keys(x).length, Object.keys(y).length, msg || 'object keys are different lengths');
-                for (var i in x) {
-                    if (x.hasOwnProperty(i)) {
-                        cmp(x[i], y[i], msg);
-                    }
-                }
-                return;
-            }
-            A.areSame(x, y, msg || 'args should be the same');
-        }
 
 
         suite.add(new Y.Test.Case({
@@ -71,43 +52,41 @@ YUI().use(
 
             'read dimensions': function() {
                 // from mojito
-                var fixtures = libpath.join(__dirname, '../../../../../fixtures/store');
                 var store = new MockRS({ root: fixtures });
                 store.plug(Y.mojito.addons.rs.config, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
                 store.plug(Y.mojito.addons.rs.selector, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
 
                 var have = store.selector.getPOSLFromContext({});
                 var want = ['*'];
-                cmp(have, want);
+                Y.TEST_CMP(have, want);
 
                 var have = store.selector.getPOSLFromContext({runtime:'client'});
                 var want = ['right', '*'];
-                cmp(have, want);
+                Y.TEST_CMP(have, want);
 
                 var have = store.selector.getPOSLFromContext({runtime:'server'});
                 var want = ['shelves', '*'];
-                cmp(have, want);
+                Y.TEST_CMP(have, want);
 
                 var have = store.selector.getPOSLFromContext({device:'android'});
                 var want = ['droid', '*'];
-                cmp(have, want);
+                Y.TEST_CMP(have, want);
 
                 var have = store.selector.getPOSLFromContext({runtime:'server', device:'android'});
                 var want = ['shelves', 'droid', '*'];
-                cmp(have, want);
+                Y.TEST_CMP(have, want);
 
                 var have = store.selector.getPOSLFromContext({device:'android', environment:'dev'});
                 var want = ['devdroid', 'droid', '*'];
-                cmp(have, want);
+                Y.TEST_CMP(have, want);
 
                 var have = store.selector.getPOSLFromContext({runtime:'server', device:'android', environment:'dev'});
                 var want = ['shelves', 'devdroid', 'droid', '*'];
-                cmp(have, want);
+                Y.TEST_CMP(have, want);
             },
 
 
             'get all posls': function() {
-                var fixtures = libpath.join(__dirname, '../../../../../fixtures/store');
                 var store = new MockRS({ root: fixtures });
                 store.plug(Y.mojito.addons.rs.config, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
                 store.plug(Y.mojito.addons.rs.selector, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
@@ -121,12 +100,11 @@ YUI().use(
                     [ 'right', 'devdroid', 'droid', '*' ],
                     [ 'right', 'droid', '*' ]
                 ];
-                cmp(want, have);
+                Y.TEST_CMP(want, have);
             },
 
 
             'list used dimensions': function() {
-                var fixtures = libpath.join(__dirname, '../../../../../fixtures/store');
                 var store = new MockRS({ root: fixtures });
                 store.plug(Y.mojito.addons.rs.config, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
                 store.plug(Y.mojito.addons.rs.selector, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
@@ -137,12 +115,11 @@ YUI().use(
                     device: ['iphone', 'android'],
                     environment: ['dev']
                 }
-                cmp(want, have);
+                Y.TEST_CMP(want, have);
             },
 
 
             'list used contexts': function() {
-                var fixtures = libpath.join(__dirname, '../../../../../fixtures/store');
                 var store = new MockRS({ root: fixtures });
                 store.plug(Y.mojito.addons.rs.config, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
                 store.plug(Y.mojito.addons.rs.selector, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
@@ -162,7 +139,7 @@ YUI().use(
                     { runtime: 'client', environment: 'dev' },
                     { runtime: 'client' }
                 ];
-                cmp(want, have);
+                Y.TEST_CMP(want, have);
             }
 
 

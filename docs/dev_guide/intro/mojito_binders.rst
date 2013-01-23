@@ -283,7 +283,7 @@ working example, see the `Code Examples: Events <../code_exs/#events>`_.
      }
    }, '0.0.1', {requires: ['node']});
 
-This example binder shows how to use the methods ``refreshChild`` and ``destroyChild``.
+This example binder shows how to use the methods ``refreshView`` and ``destroyChild``.
 
 .. code-block:: javascript
 

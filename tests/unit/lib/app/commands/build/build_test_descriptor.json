@@ -1,0 +1,52 @@
+[{
+    "settings": [ "master" ],
+    "name": "lib-cli-commands-tests",
+    "config": {
+        "mojitodir": "../../../../../.."
+    },
+    "commonlib": "$$config.mojitodir$$/tests/base/mojito-test.js",
+    "dataprovider" : {
+        "writer.js": {
+            "params": {
+                "test": "./test-writer.js",
+                "lib-DISABLED-BZ6046277": "$$config.mojitodir$$/lib/app/commands/build/writer.js",
+                "driver": "nodejs"
+            }
+        },
+        "shared.js": {
+            "params": {
+                "test": "./test-shared.js",
+                "lib": "$$config.mojitodir$$/lib/app/commands/build/shared.js",
+                "driver": "nodejs"
+            }
+        },
+        "index.js": {
+            "params": {
+                "test": "./test-index.js",
+                "lib-DISABLED-BZ6046277": "$$config.mojitodir$$/lib/app/commands/build/index.js",
+                "driver": "nodejs"
+            }
+        },
+        "scraper.js": {
+            "params": {
+                "test": "./test-scraper.js",
+                "lib": "$$config.mojitodir$$/lib/app/commands/build/scraper.js",
+                "driver": "nodejs"
+            }
+        },
+        "hybridapp.js": {
+            "params": {
+                "test": "./test-hybridapp.js",
+                "lib-DISABLED-BZ6046277": "$$config.mojitodir$$/lib/app/commands/build/hybridapp.js",
+                "driver": "nodejs"
+            }
+        },
+        "html5app.js": {
+            "params": {
+                "test": "./test-html5app.js",
+                "lib-DISABLED-BZ6046277": "$$config.mojitodir$$/lib/app/commands/build/html5app.js",
+                "driver": "nodejs"
+            }
+        }
+    }
+}]

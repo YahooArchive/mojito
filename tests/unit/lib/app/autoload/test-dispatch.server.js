@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2012, Yahoo! Inc.  All rights reserved.
+ * Copyright (c) 2011-2013, Yahoo! Inc.  All rights reserved.
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
@@ -159,8 +159,6 @@ YUI.add('mojito-dispatcher-server-tests', function(Y, NAME) {
             // if the expandInstance calls with an error, the tunnel
             // should be tried.
             store.expandInstance = function (instance, context, callback) {
-                instance.controller = 'foo';
-                Y.mojito.controllers[instance.controller] = null;
                 callback(null, instance);
             };
             dispatcher._createActionContext = function (c) {
@@ -175,6 +173,63 @@ YUI.add('mojito-dispatcher-server-tests', function(Y, NAME) {
 
             // restoring references
             dispatcher._createActionContext = _createActionContext;
+        },
+
+        'test dispatch with rpc and tunnel': function () {
+            var tunnel,
+                tunnelCommand;
+
+            tunnel = {
+                rpc: function (c, a) {
+                    tunnelCommand = c;
+                }
+            };
+
+            dispatcher.init(store, tunnel);
+
+            // enabling rpc
+            command.rpc = true;
+
+            dispatcher.dispatch(command, {
+                error: function () {
+                    A.fail('adapter.error should not be called, rpc tunnel should be issued');
+                }
+            });
+            A.areSame(command, tunnelCommand, 'tunnel.rpc should be called with the corresponding command');
+        },
+
+        'test _createActionContext': function () {
+            var config,
+                ac,
+                failure;
+
+            dispatcher.init(store, null);
+
+            Y.mojito.ActionContext = function (c) {
+                config = c;
+                ac = this;
+            };
+
+            // testing proper AC
+            dispatcher._createActionContext(command, {
+                error: function () {
+                    A.fail('ActionContext should be created');
+                }
+            });
+            A.isObject(ac, 'AC object should be created based');
+            A.areSame(command, config.command, 'command should be propagated to ActionContext instance');
+
+            // testing failure AC
+            Y.mojito.ActionContext = function (c) {
+                throw new Error('manually triggering an error to test invalid ac initialization');
+            };
+            dispatcher._createActionContext(command, {
+                error: function () {
+                    failure = true;
+                }
+            });
+            A.isTrue(failure, 'adapter.error should be executed if AC fails to initialize');
+
         }
 
     }));

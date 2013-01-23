@@ -1,6 +1,3 @@
-/*
- * Copyright (c) 2012 Yahoo! Inc. All rights reserved.
- */
 
 YUI.add('{{name}}ModelFoo-tests', function(Y, NAME) {
     

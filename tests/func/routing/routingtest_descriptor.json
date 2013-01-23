@@ -5,10 +5,15 @@
         "name" : "routing",
 
         "config" :{
-            "baseUrl" : "http://localhost:4082"
+            "baseUrl" : "http://localhost:8666",
+			"application" : {
+				"name":"routing",
+	            "path": "./frameworkapp/routing",
+				"type": "mojito"
+			}
         },
 
-        "dataprovider" : {     
+        "dataprovider" : {
             "BasicRouting1" : {
                 "group" : "functional,smoke,routing",
                 "params" : {
@@ -202,7 +207,7 @@
                     "page" : "$$config.baseUrl$$/showurl?mojit_name=route-2&mojit_action=nothing"
                 }
             }
-        }     
+        }
     },
 
     {

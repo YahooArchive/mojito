@@ -122,7 +122,7 @@ plugin name (``'addon-ac-cheese'``), the constructor (``CheeseAcAddon``) with it
      }
      // Assign the constructor of the addon to a
      // namespace of Y.mojito.addons.ac
-     Y.mojito.addons.ac.cheddar = CheeseAcAddon;
+     Y.mojito.addons.ac.cheese = CheeseAcAddon;
      // Optional: 'requires' array could include other
      // YUI modules if needed.
    }, '0.0.1', {requires: ['mojito']});
@@ -173,7 +173,7 @@ added through the ``prototype`` property.
      // supported or automatically detected,
      // so please be careful.
      CheeseAcAddon.dependsOn = ['http'];
-     Y.mojito.addons.ac.cheddar = CheeseAcAddon;
+     Y.mojito.addons.ac.cheese = CheeseAcAddon;
    }, '0.0.1', {requires: ['mojito']});
 
 

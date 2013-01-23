@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2012, Yahoo! Inc.  All rights reserved.
+ * Copyright (c) 2011-2013, Yahoo! Inc.  All rights reserved.
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
@@ -35,14 +35,12 @@ YUI().use('test', function(Y) {
         }
         A.areSame(x, y, msg || 'args should be the same');
     }
-
-
+    
     suite.add(new Y.Test.Case({
 
         name: 'Management Utils tests',
 
-
-        'decode HTML entities': function() {
+        'test decode HTML entities': function() {
             A.isFunction(libutils.decodeHTMLEntities);
             A.areSame('', libutils.decodeHTMLEntities(''));
             A.areSame('orange & red', libutils.decodeHTMLEntities('orange &amp; red'));
@@ -52,12 +50,93 @@ YUI().use('test', function(Y) {
             A.areSame('orange &amp; red', libutils.decodeHTMLEntities('orange &amp;amp; red'));
             A.areSame('orange &copy; red', libutils.decodeHTMLEntities('orange &copy; red'));
             A.areSame('orange y red', libutils.decodeHTMLEntities('orange &#x79; red'));
-        }
+        },
+          
+        'test log': function() {
+              var mockConsole = Y.Mock();
+              Y.Mock.expect(mockConsole, {
+                  method:"log",
+                  args: [Y.Mock.Value.String],
+                  run: function (message) {
+                      A.isTrue(/test log/.test(message));
+                  }
+              });
+              libutils.test.setConsole(mockConsole);
+              libutils.log("test log");
+         },
+          
+         'test error string': function() {
+              var mockConsole = Y.Mock();
+              Y.Mock.expect(mockConsole, {
+                  method:"error",
+                  args: [Y.Mock.Value.String],
+                  run: function (message) {
+                      A.isTrue(/Error found/.test(message));
+                  }
+              });
+              libutils.test.setConsole(mockConsole);
+              libutils.error("Error found");
+          },
+           
+          'test error usage': function() {
+               var mockConsole = Y.Mock();
+               Y.Mock.expect(mockConsole, {
+                   method:"error",
+                   args: [Y.Mock.Value.String],
+                   run: function (message) {
+                       A.isTrue(/Error found/.test(message));
+                       A.isTrue(/usage: /.test(message));
+                       A.isTrue(/for this test/.test(message));
+                   }
+               });
+               libutils.test.setConsole(mockConsole);
+               libutils.error("Error found", "for this test", false);
+           },
+           
+           'test error object': function() {
+               var mockConsole = Y.Mock();
+               Y.Mock.expect(mockConsole, {
+                   method:"error",
+                   args: [Y.Mock.Value.Any],
+                   run: function (err) {
+                       A.isTrue(/Error found/.test(err));
+                   }
+               });
+               err = new Error();
+               err.name = "myerr";
+               err.stack = true;
+               err.message = "Error found";
+               libutils.test.setConsole(mockConsole);
+               libutils.error(err);
+           },
+            
+          'test success': function() {
+              var mockConsole = Y.Mock();
+              Y.Mock.expect(mockConsole, {
+                  method:"log",
+                  args: [Y.Mock.Value.String],
+                  run: function (message) {
+                      A.isTrue(/Successed!/.test(message));
+                  }
+              });
+              libutils.test.setConsole(mockConsole);
+              libutils.success("Successed!");
+          },
 
+          'test warn': function() {
+              var mockConsole = Y.Mock();
+              Y.Mock.expect(mockConsole, {
+                  method:"warn",
+                  args: [Y.Mock.Value.String],
+                  run: function (message) {
+                      A.isTrue(/AlertAlert/.test(message));
+                  }
+              });
+              libutils.test.setConsole(mockConsole);
+              libutils.warn("AlertAlert");
+          }         
 
     }));
 
-
     Y.Test.Runner.add(suite);
-
 });

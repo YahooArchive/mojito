@@ -1,10 +1,11 @@
 /*
- * Copyright (c) 2011-2012, Yahoo! Inc.  All rights reserved.
+ * Copyright (c) 2011-2013, Yahoo! Inc.  All rights reserved.
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
 YUI().use(
     'oop',
+    'mojito-test-extra',
     'mojito-resource-store',
     'addon-rs-config',
     'addon-rs-selector',
@@ -22,30 +23,6 @@ YUI().use(
             AA = Y.ArrayAssert,
             OA = Y.ObjectAssert;
 
-
-        function cmp(x, y, msg) {
-            if (Y.Lang.isArray(x)) {
-                A.isArray(x, msg || 'first arg should be an array');
-                A.isArray(y, msg || 'second arg should be an array');
-                A.areSame(x.length, y.length, msg || 'arrays are different lengths');
-                for (var i = 0; i < x.length; i += 1) {
-                    cmp(x[i], y[i], msg);
-                }
-                return;
-            }
-            if (Y.Lang.isObject(x)) {
-                A.isObject(x, msg || 'first arg should be an object');
-                A.isObject(y, msg || 'second arg should be an object');
-                A.areSame(Object.keys(x).length, Object.keys(y).length, msg || 'object keys are different lengths');
-                for (var i in x) {
-                    if (x.hasOwnProperty(i)) {
-                        cmp(x[i], y[i], msg);
-                    }
-                }
-                return;
-            }
-            A.areSame(x, y, msg || 'args should be the same');
-        }
 
         suite.add(new Y.Test.Case({
 
@@ -265,21 +242,6 @@ YUI().use(
                 });
             },
 
-            'expandSpec caching': function() {
-                var inSpec = {
-                    base: 'a',
-                    type: 'c'
-                };
-                var env = 'server';
-                var ctx = {};
-                var key = Y.JSON.stringify([env, ctx, inSpec]);
-                store._expandSpecCache[key] = { x: 'y' };
-                var outSpec = store._expandSpec(env, ctx, inSpec);
-                A.isObject(outSpec);
-                A.areEqual(1, Object.keys(outSpec).length);
-                A.areEqual('y', outSpec.x);
-            },
-
             'getMojitTypeDetails caching': function() {
                 var key = Y.JSON.stringify(['server', ['*'], 'en', 'x']);
                 store._getMojitTypeDetailsCache[key] = { x: 'y' };
@@ -313,7 +275,7 @@ YUI().use(
                     appResources: Y.clone(store._appResources, true),
                     mojitResources: Y.clone(store._mojitResources, true)
                 };
-                cmp(post, pre);
+                Y.TEST_CMP(post, pre);
             },
 
             'instance with base pointing to non-existant spec': function() {
@@ -567,7 +529,7 @@ YUI().use(
                     store = new Y.mojito.ResourceStore({ root: fixtures });
 
                 // fake out some parts of preload(), which we're trying to avoid
-                store._fwConfig = store.config.readConfigSimple(libpath.join(mojitoRoot, 'config.json'));
+                store._fwConfig = store.config.readConfigJSON(libpath.join(mojitoRoot, 'config.json'));
                 store._appConfigStatic = store.getStaticAppConfig();
 
                 var dir = libpath.join(__dirname, '../../../../fixtures/conventions');

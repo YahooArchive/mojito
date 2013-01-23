@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011-2012, Yahoo! Inc.  All rights reserved.
+ * Copyright (c) 2011-2013, Yahoo! Inc.  All rights reserved.
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
@@ -287,7 +287,18 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
             };
             addon.setStore({
                 getAppConfig: function() {
-                    return { yui:{ config:{ comboSep:'&' } } };
+                    return {
+                        yui: {
+                            config: {
+                                comboSep: '&',
+                                groups: {
+                                    app: {
+                                        comboSep: '&'
+                                    }
+                                }
+                            }
+                        }
+                    };
                 },
                 serializeClientStore: function() {
                     return 'clientstore';
@@ -327,6 +338,7 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
             A.isNotUndefined(matches[1], 'failed to find YUI.applyConfig() in blob');
             var config = Y.JSON.parse(matches[1]);
             A.areSame('&', config.comboSep, 'comboSep got mangled');
+            A.areSame('&', config.groups.app.comboSep, 'groups.app.comboSep got mangled');
         }
 
 

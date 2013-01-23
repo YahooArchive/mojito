@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2011-2012, Yahoo! Inc.  All rights reserved.
+ * Copyright (c) 2011-2013, Yahoo! Inc.  All rights reserved.
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
 
 
-/*jslint anon:true, sloppy:true, nomen:true, node:true*/
+/*jslint anon:true, sloppy:true, nomen:true, node:true, unparam: true, todo: true*/
 /*global YUI*/
 
 
@@ -26,18 +26,6 @@ YUI.add('mojito', function(Y, NAME) {
     Y.namespace('mojito.addons');
     Y.namespace('mojito.addons.ac');
     Y.namespace('mojito.addons.viewEngines');
-
-    // this is a facade for the real implementation from mojito-perf module
-    // that will have to be plugged manually to get the metrics in the
-    // console or a log file.
-    Y.mojito.perf = {
-        timeline: function () {
-            return {
-                done: function () {}
-            };
-        },
-        mark: function () {}
-    };
 
     // internal mojito framework cache (this is probably legacy)
     YUI.namespace('_mojito._cache');
@@ -81,6 +69,15 @@ YUI.add('mojito-dispatcher', function(Y, NAME) {});
 YUI.add('mojito-mojit-proxy', function(Y, NAME) {});
 YUI.add('mojito-output-handler', function(Y, NAME) {});
 YUI.add('mojito-perf', function(Y, NAME) {});
+YUI.add('mojito-hooks', function(Y, NAME) {
+
+    Y.namespace('mojito').hooks = {
+        hook: function () {},
+        registerHook: function () {},
+        enableHookGroup: function () {}
+    };
+
+});
 YUI.add('mojito-resource-store', function(Y, NAME) {});
 YUI.add('mojito-rest-lib', function(Y, NAME) {});
 YUI.add('mojito-route-maker', function(Y, NAME) {});
@@ -205,12 +202,45 @@ YUI.add('mojito-test', function(Y, NAME) {
 
 }, '0.1.0', {requires: [
     'event',
-    "node",
-    "node-event-simulate"
+    'node',
+    'node-event-simulate'
 ]});
 
 
 YUI.add('mojito-test-extra', function(Y, NAME) {
-	Y.MOJITO_DIR = require ?
-	    require('path').resolve(__dirname, '../../') + '/' : null;
-});
+    var A = Y.Assert;
+
+    // move to mojito-test, under Y.mojito namespace? i.e. Y.mojito.BASEDIR
+    if (('undefined' !== typeof require) && ('function' === typeof require.resolve)) {
+        // define the abs path to the mojito base dir on nodejs only
+        Y.MOJITO_DIR = require('path').resolve(__dirname, '../../') + '/';
+    }
+
+    // path doesn't need to be given, mainly used during recursion
+    Y.TEST_CMP = function (x, y, msg, path) {
+        path = path || 'obj';
+        var i;
+        if (Y.Lang.isArray(x)) {
+            A.isArray(x, path + ': ' + (msg || 'first arg should be an array'));
+            A.isArray(y, path + ': ' + (msg || 'second arg should be an array'));
+            A.areSame(x.length, y.length, path + ': ' + (msg || 'arrays are different lengths'));
+            for (i = 0; i < x.length; i += 1) {
+                Y.TEST_CMP(x[i], y[i], msg, path + '[' + i + ']');
+            }
+            return;
+        }
+        if (Y.Lang.isObject(x)) {
+            A.isObject(x, path + ': ' + (msg || 'first arg should be an object'));
+            A.isObject(y, path + ': ' + (msg || 'second arg should be an object'));
+            A.areSame(Y.Object.keys(x).length, Y.Object.keys(y).length, path + ': ' + (msg || 'object keys are different lengths'));
+            for (i in x) {
+                if (x.hasOwnProperty(i)) {
+                    Y.TEST_CMP(x[i], y[i], msg, path + '{' + i + '}');
+                }
+            }
+            return;
+        }
+        A.areSame(x, y, path + ': ' + (msg || 'args should be the same'));
+    };
+
+}, '0.1.0', {requires: ['test']});
