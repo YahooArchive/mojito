@@ -9,7 +9,8 @@ Basic Information
 
 Mojito can be configured at the framework, application, and mojit levels. 
 Each level is configured differently, but uses same general file format 
-consisting of JSON or YAML.
+consisting of JSON or YAML. If configuration files exist in both JSON and YAML,
+Mojito will use the YAML configuration file.
 
 .. _config_basic-file:
 
@@ -44,7 +45,6 @@ configuration files.
 .. code-block:: javascript
 
    [
-     // Configuration object
      {
        "settings": [ "master" ],
        "specs": {
@@ -78,18 +78,19 @@ For the data types of the YAML elements, please see the JSON configuration table
 .. code-block:: yaml
 
    ---
-     - 
-       settings: 
+     # Example application configuration in YAML, which allows comments.
+     -
+       # The master context for default configurations.
+       settings:
          - "master"
-       specs: 
-         hello: 
-           type: "helloMojit"
-     - 
-       settings: 
-         - "environment:development"
-       staticHandling: 
-         forceUpdate: true
 
+       # You can create mojit instances in the 'specs' object.
+       specs:
+     -
+       # The context 'environmet:development' that you can use for development.
+       settings:
+         - "environment:development"
+       specs:
 
 To convert JSON to YAML, we recommend using a command-line utility such as the npm module 
 `json2yaml <https://npmjs.org/package/json2yaml>`_.
