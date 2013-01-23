@@ -9,7 +9,8 @@ Basic Information
 
 Mojito can be configured at the framework, application, and mojit levels. 
 Each level is configured differently, but uses same general file format 
-consisting of JSON or YAML.
+consisting of JSON or YAML. If configuration files exist in both JSON and YAML,
+Mojito will use the YAML configuration file.
 
 .. _config_basic-file:
 
@@ -39,10 +40,11 @@ objects, each identified by contexts defined by the ``settings`` property.
 See `Application Configuration`_ and `Mojit Configuration`_ for details about specific 
 configuration files.
 
+**application.json**
+
 .. code-block:: javascript
 
    [
-     // Configuration object
      {
        "settings": [ "master" ],
        "specs": {
@@ -70,6 +72,28 @@ YAML files. When both  the JSON file (e.g., ``application.json``) and the YAML f
 For the data types of the YAML elements, please see the JSON configuration tables in 
 :ref:`Application Configuration <configure_mj-app>`, 
 :ref:`Routing <configure_mj-routing>`, and :ref:`Mojit Configuration <configure_mj-mojit>`.
+
+**application.yaml**
+
+.. code-block:: yaml
+
+   ---
+     # Example application configuration in YAML, which allows comments.
+     -
+       # The master context for default configurations.
+       settings:
+         - "master"
+
+       # You can create mojit instances in the 'specs' object.
+       specs:
+     -
+       # The context 'environmet:development' that you can use for development.
+       settings:
+         - "environment:development"
+       specs:
+
+To convert JSON to YAML, we recommend using a command-line utility such as the npm module 
+`json2yaml <https://npmjs.org/package/json2yaml>`_.
 
 .. _configure_mj-app:
 
@@ -464,6 +488,8 @@ Your application configuration can specify multiple mojit instances of the same 
 different types in the ``specs`` object. In the example ``application.json`` below, the 
 mojit instances ``sign_in`` and ``sign_out`` are defined:
 
+**application.json**
+
 .. code-block:: javascript
 
    [
@@ -479,6 +505,22 @@ mojit instances ``sign_in`` and ``sign_out`` are defined:
        }
      }
    ]
+
+**application.yaml**
+
+.. code-block:: yaml
+
+   ---
+     -
+       settings:
+         - "master"
+       specs:
+         sign_in:
+           type: "SignInMojit"
+         sign_out:
+           type: "SignOutMojit"
+
+
    
 .. _config_mult_mojits-parent_child:
 
@@ -488,6 +530,9 @@ Parent Mojit With Child Mojit
 A mojit instance can be configured to have a child mojit using the ``child`` 
 object. In the example ``application.json`` below, the mojit instance ``parent`` 
 of type ``ParentMojit`` has a child mojit of type ``ChildMojit``.
+
+
+**application.json**
 
 .. code-block:: javascript
 
@@ -507,6 +552,22 @@ of type ``ParentMojit`` has a child mojit of type ``ChildMojit``.
      }
    ]
 
+**application.yaml**
+
+.. code-block:: yaml
+
+   ---
+     -
+       settings:
+         - "master"
+       specs:
+         parent:
+           type: "ParentMojit"
+           config:
+             child:
+               type: "ChildMojit"
+
+
 .. _config_mult_mojits-parent_children:
 
 Parent Mojit With Children
@@ -520,6 +581,9 @@ for more information.
 
 In the example ``application.json`` below, the mojit instance ``father`` of type 
 ``ParentMojit`` has the children ``son`` and ``daughter`` of type ``ChildMojit``.
+
+
+**application.json**
 
 .. code-block:: javascript
 
@@ -544,6 +608,25 @@ In the example ``application.json`` below, the mojit instance ``father`` of type
      }
    ]
 
+**application.yaml**
+
+.. code-block:: yaml
+
+   ---
+     -
+       settings:
+         - "master"
+       specs:
+         father:
+           type: "ParentMojit"
+           config:
+             children:
+               son:
+                 type: "ChildMojit"
+               daughter:
+                 type: "ChildMojit"
+
+
 
 .. _config_mult_mojits-child_children:
 
@@ -558,6 +641,8 @@ for more information.
 
 The example ``application.json`` below creates the parent mojit ``grandfather`` with the 
 child ``son``, which has the children ``grandson`` and ``granddaughter``.
+
+**application.json**
 
 .. code-block:: javascript
 
@@ -587,10 +672,34 @@ child ``son``, which has the children ``grandson`` and ``granddaughter``.
      }
    ]
 
+**application.yaml**
+
+.. code-block:: yaml
+
+   ---
+     -
+       settings:
+         - "master"
+       specs:
+         grandfather:
+           type: "GrandparentMojit"
+           config:
+             child:
+               son:
+                 type: "ChildMojit"
+                 children:
+                   grandson:
+                     type: "GrandchildMojit"
+                   grandaughter:
+                     type: "GrandchildMojit"
+
+
 The child mojits can also have their own children, but beware that 
 having so many child mojits may cause memory issues. In our updated 
 example ``application.json`` below, the ``grandaughter`` mojit now has
 its own children mojits:
+
+**application.json**
 
 .. code-block:: javascript
 
@@ -628,6 +737,31 @@ its own children mojits:
      }
    ]
 
+**application.yaml**
+
+.. code-block:: yaml
+
+   ---
+     -
+       settings:
+         - "master"
+       specs:
+         grandfather:
+           type: "GrandparentMojit"
+           config:
+             child:
+               son:
+                 type: "ChildMojit"
+                 children:
+                   grandson:
+                     type: "GrandchildMojit"
+                   grandaughter:
+                     type: "GrandchildMojit"
+                     children:
+                       girl_doll:
+                         type: "GirlDollMojit"
+                       boy_doll:
+                         type: "BoyDollMojit"
 
 
 .. _deploy_app:
@@ -662,6 +796,8 @@ Example
 The example ``application.json`` below uses the ``deploy`` property to configure the 
 application to be deployed to the client.
 
+**application.json**
+
 .. code-block:: javascript
 
    [
@@ -681,6 +817,21 @@ application to be deployed to the client.
      }
    ]
    
+**application.yaml**
+
+.. code-block:: yaml
+
+   ---
+     -
+       settings:
+         - "master"
+       specs:
+         frame:
+           type: "HTMLFrameMojit"
+           config:
+             deploy: true
+             child:
+               type: "PagerMojit"
 
 
 .. _app_config-ex:
@@ -692,6 +843,8 @@ This example ``application.json`` defines the two mojit instances ``foo`` and ``
 The ``foo`` mojit instance is of type ``MessageViewer``, and the ``bar`` mojit instance 
 uses ``foo`` as the base mojit. Both have metadata configured in the ``config`` object.
 
+**application.json**
+
 .. code-block:: javascript
 
    [
@@ -702,8 +855,8 @@ uses ``foo`` as the base mojit. Both have metadata configured in the ``config`` 
          "config": {
             "fetchCSS": false,
             "combine": true,
-            "comboBase:" 'http://mydomain.com/combo?',
-            "root": 'yui3/'
+            "comboBase": "http://mydomain.com/combo?",
+            "root": "yui3/"
           }
        },
        "specs": {
@@ -722,6 +875,32 @@ uses ``foo`` as the base mojit. Both have metadata configured in the ``config`` 
        }
      }
    ]
+
+**application.yaml**
+
+.. code-block:: yaml
+
+   ---
+     -
+       settings:
+         - "master"
+       yui:
+         showConsoleInClient: false
+         config:
+           fetchCSS: false
+           combine: true
+           comboBase: "http://mydomain.com/combo?"
+           root: "yui3/"
+       specs:
+         foo:
+           type: "MessageViewer"
+           config:
+             message: "hi"
+         bar:
+           base: "foo"
+           config:
+             message: "hello"
+
 
 .. _configure_mj-mojit:
 
@@ -970,6 +1149,8 @@ To create a route, you need to create a mojit instance that can be mapped to a
 path. In the ``application.json`` below, the ``hello`` instance of type 
 ``HelloMojit`` is defined.
 
+**application.json**
+
 .. code-block:: javascript
 
    [
@@ -984,9 +1165,25 @@ path. In the ``application.json`` below, the ``hello`` instance of type
      }
    ]
 
+**application.yaml**
+
+.. code-block:: yaml
+
+   ---
+     -
+       settings:
+         - "master"
+       appPort: 8666
+       specs: 
+         hello: 
+           type: "HelloMojit"
+
+
 The ``hello`` instance and a function in the ``HelloMojit`` controller can now 
 be mapped to a route path in ``routes.json`` file. In the ``routes.json`` below, 
 the ``index`` function is called when an HTTP GET call is made on the root path.
+
+**routes.json**
 
 .. code-block:: javascript
 
@@ -1001,10 +1198,27 @@ the ``index`` function is called when an HTTP GET call is made on the root path.
      }
    ]
 
+**routes.yaml**
+
+.. code-block:: yaml
+
+   ---
+     -
+       settings:
+         - "master"
+       hello index:
+         verbs:
+           - "get"
+         path: "/"
+         call: "hello.index"
+
+
 Instead of using the ``hello`` mojit instance defined in the ``application.json`` 
 shown above, you can create an anonymous instance of ``HelloMojit`` for mapping 
 an action to a route path. In the ``routes.json`` below,  an anonymous instance 
 of ``HelloMojit`` is made by prepending "@" to the mojit type.
+
+**routes.json**
 
 .. code-block:: javascript
 
@@ -1020,6 +1234,21 @@ of ``HelloMojit`` is made by prepending "@" to the mojit type.
      }
    ]
 
+**routes.yaml**
+
+.. code-block:: yaml
+
+   ---
+     -
+       settings:
+         - "master"
+       hello index:
+         verbs:
+           - "get"
+         path: "/"
+         call: "@HelloMojit.index"
+         params:
+           first_visit: true
 
 .. _routing_mapping-multiple:
 
@@ -1028,6 +1257,8 @@ Multiple Routes
 
 To specify multiple routes, you create multiple route objects that contain 
 ``verb``, ``path``, and ``call`` properties in ``routes.json`` as seen here:
+
+**routes.json**
 
 .. code-block:: javascript
 
@@ -1053,7 +1284,35 @@ To specify multiple routes, you create multiple route objects that contain
      }
    ]
 
-The ``routes.json`` file above creates the following routes:
+**routes.yaml**
+
+.. code-block:: yaml
+
+   ---
+     -
+       settings:
+         - "master"
+       root:
+         verb:
+           - "get"
+         path: "/*"
+         call: "foo-1.index"
+       foo_default:
+         verb:
+           - "get"
+         path: "/foo"
+         call: "foo-1.index"
+       bar_default:
+         verb:
+           - "get"
+         path: "/bar"
+         call: "bar-1.index"
+         params:
+           page: 1
+           log_request: true
+
+
+The ``routes.json`` and ``routes.yaml`` files above create the following routes:
 
 - ``http://localhost:8666``
 - ``http://localhost:8666/foo``
@@ -1080,6 +1339,8 @@ In the example ``routes.json`` below, routing parameters are added with an objec
 To get the value for the routing parameter ``page`` from a controller, you would 
 use ``ac.params.getFromRoute("page")``. 
 
+**routes.json**
+
 .. code-block:: javascript
 
    [
@@ -1093,6 +1354,23 @@ use ``ac.params.getFromRoute("page")``.
        }
      }
    ]
+
+**routes.yaml**
+
+.. code-block:: yaml
+
+   ---
+     -
+       settings:
+         - "master"
+       root:
+         verb:
+           - "get"
+         path: "/*"
+         call: "foo-1.index"
+         params:
+           page: 1
+           log_request: true
    
 
 .. admonition:: Deprecated
@@ -1115,6 +1393,7 @@ colon (e.g., ``:foo``). After the parameter has been replaced by a value
 given in the path, the call to the action should have the following syntax: 
 ``{mojit_instance}.(action}`` 
 
+**routes.json**
 
 .. code-block:: javascript
 
@@ -1133,8 +1412,31 @@ given in the path, the call to the action should have the following syntax:
        }
      }
    ]
-   
-For example, based on the ``routes.json`` above, an HTTP GET call made on the 
+
+**routes.yaml**
+
+.. code-block:: yaml
+  
+   ---
+     -
+       settings:
+         - "master"
+       _foo_action:
+         verb:
+           - "get"
+           - "post"
+           - "put"
+         path: "/foo/:mojit-action"
+         call: "@foo-1.{mojit-action}"
+       _bar_action:
+         verb:
+           - "get"
+           - "post"
+           - "put"
+         path: "/bar/:mojit-action"
+         call: "@bar-1.{mojit-action}"
+
+For example, based on the ``routes.json`` and ``routes.yaml`` above, an HTTP GET call made on the 
 path ``http://localhost:8666/foo/index`` would call the ``index`` function in 
 the controller because the value of ``:mojit-action`` in the path (``index`` in 
 this case) would be then replace ``{mojit-action}}`` in the ``call`` property. 
@@ -1163,6 +1465,8 @@ matches the regular expression ``\\d{1,2}_[Mm]ojitos?``, the ``index``
 action of the mojit instance is called. 
 
 
+**routes.json**
+
 .. code-block:: javascript
 
    [
@@ -1176,6 +1480,22 @@ action of the mojit instance is called.
        }
      }
    ]
+
+**routes.yaml**
+
+.. code-block:: yaml
+
+   ---
+     -
+       settings:
+         - "master"
+       regex_path:
+         verbs:
+           - "get"
+         path: "/:matched_path"
+         regex:
+           matched_path: "\\d{1,2}_[Mm]ojitos?"
+         call: "myMojit.index"
 
 Based on the above routing configuration, the following URLs 
 would call the ``index`` action:
