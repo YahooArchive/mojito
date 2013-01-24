@@ -9,7 +9,7 @@ YUI.add('Parent', function(Y, NAME) {
     Y.namespace('mojito.controllers')[NAME] = {
 
         index: function(ac) {
-            ac.composite.done({template: {time: new Date().toString()}});
+            ac.composite.done({time: new Date().toString()});
         }
 
     };

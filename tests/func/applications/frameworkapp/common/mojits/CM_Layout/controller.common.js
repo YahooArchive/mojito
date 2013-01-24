@@ -23,16 +23,16 @@ YUI.add('CM_Layout', function(Y, NAME) {
          * @param ac {Object} The action context that provides access
          *        to the Mojito API.
          */
-		index: function(ac) {
-			ac.composite.done();
-		},
+        index: function(ac) {
+            ac.composite.done();
+        },
         myIndex: function(ac) {
             Y.log('index()', 'debug', NAME);
 
             var passParams = ac.params.getFromUrl('pass_params') || 'false';
 
             var parentConfig = ac.config.get();
-			var myId = parentConfig.id;
+            var myId = parentConfig.id;
             var childrenConfig = parentConfig.children;
 
             var childInfo = [];
@@ -46,24 +46,19 @@ YUI.add('CM_Layout', function(Y, NAME) {
                 childInfo.push(info);
             });
 
-			if (passParams === "false")
-			{
-				ac.composite.done({ 
-					template: { 
-						title: 'This is the title from controller.js of ' + myId, childData: childInfo 
-					} 
-				});
-			}
+            if (passParams === "false")
+            {
+                ac.composite.done({
+                    title: 'This is the title from controller.js of ' + myId,
+                    childData: childInfo
+                });
+            }
             else
             {
-            	ac.composite.done({ 
-            		template: { 
-            			title: 'This is the title from controller.js of ' + myId, childData: childInfo 
-            		},
-            		params: {
-            			fromParent: "I am from parent"
-            		}
-            	});
+                ac.composite.done({
+                    title: 'This is the title from controller.js of ' + myId,
+                    childData: childInfo
+                });
             }
         }
     };

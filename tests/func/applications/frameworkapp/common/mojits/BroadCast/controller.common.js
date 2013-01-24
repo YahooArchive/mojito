@@ -25,9 +25,9 @@ YUI.add('BroadCast', function(Y, NAME) {
             ac.assets.addCss('/static/BroadCast/assets/static.css');
             ac.composite.done();
         },
-        
+
         'destroychild': function(ac) {
-            Y.log("inside destroy controller")
+            Y.log("inside destroy controller");
             ac.assets.addCss('/static/BroadCast/assets/static.css');
             ac.composite.done();
         },
@@ -72,7 +72,7 @@ YUI.add('BroadCast', function(Y, NAME) {
                 ac.done(template, meta);
             });
         },
-        
+
         'destroydynochild': function(ac) {
 
             var children = {
@@ -108,15 +108,13 @@ YUI.add('BroadCast', function(Y, NAME) {
                 ac.done(template, meta);
             });
         },
-        
+
         'selfinvoke': function(ac){
             //var foovalue = ac.params.getFromBody('foo');
             //Y.log("Here11111....."+foovalue);
-            ac.composite.done({ 
-                template: { 
-    			    title: 'foovalue=' 
-    		    }
-		    });
+            ac.composite.done({
+                title: 'foovalue='
+            });
         }
 
     };

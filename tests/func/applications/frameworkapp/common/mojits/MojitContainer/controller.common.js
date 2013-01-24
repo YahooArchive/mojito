@@ -29,12 +29,10 @@ YUI.add('MojitContainer', function(Y, NAME) {
         myMojits: function(ac) {
             Y.log('index()', 'debug', NAME);
 
-			ac.composite.done({ 
-				template: { 
-        			title: 'My Child Mojits:' 
-        		} 
-        	});
-		
+            ac.composite.done({
+                title: 'My Child Mojits:'
+            });
+
         }
 
     };
