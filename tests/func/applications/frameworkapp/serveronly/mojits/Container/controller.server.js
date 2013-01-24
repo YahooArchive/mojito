@@ -38,12 +38,11 @@ YUI.add('Container', function(Y, NAME) {
                 Y.log("***********************************************ChildName: " + childName + " and child spec: " +  JSON.stringify(childSpec));
                 childInfo.push(info);
             });
-    
+
             ac.composite.done({
-                template: {
-                    title: "There are two children in this Container:", childData: childInfo 
-                }
-            })
+                title: "There are two children in this Container:",
+                childData: childInfo
+            });
         }
 
     };

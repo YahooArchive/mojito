@@ -25,7 +25,11 @@ YUI.add('ShelfController', function (Y, NAME) {
             vudata.tiles.push(feed);
         });
 
-        ac.composite.done({template: vudata});
+        ac.composite.done(vudata, {
+            view: {
+                name: 'index'
+            }
+        });
     }
 
     /**
