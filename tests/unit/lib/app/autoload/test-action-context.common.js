@@ -155,7 +155,6 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                 models: {},
                 controller: {index: function() {}},
                 dispatcher: 'the dispatcher',
-                adapter: { },
                 store: store
             });
 
