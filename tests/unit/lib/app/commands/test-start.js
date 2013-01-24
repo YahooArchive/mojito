@@ -17,13 +17,22 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function(Y) {
         mockery = require('mockery'),
         mocks,
         start,
-        count;
+        port,
+        context,
+        perf,
+        listenCalls;
 
     mocks = {
         Mojito: {
             createServer: function(options) {
+                port = options.port;
+                context = options.context;
+                perf = options.perf;
                 return {
-                    listen: function(port, host, cb) { count++; cb(); }
+                    listen: function(port, host, cb) { 
+                        listenCalls++; 
+                        cb(); 
+                    }
                 };
             }
         }
@@ -31,7 +40,7 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function(Y) {
 
     suite.add(new Y.Test.Case({
 
-        name: 'start test cases',
+        name: 'start test cases basic',
 
         setUp: function() {
             start = require(cmdpath);
@@ -55,37 +64,46 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function(Y) {
             mockery.registerMock(mojito_src, mocks.Mojito);
             mockery.enable({'warnOnUnregistered': false, useCleanCache: true});
             start = require(cmdpath);
-            count = 0;
+            listenCalls = 0;
+            port = 0;
+            context = null;
+            perf = null;
         },
 
         'test run start': function() {
-            A.areSame(0, count);
+            A.areSame(0, listenCalls);
             start.run([null], null, function() {});
-            A.areSame(1, count);
+            A.areSame(1, listenCalls);
+            A.areSame(8666, port);
         },
 
         'test run start port': function() {
-            A.areSame(0, count);
-            start.run(["8667"], null, function() {});
-            A.areSame(1, count);
+            A.areSame(0, listenCalls);
+            start.run([8667], null, function() {});
+            A.areSame(1, listenCalls);
+            A.areSame(8667, port);
         },
 
         'test run start context': function() {
             var options = {
                 context: "environment:production"
             };
-            A.areSame(0, count);
-            start.run(['8668'], options, function() {});
-            A.areSame(1, count);
+            A.areSame(0, listenCalls);
+            start.run([8668], options, function() {});
+            A.areSame(1, listenCalls);
+            A.areSame(8668, port);
+            A.areSame('production', context.environment);
         },
 
         'test run start perf': function() {
             var options = {
                 perf: "abc"
             };
-            A.areSame(0, count);
-            start.run(["8669"], options, function() {});
-            A.areSame(1, count);
+            A.areSame(0, listenCalls);
+            start.run([8669], options, function() {});
+            A.areSame(1, listenCalls);
+            A.areSame(8669, port);
+            A.areSame('abc', perf);
         }
 
     }));
