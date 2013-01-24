@@ -355,10 +355,11 @@ YUI().use('mojito-composite-addon', 'test', function(Y) {
                 ac = {
                     done: function(data, meta) {
                         doneCalled = true;
-                        A.isString(meta.view.name);
+                        A.isString(meta.view.name, 'view.name should come from parentMeta');
                         A.areSame('fooFromParent', meta.view.name, "child meta should not overrule parent meta");
                         A.areSame(3, meta.assets.top.js.length, "assets from parent and childs should be merged");
                         A.isUndefined(meta.view.binder, "meta.view should be preserved from parent without deep merge");
+                        A.areEqual(123, meta.binders.mojitid, "meta.binders map should be preserved from children");
                     },
                     _dispatch: function(command, adapter) {
                         var id = command.instance.id;
@@ -371,6 +372,9 @@ YUI().use('mojito-composite-addon', 'test', function(Y) {
                                 top: {
                                     js: [id]
                                 }
+                            },
+                            binders: {
+                                mojitid: 123
                             }
                         };
                         meta[id] = id + '__meta';
