@@ -38,12 +38,10 @@ YUI.add('RefreshParent', function(Y, NAME) {
                 Y.log("**************ChildName: " + childName + " and child spec: " +  JSON.stringify(childSpec));
                 childInfo.push(info);
             });
-    
+
             ac.composite.done({
-                template: {
-                    childData: childInfo 
-                }
-            })
+                childData: childInfo
+            });
         }
 
     };
