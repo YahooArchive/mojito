@@ -7,6 +7,14 @@
         },
         "commonlib": "$$config.mojitodir$$/tests/base/mojito-test.js",
         "dataprovider" : {
+            "start.js": {
+                "params": {
+                    "test": "./test-start.js",
+                    "lib": "$$config.mojitodir$$/lib/app/commands/start.js",
+                    "driver": "nodejs"
+                },
+                "group": "fw,unit,server"
+            },
             "info.js": {
                 "params": {
                     "test": "./test-info.js",
