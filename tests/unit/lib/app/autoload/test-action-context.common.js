@@ -13,6 +13,9 @@ YUI().use('mojito-action-context', 'test', function (Y) {
             getAppConfig: function() {
                 return 'app config';
             },
+            getStaticAppConfig: function() {
+                return 'static app config';
+            },
             getStaticContext: function() {
                 return 'static context';
             },
@@ -596,6 +599,9 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                         actionTimeout: 1
                     };
                 },
+                getStaticAppConfig: function() {
+                    return 'static app config';
+                },
                 getStaticContext: function() {
                     return 'static context';
                 },
@@ -650,6 +656,9 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                         actionTimeout: 1000
                     };
                 },
+                getStaticAppConfig: function() {
+                    return 'static app config';
+                },
                 getStaticContext: function() {
                     return 'static context';
                 },
@@ -701,6 +710,9 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                     return {
                         actionTimeout: 1000
                     };
+                },
+                getStaticAppConfig: function() {
+                    return 'static app config';
                 },
                 getStaticContext: function() {
                     return 'static context';
@@ -835,6 +847,9 @@ YUI().use('mojito-action-context', 'test', function (Y) {
             var store = {
                 getAppConfig: function() {
                     return {};
+                },
+                getStaticAppConfig: function() {
+                    return 'static app config';
                 },
                 getStaticContext: function() {
                     return {};
@@ -977,6 +992,11 @@ YUI().use('mojito-action-context', 'test', function (Y) {
         'test pathToRoot for views': function() {
             var store = {
                     getAppConfig: function() {
+                        return {
+                            pathToRoot: '/path/to/root/'
+                        };
+                    },
+                    getStaticAppConfig: function() {
                         return {
                             pathToRoot: '/path/to/root/'
                         };
