@@ -21,6 +21,7 @@ YUI().use('test', function(Y) {
         'breadth first basics': function() {
             var order = [];
             var walker = new libwalker.BreadthFirst(fixtures);
+            var whichPkgA = 0;
             walker.walk(function(err, info) {
                 order.push(info.pkg.name + '@' + info.pkg.version);
                 switch(info.pkg.name) {
@@ -32,13 +33,20 @@ YUI().use('test', function(Y) {
                         break;
 
                     case 'a':
-                        A.areSame(1, info.depth);
+                        whichPkgA += 1;
                         A.areSame('666.1.0', info.pkg.version);
-                        AA.itemsAreSame(['root'], info.parents);
-                        A.areSame(libpath.join(fixtures,'node_modules/a'), info.dir);
+                        if (1 === whichPkgA) {
+                            A.areSame(1, info.depth, 'a depth');
+                            AA.itemsAreSame(['root'], info.parents);
+                            A.areSame(libpath.join(fixtures,'node_modules/a'), info.dir);
+                        } else {
+                            A.areSame(2, info.depth, 'a depth');
+                            AA.itemsAreSame(['b', 'root'], info.parents);
+                            A.areSame(libpath.join(fixtures,'node_modules/b/node_modules/a'), info.dir);
+                        }
                         break;
                     case 'aa':
-                        A.areSame(2, info.depth);
+                        A.areSame(2, info.depth, 'a depth');
                         A.areSame('666.1.1', info.pkg.version);
                         AA.itemsAreSame(['a','root'], info.parents);
                         A.areSame(libpath.join(fixtures,'node_modules/a/node_modules/aa'), info.dir);
@@ -102,6 +110,7 @@ YUI().use('test', function(Y) {
                 'c@999.999.999',
                 'aa@666.1.1',
                 'ab@666.1.2',
+                'a@666.1.0',
                 'ba@666.2.1',
                 'bb@666.2.2',
                 //'ca@999.999.999',
