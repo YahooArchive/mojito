@@ -520,6 +520,26 @@ YUI().use(
                 A.areSame('a', details.controller);
             },
 
+
+            'skip loaded packages': function() {
+                var fixtures = libpath.join(__dirname, '../../../../fixtures/packages'),
+                    store = new Y.mojito.ResourceStore({ root: fixtures });
+                store.preload();
+                var oldlog = Y.log;
+                var logged = false;
+                Y.log = function(msg, lvl, src) {
+                    if ('info' === lvl && 'mojito-resource-store' === src && msg.match(/^skipping duplicate package a@666\.1\.0/)) {
+                        logged = true;
+                    }
+                };
+                try {
+                    store.preload();
+                } finally {
+                    Y.log = oldlog;
+                }
+                A.isTrue(logged, 'info logged');
+            },
+
             'find and parse resources by convention': function() {
                 var fixtures = libpath.join(__dirname, '../../../../fixtures/conventions'),
                     store = new Y.mojito.ResourceStore({ root: fixtures });
