@@ -166,6 +166,10 @@ YUI().use(
                     A.isObject(instance.views['subdir/test_1']);
                     A.areSame('/static/test_mojit_1/views/subdir/test_1.hb.html', instance.views['subdir/test_1']['content-path']);
                     A.areSame('hb', instance.views['subdir/test_1']['engine']);
+
+                    A.isObject(instance.partials['test_3']);
+                    A.areSame('/static/test_mojit_1/views/partials/test_3.hb.html', instance.partials['test_3']['content-path']);
+                    A.areSame('hb', instance.partials['test_3']['engine']);
                 });
             },
 
