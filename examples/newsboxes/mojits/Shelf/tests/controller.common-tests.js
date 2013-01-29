@@ -109,7 +109,7 @@ YUI.add('ShelfController-tests', function(Y, NAME) {
             var ac = getAc();
             ac.composite = {
                 done: function(vudata) {
-                    A.areSame(11, vudata.template.tiles.length);
+                    A.areSame(11, vudata.tiles.length);
                 }
             };
 
@@ -120,9 +120,9 @@ YUI.add('ShelfController-tests', function(Y, NAME) {
             var ac = getAc();
             ac.composite = {
                 done: function(vudata) {
-                    A.areSame('BBC World News', vudata.template.tiles[0].name);
+                    A.areSame('BBC World News', vudata.tiles[0].name);
                     A.areSame('http://feeds.bbci.co.uk/news/world/rss.xml',
-                        vudata.template.tiles[0].url);
+                        vudata.tiles[0].url);
                 }
             };
             controller.index(ac);
@@ -132,7 +132,7 @@ YUI.add('ShelfController-tests', function(Y, NAME) {
             var ac = getAc();
             ac.composite = {
                 done: function(vudata) {
-                    A.areSame('Yahoo! OMG', vudata.template.tiles[7].name);
+                    A.areSame('Yahoo! OMG', vudata.tiles[7].name);
                 }
             };
             controller.index(ac);
