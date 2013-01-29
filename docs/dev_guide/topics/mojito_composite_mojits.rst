@@ -168,6 +168,24 @@ The example controller of parent mojit passes data and selects the template
    }, '0.1.0', {requires: ['mojito', 'mojito-composite-addon']});
 
 
+You can also specify the binder to use with the template. By default, Mojito chooses
+the binder with the same name as the template. Using the same example controller from
+above, we add the property ``binder`` to the ``view`` object to specify the ``dispatcher``
+binder to use with the ``page`` template.
+
+.. code-block:: javascript
+
+   YUI.add('ParentMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
+       index: function(ac) {
+         ac.composite.done({ parent_data: 'Welcome'}, 
+           { "view": { "name": "page", "binder": "dispatcher" }}
+         );
+       }
+     };
+   }, '0.1.0', {requires: ['mojito', 'mojito-composite-addon']});
+
+
 .. _mojito_composite-include_assets:
 
 Attaching Assets to a Parent Template
@@ -198,6 +216,8 @@ of the rendered page.
        }
      };
    }, '0.1.0', {requires: ['mojito', 'mojito-composite-addon']});
+
+
 
 
 .. _mojito_composite-child_view:
