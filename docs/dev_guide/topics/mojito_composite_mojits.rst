@@ -92,16 +92,14 @@ For example, in the example controller of the parent mojit below, the ``index``
 function calls ``ac.composite.done``, which executes ``ac.done`` in the 
 ``index`` functions of the child mojits. The rendered ``index`` templates for 
 each of the child mojits is then available as a Handlebars expression, such 
-as ``{{{child_mojit}}}`` in the parent template. Notice that the ``template`` object 
-allows the parent mojit to send data to the template, so that ``{{title}}`` can be 
-used in the template.
+as ``{{{child_mojit}}}`` in the parent template. 
 
 .. code-block:: javascript
 
    YUI.add('ParentMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
        index: function(ac) {
-         ac.composite.done({ template: { title: 'Recent News'}});
+         ac.composite.done();
        }
      };
    }, '0.1.0', {requires: ['mojito', 'mojito-composite-addon']});
@@ -121,6 +119,85 @@ If ``ParentMojit`` above is the parent of ``ChildMojit``, the controller of
        }
      };
    }, '0.1.0', {requires: []});
+
+
+.. _mojito_composite-pass_data_parent:
+
+Passing Data to the Parent Template
+===================================
+
+The parent mojit can pass data to its templates by passing an object as the
+first argument to ``ac.composite.done``.
+
+The example parent controller below passes ``parent_data`` to its template, so that
+the 
+
+.. code-block:: javascript
+
+   
+   YUI.add('ParentMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
+       index: function(ac) {
+         ac.composite.done({ parent_data: 'Welcome'});
+       }
+     };
+   }, '0.1.0', {requires: ['mojito', 'mojito-composite-addon']});
+
+
+.. _mojito_composite-specify_view:
+
+Specifying the View for a Parent Mojit
+======================================
+
+In addition to passing data to the parent template, you can 
+specify what parent template to use by passing an object containing the property
+``view`` object as a second argument to ``ac.composite.done``.  The ``name`` property
+specifies the name of the view to render.
+
+The example controller of parent mojit passes data and selects the template 
+``page`` (e.g., ``page.hb.html``):
+
+.. code-block:: javascript
+
+   YUI.add('ParentMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
+       index: function(ac) {
+         ac.composite.done({ parent_data: 'Welcome'}, { "view": { "name": "page" }});
+       }
+     };
+   }, '0.1.0', {requires: ['mojito', 'mojito-composite-addon']});
+
+
+.. _mojito_composite-include_assets:
+
+Attaching Assets to a Parent Template
+=====================================
+
+If the parent mojit is a child of ``HTMLFrameMojit``, assets can be attached
+to the parent template by passing an object containing the ``assets`` property.
+
+In this example, the controller of the parent mojit is passing data,
+specifying a template, and attaching JavaScript assets to the ``head`` element
+of the rendered page.
+
+.. code-block:: javascript
+
+   YUI.add('ParentMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
+       index: function(ac) {
+         ac.composite.done({ parent_data: 'Welcome'}, {
+           "view": {
+             "name": "page"
+           },
+           "assets": {
+             "top": {
+               "js": ["/static/app_ex/assets/js/something.js"]
+             }
+           }
+         );
+       }
+     };
+   }, '0.1.0', {requires: ['mojito', 'mojito-composite-addon']});
 
 
 .. _mojito_composite-child_view:
@@ -149,6 +226,7 @@ are embedded using Handlebars expressions.
      <div class="body" style="border: dashed black 1px; margin: 10px 10px 10px 10px;">{{{body}}}</div>
      <div class="footer" style="border: dashed black 1px; margin: 10px 10px 10px 10px;">{{{footer}}}</div>
    </div>
+
 
    
 .. _mojito_composite-dyn_define:
