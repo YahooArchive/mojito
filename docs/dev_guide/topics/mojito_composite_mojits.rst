@@ -171,7 +171,7 @@ The example controller of parent mojit passes data and selects the template
 
 You can also specify the binder to use with the template. By default, Mojito chooses
 the binder with the same name as the template. Using the same example controller from
-above, we add the property ``binder`` to the ``view`` object to specify the ``dispatcher``
+above, we add the property ``binder`` to the ``view`` object to specify the ``bar``
 binder to use with the ``page`` template.
 
 .. code-block:: javascript
@@ -180,7 +180,7 @@ binder to use with the ``page`` template.
      Y.namespace('mojito.controllers')[NAME] = { 
        index: function(ac) {
          ac.composite.done({ parent_data: 'Welcome'}, 
-           { "view": { "name": "page", "binder": "dispatcher" }}
+           { "view": { "name": "page", "binder": "bar" }}
          );
        }
      };
