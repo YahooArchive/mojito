@@ -25,6 +25,9 @@
         },
         "staticHandling": {
             "prefix": "static"
+        },
+        "viewEngine": {
+            "preloadTemplates": false
         }
     },
     "defaultRoutes" : {
