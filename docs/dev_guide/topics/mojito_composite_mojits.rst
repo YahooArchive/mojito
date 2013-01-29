@@ -130,7 +130,8 @@ The parent mojit can pass data to its templates by passing an object as the
 first argument to ``ac.composite.done``.
 
 The example parent controller below passes ``parent_data`` to its template, so that
-the 
+the Handlebars expression ``{{parent_data}}`` in the template can be replaced with the
+value ``'Welcome'`` when the template is rendered.
 
 .. code-block:: javascript
 

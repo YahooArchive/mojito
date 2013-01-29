@@ -430,11 +430,12 @@ Data
 .. _moj_parent_mojit_data:
 .. topic:: **How does a parent mojit send data to the template?** 
 
-    From the controller of the parent mojit, pass the an object to ``ac.composite.done`` 
+    From the controller of the parent mojit, pass an object to ``ac.composite.done`` 
     containing key-value pairs that can be added 
-    to the view template as Handlebars expressions. For example, the key ``foo`` in the 
-    shown here can be used in the template as ``{{foo}}``, which will 
-    be replaced by the value 'bar' when the template is rendered.::
+    to the view template as Handlebars expressions. For example, the key ``foo``
+    shown below can be included in the template as the Handlebars expression ``{{foo}}``.
+    The ``{{foo}}`` expression will be replaced by the value 'bar' when the template 
+    is rendered.::
     
       // Inside parent mojit
       ac.composite.done({"foo": "bar"});
