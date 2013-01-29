@@ -62,7 +62,6 @@ YUI.add('addon-rs-yui', function(Y, NAME) {});
 
 /* VIEW ENGINE ADDONS */
 YUI.add('mojito-hb', function(Y, NAME) {});
-YUI.add('mojito-mu', function(Y, NAME) {});
 
 /* AUTOLOAD */
 YUI.add('mojito-action-context', function(Y, NAME) {});

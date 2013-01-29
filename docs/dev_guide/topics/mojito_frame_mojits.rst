@@ -84,13 +84,13 @@ child instances that can create content for the rendered view.
            "type" : "HTMLFrameMojit",
            "config": {
              "deploy": true,
-             "title": HTMLFrameMojit Example with Children",
+             "title": "HTMLFrameMojit Example with Children",
              "child": {
                "type": "Body",
                "config": {
                  "children" : {
                    "nav": {
-                     "type": ""Navigation"
+                     "type": "Navigation"
                    },
                    "content": {
                      "type": "articleBuilder"

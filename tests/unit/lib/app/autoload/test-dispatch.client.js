@@ -19,10 +19,8 @@ YUI.add('mojito-dispatcher-client-tests', function(Y, NAME) {
 
         'setUp': function() {
             store = {
-                getAppConfig: function() {
+                getStaticAppConfig: function() {
                     return { yui: {} };
-                },
-                getStaticContext: function () {
                 },
                 getRoutes: function() {
                 },
