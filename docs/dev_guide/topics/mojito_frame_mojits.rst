@@ -421,4 +421,42 @@ to the client.
      <h2>I was lazy-loaded at {{{time}}}.</h2>
    </div>
 
+.. _mojito_fw_mojits-create:
+
+Creating Custom Frame Mojits
+============================
+
+
+Why Create a Custom Frame Mojit?
+--------------------------------
+
+Two Ways to Create Frame Mojit
+------------------------------
+
+Configuring Your Frame Mojit
+----------------------------
+
+
+
+Frame Mojit Controller
+----------------------
+
+Requirements
+############
+
+
+Requirements
+------------
+
+Configuration
+-------------
+
+
+Examples
+--------
+
+IntlHTMLFrameMojit
+##################
+
+
 
