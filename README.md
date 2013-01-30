@@ -1,8 +1,8 @@
 
 # Yahoo! Mojito
 
-<div style="float:right;margin:0 10px 10px 0" markdown="1">
-<img src="http://www.blackducksoftware.com/files/images/Rookie_2012-125.png" alt="Black Duck OS 2012 Rookie of the Year"/>
+<div style="float:right">
+<img src="http://www.blackducksoftware.com/files/images/Rookie_2012-125.png" alt="Black Duck OS 2012 Rookie of the Year" align="right"/>
 </div>
 
 Mojito is the JavaScript library implementing Cocktails, a JavaScript-based
