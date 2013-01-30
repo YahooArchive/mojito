@@ -1,6 +1,6 @@
 # Yahoo! Mojito
 
-![alt Black Duck OS 2012 Rookie of the Year][http://www.blackducksoftware.com/files/images/Rookie_2012-125.png]
+![alt Black Duck OS 2012 Rookie of the Year](http://www.blackducksoftware.com/files/images/Rookie_2012-125.png)
 
 Mojito is the JavaScript library implementing Cocktails, a JavaScript-based
 on-line/off-line, multi-device, hosted application platform.
