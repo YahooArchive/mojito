@@ -339,8 +339,79 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
             var config = Y.JSON.parse(matches[1]);
             A.areSame('&', config.comboSep, 'comboSep got mangled');
             A.areSame('&', config.groups.app.comboSep, 'groups.app.comboSep got mangled');
-        }
+        },
 
+        'test _getSeedAssets with default config': function() {
+            var assets = addon._getSeedAssets(['foo', 'bar'], {
+                comboBase: 'comboBase?',
+                comboSep: '~',
+                base: 'base/',
+                root: 'root/'
+            });
+
+            A.areSame(1, assets.length, 'combine should be the default action');
+            A.areSame('comboBase?root/foo~root/bar', assets[0], 'invalid url construction when combo is on');
+        },
+
+        'test _getSeedAssets with combo off': function() {
+            var assets = addon._getSeedAssets(['foo', 'bar'], {
+                comboBase: 'comboBase?',
+                comboSep: '~',
+                base: 'base/',
+                root: 'root/',
+                combine: false
+            });
+
+            A.areSame(2, assets.length, 'combine: false should be honored');
+            A.areSame('base/root/foo', assets[0], 'invalid url construction when combo is off');
+            A.areSame('base/root/bar', assets[1], 'invalid url construction when combo is off for secundary module');
+        },
+
+        'test _getSeedAssets with combo on with external urls entries': function() {
+            var assets = addon._getSeedAssets(['http://mojito.yahoo/baz', 'foo', 'bar'], {
+                comboBase: 'comboBase?',
+                comboSep: '~',
+                base: 'base/',
+                root: 'root/',
+                combine: true
+            });
+
+            A.areSame(2, assets.length, 'external urls should be honored');
+            A.areSame('http://mojito.yahoo/baz', assets[0], 'problem with external url detection');
+            A.areSame('comboBase?root/foo~root/bar', assets[1], 'invalid url construction when combo is on and external urls are also in the mix');
+        },
+
+        'test _getSeedAssets with combo off with external urls entries': function() {
+            var assets = addon._getSeedAssets(['http://mojito.yahoo/baz', 'foo', 'bar'], {
+                comboBase: 'comboBase?',
+                comboSep: '~',
+                base: 'base/',
+                root: 'root/',
+                combine: false
+            });
+
+            A.areSame(3, assets.length, 'external urls should be honored');
+            A.areSame('http://mojito.yahoo/baz', assets[0], 'problem with external url detection');
+            A.areSame('base/root/foo', assets[1], 'invalid url construction when combo is off and external urls are also in the mix');
+            A.areSame('base/root/bar', assets[2], 'invalid url construction when combo is off and external urls are also in the mix');
+        },
+
+        'test _getSeedAssets flushing order': function() {
+            var assets = addon._getSeedAssets([
+                    'http://mojito.yahoo/baz', 'foo', 'bar', 'http://mojito.yahoo/bar', 'baz'
+                ], {
+                comboBase: 'comboBase?',
+                comboSep: '~',
+                base: 'base/',
+                root: 'root/'
+            });
+
+            A.areSame(4, assets.length, 'order should be honored');
+            A.areSame('http://mojito.yahoo/baz', assets[0], 'initial external url order not honored');
+            A.areSame('comboBase?root/foo~root/bar', assets[1], 'combo in second position not honored');
+            A.areSame('http://mojito.yahoo/bar', assets[2], 'external url in the middle not honored');
+            A.areSame('comboBase?root/baz', assets[3], 'combo at the end not honored');
+        }
 
     };
 
