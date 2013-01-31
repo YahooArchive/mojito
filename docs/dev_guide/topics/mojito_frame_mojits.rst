@@ -430,8 +430,7 @@ In addition to the frame mojits that come with Mojito, you can create your own
 frame mojit, which is just another mojit that manages assets, metadata, creates
 the HTML skeleton, executes child mojits, and anything else that you want it to do.
 
-Before creating a custom frame mojit, we recommend that you
-do the following:
+Before creating a custom frame mojit, we recommend that you do the following:
 - use the ``HTMLFrameMojit`` and the ``Composite`` addon in a Mojito application
 - examine the `HTMLFrameMojit code <https://github.com/yahoo/mojito/tree/develop/lib/app/mojits/HTMLFrameMojit>`_
   that is part of Mojito
