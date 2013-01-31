@@ -431,6 +431,7 @@ frame mojit, which is just another mojit that manages assets, metadata, creates
 the HTML skeleton, executes child mojits, and anything else that you want it to do.
 
 Before creating a custom frame mojit, we recommend that you do the following:
+
 - use the ``HTMLFrameMojit`` and the ``Composite`` addon in a Mojito application
 - examine the `HTMLFrameMojit code <https://github.com/yahoo/mojito/tree/develop/lib/app/mojits/HTMLFrameMojit>`_
   that is part of Mojito
@@ -459,6 +460,7 @@ Responsibilities of the Frame Mojit
 -----------------------------------
 
 The frame mojit is responsible for the following:
+
 - constructing the HTML page
 - collecting the assets of your children and attaching them to the page
 - deploying the client code of its children to the client
