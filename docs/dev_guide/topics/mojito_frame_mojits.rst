@@ -427,13 +427,14 @@ Creating Custom Frame Mojits
 ============================
 
 In addition to the frame mojits that come with Mojito, you can create your own
-frame mojit, which is just another mojit that manages assets, metadata, creates
-the HTML skeleton, executes child mojits, and anything else that you want it to do.
+frame mojit, which is just another mojit that manages assets, metadata, executes 
+child mojits, constructs the HTML page, and anything else that you want it to do.
 
-Before creating a custom frame mojit, we recommend that you do the following:
+Before creating a custom frame mojit, we recommend that you have 
+done the following:
 
-- use the ``HTMLFrameMojit`` and the ``Composite`` addon in a Mojito application
-- examine the `HTMLFrameMojit code <https://github.com/yahoo/mojito/tree/develop/lib/app/mojits/HTMLFrameMojit>`_
+- used the ``HTMLFrameMojit`` and the ``Composite`` addon in a Mojito application
+- examined the `HTMLFrameMojit code <https://github.com/yahoo/mojito/tree/develop/lib/app/mojits/HTMLFrameMojit>`_
   that is part of Mojito
 
 .. _create_frame_mojits-why:
@@ -443,7 +444,9 @@ Why Create a Custom Frame Mojit?
 
 By being able to create a custom frame mojit, you can control how the HTML page
 is constructed, from the HTML skeleton, the metadata, and attachment of assets, to
-the rendering of mojits in the page.
+the rendering of mojits in the page. For example, you could create a dynamic
+HTML title, add custom metadata in the ``head`` element, or change the organization
+of the page based on the runtime environment.
 
 .. _create_frame_mojits-cannot_do:
 
@@ -452,7 +455,8 @@ What Frame Mojits Cannot Do
 
 Code from your frame mojit cannot be deployed to run on the client. It **must** run on
 the server. Thus, your frame mojit cannot have binders, and the controller of 
-your frame mojit must have the ``server`` affinity. 
+your frame mojit must have the ``server`` affinity. The frame mojit's child mojits 
+handle dynamic content and user interaction.
 
 .. _create_frame_mojits-responsibilities:
 
@@ -467,7 +471,7 @@ The frame mojit is responsible for the following:
 - executing child mojits and attaching the output to the HTML page
 
 How your frame mojit accomplishes the tasks above largely depends on your implementation.
-We will delve into these responsibilities in more detail in 
+We will delve into these responsibilities in more detail in the following sections. 
 
 .. _create_frame_mojits-configuring:
 
@@ -478,9 +482,9 @@ The configuration to use a custom frame mojit should be similar to the configura
 for using the ``HTMLFrameMojit``, but you have more flexibility because you
 have control over the implementation of the frame mojit.
 
-In the ``application.json``, the instance ``fm`` of the frame mojit ``MyFrameMojit`` 
+In the ``application.json`` below, the instance ``fm`` of the frame mojit ``MyFrameMojit`` 
 is configured to have children mojits. The implementation of ``MyFrameMojit`` will
-need to get the configuration of the children and then execute them
+need to get the configuration of the ``children`` and then execute them
 using the Composite addon.
 
 .. code-block:: javascript
