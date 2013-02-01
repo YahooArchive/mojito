@@ -434,7 +434,7 @@ Before creating a custom frame mojit, we recommend that you have
 done the following:
 
 - used the ``HTMLFrameMojit`` and the ``Composite`` addon in a Mojito application
-- examined the `HTMLFrameMojit code <https://github.com/yahoo/mojito/tree/develop/lib/app/mojits/HTMLFrameMojit>`_
+- examined the `HTMLFrameMojit code <https://github.com/yahoo/mojito/tree/master/lib/app/mojits/HTMLFrameMojit>`_
   that is part of Mojito
 
 .. _create_frame_mojits-why:
@@ -514,8 +514,14 @@ using the Composite addon.
      }
    ]
 
-You could implement your frame mojit to use a child that has children as well.
-In that case, your ``application.json`` might be similar to the following:
+You can also implement your frame mojit to use a ``child`` that has its own children 
+mojits. Implementing the controller of the frame mojit to use a ``child`` with its own
+children is more difficult, but the advantage is that the 
+child of your frame mojit can have binders and direct control over its children
+using the ``Composite`` addon. 
+
+In the case of your frame mojit having a ``child`` with its own ``children``, 
+your ``application.json`` might be similar to the following:
 
 .. code-block:: javascript
 
