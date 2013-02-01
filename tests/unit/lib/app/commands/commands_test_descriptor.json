@@ -15,6 +15,14 @@
                 },
                 "group": "fw,unit,server"
             },
+            "test.js": {
+                "params": {
+                    "test": "./test-test.js",
+                    "lib": "$$config.mojitodir$$/lib/app/commands/test.js",
+                    "driver": "nodejs"
+                },
+                "group": "fw,unit,server"
+            },
             "info.js": {
                 "params": {
                     "test": "./test-info.js",
