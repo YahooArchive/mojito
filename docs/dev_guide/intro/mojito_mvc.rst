@@ -597,7 +597,8 @@ Template files have the following naming convention:
 The following list describes the elements of the template file name:
 
 - ``{controller_function}`` - the controller function (action)
-  that supplies data.
+  that supplies data. Controller functions can also specify different
+  templates.
 - ``{selector}`` - an arbitrary  string used to select
   a specific template. For example, you could use the selector
   ``iphone`` for the iPhone template. 
@@ -693,6 +694,94 @@ snippet below, if the ``ul`` object is given, the property title is evaluated.
      <h3>{{title}}</h3>
    {{/with}}
 
+.. _using_hb-partials:
+
+Partials
+########
+
+Handlebars partials are simply templates using Handlebars expressions that other
+templates can include. Mojito allows you to have both global (shared by all mojits) or 
+local (available only to one mojit) partials depending on the context. Global and local 
+partials are used the same way in templates, but the location of the partials is 
+different. We'll look at the file naming convention, location, and usage of partials
+before finishing up with a simple example.
+
+.. _hb_partials-file_naming:
+
+File Naming Convention
+**********************
+
+The file name for partials is similar to templates using Handlebars except 
+``{partial_name}`` replaces ``{controller_function}``:
+``{partial_name}.[{selector}].hb.html``
+
+.. _hb_partials-location:
+
+Location of Partials
+********************
+
+.. _partials_location-global:
+
+Global Partials
+^^^^^^^^^^^^^^^
+ 
+``{app_dir}/views/partials`` 
+
+Thus, the global partial ``foo.hb.html`` in the application ``bar_app`` would be located at
+``bar_app/views/partials/foo.hb.html``.
+
+.. _partials_location-local:
+
+Local Partials
+^^^^^^^^^^^^^^
+
+``{app_dir}/mojits/{mojit_name}/views/partials`` 
+
+Thus, the local partial ``foo.hb.html`` in the mojit``bar_mojit`` would be located at
+``mojits/bar_mojit/views/partials/foo.hb.html``.
+
+.. _hb_partials-use:
+
+Using Partials in Templates
+***************************
+
+To use a partial, the template using the following syntax: ``{{> partial_name}}``
+
+Thus, to use the partial ``status.hb.html``, you would included the following
+in a template: ``{{> status }}``
+
+.. _hb_partials-example:
+
+Example
+*******
+
+``/my_news_app/views/partials/global_news.iphone.hb.html``
+
+.. code-block:: html
+
+   <div id="{{mojit_view_id}}">
+      <h3>Global News</h3>
+      {{global_news_stories}}
+   </div>
+
+``/my_news_app/mojits/newsMojit/views/partials/local_news.iphone.hb.html``
+
+.. code-block:: html
+
+   <div id="{{mojit_view_id}}">
+      <h3>Local News</h3>
+      {{local_news_stories}}
+   </div>
+
+``/my_news_app/mojits/newsMojit/views/index.iphone.hb.html``
+
+.. code-block:: html
+
+   <div id="{{mojit_view_id}}">
+     <h2>Today's News Stories</h2>
+     {{> global_news}}
+     {{> local_news}}
+   </div>
 
 .. _mvc-views-supplied_data:
 
@@ -714,6 +803,7 @@ template:
 
 .. note:: The prefix ``mojit_`` is reserved for use by Mojito, and thus, 
           user-defined variables cannot use this prefix in their names.
+
 
 .. _mvc-views-exs:
 

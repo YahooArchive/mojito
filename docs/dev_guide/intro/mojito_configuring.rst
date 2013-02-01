@@ -137,10 +137,6 @@ configuration Object
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
 | `builds <#builds-obj>`_                                | object               | N/A               | Specifies configuration for builds.                    |
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
-| ``cacheViewTemplates``                                 | boolean              | true              | Specifies whether the view engine should attempt       |
-|                                                        |                      |                   | to cache the view. Note that not all view engines      |
-|                                                        |                      |                   | support caching.                                       |
-+--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
 | ``middleware``                                         | array of strings     | []                | A list of paths to the Node.js module that exports     |
 |                                                        |                      |                   | a Connect middleware function.                         |
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
@@ -195,6 +191,9 @@ configuration Object
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
 | ``tunnelTimeout``                                      | number               | 30000             | The timeout in milliseconds for the communication      |
 |                                                        |                      |                   | tunnel from the client back to the server.             |
++--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
+| :ref:`viewEngine <viewEngine_obj>`                     | object               | N/A               | Contains information about caching and preloading      |
+|                                                        |                      |                   | templates.                                             |
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
 | `yui <#yui-obj>`_                                      | object               | N/A               | When Mojito is deployed to client, the                 |
 |                                                        |                      |                   | :ref:`yui_obj` specifies where and how to obtain       |
@@ -410,6 +409,23 @@ staticHandling Object
 |                       |               |                             | ``/static/``. An empty string can be given if no       |
 |                       |               |                             | prefix is desired.                                     |
 +-----------------------+---------------+-----------------------------+--------------------------------------------------------+
+
+
+.. _viewEngine_obj:
+
+viewEngine Object
+#################
+
++--------------------------------+----------------------+------------------------------------------------------------------------+
+| Property                       | Data Type            | Description                                                            |
++================================+======================+========================================================================+
+| ``cacheTemplates``             | boolean              | true              | Specifies whether the view engine should attempt   |
+|                                |                      |                   | to cache the view. Note that not all view engines  |
+|                                |                      |                   | support caching.                                   |
++--------------------------------+----------------------+-------------------+----------------------------------------------------+
+| ``preloadTemplates``           | boolean              | false             | Determines if templates are preloaded in memory.   |
++--------------------------------+----------------------+-------------------+----------------------------------------------------+
+
 
 .. _yui_obj:
 
