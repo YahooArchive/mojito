@@ -737,7 +737,7 @@ Local Partials
 
 ``{app_dir}/mojits/{mojit_name}/views/partials`` 
 
-Thus, the local partial ``foo.hb.html`` in the mojit``bar_mojit`` would be located at
+Thus, the local partial ``foo.hb.html`` in the mojit ``bar_mojit`` would be located at
 ``mojits/bar_mojit/views/partials/foo.hb.html``.
 
 .. _hb_partials-use:
@@ -745,9 +745,9 @@ Thus, the local partial ``foo.hb.html`` in the mojit``bar_mojit`` would be locat
 Using Partials in Templates
 ***************************
 
-To use a partial, the template using the following syntax: ``{{> partial_name}}``
+To use a partial, the template uses the following syntax: ``{{> partial_name}}``
 
-Thus, to use the partial ``status.hb.html``, you would included the following
+To use the partial ``status.hb.html``, you would included the following
 in a template: ``{{> status }}``
 
 .. _hb_partials-example:
@@ -755,7 +755,7 @@ in a template: ``{{> status }}``
 Example
 *******
 
-``/my_news_app/views/partials/global_news.iphone.hb.html``
+**/my_news_app/views/partials/global_news.iphone.hb.html**
 
 .. code-block:: html
 
@@ -764,7 +764,7 @@ Example
       {{global_news_stories}}
    </div>
 
-``/my_news_app/mojits/newsMojit/views/partials/local_news.iphone.hb.html``
+**/my_news_app/mojits/newsMojit/views/partials/local_news.iphone.hb.html**
 
 .. code-block:: html
 
@@ -773,7 +773,7 @@ Example
       {{local_news_stories}}
    </div>
 
-``/my_news_app/mojits/newsMojit/views/index.iphone.hb.html``
+**/my_news_app/mojits/newsMojit/views/index.iphone.hb.html**
 
 .. code-block:: html
 
