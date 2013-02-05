@@ -796,6 +796,11 @@ Mojito uses Handlebars to render Mustache tags, so if you are creating
 templates using Mustache tags and specify ``mu`` in the file name, such as
 the template ``index.mu.html``, the template will be rendered by Handlebars.
 
+.. note:: If a controller has added logic to ensure the safe encoding of Mustache 
+          tags, you may need to remove that logic from the controller and rename your 
+          template to specify Handlebars (i.e., ``{controller_function}.hb.html``).
+
+
 
 .. _mvc-views-supplied_data:
 
