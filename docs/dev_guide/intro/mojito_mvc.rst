@@ -583,7 +583,9 @@ Views
 The views are HTML files that can include templates, such as Handlebars 
 expressions, and are located in the ``views`` directory. We call these 
 files *templates* to differentiate them from the rendered views that 
-have substituted values for the template tags.
+have substituted values for the template tags. Mojito uses 
+`Handlebars <http://handlebarsjs.com/>`_ as the default rendering engine 
+for templates. 
 
 .. _mvc-views-naming:
 
@@ -703,7 +705,9 @@ Handlebars partials are simply templates using Handlebars expressions that other
 templates can include. Mojito allows you to have both global (shared by all mojits) or 
 local (available only to one mojit) partials depending on the context. Global and local 
 partials are used the same way in templates, but the location of the partials is 
-different. We'll look at the file naming convention, location, and usage of partials
+different. Data that is available to templates is also available to partials. 
+
+Now let's look at the file naming convention, location, and usage of partials
 before finishing up with a simple example.
 
 .. _hb_partials-file_naming:
@@ -755,25 +759,25 @@ in a template: ``{{> status }}``
 Example
 *******
 
-**/my_news_app/views/partials/global_news.iphone.hb.html**
+**/my_news_app/views/partials/global_news.hb.html**
 
 .. code-block:: html
 
-   <div id="{{mojit_view_id}}">
+   <div>
       <h3>Global News</h3>
       {{global_news_stories}}
    </div>
 
-**/my_news_app/mojits/newsMojit/views/partials/local_news.iphone.hb.html**
+**/my_news_app/mojits/newsMojit/views/partials/local_news.hb.html**
 
 .. code-block:: html
 
-   <div id="{{mojit_view_id}}">
+   <div>
       <h3>Local News</h3>
       {{local_news_stories}}
    </div>
 
-**/my_news_app/mojits/newsMojit/views/index.iphone.hb.html**
+**/my_news_app/mojits/newsMojit/views/index.hb.html**
 
 .. code-block:: html
 
@@ -782,6 +786,16 @@ Example
      {{> global_news}}
      {{> local_news}}
    </div>
+
+.. _mvc-views-using_mustache:
+
+Using Mustache Tags
+-------------------
+
+Mojito uses Handlebars to render Mustache tags, so if you are creating
+templates using Mustache tags and specify ``mu`` in the file name, such as
+the template ``index.mu.html``, the template will be rendered by Handlebars.
+
 
 .. _mvc-views-supplied_data:
 

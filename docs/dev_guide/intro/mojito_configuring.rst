@@ -416,15 +416,19 @@ staticHandling Object
 viewEngine Object
 #################
 
-+--------------------------------+----------------------+-------------------+----------------------------------------------------+
-| Property                       | Data Type            | Default Value     | Description                                        |
-+================================+======================+===================+====================================================+
-| ``cacheTemplates``             | boolean              | true              | Specifies whether the view engine should attempt   |
-|                                |                      |                   | to cache the view. Note that not all view engines  |
-|                                |                      |                   | support caching.                                   |
-+--------------------------------+----------------------+-------------------+----------------------------------------------------+
-| ``preloadTemplates``           | boolean              | false             | Determines if templates are preloaded in memory.   |
-+--------------------------------+----------------------+-------------------+----------------------------------------------------+
++--------------------------------+----------------------+-------------------+------------------------------------------------------+
+| Property                       | Data Type            | Default Value     | Description                                          |
++================================+======================+===================+======================================================+
+| ``cacheTemplates``             | boolean              | true              | Specifies whether the view engine should attempt     |
+|                                |                      |                   | to cache the view. Note that not all view engines    |
+|                                |                      |                   | support caching.                                     |
++--------------------------------+----------------------+-------------------+------------------------------------------------------+
+| ``preloadTemplates``           | boolean              | false             | Determines if templates are preloaded in memory.     |
+|                                |                      |                   | This is beneficial for small applications, but not   |     
+|                                |                      |                   | recommended for applications with many views and     |
+|                                |                      |                   | partials because it may require a significant amount |
+|                                |                      |                   | of memory that could degrade the performance.        |
++--------------------------------+----------------------+-------------------+------------------------------------------------------+
 
 
 .. _yui_obj:
