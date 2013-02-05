@@ -798,7 +798,9 @@ the template ``index.mu.html``, the template will be rendered by Handlebars.
 
 .. note:: If a controller has added logic to ensure the safe encoding of Mustache 
           tags, you may need to remove that logic from the controller and rename your 
-          template to specify Handlebars (i.e., ``{controller_function}.hb.html``).
+          template to specify Handlebars (i.e., ``{controller_function}.hb.html``),
+          or you can use triple brackets ``{{{}}}`` instead to avoid the default 
+          encoding done by Handlebars.
 
 
 
