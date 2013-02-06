@@ -463,30 +463,57 @@ To see all the options for the ``config`` object, see the
 Some of the properties of the ``config`` object used for configuring logging are shown below.
 
 
-+----------------------+------------------+--------------------------+---------------------------------------------------------------+
-| Property             | Data Type        | Default Value            | Description                                                   |
-+======================+==================+==========================+===============================================================+
-| ``debug``            | boolean          | true                     | Determines whether ``Y.log`` messages are written to the      |    
-|                      |                  |                          | browser console.                                              |
-+----------------------+------------------+--------------------------+---------------------------------------------------------------+
-| ``logExclude``       | object           | none                     | Excludes the logging of the YUI module(s) specified.          |
-|                      |                  |                          | For example: ``logExclude: { "logModel": true }``             |  
-+----------------------+------------------+--------------------------+---------------------------------------------------------------+
-| ``logInclude``       | object           | none                     | Includes the logging of the YUI module(s) specified.          |
-|                      |                  |                          | For example: ``logInclude: { "DemoBinderIndex": true }``      |  
-+----------------------+------------------+--------------------------+---------------------------------------------------------------+
-| ``logLevel``         | string           | "debug"                  | Specifies the lowest log level to include in the              |
-|                      |                  |                          | log output. The log level can only be set with ``logLevel``   |
-|                      |                  |                          | if ``debug`` is set to ``true``. For more information,        | 
-|                      |                  |                          | see `Log Levels <../topics/mojito_logging.html#log-levels>`_. |
-+----------------------+------------------+--------------------------+---------------------------------------------------------------+
-| ``logLevelOrder``    | array of strings | ``['debug', 'mojito',    | Defines the order of evaluating log levels. Each log          |
-|                      |                  | 'info', 'warn', 'error'  | level is a superset of the levels that follow, so messages    |
-|                      |                  | 'none']``                | at levels within the set will be displayed. Thus, at the      |
-|                      |                  |                          | ``debug`` level, messages at all levels will be displayed,    |
-|                      |                  |                          | and at the ``mojito`` level, levels ``info``, ``warn``,       |
-|                      |                  |                          | ``error`` will be displayed, etc.                             |
-+----------------------+------------------+--------------------------+---------------------------------------------------------------+
+
++----------------------+------------------+------------------------------------------+-----------------------------------------------------------------------+
+| Property             | Data Type        | Default Value                            | Description                                                           |
++======================+==================+==========================================+=======================================================================+
+| ``base``             | string           | ``"http://yui.yahooapis.com/combo?"``    | The base URL for a dynamic combo handler. This will be used           |
+|                      |                  |                                          | to make combo-handled module requests if ``combine`` is set           |
+|                      |                  |                                          | to ``true``. You can also set the base to a local path to             |
+|                      |                  |                                          | serve YUI, such as ``/static/yui``.                                   |
++----------------------+------------------+------------------------------------------+-----------------------------------------------------------------------+
+| ``combine``          | boolean          | true                                     | If ``true``, YUI will use a combo handler to load multiple            |    
+|                      |                  |                                          | modules in as few requests as possible. Providing a value for         |
+|                      |                  |                                          | the base config property will cause combine to default to             |
+|                      |                  |                                          | ``false``.                                                            |
++----------------------+------------------+------------------------------------------+-----------------------------------------------------------------------+
+| ``comboBase``        | string           | ``"http://yui.yahooapis.com/combo?"``    | The base URL for a dynamic combo handler. This will be used           |    
+|                      |                  |                                          | to make combo-handled module requests if combine is set to            |
+|                      |                  |                                          | ``true``.                                                             |
++----------------------+------------------+------------------------------------------+-----------------------------------------------------------------------+
+| ``comboSep``         | string           | ``"&"``                                  | The default separator to use between files in a combo URL.            |    
++----------------------+------------------+------------------------------------------+-----------------------------------------------------------------------+
+| ``debug``            | boolean          | true                                     | Determines whether ``Y.log`` messages are written to the              |    
+|                      |                  |                                          | browser console.                                                      |
++----------------------+------------------+------------------------------------------+-----------------------------------------------------------------------+
+| ``logExclude``       | object           | none                                     | Excludes the logging of the YUI module(s) specified.                  |
+|                      |                  |                                          | For example: ``logExclude: { "logModel": true }``                     |  
++----------------------+------------------+------------------------------------------+-----------------------------------------------------------------------+
+| ``logInclude``       | object           | none                                     | Includes the logging of the YUI module(s) specified.                  |
+|                      |                  |                                          | For example: ``logInclude: { "DemoBinderIndex": true }``              |  
++----------------------+------------------+------------------------------------------+-----------------------------------------------------------------------+
+| ``logLevel``         | string           | "debug"                                  | Specifies the lowest log level to include in the                      |
+|                      |                  |                                          | log output. The log level can only be set with ``logLevel``           |
+|                      |                  |                                          | if ``debug`` is set to ``true``. For more information,                | 
+|                      |                  |                                          | see `Log Levels <../topics/mojito_logging.html#log-levels>`_.         |
++----------------------+------------------+------------------------------------------+-----------------------------------------------------------------------+
+| ``logLevelOrder``    | array of strings | ``['debug', 'mojito',                    | Defines the order of evaluating log levels. Each log                  |
+|                      |                  | 'info', 'warn', 'error'                  | level is a superset of the levels that follow, so messages            |
+|                      |                  | 'none']``                                | at levels within the set will be displayed. Thus, at the              |
+|                      |                  |                                          | ``debug`` level, messages at all levels will be displayed,            |
+|                      |                  |                                          | and at the ``mojito`` level, levels ``info``, ``warn``,               |
+|                      |                  |                                          | ``error`` will be displayed, etc.                                     |
++----------------------+------------------+------------------------------------------+-----------------------------------------------------------------------+
+| ``root``             | string           | ``"{YUI VERSION}/build/"``               | Root path to prepend to module path for the combo service.            |
++----------------------+------------------+------------------------------------------+-----------------------------------------------------------------------+
+| ``seed``             | array of strings | ``"seed": [                              | Similar to the YUI seed file as explained in the `YUI Quickstart <htt |
+|                      |                  |     "yui-base",                          | p://yuilibrary.com/yui/quick-start/>`_ you use the ``seed`` array     |
+|                      |                  |     "loader-base",                       | to specify the YUI components to load for your application.           |
+|                      |                  |     "loader-yui3",                       | See :ref:`Seed File in Mojito Applications <seed-mojito>` for more    |
+|                      |                  |     "loader-app"                         | information.                                                          |
+|                      |                  |   ]``                                    |                                                                       |
++----------------------+------------------+------------------------------------------+-----------------------------------------------------------------------+
+
 
 
 
