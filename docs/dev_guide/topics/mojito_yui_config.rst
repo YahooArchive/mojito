@@ -350,7 +350,78 @@ needed by iPhone clients.
      }
    ]
 
+.. _seed-yui_client_load:
 
+Getting the YUI Seed from the Client
+====================================
+
+Mojito by default loads YUI components the version of YUI that comes with the framework.
+Thus, in general, the developer doesn't need to worry about getting YUI or what version
+to use. There are instances when you may want to get a specific version of YUI or would like
+the client to load YUI instead. 
+
+So, in addition to specifying components to load in the ``seed`` array, you can
+specify the URLs to seed files from a CDN or directly from YUI. This also allows the
+client to load the YUI seed.
+
+In the example ``application.json`` below, the ``seed`` array gets some of the 
+seed files from YUI, but also uses the ``loader-app`` module from the YUI version
+bundled with Mojito.
+
+.. code-block:: javascript
+   :emphasize-lines: 6-12
+
+   [
+     {
+       "settings": [ "master" ],
+       "yui": {
+         "config": {
+           "seed": [
+             "http://yui.yahooapis.com/3.8.1/build/yui-base/yui-base-min.js",
+             "http://yui.yahooapis.com/3.8.1/build/loader-base/loader-base-min.js",
+             "http://yui.yahooapis.com/3.8.1/build/loader-yui3/loader-yui3-min.js",
+             "loader-app",
+             "loader-app-base{langPath}"
+           ],
+           "gallery": "gallery-2013.01.16-21-05",
+           "base": "http://yui.yahooapis.com/3.8.1/build/",
+           "comboBase": "http://yui.yahooapis.com/combo?",
+           "root": "3.8.1/build/"
+         }
+       }
+     }
+   ]
+
+.. _seed-yui_server_load:
+
+Serving YUI Bundled with Mojito Application
+===========================================
+
+In addition to getting the YUI seed from a CDN or from YUI directly, you
+can also bundle a version of YUI in your application and then
+serve it by specifying the file path with the ``base`` property of
+the ``yui.config`` object.
+
+In the example ``application.json`` below, the ``base`` property
+specifies the file path for loading YUI bundled in the application. 
+
+.. code-block:: javascript
+   :emphasize-lines: 6-10
+
+   [
+     {
+       "settings": [ "master" ],
+       "yui": {
+         "config": {
+           "base": "/static/yui/",
+           "combine": false,
+           "comboBase": "/combo~",
+           "comboSep": "~",
+           "root": "/static/yui/"
+         }
+       }
+     }
+   ]
 
 .. _yui_config-app_grp:
 
