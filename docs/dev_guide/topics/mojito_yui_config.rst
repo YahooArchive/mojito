@@ -357,8 +357,8 @@ Getting the YUI Seed from the Client
 
 Mojito by default loads YUI components the version of YUI that comes with the framework.
 Thus, in general, the developer doesn't need to worry about getting YUI or what version
-to use. There are instances when you may want to get a specific version of YUI or would like
-the client to load YUI instead. 
+to use. There are instances, however, when you may want to get a specific version of YUI 
+or would like the **client** to load YUI instead. 
 
 So, in addition to specifying components to load in the ``seed`` array, you can
 specify the URLs to seed files from a CDN or directly from YUI. This also allows the
