@@ -508,11 +508,10 @@ Some of the properties of the ``config`` object used for configuring logging are
 +----------------------+------------------+------------------------------------------+-----------------------------------------------------------------------+
 | ``seed``             | array of strings | ``"seed": [ "yui-base", "loader-base",   | Similar to the YUI seed file as explained in the `YUI Quickstart <htt |
 |                      |                  | "loader-yui3", loader-app"]``            | p://yuilibrary.com/yui/quick-start/>`_ you use the ``seed`` array     |
-|                      |                  |                                          | to specify the YUI components to load for your application.           |
-|                      |                  |                                          | You can also specify URLs to the YUI seed files, allowing you to      |
-|                      |                  |                                          | specify the YUI version and allowing the client to load YUI.          |
-|                      |                  |                                          | See :ref:`Seed File in Mojito Applications <seed-mojito>` for more    |
-|                      |                  |                                          | information.                                                          |
+|                      |                  |                                          | to specify the YUI components to load for your application. You can   |
+|                      |                  |                                          | also specify URLs to the YUI seed files, allowing the client to load  |
+|                      |                  |                                          | YUI. See :ref:`Seed File in Mojito Applications <seed-mojito>` for    |
+|                      |                  |                                          | more information.                                                     |
 +----------------------+------------------+------------------------------------------+-----------------------------------------------------------------------+
 
 
