@@ -506,12 +506,11 @@ Some of the properties of the ``config`` object used for configuring logging are
 +----------------------+------------------+------------------------------------------+-----------------------------------------------------------------------+
 | ``root``             | string           | ``"{YUI VERSION}/build/"``               | Root path to prepend to module path for the combo service.            |
 +----------------------+------------------+------------------------------------------+-----------------------------------------------------------------------+
-| ``seed``             | array of strings | ``"seed": [                              | Similar to the YUI seed file as explained in the `YUI Quickstart <htt |
-|                      |                  |     "yui-base",                          | p://yuilibrary.com/yui/quick-start/>`_ you use the ``seed`` array     |
-|                      |                  |     "loader-base",                       | to specify the YUI components to load for your application.           |
-|                      |                  |     "loader-yui3",                       | See :ref:`Seed File in Mojito Applications <seed-mojito>` for more    |
-|                      |                  |     "loader-app"                         | information.                                                          |
-|                      |                  | ]``                                      |                                                                       |
+| ``seed``             | array of strings | ``"seed": [ "yui-base", "loader-base",   | Similar to the YUI seed file as explained in the `YUI Quickstart <htt |
+|                      |                  | "loader-yui3", loader-app"]``            | p://yuilibrary.com/yui/quick-start/>`_ you use the ``seed`` array     |
+|                      |                  |                                          | to specify the YUI components to load for your application.           |
+|                      |                  |                                          | See :ref:`Seed File in Mojito Applications <seed-mojito>` for more    |
+|                      |                  |                                          | information.                                                          |
 +----------------------+------------------+------------------------------------------+-----------------------------------------------------------------------+
 
 
