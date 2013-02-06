@@ -511,7 +511,7 @@ Some of the properties of the ``config`` object used for configuring logging are
 |                      |                  |     "loader-base",                       | to specify the YUI components to load for your application.           |
 |                      |                  |     "loader-yui3",                       | See :ref:`Seed File in Mojito Applications <seed-mojito>` for more    |
 |                      |                  |     "loader-app"                         | information.                                                          |
-|                      |                  |   ]``                                    |                                                                       |
+|                      |                  | ]``                                      |                                                                       |
 +----------------------+------------------+------------------------------------------+-----------------------------------------------------------------------+
 
 
