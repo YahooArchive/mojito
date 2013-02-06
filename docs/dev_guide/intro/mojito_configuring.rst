@@ -474,7 +474,7 @@ Some of the properties of the ``config`` object used for configuring logging are
 +----------------------+------------------+------------------------------------------+-----------------------------------------------------------------------+
 | ``combine``          | boolean          | true                                     | If ``true``, YUI will use a combo handler to load multiple            |    
 |                      |                  |                                          | modules in as few requests as possible. Providing a value for         |
-|                      |                  |                                          | the base config property will cause combine to default to             |
+|                      |                  |                                          | the ``base`` property will cause combine to default to                |
 |                      |                  |                                          | ``false``.                                                            |
 +----------------------+------------------+------------------------------------------+-----------------------------------------------------------------------+
 | ``comboBase``        | string           | ``"http://yui.yahooapis.com/combo?"``    | The base URL for a dynamic combo handler. This will be used           |    
