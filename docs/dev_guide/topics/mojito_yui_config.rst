@@ -369,7 +369,6 @@ seed files from YUI, but also uses the ``loader-app`` module from the YUI versio
 bundled with Mojito.
 
 .. code-block:: javascript
-  :emphasize-lines: 6-12
 
    [
      {
@@ -406,7 +405,6 @@ In the example ``application.json`` below, the ``base`` property
 specifies the file path for loading YUI bundled in the application. 
 
 .. code-block:: javascript
-  :emphasize-lines: 6-10
 
    [
      {
