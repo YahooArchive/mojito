@@ -49,7 +49,7 @@ assets
    File resources that are required on the clients. These resources are primarily CSS but 
    can also be JavaScript that is ancillary to and not a core component of the Mojito 
    application. See `Mojito Developer Topics: Assets <../topics/mojito_assets.html>`_ to 
-   learn how to use assets in Mojito applications.j
+   learn how to use assets in Mojito applications.
 
 
 binder
