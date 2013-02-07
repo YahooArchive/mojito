@@ -426,6 +426,8 @@ Using a custom CDN to load YUI is done in the same way as loading YUI from the
 YUI CDN. In the example below, we simply fetch the YUI seed files from
 an Amazon S3 over SSL. You could load certain files from the YUI CDN as well.
 
+.. code-block:: javascript
+
    [
      {
        "settings": [ "master" ],
