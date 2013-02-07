@@ -14,6 +14,7 @@ General
 
 * :ref:`What languages can I use to develop mojits? <moj_langs>`  
 * :ref:`Can I work on Mojito applications offline? <moj_offline>` 
+* :ref:`Does Mojito work in a Windows environment? <moj_windows>`
 * :ref:`Do I have to restart Mojito to see updates that I've made to my application? <moj_nodemon>`
 * :ref:`Is the Mojito Y instance persistent across requests? <moj_req_persistent>`
 * :ref:`Does Mojito support lazy loading? <moj_lazyloading>`
@@ -127,6 +128,15 @@ General
     implementations.
 
 ------------
+
+.. _moj_windows:
+.. topic:: **Does Mojito work in a Windows environment?**
+
+    Unfortunately, Mojito is only supported on Unix-based systems. We hope to support
+    Mojito on Windows in the future, so please check the 
+    `Mojito Releases Notes <`https://github.com/yahoo/mojito/wiki>`_ on GitHub for the
+    latest updates.
+
 
 .. _moj_nodemon:
 .. topic:: **Do I have to restart Mojito to see updates that I've made to my application?**
