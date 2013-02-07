@@ -467,7 +467,7 @@ Some of the properties of the ``config`` object used for configuring logging are
 +----------------------+------------------+--------------------------------------------------------+-----------------------------------------------------------------------+
 | Property             | Data Type        | Default Value                                          | Description                                                           |
 +======================+==================+========================================================+=======================================================================+
-| ``base``             | string           | ``" http://yui.yahooapis.com/{YUI VERSION}/build/?"``  | The base URL for a dynamic combo handler. This will be used           |
+| ``base``             | string           | ``"http://yui.yahooapis.com/{YUI VERSION}/build/?"``   | The base URL for a dynamic combo handler. This will be used           |
 |                      |                  |                                                        | to make combo-handled module requests if ``combine`` is set           |
 |                      |                  |                                                        | to ``true``. You can also set the base to a local path to             |
 |                      |                  |                                                        | serve YUI, such as ``/static/yui``.                                   |
@@ -506,9 +506,9 @@ Some of the properties of the ``config`` object used for configuring logging are
 |                      |                  |                                                        | and at the ``mojito`` level, levels ``info``, ``warn``,               |
 |                      |                  |                                                        | ``error`` will be displayed, etc.                                     |
 +----------------------+------------------+--------------------------------------------------------+-----------------------------------------------------------------------+
-| ``seed``             | array of strings | ``"seed": ["yui-base", "loader-base",                  | Similar to the YUI seed file as explained in the `YUI Quickstart <htt |
-|                      |                  | "loader-yui3", loader-app",                            | p://yuilibrary.com/yui/quick-start/>`_ you use the ``seed`` array     |
-|                      |                  | "loader-app-base{langPath}"]``                         | to specify the YUI components to load for your application. You can   |
+| ``seed``             | array of strings | ``["yui-base", "loader-base", "loader-yui3",           | Similar to the YUI seed file as explained in the `YUI Quickstart <htt |
+|                      |                  | "loader-app", "loader-app-base{langPath}"]``           | p://yuilibrary.com/yui/quick-start/>`_ you use the ``seed`` array     |
+|                      |                  |                                                        | to specify the YUI components to load for your application. You can   |
 |                      |                  |                                                        | also specify URLs to the YUI seed files, allowing the client to load  |
 |                      |                  |                                                        | YUI. See :ref:`Seed File in Mojito Applications <seed-mojito>` for    |
 |                      |                  |                                                        | more information.                                                     |
