@@ -351,22 +351,24 @@ needed by iPhone clients.
    ]
 
 
-I'm not so sure about the title of the section. It is more like: Controlling the 
-YUI version to load on the client side thru the seed configuration. In any case, I 
-think the semantic will have to change because yui seed (in its form, array), isn't 
-available in the client side, instead the seed is used only by the server side to 
-produce a list of script tags that will be injected in the page.
 
+.. _yui-getting_to_app:
 
-
-.. _yui-serving_to_app:
-
-Serving YUI to Your Application
+Getting YUI to Your Application
 ===============================
 
-Mojito by default loads YUI components the version of YUI that comes with the framework.
-Thus, in general, the developer doesn't need to worry about getting YUI or what version
-to use. You can, however, serve YUI to your application using the following three methods:
+Mojito comes with YUI, so Mojito by default loads the components of 
+YUI that comes with the framework. Thus, in general, the developer 
+doesn't need to worry about getting YUI or what version to use. As we've discussed
+earlier, you can configure your application to include YUI modules that are part 
+of the Mojito core, YUI core, and your application can be part of the seed 
+using the ``seed`` array in ``application.json``. See 
+:ref:`Configuration of the Mojito Seed File <seed-configure>` to learn more.
+
+Your application, however, does not have to use the version of YUI that comes with Mojito
+or load YUI from Mojito. Instead, your application can serve YUI to your application 
+using any of the following three methods or use a combination of them along with
+loading YUI that comes with Mojito.
 
 - Get YUI from the YUI CDN.
 - Bundle YUI with the application and configure your application to use it.
@@ -376,9 +378,8 @@ By serving YUI to your application, you can select the version of YUI, and in th
 case above, load YUI from the client. See also the :ref:`yui.config <yui_config>`
 for descriptions of the properties as well as possible and default values.
 
-
 In the following sections, we'll take a closer look at how to use each of these methods, 
-with the custom CDN serving YUI with SSL.
+with the custom CDN section including an example of serving YUI with SSL.
 
 .. _serving_to_app-yui_cdn:
 
