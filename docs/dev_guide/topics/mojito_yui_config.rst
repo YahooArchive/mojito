@@ -350,19 +350,45 @@ needed by iPhone clients.
      }
    ]
 
-.. _seed-yui_client_load:
 
-Getting the YUI Seed from the Client
-====================================
+I'm not so sure about the title of the section. It is more like: Controlling the 
+YUI version to load on the client side thru the seed configuration. In any case, I 
+think the semantic will have to change because yui seed (in its form, array), isn't 
+available in the client side, instead the seed is used only by the server side to 
+produce a list of script tags that will be injected in the page.
+
+
+
+.. _yui-serving_to_app:
+
+Serving YUI to Your Application
+===============================
 
 Mojito by default loads YUI components the version of YUI that comes with the framework.
 Thus, in general, the developer doesn't need to worry about getting YUI or what version
-to use. There are instances, however, when you would like the **client** to load YUI 
-instead, or you may want to get a specific version of YUI. 
+to use. You can, however, serve YUI to your application using the following three methods:
 
-Thus, in addition to specifying components to load in the ``seed`` array, you can
-also specify the URLs to seed files from a CDN or directly from YUI. This allows the
-client to load the YUI seed and specify the version of YUI to use.
+- Get YUI from the YUI CDN.
+- Bundle YUI with the application and configure your application to use it.
+- Use a custom CDN to serve YUI.
+
+By serving YUI to your application, you can select the version of YUI, and in the first
+case above, load YUI from the client. See also the :ref:`yui.config <yui_config>`
+for descriptions of the properties as well as possible and default values.
+
+
+In the following sections, we'll take a closer look at how to use each of these methods, 
+with the custom CDN serving YUI with SSL.
+
+.. _serving_to_app-yui_cdn:
+
+Using the YUI CDN
+-----------------
+
+By serving YUI from the YUI CDN, you can choose the version of YUI to serve and
+have your application from the client load YUI. To do this, you specify the URLs to the 
+version of YUI from the YUI CDN in the ``seed`` object. In addition, you can 
+also load YUI modules from the YUI seed that come bundled with Mojito.
 
 In the example ``application.json`` below, the ``seed`` array gets some of the 
 seed files from YUI, but also uses the ``loader-app`` module from the YUI version
@@ -391,18 +417,56 @@ bundled with Mojito.
      }
    ]
 
-.. _seed-yui_server_load:
+.. _serving_to_app-yui_app:
 
-Serving YUI Bundled with Mojito Application
-===========================================
+Using a Custom CDN to Load YUI
+------------------------------
 
-In addition to getting the YUI seed from a CDN or from YUI directly, you
-can also bundle a version of YUI in your application and then
-serve it by specifying the file path with the ``base`` property of
-the ``yui.config`` object.
+Using a custom CDN to load YUI is done in the same way as loading YUI from the
+YUI CDN. In the example below, we simply fetch the YUI seed files from
+an Amazon S3 over SSL. You could load certain files from the YUI CDN as well.
+
+   [
+     {
+       "settings": [ "master" ],
+       "yui": {
+         "config": {
+           "seed": [
+             "https://mybucket.s3.amazonaws.com/my_yui_version/yui-base/yui-base-min.js",
+             "https://mybucket.s3.amazonaws.com/my_yui_version/yui-base/loader-base-min.js",
+             "https://mybucket.s3.amazonaws.com/my_yui_version/yui-base/loader-yui3-min.js",
+             "loader-app",
+             "loader-app-base{langPath}"
+           ],
+           "gallery": "gallery-2013.01.16-21-05",
+           "base": "http://yui.yahooapis.com/3.8.1/build/",
+           "comboBase": "http://yui.yahooapis.com/combo?",
+           "root": "3.8.1/build/"
+         }
+       }
+     }
+   ]
+
+.. _serving_to_app-yui_app:
+
+Using the YUI Bundled With Your Application
+-------------------------------------------
+
+Unless you have a strong reason for bundling YUI with your application,
+we strongly recommend that you use the version of YUI that comes with Mojito or
+load YUI from the YUI CDN. Having said that, let's show you how you would 
+go about configuring your application to serve the YUI that you have bundled
+with your application.
+ 
+In general, you would install YUI in a directory within your application,
+and then configure the application to point to the directory. 
+You use the ``yui.config`` object in ``application.json`` to specify
+the file path and whether you want to combo handle the modules.
 
 In the example ``application.json`` below, the ``base`` property
 specifies the file path for loading YUI bundled in the application. 
+Because ``combine`` is ``false``, the ``comboBase``, ``root``, and
+``comboSep`` will not be be used to load YUI with the built-in combo handler.
 
 .. code-block:: javascript
 
@@ -420,6 +484,7 @@ specifies the file path for loading YUI bundled in the application.
        }
      }
    ]
+
 
 .. _yui_config-app_grp:
 
