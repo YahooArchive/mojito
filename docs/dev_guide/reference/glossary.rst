@@ -65,7 +65,7 @@ CDN
 ---
 
    `CDN <http://en.wikipedia.org/wiki/Content_delivery_network>`_ stands for **content 
-   delivery network**, which is largely distributed system of servers deployed in multiple 
+   delivery network**, which is a largely distributed system of servers deployed in multiple 
    data centers in the Internet. CDNs serve content to end-users with high availability 
    and high performance. YUI has a CDN for delivering
    the `YUI library <http://yuilibrary.com/>`_. 
