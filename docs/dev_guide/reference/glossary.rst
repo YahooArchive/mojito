@@ -129,7 +129,7 @@ Node.js
 npm
 ---
 
-   The package manager is for `Node.js`_ and can be used to install and publish code 
+   The package manager for `Node.js`_, which can be used to install and publish code 
    libraries and manage the dependencies among them. 
    See `npmjs.org <http://npmjs.org>`_ for more information.
    
