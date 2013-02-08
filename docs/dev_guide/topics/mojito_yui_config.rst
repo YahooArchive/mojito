@@ -357,14 +357,8 @@ needed by iPhone clients.
 Getting YUI to Your Application
 ===============================
 
-Mojito comes with YUI, so Mojito by default loads the components of 
-YUI that comes with the framework. Thus, in general, the developer 
-doesn't need to worry about getting YUI or what version to use. As we've discussed
-earlier, you can configure your application to include YUI modules that are part 
-of the Mojito core, YUI core, and your application can be part of the seed 
-using the ``seed`` array in ``application.json``. See 
-:ref:`Configuration of the Mojito Seed File <seed-configure>` to learn more.
-
+By default, Mojito loads the components of YUI that comes with the framework. Thus, in 
+general, the developer doesn't need to worry about getting YUI or what version to use. 
 Your application, however, does not have to use the version of YUI that comes with Mojito
 or load YUI from Mojito. Instead, your application can serve YUI to your application 
 using any of the following three methods or use a combination of them along with
@@ -374,12 +368,10 @@ loading YUI that comes with Mojito.
 - Bundle YUI with the application and configure your application to use it.
 - Use a custom CDN to serve YUI.
 
-By serving YUI to your application, you can select the version of YUI, and in the first
-case above, load YUI from the client. See also the :ref:`yui.config <yui_config>`
-for descriptions of the properties as well as possible and default values.
-
 In the following sections, we'll take a closer look at how to use each of these methods, 
-with the custom CDN section including an example of serving YUI with SSL.
+with the custom CDN section including an example of serving YUI with SSL. See also 
+the :ref:`yui.config <yui_config>` for descriptions of the properties as well as 
+possible and default values.
 
 .. _serving_to_app-yui_cdn:
 
@@ -424,8 +416,9 @@ Using a Custom CDN to Load YUI
 ------------------------------
 
 Using a custom CDN to load YUI is done in the same way as loading YUI from the
-YUI CDN. In the example below, we simply fetch the YUI seed files from
-an Amazon S3 over SSL. You could load certain files from the YUI CDN as well.
+YUI CDN. You also have the same benefits of choosing the YUI version and loading 
+YUI from the client. In the example below, we simply fetch the YUI seed files from
+an Amazon S3 over SSL. 
 
 .. code-block:: javascript
 
@@ -462,9 +455,9 @@ go about configuring your application to serve the YUI that you have bundled
 with your application.
  
 In general, you would install YUI in a directory within your application,
-and then configure the application to point to the directory. 
-You use the ``yui.config`` object in ``application.json`` to specify
-the file path and whether you want to combo handle the modules.
+and then configure the application to point to the directory, so your
+application can serve it. You use the ``yui.config`` object in ``application.json`` to 
+specify the file path and whether you want to combo handle the modules.
 
 In the example ``application.json`` below, the ``base`` property
 specifies the file path for loading YUI bundled in the application. 
