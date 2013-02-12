@@ -397,6 +397,39 @@ YUI().use('mojito-composite-addon', 'test', function(Y) {
             });
 
             A.isTrue(doneCalled, "ac done function never called");
+        },
+
+        'test failures in child default': function() {
+            var command = {instance: {}},
+                adapter = Y.Mock(),
+                ac = {
+                    _dispatch: function(command, adapter) {
+                        var id = command.instance.id;
+                        if (id === 'kid_a') {
+                            adapter.done(id + '__data', {});
+                        } else {
+                            adapter.error(id + '__error');
+                        }
+                    }
+                },
+                c = new Y.mojito.addons.ac.composite(command, adapter, ac),
+                config = {
+                    children: {
+                        kid_a: { id: 'kid_a', type: 'kida' },
+                        kid_b: { id: 'kid_b', type: 'kidb' }
+                    }
+                },
+                data;
+
+            c.execute(config, function(d, m) {
+                data = d;
+            });
+
+            A.isString(data.kid_a, "missing kid_a data");
+            A.areSame('kid_a__data', data.kid_a, "wrong kid_a data");
+
+            A.isString(data.kid_b, "missing kid_b data");
+            A.areSame('', data.kid_b, "kid_b data should be empty since it failed during dispatch");
         }
 
     }));
