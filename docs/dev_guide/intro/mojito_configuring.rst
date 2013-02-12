@@ -441,7 +441,7 @@ See `Example Application Configurations`_ for an example of the ``yui`` object.
 +--------------------------------+----------------------+------------------------------------------------------------------------+
 | Property                       | Data Type            | Description                                                            |
 +================================+======================+========================================================================+
-| :ref:`config <yui_config>`     | object               | Used to populate the `YUI_config <http://yuilibrary.com/yui/docs/yui/  |
+| :ref:`config <yui_conf>`       | object               | Used to populate the `YUI_config <http://yuilibrary.com/yui/docs/yui/  |
 |                                |                      | #yui_config>`_ global variable that allows you to configure every YUI  |
 |                                |                      | instance on the page even before YUI is loaded. For example, you can   |
 |                                |                      | configure logging or YUI not to load its default CSS with the          |
@@ -452,7 +452,7 @@ See `Example Application Configurations`_ for an example of the ``yui`` object.
 +--------------------------------+----------------------+------------------------------------------------------------------------+
 
 
-.. _yui_config:
+.. _yui_conf:
 
 config Object
 *************

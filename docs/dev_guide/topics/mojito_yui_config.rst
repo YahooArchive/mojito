@@ -366,11 +366,12 @@ the methods below to load YUI modules.
 - Bundle YUI with the application and configure your application to use it.
 
 In the following sections, we'll discuss the methods above, list the pros and 
-cons of each, and provide an example application configuraiton.
+cons of each, and provide an example application configuration.
 
 To better understand how to configure YUI in Mojito, we also recommend that you 
-refer to documentation for the configuration object :ref:`yui.config <../intro/yui_config>`, which 
-provides descriptions as well as possible and default values of its properties.
+refer to documentation for the configuration object 
+`yui.config <../intro/mojito_configuring.html#yui-conf>`_, which provides descriptions 
+as well as possible and default values of its properties.
 
 .. _serving_to_app-yui_with_mojito:
 
