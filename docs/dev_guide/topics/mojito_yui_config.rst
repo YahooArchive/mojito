@@ -357,8 +357,8 @@ needed by iPhone clients.
 Getting YUI to Your Application
 ===============================
 
-Your application can get YUI using the methods below. Your application can also be 
-configured to use any combination of the methods to load YUI modules.
+Your application can use the methods and any combination of 
+the methods below to load YUI modules.
 
 - Use the YUI version that comes with Mojito.
 - Get YUI from the YUI CDN.
@@ -369,7 +369,7 @@ In the following sections, we'll discuss the methods above, list the pros and
 cons of each, and provide an example application configuraiton.
 
 To better understand how to configure YUI in Mojito, we also recommend that you 
-refer to documentation for the configuration object :ref:`yui.config <yui_config>`, which 
+refer to documentation for the configuration object :ref:`yui.config <../intro/yui_config>`, which 
 provides descriptions as well as possible and default values of its properties.
 
 .. _serving_to_app-yui_with_mojito:
@@ -377,7 +377,7 @@ provides descriptions as well as possible and default values of its properties.
 Using the YUI Version Bundled with Mojito
 -----------------------------------------
 
-Mojito comes with YUI, so developers, in general, don't need to worry about getting 
+Mojito comes with YUI, so developers don't need to worry about getting 
 YUI or which version to use. Using the bundled YUI version also allows Mojito applications 
 to load YUI modules more quickly and efficiently. Developers can use the default 
 configurations, and thus, not need to do any configuration, or configure Mojito to 
@@ -413,7 +413,6 @@ Default Configuration
 Without setting any YUI configurations with ``yui.config`` in ``application.json``,
 Mojito by default will use the configurations below to load the YUI modules ``yui-base``, 
 ``loader-base``, and ``loader-yui3`` from the version of YUI that comes with Mojito. 
-`` 
 
 .. code-block:: javascript
 
@@ -449,7 +448,7 @@ array.
 The example ``application.json`` below configures Mojito to load the YUI
 modules ``cache-base`` and ``io-base`` as well as the default modules. 
 Remember though, when you load additional modules, you are increasing the size
-of the seed file and are at risk at causing latency issues. 
+of the seed file and may negatively impact performance. 
 
 .. code-block:: javascript
 
