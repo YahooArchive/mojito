@@ -357,38 +357,48 @@ needed by iPhone clients.
 Getting YUI to Your Application
 ===============================
 
-The following sections will discuss how your application gets YUI using the following 
-methods:
+Your application can get YUI using the methods below. Your application can also be 
+configured to use any combination of the methods to load YUI modules.
 
 - Use the YUI version that comes with Mojito.
 - Get YUI from the YUI CDN.
 - Use a custom CDN to serve YUI.
 - Bundle YUI with the application and configure your application to use it.
 
-Your application can also be configured to use any combination of the methods
-to load YUI modules. We'll look at each method and then discuss the pros and cons of each. 
-To better understand how to configure YUI in Mojito, we also recommend that you also 
-refer to :ref:`yui.config <yui_config>` for descriptions of the properties thaas well 
-as possible and default values.
+In the following sections, we'll discuss the methods above, list the pros and 
+cons of each, and provide an example application configuraiton.
+
+To better understand how to configure YUI in Mojito, we also recommend that you 
+refer to documentation for the configuration object :ref:`yui.config <yui_config>`, which 
+provides descriptions as well as possible and default values of its properties.
 
 .. _serving_to_app-yui_with_mojito:
 
 Using the YUI Version Bundled with Mojito
 -----------------------------------------
 
-Mojito has a default setting for loading the components of YUI that come with the 
-framework, so the developer doesn't need to worry about getting YUI or what version 
-to use. You can either use the default configuration or specify which modules to load 
-in the ``seed`` array. Before looking at both options, let's look at the pros and cons
-of using the YUI version bundled with Mojito.
+Mojito comes with YUI, so developers, in general, don't need to worry about getting 
+YUI or which version to use. Using the bundled YUI version also allows Mojito applications 
+to load YUI modules more quickly and efficiently. Developers can use the default 
+configurations, and thus, not need to do any configuration, or configure Mojito to 
+include specific YUI modules to be part of the seed. In either case, Mojito will combo 
+handle the modules in the seed, so that only one HTTP request is needed.
+
+Before looking at the default configurations or configuring Mojito to include specific
+modules in the seed, let's look at the pros and cons of using the YUI version bundled 
+with Mojito.
 
 .. _yui_with_mojito-pros_cons:
 
 Pros
 ####
 
+- The default configuration is optimized, so developers don't need to provide any
+  additional configuration.
 - Mojito will handle the combo handling for you, so only one HTTP request is needed
   to fetch the YUI modules.
+
+.. _yui_with_mojito-cons:
 
 Cons
 ####
@@ -401,7 +411,7 @@ Default Configuration
 #####################
 
 Without setting any YUI configurations with ``yui.config`` in ``application.json``,
-Mojito by default will use the configurations below to load YUI modules ``yui-base``, 
+Mojito by default will use the configurations below to load the YUI modules ``yui-base``, 
 ``loader-base``, and ``loader-yui3`` from the version of YUI that comes with Mojito. 
 `` 
 
@@ -425,15 +435,16 @@ Mojito by default will use the configurations below to load YUI modules ``yui-ba
 
 .. note:: The ``loader-base`` module is a :ref:`synthetic module <seed_configure-synthetic>`
           that loads the information and organizes the Mojito code and modules that your 
-          application needs, but does not load or affect the loading of YUI.
+          application needs, but does not load YUI or affect the loading of YUI.
 
 .. _yui_with_mojito-specifying:
 
 Specifying YUI Modules
 ######################
 
-You can configure Mojito to load specific modules from the YUI version bundled with 
-Mojito by adding the module names to the ``yui.config.seed`` array.
+As we mentioned earlier, you can also configure Mojito to load specific modules from the 
+YUI version bundled with Mojito by adding the module names to the ``yui.config.seed`` 
+array.
 
 The example ``application.json`` below configures Mojito to load the YUI
 modules ``cache-base`` and ``io-base`` as well as the default modules. 
@@ -467,9 +478,9 @@ Using the YUI CDN
 -----------------
 
 You can also fetch YUI directly from the YUI CDN by specifying the URLs to the 
-version of YUI from the YUI CDN in the ``seed`` object. In addition, you can 
-also load YUI modules from the YUI seed that come bundled with Mojito.
+version of YUI from the YUI CDN in the ``seed`` object. 
 
+.. _yui_cdn-pros:
 
 Pros
 ####
@@ -477,17 +488,21 @@ Pros
 - By serving YUI from the YUI CDN, you can choose the version of YUI to serve 
   and have your application from the client load YUI. 
 
+.. _yui_cdn-cons:
+
 Cons
 ####
 
-- Your application will need to make separate HTTP requests to get YUI from the YUI CDN and
-  any YUI modules from the YUI that comes bundled with Mojito.
-  
+- Your application will need to make separate HTTP requests to get YUI from the YUI CDN in
+  addition to loading any YUI modules from the YUI that comes bundled with Mojito.
+
+.. _yui_cdn-ex:  
+
 Example
 #######
 
-In the example ``application.json`` below, the ``seed`` array gets the ``yui-base`` module
-from the YUI bundled with Mojito and the ``loader-base`` and ``loader-yui3`` modules
+In the example ``application.json`` below, the ``seed`` array includes the ``yui-base`` 
+module from the YUI bundled with Mojito and the ``loader-base`` and ``loader-yui3`` modules
 from the YUI CDN. To serve the YUI modules in the seed, your application will have
 to make three HTTP requests, something you should consider when choosing to get
 modules from the YUI CDN. 
@@ -511,7 +526,7 @@ modules from the YUI CDN.
      }
    ]
 
-.. _serving_to_app-yui_app:
+.. _serving_to_app-custom_cdn:
 
 Using a Custom CDN to Load YUI
 ------------------------------
@@ -519,11 +534,15 @@ Using a Custom CDN to Load YUI
 Using a custom CDN to load YUI is done in the same way as loading YUI from the
 YUI CDN. 
 
+.. _custom_cdn-pros:
+
 Pros
 ####
 
 - By serving YUI from a custom CDN, you can choose the version of YUI to serve 
   and have your application from the client load YUI. 
+
+.. _custom_cdn-cons:
 
 Cons
 ####
@@ -531,9 +550,13 @@ Cons
 - You application need to make separate HTTP requests to get YUI from the YUI CDN and
   any YUI modules from the YUI that comes bundled with Mojito.
 
-You also have the same benefits of choosing the YUI version and loading 
-YUI from the client. In the example below, we simply fetch the YUI seed files from
-an Amazon S3 over SSL. 
+.. _custom_cdn-ex:
+
+Example
+#######
+
+In the example below, we simply fetch the YUI seed files from an Amazon S3 over SSL. 
+Again, Mojito will make three separate HTTP requests to get the files from the CDN.
 
 .. code-block:: javascript
 
@@ -565,14 +588,31 @@ Using the YUI Bundled With Your Application
 
 Unless you have a strong reason for bundling YUI with your application,
 we strongly recommend that you use the version of YUI that comes with Mojito or
-load YUI from the YUI CDN. Having said that, let's show you how you would 
-go about configuring your application to serve the YUI that you have bundled
-with your application.
- 
-In general, you would install YUI in a directory within your application,
-and then configure the application to point to the directory, so your
+load YUI from the YUI CDN. 
+
+To bundle YUI with your application, you install YUI in a directory within your 
+application, and then configure the application to point to the directory, so your
 application can serve it. You use the ``yui.config`` object in ``application.json`` to 
 specify the file path and whether you want to combo handle the modules.
+
+Let's review the pros and cons and then show you an example configuration for
+serving YUI bundled with an application.
+
+
+.. _yui_app-pros:
+
+Pros
+####
+
+.. _yui_app-cons:
+
+Cons
+####
+
+.. _yui_app-ex:
+ 
+Example
+#######
 
 In the example ``application.json`` below, the ``base`` property
 specifies the file path for loading YUI bundled in the application. 
