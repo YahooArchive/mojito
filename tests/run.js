@@ -176,7 +176,7 @@ function runFuncAppTests(cmd, callback){
         descriptors.push(cmd.funcPath + '/' + descriptor);
     }
     
-    var arrowReportDir = cmd.funcPath + '/artifacts/arrowreport/';
+    var arrowReportDir = cmd.funcPath + '/../../artifacts/arrowreport/';
     try {
         wrench.rmdirSyncRecursive(arrowReportDir);
     } catch (e) {}
