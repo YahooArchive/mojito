@@ -30,19 +30,21 @@ more information about the parameters and to see the source code.
 meta Object
 ###########
 
-By default, Mojito builds the metadata to use when ``done`` executes the 
-template. You can pass an object to override the defaults, such as the view name, mojit
-definitions, the assets, the view engine, HTTP information, etc. 
+By default, Mojito builds the metadata that is used when the method ``done`` executes and 
+renders a template. You can, however, pass an object to override the defaults, such as the 
+view name, mojit definitions, the assets, the view engine, HTTP information, etc. 
 
-Generally, the only time 
-you need to pass the ``meta`` object is when you are specifying a different template than the default
-or a parent mojit is manually executing 
-child mojits with the methods `ac.composite.done <http://developer.yahoo.com/cocktails/mojito/api/classes/Composite.common.html#method_done>`_ or 
-`ac._dispatch <http://developer.yahoo.com/cocktails/mojito/api/classes/ActionContext.html#method__dispatch>`_. 
+Generally, the only time you would need to pass the ``meta`` object is in the following
+cases:
 
-For example, if you want the ``index`` function of your controller to use the template 
-``foo.hb.html`` instead of the default ``index.hb.html``, you would call ``ac.done`` with the 
-following ``meta`` object (2nd argument):
+- you want to render a different template than the default
+- a parent mojit is executing child mojits with the methods 
+  `ac.composite.done <http://developer.yahoo.com/cocktails/mojito/api/classes/Composite.common.html#method_done>`_ 
+  or `ac._dispatch <http://developer.yahoo.com/cocktails/mojito/api/classes/ActionContext.html#method__dispatch>`_. 
+
+In the first case, suppose you want the ``index`` function of your controller to use the template 
+``foo.hb.html`` instead of the default ``index.hb.html``. You would call ``ac.done`` with the 
+following ``meta`` object (second argument) as shown below:
 
 .. code-block:: javascript
 
@@ -52,11 +54,11 @@ following ``meta`` object (2nd argument):
      }
    ...
 
-In the more complicated case of passing metadata to either ``ac.composite.done``
+In the more complicated second case where metadata needs to be passed to either ``ac.composite.done``
 or ``ac._dispatch`` so a parent mojit can execute children, 
 you may need to merge the metadata of both the parent and children. Below is
 an example ``meta`` object containing mojit definitions and metadata about binders, assets,
-and HTTP information.
+and the HTTP response.
 
 .. code-block:: javascript
 
