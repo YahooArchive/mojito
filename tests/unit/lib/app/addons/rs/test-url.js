@@ -231,27 +231,29 @@ YUI().use('addon-rs-url', 'base', 'oop', 'test', function(Y) {
         },
 
 
-        'augment getMojitTypeDetails': function() {
+        'augment resolveMojitDetails': function() {
             var fixtures = libpath.join(__dirname, '../../../../fixtures/store');
 
             var store = new MockRS({
                 root: fixtures,
                 appConfig: {}
             });
-            store.getResources = function() {
-                return [ { url: 'TEST' } ];
-            };
             store.plug(Y.mojito.addons.rs.url, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
-            var mojit = {};
-            store.fire('getMojitTypeDetails', {
+            var details = {};
+            var mojitRes = {
+                url: 'TEST'
+            }
+            store.fire('resolveMojitDetails', {
                 args: {
-                    env: 'server',
-                    ctx: {},
-                    mojitType: 'Foo'
+                    env: 'client',
+                    posl: ['*'],
+                    type: 'Foo',
+                    ress: [],
+                    mojitRes: mojitRes
                 },
-                mojit: mojit
+                mojitDetails: details
             });
-            A.areSame('TEST/assets', mojit.assetsRoot);
+            A.areSame('TEST/assets', details.assetsRoot);
         },
 
 

@@ -61,11 +61,11 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
         setUp: function() {
             store = {
                 getAppConfig: function() { return { obj: 'appConfig' }; },
-                getAllURLResources: function () {
+                getAllURLDetails: function () {
                     return urlRess;
                 },
-                getResourceVersions: function () {
-                    return {};
+                getResourceVersions: function (filter) {
+                    return [{ filter: filter }];
                 },
                 getResourceContent: function (args, callback) {
                     var content, stat;
@@ -87,11 +87,8 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                         }
                     };
                 },
-                getResources: function(env, ctx, filter) {
-                    return [{ filter: filter }];
-                },
                 yui: {
-                    getYUIURLResources: function () {
+                    getYUIURLDetails: function () {
                         return yuiRess;
                     }
                 }
@@ -337,7 +334,8 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
 
             mockResources = {
                 "/robots.txt": {
-                    mime: { type: 'text/html' }
+                    id: 'robots.txt',
+                    mime: { type: 'text/plain', charset: 'UTF-8' }
                 }
             };
             getResourceContentFn = store.getResourceContent;
@@ -363,7 +361,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                 return [];
             };
             store.getResourceContent = function(res, cb) {
-                OA.areEqual(mockResources["/robots.txt"], res, 'wrong resource');
+                Y.TEST_CMP(mockResources["/robots.txt"], res, 'wrong resource');
             };
 
             handler = factory({
@@ -385,7 +383,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                 return [mockResources["/robots.txt"]];
             };
             store.getResourceContent = function(res, cb) {
-                OA.areEqual(mockResources["/robots.txt"], res, 'wrong resource');
+                Y.TEST_CMP(mockResources["/robots.txt"], res, 'wrong resource');
             };
 
             handler = factory({

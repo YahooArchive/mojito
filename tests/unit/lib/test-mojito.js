@@ -191,7 +191,7 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
                         'xx-00': true,
                         'yy-11': true
                     },
-                    getConfigAllMojits: function () {
+                    getModulesConfig: function () {
                         return {
                             modules: {
                                 'mojits-A': 'mojits-A-val',
@@ -215,20 +215,16 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
             res = server._configureYUI(mockY, mockStore, load);
             A.isUndefined(res);
 
-            A.areSame(6, load.length);
+            A.areSame(4, load.length);
             AA.contains('mojits-A', load);
             AA.contains('mojits-B', load);
-            AA.contains('shared-A', load);
-            AA.contains('shared-B', load);
             AA.contains('lang/datatype-date-format_xx-00', load);
             AA.contains('lang/datatype-date-format_yy-11', load);
 
             wantConfig = {
                 modules: {
                     'mojits-A': 'mojits-A-val',
-                    'mojits-B': 'mojits-B-val',
-                    'shared-A': 'shared-A-val',
-                    'shared-B': 'shared-B-val'
+                    'mojits-B': 'mojits-B-val'
                 }
             };
             Y.TEST_CMP(wantConfig, haveConfig);

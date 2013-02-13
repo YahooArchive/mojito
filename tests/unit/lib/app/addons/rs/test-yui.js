@@ -47,8 +47,8 @@ YUI().use(
         initializer: function(cfg) {
             this._config = cfg || {};
             this.RVs = {};
-            this._mojitResources = {};  // env: ctx: mojitType: list of resources
-            this._appResources = {};    // env: ctx: list of resources
+            this._mojitRVs = {};  // mojitType: list of resources
+            this._appRVs = {};    // list of resources
             this._mojits = {};
             this.publish('getMojitTypeDetails', {emitFacade: true, preventable: false});
             this._appConfig = { yui: {} };
@@ -62,7 +62,7 @@ YUI().use(
             return Y.clone(this._appConfig, true);
         },
 
-        getResources: function(env, ctx, filter) {
+        getResourceVersions: function(filter) {
             var source,
                 out = [],
                 r,
@@ -70,24 +70,10 @@ YUI().use(
                 k,
                 use;
 
-            ctx = Y.JSON.stringify(ctx);
-            if (filter.mojit) {
-                if (!this._mojitResources[env] ||
-                        !this._mojitResources[env][ctx] ||
-                        !this._mojitResources[env][ctx][filter.mojit]) {
-                    return [];
-                }
-                source = this._mojitResources[env][ctx][filter.mojit];
-            } else {
-                if (!this._appResources[env] ||
-                        !this._appResources[env][ctx]) {
-                    return [];
-                }
-                source = this._appResources[env][ctx];
+            source = filter.mojit ? this._mojitRVs[filter.mojit] : this._appRVs;
+            if (!source) {
+                return [];
             }
-            // this is taken care of already, and will trip up mojit-level
-            // resources that are actually shared
-            delete filter.mojit;
             for (r = 0; r < source.length; r += 1) {
                 res = source[r];
                 use = true;
@@ -130,6 +116,8 @@ YUI().use(
                     },
                     pkg: { name: (pkgName || 'testing') }
                 },
+                affinity: { affinity: 'common' },
+                selector: '*',
                 mojit: mojit,
                 type: type,
                 name: name,
@@ -140,24 +128,12 @@ YUI().use(
             }
             ctx = Y.JSON.stringify(ctx);
             if (mojit) {
-                if (!this._mojitResources[env]) {
-                    this._mojitResources[env] = {};
+                if (!this._mojitRVs[mojit]) {
+                    this._mojitRVs[mojit] = [];
                 }
-                if (!this._mojitResources[env][ctx]) {
-                    this._mojitResources[env][ctx] = {};
-                }
-                if (!this._mojitResources[env][ctx][mojit]) {
-                    this._mojitResources[env][ctx][mojit] = [];
-                }
-                this._mojitResources[env][ctx][mojit].push(res);
+                this._mojitRVs[mojit].push(res);
             } else {
-                if (!this._appResources[env]) {
-                    this._appResources[env] = {};
-                }
-                if (!this._appResources[env][ctx]) {
-                    this._appResources[env][ctx] = [];
-                }
-                this._appResources[env][ctx].push(res);
+                this._appRVs.push(res);
             }
         }
 
@@ -517,37 +493,11 @@ YUI().use(
             store._makeResource('server', {}, 'shared', 'binder', 'list', 'FooBinderList', 'mojito');
             store._makeResource('server', {}, 'Foo', 'controller', 'controller', 'FooController');
 
-            config = store.yui.getConfigShared('server', {}, false);
-            A.isNotUndefined(config.modules);
-            A.isNotUndefined(config.modules.FooBinderIndex);
-            A.isNotUndefined(config.modules.FooBinderList);
-            A.isUndefined(config.modules.FooController);
-
-            config = store.yui.getConfigShared('server', {}, true);
-            A.isNotUndefined(config.modules);
-            A.isNotUndefined(config.modules.FooBinderIndex);
-            A.isUndefined(config.modules.FooBinderList);
-            A.isUndefined(config.modules.FooController);
-        },
-
-
-        'get config all mojits': function() {
-            var fixtures,
-                store,
-                config;
-            fixtures = libpath.join(__dirname, '../../../../../fixtures/store');
-            store = new MockRS({ root: fixtures });
-            store.plug(Y.mojito.addons.rs.yui, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
-
-            store._makeResource('server', {}, 'shared', 'binder', 'index', 'FooBinderIndex');
-            store._makeResource('server', {}, 'Foo', 'binder', 'list', 'FooBinderList', 'mojito');
-            store._makeResource('server', {}, 'Bar', 'controller', 'controller', 'BarController');
-
-            config = store.yui.getConfigAllMojits('server', {}, false);
-            A.isNotUndefined(config.modules);
-            A.isUndefined(config.modules.FooBinderIndex);
-            A.isNotUndefined(config.modules.FooBinderList);
-            A.isNotUndefined(config.modules.BarController);
+            config = store.yui.getConfigShared('server');
+            A.isNotUndefined(config.modules, 'false config.modules');
+            A.isNotUndefined(config.modules.FooBinderIndex, 'false config.modules.FooBinderIndex');
+            A.isNotUndefined(config.modules.FooBinderList, 'false config.modules.FooBinderList');
+            A.isUndefined(config.modules.FooController, 'false config.modules.FooController');
         },
 
 
