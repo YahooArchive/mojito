@@ -78,6 +78,22 @@
                     "driver": "nodejs"
                 },
                 "group": "fw,unit,server"
+            },
+            "compile.js": {
+                "params": {
+                    "test": "./test-compile.js",
+                    "lib": "$$config.mojitodir$$/lib/app/commands/compile.js",
+                    "driver": "nodejs"
+                },
+                "group": "fw,unit,server"
+            },
+            "gv.js": {
+                "params": {
+                    "test": "./test-gv.js",
+                    "lib": "$$config.mojitodir$$/lib/app/commands/gv.js",
+                    "driver": "nodejs"
+                },
+                "group": "fw,unit,server"
             }
         }
     }
