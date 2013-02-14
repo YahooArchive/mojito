@@ -95,10 +95,14 @@ function test (cmd) {
 
 function gethostip(callback){
     dns.lookup(hostname, function (err, addr, fam) {
+        if (err){
+            callback(err);
+            return; 
+        } 
         hostip = addr;
         console.log('App running at.....' + hostip);
+        callback(null);
     });
-    callback(null);
 }
 
 function startArrowServer (callback) {
