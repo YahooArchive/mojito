@@ -326,7 +326,6 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
         'handler deals with resources correctly': function() {
             var req,
                 resp,
-                getResourcesFn,
                 getAllURLResourcesFn,
                 getResourceContentFn,
                 handler,
@@ -340,7 +339,6 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
             };
             getResourceContentFn = store.getResourceContent;
             getAllURLResourcesFn = store.getAllURLResources;
-            getResourcesFn = store.getResources;
 
             req = {
                 url: '/robots.txt',
@@ -356,9 +354,6 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
             // handle res of type obj
             store.getAllURLResources = function() {
                 return mockResources;
-            };
-            store.getResources = function() {
-                return [];
             };
             store.getResourceContent = function(res, cb) {
                 Y.TEST_CMP(mockResources["/robots.txt"], res, 'wrong resource');
@@ -379,9 +374,6 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
             store.getAllURLResources = function() {
                 return mockResources;
             };
-            store.getResources = function() {
-                return [mockResources["/robots.txt"]];
-            };
             store.getResourceContent = function(res, cb) {
                 Y.TEST_CMP(mockResources["/robots.txt"], res, 'wrong resource');
             };
@@ -396,7 +388,6 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                 A.fail('next() handler 2 should not have been called');
             });
 
-            store.getResources = getResourcesFn;
             store.getResourceContent = getResourceContentFn;
             store.getAllURLResources = getAllURLResourcesFn;
         },

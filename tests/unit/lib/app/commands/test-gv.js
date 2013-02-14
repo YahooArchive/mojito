@@ -164,14 +164,10 @@ YUI().use('mojito-test-extra', 'test', 'json-parse', 'json-stringify', function(
             ];
             Y.TEST_CMP(want, Object.keys(graph._subgraphs).sort(), 'subgraphs');
 
-            want = [
-                'HTMLFrameMojit'
-            ];
-            Y.TEST_CMP(want, Object.keys(graph._subgraphs['mojit HTMLFrameMojit']._nodes).sort(), 'subgraph mojit HTMLFrameMojite');
-
             want = [];
             Y.TEST_CMP(want, Object.keys(graph._subgraphs['mojit LazyLoad']._nodes).sort(), 'subgraph mojit LazyLoad');
             Y.TEST_CMP(want, Object.keys(graph._subgraphs['mojit TunnelProxy']._nodes).sort(), 'subgraph mojit TunnelProxy');
+            Y.TEST_CMP(want, Object.keys(graph._subgraphs['mojit HTMLFrameMojit']._nodes).sort(), 'subgraph mojit HTMLFrameMojit');
 
             want = [
                 'test_mojit_2'
@@ -219,6 +215,7 @@ YUI().use('mojito-test-extra', 'test', 'json-parse', 'json-stringify', function(
 
 
         'test parseResources basics': function() {
+            var env = 'server';
             var graph = {
                 _subgraphs: {},
                 _nodes: {},
@@ -258,12 +255,14 @@ YUI().use('mojito-test-extra', 'test', 'json-parse', 'json-stringify', function(
                 {
                     type: 'whatever',
                     mojit: 'MojitA',
+                    affinity: { affinity: 'server' },
                     source: { pkg: { name: 'pkgA', version: 'eleven' } },
                     yui: { name: 'a', meta: { requires: ['b', 'c'] } }
                 },
                 {
                     type: 'whatever',
                     mojit: 'MojitB',
+                    affinity: { affinity: 'server' },
                     source: { pkg: { name: 'pkgB', version: 'eleven' } },
                     yui: { name: 'b', meta: {} }
                 }
@@ -271,7 +270,7 @@ YUI().use('mojito-test-extra', 'test', 'json-parse', 'json-stringify', function(
             var options = {};
             mockFs.RESET_MOCK();
             A.isFunction(gvcmd.test.parseResources);
-            gvcmd.test.parseResources(graph, ress, options);
+            gvcmd.test.parseResources(env, graph, ress, options);
             var want = {
                 "_subgraphs": {
                     "mojit MojitA": {
