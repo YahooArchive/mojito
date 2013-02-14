@@ -41,16 +41,6 @@ program.command('test')
 console.log(process.argv.join(' '));
 console.log();
 
-dns.lookup(hostname, function (err, addr, fam) {
-    hostip = addr;
-    console.log('App running at......' + hostip);
-})
-
-if (process.env['SELENIUM_HUB_URL']) {
-    remoteselenium = process.env['SELENIUM_HUB_URL'];
-    console.log('selenium host.....' + remoteselenium);
-}
-
 program.parse(process.argv);
 
 function test (cmd) {
@@ -66,6 +56,13 @@ function test (cmd) {
     cmd.unitPath = path.resolve(cwd, cmd.unitPath || cmd.path || './unit');
     cmd.funcPath = path.resolve(cwd, cmd.funcPath || cmd.path || './func');
 
+    if (process.env['SELENIUM_HUB_URL']) {
+        remoteselenium = process.env['SELENIUM_HUB_URL'];
+        console.log('selenium host.....' + remoteselenium);
+    }
+    
+    series.push(gethostip);
+    
     if (cmd.arrow) {
         series.push(startArrowServer);
     }
@@ -94,6 +91,14 @@ function test (cmd) {
         });
     }
     async.series(series, finalize);
+}
+
+function gethostip(callback){
+    dns.lookup(hostname, function (err, addr, fam) {
+        hostip = addr;
+        console.log('App running at.....' + hostip);
+    });
+    callback(null);
 }
 
 function startArrowServer (callback) {
