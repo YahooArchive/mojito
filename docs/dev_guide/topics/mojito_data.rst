@@ -432,7 +432,7 @@ template.
          }
        }
      }
-   }, '0.0.1', {requires: ['mojito-cookies-addon']});
+   }, '0.0.1', {requires: ['mojito-cookie-addon']});
 
 .. _data_cookies-write:
 
@@ -459,6 +459,6 @@ with the name ``'user'`` if one does not exist.
          );
         }
      }
-   }, '0.0.1', {requires: ['mojito-cookies-addon']});
+   }, '0.0.1', {requires: ['mojito-cookie-addon']});
 
 

@@ -1,6 +1,6 @@
 [{
     "settings": [ "master" ],
-    "name": "lib-cli-commands-tests",
+    "name": "lib-cli-commands-build-tests",
     "config": {
         "mojitodir": "../../../../../.."
     },
