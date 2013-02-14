@@ -60,7 +60,7 @@ YUI().use('mojito-test-extra', 'test', 'json-parse', 'json-stringify', function(
                 getResources: function(env, ctx, filter) {
                     if ('mojit' === filter.type) {
                         return [
-                            this._mkRes('mojit', null, filter.mojit, null, 'mojits/' + filter.mojit)
+                            this._mkRes('mojit', null, filter.mojit, null, 'mojits/' + filter.name)
                         ];
                     }
                     return [
@@ -82,7 +82,7 @@ YUI().use('mojito-test-extra', 'test', 'json-parse', 'json-stringify', function(
                 {
                     mojitName: 'orange',
                     yuiModuleName: 'inlinecss/orange',
-                    dest: '/Users/folta/work/yahoo/mojito/gh-drewfish/tests/fixtures/store/mojits/undefined/autoload/compiled/inlinecss.s2.common.js',
+                    dest: fixtures + '/mojits/orange/autoload/compiled/inlinecss.s2.common.js',
                     srcs: {
                         '/static/asset-css-foo': true,
                         '/static/asset-css-bar': true
@@ -91,7 +91,7 @@ YUI().use('mojito-test-extra', 'test', 'json-parse', 'json-stringify', function(
                 {
                     mojitName: 'red',
                     yuiModuleName: 'inlinecss/red',
-                    dest: '/Users/folta/work/yahoo/mojito/gh-drewfish/tests/fixtures/store/mojits/undefined/autoload/compiled/inlinecss.s2.common.js',
+                    dest: fixtures + '/mojits/red/autoload/compiled/inlinecss.s2.common.js',
                     srcs: {
                         '/static/asset-css-foo': true,
                         '/static/asset-css-bar': true
