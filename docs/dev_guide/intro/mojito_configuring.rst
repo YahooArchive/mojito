@@ -459,8 +459,10 @@ config Object
 
 The ``config`` object can be used to configure all the options for the YUI instance. 
 To see all the options for the ``config`` object, see the 
-`YUI config Class <http://yuilibrary.com/yui/docs/api/classes/config.html>`_.
-Some of the properties of the ``config`` object used for configuring logging are shown below.
+`YUI config Class <http://yuilibrary.com/yui/docs/api/classes/config.html>`_. Some of the 
+properties of the ``config`` object used for configuring logging are shown 
+below. For more information about how to configure YUI for Mojito applications, see 
+`Configuring YUI in Mojito <../topics/mojito_yui_config.html>`_.
 
 
 
