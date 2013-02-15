@@ -58,6 +58,16 @@ Generate documentation:
 * Mojito Introduction - http://developer.yahoo.com/cocktails/mojito/docs/intro/
 * Mojito Getting Started - http://developer.yahoo.com/cocktails/mojito/docs/getting_started/
 
+### Contributing to Documentation
+
+Mojito documentation is present in /docs directory. To generate HTML documentation run the following commands 
+from the documentation directories.
+
+    $ cd docs/dev_guide
+    $ make html
+
+Please note that in order to generate the documentation you will need [Sphinx](http://sphinx-doc.org/). 
+
 ### API Documentation
 
 * Running the following command will generate API docs and locally save them to `./artifacts/docs/mojito/`
