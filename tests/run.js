@@ -13,7 +13,11 @@ var fs = require('fs'),
     thePid = null,
     pidNames = {},
     thePidName = null,
-    returnVal = 0;
+    returnVal = 0,
+    hostname = require('os').hostname(),
+    dns = require('dns'),
+    hostip,
+    remoteselenium;
 
 program.command('test')
     .description('Run unit and functional tests')
@@ -27,6 +31,7 @@ program.command('test')
     .option('--descriptor <value>', 'which descriptor to run. filename (or glob) relative to --path')
     .option('--port <value>', 'port number to run app')
     .option('--coverage', 'Arrow code coverage')
+    .option('--reuseSession', 'Arrow reuseSession')
     .option('--group <value>', 'Arrow group')
     .option('--driver <value>', 'Arrow driver')
     .option('--browser <value>', 'Arrow browser')
@@ -52,6 +57,13 @@ function test (cmd) {
     cmd.unitPath = path.resolve(cwd, cmd.unitPath || cmd.path || './unit');
     cmd.funcPath = path.resolve(cwd, cmd.funcPath || cmd.path || './func');
 
+    if (process.env['SELENIUM_HUB_URL']) {
+        remoteselenium = process.env['SELENIUM_HUB_URL'];
+        console.log('selenium host.....' + remoteselenium);
+    }
+    
+    series.push(gethostip);
+    
     if (cmd.arrow) {
         series.push(startArrowServer);
     }
@@ -68,7 +80,7 @@ function test (cmd) {
         });
     }
     if (cmd.func) {
-        if ('phantomjs' !== cmd.funcBrowser) {
+        if ('phantomjs' !== cmd.funcBrowser && cmd.reuseSession) {
             if (cmd.selenium) {
                 series.push(function (callback) {
                     startArrowSelenium(cmd, callback);
@@ -80,6 +92,18 @@ function test (cmd) {
         });
     }
     async.series(series, finalize);
+}
+
+function gethostip(callback){
+    dns.lookup(hostname, function (err, addr, fam) {
+        if (err){
+            callback(err);
+            return; 
+        } 
+        hostip = addr;
+        console.log('App running at.....' + hostip);
+        callback(null);
+    });
 }
 
 function startArrowServer (callback) {
@@ -123,7 +147,7 @@ function runUnitTests (cmd, callback) {
         "--report=true",
         "--reportFolder=" + arrowReportDir
     ];
-    if ('phantomjs' !== cmd.unitBrowser) {
+    if ('phantomjs' !== cmd.unitBrowser && cmd.reuseSession) {
         commandArgs.push('--reuseSession');
     }
     commandArgs.push('--logLevel=' + cmd.logLevel);
@@ -160,6 +184,9 @@ function build (cmd, callback) {
 function startArrowSelenium (cmd, callback) {
     console.log("---Starting Arrow Selenium---");
     var commandArgs = [cwd+"/../node_modules/yahoo-arrow/arrow_selenium/selenium.js"];
+    if (remoteselenium) {
+        commandArgs.push('--seleniumHost=' + remoteselenium);
+    }
     commandArgs.push("--open=" + cmd.funcBrowser);
     runCommand(cwd, "node", commandArgs, function () {
         callback(null);
@@ -176,7 +203,7 @@ function runFuncAppTests(cmd, callback){
         descriptors.push(cmd.funcPath + '/' + descriptor);
     }
     
-    var arrowReportDir = cmd.funcPath + '/artifacts/arrowreport/';
+    var arrowReportDir = cmd.funcPath + '/../../artifacts/arrowreport/';
     try {
         wrench.rmdirSyncRecursive(arrowReportDir);
     } catch (e) {}
@@ -208,9 +235,8 @@ function runFuncAppTests(cmd, callback){
 function runFuncTests (cmd, desc, port, thispid, arrowReportDir, callback) {
     console.log('---Running Functional Tests---');
    
-    var host = cmd.host || 'localhost',
-        group = cmd.group || null,
-        baseUrl = 'http:\/\/'+host+':'+port;
+    var group = cmd.group || null,
+        baseUrl = 'http:\/\/'+hostip+':'+port;
     var commandArgs = [
         cwd + "/../node_modules/yahoo-arrow/index.js",
         "--descriptor=" + desc,
@@ -220,8 +246,11 @@ function runFuncTests (cmd, desc, port, thispid, arrowReportDir, callback) {
         "--reportFolder=" + arrowReportDir,
         "--config=" + cwd + "/config/config.js"
     ];
-    if ('phantomjs' !== cmd.funcBrowser) {
+    if ('phantomjs' !== cmd.funcBrowser && cmd.reuseSession) {
         commandArgs.push('--reuseSession');
+    }
+    if (remoteselenium) {
+        commandArgs.push('--seleniumHost=' + remoteselenium);
     }
     commandArgs.push('--logLevel=' + cmd.logLevel);
     commandArgs.push('--browser=' + cmd.funcBrowser);
