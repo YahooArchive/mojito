@@ -440,7 +440,7 @@ context configuration.
            }
          }
        }
-     },
+     }
    ]
 
 .. _context_config_exs-defaults_json:
@@ -501,6 +501,58 @@ routes.json
        }
      }
    ]
+
+Static Configurations 
+---------------------
+
+The context configurations in the list below can only be set once when the base context is 
+specified on the command line or configured in the ``server.js`` file.
+
+- `actionTimeout <../intro/mojito_configuring.html#configuration-object>`_
+- `appPort <../intro/mojito_configuring.html#configuration-object>`_
+- `builds <../intro/mojito_configuring.html#builds-object>`_ - (only used by the ``mojito build`` command)
+- `middleware <../intro/mojito_configuring.html#configuration-object>`_
+- `mojitDirs <../intro/mojito_configuring.html#configuration-object>`_
+- `mojitsDirs <../intro/mojito_configuring.html#configuration-object>`_
+- `routesFiles <../intro/mojito_configuring.html#configuration-object>`_
+- `staticHandling <../intro/mojito_configuring.html#statichandling-object>`_
+- `tunnelPrefix <../intro/mojito_configuring.html#configuration-object>`_
+- `viewEngine <../intro/mojito_configuring.html#viewengine-object>`_
+- `yui <../intro/mojito_configuring.html#yui-object>`_
+
+For example, based on the configurations defined in the example ``application.json`` 
+below, after you set the base context ``"environment:development"`` with the
+command ``$ mojito start --context "environment:development"``, your
+application can only listen to requests on port 8000.
+
+
+.. code-block:: javascript
+
+   [
+     {
+       "settings": [ "master" ],
+       "appPort": 8666,
+       "specs": {
+         ...
+       }
+     },
+     {
+       "settings": [ "environment:development" ],
+       "appPort": 8000,
+       "specs": {
+         ...
+       }
+     },
+     {
+       "settings": [ "environment:production" ],
+       "appPort": 80,
+       "specs": {
+         ...
+       }
+     },
+     ...
+   ]
+
 
 .. _context_configs-dynamic:
 
