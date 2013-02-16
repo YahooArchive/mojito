@@ -155,7 +155,7 @@ You can view the supported BCP 47 language tags and default contexts in the
 file of Mojito. You can also :ref:`create custom contexts <context_configs-custom>` 
 if the Mojito default contexts don't meet the needs of your application.
 
-.. _context_configs-resolultion:
+.. _context_configs-resolution:
 
 How Does Mojito Resolve Context Configurations?
 ===============================================
@@ -502,11 +502,18 @@ routes.json
      }
    ]
 
-Static Configurations 
----------------------
+.. _context_configs_define-static:
 
-The context configurations in the list below can only be set once when the base context is 
+Static Configurations 
+=====================
+
+Certain context configurations can only be set once by the base context.
+In other words, once the application starts with a given base context, the
+values for certain configurations are static: they will not change until
+the application is started with another base context that's either  
 specified on the command line or configured in the ``server.js`` file.
+
+The following configurations are static:
 
 - `actionTimeout <../intro/mojito_configuring.html#configuration-object>`_
 - `appPort <../intro/mojito_configuring.html#configuration-object>`_
