@@ -528,7 +528,6 @@ below. For more information about how to configure YUI for Mojito applications, 
 
 
 
-
 .. _config-multiple_mojits:
 
 Configuring Applications to Have Multiple Mojits
