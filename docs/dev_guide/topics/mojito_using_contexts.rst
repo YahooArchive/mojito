@@ -155,7 +155,7 @@ You can view the supported BCP 47 language tags and default contexts in the
 file of Mojito. You can also :ref:`create custom contexts <context_configs-custom>` 
 if the Mojito default contexts don't meet the needs of your application.
 
-.. _context_configs-resolultion:
+.. _context_configs-resolution:
 
 How Does Mojito Resolve Context Configurations?
 ===============================================
@@ -440,7 +440,7 @@ context configuration.
            }
          }
        }
-     },
+     }
    ]
 
 .. _context_config_exs-defaults_json:
@@ -501,6 +501,65 @@ routes.json
        }
      }
    ]
+
+.. _context_configs_define-static:
+
+Static Configurations 
+=====================
+
+Certain context configurations can only be set once by the base context.
+In other words, once the application starts with a given base context, the
+values for certain configurations are static: they will not change until
+the application is started with another base context that's either  
+specified on the command line or configured in the ``server.js`` file.
+
+The following configurations are static:
+
+- `actionTimeout <../intro/mojito_configuring.html#configuration-object>`_
+- `appPort <../intro/mojito_configuring.html#configuration-object>`_
+- `builds <../intro/mojito_configuring.html#builds-object>`_ - (only used by the ``mojito build`` command)
+- `middleware <../intro/mojito_configuring.html#configuration-object>`_
+- `mojitDirs <../intro/mojito_configuring.html#configuration-object>`_
+- `mojitsDirs <../intro/mojito_configuring.html#configuration-object>`_
+- `routesFiles <../intro/mojito_configuring.html#configuration-object>`_
+- `staticHandling <../intro/mojito_configuring.html#statichandling-object>`_
+- `tunnelPrefix <../intro/mojito_configuring.html#configuration-object>`_
+- `viewEngine <../intro/mojito_configuring.html#viewengine-object>`_
+- `yui <../intro/mojito_configuring.html#yui-object>`_
+
+For example, based on the configurations defined in the example ``application.json`` 
+below, after you set the base context ``"environment:development"`` with the
+command ``$ mojito start --context "environment:development"``, your
+application can only listen to requests on port 8000.
+
+
+.. code-block:: javascript
+
+   [
+     {
+       "settings": [ "master" ],
+       "appPort": 8666,
+       "specs": {
+         ...
+       }
+     },
+     {
+       "settings": [ "environment:development" ],
+       "appPort": 8000,
+       "specs": {
+         ...
+       }
+     },
+     {
+       "settings": [ "environment:production" ],
+       "appPort": 80,
+       "specs": {
+         ...
+       }
+     },
+     ...
+   ]
+
 
 .. _context_configs-dynamic:
 

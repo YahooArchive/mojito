@@ -87,7 +87,7 @@ For the data types of the YAML elements, please see the JSON configuration table
        # You can create mojit instances in the 'specs' object.
        specs:
      -
-       # The context 'environmet:development' that you can use for development.
+       # The context 'environment:development' that you can use for development.
        settings:
          - "environment:development"
        specs:
@@ -165,7 +165,7 @@ configuration Object
 |                                                        |                      |                   | ``"selector": "iphone"`` would configure the Resource  |
 |                                                        |                      |                   | Store to find resources with the identifier ``iphone`` |
 |                                                        |                      |                   | such as ``index.iphone.hb.html``.                      |
-|                                                        |                      |                   | See the `selector Propery <../topics/mojito_resource   |
+|                                                        |                      |                   | See the `selector Property <../topics/mojito_resource  |
 |                                                        |                      |                   | _store.html#selector-property>`_ and `Selectors <../   |
 |                                                        |                      |                   | topics/mojito_resource_store.html#selectors>`_ for     |
 |                                                        |                      |                   | for more information.                                  |
@@ -524,7 +524,6 @@ below. For more information about how to configure YUI for Mojito applications, 
 |                      |                  |                                                        | YUI. See :ref:`Seed File in Mojito Applications <seed-mojito>` for    |
 |                      |                  |                                                        | more information.                                                     |
 +----------------------+------------------+--------------------------------------------------------+-----------------------------------------------------------------------+
-
 
 
 
@@ -1634,7 +1633,7 @@ you would use ``ac.config.getAppConfig().specs`` as shown here:
       YUI.add('myMojit', function(Y, NAME) {
         Y.namespace('mojito.controllers')[NAME] = {
           index: function(ac) {
-            // Get the 'specs' object from teh application configuration 
+            // Get the 'specs' object from the application configuration 
             // through the Config addon.
             var app_specs = ac.config.getAppConfig().specs;
             Y.log(app_specs);

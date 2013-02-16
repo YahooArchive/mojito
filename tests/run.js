@@ -31,6 +31,7 @@ program.command('test')
     .option('--descriptor <value>', 'which descriptor to run. filename (or glob) relative to --path')
     .option('--port <value>', 'port number to run app')
     .option('--coverage', 'Arrow code coverage')
+    .option('--reuseSession', 'Arrow reuseSession')
     .option('--group <value>', 'Arrow group')
     .option('--driver <value>', 'Arrow driver')
     .option('--browser <value>', 'Arrow browser')
@@ -79,7 +80,7 @@ function test (cmd) {
         });
     }
     if (cmd.func) {
-        if ('phantomjs' !== cmd.funcBrowser) {
+        if ('phantomjs' !== cmd.funcBrowser && cmd.reuseSession) {
             if (cmd.selenium) {
                 series.push(function (callback) {
                     startArrowSelenium(cmd, callback);
@@ -146,7 +147,7 @@ function runUnitTests (cmd, callback) {
         "--report=true",
         "--reportFolder=" + arrowReportDir
     ];
-    if ('phantomjs' !== cmd.unitBrowser) {
+    if ('phantomjs' !== cmd.unitBrowser && cmd.reuseSession) {
         commandArgs.push('--reuseSession');
     }
     commandArgs.push('--logLevel=' + cmd.logLevel);
@@ -245,7 +246,7 @@ function runFuncTests (cmd, desc, port, thispid, arrowReportDir, callback) {
         "--reportFolder=" + arrowReportDir,
         "--config=" + cwd + "/config/config.js"
     ];
-    if ('phantomjs' !== cmd.funcBrowser) {
+    if ('phantomjs' !== cmd.funcBrowser && cmd.reuseSession) {
         commandArgs.push('--reuseSession');
     }
     if (remoteselenium) {

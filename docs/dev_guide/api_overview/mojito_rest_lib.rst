@@ -42,9 +42,9 @@ GET call to the Recipe Puppy API.
        recipeSearch: function(count, cb) {
          var url = 'http://www.recipepuppy.com/api/';
          var params = {
-           i="onions,garlic",
-           q="omelet",
-           p=1 
+           i:"onions,garlic",
+           q:"omelet",
+           p:1 
          };
          var config = {
            timeout: 5000,
