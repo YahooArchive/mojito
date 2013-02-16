@@ -597,8 +597,9 @@ load YUI from the YUI CDN.
 
 To bundle YUI with your application, you install YUI in a directory within your 
 application, and then configure the application to point to the directory, so your
-application can serve it. You use the ``yui.config`` object in ``application.json`` to 
-specify the file path and whether you want to combo handle the modules.
+application can serve it as a static asset. You use the ``yui.config`` object in 
+``application.json`` to specify the file path and whether you want to combo handle the 
+modules.
 
 Let's review the pros and cons and then show you an example configuration for
 serving YUI bundled with an application.
@@ -610,12 +611,22 @@ Pros
 ####
 
 - By bundling YUI with your application, you can choose the version of YUI to serve. 
+- If you deploy the YUI bundled with your application to the client, the application
+  can use the YUI when offline. For example, your application can run as an HTML5 
+  or hybrid application (e.g., PhoneGap).
 
 
 .. _yui_app-cons:
 
 Cons
 ####
+
+- Node.js is not very good at serving static assets (i.e., YUI), so the performance of 
+  your application may be negatively impacted.
+- Static assets are not versioned and are generally cached in browsers. Thus, 
+  although you update the YUI version bundled with your application, the client
+  may still be using an older version: this is the most convincing reason to use
+  a CDN, which avoids this problem.
 
 .. _yui_app-ex:
  
