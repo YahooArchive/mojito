@@ -118,6 +118,8 @@ for your application:
 The tables below describe the ``configuration`` object and its properties. 
 Those properties that have object values have tables below describing their 
 properties as well except the ``config`` object, which is user defined.
+To learn how to use select configurations based on the runtime
+environment, see `Using Context Configurations <../topics/mojito_using_contexts.html>`_.
 
 .. _app-configuration_obj:
 
@@ -201,6 +203,13 @@ configuration Object
 |                                                        |                      |                   | logging configurations.                                |
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
 
+.. note:: Some of the values for the properties above can be dynamically changed by code 
+          or a new context (runtime environment) may use a configuration
+          object that has different ``settings``, and thus, a different set of 
+          configurations. Other configurations are considered static, meaning that they
+          cannot be changed once an application is started in a base context (environment).
+          See `Static Configurations <../topics/mojito_using_contexts.html#static-configurations>`_
+          for more information and a list of the static configurations.
 
 
 .. _builds_obj:
