@@ -17,6 +17,7 @@ YUI().use('mojito-test-extra', 'test', 'json-parse', 'json-stringify', function(
         libunits,
 
         libpath = require('path'),
+        existsSync = libfs.existsSync || libpath.existsSync,
         cmdpath = libpath.join(__dirname, '../../../../../lib/app/commands/gv.js'),
         utilspath = libpath.join(__dirname, '../../../../../lib/management/utils.js'),
         mojitoVersion = require(libpath.join(__dirname, '/../../../../../package.json')).version,
@@ -33,7 +34,7 @@ YUI().use('mojito-test-extra', 'test', 'json-parse', 'json-stringify', function(
         },
 
         existsSync: function(file) {
-            return libfs.existsSync(file);
+            return existsSync(file);
         },
 
         readFileSync: function(file, encoding) {
