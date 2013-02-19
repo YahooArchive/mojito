@@ -135,7 +135,6 @@ YUI().use(
                 var fixtures = libpath.join(__dirname, '../../../../fixtures/store');
                 var instance = {type:'test_mojit_1'};
                 store.expandInstance(instance, {}, function(err, instance) {
-                    A.areSame('/static/test_mojit_1/assets', instance.assetsRoot);
                     // we'll skip the favicon.ico that ships with Mojito
                     // (it's not availble when running --coverage anyway)
                     A.areSame(libpath.join(fixtures, 'mojits/test_mojit_1/assets/css/main.css'), instance.assets['css/main.css']);
@@ -189,7 +188,7 @@ YUI().use(
                 var instance = {type:'TestMojit2'};
                 store.expandInstance(instance, {}, function(err, instance){
                     A.isNotUndefined(instance.controller);
-                    A.areSame('/static/TestMojit2/assets', instance.assetsRoot);
+                    A.areSame('TestMojit2', instance.type);
                     A.areSame(libpath.join(fixtures, 'mojits/test_mojit_2/views/index.hb.html'), instance.views.index['content-path']);
                 });
             },
@@ -203,7 +202,7 @@ YUI().use(
             'server mojit is loaded because of package mojito version match': function(){
                 var instance = {type:'TestMojit2'};
                 store.expandInstance(instance, {}, function(err, instance){
-                    A.areSame('/static/TestMojit2/assets', instance.assetsRoot);
+                    A.areSame('TestMojit2', instance.type);
                 });
             },
 
@@ -334,9 +333,8 @@ YUI().use(
 
             'app resource overrides framework resource': function() {
                 var fixtures = libpath.join(__dirname, '../../../../fixtures/store'),
-                    ress;
-                ress = store.getResources('server', {}, {mojit: 'HTMLFrameMojit', type: 'controller'});
-                A.areSame(libpath.join(fixtures, 'mojits/HTMLFrameMojit/controller.server.js'), ress[0].source.fs.fullPath);
+                    details = store.getMojitTypeDetails('server', {}, 'HTMLFrameMojit');
+                A.areSame(libpath.join(fixtures, 'mojits/HTMLFrameMojit'), details.fullPath);
             },
 
             'ignore: getAllURLResources()': function() {
@@ -364,7 +362,6 @@ YUI().use(
             }
 
         }));
-
 
         suite.add(new Y.Test.Case({
 
@@ -409,7 +406,7 @@ YUI().use(
 
             'appConfig staticHandling.prefix': function() {
                 var spec = { type: 'PagedFlickr' };
-                store.expandInstance(spec, {}, function(err, instance) {
+                store.expandInstanceForEnv('client', spec, {}, function(err, instance) {
                     A.areSame('/static/PagedFlickr/assets', instance.assetsRoot);
                 });
             }
@@ -502,23 +499,11 @@ YUI().use(
                     A.isTrue(true);
                     return;
                 }
-
-                var m, mojitType, mojits = ['a', 'aa', 'ba'];
-                var r, res, ress, found;
-                for (m = 0; m < mojits.length; m += 1) {
-                    mojitType = mojits[m];
-
-                    ress = store.getResources('server', {}, {mojit: mojitType});
-                    found = 0;
-                    for (r = 0; r < ress.length; r += 1) {
-                        res = ress[r];
-                        if (res.id === 'yui-module--b') { found += 1; }
-                        if (res.id === 'yui-module--ab') { found += 1; }
-                        if (res.id === 'yui-module--bb') { found += 1; }
-                        if (res.id === 'yui-module--cb') { found += 1; }
-                    }
-                    A.areSame(4, found, 'some child node_modules not loaded');
-                }
+                var config = store.yui.getConfigShared('server');
+                A.isObject(config.modules.b, 'b');
+                A.isObject(config.modules.ab, 'ab');
+                A.isObject(config.modules.bb, 'bb');
+                A.isObject(config.modules.cb, 'cb');
 
                 var details = store.getMojitTypeDetails('server', {}, 'a');
                 A.areSame('a', details.controller);
