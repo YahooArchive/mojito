@@ -174,10 +174,9 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
         'configure YUI': function () {
             var mockY,
                 mockStore,
-                load = [],
+                load,
                 haveConfig,
-                wantConfig,
-                res;
+                wantConfig;
 
             mockY = {
                 merge: Y.merge,
@@ -212,8 +211,8 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
 
             A.isFunction(server._configureYUI);
 
-            res = server._configureYUI(mockY, mockStore, load);
-            A.isUndefined(res);
+            load = server._configureYUI(mockY, mockStore);
+            A.isArray(load);
 
             A.areSame(4, load.length);
             AA.contains('mojits-A', load);
