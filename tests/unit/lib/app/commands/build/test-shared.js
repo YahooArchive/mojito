@@ -152,7 +152,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                     }
                 ],
                 store = {
-                    getResources: function(type, ctx, filter) {return mojits;}
+                    getResourceVersions: function(filter) {return mojits;}
                 },
                 buildmap = {},
                 expected = {'/tunnel/yahoo.application.test50/top_frame/definition.json?device=iphone': '/yahoo.application.test50/top_frame/definition.json'};
@@ -187,7 +187,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                     }
                 ],
                 store = {
-                    getResources: function(type, ctx, filter) {return mojits;}
+                    getResourceVersions: function(filter) {return mojits;}
                 },
                 buildmap = {},
                 expected = {};

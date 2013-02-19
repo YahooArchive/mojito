@@ -12,7 +12,7 @@ YUI({
          suite.add(new Y.Test.Case({
          
              "test yamlconfig2": function() {
-                  Y.Assert.areEqual('YAML Config from a spec file.', Y.one('pre').get('innerHTML'));
+                  Y.Assert.areEqual('Using YAML configs with comments!', Y.one('pre').get('innerHTML'));
              }
          }));    
          
