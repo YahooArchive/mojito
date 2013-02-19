@@ -11,7 +11,7 @@ YUI({
 
      suite.add(new Y.Test.Case({
 	  "test HeadersServer": function(){
-          Y.Assert.areEqual('\{\"myheader\":\"somevalue\",\"connection\":\"keep-alive\",\"keep-alive\":\"200\",\"host\":\"localhost:', Y.one('#something').get('innerHTML').match(/\{\"myheader\":\"somevalue\",\"connection\":\"keep-alive\",\"keep-alive\":\"200\",\"host\":\"localhost:/gi));
+          Y.Assert.areEqual('\{\"myheader\":\"somevalue\",\"connection\":\"keep-alive\",\"keep-alive\":\"200\",\"host\":\"', Y.one('#something').get('innerHTML').match(/\{\"myheader\":\"somevalue\",\"connection\":\"keep-alive\",\"keep-alive\":\"200\",\"host\":\"/gi));
           Y.Assert.areEqual('somevalue', Y.one('#my_header').get('innerHTML'));
           Y.Assert.areEqual('keep-alive', Y.one('#connection').get('innerHTML'));
       }
