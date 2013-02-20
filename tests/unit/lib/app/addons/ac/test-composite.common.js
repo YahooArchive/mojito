@@ -464,7 +464,7 @@ YUI().use('mojito-composite-addon', 'test', function(Y) {
 
 
             A.isUndefined(data, "when an error is propagated, ac.composite.execute callback should never be called");
-            A.areSame('kid_b__error', err, "when an error is propagated, adapter.error should be called");
+            A.areSame('Failed composite because of first child failure of "kid_b"', err, "when an error is propagated, adapter.error should be called");
         }
 
     }));
