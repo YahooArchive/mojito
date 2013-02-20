@@ -46,6 +46,14 @@ YUI().use('addon-rs-config', 'mojito-util', 'mojito-test-extra', 'base', 'oop', 
 
         parseResourceVersion: function(source, type, subtype, mojitType) {
             // no-op
+        },
+
+        contextCacheGet: function(ctx, key) {
+            // no-op
+        },
+
+        contextCacheSet: function(ctx, key, value) {
+            // no-op
         }
 
     });

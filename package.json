@@ -15,6 +15,7 @@
         "Caridy Patino <caridy@yahoo-inc.com>"
     ],
     "dependencies": {
+        "context-cache": "~0.0.4",
         "colors": "*",
         "express": "2.5.10",
         "glob": "~3.1.11",
