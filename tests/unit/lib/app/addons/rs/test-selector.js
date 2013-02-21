@@ -42,7 +42,9 @@ YUI().use(
             validateContext: function() {},
             cloneObj: function(o) {
                 return Y.clone(o);
-            }
+            },
+            contextCacheGet: function(ctx, key) {},
+            contextCacheSet: function(ctx, key, value) {}
         });
 
 
