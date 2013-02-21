@@ -534,13 +534,13 @@ YUI().use(
                     store = new Y.mojito.ResourceStore({ root: fixtures });
 
                 // fake out some parts of preload(), which we're trying to avoid
-                store._fwConfig = store.config.readConfigJSON(libpath.join(mojitoRoot, 'config.json'));
+                store._fwConfig = store.config.readConfigSimple(libpath.join(mojitoRoot, 'config.json'));
                 store._appConfigStatic = store.getStaticAppConfig();
 
                 var dir = libpath.join(__dirname, '../../../../fixtures/conventions');
                 var pkg = { name: 'test', version: '6.6.6' };
                 var mojitType = 'testing';
-                var ress = store._findResourcesByConvention(dir, 'app', pkg, mojitType)
+                var ress = store._findResourcesByConvention(dir, 'app', pkg, mojitType);
 
                 var r, res;
                 for (r = 0; r < ress.length; r++) {
