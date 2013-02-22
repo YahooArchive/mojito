@@ -44,7 +44,7 @@
 
         # If you want to server YUI from mojito, you have to
         # set this flag to true. It is false by default.
-        ## serveYUIFromLocal: false
+        ## serveYUIFromAppOrigin: false
 
     viewEngine:
 

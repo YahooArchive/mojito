@@ -77,7 +77,7 @@
     "settings": [ "environment:development" ],
     "staticHandling": {
         "forceUpdate": true,
-        "serveYUIFromLocal": true
+        "serveYUIFromAppOrigin": true
     },
     "yui": {
         "config": {
