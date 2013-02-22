@@ -248,6 +248,56 @@ are embedded using Handlebars expressions.
      <div class="footer" style="border: dashed black 1px; margin: 10px 10px 10px 10px;">{{{footer}}}</div>
    </div>
 
+.. _mojito_composite-child_errors:
+
+Propagating Child Mojit Errors to Parent Mojits
+===============================================
+
+By default, when a child mojit calls the method ``ac.error`, an error message is
+logged (depending on the logging configurations) and an empty string is passed to the
+parent. The parent continues to execute its children in parallel, and finally, the 
+parent template is rendered with the content from the successfully executed
+children.
+
+To propagate the error from the child mojit to its parent so that the parent
+halts execution of child mojits, you set the property ``propagateFailure`` to ``true``
+in ``application.json``. The ``propagateFailure`` property is part of the
+child configuration, not the parent configuration, so you can configure critical
+child mojits to propagate errors while making sure that the parent mojit **does not**
+fail because a nonessential child mojit calls ``ac.error``.
+
+Based on the example ``application.json`` below, when the ``real_content`` mojit 
+instance calls the method ``ac.error``, the error will be propagated to the ``parent`` 
+mojit instance, which will then halt the execution of child mojits.
+If the ``fluff`` mojit instance calls ``ac.error``, the error
+can be logged, but will not be propagated to the ``parent`` mojit, so the parent
+will resume executing the other child mojits.
+
+.. code-block:: javascript
+
+   [
+     {
+       "settings": [ "master" ],
+       "appPort": 8666,
+       "specs": {
+         "parent": {
+           "type": "parentMojit",
+           "config" : {
+             "children": {
+               "fluff": {
+                 "type": "fluffMojit",
+                 "propagateFailure": false
+               },
+               "real_content": {
+                 "type": "contentMojit",
+                 "propagateFailure": true
+               }
+             }
+           }
+         }
+       }
+     }
+   ]
 
    
 .. _mojito_composite-dyn_define:

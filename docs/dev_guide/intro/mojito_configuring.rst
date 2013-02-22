@@ -311,6 +311,17 @@ Mojito and Cocktails.
 specs Object
 ############
 
+The ``specs`` object can contain one or more mojit instances that are named by 
+the developer. Each mojit instance is represented by an object and has
+a type that specifies a mojit that was created with ``mojito create mojit <mojit_name>``
+or a built-in `frame mojit <../topics/mojito_frame_mojits.html>`_.
+The table below contains the properties that a mojit instance object can contain.
+
+.. _mojit_instance_obj:
+
+Mojit Instance Object
+*********************
+
 +------------------------------+---------------+-------------------------------------------------------------------------+
 | Property                     | Data Type     | Description                                                             |
 +==============================+===============+=========================================================================+
@@ -332,10 +343,18 @@ specs Object
 |                              |               | addon <../../api/classes/Config.common.html>`_. For example:            |
 |                              |               | ``ac.config.get('message')``                                            |
 +------------------------------+---------------+-------------------------------------------------------------------------+
-| ``defer``                    | boolean       | If true and the mojit instance is a child of the ``HTMLFrameMojit``,    |
-|                              |               | an empty node will initially be rendered and then content will be       |
-|                              |               | lazily loaded. See                                                      |
+| ``defer``                    | boolean       | If ``true`` and the mojit instance is a child of the                    |
+|                              |               | ``HTMLFrameMojit``, an empty node will initially be rendered and        |
+|                              |               | then content will be lazily loaded. See                                 |
 |                              |               | `LazyLoadMojit <../topics/mojito_frame_mojits.html#lazyloadmojit>`_     |
+|                              |               | for more information.                                                   |
++------------------------------+---------------+-------------------------------------------------------------------------+
+| ``propagateFailure``         | boolean       | If ``true``, when a child mojit calls the method ``ac.error``, the      |
+|                              |               | error message is passed to the parent and the parent mojit fails.       |
+|                              |               | When ``false`` (the default value), the child mojit can call            |
+|                              |               | ``ac.error`` to pass an error message to the parent, but the parent     |
+|                              |               | will not fail. See `Propagating Child Mojit Errors to Parent Mojit <../ |
+|                              |               | topics/mojito_composite_mojits.html#mojito_composite-child_errors>`_    |
 |                              |               | for more information.                                                   |
 +------------------------------+---------------+-------------------------------------------------------------------------+
 | ``proxy``                    | object        | This is a normal mojit spec to proxy this mojit's execution             |
@@ -351,10 +370,11 @@ specs Object
 |                              |               | required in the ``specs`` object.                                       |
 +------------------------------+---------------+-------------------------------------------------------------------------+
 
+
 .. _config_obj:
 
 config Object
-*************
++++++++++++++
 
 +--------------------------+---------------+--------------------------------------------------------------------------------+
 | Property                 | Data Type     | Description                                                                    |
