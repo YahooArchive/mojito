@@ -248,6 +248,52 @@ are embedded using Handlebars expressions.
      <div class="footer" style="border: dashed black 1px; margin: 10px 10px 10px 10px;">{{{footer}}}</div>
    </div>
 
+.. _mojito_composite-child_errors:
+
+Propagating Child Mojit Errors to Parent Mojits
+===============================================
+
+By default, child mojits can pass error messages to parent mojits
+by calling ``ac.error``, but although the child mojit will fail to execute,
+the parent mojit will continue executing other child mojits.
+
+To propagate the error from the child mojit to its parent so that the parent
+mojit will fail as well, you set the property ``propagateFailure`` to ``true``
+in ``application.json`` and have the parent mojit use the ``Composite``
+addon to execute the child mojits.
+
+Based on the example ``application.json`` below, when the ``fluff`` mojit instance
+calls the method ``ac.error``, it will not execute and the error will
+be propagated to the ``parent`` mojit instance, which will then fail as well.
+If the ``fluff`` mojit instance calls ``ac.error``, it will fail and 
+display a log message, the ``parent`` mojit, however, will not fail and instead
+execute its other child ``real_content``.
+
+.. code-block:: javascript
+
+   [
+     {
+       "settings": [ "master" ],
+       "appPort": 8666,
+       "specs": {
+         "parent": {
+           "type": "parentMojit",
+           "config" : {
+             "children": {
+               "fluff": {
+                 "type": "fluffMojit"
+                 "propagateFailure": false
+               },
+               "real_content": {
+                 "type": "contentMojit",
+                 "propagateFailure": true
+               }
+             }
+           }
+         }
+       }
+     }
+   ]
 
    
 .. _mojito_composite-dyn_define:
