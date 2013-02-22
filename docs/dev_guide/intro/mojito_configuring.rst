@@ -353,7 +353,9 @@ Mojit Instance Object
 |                              |               | error message is passed to the parent and the parent mojit fails.       |
 |                              |               | When ``false`` (the default value), the child mojit can call            |
 |                              |               | ``ac.error`` to pass an error message to the parent, but the parent     |
-|                              |               | will not fail.                                                          |
+|                              |               | will not fail. See `Propagating Child Mojit Errors to Parent Mojit <../ |
+|                              |               | topics/mojito_composite_mojits.html#mojito_composite-child_errors>`_    |
+|                              |               | for more information.                                                   |
 +------------------------------+---------------+-------------------------------------------------------------------------+
 | ``proxy``                    | object        | This is a normal mojit spec to proxy this mojit's execution             |
 |                              |               | through. This feature only works when defined within a child            |

@@ -258,12 +258,11 @@ by calling ``ac.error``, but although the child mojit will fail to execute,
 the parent mojit will continue executing other child mojits.
 
 To propagate the error from the child mojit to its parent so that the parent
-mojit will fail as well, you set the property ``propagateFailure`` to ``true``
-in ``application.json`` and have the parent mojit use the ``Composite``
-addon to execute the child mojits.
+mojit fails as well, you set the property ``propagateFailure`` to ``true``
+in ``application.json``.
 
-Based on the example ``application.json`` below, when the ``fluff`` mojit instance
-calls the method ``ac.error``, it will not execute and the error will
+Based on the example ``application.json`` below, when the ``real_content`` mojit 
+instance calls the method ``ac.error``, it will fail to execute and the error will
 be propagated to the ``parent`` mojit instance, which will then fail as well.
 If the ``fluff`` mojit instance calls ``ac.error``, it will fail and 
 display a log message, the ``parent`` mojit, however, will not fail and instead
