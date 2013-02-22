@@ -58,8 +58,7 @@ function test (cmd) {
     cmd.funcPath = path.resolve(cwd, cmd.funcPath || cmd.path || './func');
 
     if (process.env['SELENIUM_HUB_URL']) {
-        //remoteselenium = process.env['SELENIUM_HUB_URL'];
-        remoteselenium = "http://partialsight.corp.yahoo.com:4444/wd/hub']";
+        remoteselenium = process.env['SELENIUM_HUB_URL'];
         console.log('selenium host.....' + remoteselenium);
     }
     
