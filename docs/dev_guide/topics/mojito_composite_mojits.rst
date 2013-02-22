@@ -285,7 +285,7 @@ will resume executing the other child mojits.
            "config" : {
              "children": {
                "fluff": {
-                 "type": "fluffMojit"
+                 "type": "fluffMojit",
                  "propagateFailure": false
                },
                "real_content": {
