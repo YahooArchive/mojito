@@ -502,7 +502,7 @@ YUI().use(
         },
 
 
-        'yui meta': function() {
+        'yui meta for loader-app-base-en-US': function() {
             var fixtures = libpath.join(__dirname, '../../../../../fixtures/gsg5'),
                 series = [];
             store = new Y.mojito.ResourceStore({ root: fixtures });
@@ -514,7 +514,7 @@ YUI().use(
                 A.isArray(ress);
                 A.areSame(1, ress.length, "didn't find yui-module-synthetic-loader-app-base-en-US");
                 res = ress[0];
-                A.isObject(res);
+                A.isObject(res, "didn't find res for loader-app-base-en-US");
                 store.getResourceContent(res, function(err, buffer, stat) {
                     A.isNull(err, 'error');
                     A.isNotNull(stat, 'stat');
@@ -540,6 +540,18 @@ YUI().use(
                     next();
                 });
             });
+            libasync.series(series, function(err) {
+                A.isNull(err, 'no errors for all tests');
+            });
+        },
+
+
+        'yui meta loader-app-resolved-en-US': function() {
+            var fixtures = libpath.join(__dirname, '../../../../../fixtures/gsg5'),
+                series = [];
+            store = new Y.mojito.ResourceStore({ root: fixtures });
+            store.preload();
+
             series.push(function(next) {
                 var res, ress;
                 ress = store.getResourceVersions({mojit: 'shared', type: 'yui-module', subtype:'synthetic', name:'loader-app-resolved-en-US' });
@@ -588,6 +600,18 @@ YUI().use(
                     next();
                 });
             });
+            libasync.series(series, function(err) {
+                A.isNull(err, 'no errors for all tests');
+            });
+        },
+
+
+        'yui meta for loader-yui3-base-en-US': function() {
+            var fixtures = libpath.join(__dirname, '../../../../../fixtures/gsg5'),
+                series = [];
+            store = new Y.mojito.ResourceStore({ root: fixtures });
+            store.preload();
+
             series.push(function(next) {
                 var res, ress;
                 ress = store.getResourceVersions({mojit: 'shared', type: 'yui-module', subtype:'synthetic', name:'loader-yui3-base-en-US' });
@@ -611,6 +635,18 @@ YUI().use(
                     next();
                 });
             });
+            libasync.series(series, function(err) {
+                A.isNull(err, 'no errors for all tests');
+            });
+        },
+
+
+        'yui meta for loader-yui3-resolved-en-US': function() {
+            var fixtures = libpath.join(__dirname, '../../../../../fixtures/gsg5'),
+                series = [];
+            store = new Y.mojito.ResourceStore({ root: fixtures });
+            store.preload();
+
             series.push(function(next) {
                 var res, ress;
                 ress = store.getResourceVersions({mojit: 'shared', type: 'yui-module', subtype:'synthetic', name:'loader-yui3-resolved-en-US' });
@@ -624,6 +660,7 @@ YUI().use(
                     meta = buffer.toString();
                     var matches = meta.match(/\.modules=[^|]+\|\|([\s\S]+?);},"",{requires:/);
                     var config = parseConfig(matches[1]);
+                    var i;
                     for (i in config) {
                         if (config.hasOwnProperty(i)) {
                             obj = config[i];
@@ -644,6 +681,17 @@ YUI().use(
                     next();
                 });
             });
+            libasync.series(series, function(err) {
+                A.isNull(err, 'no errors for all tests');
+            });
+        },
+
+        'yui meta for loader-app': function() {
+            var fixtures = libpath.join(__dirname, '../../../../../fixtures/gsg5'),
+                series = [];
+            store = new Y.mojito.ResourceStore({ root: fixtures });
+            store.preload();
+
             series.push(function(next) {
                 var res, ress;
                 ress = store.getResourceVersions({mojit: 'shared', type: 'yui-module', subtype:'synthetic', name:'loader-app' });
@@ -663,7 +711,6 @@ YUI().use(
                 A.isNull(err, 'no errors for all tests');
             });
         },
-
 
         'ignore: gather list of all langs in app': function() {
             // TODO
