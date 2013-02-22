@@ -225,6 +225,8 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
             A.areEqual(1, hits, 'one hit to the store should be issued, the next should use the cached version.');
             A.areEqual(2, end, 'two valid requests should be counted');
 
+            A.areEqual("public, max-age=0.001", resHeader["Cache-Control"]);
+
             store.getResourceContent = getResourceContentFn;
         },
 
