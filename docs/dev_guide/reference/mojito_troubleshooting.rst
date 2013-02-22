@@ -39,7 +39,7 @@ an error or the value is not found.*
 
 **A:** 
 Try inspecting the ``spec`` object that is found in the ``ActionContext`` object for the 
-key. If ``ac`` is the ``ActionContext`` object, you can access the ``specs` object with the 
+key. If ``ac`` is the ``ActionContext`` object, you can access the ``specs`` object with the 
 following: ``ac.config.getAppConfig().specs``. 
 
 If you need to examine the entire ``ActionContext`` object, you can use the 
