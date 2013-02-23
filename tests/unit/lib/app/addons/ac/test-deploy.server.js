@@ -19,20 +19,13 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
 
         setUp: function() {
             addon = new Y.mojito.addons.ac.deploy({instance: {}});
-        },
-
-        tearDown: function() {
-            addon = null;
-        },
-
-
-        'YUI.applyConfig() should use application.json yui.config': function() {
             addon.ac = {
                 http: {
                     getHeader: function(h) {
                         return null;
                     }
                 },
+                context: {},
                 url: {
                     getRouteMaker: function() {
                         return {
@@ -43,25 +36,14 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
                     }
                 }
             };
-            addon.ac.context = {
-                lang: 'klingon'
-            };
-            addon.setStore({
-                getAppConfig: function() {
-                    return { yui:{ config:{ foo:'bar' } } };
-                },
-                getAllURLs: function() { return {}; },
-                getFrameworkConfig: function() {
-                    return { ondemandBaseYuiModules:[] };
-                },
-                yui: {
-                    getAppSeedFiles: function () { return ['/static/seed.js']; },
-                    getAppGroupConfig: function() { return {}; },
-                    getConfigShared: function() { return {}; },
-                    langs: { klingon: true }
-                }
-            });
+        },
 
+        tearDown: function() {
+            addon = null;
+        },
+
+
+        'YUI.applyConfig() should use application.json yui.config': function() {
             var blobs = [];
             var assetHandler = {
                     addCss: function(path, location) {
@@ -78,7 +60,24 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
                         }
                     }
                 };
+
             var binderMap = {};
+
+            addon.setStore({
+                getAppConfig: function() {
+                    return {};
+                },
+                yui: {
+                    getYUIConfig: function() {
+                        return {
+                            lang: 'klingon',
+                            foo:'bar',
+                            seed: ['/static/seed.js']
+                        };
+                    }
+                }
+            });
+
             addon.constructMojitoClientRuntime(assetHandler, binderMap);
 
             A.areSame(1, blobs.length, 'wrong number of blobs');
@@ -117,39 +116,18 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
                     }
                 };
 
-            addon.ac = {
-                http: {
-                    getHeader: function(h) {
-                        return null;
-                    }
-                },
-                context: {
-                    lang: 'klingon'
-                },
-                url: {
-                    getRouteMaker: function() {
-                        return {
-                            getComputedRoutes: function() {
-                                return ['routes'];
-                            }
-                        };
-                    }
-                }
-            };
-
             addon.setStore({
                 getAppConfig: function() {
-                    return { yui:{ config:{ foo:'bar' } } };
-                },
-                getAllURLs: function() { return {}; },
-                getFrameworkConfig: function() {
-                    return { ondemandBaseYuiModules:[] };
+                    return {yui: {config: {discarded: true}}};
                 },
                 yui: {
-                    getAppSeedFiles: function () { return ['/static/seed.js']; },
-                    getAppGroupConfig: function() { return {}; },
-                    getConfigShared: function() { return {}; },
-                    langs: { klingon: true }
+                    getYUIConfig: function() {
+                        return {
+                            lang: 'klingon',
+                            foo:'bar',
+                            seed: ['/static/seed.js']
+                        };
+                    }
                 }
             });
 
@@ -157,9 +135,9 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
 
             var expected = [
                     '<script type="text/javascript">',
-                    '    YUI.applyConfig({"fetchCSS":true,"combine":true,"base":"http://yui.yahooapis.com/3.6.0/build/","comboBase":"http://yui.yahooapis.com/combo?","root":"3.6.0/build/","groups":{"app":{}},"foo":"bar","lang":"klingon"});',
+                    '    YUI.applyConfig({"lang":"klingon","foo":"bar"});',
                     '    YUI().use(\'mojito-client\', function(Y) {',
-                    '    window.YMojito = { client: new Y.mojito.Client({"context":{"lang":"klingon","runtime":"client"},"binderMap":{"viewId1":{"needs":"a drink"},"viewId2":{"needs":"another drink"}},"appConfig":{"yui":{}},"routes":["routes"]}) };',
+                    '    window.YMojito = { client: new Y.mojito.Client({"context":{"runtime":"client"},"binderMap":{"viewId1":{"needs":"a drink"},"viewId2":{"needs":"another drink"}},"appConfig":{"yui":{}},"routes":["routes"]}) };',
                     '        });',
                     '</script>',
                     ''
@@ -178,49 +156,18 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
 
 
         'test application.json should honor yui.config.fetchCSS=false': function() {
-            var realLoader = Y.mojito.Loader;
-            Y.mojito.Loader = function () {};
-            Y.mojito.Loader.prototype = {
-                createYuiLibComboUrl: function(yuiModules, yuiFilter) {
-                    return {
-                        'css': ['css-1','css-2'],
-                        'js':  ['js-1','js-2']
-                    };
-                }
-            };
-
-            addon.ac = {
-                http: {
-                    getHeader: function(h) {
-                        return null;
-                    }
-                },
-                url: {
-                    getRouteMaker: function() {
-                        return {
-                            getComputedRoutes: function() {
-                                return ['routes'];
-                            }
-                        };
-                    }
-                }
-            };
-            addon.ac.context = {
-                lang: 'klingon'
-            };
             addon.setStore({
                 getAppConfig: function() {
-                    return { yui:{ config:{ fetchCSS:false } } };
-                },
-                getAllURLs: function() { return {}; },
-                getFrameworkConfig: function() {
-                    return { ondemandBaseYuiModules:[] };
+                    return {};
                 },
                 yui: {
-                    getAppSeedFiles: function () { return ['/static/seed.js']; },
-                    getAppGroupConfig: function() { return {}; },
-                    getConfigShared: function() { return {}; },
-                    langs: { klingon: true }
+                    getYUIConfig: function() {
+                        return {
+                            lang: 'klingon',
+                            fetchCSS:false,
+                            seed: ['/static/seed.js']
+                        };
+                    }
                 }
             });
 
@@ -252,12 +199,7 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
                 };
             var binderMap = {};
 
-            try {
-                addon.constructMojitoClientRuntime(assetHandler, binderMap);
-            }
-            finally {
-                Y.mojito.Loader = realLoader;
-            }
+            addon.constructMojitoClientRuntime(assetHandler, binderMap);
 
             A.areSame(2, Object.keys(counts).length, 'too many type:location pairs');
             A.areSame(1, counts['js top'], 'wrong number of js:top');
@@ -266,52 +208,23 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
 
 
         'test constructMojitoClientRuntime processes yui config correctly': function() {
-            addon.ac = {
-                http: {
-                    getHeader: function(h) {
-                        return null;
-                    }
-                },
-                url: {
-                    getRouteMaker: function() {
-                        return {
-                            getComputedRoutes: function() {
-                                return ['routes'];
-                            }
-                        };
-                    }
-                }
-            };
-            addon.ac.context = {
-                lang: 'klingon'
-            };
             addon.setStore({
                 getAppConfig: function() {
-                    return {
-                        yui: {
-                            config: {
-                                comboSep: '&',
-                                groups: {
-                                    app: {
-                                        comboSep: '&'
-                                    }
-                                }
-                            }
-                        }
-                    };
-                },
-                serializeClientStore: function() {
-                    return 'clientstore';
-                },
-                getAllURLs: function() { return {}; },
-                getFrameworkConfig: function() {
-                    return { ondemandBaseYuiModules:[] };
+                    return {};
                 },
                 yui: {
-                    getAppSeedFiles: function () { return ['/static/seed.js']; },
-                    getAppGroupConfig: function() { return {}; },
-                    getConfigShared: function() { return {}; },
-                    langs: { klingon: true }
+                    getYUIConfig: function() {
+                        return {
+                            lang: 'klingon',
+                            comboSep: '&',
+                            groups: {
+                                app: {
+                                    comboSep: '&'
+                                }
+                            },
+                            seed: ['/static/seed.js']
+                        };
+                    }
                 }
             });
 
@@ -339,78 +252,6 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
             var config = Y.JSON.parse(matches[1]);
             A.areSame('&', config.comboSep, 'comboSep got mangled');
             A.areSame('&', config.groups.app.comboSep, 'groups.app.comboSep got mangled');
-        },
-
-        'test _getSeedAssets with default config': function() {
-            var assets = addon._getSeedAssets(['foo', 'bar'], {
-                comboBase: 'comboBase?',
-                comboSep: '~',
-                base: 'base/',
-                root: 'root/'
-            });
-
-            A.areSame(1, assets.length, 'combine should be the default action');
-            A.areSame('comboBase?root/foo~root/bar', assets[0], 'invalid url construction when combo is on');
-        },
-
-        'test _getSeedAssets with combo off': function() {
-            var assets = addon._getSeedAssets(['foo', 'bar'], {
-                comboBase: 'comboBase?',
-                comboSep: '~',
-                base: 'base/',
-                root: 'root/',
-                combine: false
-            });
-
-            A.areSame(2, assets.length, 'combine: false should be honored');
-            A.areSame('base/root/foo', assets[0], 'invalid url construction when combo is off');
-            A.areSame('base/root/bar', assets[1], 'invalid url construction when combo is off for secundary module');
-        },
-
-        'test _getSeedAssets with combo on with external urls entries': function() {
-            var assets = addon._getSeedAssets(['http://mojito.yahoo/baz', 'foo', 'bar'], {
-                comboBase: 'comboBase?',
-                comboSep: '~',
-                base: 'base/',
-                root: 'root/',
-                combine: true
-            });
-
-            A.areSame(2, assets.length, 'external urls should be honored');
-            A.areSame('http://mojito.yahoo/baz', assets[0], 'problem with external url detection');
-            A.areSame('comboBase?root/foo~root/bar', assets[1], 'invalid url construction when combo is on and external urls are also in the mix');
-        },
-
-        'test _getSeedAssets with combo off with external urls entries': function() {
-            var assets = addon._getSeedAssets(['http://mojito.yahoo/baz', 'foo', 'bar'], {
-                comboBase: 'comboBase?',
-                comboSep: '~',
-                base: 'base/',
-                root: 'root/',
-                combine: false
-            });
-
-            A.areSame(3, assets.length, 'external urls should be honored');
-            A.areSame('http://mojito.yahoo/baz', assets[0], 'problem with external url detection');
-            A.areSame('base/root/foo', assets[1], 'invalid url construction when combo is off and external urls are also in the mix');
-            A.areSame('base/root/bar', assets[2], 'invalid url construction when combo is off and external urls are also in the mix');
-        },
-
-        'test _getSeedAssets flushing order': function() {
-            var assets = addon._getSeedAssets([
-                    'http://mojito.yahoo/baz', 'foo', 'bar', 'http://mojito.yahoo/bar', 'baz'
-                ], {
-                comboBase: 'comboBase?',
-                comboSep: '~',
-                base: 'base/',
-                root: 'root/'
-            });
-
-            A.areSame(4, assets.length, 'order should be honored');
-            A.areSame('http://mojito.yahoo/baz', assets[0], 'initial external url order not honored');
-            A.areSame('comboBase?root/foo~root/bar', assets[1], 'combo in second position not honored');
-            A.areSame('http://mojito.yahoo/bar', assets[2], 'external url in the middle not honored');
-            A.areSame('comboBase?root/baz', assets[3], 'combo at the end not honored');
         }
 
     };
