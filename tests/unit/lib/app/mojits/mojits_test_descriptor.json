@@ -10,7 +10,7 @@
         "dataprovider" : {
             "htmlframemojit-controller": {
                 "params": {
-                    "lib": "$$config.lib$$/app/mojits/HTMLFrameMojit/controller.server.js",
+                    "lib": "$$config.lib$$/app/mojits/HTMLFrameMojit/controller.server.js,./../../../../../lib/app/autoload/util.common.js",
                     "test": "./test-htmlframemojit-controller.server.js",
                     "driver": "nodejs"
                 },

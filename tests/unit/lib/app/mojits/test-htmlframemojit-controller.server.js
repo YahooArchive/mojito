@@ -132,7 +132,6 @@ YUI().use('HTMLFrameMojit', 'test', function(Y, NAME) {
                                 cfg: cfg
                             };
                             callback({}, {
-                                metaFromChildGoesHere: true,
                                 assets: {
                                     bottom: {}
                                 }
@@ -166,11 +165,69 @@ YUI().use('HTMLFrameMojit', 'test', function(Y, NAME) {
 
             A.isString(doneCalled.data.title, 'title is required');
 
-            A.isTrue(doneCalled.viewMeta.metaFromChildGoesHere, 'meta should be passed into done');
             A.areEqual('index', doneCalled.viewMeta.view.name, 'the view name should always be index');
 
             A.isObject(assetsAdded, 'ac.assets.addAssets was not called');
             A.isObject(doneCalled.viewMeta.assets.bottom, 'assets coming from the child should be inserted in the correct position');
+        },
+
+        'test metas edge cases': function() {
+
+            var dispatchCalled,
+                doneCalled,
+                executeCalled,
+                assetsAdded,
+                ac = {
+                    config: {
+                        get: function (name) {
+                            return {
+                                child: {
+                                    base: "child-1"
+                                },
+                                assets: {},
+                                deploy: false
+                            }[name];
+                        }
+                    },
+                    composite: {
+                        execute: function (cfg, callback) {
+                            callback({}, {
+                                view: {
+                                    name: "trying-to-overrule-parent-view"
+                                },
+                                http: {
+                                    headers: {
+                                        'content-type': 'trying-to-overrule-parent-content-type',
+                                        'something-extra': 1
+                                    }
+                                },
+                                metaFromChildGoesHere: true
+                            });
+                        }
+                    },
+                    done: function(data, viewMeta) {
+                        doneCalled = {
+                            data: data,
+                            viewMeta: viewMeta
+                        };
+                    },
+                    assets: {
+                        renderLocations: function() {
+                            return {};
+                        },
+                        getAssets: function() {
+                            return [];
+                        },
+                        addAssets: function(assets) {
+                        }
+                    }
+                };
+
+            Y.mojito.controllers.HTMLFrameMojit.index(ac);
+            A.isTrue(doneCalled.viewMeta.metaFromChildGoesHere, 'custom meta should be passed into done');
+            A.areEqual('index', doneCalled.viewMeta.view.name, 'the view name should always be index');
+            A.areEqual(1, doneCalled.viewMeta.http.headers['something-extra'], 'extra headers from children should be mixed in');
+            A.areEqual('text/html; charset="utf-8"', doneCalled.viewMeta.http.headers['content-type'], 'the content-type cannot be overrule');
         }
 
     }));
