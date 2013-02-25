@@ -286,6 +286,14 @@ YUI().use(
                 });
             },
 
+            'instance with default spec': function() {
+                // should use tests/fixtures/store/mojits/test_mojit_2/specs/default.json
+                var spec = { base: 'TestMojit2' };
+                store.expandInstance(spec, {}, function(err, instance) {
+                    A.areSame('testVal1', instance.config.testKey1);
+                });
+            },
+
             'getAppConfig() returns contextualized info': function() {
                 var context = { runtime: 'server' },
                     config;
