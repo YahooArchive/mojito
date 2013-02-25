@@ -17,7 +17,7 @@ $basedir/bin/mojito jslint -p
 
 # unit tests
 $basedir/tests/run.js test -u --group server --driver nodejs
-$basedir/tests/run.js test -u --group client --driver selenium
+$basedir/tests/run.js test -u --group client --driver selenium --reuseSession
 
 # func tests
-$basedir/tests/run.js test -f --coverage --path func
+$basedir/tests/run.js test -f --coverage --path func --reuseSession
