@@ -754,6 +754,9 @@ YUI().use(
                     }
                 }[ctx.custom];
             };
+            store.yui.langs = {
+                'en-US': true
+            }; // hack to avoid failures if langs array is undefined
 
             // testing context custom:foo
             config = store.yui.getYUIConfig({custom: "foo", lang: "es"});
@@ -763,7 +766,10 @@ YUI().use(
             A.areSame('http://yui.yahooapis.com/combo?', config.comboBase, 'By default, YUI core modules should come from CDN');
 
             // testing context custom:bar
-            config = store.yui.getYUIConfig({custom: "bar"});
+            store.yui.langs = {
+                'en-US': true
+            }; // hack to avoid failures if langs array is undefined
+            config = store.yui.getYUIConfig({custom: "bar", lang: "en-US"});
             A.isTrue(config.combine, 'yui->config->combine is not honored');
             A.isTrue(config.fetchCSS, 'yui->config->fetchCSS should be true by default even when combine is true');
             A.isObject(config.groups.app, 'yui->config->groups->app should be created synthetically');
@@ -772,7 +778,7 @@ YUI().use(
             store.yui.staticHandling = {
                 serveYUIFromAppOrigin: true
             };
-            config = store.yui.getYUIConfig({custom: "bar"});
+            config = store.yui.getYUIConfig({custom: "bar", lang: "en-US"});
             A.areSame('/combo~', config.comboBase, 'When serving YUI core modules from local, combo should point to local');
             A.areSame(1024, config.maxURLLength, 'When serving YUI core modules from local, we should restrict the size of the url');
             A.areSame('~', config.comboSep, 'When serving YUI core modules from local, comboSep should be ~');
