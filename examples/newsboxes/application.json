@@ -9,7 +9,14 @@
             "urls": ["/read.html"]
         }
     },
-    "cacheViewTemplates": false,
+    "viewEngine": {
+        "cacheTemplates": false
+    },
+    "yui": {
+        "config": {
+            "fetchCSS": false
+        }
+    },
 
     "specs": {
 
@@ -62,5 +69,20 @@
         }
     }
 },
-{ "settings": [ "device:opera-mini" ], "selector": "opera-mini" }
-]
+{
+    "settings": [ "device:opera-mini" ],
+    "selector": "opera-mini"
+},
+{
+    "settings": [ "environment:development" ],
+    "staticHandling": {
+        "forceUpdate": true,
+        "serveYUIFromAppOrigin": true
+    },
+    "yui": {
+        "config": {
+            "combine": false,
+            "logLevel": "debug"
+        }
+    }
+}]

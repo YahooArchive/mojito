@@ -20,7 +20,8 @@ YUI().use(
         libvm = require('vm'),
         mojitoRoot = libpath.join(__dirname, '../../../../../../lib'),
         A = Y.Assert,
-        AA = Y.ArrayAssert;
+        AA = Y.ArrayAssert,
+        store;
 
 
     function parseConfig(config) {
@@ -193,7 +194,7 @@ YUI().use(
 
         'find yui resources': function() {
             var fixtures = libpath.join(__dirname, '../../../../../fixtures/store');
-            var store = new MockRS({ root: fixtures });
+            store = new MockRS({ root: fixtures });
             store.plug(Y.mojito.addons.rs.yui, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
 
             var source = makeSource(fixtures, 'app', 'autoload', 'x.server.txt', true);
@@ -225,7 +226,7 @@ YUI().use(
 
         'parse found resource': function() {
             var fixtures = libpath.join(__dirname, '../../../../../fixtures/conventions');
-            var store = new MockRS({ root: fixtures });
+            store = new MockRS({ root: fixtures });
             store.plug(Y.mojito.addons.rs.yui, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
 
             var source = makeSource(fixtures, 'app', 'autoload', 'm.common.js', true);
@@ -298,7 +299,7 @@ YUI().use(
 
         'parse other resources': function() {
             var fixtures = libpath.join(__dirname, '../../../../../fixtures/conventions');
-            var store = new MockRS({ root: fixtures });
+            store = new MockRS({ root: fixtures });
             store.plug(Y.mojito.addons.rs.yui, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
 
             var source = makeSource(fixtures+'/mojits/X', 'mojit', '.', 'controller.common.js', true);
@@ -335,11 +336,11 @@ YUI().use(
 
 
         'find and parse resources by convention': function() {
-            var fixtures = libpath.join(__dirname, '../../../../../fixtures/conventions'),
-                store = new Y.mojito.ResourceStore({ root: fixtures });
+            var fixtures = libpath.join(__dirname, '../../../../../fixtures/conventions');
+            store = new Y.mojito.ResourceStore({ root: fixtures });
 
             // fake out some parts of preload(), which we're trying to avoid
-            store._fwConfig = store.config.readConfigJSON(libpath.join(mojitoRoot, 'config.json'));
+            store._fwConfig = store.config.readConfigSimple(libpath.join(mojitoRoot, 'config.json'));
             store._appConfigStatic = store.getStaticAppConfig();
             store.plug(Y.mojito.addons.rs.yui, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
 
@@ -501,10 +502,10 @@ YUI().use(
         },
 
 
-        'yui meta': function() {
+        'yui meta for loader-app-base-en-US': function() {
             var fixtures = libpath.join(__dirname, '../../../../../fixtures/gsg5'),
-                store = new Y.mojito.ResourceStore({ root: fixtures }),
                 series = [];
+            store = new Y.mojito.ResourceStore({ root: fixtures });
             store.preload();
 
             series.push(function(next) {
@@ -513,7 +514,7 @@ YUI().use(
                 A.isArray(ress);
                 A.areSame(1, ress.length, "didn't find yui-module-synthetic-loader-app-base-en-US");
                 res = ress[0];
-                A.isObject(res);
+                A.isObject(res, "didn't find res for loader-app-base-en-US");
                 store.getResourceContent(res, function(err, buffer, stat) {
                     A.isNull(err, 'error');
                     A.isNotNull(stat, 'stat');
@@ -539,6 +540,18 @@ YUI().use(
                     next();
                 });
             });
+            libasync.series(series, function(err) {
+                A.isNull(err, 'no errors for all tests');
+            });
+        },
+
+
+        'yui meta loader-app-resolved-en-US': function() {
+            var fixtures = libpath.join(__dirname, '../../../../../fixtures/gsg5'),
+                series = [];
+            store = new Y.mojito.ResourceStore({ root: fixtures });
+            store.preload();
+
             series.push(function(next) {
                 var res, ress;
                 ress = store.getResourceVersions({mojit: 'shared', type: 'yui-module', subtype:'synthetic', name:'loader-app-resolved-en-US' });
@@ -587,6 +600,18 @@ YUI().use(
                     next();
                 });
             });
+            libasync.series(series, function(err) {
+                A.isNull(err, 'no errors for all tests');
+            });
+        },
+
+
+        'yui meta for loader-yui3-base-en-US': function() {
+            var fixtures = libpath.join(__dirname, '../../../../../fixtures/gsg5'),
+                series = [];
+            store = new Y.mojito.ResourceStore({ root: fixtures });
+            store.preload();
+
             series.push(function(next) {
                 var res, ress;
                 ress = store.getResourceVersions({mojit: 'shared', type: 'yui-module', subtype:'synthetic', name:'loader-yui3-base-en-US' });
@@ -610,6 +635,18 @@ YUI().use(
                     next();
                 });
             });
+            libasync.series(series, function(err) {
+                A.isNull(err, 'no errors for all tests');
+            });
+        },
+
+
+        'yui meta for loader-yui3-resolved-en-US': function() {
+            var fixtures = libpath.join(__dirname, '../../../../../fixtures/gsg5'),
+                series = [];
+            store = new Y.mojito.ResourceStore({ root: fixtures });
+            store.preload();
+
             series.push(function(next) {
                 var res, ress;
                 ress = store.getResourceVersions({mojit: 'shared', type: 'yui-module', subtype:'synthetic', name:'loader-yui3-resolved-en-US' });
@@ -623,6 +660,7 @@ YUI().use(
                     meta = buffer.toString();
                     var matches = meta.match(/\.modules=[^|]+\|\|([\s\S]+?);},"",{requires:/);
                     var config = parseConfig(matches[1]);
+                    var i;
                     for (i in config) {
                         if (config.hasOwnProperty(i)) {
                             obj = config[i];
@@ -643,6 +681,17 @@ YUI().use(
                     next();
                 });
             });
+            libasync.series(series, function(err) {
+                A.isNull(err, 'no errors for all tests');
+            });
+        },
+
+        'yui meta for loader-app': function() {
+            var fixtures = libpath.join(__dirname, '../../../../../fixtures/gsg5'),
+                series = [];
+            store = new Y.mojito.ResourceStore({ root: fixtures });
+            store.preload();
+
             series.push(function(next) {
                 var res, ress;
                 ress = store.getResourceVersions({mojit: 'shared', type: 'yui-module', subtype:'synthetic', name:'loader-app' });
@@ -663,50 +712,49 @@ YUI().use(
             });
         },
 
-
         'ignore: gather list of all langs in app': function() {
             // TODO
-        },
+        }
 
+    }));
 
-        'ignore: _precomputeConfigApp()': function() {
-            // TODO
-        },
+    suite.add(new YUITest.TestCase({
 
-        'test getAppGroupConfig': function() {
-            var fixtures,
-                store,
-                config;
+        name: 'yui yui addon YUI_config and Seed tests',
+
+        setUp: function() {
+            var fixtures;
             fixtures = libpath.join(__dirname, '../../../../../fixtures/store');
             store = new MockRS({ root: fixtures });
             store.plug(Y.mojito.addons.rs.yui, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
 
-            store.getAppConfig = function () {
-                return {};
-            };
-            config = store.yui.getAppGroupConfig({});
+            store.yui.yuiConfig = {};
+        },
+
+        tearDown: function() {
+            store = null;
+        },
+
+        'test getAppGroupConfig': function() {
+            var config;
+
+            config = store.yui.getAppGroupConfig();
             A.isTrue(config.combine, 'combine should be true by default');
             A.areSame(1024, config.maxURLLength, 'maxURLLength should be 1024 by default');
 
-            store.getAppConfig = function () {
-                return {
-                    yui: {
-                        config: {
-                            combine: false,
-                            groups: {
-                                app: {
-                                    maxURLLength: 'maxURLLength',
-                                    base: "base",
-                                    comboBase: "comboBase",
-                                    comboSep: "comboSep",
-                                    root: "root"
-                                }
-                            }
-                        }
+            store.yui.yuiConfig = {
+                combine: false,
+                groups: {
+                    app: {
+                        maxURLLength: 'maxURLLength',
+                        base: "base",
+                        comboBase: "comboBase",
+                        comboSep: "comboSep",
+                        root: "root"
                     }
-                };
+                }
             };
-            config = store.yui.getAppGroupConfig({});
+            config = store.yui.getAppGroupConfig();
             A.isFalse(config.combine, 'yui->config->combine should be the fallback for yui->config->groups->app->combine');
             A.areSame('maxURLLength', config.maxURLLength, 'yui->config->groups->app->maxURLLength should be honored');
             A.areSame('base', config.base, 'yui->config->groups->app->base should be honored');
@@ -716,42 +764,119 @@ YUI().use(
         },
 
         'test getAppSeedFiles': function() {
-            var fixtures,
-                store,
-                seed;
-            fixtures = libpath.join(__dirname, '../../../../../fixtures/store');
-            store = new MockRS({ root: fixtures });
-            store.plug(Y.mojito.addons.rs.yui, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
+            var seed;
             store.yui.langs = {
                 'en-US': true
             }; // hack to avoid failures if langs array is undefined
 
-            store.getAppConfig = function () {
-                return {};
+            store.yui.appModulesDetails = {
+                "app-level-mod": {
+                    url: "app/app.js"
+                },
+                "synthetic_en-US": {
+                    url: "app-something/synthetic_en-US.js"
+                }
             };
-            seed = store.yui.getAppSeedFiles({
-                lang: 'en-US'
-            });
-            A.isArray(seed);
-            A.areSame(5, seed.length, '');
 
-            store.getAppConfig = function () {
-                return {
-                    yui: {
-                        config: {
-                            seed: ['yui-base', 'loader-app', 'foo{langPath}']
-                        }
-                    }
-                };
-            };
+            // basic configuration
             seed = store.yui.getAppSeedFiles({
                 lang: 'en-US'
+            }, {});
+            A.isArray(seed);
+            A.areSame(0, seed.length, 'seed should come from second argument, which is empty in this assert');
+
+            // custom seed with lang entries
+            seed = store.yui.getAppSeedFiles({
+                lang: 'en-US'
+            }, {
+                root: "root/",
+                comboBase: "comboBase?",
+                comboSep: "&",
+                seed: ['yui-base', 'loader-base', 'app-level-mod', 'synthetic{langPath}'],
+                groups: {
+                    app: {
+                        root: "app-root/",
+                        comboBase: "app-comboBase?",
+                        comboSep: "~"
+                    }
+                }
             });
             A.isArray(seed);
-            A.areSame(3, seed.length, '');
-            A.areSame('yui-base', seed[0], 'regular modules should be in honored');
-            A.areSame('loader-app', seed[1], 'regular modules should be in honored');
-            A.areSame('foo_en-US', seed[2], 'lang should also be honored if the seed is using {langPath} token');
+            A.areSame(2, seed.length, 'single url with all modules comboded');
+            A.areSame('comboBase?root/yui-base/yui-base-min.js&root/loader-base/loader-base-min.js', seed[0], 'yui modules should be honored');
+            A.areSame('app-comboBase?app-root/app.js~app-root/synthetic_en-US.js', seed[1], 'synthetic and app level modules should be honored');
+        },
+
+        'test getAppSeedFiles with combo off': function() {
+            var assets = store.yui.getAppSeedFiles({
+                lang: 'en-US'
+            }, {
+                seed: ['foo', 'bar'],
+                comboBase: 'comboBase?',
+                comboSep: '~',
+                base: 'base/',
+                root: 'root/',
+                combine: false
+            });
+
+            A.areSame(2, assets.length, 'combine: false should be honored');
+            A.areSame('base/foo/foo-min.js', assets[0], 'invalid url construction when combo is off');
+            A.areSame('base/bar/bar-min.js', assets[1], 'invalid url construction when combo is off for secundary module');
+        },
+
+        'test getAppSeedFiles with combo on with external urls entries': function() {
+            var assets = store.yui.getAppSeedFiles({
+                lang: 'en-US'
+            }, {
+                seed: ['http://mojito.yahoo/baz', 'foo', 'bar'],
+                comboBase: 'comboBase?',
+                comboSep: '~',
+                base: 'base/',
+                root: 'root/',
+                combine: true
+            });
+
+            A.areSame(2, assets.length, 'external urls should be honored');
+            A.areSame('http://mojito.yahoo/baz', assets[0], 'problem with external url detection');
+            A.areSame('comboBase?root/foo/foo-min.js~root/bar/bar-min.js', assets[1], 'invalid url construction when combo is on and external urls are also in the mix');
+        },
+
+        'test getAppSeedFiles with combo off with external urls entries': function() {
+            var assets = store.yui.getAppSeedFiles({
+                lang: 'en-US'
+            }, {
+                seed: ['http://mojito.yahoo/baz', 'foo', 'bar'],
+                comboBase: 'comboBase?',
+                comboSep: '~',
+                base: 'base/',
+                root: 'root/',
+                combine: false
+            });
+
+            A.areSame(3, assets.length, 'external urls should be honored');
+            A.areSame('http://mojito.yahoo/baz', assets[0], 'problem with external url detection');
+            A.areSame('base/foo/foo-min.js', assets[1], 'invalid url construction when combo is off and external urls are also in the mix');
+            A.areSame('base/bar/bar-min.js', assets[2], 'invalid url construction when combo is off and external urls are also in the mix');
+        },
+
+        'test getAppSeedFiles flushing order': function() {
+            var assets = store.yui.getAppSeedFiles({
+                lang: 'en-US'
+            }, {
+                seed: [
+                    'http://mojito.yahoo/baz', 'foo', 'bar', 'http://mojito.yahoo/bar', 'baz'
+                ],
+                comboBase: 'comboBase?',
+                comboSep: '~',
+                base: 'base/',
+                root: 'root/'
+            });
+
+            A.areSame(4, assets.length, 'order should be honored');
+            A.areSame('http://mojito.yahoo/baz', assets[0], 'initial external url order not honored');
+            A.areSame('comboBase?root/foo/foo-min.js~root/bar/bar-min.js', assets[1], 'combo in second position not honored');
+            A.areSame('http://mojito.yahoo/bar', assets[2], 'external url in the middle not honored');
+            A.areSame('comboBase?root/baz/baz-min.js', assets[3], 'combo at the end not honored');
         }
 
     }));
