@@ -727,32 +727,85 @@ YUI().use(
             fixtures = libpath.join(__dirname, '../../../../../fixtures/store');
             store = new MockRS({ root: fixtures });
             store.plug(Y.mojito.addons.rs.yui, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
-
-            store.yui.yuiConfig = {};
         },
 
         tearDown: function() {
             store = null;
         },
 
+        'test getYUIConfig': function() {
+            var config;
+
+            store.getAppConfig = function (ctx) {
+                return {
+                    foo: {
+                        yui: {
+                            config: {
+                                combine: false
+                            }
+                        }
+                    },
+                    bar: {
+                        yui: {
+                            config: {
+                                combine: true
+                            }
+                        }
+                    }
+                }[ctx.custom];
+            };
+
+            // testing context custom:foo
+            config = store.yui.getYUIConfig({custom: "foo", lang: "es"});
+            A.isFalse(config.combine, 'yui->config->combine should be false by default');
+            A.isTrue(config.fetchCSS, 'yui->config->fetchCSS should be true by default');
+            A.areSame('es', config.lang, 'yui->config->lang should be picked from context');
+            A.areSame('http://yui.yahooapis.com/combo?', config.comboBase, 'By default, YUI core modules should come from CDN');
+
+            // testing context custom:bar
+            config = store.yui.getYUIConfig({custom: "bar"});
+            A.isTrue(config.combine, 'yui->config->combine is not honored');
+            A.isTrue(config.fetchCSS, 'yui->config->fetchCSS should be true by default even when combine is true');
+            A.isObject(config.groups.app, 'yui->config->groups->app should be created synthetically');
+
+            // testing serveYUIFromAppOrigin flag
+            store.yui.staticHandling = {
+                serveYUIFromAppOrigin: true
+            };
+            config = store.yui.getYUIConfig({custom: "bar"});
+            A.areSame('/combo~', config.comboBase, 'When serving YUI core modules from local, combo should point to local');
+            A.areSame(1024, config.maxURLLength, 'When serving YUI core modules from local, we should restrict the size of the url');
+            A.areSame('~', config.comboSep, 'When serving YUI core modules from local, comboSep should be ~');
+        },
+
         'test getAppGroupConfig': function() {
             var config;
+
+            store.getAppConfig = function () {
+                return {};
+            };
 
             config = store.yui.getAppGroupConfig();
             A.isTrue(config.combine, 'combine should be true by default');
             A.areSame(1024, config.maxURLLength, 'maxURLLength should be 1024 by default');
 
-            store.yui.yuiConfig = {
-                combine: false,
-                groups: {
-                    app: {
-                        maxURLLength: 'maxURLLength',
-                        base: "base",
-                        comboBase: "comboBase",
-                        comboSep: "comboSep",
-                        root: "root"
+            store.getAppConfig = function () {
+                return {
+                    yui: {
+                        config: {
+                            combine: false,
+                            groups: {
+                                app: {
+                                    maxURLLength: 'maxURLLength',
+                                    base: "base",
+                                    comboBase: "comboBase",
+                                    comboSep: "comboSep",
+                                    root: "root"
+                                }
+                            }
+                        }
                     }
-                }
+                };
             };
             config = store.yui.getAppGroupConfig();
             A.isFalse(config.combine, 'yui->config->combine should be the fallback for yui->config->groups->app->combine');
