@@ -7,17 +7,16 @@ fail() {
 }
 
 # bail if selenium isn't running
-#ps aux | egrep -q '[j]ava.+selenium' || fail 9 'no selenium server, exiting'
+ps aux | egrep -q '[j]ava.+selenium' || fail 9 'no selenium server, exiting'
 
-# get abs path to mojito base dir
-basedir=$(cd $(dirname $0)/../ && pwd)
+# tests subdir
+cd $(dirname $0)
 
 # lint
-$basedir/bin/mojito jslint -p
+../bin/mojito jslint -p
 
 # unit tests
-$basedir/tests/run.js test -u --group server --driver nodejs
-$basedir/tests/run.js test -u --group client --driver selenium --reuseSession
+../tests/run.js test -u --reuseSession --path unit
 
 # func tests
-#$basedir/tests/run.js test -f --coverage --path func --reuseSession
+#../tests/run.js test -f --coverage --path func --reuseSession
