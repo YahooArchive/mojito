@@ -16,7 +16,7 @@ YUI({
             Y.one('#partialRenderButton').simulate('click');
             that.wait(function(){
                 Y.Assert.areEqual('this is my data: data not from url', Y.one('#subdata').get('innerHTML').match(/this is my data: data not from url/gi));
-            }, 2000);
+            }, 4000);
         }
 
      }));

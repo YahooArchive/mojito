@@ -28,7 +28,7 @@ YUI({
                      Y.Assert.areEqual('/static/Binders/assets/css/css_in_binders.css', checkscript(Y.one('head'), 'style', 'rel', pat2));
                      Y.Assert.areEqual('/static/AssetsMojit/assets/css/css_not_present.css', checkscript(Y.one('head'), 'style', 'rel', pat3));
                  }
-             }, 2000);
+             }, 4000);
          }
 
      }));

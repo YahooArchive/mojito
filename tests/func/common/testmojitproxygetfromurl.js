@@ -16,7 +16,7 @@ YUI({
             Y.one('#mojitProxyMojitButton').simulate('click');
             that.wait(function(){
 	            Y.Assert.areEqual('abc', Y.one('#thisvalue').get('innerHTML').match(/abc/gi));
-            }, 3000);
+            }, 4000);
         }
 
     }));

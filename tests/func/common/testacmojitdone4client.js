@@ -17,7 +17,7 @@ YUI({
           Y.one('#acMojitButton').simulate('click');
           that.wait(function(){
 	            Y.Assert.areEqual('Saab,Volvo,BMW', Y.one('#ACMojitTest').get('innerHTML').match(/Saab,Volvo,BMW/gi));
-          }, 2000);
+          }, 4000);
       }
 
       }));

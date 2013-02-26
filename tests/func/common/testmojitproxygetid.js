@@ -17,7 +17,7 @@ YUI({
             that.wait(function(){
 	            Y.log("************"+Y.one('#thisid').get('innerHTML'));
 	            Y.Assert.areEqual('yui_', Y.one('#thisid').get('innerHTML').match(/yui_/gi));
-            }, 3000);
+            }, 4000);
         }
     }));
 

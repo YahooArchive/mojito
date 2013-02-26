@@ -23,7 +23,7 @@ YUI({
 	            Y.Assert.areEqual('\[\"defaultArrayValue1\",\"defaultArrayValue2\"\]', Y.one('#defaultArray').get('innerHTML').match(/\[\"defaultArrayValue1\",\"defaultArrayValue2\"\]/gi));
 	            Y.Assert.areEqual('ac.config.get\(\'nestedConfig.subConfig2\'\) -', Y.one('#defaultNested1').get('innerHTML').match(/ac.config.get\(\'nestedConfig.subConfig2\'\) -/gi));
 	            Y.Assert.areEqual('\{\"subsubConfig1\":\"SubSubConfig1 from defaults.yaml\",\"subsubConfig2\":\"SubSubConfig2 from defaults.yaml\"\}', Y.one('#defaultNested1').get('innerHTML').match(/\{\"subsubConfig1\":\"SubSubConfig1 from defaults.yaml\",\"subsubConfig2\":\"SubSubConfig2 from defaults.yaml\"\}/gi));          
-            }, 2000);
+            }, 4000);
         }
         
     }));

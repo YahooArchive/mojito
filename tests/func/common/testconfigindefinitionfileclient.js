@@ -23,7 +23,7 @@ YUI({
 	            Y.Assert.areEqual('\{\"subsubset1\"\:\"inner subset from def\"\,\"subsubsetArray\"\:\[\"innerArrayValue1\"\,\"innerArrayValue2\"\]\}', Y.one('#defNested1').get('innerHTML').match(/\{\"subsubset1\"\:\"inner subset from def\"\,\"subsubsetArray\"\:\[\"innerArrayValue1\"\,\"innerArrayValue2\"\]\}/gi));
                 Y.Assert.areEqual('ac.config.getDefinition\(\'nested.subset2.subsubsetArray\'\) -', Y.one('#defNestedArray').get('innerHTML').match(/ac.config.getDefinition\(\'nested.subset2.subsubsetArray\'\) -/gi));
                 Y.Assert.areEqual('\"innerArrayValue1\"', Y.one('#defNestedArray').get('innerHTML').match(/\"innerArrayValue1\"/gi));
-            }, 2000);
+            }, 4000);
         }
 
     }));

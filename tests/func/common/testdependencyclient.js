@@ -12,7 +12,7 @@ YUI.add('testdependencyclient-tests', function (Y) {
           Y.one('#DepCheckParentButton').simulate('click');
           that.wait(function(){
               Y.Assert.areEqual('0,1,Aardvark,attic,zebra,Zoo', Y.one('#myarray').get('innerHTML').match(/0,1,Aardvark,attic,zebra,Zoo/gi));
-          }, 2000);
+          }, 4000);
       }
       
     }));
