@@ -13,7 +13,9 @@ YUI().use('mojito-models-addon', 'test', function(Y) {
         name: 'model tests',
 
         'invalid model name': function () {
-            var adapter = {};
+            var adapter = {
+                page: {}
+            };
 
             var addon = new Y.mojito.addons.ac.models({
                 instance: {}
@@ -25,7 +27,9 @@ YUI().use('mojito-models-addon', 'test', function(Y) {
         },
 
         'valid model name': function () {
-            var adapter = {};
+            var adapter = {
+                page: {}
+            };
 
             var addon = new Y.mojito.addons.ac.models({
                 instance: {
@@ -43,7 +47,9 @@ YUI().use('mojito-models-addon', 'test', function(Y) {
         },
 
         'test instances of a model': function () {
-            var adapter = {};
+            var adapter = {
+                page: {}
+            };
 
             var addon = new Y.mojito.addons.ac.models({
                 instance: {}
@@ -68,9 +74,9 @@ YUI().use('mojito-models-addon', 'test', function(Y) {
 
         name: 'global model tests',
 
-        'register global model in server with req object': function() {
-            var serverAdapter = {
-                req: {}
+        'test register global model': function() {
+            var adapter = {
+                page: {}
             };
             var bar = {
                 init: function () {
@@ -81,13 +87,13 @@ YUI().use('mojito-models-addon', 'test', function(Y) {
             // creating first addon instance
             var addon1 = new Y.mojito.addons.ac.models({
                 instance: {}
-            }, serverAdapter);
-            addon1.registerGlobal('bar', bar);
+            }, adapter);
+            addon1.expose('bar', bar);
 
             // creating second addon instance
             var addon2 = new Y.mojito.addons.ac.models({
                 instance: {}
-            }, serverAdapter);
+            }, adapter);
 
             // testing models
             var model1 = addon1.get('bar');
@@ -98,36 +104,10 @@ YUI().use('mojito-models-addon', 'test', function(Y) {
             A.areSame(bar, model2, 'should return the registered model');
         },
 
-        'register global model in client without req object': function() {
-            var clientAdapter = {};
-            var baz = {
-                init: function () {
-                    A.fail('init of a global model should never be called, it is an instance already');
-                }
-            };
-
-            // creating first addon instance
-            var addon1 = new Y.mojito.addons.ac.models({
-                instance: {}
-            }, clientAdapter);
-            addon1.registerGlobal('baz', baz);
-
-            // creating second addon instance
-            var addon2 = new Y.mojito.addons.ac.models({
-                instance: {}
-            }, clientAdapter);
-
-            // testing models
-            var model1 = addon1.get('baz');
-            var model2 = addon2.get('baz');
-            A.isObject(model1, 'registered global model should return an instance');
-            A.areSame(baz, model1, 'should return the registered model');
-            A.isObject(model2, 'registered global model by other mojit should return an instance');
-            A.areSame(baz, model2, 'should return the registered model');
-        },
-
         'test global vs local': function() {
-            var adapter = {};
+            var adapter = {
+                page: {}
+            };
 
             var addon = new Y.mojito.addons.ac.models({
                 instance: {}
@@ -141,11 +121,50 @@ YUI().use('mojito-models-addon', 'test', function(Y) {
             };
 
             Y.mojito.models.cuba = localModel;
-            addon.registerGlobal('cuba', globalModel);
+            addon.expose('cuba', globalModel);
 
             model = addon.get('cuba');
             A.isObject(model, 'registered model should return an instance');
             A.areSame(globalModel, model, 'global registered should have priority over local models');
+        },
+
+        'test expose': function() {
+            var adapter = {
+                page: {}
+            };
+            var baz = {
+                init: function () {
+                    A.fail('init of a global model should never be called, it is an instance already');
+                }
+            };
+            // creating first addon instance
+            var addon = new Y.mojito.addons.ac.models({
+                instance: {}
+            }, adapter);
+            addon.expose('baz', baz);
+
+            // testing models
+            A.areSame(baz, adapter.page.models.baz, 'models should be exposed thru adapter.page.models.*');
+        },
+
+        'test expose by name': function() {
+            var adapter = {
+                page: {}
+            };
+            var baz = {
+                init: function () {
+                    A.fail('init of a global model should never be called, it is an instance already');
+                }
+            };
+            // creating first addon instance
+            var addon = new Y.mojito.addons.ac.models({
+                instance: {}
+            }, adapter);
+            addon.set('baz', baz);
+            addon.expose('baz');
+
+            // testing models
+            A.areSame(baz, adapter.page.models.baz, 'models should be exposed thru adapter.page.models.*');
         }
 
     }));
