@@ -629,9 +629,6 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
                             A.isTrue(true);
                         },
                         yui: {
-                            getConfigAllMojits: function () {
-                                return {};
-                            },
                             getConfigShared: function () {
                                 return {};
                             },
