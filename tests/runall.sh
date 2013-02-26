@@ -20,4 +20,4 @@ $basedir/tests/run.js test -u --group server --driver nodejs
 $basedir/tests/run.js test -u --group client --driver selenium --reuseSession
 
 # func tests
-#$basedir/tests/run.js test -f --coverage --path func --reuseSession
+$basedir/tests/run.js test -f --coverage --path func --reuseSession

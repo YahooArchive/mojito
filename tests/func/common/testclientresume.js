@@ -24,10 +24,10 @@ YUI({
 			            Y.one('#resumeButton').simulate('click');
 			            that.wait(function(){
 				            Y.Assert.areEqual('this is my data: abc', Y.one('#thisdata').get('innerHTML').match(/this is my data: abc/gi));
-			            }, 2000);
-		            }, 2000);
-	            }, 2000);
-            }, 2000);
+			            }, 4000);
+		            }, 4000);
+	            }, 4000);
+            }, 4000);
         }
 
     }));

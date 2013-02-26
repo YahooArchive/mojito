@@ -21,8 +21,8 @@ YUI({
 		        that.wait(function(){
 			        Y.Assert.areEqual('news heard a click from nav \(type\: CM_Nav\) with the data\:', Y.one('#click2').get('innerHTML').match(/news heard a click from nav \(type\: CM_Nav\) with the data\:/gi));
 			        Y.Assert.areEqual('Hi News!', Y.one('#click1').get('innerHTML').match(/Hi News!/gi));
-		         }, 2000);
-	        }, 2000);
+		         }, 4000);
+	        }, 4000);
         }
 
    }));

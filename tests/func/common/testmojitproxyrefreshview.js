@@ -19,8 +19,8 @@ YUI({
 	            Y.one('#refreshViewButton').simulate('click');
 	            that.wait(function(){
 		            Y.Assert.areEqual('Testing ac.refreshView', Y.one('#MojitProxyMojitResult').get('innerHTML').match(/Testing ac.refreshView/gi));
-	            }, 3000);
-            }, 3000);
+	            }, 4000);
+            }, 4000);
         }
 
     }));

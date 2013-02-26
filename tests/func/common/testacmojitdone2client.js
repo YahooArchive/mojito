@@ -17,7 +17,7 @@ YUI({
            Y.one('#acMojitButton').simulate('click');
            that.wait(function(){
                Y.Assert.areEqual('\{\"greeting\"\:\"Hello Action Context Testing\"\}', Y.one('#ACMojitResult').get('innerHTML').match(/\{\"greeting\"\:\"Hello Action Context Testing\"\}/gi));
-           }, 2000);
+           }, 4000);
         }
 
       }));

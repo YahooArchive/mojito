@@ -19,7 +19,7 @@ YUI({
 	            Y.Assert.areEqual('\"definition not found\"', Y.one('#noMatchDefinition').get('innerHTML').match(/\"definition not found\"/gi));
                 Y.Assert.areEqual('ac.config.getDefinition\(\'something_unknown\'\, \'\[\"I\"\, \"am\"\, \"an\"\, \"array\"\]\'\) -', Y.one('#noMatchDefinitionArray').get('innerHTML').match(/ac.config.getDefinition\(\'something_unknown\'\, \'\[\"I\"\, \"am\"\, \"an\"\, \"array\"\]\'\) -/gi));
                 Y.Assert.areEqual('ac.config.getDefinition\(\'something_unknown\', \'\{one\: \{two\: \"I am two\"\, three\: \"I am three\"\}\}\'\) -', Y.one('#noMatchDefinitionJson').get('innerHTML').match(/ac.config.getDefinition\(\'something_unknown\', \'\{one\: \{two\: \"I am two\"\, three\: \"I am three\"\}\}\'\) -/gi));
-            }, 2000);
+            }, 4000);
         }
 
     }));

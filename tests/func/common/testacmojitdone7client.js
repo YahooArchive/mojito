@@ -17,7 +17,7 @@ YUI({
           Y.one('#acMojitButton').simulate('click');
           that.wait(function(){
               Y.Assert.areEqual('\{\"data\":\"Hello, world!\"\}', Y.one('#ACMojitResult').get('innerHTML').match(/\{\"data\":\"Hello, world!\"\}/gi));
-          }, 1000);
+          }, 4000);
       }
 
       }));

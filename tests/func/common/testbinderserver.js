@@ -24,8 +24,8 @@ YUI({
 	            Y.one('#chickenimg').simulate('click');
 	            that.wait(function(){
 		            Y.Assert.areEqual('I clicked myself 2 times', Y.one('#para2').get('innerHTML').match(/I clicked myself 2 times/gi));
-	            }, 2000);
-        }, 2000);
+	            }, 4000);
+        }, 4000);
     }
     
    }));

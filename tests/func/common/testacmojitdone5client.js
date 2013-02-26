@@ -17,7 +17,7 @@ YUI({
           Y.one('#acMojitButton').simulate('click');
           that.wait(function(){
               Y.Assert.areEqual('\{\"mycars\":[\"Saab\",\"Volvo\",\"BMW\"\]\}', Y.one('#ACMojitResult').get('innerHTML').match(/\{\"mycars\":\[\"Saab\",\"Volvo\",\"BMW\"\]\}/gi));
-          }, 2000);
+          }, 4000);
       }
 
       }));
