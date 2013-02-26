@@ -19,8 +19,8 @@ YUI({
                 Y.one('#js2_button').simulate('click');
                 that.wait(function(){
                     Y.Assert.areEqual('I was appended by the recently added javascript file - js2.js.', Y.one('#para_node').get('innerHTML').match(/I was appended by the recently added javascript file - js2.js./gi));
-                }, 2000);
-            }, 2000);
+                }, 4000);
+            }, 4000);
         }
 
      }));

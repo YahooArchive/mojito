@@ -21,9 +21,9 @@ YUI({
 		            Y.one('#mojitProxyMojitButton').simulate('click');
 		            that.wait(function(){
 			            Y.Assert.areEqual('Testing ac.pause And ac.resume', Y.one('#MojitProxyMojitResult').get('innerHTML').match(/Testing ac.pause And ac.resume/gi));
-		            }, 2000);
-	            }, 2000);
-            }, 2000);
+		            }, 4000);
+	            }, 4000);
+            }, 4000);
         }
 
     }));

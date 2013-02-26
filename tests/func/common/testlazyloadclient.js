@@ -32,7 +32,7 @@ YUI({
                 Y.Assert.isFalse(finalLazyResult.mojit.defer);
 
                 Y.Assert.areEqual('LAZY LOAD COMPLETE', Y.one('#lazyResult').get('innerHTML').match(/LAZY LOAD COMPLETE/gi));
-            }, 2000);
+            }, 4000);
         }
 
     }));

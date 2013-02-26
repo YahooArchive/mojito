@@ -17,7 +17,7 @@ YUI({
           Y.one('#acMojitButton').simulate('click');
           that.wait(function(){
               Y.Assert.areEqual("<h4></h4>", Y.one('#ACMojitTest').get('innerHTML').match(/<h4><\/h4>/gi));
-          }, 1000);
+          }, 4000);
       }
 
       }));

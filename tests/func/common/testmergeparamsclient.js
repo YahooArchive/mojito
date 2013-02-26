@@ -30,7 +30,7 @@ YUI({
 	            Y.Assert.areEqual('url ==&gt; name ==&gt; Hillary Clinton', Y.all('#allparams').item(1).get('innerHTML').match(/url ==&gt; name ==&gt; Hillary Clinton/gi));  
 	            Y.Assert.areEqual('body ==&gt; name ==&gt; Everyone', Y.all('#allparams').item(2).get('innerHTML').match(/body ==&gt; name ==&gt; Everyone/gi));
 	            Y.Assert.areEqual('body ==&gt; likes ==&gt; ice cream', Y.all('#allparams').item(3).get('innerHTML').match(/body ==&gt; likes ==&gt; ice cream/gi));        
-            }, 2000);
+            }, 4000);
         }
     }));
 

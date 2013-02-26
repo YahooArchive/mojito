@@ -42,7 +42,7 @@ YUI({
                 Y.Assert.areEqual('CM_Footer', childConfig3.base);
                 Y.Assert.areEqual('footer_id', childConfig3.config.id);
                 Y.Assert.isNotUndefined('nav', childConfig3.instanceId, 'instanceId for CM_Footer is undefined');
-            }, 3000);
+            }, 4000);
         }
 
     }));

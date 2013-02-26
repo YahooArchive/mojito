@@ -13,7 +13,7 @@ YUI.add('acmojitdone1client-tests', function (Y) {
             Y.one('#acMojitButton').simulate('click');
             that.wait(function(){
                 Y.Assert.areEqual('Hello Action Context Testing', Y.one('#ACMojitTest').get('innerHTML').match(/Hello Action Context Testing/gi));
-            }, 2000);
+            }, 4000);
         }
 
     }));

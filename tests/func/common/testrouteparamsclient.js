@@ -21,7 +21,7 @@ YUI({
 	            Y.Assert.areEqual('foo ==&gt; fooval', Y.all('#keyandvalue').item(0).get('innerHTML').match(/foo ==&gt; fooval/gi));
 	            Y.Assert.areEqual('foo ==&gt; fooval', Y.all('#keyandvalue').item(0).get('innerHTML').match(/foo ==&gt; fooval/gi));
 	            Y.Assert.areEqual('fooval', Y.one('#foo').get('innerHTML').match(/fooval/gi));       
-            }, 2000);
+            }, 4000);
         }
     }));
     Y.Test.Runner.add(suite);

@@ -29,11 +29,11 @@ YUI({
 				            Y.one('#retrievebutton').simulate('click');
 				            that.wait(function(){
 					           Y.Assert.areEqual('ball: softball', Y.one('#ControllerCachingResult').get('innerHTML').match(/ball: softball/gi));
-				            }, 1000);
-			             }, 1000);
-		             }, 1000);
-	             }, 1000);         
-            }, 1000);
+				            }, 4000);
+			             }, 4000);
+		             }, 4000);
+	             }, 4000);         
+            }, 4000);
        }
 
     }));

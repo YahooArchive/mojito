@@ -17,7 +17,7 @@ YUI({
           Y.one('#acMojitButton').simulate('click');
           that.wait(function(){
               Y.Assert.areEqual("1,2,,4", Y.one('#ACMojitTest').get('innerHTML').match(/1,2,,4/gi));
-          }, 1000);
+          }, 4000);
       }
 
       }));

@@ -20,7 +20,7 @@ YUI({
 	            var pat2 = /\/static\/AssetsMojit\/assets\/js\/js2.js/gi;
 	            Y.Assert.areEqual('/static/AssetsMojit/assets/js/js1.js', checkscript(Y.one('head'), 'script', 'src', pat1));
 	            Y.Assert.areEqual('/static/AssetsMojit/assets/js/js2.js', checkscript(Y.one('head'), 'script', 'src', pat2));       				
-            }, 2000);
+            }, 4000);
         }
 
      }));
