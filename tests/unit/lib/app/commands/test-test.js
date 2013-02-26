@@ -40,8 +40,8 @@ YUI().use('mojito-test-extra', 'test', 'json-parse', 'json-stringify', function(
             this.existsSyncCalled = true;
         },
 
-        readFileSync: function(file) {
-            return libfs.readFileSync(file);
+        readFileSync: function(file, encoding) {
+            return libfs.readFileSync(file, encoding);
         },
 
         statSync: function(file) {
