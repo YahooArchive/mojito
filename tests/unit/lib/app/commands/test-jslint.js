@@ -65,8 +65,8 @@ YUI().use('test', function(Y) {
                 return libfs.readdirSync(file);
             },
 
-            readFileSync: function(file) {
-                return libfs.readFileSync(file);
+            readFileSync: function(file, encoding) {
+                return libfs.readFileSync(file, encoding);
             },
 
             statSync: function(file) {
