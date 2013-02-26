@@ -27,7 +27,7 @@
         "semver": "1.0.14",
         "wrench": "~1.3.9",
         "ycb": "~1.0.0",
-        "yui": "~3.7.3",
+        "yui": "~3.8.1",
         "yuidocjs": "~0.3.14",
         "yuitest": "~0.7.4",
         "yuitest-coverage": "~0.0.6"
