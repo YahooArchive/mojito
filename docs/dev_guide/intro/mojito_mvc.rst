@@ -798,8 +798,8 @@ you can call in Handlebars expressions. Some helpers are called
 `block helpers <http://handlebarsjs.com/block_helpers.html>`_ because
 they are iterators. You can also create new helpers and register them
 using the `Helpers addon <http://developer.yahoo.com/cocktails/mojito/api/classes/Helpers.common.html>`_. 
-We'll take a look how to use both simple helper and block helpers and then show you how 
-to create and register your own helpers.
+We'll take a look how in Mojito application to use both simple helper and block helpers
+and then show you how to create and register your own helpers.
 
 .. _hb-using_helpers:
 
@@ -885,13 +885,20 @@ create links with the objects and their properties``name`` and ``url``:
 Creating Custom Helpers
 -----------------------
 
+As an aid to those used Handlebars helpers, we'll first look at 
+how Handlebars helpers are used in Node.js applications and then
+contrast that with how they are used in Mojito applications.
+
+.. _creating_helpers-node:
+
 Node.js Applications
 ####################
 
 To create custom Handlebars helpers in a Node.js application, you use the 
-Handlebars method ``registerHelper`` to register your helper.
+Handlebars method ``registerHelper`` to register your helper so that
+it can be used in Handlebars expressions.
 
-TBD: Explain code
+In the example Node.js script below, the ``makeLink`` 
 
 .. code-block:: javascript
 
@@ -900,17 +907,20 @@ TBD: Explain code
    var Handlebars = require('handlebars');
    var context = { title: "My New Post", url: "http://mywebsite.com/new-post" };
    var source = "<div>{{makeLink title url}}</div>";
+   // Registering a Handlebars helper that can be used
+   // in the Handlebars expression in the HTML (`source`).
    Handlebars.registerHelper('makeLink', function(text, url) {
      text = Handlebars.Utils.escapeExpression(text);
      url  = Handlebars.Utils.escapeExpression(url);
      var result = '<a href="' + url + '">' + text + '</a>';
      return new Handlebars.SafeString(result);
    });
-
-
    var template = Handlebars.compile(source);
    var html = template(context);
-   console.log(html);
+   // Output: <div><a href="http://mywebsite.com/new-post">My New Post</a></div>
+   console.log(html); 
+
+.. _creating_helpers-mojito:
 
 Mojito Applications
 ####################
@@ -918,9 +928,14 @@ Mojito Applications
 To use custom Handlebars helpers in a Mojito application, you also need to register
 your helper, but instead of using ``registerHelper``, you use the 
 `Helpers addon <http://developer.yahoo.com/cocktails/mojito/api/classes/Helpers.common.html>`_.
-The ``Helpers`` addon has several methods for getting helpers and setting mojit-level
-helpers or exposing helpers so that they can shared with other mojits.
+The ``Helpers`` addon has several methods for getting helpers, setting mojit-level
+helpers, or exposing helpers so that they can shared with other mojits.
 
+Let's take a quick look at the ``Helper`` addon, show how to use the addon methods
+to register helpers, and finally provide you with an example that includes both the
+controller and corresponding template.
+
+.. _mojito-helpers_addon:
 
 Helpers Addon
 *************
@@ -939,6 +954,7 @@ The ``Helper`` addon has the following three methods:
 - ``set`` - Sets a helper function for a mojit instance. Other mojit instances will not
   have access to this helper function.
 
+.. _helpers_addon-set_mojit:
 
 Setting Helpers for a Mojit Instance
 ************************************
@@ -978,13 +994,15 @@ a specific data structure passed to it.
      }
    ...
 
+.. _helpers_addon-set_global:
+
 Exposing Helpers for Global Use
 *******************************
 
-To register a helper so that it can be shared, you use the ``expose`` method of the 
-``Helpers`` addon. In the example controller below, the ``expose`` method registers the 
-helper ``toLinkHelper`` that creates links. It makes sense to expose this helper
-as global so other mojit instances can use it to create links.
+To register a helper so that it can be shared with other mojit instances, you use the 
+``expose`` method of the ``Helpers`` addon. In the example controller below, the 
+``expose`` method registers the helper ``toLinkHelper`` that creates links. It makes sense 
+to expose this helper as global so other mojit instances can use it to create links.
 
 .. code-block:: javascript
 
@@ -1009,9 +1027,12 @@ as global so other mojit instances can use it to create links.
      }
    ...
 
+.. _helpers_addon-ex:
 
 Example
 *******
+
+.. _helpers_ex-controller:
 
 controller.server.js
 ^^^^^^^^^^^^^^^^^^^^
@@ -1024,19 +1045,19 @@ controller.server.js
        return "<a href='" + url + "'>" + title + "</a>";
      }
      function highlightModuleHelper(mods, highlighted_module) {
-      var mod_names = [];
-      for (var i = 0, l=mods.length; i<l; i++){
-        mod_names.push(mods[i].name);
-      }
-      mod_names = mod_names.join(', ');
-      return Y.Highlight.words(mod_names, highlighted_module, {
-        caseSensitive:false
-      }); 
-    }
-    Y.namespace('mojito.controllers')[NAME] = {
-     index: function(ac) {
-       ac.helpers.set('toLink', toLinkHelper);
-       ac.helpers.expose('highlightModule', highlightModuleHelper);
+       var mod_names = [];
+       for (var i = 0, l=mods.length; i<l; i++){
+         mod_names.push(mods[i].name);
+       }
+       mod_names = mod_names.join(', ');
+       return Y.Highlight.words(mod_names, highlighted_module, {
+         caseSensitive:false
+       }); 
+     }
+     Y.namespace('mojito.controllers')[NAME] = {
+       index: function(ac) {
+         ac.helpers.set('toLink', toLinkHelper);
+         ac.helpers.expose('highlightModule', highlightModuleHelper);
          var yui = {
            modules: [
              {name: "event", user_guide: "http://yuilibrary.com/yui/docs/event/", title: "Event Utility"},
@@ -1051,6 +1072,8 @@ controller.server.js
        }
      };
    }, '0.0.1', {requires: ['mojito', 'mojito-helpers-addon', 'mojito-params-addon', 'highlight']});
+
+.. _helpers_ex-template:
 
 index.hb.html
 ^^^^^^^^^^^^^
