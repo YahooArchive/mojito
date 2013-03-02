@@ -282,7 +282,7 @@ Several objects and methods form the backbone of the controller.
   function is running within. This means that you can refer to other functions 
   described within ``Y.namespace('mojito.controllers')[NAME]`` using 
   ``this.otherFunction``. This is helpful when you've added some utility functions 
-  onto your controller that do not accept an ActionContext object.
+  onto your controller that do not accept an ``ActionContext`` object.
 - ``requires`` - (optional) an array that lists any addons that are needed 
   by the controller.
 
@@ -451,8 +451,8 @@ For a more detailed example, see `Calling the Model`_ and
 Passing Data to the View
 ------------------------
 
-The controller also uses the ActionContext object to send data to the view. 
-Calling the ``done`` method from the ActionContext object, you can send literal 
+The controller also uses the ``ActionContext`` object to send data to the view. 
+Calling the ``done`` method from the ``ActionContext`` object, you can send literal 
 strings or objects, with the latter being interpolated in template tags that are 
 rendered by the appropriate view engine. The ``done`` method should only be 
 called once. If neither ``done`` nor ``error`` is called within 60 seconds, Mojito 
@@ -946,9 +946,9 @@ addon and its methods through the ``ActionContext`` object.
 
 The ``Helper`` addon has the following three methods:
 
-- ``expose`` - Exposes a helper function as global. On the server side, this means any 
-  mojit instance under a particular request can use the helper. On the client, any mojit 
-  instance on the page can use the helper.
+- ``expose`` - Exposes a parent mojit's helper function so that on the server side any 
+  child mojit instance under a particular request can use the helper. On the client, any 
+  child mojit instance on the page can use the helper. 
 - ``get`` - Allows you to get a specify helper (if given an argument) or all the helpers
   if not given any arguments.
 - ``set`` - Sets a helper function for a mojit instance. Other mojit instances will not
@@ -979,7 +979,7 @@ a specific data structure passed to it.
        }); 
      }
      index: function(ac) {
-       var yui = {
+       var data = {
              modules: [
                {name: "event", user_guide: "http://yuilibrary.com/yui/docs/event/", title: "Event Utility"},
                {name: "node", user_guide: "http://yuilibrary.com/yui/docs/node/",  title: "Node Utility"},
@@ -989,20 +989,33 @@ a specific data structure passed to it.
                {name: "yql", user_guide: "http://yuilibrary.com/yui/docs/yql/", title: "YQL Query"} 
              ]
            };
-       ac.helpers.set('highlightModuleHelper', highlightModuleHelper);
-       ac.done({ yui: yui, highlighted_module: ac.params.url('module') || "event"});
+       ac.helpers.set('highlightModule', highlightModuleHelper);
+       ac.done({ yui_info: data, highlighted_module: ac.params.url('module') || "event"});
      }
    ...
+
+In the ``index.hb.html`` template, the helper ``highlightModule`` highlights
+takes as the arguments passed to it by ``ac.done`` and highlights the strings matching
+the values assigned to ``highlighted_module``:
+
+.. code-block:: html
+
+   <div id="{{mojit_view_id}}">
+     <h3>Highlighted Products:</h3>
+     {{{highlightModule yui_info.modules highlighted_module }}
+   </div>
+
 
 .. _helpers_addon-set_global:
 
 Exposing Helpers for Global Use
 *******************************
 
-To register a helper so that it can be shared with other mojit instances, you use the 
+To register a helper so that parent mojits can share them with their children, you use the 
 ``expose`` method of the ``Helpers`` addon. In the example controller below, the 
 ``expose`` method registers the helper ``toLinkHelper`` that creates links. It makes sense 
-to expose this helper as global so other mojit instances can use it to create links.
+to expose this helper so that its child mojit instances can also use the helper to create 
+links.
 
 .. code-block:: javascript
 
@@ -1011,7 +1024,7 @@ to expose this helper as global so other mojit instances can use it to create li
         return "<a href='" + url + "'>" + title + "</a>";
      }
      index: function(ac) {
-       var yui = {
+       var data = {
              modules: [
                {name: "event", user_guide: "http://yuilibrary.com/yui/docs/event/", title: "Event Utility"},
                {name: "node", user_guide: "http://yuilibrary.com/yui/docs/node/",  title: "Node Utility"},
@@ -1021,11 +1034,27 @@ to expose this helper as global so other mojit instances can use it to create li
                {name: "yql", user_guide: "http://yuilibrary.com/yui/docs/yql/", title: "YQL Query"} 
              ]
            };
-       ac.helpers.set('highlightModuleHelper', highlightModuleHelper);
-       ac.helpers.expose('toLinkHelper',toLinkHelper);
-       ac.done({ yui: yui, highlighted_module: ac.params.url('module') || "event"});
+       ac.helpers.expose('toLink',toLinkHelper);
+       ac.done({ yui_info: data });
      }
    ...
+
+In the template ``index.hb.html`` below, the Handlebars block helper ``each``
+iterates through the objects contained in the array ``yui_info.modules``, and
+then the custom helper ``toLink`` creates links with the values of the properties
+``title`` and ``user_guide``:
+
+.. code-block:: html
+
+   <div id="{{mojit_view_id}}">
+     <h3>YUI Modules</h3>
+     <ul>
+     {{#each yui_info.modules}}
+       <li>{{{toLink title user_guide }}}</li>
+     {{/each}}
+     </ul>
+   </div>
+
 
 .. _helpers_addon-ex:
 
@@ -1058,7 +1087,7 @@ controller.server.js
        index: function(ac) {
          ac.helpers.set('toLink', toLinkHelper);
          ac.helpers.expose('highlightModule', highlightModuleHelper);
-         var yui = {
+         var data = {
            modules: [
              {name: "event", user_guide: "http://yuilibrary.com/yui/docs/event/", title: "Event Utility"},
              {name: "node", user_guide: "http://yuilibrary.com/yui/docs/node/",  title: "Node Utility"},
@@ -1068,7 +1097,7 @@ controller.server.js
              {name: "yql", user_guide: "http://yuilibrary.com/yui/docs/yql/", title: "YQL Query"} 
            ]
          };
-         ac.done({ yui: yui, highlighted_module: ac.params.url('module') || "event"});
+         ac.done({ yui_info: data, highlighted_module: ac.params.url('module') || "event"});
        }
      };
    }, '0.0.1', {requires: ['mojito', 'mojito-helpers-addon', 'mojito-params-addon', 'highlight']});
@@ -1083,12 +1112,12 @@ index.hb.html
    <div id="{{mojit_view_id}}">
      <h3>YUI Modules</h3>
      <ul>
-     {{#each yui.modules}}
+     {{#each yui_info.modules}}
        <li>{{{toLink title user_guide }}}</li>
      {{/each}}
      </ul>
      <h3>Highlighted Products:</h3>
-     {{{highlightModule yui.modules highlighted_module }}
+     {{{highlightModule yui_info.modules highlighted_module }}
    </div>
 
 
