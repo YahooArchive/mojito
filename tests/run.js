@@ -32,6 +32,7 @@ program.command('test')
     .option('--port <value>', 'port number to run app')
     .option('--coverage', 'Arrow code coverage')
     .option('--reuseSession', 'Arrow reuseSession')
+    .option('--baseUrl <value>', 'Full app path including port if there is one to run arrow tests')
     .option('--group <value>', 'Arrow group')
     .option('--driver <value>', 'Arrow driver')
     .option('--browser <value>', 'Arrow browser')
@@ -236,7 +237,8 @@ function runFuncTests (cmd, desc, port, thispid, arrowReportDir, callback) {
     console.log('---Running Functional Tests---');
    
     var group = cmd.group || null,
-        baseUrl = 'http:\/\/'+hostip+':'+port;
+        defaultBaseUrl = 'http:\/\/'+hostip+':'+port,
+        baseUrl = cmd.baseUrl || defaultBaseUrl;
     var commandArgs = [
         cwd + "/../node_modules/yahoo-arrow/index.js",
         "--descriptor=" + desc,
