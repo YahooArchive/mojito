@@ -12,6 +12,7 @@ Features
 
 Bug Fixes
 ------------
+* issue #812:  only walk the first/shallowest version of each package
 
 
 
