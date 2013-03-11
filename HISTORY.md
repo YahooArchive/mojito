@@ -13,7 +13,7 @@ Features
 Bug Fixes
 ------------
 * issue #812:  only walk the first/shallowest version of each package
-
+* issue #1016:  regression that prevented shaker for controllering CDN urls
 
 
 version 0.5.5
