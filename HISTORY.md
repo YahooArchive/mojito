@@ -6,15 +6,19 @@ Notes
 
 Deprecations
 ------------
+* Mojits shipped with Mojito (like HTMLFrame, tunnel, etc) will play by the same
+rules, no more conditions when we walk them. Before, those mojits were forced
+to not have `res.url` because they should not be used from the client side, that's not
+longer the case.
 
 Features
 ------------
 
 Bug Fixes
 ------------
-* issue #812:  only walk the first/shallowest version of each package
-* issue #1016:  regression that prevented shaker for controllering CDN urls
-
+* issue  #812: only walk the first/shallowest version of each package
+* issue #1016: regression that prevented shaker for controllering CDN urls
+* issue #1026: compatibility with Node.js 0.10 by making all mojits to play by the same rules
 
 version 0.5.5
 =================
