@@ -525,7 +525,7 @@ YUI().use(
                 var oldlog = Y.log;
                 var logged = false;
                 Y.log = function(msg, lvl, src) {
-                    if ('info' === lvl && 'mojito-resource-store' === src && msg.match(/^skipping duplicate package a@666\.1\.0/)) {
+                    if ('info' === lvl && 'mojito-resource-store' === src && msg.match(/^skipping duplicate package a/)) {
                         logged = true;
                     }
                 };

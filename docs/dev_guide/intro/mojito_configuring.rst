@@ -435,8 +435,7 @@ staticHandling Object
 | ``prefix``            | string        | "static"                    | The URL prefix for all statically served assets.       |
 |                       |               |                             | Specified as a simple string and wrapped in "/".       |
 |                       |               |                             | For example ``"static"`` becomes the URL prefix        |
-|                       |               |                             | ``/static/``. An empty string can be given if no       |
-|                       |               |                             | prefix is desired.                                     |
+|                       |               |                             | ``/static/``.                                          |
 +-----------------------+---------------+-----------------------------+--------------------------------------------------------+
 
 
