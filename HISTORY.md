@@ -45,6 +45,9 @@ Here are details of the API changes.
 
 Please see the API docs for details of each.
 
+Installing mojito globally (i.e. `npm install --global mojito`) is deprecated. Please install mojito locally in your application.
+
+
 Features
 ------------
 * Global models thru `ac.models.expose()` upgraded from experimental to beta.
