@@ -49,6 +49,9 @@ Here are details of the API changes.
 
 Please see the API docs for details of each.
 
+Please note, mojito cli commands will be moving to a separate package "mojito-cli" in upcoming releases, which will be for global installation. The core mojito package will be for bundling with your application.
+
+
 Features
 ------------
 * Global models thru `ac.models.expose()` upgraded from experimental to beta.
