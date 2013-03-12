@@ -45,7 +45,7 @@ Here are details of the API changes.
 
 Please see the API docs for details of each.
 
-Installing mojito globally (i.e. `npm install --global mojito`) is deprecated. Please install mojito locally in your application.
+Please note, mojito cli commands will be moving to a separate package "mojito-cli" in upcoming releases, which will be for global installation. The core mojito package will be for bundling with your application.
 
 
 Features
