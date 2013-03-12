@@ -6,13 +6,28 @@ Notes
 
 Deprecations
 ------------
+
+Features
+------------
+
+Bug Fixes
+------------
+
+version 0.5.6
+=================
+
+Notes
+------------
+* Mojito cli commands will be moving to a separate package `mojito-cli` in
+  upcoming releases, which will be for global installation. The core mojito
+  package will be for bundling with your application.
+
+Deprecations
+------------
 * Mojits shipped with Mojito (like HTMLFrame, tunnel, etc) will play by the same
 rules, no more conditions when we walk them. Before, those mojits were forced
 to not have `res.url` because they should not be used from the client side, that's not
 longer the case.
-
-Features
-------------
 
 Bug Fixes
 ------------
@@ -48,9 +63,6 @@ Here are details of the API changes.
 * `store.yui.getYUIURLResources()` is now called `store.yui.getYUIURLDetails()` and returns a different datastructure.
 
 Please see the API docs for details of each.
-
-Please note, mojito cli commands will be moving to a separate package "mojito-cli" in upcoming releases, which will be for global installation. The core mojito package will be for bundling with your application.
-
 
 Features
 ------------
