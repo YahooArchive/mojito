@@ -4,9 +4,7 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-var cli,
-    resolve = require('path').resolve,
-    mojito = require(resolve(__dirname, '../lib/mojito'));
+var resolve = require('path').resolve;
+    cli = require(resolve(__dirname, '../lib/management/cli'));
 
-cli = mojito.include('management/cli');
-cli.run();
+cli.run(process.argv.slice(2));
