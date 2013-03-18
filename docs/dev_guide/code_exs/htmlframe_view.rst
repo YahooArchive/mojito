@@ -34,11 +34,9 @@ Implementation Notes
 The screenshot below shows the page served by your application, where the visible 
 content is created by the child mojit of ``HTMLFrameMojit``.
 
-Tab 2 Selected
-
 .. image:: images/htmlframe.preview.gif
    :width: 401px
-   :height: 368px
+   :height: 360px
 
 The ``HTMLFrameMojit`` is a reusable component that is available in every Mojito 
 application. To configure the ``HTMLFrameMojit``, you use the ``application.json`` 
