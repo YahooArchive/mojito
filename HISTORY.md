@@ -9,6 +9,7 @@ Deprecations
 
 Features
 ------------
+* Upgraded to YUI 3.9.0
 
 Bug Fixes
 ------------
