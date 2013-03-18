@@ -6,7 +6,12 @@
 
 var config = {};
 
-config.defaultAppSeed = "http://yui.yahooapis.com/3.4.1/build/yui/yui-min.js";
+/**
+You can customize arrow to use a custom yui seed for the tests by specifing
+the seed url here. This is needed when arrow is trying to use an old version
+of yui.
+**/
+// config.defaultAppSeed = "http://yui.yahooapis.com/3.6.0/build/yui/yui-min.js";
 
 module.exports = config;
 
