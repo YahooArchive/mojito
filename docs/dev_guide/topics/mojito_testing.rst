@@ -665,7 +665,7 @@ or unit tests with one command.
    ``$ java -jar path/to/selenium-server.jar &``
 #. Run the unit tests for the framework and client: 
 
-   ``$ ./run.js test -u --path unit --group fw,client,server``
+   ``$ ./run.js test -u --path unit --group fw,client,server --reuseSession``
 #. You can also run all the functional tests with the below command. 
 
    ``$ ./run.js test -f --path func --port 4000``
@@ -676,7 +676,7 @@ or unit tests with one command.
 #. To run individual unit and functional tests, you pass the test descriptor
    to ``run.js``. 
 
-   ``$ ./run.js test -f --path func --descriptor examples/newsboxes/newsboxes_descriptor.json --port 4000``
+   ``$ ./run.js test -f --path func --descriptor examples/newsboxes/newsboxes_descriptor.json --port 4000 --reuseSession``
 
    The command above runs the functional test for the
    ``newsboxes`` application. The ``--path`` option indicates that the 
