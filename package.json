@@ -62,6 +62,7 @@
     },
     "bugs": "https://github.com/yahoo/mojito/issues",
     "scripts": {
+        "postinstall": "./postinstall.sh",
         "test": "./tests/runall.sh"
     },
     "yahoo": {
