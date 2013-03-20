@@ -4,7 +4,14 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-var resolve = require('path').resolve;
-    cli = require(resolve(__dirname, '../lib/management/cli'));
+var cli = require('../lib/management/cli');
+
+console.warn('mojito: NOTICE, please read.');
+console.warn('mojito: The command line runner in the package "mojito" is now deprecated,');
+console.warn('mojito: and will be removed in a future release. Please install the package');
+console.warn('mojito: "mojito-cli" as follows:');
+console.warn('mojito:');
+console.warn('mojito:    npm install --global mojito-cli');
+console.warn('mojito:');
 
 cli.run(process.argv.slice(2));
