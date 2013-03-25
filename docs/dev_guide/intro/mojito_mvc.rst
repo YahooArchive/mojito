@@ -870,7 +870,7 @@ Yahoo! pages to ``ac.done``:
     ...
 
 In the template, we can now use the block helper ``each`` to
-create links with the objects and their properties``name`` and ``url``:
+create links with the objects and their properties ``name`` and ``url``:
 
 .. code-block: html
 
