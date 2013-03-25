@@ -123,14 +123,15 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
         'handler should override execution context to server (with /tunnel prefix)': function() {
             var nextCalls = 0, writeCalls = 0, endCalls = 0,
                 req = {
-                    'url': '/tunnel',
-                    'method': 'POST',
-                    'body': {
-                        'context': {
-                            'runtime': 'client',
-                            'myKey': 'myValue'
+                    url: '/tunnel',
+                    method: 'POST',
+                    body: {
+                        context: {
+                            runtime: 'client',
+                            myKey: 'myValue'
                         }
-                    }
+                    },
+                    headers: {}
                 },
                 res = {
                 };
@@ -151,13 +152,14 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
         'handler should set execution context to server (with /tunnel prefix)': function() {
             var nextCalls = 0, writeCalls = 0, endCalls = 0,
                 req = {
-                    'url': '/tunnel',
-                    'method': 'POST',
-                    'body': {
-                        'reqs': [{
-                            'data': {}
+                    url: '/tunnel',
+                    method: 'POST',
+                    body: {
+                        reqs: [{
+                            data: {}
                         }]
-                    }
+                    },
+                    headers: {}
                 },
                 res = {
                 };
