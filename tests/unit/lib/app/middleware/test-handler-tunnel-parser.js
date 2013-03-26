@@ -170,6 +170,20 @@ YUI().use('mojito-test-extra', 'test', function (Y) {
             A.areSame('MojitY', req._tunnel.typeReq.type, 'should have parsed out the mojit type correctly');
         },
 
+        'test compatibility with tunnelUrl option': function () {
+            req.url = '/tunnel;_ylt=A0oGdV8GMC1RcBgAQNhXNyoA;_ylu=X3oDMTE5aWhtbjdhBHNlYwNvdi10b3AEY29sbwNzazEEdnRpZANTTUUwNDFfMTU0BHBvcwMx';
+            req.headers['x-mojito-header'] = 'huggies';
+
+            middleware = factory(config);
+            middleware(req, null, function () {
+                nextCallCount += 1;
+            });
+
+            A.areSame(1, nextCallCount, 'next() handler should have been called');
+            A.isObject(req._tunnel.rpcReq, 'should have been identified as an rpc request');
+        },
+
+
         'test tunnel rpc request is correctly parsed': function () {
             middleware = factory(config);
             middleware(req, null, function () {
