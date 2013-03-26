@@ -164,6 +164,34 @@ YUI({useBrowserConsole: true}).use(
                 Y.Mock.verify(mojitProxy._client);
             },
 
+            "test invoke with tunnelUrl option": function () {
+                var mojitProxy = this.mojitProxy,
+                    mojitProxyConfig = this.mojitProxyConfig,
+                    tunnelUrl = '/tunnel;_ylt=A0oGdV8GMC1RcBgAQNhXNyoA';
+
+                mojitProxy._client = Y.Mock();
+                mojitProxy.query = {}; // Avoid window calls
+
+                Y.Mock.expect(mojitProxy._client, {
+                    method: 'executeAction',
+                    args: [Y.Mock.Value.Object, Y.Mock.Value.String, Y.Mock.Value.Function],
+                    run: function (command, id, cb) {
+                        Y.Assert.areSame(tunnelUrl, command._tunnelUrl);
+                    }
+                });
+
+                mojitProxy.invoke('index', {
+                    params: {
+                        body: {
+                            testKey: 'testVal'
+                        }
+                    },
+                    tunnelUrl: tunnelUrl,
+                    rpc: true
+                });
+                Y.Mock.verify(mojitProxy._client);
+            },
+
             "test refreshView": function () {
                 var mojitProxy = this.mojitProxy;
                 mojitProxy._client = Y.Mock();

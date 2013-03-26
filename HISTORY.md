@@ -3,6 +3,10 @@ version @VERSION@
 
 Notes
 ------------
+* A middleware called `mojito-handler-error` has been added to handle
+  middleware errors. If you have redefined the middleware stack and do not have
+  your own error handler, then it is your responsibility to add it so that
+  errors can be handled appropriately.
 
 Deprecations
 ------------
@@ -10,6 +14,14 @@ Deprecations
 Features
 ------------
 * Upgraded to YUI 3.9.0
+* [issue #979](/yahoo/mojito/issues/979):
+  * The `mojito-handler-tunnel` middleware was refactored into a middleware
+    substack that more loosens the coupling between the parsing and handling
+    phases of a tunnel request. This means that applications will have an
+    easier time overriding and customizing tunnel behavior.
+  * The URL is now customizable per request using the `tunnelUrl` option for
+    `mojitProxy.invoke()`, but is still subject to the `tunnelPrefix`
+    restriction.
 
 Bug Fixes
 ------------
