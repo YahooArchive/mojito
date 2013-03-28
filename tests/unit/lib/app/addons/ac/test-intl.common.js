@@ -83,6 +83,85 @@ YUI().use('mojito-intl-addon', 'test', 'datatype-date', function(Y) {
             Mock.verify(mockYIntl);
         },
 
+        'test appLang() gets translation from Y.Intl': function() {
+            var command = {},
+                adapter = null,
+                bundleName = 'shared',
+                ac = {
+                    context: { lang: 'foo' },
+                    instance: {
+                        controller: 'controller-yui-module-name',
+                        langs: { foo: true }
+                    }
+                };
+
+            var mockYIntl = Mock();
+            Mock.expect(mockYIntl, {
+                method: 'setLang',
+                args: [bundleName, 'foo'],
+                returns: 'true'
+            });
+            Mock.expect(mockYIntl, {
+                method: 'get',
+                args: [bundleName, 'key'],
+                returns: 'translation'
+            });
+
+            var yIntl = Y.Intl;
+            Y.Intl = mockYIntl;
+
+            var addon = new Y.mojito.addons.ac.intl(command, adapter, ac);
+
+            var value = addon.appLang('key');
+
+            Y.Intl = yIntl;
+
+            Assert.areEqual('translation', value, 'The return value of Y.Intl.get() was not used');
+            Mock.verify(mockYIntl);
+        },
+
+        'test appLang() formats translation from Y.Intl': function() {
+            var command = {},
+                adapter = null,
+                bundleName = 'shared';
+                appConfig = {
+                    "mojito-intl-addon": {
+                        appBundle: bundleName
+                    }
+                },
+                ac = {
+                    context: { lang: 'foo' },
+                    instance: {
+                        controller: 'controller-yui-module-name',
+                        langs: { foo: true }
+                    }
+                };
+
+            var mockYIntl = Mock();
+            Mock.expect(mockYIntl, {
+                method: 'setLang',
+                args: [bundleName, 'foo'],
+                returns: 'true'
+            });
+            Mock.expect(mockYIntl, {
+                method: 'get',
+                args: [bundleName, 'key'],
+                returns: 'translation {0} {1}'
+            });
+
+            var yIntl = Y.Intl;
+            Y.Intl = mockYIntl;
+
+            var addon = new Y.mojito.addons.ac.intl(command, adapter, ac);
+
+            var value = addon.appLang('key', ['param1', 'param2']);
+
+            Y.Intl = yIntl;
+
+            Assert.areEqual('translation param1 param2', value, 'The return value of Y.Intl.get() was not formatted');
+            Mock.verify(mockYIntl);
+        },
+
         'test formatDate() delegates to Y.DataType.Date.format': function() {
             var command = {},
                 adapter = null,
