@@ -1,3 +1,19 @@
+version @VERSION@
+=================
+
+Notes
+-----
+
+Deprecations
+------------
+
+Features
+--------
+
+Bug Fixes
+---------
+
+
 version 0.5.7
 =============
 
