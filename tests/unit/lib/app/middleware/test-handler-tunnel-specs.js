@@ -20,7 +20,6 @@ YUI().use('mojito-test-extra', 'test', function (Y) {
         req,
         res,
         sendData,
-        statusCode,
         nextCallCount,
         middleware,
         store,
@@ -54,9 +53,9 @@ YUI().use('mojito-test-extra', 'test', function (Y) {
             };
 
             res = {
-                send: function (code, data) {
-                    sendData    = data;
-                    statusCode  = code;
+                writeHead: function () {},
+                end: function (data) {
+                    sendData = data;
                 }
             };
         },
@@ -66,7 +65,6 @@ YUI().use('mojito-test-extra', 'test', function (Y) {
 
             nextCallCount = 0;
             sendData      = undefined;
-            statusCode    = undefined;
             store         = null;
             config        = null;
             req           = null;
@@ -140,9 +138,8 @@ YUI().use('mojito-test-extra', 'test', function (Y) {
             });
 
             A.areSame(0, nextCallCount, 'next() handler should not have been called');
-            A.areSame(200, statusCode, 'status code should have been set to 200');
-            A.isUndefined(error, 'next() handler should have received an error');
-            A.areSame(data, sendData, 'data should have been sent');
+            A.isUndefined(error, 'next() handler should not have received an error');
+            A.areEqual(JSON.stringify(data), sendData, 'data should have been sent');
         }
     }));
 });
