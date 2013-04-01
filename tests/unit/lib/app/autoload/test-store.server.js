@@ -498,7 +498,6 @@ YUI().use(
             'load node_modules': function() {
                 var fixtures = libpath.join(__dirname, '../../../../fixtures/packages'),
                     store = new Y.mojito.ResourceStore({ root: fixtures });
-                store.preload();
 
                 if (!store._mojitRVs.a && !store._mojitRVs.aa && !store._mojitRVs.ba) {
                     // This happens when mojito is installed via npm, since npm
