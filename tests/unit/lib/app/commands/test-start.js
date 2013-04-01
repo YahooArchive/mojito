@@ -84,6 +84,34 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function(Y) {
             A.areSame(8667, port);
         },
 
+        'test run start string port': function() {
+            A.areSame(0, listenCalls);
+            start.run(['8888'], null, function() {});
+            A.areSame(1, listenCalls);
+            A.areSame(8888, port);
+        },
+
+        'test run start funny string port': function() {
+            A.areSame(0, listenCalls);
+            start.run(['07777a.bc'], null, function() {});
+            A.areSame(1, listenCalls);
+            A.areSame(7777, port);
+        },
+
+        'test run start port is "foo"': function() {
+            A.areSame(0, listenCalls);
+            start.run(['foo'], null, function() {});
+            A.areSame(1, listenCalls);
+            A.areSame(8666, port);
+        },
+
+        'test run start with args ["app", "."]': function() {
+            A.areSame(0, listenCalls);
+            start.run(["app", "."], null, function() {});
+            A.areSame(1, listenCalls);
+            A.areSame(8666, port);
+        },
+
         'test run start context': function() {
             var options = {
                 context: "environment:production"

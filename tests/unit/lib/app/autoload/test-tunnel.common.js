@@ -35,6 +35,22 @@ YUI({useBrowserConsole: true}).use(
                 Y.Assert.areEqual(this.appConfig, tunnelClient._appConfig);
             },
 
+            "test tunnelUrl override": function () {
+                var appConfig = this.appConfig,
+                    tunnelClient = this.tunnelClient,
+                    tunnelUrl = '/tunnel;_ylt=A0oGdV8GMC1RcBgAQNhXNyoA',
+                    command = {
+                        _tunnelUrl: tunnelUrl
+                    };
+
+                tunnelClient._makeRequest = function (url) {
+                    Y.Assert.isString(url);
+                    Y.Assert.areEqual(tunnelUrl, url);
+                };
+
+                tunnelClient.rpc(command);
+            },
+
             "test rpc success": function () {
                 var appConfig = this.appConfig,
                     tunnelClient = this.tunnelClient,
