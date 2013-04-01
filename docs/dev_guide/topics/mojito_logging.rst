@@ -7,10 +7,10 @@ log messages are handled by a YUI instance that Mojito creates based on YUI conf
 defined in ``application.json`` or ``application.yaml``. You can set logging levels to 
 control the degree of detail in your log reports. 
 
-Mojito does not write logs into a file instead, it writes into the node.js console. Whatever 
-node.js does with the logs, writing them into a file, transmiting them into an aggregated 
-hub for multiple cores, or whatever other crazy idea people decide to implement has very 
-little to do with Mojito.
+Mojito does not write logs to a file. Instead, Mojito writes logs to the Node.js console. 
+Thus, once logs are passed to Node.js, Mojito has no control over whether Node.js writes 
+logs to a file, transmits them into an aggregated hub for multiple cores, or uses another 
+implementation for logging.
 
 .. _mojito_logging-levels:
 
