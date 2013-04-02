@@ -1,0 +1,52 @@
+{
+    "type": "array",
+    "id": "routes configuration",
+    "items": {
+        "type": "object",
+        "id": "route",
+        "additionalProperties": false,
+        "properties": {
+            "settings": {
+                "type": "array",
+                "id": "context",
+                "required": true,
+                "items": {
+                    "type": "string"
+                }
+            }
+        },
+        "patternProperties": {
+            "^((?!^settings$).)*$": {
+                "type": "object",
+                "id": "routing",
+                "additionalProperties": false,
+                "properties": {
+                    "call": {
+                        "type": "string",
+                        "required": true
+                    },
+                    "params": {
+                        "type": ["object", "string"]
+                    },
+                    "path": {
+                        "type": "string",
+                        "required": true
+                    },
+                    "regex": {
+                        "type": "object"
+                    },
+                    "verbs": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "get", "post", "put", "delete",
+                                "GET", "POST", "PUT", "DELETE"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
