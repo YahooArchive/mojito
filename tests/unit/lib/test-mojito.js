@@ -336,7 +336,7 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
                     _options: {verbose: false}
                 };
 
-            cb = function(/*err, app*/) {};
+            cb = function(err, app) {};
 
             Y.Mock.expect(app, {
                 method: 'listen',
@@ -615,14 +615,24 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
         name: '_configureAppInstance suite',
 
         'test configureAppInstance': function () {
-            var appwtf = {
+            var dispatcher,
+                madeY,      // the Y instance made in mojito.js
+                appwtf = {
                     store: {
+                        getAllURLDetails: function () {
+                            return {};
+                        },
                         getAppConfig: function () {
                             A.isTrue(true);
                             return {
                                 debugMemory: true,
-                                middleware: ['mojito-router'],
-                                perf: {}
+                                middleware: ['mojito-handler-dispatcher']
+                            };
+                        },
+                        getStaticAppConfig: function () {
+                            return {
+                                debugMemory: true,
+                                middleware: ['mojito-handler-dispatcher']
                             };
                         },
                         getStaticContext: function () {
@@ -632,21 +642,36 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
                             getConfigShared: function () {
                                 return {};
                             },
+                            getModulesConfig: function () {
+                                return {
+                                    modules: {
+                                        'mojito-hooks': {
+                                            fullpath: __dirname + '/../../base/mojito-test.js'
+                                        },
+                                        'mojito-dispatcher': {
+                                            fullpath: __dirname + '/../../base/mojito-test.js'
+                                        }
+                                    }
+                                };
+                            },
+                            getYUIURLDetails: function () {
+                                return {};
+                            }
                         }
                     },
-                    use: function () {}
+                    use: function (x) {
+                        dispatcher = x;
+                    }
                 };
 
-            Y.namespace('mojito.Dispatcher').init = function(store) {
-                Y.isObject(store);
-                return {
-                    dispatch: function (cmd, outputHandler) {}
-                };
+            Mojito.Server.prototype._configureLogger = function(y) {
+                madeY = y;
             };
-
-            try {
-                Mojito.Server.prototype._configureAppInstance(appwtf);
-            } catch (err) {}
+            Mojito.Server.prototype._configureAppInstance(appwtf);
+            dispatcher({command: {}}, {}, function() {});
+            A.isObject(madeY.mojito.Dispatcher.outputHandler);
+            A.isObject(madeY.mojito.Dispatcher.outputHandler.page);
+            A.isObject(madeY.mojito.Dispatcher.outputHandler.page.staticAppConfig);
         }
 
     }));
