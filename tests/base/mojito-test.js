@@ -65,7 +65,19 @@ YUI.add('mojito-hb', function(Y, NAME) {});
 
 /* AUTOLOAD */
 YUI.add('mojito-action-context', function(Y, NAME) {});
-YUI.add('mojito-dispatcher', function(Y, NAME) {});
+YUI.add('mojito-dispatcher', function(Y, NAME) {
+    // We need to grab the output handler while testing lib/mojito.js.
+    var mock = {
+        init: function(store) {
+            return {
+                dispatch: function(command, outputHandler) {
+                    mock.outputHandler = outputHandler;
+                }
+            };
+        }
+    };
+    Y.namespace('mojito').Dispatcher = mock;
+});
 YUI.add('mojito-mojit-proxy', function(Y, NAME) {});
 YUI.add('mojito-output-handler', function(Y, NAME) {});
 YUI.add('mojito-perf', function(Y, NAME) {});

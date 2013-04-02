@@ -3,7 +3,7 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-YUI().use('mojito-action-context', 'test', function (Y) {
+YUI().use('mojito-action-context', 'mojito-tests', 'test', function (Y) {
 
     var suite = new Y.Test.Suite('mojito-action-context tests'),
         acStash = {},
@@ -197,7 +197,11 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                         views: 'views'
                     }
                 },
-                adapter: Y.Mock(),
+                adapter: {
+                    page: {
+                        staticAppConfig: {foo: 'bar'}
+                    }
+                },
                 models: {},
                 controller: {index: function() {}},
                 store: store
@@ -206,6 +210,7 @@ YUI().use('mojito-action-context', 'test', function (Y) {
             A.areSame('Type', ac.type, 'bad type');
             A.areSame('index', ac.action, 'bad action');
             A.areSame('context', ac.context, 'bad context');
+            Y.TEST_CMP({foo: 'bar'}, ac.staticAppConfig, 'bad staticAppConfig');
 
             A.areSame('the dispatcher', ac.dispatcher,
                 "dispatcher wasn't stashed.");
