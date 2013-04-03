@@ -11,42 +11,42 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
         cases,
 
         shared = require(Y.MOJITO_DIR + 'lib/app/commands/build/shared.js'),
-        count,
-        conf;
+        count;
 
-    conf = {
-        mojitodir: '/Users/isao/Repos/mojito/myfork/',
-        app: {
-            name: 'staticpf',
-            version: '0.0.1',
-            specs: {
-                frame: {},
-                tunnelProxy: {}
+    function getConf() {
+        return {
+            mojitodir: '/Users/isao/Repos/mojito/myfork/',
+            app: {
+                name: 'staticpf',
+                version: '0.0.1',
+                specs: {
+                    frame: {},
+                    tunnelProxy: {}
+                },
+                dir: '/path/to/app'
             },
-            dir: '/path/to/app'
-        },
-        snapshot: {
-            name: '',
-            tag: '',
-            packages: {}
-        },
-        build: {
-            attachManifest: false,
-            forceRelativePaths: false,
-            insertCharset: 'UTF-8',
-            port: 1111,
-            dir: '/path/to/build/dir',
-            type: 'html5app',
-            uris: []
-        },
-        context: {
-            device: 'iphone'
-        },
-        contextqs: '?device=iphone',
-        tunnelpf: '/tunnel',
-        staticpf: 'staticpf'
-    };
-
+            snapshot: {
+                name: '',
+                tag: '',
+                packages: {}
+            },
+            build: {
+                attachManifest: false,
+                forceRelativePaths: false,
+                insertCharset: 'UTF-8',
+                port: 1111,
+                dir: '/path/to/build/dir',
+                type: 'html5app',
+                uris: []
+            },
+            context: {
+                device: 'iphone'
+            },
+            contextqs: '?device=iphone',
+            tunnelpf: '/tunnel',
+            staticpf: 'staticpf'
+        };
+    }
 
     cases = {
         name: 'build/shared cases',
@@ -81,7 +81,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                     '/staticpf/top_frame/assets/index.css?device=iphone': '/staticpf/top_frame/assets/index.css'
                 };
 
-            shared.mapStoreUris(buildmap, conf, storemap);
+            shared.mapStoreUris(buildmap, getConf(), storemap);
             OA.areEqual(expected, buildmap);
         },
 
@@ -103,7 +103,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                     '/staticpf/top_frame/package.json?device=iphone': '/staticpf/top_frame/package.json'
                 };
 
-            shared.mapStoreUris(buildmap, conf, storemap);
+            shared.mapStoreUris(buildmap, getConf(), storemap);
             OA.areEqual(expected, buildmap);
         },
 
@@ -123,7 +123,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                 };
 
             A.areSame(0, count);
-            shared.mapStoreUris(buildmap, conf, storemap);
+            shared.mapStoreUris(buildmap, getConf(), storemap);
             OA.areEqual(expected, buildmap);
             A.areSame(2, count);
         },
@@ -158,7 +158,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                 expected = {'/tunnel/yahoo.application.test50/top_frame/definition.json?device=iphone': '/yahoo.application.test50/top_frame/definition.json'};
 
             A.areSame(0, count);
-            shared.mapDefxUris(buildmap, conf, store);
+            shared.mapDefxUris(buildmap, getConf(), store);
             OA.areEqual(expected, buildmap);
             A.areSame(0, count);
         },
@@ -193,7 +193,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                 expected = {};
 
             A.areSame(0, count);
-            shared.mapDefxUris(buildmap, conf, store);
+            shared.mapDefxUris(buildmap, getConf(), store);
             OA.areEqual(expected, buildmap);
             A.areSame(0, count);
         },
@@ -206,7 +206,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                 };
 
             A.areSame(0, count);
-            shared.mapFunkySpecUris(buildmap, conf);
+            shared.mapFunkySpecUris(buildmap, getConf());
             OA.areEqual(expected, buildmap);
             A.areSame(0, count);
         },
@@ -239,7 +239,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                 newstr;
 
             A.areSame(0, count);
-            newstr = shared.mungePage(conf, uri, oldstr);
+            newstr = shared.mungePage(getConf(), uri, oldstr);
             A.areSame(newstr, oldstr);
             A.areSame(1, count);
         },
@@ -249,22 +249,18 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                 oldstr = 'blah blah <html> blah blah',
                 newstr,
                 expected = 'blah blah <html manifest="some/uri"> blah blah',
-                oldbuildconf = conf.build;
+                conf = getConf();
 
-            conf.build = {
-                attachManifest: true,
-                forceRelativePaths: true,
-                insertCharset: 'UTF-8',
-            };
+            conf.build.attachManifest = true;
+            conf.build.forceRelativePaths = true;
+            conf.build.insertCharset = 'UTF-8';
 
             A.areSame(0, count);
 
-            newstr = shared.mungePage(conf, uri, oldstr);
+            newstr = shared.mungePage(getConf(), uri, oldstr);
 
             A.areSame(newstr, oldstr);
             A.areSame(1, count);
-
-            conf.build = oldbuildconf;
         },
 
         'test mungePage for attachManifest:true': function () {
@@ -272,13 +268,10 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                 oldstr = 'blah blah <html> blah blah',
                 newstr,
                 expected = 'blah blah <html manifest="cache.manifest"> blah blah',
-                oldbuildconf = conf.build;
+                conf = getConf();
 
-            conf.build = {
-                attachManifest: true,
-                forceRelativePaths: true,
-                insertCharset: 'UTF-8',
-            };
+            conf.build.attachManifest = true;
+            conf.build.forceRelativePaths = true;
 
             A.areSame(0, count);
 
@@ -287,8 +280,6 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
             A.areNotSame(newstr, oldstr);
             A.areSame(expected, newstr);
             A.areSame(1, count);
-
-            conf.build = oldbuildconf;
         },
 
         'test mungePage for attachManifest:true can apply relative path': function () {
@@ -296,13 +287,10 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                 oldstr = 'blah blah <html> blah blah',
                 newstr,
                 expected = 'blah blah <html manifest="../../cache.manifest"> blah blah',
-                oldbuildconf = conf.build;
+                conf = getConf();
 
-            conf.build = {
-                attachManifest: true,
-                forceRelativePaths: true,
-                insertCharset: 'UTF-8',
-            };
+            conf.build.attachManifest = true;
+            conf.build.forceRelativePaths = true;
 
             A.areSame(0, count);
 
@@ -311,8 +299,6 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
             A.areNotSame(newstr, oldstr);
             A.areSame(expected, newstr);
             A.areSame(1, count);
-
-            conf.build = oldbuildconf;
         },
 
         'test mungePage for forceRelativePaths:true': function () {
@@ -320,13 +306,10 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                 oldstr = 'blah blah <a href="/foo/bar/baz/bah.html"> blah blah',
                 newstr,
                 expected = 'blah blah <a href="baz/bah.html"> blah blah',
-                oldbuildconf = conf.build;
+                conf = getConf();
 
-            conf.build = {
-                attachManifest: true,
-                forceRelativePaths: true,
-                insertCharset: 'UTF-8',
-            };
+            conf.build.attachManifest = true;
+            conf.build.forceRelativePaths = true;
 
             A.areSame(0, count);
 
@@ -344,8 +327,6 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
             A.areNotSame(newstr, oldstr);
             A.areSame(expected, newstr);
             A.areSame(2, count);
-
-            conf.build = oldbuildconf;
         },
 
         'test mungePage for forceRelativePaths:true with no common root': function () {
@@ -353,13 +334,10 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                 oldstr = 'blah blah <a href="/foo/bar/baz/bah.html"> blah blah',
                 newstr,
                 expected = 'blah blah <a href="../../../foo/bar/baz/bah.html"> blah blah',
-                oldbuildconf = conf.build;
+                conf = getConf();
 
-            conf.build = {
-                attachManifest: true,
-                forceRelativePaths: true,
-                insertCharset: 'UTF-8',
-            };
+            conf.build.attachManifest = true;
+            conf.build.forceRelativePaths = true;
 
             A.areSame(0, count);
 
@@ -377,8 +355,6 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
             A.areNotSame(newstr, oldstr);
             A.areSame(expected, newstr);
             A.areSame(2, count);
-
-            conf.build = oldbuildconf;
         },
 
         'test mungePage for insertCharset:true': function () {
@@ -386,13 +362,10 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                 oldstr = 'blah blah <head beepoo="boppoo"\npoo> blah blah',
                 newstr,
                 expected = 'blah blah <head beepoo="boppoo"\npoo>\n<meta charset="UTF-8">\n blah blah',
-                oldbuildconf = conf.build;
+                conf = getConf();
 
-            conf.build = {
-                attachManifest: true,
-                forceRelativePaths: true,
-                insertCharset: 'UTF-8',
-            };
+            conf.build.attachManifest = true;
+            conf.build.forceRelativePaths = true;
 
             A.areSame(0, count);
 
@@ -401,8 +374,6 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
             A.areNotSame(newstr, oldstr);
             A.areSame(expected, newstr);
             A.areSame(1, count);
-
-            conf.build = oldbuildconf;
         },
 
         'test mungePage for insertCharset:true simple tag': function () {
@@ -410,13 +381,10 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                 oldstr = 'blah blah <head> blah blah',
                 newstr,
                 expected = 'blah blah <head>\n<meta charset="UTF-8">\n blah blah',
-                oldbuildconf = conf.build;
+                conf = getConf();
 
-            conf.build = {
-                attachManifest: true,
-                forceRelativePaths: true,
-                insertCharset: 'UTF-8',
-            };
+            conf.build.attachManifest = true;
+            conf.build.forceRelativePaths = true;
 
             A.areSame(0, count);
 
@@ -425,21 +393,16 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
             A.areNotSame(newstr, oldstr);
             A.areSame(expected, newstr);
             A.areSame(1, count);
-
-            conf.build = oldbuildconf;
         },
 
         'test mungePage for insertCharset:true does nothing if there already is a charset metatag': function () {
             var uri = '/',
                 oldstr = 'blah blah <head boo\npoo> blah blah<meta charset="zippy">',
                 newstr,
-                oldbuildconf = conf.build;
+                conf = getConf();
 
-            conf.build = {
-                attachManifest: true,
-                forceRelativePaths: true,
-                insertCharset: 'UTF-8',
-            };
+            conf.build.attachManifest = true;
+            conf.build.forceRelativePaths = true;
 
             A.areSame(0, count);
 
@@ -447,8 +410,6 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
 
             A.areSame(newstr, oldstr);
             A.areSame(1, count);
-
-            conf.build = oldbuildconf;
         },
 
     };
