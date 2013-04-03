@@ -284,11 +284,16 @@ applications.
 
 .. _mj_cmdlne-compile_sys:
 
-Compile System
-==============
+Compile System (Deprecated)
+===========================
 
-Mojito comes with a compile command for generating files to optimize an application for 
-production.
+The ``compile`` command for generating files to optimize an application for 
+production has been **deprecated** and may not be available in the future.
+
+We recommend that you use the npm module `Shaker <https://github.com/yahoo/mojito-shaker>`_,
+which lets you compile (i.e., create rollups of) one or more input files. See the 
+`Shaker documentation <http://developer.yahoo.com/cocktails/shaker/>`_ 
+to learn how to use Shaker in Mojito applications.
 
 .. _compile_sys-syntax
 
