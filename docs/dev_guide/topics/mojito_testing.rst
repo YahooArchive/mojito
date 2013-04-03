@@ -642,7 +642,7 @@ The following instructions work for both Macs and Linux.
    `http://localhost:4444/wd/hub/static/resource/hub.html <http://localhost:4444/wd/hub/static/resource/hub.html>`_   
 #. Shut down the Selenium server with ``Ctrl-C`` command.  
 
-.. important:: If you use other versions of Firefox v20 and the Selenium Standalone Server v2.31.0, you 
+.. warning:: If you not using Firefox v20 and the Selenium Standalone Server v2.31.0, you 
                my run into backward compatibility issues. Please see the 
                `Platforms Supported by Selenium <http://docs.seleniumhq.org/about/platforms.jsp>`_
                to learn what Selenium versions and browser versions are compatible.
