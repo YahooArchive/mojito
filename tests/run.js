@@ -129,7 +129,7 @@ function startArrowServer (callback) {
     timeout = setTimeout(function () {
         p.stdout.removeListener('data', listener); // Stop printing output from arrow_server
         callback(null);
-    }, 2000);
+    }, 5000);
 }
 
 function runUnitTests (cmd, callback) {
@@ -349,10 +349,9 @@ function runCommand (path, command, argv, callback) {
 
 function installDependencies (app, basePath, callback) {
     console.log("---Starting installing dependencies---");
-    var timeout,
-        p = runCommand(basePath + '/' + app.path, "npm", ["i"], function () {
-            callback(null);
-        });
+    runCommand(basePath + '/' + app.path, "npm", ["i"], function () {
+        callback(null);
+    });
 }
 
 function runMojitoApp (app, cliOptions, basePath, port, params, callback) {
