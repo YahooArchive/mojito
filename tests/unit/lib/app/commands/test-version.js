@@ -61,7 +61,7 @@ YUI().use('test', function(Y) {
                 }
             });
             libutils.test.setConsole(mockConsole);
-            version.run(["mojit"], null, function() {});
+            version.run(["mojit", ""], null, function() {});
         },
 
         'test run app': function() {

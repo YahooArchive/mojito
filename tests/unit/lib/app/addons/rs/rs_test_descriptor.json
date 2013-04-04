@@ -18,7 +18,7 @@
             },
             "dispatch-helper.server": {
                 "params": {
-                    "lib": "$$config.lib$$/app/addons/rs/dispatch-helper.js,../../../../../../lib/app/addons/rs/config.js,../../../../../../lib/app/addons/rs/selector.js,../../../../../../lib/app/addons/rs/yui.js,../../../../../../lib/app/autoload/store.server.js",
+                    "lib": "$$config.lib$$/app/addons/rs/dispatch-helper.js,../../../../../../lib/app/addons/rs/config.js,../../../../../../lib/app/addons/rs/selector.js,../../../../../../lib/app/addons/rs/yui.js,../../../../../../lib/app/autoload/store.server.js,../../../../../../lib/app/addons/rs/url.js",
                     "test": "./test-dispatch-helper.js",
                     "driver": "nodejs"
                 },
