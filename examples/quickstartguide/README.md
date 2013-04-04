@@ -17,7 +17,8 @@ The application also adapts to the device that you're viewing it on,
 so the tiles will rearrange themselves on a tablet or phone for
 better usability. 
 
-
+## Online instance
+Mojito Quickstart Guide application is currently active online at [http://y.ahoo.it/hkgka](http://y.ahoo.it/hkgka)
 
 ## Running the Application Locally
 
@@ -29,7 +30,7 @@ better usability.
 
 ## Access your local running instance
 
-http://localhost:8666/
+[http://localhost:8666/](http://localhost:8666/)
 
 ## Ready to Learn More?
 
