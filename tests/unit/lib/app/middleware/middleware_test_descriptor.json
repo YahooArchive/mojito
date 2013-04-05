@@ -32,6 +32,38 @@
                 },
                 "group": "fw,unit,server"
             },
+            "handler-tunnel-parser": {
+                "params": {
+                    "lib": "$$config.lib$$/app/middleware/mojito-handler-tunnel-parser.js",
+                    "test": "./test-handler-tunnel-parser.js",
+                    "driver": "nodejs"
+                },
+                "group": "fw,unit,server"
+            },
+            "handler-tunnel-rpc": {
+                "params": {
+                    "lib": "$$config.lib$$/app/middleware/mojito-handler-tunnel-rpc.js",
+                    "test": "./test-handler-tunnel-rpc.js",
+                    "driver": "nodejs"
+                },
+                "group": "fw,unit,server"
+            },
+            "handler-tunnel-specs": {
+                "params": {
+                    "lib": "$$config.lib$$/app/middleware/mojito-handler-tunnel-specs.js",
+                    "test": "./test-handler-tunnel-specs.js",
+                    "driver": "nodejs"
+                },
+                "group": "fw,unit,server"
+            },
+            "handler-tunnel-type": {
+                "params": {
+                    "lib": "$$config.lib$$/app/middleware/mojito-handler-tunnel-type.js",
+                    "test": "./test-handler-tunnel-type.js",
+                    "driver": "nodejs"
+                },
+                "group": "fw,unit,server"
+            },
             "router": {
                 "params": {
                     "lib": "$$config.lib$$/app/middleware/mojito-handler-tunnel.js,../../../../../lib/app/autoload/route-maker.common.js,../../../../../lib/app/autoload/util.common.js",

@@ -2,17 +2,50 @@ version @VERSION@
 =================
 
 Notes
-------------
+-----
 
 Deprecations
 ------------
 
 Features
+--------
+
+Bug Fixes
+---------
+
+
+version 0.5.7
+=============
+
+Notes
 ------------
-* Upgraded to YUI 3.9.0
+* A middleware called `mojito-handler-error` has been added to handle
+  middleware errors. If you have redefined the middleware stack and do not have
+  your own error handler, then it is your responsibility to add it so that
+  errors can be handled appropriately.
+
+* An early preview of [`mojito-cli`](https://github.com/yahoo/mojito-cli) has been published. Users can choose to try it with `npm install --global mojito-cli`. There should be no significant changes in functionality. It is intended to replace the functionality provided by installing the mojito npm package globally (which has been deprecated). Notes:
+  * users install mojito-cli package globally (if they choose to in this preview release period).
+  * users should install the mojito package _locally_, as an npm dependency of their application.
+  * all existing mojito command line commands should continue to operate in much the same way.
+  * `mojito create app Foo`, when mojito-cli has been installed, will use `npm` to install `mojito` locally automatically after generating the app files and directories.
+
+Features
+------------
+* Upgraded to YUI 3.9.1
+* [issue #979](/yahoo/mojito/issues/979):
+  * The `mojito-handler-tunnel` middleware was refactored into a middleware
+    substack that more loosens the coupling between the parsing and handling
+    phases of a tunnel request. This means that applications will have an
+    easier time overriding and customizing tunnel behavior.
+  * The URL is now customizable per request using the `tunnelUrl` option for
+    `mojitProxy.invoke()`, but is still subject to the `tunnelPrefix`
+    restriction.
+
 
 Bug Fixes
 ------------
+* issue bz6160815: port argument must be an integer
 
 version 0.5.6
 =================

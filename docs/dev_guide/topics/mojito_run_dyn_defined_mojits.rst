@@ -52,6 +52,8 @@ Mojito also provides the ``dispatch`` method that can be called from the
 ``ActionContext`` object to run a dynamically defined child mojit. The 
 ``dispatch`` method also allows you to define your own ``flush``, 
 ``done``, and ``error`` functions for the child mojit instance.
+The ``done`` and ``error`` methods are executed synchronously,
+but the ``flush`` method is executed asynchronously.
 
 .. _dyn_defined_mojits-use_cases:
 
