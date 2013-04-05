@@ -131,6 +131,11 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
         name: 'Mojito.Server start/stop tests',
 
         setUp: function () {
+            // Mock the configure function so majority of tests don't have to.
+            realConfig = Mojito.Server.prototype._configureAppInstance;
+            Mojito.Server.prototype._configureAppInstance =
+                function(app, opts) {};
+
             server = new Mojito.Server();
             app = server._app;
             realListen = app.listen;
@@ -141,6 +146,9 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
         },
 
         tearDown: function () {
+            // Restore the original configure function.
+            Mojito.Server.prototype._configureAppInstance = realConfig;
+
             app.listen = realListen;
         },
 
@@ -168,7 +176,6 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
 
             server = new Mojito.Server();
             A.isTrue(configured);
-            Mojito.Server.prototype._configureAppInstance = realConfig;
         },
 
         'configure YUI': function () {
@@ -319,11 +326,10 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
                     _startupTime: 1358377484874,
                     _options: {verbose: true}
                 },
-                actual,
-                expected = undefined;
+                actual;
 
             actual = Mojito.Server.prototype.listen.call(this_scope, port, host, null);
-            A.areSame(expected, actual);
+            A.isUndefined(actual);
         },
 
         'test listen 2': function () {
@@ -378,11 +384,10 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
                         host: 'conan'
                     }
                 },
-                actual,
-                expected = undefined;
+                actual;
 
             actual = Mojito.Server.prototype.listen.call(this_scope);
-            A.areSame(expected, actual);
+            A.isUndefined(actual);
         },
 
 
@@ -461,7 +466,7 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
                     _options: {
                         port: 9999999,
                         verbose: false
-                    },
+                    }
                 };
 
             function cb(err, uri) {
@@ -479,7 +484,7 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
                     _options: {
                         port: 9999999,
                         verbose: false
-                    },
+                    }
                 };
 
             function cb(err, uri) {
@@ -498,7 +503,7 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
                     _options: {
                         port: 9999999,
                         verbose: false
-                    },
+                    }
                 };
 
             function cb(err, uri) {
@@ -516,7 +521,7 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
                     _options: {
                         port: 9999999,
                         verbose: false
-                    },
+                    }
                 };
 
             function cb(err, uri) {
@@ -534,7 +539,7 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
                     _options: {
                         port: 999999,
                         verbose: false
-                    },
+                    }
                 };
 
             function cb(err, uri) {
@@ -562,7 +567,7 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
                     _options: {
                         port: 99999999,
                         verbose: true
-                    },
+                    }
                 };
 
             this_scope._app = expected;
@@ -596,7 +601,7 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
                     _options: {
                         port: 99999999,
                         verbose: true
-                    },
+                    }
                 };
 
             this_scope._app = Y.Mock();
@@ -625,13 +630,11 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
                         getAppConfig: function () {
                             A.isTrue(true);
                             return {
-                                debugMemory: true,
                                 middleware: ['mojito-handler-dispatcher']
                             };
                         },
                         getStaticAppConfig: function () {
                             return {
-                                debugMemory: true,
                                 middleware: ['mojito-handler-dispatcher']
                             };
                         },
@@ -669,9 +672,9 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
             };
             Mojito.Server.prototype._configureAppInstance(appwtf);
             dispatcher({command: {}}, {}, function() {});
-            A.isObject(madeY.mojito.Dispatcher.outputHandler);
-            A.isObject(madeY.mojito.Dispatcher.outputHandler.page);
-            A.isObject(madeY.mojito.Dispatcher.outputHandler.page.staticAppConfig);
+            A.isObject(madeY.mojito.Dispatcher.outputHandler, 'output handler object');
+            A.isObject(madeY.mojito.Dispatcher.outputHandler.page, 'page object');
+            A.isObject(madeY.mojito.Dispatcher.outputHandler.page.staticAppConfig, 'staticAppConfig object');
         }
 
     }));
