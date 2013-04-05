@@ -25,10 +25,13 @@ YUI({
 
             "test Homepage title": function() {
                 // Tests the title in HTML header
-                Y.Assert.areEqual("Quickstart Guide", Y.one('head title').get('innerHTML'));
+                Y.Assert.areEqual("Mojito Quickstart Guide", Y.one('head title').get('innerHTML'));
+
+                // Tests the Mojito banner link
+                Y.Assert.areEqual("http://developer.yahoo.com/cocktails/mojito/", Y.one('.container .logo-nav .mojito_logo').get('href'))
 
                 // Tests the title within the content
-                Y.Assert.areEqual("<em>Mojito</em> Guide", Y.one('.container .logo-nav h1').get('innerHTML'));
+                Y.Assert.areEqual("Quickstart Guide", Y.one('.container .logo-nav h1').get('innerHTML'));
             },
 
             "test Homepage description link": function() {
