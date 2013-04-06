@@ -36,7 +36,7 @@
       base: _frame
       config:
         # Overwrites HTML header title
-        title: Quickstart Guide » Read
+        title: Mojito Quickstart Guide » Read
         child:
           type: Read
           config:
@@ -51,7 +51,7 @@
         # Deploy = true for binder to be executed
         deploy: true
         # HTML header title
-        title: Quickstart Guide
+        title: Mojito Quickstart Guide
         assets:
           top:
             blob:

@@ -5,6 +5,20 @@
  */
 
 /*
+        Copyright
+*/
+footer.copyright {
+    float: left;
+    width: 100%;
+    font-size: 80%;
+    color: #777777;
+    font-family: Helvetica,sans-serif;
+    margin : 1em;
+    text-align: center;
+    font-style: italic;
+}
+
+/*
         Trademark
 */
 footer.trademark {
@@ -33,6 +47,19 @@ div .description {
 }
 
 /*
+        Mojito Logo
+*/
+div.logo-nav .mojito_logo {
+    float: left;
+    width: 12em;
+    height: 3em;
+    background: url("mojito-logo.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: left bottom;
+}
+
+/*
         desktop
 */
 
@@ -54,13 +81,6 @@ div.logo-nav
         font-weight: normal;
         font-family: verdana;
     }
-
-    div.logo-nav h1 em
-    {
-        font-weight: bold;
-        letter-spacing: -0.1em;
-    }
-
 
 div.toc
 {
@@ -186,6 +206,11 @@ div.toc
             font-size: 180%;
         }
 
+        div.logo-nav .mojito_logo {
+            width: 9em;
+            height: 2.2em;
+        }
+
     div.toc
     {
         max-width: 720px;
@@ -252,6 +277,11 @@ div.toc
         font-size: 150%;
     }
 
+    div.logo-nav .mojito_logo {
+        width: 8em;
+        height: 2em;
+    }
+
     div.toc ul li
     {
         height: 100px;
@@ -310,6 +340,11 @@ div.toc
     div.container {
         max-width: 314px;
         margin: 2em auto;
+    }
+
+    div.logo-nav .mojito_logo {
+        width: 15em;
+        height: 2em;
     }
 
     div.toc ul li
