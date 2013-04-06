@@ -102,6 +102,7 @@ function gethostip(callback){
             return; 
         } 
         hostip = addr;
+        hostip = "127.0.0.1";
         console.log('App running at.....' + hostip);
         callback(null);
     });
@@ -226,15 +227,16 @@ function runFuncAppTests(cmd, callback){
             // Install dependecies for specific projects
             // Change here if you want your app to do npm install prior to start mojito server for test
             if (app.path === "../../../examples/quickstartguide") {
-                exeSeries.push(function(cb){
-                    installDependencies(app, cmd.funcPath + '/applications', cb);
-                });
+                exeSeries.push(installDependencies(app, cmd.funcPath + '/applications', function(){
+                    runMojitoApp(app, cmd, cmd.funcPath + '/applications', port, app.param, function(thispid) {
+                        runFuncTests(cmd, des, port, thispid, arrowReportDir, callback);
+                    });
+                }));
+            } else {
+                exeSeries.push(runMojitoApp(app, cmd, cmd.funcPath + '/applications', port, app.param, function(thispid) {
+                    runFuncTests(cmd, des, port, thispid, arrowReportDir, callback);
+                }));
             }
-            exeSeries.push(function(cb){
-                runMojitoApp(app, cmd, cmd.funcPath + '/applications', port, app.param, function(thispid) {
-                    runFuncTests(cmd, des, port, thispid, arrowReportDir, cb);
-                });
-            }); 
         }
     }, function(err) {
           callback(err);
@@ -350,7 +352,7 @@ function runCommand (path, command, argv, callback) {
 function installDependencies (app, basePath, callback) {
     console.log("---Starting installing dependencies---");
     runCommand(basePath + '/' + app.path, "npm", ["i"], function () {
-        callback(null);
+        callback();
     });
 }
 
