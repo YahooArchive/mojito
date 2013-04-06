@@ -102,7 +102,6 @@ function gethostip(callback){
             return; 
         } 
         hostip = addr;
-        hostip = "127.0.0.1";
         console.log('App running at.....' + hostip);
         callback(null);
     });
