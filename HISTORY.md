@@ -7,6 +7,8 @@ Notes
 Deprecations
 ------------
 
+* "hybridapp" code and resources have been removed. They were purpose built for use with other cocktails components outside mojito, but their development has recently stopped.
+
 Features
 --------
 

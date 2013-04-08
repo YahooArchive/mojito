@@ -34,13 +34,6 @@
                 "driver": "nodejs"
             }
         },
-        "hybridapp.js": {
-            "params": {
-                "test": "./test-hybridapp.js",
-                "lib-DISABLED-BZ6046277": "$$config.mojitodir$$/lib/app/commands/build/hybridapp.js",
-                "driver": "nodejs"
-            }
-        },
         "html5app.js": {
             "params": {
                 "test": "./test-html5app.js",
