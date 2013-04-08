@@ -15,6 +15,8 @@ Features
 Bug Fixes
 ---------
 
+* removed a few unnecessary datastructure copies
+
 
 version 0.5.7
 =============
@@ -49,6 +51,7 @@ Bug Fixes
 ------------
 * issue bz6160815: port argument must be an integer
 
+
 version 0.5.6
 =================
 
@@ -70,6 +73,7 @@ Bug Fixes
 * issue  #812: only walk the first/shallowest version of each package
 * issue #1016: regression that prevented shaker for controllering CDN urls
 * issue #1026: compatibility with Node.js 0.10 by making all mojits to play by the same rules
+
 
 version 0.5.5
 =================
