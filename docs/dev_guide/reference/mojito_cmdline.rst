@@ -66,9 +66,7 @@ Mojito offers the following three archetypes for applications and mojits.
   specified. It is a happy medium between ``simple`` and ``full``.
 - ``full`` - Provides the most comprehensive configuration and code for 
   applications.
-- ``hybrid`` - Creates a hybrid HTML5 application that can be plugged into 
-  a future component of Cocktails that will allow HTML5/JavaScript applications 
-  to access the features of native devices. 
+ 
 
 .. _mj_cmdlne-testing:
 
@@ -257,28 +255,6 @@ specifying the pages in the ``"builds": "html5app"`` object in
 ``application.json``. The `html5 <../intro/mojito_configuring.html#html5app-object>`_ 
 object lets you add the ``manifest`` attribute to the ``html`` element, 
 configure relative paths, and specify a list of URLs to pages to generate.
-
-.. _build_types-hybridapp:
-
-hybridapp
-#########
-
-
-To build a hybrid application, use either of the following.
-
-``$ mojito build hybridapp [--context <context>] --snapshotName <snapshot_name> --snapshotTag <snapshot_tag> [<path/to/app/>]`` 
-
-``$ mojito build hybridapp [-c <context>] -n <snapshot_name> -t <snapshot_tag> [<path/to/app/>]`` 
-
-
-This generates a HTML5 application that is customized to work with a future 
-component of the Cocktails suite that will allow you to write HTML5/JavaScript 
-applications that can access native features of mobile devices.
-
-The generated application contains Mojito, frame mojits, the default mojit 
-``top_frame``, your created mojits, and application configuration. The command 
-will also create a ``snapshot.json`` file that can be used tracking and updating 
-applications.
 
 
 
