@@ -4,6 +4,22 @@ version @VERSION@
 Notes
 -----
 
+Deprecations
+------------
+
+Features
+--------
+
+Bug Fixes
+---------
+
+
+version 0.5.8
+=============
+
+Notes
+-----
+
 * The PR [#1062](/yahoo/mojito/issues/1062) fixes the detection problems in YUI that
 where causing multiple issues with Y.JSON.parse and other components. In the current
 implementation, the app itself uses `require('yui')` in a traditional way to avoid any
@@ -16,15 +32,11 @@ Deprecations
 
 * "hybridapp" code and resources have been removed. They were purpose built for use with other cocktails components outside mojito, but their development has recently stopped.
 
-Features
---------
-
 Bug Fixes
 ---------
 
 * [PR #1062](/yahoo/mojito/issues/1062): fixes the issue with Y.config.global after the upgrade to yui@3.9.1
 * removed a few unnecessary datastructure copies
-
 
 version 0.5.7
 =============
