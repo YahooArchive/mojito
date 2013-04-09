@@ -19,4 +19,4 @@ cd $(dirname $0)
 ../tests/run.js test -u --reuseSession --path unit
 
 # func tests
-#../tests/run.js test -f --coverage --path func --reuseSession
+../tests/run.js test -f --path func --reuseSession
