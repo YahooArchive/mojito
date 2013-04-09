@@ -4,6 +4,13 @@ version @VERSION@
 Notes
 -----
 
+* The PR [#1062](/yahoo/mojito/issues/1062) fixes the detection problems in YUI that
+where causing multiple issues with Y.JSON.parse and other components. In the current
+implementation, the app itself uses `require('yui')` in a traditional way to avoid any
+potential issues in the future with the detection system in YUI. It also re-enabled
+the ability to run YUI in debug mode in the server side if you happen to use `filter="debug"`
+in `application.json` which has been broken for a long time.
+
 Deprecations
 ------------
 
@@ -15,6 +22,7 @@ Features
 Bug Fixes
 ---------
 
+* [PR #1062](/yahoo/mojito/issues/1062): fixes the issue with Y.config.global after the upgrade to yui@3.9.1
 * removed a few unnecessary datastructure copies
 
 
