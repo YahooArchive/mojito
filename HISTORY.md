@@ -7,6 +7,9 @@ Notes
 Deprecations
 ------------
 
+* `mojito compile` command was removed. It has been deprecated since 0.5.1.
+
+
 Features
 --------
 
