@@ -61,9 +61,6 @@
         "url": "git://github.com/yahoo/mojito.git"
     },
     "bugs": "https://github.com/yahoo/mojito/issues",
-    "scripts": {
-        "test": "./tests/runall.sh"
-    },
     "yahoo": {
         "mojito": {
             "type": "bundle",
