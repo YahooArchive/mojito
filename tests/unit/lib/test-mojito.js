@@ -576,22 +576,42 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
             A.areSame(expected, actual);
         },
 
-//         'test _configureLogger': function () {
-//          var y = Y.Mock();
-//
-//          y.config = {
-//              logLevel: null,
-//              logLevelOrder: [],
-//              debug: false
-//          };
-//
-//          Y.Mock(y, {
-//              method: 'use',
-//              agrs: ['base']
-//          });
-//
-//          Mojito.Server.prototype._configureLogger.call(null, y, )
-//         },
+        'test _configureLogger': function () {
+            var o = Y.Mock();
+
+            o.config = {
+                logLevel: null,
+                logLevelOrder: ['info', 'error'],
+                debug: true
+            };
+
+            o.Lang = Y.Lang;
+
+            Y.Mock.expect(o, {
+                method: 'use',
+                args: ['base']
+            });
+
+            Y.Mock.expect(o, {
+                method: 'applyConfig',
+                args: [Y.Mock.Value.Object]
+            });
+
+            Y.Mock.expect(o, {
+                method: 'on',
+                args: ['yui:log', Y.Mock.Value.Function],
+                run: function (name, fn) {
+                    A.isTrue(fn({
+                        cat: 'error',
+                        msg: 'error message'
+                    }));
+                }
+            });
+
+            Mojito.Server.prototype._configureLogger(o);
+
+            Y.Mock.verify(o);
+        },
 
         'test close': function () {
             var actual,
@@ -635,6 +655,7 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
                         },
                         getStaticAppConfig: function () {
                             return {
+                                perf: true,
                                 middleware: ['mojito-handler-dispatcher']
                             };
                         },
