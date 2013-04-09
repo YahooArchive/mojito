@@ -13,5 +13,8 @@ console.warn('mojito: "mojito-cli" as follows:');
 console.warn('mojito:');
 console.warn('mojito:    npm install --global mojito-cli');
 console.warn('mojito:');
+console.warn('mojito: All the commands should generally work the same, as long as the mojito');
+console.warn('mojito: package is declared as a dependency of your application, and installed');
+console.warn('mojito: with npm locally. More info at http://git.io/jJazAw');
 
 cli.run(process.argv.slice(2));
