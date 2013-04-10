@@ -36,8 +36,7 @@ Mojito Quickstart Guide application is currently active online at [http://y.ahoo
 
 Learn about the design and how the app works:
 
-* [Mojito Quickstart Guide Application Design](https://github.com/yahoo/mojito/wiki/Mojito-Quickstart-Guide:-Application-Design)
-* [Analyze Mojito Quickstart Guide](https://github.com/yahoo/mojito/wiki/Mojito-Quickstart-Guide:-Analyzing-This-App)
+* [Mojito Quickstart Guide Design and Analysis](https://github.com/yahoo/mojito/wiki/Mojito-Quickstart-Guide:-An-Analysis-of-the-Application)
 
 After you have finished reading the topics provided in the Mojito Quickstart application,
 you're ready to look at the larger body of [Mojito documentation](http://developer.yahoo.com/cocktails/mojito/docs)
