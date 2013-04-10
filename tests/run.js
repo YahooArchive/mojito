@@ -223,9 +223,19 @@ function runFuncAppTests(cmd, callback){
                 });
             }))
         } else {
-            exeSeries.push(runMojitoApp(app, cmd, cmd.funcPath + '/applications', port, app.param, function(thispid) {
-                runFuncTests(cmd, des, port, thispid, arrowReportDir, callback);
-            })); 
+            // Install dependecies for specific projects
+            // Change here if you want your app to do npm install prior to start mojito server for test
+            if (app.path === "../../../examples/quickstartguide") {
+                exeSeries.push(installDependencies(app, cmd.funcPath + '/applications', function(){
+                    runMojitoApp(app, cmd, cmd.funcPath + '/applications', port, app.param, function(thispid) {
+                        runFuncTests(cmd, des, port, thispid, arrowReportDir, callback);
+                    });
+                }));
+            } else {
+                exeSeries.push(runMojitoApp(app, cmd, cmd.funcPath + '/applications', port, app.param, function(thispid) {
+                    runFuncTests(cmd, des, port, thispid, arrowReportDir, callback);
+                }));
+            }
         }
     }, function(err) {
           callback(err);
@@ -338,6 +348,13 @@ function runCommand (path, command, argv, callback) {
     return cmd;
 }
 
+function installDependencies (app, basePath, callback) {
+    console.log("---Starting installing dependencies---");
+    runCommand(basePath + '/' + app.path, "npm", ["i"], function () {
+        callback();
+    });
+}
+
 function runMojitoApp (app, cliOptions, basePath, port, params, callback) {
     params = params || '';
     var cmdArgs = ['start'];
@@ -363,7 +380,7 @@ function runMojitoApp (app, cliOptions, basePath, port, params, callback) {
             console.error('---DEBUG ' + port + ' STDERR--- ' + data.toString());
         });
     }
-    
+
     var listener;
     listener = function(data) {
         if (data.toString().match(/✔ 	Mojito\(v/)) {
