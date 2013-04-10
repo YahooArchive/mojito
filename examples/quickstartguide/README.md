@@ -17,26 +17,27 @@ The application also adapts to the device that you're viewing it on,
 so the tiles will rearrange themselves on a tablet or phone for
 better usability. 
 
-## Online instance
-Mojito Quickstart Guide application is currently active online at [http://y.ahoo.it/mqsg](http://y.ahoo.it/mqsg)
+## Online Instance
+Mojito Quickstart Guide application is currently active online at [http://y.ahoo.it/mqsg](http://y.ahoo.it/mqsg).
 
-## Running the Application Locally
+## Copy and Run the Application Locally
 
-    git clone git@git.corp.yahoo.com:Mojits/quickstartguide.git
-    cd quickstartguide/src
+    git clone git://github.com/yahoo/mojito.git
+    cd examples/quickstartguide
     npm i
     ./script/start_server
 
 
-## Access your local running instance
+## See Your App Running 
 
 [http://localhost:8666/](http://localhost:8666/)
 
 ## Ready to Learn More?
 
-[Mojito Quickstart Guide Application Design](https://github.com/yahoo/mojito/wiki/%5BMojito-Quickstart-Guide%5D-Application-Design)
+Learn about the design and how the app works:
 
-[Analyze Mojito Quickstart Guide](https://github.com/yahoo/mojito/wiki/%5BMojito-Quickstart-Guide%5D-How-to-analyze-this-app%3F)
+* [Mojito Quickstart Guide Application Design](https://github.com/yahoo/mojito/wiki/Mojito-Quickstart-Guide:-Application-Design)
+* [Analyze Mojito Quickstart Guide](https://github.com/yahoo/mojito/wiki/Mojito-Quickstart-Guide:-Analyzing-This-App)
 
 After you have finished reading the topics provided in the Mojito Quickstart application,
 you're ready to look at the larger body of [Mojito documentation](http://developer.yahoo.com/cocktails/mojito/docs)
