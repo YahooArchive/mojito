@@ -9,7 +9,7 @@ Requirements
 
 **System:** Unix-based system.
 
-**Software:** `Node.js (>= 0.6.0 < 0.8) <http://nodejs.org/>`_, `npm (> 1.0.0) <http://npmjs.org/>`_
+**Software:** `Node.js (>= 0.6.0 < 0.9.0) <http://nodejs.org/>`_, `npm (> 1.0.0) <http://npmjs.org/>`_
 
 .. _mojito_quickstart-install:
 
