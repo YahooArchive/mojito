@@ -13,6 +13,8 @@ Features
 Bug Fixes
 ---------
 
+Acknowledgements
+----------------
 
 version 0.5.9
 =============
@@ -37,6 +39,10 @@ Features
 Bug Fixes
 ---------
 
+Acknowledgements
+----------------
+
+Special thanks to @luchenghan for contributing the Mojito Quickstart Guide app for this release.
 
 version 0.5.8
 =============
