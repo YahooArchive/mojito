@@ -497,6 +497,68 @@ YUI.add('GuideModel-tests', function (Y, NAME) {
             model.getGuide(guidemeta, assertCallback);
         },
 
+        'test mojit model getGuide() - empty guide': function(){
+            // Sets up mock libraries for testing
+            var config = {
+                    test: {
+                        libs: {
+                            lib_path: {
+                                join: function(p1, p2, p3) {
+                                    if (p3 != null) {
+                                        A.areSame("dirname", p1);
+                                        A.areSame("..", p2);
+                                        A.areSame("guides", p3);
+                                        return "dirname/../guides/";
+                                    } else {
+                                        A.areSame("dirname/../guides/", p1);
+                                        A.areSame("myfile.md", p2);
+                                        return "dirname/../guides/myfile.md";
+                                    }
+                                }
+                            },
+                            lib_fs: {
+                                exists: function(path, cb) {
+                                    A.areSame("dirname/../guides/myfile.md", path, "Bad path in fs.exists");
+                                    cb(true);
+                                },
+                                readFileSync: function(path, encoding, cb) {
+                                    A.areSame("dirname/../guides/myfile.md", path, "Bad path in readFile");
+                                    A.areSame("utf8", encoding);
+                                    // Return empty string!
+                                    return "";
+                                }
+                            },
+                            dirname: "dirname"
+                        }
+                    }
+                },
+                // Other input arguments to be tested
+                guidemeta = {
+                    filename: "myfile"
+                },
+                // Callback that checks final output of the method
+                assertCallback = function(err, ret){
+                    A.isNull(err);
+                    A.areSame("untitled", ret.title);
+                    A.areSame("", ret.content);
+                };
+
+            // Makes sure testing modules are present
+            A.isNotNull(model && model.test);
+
+            // Makes sure there is an init function to load mock libraries
+            A.isFunction(model.test.init_test);
+
+            // Loads our pre-defined mock libraries
+            model.test.init_test(config);
+
+            // Makes sure method to be tested presents
+            A.isFunction(model.getGuide);
+
+            // Executes testing method
+            model.getGuide(guidemeta, assertCallback);
+        },
+
         'test mojit model getGuide() - bad file checking': function(){
             // Sets up mock libraries for testing
             var config = {

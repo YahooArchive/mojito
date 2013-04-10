@@ -170,7 +170,7 @@ YUI.add('GuideModel', function (Y, NAME) {
     */
     function separateGuideTitleFromContent(content) {
         // Grab the first line in (any) header format (#+ in markdowns)
-        var title = content.match(/#+.*\n/)[0],
+        var title = (content.match(/\s*#+.*\s*/) && content.match(/\s*#+.*\s*/)[0]) || "untitled",
             // Set up the rest of content by extracting the title from content.
             restContent = content.replace(title, "");
 
