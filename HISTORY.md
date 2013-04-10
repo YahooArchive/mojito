@@ -4,6 +4,22 @@ version @VERSION@
 Notes
 -----
 
+Deprecations
+------------
+
+Features
+--------
+
+Bug Fixes
+---------
+
+
+version 0.5.9
+=============
+
+Notes
+-----
+
 * The PR [#1059](/yahoo/mojito/issues/1059) adds the Mojito Quickstart Guide application
 to the `examples` directory. The application allows you to view documentation on
 different devices and serves as a reference application. You can view the live application
