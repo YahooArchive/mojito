@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 YUI().use('mojito-action-context', 'test', function (Y) {
-console.error(1);
+
     var suite = new Y.Test.Suite('mojito-action-context tests'),
         acStash = {},
         A = Y.Assert,
@@ -888,7 +888,7 @@ console.error(1);
         }
 
     }));
-console.error(2);
+
     Y.Test.Runner.add(suite);
-console.error(3);
+
 });
