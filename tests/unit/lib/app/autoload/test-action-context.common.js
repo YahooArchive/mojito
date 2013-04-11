@@ -3,8 +3,8 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-YUI().use('mojito-action-context', 'mojito-tests', 'test', function (Y) {
-
+YUI().use('mojito-action-context', 'test', function (Y) {
+console.error(1);
     var suite = new Y.Test.Suite('mojito-action-context tests'),
         acStash = {},
         A = Y.Assert,
@@ -210,7 +210,8 @@ YUI().use('mojito-action-context', 'mojito-tests', 'test', function (Y) {
             A.areSame('Type', ac.type, 'bad type');
             A.areSame('index', ac.action, 'bad action');
             A.areSame('context', ac.context, 'bad context');
-            Y.TEST_CMP({foo: 'bar'}, ac.staticAppConfig, 'bad staticAppConfig');
+            A.areSame(1, Y.Object.keys(ac.staticAppConfig).length, 'bad staticAppConfig object');
+            A.areSame('bar', ac.staticAppConfig.foo, 'bad staticAppConfig.foo value');
 
             A.areSame('the dispatcher', ac.dispatcher,
                 "dispatcher wasn't stashed.");
@@ -887,7 +888,7 @@ YUI().use('mojito-action-context', 'mojito-tests', 'test', function (Y) {
         }
 
     }));
-
+console.error(2);
     Y.Test.Runner.add(suite);
-
+console.error(3);
 });
