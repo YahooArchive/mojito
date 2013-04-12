@@ -30,17 +30,17 @@ Implementation Notes
 The following screenshots show you how the application appears on different 
 devices.
 
-.. image:: images/preview.iphone.gif
-   :height: 368px
-   :width: 401px
+.. image:: images/preview.iphone.png
+   :height: 530px
+   :width: 500px
 
-.. image:: images/preview.android.gif
-   :height: 368px
-   :width: 401px
+.. image:: images/preview.android.png
+   :height: 530px
+   :width: 500px
 
-.. image:: images/preview.blackberry.gif
-   :height: 368px
-   :width: 401px
+.. image:: images/preview.blackberry.png
+   :height: 523px
+   :width: 500px
 
 .. _device_views_notes-config:
 

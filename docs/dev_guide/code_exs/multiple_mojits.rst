@@ -34,7 +34,7 @@ In the screenshot below, you see an HTML page divided into header, body, and foo
 sections that were created by individual mojits.
 
 .. image:: images/preview.multiple_mojits.gif
-   :height: 368px
+   :height: 415px
    :width: 401px
 
 In the ``application.json`` below that is used for this code example, you see that this 
