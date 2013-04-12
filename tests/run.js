@@ -151,12 +151,19 @@ function runUnitTests (cmd, callback) {
     if ('phantomjs' !== cmd.unitBrowser && cmd.reuseSession) {
         commandArgs.push('--reuseSession');
     }
+    
+    var filestoexclude = 'tests/base/mojito-test.js,' +
+        'lib/app/autoload/mojito-client.client.js,' +
+        'lib/app/autoload/perf.client.js,lib/app/autoload/perf.server.js,' +
+        'lib/app/commands/,' +
+        'lib/management/cli.js';
     commandArgs.push('--logLevel=' + cmd.logLevel);
     commandArgs.push('--browser=' + cmd.unitBrowser);
     cmd.driver && commandArgs.push('--driver=' + cmd.driver);
     cmd.testName && commandArgs.push('--testName=' + cmd.testName);
     cmd.group && commandArgs.push('--group=' + cmd.group);
     cmd.coverage && commandArgs.push('--coverage=' + cmd.coverage);
+    cmd.coverage && commandArgs.push('--coverageExclude=' + filestoexclude);
 
     var p = runCommand(
         cmd.unitPath,
