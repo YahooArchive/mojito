@@ -29,7 +29,7 @@ The following screenshots show you how the application appears on different
 devices.
 
 .. image:: images/scroll_view.preview.gif
-   :height: 368px
+   :height: 415px
    :width: 401px
 
 In the ``application.json`` file for this code example, the customized 
