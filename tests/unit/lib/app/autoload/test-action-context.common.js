@@ -197,7 +197,11 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                         views: 'views'
                     }
                 },
-                adapter: Y.Mock(),
+                adapter: {
+                    page: {
+                        staticAppConfig: {foo: 'bar'}
+                    }
+                },
                 models: {},
                 controller: {index: function() {}},
                 store: store
@@ -206,6 +210,8 @@ YUI().use('mojito-action-context', 'test', function (Y) {
             A.areSame('Type', ac.type, 'bad type');
             A.areSame('index', ac.action, 'bad action');
             A.areSame('context', ac.context, 'bad context');
+            A.areSame(1, Y.Object.keys(ac.staticAppConfig).length, 'bad staticAppConfig object');
+            A.areSame('bar', ac.staticAppConfig.foo, 'bad staticAppConfig.foo value');
 
             A.areSame('the dispatcher', ac.dispatcher,
                 "dispatcher wasn't stashed.");

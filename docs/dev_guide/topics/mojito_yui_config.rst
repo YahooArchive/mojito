@@ -150,8 +150,7 @@ structure and then make assumptions. From this analysis, the synthetic modules
 create application metadata that can be used by YUI Loader to load the application and 
 Mojito modules on demand. Without this metadata, the application cannot function.
 
-Synthetic modules are not physical files except in the case of hybrid applications, 
-when synthetic modules are generated as files during the build process. If you need
+Synthetic modules are not physical files. If you need
 to generate physical files for a CDN from the synthetic modules, you can 
 use `Shaker <http://developer.yahoo.com/cocktails/shaker/>`_. 
 For production, we recommend using Shaker, especially in the case that your mojits contain 

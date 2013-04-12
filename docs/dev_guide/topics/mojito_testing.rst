@@ -581,6 +581,7 @@ Required Software
 - `Java <http://www.java.com/en/download/manual.jsp>`_
 - `Node.js 0.6 or higher (packaged with npm) <http://nodejs.org/>`_
 - `Git <http://git-scm.com/downloads>`_
+- `Firefox v20 <http://www.mozilla.org/en-US/products/download>`_
 
 .. _func_unit_reqs-macs:
 
@@ -632,14 +633,19 @@ Installing Selenium (recommended)
 
 The following instructions work for both Macs and Linux.
 
-#. `Download the Selenium JAR executable <http://selenium.googlecode.com/files/selenium-server-standalone-2.22.0.jar>`_.
+#. `Download the Selenium v2.13.0 JAR executable <http://selenium.googlecode.com/files/selenium-server-standalone-2.31.0.jar>`_.
 #. Start the Selenium server:
 
-   ``$ java -jar path/to/selenium-server.jar``
+   ``$ java -jar path/to/selenium-server-standalone-2.31.0.jar``
 #. Confirm Selenium is running by going to the following URL: 
 
    `http://localhost:4444/wd/hub/static/resource/hub.html <http://localhost:4444/wd/hub/static/resource/hub.html>`_   
 #. Shut down the Selenium server with ``Ctrl-C`` command.  
+
+.. warning:: If you are not using Firefox v20 and the Selenium Standalone Server v2.31.0, you 
+               may run into backward compatibility issues. Please see the 
+               `Platforms Supported by Selenium <http://docs.seleniumhq.org/about/platforms.jsp>`_
+               to learn what Selenium and browser versions are compatible.
 
 .. _func_unit-run:
 

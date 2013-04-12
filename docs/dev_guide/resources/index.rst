@@ -20,8 +20,8 @@ Presentations/Slidecasts
 | Title                                                  | Topics Covered                                         | Description                                            | Presenter            |
 +========================================================+========================================================+========================================================+======================+
 | `Mojito: Tale of Two Runtimes                          | basic architecture of Mojito, mojits, MVC in           | Provides a quick overview of Mojito and its core       | Matt Taylor          |
-| <http://www.slideshare.net/rhyolight/mojito-           | Mojito, ActionContext object, addons, binders,         | components.                                            |                      |
-| sl-2011>`_                                             | client/server execution                                |                                                        |                      |
+| <http://www.infoq.com/presentations/Mojito-A-Tale-of-  | Mojito, ActionContext object, addons, binders,         | components.                                            |                      |
+| Two-Runtimes>`_                                        | client/server execution                                |                                                        |                      |
 +--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+----------------------+
 | `JS Conf 2012 - Bruno Fernandez-Ruiz                   | device connectivity, network latency, progressive      | Discusses how Mojito can solve the problem of serving  | Bruno Fernandez-Ruiz |
 | <http://blip.tv/file/6125446>`_                        | enhancement, JavaScript on client/server, YUI3,        | content to different devices, handle connectivity      |                      |

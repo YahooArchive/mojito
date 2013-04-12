@@ -7,12 +7,69 @@ Notes
 Deprecations
 ------------
 
+* `mojito compile` command was removed. It has been deprecated since 0.5.1.
+
+
 Features
 --------
 
 Bug Fixes
 ---------
 
+Acknowledgements
+----------------
+
+version 0.5.9
+=============
+
+Notes
+-----
+
+* The PR [#1059](/yahoo/mojito/issues/1059) adds the Mojito Quickstart Guide application
+to the `examples` directory. The application allows you to view documentation on
+different devices and serves as a reference application. You can view the live application
+at http://y.ahoo.it/mqsg. Also, see the wiki page 
+[Mojito Quickstart Guide: Intro](https://github.com/yahoo/mojito/wiki/Mojito-Quickstart-Guide:-Intro) 
+for more information about the application.
+
+
+Deprecations
+------------
+
+Features
+--------
+
+Bug Fixes
+---------
+
+Acknowledgements
+----------------
+
+Special thanks to @luchenghan for contributing the Mojito Quickstart Guide app for this release.
+
+version 0.5.8
+=============
+
+Notes
+-----
+
+* The PR [#1062](/yahoo/mojito/issues/1062) fixes the detection problems in YUI that
+where causing multiple issues with Y.JSON.parse and other components. In the current
+implementation, the app itself uses `require('yui')` in a traditional way to avoid any
+potential issues in the future with the detection system in YUI. It also re-enabled
+the ability to run YUI in debug mode in the server side if you happen to use `filter="debug"`
+in `application.json` which has been broken for a long time.
+
+Deprecations
+------------
+
+* "hybridapp" code and resources have been removed. They were purpose built for use with other cocktails components outside mojito, but their development has recently stopped.
+
+Bug Fixes
+---------
+
+* [PR #1062](/yahoo/mojito/issues/1062): fixes the issue with Y.config.global after the upgrade to yui@3.9.1
+* removed a few unnecessary datastructure copies
 
 version 0.5.7
 =============
@@ -47,6 +104,7 @@ Bug Fixes
 ------------
 * issue bz6160815: port argument must be an integer
 
+
 version 0.5.6
 =================
 
@@ -68,6 +126,7 @@ Bug Fixes
 * issue  #812: only walk the first/shallowest version of each package
 * issue #1016: regression that prevented shaker for controllering CDN urls
 * issue #1026: compatibility with Node.js 0.10 by making all mojits to play by the same rules
+
 
 version 0.5.5
 =================

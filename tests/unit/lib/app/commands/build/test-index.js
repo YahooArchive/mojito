@@ -95,7 +95,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
         'test exports': function () {
             A.isArray(index.options);
             A.isString(index.usage);
-            A.areSame(6, index.options.length);
+            A.areSame(4, index.options.length);
             A.isFunction(index.run);
         },
 
@@ -157,29 +157,6 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                 A.isString(err);
                 A.isNull(usg);
                 A.isTrue(seppuku);
-                A.areSame(expected, err);
-            });
-        },
-
-        'test hybridapp requires snapshot options': function () {
-            var expected = 'Not a Mojito directory';
-
-            // purposely having run() "fail" early to limit test scope
-            mocks.util.isMojitoApp = valfn(false, A.isString);
-
-            index.run(['hybridapp'], {}, function(err, usg, seppuku) {
-                A.isString(err);
-                A.isNull(usg);
-                A.isTrue(seppuku);
-                // err is from options check
-                A.areSame('Build hybridapp requires --snapshotName and --snapshotTag', err);
-            });
-
-            index.run(['hybridapp'], {snapshotName: 1, snapshotTag:1}, function(err, usg, seppuku) {
-                A.isString(err);
-                A.isNull(usg);
-                A.isTrue(seppuku);
-                // no options error
                 A.areSame(expected, err);
             });
         },
