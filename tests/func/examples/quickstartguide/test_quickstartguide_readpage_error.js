@@ -23,23 +23,28 @@ YUI({
 
         suite.add(new Y.Test.Case({
             "test Reader nav bar": function() {
-                // Tests the previous link, should not present
-                Y.Assert.isNull(Y.one('.container .contents-nav .link-prev'));
 
-                // Tests the next link, should not present
-                Y.Assert.isNull(Y.one('.container .contents-nav .link-next'));
+                // Wait for elements to appear
+                // For more info, visit http://yuilibrary.com/yui/docs/test/#asynctests
+                this.wait(function(){
+                    // Tests the previous link, should not present
+                    Y.Assert.isNull(Y.one('.container .contents-nav .link-prev'));
 
-                // HOME menu
-                Y.Assert.areEqual("HOME", Y.one('.container .contents-nav .link-home').get('innerHTML'));
+                    // Tests the next link, should not present
+                    Y.Assert.isNull(Y.one('.container .contents-nav .link-next'));
 
-                // Tests error article title
-                Y.Assert.areEqual("oh noes!", Y.one('.container .content-title h2').get('innerHTML'));
+                    // HOME menu
+                    Y.Assert.areEqual("HOME", Y.one('.container .contents-nav .link-home').get('innerHTML'));
 
-                // Tests article content
-                Y.Assert.areEqual("Ooo, could not fetch content for undefined.md", Y.one('.container .content #desc').get('innerHTML'));
+                    // Tests error article title
+                    Y.Assert.areEqual("oh noes!", Y.one('.container .content-title h2').get('innerHTML'));
 
-                // Tests error article footer
-                Y.Assert.areEqual("oh noes!", Y.one('.container .link-bottom p').get('innerHTML'));
+                    // Tests article content
+                    Y.Assert.areEqual("Ooo, could not fetch content for undefined.md", Y.one('.container .content #desc').get('innerHTML'));
+
+                    // Tests error article footer
+                    Y.Assert.areEqual("oh noes!", Y.one('.container .link-bottom p').get('innerHTML'));
+                }, 2000);
             }
         }));
 
