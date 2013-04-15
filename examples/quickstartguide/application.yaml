@@ -15,7 +15,7 @@
 
   # Declares Instances
   specs:
-    # For routing info on this instance, visit: https://git.corp.yahoo.com/Mojits/quickstartguide/blob/master/src/routes.yaml#L15-L20
+    # For routing info on this instance, visit: https://github.com/yahoo/mojito/blob/develop/examples/quickstartguide/routes.yaml#L15-L20
     shelf:
       # "base" will inherit the setting from specified instance
       base: _frame
@@ -31,7 +31,7 @@
               top:
                 css:
                 - /static/Shelf/assets/shelf.css
-    # For routing info on this instance, visit: https://git.corp.yahoo.com/Mojits/quickstartguide/blob/master/src/routes.yaml#L21-L25
+    # For routing info on this instance, visit: https://github.com/yahoo/mojito/blob/develop/examples/quickstartguide/routes.yaml#L21-L25
     read:
       base: _frame
       config:

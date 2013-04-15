@@ -13,14 +13,14 @@
   - master
   # Route instance name. Not the actual URI
   /:
-    # "shelf" is defined in https://git.corp.yahoo.com/Mojits/quickstartguide/blob/master/src/application.yaml#L18-L33
-    # this calls "index" method of "Shelf" mojit in https://git.corp.yahoo.com/Mojits/quickstartguide/blob/master/src/mojits/Shelf/controller.common.js#L60-L99
+    # "shelf" is defined in https://github.com/yahoo/mojito/blob/develop/examples/quickstartguide/application.yaml#L18-L33
+    # this calls "index" method of "Shelf" mojit in https://github.com/yahoo/mojito/blob/develop/examples/quickstartguide/mojits/Shelf/controller.common.js#L61-L100
     call: shelf.index
     # path can be either "/" or "/index.html"
     path: /(|index.html)
   /read.html:
-    # "read" is defined in https://git.corp.yahoo.com/Mojits/quickstartguide/blob/master/src/application.yaml#L34-L46
-    # this calls "index" method of "Shelf" mojit in https://git.corp.yahoo.com/Mojits/quickstartguide/blob/master/src/mojits/Shelf/controller.common.js#L83-L116
+    # "read" is defined in https://github.com/yahoo/mojito/blob/develop/examples/quickstartguide/application.yaml#L34-L46
+    # this calls "index" method of "Read" mojit in https://github.com/yahoo/mojito/blob/develop/examples/quickstartguide/mojits/Read/controller.common.js#L102-L132
     call: read.index
     path: /read.html
 ...
