@@ -156,7 +156,7 @@ function runUnitTests (cmd, callback) {
         'lib/app/autoload/mojito-client.client.js,' +
         'lib/app/autoload/perf.client.js,lib/app/autoload/perf.server.js,' +
         'lib/app/commands/,' +
-        'lib/management/cli.js';
+        'lib/management/';
     commandArgs.push('--logLevel=' + cmd.logLevel);
     commandArgs.push('--browser=' + cmd.unitBrowser);
     cmd.driver && commandArgs.push('--driver=' + cmd.driver);
