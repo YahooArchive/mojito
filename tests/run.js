@@ -102,6 +102,7 @@ function gethostip(callback){
             return; 
         } 
         hostip = addr;
+        hostip = "127.0.0.1";
         console.log('App running at.....' + hostip);
         callback(null);
     });
@@ -351,20 +352,19 @@ function runCommand (path, command, argv, callback) {
 function installDependencies (app, basePath, callback) {
     console.log("---Starting installing dependencies---");
     // Install with npm
-    var p1 = runCommand(basePath + '/' + app.path, "npm", ["i"], function () {
-        callback();
-    });
-
-    // If npm exit abnormally, try ynpm (Jenkins may come here)
-    p1.on("error", function() {
-        var p2 = runCommand(basePath + '/' + app.path, "ynpm", ["i"], function () {
-            callback();
-        });
-        // If neither ynpm is available, raise exeception and suggest to install npm
-        p2.on("error", function(err) {
-            process.stderr.write('please install npm.\n');
-            callback(1);
-        });
+    runCommand(basePath + '/' + app.path, "npm", ["i"], function (code) {
+        if (code !== 0) {
+            // Try to install with ynpm if npm is not available
+            runCommand(basePath + '/' + app.path, "ynpm", ["i"], function (code) {
+                if (code !== 0) {
+                    // Neither npm nor ynpm is available
+                    process.stderr.write("please install npm.\n");
+                }
+                callback(code);
+            });
+        } else {
+            callback(code);
+        }
     });
 }
 
