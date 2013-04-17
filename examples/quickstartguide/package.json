@@ -33,6 +33,6 @@
     },
     "dependencies": {
         "node-markdown": "*",
-        "mojito": ">0.5.2"
+        "mojito": "*"
     }
 }
