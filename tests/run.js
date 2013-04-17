@@ -351,8 +351,8 @@ function runCommand (path, command, argv, callback) {
 function installDependencies (app, basePath, callback) {
     console.log("---Starting installing dependencies---");
     // Install with npm
-    runCommand(basePath + '/' + app.path, "npm", ["i"], function (code) {
-        // Install with ynpm if npm is not available
+    runCommand(basePath + '/' + app.path, "npm", ["i"], function () {
+        // Install with ynpm (for Jenkins)
         runCommand(basePath + '/' + app.path, "ynpm", ["i"], function () {
             callback();
         });
