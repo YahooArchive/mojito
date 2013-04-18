@@ -354,7 +354,7 @@ function installDependencies (app, basePath, callback) {
     runCommand(basePath + '/' + app.path, "npm", ["i"], function (code) {
         if (code !== 0) {
             // Try to install with ynpm if npm is not available
-            runCommand(basePath + '/' + app.path, "ynpm", ["i"], function (code) {
+            runCommand(basePath + '/' + app.path, "ynpm", ["i", "--registry=http://ynpm-registry.corp.yahoo.com:4080"], function (code) {
                 if (code !== 0) {
                     // Neither npm nor ynpm is available
                     process.stderr.write("please install npm.\n");
