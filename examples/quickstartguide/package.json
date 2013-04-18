@@ -20,8 +20,8 @@
     "yahoo": {
         "custodian":{
             "email": "devel-ydesignmojits@yahoo-inc.com",
-			"url": "http://twiki.corp.yahoo.com/view/Cocktails/GodmotherDocs"
-	    },
+            "url": "https://github.com/yahoo/mojito/wiki/Mojito-Quickstart-Guide"
+        },
         "bugzilla": {
             "product": "Mobile",
             "component": "General"
