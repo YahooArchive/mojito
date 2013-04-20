@@ -141,8 +141,73 @@ General
 .. _moj_nodemon:
 .. topic:: **Do I have to restart Mojito to see updates that I've made to my application?**
 
-    No, you can use ``nodemon`` or ``supervisor`` to start Mojito, which will automatically 
-    update any changes that you've made to your application.
+    No, you can use the development environment with certain configurations or use
+    an external module such as ``nodemon`` or ``supervisor`` to start Mojito, which will 
+    automatically update any changes that you've made to your application.
+
+
+    **Using the Development Environment**
+
+    #. In your ``application.json``, add the configuration object with the 
+       ``settings`` property given the array ``[ "environment:development" ]`` with the
+       configurations for ``staticHandling``, ``viewEngine``, and ``yui`` highlighted 
+       below. 
+
+       .. code-block:: javascript
+          :emphasize-lines: 17-31
+
+          [
+            {
+              "settings": [ "master" ],
+              "appPort": "8666",
+              "specs": {
+                "frame": {
+                  "type": "HTMLFrameMojit",
+                  "config": {
+                    "deploy": true,
+                    "child": {
+                      "type": "foo"
+                    }
+                  }
+                }
+              }
+            },
+            {
+              "settings": [ "environment:development" ],
+              "staticHandling": {
+                "forceUpdate": true
+              },
+              "viewEngine": {
+                "cacheTemplates": false
+              },
+              "yui": {
+                "config": {
+                  "combine": false
+                }
+              }
+            }
+          ]
+   
+       .. note:: Your application has to deploy code to the client, so 
+                ``deploy`` must be set to ``true``.
+
+    #. Start your application with the context ``environment:development``:
+
+       ``$ mojito start --context environment:development``
+    #. Open your application in a browser.
+    #. Modify code in your binders or templates.
+    #. Refresh your browser to see the updates in your application.
+
+    **Caveats**
+
+    Although binder code and templates will be updated after you refresh your browser,
+    resources, such as a model or controller, with a ``server`` or ``common`` affinity 
+    are executed in the Node.js environment, and therefore, will not get refreshed. 
+    You will need to restart your application to see changes. Also, meta data for modules,
+    such as adding a module dependency to the ``requires`` array will not be reflected 
+    until you restart the application.
+
+    **Using External Modules**    
     
     You will need ``npm`` to install ``nodemon`` or ``supervisor``. To use ``nodemon``, 
     you will need a script to start the server. 
