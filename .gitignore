@@ -1,0 +1,6 @@
+.DS_Store
+.lock-wscript
+.svn/
+*.bak
+*~
+node_modules
