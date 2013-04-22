@@ -146,15 +146,14 @@ General
     automatically update any changes that you've made to your application.
 
 
-    **Using the Development Environment**
+    **I. Using the Development Environment**
 
     #. In your ``application.json``, add the configuration object with the 
        ``settings`` property given the array ``[ "environment:development" ]`` with the
-       configurations for ``staticHandling``, ``viewEngine``, and ``yui`` highlighted 
+       configurations for ``staticHandling``, ``viewEngine``, and ``yui`` shown 
        below. 
 
        .. code-block:: javascript
-          :emphasize-lines: 17-31
 
           [
             {
@@ -207,7 +206,7 @@ General
     such as adding a module dependency to the ``requires`` array will not be reflected 
     until you restart the application.
 
-    **Using External Modules**    
+    **II. Using External Modules**    
     
     You will need ``npm`` to install ``nodemon`` or ``supervisor``. To use ``nodemon``, 
     you will need a script to start the server. 
