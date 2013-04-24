@@ -3,7 +3,14 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-YUI().use('mojito-client-store', 'test', 'querystring-stringify-simple', function (Y) {
+
+/*jslint anon:true, sloppy:true, nomen:true, node:true*/
+/*global YUI*/
+
+/*
+ * Test suite for the store.client.js file functionality.
+*/
+YUI().use('mojito-client-store', 'test', 'querystring-stringify-simple', 'io', function (Y) {
 
     var suite = new Y.Test.Suite('mojito-client-store-tests'),
         A = Y.Assert,
@@ -11,12 +18,21 @@ YUI().use('mojito-client-store', 'test', 'querystring-stringify-simple', functio
 
     suite.add(new Y.Test.Case({
 
+        name: 'Store tests',
+
         setUp: function () {
             this.store = new Y.mojito.ResourceStore({
                 appConfig: {
-                    foo: 1
+                    foo: 1,
+                    staticHandling: {
+                        prefix: "mystaticprefix"
+                    }
                 },
-                pathToRoot: '/root'
+                pathToRoot: '/root',
+                context: {
+                    env: 'dev'
+                },
+                routes: '/foo/bar'
             });
         },
 
@@ -61,6 +77,140 @@ YUI().use('mojito-client-store', 'test', 'querystring-stringify-simple', functio
         'test app config value': function() {
             var config = this.store.getAppConfig();
             A.areEqual(1, config.foo);
+        },
+
+        'test app static config value': function() {
+            var config = this.store.getStaticAppConfig();
+            A.areEqual(1, config.foo);
+        },
+
+        'test app static context': function() {
+            var context = this.store.getStaticContext();
+            A.areEqual('dev', context.env);
+        },
+
+        'test app routes': function() {
+            var routes = this.store.getRoutes();
+            A.areEqual('/foo/bar', routes);
+        },
+
+        'test validateContext': function() {
+            var valid = this.store.validateContext(this.store.getStaticContext());
+            A.areEqual(true, valid);
+        },
+
+        'test validateInstance positive': function() {
+            var validbase = [1, 2, 3],
+                valid;
+            validbase.type = "sometype";
+            valid = this.store._validateInstance(validbase);
+            A.areEqual(true, valid);
+        },
+
+        'test validateInstance negtive': function() {
+            var invalidbase = [1, 2, 3],
+                valid = this.store._validateInstance(invalidbase);
+            A.areEqual(false, valid);
+        },
+
+        'test expandInstanceForEnv1': function() {
+            var instance = {
+                type: 'test_mojit_1',
+                config: {testKey4: 'other'}
+            };
+            try {
+                this.store.expandInstanceForEnv("client", instance, {}, function(err, base) {});
+            } catch (err) {
+                A.fail("Got err: " + err.message);
+            }
+        },
+
+        'test expandInstanceForEnv2': function() {
+            var instance = {
+                type: 'test_mojit_1',
+                config: {testKey4: 'other'}
+            };
+            this.store._mockLib("/root/mystaticprefix/test_mojit_1/definition.json?");
+            try {
+                this.store.expandInstanceForEnv("client", instance, {}, function(err, base) {});
+            } catch (err) {
+                A.fail("Got err: " + err.message);
+            }
+        },
+
+        'test expandInstanceForEnv3': function() {
+            var instance = {
+                base: 'test_mojit_1',
+                type: 'test_mojit_2',
+                config: {testKey4: 'other'}
+            };
+            //mock _getSpec          
+            this.store._getSpec = function(env, id, context, cb) {
+                cb(null, instance);
+            };
+            this.store.expandInstanceForEnv("client", instance, {}, function(err, base) {
+                A.areEqual("test_mojit_2", base.type);
+                A.areEqual("test_mojit_1", base.base);
+                A.areEqual("other", base.config.testKey4);
+            });
+        },
+
+        'test expandInstanceForEnv4': function() {
+            var context = this.store.getStaticContext();
+            try {
+                this.store.expandInstanceForEnv("client", "mytype", context, function() {});
+            } catch (err) {
+                A.areEqual("There was no info in the \"instance\" object", err.message);
+            }
+        },
+
+        'test expandInstanceForEnv5': function() {
+            var instance = {
+                base: 'test_mojit_1',
+                config: {testKey4: 'other'}
+            };
+            //mock _getSpec          
+            this.store._getSpec = function(env, id, context, cb) {
+                cb(null, instance);
+            };
+            this.store.expandInstanceForEnv("client", instance, {}, function(err, base) {
+                A.isNotNull(err.message);
+                A.areEqual("Instance was not valid.", err.message.match("Instance was not valid."));
+            });
+        },
+
+        'test expandInstance': function() {
+            var instance = { base: 'testbase'},
+                context = this.store.getStaticContext();
+            //mock expandInstanceForEnv  
+            this.store.expandInstanceForEnv = function(env, id, context, cb) {
+                cb(null, instance);
+            };
+            this.store.expandInstance(instance, context, function(err, base) {
+                A.areEqual("testbase", base.base);
+            });
+        },
+
+        'test get type': function() {
+            var context = this.store.getStaticContext(),
+                retrieveFile = function(url, cb) {
+                    cb(url);
+                };
+            this.store._mockLib("retrieveFile", retrieveFile);
+            this.store._getType("client", "mytype", context, function(url) {
+                A.areEqual("/root/mystaticprefix/mytype/definition.json?env=dev", url);
+            });
+        },
+
+        'test get spec': function() {
+            var context = this.store.getStaticContext(),
+                retrieveFile = function(url, cb) {
+                    cb(url);
+                };
+            this.store._mockLib("retrieveFile", retrieveFile);
+            this.store._getSpec("client", "myid", context, function(url) {
+                A.areEqual("/root/mystaticprefix/myid/specs/default.json?env=dev", url);
+            });
         }
 
     }));
