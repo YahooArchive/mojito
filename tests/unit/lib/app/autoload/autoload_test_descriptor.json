@@ -125,7 +125,7 @@
                     "lib": "$$config.lib$$/app/autoload/store.client.js",
                     "test": "./test-store.client.js"
                 },
-                "group": "fw,unit,client,lichun"
+                "group": "fw,unit,client"
             },
             "util.common": {
                 "params": {

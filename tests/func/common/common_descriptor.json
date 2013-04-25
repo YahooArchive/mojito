@@ -15,7 +15,7 @@
 
         "dataprovider" : {     
             "acmojitdone1client" : {
-                "group" : "smoke,common,acmojit,lichun",
+                "group" : "smoke,common,acmojit",
                 "params" : {
                     "test" : "testacmojitdone1client.js",
                     "page" : "$$config.baseUrl$$/"
