@@ -239,7 +239,7 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
     }));
 
     suite.add(new Y.Test.Case({
-        name: '_makeMiddewareList suite',
+        name: '_makeMiddlewareList suite',
         setUp: function () {},
         tearDown: function () {},
 
@@ -248,7 +248,7 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
                 expected,
                 mojito_list = ['mojito-mw1', 'mojito-mw2', 'mojito-mw3'];
 
-            actual = Mojito.Server.prototype._makeMiddewareList([], mojito_list);
+            actual = Mojito.Server.prototype._makeMiddlewareList([], mojito_list);
             expected = ['mojito-mw1', 'mojito-mw2', 'mojito-mw3'];
             AA.itemsAreEqual(expected, actual);
 
@@ -260,7 +260,7 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
                 app_list = ['chocolate', 'vanilla', 'strawberry'],
                 mojito_list = ['mojito-mw1', 'mojito-mw2', 'mojito-mw3'];
 
-            actual = Mojito.Server.prototype._makeMiddewareList(app_list, mojito_list);
+            actual = Mojito.Server.prototype._makeMiddlewareList(app_list, mojito_list);
             expected = app_list.concat(mojito_list);
             AA.itemsAreEqual(expected, actual);
         },
@@ -271,7 +271,7 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
                 app_list = ['/foo/chocolate', './bar/vanilla', '../baz/strawberry'],
                 mojito_list = ['mojito-mw1', 'mojito-mw2', 'mojito-mw3'];
 
-            actual = Mojito.Server.prototype._makeMiddewareList(app_list, mojito_list);
+            actual = Mojito.Server.prototype._makeMiddlewareList(app_list, mojito_list);
             expected = app_list.concat(mojito_list);
             AA.itemsAreEqual(expected, actual);
         },
@@ -282,7 +282,7 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
                 app_list = ['chocolate', 'mojito-mint', 'vanilla'],
                 mojito_list = ['mojito-mw1', 'mojito-mw2', 'mojito-mw3'];
 
-            actual = Mojito.Server.prototype._makeMiddewareList(app_list, mojito_list);
+            actual = Mojito.Server.prototype._makeMiddlewareList(app_list, mojito_list);
             AA.itemsAreEqual(expected, actual);
         }
 
