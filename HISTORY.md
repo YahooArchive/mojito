@@ -19,6 +19,83 @@ Bug Fixes
 Acknowledgements
 ----------------
 
+version 0.6.0
+=================
+
+Notes
+-----
+
+* `middleware` registration is now the same for both built-in and user
+  provided implementations.
+ 
+  For example, if your app directory structure is as follows:
+
+    app/
+        middleware/
+            mojito-foo.js
+            bar.js
+        mojits/
+        application.json
+        routes.json
+        server.js
+
+  The following changes are required:
+  - rename `mojito-foo.js` to `foo.js`
+  - `foo.js` and `bar.js` now shares the same interface for middleware
+    registration.
+
+  Mojito 0.6.0 also formalizes the interface for middleware registration. App
+  developers will configure their `middleware` via `application.json`.
+
+```
+    // foo.js
+
+    module.exports = function (config) {
+        var Y = config.Y,
+            logger = config.logger,
+            store = config.store,
+            logger = config.logger,
+            context = config.context;
+
+        return function (req, res, next) {
+            // logger.log('----');
+            // use `store` public API
+            // access the `context`
+            next();
+        };
+    };
+```
+
+  The `config` specification is defined as :
+
+```
+    /**
+     * @param {Object} config configuration specification passed to middleware
+     *     @param {Object} config.Y shared YUI instance on the server
+     *     @param {ResourceStore} config.store reference to the store API
+     *     @param {Object} config.logger reference to the logger log function
+     *     @param {Object} config.context static context set on startup
+     */
+```
+
+
+Deprecations
+------------
+
+* User provided middlewares should remove the `mojito-` prefix from the name.
+  See `Notes` section above.
+* `mojito compile` command was removed. It has been deprecated since 0.5.1.
+
+
+Features
+--------
+
+Bug Fixes
+---------
+
+Acknowledgements
+----------------
+
 version 0.5.9
 =============
 
