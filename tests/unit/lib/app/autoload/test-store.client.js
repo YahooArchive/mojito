@@ -172,7 +172,7 @@ YUI().use('mojito-client-store', 'test', 'querystring-stringify-simple', 'io', '
             //mock expandInstanceForEnv  
             this.store.expandInstanceForEnv = function(env, id, context, cb) {
                 cb(null, instance);
-            }
+            };
             this.store.expandInstance(instance, context, function(err, base) {
                 A.areEqual("testbase", base.base);
             });
@@ -183,29 +183,29 @@ YUI().use('mojito-client-store', 'test', 'querystring-stringify-simple', 'io', '
             Y.io = function(url, config) {
                 var id = "newid",
                     obj = {};
-                    obj.responseText = '{ "status": 200 }';
+                obj.responseText = '{ "status": 200 }';
                 config.on.complete('myid', obj);
             };
-            try{
-                this.store._getType("client", "mytype", context, function(url) {});
-            } catch (err){
-                 A.fail("Got err: " + err.message);
-            } 
+            try {
+                this.store._getType("client", "mytype", context, function() {});
+            } catch (err) {
+                A.fail("Got err: " + err.message);
+            }
         },
 
         'test get spec': function() {
             var context = this.store.getStaticContext();
-            
+
             Y.io = function(url, config) {
                 var id = "newid",
                     obj = {};
-                    obj.responseText = '{ "status": 200 }';
+                obj.responseText = '{ "status": 200 }';
                 config.on.complete('myid', obj);
             };
-            try{
-                this.store._getSpec("client", "myid", context, function(){});
-            } catch (err){
-                 A.fail("Got err: " + err.message);
+            try {
+                this.store._getSpec("client", "myid", context, function() {});
+            } catch (err) {
+                A.fail("Got err: " + err.message);
             }
         }
 
