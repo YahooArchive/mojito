@@ -25,8 +25,8 @@ version 0.6.0
 Notes
 -----
 
-* `middleware` registration is now the same for both built-in and user
-  provided implementations.
+* `middleware` registration is now the same for both built-in and user-provided
+implementations.
  
   For example, if your app directory structure is as follows:
 
@@ -43,7 +43,7 @@ Notes
 
   The following changes are required:
   - rename `mojito-foo.js` to `foo.js`
-  - `foo.js` and `bar.js` now shares the same interface for middleware
+  - `foo.js` and `bar.js` now share the same interface for middleware
     registration.
 
   Mojito 0.6.0 also formalizes the interface for middleware registration. App
