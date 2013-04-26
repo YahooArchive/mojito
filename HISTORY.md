@@ -30,6 +30,7 @@ Notes
  
   For example, if your app directory structure is as follows:
 
+```
     app/
         middleware/
             mojito-foo.js
@@ -38,6 +39,7 @@ Notes
         application.json
         routes.json
         server.js
+```
 
   The following changes are required:
   - rename `mojito-foo.js` to `foo.js`
