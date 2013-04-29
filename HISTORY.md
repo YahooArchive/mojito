@@ -4,8 +4,6 @@ version @VERSION@
 Notes
 -----
 
-* YUI dependency was upgraded to yui@3.10.1, which improves performance.
-
 Deprecations
 ------------
 
