@@ -1,0 +1,206 @@
+{
+    "desc": "5b0f4c9-666",
+    "app": "master",
+    "mojito": "5b0f4c9",
+    "appStartMS": 10829,
+    "appStartMemory": {
+        "vsize": 120868,
+        "rss": 71664,
+        "when": 1367276231575
+    },
+    "bursts": [
+        {
+            "memories": [
+                {
+                    "vsize": 166376,
+                    "rss": 83464,
+                    "when": 1367276238916
+                },
+                {
+                    "vsize": 166516,
+                    "rss": 83592,
+                    "when": 1367276239477
+                },
+                {
+                    "vsize": 166616,
+                    "rss": 83688,
+                    "when": 1367276240035
+                },
+                {
+                    "vsize": 166716,
+                    "rss": 83780,
+                    "when": 1367276240594
+                },
+                {
+                    "vsize": 166716,
+                    "rss": 83780,
+                    "when": 1367276241157
+                },
+                {
+                    "vsize": 166892,
+                    "rss": 83920,
+                    "when": 1367276241715
+                },
+                {
+                    "vsize": 167376,
+                    "rss": 84364,
+                    "when": 1367276242271
+                },
+                {
+                    "vsize": 166816,
+                    "rss": 83884,
+                    "when": 1367276242831
+                },
+                {
+                    "vsize": 166816,
+                    "rss": 83884,
+                    "when": 1367276243398
+                },
+                {
+                    "vsize": 166976,
+                    "rss": 84028,
+                    "when": 1367276243954
+                },
+                {
+                    "vsize": 167076,
+                    "rss": 84116,
+                    "when": 1367276244509
+                },
+                {
+                    "vsize": 167076,
+                    "rss": 84116,
+                    "when": 1367276245066
+                },
+                {
+                    "vsize": 167176,
+                    "rss": 84208,
+                    "when": 1367276245623
+                },
+                {
+                    "vsize": 167276,
+                    "rss": 84300,
+                    "when": 1367276246184
+                },
+                {
+                    "vsize": 168656,
+                    "rss": 85616,
+                    "when": 1367276246743
+                },
+                {
+                    "vsize": 152200,
+                    "rss": 69792,
+                    "when": 1367276247303
+                },
+                {
+                    "vsize": 152328,
+                    "rss": 69868,
+                    "when": 1367276247866
+                },
+                {
+                    "vsize": 153096,
+                    "rss": 70620,
+                    "when": 1367276248424
+                },
+                {
+                    "vsize": 155432,
+                    "rss": 72908,
+                    "when": 1367276248985
+                },
+                {
+                    "vsize": 157836,
+                    "rss": 75212,
+                    "when": 1367276249543
+                },
+                {
+                    "vsize": 160368,
+                    "rss": 77616,
+                    "when": 1367276250100
+                },
+                {
+                    "vsize": 162516,
+                    "rss": 79796,
+                    "when": 1367276250661
+                }
+            ],
+            "header": "httperf --hog --client=0/1 --server=doorrestore.corp.gq1.yahoo.com --port=8666 --uri=/ --send-buffer=4096 --recv-buffer=16384 --num-conns=100 --num-calls=1\nMaximum connect burst length: 1",
+            "total": {
+                "connections": 100,
+                "requests": 100,
+                "replies": 100,
+                "test-duration": 12.294
+            },
+            "connection": {
+                "rate": {
+                    "cps": 8.1,
+                    "mspc": 122.9,
+                    "maxConcurrent": 1
+                },
+                "time": {
+                    "min": 115,
+                    "avg": 122,
+                    "max": 233,
+                    "median": 120,
+                    "stddev": 12,
+                    "connect": 23
+                },
+                "length": 1
+            },
+            "request": {
+                "rps": 8.1,
+                "mspr": 122.9,
+                "size": 83
+            },
+            "reply": {
+                "rate": {
+                    "min": 8,
+                    "avg": 8.1,
+                    "max": 8.2,
+                    "stddev": 0.1,
+                    "samples": 2
+                },
+                "time": {
+                    "response": 51.2,
+                    "transfer": 48
+                },
+                "size": {
+                    "header": 159,
+                    "content": 22774,
+                    "footer": 2,
+                    "total": 22935
+                },
+                "status": {
+                    "1xx": 0,
+                    "2xx": 100,
+                    "3xx": 0,
+                    "4xx": 0,
+                    "5xx": 0
+                }
+            },
+            "misc": {
+                "cpu": {
+                    "user": 3.62,
+                    "system": 8.67,
+                    "pct": {
+                        "user": 29.5,
+                        "system": 70.5,
+                        "total": 100
+                    }
+                },
+                "net": {
+                    "KBps": 182.8
+                }
+            },
+            "errors": {
+                "total": 0,
+                "client-timo": 0,
+                "socket-timo": 0,
+                "connrefused": 0,
+                "connreset": 0,
+                "fd-unavail": 0,
+                "addrunavail": 0,
+                "ftab-full": 0,
+                "other": 0
+            }
+        }
+    ]
+}
