@@ -1,0 +1,434 @@
+====================
+1. Mojito CLI Basics
+====================
+
+Introduction
+============
+
+Mojito comes with a command-line utility that provide you with some 
+essential functionality such as creating applications, mojits, and 
+starting application. The utility also has commands for helping 
+you develop and generate documentation. In this module, we’ll 
+introduce you to the commands.
+ 
+In this module, we will be covering some of the more commonly 
+used Mojito CLI commands to create an application, a mojit, 
+and then run our application. In addition, we’ll learn how to 
+use the utility to sanitize code, and run tests. Our lesson 
+will give an overview of the utility, covering some features 
+that you won’t use in this module, but will be using in future modules.
+
+Estimated Time
+--------------
+
+10 minutes
+
+What We’ll Cover
+----------------
+
+- creating applications and mojits
+- testing applications and mojits
+- code sanitization 
+- running applications
+- specifying a context (runtime environment) to run an application 
+
+
+Final Product
+-------------
+
+Our first application isn’t very impressive as it just displays 
+the default text, but the focus in this module is to learn how 
+to use the Mojito CLI utility. In the process, we also create 
+our first application and a mojit.
+
+
+Before Starting
+---------------
+
+Review of the Last Module
+#########################
+
+We discussed the topics that this tutorial will cover and 
+that is organized in modules that help you create self-contained 
+applications. These self-contained applications are a subset of 
+the final application created in the last module. Each module 
+will have a lesson that focuses on one topic.
+
+Prequisites
+###########
+
+If you have not done so, please complete the Mojito Quickstart, 
+which will show you how to install Mojito and run basic commands.
+
+Setting Up
+##########
+
+TBD
+
+Source Code for Example
+-----------------------
+
+[{n}_chapter_title](http://github.com/yahoo/mojito/examples/quickstart_guide/app_part{x})
+
+Lesson: Using the Mojito Command-Line Utility
+=============================================
+
+Generating Code
+---------------
+
+The primary use of the Mojito command-line utility is to generate 
+directories and files needed for Mojito applications.This is 
+because Mojito applications depends on a very specific directory 
+structure containing configuration files, JavaScript files, and 
+markup. The  configuration files consist of JSON or YAML, and the 
+JavaScript files are YUI modules. Much of the configuration and 
+the structure of the YUI module code is boilerplate, so manually 
+setting up the file structure and creating configuration and 
+JavaScript files would require a lot of time and most likely 
+result in errors. 
+
+Having said that, let’s start with the create command used to 
+create application. Remember, if you ever have questions about a 
+command, you can also always ask Mojito by running the following: 
+``mojito help <command>``
+
+create
+######
+
+The create command can be used to create applications and mojits. 
+We’ll be spending much of the next module discussing mojits, but 
+for now, think of mojits as the MVC component of Mojito applications 
+that is manifested in an application as a rectangular area of a page. 
+
+The following is the basic syntax for using the create command to 
+create applications:
+
+``$ mojito create app [<archetype-name>] <app-name>``
+
+By  running the command below, you will create the application my_first_mojito.
+
+``$ mojito create app my_first_mojito``
+
+You’ll see the that the directory my_first_mojito was created and 
+inside that directory are several .json files, a server.js file, and 
+the directories assets and mojits. 
+
+The syntax for creating a mojit is similar, and the command creates 
+template code for the MVC components and configuration files for a 
+mojit in the mojits directory.
+
+``$ mojito create mojit [<archetype-name>] <mojit-name>``
+
+Great, you know how to create application and mojit code, but 
+you’re probably still wondering what is an archetype, so let’s 
+answer that question before moving on.
+
+What Are Archetypes?
+--------------------
+
+Archetypes are basically different types of artifacts in a Mojito 
+application. In other words, Mojito offers several versions of template 
+code for an artifact such as an application or a mojit. So, when you 
+select the archetype simple for an application, you are asking Mojito 
+to create an application using the boilerplate code from the simple 
+version of an application. 
+
+This is reflected in the Mojito source, where you’ll find an archetypes 
+directory.  In this directory, you’ll see the directories for the two 
+artifacts app and mojit. Within these directories that map to the artifacts, 
+you will find the archetypes that you specify on the command line. When you 
+run mojito create app simple myApp, you are asking Mojito to copy the 
+template code in archetype/app/simple to ./myApp.
+
+If no archetype name is provided, the default archetype is used, 
+which is the same as running mojito create app default.
+
+Mojito Archetypes
+#################
+
+Mojito offers the following four archetypes for applications:
+simple - The minimal configuration and code needed to run an application.
+default - This archetype is run if no command-line archetype option is specified.  
+The template file for setting up routing, routing.json, is created for you.
+
+- ``full`` - The application.json and routes.json have more boilerplate code for 
+  you to use than the default application.
+- ``hybrid`` - Creates a hybrid HTML5 application that can be plugged into a 
+  future component of Cocktails that will allow HTML5/JavaScript applications 
+  to access the features of native devices.
+
+Mojits have three archetypes:
+
+- ``simple`` - The mojit only contains a controller.
+- ``default`` - Again, this archetype is run if no command-line archetype 
+  option is specified. Your MVC components are all created, binders (client-side code), 
+  and the controller has example code for using models and  Mojito addons, which are 
+  built-in modules that offer features such as handling configuration, assets, 
+  parameters, making REST calls, and more.
+- ``full`` - Provides the configuration file defaults.json, offers binders with 
+  examples of handling client events, and more complex controller tests.
+
+If you run mojito help create, you will notice that there is a custom archetype. 
+The custom archetype allows you to use Mojito to copy your own customized code. 
+For example, you may have your own template application or mojit that you would 
+like to use again. You can just run the following to reuse your template: 
+``mojito create custom <path-to-your-template-code> name``
+
+
+Starting the Server
+-------------------
+
+The Mojito CLI utility also has the start command to start Mojito applications. 
+You can also use Node.js to start applications by running node server.js, 
+but the Mojito command lets you select a port and a context for runtime 
+configurations.  Using contexts, you can specify a set of configurations 
+for a given runtime, such as having configurations for development or 
+apply certain configurations for iPhone devices. We’ll discuss contexts 
+more in future chapters.
+
+
+Use the following start the Mojito server and your applications:
+
+``$ mojito start [<port>] [--context "key1:value1,key2:value2,key3:value3"]``
+
+The port number specified in the command above overrides the port number in 
+the application configuration file, application.json. The default port number is 8666.
+
+Testing
+-------
+
+The Mojito CLI utility also lets you use YUI Test to unit tests for mojit code. 
+Fortunately, Mojito comes with some YUI Test code for you to use. We’ll 
+go into detail about how to write tests in the Testing module. 
+
+For now, let’s look at how to invoke tests with the test command. To run 
+unit tests for all of your mojits, use the following: 
+
+``$ mojito test app <application-path>``
+
+To run the unit tests for a specific mojit or mojit module, use the 
+following:
+
+``$ mojito test mojit <mojit-path> [<mojit-module>]`` 
+
+You’ll see results similar to those below, and the results will 
+also be written to the file ``${CWD}/artifacts/test/result.xml``.
+
+.. code-block:: text
+
+   info: (mojito-resource-store): Store initialized
+   info: (mojito-resource-store): Store initial preloaded
+   info: (mojito-resource-store): Store fully preloaded
+
+   Test Results:
+   artifacts/test/result.xml
+
+
+   ✔  passed	githubMojitModelFoo-tests :: githubMojitModelFoo user tests :: test mojit model
+   ✔  passed	githubMojit-tests :: githubMojit user tests :: test mojit
+
+   Total tests: 2	✔ Passed: 2	⚑ Deferred: 0	✖ Failed: 0	100% pass rate
+
+
+
+
+Code Coverage
+-------------
+
+You can add code coverage to your tests with the option --coverage or -c. To run 
+code coverage tests, you need to have Java installed. Coverage results are written 
+to the console and also to file in the directory{CWD}/artifacts/framework/coverage/. 
+As with unit tests, it is not possible to specify an alternative output location.
+
+Functional Tests
+----------------
+
+To run functional and unit tests for the Mojito framework, you would use the test 
+framework Yahoo! Arrow. Follow the instructions in Running Mojito’s Built-In Tests 
+to run the framework tests for Mojito.
+
+Sanitizing Code
+---------------
+
+Mojito applications consist of many structured files, so having a tool to find 
+syntax errors is very important. The lint command us JSLint to do a static 
+code analysis and writes output to text files as well as the HTML file ``jslint.html``.
+
+You can use the lint command at the framework, application, and mojit levels. 
+We’ll focus on the application and mojit levels because you’ll be using them 
+as you work towards creating the dashboard application.
+
+To run JSLint on an application, including all of its mojits:
+
+``$ mojito jslint app <app-name>``
+
+As with the test command, the output is written to a file: ``{app-dir}/artifacts/jslint/``
+
+For linting mojits, you use the following:
+
+``$ mojito jslint mojit <mojit-path>``
+
+Once again, the output is written to ``{app-dir}/artifacts/jslint/mojits/{mojit-name}/``.
+
+Other Utilities
+---------------
+
+The Mojito CLI also has commands for creating documentation, building HTML5 applications, 
+and creating a visual graph of dependencies. We’re going to hold off on looking at 
+these commands until we have an application. Feel free to check out the 
+Mojito CLI documentation if you’re itching to learn more.
+
+.. tip::   Nulla mattis volutpat justo, et elementum quam condimentum vel. 
+
+Creating the Application
+========================
+
+#. Let’s first create our application with the create command. We’re using the default for the 
+   simple reason that the simple application gives us too little to work with, and the 
+   full application includes a lot of features that we won’t need and may just be confusing. 
+   Once you’ve finished this tutorial, you very well may opt to start with the full application 
+   to quicken development.
+
+   ``$ mojito create app 01_mojito_cli_basics``
+
+#. Change to your application directory, which you need to do to create mojits.
+   Our dashboard application is going to get statistics from GitHub, so let’s 
+   create the mojit that will be doing a lot of work for us now.
+
+   ``$ mojito create mojit githubMojit``
+
+#. Let’s run some tests now. First, run the application unit tests, which, in reality, 
+   just runs all the unit tests of your mojits. 
+
+   ``$ mojito test app .``
+
+   You’ll see that a controller and a model test passed and that results were saved to 
+   ``artifacts/test/result.xml``.
+
+#. Since we only have one mojit, the application unit tests and the mojit unit tests 
+   should be the same, but go ahead and run the following command to confirm:
+
+  ``$ mojito test mojit mojits/githubMojit``
+
+#. If you remember you can also test a mojit module, which is basically the module
+   name that you register with YUI.add. Mojit controllers and models are YUI modules.
+
+   ``$ mojito test mojit mojits/gitHubMojit githubMojit``
+
+#. Mojito’s test command comes with a very useful option for getting coverage results. 
+   Run the command for application unit tests, but add the option -c to get coverage 
+   results as well.
+
+   ``$ mojito test -c app .``
+
+#. In a browser, open the file artifacts/test/coverage/lcov-report/index.html to see the 
+   code coverage report. The report gives line and function coverage. 
+
+#. Our application shouldn’t have any syntax errors--if they did, we should file a GitHub 
+   ticket with Mojito immediately, but let’s run the jslint command for both the application 
+   and our one mojit:
+
+   :: 
+
+     $  mojito jslint app .
+     $  mojito jslint mojit mojits/githubMojit
+
+#. Alright, we’ve tested and linted our application, now let’s go ahead and start it.
+
+   ``$ mojito start``
+
+#. To view your application, open the URL `http://localhost:8666/@githubMojit/index`_ in a browser. 
+
+   It’s a strange URL, right? First, the port 8666 is the default port used by Mojito, 
+   which we’ll override in the next step. As for the path, well, we haven’t set up any routes yet, 
+   but the syntax for routes is as follows: ``/{mojit_instance}/{action}``.
+
+   We haven’t created a mojit instance yet (we’ll do that in the next module), but 
+   fortunately, Mojito creates for us an anonymous instance of the mojit githubMojit by 
+   prepending @ to the mojit name. As for ‘index’, it’s an action called from the mojit instance. 
+
+     
+#. Stop the application with Ctl-C, and the restart it with a different port by 
+   specifying the port. You can now view the application at `http://localhost:8000/@githubMojit/index`_:
+     
+   ``$ mojito start 8000``
+
+#. As we discussed in our lesson, you can start an application in a given context, so that a 
+   specific set of configurations are applied for a runtime environment. We’ll be doing       
+   this a great deal because we will want to test new features in the development  
+   environment.
+
+   To start the application in the development context, use the option --context and   
+   pass  the string “environment:development”. Again, you’ll see your application at        
+   the URL `http://localhost:8666/@githubMojit/index`_.
+
+   `$ mojito start --context "environment:development"`
+ 
+If you open the file ``application.json``, you will see the property “settings” twice.  
+The string value given in the array assigned to “settings” is the context. 
+Although neither configuration object in application.json has many configurations, 
+you can have many configuration objects with different configuration values that are 
+mapped to a context. 
+
+Troubleshooting
+===============
+
+Problem One
+-----------
+
+Nulla pharetra aliquam neque sed tincidunt. Donec nisi eros, sagittis vitae lobortis 
+nec, interdum sed ipsum. Quisque congue tempor odio, a volutpat eros hendrerit nec. 
+Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
+
+Problem Two
+-----------
+
+Nulla pharetra aliquam neque sed tincidunt. Donec nisi eros, sagittis vitae lobortis 
+nec, interdum sed ipsum. Quisque congue tempor odio, a volutpat eros hendrerit nec. 
+Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
+
+Module Review
+=============
+
+In this module, we covered the following features of the Mojito 
+command-line utility:
+
+- creating applications and mojits
+- running application and mojit unit tests
+- linting code
+- starting applications
+- specifying ports and contexts when starting applications.
+
+Test Yourself
+=============
+
+Questions
+---------
+
+- What is the command for getting coverage results for the mojit myMojit?
+- Why would you start an application with a context?
+- What is an archetype and what are the available archetypes for applications?
+- Besides applications and mojits, what else can you create with the create command?
+
+Additional Exercises
+--------------------
+
+- Create an application with three mojits, test the app, test a module from 
+  one of the mojits, and then run the application in the context "environment:development".
+
+Terms
+=====
+
+- archetypes
+- mojits
+- YAML
+- anonymous mojit instance
+- contexts
+
+Further Reading
+===============
+
+- [Mojito Doc](http://developer.yahoo.com/cocktails/mojito/docs/)
+- book
+- website
+
