@@ -19,6 +19,92 @@ Bug Fixes
 Acknowledgements
 ----------------
 
+version 0.6.0
+=================
+
+Notes
+-----
+
+## middleware changes
+
+The following are *backward compatible* changes:
+
+- middleware names with the prefix "mojito-" are no longer given "special"
+  treatment. This was not a publicly documented feature, and presumably not
+  widely implemented.
+
+  For example, if your app directory structure is as follows:
+
+```
+    app/
+        middleware/
+            mojito-foo.js
+            bar.js
+        mojits/
+        application.json
+        routes.json
+        server.js
+```
+
+  `mojito-foo.js` and `bar.js` are now treated the same by Mojito.
+
+- *all middlewares* are now registered the same by Mojito, and the order in 
+  which middlewares are defined in `application.json` matters.
+
+  Mojito 0.6.0 also formalizes the interface for middleware registration. App
+  developers will configure their `middleware` via `application.json`.
+
+## middleware API
+
+During middleware registration and intialization phase, Mojito will pass
+a `config` specification is defined as :
+
+```
+    /**
+     * @param {Object} config configuration specification passed to middleware
+     *     @param {Object} config.Y shared YUI instance on the server
+     *     @param {ResourceStore} config.store reference to the store API
+     *     @param {Object} config.logger reference to the logger log function
+     *     @param {Object} config.context static context set on startup
+     */
+
+
+    // foo.js
+
+    module.exports = function (config) {
+        var Y = config.Y,
+            logger = config.logger,
+            store = config.store,
+            logger = config.logger,
+            context = config.context;
+
+        return function (req, res, next) {
+            // logger.log('----');
+            // use `store` public API
+            // access the `context`
+            next();
+        };
+    };
+```
+
+
+Deprecations
+------------
+
+* User provided middlewares should remove the `mojito-` prefix from the name.
+  See `Notes` section above.
+* `mojito compile` command was removed. It has been deprecated since 0.5.1.
+
+
+Features
+--------
+
+Bug Fixes
+---------
+
+Acknowledgements
+----------------
+
 version 0.5.9
 =============
 
