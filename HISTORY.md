@@ -10,7 +10,7 @@ Deprecations, Removals
 ------------
 * The command line tools bundled with mojito have been deprecated. Rather than installing `mojito` globally, please install `mojito-cli` globally instead. Functionality should remain the same. See http://git.io/jJazAw
 * `mojito compile` command was removed. It has been deprecated since 0.5.1.
-
+* `mojito profiler` has been deprecated. It will be removed in a future release.
 
 Features
 --------
