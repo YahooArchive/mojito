@@ -4,17 +4,18 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-var cli = require('../lib/management/cli');
+var cli = require('../lib/management/cli'),
+    warn = require('../lib/management/utils').warn;
 
-console.warn('mojito: NOTICE, please read.');
-console.warn('mojito: The command line runner in the package "mojito" is now deprecated,');
-console.warn('mojito: and will be removed in a future release. Please install the package');
-console.warn('mojito: "mojito-cli" as follows:');
-console.warn('mojito:');
-console.warn('mojito:    npm install --global mojito-cli');
-console.warn('mojito:');
-console.warn('mojito: All the commands should generally work the same, as long as the mojito');
-console.warn('mojito: package is declared as a dependency of your application, and installed');
-console.warn('mojito: with npm locally. More info at http://git.io/jJazAw');
+warn('NOTICE, please read.');
+warn('The command line runner in the package "mojito" is now deprecated,');
+warn('and will be removed in a future release. Please install the package');
+warn('"mojito-cli" as follows:');
+warn('');
+warn('   npm install --global mojito-cli');
+warn('');
+warn('All the commands should generally work the same, as long as the mojito');
+warn('package is declared as a dependency of your application, and installed');
+warn('with npm locally. More info at http://git.io/jJazAw');
 
 cli.run(process.argv.slice(2));
