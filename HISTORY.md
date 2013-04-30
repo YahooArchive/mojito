@@ -27,7 +27,7 @@ Notes
 
 ## middleware changes
 
-The following are *backward incompatible* changes:
+The following are *backward compatible* changes:
 
 - middleware names with the prefix "mojito-" are no longer given "special"
   treatment. This was not a publicly documented feature, and presumably not
