@@ -6,9 +6,9 @@ Notes
 
 * YUI dependency was upgraded to yui@3.10.1, which improves performance.
 
-Deprecations
+Deprecations, Removals
 ------------
-
+* The command line tools bundled with mojito have been deprecated. Rather than installing `mojito` globally, please install `mojito-cli` globally instead. Functionality should remain the same. See http://git.io/jJazAw
 * `mojito compile` command was removed. It has been deprecated since 0.5.1.
 
 
