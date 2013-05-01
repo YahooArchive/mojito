@@ -16,7 +16,9 @@ YUI.add('MojitoGHGraphs', function(Y, NAME) {
     // returns promise
     function getLatest() {
         return new Y.Promise(function(fulfill, reject) {
-            Y.io(URLS.latest, {
+            var url = URLS.latest;
+            url += '?rand=' + Math.random();
+            Y.io(url, {
                 method: 'GET',
                 on: {
                     success: function (txid, resp) {
