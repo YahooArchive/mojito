@@ -30,7 +30,7 @@ YUI.add('mojito-view-renderer-client-tests', function(Y, NAME) {
         'test instantiating a renderer engine': function () {
             var vr;
 
-            vr = new Y.mojito.ViewRenderer('foo', 'someviewid', {z:99});
+            vr = new Y.mojito.ViewRenderer('foo', {z:99});
             A.isObject(vr);
             // less restrictive initialization
             vr = new Y.mojito.ViewRenderer('bar');
@@ -40,15 +40,14 @@ YUI.add('mojito-view-renderer-client-tests', function(Y, NAME) {
         'test render method with valid engine': function () {
             var args;
             var ve = Y.namespace('mojito.addons.viewEngines');
-            ve.foo = function(viewId, options) {
-                A.areSame('someviewid', viewId);
+            ve.foo = function(options) {
                 A.areSame(99, options.z);
             };
             ve.foo.prototype.render = function(data, mojitType, tmpl, adapter, meta, more) {
                 args = arguments;
             };
 
-            var vr = new Y.mojito.ViewRenderer('foo', 'someviewid', {z:99});
+            var vr = new Y.mojito.ViewRenderer('foo', {z:99});
             vr.render(1,2,3,4,5,6);
             A.areSame(6, args.length);
             A.areSame(1, args[0]);
@@ -64,8 +63,7 @@ YUI.add('mojito-view-renderer-client-tests', function(Y, NAME) {
 
             YUI.add('mojito-fakebarengine', function (Y) {
                 var ve = Y.namespace('mojito.addons.viewEngines');
-                ve.fakebarengine = function(viewId, options) {
-                    A.areSame('someviewid', viewId);
+                ve.fakebarengine = function(options) {
                     A.areSame(99, options.z);
                 };
                 ve.fakebarengine.prototype.render = function(data, mojitType, tmpl, adapter, meta, more) {
@@ -73,7 +71,7 @@ YUI.add('mojito-view-renderer-client-tests', function(Y, NAME) {
                 };
             });
 
-            var vr = new Y.mojito.ViewRenderer('fakebarengine', 'someviewid', {z:99});
+            var vr = new Y.mojito.ViewRenderer('fakebarengine', {z:99});
             vr.render(1,2,3,4,5,6);
             this.wait(function () {
                 A.areSame(6, args.length);
@@ -90,7 +88,7 @@ YUI.add('mojito-view-renderer-client-tests', function(Y, NAME) {
         'test render method with invalid ondemand engine': function () {
             var err;
 
-            var vr = new Y.mojito.ViewRenderer('fakebazengine', 'someviewid', {z:99});
+            var vr = new Y.mojito.ViewRenderer('fakebazengine', {z:99});
             vr.render(1,2,3, {
                 error: function () {
                     err = true;

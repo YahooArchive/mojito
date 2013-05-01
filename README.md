@@ -1,3 +1,5 @@
+<img src="http://www.blackducksoftware.com/files/images/Rookie_2012-125.png" alt="Black Duck OS 2012 Rookie of the Year" align="right" vspace="-50" />
+
 # Yahoo! Mojito
 
 Mojito is the JavaScript library implementing Cocktails, a JavaScript-based
@@ -56,6 +58,16 @@ Generate documentation:
 * Mojito Introduction - http://developer.yahoo.com/cocktails/mojito/docs/intro/
 * Mojito Getting Started - http://developer.yahoo.com/cocktails/mojito/docs/getting_started/
 
+### Contributing to Documentation
+
+Mojito documentation is present in /docs directory. To generate HTML documentation run the following commands 
+from the documentation directories.
+
+    $ cd docs/dev_guide
+    $ make html
+
+Please note that in order to generate the documentation you will need [Sphinx](http://sphinx-doc.org/). 
+
 ### API Documentation
 
 * Running the following command will generate API docs and locally save them to `./artifacts/docs/mojito/`
@@ -71,10 +83,3 @@ http://developer.yahoo.com/forum/Yahoo-Mojito
 Mojito is licensed under a [BSD license](https://github.com/yahoo/mojito/blob/master/LICENSE.txt). To contribute to the Mojito project, please see [Contributing](https://github.com/yahoo/mojito/wiki/Contributing-Code-to-Mojito). 
 
 The Mojito project is a [meritocratic, consensus-based community project](https://github.com/yahoo/mojito/wiki/Governance-Model) which allows anyone to contribute and gain additional responsibilities.
-
-## Third-party libraries
-
-Mojito includes the Mulib software available here:
-
-https://github.com/raycmorgan/Mu
-

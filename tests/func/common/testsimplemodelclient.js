@@ -20,7 +20,7 @@ YUI({
                 imglist.each(function (taskNode) {
 				    Y.Assert.areEqual('static.flickr.com', taskNode.get('src').match(/static.flickr.com/gi));
 				});
-            }, 3000);
+            }, 4000);
         }
 
     }));

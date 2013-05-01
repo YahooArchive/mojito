@@ -1,3 +1,7 @@
+.. meta::
+   :description: Mojito is a Node.js-based framework for creating Web applications for the desktop and mobile devices.
+   :keywords: Mojito, mojito, Node, node, Node.js, framework, npm, YUI, yui
+
 ==================
 Introducing Mojito
 ==================

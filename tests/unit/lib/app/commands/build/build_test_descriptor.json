@@ -1,6 +1,6 @@
 [{
     "settings": [ "master" ],
-    "name": "lib-cli-commands-tests",
+    "name": "lib-cli-commands-build-tests",
     "config": {
         "mojitodir": "../../../../../.."
     },
@@ -31,13 +31,6 @@
             "params": {
                 "test": "./test-scraper.js",
                 "lib": "$$config.mojitodir$$/lib/app/commands/build/scraper.js",
-                "driver": "nodejs"
-            }
-        },
-        "hybridapp.js": {
-            "params": {
-                "test": "./test-hybridapp.js",
-                "lib-DISABLED-BZ6046277": "$$config.mojitodir$$/lib/app/commands/build/hybridapp.js",
                 "driver": "nodejs"
             }
         },

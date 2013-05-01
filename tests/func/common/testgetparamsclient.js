@@ -19,7 +19,7 @@ YUI({
                 Y.Assert.areEqual('All params', Y.one('#desc').get('innerHTML').match(/All params/gi));
                 Y.Assert.areEqual('foo ==&gt; 123', Y.all('#gpresult').item(0).get('innerHTML').match(/foo ==&gt; 123/gi));
                 Y.Assert.areEqual('bar ==&gt; thisbar', Y.all('#gpresult').item(1).get('innerHTML').match(/bar ==&gt; thisbar/gi));
-            }, 2000);
+            }, 4000);
         }
 
     }));

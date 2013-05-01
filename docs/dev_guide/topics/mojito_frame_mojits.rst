@@ -84,13 +84,13 @@ child instances that can create content for the rendered view.
            "type" : "HTMLFrameMojit",
            "config": {
              "deploy": true,
-             "title": HTMLFrameMojit Example with Children",
+             "title": "HTMLFrameMojit Example with Children",
              "child": {
                "type": "Body",
                "config": {
                  "children" : {
                    "nav": {
-                     "type": ""Navigation"
+                     "type": "Navigation"
                    },
                    "content": {
                      "type": "articleBuilder"
@@ -421,4 +421,303 @@ to the client.
      <h2>I was lazy-loaded at {{{time}}}.</h2>
    </div>
 
+.. _mojito_fw_mojits-create:
 
+Creating Custom Frame Mojits
+============================
+
+In addition to the frame mojits that come with Mojito, you can create your own
+frame mojit, which is just another mojit that manages assets, metadata, executes 
+child mojits, constructs the HTML page, and anything else that you want it to do.
+
+Before creating a custom frame mojit, we recommend that you have 
+done the following:
+
+- used the ``HTMLFrameMojit`` and the ``Composite`` addon in a Mojito application
+- examined the `HTMLFrameMojit code <https://github.com/yahoo/mojito/tree/master/lib/app/mojits/HTMLFrameMojit>`_
+  that is part of Mojito
+
+.. _create_frame_mojits-why:
+
+Why Create a Custom Frame Mojit?
+--------------------------------
+
+By being able to create a custom frame mojit, you can control how the HTML page
+is constructed, from the HTML skeleton, the metadata, and attachment of assets, to
+the rendering of mojits in the page. For example, you could create a dynamic
+HTML title, add custom metadata in the ``head`` element, or change the organization
+of the page based on the runtime environment.
+
+.. _create_frame_mojits-cannot_do:
+
+What Frame Mojits Cannot Do
+---------------------------
+
+Code from your frame mojit cannot be deployed to run on the client. It **must** run on
+the server. Thus, your frame mojit cannot have binders, and the controller of 
+your frame mojit must have the ``server`` affinity. The frame mojit's child mojits 
+handle dynamic content and user interaction.
+
+.. _create_frame_mojits-responsibilities:
+
+Responsibilities of the Frame Mojit
+-----------------------------------
+
+The frame mojit is responsible for the following:
+
+- constructing the HTML page
+- collecting the assets of your children and attaching them to the page
+- deploying the client code of its children to the client
+- executing child mojits and attaching the output to the HTML page
+
+How your frame mojit accomplishes the tasks above largely depends on your implementation.
+We will delve into these responsibilities in more detail in the following sections. 
+
+.. _create_frame_mojits-configuring:
+
+Configuring Your Frame Mojit
+----------------------------
+
+The configuration to use a custom frame mojit should be similar to the configuration
+for using the ``HTMLFrameMojit``, but you have more flexibility because you
+have control over the implementation of the frame mojit.
+
+In the ``application.json`` below, the instance ``fm`` of the frame mojit ``MyFrameMojit`` 
+is configured to have children mojits. The implementation of ``MyFrameMojit`` will
+need to get the configuration of the ``children`` and then execute them
+using the Composite addon.
+
+.. code-block:: javascript
+
+   [
+     {
+       "settings": ["master"],
+       "appPort": "8666",
+       "specs": {
+         "fm": {
+           "type": "MyFrameMojit",
+           "config": {
+             "children": {
+               "header": {
+                 "type": "HeaderMojit"
+               },
+               "body": {
+                 "type": "BodyMojit"
+               },
+               "footer": {
+                 "type": "FooterMojit"
+               }
+             }
+           }
+         }
+       }
+     }
+   ]
+
+You can also implement your frame mojit to use a ``child`` that has its own children 
+mojits. Implementing the controller of the frame mojit to use a ``child`` with its own
+children is more difficult, but the advantage is that the 
+child of your frame mojit can have binders and direct control over its children
+using the ``Composite`` addon. 
+
+In the case of your frame mojit having a ``child`` with its own ``children``, 
+your ``application.json`` might be similar to the following:
+
+.. code-block:: javascript
+
+   [
+     {
+       "settings": [ "master" ],
+       "appPort": "8666",
+       "specs": {
+         "fm": {
+           "type": "MyFrameMojit",
+           "config": {
+             "title": "Title of HTML page",
+             "child" : {
+               "type" : "BodyMojit",
+               "config": {
+                 "children": {
+                   "header": {
+                     "type": "HeaderMojit"
+                   },
+                   "body": {
+                     "type": "ContentMojit"
+                   },
+                   "footer": {
+                     "type": "FooterMojit"
+                   }
+                 }
+               }
+             }
+           }
+         }
+       }
+     }
+   ]
+
+
+.. _create_frame_mojits-controller:
+
+Frame Mojit Controller
+----------------------
+
+.. _frame_mojits_controller-reqs:
+
+Requirements
+############
+
+Frame mojits must meet the following requirements:
+
+- Be the top-level mojit. Your frame mojit cannot be the child of another mojit instance.
+
+- Be on the server. In other words, the frame mojit's controller file must have the
+  ``server`` affinity, and the frame mojit **cannot** have binders.
+
+- Handle the assets of the children. The implementation is up to the developer, but
+  one way to do this would be to use the Assets addon to attach the assets of the children 
+  to the page, where ``meta.assets`` is from the children: 
+  ``ac.assets.addAssets(meta.assets);``
+
+- Deploy the children's client code to the client using the following:
+  ``ac.deploy.constructMojitoClientRuntime(ac.assets, meta.binders);``
+
+- Execute the children with the Composite addon using either the ``execute`` or
+  ``composite`` method. 
+
+.. _create_frame_mojits-ex:
+
+Example
+-------
+
+The following example only provides the application configuration and 
+the frame mojit code. For the entire application, 
+see `frame_app <https://raw.github.com/caridy/Mojito-Apps/master/frame_app>`_.
+
+application.json
+################
+
+.. code-block:: javascript
+
+   [
+     {
+       "settings": ["master"],
+       "appPort": "8666",
+       "specs": {
+         "ms": {
+           "type": "IntlHTMLFrameMojit",
+           "config": {
+             "children": {
+               "header": {
+                 "type": "HeaderMojit"
+               },
+               "body": {
+                 "type": "BodyMojit"
+               },
+               "footer": {
+                 "type": "FooterMojit"
+               }
+             }
+           }
+         }
+       }
+     } 
+   ]
+
+IntlHTMLFrameMojit
+##################
+
+controller.server.js
+********************
+
+.. code-block:: javascript
+
+   YUI.add('IntlHTMLFrameMojit', function (Y, NAME) {
+     'use strict';
+     Y.namespace('mojito.controllers')[NAME] = {
+       index: function (ac) {
+
+         // The frame mojit uses the Composite addon to execute the children 
+         // instances defined in the 'specs' object of application.json.
+         ac.composite.execute(ac.config.get(), function (data, meta) {
+           // Required: implementation up to developer
+           // Add the assets from the children to the frame mojit before 
+           // doing anything else.
+           ac.assets.addAssets(meta.assets);
+           // Required: must use 'constructMojitoClientRuntime'
+           // The frame mojit deploys the client code (YUI) from the 
+           // children to the client.
+           ac.deploy.constructMojitoClientRuntime(ac.assets, meta.binders);
+           //  Required: must execute the frame mojit with 'ac.done'
+           // 1. Merge the bottom and top fragments from assets into
+           //    the template data, along with title and Mojito version.
+           // 2. Merge the meta object with the children's meta object. 
+           // 3. Add HTTP header information and view name.
+           ac.done(
+             Y.merge(data, ac.assets.renderLocations(), {
+               "name": NAME,
+               "page-title": "some fancy title... from intl",
+               "greeting": ac.intl.lang("GREETING"),
+               "says": ac.intl.lang("SAYS"),
+               "preposition": ac.intl.lang("PREPOSITION"),
+               "today": ac.intl.formatDate(new Date()),
+               "mojito_version": Y.mojito.version
+             }),
+             Y.merge(meta, {
+               http: {
+                 headers: {
+                  'content-type': 'text/html; charset="utf-8"'
+                 }
+               },
+               view: {
+                 name: 'index'
+               }
+             })
+           );
+          });
+        }
+      };
+    }, '0.1.0', {requires: [
+       'mojito',
+       'mojito-assets-addon',
+       'mojito-deploy-addon',
+       'mojito-config-addon',
+       'mojito-composite-addon',
+       'mojito-intl-addon'
+   ]});
+
+index.hb.html
+*************
+
+.. code-block:: html
+
+   <html>
+     <head>
+     {{#meta}}
+       <meta name="{{name}}" content="{{content}}">
+     {{/meta}}
+     {{^meta}}
+       <meta name="creator" content="Yahoo! Mojito {{mojito_version}}">
+     {{/meta}}
+       <title>{{page-title}}</title>
+        {{{top}}}
+     </head>
+     <body>
+       <div id="intl_frame" class="header" style="border: dashed black 1px; margin: 10px 10px 10px 10px;">
+         <h2>{{{name}}} {{{says}} {{{greeting}}} {{{preposition}}} {{{today}}}</h2>
+         <div id="{{mojit_view_id}}" class="mojit" style="border: dashed black 1px;">
+           <h3>{{title}}</h3>
+           <div class="header" style="border: dashed black 1px; margin: 10px 10px 10px 10px;">
+             {{{header}}}
+           </div>
+           <div class="body" style="border: dashed black 1px; margin: 10px 10px 10px 10px;">
+             {{{body}}}
+           </div>
+           <div class="footer" style="border: dashed black 1px; margin: 10px 10px 10px 10px;">
+             {{{footer}}}
+           </div>
+         </div>
+       </div>
+       {{{bottom}}}
+     </body>
+   </html>

@@ -10,11 +10,8 @@ YUI().use('mojito-action-context', 'test', function (Y) {
         A = Y.Assert,
         OA = Y.ObjectAssert,
         store = {
-            getAppConfig: function() {
-                return 'app config';
-            },
-            getStaticContext: function() {
-                return 'static context';
+            getStaticAppConfig: function() {
+                return 'static app config';
             },
             getRoutes: function(ctx) {
                 return "routes";
@@ -155,7 +152,6 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                 models: {},
                 controller: {index: function() {}},
                 dispatcher: 'the dispatcher',
-                adapter: { },
                 store: store
             });
 
@@ -201,7 +197,11 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                         views: 'views'
                     }
                 },
-                adapter: Y.Mock(),
+                adapter: {
+                    page: {
+                        staticAppConfig: {foo: 'bar'}
+                    }
+                },
                 models: {},
                 controller: {index: function() {}},
                 store: store
@@ -210,6 +210,8 @@ YUI().use('mojito-action-context', 'test', function (Y) {
             A.areSame('Type', ac.type, 'bad type');
             A.areSame('index', ac.action, 'bad action');
             A.areSame('context', ac.context, 'bad context');
+            A.areSame(1, Y.Object.keys(ac.staticAppConfig).length, 'bad staticAppConfig object');
+            A.areSame('bar', ac.staticAppConfig.foo, 'bad staticAppConfig.foo value');
 
             A.areSame('the dispatcher', ac.dispatcher,
                 "dispatcher wasn't stashed.");
@@ -480,12 +482,14 @@ YUI().use('mojito-action-context', 'test', function (Y) {
             Y.mojito.ViewRenderer = function(engine) {
                 A.areSame('engine', engine, 'bad view engine');
                 return {
-                    render: function(d, type, v, a, m, more) {
+                    render: function(d, mojitType, v, a, m, more) {
                         vrRendered = true;
                         A.areSame(data, d, 'bad data to view');
-                        A.areSame('t', type, 'bad mojitType to view');
+                        A.isObject(mojitType, 'mojitType should be the expanded instance');
+                        A.areSame('t', mojitType.type, 'bad mojitType to view');
                         A.areSame(meta, m, 'bad meta to view');
-                        A.areSame('path', v, 'bad view content path to view engine');
+                        A.isObject(v, 'view object from store with the proper view info');
+                        A.areSame('path', v['content-path'], 'bad view content path to view engine');
                         A.areSame(ac._adapter, a, 'bad adapter to view');
                         A.isFalse(more);
                     }
@@ -501,7 +505,7 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                         acAddons: [],
                         views: {
                             viewName: {
-                                engine: 'engine',
+                                'engine': 'engine',
                                 'content-path': 'path'
                             }
                         }
@@ -568,7 +572,7 @@ YUI().use('mojito-action-context', 'test', function (Y) {
             };
             // mock view renderer
             var VR = Y.mojito.ViewRenderer;
-            Y.mojito.ViewRenderer = function(engine) {
+            Y.mojito.ViewRenderer = function() {
                 return {
                     render: function(d, type, v, a, m, more) {
                         a.done('html', m);
@@ -591,13 +595,10 @@ YUI().use('mojito-action-context', 'test', function (Y) {
 
         'test timer trigger done': function() {
             var store = {
-                getAppConfig: function() {
+                getStaticAppConfig: function() {
                     return {
                         actionTimeout: 1
                     };
-                },
-                getStaticContext: function() {
-                    return 'static context';
                 },
                 getRoutes: function(ctx) {
                     return 'routes';
@@ -645,13 +646,10 @@ YUI().use('mojito-action-context', 'test', function (Y) {
 
         'test timer notrigger done': function() {
             var store = {
-                getAppConfig: function() {
+                getStaticAppConfig: function() {
                     return {
                         actionTimeout: 1000
                     };
-                },
-                getStaticContext: function() {
-                    return 'static context';
                 },
                 getRoutes: function(ctx) {
                     return 'routes';
@@ -697,13 +695,10 @@ YUI().use('mojito-action-context', 'test', function (Y) {
 
         'test timer notrigger error': function() {
             var store = {
-                getAppConfig: function() {
+                getStaticAppConfig: function() {
                     return {
                         actionTimeout: 1000
                     };
-                },
-                getStaticContext: function() {
-                    return 'static context';
                 },
                 getRoutes: function(ctx) {
                     return 'routes';
@@ -833,10 +828,7 @@ YUI().use('mojito-action-context', 'test', function (Y) {
 
         'test no view': function() {
             var store = {
-                getAppConfig: function() {
-                    return {};
-                },
-                getStaticContext: function() {
+                getStaticAppConfig: function() {
                     return {};
                 },
                 getRoutes: function(ctx) {
@@ -893,160 +885,6 @@ YUI().use('mojito-action-context', 'test', function (Y) {
             }
             A.isNotUndefined(error);
             A.areSame("Missing view template: 'index'", error.message.toString());
-        },
-
-        'test server-side view caching': function() {
-            var command = {
-                    action: 'index',
-                    context: {
-                        runtime: 'server'
-                    },
-                    instance: {
-                        id: 'id',
-                        type: 'TypeGeneral',
-                        acAddons: [],
-                        views: {
-                            index: {
-                                engine: 'mockViewEngine',
-                                'content-path': 'path'
-                            }
-                        }
-                    }
-                };
-            var adapter = {
-                    done: function(data, meta) {},
-                    error: function(err) {}
-                };
-
-            var ac, error;
-            var rendererCtorCalled = 0,
-                rendererRenderCalled = 0;
-            Y.mojito.addons.viewEngines.mockViewEngine = function() {
-                rendererCtorCalled += 1;
-                this.render = function(data, type, path, in_adapter, meta, more) {
-                    rendererRenderCalled += 1;
-                    A.areSame('done', data.status);
-                    A.areSame('TypeGeneral', type);
-                    A.areSame('path', path);
-                    A.areSame(adapter, in_adapter);
-                    A.areSame('index', meta.view.name);
-                    A.isFalse(!!more);
-                };
-                return this;
-            };
-            try {
-                ac = new Y.mojito.ActionContext({
-                    dispatch: 'the dispatch',
-                    command: command,
-                    controller: {
-                        index: function(ac) {
-                            ac.done({status: 'done'});
-                        }
-                    },
-                    store: store,
-                    adapter: adapter
-                });
-            } catch(err) {
-                error = err;
-            }
-            A.isUndefined(error);
-            A.areSame(1, rendererCtorCalled);
-            A.areSame(1, rendererRenderCalled);
-
-            // second time, should use cache
-            try {
-                ac = new Y.mojito.ActionContext({
-                    dispatch: 'the dispatch',
-                    command: command,
-                    controller: {
-                        index: function(ac) {
-                            ac.done({status: 'done'});
-                        }
-                    },
-                    store: store,
-                    adapter: adapter
-                });
-            } catch(err) {
-                error = err;
-            }
-            A.isUndefined(error);
-            A.areSame(1, rendererCtorCalled);
-            A.areSame(2, rendererRenderCalled);
-        },
-
-        'test pathToRoot for views': function() {
-            var store = {
-                    getAppConfig: function() {
-                        return {
-                            pathToRoot: '/path/to/root/'
-                        };
-                    },
-                    getStaticContext: function() {
-                        return 'static context';
-                    },
-                    getRoutes: function(ctx) {
-                        return 'routes';
-                    }
-                };
-            var command = {
-                    action: 'index',
-                    context: {
-                        runtime: 'server'
-                    },
-                    instance: {
-                        id: 'id',
-                        type: 'TypeGeneral',
-                        acAddons: [],
-                        views: {
-                            index: {
-                                engine: 'engine-in-instance',
-                                'content-path': 'path/in/instance'
-                            }
-                        }
-                    }
-                };
-            var adapter = {
-                    done: function(data, meta) {},
-                    error: function(err) {}
-                };
-            var renderCalled = false;
-            Y.mojito.addons.viewEngines.mockViewEngine2 = function() {
-                this.render = function(data, type, path, in_adapter, meta, more) {
-                    renderCalled = true;
-                    A.areSame('done', data.status);
-                    A.areSame('TypeGeneral', type);
-                    A.areSame('/path/to/root/path/in/meta', path);
-                    A.areSame(adapter, in_adapter);
-                    A.areSame('index', meta.view.name);
-                    A.isFalse(!!more);
-                };
-                return this;
-            };
-            var ac, error;
-            try {
-                ac = new Y.mojito.ActionContext({
-                    dispatch: 'the dispatch',
-                    command: command,
-                    controller: {
-                        index: function(ac) {
-                            ac.done({
-                                status: 'done'
-                            }, {
-                                view: {
-                                    engine: 'mockViewEngine2',
-                                    'content-path': 'path/in/meta'
-                                }
-                            });
-                        }
-                    },
-                    store: store,
-                    adapter: adapter
-                });
-            } catch(err) {
-                error = err;
-            }
-            A.isUndefined(error, 'no error');
-            A.isTrue(renderCalled, 'render called');
         }
 
     }));

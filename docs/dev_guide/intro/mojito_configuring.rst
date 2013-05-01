@@ -9,7 +9,8 @@ Basic Information
 
 Mojito can be configured at the framework, application, and mojit levels. 
 Each level is configured differently, but uses same general file format 
-consisting of JSON or YAML.
+consisting of JSON or YAML. If configuration files exist in both JSON and YAML,
+Mojito will use the YAML configuration file.
 
 .. _config_basic-file:
 
@@ -39,10 +40,11 @@ objects, each identified by contexts defined by the ``settings`` property.
 See `Application Configuration`_ and `Mojit Configuration`_ for details about specific 
 configuration files.
 
+**application.json**
+
 .. code-block:: javascript
 
    [
-     // Configuration object
      {
        "settings": [ "master" ],
        "specs": {
@@ -71,6 +73,28 @@ For the data types of the YAML elements, please see the JSON configuration table
 :ref:`Application Configuration <configure_mj-app>`, 
 :ref:`Routing <configure_mj-routing>`, and :ref:`Mojit Configuration <configure_mj-mojit>`.
 
+**application.yaml**
+
+.. code-block:: yaml
+
+   ---
+     # Example application configuration in YAML, which allows comments.
+     -
+       # The master context for default configurations.
+       settings:
+         - "master"
+
+       # You can create mojit instances in the 'specs' object.
+       specs:
+     -
+       # The context 'environment:development' that you can use for development.
+       settings:
+         - "environment:development"
+       specs:
+
+To convert JSON to YAML, we recommend using a command-line utility such as the npm module 
+`json2yaml <https://npmjs.org/package/json2yaml>`_.
+
 .. _configure_mj-app:
 
 Application Configuration
@@ -94,6 +118,8 @@ for your application:
 The tables below describe the ``configuration`` object and its properties. 
 Those properties that have object values have tables below describing their 
 properties as well except the ``config`` object, which is user defined.
+To learn how to use select configurations based on the runtime
+environment, see `Using Context Configurations <../topics/mojito_using_contexts.html>`_.
 
 .. _app-configuration_obj:
 
@@ -112,10 +138,6 @@ configuration Object
 |                                                        |                      |                   | will use.                                              |
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
 | `builds <#builds-obj>`_                                | object               | N/A               | Specifies configuration for builds.                    |
-+--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
-| ``cacheViewTemplates``                                 | boolean              | true              | Specifies whether the view engine should attempt       |
-|                                                        |                      |                   | to cache the view. Note that not all view engines      |
-|                                                        |                      |                   | support caching.                                       |
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
 | ``middleware``                                         | array of strings     | []                | A list of paths to the Node.js module that exports     |
 |                                                        |                      |                   | a Connect middleware function.                         |
@@ -143,7 +165,7 @@ configuration Object
 |                                                        |                      |                   | ``"selector": "iphone"`` would configure the Resource  |
 |                                                        |                      |                   | Store to find resources with the identifier ``iphone`` |
 |                                                        |                      |                   | such as ``index.iphone.hb.html``.                      |
-|                                                        |                      |                   | See the `selector Propery <../topics/mojito_resource   |
+|                                                        |                      |                   | See the `selector Property <../topics/mojito_resource  |
 |                                                        |                      |                   | _store.html#selector-property>`_ and `Selectors <../   |
 |                                                        |                      |                   | topics/mojito_resource_store.html#selectors>`_ for     |
 |                                                        |                      |                   | for more information.                                  |
@@ -172,12 +194,22 @@ configuration Object
 | ``tunnelTimeout``                                      | number               | 30000             | The timeout in milliseconds for the communication      |
 |                                                        |                      |                   | tunnel from the client back to the server.             |
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
+| :ref:`viewEngine <viewEngine_obj>`                     | object               | N/A               | Contains information about caching and preloading      |
+|                                                        |                      |                   | templates.                                             |
++--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
 | `yui <#yui-obj>`_                                      | object               | N/A               | When Mojito is deployed to client, the                 |
 |                                                        |                      |                   | :ref:`yui_obj` specifies where and how to obtain       |
 |                                                        |                      |                   | YUI 3. The ``yui.config`` object also contains         |
 |                                                        |                      |                   | logging configurations.                                |
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
 
+.. note:: Some of the values for the properties above can be dynamically changed by code 
+          or a new context (runtime environment) may use a configuration
+          object that has different ``settings``, and thus, a different set of 
+          configurations. Other configurations are considered static, meaning that they
+          cannot be changed once an application is started in a base context (environment).
+          See `Static Configurations <../topics/mojito_using_contexts.html#static-configurations>`_
+          for more information and a list of the static configurations.
 
 
 .. _builds_obj:
@@ -190,10 +222,6 @@ builds Object
 +=================================+===============+================================================================================+
 | `html5app <#html5app-obj>`_     | object        | Specifies configuration for HTML5 applications                                 |
 |                                 |               | created with ``$ mojito build html5app``.                                      | 
-+---------------------------------+---------------+--------------------------------------------------------------------------------+
-| `hybridapp <#hybridapp-obj>`_   | object        | Specifies configuration for hybrid applications                                |
-|                                 |               | created with the following:                                                    |
-|                                 |               | ``mojito build hybridapp -n <snapshot_name> -t <snapshot_tag> [<build_path>]`` |
 +---------------------------------+---------------+--------------------------------------------------------------------------------+
 
 
@@ -235,49 +263,23 @@ html5app Object
 |                        |               |           |               | ``urls: [ '/view.html']``                 |
 +------------------------+---------------+-----------+---------------+-------------------------------------------+
 
-.. _hybrid_obj:
-
-hybridapp Object
-****************
-
-The ``hybridapp`` object is used to specify build information for hybrid applications,
-which are created with the command 
-``mojito build hybridapp -n <snapshot_name> -t <snapshot_tag> [<build_path>]``.
-Hybrid applications are HTML5 applications that are designed to work with future
-Cocktails components that will enable hybrid applications to use the native features
-of mobile devices. Currently, hybrid applications are strictly an experimental feature of 
-Mojito and Cocktails.
-
-+------------------------+---------------+-----------+-------------------------------+--------------------------------------------------------------------------------+
-| Property               | Data Type     | Required? | Default Value                 | Description                                                                    |
-+========================+===============+===========+===============================+================================================================================+
-| ``buildDir``           | string        | no        | none                          | The build path of the hybrid application. If not specified, the hybrid         |
-|                        |               |           |                               | application will be placed in ``artifacts/build/hybridapp``. The specified     |
-|                        |               |           |                               | path for ``buildDir`` will be overridden if a build path is given to the       |
-|                        |               |           |                               | following command:                                                             |
-|                        |               |           |                               | ``mojito build hybridapp -n <snapshot_name> -t <snapshot_tag> [<build_path>]`` |
-+------------------------+---------------+-----------+-------------------------------+--------------------------------------------------------------------------------+
-| ``forceRelativePaths`` | boolean       | no        | ``false``                     | When ``true``, the server-relative paths (those starting with "/") are         |
-|                        |               |           |                               | converted into paths relative to the generated file.                           |
-+------------------------+---------------+-----------+-------------------------------+--------------------------------------------------------------------------------+
-| ``packages``           | object        | yes       | none                          | An object containing key-value pairs that specify dependencies and their       |
-|                        |               |           |                               | associated versions. When you create a hybrid application with the command     |
-|                        |               |           |                               | ``mojito build hybridapp``, the dependencies listed in ``packages`` are added  |
-|                        |               |           |                               | to the ``packages.json`` of the built hybrid application.                      |
-+------------------------+---------------+-----------+-------------------------------+--------------------------------------------------------------------------------+
-| ``urls``               | array of      | yes       | none                          | The routing paths to views that be rendered into static pages and then cached  | 
-|                        | strings       |           |                               | so that the page can be viewed offline. For example, if the running            |
-|                        |               |           |                               | application renders the view ``view.html``, you could configure the            |
-|                        |               |           |                               | application to statically create and cache ``view.html`` in                    |
-|                        |               |           |                               | ``{app_dir}/artifacts/builds/hybridapp`` (default location) using the          |
-|                        |               |           |                               | following: ``urls: [ '/view.html']``                                           |
-+------------------------+---------------+-----------+-------------------------------+--------------------------------------------------------------------------------+
 
 
 .. _specs_obj:
 
 specs Object
 ############
+
+The ``specs`` object can contain one or more mojit instances that are named by 
+the developer. Each mojit instance is represented by an object and has
+a type that specifies a mojit that was created with ``mojito create mojit <mojit_name>``
+or a built-in `frame mojit <../topics/mojito_frame_mojits.html>`_.
+The table below contains the properties that a mojit instance object can contain.
+
+.. _mojit_instance_obj:
+
+Mojit Instance Object
+*********************
 
 +------------------------------+---------------+-------------------------------------------------------------------------+
 | Property                     | Data Type     | Description                                                             |
@@ -300,10 +302,18 @@ specs Object
 |                              |               | addon <../../api/classes/Config.common.html>`_. For example:            |
 |                              |               | ``ac.config.get('message')``                                            |
 +------------------------------+---------------+-------------------------------------------------------------------------+
-| ``defer``                    | boolean       | If true and the mojit instance is a child of the ``HTMLFrameMojit``,    |
-|                              |               | an empty node will initially be rendered and then content will be       |
-|                              |               | lazily loaded. See                                                      |
+| ``defer``                    | boolean       | If ``true`` and the mojit instance is a child of the                    |
+|                              |               | ``HTMLFrameMojit``, an empty node will initially be rendered and        |
+|                              |               | then content will be lazily loaded. See                                 |
 |                              |               | `LazyLoadMojit <../topics/mojito_frame_mojits.html#lazyloadmojit>`_     |
+|                              |               | for more information.                                                   |
++------------------------------+---------------+-------------------------------------------------------------------------+
+| ``propagateFailure``         | boolean       | If ``true``, when a child mojit calls the method ``ac.error``, the      |
+|                              |               | error message is passed to the parent and the parent mojit fails.       |
+|                              |               | When ``false`` (the default value), the child mojit can call            |
+|                              |               | ``ac.error`` to pass an error message to the parent, but the parent     |
+|                              |               | will not fail. See `Propagating Child Mojit Errors to Parent Mojit <../ |
+|                              |               | topics/mojito_composite_mojits.html#mojito_composite-child_errors>`_    |
 |                              |               | for more information.                                                   |
 +------------------------------+---------------+-------------------------------------------------------------------------+
 | ``proxy``                    | object        | This is a normal mojit spec to proxy this mojit's execution             |
@@ -319,10 +329,11 @@ specs Object
 |                              |               | required in the ``specs`` object.                                       |
 +------------------------------+---------------+-------------------------------------------------------------------------+
 
+
 .. _config_obj:
 
 config Object
-*************
++++++++++++++
 
 +--------------------------+---------------+--------------------------------------------------------------------------------+
 | Property                 | Data Type     | Description                                                                    |
@@ -383,9 +394,29 @@ staticHandling Object
 | ``prefix``            | string        | "static"                    | The URL prefix for all statically served assets.       |
 |                       |               |                             | Specified as a simple string and wrapped in "/".       |
 |                       |               |                             | For example ``"static"`` becomes the URL prefix        |
-|                       |               |                             | ``/static/``. An empty string can be given if no       |
-|                       |               |                             | prefix is desired.                                     |
+|                       |               |                             | ``/static/``.                                          |
 +-----------------------+---------------+-----------------------------+--------------------------------------------------------+
+
+
+.. _viewEngine_obj:
+
+viewEngine Object
+#################
+
++--------------------------------+----------------------+-------------------+------------------------------------------------------+
+| Property                       | Data Type            | Default Value     | Description                                          |
++================================+======================+===================+======================================================+
+| ``cacheTemplates``             | boolean              | true              | Specifies whether the view engine should attempt     |
+|                                |                      |                   | to cache the view. Note that not all view engines    |
+|                                |                      |                   | support caching.                                     |
++--------------------------------+----------------------+-------------------+------------------------------------------------------+
+| ``preloadTemplates``           | boolean              | false             | Determines if templates are preloaded in memory.     |
+|                                |                      |                   | This is beneficial for small applications, but not   |     
+|                                |                      |                   | recommended for applications with many views and     |
+|                                |                      |                   | partials because it may require a significant amount |
+|                                |                      |                   | of memory that could degrade the performance.        |
++--------------------------------+----------------------+-------------------+------------------------------------------------------+
+
 
 .. _yui_obj:
 
@@ -397,7 +428,7 @@ See `Example Application Configurations`_ for an example of the ``yui`` object.
 +--------------------------------+----------------------+------------------------------------------------------------------------+
 | Property                       | Data Type            | Description                                                            |
 +================================+======================+========================================================================+
-| :ref:`config <yui_config>`     | object               | Used to populate the `YUI_config <http://yuilibrary.com/yui/docs/yui/  |
+| :ref:`config <yui_conf>`       | object               | Used to populate the `YUI_config <http://yuilibrary.com/yui/docs/yui/  |
 |                                |                      | #yui_config>`_ global variable that allows you to configure every YUI  |
 |                                |                      | instance on the page even before YUI is loaded. For example, you can   |
 |                                |                      | configure logging or YUI not to load its default CSS with the          |
@@ -408,41 +439,69 @@ See `Example Application Configurations`_ for an example of the ``yui`` object.
 +--------------------------------+----------------------+------------------------------------------------------------------------+
 
 
-.. _yui_config:
+.. _yui_conf:
 
 config Object
 *************
 
 The ``config`` object can be used to configure all the options for the YUI instance. 
 To see all the options for the ``config`` object, see the 
-`YUI config Class <http://yuilibrary.com/yui/docs/api/classes/config.html>`_.
-Some of the properties of the ``config`` object used for configuring logging are shown below.
+`YUI config Class <http://yuilibrary.com/yui/docs/api/classes/config.html>`_. Some of the 
+properties of the ``config`` object used for configuring logging are shown 
+below. For more information about how to configure YUI for Mojito applications, see 
+`Configuring YUI in Mojito <../topics/mojito_yui_config.html>`_.
 
 
-+----------------------+------------------+--------------------------+---------------------------------------------------------------+
-| Property             | Data Type        | Default Value            | Description                                                   |
-+======================+==================+==========================+===============================================================+
-| ``debug``            | boolean          | true                     | Determines whether ``Y.log`` messages are written to the      |    
-|                      |                  |                          | browser console.                                              |
-+----------------------+------------------+--------------------------+---------------------------------------------------------------+
-| ``logExclude``       | object           | none                     | Excludes the logging of the YUI module(s) specified.          |
-|                      |                  |                          | For example: ``logExclude: { "logModel": true }``             |  
-+----------------------+------------------+--------------------------+---------------------------------------------------------------+
-| ``logInclude``       | object           | none                     | Includes the logging of the YUI module(s) specified.          |
-|                      |                  |                          | For example: ``logInclude: { "DemoBinderIndex": true }``      |  
-+----------------------+------------------+--------------------------+---------------------------------------------------------------+
-| ``logLevel``         | string           | "debug"                  | Specifies the lowest log level to include in the              |
-|                      |                  |                          | log output. The log level can only be set with ``logLevel``   |
-|                      |                  |                          | if ``debug`` is set to ``true``. For more information,        | 
-|                      |                  |                          | see `Log Levels <../topics/mojito_logging.html#log-levels>`_. |
-+----------------------+------------------+--------------------------+---------------------------------------------------------------+
-| ``logLevelOrder``    | array of strings | ``['debug', 'mojito',    | Defines the order of evaluating log levels. Each log          |
-|                      |                  | 'info', 'warn', 'error'  | level is a superset of the levels that follow, so messages    |
-|                      |                  | 'none']``                | at levels within the set will be displayed. Thus, at the      |
-|                      |                  |                          | ``debug`` level, messages at all levels will be displayed,    |
-|                      |                  |                          | and at the ``mojito`` level, levels ``info``, ``warn``,       |
-|                      |                  |                          | ``error`` will be displayed, etc.                             |
-+----------------------+------------------+--------------------------+---------------------------------------------------------------+
+
++----------------------+------------------+--------------------------------------------------------+-----------------------------------------------------------------------+
+| Property             | Data Type        | Default Value                                          | Description                                                           |
++======================+==================+========================================================+=======================================================================+
+| ``base``             | string           | ``"http://yui.yahooapis.com/{YUI VERSION}/build/?"``   | The base URL for a dynamic combo handler. This will be used           |
+|                      |                  |                                                        | to make combo-handled module requests if ``combine`` is set           |
+|                      |                  |                                                        | to ``true``. You can also set the base to a local path to             |
+|                      |                  |                                                        | serve YUI, such as ``/static/yui``.                                   |
++----------------------+------------------+--------------------------------------------------------+-----------------------------------------------------------------------+
+| ``combine``          | boolean          | true                                                   | If ``true``, YUI will use a combo handler to load multiple            |    
+|                      |                  |                                                        | modules in as few requests as possible. Providing a value for         |
+|                      |                  |                                                        | the ``base`` property will cause combine to default to                |
+|                      |                  |                                                        | ``false``.                                                            |
++----------------------+------------------+--------------------------------------------------------+-----------------------------------------------------------------------+
+| ``comboBase``        | string           | ``"http://yui.yahooapis.com/combo?"``                  | The base URL for a dynamic combo handler. This will be used           |    
+|                      |                  |                                                        | to make combo-handled module requests if combine is set to            |
+|                      |                  |                                                        | ``true``.                                                             |
++----------------------+------------------+--------------------------------------------------------+-----------------------------------------------------------------------+
+| ``comboSep``         | string           | ``"&"``                                                | The default separator to use between files in a combo URL.            |    
++----------------------+------------------+--------------------------------------------------------+-----------------------------------------------------------------------+
+| ``root``             | string           | ``"{YUI VERSION}/build/"``                             | Root path to prepend to module path for the combo service.            |
++----------------------+------------------+--------------------------------------------------------+-----------------------------------------------------------------------+
+| ``debug``            | boolean          | true                                                   | Determines whether ``Y.log`` messages are written to the              |    
+|                      |                  |                                                        | browser console.                                                      |
++----------------------+------------------+--------------------------------------------------------+-----------------------------------------------------------------------+
+| ``logExclude``       | object           | none                                                   | Excludes the logging of the YUI module(s) specified.                  |
+|                      |                  |                                                        | For example: ``logExclude: { "logModel": true }``                     |  
++----------------------+------------------+--------------------------------------------------------+-----------------------------------------------------------------------+
+| ``logInclude``       | object           | none                                                   | Includes the logging of the YUI module(s) specified.                  |
+|                      |                  |                                                        | For example: ``logInclude: { "DemoBinderIndex": true }``              |  
++----------------------+------------------+--------------------------------------------------------+-----------------------------------------------------------------------+
+| ``logLevel``         | string           | "debug"                                                | Specifies the lowest log level to include in the                      |
+|                      |                  |                                                        | log output. The log level can only be set with ``logLevel``           |
+|                      |                  |                                                        | if ``debug`` is set to ``true``. For more information,                | 
+|                      |                  |                                                        | see `Log Levels <../topics/mojito_logging.html#log-levels>`_.         |
++----------------------+------------------+--------------------------------------------------------+-----------------------------------------------------------------------+
+| ``logLevelOrder``    | array of strings | ``['debug', 'mojito',                                  | Defines the order of evaluating log levels. Each log                  |
+|                      |                  | 'info', 'warn', 'error'                                | level is a superset of the levels that follow, so messages            |
+|                      |                  | 'none']``                                              | at levels within the set will be displayed. Thus, at the              |
+|                      |                  |                                                        | ``debug`` level, messages at all levels will be displayed,            |
+|                      |                  |                                                        | and at the ``mojito`` level, levels ``info``, ``warn``,               |
+|                      |                  |                                                        | ``error`` will be displayed, etc.                                     |
++----------------------+------------------+--------------------------------------------------------+-----------------------------------------------------------------------+
+| ``seed``             | array of strings | ``["yui-base", "loader-base", "loader-yui3",           | Similar to the YUI seed file as explained in the `YUI Quickstart <htt |
+|                      |                  | "loader-app", "loader-app-base{langPath}"]``           | p://yuilibrary.com/yui/quick-start/>`_ you use the ``seed`` array     |
+|                      |                  |                                                        | to specify the YUI components to load for your application. You can   |
+|                      |                  |                                                        | also specify URLs to the YUI seed files, allowing the client to load  |
+|                      |                  |                                                        | YUI. See :ref:`Seed File in Mojito Applications <seed-mojito>` for    |
+|                      |                  |                                                        | more information.                                                     |
++----------------------+------------------+--------------------------------------------------------+-----------------------------------------------------------------------+
 
 
 
@@ -464,6 +523,8 @@ Your application configuration can specify multiple mojit instances of the same 
 different types in the ``specs`` object. In the example ``application.json`` below, the 
 mojit instances ``sign_in`` and ``sign_out`` are defined:
 
+**application.json**
+
 .. code-block:: javascript
 
    [
@@ -479,6 +540,22 @@ mojit instances ``sign_in`` and ``sign_out`` are defined:
        }
      }
    ]
+
+**application.yaml**
+
+.. code-block:: yaml
+
+   ---
+     -
+       settings:
+         - "master"
+       specs:
+         sign_in:
+           type: "SignInMojit"
+         sign_out:
+           type: "SignOutMojit"
+
+
    
 .. _config_mult_mojits-parent_child:
 
@@ -488,6 +565,9 @@ Parent Mojit With Child Mojit
 A mojit instance can be configured to have a child mojit using the ``child`` 
 object. In the example ``application.json`` below, the mojit instance ``parent`` 
 of type ``ParentMojit`` has a child mojit of type ``ChildMojit``.
+
+
+**application.json**
 
 .. code-block:: javascript
 
@@ -507,6 +587,22 @@ of type ``ParentMojit`` has a child mojit of type ``ChildMojit``.
      }
    ]
 
+**application.yaml**
+
+.. code-block:: yaml
+
+   ---
+     -
+       settings:
+         - "master"
+       specs:
+         parent:
+           type: "ParentMojit"
+           config:
+             child:
+               type: "ChildMojit"
+
+
 .. _config_mult_mojits-parent_children:
 
 Parent Mojit With Children
@@ -520,6 +616,9 @@ for more information.
 
 In the example ``application.json`` below, the mojit instance ``father`` of type 
 ``ParentMojit`` has the children ``son`` and ``daughter`` of type ``ChildMojit``.
+
+
+**application.json**
 
 .. code-block:: javascript
 
@@ -544,6 +643,25 @@ In the example ``application.json`` below, the mojit instance ``father`` of type
      }
    ]
 
+**application.yaml**
+
+.. code-block:: yaml
+
+   ---
+     -
+       settings:
+         - "master"
+       specs:
+         father:
+           type: "ParentMojit"
+           config:
+             children:
+               son:
+                 type: "ChildMojit"
+               daughter:
+                 type: "ChildMojit"
+
+
 
 .. _config_mult_mojits-child_children:
 
@@ -558,6 +676,8 @@ for more information.
 
 The example ``application.json`` below creates the parent mojit ``grandfather`` with the 
 child ``son``, which has the children ``grandson`` and ``granddaughter``.
+
+**application.json**
 
 .. code-block:: javascript
 
@@ -587,10 +707,34 @@ child ``son``, which has the children ``grandson`` and ``granddaughter``.
      }
    ]
 
+**application.yaml**
+
+.. code-block:: yaml
+
+   ---
+     -
+       settings:
+         - "master"
+       specs:
+         grandfather:
+           type: "GrandparentMojit"
+           config:
+             child:
+               son:
+                 type: "ChildMojit"
+                 children:
+                   grandson:
+                     type: "GrandchildMojit"
+                   grandaughter:
+                     type: "GrandchildMojit"
+
+
 The child mojits can also have their own children, but beware that 
 having so many child mojits may cause memory issues. In our updated 
 example ``application.json`` below, the ``grandaughter`` mojit now has
 its own children mojits:
+
+**application.json**
 
 .. code-block:: javascript
 
@@ -628,6 +772,31 @@ its own children mojits:
      }
    ]
 
+**application.yaml**
+
+.. code-block:: yaml
+
+   ---
+     -
+       settings:
+         - "master"
+       specs:
+         grandfather:
+           type: "GrandparentMojit"
+           config:
+             child:
+               son:
+                 type: "ChildMojit"
+                 children:
+                   grandson:
+                     type: "GrandchildMojit"
+                   grandaughter:
+                     type: "GrandchildMojit"
+                     children:
+                       girl_doll:
+                         type: "GirlDollMojit"
+                       boy_doll:
+                         type: "BoyDollMojit"
 
 
 .. _deploy_app:
@@ -662,6 +831,8 @@ Example
 The example ``application.json`` below uses the ``deploy`` property to configure the 
 application to be deployed to the client.
 
+**application.json**
+
 .. code-block:: javascript
 
    [
@@ -681,6 +852,21 @@ application to be deployed to the client.
      }
    ]
    
+**application.yaml**
+
+.. code-block:: yaml
+
+   ---
+     -
+       settings:
+         - "master"
+       specs:
+         frame:
+           type: "HTMLFrameMojit"
+           config:
+             deploy: true
+             child:
+               type: "PagerMojit"
 
 
 .. _app_config-ex:
@@ -692,6 +878,8 @@ This example ``application.json`` defines the two mojit instances ``foo`` and ``
 The ``foo`` mojit instance is of type ``MessageViewer``, and the ``bar`` mojit instance 
 uses ``foo`` as the base mojit. Both have metadata configured in the ``config`` object.
 
+**application.json**
+
 .. code-block:: javascript
 
    [
@@ -702,8 +890,8 @@ uses ``foo`` as the base mojit. Both have metadata configured in the ``config`` 
          "config": {
             "fetchCSS": false,
             "combine": true,
-            "comboBase:" 'http://mydomain.com/combo?',
-            "root": 'yui3/'
+            "comboBase": "http://mydomain.com/combo?",
+            "root": "yui3/"
           }
        },
        "specs": {
@@ -722,6 +910,32 @@ uses ``foo`` as the base mojit. Both have metadata configured in the ``config`` 
        }
      }
    ]
+
+**application.yaml**
+
+.. code-block:: yaml
+
+   ---
+     -
+       settings:
+         - "master"
+       yui:
+         showConsoleInClient: false
+         config:
+           fetchCSS: false
+           combine: true
+           comboBase: "http://mydomain.com/combo?"
+           root: "yui3/"
+       specs:
+         foo:
+           type: "MessageViewer"
+           config:
+             message: "hi"
+         bar:
+           base: "foo"
+           config:
+             message: "hello"
+
 
 .. _configure_mj-mojit:
 
@@ -970,6 +1184,8 @@ To create a route, you need to create a mojit instance that can be mapped to a
 path. In the ``application.json`` below, the ``hello`` instance of type 
 ``HelloMojit`` is defined.
 
+**application.json**
+
 .. code-block:: javascript
 
    [
@@ -984,9 +1200,25 @@ path. In the ``application.json`` below, the ``hello`` instance of type
      }
    ]
 
+**application.yaml**
+
+.. code-block:: yaml
+
+   ---
+     -
+       settings:
+         - "master"
+       appPort: 8666
+       specs: 
+         hello: 
+           type: "HelloMojit"
+
+
 The ``hello`` instance and a function in the ``HelloMojit`` controller can now 
 be mapped to a route path in ``routes.json`` file. In the ``routes.json`` below, 
 the ``index`` function is called when an HTTP GET call is made on the root path.
+
+**routes.json**
 
 .. code-block:: javascript
 
@@ -1001,10 +1233,27 @@ the ``index`` function is called when an HTTP GET call is made on the root path.
      }
    ]
 
+**routes.yaml**
+
+.. code-block:: yaml
+
+   ---
+     -
+       settings:
+         - "master"
+       hello index:
+         verbs:
+           - "get"
+         path: "/"
+         call: "hello.index"
+
+
 Instead of using the ``hello`` mojit instance defined in the ``application.json`` 
 shown above, you can create an anonymous instance of ``HelloMojit`` for mapping 
 an action to a route path. In the ``routes.json`` below,  an anonymous instance 
 of ``HelloMojit`` is made by prepending "@" to the mojit type.
+
+**routes.json**
 
 .. code-block:: javascript
 
@@ -1020,6 +1269,21 @@ of ``HelloMojit`` is made by prepending "@" to the mojit type.
      }
    ]
 
+**routes.yaml**
+
+.. code-block:: yaml
+
+   ---
+     -
+       settings:
+         - "master"
+       hello index:
+         verbs:
+           - "get"
+         path: "/"
+         call: "@HelloMojit.index"
+         params:
+           first_visit: true
 
 .. _routing_mapping-multiple:
 
@@ -1028,6 +1292,8 @@ Multiple Routes
 
 To specify multiple routes, you create multiple route objects that contain 
 ``verb``, ``path``, and ``call`` properties in ``routes.json`` as seen here:
+
+**routes.json**
 
 .. code-block:: javascript
 
@@ -1053,7 +1319,35 @@ To specify multiple routes, you create multiple route objects that contain
      }
    ]
 
-The ``routes.json`` file above creates the following routes:
+**routes.yaml**
+
+.. code-block:: yaml
+
+   ---
+     -
+       settings:
+         - "master"
+       root:
+         verb:
+           - "get"
+         path: "/*"
+         call: "foo-1.index"
+       foo_default:
+         verb:
+           - "get"
+         path: "/foo"
+         call: "foo-1.index"
+       bar_default:
+         verb:
+           - "get"
+         path: "/bar"
+         call: "bar-1.index"
+         params:
+           page: 1
+           log_request: true
+
+
+The ``routes.json`` and ``routes.yaml`` files above create the following routes:
 
 - ``http://localhost:8666``
 - ``http://localhost:8666/foo``
@@ -1080,6 +1374,8 @@ In the example ``routes.json`` below, routing parameters are added with an objec
 To get the value for the routing parameter ``page`` from a controller, you would 
 use ``ac.params.getFromRoute("page")``. 
 
+**routes.json**
+
 .. code-block:: javascript
 
    [
@@ -1093,6 +1389,23 @@ use ``ac.params.getFromRoute("page")``.
        }
      }
    ]
+
+**routes.yaml**
+
+.. code-block:: yaml
+
+   ---
+     -
+       settings:
+         - "master"
+       root:
+         verb:
+           - "get"
+         path: "/*"
+         call: "foo-1.index"
+         params:
+           page: 1
+           log_request: true
    
 
 .. admonition:: Deprecated
@@ -1115,6 +1428,7 @@ colon (e.g., ``:foo``). After the parameter has been replaced by a value
 given in the path, the call to the action should have the following syntax: 
 ``{mojit_instance}.(action}`` 
 
+**routes.json**
 
 .. code-block:: javascript
 
@@ -1133,8 +1447,31 @@ given in the path, the call to the action should have the following syntax:
        }
      }
    ]
-   
-For example, based on the ``routes.json`` above, an HTTP GET call made on the 
+
+**routes.yaml**
+
+.. code-block:: yaml
+  
+   ---
+     -
+       settings:
+         - "master"
+       _foo_action:
+         verb:
+           - "get"
+           - "post"
+           - "put"
+         path: "/foo/:mojit-action"
+         call: "@foo-1.{mojit-action}"
+       _bar_action:
+         verb:
+           - "get"
+           - "post"
+           - "put"
+         path: "/bar/:mojit-action"
+         call: "@bar-1.{mojit-action}"
+
+For example, based on the ``routes.json`` and ``routes.yaml`` above, an HTTP GET call made on the 
 path ``http://localhost:8666/foo/index`` would call the ``index`` function in 
 the controller because the value of ``:mojit-action`` in the path (``index`` in 
 this case) would be then replace ``{mojit-action}}`` in the ``call`` property. 
@@ -1163,6 +1500,8 @@ matches the regular expression ``\\d{1,2}_[Mm]ojitos?``, the ``index``
 action of the mojit instance is called. 
 
 
+**routes.json**
+
 .. code-block:: javascript
 
    [
@@ -1176,6 +1515,22 @@ action of the mojit instance is called.
        }
      }
    ]
+
+**routes.yaml**
+
+.. code-block:: yaml
+
+   ---
+     -
+       settings:
+         - "master"
+       regex_path:
+         verbs:
+           - "get"
+         path: "/:matched_path"
+         regex:
+           matched_path: "\\d{1,2}_[Mm]ojitos?"
+         call: "myMojit.index"
 
 Based on the above routing configuration, the following URLs 
 would call the ``index`` action:
@@ -1256,7 +1611,7 @@ you would use ``ac.config.getAppConfig().specs`` as shown here:
       YUI.add('myMojit', function(Y, NAME) {
         Y.namespace('mojito.controllers')[NAME] = {
           index: function(ac) {
-            // Get the 'specs' object from teh application configuration 
+            // Get the 'specs' object from the application configuration 
             // through the Config addon.
             var app_specs = ac.config.getAppConfig().specs;
             Y.log(app_specs);

@@ -24,6 +24,8 @@ Issues
   to start Mojito? <eaddriuse_err>`
 * :ref:`When I execute child mojits with "composite.execute", the views are being rendered, 
   but the binders are not executed. Why? <binder_not_executing>`
+* :ref`Why am I getting a DOM dependency error on the server similar to the one below? 
+  How do I debug this type of error? <dom_dependency>`
 
 
 Solutions
@@ -37,7 +39,7 @@ an error or the value is not found.*
 
 **A:** 
 Try inspecting the ``spec`` object that is found in the ``ActionContext`` object for the 
-key. If ``ac`` is the ``ActionContext`` object, you can access the ``specs` object with the 
+key. If ``ac`` is the ``ActionContext`` object, you can access the ``specs`` object with the 
 following: ``ac.config.getAppConfig().specs``. 
 
 If you need to examine the entire ``ActionContext`` object, you can use the 
@@ -193,5 +195,29 @@ Try doing the following:
        ac.done(data, meta);
      });
    ...
+
+.. _dom_dependency:
+
+**Q:** *Why am I getting a DOM dependency error on the server similar to the one below? 
+        How do I debug this type of error?*
+ 
+::
+
+   TypeError: Cannot read property 'documentElement' of null at Object.YUI.add.requires [as fn]
+
+   (/home/user1/my_app/node_modules/mojito/node_modules/yui/dom-base/dom-base-min.js:7:50)
+
+   at proto._attach
+
+   (/home/user1/my_app/node_modules/mojito/node_modules/yui/yui-nodejs/yui-nodejs.js:701:33)
    
+
+**A:**
+Your application has modules that depend on DOM APIs that aren't available in 
+a Node.js-environment. To find those modules, try using the commands 
+``mojito gv --trace dom`` and ``mojito gv --trace dom-base``, which 
+create a graph of the module dependencies.
+
+
+
    

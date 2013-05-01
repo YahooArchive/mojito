@@ -11,3 +11,6 @@
             debug: true
             # This is the level that will be used
             logLevel: debug
+    specs:
+        simple:
+            type: simple

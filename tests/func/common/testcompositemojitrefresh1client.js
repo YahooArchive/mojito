@@ -22,7 +22,7 @@ YUI({
               Y.Assert.areEqual('This module has been refreshed ', Y.one('#footercomment').get('innerHTML').match(/This module has been refreshed /gi));
               Y.Assert.areEqual('1', Y.one('#footercomment').get('innerHTML').match(/1/gi));
               Y.Assert.areEqual('times', Y.one('#footercomment').get('innerHTML').match(/times/gi));
-          }, 2000);
+          }, 4000);
       }
 
   }));

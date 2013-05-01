@@ -32,9 +32,9 @@ Implementation Notes
 
 The following screenshot shows the grid of Flickr images retrieved by YQL.
 
-.. image:: images/yql.flickr.preview.gif
-   :height: 373px
-   :width: 401px
+.. image:: images/yql.flickr.preview.png
+   :height: 530px
+   :width: 500px
 
 .. _code_exs_yql-statement:
 

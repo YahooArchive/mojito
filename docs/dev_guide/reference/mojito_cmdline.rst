@@ -66,9 +66,7 @@ Mojito offers the following three archetypes for applications and mojits.
   specified. It is a happy medium between ``simple`` and ``full``.
 - ``full`` - Provides the most comprehensive configuration and code for 
   applications.
-- ``hybrid`` - Creates a hybrid HTML5 application that can be plugged into 
-  a future component of Cocktails that will allow HTML5/JavaScript applications 
-  to access the features of native devices. 
+ 
 
 .. _mj_cmdlne-testing:
 
@@ -258,37 +256,20 @@ specifying the pages in the ``"builds": "html5app"`` object in
 object lets you add the ``manifest`` attribute to the ``html`` element, 
 configure relative paths, and specify a list of URLs to pages to generate.
 
-.. _build_types-hybridapp:
-
-hybridapp
-#########
-
-
-To build a hybrid application, use either of the following.
-
-``$ mojito build hybridapp [--context <context>] --snapshotName <snapshot_name> --snapshotTag <snapshot_tag> [<path/to/app/>]`` 
-
-``$ mojito build hybridapp [-c <context>] -n <snapshot_name> -t <snapshot_tag> [<path/to/app/>]`` 
-
-
-This generates a HTML5 application that is customized to work with a future 
-component of the Cocktails suite that will allow you to write HTML5/JavaScript 
-applications that can access native features of mobile devices.
-
-The generated application contains Mojito, frame mojits, the default mojit 
-``top_frame``, your created mojits, and application configuration. The command 
-will also create a ``snapshot.json`` file that can be used tracking and updating 
-applications.
-
 
 
 .. _mj_cmdlne-compile_sys:
 
-Compile System
-==============
+Compile System (Deprecated)
+===========================
 
-Mojito comes with a compile command for generating files to optimize an application for 
-production.
+The ``compile`` command for generating files to optimize an application for 
+production has been **deprecated** and may not be available in the future.
+
+We recommend that you use the npm module `Shaker <https://github.com/yahoo/mojito-shaker>`_,
+which lets you compile (i.e., create rollups of) one or more input files. See the 
+`Shaker documentation <http://developer.yahoo.com/cocktails/shaker/>`_ 
+to learn how to use Shaker in Mojito applications.
 
 .. _compile_sys-syntax
 

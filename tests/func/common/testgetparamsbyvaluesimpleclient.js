@@ -19,7 +19,7 @@ YUI({
                 Y.Assert.areEqual('Params by key', Y.one('#desc').get('innerHTML').match(/Params by key/gi));
                 Y.Assert.areEqual('Does the \"foo\" param exist\?', Y.one('#question').get('innerHTML').match(/Does the \"foo\" param exist\?/gi));
 				Y.Assert.areEqual('YES', Y.one('#answer').get('innerHTML').match(/YES/gi));
-            }, 2000);
+            }, 4000);
         }
 
     }));

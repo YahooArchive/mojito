@@ -30,7 +30,7 @@ YUI({
                 Y.Assert.areEqual('ac.config.get\(\'config2.config2Key2.config2Key2Key1\'\) -', Y.one('#configNested3').get('innerHTML').match(/ac.config.get\(\'config2.config2Key2.config2Key2Key1\'\) -/gi));
                 Y.Assert.areEqual('\"It gets complicated here- config2Key2Key1 value in application.yaml\"', Y.one('#configNested3').get('innerHTML').match(/\"It gets complicated here- config2Key2Key1 value in application.yaml\"/gi));
 	            				
-            }, 2000);
+            }, 4000);
        }
 
     }));

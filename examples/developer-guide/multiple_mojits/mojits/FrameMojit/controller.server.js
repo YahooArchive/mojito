@@ -13,7 +13,7 @@ YUI.add('FrameMojit', function(Y, NAME) {
             this.config = config;
         },
         index: function(actionContext) {
-            actionContext.composite.done({template: {title: "Parent Frame"}});
+            actionContext.composite.done({title: "Parent Frame"});
         }
     };
 }, '0.0.1', {requires: ['mojito', 'mojito-composite-addon']});

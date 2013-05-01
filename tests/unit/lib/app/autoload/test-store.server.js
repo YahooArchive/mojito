@@ -135,7 +135,6 @@ YUI().use(
                 var fixtures = libpath.join(__dirname, '../../../../fixtures/store');
                 var instance = {type:'test_mojit_1'};
                 store.expandInstance(instance, {}, function(err, instance) {
-                    A.areSame('/static/test_mojit_1/assets', instance.assetsRoot);
                     // we'll skip the favicon.ico that ships with Mojito
                     // (it's not availble when running --coverage anyway)
                     A.areSame(libpath.join(fixtures, 'mojits/test_mojit_1/assets/css/main.css'), instance.assets['css/main.css']);
@@ -166,6 +165,10 @@ YUI().use(
                     A.isObject(instance.views['subdir/test_1']);
                     A.areSame('/static/test_mojit_1/views/subdir/test_1.hb.html', instance.views['subdir/test_1']['content-path']);
                     A.areSame('hb', instance.views['subdir/test_1']['engine']);
+
+                    A.isObject(instance.partials['test_3']);
+                    A.areSame('/static/test_mojit_1/views/partials/test_3.hb.html', instance.partials['test_3']['content-path']);
+                    A.areSame('hb', instance.partials['test_3']['engine']);
                 });
             },
 
@@ -185,7 +188,7 @@ YUI().use(
                 var instance = {type:'TestMojit2'};
                 store.expandInstance(instance, {}, function(err, instance){
                     A.isNotUndefined(instance.controller);
-                    A.areSame('/static/TestMojit2/assets', instance.assetsRoot);
+                    A.areSame('TestMojit2', instance.type);
                     A.areSame(libpath.join(fixtures, 'mojits/test_mojit_2/views/index.hb.html'), instance.views.index['content-path']);
                 });
             },
@@ -199,7 +202,7 @@ YUI().use(
             'server mojit is loaded because of package mojito version match': function(){
                 var instance = {type:'TestMojit2'};
                 store.expandInstance(instance, {}, function(err, instance){
-                    A.areSame('/static/TestMojit2/assets', instance.assetsRoot);
+                    A.areSame('TestMojit2', instance.type);
                 });
             },
 
@@ -283,6 +286,14 @@ YUI().use(
                 });
             },
 
+            'instance with default spec': function() {
+                // should use tests/fixtures/store/mojits/test_mojit_2/specs/default.json
+                var spec = { base: 'TestMojit2' };
+                store.expandInstance(spec, {}, function(err, instance) {
+                    A.areSame('testVal1', instance.config.testKey1);
+                });
+            },
+
             'getAppConfig() returns contextualized info': function() {
                 var context = { runtime: 'server' },
                     config;
@@ -330,9 +341,8 @@ YUI().use(
 
             'app resource overrides framework resource': function() {
                 var fixtures = libpath.join(__dirname, '../../../../fixtures/store'),
-                    ress;
-                ress = store.getResources('server', {}, {mojit: 'HTMLFrameMojit', type: 'controller'});
-                A.areSame(libpath.join(fixtures, 'mojits/HTMLFrameMojit/controller.server.js'), ress[0].source.fs.fullPath);
+                    details = store.getMojitTypeDetails('server', {}, 'HTMLFrameMojit');
+                A.areSame(libpath.join(fixtures, 'mojits/HTMLFrameMojit'), details.fullPath);
             },
 
             'ignore: getAllURLResources()': function() {
@@ -360,7 +370,6 @@ YUI().use(
             }
 
         }));
-
 
         suite.add(new Y.Test.Case({
 
@@ -405,7 +414,7 @@ YUI().use(
 
             'appConfig staticHandling.prefix': function() {
                 var spec = { type: 'PagedFlickr' };
-                store.expandInstance(spec, {}, function(err, instance) {
+                store.expandInstanceForEnv('client', spec, {}, function(err, instance) {
                     A.areSame('/static/PagedFlickr/assets', instance.assetsRoot);
                 });
             }
@@ -489,7 +498,6 @@ YUI().use(
             'load node_modules': function() {
                 var fixtures = libpath.join(__dirname, '../../../../fixtures/packages'),
                     store = new Y.mojito.ResourceStore({ root: fixtures });
-                store.preload();
 
                 if (!store._mojitRVs.a && !store._mojitRVs.aa && !store._mojitRVs.ba) {
                     // This happens when mojito is installed via npm, since npm
@@ -498,26 +506,34 @@ YUI().use(
                     A.isTrue(true);
                     return;
                 }
-
-                var m, mojitType, mojits = ['a', 'aa', 'ba'];
-                var r, res, ress, found;
-                for (m = 0; m < mojits.length; m += 1) {
-                    mojitType = mojits[m];
-
-                    ress = store.getResources('server', {}, {mojit: mojitType});
-                    found = 0;
-                    for (r = 0; r < ress.length; r += 1) {
-                        res = ress[r];
-                        if (res.id === 'yui-module--b') { found += 1; }
-                        if (res.id === 'yui-module--ab') { found += 1; }
-                        if (res.id === 'yui-module--bb') { found += 1; }
-                        if (res.id === 'yui-module--cb') { found += 1; }
-                    }
-                    A.areSame(4, found, 'some child node_modules not loaded');
-                }
+                var config = store.yui.getConfigShared('server');
+                A.isObject(config.modules.b, 'b');
+                A.isObject(config.modules.ab, 'ab');
+                A.isObject(config.modules.bb, 'bb');
+                A.isObject(config.modules.cb, 'cb');
 
                 var details = store.getMojitTypeDetails('server', {}, 'a');
                 A.areSame('a', details.controller);
+            },
+
+
+            'skip loaded packages': function() {
+                var fixtures = libpath.join(__dirname, '../../../../fixtures/packages'),
+                    store = new Y.mojito.ResourceStore({ root: fixtures });
+                store.preload();
+                var oldlog = Y.log;
+                var logged = false;
+                Y.log = function(msg, lvl, src) {
+                    if ('info' === lvl && 'mojito-resource-store' === src && msg.match(/^skipping duplicate package a/)) {
+                        logged = true;
+                    }
+                };
+                try {
+                    store.preload();
+                } finally {
+                    Y.log = oldlog;
+                }
+                A.isTrue(logged, 'info logged');
             },
 
             'find and parse resources by convention': function() {
@@ -525,13 +541,13 @@ YUI().use(
                     store = new Y.mojito.ResourceStore({ root: fixtures });
 
                 // fake out some parts of preload(), which we're trying to avoid
-                store._fwConfig = store.config.readConfigJSON(libpath.join(mojitoRoot, 'config.json'));
+                store._fwConfig = store.config.readConfigSimple(libpath.join(mojitoRoot, 'config.json'));
                 store._appConfigStatic = store.getStaticAppConfig();
 
                 var dir = libpath.join(__dirname, '../../../../fixtures/conventions');
                 var pkg = { name: 'test', version: '6.6.6' };
                 var mojitType = 'testing';
-                var ress = store._findResourcesByConvention(dir, 'app', pkg, mojitType)
+                var ress = store._findResourcesByConvention(dir, 'app', pkg, mojitType);
 
                 var r, res;
                 for (r = 0; r < ress.length; r++) {

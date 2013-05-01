@@ -17,11 +17,11 @@ YUI({
           Y.one('#pitchbutton').simulate('click');
           that.wait(function(){
               Y.Assert.areEqual('pitched: baseball', Y.one('#ControllerCachingResult').get('innerHTML').match(/pitched: baseball/gi));
-          }, 2000);
+          }, 4000);
           Y.one('#retrievebutton').simulate('click');
           that.wait(function(){
               Y.Assert.areEqual('ball: baseball', Y.one('#ControllerCachingResult').get('innerHTML').match(/ball: baseball/gi));
-          }, 1000);
+          }, 4000);
      }
 
    }));

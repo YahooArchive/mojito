@@ -15,16 +15,16 @@ YUI({
             var that = this;
             Y.one('#assets_loc_button').simulate('click');
             that.wait(function(){
-	            //check if the scripts are called correctly
-	            Y.one('#js1_button').simulate('click');
-	            that.wait(function(){
-		            Y.Assert.areEqual('I was appended by the recently added javascript file - js1.js.', Y.one('#para_node').get('innerHTML').match(/I was appended by the recently added javascript file - js1.js./gi));
+                //check if the scripts are called correctly
+                Y.one('#js1_button').simulate('click');
+                that.wait(function(){
+                    Y.Assert.areEqual('I was appended by the recently added javascript file - js1.js.', Y.one('#para_node').get('innerHTML').match(/I was appended by the recently added javascript file - js1.js./gi));
                     Y.one('#js2_button').simulate('click');
-		            that.wait(function(){
-			            Y.Assert.areEqual('I was appended by the recently added javascript file - js2.js.', Y.one('#para_node').get('innerHTML').match(/I was appended by the recently added javascript file - js2.js./gi));
-		            }, 1000);
-	            }, 1000);           				
-            }, 1000);
+                    that.wait(function(){
+                        Y.Assert.areEqual('I was appended by the recently added javascript file - js2.js.', Y.one('#para_node').get('innerHTML').match(/I was appended by the recently added javascript file - js2.js./gi));
+                    }, 4000);
+                }, 4000);
+            }, 4000);
         }
 
      }));

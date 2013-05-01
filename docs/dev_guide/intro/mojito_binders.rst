@@ -253,7 +253,7 @@ Binder Examples
 ---------------
 
 The following example shows a typical binder. To see how to use binders in a 
-working example, see the `Code Examples: Events <../code_exs/#events>`_.
+working example, see the `Code Examples: Events <../code_exs/events.html>`_.
 
 .. code-block:: javascript
 

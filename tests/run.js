@@ -13,7 +13,11 @@ var fs = require('fs'),
     thePid = null,
     pidNames = {},
     thePidName = null,
-    returnVal = 0;
+    returnVal = 0,
+    hostname = require('os').hostname(),
+    dns = require('dns'),
+    hostip,
+    remoteselenium;
 
 program.command('test')
     .description('Run unit and functional tests')
@@ -27,6 +31,8 @@ program.command('test')
     .option('--descriptor <value>', 'which descriptor to run. filename (or glob) relative to --path')
     .option('--port <value>', 'port number to run app')
     .option('--coverage', 'Arrow code coverage')
+    .option('--reuseSession', 'Arrow reuseSession')
+    .option('--baseUrl <value>', 'Full app path including port if there is one to run arrow tests')
     .option('--group <value>', 'Arrow group')
     .option('--driver <value>', 'Arrow driver')
     .option('--browser <value>', 'Arrow browser')
@@ -52,9 +58,14 @@ function test (cmd) {
     cmd.unitPath = path.resolve(cwd, cmd.unitPath || cmd.path || './unit');
     cmd.funcPath = path.resolve(cwd, cmd.funcPath || cmd.path || './func');
 
-    // We only start the Arrow server when we're running unit or functional
-    // tests.
-    if (cmd.arrow && (!cmd.unit && !cmd.func)) {
+    if (process.env['SELENIUM_HUB_URL']) {
+        remoteselenium = process.env['SELENIUM_HUB_URL'];
+        console.log('selenium host.....' + remoteselenium);
+    }
+    
+    series.push(gethostip);
+    
+    if (cmd.arrow) {
         series.push(startArrowServer);
     }
     if (cmd.unit) {
@@ -70,7 +81,7 @@ function test (cmd) {
         });
     }
     if (cmd.func) {
-        if ('phantomjs' !== cmd.funcBrowser) {
+        if ('phantomjs' !== cmd.funcBrowser && cmd.reuseSession) {
             if (cmd.selenium) {
                 series.push(function (callback) {
                     startArrowSelenium(cmd, callback);
@@ -82,6 +93,18 @@ function test (cmd) {
         });
     }
     async.series(series, finalize);
+}
+
+function gethostip(callback){
+    dns.lookup(hostname, function (err, addr, fam) {
+        if (err){
+            callback(err);
+            return; 
+        } 
+        hostip = addr;
+        console.log('App running at.....' + hostip);
+        callback(null);
+    });
 }
 
 function startArrowServer (callback) {
@@ -125,15 +148,22 @@ function runUnitTests (cmd, callback) {
         "--report=true",
         "--reportFolder=" + arrowReportDir
     ];
-    if ('phantomjs' !== cmd.unitBrowser) {
+    if ('phantomjs' !== cmd.unitBrowser && cmd.reuseSession) {
         commandArgs.push('--reuseSession');
     }
+    
+    var filestoexclude = 'tests/base/mojito-test.js,' +
+        'lib/app/autoload/mojito-client.client.js,' +
+        'lib/app/autoload/perf.client.js,lib/app/autoload/perf.server.js,' +
+        'lib/app/commands/,' +
+        'lib/management/';
     commandArgs.push('--logLevel=' + cmd.logLevel);
     commandArgs.push('--browser=' + cmd.unitBrowser);
     cmd.driver && commandArgs.push('--driver=' + cmd.driver);
     cmd.testName && commandArgs.push('--testName=' + cmd.testName);
     cmd.group && commandArgs.push('--group=' + cmd.group);
     cmd.coverage && commandArgs.push('--coverage=' + cmd.coverage);
+    cmd.coverage && commandArgs.push('--coverageExclude=' + filestoexclude);
 
     var p = runCommand(
         cmd.unitPath,
@@ -162,6 +192,9 @@ function build (cmd, callback) {
 function startArrowSelenium (cmd, callback) {
     console.log("---Starting Arrow Selenium---");
     var commandArgs = [cwd+"/../node_modules/yahoo-arrow/arrow_selenium/selenium.js"];
+    if (remoteselenium) {
+        commandArgs.push('--seleniumHost=' + remoteselenium);
+    }
     commandArgs.push("--open=" + cmd.funcBrowser);
     runCommand(cwd, "node", commandArgs, function () {
         callback(null);
@@ -178,7 +211,7 @@ function runFuncAppTests(cmd, callback){
         descriptors.push(cmd.funcPath + '/' + descriptor);
     }
     
-    var arrowReportDir = cmd.funcPath + '/artifacts/arrowreport/';
+    var arrowReportDir = cmd.funcPath + '/../../artifacts/arrowreport/';
     try {
         wrench.rmdirSyncRecursive(arrowReportDir);
     } catch (e) {}
@@ -197,9 +230,19 @@ function runFuncAppTests(cmd, callback){
                 });
             }))
         } else {
-            exeSeries.push(runMojitoApp(app, cmd, cmd.funcPath + '/applications', port, app.param, function(thispid) {
-                runFuncTests(cmd, des, port, thispid, arrowReportDir, callback);
-            })); 
+            // Install dependecies for specific projects
+            // Change here if you want your app to do npm install prior to start mojito server for test
+            if (app.path === "../../../examples/quickstartguide") {
+                exeSeries.push(installDependencies(app, cmd.funcPath + '/applications', function(){
+                    runMojitoApp(app, cmd, cmd.funcPath + '/applications', port, app.param, function(thispid) {
+                        runFuncTests(cmd, des, port, thispid, arrowReportDir, callback);
+                    });
+                }));
+            } else {
+                exeSeries.push(runMojitoApp(app, cmd, cmd.funcPath + '/applications', port, app.param, function(thispid) {
+                    runFuncTests(cmd, des, port, thispid, arrowReportDir, callback);
+                }));
+            }
         }
     }, function(err) {
           callback(err);
@@ -210,9 +253,9 @@ function runFuncAppTests(cmd, callback){
 function runFuncTests (cmd, desc, port, thispid, arrowReportDir, callback) {
     console.log('---Running Functional Tests---');
    
-    var host = cmd.host || 'localhost',
-        group = cmd.group || null,
-        baseUrl = 'http:\/\/'+host+':'+port;
+    var group = cmd.group || null,
+        defaultBaseUrl = 'http:\/\/'+hostip+':'+port,
+        baseUrl = cmd.baseUrl || defaultBaseUrl;
     var commandArgs = [
         cwd + "/../node_modules/yahoo-arrow/index.js",
         "--descriptor=" + desc,
@@ -222,8 +265,11 @@ function runFuncTests (cmd, desc, port, thispid, arrowReportDir, callback) {
         "--reportFolder=" + arrowReportDir,
         "--config=" + cwd + "/config/config.js"
     ];
-    if ('phantomjs' !== cmd.funcBrowser) {
+    if ('phantomjs' !== cmd.funcBrowser && cmd.reuseSession) {
         commandArgs.push('--reuseSession');
+    }
+    if (remoteselenium) {
+        commandArgs.push('--seleniumHost=' + remoteselenium);
     }
     commandArgs.push('--logLevel=' + cmd.logLevel);
     commandArgs.push('--browser=' + cmd.funcBrowser);
@@ -309,6 +355,25 @@ function runCommand (path, command, argv, callback) {
     return cmd;
 }
 
+function installDependencies (app, basePath, callback) {
+    console.log("---Starting installing dependencies---");
+    // Install with npm
+    runCommand(basePath + '/' + app.path, "npm", ["i"], function (code) {
+        if (code !== 0) {
+            // Try to install with ynpm if npm is not available
+            runCommand(basePath + '/' + app.path, "ynpm", ["i", "--registry=http://ynpm-registry.corp.yahoo.com:4080"], function (code) {
+                if (code !== 0) {
+                    // Neither npm nor ynpm is available
+                    process.stderr.write("please install npm.\n");
+                }
+                callback(code);
+            });
+        } else {
+            callback(code);
+        }
+    });
+}
+
 function runMojitoApp (app, cliOptions, basePath, port, params, callback) {
     params = params || '';
     var cmdArgs = ['start'];
@@ -334,7 +399,7 @@ function runMojitoApp (app, cliOptions, basePath, port, params, callback) {
             console.error('---DEBUG ' + port + ' STDERR--- ' + data.toString());
         });
     }
-    
+
     var listener;
     listener = function(data) {
         if (data.toString().match(/✔ 	Mojito\(v/)) {

@@ -92,16 +92,14 @@ For example, in the example controller of the parent mojit below, the ``index``
 function calls ``ac.composite.done``, which executes ``ac.done`` in the 
 ``index`` functions of the child mojits. The rendered ``index`` templates for 
 each of the child mojits is then available as a Handlebars expression, such 
-as ``{{{child_mojit}}}`` in the parent template. Notice that the ``template`` object 
-allows the parent mojit to send data to the template, so that ``{{title}}`` can be 
-used in the template.
+as ``{{{child_mojit}}}`` in the parent template. 
 
 .. code-block:: javascript
 
    YUI.add('ParentMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
        index: function(ac) {
-         ac.composite.done({ template: { title: 'Recent News'}});
+         ac.composite.done();
        }
      };
    }, '0.1.0', {requires: ['mojito', 'mojito-composite-addon']});
@@ -121,6 +119,106 @@ If ``ParentMojit`` above is the parent of ``ChildMojit``, the controller of
        }
      };
    }, '0.1.0', {requires: []});
+
+
+.. _mojito_composite-pass_data_parent:
+
+Passing Data to the Parent Template
+===================================
+
+The parent mojit can pass data to its templates by passing an object as the
+first argument to ``ac.composite.done``.
+
+The example parent controller below passes ``parent_data`` to its template, so that
+the Handlebars expression ``{{parent_data}}`` in the parent template can be replaced with 
+the value ``'Welcome'`` when the template is rendered.
+
+.. code-block:: javascript
+
+   
+   YUI.add('ParentMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
+       index: function(ac) {
+         ac.composite.done({ parent_data: 'Welcome'});
+       }
+     };
+   }, '0.1.0', {requires: ['mojito', 'mojito-composite-addon']});
+
+
+.. _mojito_composite-specify_view:
+
+Specifying the View for a Parent Mojit
+======================================
+
+In addition to passing data to the parent template, you can 
+specify what parent template to use by passing an object containing the property
+``view`` object as a second argument to ``ac.composite.done``.  The ``name`` property
+specifies the name of the view to render.
+
+The example controller of parent mojit passes data and selects the template 
+``page`` (e.g., ``page.hb.html``):
+
+.. code-block:: javascript
+
+   YUI.add('ParentMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
+       index: function(ac) {
+         ac.composite.done({ parent_data: 'Welcome'}, { "view": { "name": "page" }});
+       }
+     };
+   }, '0.1.0', {requires: ['mojito', 'mojito-composite-addon']});
+
+
+You can also specify the binder to use with the template. By default, Mojito chooses
+the binder with the same name as the template. Using the same example controller from
+above, we add the property ``binder`` to the ``view`` object to specify the ``bar``
+binder to use with the ``page`` template.
+
+.. code-block:: javascript
+
+   YUI.add('ParentMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
+       index: function(ac) {
+         ac.composite.done({ parent_data: 'Welcome'}, 
+           { "view": { "name": "page", "binder": "bar" }}
+         );
+       }
+     };
+   }, '0.1.0', {requires: ['mojito', 'mojito-composite-addon']});
+
+
+.. _mojito_composite-include_assets:
+
+Attaching Assets to a Parent Template
+=====================================
+
+If the parent mojit is a child of ``HTMLFrameMojit``, assets can be attached
+to the parent template by passing an object containing the ``assets`` property.
+
+In this example, the controller of the parent mojit is passing data,
+specifying a template, and attaching JavaScript assets to the ``head`` element
+of the rendered page.
+
+.. code-block:: javascript
+
+   YUI.add('ParentMojit', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = { 
+       index: function(ac) {
+         ac.composite.done({ parent_data: 'Welcome'}, {
+           "view": {
+             "name": "page"
+           },
+           "assets": {
+             "top": {
+               "js": ["/static/app_ex/assets/js/something.js"]
+             }
+           }
+         );
+       }
+     };
+   }, '0.1.0', {requires: ['mojito', 'mojito-composite-addon']});
+
+
 
 
 .. _mojito_composite-child_view:
@@ -149,6 +247,57 @@ are embedded using Handlebars expressions.
      <div class="body" style="border: dashed black 1px; margin: 10px 10px 10px 10px;">{{{body}}}</div>
      <div class="footer" style="border: dashed black 1px; margin: 10px 10px 10px 10px;">{{{footer}}}</div>
    </div>
+
+.. _mojito_composite-child_errors:
+
+Propagating Child Mojit Errors to Parent Mojits
+===============================================
+
+By default, when a child mojit calls the method ``ac.error`, an error message is
+logged (depending on the logging configurations) and an empty string is passed to the
+parent. The parent continues to execute its children in parallel, and finally, the 
+parent template is rendered with the content from the successfully executed
+children.
+
+To propagate the error from the child mojit to its parent so that the parent
+halts execution of child mojits, you set the property ``propagateFailure`` to ``true``
+in ``application.json``. The ``propagateFailure`` property is part of the
+child configuration, not the parent configuration, so you can configure critical
+child mojits to propagate errors while making sure that the parent mojit **does not**
+fail because a nonessential child mojit calls ``ac.error``.
+
+Based on the example ``application.json`` below, when the ``real_content`` mojit 
+instance calls the method ``ac.error``, the error will be propagated to the ``parent`` 
+mojit instance, which will then halt the execution of child mojits.
+If the ``fluff`` mojit instance calls ``ac.error``, the error
+can be logged, but will not be propagated to the ``parent`` mojit, so the parent
+will resume executing the other child mojits.
+
+.. code-block:: javascript
+
+   [
+     {
+       "settings": [ "master" ],
+       "appPort": 8666,
+       "specs": {
+         "parent": {
+           "type": "parentMojit",
+           "config" : {
+             "children": {
+               "fluff": {
+                 "type": "fluffMojit",
+                 "propagateFailure": false
+               },
+               "real_content": {
+                 "type": "contentMojit",
+                 "propagateFailure": true
+               }
+             }
+           }
+         }
+       }
+     }
+   ]
 
    
 .. _mojito_composite-dyn_define:

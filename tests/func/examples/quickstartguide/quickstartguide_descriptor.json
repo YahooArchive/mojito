@@ -1,0 +1,75 @@
+[
+    {
+        "settings": [ "master" ],
+
+        "name" : "quickstartguide",
+
+        "config" :{
+            "baseUrl" : "http://localhost:8666",
+            "application" : {
+                "name":"input",
+                "path": "../../../examples/quickstartguide"
+            }
+        },
+
+        "dataprovider" : { 
+            "quickstartguide home index page test" : {
+                "group" : "quickstartguide",
+                "params" : {
+                    "scenario": [
+                        {
+                            "test" : "test_quickstartguide_homepage.js",
+                            "page" : "$$config.baseUrl$$"
+                        },
+                        {
+                           "controller": "locator",
+                           "params": {
+                                  "value": ".container .toc ul li a",
+                                  "click": true
+                           }
+                        },
+                        {
+                           "test" : "test_quickstartguide_readpage.js"
+                        },
+                        {
+                           "controller": "locator",
+                           "params": {
+                                  "value": ".container .contents-nav .link-home",
+                                  "click": true
+                           }
+                        },
+                        {
+                           "test" : "test_quickstartguide_homepage.js"
+                        }
+                     ]
+                }
+            },
+            "quickstartguide readpage failure test" : {
+                "group" : "quickstartguide",
+                "params" : {
+                    "scenario": [
+                        {
+                           "test" : "test_quickstartguide_readpage_error.js",
+                            "page" : "$$config.baseUrl$$/read.html?blah"
+                        },
+                        {
+                           "controller": "locator",
+                           "params": {
+                                  "value": ".container .contents-nav .link-home",
+                                  "click": true
+                           }
+                        },
+                        {
+                           "test" : "test_quickstartguide_homepage.js"
+                        }
+                     ]
+                }
+            }
+        }     
+    },
+
+    {
+        "settings": [ "environment:development" ]
+    }
+
+]

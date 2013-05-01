@@ -61,6 +61,15 @@ binder
    the ``binders`` directory. See `Mojito Binders <../intro/mojito_binders.html>`_ for 
    more information.
 
+CDN
+---
+
+   `CDN <http://en.wikipedia.org/wiki/Content_delivery_network>`_ stands for **content 
+   delivery network**, which is a largely distributed system of servers deployed in multiple 
+   data centers in the Internet. CDNs serve content to end-users with high availability 
+   and high performance. YUI has a CDN for delivering
+   the `YUI library <http://yuilibrary.com/>`_. 
+
 
 composite mojits
 ----------------
@@ -120,7 +129,7 @@ Node.js
 npm
 ---
 
-   The package manager is for `Node.js`_ and can be used to install and publish code 
+   The package manager for `Node.js`_, which can be used to install and publish code 
    libraries and manage the dependencies among them. 
    See `npmjs.org <http://npmjs.org>`_ for more information.
    
@@ -132,6 +141,14 @@ OAuth
    another site without giving out the user ID and password. See the 
    `Yahoo! OAuth Quick Start Guide <http://developer.yahoo.com/oauth/guide/oauth-guide.html>`_ 
    for more information.
+
+Shaker
+------
+
+   An asset rollup management tool for Mojito applications that improves performance by 
+   reducing the number of HTTP requests. See the `Shaker documentation <http://developer.yahoo.com/cocktails/shaker/>`_
+   and the `Shaker GitHub repository <https://github.com/yahoo/mojito-shaker>`_ for more
+   information.
 
 template
 --------

@@ -61,11 +61,11 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
         setUp: function() {
             store = {
                 getAppConfig: function() { return { obj: 'appConfig' }; },
-                getAllURLResources: function () {
+                getAllURLDetails: function () {
                     return urlRess;
                 },
-                getResourceVersions: function () {
-                    return {};
+                getResourceVersions: function (filter) {
+                    return [{ filter: filter }];
                 },
                 getResourceContent: function (args, callback) {
                     var content, stat;
@@ -87,11 +87,8 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                         }
                     };
                 },
-                getResources: function(env, ctx, filter) {
-                    return [{ filter: filter }];
-                },
                 yui: {
-                    getYUIURLResources: function () {
+                    getYUIURLDetails: function () {
                         return yuiRess;
                     }
                 }
@@ -228,6 +225,8 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
             A.areEqual(1, hits, 'one hit to the store should be issued, the next should use the cached version.');
             A.areEqual(2, end, 'two valid requests should be counted');
 
+            A.areEqual("public, max-age=0.001", resHeader["Cache-Control"]);
+
             store.getResourceContent = getResourceContentFn;
         },
 
@@ -329,7 +328,6 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
         'handler deals with resources correctly': function() {
             var req,
                 resp,
-                getResourcesFn,
                 getAllURLResourcesFn,
                 getResourceContentFn,
                 handler,
@@ -337,12 +335,12 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
 
             mockResources = {
                 "/robots.txt": {
-                    mime: { type: 'text/html' }
+                    id: 'robots.txt',
+                    mime: { type: 'text/plain', charset: 'UTF-8' }
                 }
             };
             getResourceContentFn = store.getResourceContent;
             getAllURLResourcesFn = store.getAllURLResources;
-            getResourcesFn = store.getResources;
 
             req = {
                 url: '/robots.txt',
@@ -359,11 +357,8 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
             store.getAllURLResources = function() {
                 return mockResources;
             };
-            store.getResources = function() {
-                return [];
-            };
             store.getResourceContent = function(res, cb) {
-                OA.areEqual(mockResources["/robots.txt"], res, 'wrong resource');
+                Y.TEST_CMP(mockResources["/robots.txt"], res, 'wrong resource');
             };
 
             handler = factory({
@@ -381,11 +376,8 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
             store.getAllURLResources = function() {
                 return mockResources;
             };
-            store.getResources = function() {
-                return [mockResources["/robots.txt"]];
-            };
             store.getResourceContent = function(res, cb) {
-                OA.areEqual(mockResources["/robots.txt"], res, 'wrong resource');
+                Y.TEST_CMP(mockResources["/robots.txt"], res, 'wrong resource');
             };
 
             handler = factory({
@@ -398,7 +390,6 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                 A.fail('next() handler 2 should not have been called');
             });
 
-            store.getResources = getResourcesFn;
             store.getResourceContent = getResourceContentFn;
             store.getAllURLResources = getAllURLResourcesFn;
         },

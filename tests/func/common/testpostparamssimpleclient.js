@@ -19,7 +19,7 @@ YUI({
 	            Y.Assert.areEqual('POST Parameters', Y.one('#pptitle').get('innerHTML').match(/POST Parameters/gi));
 	            Y.Assert.areEqual('Here\'s the POST data!', Y.one('#desc').get('innerHTML').match(/Here\'s the POST data!/gi));
 	            Y.Assert.areEqual('Nobody likes spinach!', Y.one('#ouput').get('innerHTML').match(/Nobody likes spinach!/gi));        
-            }, 2000);
+            }, 4000);
         }
 
     }));

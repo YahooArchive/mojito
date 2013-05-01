@@ -17,7 +17,7 @@ YUI({
           Y.one('#acMojitButton').simulate('click');
           that.wait(function(){
               Y.Assert.areEqual('Hello, world!--from done', Y.one('#ACMojitResult').get('innerHTML').match(/Hello, world!--from done/gi));
-          }, 2000);
+          }, 4000);
       }
 
       }));
