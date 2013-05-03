@@ -25,16 +25,7 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
                         return null;
                     }
                 },
-                context: {},
-                url: {
-                    getRouteMaker: function() {
-                        return {
-                            getComputedRoutes: function() {
-                                return ['routes'];
-                            }
-                        };
-                    }
-                }
+                context: {}
             };
         },
 
@@ -66,6 +57,9 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
             addon.setStore({
                 getAppConfig: function() {
                     return {};
+                },
+                getRoutes: function() {
+                    return ['routes'];
                 },
                 yui: {
                     getYUIConfig: function() {
@@ -120,6 +114,9 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
                 getAppConfig: function() {
                     return {yui: {config: {discarded: true}}};
                 },
+                getRoutes: function() {
+                    return ['routes'];
+                },
                 yui: {
                     getYUIConfig: function() {
                         return {
@@ -159,6 +156,9 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
             addon.setStore({
                 getAppConfig: function() {
                     return {};
+                },
+                getRoutes: function() {
+                    return ['routes'];
                 },
                 yui: {
                     getYUIConfig: function() {
@@ -211,6 +211,9 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
             addon.setStore({
                 getAppConfig: function() {
                     return {};
+                },
+                getRoutes: function() {
+                    return ['routes'];
                 },
                 yui: {
                     getYUIConfig: function() {
