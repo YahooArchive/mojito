@@ -12,7 +12,7 @@ YUI.add('DepCheckParentMytest', function(Y, NAME) {
         init: function(mojitProxy) {
             this.mp = mojitProxy;
             var self = this;
-            Y.log(this.mp);
+            //Y.log(this.mp);
         },
 
         /**
