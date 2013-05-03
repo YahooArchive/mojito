@@ -1,6 +1,6 @@
 {
     "name": "mojito",
-    "version": "0.5.8",
+    "version": "0.6.0",
     "description": "Mojito provides an architecture, components and tools for developers to build complex web applications faster.",
     "author": "Drew Folta <folta@yahoo-inc.com>",
     "contributors": [
@@ -11,11 +11,12 @@
         "Martin Cooper <mcooper@yahoo-inc.com>",
         "Isao Yagi <isao@yahoo-inc.com>",
         "Michael Ridgway <mridgway@yahoo-inc.com>",
-        "Caridy Patino <caridy@yahoo-inc.com>"
+        "Caridy Patino <caridy@yahoo-inc.com>",
+        "Alberto Chan <albertoc@yahoo-inc.com>"
     ],
     "dependencies": {
         "colors": "*",
-        "express": "2.5.10",
+        "debug": "*",
         "glob": "~3.1.11",
         "js-yaml": "1.0.2",
         "jslint": "~0.1.9",
@@ -27,12 +28,13 @@
         "wrench": "~1.3.9",
         "ycb": "~1.0.0",
         "yui": "~3.9.1",
-        "yuidocjs": "~0.3.14",
+        "yuidocjs": "0.3.44",
         "yuitest": "~0.7.4",
         "yuitest-coverage": "~0.0.6"
     },
     "keywords": [
         "framework",
+        "modown",
         "webapp"
     ],
     "main": "lib/mojito",
@@ -41,16 +43,17 @@
         "docs",
         "lib"
     ],
-    "bin": {
-        "mojito": "bin/mojito"
-    },
     "engines": {
         "node": ">0.4",
         "npm": ">1.0"
     },
+    "peerDependencies": {
+        "express": "3.x"
+    },
     "devDependencies": {
         "async": "*",
         "commander": "1.0.1",
+        "express": "3.x",
         "mockery": "~1.4.0",
         "node-static": ">0.6.8",
         "yahoo-arrow": ">=0.0.75"
