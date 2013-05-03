@@ -27,9 +27,9 @@ YUI.add('BindersBindermyIndex', function(Y, NAME) {
          */
         init: function(mojitProxy) {
             this.mojitProxy = mojitProxy;
-			this.id = mojitProxy.config.id;
-			Y.log('init(' + this.id + ')', 'debug', NAME);
-			this.count = 0;
+            this.id = mojitProxy.data.get('id');
+            Y.log('init(' + this.id + ')', 'debug', NAME);
+            this.count = 0;
         },
 
         /**
@@ -45,7 +45,7 @@ YUI.add('BindersBindermyIndex', function(Y, NAME) {
                 this.count++;
                 if (this.count === 1)
                 {
-                    this.node.append('<p id="data">' + this.mojitProxy.config.config_data + ' for the id: ' + this.id +'</p>');
+                    this.node.append('<p id="data">' + this.mojitProxy.data.get('config_data') + ' for the id: ' + this.id +'</p>');
                     this.node.append('<p id="para1">I clicked myself ' + this.count + ' time</p>');
                 }
                 else
@@ -54,7 +54,7 @@ YUI.add('BindersBindermyIndex', function(Y, NAME) {
                 }
                 this.node.addClass('myClass');
             }, this);
-		}
+        }
     };
 
 }, '0.0.1', {requires: ['node']});
