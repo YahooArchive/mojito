@@ -65,7 +65,7 @@ The parent mojit instance defined in ``application.json`` can access the
 The controller methods of the parent mojit can use the ``Config`` addon
 to get the application configuration with the method ``getAppConfig``.
 
-In the example controller of ``ParentMojit`` below, the ``init`` function saves 
+In the example controller of ``ParentMojit`` below, the ``index`` function saves 
 and displays the ``children`` object that lists the child mojits.
 
 .. code-block:: javascript
@@ -77,6 +77,7 @@ and displays the ``children`` object that lists the child mojits.
          // The app config contains the 'children' object that is
          // defined in application.json
          Y.log(app_config);
+         ac.done(app_config);
        },
        ...
      };
@@ -111,9 +112,6 @@ If ``ParentMojit`` above is the parent of ``ChildMojit``, the controller of
 
    YUI.add('ChildMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
-       init: function(config) {
-         this.config = config;
-       },
        index: function(ac) {
          ac.done({ title: 'Child Mojit'});
        }
