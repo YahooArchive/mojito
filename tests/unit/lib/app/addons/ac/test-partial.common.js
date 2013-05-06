@@ -61,7 +61,11 @@ YUI().use('mojito-partial-addon', 'test', function (Y) {
             var mockRenderer = Mock();
             Mock.expect(mockRenderer, {
                 method: 'render',
-                args: [data, 'myInstanceType', 'myContentPath', Mock.Value.Object, Mock.Value.Object]
+                args: [data, 'myInstanceType',  Mock.Value.Object, Mock.Value.Object, Mock.Value.Object],
+                run: function (data, type, mojitView) {
+                    Assert.areEqual('myContentPath', mojitView['content-path']);
+
+                }
             });
 
             var mockYMojito = Mock();
