@@ -15,7 +15,7 @@ YUI({
               var headers = getMyResponseHeader("/httpParent/testAddSetHeaders?header_option=set");
               Y.Assert.areEqual('foo: bar_final', headers.match(/foo: bar_final/gi));
               Y.Assert.areEqual('foo1: bar1_final', headers.match(/foo1: bar1_final/gi));
-              Y.Assert.areEqual(null, headers.match(/foo2/gi));
+              Y.Assert.areEqual(null, headers.foo2);
               Y.Assert.areEqual('I am done...Please check for the headers.', Y.one('body').get('innerHTML').match(/I am done...Please check for the headers./gi));
           },
     }));    
