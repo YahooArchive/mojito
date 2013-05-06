@@ -26,7 +26,7 @@ YUI.add('BroadCastBinderIndex', function(Y, NAME) {
          */
         init: function(mojitProxy) {
             this.mp = mojitProxy;
-            Y.log(this.mp);
+            //Y.log(this.mp);
         },
 
         /**
