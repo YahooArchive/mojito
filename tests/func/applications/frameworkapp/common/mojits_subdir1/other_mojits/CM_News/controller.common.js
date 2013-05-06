@@ -24,9 +24,14 @@ YUI.add('CM_News', function(Y, NAME) {
          *        to the Mojito API.
          */
         index: function(ac) {
+            ac.data.set('id', ac.config.get('id'));
             ac.done({title:'Latest News'});
         }
 
     };
 
-}, '0.0.1', {requires: ['mojito']});
+}, '0.0.1', {requires: [
+    'mojito',
+    'mojito-config-addon',
+    'mojito-data-addon'
+]});
