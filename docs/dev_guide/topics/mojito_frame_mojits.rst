@@ -592,7 +592,7 @@ Example
 
 The following example only provides the application configuration and 
 the frame mojit code. For the entire application, 
-see `frame_app <https://raw.github.com/caridy/Mojito-Apps/master/frame_app>`_.
+see `frame_app <https://github.com/caridy/Mojito-Apps/tree/master/frame_app>`_.
 
 application.json
 ################
