@@ -229,7 +229,7 @@ YUI().use('mojito-composite-addon', 'test', function(Y) {
                         var id = command.instance.id;
                         var meta = {};
                         if (! id) {
-                            id = command.instance.config.proxied.id;
+                            id = command.instance.proxied.id;
                             A.areSame('ProxyHandler', command.instance.type, 'Wrong proxy type');
                         }
                         meta[id] = id + '__meta';
@@ -270,7 +270,7 @@ YUI().use('mojito-composite-addon', 'test', function(Y) {
                         var id = command.instance.id;
                         var meta = {};
                         if (! id) {
-                            id = command.instance.config.proxied.id;
+                            id = command.instance.proxied.id;
                             A.areSame('LazyLoad', command.instance.type, 'Wrong proxy type');
                         }
                         meta[id] = id + '__meta';
@@ -534,7 +534,7 @@ YUI().use('mojito-composite-addon', 'test', function(Y) {
             });
 
             A.areSame('LazyLoad', child.type, "type should be replaced with LazyLoad");
-            A.areSame('baz', child.config.proxied.type, "original type should be preserved thru proxied entry");
+            A.areSame('baz', child.proxied.type, "original type should be preserved thru proxied entry");
             Y.Mock.verify(ac);
         },
 
@@ -560,7 +560,7 @@ YUI().use('mojito-composite-addon', 'test', function(Y) {
             });
 
             A.areSame('superproxy', child.type, "type should be replaced with the proxy one");
-            A.areSame('baz', child.config.proxied.type, "original type should be preserved thru proxied entry");
+            A.areSame('baz', child.proxied.type, "original type should be preserved thru proxied entry");
             Y.Mock.verify(ac);
         }
 
