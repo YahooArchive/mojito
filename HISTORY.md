@@ -3,15 +3,27 @@ version @VERSION@
 
 Notes
 -----
+* **!IMPORTANT!** This release contains a notable backward-incompatible change. See "Deprecations, Removals" below.
 
 Deprecations, Removals
 ------------
+* **!Backwards-Incompatible Change!** Using `ac.instance.config` to send data from a controller to a binder has been removed.
+This was never the official approach but was a work-around mentioned in our FAQ until we could support something better.
+We now have an official data channel from controller to binder -- see "Features" below.
+This was removed because sending `instance.config` from the server to the client could possibly leak secure information.
 * The command line tools bundled with mojito have been deprecated. Rather than installing `mojito` globally, please install `mojito-cli` globally instead. Functionality should remain the same. See http://git.io/jJazAw
 * `mojito compile` command was removed. It has been deprecated since 0.5.1.
 * `mojito profiler` has been deprecated. It will be removed in a future release.
 
 Features
 --------
+
+### Data Channel from Server to Client
+In `0.5.9pr1` we implemented a `mojito-data-addon` for use in controllers.
+This AC addon is used to pass information from the controller (on the server or client)
+to the binder (always on the client).  After requiring this addon in your controller
+you can use `ac.data.set(name, value)` to expose data to the binder. The binder
+accesses this data with `mojitProxy.data.get(name)`.
 
 Bug Fixes
 ---------
