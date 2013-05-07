@@ -23,19 +23,22 @@ YUI.add('Binders', function(Y, NAME) {
          * @param ac {Object} The action context that provides access
          *        to the Mojito API.
          */
-		index: function(ac) {
-			ac.done();
-		},
+        index: function(ac) {
+            ac.data.set('id', ac.config.get('id'));
+            ac.done();
+        },
         myIndex: function(ac) {
-		    //Y.log("In the myIndex");
+            //Y.log("In the myIndex");
             var model = ac.models.get('Binders');
+            ac.data.set('id', ac.config.get('id'));
+            ac.data.set('config_data', ac.config.get('config_data'));
             model.getData(function(data) {
                 model.getTaco(function(taco) {
                     data.version = ac.config.get('version');
-                     //console.log("VERSION: " + data.version);
-                     data.extra = ac.config.get('extra');
-                     data.taco = taco;
-                     ac.done(data);
+                    //console.log("VERSION: " + data.version);
+                    data.extra = ac.config.get('extra');
+                    data.taco = taco;
+                    ac.done(data);
                  });
              });
         }
@@ -45,4 +48,5 @@ YUI.add('Binders', function(Y, NAME) {
     'mojito',
     'mojito-config-addon',
     'mojito-models-addon',
+    'mojito-data-addon',
     'BindersModel']});

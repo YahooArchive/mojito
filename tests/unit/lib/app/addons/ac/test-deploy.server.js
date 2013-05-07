@@ -130,25 +130,33 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
 
             addon.constructMojitoClientRuntime(assetHandler, binderMap);
 
-            var expected = [
-                    '<script type="text/javascript">',
-                    '    YUI.applyConfig({"lang":"klingon","foo":"bar"});',
-                    '    YUI().use(\'mojito-client\', function(Y) {',
-                    '    window.YMojito = { client: new Y.mojito.Client({"context":{"runtime":"client"},"binderMap":{"viewId1":{"needs":"a drink"},"viewId2":{"needs":"another drink"}},"appConfig":{"yui":{}},"routes":["routes"]}) };',
-                    '        });',
-                    '</script>',
-                    ''
-                ].join("\n");
-
             A.isArray(blobs);
-            A.areSame(expected, blobs[0]);
             A.areSame(1, blobs.length, 'wrong number of blobs');
+
             var matches = blobs[0].match(/YUI\.applyConfig\((.+?)\);/);
             A.isNotUndefined(matches[1], 'failed to find YUI.applyConfig() in blob');
             var config = Y.JSON.parse(matches[1]);
             A.isObject(config, 'failed to parse YUI.applyConfig()');
             A.areSame('bar', config.foo, 'failed to base YUI.applyConfig() on application.yui.config');
             A.areSame('klingon', config.lang, 'wrong lang used');
+
+            // window.YMojito = { client: new Y.mojito.Client({...}) };
+            matches = blobs[0].match(/window\.YMojito = { client: new Y\.mojito\.Client\((.+?)\) };/);
+            A.isTrue(!!matches, 'failed to find new Y.mojito.Client() in blob');
+            A.isNotUndefined(matches[1], 'failed to find new Y.mojito.Client() in blob');
+            config = Y.JSON.parse(matches[1]);
+            A.isObject(config, 'failed to parse Y.mojito.Client() config');
+            A.isObject(config.context, 'config.context should be an object');
+            A.areSame('client', config.context.runtime, 'config.context.runtime should be "client"');
+            A.isObject(config.binderMap, 'config.binderMap should be an object');
+            A.isObject(config.binderMap.viewId1, 'config.binderMap.viewId1 should be an object');
+            A.areSame('a drink', config.binderMap.viewId1.needs, 'config.binderMap.viewId1.needs should be "a drink"');
+            A.isObject(config.binderMap.viewId2, 'config.binderMap.viewId2 should be an object');
+            A.areSame('another drink', config.binderMap.viewId2.needs, 'config.binderMap.viewId2.needs should be "another drink"');
+            A.isObject(config.appConfig, 'config.appConfig should be an object');
+            A.isObject(config.appConfig.yui, 'config.appConfig.yui should be an object');
+            A.isArray(config.routes, 'config.routes should be an object');
+            A.isObject(config.page, 'config.page should be an object');
         },
 
 

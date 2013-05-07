@@ -10,7 +10,7 @@ YUI({
          var suite = new Y.Test.Suite("UseCases: i18n-neg");
 
          suite.add(new Y.Test.Case({
-             "test i18n": function() {
+             "test i18n-neg": function() {
                    var title = Y.one('h2').get('innerHTML');
                    Y.Assert.areEqual('Enjoy your Flickr Images in en!', title.match(/Enjoy your Flickr Images in en!/gi));
                    var imagelink = Y.all('a').item(1).get('href');
