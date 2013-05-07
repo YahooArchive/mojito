@@ -25,6 +25,19 @@ to the binder (always on the client).  After requiring this addon in your contro
 you can use `ac.data.set(name, value)` to expose data to the binder. The binder
 accesses this data with `mojitProxy.data.get(name)`.
 
+This data (set via `ac.data.set()`) is also available in all templates.
+Any data given to `ac.done()` will be merged over the data given by `ac.data.set()`.
+(This is a shallow merge.)
+
+### Page-Level Data Store
+As well, `mojito-data-addon` also introduces the `ac.pageData` store.
+This has a model API, i.e. `ac.pageData.set(name, value)` and `ac.pageData.get(name)`.
+This data store is unique to each request, but is a single store for all mojits of the request.
+
+This data (set via `ac.pageData.set()`) is also available in all templates.
+It is available at `this.page` (for example `{{page}}` in mustache templates).
+If `ac.done()` is sent data with a `page` key that will override all data set via `ac.pageData`.
+
 Bug Fixes
 ---------
 
