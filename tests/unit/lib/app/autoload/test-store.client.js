@@ -143,12 +143,11 @@ YUI().use('mojito-client-store', 'test', 'querystring-stringify-simple', 'io', '
         },
 
         'test expandInstanceForEnv3': function() {
-            var context = this.store.getStaticContext();
-            try {
-                this.store.expandInstanceForEnv("client", "mytype", context, function() {});
-            } catch (err) {
-                A.areEqual("There was no info in the \"instance\" object", err.message);
-            }
+            var context = this.store.getStaticContext(),
+                mystore = this.store;
+            A.throwsError('There was no info in the \"instance\" object', function() {
+                mystore.expandInstanceForEnv("client", "mytype", context, function() {});
+            });
         },
 
         'test expandInstanceForEnv4': function() {
