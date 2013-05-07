@@ -19,24 +19,33 @@ Features
 --------
 
 ### Data Channel from Server to Client
-In `0.5.9pr1` we implemented a `mojito-data-addon` for use in controllers.
-This AC addon is used to pass information from the controller (on the server or client)
-to the binder (always on the client).  After requiring this addon in your controller
-you can use `ac.data.set(name, value)` to expose data to the binder. The binder
-accesses this data with `mojitProxy.data.get(name)`.
 
-This data (set via `ac.data.set()`) is also available in all templates.
-Any data given to `ac.done()` will be merged over the data given by `ac.data.set()`.
+Introducing `mojito-data-addon` for use in controllers. This AC addon is used to pass
+information from the controller to the binder. After requiring this addon in your
+controller you can use `ac.data.set(name, value)` to expose data to the binder.
+The binder accesses this data with `mojitProxy.data.get(name)`.
+
+The data set via `ac.data.set()` is also available in all templates. Any data given
+to `ac.done()` will be merged over the data given by `ac.data.set()`.
 (This is a shallow merge.)
 
 ### Page-Level Data Store
-As well, `mojito-data-addon` also introduces the `ac.pageData` store.
-This has a model API, i.e. `ac.pageData.set(name, value)` and `ac.pageData.get(name)`.
-This data store is unique to each request, but is a single store for all mojits of the request.
 
-This data (set via `ac.pageData.set()`) is also available in all templates.
-It is available at `this.page` (for example `{{page}}` in mustache templates).
-If `ac.done()` is sent data with a `page` key that will override all data set via `ac.pageData`.
+`mojito-data-addon` also introduces the page data, which is accessible thru `ac.pageData`.
+This has a YUI Model API, i.e. `ac.pageData.set(name, value)` and `ac.pageData.get(name)`.
+`pageData` is unique to each request, but is a single store for all mojits of the request,
+and you can use it to share data between mojits in a page. The binder accesses this data
+with `mojitProxy.pageData.get(name)`.
+
+The data set via `ac.pageData.set()` is also available in all templates thru `this.page`
+(for example `{{page}}` in handlebars templates). Keep in mind that if
+`ac.done({page: 'something'})` is specified in your controller, the `page` key will override
+all data set via `ac.pageData`.
+
+This data will be sent to the client side, and rehydrated since the page built at the server
+side will expand its scope to the client. In other words, `pageData` serve as a mechanism
+to share data between mojits and runtimes. `ac.pageData` and `mojitProxy.pageData` provides
+access to the same page model.
 
 Bug Fixes
 ---------
