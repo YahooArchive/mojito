@@ -1,8 +1,12 @@
 /*
  * This is a basic func test for a UseCase application.
  */
-YUI.add('usecase_testpreinit', function (Y) {
-
+YUI({
+    useConsoleOutput: true,
+    useBrowserConsole: true,
+    logInclude: { TestRunner: true }
+}).use('node', 'node-event-simulate', 'test', 'console', 'intl', 'datatype-date-format', function (Y) {
+    
          var suite = new Y.Test.Suite("UseCases: preinit");
 
          suite.add(new Y.Test.Case({
@@ -19,11 +23,9 @@ YUI.add('usecase_testpreinit', function (Y) {
                        Y.Assert.areEqual('Hallo!',Y.one('h2').get('innerHTML').match(/Hallo!/gi));
                        Y.Assert.areEqual('zur',Y.one('#paginate a').get('innerHTML').match(/zur/gi));
                        Y.Assert.areEqual('weiter',Y.all('#paginate a').item(1).get('innerHTML').match(/weiter/gi));
-                   }, 2000);
+                   }, 2000);        
                }
          }));
 
          Y.Test.Runner.add(suite);
-}, '0.0.1', {requires: [
-    'node', 'node-event-simulate', 'test', 'console', 'intl', 'datatype-date-format'
-]});
+});
