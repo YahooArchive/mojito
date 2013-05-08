@@ -6,7 +6,7 @@
             "lib": "../../../../../lib",
             "base": "../../../../base"
         },
-        "commonlib": "$$config.base$$/mojito-test.js,./../../../../../lib/app/autoload/util.common.js",
+        "commonlib": "$$config.base$$/mojito-test.js,$$config.lib$$/app/autoload/util.common.js",
         "dataprovider" : {
             "action-context.common": {
                 "params": {
@@ -19,7 +19,7 @@
             "dispatch.server": {
                 "params": {
                     "page": "$$config.base$$/mojito-test.html",
-                    "lib": "$$config.lib$$/app/autoload/action-context.common.js,./../../../../../lib/app/autoload/dispatch.server.js",
+                    "lib": "$$config.lib$$/app/autoload/action-context.common.js,$$config.lib$$/app/autoload/dispatch.server.js",
                     "test": "./test-dispatch.server.js"
                 },
                 "group": "fw,unit,server"
@@ -27,7 +27,7 @@
             "dispatch.client": {
                 "params": {
                     "page": "$$config.base$$/mojito-test.html",
-                    "lib": "$$config.lib$$/app/autoload/action-context.common.js,./../../../../../lib/app/autoload/dispatch.client.js",
+                    "lib": "$$config.lib$$/app/autoload/action-context.common.js,$$config.lib$$/app/autoload/dispatch.client.js",
                     "test": "./test-dispatch.client.js"
                 },
                 "group": "fw,unit,client"
@@ -105,7 +105,7 @@
             },
             "store.server": {
                 "params": {
-                    "lib": "$$config.lib$$/app/autoload/store.server.js,./../../../../../lib/app/addons/rs/config.js,./../../../../../lib/app/addons/rs/selector.js,./../../../../../lib/app/addons/rs/url.js,./../../../../../lib/app/addons/rs/yui.js",
+                    "lib": "$$config.lib$$/app/autoload/store.server.js,$$config.lib$$/app/addons/rs/config.js,$$config.lib$$/app/addons/rs/selector.js,$$config.lib$$/app/addons/rs/url.js,$$config.lib$$/app/addons/rs/yui.js",
                     "test": "./test-store.server.js",
                     "driver": "nodejs"
                 },
