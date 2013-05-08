@@ -3,7 +3,31 @@ version @VERSION@
 
 Notes
 -----
+
+Deprecations, Removals
+------------
+
+Features
+--------
+
+Bug Fixes
+---------
+
+Acknowledgements
+----------------
+
+version 0.5.9pr1
+=================
+
+Notes
+-----
 * **!IMPORTANT!** This release contains a notable backward-incompatible change. See "Deprecations, Removals" below.
+* The PR [#1059](/yahoo/mojito/issues/1059) adds the Mojito Quickstart Guide application
+to the `examples` directory. The application allows you to view documentation on
+different devices and serves as a reference application. You can view the live application
+at http://y.ahoo.it/mqsg. Also, see the wiki page 
+[Mojito Quickstart Guide: Intro](https://github.com/yahoo/mojito/wiki/Mojito-Quickstart-Guide) 
+for more information about the application.
 
 Deprecations, Removals
 ------------
@@ -53,33 +77,7 @@ Bug Fixes
 Acknowledgements
 ----------------
 
-version 0.5.9
-=============
-
-Notes
------
-
-* The PR [#1059](/yahoo/mojito/issues/1059) adds the Mojito Quickstart Guide application
-to the `examples` directory. The application allows you to view documentation on
-different devices and serves as a reference application. You can view the live application
-at http://y.ahoo.it/mqsg. Also, see the wiki page 
-[Mojito Quickstart Guide: Intro](https://github.com/yahoo/mojito/wiki/Mojito-Quickstart-Guide:-Intro) 
-for more information about the application.
-
-
-Deprecations
-------------
-
-Features
---------
-
-Bug Fixes
----------
-
-Acknowledgements
-----------------
-
-Special thanks to @luchenghan for contributing the Mojito Quickstart Guide app for this release.
+Special thanks to [Steven Lu](/luchenghan) for contributing the Mojito Quickstart Guide app for this release.
 
 version 0.5.8
 =============
