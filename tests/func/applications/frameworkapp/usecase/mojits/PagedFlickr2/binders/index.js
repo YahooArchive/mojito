@@ -17,7 +17,7 @@ YUI.add('PagedFlickr2Binder', function(Y, NAME) {
         bind: function(node) {
             var self = this;
             this.node = node;
-            Y.log("inbinder-----"+self.mojitProxy.config.config1);
+            Y.log("inbinder-----"+self.mojitProxy.data.get('config1'));
             var paginator = function(evt) {
 
                 var tgt = evt.target;
@@ -34,6 +34,10 @@ YUI.add('PagedFlickr2Binder', function(Y, NAME) {
 
             };
             this.node.all('#paginate a').on('click', paginator, this);
+        },
+
+        onRefreshView: function(node) {
+            node.one('#myconfig').set('innerHTML', Y.JSON.stringify(this.mojitProxy.data.get('config1')));
         }
 
     };
