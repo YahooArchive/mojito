@@ -42,6 +42,11 @@ YUI({useBrowserConsole: true}).use(
                     },
                     context: {
                         'affinity': 'client'
+                    },
+                    pageData: {
+                        toJSON: function () {
+                            return {color: 'orange'};
+                        }
                     }
                 };
                 this.mojitProxy = new Y.mojito.MojitProxy(this.mojitProxyConfig);
@@ -99,7 +104,10 @@ YUI({useBrowserConsole: true}).use(
                     args: [Y.Mock.Value.Object, Y.Mock.Value.Object, Y.Mock.Value.String, Y.Mock.Value.Function],
                     run: function (mp, data, view, cb) {
                         Y.Assert.areEqual(mojitProxy, mp);
+                        Y.Assert.isObject(data);
                         Y.Assert.areEqual('testName', data.name);
+                        Y.Assert.isObject(data.page);
+                        Y.Assert.areEqual('orange', data.page.color);
                         Y.Assert.areEqual('index', view);
                         Y.Assert.isFunction(cb);
                     }

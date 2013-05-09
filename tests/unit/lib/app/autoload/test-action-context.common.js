@@ -484,7 +484,8 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                 return {
                     render: function(d, mojitType, v, a, m, more) {
                         vrRendered = true;
-                        A.areSame(data, d, 'bad data to view');
+                        A.isObject(d, 'data to view should be an object');
+                        A.isTrue(!!d.mojit_view_id, 'data.mojit_view_id should be set');
                         A.isObject(mojitType, 'mojitType should be the expanded instance');
                         A.areSame('t', mojitType.type, 'bad mojitType to view');
                         A.areSame(meta, m, 'bad meta to view');
@@ -566,7 +567,6 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                 done: function(data, meta) {
                     doneCalled = true;
                     A.isObject(meta.binders.binderid, 'no binder id');
-                    A.isUndefined(meta.binders.binderid.config.children.params, 'config.children.params should be undefined');
                     A.isUndefined(meta.binders.binderid.children.params, 'children.params should be undefined');
                 }
             };
