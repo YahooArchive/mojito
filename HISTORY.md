@@ -10,6 +10,10 @@ Deprecations, Removals
 Features
 --------
 
+* PR [#1103] Bringing `windows` to the front row by adding *partial* support for mojito on windows. We plan to consolidate this
+going forward, but until `tracisci` supports `windows` as part of the build process to do sanity check, we
+cannot guarantee that everything will work on `windows`.
+
 Bug Fixes
 ---------
 
