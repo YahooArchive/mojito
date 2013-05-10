@@ -15,7 +15,7 @@ app = express();
 // app.use(require('./middleware/foo.js'));
 
 // Registers Mojito's default
-app.use(mojito.middleware());
+app.use(mojito.middleware(app));
 
 /*
 // By doing this, give users more control over which order middleware
