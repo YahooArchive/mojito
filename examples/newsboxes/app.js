@@ -15,13 +15,16 @@ app = express();
 // app.use(require('./middleware/foo.js'));
 
 // Registers Mojito's default
-app.use(app.mojito.registerMiddleware());
+app.use(mojito.middleware());
+
 /*
 // By doing this, give users more control over which order middleware
 // are registered.
-app.mojito.middleware().forEach(function (mid) {
+// But the recommended way to register all default middleware is:
+// `app.use(mojito.middleware());`
+mojito.defaultMiddleware().forEach(function (mid) {
     debug('app.use(): ' + mid);
-    app.use(app.mojito[mid]);
+    app.use(mojito[mid]);
 });
 */
 
