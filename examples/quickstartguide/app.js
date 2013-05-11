@@ -1,3 +1,8 @@
+/*
+* Copyright (c) 2011-2013, Yahoo! Inc.  All rights reserved.
+* Copyrights licensed under the New BSD License.
+* See the accompanying LICENSE file for terms.
+*/
 
 
 /*jslint node:true*/
@@ -10,22 +15,8 @@ var express = require('express'),
 
 app = express();
 
-// register custom middleware here
-// app.use(require('./middleware/foo.js'));
-
-// Registers Mojito's default
 app.use(mojito.middleware(app));
-/*
-// By doing this, give users more control over which order middleware
-// are registered.
-app.mojito.middleware().forEach(function (mid) {
-    debug('app.use(): ' + mid);
-    app.use(app.mojito[mid]);
-});
-*/
 
-// In addition to mojito `routes.json`, user can hook up additional 
-// mounting points if necessary.
 app.get('/status', function (req, res) {
     res.send('200 OK');
 });
