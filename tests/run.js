@@ -40,7 +40,7 @@ program.command('test')
     .option('--driver <value>', 'Arrow driver')
     .option('--browser <value>', 'Arrow browser')
     .option('--path <value>', 'Path to find the tests. defaults to ./func or ./unit')
-    .option('--reportFolder <value>', 'Result dir. defaults to tests/../artifact/ for functional or ./unit/artifact/ for unit')
+    .option('--reportFolder <value>', 'Result dir. defaults to ./unit/artifact/ for unit, ./func/../../artifact/ for functional or all tests')
     .action(test);
 
 // report how we're called, mainly to help debug CI environments
