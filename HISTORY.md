@@ -16,6 +16,27 @@ Bug Fixes
 Acknowledgements
 ----------------
 
+version 0.5.9
+=================
+
+Notes
+-----
+
+Deprecations, Removals
+------------
+
+Features
+--------
+
+* Add command "npm test" to run all mojito unit and functional tests with Phantomjs. 
+  Test results can be found under ./artifacts/arrowreport by default.
+
+Bug Fixes
+---------
+
+Acknowledgements
+----------------
+
 version 0.5.9pr1
 =================
 

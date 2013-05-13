@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+/*jslint anon:true, sloppy:true, nomen:true, node:true*/
+
 var fs = require('fs'),
     path = require('path'),
     wrench = require('wrench'),
@@ -17,6 +19,7 @@ var fs = require('fs'),
     hostname = require('os').hostname(),
     dns = require('dns'),
     hostip,
+    arrowReportDir,
     remoteselenium;
 
 program.command('test')
@@ -37,6 +40,7 @@ program.command('test')
     .option('--driver <value>', 'Arrow driver')
     .option('--browser <value>', 'Arrow browser')
     .option('--path <value>', 'Path to find the tests. defaults to ./func or ./unit')
+    .option('--reportFolder <value>', 'Result dir. defaults to tests/../artifact/ for functional or ./unit/artifact/ for unit')
     .action(test);
 
 // report how we're called, mainly to help debug CI environments
@@ -45,69 +49,84 @@ console.log();
 
 program.parse(process.argv);
 
-function test (cmd) {
+function test(cmd) {
     var series = [];
     cmd.logLevel = cmd.logLevel || 'WARN';
     // Default to all tests
-    if (!cmd.unit && !cmd.func) {
-        cmd.unit = true;
-        cmd.func = true;
-    }
-    cmd.unitBrowser = cmd.unitBrowser || cmd.browser || 'firefox';
-    cmd.funcBrowser = cmd.funcBrowser || cmd.browser || 'firefox';
+
+    cmd.browser = cmd.browser || 'firefox';
     cmd.unitPath = path.resolve(cwd, cmd.unitPath || cmd.path || './unit');
     cmd.funcPath = path.resolve(cwd, cmd.funcPath || cmd.path || './func');
+    if (cmd.reportFolder) {
+        cmd.reportFolder = path.resolve(cwd, cmd.reportFolder);
+        cmd.reportFolder = cmd.reportFolder + '/artifacts/';
+    }
+
+    if (cmd.unit) {
+        arrowReportDir = cmd.reportFolder || cmd.unitPath + '/artifacts/arrowreport/';
+    } else {
+        arrowReportDir = cmd.reportFolder || cmd.funcPath + '/../../artifacts/arrowreport/';
+    }
+    try {
+        wrench.rmdirSyncRecursive(arrowReportDir);
+    } catch (e) {}
+    wrench.mkdirSyncRecursive(arrowReportDir);
+
 
     if (process.env['SELENIUM_HUB_URL']) {
         remoteselenium = process.env['SELENIUM_HUB_URL'];
         console.log('selenium host.....' + remoteselenium);
+        series.push(gethostip);
     }
-    
-    series.push(gethostip);
-    
+
     if (cmd.arrow) {
         series.push(startArrowServer);
     }
-    if (cmd.unit) {
-        if ('phantomjs' !== cmd.unitBrowser) {
-            if (cmd.selenium) {
-                series.push(function (callback) {
-                    startArrowSelenium(cmd, callback);
-                });
-            }
-        }
+
+    if (cmd.browser === 'phantomjs') {
         series.push(function (callback) {
-            runUnitTests(cmd, callback)
+            startPhantomjs(cmd, callback);
+        });
+    } else if (cmd.reuseSession) {
+        if (cmd.selenium) {
+            series.push(function (callback) {
+                startArrowSelenium(cmd, callback);
+            });
+        }
+    }
+
+    if (!cmd.unit && !cmd.func) {
+        console.log("---Run both unit and functinal tests with phantomjs---");
+        cmd.unit = true;
+        cmd.func = true;
+    }
+
+    if (cmd.unit) {
+        series.push(function (callback) {
+            runUnitTests(cmd, callback);
         });
     }
     if (cmd.func) {
-        if ('phantomjs' !== cmd.funcBrowser && cmd.reuseSession) {
-            if (cmd.selenium) {
-                series.push(function (callback) {
-                    startArrowSelenium(cmd, callback);
-                });
-            }
-        }
         series.push(function (callback) {
-            runFuncAppTests(cmd, callback)
+            runFuncAppTests(cmd, callback);
         });
     }
     async.series(series, finalize);
 }
 
-function gethostip(callback){
+function gethostip(callback) {
     dns.lookup(hostname, function (err, addr, fam) {
-        if (err){
+        if (err) {
             callback(err);
-            return; 
-        } 
+            return;
+        }
         hostip = addr;
         console.log('App running at.....' + hostip);
         callback(null);
     });
 }
 
-function startArrowServer (callback) {
+function startArrowServer(callback) {
     var timeout,
         listener = function (data) {
             process.stdout.write(data);
@@ -134,11 +153,6 @@ function startArrowServer (callback) {
 
 function runUnitTests (cmd, callback) {
     console.log('---Running Unit Tests---');
-    var arrowReportDir = cmd.unitPath + '/artifacts/arrowreport/';
-    try {
-        wrench.rmdirSyncRecursive(arrowReportDir);
-    } catch (e) {}
-    wrench.mkdirSyncRecursive(arrowReportDir);
 
     var descriptor = cmd.descriptor || '**/*_descriptor.json';
     var commandArgs = [
@@ -148,7 +162,7 @@ function runUnitTests (cmd, callback) {
         "--report=true",
         "--reportFolder=" + arrowReportDir
     ];
-    if ('phantomjs' !== cmd.unitBrowser && cmd.reuseSession) {
+    if ('phantomjs' !== cmd.browser && cmd.reuseSession) {
         commandArgs.push('--reuseSession');
     }
     
@@ -158,7 +172,7 @@ function runUnitTests (cmd, callback) {
         'lib/app/commands/,' +
         'lib/management/';
     commandArgs.push('--logLevel=' + cmd.logLevel);
-    commandArgs.push('--browser=' + cmd.unitBrowser);
+    commandArgs.push('--browser=' + cmd.browser);
     cmd.driver && commandArgs.push('--driver=' + cmd.driver);
     cmd.testName && commandArgs.push('--testName=' + cmd.testName);
     cmd.group && commandArgs.push('--group=' + cmd.group);
@@ -178,7 +192,7 @@ function runUnitTests (cmd, callback) {
     });
 }
 
-function build (cmd, callback) {
+function build(cmd, callback) {
     console.log('---Building Apps---');
     runCommand(
         cmd.funcPath + '/applications/frameworkapp/common',
@@ -188,35 +202,59 @@ function build (cmd, callback) {
     );
 }
 
+function startPhantomjs(cmd, callback) {
+    console.log("---Starting Phantomjs---");
+    var timeout,
+        listener = function (data) {
+            process.stdout.write(data);
+        },
+        commandArgs;
+    if (fs.existsSync(cwd + "/../node_modules/phantomjs")) {
+        commandArgs = [cwd + "/../node_modules/phantomjs/bin/phantomjs"];
+    } else {
+        commandArgs = ["phantomjs"];
+    }
+    commandArgs.push("--webdriver=4445");
+    var p = runCommand(cwd, "node", commandArgs, function() {
+        // If this command returns called, then it failed to launch
+        if (timeout) {
+            clearTimeout(timeout);
+        }
+        console.log('phantomjs failed to start. Please check if phantomjs is installed');
+        pids.pop();
+        callback(1); // Trigger failure
+    });
+    p.stdout.on('data', listener);
+    pids.push(p.pid);
+    pidNames[p.pid] = 'phantomjs driver';
+    timeout = setTimeout(function () {
+        p.stdout.removeListener('data', listener); // Stop printing output from arrow_server
+        callback(null);
+    }, 5000);
+}
 
-function startArrowSelenium (cmd, callback) {
+function startArrowSelenium(cmd, callback) {
     console.log("---Starting Arrow Selenium---");
-    var commandArgs = [cwd+"/../node_modules/yahoo-arrow/arrow_selenium/selenium.js"];
+    var commandArgs = [cwd + "/../node_modules/yahoo-arrow/arrow_selenium/selenium.js"];
     if (remoteselenium) {
         commandArgs.push('--seleniumHost=' + remoteselenium);
     }
-    commandArgs.push("--open=" + cmd.funcBrowser);
+    commandArgs.push("--open=" + cmd.browser);
     runCommand(cwd, "node", commandArgs, function () {
         callback(null);
     });
 }
 
-function runFuncAppTests(cmd, callback){
+function runFuncAppTests(cmd, callback) {
     var descriptor = cmd.descriptor || '**/*_descriptor.json',
         descriptors = [],
         exeSeries = [];
-    if(descriptor === '**/*_descriptor.json'){
-        descriptors = glob.sync(cmd.funcPath +'/' + descriptor);    
+    if (descriptor === '**/*_descriptor.json') {
+        descriptors = glob.sync(cmd.funcPath + '/' + descriptor);
     } else {
         descriptors.push(cmd.funcPath + '/' + descriptor);
     }
-    
-    var arrowReportDir = cmd.funcPath + '/../../artifacts/arrowreport/';
-    try {
-        wrench.rmdirSyncRecursive(arrowReportDir);
-    } catch (e) {}
-    wrench.mkdirSyncRecursive(arrowReportDir);
-    
+
     async.forEachSeries(descriptors, function(des, callback) {
         var appConfig = JSON.parse(fs.readFileSync(des, 'utf8'));
         var app = appConfig[0].config.application,
@@ -226,36 +264,43 @@ function runFuncAppTests(cmd, callback){
         if (type === "static") {
             exeSeries.push(build(cmd, function() {
                 runStaticApp(cmd.funcPath + '/applications', app.path, port, function(thispid) {
-                    runFuncTests(cmd, des, port, thispid, arrowReportDir, callback);
+                    runFuncTests(cmd, des, port, thispid, callback);
                 });
-            }))
+            }));
         } else {
             // Install dependecies for specific projects
             // Change here if you want your app to do npm install prior to start mojito server for test
             if (app.path === "../../../examples/quickstartguide") {
-                exeSeries.push(installDependencies(app, cmd.funcPath + '/applications', function(){
+                exeSeries.push(installDependencies(app, cmd.funcPath + '/applications', function() {
                     runMojitoApp(app, cmd, cmd.funcPath + '/applications', port, app.param, function(thispid) {
-                        runFuncTests(cmd, des, port, thispid, arrowReportDir, callback);
+                        runFuncTests(cmd, des, port, thispid, callback);
                     });
                 }));
             } else {
                 exeSeries.push(runMojitoApp(app, cmd, cmd.funcPath + '/applications', port, app.param, function(thispid) {
-                    runFuncTests(cmd, des, port, thispid, arrowReportDir, callback);
+                    runFuncTests(cmd, des, port, thispid, callback);
                 }));
             }
         }
     }, function(err) {
           callback(err);
-    }); 
+    });
     async.series(exeSeries, callback);
 }
 
-function runFuncTests (cmd, desc, port, thispid, arrowReportDir, callback) {
+function runFuncTests(cmd, desc, port, thispid, callback) {
     console.log('---Running Functional Tests---');
-   
+
     var group = cmd.group || null,
-        defaultBaseUrl = 'http:\/\/'+hostip+':'+port,
-        baseUrl = cmd.baseUrl || defaultBaseUrl;
+        baseUrl;
+    if (cmd.baseUrl) {
+        baseUrl = cmd.baseUrl;
+    } else if (hostip) {
+        baseUrl = 'http:\/\/' + hostip + ':' + port;
+    } else {
+        baseUrl = 'http:\/\/localhost' + ':' + port;
+    }
+ 
     var commandArgs = [
         cwd + "/../node_modules/yahoo-arrow/index.js",
         "--descriptor=" + desc,
@@ -265,14 +310,14 @@ function runFuncTests (cmd, desc, port, thispid, arrowReportDir, callback) {
         "--reportFolder=" + arrowReportDir,
         "--config=" + cwd + "/config/config.js"
     ];
-    if ('phantomjs' !== cmd.funcBrowser && cmd.reuseSession) {
+    if ('phantomjs' !== cmd.browser && cmd.reuseSession) {
         commandArgs.push('--reuseSession');
     }
     if (remoteselenium) {
         commandArgs.push('--seleniumHost=' + remoteselenium);
     }
     commandArgs.push('--logLevel=' + cmd.logLevel);
-    commandArgs.push('--browser=' + cmd.funcBrowser);
+    commandArgs.push('--browser=' + cmd.browser);
     cmd.driver && commandArgs.push('--driver=' + cmd.driver);
     cmd.testName && commandArgs.push('--testName=' + cmd.testName);
     cmd.group && commandArgs.push('--group=' + cmd.group);
