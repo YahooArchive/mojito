@@ -58,7 +58,7 @@
     "optionalDependencies": {
         "phantomjs": ">=1.8.0"
     },
-	"scripts": {
+    "scripts": {
         "test": "cd tests && ./run.js test --browser phantomjs"
     },
     "homepage": "http://developer.yahoo.com/cocktails/mojito/",
