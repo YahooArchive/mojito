@@ -10,8 +10,8 @@
     "appPort": 4081,
     "yui": {
       "config": {
-        "debug": true,
-        "logLevel": "debug",
+        "debug": false,
+        "logLevel": "none",
         "root": "static/yui",
         "combine": false
       }

@@ -228,7 +228,7 @@ function startPhantomjs(cmd, callback) {
     pids.push(p.pid);
     pidNames[p.pid] = 'phantomjs driver';
     timeout = setTimeout(function () {
-        p.stdout.removeListener('data', listener); // Stop printing output from arrow_server
+        p.stdout.removeListener('data', listener); // Stop printing output from phantomjs
         callback(null);
     }, 5000);
 }
