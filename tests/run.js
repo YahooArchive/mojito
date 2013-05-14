@@ -59,14 +59,19 @@ function test(cmd) {
     cmd.funcPath = path.resolve(cwd, cmd.funcPath || cmd.path || './func');
     if (cmd.reportFolder) {
         cmd.reportFolder = path.resolve(cwd, cmd.reportFolder);
-        cmd.reportFolder = cmd.reportFolder + '/artifacts/';
+        if(cmd.reportFolder.indexOf(cwd) !== -1 && !cmd.unit){
+            console.log('Please specify a report directory outside of tests/');
+            process.exit(1);
+        }
     }
 
     if (cmd.unit) {
-        arrowReportDir = cmd.reportFolder || cmd.unitPath + '/artifacts/arrowreport/';
+        arrowReportDir = cmd.reportFolder || cmd.unitPath;
     } else {
-        arrowReportDir = cmd.reportFolder || cmd.funcPath + '/../../artifacts/arrowreport/';
-    }
+        arrowReportDir = cmd.reportFolder || cmd.funcPath + '/../..';
+    } 
+    arrowReportDir = arrowReportDir + '/artifacts/arrowreport/';
+    
     try {
         wrench.rmdirSyncRecursive(arrowReportDir);
     } catch (e) {}
