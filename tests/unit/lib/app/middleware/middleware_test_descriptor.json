@@ -66,7 +66,7 @@
             },
             "router": {
                 "params": {
-                    "lib": "$$config.lib$$/app/middleware/mojito-handler-tunnel.js,$$config.lib$$/app/autoload/route-maker.common.js,$$config.lib$$/app/autoload/util.common.js",
+                    "lib": "$$config.lib$$/app/middleware/mojito-handler-tunnel.js,../../../../../lib/app/autoload/route-maker.common.js,../../../../../lib/app/autoload/util.common.js",
                     "test": "./test-router.js",
                     "driver": "nodejs"
                 },
