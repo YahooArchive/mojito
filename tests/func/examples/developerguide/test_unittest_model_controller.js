@@ -12,9 +12,12 @@ YUI({
          suite.add(new Y.Test.Case({
          
              "test unittest_model_controller": function() {
-                 for(i=0; i<Y.all('a').size(); i++){
-                     Y.Assert.areEqual("static.flickr.com", Y.all('a').item(i).getAttribute('href').match(/static.flickr.com/gi));
-                 }
+       	         var that = this;
+       	         that.wait(function(){
+       	             for(i=0; i<Y.all('a').size(); i++){
+       	                 Y.Assert.areEqual("static.flickr.com", Y.all('a').item(i).getAttribute('href').match(/static.flickr.com/gi));
+       	             };
+                 }, 2000);
              }
          }));    
          Y.Test.Runner.add(suite);
