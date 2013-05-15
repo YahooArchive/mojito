@@ -16,7 +16,7 @@ var debug = require('debug')('app'),
 
 app = express();
 
-app.use(mojito.middleware(app));
+app.use(mojito.middleware());
 
 app.get('/status', function (req, res) {
     res.send('200 OK');
