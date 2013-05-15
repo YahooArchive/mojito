@@ -3,9 +3,20 @@ version @VERSION@
 
 Notes
 -----
+* `ac.config.getAppConfig()` was reworked to improve performance by computing the app
+config once per request, and reuse across all the mojit instances in the same page using
+the `mojito-config-addon`. This means you have to be extra careful if you attempt to
+change that object, because it might affects other mojits in the same page.
+* `ac.config.getRoutes()` was reworked to improve performance by computing the app
+config once per request, and reuse across all the mojit instances in the same page using
+the `mojito-url-addon`. This means you have to be extra careful if you attempt to
+change that object, because it might affects other mojits in the same page.
 
 Deprecations, Removals
-------------
+----------------------
+* `ac.staticAppConfig` was a private api used by mojito to allocate static config for the app,
+and this is now removed. If you need access to the config, you can use `mojito-config-addon`
+to access `ac.config.getAppConfig()`.
 
 Features
 --------

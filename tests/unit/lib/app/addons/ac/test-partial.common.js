@@ -9,16 +9,20 @@ YUI().use('mojito-partial-addon', 'test', function (Y) {
         Assert = Y.Assert,
         ObjectAssert = Y.ObjectAssert,
         Mock = Y.Mock,
-        ac;
+        ac,
+        adapter;
 
     suite.add(new Y.Test.Case({
 
         name: 'render() tests',
 
         'setUp': function () {
-            ac = {
-                staticAppConfig: {
-                    viewEngine: {}
+            ac = {};
+            adapter = {
+                page: {
+                    staticAppConfig: {
+                        viewEngine: 'page static app config view engine'
+                    }
                 }
             };
         },
@@ -36,7 +40,7 @@ YUI().use('mojito-partial-addon', 'test', function (Y) {
                 args: ['View "missingView" not found']
             });
 
-            var addon = new Y.mojito.addons.ac.partial(command, null, ac);
+            var addon = new Y.mojito.addons.ac.partial(command, adapter, ac);
             addon.render(null, 'missingView', mockCallback.callback);
 
             Mock.verify(mockCallback);
@@ -56,7 +60,7 @@ YUI().use('mojito-partial-addon', 'test', function (Y) {
                     }
                 };
 
-            var addon = new Y.mojito.addons.ac.partial(command, null, ac);
+            var addon = new Y.mojito.addons.ac.partial(command, adapter, ac);
 
             var mockRenderer = Mock();
             Mock.expect(mockRenderer, {
@@ -71,7 +75,7 @@ YUI().use('mojito-partial-addon', 'test', function (Y) {
             var mockYMojito = Mock();
             Mock.expect(mockYMojito, {
                 method: 'ViewRenderer',
-                args: ['myViewEngine', ac.staticAppConfig.viewEngine],
+                args: ['myViewEngine', 'page static app config view engine'],
                 returns: mockRenderer
             });
 
@@ -109,7 +113,7 @@ YUI().use('mojito-partial-addon', 'test', function (Y) {
                 };
             };
 
-            var addon = new Y.mojito.addons.ac.partial(command, null, ac);
+            var addon = new Y.mojito.addons.ac.partial(command, adapter, ac);
             addon.render(null, 'myView', mockCallback.callback);
 
             Y.mojito.ViewRenderer = yMojitoViewRenderer;
@@ -152,7 +156,7 @@ YUI().use('mojito-partial-addon', 'test', function (Y) {
             ac.context = 'myContext';
             ac._dispatch = mockDispatch.dispatch;
 
-            var addon = new Y.mojito.addons.ac.partial(command, null, ac);
+            var addon = new Y.mojito.addons.ac.partial(command, adapter, ac);
             addon.invoke('myAction', options, null);
 
             Mock.verify(mockDispatch);
@@ -181,7 +185,7 @@ YUI().use('mojito-partial-addon', 'test', function (Y) {
                 })]
             });
 
-            var addon = new Y.mojito.addons.ac.partial(command, null, { _dispatch: mockDispatch.dispatch });
+            var addon = new Y.mojito.addons.ac.partial(command, adapter, { _dispatch: mockDispatch.dispatch });
             addon.invoke(null, { params: {} }, mockCallback.callback);
 
             Mock.verify(mockDispatch);
@@ -199,7 +203,7 @@ YUI().use('mojito-partial-addon', 'test', function (Y) {
                 returns: {}
             });
 
-            var addon = new Y.mojito.addons.ac.partial(command, null, {
+            var addon = new Y.mojito.addons.ac.partial(command, adapter, {
                 _dispatch: function() {},
                 params: mockParams
             });

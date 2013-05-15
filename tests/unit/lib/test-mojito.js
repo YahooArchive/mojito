@@ -659,6 +659,9 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
                                 middleware: ['mojito-handler-dispatcher']
                             };
                         },
+                        getRoutes: function () {
+                            return {};
+                        },
                         getStaticContext: function () {
                             A.isTrue(true);
                         },
