@@ -21,6 +21,7 @@ to access `ac.config.getAppConfig()`.
 Features
 --------
 
+* `mojito-composite-addon` and `mojito-partial-addon` support `ac.flush` from child mojits.
 * Add command "npm test" to run all mojito unit and functional tests with Phantomjs. 
   Test results can be found under <mojitosrcdir>/artifacts/arrowreport by default.
 
