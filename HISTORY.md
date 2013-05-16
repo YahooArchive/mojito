@@ -21,6 +21,9 @@ to access `ac.config.getAppConfig()`.
 Features
 --------
 
+* Add command "npm test" to run all mojito unit and functional tests with Phantomjs. 
+  Test results can be found under <mojitosrcdir>/artifacts/arrowreport by default.
+
 Bug Fixes
 ---------
 

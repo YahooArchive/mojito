@@ -1,7 +1,8 @@
 #!/bin/sh -ex
 # -e exits on any error; exit code is preserved
 
-ARGS="--reuseSession"
+ARGS="--browser phantomjs"
+#ARGS="$ARGS --reuseSession"
 #ARGS="$ARGS --baseUrl http://localhost:8666"
 #ARGS="$ARGS --descriptor usecases/usecasestest_descriptor.json"
 #ARGS="$ARGS --testName preinit"
