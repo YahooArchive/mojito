@@ -6,12 +6,15 @@ YUI.add('usecases-testpagedflickr-tests', function (Y) {
 
     suite.add(new Y.Test.Case({
         "test pagedflickr": function() {
-            Y.Assert.areEqual('Enjoy your Flickr Images!',Y.one('h2').get('innerHTML').match(/Enjoy your Flickr Images!/gi));
-            var imagelink = Y.all('a').item(1).get('href');
-            Y.Assert.areEqual('http:',imagelink.match(/http:/gi));
-            Y.Assert.areEqual('static.flickr.com',imagelink.match(/static.flickr.com/gi));
-            Y.Assert.areEqual('page=2', Y.one('#paginate a').get('href').match(/page=2/gi));
-            Y.Assert.areEqual('next', Y.one('#paginate a').get('innerHTML'));
+            var that = this;
+            that.wait(function(){
+                Y.Assert.areEqual('Enjoy your Flickr Images!',Y.one('h2').get('innerHTML').match(/Enjoy your Flickr Images!/gi));
+                var imagelink = Y.all('a').item(1).get('href');
+                Y.Assert.areEqual('http:',imagelink.match(/http:/gi));
+                Y.Assert.areEqual('static.flickr.com',imagelink.match(/static.flickr.com/gi));
+                Y.Assert.areEqual('page=2', Y.one('#paginate a').get('href').match(/page=2/gi));
+                Y.Assert.areEqual('next', Y.one('#paginate a').get('innerHTML'));
+            }, 2000);
         }
     }));
 
