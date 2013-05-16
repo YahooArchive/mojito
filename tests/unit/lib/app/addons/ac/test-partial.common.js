@@ -127,6 +127,18 @@ YUI().use('mojito-partial-addon', 'test', function (Y) {
 
         name: 'invoke() tests',
 
+        'setUp': function () {
+            ac = {};
+            adapter = {
+                page: {
+                    staticAppConfig: {
+                        viewEngine: 'page static app config view engine'
+                    }
+                },
+                hook: {}
+            };
+        },
+
         'test populates command object for dispatch': function() {
             var command = {
                     instance: {
@@ -152,6 +164,7 @@ YUI().use('mojito-partial-addon', 'test', function (Y) {
                     Mock.Value.Object
                 ]
             });
+
             ac.command = command;
             ac.context = 'myContext';
             ac._dispatch = mockDispatch.dispatch;
