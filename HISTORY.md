@@ -20,9 +20,12 @@ to access `ac.config.getAppConfig()`.
 
 Features
 --------
-
-* PR [#1103] Bringing `windows` to the front row by adding *partial* support for mojito on windows. We plan to consolidate this
-going forward, but until after [travis-ci.org](http://travis-ci.org/) supports `windows` [environment](http://about.travis-ci.org/docs/user/ci-environment/) as part of the build process to do sanity check, we cannot guarantee that everything will work on `windows`.
+* PR [#1103] Bringing `windows` to the front row by adding *partial* support for mojito on
+windows. We plan to consolidate this going forward, but until after [travis-ci.org](http://travis-ci.org/)
+supports `windows` [environment](http://about.travis-ci.org/docs/user/ci-environment/) as part of the
+build process to do sanity check, we cannot guarantee that everything will work on `windows`.
+* Add command "npm test" to run all mojito unit and functional tests with Phantomjs. 
+  Test results can be found under <mojitosrcdir>/artifacts/arrowreport by default.
 
 Bug Fixes
 ---------
