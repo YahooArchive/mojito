@@ -1,8 +1,8 @@
 #!/bin/sh -ex
 # -e exits on any error; exit code is preserved
 
-ARGS="--reuseSession"
-ARGSFUNC= "--browser phantomjs"
+ARGS="--browser phantomjs"
+#ARGS="$ARGS --reuseSession"
 #ARGS="$ARGS --baseUrl http://localhost:8666"
 #ARGS="$ARGS --descriptor usecases/usecasestest_descriptor.json"
 #ARGS="$ARGS --testName preinit"
@@ -31,5 +31,5 @@ then
     ./run.js test -u --path unit $ARGS
 else
     # func tests
-    ./run.js test -f --path func $ARGSFUNC
+    ./run.js test -f --path func $ARGS
 fi

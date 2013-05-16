@@ -210,10 +210,22 @@ function build(cmd, callback) {
 function startPhantomjs(cmd, callback) {
     console.log("---Starting Phantomjs---");
     var timeout,
-        listener = function (data) {
-            process.stdout.write(data);
-        },
+        listener,
+        done,
         commandArgs;
+        
+    done = function () {
+        clearTimeout(timeout);
+        p.stdout.removeListener('data', listener);
+        callback(null);
+    };
+    listener = function (data) {
+        process.stdout.write(data);
+        if (data.toString().match(/GhostDriver - Main - running on port 4445/)) {
+            done();
+        }
+    };
+
     if (fs.existsSync(cwd + "/../node_modules/phantomjs")) {
         commandArgs = [cwd + "/../node_modules/phantomjs/bin/phantomjs"];
     } else {
@@ -225,7 +237,7 @@ function startPhantomjs(cmd, callback) {
         if (timeout) {
             clearTimeout(timeout);
         }
-        console.log('phantomjs failed to start. Please check if phantomjs is installed');
+        console.log('phantomjs failed to start. Phantomjs needs to be installed either locally or globally');
         pids.pop();
         callback(1); // Trigger failure
     });
@@ -233,8 +245,7 @@ function startPhantomjs(cmd, callback) {
     pids.push(p.pid);
     pidNames[p.pid] = 'phantomjs driver';
     timeout = setTimeout(function () {
-        p.stdout.removeListener('data', listener); // Stop printing output from phantomjs
-        callback(null);
+        done();
     }, 5000);
 }
 
