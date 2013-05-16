@@ -9,6 +9,7 @@ YUI().use('mojito-partial-addon', 'test', function (Y) {
         Assert = Y.Assert,
         ObjectAssert = Y.ObjectAssert,
         Mock = Y.Mock,
+        ViewRenderer = Y.mojito.ViewRenderer,
         ac,
         adapter;
 
@@ -25,6 +26,10 @@ YUI().use('mojito-partial-addon', 'test', function (Y) {
                     }
                 }
             };
+        },
+
+        'tearUp': function () {
+            Y.mojito.ViewRenderer = ViewRenderer;
         },
 
         'test callback called with error when view is not found': function() {
@@ -66,28 +71,29 @@ YUI().use('mojito-partial-addon', 'test', function (Y) {
             Mock.expect(mockRenderer, {
                 method: 'render',
                 args: [data, 'myInstanceType',  Mock.Value.Object, Mock.Value.Object, Mock.Value.Object],
-                run: function (data, type, mojitView) {
+                run: function (data, type, mojitView, adapter) {
                     Assert.areEqual('myContentPath', mojitView['content-path']);
-
+                    adapter.done('renderdone');
                 }
             });
 
-            var mockYMojito = Mock();
-            Mock.expect(mockYMojito, {
+            var mockCallback = Mock();
+            Mock.expect(mockCallback, {
+                method: 'callback',
+                args: [null, 'renderdone', Mock.Value.Any]
+            });
+
+            Mock.expect(Y.mojito, {
                 method: 'ViewRenderer',
                 args: ['myViewEngine', 'page static app config view engine'],
                 returns: mockRenderer
             });
 
-            var yMojito = Y.mojito;
-            Y.mojito = mockYMojito;
+            addon.render(data, 'myView', mockCallback.callback);
 
-            addon.render(data, 'myView', null);
-
-            Y.mojito = yMojito;
-
-            Mock.verify(mockYMojito);
-            Mock.verify(mockRenderer);
+            Mock.verify(Y.mojito, 'Y.mojito.ViewRenderer was never called');
+            Mock.verify(mockRenderer, 'renderer.render was never called');
+            Mock.verify(mockCallback, 'callback from addon.render() was not called');
         },
 
         'test passes a valid adapter to the view engine': function() {
@@ -102,10 +108,9 @@ YUI().use('mojito-partial-addon', 'test', function (Y) {
             var mockCallback = Mock();
             Mock.expect(mockCallback, {
                 method: 'callback',
-                args: [null, 'flushdone']
+                args: [null, 'flushdone', Mock.Value.Any]
             });
 
-            var yMojitoViewRenderer = Y.mojito.ViewRenderer;
             Y.mojito.ViewRenderer = function() {
                 this.render = function(a, b, c, adapter, d) {
                     adapter.flush('flush');
@@ -115,8 +120,6 @@ YUI().use('mojito-partial-addon', 'test', function (Y) {
 
             var addon = new Y.mojito.addons.ac.partial(command, adapter, ac);
             addon.render(null, 'myView', mockCallback.callback);
-
-            Y.mojito.ViewRenderer = yMojitoViewRenderer;
 
             Mock.verify(mockCallback);
         }
