@@ -113,15 +113,16 @@ YUI().use('mojito-test-extra', 'test', 'json-parse', 'json-stringify', function(
                 callbackCalled = true;
             });
             A.areSame(3, mockFs._log.length);
-            Y.TEST_CMP(['mkdirSync', fixtures + '/artifacts', 511], mockFs._log[0]);
-            Y.TEST_CMP(['mkdirSync', fixtures + '/artifacts/gv', 511], mockFs._log[1]);
+            Y.TEST_CMP(['mkdirSync', libpath.join(fixtures, '/artifacts'), 511], mockFs._log[0]);
+            Y.TEST_CMP(['mkdirSync', libpath.join(fixtures + '/artifacts/gv'), 511], mockFs._log[1]);
             Y.TEST_CMP('writeFileSync', mockFs._log[2][0]);
-            Y.TEST_CMP(fixtures + '/artifacts/gv/yui.server.dot', mockFs._log[2][1]);
+            Y.TEST_CMP(libpath.join(fixtures + '/artifacts/gv/yui.server.dot'), mockFs._log[2][1]);
 
             A.isTrue(callbackCalled, 'callback called');
             A.areSame(2, mockConsole._log.length, 'right number of log messages');
             A.areSame('Dotfile generated. To turn it into a graph, run the following:', mockConsole._log[0]);
-            A.areSame('$ dot -Tgif artifacts/gv/yui.server.dot > artifacts/gv/yui.server.gif', mockConsole._log[1]);
+            A.areSame('$ dot -Tgif ' + libpath.join('artifacts/gv/yui.server.dot') + ' > ' +
+                libpath.join('artifacts/gv/yui.server.gif'), mockConsole._log[1]);
 
             var graph = gvcmd.test.graph;
             var want = [
