@@ -26,11 +26,10 @@ windows. We plan to consolidate this going forward, but until after [travis-ci.o
 supports `windows` [environment](http://about.travis-ci.org/docs/user/ci-environment/) as part of the
 build process to do sanity check, we cannot guarantee that everything will work on `windows`.
 * `mojito-composite-addon` and `mojito-partial-addon` support `ac.flush` from child mojits.
-* Added command "npm test" to run all mojito unit and functional tests with Phantomjs. 
+* Command "npm test" is added to run all mojito unit and functional tests with Phantomjs. 
   Test results can be found under <mojitosrcdir>/artifacts/arrowreport by default.
-* Added command "npm run-script testunit" to run mojito unit tests with Phantomjs. 
-  Test results can be found under <mojitosrcdir>/tests/unit/artifacts/arrowreport by default.
-  Unit tests code coverage data will be generated too at <mojitosrcdir>/tests/unit/coverage.
+  "npm run unit", "npm run func", "npm run doc", "npm run lint" are also added.
+  
 
 Bug Fixes
 ---------
