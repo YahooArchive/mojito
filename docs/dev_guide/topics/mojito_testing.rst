@@ -663,8 +663,9 @@ of tests and specify the location to write test results.
    * functional tests (XML) - ``mojito/artifacts/arrowreport/result.xml``
    * functional tests (JSON) - ``mojito/artifacts/arrowreport/result.json``                                                                                     
 
-.. note:: The functional tests are written to the parent directory of ``tests`` because
-          Arrow will overwrite the test results if they are in the ``tests`` directory.
+.. note:: The functional test results are written to the parent directory of ``tests`` 
+          because Arrow will overwrite the prior test results if they are in the ``tests`` 
+          directory.
 
 .. _runjs_phantomjs-run:
 
