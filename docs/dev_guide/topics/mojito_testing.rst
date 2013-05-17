@@ -627,13 +627,14 @@ Using npm
    * unit tests (JSON) - ``mojito/tests/unit/artifacts/arrowreport/result.json``
    * functional tests (XML) - ``mojito/artifacts/arrowreport/result.xml``
    * functional tests (JSON) - ``mojito/artifacts/arrowreport/result.json``                                                                                     
-#. To run only unit tests with coverage, use the following:
 
-   ``$ npm run-script testunit``
 
    .. note:: The functional test results are written to the parent directory of ``tests`` 
              because Arrow will overwrite the prior test results if they are in the ``tests`` 
              directory.
+#. To run only unit tests with coverage, use the following:
+
+   ``$ npm run-script testunit``
 
 .. _runjs_phantomjs-run:
 
@@ -641,8 +642,8 @@ Using run.js
 ************
 
 #. Change to the ``mojito/tests`` directory.
-#. To run individual unit and functional tests, you pass the test descriptor
-   to ``run.js``. 
+#. To run individual unit and functional tests, you pass the test descriptor to ``run.js``.
+   You can also specify a port, choose a browser, and reuse a browser session.
 
    ``$ ./run.js test -f --path func --descriptor examples/newsboxes/newsboxes_descriptor.json --port 4000 --reuseSession --browser phantomjs``
 #. 
@@ -656,8 +657,6 @@ and browser drivers. Selenium Server comes with a driver for Firefox, so do not 
 install the Firefox driver. To run tests in Chrome and other browsers, you will need to 
 `install the appropriate drivers <https://code.google.com/p/selenium/w/list>`_. In the 
 steps below, we'll just be using the default browser Firefox.
-
-.. _func_unit-install_selenium:
 
 #. Install Selenium:
    
