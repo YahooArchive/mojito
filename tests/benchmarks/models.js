@@ -7,7 +7,7 @@ var Y = YUI({
     useSync: true,
     modules: {
         'model-base': {
-            fullpath: '../../lib/app/autoload/model-base.common.js'
+            fullpath: './model-base.common.js'
         },
         'model-vanilla': {
             fullpath: '../../lib/app/autoload/model-vanilla.common.js'
