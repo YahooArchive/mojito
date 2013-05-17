@@ -25,8 +25,8 @@ YUI.add('ContainerBinderIndex', function(Y, NAME) {
          * have been constructed.
          */
         init: function(mojitProxy) {
-             this.mp = mojitProxy;
-                Y.log(this.mp);
+            this.mp = mojitProxy;
+            //Y.log(this.mp);
         },
 
         /**

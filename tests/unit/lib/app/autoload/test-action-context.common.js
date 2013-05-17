@@ -9,14 +9,8 @@ YUI().use('mojito-action-context', 'test', function (Y) {
         acStash = {},
         A = Y.Assert,
         OA = Y.ObjectAssert,
-        store = {
-            getStaticAppConfig: function() {
-                return 'static app config';
-            },
-            getRoutes: function(ctx) {
-                return "routes";
-            }
-        };
+        adapter,
+        store;
 
     suite.add(new Y.Test.Case({
 
@@ -26,6 +20,14 @@ YUI().use('mojito-action-context', 'test', function (Y) {
             Y.Object.each(Y.namespace('mojito.addons').ac, function(v, k) {
                 acStash[k] = v;
             });
+            store = {};
+            adapter = {
+                page: {
+                    staticAppConfig: 'static app config'
+                },
+                done: function(data, meta) {},
+                error: function(err) {}
+            };
         },
 
         tearDown: function() {
@@ -53,16 +55,14 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                         views: 'views'
                     }
                 },
-                adapter: Y.Mock(),
+                adapter: adapter,
                 models: {},
                 controller: {index: function() {}},
                 store: store
             });
 
-            ac._adapter = {
-                flush: function (data, meta) {
-                    A.areSame(data, 'test flush data', 'improper test data');
-                }
+            adapter.flush = function (data, meta) {
+                A.areSame(data, 'test flush data', 'improper test data');
             };
 
             ac.flush('test flush data');
@@ -85,16 +85,14 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                         views: 'views'
                     }
                 },
-                adapter: Y.Mock(),
+                adapter: adapter,
                 models: {},
                 controller: {index: function() {}},
                 store: store
             });
 
-            ac._adapter = {
-                done: function (data, meta) {
-                    A.areSame(data, 'test done data', 'improper test data');
-                }
+            adapter.done = function (data, meta) {
+                A.areSame(data, 'test done data', 'improper test data');
             };
 
             ac.done('test done data');
@@ -117,16 +115,14 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                         views: 'views'
                     }
                 },
-                adapter: Y.Mock(),
+                adapter: adapter,
                 models: {},
                 controller: {index: function() {}},
                 store: store
             });
 
-            ac._adapter = {
-                error: function (data, meta) {
-                    A.areSame(data, 'test error data', 'improper test data');
-                }
+            adapter.error = function (data, meta) {
+                A.areSame(data, 'test error data', 'improper test data');
             };
 
             ac.error('test error data');
@@ -148,7 +144,7 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                         views: 'views'
                     }
                 },
-                adapter: Y.Mock(),
+                adapter: adapter,
                 models: {},
                 controller: {index: function() {}},
                 dispatcher: 'the dispatcher',
@@ -173,7 +169,7 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                         acAddons: ['custom']
                     }
                 },
-                adapter: Y.Mock(),
+                adapter: adapter,
                 controller: {index: function() {}},
                 store: store
             });
@@ -197,11 +193,7 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                         views: 'views'
                     }
                 },
-                adapter: {
-                    page: {
-                        staticAppConfig: {foo: 'bar'}
-                    }
-                },
+                adapter: adapter,
                 models: {},
                 controller: {index: function() {}},
                 store: store
@@ -210,8 +202,6 @@ YUI().use('mojito-action-context', 'test', function (Y) {
             A.areSame('Type', ac.type, 'bad type');
             A.areSame('index', ac.action, 'bad action');
             A.areSame('context', ac.context, 'bad context');
-            A.areSame(1, Y.Object.keys(ac.staticAppConfig).length, 'bad staticAppConfig object');
-            A.areSame('bar', ac.staticAppConfig.foo, 'bad staticAppConfig.foo value');
 
             A.areSame('the dispatcher', ac.dispatcher,
                 "dispatcher wasn't stashed.");
@@ -259,7 +249,7 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                         ]
                     }
                 },
-                adapter: Y.Mock(),
+                adapter: adapter,
                 controller: {index: function() {}},
                 store: store
             });
@@ -273,6 +263,20 @@ YUI().use('mojito-action-context', 'test', function (Y) {
 
         name: 'general tests',
 
+        setUp: function() {
+            store = {};
+            adapter = {
+                page: {
+                    staticAppConfig: 'static app config'
+                },
+                done: function(data, meta) {},
+                error: function(err) {}
+            };
+        },
+
+        tearDown: function() {
+        },
+
         'test flush calls done with "more"': function() {
             var doneCalled;
             var ac = new Y.mojito.ActionContext({
@@ -285,7 +289,7 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                         acAddons: []
                     }
                 },
-                adapter: Y.Mock(),
+                adapter: adapter,
                 controller: {index: function() {}},
                 store: store
             });
@@ -315,19 +319,17 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                         views: {}
                     }
                 },
-                adapter: Y.Mock(),
+                adapter: adapter,
                 controller: {index: function() {}},
                 store: store
             });
 
-            ac._adapter = {
-                done: function(data, meta) {
-                    var ct = meta.http.headers['content-type'];
-                    doneCalled = true;
-                    A.areSame('hi',data, 'bad string to done');
-                    A.areSame(1, ct.length, "should be only one content-type header");
-                    A.areSame('text/plain; charset=utf-8', ct[0]);
-                }
+            adapter.done = function(data, meta) {
+                var ct = meta.http.headers['content-type'];
+                doneCalled = true;
+                A.areSame('hi',data, 'bad string to done');
+                A.areSame(1, ct.length, "should be only one content-type header");
+                A.areSame('text/plain; charset=utf-8', ct[0]);
             };
 
             ac.done('hi');
@@ -348,19 +350,17 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                         views: {}
                     }
                 },
-                adapter: Y.Mock(),
+                adapter: adapter,
                 controller: {index: function() {}},
                 store: store
             });
 
-            ac._adapter = {
-                done: function(data, meta) {
-                    var ct = meta.http.headers['content-type'];
-                    doneCalled = true;
-                    A.areSame('hi',data, 'bad string to done');
-                    A.areSame(1, ct.length, "should be only one content-type header");
-                    A.areSame('my favorite type', ct[0]);
-                }
+            adapter.done = function(data, meta) {
+                var ct = meta.http.headers['content-type'];
+                doneCalled = true;
+                A.areSame('hi',data, 'bad string to done');
+                A.areSame(1, ct.length, "should be only one content-type header");
+                A.areSame('my favorite type', ct[0]);
             };
 
             ac.done('hi', {
@@ -387,20 +387,18 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                         views: {}
                     }
                 },
-                adapter: Y.Mock(),
+                adapter: adapter,
                 controller: {index: function() {}},
                 store: store
             });
             var json = {hi:'there'};
 
-            ac._adapter = {
-                done: function(data, meta) {
-                    var ct = meta.http.headers['content-type'];
-                    doneCalled = true;
-                    A.areSame(Y.JSON.stringify(json), data, 'bad string to done');
-                    A.areSame(1, ct.length, "should be only one content-type header");
-                    A.areSame('application/json; charset=utf-8', ct[0]);
-                }
+            adapter.done = function(data, meta) {
+                var ct = meta.http.headers['content-type'];
+                doneCalled = true;
+                A.areSame(Y.JSON.stringify(json), data, 'bad string to done');
+                A.areSame(1, ct.length, "should be only one content-type header");
+                A.areSame('application/json; charset=utf-8', ct[0]);
             };
 
             ac.done(json, 'json');
@@ -421,20 +419,18 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                         views: {}
                     }
                 },
-                adapter: Y.Mock(),
+                adapter: adapter,
                 controller: {index: function() {}},
                 store: store
             });
             var json = {hi:'there'};
 
-            ac._adapter = {
-                done: function(data, meta) {
-                    var ct = meta.http.headers['content-type'];
-                    doneCalled = true;
-                    A.areSame('<xml><hi>there</hi></xml>', data, 'bad string to done');
-                    A.areSame(1, ct.length, "should be only one content-type header");
-                    A.areSame('application/xml; charset=utf-8', ct[0]);
-                }
+            adapter.done = function(data, meta) {
+                var ct = meta.http.headers['content-type'];
+                doneCalled = true;
+                A.areSame('<xml><hi>there</hi></xml>', data, 'bad string to done');
+                A.areSame(1, ct.length, "should be only one content-type header");
+                A.areSame('application/xml; charset=utf-8', ct[0]);
             };
 
             ac.done(json, 'xml');
@@ -455,19 +451,17 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                         views: {}
                     }
                 },
-                adapter: Y.Mock(),
+                adapter: adapter,
                 controller: {index: function() {}},
                 store: store
             });
             var data = 'data';
             var meta = {};
 
-            ac._adapter = {
-                done: function(d, m) {
-                    doneCalled = true;
-                    A.areSame(data, d, 'bad data to done');
-                    A.areSame(meta, m, 'bad meta to done');
-                }
+            adapter.done = function(d, m) {
+                doneCalled = true;
+                A.areSame(data, d, 'bad data to done');
+                A.areSame(meta, m, 'bad meta to done');
             };
 
             ac.done(data, meta);
@@ -484,7 +478,8 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                 return {
                     render: function(d, mojitType, v, a, m, more) {
                         vrRendered = true;
-                        A.areSame(data, d, 'bad data to view');
+                        A.isObject(d, 'data to view should be an object');
+                        A.isTrue(!!d.mojit_view_id, 'data.mojit_view_id should be set');
                         A.isObject(mojitType, 'mojitType should be the expanded instance');
                         A.areSame('t', mojitType.type, 'bad mojitType to view');
                         A.areSame(meta, m, 'bad meta to view');
@@ -511,16 +506,14 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                         }
                     }
                 },
-                adapter: Y.Mock(),
+                adapter: adapter,
                 controller: {index: function() {}},
                 store: store
             });
             var data = {};
             var meta = { view: {name: 'viewName'} };
-            ac._adapter = {
-                done: function() {
-                    A.fail('done should not be called, the view renderer should be calling it');
-                }
+            adapter.done = function() {
+                A.fail('done should not be called, the view renderer should be calling it');
             };
 
             ac.done(data, meta, false);
@@ -557,18 +550,15 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                         }
                     }
                 },
-                adapter: Y.Mock(),
+                adapter: adapter,
                 controller: {index: function() {}},
                 store: store
             });
 
-            ac._adapter = {
-                done: function(data, meta) {
-                    doneCalled = true;
-                    A.isObject(meta.binders.binderid, 'no binder id');
-                    A.isUndefined(meta.binders.binderid.config.children.params, 'config.children.params should be undefined');
-                    A.isUndefined(meta.binders.binderid.children.params, 'children.params should be undefined');
-                }
+            adapter.done = function(data, meta) {
+                doneCalled = true;
+                A.isObject(meta.binders.binderid, 'no binder id');
+                A.isUndefined(meta.binders.binderid.children.params, 'children.params should be undefined');
             };
             // mock view renderer
             var VR = Y.mojito.ViewRenderer;
@@ -594,15 +584,14 @@ YUI().use('mojito-action-context', 'test', function (Y) {
         },
 
         'test timer trigger done': function() {
-            var store = {
-                getStaticAppConfig: function() {
-                    return {
-                        actionTimeout: 1
-                    };
-                },
-                getRoutes: function(ctx) {
-                    return 'routes';
-                }
+            adapter.page.staticAppConfig = {
+                actionTimeout: 1
+            };
+            adapter.done = function(data, meta) {
+                adapterDoneCalled = true;
+            };
+            adapter.error = function(err) {
+                adapterErrorCalled = true;
             };
             var adapterDoneCalled = false;
             var adapterErrorCalled = false;
@@ -633,27 +622,19 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                     }
                 },
                 store: store,
-                adapter: {
-                    done: function(data, meta) {
-                        adapterDoneCalled = true;
-                    },
-                    error: function(err) {
-                        adapterErrorCalled = true;
-                    }
-                }
+                adapter: adapter
             });
         },
 
         'test timer notrigger done': function() {
-            var store = {
-                getStaticAppConfig: function() {
-                    return {
-                        actionTimeout: 1000
-                    };
-                },
-                getRoutes: function(ctx) {
-                    return 'routes';
-                }
+            adapter.page.staticAppConfig = {
+                actionTimeout: 1000
+            };
+            adapter.done = function(data, meta) {
+                adapterDoneCalled = true;
+            };
+            adapter.error = function(err) {
+                adapterErrorCalled = true;
             };
             var adapterDoneCalled = false;
             var adapterErrorCalled = false;
@@ -682,27 +663,19 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                     }
                 },
                 store: store,
-                adapter: {
-                    done: function(data, meta) {
-                        adapterDoneCalled = true;
-                    },
-                    error: function(err) {
-                        adapterErrorCalled = true;
-                    }
-                }
+                adapter: adapter
             });
         },
 
         'test timer notrigger error': function() {
-            var store = {
-                getStaticAppConfig: function() {
-                    return {
-                        actionTimeout: 1000
-                    };
-                },
-                getRoutes: function(ctx) {
-                    return 'routes';
-                }
+            adapter.page.staticAppConfig = {
+                actionTimeout: 1000
+            };
+            adapter.done = function(data, meta) {
+                adapterDoneCalled = true;
+            };
+            adapter.error = function(err) {
+                adapterErrorCalled = true;
             };
             var adapterDoneCalled = false;
             var adapterErrorCalled = false;
@@ -731,14 +704,7 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                     }
                 },
                 store: store,
-                adapter: {
-                    done: function(data, meta) {
-                        adapterDoneCalled = true;
-                    },
-                    error: function(err) {
-                        adapterErrorCalled = true;
-                    }
-                }
+                adapter: adapter
             });
         },
 
@@ -754,7 +720,7 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                         views: {}
                     }
                 },
-                adapter: Y.Mock(),
+                adapter: adapter,
                 controller: {index: function() {}},
                 store: store
             });
@@ -788,7 +754,7 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                 ac = new Y.mojito.ActionContext({
                     dispatch: 'the dispatch',
                     command: command,
-                    adapter: Y.Mock(),
+                    adapter: adapter,
                     controller: {
                         // no index() action
                     },
@@ -815,7 +781,7 @@ YUI().use('mojito-action-context', 'test', function (Y) {
             var ac = new Y.mojito.ActionContext({
                     dispatch: 'the dispatch',
                     command: command,
-                    adapter: Y.Mock(),
+                    adapter: adapter,
                     controller: {
                         __call: function() {
                             callCalled = true;
@@ -827,14 +793,6 @@ YUI().use('mojito-action-context', 'test', function (Y) {
         },
 
         'test no view': function() {
-            var store = {
-                getStaticAppConfig: function() {
-                    return {};
-                },
-                getRoutes: function(ctx) {
-                    return {};
-                }
-            };
             var command = {
                     action: 'index',
                     instance: {
@@ -843,10 +801,6 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                         acAddons: [],
                         views: {}
                     }
-                };
-            var adapter = {
-                    done: function(data, meta) {},
-                    error: function(err) {}
                 };
 
             var ac, error;

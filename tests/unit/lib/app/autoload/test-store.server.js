@@ -216,14 +216,14 @@ YUI().use(
             'server mojit view index.hb.html is loaded correctly': function() {
                 var instance = {type:'TestMojit3'};
                 store.expandInstance(instance, {}, function(err, instance){
-                    A.areSame('index.hb.html', instance.views.index['content-path'].split('/').pop());
+                    A.areSame('index.hb.html', instance.views.index['content-path'].split(libpath.sep).pop());
                 });
             },
 
             'server mojit view index.iphone.hb.html is loaded correctly': function(){
                 var instance = {type:'TestMojit3'};
                 store.expandInstance(instance, {device:'iphone'}, function(err, instance){
-                    A.areSame('index.iphone.hb.html', instance.views.index['content-path'].split('/').pop());
+                    A.areSame('index.iphone.hb.html', instance.views.index['content-path'].split(libpath.sep).pop());
                 });
             },
 
