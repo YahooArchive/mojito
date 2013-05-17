@@ -9,18 +9,27 @@ YUI().use('mojito-partial-addon', 'test', function (Y) {
         Assert = Y.Assert,
         ObjectAssert = Y.ObjectAssert,
         Mock = Y.Mock,
-        ac;
+        ViewRenderer = Y.mojito.ViewRenderer,
+        ac,
+        adapter;
 
     suite.add(new Y.Test.Case({
 
         name: 'render() tests',
 
         'setUp': function () {
-            ac = {
-                staticAppConfig: {
-                    viewEngine: {}
+            ac = {};
+            adapter = {
+                page: {
+                    staticAppConfig: {
+                        viewEngine: 'page static app config view engine'
+                    }
                 }
             };
+        },
+
+        'tearUp': function () {
+            Y.mojito.ViewRenderer = ViewRenderer;
         },
 
         'test callback called with error when view is not found': function() {
@@ -36,7 +45,7 @@ YUI().use('mojito-partial-addon', 'test', function (Y) {
                 args: ['View "missingView" not found']
             });
 
-            var addon = new Y.mojito.addons.ac.partial(command, null, ac);
+            var addon = new Y.mojito.addons.ac.partial(command, adapter, ac);
             addon.render(null, 'missingView', mockCallback.callback);
 
             Mock.verify(mockCallback);
@@ -56,30 +65,35 @@ YUI().use('mojito-partial-addon', 'test', function (Y) {
                     }
                 };
 
-            var addon = new Y.mojito.addons.ac.partial(command, null, ac);
+            var addon = new Y.mojito.addons.ac.partial(command, adapter, ac);
 
             var mockRenderer = Mock();
             Mock.expect(mockRenderer, {
                 method: 'render',
-                args: [data, 'myInstanceType', 'myContentPath', Mock.Value.Object, Mock.Value.Object]
+                args: [data, 'myInstanceType',  Mock.Value.Object, Mock.Value.Object, Mock.Value.Object],
+                run: function (data, type, mojitView, adapter) {
+                    Assert.areEqual('myContentPath', mojitView['content-path']);
+                    adapter.done('renderdone');
+                }
             });
 
-            var mockYMojito = Mock();
-            Mock.expect(mockYMojito, {
+            var mockCallback = Mock();
+            Mock.expect(mockCallback, {
+                method: 'callback',
+                args: [null, 'renderdone', Mock.Value.Any]
+            });
+
+            Mock.expect(Y.mojito, {
                 method: 'ViewRenderer',
-                args: ['myViewEngine', ac.staticAppConfig.viewEngine],
+                args: ['myViewEngine', 'page static app config view engine'],
                 returns: mockRenderer
             });
 
-            var yMojito = Y.mojito;
-            Y.mojito = mockYMojito;
+            addon.render(data, 'myView', mockCallback.callback);
 
-            addon.render(data, 'myView', null);
-
-            Y.mojito = yMojito;
-
-            Mock.verify(mockYMojito);
-            Mock.verify(mockRenderer);
+            Mock.verify(Y.mojito, 'Y.mojito.ViewRenderer was never called');
+            Mock.verify(mockRenderer, 'renderer.render was never called');
+            Mock.verify(mockCallback, 'callback from addon.render() was not called');
         },
 
         'test passes a valid adapter to the view engine': function() {
@@ -94,10 +108,9 @@ YUI().use('mojito-partial-addon', 'test', function (Y) {
             var mockCallback = Mock();
             Mock.expect(mockCallback, {
                 method: 'callback',
-                args: [null, 'flushdone']
+                args: [null, 'flushdone', Mock.Value.Any]
             });
 
-            var yMojitoViewRenderer = Y.mojito.ViewRenderer;
             Y.mojito.ViewRenderer = function() {
                 this.render = function(a, b, c, adapter, d) {
                     adapter.flush('flush');
@@ -105,10 +118,8 @@ YUI().use('mojito-partial-addon', 'test', function (Y) {
                 };
             };
 
-            var addon = new Y.mojito.addons.ac.partial(command, null, ac);
+            var addon = new Y.mojito.addons.ac.partial(command, adapter, ac);
             addon.render(null, 'myView', mockCallback.callback);
-
-            Y.mojito.ViewRenderer = yMojitoViewRenderer;
 
             Mock.verify(mockCallback);
         }
@@ -118,6 +129,18 @@ YUI().use('mojito-partial-addon', 'test', function (Y) {
     suite.add(new Y.Test.Case({
 
         name: 'invoke() tests',
+
+        'setUp': function () {
+            ac = {};
+            adapter = {
+                page: {
+                    staticAppConfig: {
+                        viewEngine: 'page static app config view engine'
+                    }
+                },
+                hook: {}
+            };
+        },
 
         'test populates command object for dispatch': function() {
             var command = {
@@ -144,11 +167,12 @@ YUI().use('mojito-partial-addon', 'test', function (Y) {
                     Mock.Value.Object
                 ]
             });
+
             ac.command = command;
             ac.context = 'myContext';
             ac._dispatch = mockDispatch.dispatch;
 
-            var addon = new Y.mojito.addons.ac.partial(command, null, ac);
+            var addon = new Y.mojito.addons.ac.partial(command, adapter, ac);
             addon.invoke('myAction', options, null);
 
             Mock.verify(mockDispatch);
@@ -177,7 +201,7 @@ YUI().use('mojito-partial-addon', 'test', function (Y) {
                 })]
             });
 
-            var addon = new Y.mojito.addons.ac.partial(command, null, { _dispatch: mockDispatch.dispatch });
+            var addon = new Y.mojito.addons.ac.partial(command, adapter, { _dispatch: mockDispatch.dispatch });
             addon.invoke(null, { params: {} }, mockCallback.callback);
 
             Mock.verify(mockDispatch);
@@ -195,7 +219,7 @@ YUI().use('mojito-partial-addon', 'test', function (Y) {
                 returns: {}
             });
 
-            var addon = new Y.mojito.addons.ac.partial(command, null, {
+            var addon = new Y.mojito.addons.ac.partial(command, adapter, {
                 _dispatch: function() {},
                 params: mockParams
             });

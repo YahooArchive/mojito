@@ -80,6 +80,7 @@ YUI.add('mojito-dispatcher', function(Y, NAME) {
 });
 YUI.add('mojito-mojit-proxy', function(Y, NAME) {});
 YUI.add('mojito-output-handler', function(Y, NAME) {});
+YUI.add('mojito-output-buffer', function(Y, NAME) {});
 YUI.add('mojito-perf', function(Y, NAME) {});
 YUI.add('mojito-hooks', function(Y, NAME) {
 

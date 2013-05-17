@@ -155,7 +155,10 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                     getResourceVersions: function(filter) {return mojits;}
                 },
                 buildmap = {},
-                expected = {'/tunnel/yahoo.application.test50/top_frame/definition.json?device=iphone': '/yahoo.application.test50/top_frame/definition.json'};
+                expected = {
+                    '/tunnel/yahoo.application.test50/top_frame/definition.json?device=iphone': '/yahoo.application.test50/top_frame/definition.json',
+                    '/tunnel/yahoo.application.test50/top_frame?device=iphone': '/yahoo.application.test50/top_frame'
+                };
 
             A.areSame(0, count);
             shared.mapDefxUris(buildmap, getConf(), store);

@@ -25,6 +25,10 @@ YUI().use('mojito-config-addon', 'test', function(Y) {
                 config: configs,
                 definition: definitions
             }
+        }, {
+            page: {
+                appConfig: 'page app config'
+            }
         });
     }
 
@@ -110,6 +114,12 @@ YUI().use('mojito-config-addon', 'test', function(Y) {
             A.isNotUndefined(ac.getDefinition('d1'));
             A.isNotUndefined(ac.getDefinition('d2'));
             A.isNotUndefined(ac.getDefinition('d3'));
+        },
+
+        'test getAppConfig()': function() {
+            var ac = create();
+
+            A.areSame('page app config', ac.getAppConfig(), 'the app config should come from adapter.page.appConfig');
         }
 
     }));
