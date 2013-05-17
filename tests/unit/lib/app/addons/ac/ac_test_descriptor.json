@@ -34,7 +34,7 @@
             },
             "composite.common": {
                 "params": {
-                    "lib": "$$config.lib$$/app/addons/ac/composite.common.js",
+                    "lib": "$$config.lib$$/app/addons/ac/composite.common.js,../../../../../../lib/app/autoload/output-buffer.common.js",
                     "test": "./test-composite.common.js",
                     "page": "$$config.base$$/mojito-test.html"
                 },
@@ -114,7 +114,7 @@
             },
             "partial.common": {
                 "params": {
-                    "lib": "$$config.lib$$/app/addons/ac/partial.common.js",
+                    "lib": "$$config.lib$$/app/addons/ac/partial.common.js,../../../../../../lib/app/autoload/output-buffer.common.js",
                     "test": "./test-partial.common.js",
                     "page": "$$config.base$$/mojito-test.html"
                 },
