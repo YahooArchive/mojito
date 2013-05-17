@@ -59,8 +59,8 @@
         "phantomjs": ">=1.8.0"
     },
     "scripts": {
-        "test": "cd tests && ./run.js test --browser phantomjs",
-        "testunit": "cd tests && ./run.js test -u --browser phantomjs --coverage"
+        "test": "cd tests && node run.js test --browser phantomjs",
+        "testunit": "cd tests && node run.js test -u --browser phantomjs --coverage"
     },
     "homepage": "http://developer.yahoo.com/cocktails/mojito/",
     "repository": {
