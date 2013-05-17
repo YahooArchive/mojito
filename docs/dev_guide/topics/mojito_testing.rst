@@ -699,7 +699,7 @@ Running Tests with Selenium
 
 To run tests in a browser, you need the `Selenium Server <func_unit-install_selenium>`_
 and browser drivers. Selenium Server comes with a driver for Firefox, so do not need to 
-install the driver. To run tests in Chrome and other browsers, you will need to 
+install the Firefox driver. To run tests in Chrome and other browsers, you will need to 
 `install the appropriate drivers <https://code.google.com/p/selenium/w/list>`_. In the 
 steps below, we'll just be using the default browser Firefox.
 
