@@ -14,13 +14,17 @@ change that object, because it might affects other mojits in the same page.
 
 Deprecations, Removals
 ----------------------
+* PR [#1103] Droping support for `nodejs` 0.6.
 * `ac.staticAppConfig` was a private api used by mojito to allocate static config for the app,
 and this is now removed. If you need access to the config, you can use `mojito-config-addon`
 to access `ac.config.getAppConfig()`.
 
 Features
 --------
-
+* PR [#1103] Bringing `windows` to the front row by adding *partial* support for mojito on
+windows. We plan to consolidate this going forward, but until after [travis-ci.org](http://travis-ci.org/)
+supports `windows` [environment](http://about.travis-ci.org/docs/user/ci-environment/) as part of the
+build process to do sanity check, we cannot guarantee that everything will work on `windows`.
 * `mojito-composite-addon` and `mojito-partial-addon` support `ac.flush` from child mojits.
 * Add command "npm test" to run all mojito unit and functional tests with Phantomjs. 
   Test results can be found under <mojitosrcdir>/artifacts/arrowreport by default.
