@@ -57,7 +57,8 @@ YUI().use('test', function(Y) {
                 args: [Y.Mock.Value.Any],
                 run: function (err) {
                     A.isTrue(/no such file or directory/.test(err));
-                    A.isTrue(/mojits\/package.json/.test(err));
+                    A.isTrue(/mojits/.test(err));
+                    A.isTrue(/package.json/.test(err));
                 }
             });
             libutils.test.setConsole(mockConsole);
