@@ -11,6 +11,11 @@ change that object, because it might affects other mojits in the same page.
 config once per request, and reuse across all the mojit instances in the same page using
 the `mojito-url-addon`. This means you have to be extra careful if you attempt to
 change that object, because it might affects other mojits in the same page.
+* Using `Y.Model.Vanilla` class on the server side for `ac.data` and `ac.pageData`, while
+using `Y.Model` on the client side. This is a performance optimization, and while the API
+is still the same, but on the server we do not support events on those model instances, while
+in the client, you might want to listen for changes in the model from the binder. In the future
+`Y.Model.Vanilla` will be replace with `Y.Model.Base` when it becomes available in core.
 
 Deprecations, Removals
 ----------------------
