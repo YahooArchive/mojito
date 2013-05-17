@@ -212,6 +212,7 @@ function startPhantomjs(cmd, callback) {
     var timeout,
         listener,
         done,
+        command,
         commandArgs;
         
     done = function () {
@@ -227,12 +228,14 @@ function startPhantomjs(cmd, callback) {
     };
 
     if (fs.existsSync(cwd + "/../node_modules/phantomjs")) {
+        command = "node";
         commandArgs = [cwd + "/../node_modules/phantomjs/bin/phantomjs"];
+        commandArgs.push("--webdriver=4445");
     } else {
-        commandArgs = ["phantomjs"];
+        command = "phantomjs";
+        commandArgs = ["--webdriver=4445"];
     }
-    commandArgs.push("--webdriver=4445");
-    var p = runCommand(cwd, "node", commandArgs, function() {
+    var p = runCommand(cwd, command, commandArgs, function() {
         // If this command returns called, then it failed to launch
         if (timeout) {
             clearTimeout(timeout);
