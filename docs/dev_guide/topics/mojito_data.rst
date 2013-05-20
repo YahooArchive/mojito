@@ -1,12 +1,20 @@
-=============================
-Getting Input and Cookie Data
-=============================
+==============
+Data in Mojito
+==============
 
+This chapter will first discuss how your applications can get 
+data and then look at how mojits can share that data with
+binders, other mojits, as well as how to rehydrate data.
+
+.. _mojito_data-getting:
+
+Getting Input and Cookie Data
+============================
 
 .. _mojito_data-intro:
 
 Introduction
-============
+------------
 
 Mojito provides addons for accessing data from query string and routing 
 parameters, cookies, and the POST request body.
@@ -25,7 +33,7 @@ To see examples using these addons to get data, see
 .. _mojito_data-params:
 
 Getting Data from Parameters
-============================
+----------------------------
 
 The methods in the Params addon are called from the ``params`` namespace. 
 As a result, the call will have the following syntax where ``ac`` is the 
@@ -34,7 +42,7 @@ ActionContext object: ``ac.params.*``
 .. _mojito_data-params_get:
 
 GET
----
+###
 
 The GET parameters are the URL query string parameters. The Params addon 
 creates JSON using the URL query string parameters. The method ``getFromUrl`` 
@@ -55,7 +63,7 @@ addon would create the following object:
 .. _data_params-get_single:
 
 Single Parameter
-################
+****************
 
 To get the value for a specific parameter, you pass the key to the ``getFromUrl`` 
 method, which returns the associated value.
@@ -81,7 +89,7 @@ parameter is retrieved:
 .. _data_params-get_all:
 
 All Parameters
-##############
+**************
 
 To get all of the query string parameters, you call ``getFromUrl`` or its alias 
 ``url`` without passing a key as a parameter.
@@ -112,7 +120,7 @@ the ``qs_params`` array, which ``ac.done`` makes available in the template.
 .. _mojito_data-params_post:
 
 POST
-----
+####
 
 The POST parameters come from the HTTP POST request body and often consist of 
 form data. As with query string parameters, the ``Params`` addon has the method 
@@ -122,7 +130,7 @@ the POST body parameters.
 .. _data_params-post_single:
 
 Single
-######
+******
 
 To get a parameter from the POST body, call ``getFromBody`` with the key as the 
 parameter. You can also use the alias ``body`` to get a parameter from the POST 
@@ -149,7 +157,7 @@ and then uses the ``done`` method to make it accessible to the template.
 .. _data_params-post_all:
 
 All
-###
+***
 
 To get all of the parameters from the POST body, call ``getFromBody`` or ``body`` 
 without any parameters.
@@ -182,7 +190,7 @@ template.
 .. _mojito_data-routing:
 
 Routing
-=======
+-------
 
 Routing parameters are mapped to routing paths, actions, and HTTP methods. 
 You can use the routing parameters to provide data to mojit actions when 
@@ -191,7 +199,7 @@ specific routing conditions have been met.
 .. _data_routing-set:
 
 Setting Routing Parameters
---------------------------
+##########################
 
 The routing parameters are set in the routing configuration file 
 ``routes.json``. For each defined route, you can use the ``params`` 
@@ -229,7 +237,7 @@ a coupon to a user posting information.
 .. _data_routing-get:
 
 Getting Routing Parameters
---------------------------
+##########################
 
 
 The Params addon has the method ``getFromRoutes`` that allows you to specify 
@@ -239,7 +247,7 @@ the alias ``route`` to get routing parameters.
 .. _data_routing-get_single:
 
 Single
-######
+******
 
 To get a routing parameter, call ``getFromRoute`` with the key as the 
 parameter.
@@ -272,7 +280,7 @@ to determine whether the user gets a coupon.
 .. _data_routing-get_all:
 
 All
-###
+***
 
 To get all of the routing parameters, call ``getFromRoute`` or ``route`` without 
 any arguments.
@@ -298,7 +306,7 @@ a URL.
 .. _mojito_data-get_all:
 
 Getting All Parameters
-======================
+----------------------
 
 The Params addon also has the method ``getFromMerged`` that lets you get one or 
 all of the GET, POST, and routing parameters. Because all of the parameters are 
@@ -319,7 +327,7 @@ parameter will override both the GET and POST ``foo`` parameters.
 .. _mojito_data-get_single:
 
 Single
-------
+######
 
 To get one of any of the different type of parameters, call ``getFromMerged`` 
 or ``merged`` with the key as the parameter.
@@ -345,7 +353,7 @@ In the example controller below, the ``name`` parameter is obtained using
 .. _mojito_data-get_all:
 
 All
----
+###
 
 To get all of the GET, POST, and routing parameters, call ``getFromMerged`` or 
 ``merged`` without any arguments.
@@ -373,7 +381,7 @@ To get all of the GET, POST, and routing parameters, call ``getFromMerged`` or
 .. _mojito_params_addon-aliases:
 
 Params Addon Method Aliases
-===========================
+---------------------------
 
 We have looked at the methods of the ``Params`` addon for getting query string
 parameter, query string parameters, and HTTP body data. For simplicity,
@@ -400,7 +408,7 @@ for the methods that we have covered thus far.
 .. _mojito_data-cookie:
 
 Cookies
-=======
+-------
 
 The `Cookies addon <../../api/classes/Cookie.server.html>`_ offers methods for 
 reading and writing cookies. The API of the Cookie addon is the same as 
@@ -411,7 +419,7 @@ see `Using Cookies <../code_exs/cookies.html>`_.
 .. _data_cookie-get:
 
 Getting Cookie Data
--------------------
+*******************
 
 The method ``cookie.get(name)`` is used to get the cookie value associated 
 with ``name``. In the example controller below, the cookie value 
@@ -437,7 +445,7 @@ template.
 .. _data_cookies-write:
 
 Writing Data to Cookies
------------------------
+#######################
 
 The method ``cookie.set(name, value)`` is used to set a cookie with the a 
 given name and value.  The following example controller sets a cookie 
@@ -460,5 +468,77 @@ with the name ``'user'`` if one does not exist.
         }
      }
    }, '0.0.1', {requires: ['mojito-cookie-addon']});
+
+.. _mojito_data-sharing:
+
+Sharing Data
+============
+
+The Mojito ``Data`` addon has methods that allows the server 
+to share data to the client and  for for sharing data among mojits on a page. 
+
+Requiring Data Addon
+--------------------
+
+The Data addon is required liked other addons in the controller by
+specifying the addon as a string in the ``required`` array:
+
+.. code-block::
+
+   }, '0.0.1', {requires: ['mojito-data-addon']}); 
+
+.. _mojito_data_sharing-server_client:
+
+Server Sharing Data With the Client
+-----------------------------------
+
+The ``Data`` addon is used to pass information from the controller to the binder. 
+From the controller, you use the ``set`` method from the Data addon to 
+set or expose data that the binder can access with the ``mojitProxy`` object.
+
+Example
+#######
+
+controller.server.js
+********************
+
+binder.js
+*********
+
+.. _mojito_data_sharing-page_data:
+
+Sharing Page Data with Other Mojits 
+-----------------------------------
+
+The ``Data`` addon also introduces the page data, which is accessible thru ac.pageData. 
+This has a YUI Model API, i.e., ac.pageData.set(name, value) and ac.pageData.get(name). 
+The namespace ``pageData`` is unique to each request, but is a single store for all mojits 
+of the request, and you can use it to share data between mojits in a page. The binder 
+accesses this data with mojitProxy.pageData.get(name).
+
+The data set via ac.pageData.set() is also available in all templates thru this.page 
+(for example {{page}} in handlebars templates). Keep in mind that if ac.done({page: 'something'}) 
+is specified in your controller, the page key will override all data set via ac.pageData.
+
+This data will be sent to the client and rehydrated because the page is built on the server 
+will expand its scope to the client. In other words, the ``pageData`` namespace serves as a 
+mechanism to share data between mojits and runtimes. Both ``ac.pageData`` and ``mojitProxy.pageData`` 
+provide access to the same page model.
+
+Data Scope 
+##########
+
+The data is set via ac.data.set() is also available in all templates. Any data given to ac.done() will 
+be merged over the data given by ac.data.set(). (This is a shallow merge.)
+
+Example
+#######
+
+BodyMojit/controller.server.js
+******************************
+
+FlickrMojit/binders/index.js
+****************************
+
 
 
