@@ -607,7 +607,7 @@ Running Tests with PhantomJS
 ############################
 
 By default, Mojito uses the npm package ``phantomjs`` for running tests.
-You can use ``npm`` to run both unit and functional, and coverage tests. 
+You can use ``npm`` to run unit, functional, and coverage tests. 
 
 For more control over the running tests, such as running one test or specifying a 
 different location to write test results, use the wrapper script ``run.js`` that
@@ -642,11 +642,13 @@ Using run.js
 ************
 
 #. Change to the ``mojito/tests`` directory.
-#. To run individual unit and functional tests, you pass the test descriptor to ``run.js``.
-   You can also specify a port, choose a browser, and reuse a browser session.
+#. To run individual unit and functional tests, you pass the test descriptor (JSON test 
+   configuration file) to ``run.js``. You can also specify a port, choose a browser, and 
+   reuse a browser session. In the example below, we are running a specific functional 
+   described in the descriptor ``newsboxes_descriptor.json`` with ``phantomjs``.
 
    ``$ ./run.js test -f --path func --descriptor examples/newsboxes/newsboxes_descriptor.json --port 4000 --reuseSession --browser phantomjs``
-#. 
+
 .. _func_unit_selenium-run:   
 
 Running Tests with Selenium
