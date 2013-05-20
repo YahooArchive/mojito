@@ -11,10 +11,9 @@ YUI.add('example-testunitestmodelcontroller-tests', function (Y) {
             var that = this;
             that.wait(function(){
                 for(i=0; i<Y.all('a').size(); i++){
-                    Y.log("test....");
                     Y.Assert.areEqual("static.flickr.com", Y.all('a').item(i).getAttribute('href').match(/static.flickr.com/gi));
                 };
-            }, 4000);
+            }, 2000);
          }
     }));   
  
