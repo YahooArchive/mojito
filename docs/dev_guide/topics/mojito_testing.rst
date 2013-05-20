@@ -607,7 +607,7 @@ Running Tests with PhantomJS
 ############################
 
 By default, Mojito uses the npm package ``phantomjs`` for running tests.
-You can use ``npm`` to run unit, functional, and coverage tests. 
+You can use ``npm`` to run functional and unit tests.
 
 For more control over the running tests, such as running one test or specifying a 
 different location to write test results, use the wrapper script ``run.js`` that
@@ -621,20 +621,13 @@ Using npm
 #. From the ``mojito`` directory, run both the unit and functional tests with ``npm``:
 
    ``$ npm test``
-#. You can view the test results in the following directories:
+#. To run only unit tests, use the following:
 
-   * unit tests (XML) - ``mojito/tests/unit/artifacts/arrowreport/result.xml``
-   * unit tests (JSON) - ``mojito/tests/unit/artifacts/arrowreport/result.json``
-   * functional tests (XML) - ``mojito/artifacts/arrowreport/result.xml``
-   * functional tests (JSON) - ``mojito/artifacts/arrowreport/result.json``                                                                                     
+   ``$ npm run-script unit``
+#. To run only functional tests, use the following:
 
+   ``$ npm run-script func``
 
-   .. note:: The functional test results are written to the parent directory of ``tests`` 
-             because Arrow will overwrite the prior test results if they are in the ``tests`` 
-             directory.
-#. To run only unit tests with coverage, use the following:
-
-   ``$ npm run-script testunit``
 
 .. _runjs_phantomjs-run:
 
@@ -642,12 +635,17 @@ Using run.js
 ************
 
 #. Change to the ``mojito/tests`` directory.
+#. To run the functional tests, you use the option ``-u`` and specify
+   the path with the option ``--path``:
+   
+   ``$ ./run.js test -u --path unit``
+
 #. To run individual unit and functional tests, you pass the test descriptor (JSON test 
-   configuration file) to ``run.js``. You can also specify a port, choose a browser, and 
-   reuse a browser session. In the example below, we are running a specific functional 
-   described in the descriptor ``newsboxes_descriptor.json`` with ``phantomjs``.
+   configuration file) to ``run.js``. 
 
    ``$ ./run.js test -f --path func --descriptor examples/newsboxes/newsboxes_descriptor.json --port 4000 --reuseSession --browser phantomjs``
+
+
 
 .. _func_unit_selenium-run:   
 
