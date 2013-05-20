@@ -11,7 +11,8 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
         AA = Y.ArrayAssert,
         OA = Y.ObjectAssert,
         RouteMaker,
-        acMock;
+        acMock,
+        adapterMock;
 
     cases = {
         name: 'make url tests',
@@ -19,9 +20,13 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
         setUp: function() {
             // Capture the real RouteMaker
             RouteMaker = Y.mojito.RouteMaker;
-            acMock = {
-                staticAppConfig: {}
+            adapterMock = {
+                page: {
+                    staticAppConfig: {},
+                    routes: 'routes'
+                }
             };
+            acMock = {};
         },
 
         tearDown: function() {
@@ -40,17 +45,15 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
                     }
                 };
             };
-            var addon = new Y.mojito.addons.ac.url({}, null, acMock);
-            addon.setStore({
-                getRoutes: function() { return 'routes'; }
-            });
+            var addon = new Y.mojito.addons.ac.url({}, adapterMock, acMock);
 
             url = addon.find('myid.myaction?foo=bar', 'get');
             A.areSame('ohhai url', url);
         },
 
         'test find url (get) using real RouteMaker': function() {
-            var addon, url, routes = {
+            var addon, url;
+            adapterMock.page.routes = {
                 'aroute': {
                     'call': 'foo',
                     'path': '/a/b/c/',
@@ -61,10 +64,7 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
             //need to use real find() which needs real RouteMaker
             Y.mojito.RouteMaker = RouteMaker;
 
-            addon = new Y.mojito.addons.ac.url({}, null, acMock);
-            addon.setStore({
-                getRoutes: function() { return routes; }
-            });
+            addon = new Y.mojito.addons.ac.url({}, adapterMock, acMock);
 
             url = addon.find('/a/b/c/', 'get');
 
@@ -89,7 +89,8 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
         },
 
         'test find http://url?with=params (get) using real RouteMaker': function() {
-            var addon, url, routes = {
+            var addon, url;
+            adapterMock.page.routes = {
                 'aroute': {
                     'call': 'foo',
                     'path': '/a/b/c/',
@@ -100,10 +101,7 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
             //need to use real find() which needs real RouteMaker
             Y.mojito.RouteMaker = RouteMaker;
 
-            addon = new Y.mojito.addons.ac.url({}, null, acMock);
-            addon.setStore({
-                getRoutes: function() { return routes; }
-            });
+            addon = new Y.mojito.addons.ac.url({}, adapterMock, acMock);
 
             url = addon.find('http://xyz.com/a/b/c/?a=1&b=2', 'get');
             A.areSame('foo', url.call);
@@ -122,10 +120,7 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
                     }
                 };
             };
-            var addon = new Y.mojito.addons.ac.url({}, null, acMock);
-            addon.setStore({
-                getRoutes: function() { return 'routes'; }
-            });
+            var addon = new Y.mojito.addons.ac.url({}, adapterMock, acMock);
 
             url = addon.find('myid.myaction', 'post');
             A.areSame('ohhai url', url);
@@ -143,10 +138,7 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
                     }
                 };
             };
-            var addon = new Y.mojito.addons.ac.url({}, null, acMock);
-            addon.setStore({
-                getRoutes: function() { return 'routes'; }
-            });
+            var addon = new Y.mojito.addons.ac.url({}, adapterMock, acMock);
 
             url = addon.make('myid', 'myaction', {foo: 'bar'}, 'get');
 
@@ -167,10 +159,7 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
                     }
                 };
             };
-            var addon = new Y.mojito.addons.ac.url({}, null, acMock);
-            addon.setStore({
-                getRoutes: function() { return 'routes'; }
-            });
+            var addon = new Y.mojito.addons.ac.url({}, adapterMock, acMock);
 
             url = addon.make('myid', 'myaction', {foo: 'bar'}, 'get', {a:1, b:2});
             A.areSame('ohhai url', url);
@@ -188,10 +177,7 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
                     }
                 };
             };
-            var addon = new Y.mojito.addons.ac.url({}, null, acMock);
-            addon.setStore({
-                getRoutes: function() { return 'routes'; }
-            });
+            var addon = new Y.mojito.addons.ac.url({}, adapterMock, acMock);
 
             url = addon.make('myid', 'myaction', {foo: 'bar' }, 'post');
             A.areSame('ohhai url', url);
@@ -208,10 +194,7 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
                     }
                 };
             };
-            var addon = new Y.mojito.addons.ac.url({}, null, acMock);
-            addon.setStore({
-                getRoutes: function() { return 'routes'; }
-            });
+            var addon = new Y.mojito.addons.ac.url({}, adapterMock, acMock);
 
             url = addon.make('myid', 'myaction');
             A.areSame('ohhai url', url);
@@ -229,10 +212,7 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
                     }
                 };
             };
-            var addon = new Y.mojito.addons.ac.url({}, null, acMock);
-            addon.setStore({
-                getRoutes: function() { return 'routes'; }
-            });
+            var addon = new Y.mojito.addons.ac.url({}, adapterMock, acMock);
 
             url = addon.make('myid', 'myaction', {foo:'bar'}, 'get');
             A.areSame('ohhai url', url);
@@ -249,10 +229,7 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
                     }
                 };
             };
-            var addon = new Y.mojito.addons.ac.url({}, null, acMock);
-            addon.setStore({
-                getRoutes: function() { return 'routes'; }
-            });
+            var addon = new Y.mojito.addons.ac.url({}, adapterMock, acMock);
 
             url = addon.make('myid', 'myaction');
             A.areSame('ohhai url', url);
@@ -270,10 +247,7 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
                     }
                 };
             };
-            var addon = new Y.mojito.addons.ac.url({}, null, acMock);
-            addon.setStore({
-                getRoutes: function() { return 'routes'; }
-            });
+            var addon = new Y.mojito.addons.ac.url({}, adapterMock, acMock);
 
             url = addon.make('myid', 'myaction', {foo: 'bar'}, 'get', {foo: 'baz'});
             A.areSame('ohhai url', url);
@@ -294,10 +268,7 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
                     }
                 };
             };
-            var addon = new Y.mojito.addons.ac.url({}, null, acMock);
-            addon.setStore({
-                getRoutes: function() { return 'routes'; }
-            });
+            var addon = new Y.mojito.addons.ac.url({}, adapterMock, acMock);
 
             url = addon.make('myid', 'myaction', 'foo=bar&bar=baz', 'get', 'a=1&b=2');
             A.areSame('ohhai url', url);
@@ -320,10 +291,7 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
                     }
                 };
             };
-            var addon = new Y.mojito.addons.ac.url({}, null, acMock);
-            addon.setStore({
-                getRoutes: function() { return 'routes'; }
-            });
+            var addon = new Y.mojito.addons.ac.url({}, adapterMock, acMock);
 
             url = addon.make('myid', 'myaction', ['foo', 'bar'], 'get', ['a', 'b']);
             A.areSame('ohhai url', url);

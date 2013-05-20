@@ -3,12 +3,38 @@ version @VERSION@
 
 Notes
 -----
+* `ac.config.getAppConfig()` was reworked to improve performance by computing the app
+config once per request, and reuse across all the mojit instances in the same page using
+the `mojito-config-addon`. This means you have to be extra careful if you attempt to
+change that object, because it might affects other mojits in the same page.
+* `ac.config.getRoutes()` was reworked to improve performance by computing the app
+config once per request, and reuse across all the mojit instances in the same page using
+the `mojito-url-addon`. This means you have to be extra careful if you attempt to
+change that object, because it might affects other mojits in the same page.
+* Using `Y.Model.Vanilla` class on the server side for `ac.data` and `ac.pageData`, while
+using `Y.Model` on the client side. This is a performance optimization, and while the API
+is still the same, but on the server we do not support events on those model instances, while
+in the client, you might want to listen for changes in the model from the binder. In the future
+`Y.Model.Vanilla` will be replace with `Y.Model.Base` when it becomes available in core.
 
 Deprecations, Removals
-------------
+----------------------
+* PR [#1103] Droping support for `nodejs` 0.6.
+* `ac.staticAppConfig` was a private api used by mojito to allocate static config for the app,
+and this is now removed. If you need access to the config, you can use `mojito-config-addon`
+to access `ac.config.getAppConfig()`.
 
 Features
 --------
+* PR [#1103] Bringing `windows` to the front row by adding *partial* support for mojito on
+windows. We plan to consolidate this going forward, but until after [travis-ci.org](http://travis-ci.org/)
+supports `windows` [environment](http://about.travis-ci.org/docs/user/ci-environment/) as part of the
+build process to do sanity check, we cannot guarantee that everything will work on `windows`.
+* `mojito-composite-addon` and `mojito-partial-addon` support `ac.flush` from child mojits.
+* Command "npm test" is added to run all mojito unit and functional tests with Phantomjs. 
+  Test results can be found under <mojitosrcdir>/artifacts/arrowreport by default.
+  "npm run unit", "npm run func", "npm run doc", "npm run lint" are also added.
+  
 
 Bug Fixes
 ---------
