@@ -638,12 +638,12 @@ Using run.js
 #. To run the functional tests, you use the option ``-u`` and specify
    the path with the option ``--path``:
    
-   ``$ ./run.js test -u --path unit``
+   ``$ ./run.js test –u —path unit —browser phantomjs``
 
 #. To run individual unit and functional tests, you pass the test descriptor (JSON test 
    configuration file) to ``run.js``. 
 
-   ``$ ./run.js test -f --path func --descriptor examples/newsboxes/newsboxes_descriptor.json --port 4000 --reuseSession --browser phantomjs``
+   ``$ ./run.js test -f --path func --descriptor examples/newsboxes/newsboxes_descriptor.json --port 4000 --browser phantomjs``
 
 
 
