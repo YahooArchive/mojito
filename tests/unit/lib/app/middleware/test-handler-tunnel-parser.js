@@ -39,6 +39,11 @@ YUI().use('mojito-test-extra', 'test', function (Y) {
             };
 
             req = {
+                app: {
+                    mojito: {
+                        store: store
+                    }
+                },
                 url: '/tunnel',
                 headers: {
                     'x-mojito-header': 'tunnel'
@@ -55,7 +60,7 @@ YUI().use('mojito-test-extra', 'test', function (Y) {
         },
 
         'test trailing slashes are removed from tunnel URIs': function () {
-            config.store.getAppConfig = function () {
+            store.getAppConfig = function () {
                 return {
                     tunnelPrefix: '/spinach/'
                 };

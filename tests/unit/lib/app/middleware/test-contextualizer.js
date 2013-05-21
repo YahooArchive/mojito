@@ -30,6 +30,11 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                 logger: function() {}
             });
             req = {
+                app: {
+                    mojito: {
+                        context: { }
+                    }
+                },
                 url: '/some/uri',
                 headers: {'user-agent': null}
             };
