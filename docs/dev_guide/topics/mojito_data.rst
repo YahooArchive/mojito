@@ -474,11 +474,21 @@ with the name ``'user'`` if one does not exist.
 Sharing Data
 ============
 
-The Mojito ``Data`` addon has methods that allows the server 
-to share data to the client and  for for sharing data among mojits on a page. 
+After you get data, your application may need to share that data with client-side code 
+(binders) or other mojits. Mojito provides the ``Data`` addon that allows your mojit
+controllers and binders to share and access data. We'll look at the addon and then look at
+some use cases with examples.
+
+Data Addon
+----------
+
+The ``Data`` addon is available through the ``ActionContext`` and ``mojitProxy`` objects
+from the controller and binders respectively. Because the addon has two different 
+functions, allowing data to be shared from the server to the client and allowing one
+mojit to share data with other mojits, the addon has two namespaces. 
 
 Requiring Data Addon
---------------------
+####################
 
 The Data addon is required liked other addons in the controller by
 specifying the addon as a string in the ``required`` array:
@@ -486,6 +496,21 @@ specifying the addon as a string in the ``required`` array:
 .. code-block::
 
    }, '0.0.1', {requires: ['mojito-data-addon']}); 
+
+TBD: Does addon have to be required in binders.
+
+pageData Object
+###############
+
+When you include the ``pageData`` object is  two methods for setting (exposing) and getting data.
+Mojit controllers 
+
+The Mojito ``Data`` addon has methods that allows the server 
+to share data to the client and  for for sharing data among mojits on a page. 
+
+.. _mojito_data_sharing-require_addon:
+
+
 
 .. _mojito_data_sharing-server_client:
 
