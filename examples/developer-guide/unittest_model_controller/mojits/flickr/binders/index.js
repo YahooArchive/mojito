@@ -43,7 +43,7 @@ YUI.add('flickrBinderIndex', function (Y, NAME) {
             this.node = node;
             Y.log('NODE: ' + Y.dump(this.node));
             var nodeId = node.get('id'),
-                binderId = this.mojitProxy._guid,
+                binderId = this.mojitProxy.getId(),
                 handleClick = function() {
                     this.node.one('div').set('innerHTML', "clicked on " + new Date());
                 };

@@ -56,13 +56,18 @@
         "express": "3.x",
         "mockery": "~1.4.0",
         "node-static": ">0.6.8",
-        "yahoo-arrow": "0.0.75"
+        "yahoo-arrow": "0.0.75",
+        "benchmark": "1.x"
     },
     "optionalDependencies": {
         "phantomjs": ">=1.8.0"
     },
     "scripts": {
-        "test": "cd tests && node run.js test --browser phantomjs"
+        "test": "cd tests && node run.js test --browser phantomjs",
+        "unit": "cd tests && node run.js test -u --browser phantomjs",
+        "func": "cd tests && node run.js test -f --browser phantomjs",
+        "lint": "node bin/mojito jslint",
+        "docs": "node bin/mojito docs mojito"
     },
     "homepage": "http://developer.yahoo.com/cocktails/mojito/",
     "repository": {

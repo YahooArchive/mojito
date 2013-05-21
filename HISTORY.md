@@ -11,6 +11,11 @@ change that object, because it might affects other mojits in the same page.
 config once per request, and reuse across all the mojit instances in the same page using
 the `mojito-url-addon`. This means you have to be extra careful if you attempt to
 change that object, because it might affects other mojits in the same page.
+* Using `Y.Model.Vanilla` class on the server side for `ac.data` and `ac.pageData`, while
+using `Y.Model` on the client side. This is a performance optimization, and while the API
+is still the same, but on the server we do not support events on those model instances, while
+in the client, you might want to listen for changes in the model from the binder. In the future
+`Y.Model.Vanilla` will be replace with `Y.Model.Base` when it becomes available in core.
 
 Deprecations, Removals
 ----------------------
@@ -26,8 +31,10 @@ windows. We plan to consolidate this going forward, but until after [travis-ci.o
 supports `windows` [environment](http://about.travis-ci.org/docs/user/ci-environment/) as part of the
 build process to do sanity check, we cannot guarantee that everything will work on `windows`.
 * `mojito-composite-addon` and `mojito-partial-addon` support `ac.flush` from child mojits.
-* Add command "npm test" to run all mojito unit and functional tests with Phantomjs. 
+* Command "npm test" is added to run all mojito unit and functional tests with Phantomjs. 
   Test results can be found under <mojitosrcdir>/artifacts/arrowreport by default.
+  "npm run unit", "npm run func", "npm run doc", "npm run lint" are also added.
+  
 
 Bug Fixes
 ---------

@@ -542,10 +542,12 @@ module.
 Mojito Built-In Functional/Unit Tests
 =====================================
 
-Mojito comes with the script ``run.js`` that allows you to run built-in unit
-and functional tests. The script ``run.js`` uses the npm module 
-`Arrow <https://github.com/yahoo/arrow/>`_, a testing framework that fuses
-together JavaScript, Node.js, PhantomJS, and Selenium. By running the built-in
+Mojito allows you to use ``npm test`` to run tests and also 
+comes with the script ``run.js`` that allows you to have more control over the test(s) 
+you want to run and where you want to write the test results.
+
+Mojito uses the npm module  `Arrow <https://github.com/yahoo/arrow/>`_, a testing framework 
+that fuses together JavaScript, Node.js, PhantomJS, and Selenium. By running the built-in
 unit and functional tests, contributors can accelerate the merging of
 their pull request.
 
@@ -563,7 +565,6 @@ Before making pull requests, we recommend contributors do the following:
 #. Everything working? Great, make your pull request and don't forget to 
    unlink your fork of Mojito.
 
-
 The following sections show you how to set up your environment and run the unit 
 and functional tests that come with Mojito. 
 
@@ -579,97 +580,106 @@ Required Software
 #################
 
 - `Java <http://www.java.com/en/download/manual.jsp>`_
-- `Node.js 0.6 or higher (packaged with npm) <http://nodejs.org/>`_
 - `Git <http://git-scm.com/downloads>`_
 - `Firefox v20 <http://www.mozilla.org/en-US/products/download>`_
 
-.. _func_unit_reqs-macs:
+Optional Software
+#################
 
-Macs
-####
+To run functional tests in a browser, you need to :ref:`install the Selenium 
+Server <func_unit-install_selenium>`.
 
-.. _func_unit-macs_setup:
 
-Setting Up
-**********
-
-#. `Download PhantomJS <http://www.doctor46.com/phantomjs>`_.
-#. Copy the phantomjs binary to ``/usr/local/bin/``.
-
-   ``$ cp phantomjs /usr/local/bin/``
-#. Install Arrow:
-
-   ``$ npm install yahoo-arrow -g`` 
-#. Start the Arrow server to confirm it was installed:
-
-   ``$ arrow_server``
-#. Shut down the Arrow server with ``Ctrl-C`` command.   
-
-.. _func_unit_reqs-linux:
-
-Linux
-#####
-
-.. _func_unit-linux_setup:
-
-Setting Up
-**********
-
-#. Follow the `installation instructions for PhantomJS <http://www.doctor46.com/phantomjs>`_.
-#. Copy the phantomjs binary to ``/usr/local/bin/``.
-#. Install Arrow:
-
-   ``$ npm install yahoo-arrow -g``
-#. Start the Arrow server to confirm it was installed:
-
-   ``$ arrow_server``
-#. Shut down the Arrow server with ``Ctrl-C`` command.  
-
-   
-.. _func_unit-install_selenium:
-   
-Installing Selenium (recommended)
-#################################
-
-The following instructions work for both Macs and Linux.
-
-#. `Download the Selenium v2.13.0 JAR executable <http://selenium.googlecode.com/files/selenium-server-standalone-2.31.0.jar>`_.
-#. Start the Selenium server:
-
-   ``$ java -jar path/to/selenium-server-standalone-2.31.0.jar``
-#. Confirm Selenium is running by going to the following URL: 
-
-   `http://localhost:4444/wd/hub/static/resource/hub.html <http://localhost:4444/wd/hub/static/resource/hub.html>`_   
-#. Shut down the Selenium server with ``Ctrl-C`` command.  
-
-.. warning:: If you are not using Firefox v20 and the Selenium Standalone Server v2.31.0, you 
-               may run into backward compatibility issues. Please see the 
-               `Platforms Supported by Selenium <http://docs.seleniumhq.org/about/platforms.jsp>`_
-               to learn what Selenium and browser versions are compatible.
-
-.. _func_unit-run:
-
-Running Tests
-#############
-
-The following instructions show you how to run Arrow tests with the 
-wrapper script ``run.js``, which allows you to run batch tests. For 
-example, you can use ``run.js`` to run all of the Mojito functional 
-or unit tests with one command.
+Setting Up 
+##########
 
 #. Clone the Mojito repository.
 
    ``$ git clone https://github.com/yahoo/mojito.git``
 #. Change to the ``mojito`` directory.
-#. Install Mojito's dependencies. Mojito needs several npm modules to 
-   run tests.
+#. Install the Mojito dependencies:
+
+  ``$ npm install``
+
+.. _func_unit_phantomjs-run:   
+
+Running Tests with PhantomJS
+############################
+
+By default, Mojito uses the npm package ``phantomjs`` for running tests.
+You can use ``npm`` to run functional and unit tests.
+
+For more control over the running tests, such as running one test or specifying a 
+different location to write test results, use the wrapper script ``run.js`` that
+comes with Mojito. 
+
+.. _npm_phantomjs-run:  
+
+Using npm
+*********
+
+#. From the ``mojito`` directory, run both the unit and functional tests with ``npm``:
+
+   ``$ npm test``
+#. To run only unit tests, use the following:
+
+   ``$ npm run-script unit``
+#. To run only functional tests, use the following:
+
+   ``$ npm run-script func``
+
+
+.. _runjs_phantomjs-run:
+
+Using run.js
+************
+
+#. Change to the ``mojito/tests`` directory.
+#. To run the functional tests, you use the option ``-u`` and specify
+   the path with the option ``--path``:
    
-   ``$ npm install``
-#. Change to the ``tests`` directory.
+   ``$ ./run.js test –u —path unit —browser phantomjs``
+
+#. To run individual unit and functional tests, you pass the test descriptor (JSON test 
+   configuration file) to ``run.js``. 
+
+   ``$ ./run.js test -f --path func --descriptor examples/newsboxes/newsboxes_descriptor.json --port 4000 --browser phantomjs``
+
+
+
+.. _func_unit_selenium-run:   
+
+Running Tests with Selenium
+###########################
+
+To run tests in a browser, you need the `Selenium Server <func_unit-install_selenium>`_
+and browser drivers. Selenium Server comes with a driver for Firefox, so do not need to 
+install the Firefox driver. To run tests in Chrome and other browsers, you will need to 
+`install the appropriate drivers <https://code.google.com/p/selenium/w/list>`_. In the 
+steps below, we'll just be using the default browser Firefox.
+
+#. Install Selenium:
+   
+   #. `Download the Selenium v2.31.0 JAR executable <http://selenium.googlecode.com/files/selenium-server-standalone-2.31.0.jar>`_.
+   #. Start the Selenium server:
+ 
+      ``$ java -jar path/to/selenium-server-standalone-2.31.0.jar``
+   #. Confirm Selenium is running by going to the following URL: 
+
+     `http://localhost:4444/wd/hub/static/resource/hub.html <http://localhost:4444/wd/hub/static/resource/hub.html>`_   
+   #. Shut down the Selenium server with ``Ctrl-C`` command.  
+
+      .. warning:: If you are not using Firefox v20 and the Selenium Standalone Server v2.31.0, you 
+                   may run into backward compatibility issues. Please see the 
+                   `Platforms Supported by Selenium <http://docs.seleniumhq.org/about/platforms.jsp>`_
+                   to learn what Selenium and browser versions are compatible.
+
+#. Change to the ``mojito/tests`` directory.
 #. Start the Selenium server in the background.
 
    ``$ java -jar path/to/selenium-server.jar &``
-#. Run the unit tests for the framework and client: 
+#. Run the unit tests for the framework and client. As we mentioned before, the default 
+   browser is Firefox. To specify Chrome, you would add the option ``--browser chrome``.
 
    ``$ ./run.js test -u --path unit --group fw,client,server --reuseSession``
 #. You can also run all the functional tests with the below command. 
@@ -688,14 +698,48 @@ or unit tests with one command.
    ``newsboxes`` application. The ``--path`` option indicates that the 
    path to the test descriptor is located in the ``func`` directory: ``func/examples/newsboxes/newsboxes_descriptor.json`` 
 
-..
-      - ``$ ./unit/artifacts/arrowreport/``
-      - ``$ ./func/artifacts/arrowreport/``
+.. _test_results:  
 
-      .. note:: You will not get a report if you terminated any tests before they 
-          completed. Also, Selenium will display the error message 
-          ``SeleniumDriver - Failed to collect the test report`` if a 
-          previously generated report exists.
+Test Results
+############
+
+Test results are written in both XML and JSON. You can specify the location to write
+test results or use the default location. In the following sections, we'll look at the 
+default locations and the way to specify the location for unit and functional tests.
+
+.. _test_results-unit:
+
+Unit Tests
+**********
+
+* Default location when running ``npm test``:
+
+  * unit tests (XML) - ``mojito/tests/unit/artifacts/arrowreport/result.xml``
+  * unit tests (JSON) - ``mojito/tests/unit/artifacts/arrowreport/result.json``
+
+* Use the option ``--reportFolder`` to specify the location to write test results:
+
+  ``$ ./run.js test -u --path unit --browser phantomjs --reportFolder <dir>``
+
+.. _test_results-func:
+
+Functional Tests
+****************
+
+* Default Location when running ``npm test``:
+
+  * functional tests (XML) - ``mojito/artifacts/arrowreport/result.xml``
+  * functional tests (JSON) - ``mojito/artifacts/arrowreport/result.json``  
+
+* As with the test results for unit tests, use the option ``--reportFolder`` to specify the 
+  location to write test results. 
+
+  ``$ ./run.js test -u --path unit --browser phantomjs --reportFolder <dir>``
+
+   .. warning:: Do not write your test results to ``mojito/tests`` as the results
+                for each test will overwrite the results of prior tests. This is
+                why the default location is ``mojito/artifacts/arrowreport`` and
+                not ``mojito/tests/``.
 
    
    
