@@ -10,6 +10,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
         store,
         urlRess,
         yuiRess,
+        mojito,
         factory = require(Y.MOJITO_DIR + 'lib/app/middleware/mojito-handler-static');
 
     yuiRess = {
@@ -94,6 +95,13 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                 }
             };
 
+            mojito = {
+                mojito: {
+                    context: {},
+                    store:  store
+                }
+            };
+
             this._handler = factory({
                 context: {},
                 store:  store,
@@ -112,6 +120,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
         'handler calls next() when HTTP method is not HEAD or GET': function() {
             var callCount = 0;
             this._handler({
+                    app: mojito,
                     url: '/static/foo',
                     method: 'PUT'
                 }, null, function() {
@@ -130,12 +139,14 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
         'handler calls next() when no combo or static prefix is used': function() {
             var callCount = 0;
             this._handler({
+                    app: mojito,
                     url: '/foo/baz',
                     method: 'GET'
                 }, null, function() {
                 callCount++;
             });
             this._handler({
+                    app: mojito,
                     url: '/bar~baz',
                     method: 'GET'
                 }, null, function() {
@@ -144,12 +155,12 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
             A.areEqual(2, callCount, 'next() handler should have been called');
         },
 
-
         'handler detects forbidden calls': function() {
             var callCount = 0,
                 errorCode,
                 end,
                 req = {
+                    app: mojito,
                     url: '/static/foo/../bar.css',
                     method: 'GET',
                     headers: {}
@@ -175,6 +186,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
         'handler calls next() when URL is not in RS hash': function() {
             var callCount = 0;
             this._handler({
+                    app: mojito,
                     url: '/static/foo',
                     method: 'GET'
                 }, null, function() {
@@ -191,6 +203,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                 next = 0,
                 hits = 0,
                 req = {
+                    app: mojito,
                     url: '/static/cacheable.css',
                     method: 'GET',
                     headers: {}
@@ -225,7 +238,8 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
             A.areEqual(1, hits, 'one hit to the store should be issued, the next should use the cached version.');
             A.areEqual(2, end, 'two valid requests should be counted');
 
-            A.areEqual("public, max-age=0.001", resHeader["Cache-Control"]);
+            // A.areEqual("public, max-age=0.001", resHeader["Cache-Control"]);
+            A.areEqual("public, max-age=0", resHeader["Cache-Control"]);
 
             store.getResourceContent = getResourceContentFn;
         },
@@ -241,6 +255,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
 
         'handler supports compiled resources': function () {
             var req = {
+                    app: mojito,
                     url: '/static/compiled.css',
                     method: 'GET',
                     headers: {}
@@ -288,6 +303,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                 'asset-ico-favicon'
             ];
             req = {
+                app: mojito,
                 url: '/robots.txt',
                 method: 'GET',
                 headers: {}
@@ -343,6 +359,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
             getAllURLResourcesFn = store.getAllURLResources;
 
             req = {
+                app: mojito,
                 url: '/robots.txt',
                 method: 'GET',
                 headers: {}
@@ -403,6 +420,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                 });
 
             var req = {
+                    app: mojito,
                     method: 'GET',
                     // combining an existing file with an invalid one should trigger 400
                     url: '/combo~/static/compiled.css~/static/PagedFlickrModel.js',
@@ -437,6 +455,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                 });
 
             var req = {
+                    app: mojito,
                     method: 'GET',
                     url: '/combo~/static/compiled.css~/static/cacheable.css',
                     headers: {}
@@ -468,6 +487,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                 });
 
             var req = {
+                    app: mojito,
                     method: 'GET',
                     url: '/combo~/static/compiled.css',
                     headers: {}
@@ -499,6 +519,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
                 });
 
             var req = {
+                    app: mojito,
                     method: 'GET',
                     url: '/combo~/static/compiled.css~/st',
                     headers: {}
@@ -544,6 +565,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
             };
 
             req = {
+                app: mojito,
                 url: '/favicon.ico',
                 method: 'GET',
                 headers: {}
@@ -604,6 +626,7 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
             };
 
             req = {
+                app: mojito,
                 url: '/combo~/favicon.ico~/robots.txt',
                 method: 'GET',
                 headers: {}
@@ -728,7 +751,6 @@ YUI().use('mojito-test-extra', 'test', function(Y) {
             mod = factory._modified({headers: reqHeaders}, resHeaders);
             A.areSame(true, mod, 'degenerate');
         }
-
     };
 
     Y.Test.Runner.add(new Y.Test.Case(cases));
