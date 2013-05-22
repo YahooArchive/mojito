@@ -3,6 +3,24 @@ version @VERSION@
 
 Notes
 -----
+
+Deprecations, Removals
+----------------------
+
+Features
+--------
+
+Bug Fixes
+---------
+
+Acknowledgements
+----------------
+
+version 0.6.0
+=================
+
+Notes
+-----
 * `ac.config.getAppConfig()` was reworked to improve performance by computing the app
 config once per request, and reuse across all the mojit instances in the same page using
 the `mojito-config-addon`. This means you have to be extra careful if you attempt to
