@@ -10,7 +10,6 @@ YUI.add('example-testunitestmodelcontroller-tests', function (Y) {
         "test unittest_model_controller": function() {
             var that = this;
             that.wait(function(){
-                //if(Y.all('a').item(0) === null){
                 if(Y.all('a').size() === 0){
                     Y.Assert.fail("No pic is shown on the page!");
                 }
