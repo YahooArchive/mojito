@@ -10,6 +10,9 @@ YUI.add('example-testunitestmodelcontroller-tests', function (Y) {
         "test unittest_model_controller": function() {
             var that = this;
             that.wait(function(){
+                if(Y.all('a').item(0) === null){
+                    Y.Assert.fail("no pic found!");
+                }
                 for(i=0; i<Y.all('a').size(); i++){
                     Y.Assert.areEqual("static.flickr.com", Y.all('a').item(i).getAttribute('href').match(/static.flickr.com/gi));
                 };
