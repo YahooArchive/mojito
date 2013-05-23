@@ -53,7 +53,7 @@
         "commander": "1.0.1",
         "mockery": "~1.4.0",
         "node-static": ">0.6.8",
-        "yahoo-arrow": "0.0.75",
+        "yahoo-arrow": "~0.0.77",
         "benchmark": "1.x"
     },
     "optionalDependencies": {
