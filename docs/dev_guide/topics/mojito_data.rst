@@ -4,7 +4,7 @@ Data in Mojito
 
 This chapter will first discuss how your applications can get 
 data and then look at how mojits can share that data with
-binders, other mojits, as well as how to rehydrate data.
+binders, other mojits, as well as how to re-hydrate data.
 
 .. _mojito_data-getting:
 
@@ -391,17 +391,17 @@ for the methods that we have covered thus far.
 +---------------------+--------------+
 | Method              | Alias        | 
 +=====================+==============+
-| ``getAll()``        | ``all()``    | 
+| ``getAll``          | ``all``      | 
 +---------------------+--------------+
-| ``getFromBody()``   | ``body()``   |
+| ``getFromBody``     | ``body``     |
 +---------------------+--------------+
-| ``getFromFiles()``  | ``files()``  |
+| ``getFromFiles``    | ``files``    |
 +---------------------+--------------+
-| ``getFromMerged()`` | ``merged()`` |
+| ``getFromMerged``   | ``merged``   |
 +---------------------+--------------+
-| ``getfromRoute()``  | ``route()``  | 
+| ``getfromRoute``    | ``route``    | 
 +---------------------+--------------+
-| ``getFromUrl()``    | ``url()``    |
+| ``getFromUrl``      | ``url``      |
 +---------------------+--------------+
 
 
@@ -474,10 +474,13 @@ with the name ``'user'`` if one does not exist.
 Sharing Data
 ============
 
-After you get data, your application may need to share that data with client-side code 
-(binders) or other mojits. Mojito provides the ``Data`` addon that allows your mojit
-controllers and binders to share and access data. We'll look at the addon and then look at
-some use cases with examples.
+After a mojit gets data, it may need to share that data with binders, templates, or other 
+mojits. Mojito provides the ``Data`` addon that allows your mojit controllers and binders 
+to share and access data. Data can also be refreshed in templates using the ``Data`` addon
+and Handlebars expressions. Let's look at the addon and then look at some use cases with 
+examples.
+
+.. _mojito_data_sharing-data_addon:
 
 Data Addon
 ----------
@@ -485,7 +488,18 @@ Data Addon
 The ``Data`` addon is available through the ``ActionContext`` and ``mojitProxy`` objects
 from the controller and binders respectively. Because the addon has two different 
 functions, allowing data to be shared from the server to the client and allowing one
-mojit to share data with other mojits, the addon has two namespaces. 
+mojit to share data with other mojits, the addon has the two objects ``data`` and 
+``pageData``. 
+
+.. _data_addon_obj_table:
+
+.. csv-table:: Data Addon Objects
+   :header: "Object", "Available Methods", "Scope", "Description"
+
+   "pageData", "get, set", "Page-Level", "Allows you to share data with other mojits on a page."
+   "data", "get, set", "Mojit-Level", "Allows a controller to share data with its binders and templates."
+
+.. _data_addon-requiring:
 
 Requiring Data Addon
 ####################
@@ -497,73 +511,231 @@ specifying the addon as a string in the ``required`` array:
 
    }, '0.0.1', {requires: ['mojito-data-addon']}); 
 
-TBD: Does addon have to be required in binders.
-
-pageData Object
-###############
-
-When you include the ``pageData`` object is  two methods for setting (exposing) and getting data.
-Mojit controllers 
-
-The Mojito ``Data`` addon has methods that allows the server 
-to share data to the client and  for for sharing data among mojits on a page. 
-
-.. _mojito_data_sharing-require_addon:
-
+.. note:: You don't need to require the addon in binders.
 
 
 .. _mojito_data_sharing-server_client:
 
-Server Sharing Data With the Client
------------------------------------
+Mojits Sharing Data With Its Binders and Templates
+--------------------------------------------------
 
-The ``Data`` addon is used to pass information from the controller to the binder. 
-From the controller, you use the ``set`` method from the Data addon to 
-set or expose data that the binder can access with the ``mojitProxy`` object.
+As you saw in the :ref:`Data Addon Objects table`, the scope of the ``data`` object is 
+limited to a mojit. In other words, the controller can use the ``data`` object to share 
+data with its binder or templates, but not with other mojits. When you set data
+with ``ac.data.set(key, value)``, the data is merged with the data passed to ``ac.done`` 
+(this is a shallow merge). 
+
+From the controller, you use ``ac.data.set`` to set or expose data that the binder 
+can access with the ``mojitProxy`` object. The ``mojitProxy`` accesses the
+set data with the ``data`` object as well with ``mojitProxy.data.get``. Templates can
+have Handlebars expressions to inject the set data into a page.
+
+The following example shows you how you would set data and then access it from the binder
+or the template.
+
+.. _server_client-ex:
 
 Example
 #######
+
+The example below shows how a mojit controller can share stock price information 
+with its binder code and templates. 
+
+.. _server_client_ex-controller:
 
 controller.server.js
 ********************
 
+.. code-block:: javascript
+
+   YUI.add('StockQuotes', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = {
+       index: function(ac) {
+         // Model gets stock quote prices
+         ac.models.get('StockQuotesModel').getData(function(err, data) {
+           if (err) {
+             ac.error(err);
+             return;
+           }
+           // The data object allows the controller to set/expose the
+           // variable stock_quotes that the binder and templates can access.
+           ac.data.set('stock_quotes', data);
+           ac.done({
+             title: "Stock Quotes"
+           });
+         });
+       }
+     };
+   }, '0.0.1', {requires: ['mojito', 'mojito-models-addon', 'StockQuotesModel', 'mojito-data-addon']});
+
+.. _server_client_ex-binder:
+
 binder.js
 *********
 
+.. code-block:: javascript
+
+   YUI.add('StockQuotesBinderIndex', function(Y, NAME) {
+     Y.namespace('mojito.binders')[NAME] = {
+       init: function(mojitProxy) {
+         this.mojitProxy = mojitProxy;
+       },
+       bind: function(node) {
+         // From the mojitProxy, you use the data object to get the 
+         // value for stock_quotes that was set in the controller.
+         var me = this,
+             stock_quotes = this.mojitProxy.data.get('stock_quotes');
+         this.node = node;
+         var list = "<ul>";
+         for (var s in stock_list) {
+           list += "<li>" + s + ": $" + stock_list[s] + "</li>";
+         }
+         list += "</ul>";
+         node.one('#stocks p').setHTML(list);
+       }
+     };
+   }, '0.0.1', {requires: ['event-mouseenter', 'mojito-client']});
+
+.. _server_client_ex-template:
+
+index.hb.html
+*************
+
+.. code-block:: html
+
+   <div id="{{mojit_view_id}}">
+     <h2>{{title}}</h2>
+     <ul>
+     <!-- The Handlerbars block helper can iterate through the data
+          made available through ac.data.set in the controller.
+     -->
+     {{#each stock_quotes}}
+       <li>{{.}}</li>
+      {{/each}}
+     </ul>
+     <!-- Binder attaches the stock prices to the div container -->
+     <div id="stocks">
+       <p></p>
+     </div>
+
+
 .. _mojito_data_sharing-page_data:
 
-Sharing Page Data with Other Mojits 
------------------------------------
+Sharing Page Data
+------------------
 
-The ``Data`` addon also introduces the page data, which is accessible thru ac.pageData. 
-This has a YUI Model API, i.e., ac.pageData.set(name, value) and ac.pageData.get(name). 
-The namespace ``pageData`` is unique to each request, but is a single store for all mojits 
-of the request, and you can use it to share data between mojits in a page. The binder 
-accesses this data with mojitProxy.pageData.get(name).
+Page data simply means data that is scoped to the mojits within a page. 
+The ``Data`` addon provides the ``pageData`` object, based on the 
+`YUI Model API <http://yuilibrary.com/yui/docs/model/>`_, which has a ``set`` method
+for setting or exposing data that other mojits on the page can access through the
+``get`` method. 
 
-The data set via ac.pageData.set() is also available in all templates thru this.page 
-(for example {{page}} in handlebars templates). Keep in mind that if ac.done({page: 'something'}) 
-is specified in your controller, the page key will override all data set via ac.pageData.
+The ``pageData`` object is unique to each request, but is the one store for all mojits 
+of the request, allowing it to share data between mojits in a page. Binders 
+can access page data with ``mojitProxy.pageData.get(name)``. Templates can use
+Handlebars to access page data as well, so the page data set with ``ac.pageData.set('name', 'foo')`` 
+from one mojit can be added the the template of another mojit with ``{{name}}``.
 
-This data will be sent to the client and rehydrated because the page is built on the server 
-will expand its scope to the client. In other words, the ``pageData`` namespace serves as a 
-mechanism to share data between mojits and runtimes. Both ``ac.pageData`` and ``mojitProxy.pageData`` 
+.. _page_data-page_obj:
+
+page Object
+###########
+
+The ``page`` object contains all of the page data set by controllers. Templates
+can use ``{{page}}`` to access all of the available page data. The ``page``
+object is built on the server and then sent to the client, so the page data can
+be shared and also *re-hydrate* the data on the page.
+
+The ``pageData`` object serves as a mechanism for all mojits to access data in the 
+``page`` object from the client or server. Both ``ac.pageData`` and ``mojitProxy.pageData`` 
 provide access to the same page model.
 
-Data Scope 
-##########
 
-The data is set via ac.data.set() is also available in all templates. Any data given to ac.done() will 
-be merged over the data given by ac.data.set(). (This is a shallow merge.)
+Now that you have a better understand of the page model and the ``page`` object,
+you can understand why passing a ``page`` object to ``ac.done`` is in your controller
+is **not** a good idea: ``ac.done({ page: "some data"})`` will override all of the page data 
+(the data set with ``pageData.set`` and contained in the ``page object).
+
+.. _page_data-ex:
 
 Example
 #######
 
-BodyMojit/controller.server.js
-******************************
+In this example we're expanding on the idea of sharing stock price information.
+The ``StockQuoteMojit`` mojit shares the stock price quotes with other mojits
+with the ``pageData``. 
 
-FlickrMojit/binders/index.js
-****************************
+.. _page_data_ex-controller:
 
+mojits/StockQuotes/controller.server.js
+***************************************
+
+.. code-block:: javascript
+
+   YUI.add('StockQuotes', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = {
+       index: function(ac) {
+         // Model gets stock quote prices
+         ac.models.get('StockQuotesModel').getData(function(err, data) {
+           if (err) {
+             ac.error(err);
+             return;
+           }
+           // The data object allows the controller to set/expose the
+           // variable stock_quotes other mojits on the page can access.
+           ac.pageData.set('stock_quotes', data);
+           ac.done({
+             title: "Stock Quotes"
+           });
+         });
+       }
+     };
+   }, '0.0.1', {requires: ['mojito', 'mojito-models-addon', 'StockQuotesModel', 'mojito-data-addon']});
+
+.. _page_data_ex-binder:
+
+mojits/StockPortfolio/binders/index.js
+**************************************
+
+.. code-block:: javascript
+
+   YUI.add('StockPortfolioBinderIndex', function(Y, NAME) {
+     Y.namespace('mojito.binders')[NAME] = {
+       init: function(mojitProxy) {
+         this.mojitProxy = mojitProxy;
+       },
+       bind: function(node) {
+         // From the mojitProxy, you use the data object to get the 
+         // value for stock_quotes that was set in the controller.
+         var me = this,
+             stock_quotes = this.mojitProxy.pageData.get('stock_quotes');
+         this.node = node;
+         var list = "<ul>";
+         for (var s in stock_list) {
+           list += "<li>" + s + ": $" + stock_list[s] + "</li>";
+         }
+         list += "</ul>";
+         node.one('#stocks p').setHTML(list);
+       }
+     };
+   }, '0.0.1', {requires: ['event-mouseenter', 'mojito-client']});
+
+
+.. _page_data_ex-template:
+
+mojits/Ticker/views/index.hb.html
+*********************************
+
+.. code-block:: html
+
+   <div id="{{mojit_view_id}}">
+     <!-- Here we iterate through the data
+          made available through ac.pageData.set in the controller of
+          another mojit.
+     -->
+     {{#each stock_quotes}}
+       <a href="http://finance.yahoo.com/q?s={{.}}">{{.}}</a> |&nbsp;
+      {{/each}}
+   </div>
 
 
