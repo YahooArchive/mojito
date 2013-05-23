@@ -9,7 +9,7 @@ binders, other mojits, as well as how to re-hydrate data.
 .. _mojito_data-getting:
 
 Getting Input and Cookie Data
-============================
+=============================
 
 .. _mojito_data-intro:
 
@@ -507,7 +507,7 @@ Requiring Data Addon
 The Data addon is required liked other addons in the controller by
 specifying the addon as a string in the ``required`` array:
 
-.. code-block::
+.. code-block:: javascript
 
    }, '0.0.1', {requires: ['mojito-data-addon']}); 
 
@@ -617,6 +617,7 @@ index.hb.html
      <div id="stocks">
        <p></p>
      </div>
+   </div>
 
 
 .. _mojito_data_sharing-page_data:
@@ -737,5 +738,4 @@ mojits/Ticker/views/index.hb.html
        <a href="http://finance.yahoo.com/q?s={{.}}">{{.}}</a> |&nbsp;
       {{/each}}
    </div>
-
 
