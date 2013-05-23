@@ -655,7 +655,7 @@ provide access to the same page model.
 Now that you have a better understand of the page model and the ``page`` object,
 you can understand why passing a ``page`` object to ``ac.done`` is in your controller
 is **not** a good idea: ``ac.done({ page: "some data"})`` will override all of the page data 
-(the data set with ``pageData.set`` and contained in the ``page object).
+(the data set with ``pageData.set`` and contained in the ``page`` object).
 
 .. _page_data-ex:
 
