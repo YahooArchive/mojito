@@ -419,7 +419,7 @@ see `Using Cookies <../code_exs/cookies.html>`_.
 .. _data_cookie-get:
 
 Getting Cookie Data
-*******************
+###################
 
 The method ``cookie.get(name)`` is used to get the cookie value associated 
 with ``name``. In the example controller below, the cookie value 
