@@ -6,42 +6,34 @@ YUI.add('SimpleModelModel', function(Y) {
         },
           
         getTurkeyImages: function(callback) {
-            var API_KEY = '84921e87fb8f2fc338c3ff9bf51a412e';
-            var queryString = 'wild turkey';
-            var q = 'select * from flickr.photos.search where text="wild turkey" and api_key="' + API_KEY + '"';
-            Y.YQL(q, function(rawYqlData) {
-                Y.log(rawYqlData);
-                var rawPhotos = rawYqlData.query.results.photo,
-                    rawPhoto = null,
-                    photos = [],
-                    photo = null,
-                    i = 0;
-
-                for (; i<rawPhotos.length; i++) {
-                    rawPhoto = rawPhotos[i];
-                    photo = {
-                        title: rawPhoto.title,
-                        url: buildFlickrUrlFromRecord(rawPhoto)
-                    };
-                    // some flickr photos don't have titles, so force them
-                    if (!photo.title) {
-                        photo.title = "[" + queryString + "]";
-                    }
-                    photos.push(photo);
+            var photos = [
+                {
+                    "title": "Wild turkey1",
+                    "url": "http://farm8.static.flickr.com/7456/8802989034_d4be06b6c9.jpg"
+                },
+                {
+                    "title": "Wild turkey2",
+                    "url": "http://farm3.static.flickr.com/2810/8790605005_ffabf53846.jpg"      
+                },
+                {
+                    "title": "Wild turkey3",
+                    "url": "http://farm8.static.flickr.com/7345/8796117836_bf224fdbfe.jpg"
+                },
+                {
+                    "title": "Wild turkey4",
+                    "url": "http://farm6.static.flickr.com/5332/8795818514_85d111d8e7.jpg"           
+                },
+                {
+                    "title": "Wild turkey5",
+                    "url": "http://farm6.static.flickr.com/5446/8784176565_6f21f6b7d5.jpg"           
                 }
-                Y.log('calling callback with photos');
-                Y.log(photos);
+            ];
+            setTimeout(function() {
                 callback(photos);
-
-            });
+            }, 10);
         },
         
         getConfigFromModel: function(callback){
-            Y.log("********In MODEL*************");
-            Y.log("*********************"+this.cfg.myconfig0);
-            Y.log("*********************"+this.cfg.myconfig1);
-            Y.log("*********************"+this.cfg.myconfig2);
-            Y.log("*********************"+this.cfg.myconfig3);
             var data = {
                 myconfig0: this.cfg.myconfig0,
                 myconfig1: this.cfg.myconfig1,
