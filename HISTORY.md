@@ -3,6 +3,24 @@ version @VERSION@
 
 Notes
 -----
+
+Deprecations, Removals
+----------------------
+
+Features
+--------
+
+Bug Fixes
+---------
+
+Acknowledgements
+----------------
+
+version 0.6.0
+=================
+
+Notes
+-----
 * `ac.config.getAppConfig()` was reworked to improve performance by computing the app
 config once per request, and reuse across all the mojit instances in the same page using
 the `mojito-config-addon`. This means you have to be extra careful if you attempt to
@@ -31,8 +49,10 @@ windows. We plan to consolidate this going forward, but until after [travis-ci.o
 supports `windows` [environment](http://about.travis-ci.org/docs/user/ci-environment/) as part of the
 build process to do sanity check, we cannot guarantee that everything will work on `windows`.
 * `mojito-composite-addon` and `mojito-partial-addon` support `ac.flush` from child mojits.
-* Add command "npm test" to run all mojito unit and functional tests with Phantomjs. 
+* Command "npm test" is added to run all mojito unit and functional tests with Phantomjs. 
   Test results can be found under <mojitosrcdir>/artifacts/arrowreport by default.
+  "npm run unit", "npm run func", "npm run doc", "npm run lint" are also added.
+  
 
 Bug Fixes
 ---------

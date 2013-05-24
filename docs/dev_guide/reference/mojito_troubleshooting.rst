@@ -24,7 +24,7 @@ Issues
   to start Mojito? <eaddriuse_err>`
 * :ref:`When I execute child mojits with "composite.execute", the views are being rendered, 
   but the binders are not executed. Why? <binder_not_executing>`
-* :ref`Why am I getting a DOM dependency error on the server similar to the one below? 
+* :ref:`Why am I getting a DOM dependency error on the server similar to the one below? 
   How do I debug this type of error? <dom_dependency>`
 
 

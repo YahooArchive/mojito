@@ -10,11 +10,13 @@ YUI.add('example-testunitestmodelcontroller-tests', function (Y) {
         "test unittest_model_controller": function() {
             var that = this;
             that.wait(function(){
+                if(Y.all('a').size() === 0){
+                    Y.Assert.fail("No pic is shown on the page!");
+                }
                 for(i=0; i<Y.all('a').size(); i++){
-                    Y.log("test....");
                     Y.Assert.areEqual("static.flickr.com", Y.all('a').item(i).getAttribute('href').match(/static.flickr.com/gi));
                 };
-            }, 4000);
+            }, 2000);
          }
     }));   
  
