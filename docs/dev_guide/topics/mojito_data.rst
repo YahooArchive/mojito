@@ -523,12 +523,15 @@ As you saw in the :ref:`Data Addon Objects table`, the scope of the ``data`` obj
 limited to a mojit. In other words, the controller can use the ``data`` object to share 
 data with its binder or templates, but not with other mojits. When you set data
 with ``ac.data.set(key, value)``, the data is merged with the data passed to ``ac.done`` 
-(this is a shallow merge). 
+(this is a shallow merge).  The data is also serialized and rehydrated 
+on the client when the page is rendered in the browser.
 
 From the controller, you use ``ac.data.set`` to set or expose data that the binder 
 can access with the ``mojitProxy`` object. The ``mojitProxy`` accesses the
 set data with the ``data`` object as well with ``mojitProxy.data.get``. Templates can
 have Handlebars expressions to inject the set data into a page.
+
+
 
 The following example shows you how you would set data and then access it from the binder
 or the template.
@@ -666,6 +669,10 @@ In this example we're expanding on the idea of sharing stock price information.
 The ``StockQuoteMojit`` mojit shares the stock price quotes with other mojits
 with the ``pageData``. 
 
+The example shows how to access and attach shared data to the page from 
+the binder and the template, but in your applications, you would normally only 
+use one method, and the template approach is preferred.
+
 .. _page_data_ex-controller:
 
 mojits/StockQuotes/controller.server.js
@@ -693,7 +700,35 @@ mojits/StockQuotes/controller.server.js
      };
    }, '0.0.1', {requires: ['mojito', 'mojito-models-addon', 'StockQuotesModel', 'mojito-data-addon']});
 
-.. _page_data_ex-binder:
+.. _page_data_ex`-binder:
+
+mojits/StockTicker/binders/index.js
+***********************************
+
+.. code-block:: javascript
+
+   YUI.add('StockQuotesBinderIndex', function(Y, NAME) {
+     Y.namespace('mojito.binders')[NAME] = {
+       init: function(mojitProxy) {
+         this.mojitProxy = mojitProxy;
+       },
+       bind: function(node) {
+         // From the mojitProxy, you use the data object to get the 
+         // value for stock_quotes that was set in the controller.
+         this.mojitProxy.pageData.on('change', function('stock_quotes');
+         this.node = node;
+         var list = "<ul>";
+         for (var s in stock_list) {
+           list += "<li>" + s + ": $" + stock_list[s] + "</li>";
+         }
+         list += "</ul>";
+         node.one('#stocks p').setHTML(list);
+       }
+     };
+   }, '0.0.1', {requires: ['event-mouseenter', 'mojito-client']});
+
+
+.. _page_data_ex2-binder:
 
 mojits/StockPortfolio/binders/index.js
 **************************************
@@ -722,6 +757,8 @@ mojits/StockPortfolio/binders/index.js
    }, '0.0.1', {requires: ['event-mouseenter', 'mojito-client']});
 
 
+
+
 .. _page_data_ex-template:
 
 mojits/Ticker/views/index.hb.html
@@ -734,8 +771,10 @@ mojits/Ticker/views/index.hb.html
           made available through ac.pageData.set in the controller of
           another mojit.
      -->
-     {{#each stock_quotes}}
-       <a href="http://finance.yahoo.com/q?s={{.}}">{{.}}</a> |&nbsp;
-      {{/each}}
+     {{#page}}
+       {{#each stock_quotes}}
+         <a href="http://finance.yahoo.com/q?s={{.}}">{{.}}</a> |&nbsp;
+        {{/each}}
+      {{/page}}
    </div>
 
