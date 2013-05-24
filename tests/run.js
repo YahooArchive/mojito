@@ -267,42 +267,52 @@ function startArrowSelenium(cmd, callback) {
 function runFuncAppTests(cmd, callback) {
     var descriptor = cmd.descriptor || '**/*_descriptor.json',
         descriptors = [],
-        exeSeries = [];
+        exeSeries = [],
+        // skip some tests (for now) until they are fixed
+        skips,
+        descriptors2 = [];
+
     if (descriptor === '**/*_descriptor.json') {
         descriptors = glob.sync(cmd.funcPath + '/' + descriptor);
     } else {
         descriptors.push(cmd.funcPath + '/' + descriptor);
     }
 
-    async.forEachSeries(descriptors, function(des, callback) {
-        // NOTE: to avoid running some specific func tests for now
-        // TODO: Fix those tests
-        var skips = [
-            // TODO: HTML5 related tests : need to revisit
-            'html5apptest_descriptor.json',
-            // TODO: Context based static app config. Replaced with NodeJS
-            // environemnt
-            'configtest0_descriptor.json',
-            'configtest1_descriptor.json',
-            'configtest2_descriptor.json',
-            'configtest3_descriptor.json',
-            'configtest4_descriptor.json',
-            'configtest5_descriptor.json',
-            'configtest6_descriptor.json',
-            // TODO: uses context based app config to configure log level 
-            // on the client side. Need to revisit.
-            'simple_logging_descriptor.json'
-        ];
-
+    // remove the descriptors to ignore (for now)
+    //
+    // NOTE: to avoid running some specific func tests for now
+    // TODO: Fix those tests
+    skips = [
+        // TODO: HTML5 related tests : need to revisit
+        'html5apptest_descriptor.json',
+        // TODO: Context based static app config. Replaced with NodeJS
+        // environemnt
+        'configtest0_descriptor.json',
+        'configtest1_descriptor.json',
+        'configtest2_descriptor.json',
+        'configtest3_descriptor.json',
+        'configtest4_descriptor.json',
+        'configtest5_descriptor.json',
+        'configtest6_descriptor.json',
+        // TODO: uses context based app config to configure log level 
+        // on the client side. Need to revisit.
+        'simple_logging_descriptor.json'
+    ];
+    descriptors.forEach(function (descriptor) {
         for (var i = 0; i < skips.length; i += 1) {
             var regex = new RegExp(skips[i]);
-            if (regex.test(des)) {
-                console.log('-----------------------------------');
-                console.log('Skipping test descriptor : ' + des);
-                console.log('-----------------------------------');
-                return;
+            if (regex.test(descriptor)) {
+                console.log('Skipping test descriptor : ' + descriptor);
+            } else {
+                descriptors2.push(descriptor);
             }
         }
+    });
+    descriptors = descriptors2;
+    //////
+
+    async.forEachSeries(descriptors, function(des, callback) {
+
         var appConfig = JSON.parse(fs.readFileSync(des, 'utf8'));
         var app = appConfig[0].config.application,
             port = cmd.port || 8666,
