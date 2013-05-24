@@ -48,6 +48,11 @@ YUI().use('mojito-test-extra', 'test', function (Y) {
                     typeReq: {
                         type: 'MojitX'
                     }
+                },
+                app: {
+                    mojito: {
+                        store: store
+                    }
                 }
             };
 
@@ -74,7 +79,7 @@ YUI().use('mojito-test-extra', 'test', function (Y) {
 
         'handler should exit early if not type request': function () {
             req._tunnel.typeReq = null;
-            middleware = factory(config);
+            middleware = factory();
             middleware(req, res, function () {
                 nextCallCount += 1;
             });
@@ -85,7 +90,7 @@ YUI().use('mojito-test-extra', 'test', function (Y) {
 
         'handler should error if "type" is missing': function () {
             req._tunnel.typeReq.type = null;
-            middleware = factory(config);
+            middleware = factory();
             middleware(req, res, function (err) {
                 error = err;
                 nextCallCount += 1;
@@ -100,7 +105,7 @@ YUI().use('mojito-test-extra', 'test', function (Y) {
             config.store.expandInstanceForEnv = function (env, instance, context, callback) {
                 callback(new Error('you have 10 seconds to eat that tomato'));
             };
-            middleware = factory(config);
+            middleware = factory();
             middleware(req, res, function (err) {
                 error = err;
                 nextCallCount += 1;
@@ -117,7 +122,7 @@ YUI().use('mojito-test-extra', 'test', function (Y) {
             config.store.expandInstanceForEnv = function (env, instance, context, callback) {
                 callback(null, data);
             };
-            middleware = factory(config);
+            middleware = factory();
             middleware(req, res, function (err) {
                 error = err;
                 nextCallCount += 1;
