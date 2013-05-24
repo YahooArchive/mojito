@@ -28,6 +28,7 @@ YUI.add('SimpleModelModel', function(Y) {
                     "url": "http://farm6.static.flickr.com/5446/8784176565_6f21f6b7d5.jpg"           
                 }
             ];
+            //add delay to simulate the async nature of YQL
             setTimeout(function() {
                 callback(photos);
             }, 10);
