@@ -268,18 +268,15 @@ function runFuncAppTests(cmd, callback) {
     var descriptor = cmd.descriptor || '**/*_descriptor.json',
         descriptors = [],
         exeSeries = [];
-    // HACK: support glob from CLI
-    // if (descriptor === '**/*_descriptor.json') {
-    if (/\*\*\//.test('**/*_descriptor.json')) {
+    if (descriptor === '**/*_descriptor.json') {
         descriptors = glob.sync(cmd.funcPath + '/' + descriptor);
     } else {
         descriptors.push(cmd.funcPath + '/' + descriptor);
     }
 
     async.forEachSeries(descriptors, function(des, callback) {
-        // HACK: to avoid running some specific func tests for now
+        // NOTE: to avoid running some specific func tests for now
         // TODO: Fix those tests
-        // html5app : need to revisit how scrapping will be done
         var skips = [
             // TODO: HTML5 related tests : need to revisit
             'html5apptest_descriptor.json',
@@ -498,7 +495,6 @@ function runMojitoApp (app, cliOptions, basePath, port, params, callback) {
 
     var listener;
     listener = function(data) {
-        // if (data.toString().match(/✔ 	Mojito\(v/)) {
         if (data.toString().match(/✔\tMojito ready to serve\./)) {
             p.stdout.removeListener('data', listener);
             callback(thePid);
