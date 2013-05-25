@@ -278,6 +278,7 @@ function runFuncAppTests(cmd, callback) {
         descriptors.push(cmd.funcPath + '/' + descriptor);
     }
 
+    //
     // remove the descriptors to ignore (for now)
     //
     // NOTE: to avoid running some specific func tests for now
@@ -296,20 +297,28 @@ function runFuncAppTests(cmd, callback) {
         'configtest6_descriptor.json',
         // TODO: uses context based app config to configure log level 
         // on the client side. Need to revisit.
-        'simple_logging_descriptor.json'
+        'simple_logging_descriptor.json',
+        //
+        'yui_module_descriptor.json'
     ];
     descriptors.forEach(function (descriptor) {
-        for (var i = 0; i < skips.length; i += 1) {
-            var regex = new RegExp(skips[i]);
+        var regex,
+            found = false,
+            i;
+        for (i = 0; i < skips.length; i += 1) {
+            regex = new RegExp(skips[i]);
             if (regex.test(descriptor)) {
+                found = true;
                 console.log('Skipping test descriptor : ' + descriptor);
-            } else {
-                descriptors2.push(descriptor);
+                break;
             }
+        }
+        if (!found) {
+            descriptors2.push(descriptor);
         }
     });
     descriptors = descriptors2;
-    //////
+    //
 
     async.forEachSeries(descriptors, function(des, callback) {
 
