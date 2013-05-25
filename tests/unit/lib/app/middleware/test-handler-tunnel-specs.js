@@ -49,6 +49,11 @@ YUI().use('mojito-test-extra', 'test', function (Y) {
                         type: 'MojitX',
                         name: 'default'
                     }
+                },
+                app: {
+                    mojito: {
+                        store: store
+                    }
                 }
             };
 
@@ -75,7 +80,7 @@ YUI().use('mojito-test-extra', 'test', function (Y) {
 
         'handler should exit early if not specs request': function () {
             req._tunnel.specsReq = null;
-            middleware = factory(config);
+            middleware = factory();
             middleware(req, res, function () {
                 nextCallCount += 1;
             });
@@ -86,7 +91,7 @@ YUI().use('mojito-test-extra', 'test', function (Y) {
 
         'handler should error if "type" is missing': function () {
             req._tunnel.specsReq.type = null;
-            middleware = factory(config);
+            middleware = factory();
             middleware(req, res, function (err) {
                 error = err;
                 nextCallCount += 1;
@@ -99,7 +104,7 @@ YUI().use('mojito-test-extra', 'test', function (Y) {
 
         'handler should error if "name" is missing': function () {
             req._tunnel.specsReq.name = null;
-            middleware = factory(config);
+            middleware = factory();
             middleware(req, res, function (err) {
                 error = err;
                 nextCallCount += 1;
@@ -114,7 +119,7 @@ YUI().use('mojito-test-extra', 'test', function (Y) {
             config.store.expandInstanceForEnv = function (env, instance, context, callback) {
                 callback(new Error('you have 10 seconds to eat that tomato'));
             };
-            middleware = factory(config);
+            middleware = factory();
             middleware(req, res, function (err) {
                 error = err;
                 nextCallCount += 1;
@@ -131,7 +136,7 @@ YUI().use('mojito-test-extra', 'test', function (Y) {
             config.store.expandInstanceForEnv = function (env, instance, context, callback) {
                 callback(null, data);
             };
-            middleware = factory(config);
+            middleware = factory();
             middleware(req, res, function (err) {
                 error = err;
                 nextCallCount += 1;

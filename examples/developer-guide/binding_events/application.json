@@ -1,6 +1,11 @@
 [
   {
     "settings": [ "master" ],
+    "yui": {
+        "config": {
+            "debug": false
+        }
+    },
     "specs": {
       "frame": {
         "type": "HTMLFrameMojit",

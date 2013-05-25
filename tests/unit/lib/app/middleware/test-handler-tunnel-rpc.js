@@ -50,6 +50,11 @@ YUI().use('mojito-test-extra', 'test', function (Y) {
                     context: {
                         runtime: 'client'
                     }
+                },
+                app: {
+                    mojito: {
+                        store: store
+                    }
                 }
             };
         },
@@ -65,7 +70,7 @@ YUI().use('mojito-test-extra', 'test', function (Y) {
         'handler should exit early if not an rpc request': function () {
             req._tunnel.rpcReq = null;
 
-            middleware = factory(config);
+            middleware = factory();
             middleware(req, null, function () {
                 nextCallCount += 1;
             });
@@ -75,7 +80,7 @@ YUI().use('mojito-test-extra', 'test', function (Y) {
         },
 
         'handler should override execution context to "server"': function () {
-            middleware = factory(config);
+            middleware = factory();
             middleware(req, null, function () {
                 nextCallCount += 1;
             });
@@ -87,7 +92,7 @@ YUI().use('mojito-test-extra', 'test', function (Y) {
         'handler should set execution context to "server"': function () {
             req.body.context.runtime = null;
 
-            middleware = factory(config);
+            middleware = factory();
             middleware(req, null, function () {
                 nextCallCount += 1;
             });
