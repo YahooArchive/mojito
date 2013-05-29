@@ -11,7 +11,8 @@
         "Martin Cooper <mcooper@yahoo-inc.com>",
         "Isao Yagi <isao@yahoo-inc.com>",
         "Michael Ridgway <mridgway@yahoo-inc.com>",
-        "Caridy Patino <caridy@yahoo-inc.com>"
+        "Caridy Patino <caridy@yahoo-inc.com>",
+        "Lichun Zhan <lzhan@yahoo-inc.com>"
     ],
     "dependencies": {
         "colors": "*",
@@ -26,7 +27,7 @@
         "semver": "1.0.14",
         "wrench": "~1.3.9",
         "ycb": "~1.0.5",
-        "yui": "~3.9.1",
+        "yui": "~3.10.0",
         "yuidocjs": "~0.3.14",
         "yuitest": "~0.7.4",
         "yuitest-coverage": "~0.0.6"
