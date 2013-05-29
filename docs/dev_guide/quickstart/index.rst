@@ -17,7 +17,7 @@ Installation Steps
 ==================
 
 #. Globally install the Mojito CLI package (``mojito-cli``) from the npm registry 
-   so that you run Mojito commands. You may need to use ``sudo`` if 
+   so that you can run Mojito commands. You may need to use ``sudo`` if 
    you run into permission errors.
 
    ``$ npm install mojito-cli -g``
