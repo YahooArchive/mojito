@@ -204,7 +204,7 @@ configurations:
    files. Mojito will use the more qualified contexts if present over more 
    general contexts. For example, if the merged base and request context is 
    ``"environment:prod, device:iphone"``, then Mojito will use it over either 
-   ``"device:iphone"`` or ``"env:prod"``. If ``"environment:prod, device:iphone"`` 
+   ``"device:iphone"`` or ``"environment:prod"``. If ``"environment:prod, device:iphone"`` 
    is not present, Mojito will use the request context over the base context 
    as the resolved context. 
   
