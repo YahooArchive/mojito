@@ -621,7 +621,7 @@ Creating Custom Contexts
 
 The Mojito framework defines default contexts that developers can map 
 configurations to. These default contexts are defined in the file 
-``dimensions.json <https://github.com/yahoo/mojito/blob/develop/source/lib/dimensions.json>`_ 
+`dimensions.json <https://github.com/yahoo/mojito/blob/develop/source/lib/dimensions.json>`_ 
 found in the Mojito source code. Developers can create an application-level 
 ``dimensions.json`` to define custom contexts that can be mapped to configurations 
 as well. 
