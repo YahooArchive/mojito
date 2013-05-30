@@ -349,6 +349,11 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
                 args: [port, host, V.Function]
             });
 
+            Y.Mock.expect(app, {
+                method: 'on',
+                args: ['error', V.Function]
+            });
+
             this_scope._app = app;
             Mojito.Server.prototype.listen.call(this_scope, port, host, cb);
 
@@ -366,7 +371,7 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
 
             Y.Mock.expect(app, {
                 method: 'listen',
-                args: [port, host, V.Function]
+                args: [port, host]
             });
 
             this_scope._app = app;
@@ -382,6 +387,16 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
                         verbose: false,
                         port: 9876,
                         host: 'conan'
+                    },
+                    _app: {
+                        listen: function(p, h) {
+                            A.areSame(9876, p);
+                            A.areSame('conan', h);
+                        },
+                        on: function(ev, cb) {
+                            A.areSame('error', ev);
+                            A.isFunction(cb);
+                        }
                     }
                 },
                 actual;
@@ -400,7 +415,7 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
 
             Y.Mock.expect(app, {
                 method: 'listen',
-                args: [this_scope._options.port, this_scope._options.host, V.Function]
+                args: [this_scope._options.port]
             });
 
             this_scope._app = app;
@@ -421,6 +436,10 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
                             A.areSame(host, h);
                             A.isFunction(cb);
                             cb('fake error');
+                        },
+                        on: function(ev, cb) {
+                            A.areSame('error', ev);
+                            A.isFunction(cb);
                         }
                     }
                 };
@@ -445,7 +464,12 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
 
             Y.Mock.expect(app, {
                 method: 'listen',
-                args: [port, host, cb]
+                args: [port, host, V.Function]
+            });
+
+            Y.Mock.expect(app, {
+                method: 'on',
+                args: ['error', V.Function]
             });
 
             this_scope._app = app;
