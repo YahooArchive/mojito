@@ -29,29 +29,37 @@ Archetypes are used to create skeletons for the different types of artifacts
 in a Mojito application. The skeletons only contain stripped down boilerplate 
 code that is easier to create using the command-line tool rather than by hand.
 
-To create a skeleton for a Mojito application:
+- To create a skeleton for a Mojito application:
 
-``$ mojito create app [<archetype-name>] <app-name>``
+  ``$ mojito create app [<archetype-name>] <app-name>``
 
-This will create an empty application (i.e., one with no mojits) with the name 
-provided. The application is created in a directory named ``<app-name>`` within 
-the current directory. If no archetype name is provided, the default archetype 
-is used.
+  This will create an empty application (i.e., one with no mojits) with the name 
+  provided. The application is created in a directory named ``<app-name>`` within 
+  the current directory. If no archetype name is provided, the default archetype 
+  is used.
 
-From the application directory, use the following command to create a skeleton 
-for a mojit:
+- From the application directory, use the following command to create a skeleton 
+  for a mojit:
 
-``$ mojito create mojit [<archetype-name>] <mojit-name>``
+  ``$ mojito create mojit [<archetype-name>] <mojit-name>``
 
-This will create an empty mojit with the name provided. The command assumes it 
-is being executed within an application directory. Thus, the mojit is created 
-in a directory named ``<mojit-name>`` within a ``mojits`` subdirectory of the 
-application directory. For example, the mojit ``MyMojit`` would be created in 
-``mojits/MyMojit``.
+  This will create an empty mojit with the name provided. The command assumes it 
+  is being executed within an application directory. Thus, the mojit is created 
+  in a directory named ``<mojit-name>`` within a ``mojits`` subdirectory of the 
+  application directory. For example, the mojit ``MyMojit`` would be created in 
+  ``mojits/MyMojit``.
 
-As with application creation, if no archetype name is provided, the default 
-archetype is used. Depending upon the archetype, the skeleton may include any 
-or all of the controller, model, view, and binder.
+  As with application creation, if no archetype name is provided, the default 
+  archetype is used. Depending upon the archetype, the skeleton may include any 
+  or all of the controller, model, view, and binder.
+
+
+- You can also create a mojit or application in a specified directory with the 
+  ``--dir`` option:
+
+  - ``$ mojito create app [<archetype-name>] <app-name> --dir <your_app_path>``
+  - ``$ mojito create mojit [<archetype-name>] <mojit-name> --dir <your_mojit_path>``
+
 
 
 .. _mj_cmdlne-archetype:
@@ -76,7 +84,6 @@ Testing
 Unit tests are run using YUI Test invoked using the Mojito command-line tool. 
 Test output is written to the console and also to the file
 ``{CWD}/artifacts/test/result.xml``, where ``{CWD}`` is the current working directory. 
-Note that it is not (yet) possible to specify an alternative output location.
 
 - To run tests for an application:
 
@@ -89,6 +96,10 @@ Note that it is not (yet) possible to specify an alternative output location.
   If a mojit module (i.e., the YUI module for a portion of the mojit) is 
   specified, only the tests for that module will be run. Otherwise all tests 
   for the mojit will be run.
+
+- To run tests in a directory that is not in the application or a mojit directory:
+
+  ``$ mojito test --dir <test_dir> [<module>]``
 
 To run functional and unit tests for the Mojito framework,
 you would use the test framework `Yahoo! Arrow <https://github.com/yahoo/arrow>`_.
@@ -142,7 +153,7 @@ Sanitizing Code
 Static code analysis is run using JSLint invoked using the Mojito command-line 
 tool. JSLint output is written to text files and to a ``jslint.html`` file, 
 making it easier to view the results. The output file locations are specified 
-below. Note that it is not possible to specify an alternative output location.
+below. 
 
 - To run JSLint on the Mojito framework code:
 
@@ -170,8 +181,7 @@ Documenting Code
 
 API documentation is generated using `YUI Doc <http://developer.yahoo.com/yui/yuidoc/>`_, 
 which is invoked using the Mojito command-line tool. Documentation output is 
-written to files in the locations specified below. Note that it is not (yet) 
-possible to specify an alternative output location.
+written to files in the locations specified below. 
 
 - To generate documentation for the Mojito framework itself:
 
