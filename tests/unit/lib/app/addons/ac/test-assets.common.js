@@ -13,7 +13,8 @@ YUI().use('mojito-assets-addon', 'test', 'array-extras', function(Y, NAME) {
     var suite = new Y.Test.Suite('mojito-assets-addon tests'),
         cases = {},
         A = Y.Assert,
-        AA = Y.ArrayAssert;
+        AA = Y.ArrayAssert,
+        addon;
 
     cases = {
         name: 'basics',

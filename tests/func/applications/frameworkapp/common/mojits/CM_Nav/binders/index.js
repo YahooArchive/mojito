@@ -26,7 +26,7 @@ YUI.add('CM_NavBinderIndex', function(Y, NAME) {
          */
         init: function(mojitProxy) {
             this.mojitProxy = mojitProxy;
-	        this.id = mojitProxy.config.id;
+	        this.id = mojitProxy.data.get('id');
 	        this.count = 0;
 	        this.paraAlertCalled = false;
         },
@@ -45,13 +45,13 @@ YUI.add('CM_NavBinderIndex', function(Y, NAME) {
                 //Y.log("Type: " + this.mojitProxy.type);
                 if (this.paraAlertCalled === true)
                 {
-                    this.mojitProxy.broadcast('myClickEvent', {message: 'ALERT - Run Run !!', clickCount: this.count, config: this.mojitProxy.config, mojitType: this.mojitProxy.type});
+                    this.mojitProxy.broadcast('myClickEvent', {message: 'ALERT - Run Run !!', clickCount: this.count, config: this.mojitProxy.data.get('config'), mojitType: this.mojitProxy.type});
                     this.paraAlertCalled = false;
                     //Y.log("Alert message broadcasted");
                 }
                 else
                 {
-                    this.mojitProxy.broadcast('myClickEvent', {message: 'Hi News!', clickCount: this.count, config: this.mojitProxy.config, mojitType: this.mojitProxy.type});
+                    this.mojitProxy.broadcast('myClickEvent', {message: 'Hi News!', clickCount: this.count, config: this.mojitProxy.data.get('config'), mojitType: this.mojitProxy.type});
                     //Y.log("Normal message broadcasted");
                 }
 	        }, this);

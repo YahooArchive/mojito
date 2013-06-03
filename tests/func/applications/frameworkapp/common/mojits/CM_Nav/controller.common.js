@@ -24,9 +24,15 @@ YUI.add('CM_Nav', function(Y, NAME) {
          *        to the Mojito API.
          */
         index: function(ac) {
+            ac.data.set('id', ac.config.get('id'));
+            ac.data.set('config', ac.instance.config);
 			ac.done({title:'Navigation'});
         }
 
     };
 
-}, '0.0.1', {requires: ['mojito']});
+}, '0.0.1', {requires: [
+    'mojito',
+    'mojito-config-addon',
+    'mojito-data-addon'
+]});

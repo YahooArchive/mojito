@@ -27,7 +27,7 @@ YUI.add('CM_NewsBinderIndex', function(Y, NAME) {
         init: function(mojitProxy) {
     		var self = this; 
             self.mojitProxy = mojitProxy;
-            self.id = mojitProxy.config.id;
+            self.id = mojitProxy.data.get('id');
             //Y.log('init()', 'debug', NAME);
             mojitProxy.listen('myClickEvent', function(evt) {
             	//Y.log(evt);

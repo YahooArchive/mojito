@@ -1,12 +1,20 @@
-=============================
+==============
+Data in Mojito
+==============
+
+This chapter will first discuss how your applications can get 
+data and then look at how mojits can share that data with
+binders, other mojits, as well as how to re-hydrate data.
+
+.. _mojito_data-getting:
+
 Getting Input and Cookie Data
 =============================
-
 
 .. _mojito_data-intro:
 
 Introduction
-============
+------------
 
 Mojito provides addons for accessing data from query string and routing 
 parameters, cookies, and the POST request body.
@@ -25,7 +33,7 @@ To see examples using these addons to get data, see
 .. _mojito_data-params:
 
 Getting Data from Parameters
-============================
+----------------------------
 
 The methods in the Params addon are called from the ``params`` namespace. 
 As a result, the call will have the following syntax where ``ac`` is the 
@@ -34,7 +42,7 @@ ActionContext object: ``ac.params.*``
 .. _mojito_data-params_get:
 
 GET
----
+###
 
 The GET parameters are the URL query string parameters. The Params addon 
 creates JSON using the URL query string parameters. The method ``getFromUrl`` 
@@ -55,7 +63,7 @@ addon would create the following object:
 .. _data_params-get_single:
 
 Single Parameter
-################
+****************
 
 To get the value for a specific parameter, you pass the key to the ``getFromUrl`` 
 method, which returns the associated value.
@@ -81,7 +89,7 @@ parameter is retrieved:
 .. _data_params-get_all:
 
 All Parameters
-##############
+**************
 
 To get all of the query string parameters, you call ``getFromUrl`` or its alias 
 ``url`` without passing a key as a parameter.
@@ -112,7 +120,7 @@ the ``qs_params`` array, which ``ac.done`` makes available in the template.
 .. _mojito_data-params_post:
 
 POST
-----
+####
 
 The POST parameters come from the HTTP POST request body and often consist of 
 form data. As with query string parameters, the ``Params`` addon has the method 
@@ -122,7 +130,7 @@ the POST body parameters.
 .. _data_params-post_single:
 
 Single
-######
+******
 
 To get a parameter from the POST body, call ``getFromBody`` with the key as the 
 parameter. You can also use the alias ``body`` to get a parameter from the POST 
@@ -149,7 +157,7 @@ and then uses the ``done`` method to make it accessible to the template.
 .. _data_params-post_all:
 
 All
-###
+***
 
 To get all of the parameters from the POST body, call ``getFromBody`` or ``body`` 
 without any parameters.
@@ -182,7 +190,7 @@ template.
 .. _mojito_data-routing:
 
 Routing
-=======
+-------
 
 Routing parameters are mapped to routing paths, actions, and HTTP methods. 
 You can use the routing parameters to provide data to mojit actions when 
@@ -191,7 +199,7 @@ specific routing conditions have been met.
 .. _data_routing-set:
 
 Setting Routing Parameters
---------------------------
+##########################
 
 The routing parameters are set in the routing configuration file 
 ``routes.json``. For each defined route, you can use the ``params`` 
@@ -229,7 +237,7 @@ a coupon to a user posting information.
 .. _data_routing-get:
 
 Getting Routing Parameters
---------------------------
+##########################
 
 
 The Params addon has the method ``getFromRoutes`` that allows you to specify 
@@ -239,7 +247,7 @@ the alias ``route`` to get routing parameters.
 .. _data_routing-get_single:
 
 Single
-######
+******
 
 To get a routing parameter, call ``getFromRoute`` with the key as the 
 parameter.
@@ -272,7 +280,7 @@ to determine whether the user gets a coupon.
 .. _data_routing-get_all:
 
 All
-###
+***
 
 To get all of the routing parameters, call ``getFromRoute`` or ``route`` without 
 any arguments.
@@ -298,7 +306,7 @@ a URL.
 .. _mojito_data-get_all:
 
 Getting All Parameters
-======================
+----------------------
 
 The Params addon also has the method ``getFromMerged`` that lets you get one or 
 all of the GET, POST, and routing parameters. Because all of the parameters are 
@@ -319,7 +327,7 @@ parameter will override both the GET and POST ``foo`` parameters.
 .. _mojito_data-get_single:
 
 Single
-------
+######
 
 To get one of any of the different type of parameters, call ``getFromMerged`` 
 or ``merged`` with the key as the parameter.
@@ -345,7 +353,7 @@ In the example controller below, the ``name`` parameter is obtained using
 .. _mojito_data-get_all:
 
 All
----
+###
 
 To get all of the GET, POST, and routing parameters, call ``getFromMerged`` or 
 ``merged`` without any arguments.
@@ -373,7 +381,7 @@ To get all of the GET, POST, and routing parameters, call ``getFromMerged`` or
 .. _mojito_params_addon-aliases:
 
 Params Addon Method Aliases
-===========================
+---------------------------
 
 We have looked at the methods of the ``Params`` addon for getting query string
 parameter, query string parameters, and HTTP body data. For simplicity,
@@ -383,24 +391,24 @@ for the methods that we have covered thus far.
 +---------------------+--------------+
 | Method              | Alias        | 
 +=====================+==============+
-| ``getAll()``        | ``all()``    | 
+| ``getAll``          | ``all``      | 
 +---------------------+--------------+
-| ``getFromBody()``   | ``body()``   |
+| ``getFromBody``     | ``body``     |
 +---------------------+--------------+
-| ``getFromFiles()``  | ``files()``  |
+| ``getFromFiles``    | ``files``    |
 +---------------------+--------------+
-| ``getFromMerged()`` | ``merged()`` |
+| ``getFromMerged``   | ``merged``   |
 +---------------------+--------------+
-| ``getfromRoute()``  | ``route()``  | 
+| ``getfromRoute``    | ``route``    | 
 +---------------------+--------------+
-| ``getFromUrl()``    | ``url()``    |
+| ``getFromUrl``      | ``url``      |
 +---------------------+--------------+
 
 
 .. _mojito_data-cookie:
 
 Cookies
-=======
+-------
 
 The `Cookies addon <../../api/classes/Cookie.server.html>`_ offers methods for 
 reading and writing cookies. The API of the Cookie addon is the same as 
@@ -411,7 +419,7 @@ see `Using Cookies <../code_exs/cookies.html>`_.
 .. _data_cookie-get:
 
 Getting Cookie Data
--------------------
+###################
 
 The method ``cookie.get(name)`` is used to get the cookie value associated 
 with ``name``. In the example controller below, the cookie value 
@@ -437,7 +445,7 @@ template.
 .. _data_cookies-write:
 
 Writing Data to Cookies
------------------------
+#######################
 
 The method ``cookie.set(name, value)`` is used to set a cookie with the a 
 given name and value.  The following example controller sets a cookie 
@@ -461,4 +469,328 @@ with the name ``'user'`` if one does not exist.
      }
    }, '0.0.1', {requires: ['mojito-cookie-addon']});
 
+.. _mojito_data-sharing:
+
+Sharing Data
+============
+
+After a mojit gets data, it may need to share that data with binders, templates, or other 
+mojits. Mojito provides the ``Data`` addon that allows your mojit controllers and binders 
+to share and access data. Data can also be refreshed in templates using the ``Data`` addon
+and Handlebars expressions. Let's look at the addon and then look at some use cases with 
+examples.
+
+.. _mojito_data_sharing-data_addon:
+
+Data Addon
+----------
+
+The ``Data`` addon is available through the ``ActionContext`` and ``mojitProxy`` objects
+from the controller and binders respectively. Because the addon has two different 
+functions, allowing data to be shared from the server to the client and allowing one
+mojit to share data with other mojits, the addon has the two objects ``data`` and 
+``pageData``. 
+
+Both  ``data`` and ``pageData`` are fully functional `Y.Model instances 
+on the client <http://yuilibrary.com/yui/docs/model/>`_, which enables listening for 
+data changes and refreshing data on the page.
+
+.. _data_addon_obj_table:
+
+.. csv-table:: Data Addon Objects
+   :header: "Object", "Available Methods", "Scope", "Description"
+
+   "pageData", "get, set", "Page-Level", "Allows you to share data with other mojits on a page."
+   "data", "get, set", "Mojit-Level", "Allows a controller to share data with its binders and templates."
+
+.. _data_addon-requiring:
+
+Requiring Data Addon
+####################
+
+The Data addon is required liked other addons in the controller by
+specifying the addon as a string in the ``required`` array:
+
+.. code-block:: javascript
+
+   }, '0.0.1', {requires: ['mojito-data-addon']}); 
+
+.. note:: You don't need to require the addon in binders.
+
+
+.. _mojito_data_sharing-server_client:
+
+Mojits Sharing Data With Its Binders and Templates
+--------------------------------------------------
+
+As you saw in the :ref:`Data Addon Objects table`, the scope of the ``data`` object is 
+limited to a mojit. In other words, the controller can use the ``data`` object to share 
+data with its binder or templates, but not with other mojits. When you set data
+with ``ac.data.set(key, value)``, the data is merged with the data passed to ``ac.done`` 
+(this is a shallow merge).  The data is also serialized and rehydrated 
+on the client when the page is rendered in the browser.
+
+From the controller, you use ``ac.data.set`` to set or expose data that the binder 
+can access with the ``mojitProxy`` object. The ``mojitProxy`` accesses the
+set data with the ``data`` object as well with ``mojitProxy.data.get``. Templates can
+have Handlebars expressions to inject the set data into a page.
+
+The following example shows you how you would set data and then access it from the binder
+or the template.
+
+.. _server_client-ex:
+
+Example
+#######
+
+The example below shows how a mojit controller can share stock price information 
+with its binder code and templates. This example shows how to access the shared data
+with both Handlebars expressions and using ``mojitProxy.pageData`` in the binder.
+In reality, you would only need to use one of these methods, with the former (Handlebars
+expressions) being the preferred way.
+
+.. _server_client_ex-controller:
+
+mojits/StockQuotes/controller.server.js
+***************************************
+
+.. code-block:: javascript
+
+   YUI.add('StockQuotes', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = {
+       index: function(ac) {
+         // Model gets stock quote prices
+         ac.models.get('StockQuotesModel').getData(function(err, data) {
+           if (err) {
+             ac.error(err);
+             return;
+           }
+           // The data object allows the controller to set/expose the
+           // variable stock_quotes that the binder and templates can access.
+           ac.data.set('stock_quotes', data);
+           ac.done({
+             title: "Stock Quotes"
+           });
+         });
+       }
+     };
+   }, '0.0.1', {requires: ['mojito', 'mojito-models-addon', 'StockQuotesModel', 'mojito-data-addon']});
+
+.. _server_client_ex-binder:
+
+mojits/StockQuotes/binders/binder.js
+************************************
+
+.. code-block:: javascript
+
+   YUI.add('StockQuotesBinderIndex', function(Y, NAME) {
+     Y.namespace('mojito.binders')[NAME] = {
+       init: function(mojitProxy) {
+         this.mojitProxy = mojitProxy;
+       },
+       bind: function(node) {
+         // From the mojitProxy, you use the data object to get the 
+         // value for stock_quotes that was set in the controller.
+         var me = this,
+             stock_quotes = this.mojitProxy.data.get('stock_quotes');
+         this.node = node;
+         var list = "<ul>";
+         for (var s in stock_list) {
+           list += "<li>" + s + ": $" + stock_list[s] + "</li>";
+         }
+         list += "</ul>";
+         node.one('#stocks p').setHTML(list);
+       }
+     };
+   }, '0.0.1', {requires: ['event-mouseenter', 'mojito-client']});
+
+
+
+.. _server_client_ex-template:
+
+mojits/StockQuotes/views/index.hb.html
+**************************************
+
+.. code-block:: html
+
+   <div id="{{mojit_view_id}}">
+     <h2>{{title}}</h2>
+     <ul>
+     <!-- The Handlerbars block helper can iterate through the data
+          made available through ac.data.set in the controller.
+     -->
+     {{#each stock_quotes}}
+       <li>{{.}}</li>
+      {{/each}}
+     </ul>
+     <!-- Binder attaches the stock prices to the div container -->
+     <div id="stocks">
+       <p></p>
+     </div>
+   </div>
+
+
+.. _mojito_data_sharing-page_data:
+
+Sharing Page Data
+------------------
+
+Page data simply means data that is scoped to the mojits within a page. 
+The ``Data`` addon provides the ``pageData`` object, based on the 
+`YUI Model API <http://yuilibrary.com/yui/docs/model/>`_, which has a ``set`` method
+for setting or exposing data that other mojits on the page can access through the
+``get`` method. 
+
+The ``pageData`` object is unique to each request, but is the one store for all mojits 
+of the request, allowing it to share data between mojits in a page. Binders 
+can access page data with ``mojitProxy.pageData.get(name)``. Templates can use
+Handlebars to access page data as well, so the page data set with ``ac.pageData.set('name', 'foo')`` 
+from one mojit can be added the the template of another mojit with ``{{name}}``.
+
+.. _page_data-page_obj:
+
+page Object
+###########
+
+The ``page`` object contains all of the page data set by controllers. Templates
+can use ``{{page}}`` to access all of the available page data. The ``page``
+object is built on the server and then sent to the client, so the page data can
+be shared and also *re-hydrate* the data on the page.
+
+The ``pageData`` object serves as a mechanism for all mojits to access data in the 
+``page`` object from the client or server. Both ``ac.pageData`` and ``mojitProxy.pageData`` 
+provide access to the same page model.
+
+Now that you have a better understand of the page model and the ``page`` object,
+you can understand why passing a ``page`` object to ``ac.done`` is in your controller
+is **not** a good idea: ``ac.done({ page: "some data"})`` will override all of the page data 
+(the data set with ``pageData.set`` and contained in the ``page`` object). Also, data passed
+to ``ac.done`` or set through ``data`` or ``pageData`` object is wrapped by Mojito 
+in``this.page``. For example, the data passed to the template with either
+``ac.done({ stock_list: ["YHOO", "GOOG", "CSCO"]})`` or 
+``ac.pagedata.set('stock_list', ["YHOO", "GOOG", "CSCO"])`` can be accessed in the template
+with ``{{stock_list}}`` or ``{{this.page.stock_list}}``.
+
+.. _page_data-ex:
+
+Example
+#######
+
+In this example, we're expanding on the idea of sharing stock price information.
+The ``StockQuoteMojit`` mojit shares the stock price quotes with other mojits
+with the ``pageData``. 
+
+As with previous example, we show how to access and attach shared data to the page with 
+the binder and the template, but in your applications, you would normally only 
+use one method, and the template approach is preferred.
+
+.. _page_data_ex-controller:
+
+mojits/StockQuotes/controller.server.js
+***************************************
+
+.. code-block:: javascript
+
+   YUI.add('StockQuotes', function(Y, NAME) {
+     Y.namespace('mojito.controllers')[NAME] = {
+       index: function(ac) {
+         // Model gets stock quote prices
+         ac.models.get('StockQuotesModel').getData(function(err, data) {
+           if (err) {
+             ac.error(err);
+             return;
+           }
+           // The data object allows the controller to set/expose the
+           // variable stock_quotes other mojits on the page can access.
+           ac.pageData.set('stock_quotes', data);
+           ac.done({
+             title: "Stock Quotes"
+           });
+         });
+       }
+     };
+   }, '0.0.1', {requires: ['mojito', 'mojito-models-addon', 'StockQuotesModel', 'mojito-data-addon']});
+
+.. _page_data_ex`-binder:
+
+mojits/StockQuotes/binders/index.js
+***********************************
+
+.. code-block:: javascript
+
+   YUI.add('StockQuotesBinderIndex', function(Y, NAME) {
+     Y.namespace('mojito.binders')[NAME] = {
+       init: function(mojitProxy) {
+         this.mojitProxy = mojitProxy;
+       },
+       bind: function(node) {
+         var ticker = null;
+         // From the mojitProxy, you use the data object to get the 
+         // value for stock_quotes that was set in the controller.
+         this.mojitProxy.pageData.on('change', function(e) {
+            var ticker = e.changed;
+         }
+         this.node = node;
+         var list = "<ul>";
+         for (var s in stock_list) {
+           list += "<li>" + s + ": $" + stock_list[s] + "</li>";
+         }
+         list += "</ul>";
+         node.one('#stocks p').setHTML(list);
+       }
+     };
+   }, '0.0.1', {requires: ['event-mouseenter', 'mojito-client']});
+
+
+.. _page_data_ex2-binder:
+
+mojits/StockTicker/binders/binder.js
+************************************
+
+In this binder, we are using an event handler to listen for updates to data. To listen
+to changes to any data set, you can use ``mojitProxy.data.on('change', doSomething)``.
+This example listens for changes to ``ticker_list``. 
+
+
+.. code-block:: javascript
+
+   YUI.add('StockTickerBinderIndex', function(Y, NAME) {
+
+     Y.namespace('mojito.binders')[NAME] = {
+       init: function(mojitProxy) {
+         this.mojitProxy = mojitProxy;
+       },
+       bind: function(node) {
+          // Listen for updates 
+         this.mojitProxy.pageData.on('ticker_listChange', function(e){
+           var ul = node.one("#ticker"),
+               items = e.newVal;
+           for (var i in items) {
+             ul.append("<li>" + items[i] + "</li>");
+           }
+         });
+       }
+     };
+   }, '0.0.1', {requires: ['event-mouseenter', 'mojito-client']});
+
+
+
+.. _page_data_ex-template:
+
+mojits/Ticker/views/index.hb.html
+*********************************
+
+.. code-block:: html
+
+   <div id="{{mojit_view_id}}">
+     <!-- Here we iterate through the data
+          made available through ac.pageData.set in the controller of
+          another mojit.
+          Note: `stock_quotes` is wrapped in `this.page`, Thus
+          you could use `{{#each this.page.stock_quotes}}`, too.
+     -->
+       {{#each stock_quotes}}
+         <a href="http://finance.yahoo.com/q?s={{.}}">{{.}}</a> |&nbsp;
+        {{/each}}
+   </div>
 

@@ -11,7 +11,6 @@ YUI.add('SimpleModelBinderIndex', function(Y, NAME) {
          */
         init: function(mojitProxy) {
             this.mojitProxy = mojitProxy;
-			this.config = mojitProxy.config;
         },
 
         /**

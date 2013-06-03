@@ -16,7 +16,8 @@ YUI({
               Y.Assert.areEqual('URL: /httpParent/testRequestObj', Y.one('#url').get('innerHTML'));
               Y.Assert.areEqual('Trailers: [object Object]', Y.one('#trailers').get('innerHTML'));
               Y.Assert.areEqual('httpVersion: 1.1', Y.one('#httpVersion').get('innerHTML'));
-              Y.Assert.areEqual('Headers: {\"host\":', Y.one('#headers').get('innerHTML').match(/Headers: {\"host\":/gi));
+              Y.Assert.areEqual('Headers: {', Y.one('#headers').get('innerHTML').match(/Headers\: {/gi));
+              Y.Assert.areEqual('\"host\":', Y.one('#headers').get('innerHTML').match(/\"host\":/gi));
          }
   }));    
 
