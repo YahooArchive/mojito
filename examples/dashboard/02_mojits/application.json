@@ -1,0 +1,29 @@
+[
+    {
+        "settings": [ "master" ],
+        "appPort": "8666",
+        "specs": {
+           "github": {
+               "type": "githubMojit",
+               "config": {
+                   "title": "YUI/Mojito Dashboard Application"
+               }
+           },
+           "header": {
+               "type": "HeaderMojit"
+           },
+           "body": {
+               "type": "BodyMojit"
+           },
+           "footer": {
+               "type": "FooterMojit"
+           }
+       }
+    },
+    {
+        "settings": [ "environment:development" ],
+        "staticHandling": {
+            "forceUpdate": true
+        }
+    }
+]

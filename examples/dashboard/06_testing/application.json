@@ -1,0 +1,59 @@
+[
+    {
+        "settings": [ "master" ],
+        "appPort": "8666",
+        "specs": {"tribframe": {
+                "type": "HTMLFrameMojit",
+                "config": {
+                    "deploy": true,
+                    "title": "Trib - Contribute to the Tribe",
+                    "child": {
+                        "type": "FrameMojit",
+                        "config": {
+                            "children": {
+                                "header": {
+                                    "type": "HeaderMojit"
+                                },
+                                "body": {
+                                    "type": "BodyMojit",
+                                    "config": {
+                                        "children": {
+                                            "github": {
+                                                "type":"githubMojit"
+                                            },
+                                            "twitter": {
+                                                "type": "twitterMojit"
+                                            }
+                                        }
+                                    }
+                                },
+                                "footer": {
+                                    "type": "FooterMojit"
+                                }
+                            }
+                        }
+                    },
+                    "assets": {
+                        "top": {
+                            "css": [
+                                 "http://yui.yahooapis.com/3.9.0/build/cssnormalize/cssnormalize-min.css",
+                                "http://yui.yahooapis.com/gallery-2013.03.13-20-05/build/gallerycss-cssform/gallerycss-cssform-min.css",
+                                "http://yui.yahooapis.com/3.9.0/build/cssgrids-responsive/cssgrids-responsive-min.css",
+                                "http://yui.yahooapis.com/3.9.0/build/cssbutton/cssbutton-min.css",
+                                "http://yui.yahooapis.com/gallery-2013.03.13-20-05/build/gallerycss-csslist/gallerycss-csslist-min.css",
+                                "https://rawgithub.com/tilomitra/yuicss-common/master/ui.css",
+                                "/static/05_getting_data/assets/trib.css"
+                                 ]
+                         }
+                     }
+                  }
+              }
+         }
+    },
+    {
+        "settings": [ "environment:development" ],
+        "staticHandling": {
+            "forceUpdate": true
+        }
+    }
+]

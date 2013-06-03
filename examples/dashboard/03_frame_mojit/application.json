@@ -1,0 +1,29 @@
+[
+    {
+        "settings": [ "master" ],
+        "appPort": "8666",
+        "specs": {
+           "tribframe": {
+              "type": "HTMLFrameMojit",
+              "config": {
+                 "deploy": true,
+                 "title": "Trib - Contribute to the Tribe",
+                 "child": {
+                     "type": "githubMojit"
+                  },
+                 "assets": {
+                    "top": {
+                        "css": ["/static/03_frame_mojit/assets/trib.css"]
+                    }
+                 }
+              }
+           }
+        }
+    },
+    {
+        "settings": [ "environment:development" ],
+        "staticHandling": {
+            "forceUpdate": true
+        }
+    }
+]

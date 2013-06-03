@@ -1,0 +1,13 @@
+[
+   {    
+        "settings": [ "master" ],
+        "appPort": "8666",
+        "specs": {}
+    },
+    {
+        "settings": [ "environment:development" ],
+        "staticHandling": {
+            "forceUpdate": true
+        }
+    }
+]
