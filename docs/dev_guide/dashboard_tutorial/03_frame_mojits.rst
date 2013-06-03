@@ -62,10 +62,6 @@ so you’ll want to make a copy of the application that we made:
 
 ``$ cp -r 02_mojits 03_frame_mojit``
 
-Source Code for Example
-#######################
-
-[app_part{x}](http://github.com/yahoo/mojito/examples/quickstart_guide/app_part{x})
 
 Lesson: Frame Mojits
 ====================
@@ -392,13 +388,13 @@ and attach the CSS and JavaScript assets in the <head> and <body> elements as sh
 Creating the Application
 ========================
 
-#. Change to the 03_frame_mojits application.
-#. The first thing we need to do is create an instance of the HTMLFrameMojit and 
-   have a child mojit that will create some content. We’ll use our githubMojit 
+#. Change to the ``03_frame_mojits`` application.
+#. The first thing we need to do is create an instance of the ``HTMLFrameMojit`` and 
+   have a child mojit that will create some content. We’ll use our ``Github``
    to create content and remove the instances that we defined for the other mojits 
-   for now. Also, we’re going to add a CSS asset so that the HTMLFrameMojit can attach
+   for now. Also, we’re going to add a CSS asset so that the ``HTMLFrameMojit`` can attach
    it to the page for us. For the sake of simplicity, you’re probably better off just 
-   replacing the contents of application.json with the following: 
+   replacing the contents of ``application.json`` with the following: 
 
    .. code-block:: javascript
 
@@ -413,7 +409,7 @@ Creating the Application
                 "deploy": true,
                 "title": "Trib - Contribute to the Tribe",
                 "child": {
-                  "type": "githubMojit"
+                  "type": "Github"
                 },
                 "assets": {
                   "top": {
@@ -432,8 +428,8 @@ Creating the Application
         }
       ]
 
-#. The mojit instance based on the HTMLFrameMojit is what we’ll use for the root path. 
-   We won’t change the other route paths for now, so in your routes.json, just add the 
+#. The mojit instance based on the ``HTMLFrameMojit`` is what we’ll use for the root path. 
+   We won’t change the other route paths for now, so in your ``routes.json``, just add the 
    following routing path: 
 
    .. code-block:: javascript
@@ -450,7 +446,7 @@ Creating the Application
 #. Our frame mojit is configured to attach a CSS file to our page, so we’re still 
    going to need to add the CSS file to our application. Based on the static URL 
    to the asset trib.css, you can see that we’re using an application-level asset, 
-   so let’s create the file assets/trib.css with the following:
+   so let’s create the file ``assets/trib.css`` with the following:
 
    .. code-block:: css
 
@@ -490,20 +486,20 @@ Creating the Application
    another CSS file for the second page. For that, we’re going to use the Assets 
    addon to dynamically add custom CSS based on a query parameter. To get the query 
    parameter, we’re going to use the Params addon. Once again, because of all the 
-   changes, you might want to just replace the contents of the githubMojit/controller.server.js 
+   changes, you might want to just replace the contents of the ``Github/controller.server.js`` 
    with the following:
 
    .. code-block::
 
-      YUI.add('githubMojit', function(Y, NAME) {
+      YUI.add('Github', function(Y, NAME) {
 
         Y.namespace('mojito.controllers')[NAME] = {
 
           index: function(ac) {
-            var model = ac.models.get('githubMojitModelFoo');
+            var model = ac.models.get('GithubModelFoo');
             Y.log(model);
             model.getData(function(err, data){
-              Y.log("githubmojit -index - model.getData:");
+              Y.log("Github -index - model.getData:");
               if (err) {
                 ac.error(err);
                 return;
@@ -525,27 +521,27 @@ Creating the Application
             });
           }
         };
-      }, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-params-addon','mojito-models-addon', 'githubMojitModelFoo']});
+      }, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-params-addon','mojito-models-addon', 'GithubModelFoo']});
 
-#. We should call out the use of the addons that we mentioned. The Params addon 
-   method getFromUrl is going to fetch the value for the query parameter view. 
+#. We should call out the use of the addons that we mentioned. The ``Params`` addon 
+   method ``getFromUrl`` is going to fetch the value for the query parameter ``view``. 
    So, if the HTTP GET request is made to http://localhost:8666?view=custom, 
-   we’re going to get the string ‘custom’. As for the Assets addon, we’re 
-   dynamically attaching the application-level CSS file custom.css to the <head> 
-   element with the method addCss.
+   we’re going to get the string ‘custom’. As for the ``Assets`` addon, we’re 
+   dynamically attaching the application-level CSS file ``custom.css`` to the ``<head>`` 
+   element with the method ``addCss``.
 
-#. When we called ac.done, we passed the variable view as the second parameter. 
+#. When we called ``ac.done``, we passed the variable view as the second parameter. 
    If you recall from the Mojits module, you can tell Mojito to render a different 
    template other than the default, which is the template with the same name as the 
    action being executed. In this application, we’re telling Mojito to either use 
    the default or the ‘custom’ view, which means we need the custom template 
-   custom.hb.html for Mojito to execute. So, in the views directory, copy the 
-   index.hb.html to custom.hb.html and just change the class of the inner <div> 
-   tag from “mymodule” to “mycustom”.
+   ``custom.hb.html`` for Mojito to execute. So, in the views directory, copy the 
+   ``index.hb.html`` to ``custom.hb.html`` and just change the class of the inner ``<div>``
+   tag from "mymodule" to "mycustom".
    
 #. Our custom CSS doesn’t really do much, but the more important takeaway is how 
    to choose a template other than the default and use the Assets addon to dynamically 
-   add CSS. From your application directory, create the file assets/custom.css with 
+   add CSS. From your application directory, create the file ``assets/custom.css`` with 
    the following:
 
    .. code-block:: css 
@@ -566,13 +562,13 @@ Creating the Application
       }
 
 #. Okay, we’re ready to view our application. Let’s take a look at the default 
-   template that is rendered and attached to the page by HTMLFrameMojit by going 
+   template that is rendered and attached to the page by ``HTMLFrameMojit`` by going 
    to http://localhost:8666. The page doesn’t look very different, but take a look 
-   at the page source. You’ll see that the HTMLFrameMojit has created the HTML 
+   at the page source. You’ll see that the ``HTMLFrameMojit`` has created the HTML 
    skeleton, inserted the value for the <title> element and attached our CSS and 
    some JavaScript files.
 
-#. To look at our custom template and CSS, append the query parameter ?view=custom. 
+#. To look at our custom template and CSS, append the query parameter ``?view=custom``. 
    You’ll see basically the same page with some shadowing. If you look at the page 
    source again, you’ll see the custom CSS file now.
 
@@ -625,9 +621,10 @@ Source Code
 ===========
 
 [app_part{x}](http://github.com/yahoo/mojito/examples/quickstart_guide/app_part{x})
+
 Further Reading
-[Mojito Doc](http://developer.yahoo.com/cocktails/mojito/docs/)
-Using the HTML Frame Mojit
-Attaching Assets with HTMLFrameMojit.
-website
+===============
+
+- Using the HTML Frame Mojit
+- Attaching Assets with HTMLFrameMojit.
 

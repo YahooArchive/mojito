@@ -64,10 +64,6 @@ so you’ll want to make a copy of the application that we made:
 
 ``$ cp -r 01_mojito_cli_basics 02_mojits``
 
-Source Code for Example
-#######################
-
-[app_part{x}](http://github.com/yahoo/mojito/examples/quickstart_guide/app_part{x})
 
 Lesson: Mojits and More Mojits
 ==============================
@@ -281,7 +277,7 @@ definition.json allows the mojit to define key-value pairs that can
 be accessed by the controller. You can also use the settings property 
 to specify a context for a runtime environment.
 
-In the defaults.json file, you list configurations in the config object as shown below. 
+In the ``defaults.json`` file, you list configurations in the config object as shown below. 
 These configurations are defaults that will be used unless a mojit instance has 
 configurations with the same keys, which we will look at in the next section on mojit instances.
 
@@ -306,7 +302,7 @@ configurations with the same keys, which we will look at in the next section on 
       }
     ]
 
-The configurations in definition.json do not need to be in a config object. 
+The configurations in definition.json do not need to be in a ``config`` object. 
 You just list key-value pairs:
 
 .. code-block:: javascript
@@ -371,7 +367,7 @@ paths that let you execute mojit actions with a URL. We use the term
 action to differentiate the controller functions of the mojit definition 
 from the same functions run by a mojit instance. When you create a mojit, 
 as you might have already guessed, you can use the following URL syntax: 
-schema to execute mojit actions:  http://{domain}:{port}/@{mojit_name}/{action}/
+schema to execute mojit actions:  ``http://{domain}:{port}/@{mojit_name}/{action}/``
 
 As with using anonymous instances, you obviously don’t want to use these 
 default routes created by Mojito. You instead map routing paths to mojit 
@@ -409,6 +405,16 @@ maps to the action index specified in the routing configuration.
           Cras dignissim hendrerit dui, at mollis nisi commodo in. Integer eget 
           sem velit. Sed tempus est quis ligula vulputate vulputate
 
+
+
+Recommended Naming Conventions for Mojits
+-----------------------------------------
+
+When create mojits (mojit definitions) with the command-line tool, we will be using upper camel case for
+the mojit name, such as ``Github``. For mojit instances, we will be using lower case, such as ``github``.
+This is the typical convention when defining a class and creating an object, so you can think of
+the mojit definition as the class definition and the mojit instance as an instance or object of that class.
+
 Creating the Application
 ========================
 
@@ -423,14 +429,14 @@ change into the application 02_mojits.
 
    ::
 
-      $ mojito create mojit BodyMojit
-      $ mojito create mojit HeaderMojit
-      $ mojito create mojit FooterMojit
+      $ mojito create mojit Body
+      $ mojito create mojit Header
+      $ mojito create mojit Footer
 
-#. In the mojits directory, you should now see the four mojits we created: githubMojit, 
-   BodyMojit, HeaderMojit, and FooterMojit. We’re going to want to create mojit instances 
-   that use the mojit definitions. Edit the application.json so that it is the same as 
-   below (feel free to just replace the content of your application.json):
+#. In the mojits directory, you should now see the four mojits we created: ``Github``, 
+   ``BodyMojit``, ``HeaderMojit``, and ``FooterMojit``. We’re going to want to create mojit instances 
+   that use the mojit definitions. Edit the ``application.json`` so that it is the same as 
+   below (feel free to just replace the content of your ``application.json``):
 
    .. code-block:: javascript
 
@@ -440,19 +446,19 @@ change into the application 02_mojits.
           "appPort": "8666",
           "specs": {
             "github": {
-              "type": "githubMojit",
+              "type": "Github",
               "config": {
                 "title": "YUI/Mojito Dashboard Application"
               }
             },
             "header": {
-              "type": "HeaderMojit"
+              "type": "Header"
             },
             "body": {
-              "type": "BodyMojit"
+              "type": "Body"
             },
             "footer": {
-              "type": "FooterMojit"
+              "type": "Footer"
             }
           }
         },
@@ -471,7 +477,7 @@ change into the application 02_mojits.
 
       ...  
         "github": {
-          "type": "githubMojit",
+          "type": "Github",
           "config": {
             "title": "YUI/Mojito Dashboard Application"
           }
@@ -480,7 +486,7 @@ change into the application 02_mojits.
 
 #. With those freshly created instances, we can now define routing paths 
    that execute mojit actions. Let’s create simple routing paths for 
-   each of our instances for testing purposes by modifying routes.json 
+   each of our instances for testing purposes by modifying ``routes.json``
    to look like the following:
 
    .. code-block:: javascript
@@ -520,10 +526,10 @@ change into the application 02_mojits.
    - http://localhost:8666/body
    - http://localhost:8666/footer
 
-#. We’re going to work a little with the MVC of githubMojit. Let’s first 
+#. We’re going to work a little with the MVC of ``Github``. Let’s first 
    modify the model so that it passes different data to the controller. 
-   We’ll get real data in the future, but for now update the method getData 
-   in your model (mojits/githubMojit/models/foo.server.js) so that it’s the same 
+   We’ll get real data in the future, but for now update the method ``getData``
+   in your model (``mojits/Github/models/foo.server.js``) so that it’s the same 
    as the following:
 
    .. code-block:: javascript
@@ -533,9 +539,9 @@ change into the application 02_mojits.
       }
 
 #. We’re also going to update the controller so that we’re passing pseudo 
-   GitHub data to the template. Open the controller of githubMojit 
-   (mojits/githubMojit/controller.server.js) in an editor and update the 
-   object that is passed to ac.done and the addons required with the following:
+   GitHub data to the template. Open the controller of ``Github``
+   (``mojits/Github/controller.server.js``) in an editor and update the 
+   object that is passed to ``ac.done`` and the addons required with the following:
 
    .. code-block:: 
 
@@ -545,12 +551,12 @@ change into the application 02_mojits.
           github: data
         });
       ...
-      {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'githubMojitModelFoo', 'mojito-config-addon']});
+      {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'GithubModelFoo', 'mojito-config-addon']});
 
 #. Because we’ve modified the object that we are passing to the template, 
    we’ll need to modify the template as well. We’re also going to change 
    the HTML in the template, so you can simply replace the contents of the 
-   template mojits/githhubMojit/views/index.hb.html with the following:
+   template ``mojits/Github/views/index.hb.html`` with the following:
 
    .. code-block:: html
 
@@ -572,7 +578,7 @@ change into the application 02_mojits.
    - http://localhost:8666/body/
    - http://localhost:8666/header/
    - http://localhost:8666/footer/
-#. Now for the finale: let’s go to the route to execute our githubMojit, which 
+#. Now for the finale: let’s go to the route to execute our ``Github``, which 
    we modified the model, controller, and view: http://localhost:8666
 
    You’ll see that model data was passed to the controller and in turn passed to the 
@@ -590,7 +596,7 @@ I started the application, but when I go to http://localhost:8666/body,
 I get the following error: Cannot GET /body
 
 It appears that you started Mojito from the wrong location. Try changing 
-to the application directory, which in this example is 02_mojits, and then run 
+to the application directory, which in this example is ``02_mojits``, and then run 
 mojito start.
 
 Error: listen EADDRINUSE
@@ -640,7 +646,6 @@ Source Code
 Further Reading
 ===============
 
-- [Mojito Doc](http://developer.yahoo.com/cocktails/mojito/docs/)
 - Handlebars documentation
 - Model-view-controller
 

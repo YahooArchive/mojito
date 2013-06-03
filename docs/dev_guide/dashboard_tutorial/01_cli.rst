@@ -63,12 +63,11 @@ which will show you how to install Mojito and run basic commands.
 Setting Up
 ##########
 
-TBD
+If you haven't installed the ``mojito-cli`` package, you should do so now:
 
-Source Code for Example
------------------------
+``$ npm install -g mojito-cli``
 
-[{n}_chapter_title](http://github.com/yahoo/mojito/examples/quickstart_guide/app_part{x})
+
 
 Lesson: Using the Mojito Command-Line Utility
 =============================================
@@ -295,7 +294,7 @@ Creating the Application
    Our dashboard application is going to get statistics from GitHub, so let’s 
    create the mojit that will be doing a lot of work for us now.
 
-   ``$ mojito create mojit githubMojit``
+   ``$ mojito create mojit Github``
 
 #. Let’s run some tests now. First, run the application unit tests, which, in reality, 
    just runs all the unit tests of your mojits. 
@@ -308,12 +307,12 @@ Creating the Application
 #. Since we only have one mojit, the application unit tests and the mojit unit tests 
    should be the same, but go ahead and run the following command to confirm:
 
-  ``$ mojito test mojit mojits/githubMojit``
+  ``$ mojito test mojit mojits/Github``
 
 #. If you remember you can also test a mojit module, which is basically the module
-   name that you register with YUI.add. Mojit controllers and models are YUI modules.
+   name that you register with ``YUI.add``. Mojit controllers and models are YUI modules.
 
-   ``$ mojito test mojit mojits/gitHubMojit githubMojit``
+   ``$ mojito test mojit mojits/Github Github``
 
 #. Mojito’s test command comes with a very useful option for getting coverage results. 
    Run the command for application unit tests, but add the option -c to get coverage 
@@ -331,25 +330,25 @@ Creating the Application
    :: 
 
      $  mojito jslint app .
-     $  mojito jslint mojit mojits/githubMojit
+     $  mojito jslint mojit mojits/Github
 
 #. Alright, we’ve tested and linted our application, now let’s go ahead and start it.
 
    ``$ mojito start``
 
-#. To view your application, open the URL `http://localhost:8666/@githubMojit/index`_ in a browser. 
+#. To view your application, open the URL `http://localhost:8666/@Github/index`_ in a browser. 
 
    It’s a strange URL, right? First, the port 8666 is the default port used by Mojito, 
    which we’ll override in the next step. As for the path, well, we haven’t set up any routes yet, 
    but the syntax for routes is as follows: ``/{mojit_instance}/{action}``.
 
    We haven’t created a mojit instance yet (we’ll do that in the next module), but 
-   fortunately, Mojito creates for us an anonymous instance of the mojit githubMojit by 
+   fortunately, Mojito creates for us an anonymous instance of the mojit ``Github`` by 
    prepending @ to the mojit name. As for ‘index’, it’s an action called from the mojit instance. 
 
      
 #. Stop the application with Ctl-C, and the restart it with a different port by 
-   specifying the port. You can now view the application at `http://localhost:8000/@githubMojit/index`_:
+   specifying the port. You can now view the application at `http://localhost:8000/@Github/index`_:
      
    ``$ mojito start 8000``
 
@@ -360,7 +359,7 @@ Creating the Application
 
    To start the application in the development context, use the option --context and   
    pass  the string “environment:development”. Again, you’ll see your application at        
-   the URL `http://localhost:8666/@githubMojit/index`_.
+   the URL `http://localhost:8666/@Github/index`_.
 
    `$ mojito start --context "environment:development"`
  
@@ -424,6 +423,11 @@ Terms
 - YAML
 - anonymous mojit instance
 - contexts
+
+Source Code for Example
+=======================
+
+[{n}_chapter_title](http://github.com/yahoo/mojito/examples/quickstart_guide/app_part{x})
 
 Further Reading
 ===============
