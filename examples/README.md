@@ -17,14 +17,14 @@ For existing applications, however, you will need to locally install
 
 ## Instructions
 
-#. Globally install the `mojito-cli` package. 
+1. Globally install the `mojito-cli` package. 
   
    `$ npm install -g mojito-cli`
-#. Change to the application directory of one of the examples.
-#. Locally install `mojito` in your application. (If you had created the application with `mojito create app <app_name>`, this would be done for you by `mojito-cli`.)
+1. Change to the application directory of one of the examples.
+1. Locally install `mojito` in your application. (If you had created the application with `mojito create app <app_name>`, this would be done for you by `mojito-cli`.)
  
    `$ npm install`
-#. Start your application.
+1. Start your application.
 
    `$ mojito start`
 
