@@ -4,8 +4,6 @@ version @VERSION@
 Notes
 -----
 
-YUI dependency was upgraded to yui@3.10.1
-
 Deprecations, Removals
 ----------------------
 
@@ -17,6 +15,36 @@ Bug Fixes
 
 Acknowledgements
 ----------------
+
+
+version 0.6.1
+=================
+
+Notes
+-----
+* Mojito contributors can now use the following `npm run-script` shortcuts when working inside the mojito repo:
+  * `npm test`
+  * `npm run unit`
+  * `npm run func`
+* YUI dependency was upgraded to yui@3.10.1
+* Arrow devDependency was upgraded to yahoo-arrow@~0.0.77
+* YCB dependency was upgraded to ycb@~1.0.5
+
+Deprecations, Removals
+----------------------
+
+Features
+--------
+
+Bug Fixes
+---------
+* fix #1151 client-side route-maker error IE6-8
+* fix #1146 use perf.logFile from app.json:perf.logFile if applicable
+* fix callback handling in mojito start sequence
+
+Acknowledgements
+----------------
+Thanks to @chetanankola for discovering and helping with issue #1151.
 
 version 0.6.0
 =================
@@ -51,10 +79,10 @@ windows. We plan to consolidate this going forward, but until after [travis-ci.o
 supports `windows` [environment](http://about.travis-ci.org/docs/user/ci-environment/) as part of the
 build process to do sanity check, we cannot guarantee that everything will work on `windows`.
 * `mojito-composite-addon` and `mojito-partial-addon` support `ac.flush` from child mojits.
-* Command "npm test" is added to run all mojito unit and functional tests with Phantomjs. 
+* Command "npm test" is added to run all mojito unit and functional tests with Phantomjs.
   Test results can be found under <mojitosrcdir>/artifacts/arrowreport by default.
   "npm run unit", "npm run func", "npm run doc", "npm run lint" are also added.
-  
+
 
 Bug Fixes
 ---------
@@ -71,8 +99,8 @@ Notes
 * The PR [#1059](/yahoo/mojito/issues/1059) adds the Mojito Quickstart Guide application
 to the `examples` directory. The application allows you to view documentation on
 different devices and serves as a reference application. You can view the live application
-at http://y.ahoo.it/mqsg. Also, see the wiki page 
-[Mojito Quickstart Guide: Intro](https://github.com/yahoo/mojito/wiki/Mojito-Quickstart-Guide) 
+at http://y.ahoo.it/mqsg. Also, see the wiki page
+[Mojito Quickstart Guide: Intro](https://github.com/yahoo/mojito/wiki/Mojito-Quickstart-Guide)
 for more information about the application.
 
 Deprecations, Removals
@@ -240,7 +268,7 @@ Features
 * Global models thru `ac.models.expose()` upgraded from experimental to beta.
 * Support for Handlebars helpers through `mojito-helpers-addon` and support for global Handlebars helpers using `ac.helpers.expose()`. This is an experimental feature!
 * Introducing error propagation in `mojito-composite-addon` by using the flag `propagateFailure` in a child.
-* Introduced a clear separation between YUI core modules and app-specific YUI modules. YUI core modules are now served from CDN by default; they are only served by the app origin server if `staticHandling.serveYUIFromAppOrigin` is set in `application.json`. This change optimizes the initial load time of the app as well as its offline capabilities when using [mojito build html5app](http://developer.yahoo.com/cocktails/mojito/docs/reference/mojito_cmdline.html#build-system). 
+* Introduced a clear separation between YUI core modules and app-specific YUI modules. YUI core modules are now served from CDN by default; they are only served by the app origin server if `staticHandling.serveYUIFromAppOrigin` is set in `application.json`. This change optimizes the initial load time of the app as well as its offline capabilities when using [mojito build html5app](http://developer.yahoo.com/cocktails/mojito/docs/reference/mojito_cmdline.html#build-system).
 * Improved Resource Store: minimized memory footprint.
 * Upgraded to YUI 3.8.1
 
@@ -658,7 +686,7 @@ Notes
 
 Features
 ------------
-* [#643](/yahoo/mojito/issues/643) new `hybrid` archetype 
+* [#643](/yahoo/mojito/issues/643) new `hybrid` archetype
    * new archetype: mojito create app hybrid myapp
    * new build type: mojito build hybrid path/to/packages/dir
    * new custom archetypes: mojito create custom path/to/your/archetype mything
@@ -775,7 +803,7 @@ Bug Fixes
 * fixed how commands instantiate the store
 * performance: use Y.mojito.util.copy() instead of Y.clone()
 * performance: removed Y.clone() from YCB library
-* fix multiple done() calls in client-side Handlebar renderer, consequence of fixing [#408](/yahoo/mojito/issues/408) 
+* fix multiple done() calls in client-side Handlebar renderer, consequence of fixing [#408](/yahoo/mojito/issues/408)
 
 
 version 0.4.3
@@ -832,11 +860,11 @@ Providing the ability to provide a `reasonPhrase` property when calling `ac.erro
 
 It was discovered that `shareYUIInstance` was not usable in previous versions.
 We have addressed some of the issues such that `shareYUIInstance` should be usable, although should be considered experimental.
-This configuration now works in the following way: 
+This configuration now works in the following way:
 
 Default value is `false` at app level, mojits can override the app config by specifying `shareYUIInstance` in their defaults.json (parallel to the config key).
 
-* [#357](/yahoo/mojito/issues/357), [#386](/yahoo/mojito/issues/386): Fixed `shareYUIInstance` 
+* [#357](/yahoo/mojito/issues/357), [#386](/yahoo/mojito/issues/386): Fixed `shareYUIInstance`
 
 ### Docs
 
@@ -859,7 +887,7 @@ Bug Fixes
 * [Fix bz5712477] Make sure to callback when there is an error [#338](/yahoo/mojito/issues/338)
 * Porting mojito doc over to the new yuidocjs [#243](/yahoo/mojito/issues/243) - Thanks Fabian Frank!
 * [#270](/yahoo/mojito/issues/270): Added unit tests for client and server handlebars engines
-* [#357](/yahoo/mojito/issues/357), [#386](/yahoo/mojito/issues/386): Fixed `shareYUIInstance` 
+* [#357](/yahoo/mojito/issues/357), [#386](/yahoo/mojito/issues/386): Fixed `shareYUIInstance`
 
 
 version 0.4.0
@@ -894,7 +922,7 @@ Bug Fixes
 * bz 5495519: mojito is not loading - stuck retrieving all the datetype-date-format for each locale
 * bz 5530096: Mojito tries to parse .json~ files in [mojit]/specs/
 * bz 5541500: mojito not doing fallback
-* bz 5609501: L10n: Root strings file is not used by default when a non-root strings file is present 
+* bz 5609501: L10n: Root strings file is not used by default when a non-root strings file is present
 
 
 version 0.3.30
@@ -976,7 +1004,7 @@ Features
 Bug Fixes
 ------------
 * [#231](/yahoo/mojito/issues/231) Update sys references to util references.
-* [#219](/yahoo/mojito/issues/219) [bz5651900] stop mojit data memory leak - record dynamically 
+* [#219](/yahoo/mojito/issues/219) [bz5651900] stop mojit data memory leak - record dynamically
 * [#223](/yahoo/mojito/issues/223) [bz5646042] log warning if server mojit has DOM dependency.
 * [#232](/yahoo/mojito/issues/232) [bz5649382] Fix for `mojito test app`.
 * fix dynamic mojit regression introduced in [2dd7313](/yahoo/mojito/commit/2dd7313)
@@ -984,7 +1012,7 @@ Bug Fixes
 * [bz5491914] Fix client exception on `ac.error()`
 * [bz5649346] Updates yui and yuitest dependencies; +FreeBSD
 * [bz5494997] Fix for Mojito client throwing on tunnel timeout
-* More null fixes for Mustache 
+* More null fixes for Mustache
 * [bz5590319] Unicode and/or HTML escaping for config data.
 
 
