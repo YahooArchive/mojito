@@ -22,19 +22,21 @@ YUI.add('Github', function(Y, NAME) {
          *        to the Mojito API.
          */
         index: function(ac) {
-            ac.models.get('GithubModelFoo').getData(function(err, data) {
-                if (err) {
-                    ac.error(err);
-                    return;
-                }
-                ac.assets.addCss('./index.css');
+
+            var model = ac.models.get('StatsModelYQL');
+            Y.log(model);
+            model.getData({}, function(data){
+                Y.log("githubmojit -index - model.getData:");
+                Y.log(data);
+
                 ac.done({
-                    status: 'Mojito is working.',
-                    data: data
+                    title: "",
+                    watchers: data.watchers,
+                    forks: data.forks
                 });
             });
         }
 
     };
 
-}, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'GithubModelFoo']});
+}, '0.0.1', {requires: ['mojito', 'mojito-models-addon']});
