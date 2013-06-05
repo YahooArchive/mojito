@@ -1,10 +1,10 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('githubMojit', function(Y, NAME) {
+YUI.add('Github', function(Y, NAME) {
 
 /**
- * The githubMojit module.
+ * The Github module.
  *
- * @module githubMojit
+ * @module Github
  */
 
     /**
@@ -22,7 +22,7 @@ YUI.add('githubMojit', function(Y, NAME) {
          *        to the Mojito API.
          */
         index: function(ac) {
-            ac.models.get('githubMojitModelFoo').getData(function(err, data) {
+            ac.models.get('GithubModelFoo').getData(function(err, data) {
                 if (err) {
                     ac.error(err);
                     return;
@@ -37,4 +37,4 @@ YUI.add('githubMojit', function(Y, NAME) {
 
     };
 
-}, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'githubMojitModelFoo', 'mojito-config-addon']});
+}, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'GithubModelFoo', 'mojito-config-addon']});
