@@ -1,16 +1,16 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('githubMojitBinderIndex', function(Y, NAME) {
+YUI.add('GithubBinderIndex', function(Y, NAME) {
 
 /**
- * The githubMojitBinderIndex module.
+ * The GithubBinderIndex module.
  *
- * @module githubMojitBinderIndex
+ * @module GithubBinderIndex
  */
 
     /**
-     * Constructor for the githubMojitBinderIndex class.
+     * Constructor for the GithubBinderIndex class.
      *
-     * @class githubMojitBinderIndex
+     * @class GithubBinderIndex
      * @constructor
      */
     Y.namespace('mojito.binders')[NAME] = {

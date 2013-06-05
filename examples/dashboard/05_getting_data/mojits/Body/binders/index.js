@@ -1,16 +1,16 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('BodyMojitBinderIndex', function(Y, NAME) {
+YUI.add('BodyBinderIndex', function(Y, NAME) {
 
 /**
- * The BodyMojitBinderIndex module.
+ * The BodyBinderIndex module.
  *
- * @module BodyMojitBinderIndex
+ * @module BodyBinderIndex
  */
 
     /**
-     * Constructor for the BodyMojitBinderIndex class.
+     * Constructor for the BodyBinderIndex class.
      *
-     * @class BodyMojitBinderIndex
+     * @class BodyBinderIndex
      * @constructor
      */
     Y.namespace('mojito.binders')[NAME] = {
