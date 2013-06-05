@@ -1,16 +1,16 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('galleryBinderIndex', function(Y, NAME) {
+YUI.add('GalleryBinderIndex', function(Y, NAME) {
 
 /**
- * The galleryBinderIndex module.
+ * The GalleryBinderIndex module.
  *
- * @module galleryBinderIndex
+ * @module GalleryBinderIndex
  */
 
     /**
-     * Constructor for the galleryBinderIndex class.
+     * Constructor for the GalleryBinderIndex class.
      *
-     * @class galleryBinderIndex
+     * @class GalleryBinderIndex
      * @constructor
      */
     Y.namespace('mojito.binders')[NAME] = {

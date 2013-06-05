@@ -1,62 +1,61 @@
 
-YUI.add('gallery-tests', function(Y) {
 
-    var suite = new YUITest.TestSuite('gallery-tests'),
+YUI.add('Gallery-tests', function (Y) {
+
+    var suite = new YUITest.TestSuite('Gallery-tests'),
         controller = null,
+        model = null,
         A = YUITest.Assert;
 
     suite.add(new YUITest.TestCase({
-        
-        name: 'gallery user tests',
-        
-        setUp: function() {
-            controller = Y.mojito.controllers.gallery;
+
+        name: 'Gallery user tests',
+
+        setUp: function () {
+            controller = Y.mojito.controllers.Gallery;
+            model = Y.mojito.models.galleryModelYQL;
         },
-        tearDown: function() {
+        tearDown: function () {
             controller = null;
         },
-        
-        'test mojit': function() {
+        'test mojit': function () {
             var ac,
-                modelData,
                 assetsResults,
-                doneResults;
-            modelData = { x:'y' };
+                doneResults,
+                def_value,
+                route_param;
             ac = {
                 assets: {
-                    addCss: function(css) {
-                        assetsResults = css;
+                    addCss: function (css) {
+                        assetsResults = "joe";
+                    }
+                },
+                config: {
+                    getDefinition: function (key) {
+                        def_value = key;
+                    }
+                },
+                params: {
+                    getFromRoute: function (param) {
+                        route_param = param;
                     }
                 },
                 models: {
-                    get: function(modelName) {
-                        A.areEqual('galleryModelFoo', modelName, 'wrong model name');
-                        return {
-                            getData: function(cb) {
-                                cb(null, modelData);
-                            }
-                        }
+                    get: function (modelName) {
+                        A.areEqual('galleryModelYQL', modelName, 'wrong model name');
+                        return model;
                     }
                 },
-                done: function(data) {
+                done: function (data) {
                     doneResults = data;
                 }
             };
-
             A.isNotNull(controller);
             A.isFunction(controller.index);
             controller.index(ac);
-            A.areSame('./index.css', assetsResults);
-            A.isObject(doneResults);
-            A.areSame('Mojito is working.', doneResults.status);
-            A.isObject(doneResults.data);
-            A.isTrue(doneResults.data.hasOwnProperty('x'));
-            A.areEqual('y', doneResults.data['x']);
-            
         }
-        
     }));
-    
+
     YUITest.TestRunner.add(suite);
-    
-}, '0.0.1', {requires: ['mojito-test', 'gallery']});
+
+}, '0.0.1', {requires: ['mojito-test', 'Gallery', 'galleryModelYQL']});

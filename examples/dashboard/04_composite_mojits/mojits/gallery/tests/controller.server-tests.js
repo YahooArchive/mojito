@@ -1,16 +1,16 @@
 
-YUI.add('gallery-tests', function(Y) {
+YUI.add('Gallery-tests', function(Y) {
 
-    var suite = new YUITest.TestSuite('gallery-tests'),
+    var suite = new YUITest.TestSuite('Gallery-tests'),
         controller = null,
         A = YUITest.Assert;
 
     suite.add(new YUITest.TestCase({
         
-        name: 'gallery user tests',
+        name: 'Gallery user tests',
         
         setUp: function() {
-            controller = Y.mojito.controllers.gallery;
+            controller = Y.mojito.controllers.Gallery;
         },
         tearDown: function() {
             controller = null;
@@ -30,7 +30,7 @@ YUI.add('gallery-tests', function(Y) {
                 },
                 models: {
                     get: function(modelName) {
-                        A.areEqual('galleryModelFoo', modelName, 'wrong model name');
+                        A.areEqual('GalleryModelFoo', modelName, 'wrong model name');
                         return {
                             getData: function(cb) {
                                 cb(null, modelData);
@@ -59,4 +59,4 @@ YUI.add('gallery-tests', function(Y) {
     
     YUITest.TestRunner.add(suite);
     
-}, '0.0.1', {requires: ['mojito-test', 'gallery']});
+}, '0.0.1', {requires: ['mojito-test', 'Gallery']});

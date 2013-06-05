@@ -32,13 +32,11 @@ YUI.add('TwitterSearchModel', function(Y, NAME) {
         var resp = Y.JSON.parse(response._resp.responseText).results;
 
 
-        //Y.log("twitterSearch:");
+        //Y.log("TwitterSearch:");
         //Y.log(resp);
 
         cb(null, resp);
       });
-
-    
 
     }
   };

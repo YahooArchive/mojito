@@ -2,12 +2,12 @@
  * Copyright (c) 2012 Yahoo! Inc. All rights reserved.
  */
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('twitterMojit', function(Y, NAME) {
+YUI.add('Twitter', function(Y, NAME) {
 
 /**
- * The twitterMojit module.
+ * The Twitter module.
  *
- * @module twitterMojit
+ * @module Twitter
  */
 
     /**
