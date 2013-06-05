@@ -1,10 +1,10 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('Gallery', function(Y, NAME) {
+YUI.add('Github', function(Y, NAME) {
 
 /**
- * The Gallery module.
+ * The Github module.
  *
- * @module Gallery
+ * @module Github
  */
 
     /**
@@ -22,19 +22,21 @@ YUI.add('Gallery', function(Y, NAME) {
          *        to the Mojito API.
          */
         index: function(ac) {
-            ac.models.get('galleryModelYQL').getData(function(err, data) {
-                if (err) {
-                    ac.error(err);
-                    return;
-                }
+
+            var model = ac.models.get('StatsModelYQL');
+            Y.log(model);
+            model.getData({}, function(data){
+                Y.log("githubmojit -index - model.getData:");
+                Y.log(data);
                 ac.assets.addCss('./index.css');
                 ac.done({
-                    status: 'Mojito is working.',
-                    data: data
+                    title: "YUI GitHub Stats",
+                    watchers: data.watchers,
+                    forks: data.forks
                 });
             });
         }
 
     };
 
-}, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'galleryModelYQL']});
+}, '0.0.1', {requires: ['mojito', 'mojito-assets-addon','mojito-models-addon']});

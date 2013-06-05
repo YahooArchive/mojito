@@ -1,33 +1,35 @@
 
 
-YUI.add('Gallery-tests', function (Y) {
+YUI.add('Github-tests', function (Y) {
 
-    var suite = new YUITest.TestSuite('Gallery-tests'),
+    var suite = new YUITest.TestSuite('Github-tests'),
         controller = null,
-        model = null,
-        A = YUITest.Assert;
+        A = YUITest.Assert,
+        model;
 
     suite.add(new YUITest.TestCase({
 
-        name: 'Gallery user tests',
+        name: 'Github user tests',
 
         setUp: function () {
-            controller = Y.mojito.controllers.Gallery;
-            model = Y.mojito.models.galleryModelYQL;
+            controller = Y.mojito.controllers.Github;
+            model = Y.mojito.models.StatsModelYQL;
         },
         tearDown: function () {
             controller = null;
         },
         'test mojit': function () {
             var ac,
+                modelData,
                 assetsResults,
+                route_param,
                 doneResults,
-                def_value,
-                route_param;
+                def_value;
+            modelData = { x: 'y' };
             ac = {
                 assets: {
                     addCss: function (css) {
-                        assetsResults = "joe";
+                        assetsResults = css;
                     }
                 },
                 config: {
@@ -42,7 +44,7 @@ YUI.add('Gallery-tests', function (Y) {
                 },
                 models: {
                     get: function (modelName) {
-                        A.areEqual('galleryModelYQL', modelName, 'wrong model name');
+                        A.areEqual('StatsModelYQL', modelName, 'wrong model name');
                         return model;
                     }
                 },
@@ -50,12 +52,15 @@ YUI.add('Gallery-tests', function (Y) {
                     doneResults = data;
                 }
             };
+
             A.isNotNull(controller);
             A.isFunction(controller.index);
             controller.index(ac);
         }
+
     }));
 
     YUITest.TestRunner.add(suite);
 
-}, '0.0.1', {requires: ['mojito-test', 'Gallery', 'galleryModelYQL']});
+}, '0.0.1', {requires: ['mojito-test', 'Github', 'StatsModelYQL']});
+

@@ -1,19 +1,18 @@
 
 
-YUI.add('Gallery-tests', function (Y) {
+YUI.add('Twitter-tests', function (Y, NAME) {
 
-    var suite = new YUITest.TestSuite('Gallery-tests'),
+    var suite = new YUITest.TestSuite('Twitter-tests'),
         controller = null,
-        model = null,
-        A = YUITest.Assert;
+        A = YUITest.Assert,
+        model;
 
     suite.add(new YUITest.TestCase({
 
-        name: 'Gallery user tests',
-
+        name: 'Twitter user tests',
         setUp: function () {
-            controller = Y.mojito.controllers.Gallery;
-            model = Y.mojito.models.galleryModelYQL;
+            controller = Y.mojito.controllers.Twitter;
+            model = Y.mojito.models.TwitterSearchModel;
         },
         tearDown: function () {
             controller = null;
@@ -21,13 +20,14 @@ YUI.add('Gallery-tests', function (Y) {
         'test mojit': function () {
             var ac,
                 assetsResults,
-                doneResults,
                 def_value,
-                route_param;
+                route_param,
+                doneResults,
+                modelData = { x: 'y' };
             ac = {
                 assets: {
                     addCss: function (css) {
-                        assetsResults = "joe";
+                        assetsResults = css;
                     }
                 },
                 config: {
@@ -42,7 +42,7 @@ YUI.add('Gallery-tests', function (Y) {
                 },
                 models: {
                     get: function (modelName) {
-                        A.areEqual('galleryModelYQL', modelName, 'wrong model name');
+                        A.areEqual('TwitterSearchModel', modelName, 'wrong model name');
                         return model;
                     }
                 },
@@ -50,12 +50,11 @@ YUI.add('Gallery-tests', function (Y) {
                     doneResults = data;
                 }
             };
+            console.log(assetsResults);
             A.isNotNull(controller);
             A.isFunction(controller.index);
             controller.index(ac);
         }
     }));
-
     YUITest.TestRunner.add(suite);
-
-}, '0.0.1', {requires: ['mojito-test', 'Gallery', 'galleryModelYQL']});
+}, '0.0.1', {requires: ['mojito-test', 'Twitter', 'TwitterSearchModel']});
