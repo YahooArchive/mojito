@@ -23,7 +23,6 @@
     {
         "settings": [ "environment:development" ],
         "staticHandling": {
-            "appName": "trib",
             "forceUpdate": true
         }
     }

@@ -1,16 +1,16 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('GithubBinderIndex', function(Y, NAME) {
+YUI.add('PageLayoutBinderIndex', function(Y, NAME) {
 
 /**
- * The GithubBinderIndex module.
+ * The PageLayoutBinderIndex module.
  *
- * @module GithubBinderIndex
+ * @module PageLayoutBinderIndex
  */
 
     /**
-     * Constructor for the GithubBinderIndex class.
+     * Constructor for the PageLayoutBinderIndex class.
      *
-     * @class GithubBinderIndex
+     * @class PageLayoutBinderIndex
      * @constructor
      */
     Y.namespace('mojito.binders')[NAME] = {
@@ -47,6 +47,11 @@ YUI.add('GithubBinderIndex', function(Y, NAME) {
              *
              * });
              */
+
+             Y.log("bind called");
+             Y.on("domready", function(){
+                Y.one("body").addClass("yui3-skin-sam");
+             });
         }
 
     };
