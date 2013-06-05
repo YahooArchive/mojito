@@ -1,4 +1,4 @@
-YUI.add('FooterModelFoo-tests', function(Y, NAME) {
+YUI.add('StatsModelYQL-tests', function(Y, NAME) {
     
     var suite = new YUITest.TestSuite(NAME),
         model = null,
@@ -6,10 +6,10 @@ YUI.add('FooterModelFoo-tests', function(Y, NAME) {
     
     suite.add(new YUITest.TestCase({
         
-        name: 'FooterModelFoo user tests',
+        name: 'StatsModelYQL user tests',
         
         setUp: function() {
-            model = Y.mojito.models.FooterModelFoo;
+            model = Y.mojito.models.StatsModelYQL;
         },
         tearDown: function() {
             model = null;
@@ -26,17 +26,17 @@ YUI.add('FooterModelFoo-tests', function(Y, NAME) {
             A.areSame(cfg, model.config);
 
             A.isFunction(model.getData);
+        
             model.getData(function(err, data) {
                 called = true;
+                Y.log(err, "info", NAME);
                 A.isTrue(!err);
                 A.isObject(data);
                 A.areSame('data', data.some);
             });
-            A.isTrue(called);
         }
-        
     }));
     
     YUITest.TestRunner.add(suite);
     
-}, '0.0.1', {requires: ['mojito-test', 'FooterModelFoo']});
+}, '0.0.1', {requires: ['mojito-test', 'StatsModelYQL']});
