@@ -519,42 +519,20 @@ Data
 .. _moj_params_controller_binder:
 .. topic:: **In Mojito applications, how are parameters passed from the controller to binders?** 
 
-    Your controllers can pass parameters to binders by assigning values to 
-    ``ac.instance.config.{property}`` in  methods that are passed the ``ActionContext`` 
-    object. The binder accesses those parameters through ``mojitProxy.config.{property}``.
+    Your controllers can pass parameters to binders using the ``Data`` addon.
+    The controller requires the ``Data`` addon and then uses the ``data`` object with
+    the ``set`` method to set (or expose) data for the client code (binders or templates):
+    ``ac.data.set('app_framework', "Mojito");`` 
+
+    From the binder, the ``mojitProxy`` object can then access the data set by the controller
+    from the ``data`` object with the ``get`` method: ``mojitProxy.data.get('app_framework');``
+
+    The mojit's template can access the set data through a Handlebars expression, so
+    the ``index.hb.html`` could use ``{{app_framework}}`` to get the data set in the controller.
     
-    In the ``index`` method of the controller below, the key-value pair 
-    ``"name": "Mojito"`` is stored with ``ac.instance.config.name = "Mojito"``.
-
-    .. code-block:: javascript
-
-       YUI.add('myMojit', function(Y, NAME) {
-         Y.namespace('mojito.controllers')[NAME] = {
-           index: function(ac) {
-             ac.instance.config.name = "Mojito";
-             ...
-           }
-           ...
-         };
-       }, '0.0.1', {requires: ['mojito', 'myMojitModelFoo']});
-
-    The code snippet of the binder shown below references the key ``name``
-    with ``this.mojitProxy.config.name``.
-
-    .. code-block:: javascript
-
-       YUI.add('myMojitBinderIndex', function(Y, NAME) {
-         Y.namespace('mojito.binders')[NAME] = {
-           init: function(mojitProxy) {
-             this.mojitProxy = mojitProxy;
-           },
-           bind: function(node) {
-             Y.log(this.mojitProxy.config.name);
-             ...
-           }
-           ...
-         };
-       }, '0.0.1', {requires: ['mojito-client']});
+    The ``Data`` addon also allows you to share page-level data, so that mojits on the
+    page can share data through ``ac.pageData.set`` and ``ac.pageData.get`` or ``mojitProxy.pageData.get``.
+    See  `Sharing Data <../topics/mojito_data.html#sharing>`_ for more information and example code.
 
 ------------
 

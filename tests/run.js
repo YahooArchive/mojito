@@ -59,10 +59,6 @@ function test(cmd) {
     cmd.funcPath = path.resolve(cwd, cmd.funcPath || cmd.path || './func');
     if (cmd.reportFolder) {
         cmd.reportFolder = path.resolve(cwd, cmd.reportFolder);
-        if (cmd.reportFolder.indexOf(cwd) !== -1 && !cmd.unit) {
-            console.log('Please specify a report directory outside of tests/');
-            process.exit(1);
-        }
     }
 
     if (cmd.unit) {
@@ -164,6 +160,7 @@ function runUnitTests (cmd, callback) {
         cwd + "/../node_modules/yahoo-arrow/index.js",
         "--descriptor=" + cmd.unitPath + '/' + descriptor,
         "--exitCode=true",
+        "--keepTestReport=true",
         "--report=true",
         "--reportFolder=" + arrowReportDir
     ];
@@ -279,9 +276,8 @@ function runFuncAppTests(cmd, callback) {
     }
 
     //
-    // remove the descriptors to ignore (for now)
+    // NOTE: remove those descriptors to prevent those tests to run for now
     //
-    // NOTE: to avoid running some specific func tests for now
     // TODO: Fix those tests
     skips = [
         // TODO: HTML5 related tests : need to revisit
@@ -372,6 +368,7 @@ function runFuncTests(cmd, desc, port, thispid, callback) {
         "--descriptor=" + desc,
         "--baseUrl=" + baseUrl,
         "--exitCode=true",
+        "--keepTestReport=true",
         "--report=true",
         "--reportFolder=" + arrowReportDir,
         "--config=" + cwd + "/config/config.js"
