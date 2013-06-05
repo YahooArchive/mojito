@@ -88,7 +88,7 @@ to define parent-child relationships. The composite mojit can also have many
 child mojit instances defined in the children object.
 
 
-In the example application.json below, the layout instance in its config has 
+In the example ``application.json`` below, the layout instance in its config has 
 defined three child mojit instances. This parent-child relationship lets the 
 layout instance execute the actions of its child instances and then attach the 
 content from those child instances to its template. 
@@ -101,17 +101,17 @@ content from those child instances to its template.
        "appPort": "8666",
        "specs": {
          "layout": {
-           "type": "LayoutMojit",
+           "type": "PageLayout",
            "config": {
              "children": {
                 "header": {
-                  "type": "HeaderMojit"
+                  "type": "Header"
                 },
                 "body": {
-                  "type": "BodyMojit"
+                  "type": "Body"
                 },
                 "footer": {
-                  "type": "FooterMojit"
+                  "type": "Footer"
                 }
               }
             }
@@ -122,10 +122,10 @@ content from those child instances to its template.
   ]
 
 You can imagine how our layout instance would organize the parts of the page 
-such as the body, header, and footer, but we’re still going to need our HTMLFrameMojit 
+such as the body, header, and footer, but we’re still going to need our ``HTMLFrameMojit`` 
 to create the HTML skeleton and attached our content. To do this, we simply make our 
-layout instance a child of the HTMLFrameMojit. Notice though that our composite 
-instance is now child and not layout.
+layout instance a child of the ``HTMLFrameMojit``. Notice though that our composite 
+instance is now ``child`` and **not** ``layout``.
 
 .. code-block:: javascript
 
@@ -140,17 +140,17 @@ instance is now child and not layout.
              "deploy": true,
              "title": "Trib - Contribute to the Tribe",
              "child": {
-               "type": "LayoutMojit",
+               "type": "PageLayout",
                "config": {
                  "children": {
                    "header": {
-                     "type": "HeaderMojit"
+                     "type": "Header"
                    },
                    "body": {
-                     "type": "BodyMojit"
+                     "type": "Body"
                    },
                    "footer": {
-                     "type": "FooterMojit"
+                     "type": "Footer"
                    }
                  }
                }
@@ -161,12 +161,12 @@ instance is now child and not layout.
      }
    ]
 
-As of now, the only mojit that we have that is creating content is the githubMojit. 
+As of now, the only mojit that we have that is creating content is ``Github``. 
 As you would expect, we’d want that content to be in the body of our HTML document. 
-The BodyMojit seems like the right mojit to handle this content. We might want 
-other mojits creating content for the body as well. It does sound as if our BodyMojit 
+The ``Body`` mojit seems like the right mojit to handle this content. We might want 
+other mojits creating content for the body as well. It does sound as if our ``Body``
 should be a composite mojit as well, and there are not limitations to using composite 
-mojits (aside from possible performance problems), so let’s configure the body 
+mojits (aside from possible performance problems), so let’s configure the ``body`` 
 instance to be a composite mojit as well:
 
 .. code-block:: javascript
@@ -182,24 +182,24 @@ instance to be a composite mojit as well:
              "deploy": true,
              "title": "Trib - Contribute to the Tribe",
              "child": {
-               "type": "LayoutMojit",
+               "type": "PageLayout",
                "config": {
                  "children": {
                    "header": {
-                     "type": "HeaderMojit"
+                     "type": "Header"
                    },
                    "body": {
-                     "type": "BodyMojit",
+                     "type": "Body",
                      "config": {
                        "children": {
                          "github": {
-                           "type":"githubMojit"
+                           "type":"Github"
                          }
                        }
                      }
                    },
                    "footer": {
-                     "type": "FooterMojit"
+                     "type": "Footer"
                    }
                  }
                }
@@ -213,11 +213,11 @@ instance to be a composite mojit as well:
 Executing Child Mojits With the Composite Addon
 -----------------------------------------------
 
-The controller of the parent mojit uses the Composite addon to execute 
-its child mojits. Like other addons, you require the Composite addon and 
-have access to it through the ActionContext object. The Composite addon 
-the two methods  done and execute for executing child mojit. The snippet 
-from the parent controller below uses the method ac.composite.done:
+The controller of the parent mojit uses the ``Composite`` addon to execute 
+its child mojits. Like other addons, you require the ``Composite`` addon and 
+have access to it through the ``ActionContext`` object. The ``Composite`` addon 
+the two methods ``done`` and ``execute`` for executing child mojit. The snippet 
+from the parent controller below uses the method ``ac.composite.done``:
 
 .. code-block:: javascript
 
@@ -234,7 +234,7 @@ from the parent controller below uses the method ac.composite.done:
    }, '0.0.1', {requires: ['mojito','mojito-composite-addon']});
 
 
-The ac.composite.done method is used much like ac.done. You can pass data to the 
+The ``ac.composite.done`` method is used much like ``ac.done``. You can pass data to the 
 parent template as well as meta data such as the template name.
 
 .. code-block:: javascript
@@ -250,7 +250,7 @@ parent template as well as meta data such as the template name.
    }, '0.0.1', {requires: ['mojito','mojito-composite-addon']});
 
 
-The method ac.composite.execute, however, requires that you explicitly pass 
+The method ``ac.composite.execute``, however, requires that you explicitly pass 
 configuration defining child mojit instances, making it more complicated to use 
 but allows for the dynamic creation of mojit instances. 
 
@@ -265,11 +265,11 @@ but allows for the dynamic creation of mojit instances.
          var cfg = {
            children: {
              body: {
-               type: "BodyMojit",
+               type: "Body",
                action: "index"
              },
              header: {
-               type: "HeaderMojit",
+               type: "Header",
                action: "index",
                params: {
                  route: {},
@@ -289,8 +289,8 @@ but allows for the dynamic creation of mojit instances.
   }, '0.0.1', {requires: ['mojito','mojito-composite-addon']});
 
 We’re not going to dynamically create mojit instances, so it makes more 
-sense to just use ac.composite.done to execute the child mojits. Based on 
-what we’ve learned, the controller for the parent mojit BodyMojit shown 
+sense to just use ``ac.composite.done`` to execute the child mojits. Based on 
+what we’ve learned, the controller for the parent mojit ``BodyMojit shown 
 below should make more sense. Based on our configuration, the body instance 
 will execute the github instance. We’re also passing some data to the parent 
 template, but how does the parent template attach the content created by our 
@@ -673,14 +673,14 @@ Creating the Application
    to style the lists to look more like a navigation bar and change the 
    body instance into a composite instance so that we can get the content 
    from the githubMojit into the body. Well, let’s get started.
-   In the application.json, let’s hook up the githubMojit to the BodyMojit 
-   by making the instance of the githubMojit a child of the composite mojit body:
+   In the application.json, let’s hook up the ``Github`` to the ``Body``
+   by making the instance of the ``Github`` child of the composite mojit ``body``:
 
    .. code-block:: javascript
 
       ...
         "body": {
-          "type": "BodyMojit",
+          "type": "Body",
           "config": {
             "children": {
               "github": {
@@ -703,17 +703,13 @@ Creating the Application
         "assets": {
           "top": {
             "css": [
-              "http://necolas.github.com/normalize.css/1.0.2/normalize.css",
-              "https://rawgithub.com/tilomitra/cssforms/master/css/forms.css",
-              "https://rawgithub.com/tilomitra/cssforms/master/css/forms-responsive.css",
-              "http://yui.yahooapis.com/3.9.0pr3/build/cssgrids-responsive/cssgrids-responsive-min.css",
-              "http://yui.yahooapis.com/3.8.0/build/cssbutton/cssbutton-min.css",
-              "https://rawgithub.com/tilomitra/csslist/master/css/list-core.css",
-              "https://rawgithub.com/tilomitra/csslist/master/css/list.css",
-              "https://rawgithub.com/tilomitra/csslist/master/css/list-responsive.css",
-              "https://rawgithub.com/tilomitra/csslist/master/css/list-paginator.css",
+              "http://yui.yahooapis.com/3.9.0/build/cssnormalize/cssnormalize-min.css",
+              "http://yui.yahooapis.com/gallery-2013.03.13-20-05/build/gallerycss-cssform/gallerycss-cssform-min.css",
+              "http://yui.yahooapis.com/3.9.0/build/cssgrids-responsive/cssgrids-responsive-min.css",
+              "http://yui.yahooapis.com/3.9.0/build/cssbutton/cssbutton-min.css",
+              "http://yui.yahooapis.com/gallery-2013.03.13-20-05/build/gallerycss-csslist/gallerycss-csslist-min.css",
               "https://rawgithub.com/tilomitra/yuicss-common/master/ui.css",
-              "/static/04_composite_mojits/assets/trib.css"
+              "/static/trib/assets/trib.css"
             ]
           }
         }
