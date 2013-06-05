@@ -9,7 +9,7 @@
                  "deploy": true,
                  "title": "Trib - Contribute to the Tribe",
                  "child": {
-                     "type": "githubMojit"
+                     "type": "Github"
                   },
                  "assets": {
                     "top": {
@@ -23,6 +23,7 @@
     {
         "settings": [ "environment:development" ],
         "staticHandling": {
+            "appName": "trib",
             "forceUpdate": true
         }
     }
