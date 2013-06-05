@@ -1,10 +1,13 @@
+/*
+ * Copyright (c) 2012 Yahoo! Inc. All rights reserved.
+ */
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('Gallery', function(Y, NAME) {
+YUI.add('Twitter', function(Y, NAME) {
 
 /**
- * The Gallery module.
+ * The Twitter module.
  *
- * @module Gallery
+ * @module Twitter
  */
 
     /**
@@ -21,20 +24,24 @@ YUI.add('Gallery', function(Y, NAME) {
          * @param ac {Object} The ActionContext that provides access
          *        to the Mojito API.
          */
-        index: function(ac) {
-            ac.models.get('galleryModelYQL').getData(function(err, data) {
+         index: function(ac) {
+            ac.models.get('TwitterSearchModel').getData({},function(err, data) {
                 if (err) {
                     ac.error(err);
                     return;
                 }
+
+                // add mojit specific css
                 ac.assets.addCss('./index.css');
+
+                //Y.log(data);
                 ac.done({
-                    status: 'Mojito is working.',
-                    data: data
+                    title: 'YUI Twitter mentions',
+                    results: data
                 });
             });
         }
 
     };
 
-}, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'galleryModelYQL']});
+}, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon']});
