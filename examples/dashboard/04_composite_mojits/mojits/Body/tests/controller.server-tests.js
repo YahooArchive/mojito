@@ -18,40 +18,20 @@ YUI.add('Body-tests', function(Y) {
         
         'test mojit': function() {
             var ac,
-                modelData,
-                assetsResults,
                 doneResults;
-            modelData = { x:'y' };
             ac = {
-                assets: {
-                    addCss: function(css) {
-                        assetsResults = css;
+                composite: {
+                    done: function(data) {
+                        doneResults = data;
                     }
-                },
-                models: {
-                    get: function(modelName) {
-                        A.areEqual('BodyModelFoo', modelName, 'wrong model name');
-                        return {
-                            getData: function(cb) {
-                                cb(null, modelData);
-                            }
-                        }
-                    }
-                },
-                done: function(data) {
-                    doneResults = data;
                 }
             };
 
             A.isNotNull(controller);
             A.isFunction(controller.index);
             controller.index(ac);
-            A.areSame('./index.css', assetsResults);
             A.isObject(doneResults);
-            A.areSame('Mojito is working.', doneResults.status);
-            A.isObject(doneResults.data);
-            A.isTrue(doneResults.data.hasOwnProperty('x'));
-            A.areEqual('y', doneResults.data['x']);
+            A.areSame("Statistics for YUI", doneResults.title);
             
         }
         

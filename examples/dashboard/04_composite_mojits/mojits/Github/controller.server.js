@@ -26,7 +26,7 @@ YUI.add('Github', function(Y, NAME) {
             var model = ac.models.get('StatsModelYQL');
             Y.log(model);
             model.getData({}, function(data){
-                Y.log("githubmojit -index - model.getData:");
+                Y.log("Github -index - model.getData:");
                 Y.log(data);
 
                 ac.done({
