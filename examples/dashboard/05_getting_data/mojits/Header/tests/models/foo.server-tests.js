@@ -1,5 +1,5 @@
 
-YUI.add('HeaderMojitModelFoo-tests', function(Y, NAME) {
+YUI.add('HeaderModelFoo-tests', function(Y, NAME) {
     
     var suite = new YUITest.TestSuite(NAME),
         model = null,
@@ -7,10 +7,10 @@ YUI.add('HeaderMojitModelFoo-tests', function(Y, NAME) {
     
     suite.add(new YUITest.TestCase({
         
-        name: 'HeaderMojitModelFoo user tests',
+        name: 'HeaderModelFoo user tests',
         
         setUp: function() {
-            model = Y.mojito.models.HeaderMojitModelFoo;
+            model = Y.mojito.models.HeaderModelFoo;
         },
         tearDown: function() {
             model = null;
@@ -40,4 +40,4 @@ YUI.add('HeaderMojitModelFoo-tests', function(Y, NAME) {
     
     YUITest.TestRunner.add(suite);
     
-}, '0.0.1', {requires: ['mojito-test', 'HeaderMojitModelFoo']});
+}, '0.0.1', {requires: ['mojito-test', 'HeaderModelFoo']});

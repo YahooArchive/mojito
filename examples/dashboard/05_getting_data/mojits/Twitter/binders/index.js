@@ -2,18 +2,18 @@
  * Copyright (c) 2012 Yahoo! Inc. All rights reserved.
  */
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('twitterMojitBinderIndex', function(Y, NAME) {
+YUI.add('TwitterBinderIndex', function(Y, NAME) {
 
 /**
- * The twitterMojitBinderIndex module.
+ * The TwitterBinderIndex module.
  *
- * @module twitterMojitBinderIndex
+ * @module TwitterBinderIndex
  */
 
     /**
-     * Constructor for the twitterMojitBinderIndex class.
+     * Constructor for the TwitterBinderIndex class.
      *
-     * @class twitterMojitBinderIndex
+     * @class TwitterBinderIndex
      * @constructor
      */
     Y.namespace('mojito.binders')[NAME] = {

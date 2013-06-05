@@ -40,7 +40,7 @@
                                 "http://yui.yahooapis.com/3.9.0/build/cssbutton/cssbutton-min.css",
                                 "http://yui.yahooapis.com/gallery-2013.03.13-20-05/build/gallerycss-csslist/gallerycss-csslist-min.css",
                                 "https://rawgithub.com/tilomitra/yuicss-common/master/ui.css",
-                                 "/static/04_Composite_mojits/assets/trib.css"
+                                 "/static/04_composite_mojits/assets/trib.css"
                             ]
                         }
                    }

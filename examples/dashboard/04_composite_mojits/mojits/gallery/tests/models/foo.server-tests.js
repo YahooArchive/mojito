@@ -1,5 +1,5 @@
 
-YUI.add('galleryModelFoo-tests', function(Y, NAME) {
+YUI.add('GalleryModelFoo-tests', function(Y, NAME) {
     
     var suite = new YUITest.TestSuite(NAME),
         model = null,
@@ -7,10 +7,10 @@ YUI.add('galleryModelFoo-tests', function(Y, NAME) {
     
     suite.add(new YUITest.TestCase({
         
-        name: 'galleryModelFoo user tests',
+        name: 'GalleryModelFoo user tests',
         
         setUp: function() {
-            model = Y.mojito.models.galleryModelFoo;
+            model = Y.mojito.models.GalleryModelFoo;
         },
         tearDown: function() {
             model = null;
@@ -40,4 +40,4 @@ YUI.add('galleryModelFoo-tests', function(Y, NAME) {
     
     YUITest.TestRunner.add(suite);
     
-}, '0.0.1', {requires: ['mojito-test', 'galleryModelFoo']});
+}, '0.0.1', {requires: ['mojito-test', 'GalleryModelFoo']});

@@ -1,10 +1,10 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('gallery', function(Y, NAME) {
+YUI.add('Gallery', function(Y, NAME) {
 
 /**
- * The gallery module.
+ * The Gallery module.
  *
- * @module gallery
+ * @module Gallery
  */
 
     /**
@@ -22,7 +22,7 @@ YUI.add('gallery', function(Y, NAME) {
          *        to the Mojito API.
          */
         index: function(ac) {
-            ac.models.get('galleryModelFoo').getData(function(err, data) {
+            ac.models.get('galleryModelYQL').getData(function(err, data) {
                 if (err) {
                     ac.error(err);
                     return;
@@ -37,4 +37,4 @@ YUI.add('gallery', function(Y, NAME) {
 
     };
 
-}, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'galleryModelFoo']});
+}, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'galleryModelYQL']});

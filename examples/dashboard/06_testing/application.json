@@ -2,33 +2,34 @@
     {
         "settings": [ "master" ],
         "appPort": "8666",
-        "specs": {"tribframe": {
+        "specs": {
+            "tribframe": {
                 "type": "HTMLFrameMojit",
                 "config": {
                     "deploy": true,
                     "title": "Trib - Contribute to the Tribe",
                     "child": {
-                        "type": "FrameMojit",
+                        "type": "PageLayout",
                         "config": {
                             "children": {
                                 "header": {
-                                    "type": "HeaderMojit"
+                                    "type": "Header"
                                 },
                                 "body": {
-                                    "type": "BodyMojit",
+                                    "type": "Body",
                                     "config": {
                                         "children": {
                                             "github": {
-                                                "type":"githubMojit"
+                                                "type":"Github"
                                             },
                                             "twitter": {
-                                                "type": "twitterMojit"
+                                                "type": "Twitter"
                                             }
                                         }
                                     }
                                 },
                                 "footer": {
-                                    "type": "FooterMojit"
+                                    "type": "Footer"
                                 }
                             }
                         }
@@ -36,7 +37,7 @@
                     "assets": {
                         "top": {
                             "css": [
-                                 "http://yui.yahooapis.com/3.9.0/build/cssnormalize/cssnormalize-min.css",
+                                "http://yui.yahooapis.com/3.9.0/build/cssnormalize/cssnormalize-min.css",
                                 "http://yui.yahooapis.com/gallery-2013.03.13-20-05/build/gallerycss-cssform/gallerycss-cssform-min.css",
                                 "http://yui.yahooapis.com/3.9.0/build/cssgrids-responsive/cssgrids-responsive-min.css",
                                 "http://yui.yahooapis.com/3.9.0/build/cssbutton/cssbutton-min.css",

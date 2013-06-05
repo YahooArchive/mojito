@@ -1,16 +1,16 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('FrameMojitBinderIndex', function(Y, NAME) {
+YUI.add('PageLayoutBinderIndex', function(Y, NAME) {
 
 /**
- * The FrameMojitBinderIndex module.
+ * The PageLayoutBinderIndex module.
  *
- * @module FrameMojitBinderIndex
+ * @module PageLayoutBinderIndex
  */
 
     /**
-     * Constructor for the FrameMojitBinderIndex class.
+     * Constructor for the PageLayoutBinderIndex class.
      *
-     * @class FrameMojitBinderIndex
+     * @class PageLayoutBinderIndex
      * @constructor
      */
     Y.namespace('mojito.binders')[NAME] = {

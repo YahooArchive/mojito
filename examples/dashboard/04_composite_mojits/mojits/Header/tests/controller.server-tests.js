@@ -1,16 +1,16 @@
 
-YUI.add('HeaderMojit-tests', function(Y) {
+YUI.add('Header-tests', function(Y) {
 
-    var suite = new YUITest.TestSuite('HeaderMojit-tests'),
+    var suite = new YUITest.TestSuite('Header-tests'),
         controller = null,
         A = YUITest.Assert;
 
     suite.add(new YUITest.TestCase({
         
-        name: 'HeaderMojit user tests',
+        name: 'Header user tests',
         
         setUp: function() {
-            controller = Y.mojito.controllers.HeaderMojit;
+            controller = Y.mojito.controllers.Header;
         },
         tearDown: function() {
             controller = null;
@@ -36,4 +36,4 @@ YUI.add('HeaderMojit-tests', function(Y) {
     
     YUITest.TestRunner.add(suite);
     
-}, '0.0.1', {requires: ['mojito-test', 'HeaderMojit']});
+}, '0.0.1', {requires: ['mojito-test', 'Header']});
