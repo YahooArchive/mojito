@@ -1,10 +1,10 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('BodyMojit', function(Y, NAME) {
+YUI.add('Body', function(Y, NAME) {
 
 /**
- * The BodyMojit module.
+ * The Body module.
  *
- * @module BodyMojit
+ * @module Body
  */
 
     /**
@@ -22,7 +22,7 @@ YUI.add('BodyMojit', function(Y, NAME) {
          *        to the Mojito API.
          */
         index: function(ac) {
-        Y.log("BodyMojit - controller.server.js index called");
+        Y.log("Body - controller.server.js index called");
 
             ac.composite.done({
                 title: "Statistics for YUI"
