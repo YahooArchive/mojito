@@ -1,12 +1,9 @@
 /*
  * This is a basic func test for a Common application.
  */
-YUI({
-    useConsoleOutput: true,
-    useBrowserConsole: true,
-    logInclude: { TestRunner: true }
-}).use('node', 'node-event-simulate', 'test', 'console', function (Y) {
-   
+
+YUI.add("common-testsimplemodelserver", function(Y) {
+
     var suite = new Y.Test.Suite("Common: simplemodelserver");
 
     suite.add(new Y.Test.Case({
@@ -23,4 +20,7 @@ YUI({
     }));
 
     Y.Test.Runner.add(suite);
-});
+    
+}, '0.0.1', {requires: [
+    'node', 'node-event-simulate', 'test', 'console'
+]});

@@ -71,14 +71,6 @@
                 },
                 "group": "fw,unit,server"
             },
-            "jslint.js": {
-                "params": {
-                    "test": "./test-jslint.js",
-                    "lib-DISABLED-BZ6046277": "$$config.mojitodir$$/lib/app/commands/jslint.js",
-                    "driver": "nodejs"
-                },
-                "group": "fw,unit,server"
-            },
             "gv.js": {
                 "params": {
                     "test": "./test-gv.js",
