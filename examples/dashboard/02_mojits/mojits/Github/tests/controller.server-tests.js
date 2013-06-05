@@ -1,16 +1,16 @@
 
-YUI.add('githubMojit-tests', function(Y) {
+YUI.add('Github-tests', function(Y) {
 
-    var suite = new YUITest.TestSuite('githubMojit-tests'),
+    var suite = new YUITest.TestSuite('Github-tests'),
         controller = null,
         A = YUITest.Assert;
 
     suite.add(new YUITest.TestCase({
         
-        name: 'githubMojit user tests',
+        name: 'Github user tests',
         
         setUp: function() {
-            controller = Y.mojito.controllers.githubMojit;
+            controller = Y.mojito.controllers.Github;
         },
         tearDown: function() {
             controller = null;
@@ -30,7 +30,7 @@ YUI.add('githubMojit-tests', function(Y) {
                 },
                 models: {
                     get: function(modelName) {
-                        A.areEqual('githubMojitModelFoo', modelName, 'wrong model name');
+                        A.areEqual('GithubModelFoo', modelName, 'wrong model name');
                         return {
                             getData: function(cb) {
                                 cb(null, modelData);
@@ -59,4 +59,4 @@ YUI.add('githubMojit-tests', function(Y) {
     
     YUITest.TestRunner.add(suite);
     
-}, '0.0.1', {requires: ['mojito-test', 'githubMojit']});
+}, '0.0.1', {requires: ['mojito-test', 'Github']});

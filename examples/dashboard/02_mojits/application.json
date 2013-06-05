@@ -4,19 +4,19 @@
         "appPort": "8666",
         "specs": {
            "github": {
-               "type": "githubMojit",
+               "type": "Github",
                "config": {
                    "title": "YUI/Mojito Dashboard Application"
                }
            },
            "header": {
-               "type": "HeaderMojit"
+               "type": "Header"
            },
            "body": {
-               "type": "BodyMojit"
+               "type": "Body"
            },
            "footer": {
-               "type": "FooterMojit"
+               "type": "Footer"
            }
        }
     },
