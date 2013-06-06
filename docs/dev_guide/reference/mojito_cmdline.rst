@@ -109,8 +109,8 @@ you can use the ``--directory`` or ``--dir`` option to specify where to write te
 
 - To run the unit tests for one or more modules of a mojit, use one of the following:
 
-  - ``$ mojito test mojit <mojit-path> <mojit-module1>, <mojit-module2>, <mojit-module3>``
   - ``$ mojito test mojit <mojit-path> --testname <mojit-module1> --testname <mojit-module2> --testname <mojit-module3>``
+  - ``$ mojito test mojit <mojit-path> <mojit-module1>, <mojit-module2>, <mojit-module3>``
 
 
    If one or more mojit modules (i.e., the YUI modules for a portion of the mojit) are 
