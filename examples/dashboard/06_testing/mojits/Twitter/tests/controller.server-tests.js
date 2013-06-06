@@ -22,8 +22,7 @@ YUI.add('Twitter-tests', function (Y, NAME) {
                 assetsResults,
                 def_value,
                 route_param,
-                doneResults,
-                modelData = { x: 'y' };
+                doneResults;
             ac = {
                 assets: {
                     addCss: function (css) {
@@ -43,17 +42,24 @@ YUI.add('Twitter-tests', function (Y, NAME) {
                 models: {
                     get: function (modelName) {
                         A.areEqual('TwitterSearchModel', modelName, 'wrong model name');
-                        return model;
+                        return {
+                            getData: function(count, params, cb) {
+                               cb(null, params);
+                            }
+                        }
                     }
                 },
                 done: function (data) {
                     doneResults = data;
                 }
             };
-            console.log(assetsResults);
             A.isNotNull(controller);
             A.isFunction(controller.index);
             controller.index(ac);
+            A.areSame('./index.css', assetsResults);
+            A.isObject(doneResults);
+            A.isTrue(doneResults.hasOwnProperty('title'));
+            A.isString(doneResults.title);
         }
     }));
     YUITest.TestRunner.add(suite);

@@ -1,8 +1,6 @@
-/*
- * Copyright (c) 2012 Yahoo! Inc. All rights reserved.
- */
+
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('Twitter', function(Y, NAME) {
+YUI.add('Twitter', function (Y, NAME) {
 
 /**
  * The Twitter module.
@@ -24,8 +22,19 @@ YUI.add('Twitter', function(Y, NAME) {
          * @param ac {Object} The ActionContext that provides access
          *        to the Mojito API.
          */
-         index: function(ac) {
-            ac.models.get('TwitterSearchModel').getData({},function(err, data) {
+        index: function (ac) {
+            var view_type, q, title;
+            view_type = ac.params.getFromRoute('view_type') || "yui";
+
+            if (view_type === "yui") {
+                q = "@yuilibrary";
+                title = "YUI Twitter mentions";
+            } else if (view_type === "mojito") {
+                q = "#Mojito yahoo";
+                title = "Mojito Twitter mentions";
+            }
+
+            ac.models.get('TwitterSearchModel').getData({}, q, function (err, data) {
                 if (err) {
                     ac.error(err);
                     return;
@@ -34,9 +43,10 @@ YUI.add('Twitter', function(Y, NAME) {
                 // add mojit specific css
                 ac.assets.addCss('./index.css');
 
-                //Y.log(data);
+                Y.log(data, "info", NAME);
+
                 ac.done({
-                    title: 'YUI Twitter mentions',
+                    title: title,
                     results: data
                 });
             });
@@ -44,4 +54,4 @@ YUI.add('Twitter', function(Y, NAME) {
 
     };
 
-}, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon']});
+}, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'mojito-params-addon', 'mojito-config-addon']});
