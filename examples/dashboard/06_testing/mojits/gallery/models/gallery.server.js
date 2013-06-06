@@ -1,4 +1,3 @@
-
 /*jslint anon:true, sloppy:true, nomen:true*/
 /*global YUI*/
 YUI.add('galleryModelYQL', function (Y, NAME) {

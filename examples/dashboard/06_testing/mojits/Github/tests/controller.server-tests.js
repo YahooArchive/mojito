@@ -1,5 +1,4 @@
 
-
 YUI.add('Github-tests', function (Y) {
 
     var suite = new YUITest.TestSuite('Github-tests'),
@@ -20,12 +19,10 @@ YUI.add('Github-tests', function (Y) {
         },
         'test mojit': function () {
             var ac,
-                modelData,
                 assetsResults,
                 route_param,
                 doneResults,
                 def_value;
-            modelData = { x: 'y' };
             ac = {
                 assets: {
                     addCss: function (css) {
@@ -45,7 +42,11 @@ YUI.add('Github-tests', function (Y) {
                 models: {
                     get: function (modelName) {
                         A.areEqual('StatsModelYQL', modelName, 'wrong model name');
-                        return model;
+                        return {
+                            getData: function(params, cb) {
+                                cb(params);
+                            }
+                        }
                     }
                 },
                 done: function (data) {
@@ -56,6 +57,9 @@ YUI.add('Github-tests', function (Y) {
             A.isNotNull(controller);
             A.isFunction(controller.index);
             controller.index(ac);
+            A.areSame('./index.css', assetsResults);
+            A.isObject(doneResults);
+            A.isTrue(doneResults.hasOwnProperty('watchers'));
         }
 
     }));

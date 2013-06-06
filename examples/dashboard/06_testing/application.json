@@ -1,13 +1,27 @@
+
 [
     {
         "settings": [ "master" ],
         "appPort": "8666",
-        "specs": {
+        "yui":{
+          "config": {
+            "comboBase":"http://yui.yahooapis.com/combo?",
+            "root":"3.8.1/build/",
+            "seed": [
+              "yui-base",
+              "loader-base",
+              "loader-yui3",
+              "loader-app",
+              "loader-app-base{langPath}"
+            ]
+          }            
+            },
+        "specs": {            
             "tribframe": {
                 "type": "HTMLFrameMojit",
                 "config": {
                     "deploy": true,
-                    "title": "Trib - Contribute to the Tribe",
+                    "title": "Trib - YUI Developer Dashboard",
                     "child": {
                         "type": "PageLayout",
                         "config": {
@@ -22,8 +36,20 @@
                                             "github": {
                                                 "type":"Github"
                                             },
+                                            "blog": {
+                                                "type":"Blog"
+                                            },
+                                            "calendar": {
+                                                "type":"Calendar"
+                                            },
                                             "twitter": {
-                                                "type": "Twitter"
+                                                "type":"Twitter"
+                                            },
+                                            "gallery":{
+                                                "type": "Gallery"
+                                            },
+                                            "youtube": {
+                                                "type": "Youtube"
                                             }
                                         }
                                     }
@@ -43,13 +69,14 @@
                                 "http://yui.yahooapis.com/3.9.0/build/cssbutton/cssbutton-min.css",
                                 "http://yui.yahooapis.com/gallery-2013.03.13-20-05/build/gallerycss-csslist/gallerycss-csslist-min.css",
                                 "https://rawgithub.com/tilomitra/yuicss-common/master/ui.css",
-                                "/static/05_getting_data/assets/trib.css"
-                                 ]
-                         }
-                     }
-                  }
-              }
-         }
+                                "/static/06_testing/assets/trib.css"
+                            ]
+
+                        }
+                    }
+                }
+            }
+        }
     },
     {
         "settings": [ "environment:development" ],
@@ -58,3 +85,4 @@
         }
     }
 ]
+
