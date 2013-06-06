@@ -191,7 +191,7 @@ configuration Object
 | ``tunnelPrefix``                                       | string               | "/tunnel/"        | The URL prefix for the communication tunnel            |
 |                                                        |                      |                   | from the client back to the server.                    |
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
-| ``tunnelTimeout``                                      | number               | 30000             | The timeout in milliseconds for the communication      |
+| ``tunnelTimeout``                                      | number               | 10000             | The timeout in milliseconds for the communication      |
 |                                                        |                      |                   | tunnel from the client back to the server.             |
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
 | :ref:`viewEngine <viewEngine_obj>`                     | object               | N/A               | Contains information about caching and preloading      |

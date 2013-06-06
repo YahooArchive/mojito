@@ -1,6 +1,6 @@
 {
     "name": "mojito",
-    "version": "0.6.0",
+    "version": "0.6.1",
     "description": "Mojito provides an architecture, components and tools for developers to build complex web applications faster.",
     "author": "Drew Folta <folta@yahoo-inc.com>",
     "contributors": [
@@ -12,7 +12,8 @@
         "Isao Yagi <isao@yahoo-inc.com>",
         "Michael Ridgway <mridgway@yahoo-inc.com>",
         "Caridy Patino <caridy@yahoo-inc.com>",
-        "Alberto Chan <albertoc@yahoo-inc.com>"
+        "Alberto Chan <albertoc@yahoo-inc.com>",
+        "Lichun Zhan <lzhan@yahoo-inc.com>"
     ],
     "dependencies": {
         "colors": "*",
@@ -27,8 +28,8 @@
         "semver": "1.0.14",
         "wrench": "~1.3.9",
         "ycb": "~1.0.5",
-        "yui": "~3.9.1",
-        "yuidocjs": "0.3.44",
+        "yui": "~3.10.0",
+        "yuidocjs": "~0.3.14",
         "yuitest": "~0.7.4",
         "yuitest-coverage": "~0.0.6"
     },
@@ -56,7 +57,7 @@
         "express": "3.x",
         "mockery": "~1.4.0",
         "node-static": ">0.6.8",
-        "yahoo-arrow": "0.0.75",
+        "yahoo-arrow": "~0.0.77",
         "benchmark": "1.x"
     },
     "optionalDependencies": {

@@ -9,18 +9,18 @@ Requirements
 
 **System:** Unix-based system.
 
-**Software:** `Node.js (>= 0.6.0 < 0.9.0) <http://nodejs.org/>`_, `npm (> 1.0.0) <http://npmjs.org/>`_
+**Software:** `Node.js (>= 0.8.0) <http://nodejs.org/>`_, `npm (> 1.0.0) <http://npmjs.org/>`_
 
 .. _mojito_quickstart-install:
 
 Installation Steps
 ==================
 
-#. Get Mojito from the npm registry and globally install Mojito so that 
-   it can be run from the command line. You may need to use ``sudo`` if 
+#. Globally install the Mojito CLI package (``mojito-cli``) from the npm registry 
+   so that you can run Mojito commands. You may need to use ``sudo`` if 
    you run into permission errors.
 
-   ``$ npm install mojito -g``
+   ``$ npm install mojito-cli -g``
 
 #. Confirm that Mojito has been installed by running the help command.
 

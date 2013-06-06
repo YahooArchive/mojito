@@ -638,7 +638,7 @@ Using run.js
 #. To run the functional tests, you use the option ``-u`` and specify
    the path with the option ``--path``:
    
-   ``$ ./run.js test –u —path unit —browser phantomjs``
+   ``$ ./run.js test -u --path unit --browser phantomjs``
 
 #. To run individual unit and functional tests, you pass the test descriptor (JSON test 
    configuration file) to ``run.js``. 
@@ -714,8 +714,8 @@ Unit Tests
 
 * Default location when running ``npm test``:
 
-  * unit tests (XML) - ``mojito/tests/unit/artifacts/arrowreport/result.xml``
-  * unit tests (JSON) - ``mojito/tests/unit/artifacts/arrowreport/result.json``
+  * unit tests (XML) - ``mojito/tests/unit/artifacts/arrowreport/arrow-report/arrow-test-summary.xml``
+  * unit tests (JSON) - ``mojito/tests/unit/artifacts/arrowreport/arrow-report/arrow-test-summary.json``
 
 * Use the option ``--reportFolder`` to specify the location to write test results:
 
@@ -728,18 +728,14 @@ Functional Tests
 
 * Default Location when running ``npm test``:
 
-  * functional tests (XML) - ``mojito/artifacts/arrowreport/result.xml``
-  * functional tests (JSON) - ``mojito/artifacts/arrowreport/result.json``  
+  * functional tests (XML) - ``mojito/artifacts/arrowreport/arrow-report/arrow-test-summary.xml``
+  * functional tests (JSON) - ``mojito/artifacts/arrowreport/arrow-report/arrow-test-summary.json``  
 
 * As with the test results for unit tests, use the option ``--reportFolder`` to specify the 
   location to write test results. 
 
   ``$ ./run.js test -u --path unit --browser phantomjs --reportFolder <dir>``
 
-   .. warning:: Do not write your test results to ``mojito/tests`` as the results
-                for each test will overwrite the results of prior tests. This is
-                why the default location is ``mojito/artifacts/arrowreport`` and
-                not ``mojito/tests/``.
 
    
    

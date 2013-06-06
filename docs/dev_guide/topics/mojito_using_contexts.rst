@@ -204,7 +204,7 @@ configurations:
    files. Mojito will use the more qualified contexts if present over more 
    general contexts. For example, if the merged base and request context is 
    ``"environment:prod, device:iphone"``, then Mojito will use it over either 
-   ``"device:iphone"`` or ``"env:prod"``. If ``"environment:prod, device:iphone"`` 
+   ``"device:iphone"`` or ``"environment:prod"``. If ``"environment:prod, device:iphone"`` 
    is not present, Mojito will use the request context over the base context 
    as the resolved context. 
   
@@ -621,7 +621,7 @@ Creating Custom Contexts
 
 The Mojito framework defines default contexts that developers can map 
 configurations to. These default contexts are defined in the file 
-``dimensions.json <https://github.com/yahoo/mojito/blob/develop/source/lib/dimensions.json>`_ 
+`dimensions.json <https://github.com/yahoo/mojito/blob/develop/source/lib/dimensions.json>`_ 
 found in the Mojito source code. Developers can create an application-level 
 ``dimensions.json`` to define custom contexts that can be mapped to configurations 
 as well. 
