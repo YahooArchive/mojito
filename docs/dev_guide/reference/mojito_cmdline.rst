@@ -58,8 +58,6 @@ code that is easier to create using the command-line tool rather than by hand.
   or all of the controller, model, view, and binder.
 
 
-
-
 .. _mj_cmdlne-archetype:
 
 Mojito Archetypes
@@ -104,17 +102,18 @@ you can use the ``--directory`` or ``--dir`` option to specify where to write te
 
   ``$ mojito test [app] [.]``
 
-- To run the unit tests for a specific mojit:
+- To run the unit tests for a specific mojit, use one of the following:
 
-  ``$ mojito test [mojit] <mojit-path>``
+  - ``$ mojito test mojit <mojit-path>``
+  - ``$ mojito test mojit <mojit-name>``
 
 - To run the unit tests for one or more modules of a mojit:
 
-  ``$ mojito test [mojit] <mojit-path> <mojit-module1>, <mojit-module2>, <mojit-module3>``
+  ``$ mojito test mojit <mojit-path> <mojit-module1>, <mojit-module2>, <mojit-module3>``
 
    Or:
 
-   ``$ mojito test [mojit] <mojit-path> --testname <mojit-module1> --testname <mojit-module2> --testname <mojit-module3>``
+   ``$ mojito test mojit <mojit-path> --testname <mojit-module1> --testname <mojit-module2> --testname <mojit-module3>``
 
 
    If one or more mojit modules (i.e., the YUI modules for a portion of the mojit) are 
@@ -125,7 +124,7 @@ you can use the ``--directory`` or ``--dir`` option to specify where to write te
 
 
   - ``$ mojito test [app] --directory <test_results-path>``
-  - ``$ mojito test [mojit] <mojit-path> --dir <test_results-path>``
+  - ``$ mojito test mojit <mojit-path> --dir <test_results-path>``
 
 To run functional and unit tests for the Mojito framework,
 you would use the test framework `Yahoo! Arrow <https://github.com/yahoo/arrow>`_.
@@ -229,10 +228,10 @@ option ``--directory`` or ``--dir``.
 
   Output is written to ``{app-dir}/artifacts/docs/``.
 
-- To generate documentation for a specific mojit, run the following from the 
-  application directory:
+- To generate documentation for a specific mojit, run one of the following:
 
-  ``$ mojito docs mojit <mojit-name>``
+  - ``$ mojito docs mojit <mojit-path>``
+  - ``$ mojito docs mojit <mojit-name>``
 
   Output is written to ``{app-dir}/artifacts/docs/mojits/{mojit-name}/``.
 
