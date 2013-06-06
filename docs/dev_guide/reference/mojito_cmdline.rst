@@ -97,7 +97,7 @@ Unit tests are run using YUI Test invoked using the Mojito command-line tool.
 Test output is written to the console and also to the file 
 ``{CWD}/artifacts/test/result.xml``, where ``{CWD}`` is the current working directory. 
 Note when you run tests, the output may overwrite the results of past tests. To avoid this,
-you can use the ``--dir`` or ``--directory`` option to specify where to write test results.
+you can use the ``--directory`` or ``--dir`` option to specify where to write test results.
 
 
 - To run tests for an application:
@@ -124,8 +124,8 @@ you can use the ``--dir`` or ``--directory`` option to specify where to write te
 - To specify the output directory for test results:
 
 
-  - ``$ mojito test [app] --dir <test_results-path>``
-  - ``$ mojito test [mojit] <mojit-path> --directory <test_results-path>``
+  - ``$ mojito test [app] --directory <test_results-path>``
+  - ``$ mojito test [mojit] <mojit-path> --dir <test_results-path>``
 
 To run functional and unit tests for the Mojito framework,
 you would use the test framework `Yahoo! Arrow <https://github.com/yahoo/arrow>`_.
@@ -139,7 +139,8 @@ Code Coverage
 
 Code coverage is invoked in the same way as unit testing, but with the added 
 option ``--coverage`` or ``-c``. To run code coverage tests, you need to have 
-Java installed.
+Java installed. You can specify where to write the coverage results  using the option
+``--directory`` or ``--dir``.
 
 Coverage results are written to the console and also to file in the directory 
 ``{CWD}/artifacts/framework/coverage/``.  
@@ -147,7 +148,7 @@ Coverage results are written to the console and also to file in the directory
 
 - To run code coverage for a Mojito application:
 
-  ``$ mojito test --coverage app``
+  ``$ mojito test [app] --coverage``
 
 - To run code coverage for a specific mojit:
 
@@ -155,8 +156,8 @@ Coverage results are written to the console and also to file in the directory
 
 - To specify the output directory for test results:
 
-  - ``$ mojito test [app] -c --dir <test_results-path>``
-  - ``$ mojito test [mojit] -c <mojit-path> --directory <test_results-path>``
+  - ``$ mojito test [app] -c --directory <test_results-path>``
+  - ``$ mojito test [mojit] -c <mojit-path> --dir <test_results-path>``
 
 .. _mj_cmdlne-start_server:
 
@@ -180,7 +181,7 @@ Sanitizing Code
 Static code analysis is run using JSLint invoked using the Mojito command-line 
 tool. By default, the JSLint error report is written to 
 ``{CWD}/artifacts/jslint/jslint.html``. You can also specify the directory to
-write the error report to with the option ``--dir`` or ``directory``.
+write the error report to with the option ``--directory`` ``--dir``.
 
 - To run JSLint on the Mojito framework code:
 
@@ -188,7 +189,7 @@ write the error report to with the option ``--dir`` or ``directory``.
 
 - To run JSLint on an application, including its mojits:
 
-  ``$ mojito jslint app <app-name>``
+  ``$ mojito jslint app .``
 
 - To run JSLint on a specific mojit:
 
@@ -210,8 +211,9 @@ Documenting Code
 API documentation is generated using `YUI Doc <http://developer.yahoo.com/yui/yuidoc/>`_, 
 which is invoked using the Mojito command-line tool. Documentation output is 
 written to files in the locations specified below. Because it's based on YUI Doc,
-you can start a server that serves the documentation with the option ``--server`` and 
-specify a port with ``--port``.
+you can start a server that displays the documentation with the option ``--server`` and 
+specify a port with ``--port``. You can also specify the output directory with the 
+option ``--directory`` or ``--dir``.
 
 - To generate documentation for the Mojito framework itself:
 
