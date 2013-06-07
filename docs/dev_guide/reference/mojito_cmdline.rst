@@ -136,10 +136,9 @@ Code Coverage
 Code coverage is invoked in the same way as unit testing, but with the added 
 option ``--coverage`` or ``-c``. To run code coverage tests, you need to have 
 Java installed. You can specify where to write the coverage results  using the option
-``--directory`` or ``--dir``.
-
-Coverage results are written to the console and also to file in the directory 
-``{CWD}/artifacts/framework/coverage/``.  
+``--directory`` or ``--dir``. Coverage results are written to  
+the directory ``{CWD}/artifacts/test/`` or the path specified with the option
+``--directory`` or ``--dir``: ``<path>/artifacts/test/``
 
 
 - To run code coverage for a Mojito application:
@@ -152,8 +151,10 @@ Coverage results are written to the console and also to file in the directory
 
 - To specify the output directory for test results:
 
-  - ``$ mojito test [app] -c --directory <test_results-path>``
-  - ``$ mojito test [mojit] -c <mojit-path> --dir <test_results-path>``
+  - ``$ mojito test [app] -c --directory <path>``
+  - ``$ mojito test mojit -c <mojit-path> --dir <path>``
+
+  The coverage results will be written to ``<path>/artifacts/test/``.
 
 .. _mj_cmdlne-start_server:
 
