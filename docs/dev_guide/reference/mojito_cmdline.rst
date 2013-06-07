@@ -95,7 +95,8 @@ Unit tests are run using YUI Test invoked using the Mojito command-line tool.
 Test output is written to the console and also to the file 
 ``{CWD}/artifacts/test/result.xml``, where ``{CWD}`` is the current working directory. 
 Note when you run tests, the output may overwrite the results of past tests. To avoid this,
-you can use the ``--directory`` or ``--dir`` option to specify where to write test results.
+you can use the long option ``--directory`` or an abbreviation such as ``--dir`` to
+to specify where to write test results.
 
 
 - To run tests for an application:
@@ -110,7 +111,7 @@ you can use the ``--directory`` or ``--dir`` option to specify where to write te
 - To run the unit tests for one or more modules of a mojit, use one of the following:
 
   - ``$ mojito test mojit <mojit-path> --testname <mojit-module1> --testname <mojit-module2> --testname <mojit-module3>``
-  - ``$ mojito test mojit <mojit-path> <mojit-module1>, <mojit-module2>, <mojit-module3>``
+  - ``$ mojito test mojit <mojit-path> <mojit-module1>,<mojit-module2>,<mojit-module3>``
 
 
    If one or more mojit modules (i.e., the YUI modules for a portion of the mojit) are 
@@ -131,14 +132,15 @@ to run the framework tests for Mojito.
 .. _mj_cmdlne-code_coverage:
 
 Code Coverage
-=============
+-------------
 
 Code coverage is invoked in the same way as unit testing, but with the added 
 option ``--coverage`` or ``-c``. To run code coverage tests, you need to have 
 Java installed. You can specify where to write the coverage results  using the option
 ``--directory`` or ``--dir``. Coverage results are written to  
 the directory ``{CWD}/artifacts/test/coverage/`` by default. You can also specify the 
-path to write results with the option ``--directory`` or ``--dir`` (see example below).
+path to write results with the long option ``--directory`` or an abbreviation such as 
+``--dir`` (see example below).
 
 
 - To run code coverage for a Mojito application:
@@ -178,7 +180,8 @@ Sanitizing Code
 Static code analysis is run using JSLint invoked using the Mojito command-line 
 tool. By default, the JSLint error report is written to 
 ``{CWD}/artifacts/jslint/jslint.html``. You can also specify the directory to
-write the error report to with the option ``--directory`` ``--dir``.
+write the error report to with the long option ``--directory`` or an abbreviation such 
+as ``--dir``.
 
 - To run JSLint on the Mojito framework code:
 
@@ -210,7 +213,7 @@ which is invoked using the Mojito command-line tool. Documentation output is
 written to files in the locations specified below. Because it's based on YUI Doc,
 you can start a server that displays the documentation with the option ``--server`` and 
 specify a port with ``--port``. You can also specify the output directory with the 
-option ``--directory`` or ``--dir``.
+the option ``--directory`` or an abbreviation such as ``--dir``.
 
 - To generate documentation for the Mojito framework itself:
 
