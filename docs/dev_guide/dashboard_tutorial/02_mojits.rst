@@ -2,6 +2,8 @@
 2. Mojits: Powering Your App
 ============================
 
+.. _02_mojits-intro:
+
 Introduction
 ============
 
@@ -19,10 +21,14 @@ MVC structure underneath the hood. As you We’ll also discuss the difference
 between a mojit definition and a mojit instance and how those are 
 manifested in configuration. 
 
+.. _02_mojits-est_time:
+
 Estimated Time
 --------------
 
 15 minutes
+
+.. _02_mojits-cover:
 
 What We’ll Cover
 ----------------
@@ -32,6 +38,8 @@ What We’ll Cover
 - ActionContext and ActionContext addons
 - views and templates
 
+.. _02_mojits-final:
+
 Final Product
 -------------
 
@@ -40,8 +48,17 @@ default information. We’ve created new mojits and reworked the
 githubMojit to show some information, which required changing the 
 controller, model, and view (templates).
 
+.. image:: images/02_mojits.png
+   :height: 500 px
+   :width: 650 px
+   :alt: Screenshot of 02 mojits application.
+
+.. _02_mojits-before_starting:
+
 Before Starting
 ---------------
+
+.. _02_before_starting-review:
 
 Review of the Last Module
 #########################
@@ -56,6 +73,8 @@ commands to do the following:
 - start applications
 - specify ports and contexts when starting applications.
 
+. _02_before_starting-prereqs:
+
 Setting Up
 ##########
 
@@ -64,9 +83,12 @@ so you’ll want to make a copy of the application that we made:
 
 ``$ cp -r 01_mojito_cli_basics 02_mojits``
 
+.. _02-lesson:
 
 Lesson: Mojits and More Mojits
 ==============================
+
+.. _02_lesson-mojit:
 
 What is a Mojit?
 ----------------
@@ -79,6 +101,8 @@ of the mojit definition, is called the mojit instance.
 
 We’re going to take a closer look at both the mojit definition and instance, 
 how they are created and used.
+
+.. _02_lesson-mojit_def:
 
 Mojit Definitions
 -----------------
@@ -94,7 +118,7 @@ tests, and views:
 
 :: 
 
-   testMojit
+   Github
    ├── assets
    │   └── index.css
    ├── binders
@@ -112,6 +136,7 @@ tests, and views:
    └── views
        └── index.hb.html
 
+.. _02_lesson-controllers:
 
 Controllers, Models, and YUI
 ----------------------------
@@ -125,18 +150,18 @@ the requires array that allows you to list dependencies and a namespace:
 
 .. code-block:: javascript
 
-   YUI.add('testMojit', function (Y, NAME) {
+   YUI.add('Github', function (Y, NAME) {
 
      Y.namespace('mojito.controllers')[NAME] = {
      // Code here
      };
-   }, '0.0.1', {requires: ['mojito', 'mojito-models-addon', 'testMojitModelFoo']});
+   }, '0.0.1', {requires: ['mojito', 'mojito-models-addon', 'GithubModelFoo']});
 
 ``foo.server.js``
 
 .. code-block:: javascript
 
-   YUI.add('testMojitModelFoo', function(Y, NAME) {
+   YUI.add('GithubModelFoo', function(Y, NAME) {
     
      Y.namespace('mojito.models')[NAME] = {
        init: function(config) {
@@ -146,34 +171,40 @@ the requires array that allows you to list dependencies and a namespace:
      };
    }, '0.0.1', {requires: []});
 
+.. _02_lesson-ac:
+
 ActionContext Object
 --------------------
 
-In mojit controllers, functions in the mojito.controller namespace are 
+In mojit controllers, functions in the ``mojito.controller`` namespace are 
 passed a special object called the Action Context. We’ll be calling it 
-the ActionContext object or ac for short.
+the ``ActionContext`` object or ``ac`` for short.
 
 The Action Context gives you access to important features of the Mojito 
 framework. One critical feature is the ability to send data to templates and 
 have those templates executed. Mojito also provides a library that can be 
-accessed through the ac object through a mechanism called addons.  We’ll 
-take a look at done.
+accessed through the ``ac`` object through a mechanism called addons.  We’ll 
+take a look at the addon method ``done``.
 
 For your mojits to render templates, controller functions need to call 
-the method ac.done. The done method also allows you to choose the view to 
+the method ``ac.done``. The ``done`` method also allows you to choose the view to 
 render and pass meta data, which we will cover in later chapters. If a 
 routing path is mapped to an action (controller function) that doesn’t 
-call ac.done, your application will hang until it times out.  
+call ``ac.done``, your application will hang until it times out.  
+
+.. _02_lesson-addons:
 
 ActionContext Addons
 --------------------
 
 The Action Context addons provide functionality that lives both on the 
 server and client. Each addon provides additional functions through a 
-\namespacing object that is appended to the ActionContext object. To use 
+namespacing object that is appended to the ``ActionContext`` object. To use 
 addons, function, the addons need to require addons. The default Mojito 
 application uses the Models and Assets addon. As our application gets 
 more complicated, we’ll be relying on addons to do more work. 
+
+.. _02_lesson_addons-features:
 
 Features
 ########
@@ -181,22 +212,26 @@ Features
 The Action Context addons allow you to do the following:
 
 - access assets, such as CSS and JavaScript files
-- get configuration information (application.json, routes.json, defaults.json, definition.json)
+- get configuration information (``application.json``, ``routes.json``, ``defaults.json``, 
+  ``definition.json``)
 - get and set cookies
 - localize content
 - access query and response parameters
 - get and set HTTP headers
 - create URLs
 
+.. _02_lesson_addons-syntax:
+
 Syntax
 ######
 
-Using the ActionContext object ac, you would call a {method} from an {addon} 
+Using the ActionContext object ``ac``, you would call a ``{method}`` from an ``{addon}`` 
 with the following syntax: ``ac.{addon}.{method}``
 
 For example, in the application that we will be building, we use the Config 
 addon to get the value for the key title: ``ac.config.get('title')``
 
+.. _02_lesson-req_addons:
 
 Requiring Addons
 ----------------
@@ -207,7 +242,7 @@ is required by adding the string ``'mojito-config-addon'`` to the ``requires`` a
 
 .. code-block:: javascript
 
-   YUI.add('Foo', function(Y, NAME) {
+   YUI.add('Github', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = {
        index: function(ac) {
          var title = ac.config.get(‘title’);
@@ -216,6 +251,7 @@ is required by adding the string ``'mojito-config-addon'`` to the ``requires`` a
      // Require the addon by adding the param name to the requires array
    }, '0.0.1', {requires: ['mojito', 'mojito-config-addon']});
 
+.. _02_lesson-controller_methods:
 
 Controller Methods
 ------------------
@@ -232,6 +268,7 @@ methods in the controller namespace as shown below.
      };
    ...
 
+.. _02_lesson-views:
 
 Views 
 -----
@@ -241,10 +278,10 @@ system used by Mojito is Handlebars. You can use other templating systems
 as well, but the for the purpose of this tutorial, we’ll only be covering 
 Handlebars.
 
-If you know nothing about Handlebars, we suggest that you read the Handlebars 
-documentation. When a controller function calls ac.done with an object as a parameter, 
-the object can be passed to the template file. The value of the property or 
-key will replace the Handlebars expression.
+If you know nothing about Handlebars, we suggest that you read the `Handlebars 
+documentation <http://handlebarsjs.com/>`_. When a controller function calls ac.done with 
+an object as a parameter, the object can be passed to the template file. The value of the 
+property or key will replace the Handlebars expression.
 
 For example, in the controller function index below, the object ``{ status: “It’s working” }`` 
 is passed by default to the template ``index.hb.html``.
@@ -256,8 +293,8 @@ is passed by default to the template ``index.hb.html``.
        ac.done({ status: “This is an example controller method.” });
    ...
 
-In the ``index.hb.html`` file below, the Handlebars expression ``{{status}}`` is replaced by the 
-string “This is an example controller method.” when the template is rendered.
+In the ``index.hb.html`` file below, the Handlebars expression ``{{status}}`` is replaced 
+by the string ``"This is an example controller method."`` when the template is rendered.
 
 .. code-block:: html
 
@@ -266,20 +303,21 @@ string “This is an example controller method.” when the template is rendered
    </div>
 
 
-.. Left of here at 2:36 p.m.
+.. _02_lesson-mojit_configs:
 
 Mojit Configuration Files
 -------------------------
 
-Mojits have two files for defining configurations. The file defaults.json 
+Mojits have two files for defining configurations. The file ``defaults.json`` 
 allows the mojit to have defaults that can be overridden. The file 
-definition.json allows the mojit to define key-value pairs that can 
-be accessed by the controller. You can also use the settings property 
+``definition.json`` allows the mojit to define key-value pairs that can 
+be accessed by the controller. You can also use the ``settings`` property 
 to specify a context for a runtime environment.
 
-In the ``defaults.json`` file, you list configurations in the config object as shown below. 
-These configurations are defaults that will be used unless a mojit instance has 
-configurations with the same keys, which we will look at in the next section on mojit instances.
+In the ``defaults.json`` file, you list configurations in the ``config`` object as shown 
+below. These configurations are defaults that will be used unless a mojit instance has 
+configurations with the same keys, which we will look at in the next section on mojit 
+instances.
 
 .. code-block:: javascript
 
@@ -302,7 +340,7 @@ configurations with the same keys, which we will look at in the next section on 
       }
     ]
 
-The configurations in definition.json do not need to be in a ``config`` object. 
+The configurations in ``definition.json`` do not need to be in a ``config`` object. 
 You just list key-value pairs:
 
 .. code-block:: javascript
@@ -322,28 +360,30 @@ You just list key-value pairs:
      }
    ]
 
-
+.. _02_lesson-mojit_instances:
 
 Mojit Instances
 ---------------
 
 We have already seen that Mojito creates anonymous instances of 
-mojit definitions by prepending the symbol @ the the mojit name, 
+mojit definitions by prepending the symbol ``@`` the the mojit name, 
 allowing you to execute a mojit action. Generally though, you define a 
 mojit instances in configuration, so that the Mojito framework can create 
 the instances. The configuration file that is used for defining mojit instances 
-and many other application-level configurations is application.json. When you 
-run the start command, the Mojito framework parses and loads the application 
+and many other application-level configurations is ``application.json``. When you 
+run the ``start`` command, the Mojito framework parses and loads the application 
 configuration, so mojit instances can be dispatched and their actions 
 (controller functions) can be executed.
 
-Configuring a Mojit Instance
-----------------------------
+.. _02_lesson-instances-configuration:
 
-Mojit instances are configured in the specs object in application.json. 
-You create a named object that has a type property that specifies an existing 
-mojit definition. In the example below, the mojit instance foo is defined as 
-being of type fooMojit. 
+Configuring a Mojit Instance
+############################
+
+Mojit instances are configured in the ``specs`` object in ``application.json``. 
+You create a named object that has a ``type`` property that specifies an existing 
+mojit definition. In the example below, the mojit instance ``github`` is defined as 
+being of type ``Github``. 
 
 .. code-block:: javascript
 
@@ -351,12 +391,14 @@ being of type fooMojit.
      {
        "settings": [ "master" ],
        "specs": {
-         “foo”: {
-           “type”: “fooMojit”
+         "github": {
+           “type”: “Github”
          }
        }
      }
    ]
+
+.. _02_lesson-map_routes:
 
 Mapping Routing Paths to Actions
 --------------------------------
@@ -366,16 +408,16 @@ mojit definition, your application also gets some default routing
 paths that let you execute mojit actions with a URL. We use the term 
 action to differentiate the controller functions of the mojit definition 
 from the same functions run by a mojit instance. When you create a mojit, 
-as you might have already guessed, you can use the following URL syntax: 
+as you might have already guessed, you can use the following URL
 schema to execute mojit actions:  ``http://{domain}:{port}/@{mojit_name}/{action}/``
 
 As with using anonymous instances, you obviously don’t want to use these 
 default routes created by Mojito. You instead map routing paths to mojit 
-actions in the configuration file routes.json.  The configuration object that 
+actions in the configuration file ``routes.json``.  The configuration object that 
 defines routing information has properties for defining the routing path, HTTP 
 methods that are accepted, parameters, and the mojit actions to execute. In the 
-example routes.json below, the root object configures the application to execute 
-the action index of the mojit foo when an HTTP GET call is made to the path “/”:
+example ``routes.json`` below, the root object configures the application to execute 
+the action index of the mojit foo when an HTTP GET call is made to the path ``"/"``:
 
 .. code-block:: javascript
 
@@ -384,36 +426,40 @@ the action index of the mojit foo when an HTTP GET call is made to the path “/
        "settings": [ "master" ],
        "root": {
          "path": "/",
-         "call": "foo.index",
+         "call": "github.index",
          "verbs": [ "get" ]
        }
      }
    ]
+
+.. _02_lesson-http_req_mojit_action:
 
 From HTTP Request to Mojit Action
 ---------------------------------
 
 The diagram below shows the relationship of mojit definition, mojit instance, 
 and routing paths. In addition, you can also see the relationship of the application 
-within the framework. Notice also that the mojit controller has the function index that 
-maps to the action index specified in the routing configuration.
+within the framework. Notice also that the mojit controller has the function ``index`` 
+that maps to the action index specified in the routing configuration.
+
+.. image:: images/mojits.png
+   :height: 500 px
+   :width: 650 px
+   :alt: Diagram showing how an HTTP request triggers a mojit action.
 
 
-
-
-.. tip::  Nulla mattis volutpat justo, et elementum quam condimentum vel. 
-          Cras dignissim hendrerit dui, at mollis nisi commodo in. Integer eget 
-          sem velit. Sed tempus est quis ligula vulputate vulputate
-
-
+.. _02_lesson-naming_conventions:
 
 Recommended Naming Conventions for Mojits
 -----------------------------------------
 
-When create mojits (mojit definitions) with the command-line tool, we will be using upper camel case for
-the mojit name, such as ``Github``. For mojit instances, we will be using lower case, such as ``github``.
-This is the typical convention when defining a class and creating an object, so you can think of
-the mojit definition as the class definition and the mojit instance as an instance or object of that class.
+When create mojits (mojit definitions) with the command-line tool, we will be using upper 
+camel case for the mojit name, such as ``Github``. For mojit instances, we will be using 
+lower case, such as ``github``. This is the typical convention when defining a class and 
+creating an object, so you can think of the mojit definition as the class definition and 
+the mojit instance as an instance or object of that class.
+
+.. _02_mojits-create:
 
 Creating the Application
 ========================
@@ -422,7 +468,7 @@ We’re going to extend the application we created in the last module with sever
 mojits and then configure mojit instances and routing paths. 
 
 After you have copied the application that you made in the last module (see Setting Up), 
-change into the application 02_mojits.
+change into the application ``02_mojits``.
 
 #. Let’s create mojits that will help generate output for the different parts of 
    the HTML page:
@@ -584,7 +630,7 @@ change into the application 02_mojits.
    You’ll see that model data was passed to the controller and in turn passed to the 
    template, all according to our plan. 
 
-       
+.. _02_mojits-ts:       
 
 Troubleshooting
 ===============
@@ -605,6 +651,8 @@ Error: listen EADDRINUSE
 If you start Mojit and get the following error, it means that Mojito is 
 already running. You’ll need to cancel that process before you can restart Mojito.
 
+.. _02_mojits-summary:     
+
 Summary
 =======
 
@@ -620,15 +668,21 @@ other frameworks.
 - mojit and application configuration
 - templates for views
 
+.. _02_mojits-qa:     
+
 Q&A
 ===
 
 How do you...
 
+.. _02_mojits-test:    
+
 Test Yourself
 =============
 
 Modify the application that we created so that it...
+
+.. _02_mojits-terms:   
 
 Terms
 =====
@@ -638,10 +692,14 @@ Terms
 - Action Context
 - ac
 
+.. _02_mojits-src:  
+
 Source Code
 ===========
 
 - [app_part{x}](http://github.com/yahoo/mojito/examples/quickstart_guide/app_part{x})
+
+.. _02_mojits-reading:  
 
 Further Reading
 ===============
