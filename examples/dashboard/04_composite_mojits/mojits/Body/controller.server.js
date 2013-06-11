@@ -27,9 +27,7 @@ YUI.add('Body', function(Y, NAME) {
             ac.composite.done({
                 title: "Statistics for YUI"
             });
-   
         }
-
     };
 
 }, '0.0.1', {requires: ['mojito','mojito-composite-addon']});
