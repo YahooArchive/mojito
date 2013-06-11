@@ -9,9 +9,11 @@ Deprecations, Removals
 
 Features
 --------
+* PR #1163: Rehydration of data from server to client and from client to server. Any data set thru `mojitProxy.data.set()` or `ac.data.set()` will travel back and forward between the client and server runtime to preserve the state of the mojit instance when using the rpc tunnel.
 
 Bug Fixes
 ---------
+* Issue #1159: tunnel request fails if mojito-data-addon is required on the server side controller.
 
 Acknowledgements
 ----------------
