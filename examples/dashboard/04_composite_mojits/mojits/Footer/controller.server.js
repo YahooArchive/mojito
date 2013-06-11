@@ -26,7 +26,5 @@ YUI.add('Footer', function(Y, NAME) {
                 title: "Copyright 2013 Yahoo! Inc."
             });
         }
-
     };
-
 }, '0.0.1', {requires: ['mojito']});

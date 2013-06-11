@@ -26,7 +26,7 @@ YUI.add('GithubModelFoo', function(Y, NAME) {
          *        data has been retrieved.
          */
         getData: function(callback) {
-            callback(null, { watchers: 1, forks: 1 });
+            callback({ watchers: 1, forks: 1 });
         }
 
     };
