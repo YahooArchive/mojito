@@ -36,16 +36,20 @@ but we’ll be relying on the frame mojit to create the page and
 insert assets (CSS). The application will create two pages, one 
 based on a query parameter.
 
+.. image:: images/03_frame_mojits.png
+   :height: 302 px
+   :width: 650 px
+   :alt: Screenshot of 03 frame mojits application.
+
+
 Before Starting
 ---------------
 
 Review of the Last Module
 #########################
 
-In the last module, we discussed mojits. If the differences 
-between mojit definitions and instances, how to create the dithe 
-mojit MVC design, and how y and then learned how to use the basic 
-commands to do the following:
+In the last module, we discussed mojits. We covered the following
+about mojits:
 
 - differences between the mojit definition and mojit instance
 - how to create mojit definitions and instances
@@ -87,27 +91,27 @@ HTMLFrameMojit
 --------------
 
 The HTMLFrameMojit is a generic frame mojit that tries to meet the requirements 
-of most use cases. For example,  the HTMLFrameMojit creates the elements <html>, 
-<head>, and <body> and then attaches assets such as CSS and JavaScript files 
-into either the <head> or <body> elements and the content from its child mojits 
-to the <body>.
+of most use cases. For example,  the HTMLFrameMojit creates the elements ``<html>``, 
+``<head>``, and ``<body>`` and then attaches assets such as CSS and JavaScript files 
+into either the ``<head>`` or ``<body>`` elements and the content from its child mojits 
+to the ``<body>``.
 
-As a frame mojit, the HTMLFrameMojit is responsible for the creation of the HTML 
-page, and thus, the instance of the HTMLFrameMojit must be the top-level mojit 
+As a frame mojit, the ``HTMLFrameMojit`` is responsible for the creation of the HTML 
+page, and thus, the instance of the ``HTMLFrameMojit`` must be the top-level mojit 
 in the application. This will be clearer when we discuss configuring the 
-HTMLFrameMojit in the next section. 
+``HTMLFrameMojit`` in the next section. 
 
 
 Configuration
 -------------
 
 As with defining instances of other mojit types, you define an instance of the 
-HTMLFrameMojit in  application.json. As we have said, because frame mojits have 
-to be the top-level mojit of an application, the instance of HTMLFrameMojit has 
+``HTMLFrameMojit`` in ``application.json``. As we have said, because frame mojits have 
+to be the top-level mojit of an application, the instance of ``HTMLFrameMojit`` has 
 to be the parent of child mojits. To create the parent-child relationship, the 
 child mojit instance is created within the config object of the parent mojit.  
-In the example application.json below, the child instance is for the mojit 
-definition githubMojit.
+In the example ``application.json`` below, the child instance is for the mojit 
+definition ``Github``.
 
 .. code-block:: javascript
 
@@ -120,7 +124,7 @@ definition githubMojit.
            "config": {
              "title": "Mojito/YUI Dashboard Application",
              "child" : {
-               "type" : "githubMojit"
+               "type" : "Github"
              }
            }
          }
@@ -139,7 +143,7 @@ One of the most important reasons to use a frame mojit is to have
 your mojit code deployed to the client. The Mojito framework will 
 deploy framework code as well as application code to the client. 
 
-In the config object for the parent mojit (our frame mojit HTMLFrameMojit), 
+In the config object for the parent mojit (our frame mojit ``HTMLFrameMojit``), 
 you set the deploy property to true. 
 
 .. code-block:: javascript
@@ -153,7 +157,7 @@ you set the deploy property to true.
            "config": {
              "deploy": true,
              "child" : {
-               "type" : "githubMojit"
+               "type" : "Github"
              }
            }
          }
@@ -191,13 +195,13 @@ Configuring Assets
 
 When we say configuring assets, we are really just defining the 
 location of our assets so that Mojito can find them. In the ``application.json`` 
-file, we use the assets object, which contains the array css for the paths 
-to CSS assets and the array js for paths to the JavaScript assets. 
+file, we use the ``assets`` object, which contains the array ``css`` for the paths 
+to CSS assets and the array ``js`` for paths to the JavaScript assets. 
 
-The assets object has a top and bottom property so that you can attach 
-assets to the <head> element or to the <body> element right before the 
-closing </body> tag. Within the top or bottom objects, you can have 
-either a css or js array for defining paths to CSS or JavaScript assets. 
+The ``assets`` object has a ``top`` and ``bottom`` property so that you can attach 
+assets to the ``<head>`` element or to the ``<body>`` element right before the 
+closing ``</body>`` tag. Within the ``top`` or ``bottom`` objects, you can have 
+either a ``css`` or ``js`` array for defining paths to CSS or JavaScript assets. 
 
 .. code-block:: javascript
 
@@ -209,7 +213,7 @@ either a css or js array for defining paths to CSS or JavaScript assets.
            "deploy": true,
            "title": "Trib - Contribute to the Tribe",
              "child": {
-               "type": "githubMojit"
+               "type": "Github"
              },
              "assets": {
                "top": {
@@ -227,37 +231,37 @@ Static Assets
 
 Static assets are simply those assets that your application can 
 refer to with a static URL. To do this, you add your CSS and JavaScript 
-file to an assets directory and then refer to the static URL to the 
+file to an ``assets`` directory and then refer to the static URL to the 
 assets in your template.
 
-For application-level assets, you place the assets in the assets directory 
-directly beneath the application directory: {app_name}/assets/
+For application-level assets, you place the assets in the ``assets`` directory 
+directly beneath the application directory: ``{app_name}/assets/``
 
-For mojit-level assets, you just use the assets directory under a mojit: mojits/{mojit_name}/assets
+For mojit-level assets, you just use the assets directory under a mojit: ``mojits/{mojit_name}/assets``
 
 So, for example, suppose we want the file index.css to be available to all of the 
 mojits in our application 03_frame_mojits, we would place the file in the 
-following location: 03_frame_mojits/assets/index.css
+following location: ``03_frame_mojits/assets/index.css``
 
 Static URL to Assets
 ####################
 
 The static path to assets is important because your templates can include 
-assets with this path. The static path has the following syntax: /{prefix}/{source_path}/{relative_path}
+assets with this path. The static path has the following syntax: ``/{prefix}/{source_path}/{relative_path}``
 
-The {prefix} is static by default, but you can configure the prefix with the 
-staticHandling object. The {source_path} can be mojito for framework assets, an 
+The ``{prefix}`` is ``static`` by default, but you can configure the prefix with the 
+``staticHandling`` object. The ``{source_path}`` can be ``mojito`` for framework assets, an 
 application name, or the mojit name.  
 
-For example, the static path for the application-level asset index.css in the our 
-application 03_frame_mojits would be /static/03_frame_mojits/assets/index.css.
+For example, the static path for the application-level asset ``index.css`` in the our 
+application ``03_frame_mojits`` would be ``/static/03_frame_mojits/assets/index.css``.
 
 Using Static Assets in a Template
 #################################
 
 From your template, you can use a link tag pointing to the static URL for your assets.
-So, for the application-level asset index.css that we have been discussing, you would 
-simply use a link element and point to the static URL in your index.hb.html 
+So, for the application-level asset ``index.css`` that we have been discussing, you would 
+simply use a link element and point to the static URL in your ``index.hb.html`` 
 template as seen below:
 
 .. code-block:: html
@@ -286,8 +290,8 @@ The Assets addon has methods for adding JavaScript, CSS, and meta data
 to your page. The Assets addon knows to look in the mojit’s assets directory 
 to find files and creates the HTML frame to attach both CSS and JavaScript assets.
 
-For example, in your mojit, if you have assets/index.css, you can just pass the 
-name of the file to the Assets addon method addCss:
+For example, in your mojit, if you have ``assets/index.css``, you can just pass the 
+name of the file to the Assets addon method ``addCss``:
 
 .. code-block:: javascript
 
@@ -315,18 +319,18 @@ what we’re going to show you next.
 Frame Assets
 ############
 
-The HTMLFrameMojit can attach both mojit-level and application-level assets 
-to the page. You just need to add the asset files to the appropriate assets 
-directory and rhw define the location of your assets in an assets object in 
-application.json.
+The ``HTMLFrameMojit`` can attach both mojit-level and application-level assets 
+to the page. You just need to add the asset files to the appropriate ``assets`` 
+directory and then define the location of your assets in an ``assets`` object in 
+``application.json``.
 
-In the example application.json below, the HTMLFrameMojit instance frame 
-has one child mojit with a CSS asset. Notice that the assets object is a 
-property of the instance of type HTMLFrameMojit. You use the top property 
-to attach the asset files to the <head> element. If you were going to 
-attach JavaScript assets, you could use the top or bottom property to 
-specify JavaScript assets. When using the bottom property, the asset is 
-inserted right before the closing <body> tag. You’ll also notice that the 
+In the example ``application.json`` below, the ``HTMLFrameMojit`` instance frame 
+has one child mojit with a CSS asset. Notice that the ``assets`` object is a 
+property of the instance of type ``HTMLFrameMojit``. You use the top property 
+to attach the asset files to the ``<head>`` element. If you were going to 
+attach JavaScript assets, you could use the ``top`` or ``bottom`` property to 
+specify JavaScript assets. When using the ``bottom`` property, the asset is 
+inserted right before the closing ``<body>`` tag. You’ll also notice that the 
 path to the assets uses the static URL syntax: ``/{prefix}/{source_path}/{relative_path}``
 
 .. code-block:: javascript
@@ -361,8 +365,8 @@ path to the assets uses the static URL syntax: ``/{prefix}/{source_path}/{relati
    ]
 
 
-Based on the application.json above, the HTMLFrameMojit will create the HTML skeleton 
-and attach the CSS and JavaScript assets in the <head> and <body> elements as shown below:
+Based on the ``application.json`` above, the ``HTMLFrameMojit`` will create the HTML skeleton 
+and attach the CSS and JavaScript assets in the ``<head>`` and ``<body>`` elements as shown below:
 
 .. code-block:: html
 
@@ -445,7 +449,7 @@ Creating the Application
 
 #. Our frame mojit is configured to attach a CSS file to our page, so we’re still 
    going to need to add the CSS file to our application. Based on the static URL 
-   to the asset trib.css, you can see that we’re using an application-level asset, 
+   to the asset ``trib.css`` you can see that we’re using an application-level asset, 
    so let’s create the file ``assets/trib.css`` with the following:
 
    .. code-block:: css
@@ -457,7 +461,7 @@ Creating the Application
       div {
         xborder: 1px solid red;
       } 
-      .frameMojit {
+      .a {
         padding-top: 30px;
       }
       .mymodule {
@@ -481,7 +485,7 @@ Creating the Application
       }
 
 #. If you remember the screenshot for the final application, you’ll recall that our 
-   application displayed two different versions of the same page. The HTMLFrameMojit 
+   application displayed two different versions of the same page. The ``HTMLFrameMojit`` 
    is going to take care of the CSS file we added earlier, but we’re going to need 
    another CSS file for the second page. For that, we’re going to use the Assets 
    addon to dynamically add custom CSS based on a query parameter. To get the query 
@@ -525,19 +529,19 @@ Creating the Application
 
 #. We should call out the use of the addons that we mentioned. The ``Params`` addon 
    method ``getFromUrl`` is going to fetch the value for the query parameter ``view``. 
-   So, if the HTTP GET request is made to http://localhost:8666?view=custom, 
-   we’re going to get the string ‘custom’. As for the ``Assets`` addon, we’re 
-   dynamically attaching the application-level CSS file ``custom.css`` to the ``<head>`` 
+   So, if the HTTP GET request is made to ``http://localhost:8666?view=custom``, 
+   we’re going to get the string ``"custom"``. As for the ``Assets`` addon, we’re 
+   dynamically attaching the application-level CSS file ``trib.css`` to the ``<head>`` 
    element with the method ``addCss``.
 
 #. When we called ``ac.done``, we passed the variable view as the second parameter. 
    If you recall from the Mojits module, you can tell Mojito to render a different 
    template other than the default, which is the template with the same name as the 
    action being executed. In this application, we’re telling Mojito to either use 
-   the default or the ‘custom’ view, which means we need the custom template 
-   ``custom.hb.html`` for Mojito to execute. So, in the views directory, copy the 
+   the default or the ``custom`` view, which means we need the custom template 
+   ``custom.hb.html`` for Mojito to execute. So, in the ``views`` directory, copy the 
    ``index.hb.html`` to ``custom.hb.html`` and just change the class of the inner ``<div>``
-   tag from "mymodule" to "mycustom".
+   tag from ``"mymodule"`` to ``"mycustom"``.
    
 #. Our custom CSS doesn’t really do much, but the more important takeaway is how 
    to choose a template other than the default and use the Assets addon to dynamically 
@@ -565,7 +569,7 @@ Creating the Application
    template that is rendered and attached to the page by ``HTMLFrameMojit`` by going 
    to http://localhost:8666. The page doesn’t look very different, but take a look 
    at the page source. You’ll see that the ``HTMLFrameMojit`` has created the HTML 
-   skeleton, inserted the value for the <title> element and attached our CSS and 
+   skeleton, inserted the value for the ``<title>`` element and attached our CSS and 
    some JavaScript files.
 
 #. To look at our custom template and CSS, append the query parameter ``?view=custom``. 

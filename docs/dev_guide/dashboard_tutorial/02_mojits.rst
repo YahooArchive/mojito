@@ -49,7 +49,7 @@ githubMojit to show some information, which required changing the
 controller, model, and view (templates).
 
 .. image:: images/02_mojits.png
-   :height: 500 px
+   :height: 525 px
    :width: 650 px
    :alt: Screenshot of 02 mojits application.
 

@@ -2,18 +2,21 @@
 4. Composite Mojits
 ===================
 
+.. _04_composite_mojits-intro:
+
 Introduction
 ============
 
 Mojito allows you to establish parent-child relationships between your mojits, 
 so parent mojits can execute child mojits and attach the content to the 
-parent mojit’s template. Sound familiar? Yep, the HTMLFrameMojit is a 
-frame mojit that is also a composite mojit. In fact, all frame mojits 
+parent mojit’s template. The parent mojit in this relationship is called a 
+composite mojit. The frame mojit ``HTMLFrameMojit`` that we looked in the last module is 
+also a composite mojit. In fact, all frame mojits 
 are composite mojits, but composite mojits do not have to be frame mojits. 
 A frame mojit can also have a child mojit that is a composite mojit, 
 extending the parent-child relationship. 
 
-In this module, we’re going to keep using the HTMLFrameMojit and have a child 
+In this module, we’re going to keep using the ``HTMLFrameMojit`` and have a child 
 that is a composite mojit, which will have several children. To make it more 
 interesting, one of the children is also a composite mojit that has a child. 
 The composite mojits will manage the child mojits that create our content, 
@@ -22,9 +25,14 @@ remember all those mojits that we created earlier that have been just sitting
 there unused? Well, we’re finally going to use them for the application that 
 we’ll create in this module.
 
+.. _04_intro-est_time:
+
 Estimated Time
 --------------
+
 15 minutes
+
+.. _04_intro-cover:
 
 What We’ll Cover
 ----------------
@@ -34,14 +42,26 @@ What We’ll Cover
 - passing data from parent to child mojits
 - attaching child mojits to templates
 
+.. _04_intro-final:
+
 Final Product
 -------------
 
-As you can see from the screenshot, we’re going to spiffy up our application 
-a great deal with the help of YUI CSS. 
+As you can see from the screenshot, we haven't changed much aside from adding the header
+and footer to the page, but beneath the surface, we have also changed the structure of the
+application, which we'll talk about shortly.
+
+.. image:: images/03_frame_mojits.png
+   :height: 634 px
+   :width: 650 px
+   :alt: Screenshot of 04 composite mojits application.
+
+.. _04_intro-before_starting:
 
 Before Starting
 ---------------
+
+.. _04_before_starting-review:
 
 Review of the Last Module
 #########################
@@ -55,6 +75,7 @@ covered the following:
 - configuring parent-child relationships between mojits
 - adding assets with the Assets addon, with static URLs, and with the HTMLFrameMojit
 
+.. _04_before_starting-setting_up:
 
 Setting Up
 ##########
@@ -62,13 +83,12 @@ Setting Up
 
 ``$ cp -r 03_frame_mojit 04_composite_mojits``
 
-Source Code for Example
-#######################
-
-[app_part{x}](http://github.com/yahoo/mojito/examples/quickstart_guide/app_part{x})
+.. _04_composite_mojits-lesson:
 
 Lesson: Composite Mojits
 ========================
+
+.. _04_lesson-intro:
 
 Introduction
 ------------
@@ -78,6 +98,8 @@ it can execute with the Composite addon. This allows you to have central
 control over several mojits that are responsible for generating content for 
 parts of a page, and it also allows you to share data and configuration with 
 child mojits.
+
+.. _04_lesson_intro-config_composite_mojits:
 
 Configuring Composite Mojits
 ############################
@@ -210,6 +232,8 @@ instance to be a composite mojit as well:
      }
    ]
 
+.. _04_lesson-composite_addon:
+
 Executing Child Mojits With the Composite Addon
 -----------------------------------------------
 
@@ -291,10 +315,10 @@ but allows for the dynamic creation of mojit instances.
 We’re not going to dynamically create mojit instances, so it makes more 
 sense to just use ``ac.composite.done`` to execute the child mojits. Based on 
 what we’ve learned, the controller for the parent mojit ``BodyMojit shown 
-below should make more sense. Based on our configuration, the body instance 
-will execute the github instance. We’re also passing some data to the parent 
+below should make more sense. Based on our configuration, the ``body`` instance 
+will execute the ``github`` instance. We’re also passing some data to the parent 
 template, but how does the parent template attach the content created by our 
-github instance? Well, we’re going to look at that next. 
+``github`` instance? Well, we’re going to look at that next. 
  
 .. code-block:: javascript
 
@@ -311,6 +335,8 @@ github instance? Well, we’re going to look at that next.
      };
    }, '0.0.1', {requires: ['mojito','mojito-composite-addon']});
 
+.. _04_lesson-parent_templates:
+
 Parent Mojit Templates
 ----------------------
 
@@ -318,9 +344,9 @@ We’ve already seen how data from the controller is captured in templates
 by Handlebars expressions. Attaching the content from child mojits to 
 parent templates is done in the same way. In the parent template, you 
 use the Handlebars expressions and the mojit instance name to attach the 
-content. In our configuration, the body instance has the one child github, 
+content. In our configuration, the ``body`` instance has the one child ``github``, 
 so in the template of the BodyMojit, you use the Handlebars expression 
-{{github}} to get the content from the github instance:
+``{{github}}`` to get the content from the ``github`` instance:
 
 .. code-block:: html
 
@@ -331,6 +357,8 @@ so in the template of the BodyMojit, you use the Handlebars expression
      </div>
    </div>
 
+.. _04_lesson-yui:
+
 YUI CSS
 -------
 
@@ -338,29 +366,40 @@ In this module, we use YUI CSS to style our application. We’re
 going to look at the YUI CSS files and discuss what they do
 for the application.
 
+.. _04_lesson_yui-normalize:
+
 Normalize
 #########
 
 File: "http://necolas.github.com/normalize.css/1.0.2/normalize.css",
+
+.. _04_lesson_yui-normalize:
 
 Forms
 #####
 
 File: "https://rawgithub.com/tilomitra/cssforms/master/css/forms.css",
 
+.. _04_lesson_yui-response_grid:
+
 Response Grid          
 #############
                      
 Files
+*****
 
 - "https://rawgithub.com/tilomitra/cssforms/master/css/forms-responsive.css",
 - "https://rawgithub.com/tilomitra/csslist/master/css/list-responsive.css",
 - "http://yui.yahooapis.com/3.9.0pr3/build/cssgrids-responsive/cssgrids-responsive-min.css",
 
+.. _04_lesson_yui-buttons:
+
 Buttons
 #######
 
 - "http://yui.yahooapis.com/3.8.0/build/cssbutton/cssbutton-min.css",
+
+.. _04_lesson_yui-lists:
 
 Lists
 #####
@@ -368,11 +407,15 @@ Lists
 - "https://rawgithub.com/tilomitra/csslist/master/css/list-core.css",
 - "https://rawgithub.com/tilomitra/csslist/master/css/list.css",
 - "https://rawgithub.com/tilomitra/csslist/master/css/list-paginator.css",
-                 
+
+.. _04_lesson_yui-lists:             
+
 UI                                
 ##
 
 - "https://rawgithub.com/tilomitra/yuicss-common/master/ui.css",
+
+.. _04_lesson_yui-custom:
 
 Custom
 ######
@@ -381,23 +424,25 @@ Custom
 
 .. tip:: Nulla mattis volutpat justo, et elementum quam condimentum vel. 
 
+.. _04_composite_mojits-create:
+
 Creating the Application
 ========================
 
 #. Change to the ``04_composite_mojits`` application.
-#. Although we’re still using the HTMLFrameMojit to create the Web page, we are also 
-   going to create the mojit LayoutMojit to handle the layout of the Web page.
+#. Although we’re still using the ``HTMLFrameMojit`` to create the Web page, we are also 
+   going to create the mojit ``PageLayout`` to handle the layout of the Web page.
   
-   ``$ mojito create mojit LayoutMojit``
+   ``$ mojito create mojit PageLayout``
 
-#. For the LayoutMojit to control the layout of the content of the other mojits, 
+#. For ``PageLayout`` to control the layout of the content of the other mojits, 
    it will have to be a composite mojit. As we’ve seen in our lesson, to create a 
-   composite mojit instance, you give it a config.children object where its child 
+   composite mojit instance, you give it a ``config.children`` object where its child 
    mojit instances are defined. The hierarchy should be frame mojit -> composite mojit -> child mojit. 
-   This structure will be reflected in the configuration, so the HTMLFrameMojit 
+   This structure will be reflected in the configuration, so the ``HTMLFrameMojit`` 
    will be the top-level mojit (this is required for frame mojits), its child 
    will be the composite mojit, and the composite mojit will have children. Let’s 
-   create this mojit structure by replacing the content of your application.json 
+   create this mojit structure by replacing the content of your ``application.json``
    with the following:
 
    .. code-block:: javascript
@@ -413,17 +458,24 @@ Creating the Application
                 "deploy": true,
                 "title": "Trib - Contribute to the Tribe",
                 "child": {
-                  "type": "LayoutMojit",
+                  "type": "PageLayout",
                   "config": {
                     "children": {
                       "header": {
-                        "type": "HeaderMojit"
+                        "type": "Header"
                       },
                       "body": {
-                        "type": "BodyMojit"
+                        "type": "Body",
+                        "config": {
+                          "children": {
+                            "github": {
+                              "type":"Github"
+                            }
+                          }
+                        }
                       },
                       "footer": {
-                        "type": "FooterMojit"
+                        "type": "Footer"
                       }
                     }
                   }
@@ -431,6 +483,12 @@ Creating the Application
                 "assets": {
                   "top": {
                     "css": [
+                      "http://yui.yahooapis.com/3.9.0/build/cssnormalize/cssnormalize-min.css",
+                      "http://yui.yahooapis.com/gallery-2013.03.13-20-05/build/gallerycss-cssform/gallerycss-cssform-min.css",
+                      "http://yui.yahooapis.com/3.9.0/build/cssgrids-responsive/cssgrids-responsive-min.css",
+                      "http://yui.yahooapis.com/3.9.0/build/cssbutton/cssbutton-min.css",
+                      "http://yui.yahooapis.com/gallery-2013.03.13-20-05/build/gallerycss-csslist/gallerycss-csslist-min.css",
+                      "https://rawgithub.com/tilomitra/yuicss-common/master/ui.css",
                       "/static/04_composite_mojits/assets/trib.css"
                     ]
                   }
@@ -456,12 +514,12 @@ Creating the Application
 
    .. code-block:: javascript
 
-      YUI.add('LayoutMojit', function(Y, NAME) {
+      YUI.add('PageLayout', function(Y, NAME) {
 
         /**
-        * The LayoutMojit module.
+        * The PageLayout module.
         *
-        * @module LayoutMojit
+        * @module PageLayout
         */
 
         /**
@@ -471,9 +529,7 @@ Creating the Application
         * @constructor
         */
         Y.namespace('mojito.controllers')[NAME] = {
-          init: function(config){
-            this.config = config;
-          },
+
           /**
           * Method corresponding to the 'index' action.
           *
@@ -495,7 +551,7 @@ Creating the Application
 
    .. code-block:: html
 
-      <div id="{{mojit_view_id}}" class="mojit frameMojit" >
+      <div id="{{mojit_view_id}}" class="mojit frame" >
         <h1>{{title}}</h1>
         <div class="myheader" >
           {{{header}}}
@@ -512,19 +568,19 @@ Creating the Application
    content being rendered three times and attached to the page. The next step is 
    to modify our children so that we have more interesting content.
 
-#. For HeaderMojit, update the controller.server.js and index.hb.html with the 
+#. For the ``Header`` mojit, update the ``controller.server.js`` and ``index.hb.html`` with the 
    content below. Note that our controller is not contributing much because 
    the content is mostly static.
 
    .. code-block:: javascript
 
       /*jslint anon:true, sloppy:true, nomen:true*/
-      YUI.add('HeaderMojit', function(Y, NAME) {
+      YUI.add('Header', function(Y, NAME) {
 
         /**
-        * The HeaderMojit module.
+        * The Header module.
         *
-        * @module HeaderMojit
+        * @module Header
         */
 
         /**
@@ -554,46 +610,20 @@ Creating the Application
 
        <div id="{{mojit_view_id}}" class="mojit">
          <h3>{{title}}</h3>
-         <div id="horizontal-menu" class="yui3-menu yui3-menu-open yui3-menu-horizontal yui3-menu-fixed">
-           <ul id="std-menu-items" class="yui3-menu-light">
-             <li class="yui3-menu-active"><a href="#">Trib</a></li>
-             <li><a href="#">Stats</a></li>
-             <li><a href="#">Code</a></li>
-             <li><a href="#">Docs</a></li>
-             <li><a href="#">Share</a></li>
-             <li><a href="#">Config</a>
-               <ul>
-                 <li class="yui3-menu-heading">Settings</li>
-                 <li class="yui3-menu-separator"></li>
-                 <li><a href="#">Theme</a></li>
-                 <li><a href="#">User</a></li>
-                 <li><a href="#">Project</a></li>
-                 <li>
-                   <a href="#">Even More</a>
-                   <ul>
-                     <li><a href="#">SubItem 1</a></li>
-                     <li><a href="#">SubItem 2</a></li>
-                     <li><a href="#">SubItem 3</a></li>
-                     <li><a href="#">SubItem 4</a></li>
-                   </ul>
-                 </li>
-               </ul>
-             </li>
-           </ul>
-         </div>
        </div>
 
-#. Do the same thing for the FooterMojit. Again, mostly static content, 
+
+#. Do the same thing for the ``Footer`` mojit. Again, mostly static content, 
    which is what you would expect from the header and footer.
 
    .. code-block:: javascript
 
-      YUI.add('FooterMojit', function(Y, NAME) {
+      YUI.add('Footer', function(Y, NAME) {
 
         /**
-        * The FooterMojit module.
+        * The Footer module.
         *
-        * @module FooterMojit
+        * @module Footer
         */
         /**
         * Constructor for the Controller class.
@@ -622,19 +652,19 @@ Creating the Application
         <small>{{title}}</small>
       </div>
 
-#. In our application, the BodyMojit is responsible for the content in 
-   the <body> tag. Let’s update the controller and template with some 
+#. In our application, the ``Body`` mojit is responsible for the dynamic content of 
+   our page. Let’s update the controller and template with some 
    content, but we’re not done with this mojit yet--just look at that 
-   empty <div> tag in the template.
+   empty ``<div>`` tag in the template.
 
    .. code-block:: javascript
 
-      YUI.add('BodyMojit', function(Y, NAME) {
+      YUI.add('Body', function(Y, NAME) {
 
         /**
-        * The BodyMojit module.
+        * The Body module.
         *
-        * @module BodyMojit
+        * @module Body
         */
 
         /**
@@ -651,7 +681,7 @@ Creating the Application
           * to the Mojito API.
           */
           index: function(ac) {
-            Y.log("BodyMojit - controller.server.js index called");
+            Y.log("Body - controller.server.js index called");
             ac.done({
               title: "Statistics for YUI"
             });
@@ -664,16 +694,15 @@ Creating the Application
       <div id="{{mojit_view_id}}" class="mojit">
         <h4 class="bodytext">{{title}}</h4>
         <div class="bodyMojitStuff">
+          {{{github}}}
         </div>
       </div>
 
-#. When you start the app now, you’ll see the bulleted lists in the 
-   header that will turn into our navigation, the title of our body, 
-   and the copyright message. We need to go back to our application.json 
-   to style the lists to look more like a navigation bar and change the 
-   body instance into a composite instance so that we can get the content 
-   from the githubMojit into the body. Well, let’s get started.
-   In the application.json, let’s hook up the ``Github`` to the ``Body``
+#. When you start the app now and go to http://localhost:8666.
+   You'll notice that we're missing our Github statistics. That's because we need
+   to have the ``body`` instance attach the content from the ``github`` instance to the 
+   page by configuring a parent-child relationship in ``application.json``. 
+   In the ``application.json``, let’s hook up the ``Github`` to the ``Body``
    by making the instance of the ``Github`` child of the composite mojit ``body``:
 
    .. code-block:: javascript
@@ -684,7 +713,7 @@ Creating the Application
           "config": {
             "children": {
               "github": {
-                "type":"githubMojit"
+                "type":"Github"
               }
             }
           }
@@ -692,32 +721,12 @@ Creating the Application
       ...
     ...
 
-#. Now for the magical YUI CSS that we discussed in the lesson that will turn 
-   our bulleted list into a slick navigation bar. In addition to our the CSS 
-   that we added earlier, add the URLs to the YUI CSS to the assets object as 
-   shown here:
 
-   .. code-block:: javascript
+#. Start your app again to see the mocked GitHub stats that is being attached to the
+   template of the ``Body`` mojit. The page would be more useful with real data,
+   so, that will be the topic of our next module.
 
-      ...
-        "assets": {
-          "top": {
-            "css": [
-              "http://yui.yahooapis.com/3.9.0/build/cssnormalize/cssnormalize-min.css",
-              "http://yui.yahooapis.com/gallery-2013.03.13-20-05/build/gallerycss-cssform/gallerycss-cssform-min.css",
-              "http://yui.yahooapis.com/3.9.0/build/cssgrids-responsive/cssgrids-responsive-min.css",
-              "http://yui.yahooapis.com/3.9.0/build/cssbutton/cssbutton-min.css",
-              "http://yui.yahooapis.com/gallery-2013.03.13-20-05/build/gallerycss-csslist/gallerycss-csslist-min.css",
-              "https://rawgithub.com/tilomitra/yuicss-common/master/ui.css",
-              "/static/trib/assets/trib.css"
-            ]
-          }
-        }
-      ...
-
-#. Start your app again to see the shiny new navigation bar and our GitHub stats. 
-   Looks good, right? If only we had real data, which obviously is the topic of our next module.
-
+.. _04_composite_mojits-ts:
 
 Troubleshooting
 ===============
@@ -736,6 +745,8 @@ Nulla pharetra aliquam neque sed tincidunt. Donec nisi eros, sagittis vitae lobo
 interdum sed ipsum. Quisque congue tempor odio, a volutpat eros hendrerit nec. 
 Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
 
+.. _04_composite_mojits-summary:
+
 Summary
 =======
 
@@ -744,10 +755,14 @@ In this module, we covered the following:
 - blah, blah
 - blah, blah
 
+.. _04_composite_mojits-qa:
+
 Q&A
 ===
 
 How do you...
+
+.. _04_composite_mojits-test:
 
 Test Yourself
 =============
@@ -756,15 +771,21 @@ Test Yourself
 - What Handlebars expression allows you to attach the content of a child mojit?
 - What are the two Composite addon methods that allow parent mojits to execute child mojits?
 
+.. _04_composite_mojits-terms:
+
 Terms
 =====
 
 - composite
 
+.. _04_composite_mojits-src:
+
 Source Code
 ===========
 
 - [app_part{x}](http://github.com/yahoo/mojito/examples/quickstart_guide/app_part{x})
+
+.. _04_composite_mojits-reading:
 
 Further Reading
 ===============
