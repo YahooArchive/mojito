@@ -22,8 +22,7 @@
         "request": "2.9.202",
         "semver": "1.0.14",
         "ycb": "~1.0.5",
-        "yui": "~3.10.3",
-        "yui": "~3.10.0"
+        "yui": "~3.10.3"
     },
     "keywords": [
         "framework",
@@ -44,7 +43,7 @@
         "benchmark": "1.x",
         "commander": "1.0.1",
         "mockery": "~1.4.0",
-        "mojito-cli": "~0.0.4",
+        "mojito-cli": "~0.0.5",
         "node-static": ">0.6.8",
         "wrench": "~1.3.9",
         "yahoo-arrow": "~0.0.77"
@@ -56,8 +55,8 @@
         "test": "cd tests && node run.js test --browser phantomjs",
         "unit": "cd tests && node run.js test -u --browser phantomjs",
         "func": "cd tests && node run.js test -f --browser phantomjs",
-        "lint": "node bin/mojito jslint -p",
-        "docs": "node bin/mojito docs mojito"
+        "lint": "mojito jslint app --ex examples --ex docs -p",
+        "docs": "mojito docs mojito"
     },
     "homepage": "http://developer.yahoo.com/cocktails/mojito/",
     "repository": {
