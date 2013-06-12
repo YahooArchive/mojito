@@ -84,6 +84,13 @@
                     "page" : "$$config.baseUrl$$/"
                 }
             },
+			"lazyloadrpc" : {
+                "group" : "smoke,common,lazyloadrpc",
+                "params" : {
+                    "test" : "testlazyloadrpcclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
             "acmojitnoparamclient" : {
                 "group" : "smoke,html5app,acmojit",
                 "params" : {
