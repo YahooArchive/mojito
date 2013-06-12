@@ -1,4 +1,3 @@
-/*jslint anon:true, sloppy:true, nomen:true*/
 YUI.add('LazyLoadRPC', function(Y, NAME) {
 
     Y.namespace('mojito.controllers')[NAME] = {

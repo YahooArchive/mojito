@@ -1,4 +1,3 @@
-/*jslint anon:true, sloppy:true, nomen:true*/
 YUI.add('MainBinderIndex', function(Y, NAME) {
 
 /**
@@ -34,14 +33,14 @@ YUI.add('MainBinderIndex', function(Y, NAME) {
             self.node = node;
             self.node.one('#lazyloadrpcButton').on('click', function() {
                 self.mojitProxy.invoke('lazyloadrpc', {rpc: true}, 
-                  function(err, result) {
-                    if (err || result.indexOf('Error') >= 0) {
-                        Y.Node.one('#LazyLoadRPCResult').set('innerHTML', 'lazy load failed:' + err);
-                    } else {
-                        Y.Node.one('#LazyLoadRPCResult').set('innerHTML', 'lazy load succeeded: ' + self.mojitProxy.data.get('mydata'));
-                    }
+                    function(err, result) {
+                        if (err || result.indexOf('Error') >= 0) {
+                            Y.Node.one('#LazyLoadRPCResult').set('innerHTML', 'lazy load failed:' + err);
+                        } else {
+                            Y.Node.one('#LazyLoadRPCResult').set('innerHTML', 'lazy load succeeded: ' + self.mojitProxy.data.get('mydata'));
+                        }
                 });
-			}, this);
+            }, this);
         }
 
     };

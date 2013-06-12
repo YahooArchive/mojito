@@ -55,7 +55,7 @@
                           ]
                       }
                     },
-					"LazyLoadRPC": {
+                    "LazyLoadRPC": {
                       "type": "LazyLoadRPC"
                     },
                     "ACMojit": {

@@ -84,7 +84,7 @@
                     "page" : "$$config.baseUrl$$/"
                 }
             },
-			"lazyloadrpc" : {
+            "lazyloadrpc" : {
                 "group" : "smoke,common,lazyloadrpc",
                 "params" : {
                     "test" : "testlazyloadrpcclient.js",
