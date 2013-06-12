@@ -8,6 +8,11 @@ Notes
 
 Deprecations, Removals
 ----------------------
+* The command line executable "mojito" was removed.
+  * Developers should install `mojito-cli` globally to use "mojito" commands from the console.
+  * Screwdrivers users need to add `mojito-cli` as a devDependency.
+  * More info at http://git.io/jJazAw
+
 
 Features
 --------
