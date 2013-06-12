@@ -20,7 +20,10 @@ var fs = require('fs'),
     dns = require('dns'),
     hostip,
     arrowReportDir,
-    remoteselenium;
+    remoteselenium,
+
+    MOJITOCLI = libpath.resolve(__dirname, '../node_modules/.bin/mojito'),
+    MOJITOLIB = libpath.resolve(cwd, '..');
 
 program.command('test')
     .description('Run unit and functional tests')
@@ -65,9 +68,9 @@ function test(cmd) {
         arrowReportDir = cmd.reportFolder || cmd.unitPath;
     } else {
         arrowReportDir = cmd.reportFolder || cmd.funcPath + '/../..';
-    } 
+    }
     arrowReportDir = arrowReportDir + '/artifacts/arrowreport/';
-    
+
     try {
         wrench.rmdirSyncRecursive(arrowReportDir);
     } catch (e) {}
@@ -167,12 +170,11 @@ function runUnitTests (cmd, callback) {
     if ('phantomjs' !== cmd.browser && cmd.reuseSession) {
         commandArgs.push('--reuseSession');
     }
-    
+
     var filestoexclude = 'tests/base/mojito-test.js,' +
         'lib/app/autoload/mojito-client.client.js,' +
-        'lib/app/autoload/perf.client.js,lib/app/autoload/perf.server.js,' +
-        'lib/app/commands/,' +
-        'lib/management/';
+        'lib/app/autoload/perf.client.js,lib/app/autoload/perf.server.js';
+
     commandArgs.push('--logLevel=' + cmd.logLevel);
     commandArgs.push('--browser=' + cmd.browser);
     cmd.driver && commandArgs.push('--driver=' + cmd.driver);
@@ -195,11 +197,16 @@ function runUnitTests (cmd, callback) {
 }
 
 function build(cmd, callback) {
+    var cmdArgs = [
+            'build', 'html5app', '--debug', '--libmojito', MOJITOLIB,
+            libpath.resolve(cmd.funcPath, 'applications/frameworkapp/flatfile')
+        ];
+
     console.log('---Building Apps---');
     runCommand(
         cmd.funcPath + '/applications/frameworkapp/common',
-        cwd + "/../bin/mojito",
-        ['build', 'html5app', cmd.funcPath + '/applications/frameworkapp/flatfile'],
+        MOJITOCLI,
+        cmdArgs,
         callback
     );
 }
@@ -211,7 +218,7 @@ function startPhantomjs(cmd, callback) {
         done,
         command,
         commandArgs;
-        
+
     done = function () {
         clearTimeout(timeout);
         p.stdout.removeListener('data', listener);
@@ -316,7 +323,7 @@ function runFuncTests(cmd, desc, port, thispid, callback) {
     } else {
         baseUrl = 'http:\/\/localhost' + ':' + port;
     }
- 
+
     var commandArgs = [
         cwd + "/../node_modules/yahoo-arrow/index.js",
         "--descriptor=" + desc,
@@ -437,8 +444,10 @@ function installDependencies (app, basePath, callback) {
 }
 
 function runMojitoApp (app, cliOptions, basePath, port, params, callback) {
+    var cmdArgs = ['start', '--debug', '--libmojito', MOJITOLIB],
+        p;
+
     params = params || '';
-    var cmdArgs = ['start'];
     console.log("---Starting application---");
     if (port) {
         cmdArgs.push(port);
@@ -447,8 +456,9 @@ function runMojitoApp (app, cliOptions, basePath, port, params, callback) {
         cmdArgs.push('--context');
         cmdArgs.push(params);
     }
-    var p = runCommand(basePath + '/' + app.path, cwd + "/../bin/mojito", cmdArgs, function () {});
-        thispid = p.pid;
+
+    p = runCommand(basePath + '/' + app.path, MOJITOCLI, cmdArgs, function () {});
+    thispid = p.pid;
     thePid = p.pid;
     thePidName = app.name + ':' + port + (params ? '?' + params : '');
     pids.push(thePid);
@@ -462,13 +472,13 @@ function runMojitoApp (app, cliOptions, basePath, port, params, callback) {
         });
     }
 
-    var listener;
-    listener = function(data) {
-        if (data.toString().match(/✔ 	Mojito\(v/)) {
+    function listener(data) {
+        if (data.toString().match(/Mojito v[\d.]+ started/)) {
             p.stdout.removeListener('data', listener);
             callback(thePid);
         }
     }
+
     p.stdout.on('data', listener);
 }
 
@@ -479,7 +489,7 @@ function runStaticApp (basePath, path, port, callback) {
     thePidName = 'static ' + libpath.basename(path) + ':' + port;
     pids.push(p.pid);
     pidNames[p.pid] = 'static ' + libpath.basename(path) + ':' + port;
-    
+
     var listener;
     listener = function(data) {
         if (data.toString().match(/serving \".\" at http:\/\//)) {
