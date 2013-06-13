@@ -1,15 +1,15 @@
-YUI.add('MainBinderIndex', function(Y, NAME) {
+YUI.add('LazyLoadRPCBinderIndex', function(Y, NAME) {
 
 /**
- * The MainBinderIndex module.
+ * The LazyLoadRPCBinderIndex module.
  *
- * @module MainBinderIndex
+ * @module LazyLoadRPCBinderIndex
  */
 
     /**
-     * Constructor for the MainBinderIndex class.
+     * Constructor for the LazyLoadRPCBinderIndex class.
      *
-     * @class MainBinderIndex
+     * @class LazyLoadRPCBinderIndex
      * @constructor
      */
     Y.namespace('mojito.binders')[NAME] = {
