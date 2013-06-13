@@ -8,6 +8,7 @@
               "email": "nobody@yahoo-inc.com"
           }
     ],
+    "dependencies": {"mojito": "*"},
     "config": {
         "mojito": {
             "version": "*"
