@@ -1,8 +1,4 @@
-/*
- * Copyright (c) 2012 Yahoo! Inc. All rights reserved.
- */
-/*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('Twitter', function(Y, NAME) {
+YUI.add('Twitter', function (Y, NAME) {
 
 /**
  * The Twitter module.
@@ -24,24 +20,35 @@ YUI.add('Twitter', function(Y, NAME) {
          * @param ac {Object} The ActionContext that provides access
          *        to the Mojito API.
          */
-         index: function(ac) {
-            ac.models.get('TwitterSearchModel').getData({},function(err, data) {
+        index: function (ac) {
+            var q="@yuilibrary", oauth_keys, count=10;
+
+            // Get Twitter API keys from your developer account (https://dev.twitter.com/apps) and 
+            // use the `oauth_keys` to hold your consumer key/secret and access token/secret.
+            // If you leave `oauth_keys` undefined, your app will just use mocked data.
+            /*
+             * oauth_keys = {
+             *    "consumer_key": "xxxx",
+             *    "consumer_secret": "xxxx",
+             *    "access_token_key": "xxxx",
+             *    "access_token_secret": "xxxx"
+             * }
+            */
+
+            // Get OAuth keys from definition.json to get real data.
+            // If `oauth_keys==null`, use mock data from model.
+            ac.models.get('TwitterSearchModel').getData(count, q, oauth_keys, function (err, data) {
                 if (err) {
                     ac.error(err);
                     return;
                 }
-
                 // add mojit specific css
                 ac.assets.addCss('./index.css');
-
-                //Y.log(data);
                 ac.done({
-                    title: 'YUI Twitter mentions',
-                    results: data
+                    title: "YUI Twitter Mentions",
+                    results: data.statuses
                 });
             });
         }
-
     };
-
-}, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon']});
+}, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'mojito-params-addon']});
