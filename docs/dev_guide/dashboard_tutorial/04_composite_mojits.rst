@@ -51,7 +51,7 @@ As you can see from the screenshot, we haven't changed much aside from adding th
 and footer to the page, but beneath the surface, we have also changed the structure of the
 application, which we'll talk about shortly.
 
-.. image:: images/03_frame_mojits.png
+.. image:: images/04_composite_mojits.png
    :height: 634 px
    :width: 650 px
    :alt: Screenshot of 04 composite mojits application.

@@ -1,6 +1,6 @@
-=======================
-5. Getting Data (Draft)
-=======================
+===============
+5. Getting Data 
+===============
 
 Introduction
 ============
@@ -12,9 +12,10 @@ to get data in a couple of different ways. The recommended way is to use YQL, an
 SQL-like language and Web Service that allows you to make queries on Web data. You can 
 also use the REST module that comes with Mojito to make HTTP calls to Web services.
 
-We’re going to use both methods to get some data into our application. Our githubMojit 
+We’re going to use both methods to get some data into our application. Our ``Github`` mojit 
 will finally fetch live data, and we’re going to add another mojit to get Twitter data 
-with the REST module.
+with the help of the Node.js module `simple-twitter <https://npmjs.org/package/simple-twitter>`_.
+
 
 Estimated Time
 --------------
@@ -27,14 +28,19 @@ What We’ll Cover
 - mojit models 
 - YQL and how to use it get data
 - accessing and calling model methods from the controller
-- using the Http class to make REST calls
-- using other forms of data such as cookies and parameters.
+- using the ``Http`` class to make REST calls
+- using other forms of data such as query string parameters.
 
 Final Product
 -------------
 
 In the screenshot, you can see we’ve added a mojit for Twitter data 
 and that we finally have live data for our GitHub statistics.
+
+.. image:: images/05_getting_data.png
+   :height: 481 px
+   :width: 650 px
+   :alt: Screenshot of 05 getting data application.
 
 
 Before Starting
@@ -52,18 +58,31 @@ for use. In summary, we covered the following:
 
 - configuring composite mojits
 - using the Composite addon
-- ac.composite.done versus ac.composite execute
+- ``ac.composite.done`` versus ``ac.composite.execute``
 - parent mojit templates
 
 Setting Up
 ##########
 
-``$ cp -r 04_composite_mojits 05_getting_data``
+- ``$ cp -r 04_composite_mojits 05_getting_data``
 
-Source Code for Example
-#######################
+To get live Twitter data for your application:
 
-[app_part{x}](http://github.com/yahoo/mojito/examples/quickstart_guide/app_part{x})
+#. `Create a Twitter application <https://dev.twitter.com/apps/new>`_ to get OAuth keys 
+   from Twitter. You'll need a consumer key, consumer secret, access token key, and access 
+   token secret.
+#. Add the ``simple-twitter`` module as a dependency in the ``package.json``:
+
+   .. code-block:: javascript
+
+       ...
+         "optionalDependencies": {
+           "yahoo-arrow": "~0.0.77",
+           "phantomjs": ">=1.8.0",
+           "simple-twitter": "~1.0.0"
+         },
+       ...
+#. Install the dependencies: ``$ npm install``
 
 Lesson: Getting Data
 ====================
@@ -83,39 +102,38 @@ YQL module.
 Models
 ------
 
-We briefly went over the structure of models in the Mojits module when we discussed mojit MVC. 
-Let’s just summarize some of the important points about mojit models.
+We briefly went over the structure of models in the Mojits module when we discussed mojit 
+MVC. Let’s just summarize some of the important points about mojit models.
 
 Location
 --------
 
-The location of models are in the models directory under the mojit directory. So, if your 
-mojit is myMojit, the models would be found in myMojit/models. 
+The location of models are in the ``models`` directory under the mojit directory. So, if 
+your mojit is ``myMojit``, the models would be found in ``myMojit/models``. 
 
 File Naming Convention
 ----------------------
 
 The file name of a model has two parts. The model name and the affinity. The model name 
-is an arbitrary string, and the affinity as we have said before indicates where the code 
-is running. The affinity may be server, client, or common, where common indicates the 
-code can run on either the server or client. Thus, the syntax of the model file name is 
-the following: {model_name}.{affinity}.js
+is an arbitrary string, and the affinity, as we have said before, indicates where the code 
+is running. The affinity may be ``server``, ``client``, or ``common``, where ``common``
+indicates the code can run on either the server or client. Thus, the syntax of the model 
+file name is the following: ``{model_name}.{affinity}.js``
 
 Models as YUI Modules
 ---------------------
 
-Models like controllers are registered with YUI as modul
-es with YUI.add, have their own namespace, and list dependencies 
-in the requires array.  
+Models like controllers are registered with YUI as modules with ``YUI.add``, have their own 
+namespace, and list dependencies in the ``requires`` array.  
 
-Below is the skeleton of the model. Notice that we have required the ‘yql’ module. 
+Below is the skeleton of the model. Notice that we have required the ``yql`` module. 
 This is the main way for getting data. If you haven’t heard of or used YQL before, 
 don’t worry, we’ll give you a little primer before writing code to get data with 
 YQL in the next section.
 
 .. code-block:: javascript
 
-   YUI.add('githubModel', function(Y, NAME) {
+   YUI.add('GithubModel', function(Y, NAME) {
 
      // The namespace for the model that passes the
      // name 
@@ -149,14 +167,18 @@ YQL Statements
 ##############
 
 The YQL language like SQL has many verbs for reading and writing data. For 
-our application, we’ll be just reading data with the SELECT verb. To filter data, 
-like SQL, you use the key word WHERE. YQL also includes operators such as LIKE 
-for filtering, the key word LIMIT to limit the number of results, and the 
-pipe (|) to filter results through a function such as SORT. We can’t possibly 
+our application, we’ll be just reading data with the ``SELECT`` verb. To filter data, 
+like SQL, you use the key word ``WHER``. YQL also includes operators such as ``LIKE`` 
+for filtering, the key word ``LIMIT`` to limit the number of results, and the 
+pipe (``|``) to filter results through a function such as ``SORT``. We can’t possibly 
 cover all of the features of YQL here, but an example YQL statement can 
 certainly show you many of the features that we’ve just discussed: 
 
 ``select Title, Rating.AverageRating from local.search(20) where query="pizza" and city="New York" and state="NY" | sort(field="Rating.AverageRating") | reverse()``
+
+Try running the `local search query <http://y.ahoo.it/grM5T>`_ above in the 
+`YQL Console <http://developer.yahoo.com/yql/console>`_ to see the results returned
+by YQL.
 
 YQL Web Service
 ###############
@@ -168,7 +190,7 @@ The YQL Web Service has a couple URLs for getting public and authorized data:
 - Public Data: http://query.yahooapis.com/v1/public/yql
 - Public/Private (OAuth authorized): http://query.yahooapis.com/v1/yql
 
-So, if you wanted to make the query select * from local.search where query=”pizza”, 
+So, if you wanted to make the query ``select * from local.search where query=”pizza”``, 
 you would make an HTTP GET call to the following URL: 
 ``http://query.yahooapis.com/v1/public/yql?q=select * from local.search where query=”pizza”``
 
@@ -178,69 +200,56 @@ just need to form the YQL statement. With that, let’s look at the YQL module.
 YQL Query Module
 ################
 
-To use the YQL Query module in a mojit model, you simply add the string ‘yql’ 
-to the requires array as shown below:
+To use the YQL Query module in a mojit model, you simply add the string ``"yql"`` 
+to the ``requires`` array as shown below:
 
 .. code-block:: javascript
 
    }, '0.0.1', {requires: ['yql']});
 
+
+To use the module, you form the YQL statement using an existing table or a table that you
+have created and are hosting and then pass that statement and a callback function
+to ``Y.YQL``. The ``yql`` module will make the REST call to the YQL Web service using
+the passed statement and your results will be returned to the callback.
+
+In our application, we'll be using YQL to get GitHub statistics. In the ``getData`` method
+of our model shown below, we're using a custom table (thus, the ``use`` statement) that is 
+appropos hosted on GitHub. The results are handled by the method ``onDataReturn``.
+
+.. code-block:: javascript
+
    getData: function(params, callback) {
-            Y.log("getData called");
-            var
-                feedURL = "http://www.yuiblog.com/blog/feed/";
-                query = "select title,link,pubDate, description from feed where url='{feed}' limit 5",
-                queryParams = {
-                    feed: feedURL
-                },
-                cookedQuery = Y.substitute(query,queryParams);
-
-                Y.log("blog cookedQuery: " + cookedQuery);
-
-                if(Y.blogData){
-                    Y.log("blogData! skip YQL");
-                    callback(Y.blogData);
-                }else {
-                    Y.namespace("blogData");
-                    Y.log("blogmodel calling YQL");
-                    Y.YQL(cookedQuery, Y.bind(this.onDataReturn, this, callback));
-                }
-
-        },
-
-
-  getData: function(params, callback) {
-            /**
-            // need to update for rate limiting
-
-            var //yqlTable = 'store://kIfKmDunyT35ymUmFHJw0M',
-
-                yqlTable = 'https://raw.github.com/triptych/trib/master/src/yql/github.xml',
-                query = "use '{table}' as yahoo.awooldri.github.repo; select watchers,forks from yahoo.awooldri.github.repo where id='yql' and repo='yql-tables'",
-                queryParams = {
-                    table: yqlTable
-                },
-                cookedQuery = Y.substitute(query, queryParams);
-                Y.log("getData called");
-                Y.log("cookedQuery:" + cookedQuery);
-                Y.YQL(cookedQuery, Y.bind(this.onDataReturn, this, callback));
-
-               **/
-
-               callback({});
-        },
+       
+      var yqlTable = 'https://raw.github.com/triptych/trib/master/src/yql/github.xml',
+          query = "use '{table}' as yahoo.awooldri.github.repo; select watchers,forks from yahoo.awooldri.github.repo where id='yql' and repo='yql-tables'",
+          queryParams = {
+            table: yqlTable
+          },
+      cookedQuery = Y.substitute(query, queryParams);
+      Y.YQL(cookedQuery, Y.bind(this.onDataReturn, this, callback));
+   },
+   onDataReturn: function (cb, result) {
+       Y.log("onDataReturn called");
+       if (typeof result.error === 'undefined') {
+           var results = result.query.results.json;
+           cb(results);
+       } else {
+          cb(result.error);
+       }
+   }
 
  
 Using the Mojito REST Module
 ----------------------------
 
-The REST module for Mojito provides an easy make HTTP calls to URLs. To use the 
-module, you add the string ‘mojito-rest-lib’ to the requires array as shown below.
+The `REST module <http://developer.yahoo.com/cocktails/mojito/api/classes/Y.mojito.lib.REST.html>`_ 
+for Mojito provides an easy make HTTP calls to URLs.
+
+To use the module, you add the string ``"mojito-rest-lib"`` to the ``requires`` array as 
+shown below.
 
 .. code-block:: javascript
-
-   YUI.add('TwitterSearchModel', function(Y, NAME) {
-  
 
    }, '0.0.1', {requires: [ 'mojito-rest-lib']});
 
@@ -252,53 +261,139 @@ The methods of the module all take the following parameters:
 - ``config`` - Configurations for the call, such as headers or timeout values.
 - ``callback`` - The function that receives the response or error.
 
-For the application that we’re creating in this module, we are going to get 
-data from the Twitter Search API. In the getData method below, we pass our 
-parameters to make the call and return the JSON parsed results back with the callback. 
+Using the REST module, the HTTP calls have the following syntax:
+
+``Y.mojito.lib.REST.{HTTP_VERB}}(uri, params, config, callback)``
+
+We won't be using the REST module in this application because the Twitter Search API 
+requires OAuth  authorization, which is done more easily through a library such as 
+``simple-twitter``. We're going to just show you a simple example of using the REST 
+module for your future reference. 
+
+In the ``getData`` method below, we pass our 
+parameters to make the call to the Y! Groups page and return the JSON parsed results back 
+with the callback. 
 
 .. code-block:: javascript
 
-   ... 
-     ...
-       getData: function(count, cb) {
 
-         // The Twitter Search API URL
-         var url = 'http://search.twitter.com/search.json';
+   YUI.add('GroupsModel', function(Y, NAME) {
 
-         // q = search query
-         // rpp = the number of tweets to return per page
-         var params = {
-           q:"@yuilibrary",
-           rpp: "6"
-         };
-         var config = {
-           timeout: 5000,
-           headers: {
-             'Cache-Control': 'max-age=0'
-           }
-         };
-         Y.mojito.lib.REST.GET(url, params, config, function(err, response) {
+     Y.namespace('mojito.models')[NAME] = {
+
+       init: function(config) {
+            this.config = config;
+       },
+       getData: function(callback) {
+         var uri = "http://groups.yahoo.com" + "/search",
+             params = { "query": "baking" };
+         Y.mojito.lib.REST.GET(uri, params,null,function(err, response) {
            if (err) {
-             return cb(err);
+             callback(err);
            }
-           var resp = Y.JSON.parse(response._resp.responseText).results;
-           cb(null, resp);
+           callback(null, response._resp.responseText);
          });
        }
-     ...
-   ...
+     };
+   }, '0.0.1', {requires: ['mojito-rest-lib']});
+
+
+Using a Node.js Module to Get Twitter Data
+------------------------------------------
+
+After you have your OAuth keys and installed ``simple-twitter``, you can use
+that module in your model to get Twitter data. You can use just about any npm module
+using the Node.js ``require`` method, which is what we're going to do in the Twitter model.
+
+To help explain the model code, let's first just take a look at how
+to use the ``simple-twitter`` module. You require the module and save a reference
+to a variable. With that reference, you can instantiate an object with your
+Twitter OAuth keys that will allow you to make a REST call to their APIs.
+
+.. code-block:: javascript
+
+   var twitter = require('simple-twitter'),
+       tweets = new twitter(
+                        oauth.consumer_key, 
+                        oauth.consumer_secret,
+                        oauth.access_token_key,
+                        oauth.access_token_secret
+        );
+
+You append the HTTP method to the object and pass in the ``{endpoint}``, such
+as ``search/tweets``, the parameters, such as ``q=@yui``, and a callback to handle
+the returned response.
+
+.. code-block:: javascript
+
+   tweets.get("{endpoint}", params, callback);
+
+In our Twitter model shown below, we also use the YUI JSON module to help parse
+the returned results. In case you don't want to get Twitter OAuth keys, we also 
+provide mocked data.
+
+.. code-block:: javascript
+
+   YUI.add('TwitterSearchModel', function (Y, NAME) {
+     Y.mojito.models[NAME] = {
+
+       init: function (config) {
+         this.config = config;
+       },
+       getData: function (count, q, oauth, cb) {
+        // Confirm OAuth keys have been passed
+         Y.log(oauth, "info", NAME);
+         if (oauth) {
+           var twitter = require('simple-twitter'),
+               tweets = new twitter(
+                        oauth.consumer_key, 
+                        oauth.consumer_secret,
+                        oauth.access_token_key,
+                        oauth.access_token_secret
+               );
+               tweets.get("search/tweets", "?q="+ encodeURIComponent(q) + "&count=" + count,
+                 function(error, data) {
+                   if(error) {
+                     return cb(error);
+                   }
+                   cb(null, Y.JSON.parse(data));
+                 }
+               );
+               //  Use mock data if no OAuth keys have been provided
+         } else {
+             var mock_yui_data = { statuses: [ { from_user: "YUI User 1", text: "Love the new YUI Pure!" },
+                                          { from_user: "YUI User 2", text: "YUI Charts is off the charts!" },
+                                          { from_user: "YUI User 3", text: "Mojito + YUI = developer goodness." },
+                                          { from_user: "YUI User 4", text: "The YUI Gallery offers all kinds of cool modules!" },
+                                          { from_user: "YUI User 5", text: "I'm anxious to try the YUI App Framework." }
+                                       ]};
+             var mock_mojito_data = { statuses: [ { from_user: "Mojit User 1", text: "Mojits are self-contained MVC modules." },
+                                          { from_user: "Mojito User 2", text: "The Data addon allows you to rehydrate data on the client!" },
+                                          { from_user: "Mojito User 3", text: "Mojito + YUI = developer goodness." },
+                                          { from_user: "Mojito User 4", text: "Mojito makes it easier to create pages for different devices." },
+                                          { from_user: "Mojito User 5", text: "The Mojito CLI is now a separate package from Mojito." }
+                                       ]};
+             if ("@yuilibrary"==q) {
+                cb(null, mock_yui_data);
+             } else {
+                cb(null, mock_mojito_data);
+             }
+         }
+       }
+     };
+   }, '0.0.1', {requires: ['mojito', 'mojito-rest-lib', 'json']});
 
 
 Calling Model Methods From Controller
-#####################################
+-------------------------------------
 
 The controller brokers all requests, calling the model, and passing data back 
 to the client or rendering templates with the data. The controller uses 
 model much like it uses addons. 
 
-The controller needs to require the Models addon and use the method get from 
+The controller needs to require the ``Models`` addon and use the method ``get`` from 
 that addon to access a model.  For example, for the controller shown below to 
-get the model registered with the name TwitterSearchModel, the Models addon 
+get the model registered with the name ``TwitterSearchModel``, the ``Models`` addon 
 is required and then used to access and use the the model.
 
 .. code-block:: javascript
@@ -306,15 +401,51 @@ is required and then used to access and use the the model.
    ...
      ...
        index: function(ac) {
-         // The Models addon method ‘get’ is used to access the
-         // model registered as ‘TwitterSearchMojito’.
-         ac.models.get('TwitterSearchModel').getData({},function(err, data) {
-       
-         });
+         var q="@yuilibrary", oauth_keys, count=10;
+         ac.models.get('TwitterSearchModel').getData(count, q, oauth_keys, function (err, data) {
+           ...
+         }
        }
      ...
-     // The Models addon is included with ‘mojito-models-addon’.
-   }, '0.0.1', {requires: ['mojito', 'mojito-models-addon']});
+   }, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'mojito-params-addon']});
+
+
+.. code-block:: javascript
+
+   YUI.add('Twitter', function (Y, NAME) {
+
+     Y.namespace('mojito.controllers')[NAME] = {
+       index: function (ac) {
+         var q="@yuilibrary", oauth_keys, count=10;
+
+         // Get Twitter API keys from your developer account (https://dev.twitter.com/apps) and
+         // use the `oauth_keys` to hold your consumer key/secret and access token/secret.
+         // If you leave `oauth_keys` undefined, your app will just use mocked data.
+         /*
+          * oauth_keys = {
+          *    "consumer_key": "xxxx",
+          *    "consumer_secret": "xxxx",
+          *    "access_token_key": "xxxx",
+          *    "access_token_secret": "xxxx"
+          * }
+         */
+         // Get OAuth keys from definition.json to get real data.
+         // If `oauth_keys==null`, use mock data from model.
+         ac.models.get('TwitterSearchModel').getData(count, q, oauth_keys, function (err, data) {
+           if (err) {
+             ac.error(err);
+             return;
+           }
+           // Add mojit specific CSS
+           ac.assets.addCss('./index.css');
+           ac.done({
+             title: "YUI Twitter Mentions",
+             results: data.statuses
+           });
+         });
+       }
+     };
+   }, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'mojito-params-addon']});
 
 
 Creating the Application
@@ -325,38 +456,61 @@ Creating the Application
 
 #. Let’s create the Twitter mojits that get Twitter data for us.
 
-   ``$ mojito create mojit twitterMojit``
-#. Change to the models directory of  twitterMojit. We’re going to deal with 
-   getting Twitter data first.
+   ``$ mojito create mojit Twitter``
+#. Change to the models directory of ``Twitter``. We’re going to deal with 
+   getting ``Twitter`` data first.
 #. Rename the file ``foo.server.js`` to ``twitter.server.js`` and then change the 
    registered module name to ``TwitterSearchModel``.
 #. Open ``twitter.server.js`` in an editor, and modify the method ``getData``, so 
-   that it looks like the snippet below. As you can see, we pass the URL to the 
-   Twitter Search API, the search query, and we configure the call to have a 
-   timeout and force the cache to be cleared. 
+   that it looks like the snippet below. As you can see, we use the ``simple-twitter``
+   module to make the REST calls to the Twitter Search API. We've also added mocked 
+   data for those who don't want to open a Twitter developer account and get OAuth keys.
 
    .. code-block:: javascript
 
-      getData: function(count, cb) {
-
-        var url = 'http://search.twitter.com/search.json';
-        var params = {
-          q:"@yuilibrary",
-          rpp: "6"
-        };
-        var config = {
-          timeout: 5000,
-          headers: {
-            'Cache-Control': 'max-age=0'
-          }
-        };
-        Y.mojito.lib.REST.GET(url, params, config, function(err, response) {
-          if (err) {
-            return cb(err);
-          }
-          var resp = Y.JSON.parse(response._resp.responseText).results;
-          cb(null, resp);
-        });
+      getData: function (count, q, oauth, cb) {
+        // Confirm OAuth keys have been passed
+        // You'll also need to add `simple-twitter: "~1.0.0"` to the `dependencies` object in
+        // `package.json` and then run `npm install` from the application directory
+        // to get the `simple-twitter` module that will call the Twitter Search API
+        // If `oauth` is null, you'll be using the mocked data.
+        Y.log(oauth, "info", NAME);
+        if (oauth) {
+          var twitter = require('simple-twitter'),
+              tweets = new twitter(
+                  oauth.consumer_key,
+                  oauth.consumer_secret,
+                  oauth.access_token_key,
+                  oauth.access_token_secret
+              );
+          tweets.get("search/tweets", "?q="+ encodeURIComponent(q) + "&count=" + count,
+            function(error, data) {
+              if(error) {
+                return cb(error);
+              }
+              cb(null, Y.JSON.parse(data));
+            }
+          );
+          //  Use mock data if no OAuth keys have been provided
+        } else {
+          var mock_yui_data = { statuses: [ { from_user: "YUI User 1", text: "Love the new YUI Pure!" },
+                                 { from_user: "YUI User 2", text: "YUI Charts is off the charts!" },
+                                 { from_user: "YUI User 3", text: "Mojito + YUI = developer goodness." },
+                                 { from_user: "YUI User 4", text: "The YUI Gallery offers all kinds of cool modules!" },
+                                 { from_user: "YUI User 5", text: "I'm anxious to try the YUI App Framework." }
+                               ]};
+          var mock_mojito_data = { statuses: [ { from_user: "Mojit User 1", text: "Mojits are self-contained MVC modules." },
+                                    { from_user: "Mojito User 2", text: "The Data addon allows you to rehydrate data on the client!" },
+                                    { from_user: "Mojito User 3", text: "Mojito + YUI = developer goodness." },
+                                    { from_user: "Mojito User 4", text: "Mojito makes it easier to create pages for different devices." },
+                                    { from_user: "Mojito User 5", text: "The Mojito CLI is now a separate package from Mojito." }
+                                ]};
+           if ("@yuilibrary"==q) {
+             cb(null, mock_yui_data);
+           } else {
+             cb(null, mock_mojito_data);
+           }
+        }
       }
 
 #. We also need to add the dependencies to use the REST and JSON modules:
@@ -366,38 +520,54 @@ Creating the Application
       }, '0.0.1', {requires: ['mojito', 'mojito-rest-lib','json']});
 
 #. We need to modify the controller to use the TwitterSearchModel. 
-   Open controller.server.js in an editor, add the Models addon, and 
-   modify the index method so that it’s the same as that shown below. 
-   The models addon allows you to access our model and call the model 
+   Open ``controller.server.js`` in an editor, add the ``Models`` addon, and 
+   modify the ``index`` method so that it’s the same as that shown below. 
+   The ``Models`` addon allows you to access our model and call the model 
    function ``getData``.
 
    .. code-block:: javascript
 
       ...
         ... 
-          index: function(ac) {
-            ac.models.get('TwitterSearchModel').getData({},function(err, data) {
+          index: function (ac) {
+            var q="@yuilibrary", oauth_keys, count=10;
+
+            // Get Twitter API keys from your developer account (https://dev.twitter.com/apps) and
+            // use the `oauth_keys` to hold your consumer key/secret and access token/secret.
+            // If you leave `oauth_keys` undefined, your app will just use mocked data.
+            /*
+             * oauth_keys = {
+             *    "consumer_key": "xxxx",
+             *    "consumer_secret": "xxxx",
+             *    "access_token_key": "xxxx",
+             *    "access_token_secret": "xxxx"
+             * }
+            */
+
+            // Get OAuth keys from definition.json to get real data.
+            // If `oauth_keys==null`, use mock data from model.
+            ac.models.get('TwitterSearchModel').getData(count, q, oauth_keys, function (err, data) {
               if (err) {
                 ac.error(err);
                 return;
               }
-              // Add mojit specific css
+              // add mojit specific css
               ac.assets.addCss('./index.css');
               ac.done({
-                title: 'YUI Twitter mentions',
-                results: data
+                title: "YUI Twitter Mentions",
+                results: data.statuses
               });
             });
           }
         };
-      }, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon']});
+      }, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'mojito-params-addon']});
 
-#. Let’s replace the content of index.hb.html with the following while we’re here:
+#. Let’s replace the content of ``index.hb.html`` with the following while we’re here:
  
    .. code-block:: html
 
       <div id="{{mojit_view_id}}" class="mojit">
-        <div class="mod" id="twittermojit">
+        <div class="mod" id="twitter">
           <h3>
             <strong>{{title}}</strong>
             <a title="minimize module" class="min" href="#">-</a>
@@ -413,46 +583,58 @@ Creating the Application
         </div>
       </div>
 
-#. Let’s turn our attention to the githubMojit. We have been waiting long 
+#. Let’s turn our attention to the ``Github`` mojit. We have been waiting long 
    enough to get GitHub data, but before we change any code, let’s rename 
    the model file to ``yql.server.js``. Now we can edit the file ``yql.server.js``. 
-   Open the file in an editor, change the module name to StatsModelYQL, and update 
-   the getData function with the code below. Notice that we are using the YQL 
-   Open Data Table github.xml, which the YQL module let’s you specify as a query 
+   Open the file in an editor, change the module name to ``StatsModelYQL``, and update 
+   the ``getData`` function with the code below. Notice that we are using the YQL 
+   Open Data Table ``github.xml``, which the YQL module let’s you specify as a ``query`` 
    parameter. 
 
    .. code-block:: javascript
 
-      ...
-        getData: function(params, callback) {
-          var yqlTable = 'https://raw.github.com/triptych/trib/master/src/yql/github.xml',
-              query = "use '{table}' as yahoo.awooldri.github.repo; select watchers,forks from yahoo.awooldri.github.repo where id='yql' and repo='yql-tables'",
-              queryParams = {
-                table: yqlTable
-              },
-              cookedQuery = Y.substitute(query, queryParams);
-              Y.YQL(cookedQuery, Y.bind(this.onDataReturn, this, callback));
-        },
-        onDataReturn: function (cb, result) {
-          if (typeof result.error === 'undefined') {
-            var results = result.query.results.json;
-            cb(results);
-          } else {
-            cb(result.error);
+      YUI.add('StatsModelYQL', function(Y, NAME) {
+
+        Y.mojito.models[NAME] = {
+
+          init: function(config) {
+            this.config = config;
+          },
+          getData: function(params, callback) {
+            var yqlTable = 'https://raw.github.com/triptych/trib/master/src/yql/github.xml',
+                query = "use '{table}' as yahoo.awooldri.github.repo; select watchers,forks from yahoo.awooldri.github.repo where id='yql' and repo='yql-tables'",
+                queryParams = {
+                  table: yqlTable
+                },
+                cookedQuery = Y.substitute(query, queryParams);
+                Y.log("getData called");
+                Y.log("cookedQuery:" + cookedQuery);
+                Y.YQL(cookedQuery, Y.bind(this.onDataReturn, this, callback));
+          },
+          onDataReturn: function (cb, result) {
+            Y.log("onDataReturn called");
+            if (typeof result.error === 'undefined') {
+              var results = result.query.results.json;
+              Y.log("results.json:");
+              Y.log(results);
+              cb(results);
+            } else {
+              cb(result.error);
+            }
           }
-        }
-      ...
+        };
+      }, '0.0.1', {requires: ['yql', 'substitute']});
 
 #. Besides the YQL module, we also used the Substitute module, so make 
-   sure to add both of those modules to the requires array:
+   sure to add both of those modules to the ``requires`` array:
 
    .. code-block:: javascript
 
       }, '0.0.1', {requires: ['yql', 'substitute']});
 
-#. The githubMojit controller needs to get the correct model. We’re also 
-   going to simplify the index function to only use the default template. 
-   Modify the index function so that it’s the same as that below.
+#. The ``Github`` controller needs to get the correct model. We’re also 
+   going to simplify the ``index`` function to only use the default template. 
+   Modify the ``index`` function so that it’s the same as that below.
 
    .. code-block:: javascript
 
@@ -475,42 +657,67 @@ Creating the Application
       ...
 
 #. We’re going to update our template to look more like the Twitter 
-   template. So, go ahead and replace the content of index.hb.html 
+   template. So, go ahead and replace the content of ``index.hb.html`` 
    with the following:
 
    .. code-block:: html
 
       <div id="{{mojit_view_id}}" class="mojit">
-        <div class="mod" id="githubmojit">
+        <div class="mod" id="github">
           <h3>
             <strong>{{title}}</strong>
             <a title="minimize module" class="min" href="#">-</a>
             <a title="close module" class="close" href="#">x</a>
           </h3>
-        <div class="inner">
-          <div>Github watchers: <span>{{watchers}}</span></div>
-          <div>Github forks: <span>{{forks}}</span></div>
+          <div class="inner">
+            <div>Github watchers: <span>{{watchers}}</span></div>
+            <div>Github forks: <span>{{forks}}</span></div>
+          </div>
         </div>
       </div>
-    </div>
 
-#. Okay, we have githubMojit getting real data and even have a mojit 
+#. Because the Github mojit displays a title for the GitHub statistics. Let's remove
+   the ``title`` property passed to ``ac.composite.done`` in ``Github/controller.server.js`` 
+   and the ``{{title}}`` Handlebars expression in the template 
+   ``Github/views/index.hb.html`` so they look like the following:
+
+   .. code-block::
+
+      index: function(ac) {
+        Y.log("Body - controller.server.js index called");
+        ac.composite.done({});
+      }
+
+   .. code-block:: html
+
+      <div id="{{mojit_view_id}}" class="mojit">
+        <div class="bodyMojitStuff yui3-g-r">
+          <div class="yui3-u-1-3">
+            {{{github}}}
+          </div>
+          <div class="yui3-u-1-3">
+            {{{twitter}}}</div>
+          </div>
+        </div>
+      </div>
+
+#. Okay, we have ``Github`` mojit getting real data and even have a mojit 
    for getting Twitter data. Did we forget anything? Yeah, we need to 
-   plug our twitterMojit into the body by making it a child of the 
-   body instance. Let’s update the body instance in the ``application.json``:
+   plug our ``Twitter`` into the body by making it a child of the 
+   ``body`` instance. Let’s update the ``body`` instance in the ``application.json``:
 
    .. code-block:: javascript
 
       ... 
         "body": {
-          "type": "BodyMojit",
+          "type": "Body",
           "config": {
             "children": {
               "github": {
-                "type":"githubMojit"
+                "type":"Github"
               },
               "twitter": {
-                "type": "twitterMojit"
+                "type": "Twitter"
               }
             }
           }
