@@ -23,16 +23,11 @@ YUI.add('Youtube-tests', function(Y) {
                 doneResults;
             modelData = { x:'y' };
             ac = {
-                assets: {
-                    addCss: function(css) {
-                        assetsResults = css;
-                    }
-                },
                 models: {
                     get: function(modelName) {
-                        A.areEqual('YoutubeModelFoo', modelName, 'wrong model name');
+                        A.areEqual('YoutubeModelYQL', modelName, 'wrong model name');
                         return {
-                            getData: function(cb) {
+                            getData: function(config, cb) {
                                 cb(null, modelData);
                             }
                         }
@@ -46,13 +41,7 @@ YUI.add('Youtube-tests', function(Y) {
             A.isNotNull(controller);
             A.isFunction(controller.index);
             controller.index(ac);
-            A.areSame('./index.css', assetsResults);
             A.isObject(doneResults);
-            A.areSame('Mojito is working.', doneResults.status);
-            A.isObject(doneResults.data);
-            A.isTrue(doneResults.data.hasOwnProperty('x'));
-            A.areEqual('y', doneResults.data['x']);
-            
         }
         
     }));

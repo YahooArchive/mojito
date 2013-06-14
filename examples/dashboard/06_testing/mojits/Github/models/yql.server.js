@@ -19,20 +19,14 @@ YUI.add('StatsModelYQL', function(Y, NAME) {
                 Y.log("cookedQuery:" + cookedQuery);
                 Y.YQL(cookedQuery, Y.bind(this.onDataReturn, this, callback));
         },
-
         onDataReturn: function (cb, result) {
             Y.log("onDataReturn called");
             if (typeof result.error === 'undefined') {
 
                 Y.log("result:");
-                Y.log(result);
-
-
+                Y.log(result, "info", NAME);
 
                 var results = result.query.results.json;
-                Y.log("results.json:");
-                Y.log(results);
-
 
                 cb(results);
             } else {
