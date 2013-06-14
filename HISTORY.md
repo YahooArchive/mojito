@@ -4,14 +4,23 @@ version @VERSION@
 Notes
 -----
 
+* YUI dependency was upgraded to yui@3.10.3
+
 Deprecations, Removals
 ----------------------
+* The command line executable "mojito" was removed.
+  * Developers should install `mojito-cli` globally to use "mojito" commands from the console.
+  * Screwdrivers users need to add `mojito-cli` as a devDependency.
+  * More info at http://git.io/jJazAw
+
 
 Features
 --------
+* PR #1163: Rehydration of data from server to client and from client to server. Any data set thru `mojitProxy.data.set()` or `ac.data.set()` will travel back and forward between the client and server runtime to preserve the state of the mojit instance when using the rpc tunnel.
 
 Bug Fixes
 ---------
+* Issue #1159: tunnel request fails if mojito-data-addon is required on the server side controller.
 
 Acknowledgements
 ----------------
