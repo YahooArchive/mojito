@@ -3,19 +3,6 @@
     {
         "settings": [ "master" ],
         "appPort": "8666",
-        "yui":{
-          "config": {
-            "comboBase":"http://yui.yahooapis.com/combo?",
-            "root":"3.8.1/build/",
-            "seed": [
-              "yui-base",
-              "loader-base",
-              "loader-yui3",
-              "loader-app",
-              "loader-app-base{langPath}"
-            ]
-          }            
-            },
         "specs": {            
             "tribframe": {
                 "type": "HTMLFrameMojit",
@@ -36,17 +23,11 @@
                                             "github": {
                                                 "type":"Github"
                                             },
-                                            "blog": {
-                                                "type":"Blog"
-                                            },
                                             "calendar": {
                                                 "type":"Calendar"
                                             },
                                             "twitter": {
                                                 "type":"Twitter"
-                                            },
-                                            "gallery":{
-                                                "type": "Gallery"
                                             },
                                             "youtube": {
                                                 "type": "Youtube"

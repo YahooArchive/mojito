@@ -1,5 +1,5 @@
 {
-    "name": "05_getting_data",
+    "name": "06_testing",
     "description": "My Mojito application",
     "version": "0.0.1",
     "author": {
@@ -15,6 +15,11 @@
     "dependencies": {
         "mojito": "0.6.x"
     },
+    "optionalDependencies": {
+       "simple-twitter": "~1.0.0",
+       "yahoo-arrow": "~0.0.77",
+       "phantomjs": ">=1.8.0"
+    },    
     "engines": {
         "node": ">0.6"
     }

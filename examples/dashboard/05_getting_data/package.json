@@ -13,8 +13,12 @@
           }
     ],
     "dependencies": {
-        "mojito": "0.6.x"
+        "mojito": "0.6.x",
+        "simple-twitter": "~1.0.0"
     },
+    "optionalDependencies": {
+       "simple-twitter": "~1.0.0"
+    },    
     "engines": {
         "node": ">0.6"
     }
