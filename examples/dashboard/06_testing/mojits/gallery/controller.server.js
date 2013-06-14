@@ -22,7 +22,7 @@ YUI.add('Gallery', function(Y, NAME) {
          *        to the Mojito API.
          */
         index: function(ac) {
-            ac.models.get('galleryModelYQL').getData(function(err, data) {
+            ac.models.get('GalleryModelYQL').getData(function(err, data) {
                 if (err) {
                     ac.error(err);
                     return;
@@ -37,4 +37,4 @@ YUI.add('Gallery', function(Y, NAME) {
 
     };
 
-}, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'galleryModelYQL']});
+}, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'GalleryModelYQL']});

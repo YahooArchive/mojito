@@ -25,9 +25,8 @@ YUI.add('Body', function(Y, NAME) {
         Y.log("Body - controller.server.js index called");
 
             ac.composite.done({
-                title: "Statistics for YUI"
+                title: ""
             });
-   
         }
 
     };

@@ -29,7 +29,5 @@ YUI.add('PageLayout', function(Y, NAME) {
                 title: "Trib - Contribute to the Tribe"
             });
         }
-
     };
-
 }, '0.0.1', {requires: ['mojito','mojito-composite-addon']});

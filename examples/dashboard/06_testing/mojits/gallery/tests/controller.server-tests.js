@@ -1,5 +1,3 @@
-
-
 YUI.add('Gallery-tests', function (Y) {
 
     var suite = new YUITest.TestSuite('Gallery-tests'),
@@ -13,7 +11,7 @@ YUI.add('Gallery-tests', function (Y) {
 
         setUp: function () {
             controller = Y.mojito.controllers.Gallery;
-            model = Y.mojito.models.galleryModelYQL;
+            model = Y.mojito.models.GalleryModelYQL;
         },
         tearDown: function () {
             controller = null;
@@ -23,7 +21,8 @@ YUI.add('Gallery-tests', function (Y) {
                 assetsResults,
                 doneResults,
                 def_value,
-                route_param;
+                route_param,
+                modelData = { x: 'y' };
             ac = {
                 assets: {
                     addCss: function (css) {
@@ -42,8 +41,12 @@ YUI.add('Gallery-tests', function (Y) {
                 },
                 models: {
                     get: function (modelName) {
-                        A.areEqual('galleryModelYQL', modelName, 'wrong model name');
-                        return model;
+                        A.areEqual('GalleryModelYQL', modelName, 'wrong model name');
+                        return {
+                            getData: function (cb) {
+                                cb(null, modelData);
+                            }
+                        };
                     }
                 },
                 done: function (data) {
@@ -58,4 +61,4 @@ YUI.add('Gallery-tests', function (Y) {
 
     YUITest.TestRunner.add(suite);
 
-}, '0.0.1', {requires: ['mojito-test', 'Gallery', 'galleryModelYQL']});
+}, '0.0.1', {requires: ['mojito-test', 'Gallery', 'GalleryModelYQL']});
