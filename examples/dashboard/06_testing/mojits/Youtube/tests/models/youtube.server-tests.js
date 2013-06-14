@@ -1,5 +1,5 @@
 
-YUI.add('YoutubeModelFoo-tests', function(Y, NAME) {
+YUI.add('YoutubeModelYQL-tests', function(Y, NAME) {
     
     var suite = new YUITest.TestSuite(NAME),
         model = null,
@@ -10,7 +10,7 @@ YUI.add('YoutubeModelFoo-tests', function(Y, NAME) {
         name: 'YoutubeModelFoo user tests',
         
         setUp: function() {
-            model = Y.mojito.models.YoutubeModelFoo;
+            model = Y.mojito.models.YoutubeModelYQL;
         },
         tearDown: function() {
             model = null;
@@ -27,17 +27,15 @@ YUI.add('YoutubeModelFoo-tests', function(Y, NAME) {
             A.areSame(cfg, model.config);
 
             A.isFunction(model.getData);
-            model.getData(function(err, data) {
+            model.getData({}, function(data) {
                 called = true;
-                A.isTrue(!err);
                 A.isObject(data);
-                A.areSame('data', data.some);
+                A.isTrue(called);
             });
-            A.isTrue(called);
         }
         
     }));
     
     YUITest.TestRunner.add(suite);
     
-}, '0.0.1', {requires: ['mojito-test', 'YoutubeModelFoo']});
+}, '0.0.1', {requires: ['mojito-test', 'YoutubeModelYQL']});
