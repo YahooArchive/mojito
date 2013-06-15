@@ -2,7 +2,7 @@
 YUI.add('YoutubeModelYQL', function(Y, NAME) {
 
 /**
- * The YoutubeModelFoo module.
+ * The YoutubeModelYQL module.
  *
  * @module Youtube
  */
@@ -10,7 +10,7 @@ YUI.add('YoutubeModelYQL', function(Y, NAME) {
     /**
      * Constructor for the YoutubeModelFoo class.
      *
-     * @class YoutubeModelFoo
+     * @class YoutubeModelYQL
      * @constructor
      */
     Y.namespace('mojito.models')[NAME] = {
