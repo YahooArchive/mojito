@@ -488,13 +488,15 @@ and Handlebars expressions.
 How Is Data Shared?
 ###################
 
-Data is passed from the server to the client and vice version using a remote procedural 
+Data is passed from the server to the client and vice versa using a remote procedural 
 call (RPC) through a tunnel. During this transmission, the state of the data is preserved. 
-When a mojit is first executed, the data and templates are rendered on the server and sent 
-to the client through the tunnel. After the initial rendering, each time the mojit instance 
-invokes an action that triggers an RPC through the tunnel, data is serialized and sent to the 
-server, where the instance is recreated with the data. If the action changes the data model, 
-the new data is then sent back through the tunnel to the client to update the data model.
+When content is sent to the client as part of the page, the data and templates are rendered 
+on the server and sent to the client through the tunnel. After the initial rendering, each 
+time the mojit instance invokes an action that triggers an RPC through the tunnel, data is 
+serialized and sent to the server, where the instance is recreated with the data. If the 
+action changes the data model, the new data is then sent back through the tunnel to the 
+client to update the data model.
+
 
 Benefits 
 ########
@@ -506,7 +508,7 @@ of controllers and binders, which have access to the ``Data`` addon.
 Controllers
 ***********
 
-Contollers can share data in the following ways:
+Controllers can share data in the following ways:
 
 - rehydrate data of its template or all the templates on the page
 - share data with its binders or all the other mojit binders on the page
@@ -668,7 +670,7 @@ mojits/StockQuotes/views/index.hb.html
    <div id="{{mojit_view_id}}">
      <h2>{{title}}</h2>
      <ul>
-     <!-- The Handlerbars block helper can iterate through the data
+     <!-- The Handlebars block helper can iterate through the data
           made available through ac.data.set in the controller.
      -->
      {{#each stock_quotes}}
