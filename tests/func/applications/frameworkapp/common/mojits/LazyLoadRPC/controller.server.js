@@ -7,7 +7,9 @@ YUI.add('LazyLoadRPC', function(Y, NAME) {
         },
 
         lazyloadrpc: function(ac) {
-            ac.data.set('mydata', "mydatavalue");
+            var foo = ac.data.get('foo');
+            ac.data.set('bar', "bar-value set by controller");
+            ac.data.set('baz', 'From controller: ' + foo);
             ac.done();
         }
     };
