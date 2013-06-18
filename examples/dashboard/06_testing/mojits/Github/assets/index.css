@@ -1,3 +1,2 @@
-#githubmojit h3 strong {
-    background-image: url(/static/githubMojit/assets/favicon-github.png);
-}
+dt { font-weight: bold; }
+.sel { background-color: #FF4; }
