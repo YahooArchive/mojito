@@ -473,7 +473,7 @@ function runMojitoApp (app, cliOptions, basePath, port, params, callback) {
     }
 
     function listener(data) {
-        if (data.toString().match(/Mojito v[\d.]+ started/)) {
+        if (data.toString().match(/Mojito v\d+[.]\d+[.]\d+\S* started/)) {
             p.stdout.removeListener('data', listener);
             callback(thePid);
         }
