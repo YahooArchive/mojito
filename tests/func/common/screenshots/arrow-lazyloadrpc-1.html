@@ -1,0 +1,523 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html [
+  <!ENTITY % htmlDTD
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "DTD/xhtml1-strict.dtd">
+  %htmlDTD;
+  <!ENTITY % netErrorDTD
+    SYSTEM "chrome://global/locale/netError.dtd">
+  %netErrorDTD;
+
+<!ENTITY loadError.label "Problem loading page">
+<!ENTITY retry.label "Try Again">
+
+<!-- Specific error messages -->
+
+<!ENTITY connectionFailure.title "Unable to connect">
+<!ENTITY connectionFailure.longDesc "&sharedLongDesc;">
+
+<!ENTITY deniedPortAccess.title "This address is restricted">
+<!ENTITY deniedPortAccess.longDesc "">
+
+<!ENTITY dnsNotFound.title "Server not found">
+<!ENTITY dnsNotFound.longDesc "
+<ul>
+  <li>Check the address for typing errors such as
+    <strong>ww</strong>.example.com instead of
+    <strong>www</strong>.example.com</li>
+  <li>If you are unable to load any pages, check your computer's network
+    connection.</li>
+  <li>If your computer or network is protected by a firewall or proxy, make sure
+    that &brandShortName; is permitted to access the Web.</li>
+</ul>
+">
+
+<!ENTITY fileNotFound.title "File not found">
+<!ENTITY fileNotFound.longDesc "
+<ul>
+  <li>Check the file name for capitalization or other typing errors.</li>
+  <li>Check to see if the file was moved, renamed or deleted.</li>
+</ul>
+">
+
+
+<!ENTITY generic.title "Oops.">
+<!ENTITY generic.longDesc "
+<p>&brandShortName; can't load this page for some reason.</p>
+">
+
+<!ENTITY malformedURI.title "The address isn't valid">
+<!ENTITY malformedURI.longDesc "
+<ul>
+  <li>Web addresses are usually written like
+    <strong>http://www.example.com/</strong></li>
+  <li>Make sure that you're using forward slashes (i.e.
+    <strong>/</strong>).</li>
+</ul>
+">
+
+<!ENTITY netInterrupt.title "The connection was interrupted">
+<!ENTITY netInterrupt.longDesc "&sharedLongDesc;">
+
+<!ENTITY notCached.title "Document Expired">
+<!ENTITY notCached.longDesc "<p>The requested document is not available in &brandShortName;'s cache.</p><ul><li>As a security precaution, &brandShortName; does not automatically re-request sensitive documents.</li><li>Click Try Again to re-request the document from the website.</li></ul>">
+
+<!ENTITY netOffline.title "Offline mode">
+<!ENTITY netOffline.longDesc2 "
+<ul>
+  <li>Press &quot;Try Again&quot; to switch to online mode and reload the page.</li>
+</ul>
+">
+
+<!ENTITY contentEncodingError.title "Content Encoding Error">
+<!ENTITY contentEncodingError.longDesc "
+<ul>
+  <li>Please contact the website owners to inform them of this problem.</li>
+</ul>
+">
+
+<!ENTITY unsafeContentType.title "Unsafe File Type">
+<!ENTITY unsafeContentType.longDesc "
+<ul>
+  <li>Please contact the website owners to inform them of this problem.</li>
+</ul>
+">
+
+<!ENTITY netReset.title "The connection was reset">
+<!ENTITY netReset.longDesc "&sharedLongDesc;">
+
+<!ENTITY netTimeout.title "The connection has timed out">
+<!ENTITY netTimeout.longDesc "&sharedLongDesc;">
+
+<!ENTITY protocolNotFound.title "The address wasn't understood">
+<!ENTITY protocolNotFound.longDesc "
+<ul>
+  <li>You might need to install other software to open this address.</li>
+</ul>
+">
+
+<!ENTITY proxyConnectFailure.title "The proxy server is refusing connections">
+<!ENTITY proxyConnectFailure.longDesc "
+<ul>
+  <li>Check the proxy settings to make sure that they are correct.</li>
+  <li>Contact your network administrator to make sure the proxy server is
+    working.</li>
+</ul>
+">
+
+<!ENTITY proxyResolveFailure.title "Unable to find the proxy server">
+<!ENTITY proxyResolveFailure.longDesc "
+<ul>
+  <li>Check the proxy settings to make sure that they are correct.</li>
+  <li>Check to make sure your computer has a working network connection.</li>
+  <li>If your computer or network is protected by a firewall or proxy, make sure
+    that &brandShortName; is permitted to access the Web.</li>
+</ul>
+">
+
+<!ENTITY redirectLoop.title "The page isn't redirecting properly">
+<!ENTITY redirectLoop.longDesc "
+<ul>
+  <li>This problem can sometimes be caused by disabling or refusing to accept
+    cookies.</li>
+</ul>
+">
+
+<!ENTITY unknownSocketType.title "Unexpected response from server">
+<!ENTITY unknownSocketType.longDesc "
+<ul>
+  <li>Check to make sure your system has the Personal Security Manager
+    installed.</li>
+  <li>This might be due to a non-standard configuration on the server.</li>
+</ul>
+">
+
+<!ENTITY nssFailure2.title "Secure Connection Failed">
+<!ENTITY nssFailure2.longDesc "
+<ul>
+  <li>The page you are trying to view cannot be shown because the authenticity of the received data could not be verified.</li>
+  <li>Please contact the website owners to inform them of this problem. Alternatively, use the command found in the help menu to report this broken site.</li>
+</ul>
+">
+
+<!ENTITY nssBadCert.title "Secure Connection Failed">
+<!ENTITY nssBadCert.longDesc2 "
+<ul>
+  <li>This could be a problem with the server's configuration, or it could be
+someone trying to impersonate the server.</li>
+  <li>If you have connected to this server successfully in the past, the error may
+be temporary, and you can try again later.</li>
+</ul>
+">
+
+<!ENTITY sharedLongDesc "
+<ul>
+  <li>The site could be temporarily unavailable or too busy. Try again in a few
+    moments.</li>
+  <li>If you are unable to load any pages, check your computer's network
+    connection.</li>
+  <li>If your computer or network is protected by a firewall or proxy, make sure
+    that &brandShortName; is permitted to access the Web.</li>
+</ul>
+">
+
+<!ENTITY malwareBlocked.title "Suspected Attack Site!">
+<!ENTITY malwareBlocked.longDesc "
+<p>Attack sites try to install programs that steal private information, use your computer to attack others, or damage your system.</p>
+<p>Website owners who believe their site has been reported as an attack site in error may <a href='http://www.stopbadware.org/home/reviewinfo' >request a review</a>.</p>
+">
+
+<!ENTITY phishingBlocked.title "Suspected Web Forgery!">
+<!ENTITY phishingBlocked.longDesc "
+<p>Entering any personal information on this page may result in identity theft or other fraud.</p>
+<p>These types of web forgeries are used in scams known as phishing attacks, in which fraudulent web pages and emails are used to imitate sources you may trust.</p>
+">
+
+<!ENTITY cspFrameAncestorBlocked.title "Blocked by Content Security Policy">
+<!ENTITY cspFrameAncestorBlocked.longDesc "<p>&brandShortName; prevented this page from loading in this way because the page has a content security policy that disallows it.</p>">
+
+<!ENTITY corruptedContentError.title "Corrupted Content Error">
+<!ENTITY corruptedContentError.longDesc "<p>The page you are trying to view cannot be shown because an error in the data transmission was detected.</p><ul><li>Please contact the website owners to inform them of this problem.</li></ul>">
+
+
+<!ENTITY securityOverride.linkText "Or you can add an exception…">
+<!ENTITY securityOverride.getMeOutOfHereButton "Get me out of here!">
+<!ENTITY securityOverride.exceptionButtonLabel "Add Exception…">
+
+<!-- LOCALIZATION NOTE (securityOverride.warningContent) - Do not translate the
+contents of the <button> tags. It uses strings already defined above. The
+button is included here (instead of netError.xhtml) because it exposes
+functionality specific to firefox. -->
+
+<!ENTITY securityOverride.warningContent "
+<p>You should not add an exception if you are using an internet connection that you do not trust completely or if you are not used to seeing a warning for this server.</p>
+
+<button id='getMeOutOfHereButton'>&securityOverride.getMeOutOfHereButton;</button>
+<button id='exceptionDialogButton'>&securityOverride.exceptionButtonLabel;</button>
+">
+
+<!ENTITY remoteXUL.title "Remote XUL">
+<!ENTITY remoteXUL.longDesc "<p><ul><li>Please contact the website owners to inform them of this problem.</li></ul></p>">
+
+  <!ENTITY % globalDTD
+    SYSTEM "chrome://global/locale/global.dtd">
+  %globalDTD;
+]>
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+<html xmlns="http://www.w3.org/1999/xhtml" hasBrowserHandlers="true" class="yui3-js-enabled">
+  <head>
+    <title>Problem loading page</title>
+    <link rel="stylesheet" href="chrome://global/skin/netError.css" type="text/css" media="all" />
+    <!-- If the location of the favicon is changed here, the FAVICON_ERRORPAGE_URL symbol in
+         toolkit/components/places/src/nsFaviconService.h should be updated. -->
+    <link rel="icon" type="image/png" id="favicon" href="chrome://global/skin/icons/warning-16.png" />
+
+    <script type="application/javascript"><![CDATA[
+      // Error url MUST be formatted like this:
+      //   moz-neterror:page?e=error&u=url&d=desc
+      //
+      // or optionally, to specify an alternate CSS class to allow for
+      // custom styling and favicon:
+      //
+      //   moz-neterror:page?e=error&u=url&s=classname&d=desc
+
+      // Note that this file uses document.documentURI to get
+      // the URL (with the format from above). This is because
+      // document.location.href gets the current URI off the docshell,
+      // which is the URL displayed in the location bar, i.e.
+      // the URI that the user attempted to load.
+
+      function getErrorCode()
+      {
+        var url = document.documentURI;
+        var error = url.search(/e\=/);
+        var duffUrl = url.search(/\&u\=/);
+        return decodeURIComponent(url.slice(error + 2, duffUrl));
+      }
+
+      function getCSSClass()
+      {
+        var url = document.documentURI;
+        var matches = url.match(/s\=([^&]+)\&/);
+        // s is optional, if no match just return nothing
+        if (!matches || matches.length < 2)
+          return "";
+
+        // parenthetical match is the second entry
+        return decodeURIComponent(matches[1]);
+      }
+
+      function getDescription()
+      {
+        var url = document.documentURI;
+        var desc = url.search(/d\=/);
+
+        // desc == -1 if not found; if so, return an empty string
+        // instead of what would turn out to be portions of the URI
+        if (desc == -1)
+          return "";
+
+        return decodeURIComponent(url.slice(desc + 2));
+      }
+
+      function retryThis(buttonEl)
+      {
+        // Note: The application may wish to handle switching off "offline mode"
+        // before this event handler runs, but using a capturing event handler.
+
+        // Session history has the URL of the page that failed
+        // to load, not the one of the error page. So, just call
+        // reload(), which will also repost POST data correctly.
+        try {
+          location.reload();
+        } catch (e) {
+          // We probably tried to reload a URI that caused an exception to
+          // occur;  e.g. a nonexistent file.
+        }
+
+        buttonEl.disabled = true;
+      }
+
+      function initPage()
+      {
+        var err = getErrorCode();
+        
+        // if it's an unknown error or there's no title or description
+        // defined, get the generic message
+        var errTitle = document.getElementById("et_" + err);
+        var errDesc  = document.getElementById("ed_" + err);
+        if (!errTitle || !errDesc)
+        {
+          errTitle = document.getElementById("et_generic");
+          errDesc  = document.getElementById("ed_generic");
+        }
+
+        var title = document.getElementById("errorTitleText");
+        if (title)
+        {
+          title.parentNode.replaceChild(errTitle, title);
+          // change id to the replaced child's id so styling works
+          errTitle.id = "errorTitleText";
+        }
+
+        var sd = document.getElementById("errorShortDescText");
+        if (sd)
+          sd.textContent = getDescription();
+
+        var ld = document.getElementById("errorLongDesc");
+        if (ld)
+        {
+          ld.parentNode.replaceChild(errDesc, ld);
+          // change id to the replaced child's id so styling works
+          errDesc.id = "errorLongDesc";
+        }
+
+        // remove undisplayed errors to avoid bug 39098
+        var errContainer = document.getElementById("errorContainer");
+        errContainer.parentNode.removeChild(errContainer);
+
+        var className = getCSSClass();
+        if (className && className != "expertBadCert") {
+          // Associate a CSS class with the root of the page, if one was passed in,
+          // to allow custom styling.
+          // Not "expertBadCert" though, don't want to deal with the favicon
+          document.documentElement.className = className;
+
+          // Also, if they specified a CSS class, they must supply their own
+          // favicon.  In order to trigger the browser to repaint though, we
+          // need to remove/add the link element. 
+          var favicon = document.getElementById("favicon");
+          var faviconParent = favicon.parentNode;
+          faviconParent.removeChild(favicon);
+          favicon.setAttribute("href", "chrome://global/skin/icons/" + className + "_favicon.png");
+          faviconParent.appendChild(favicon);
+        }
+        if (className == "expertBadCert") {
+          showSecuritySection();
+        }
+
+        if (err == "remoteXUL") {
+          // Remove the "Try again" button for remote XUL errors given that
+          // it is useless.
+          document.getElementById("errorTryAgain").style.display = "none";
+        }
+
+        if (err == "cspFrameAncestorBlocked") {
+          // Remove the "Try again" button for CSP frame ancestors violation, since it's
+          // almost certainly useless. (Bug 553180)
+          document.getElementById("errorTryAgain").style.display = "none";
+        }
+
+        if (err == "nssBadCert") {
+          // Remove the "Try again" button for security exceptions, since it's
+          // almost certainly useless.
+          document.getElementById("errorTryAgain").style.display = "none";
+          document.getElementById("errorPageContainer").setAttribute("class", "certerror");
+          addDomainErrorLink();
+        }
+        else {
+          // Remove the override block for non-certificate errors.  CSS-hiding
+          // isn't good enough here, because of bug 39098
+          var secOverride = document.getElementById("securityOverrideDiv");
+          secOverride.parentNode.removeChild(secOverride);
+        }
+      }
+      
+      function showSecuritySection() {
+        // Swap link out, content in
+        document.getElementById('securityOverrideContent').style.display = '';
+        document.getElementById('securityOverrideLink').style.display = 'none';
+      }
+      
+      /* In the case of SSL error pages about domain mismatch, see if
+         we can hyperlink the user to the correct site.  We don't want
+         to do this generically since it allows MitM attacks to redirect
+         users to a site under attacker control, but in certain cases
+         it is safe (and helpful!) to do so.  Bug 402210
+      */
+      function addDomainErrorLink() {
+        // Rather than textContent, we need to treat description as HTML
+        var sd = document.getElementById("errorShortDescText");
+        if (sd) {
+          var desc = getDescription();
+          
+          // sanitize description text - see bug 441169
+          
+          // First, find the index of the <a> tag we care about, being careful not to
+          // use an over-greedy regex
+          var re = /<a id="cert_domain_link" title="([^"]+)">/;
+          var result = re.exec(desc);
+          if(!result)
+            return;
+          
+          // Remove sd's existing children
+          sd.textContent = "";
+
+          // Everything up to the link should be text content
+          sd.appendChild(document.createTextNode(desc.slice(0, result.index)));
+          
+          // Now create the link itself
+          var anchorEl = document.createElement("a");
+          anchorEl.setAttribute("id", "cert_domain_link");
+          anchorEl.setAttribute("title", result[1]);
+          anchorEl.appendChild(document.createTextNode(result[1]));
+          sd.appendChild(anchorEl);
+          
+          // Finally, append text for anything after the closing </a>
+          sd.appendChild(document.createTextNode(desc.slice(desc.indexOf("</a>") + "</a>".length)));
+        }
+
+        var link = document.getElementById('cert_domain_link');
+        if (!link)
+          return;
+        
+        var okHost = link.getAttribute("title");
+        var thisHost = document.location.hostname;
+        var proto = document.location.protocol;
+
+        // If okHost is a wildcard domain ("*.example.com") let's
+        // use "www" instead.  "*.example.com" isn't going to
+        // get anyone anywhere useful. bug 432491
+        okHost = okHost.replace(/^\*\./, "www.");
+
+        /* case #1: 
+         * example.com uses an invalid security certificate.
+         *
+         * The certificate is only valid for www.example.com
+         *
+         * Make sure to include the "." ahead of thisHost so that
+         * a MitM attack on paypal.com doesn't hyperlink to "notpaypal.com"
+         *
+         * We'd normally just use a RegExp here except that we lack a
+         * library function to escape them properly (bug 248062), and
+         * domain names are famous for having '.' characters in them,
+         * which would allow spurious and possibly hostile matches.
+         */
+        if (endsWith(okHost, "." + thisHost))
+          link.href = proto + okHost;
+
+        /* case #2:
+         * browser.garage.maemo.org uses an invalid security certificate.
+         *
+         * The certificate is only valid for garage.maemo.org
+         */
+        if (endsWith(thisHost, "." + okHost))
+          link.href = proto + okHost;
+      }
+      
+      function endsWith(haystack, needle) {
+        return haystack.slice(-needle.length) == needle;
+      }
+
+    ]]></script>
+  <link charset="utf-8" rel="stylesheet" id="yui_3_8_0_2_1371578950529_2" href="http://yui.yahooapis.com/combo?3.8.0/build/widget-base/assets/skins/sam/widget-base.css&amp;3.8.0/build/console/assets/skins/sam/console.css" /><script charset="utf-8" id="yui_3_8_0_2_1371578950529_4" src="http://yui.yahooapis.com/combo?3.8.0/build/oop/oop-min.js&amp;3.8.0/build/event-custom-base/event-custom-base-min.js&amp;3.8.0/build/dom-core/dom-core-min.js&amp;3.8.0/build/dom-base/dom-base-min.js&amp;3.8.0/build/selector-native/selector-native-min.js&amp;3.8.0/build/selector/selector-min.js&amp;3.8.0/build/node-core/node-core-min.js&amp;3.8.0/build/node-base/node-base-min.js&amp;3.8.0/build/event-base/event-base-min.js&amp;3.8.0/build/event-simulate/event-simulate-min.js&amp;3.8.0/build/event-custom-complex/event-custom-complex-min.js&amp;3.8.0/build/json-stringify/json-stringify-min.js&amp;3.8.0/build/test/test-min.js&amp;3.8.0/build/intl/intl-min.js&amp;3.8.0/build/event-delegate/event-delegate-min.js&amp;3.8.0/build/node-event-delegate/node-event-delegate-min.js&amp;3.8.0/build/pluginhost-base/pluginhost-base-min.js&amp;3.8.0/build/pluginhost-config/pluginhost-config-min.js&amp;3.8.0/build/node-pluginhost/node-pluginhost-min.js&amp;3.8.0/build/dom-style/dom-style-min.js&amp;3.8.0/build/dom-screen/dom-screen-min.js&amp;3.8.0/build/node-screen/node-screen-min.js" async=""></script><script charset="utf-8" id="yui_3_8_0_2_1371578950529_5" src="http://yui.yahooapis.com/combo?3.8.0/build/node-style/node-style-min.js&amp;3.8.0/build/async-queue/async-queue-min.js&amp;3.8.0/build/gesture-simulate/gesture-simulate-min.js&amp;3.8.0/build/node-event-simulate/node-event-simulate-min.js&amp;3.8.0/build/console/lang/console_en.js&amp;3.8.0/build/attribute-core/attribute-core-min.js&amp;3.8.0/build/attribute-observable/attribute-observable-min.js&amp;3.8.0/build/attribute-extras/attribute-extras-min.js&amp;3.8.0/build/attribute-base/attribute-base-min.js&amp;3.8.0/build/attribute-complex/attribute-complex-min.js&amp;3.8.0/build/base-core/base-core-min.js&amp;3.8.0/build/base-observable/base-observable-min.js&amp;3.8.0/build/base-base/base-base-min.js&amp;3.8.0/build/base-pluginhost/base-pluginhost-min.js&amp;3.8.0/build/classnamemanager/classnamemanager-min.js&amp;3.8.0/build/event-synthetic/event-synthetic-min.js&amp;3.8.0/build/event-focus/event-focus-min.js&amp;3.8.0/build/widget-base/widget-base-min.js&amp;3.8.0/build/widget-htmlparser/widget-htmlparser-min.js&amp;3.8.0/build/widget-skin/widget-skin-min.js" async=""></script><script charset="utf-8" id="yui_3_8_0_2_1371578950529_6" src="http://yui.yahooapis.com/combo?3.8.0/build/widget-uievents/widget-uievents-min.js&amp;3.8.0/build/console/console-min.js" async=""></script></head>
+
+  <body dir="ltr">
+
+    <!-- ERROR ITEM CONTAINER (removed during loading to avoid bug 39098) -->
+    
+
+    <!-- PAGE CONTAINER (for styling purposes only) -->
+    <div id="errorPageContainer">
+    
+      <!-- Error Title -->
+      <div id="errorTitle">
+        <h1 id="errorTitleText">Unable to connect</h1>
+      </div>
+      
+      <!-- LONG CONTENT (the section most likely to require scrolling) -->
+      <div id="errorLongContent">
+      
+        <!-- Short Description -->
+        <div id="errorShortDesc">
+          <p id="errorShortDescText">Firefox can't establish a connection to the server at localhost:8666.</p>
+        </div>
+
+        <!-- Long Description (Note: See netError.dtd for used XHTML tags) -->
+        <div id="errorLongDesc">
+<ul>
+  <li>The site could be temporarily unavailable or too busy. Try again in a few
+    moments.</li>
+  <li>If you are unable to load any pages, check your computer's network
+    connection.</li>
+  <li>If your computer or network is protected by a firewall or proxy, make sure
+    that Firefox is permitted to access the Web.</li>
+</ul>
+</div>
+
+        <!-- Override section - For ssl errors only.  Removed on init for other
+             error types.  -->
+        
+      </div>
+
+      <!-- Retry Button -->
+      <button id="errorTryAgain" autocomplete="off" onclick="retryThis(this);" autofocus="true">Try Again</button>
+      <script>
+        // Only do autofocus if we're the toplevel frame; otherwise we
+        // don't want to call attention to ourselves!  The key part is
+        // that autofocus happens on insertion into the tree, so we
+        // can remove the button, add @autofocus, and reinsert the
+        // button.
+        if (window.top == window) {
+            var button = document.getElementById("errorTryAgain");
+            var nextSibling = button.nextSibling;
+            var parent = button.parentNode;
+            parent.removeChild(button);
+            button.setAttribute("autofocus", "true");
+            parent.insertBefore(button, nextSibling);
+        }
+      </script>
+
+    </div>
+
+    <!--
+    - Note: It is important to run the script this way, instead of using
+    - an onload handler. This is because error pages are loaded as
+    - LOAD_BACKGROUND, which means that onload handlers will not be executed.
+    -->
+    <script type="application/javascript">initPage();</script>
+
+  <script type="text/javascript" src="http://yui.yahooapis.com/3.8.0/build/yui/yui-min.js"></script><div id="yui3-css-stamp" style="position: absolute !important; visibility: hidden !important" class=""></div></body>
+<canvas id="fxdriver-screenshot-canvas" style="display: none;" width="994" height="699"></canvas></html>
