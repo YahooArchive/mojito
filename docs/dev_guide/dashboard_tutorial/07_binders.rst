@@ -1,6 +1,8 @@
-===============================
-7. Mojito on the Client (Draft)
-===============================
+=======================
+7. Mojito on the Client
+=======================
+
+.. _07_binders-intro:
 
 Introduction
 ============
@@ -10,12 +12,16 @@ code, and templates to the client, we have written client code that works with t
 DOM. Mojito has a special way for you to write code specifically for DOM binding 
 and manipulation called binders. Mojits can have one or more binders that are 
 deployed to the client (they cannot run on the server). We’re going to create 
-some binders to make our dashboard application more interactive.
+some binders to allow users to update data and hide content. 
+
+.. _07_intro-est_time:
 
 Estimated Time
 --------------
 
 15 minutes
+
+.. _07_intro-what:
 
 What We’ll Cover
 ----------------
@@ -27,17 +33,26 @@ What We’ll Cover
 - refreshing templates with binders
 - destroying child mojits with binders
 
+.. _07_intro-final:
+
 Final Product
 -------------
 
-In the screenshot, you can see that when ... the menu...
+In the screenshot, you can see that we now have a very full dashboard with data
+from GitHub, Twitter, the YUI blog, YouTube, and YUI Gallery. You can also see
+the icon **⟲**, which uses binders to refresh data when clicked.
 
+.. image:: images/07_binders.png
+   :height: 669 px
+   :width: 650 px
+   :alt: Screenshot of 07 binders application.
 
-Image here!
-
+.. _07_intro-before:
 
 Before Starting
 ---------------
+
+.. _07_intro_before-review:
 
 Review of the Last Module
 #########################
@@ -53,19 +68,19 @@ out our dashboard application. In summary, we looked at the following:
 - writing YUI Tests for Arrow
 - running functional tests with Arrow
 
+.. _07_intro_before-setup:
 
 Setting Up
 ##########
 
 ``$ cp -r 06_testing 07_binders``
 
-Source Code for Example
------------------------
-
-[app_part{x}](http://github.com/yahoo/mojito/examples/quickstart_guide/app_part{x})
+.. _07_binders-lesson:
 
 Lesson: Binders
 ===============
+
+.. _07_lesson-intro:
 
 Introduction
 ------------
@@ -74,40 +89,47 @@ A mojit may have zero, one, or many binders within the binders directory. Each b
 will be deployed to the browser along with the rest of the mojit code, where the 
 client-side Mojito runtime will call it appropriately. The view used to generate 
 output determines which binder is used. Thus, if the simple view is used, the 
-bindersimple.js is used. This can be overridden by setting view.binder in the meta 
-argument to ac.done. If no binder matches the view, then no binder is used.
+bindersimple.js is used. This can be overridden by setting ``view.binder`` in the meta 
+argument to ``ac.done``. If no binder matches the view, then no binder is used.
+
+.. _07_lesson-location:
 
 Location
 --------
 
 ``{app_name}/mojits/{mojit_name}/binders/{action_name}.js``
 
+.. _07_lesson-reqs:
+
 Requirements for Using Binders
 ------------------------------
 
-The top-level mojit instance defined in application.json is of type HTMLFrameMojit 
-or your own frame mojit. See HTMLFrameMojit for an introduction and example configuration.
-Your application is configured to deploy code to the client with the deploy property in
-``application.json``. See Configuring Applications to Be Deployed to Client for more 
-information. The template files (e.g., index.hb.html) have containers (div elements)
-that have the id attribute assigned the value {{mojit_view_id}}. 
+The top-level mojit instance defined in ``application.json`` is of type ``HTMLFrameMojit`` 
+or your own frame mojit. See `HTMLFrameMojit <../topics/mojito_frame_mojits.html#htmlframemojit>`_ 
+for an introduction and example configuration. Your application is configured to deploy 
+code to the client with the deploy property in ``application.json``. See `Configuring 
+Applications to Be Deployed to Client <../intro/mojito_configuring.html#configuring-applications-to-be-deployed-to-client>`_ 
+for more information. The template files (e.g., ``index.hb.html``) have containers (``div`` 
+elements) that have the ``id`` attribute assigned the value ``{{mojit_view_id}}``. 
 For example: ``<div id={{mojit_view_id}}>``. The attribute value ``{{mojit_view_id}}`` 
 allows binders to attach themselves to the DOM.
+
+.. _07_lesson-binder:
 
 Binder Code
 -----------
 
-Like controllers and models, binders register a module name with YUI.add and their own 
-namespace. Binders have the two essential functions init and bind. The init function 
-initializes the binder and contains the mojitProxy object, which we will discuss in 
-detail soon. The bind function as you might imagine, allows the binder code to be 
+Like controllers and models, binders register a module name with ``YUI.add`` and their own 
+namespace. Binders have the two essential functions ``init`` and ``bind``. The ``init`` 
+function initializes the binder and contains the ``mojitProxy`` object, which we will discuss 
+in detail soon. The ``bind`` function, as you might imagine, allows the binder code to be 
 attached to the DOM.
 
 The example binder below shows its basic structure:
 
 .. code-block:: javascript
 
-   YUI.add('blogMojitBinderIndex', function(Y, NAME) {
+   YUI.add('BlogBinderIndex', function(Y, NAME) {
      Y.namespace('mojito.binders')[NAME] = {
        init: function(mojitProxy) {
          this.mojitProxy = mojitProxy;
@@ -117,51 +139,67 @@ The example binder below shows its basic structure:
      };
    }, '0.0.1', {requires: ['mojito-client']});
 
+
+.. _07_lesson_binder-when:
+
 When Are Binders Executed?
 ##########################
 
-The binder ``index.js`` will be created whenever the index function of the controller is 
-executed. and its corresponding DOM node is attached to a client page. Mojito will 
-select that DOM node and pass it into the bind function. This allows you to write 
+The binder ``index.js`` will be created whenever the ``index`` function of the controller 
+is executed. and its corresponding DOM node is attached to a client page. Mojito will 
+select that DOM node and pass it into the ``bind`` function. This allows you to write 
 code to capture UI events and interact with Mojito or other mojit binders.
+
+.. _07_lesson_binder-functions:
 
 Binder Functions
 ################
 
+.. _07_binder_functions-init:
+
 init
 ****
 
-The init method is called with an instance of a mojit proxy specific for this mojit 
-binder instance. The mojit proxy can be used at this point to listen for events. It is 
-typical to store the mojit proxy for later use as well. The mojit proxy is the only 
-gateway back into the Mojito framework for your binder.
+The ``init`` method is called with an instance of a mojit proxy specific for this mojit 
+binder instance. The ``mojitProxy`` instance can be used at this point to listen for events. 
+It is typical to store the ``mojitProxy`` for later use as well. The ``mojitProxy`` object 
+is the only gateway back into the Mojito framework for your binder.
+
+.. _07_binder_functions-bind:
 
 bind
 ****
 
-The bind method is passed a Y.Node instance that wraps the DOM node representing this mojit 
-instance within the DOM. It will be called after all other binders on the page have been 
-constructed and their initmethods have been called. The mojit proxy can be used at this 
-point to broadcast events. Users should attach DOM event handlers in bind to capture user 
-interactions.
+The ``bind`` method is passed a ``Y.Node`` instance that wraps the DOM node representing 
+this mojit instance within the DOM. It will be called after all other binders on the page 
+have been constructed and their ``init`` methods have been called. The ``mojitProxy`` can 
+be used at this point to broadcast events. Users should attach DOM event handlers in ``bind`` 
+to capture user interactions.
 
+.. _07_lesson_binder-mojitProxy:
 
 mojitProxy Object
 #################
 
 Each binder, when constructed by Mojito on the client, is given a proxy object for interactions 
-with the mojit it represents as well as with other mojits on the page. This mojitProxy should 
-be saved with this for use in the other parts of the binder.
+with the mojit it represents as well as with other mojits on the page. This ``mojitProxy`` 
+should be saved with this for use in the other parts of the binder. 
+
+.. _07_lesson_mojitProxy-props:
 
 Properties
 **********
 
+The ``mojitProxy`` object has the following properties:
+
 - ``config`` - the instance specification for the mojit linked to the binder
 - ``context`` - environment information such as language, device, region, site, etc.
 - ``children`` - the children of the mojit, which is defined in application.json.
+- ``data`` - the data model that allows your binder to share and access data through a tunnel
+  that data can pass between the client and server.
 - ``type`` - the name of the mojit that attached the binder to the DOM.
 
-From the mojitProxy, you can access properties that use the interface and provides the 
+From the ``mojitProxy``, you can access properties that use the interface and provides the 
 information below:
 
 .. code-block:: javascript
@@ -181,47 +219,70 @@ information below:
      };
    }, '0.0.1', {requires: ['yql']});
 
+.. _07_lesson_binder-api:
+
 API Methods
 ###########
 
-In addition to  the properties of the mojitProxy object, you can also use the methods 
+In addition to  the properties of the ``mojitProxy`` object, you can also use the methods 
 of the ``MojitProxy`` class so that the binder can interact with the controller and 
 other mojits. We’re going to focus on a core set of the available methods and recommend 
 you look at the API documentation to complete the picture.
 
-In the next few sections, we’ll be using the following MojitProxy methods. The methods 
-broadcast and listen allow binder code to communicate with each other. The invoke function 
-allows binder to call controller functions. The methods refreshView and render help binders 
-to update content of a template.
+In the next few sections, we’ll be using the following ``MojitProxy`` methods. The methods 
+``broadcast`` and ``liste``n allow binder code to communicate with each other. The ``invoke`` 
+function allows binder to call controller functions. The methods ``refreshView`` and 
+``render`` help binders to update content of a template.
+
+.. _07_binder_api-binder2binder:
 
 Binder-to-Binder Communication 
-##############################
+******************************
 
 - ``broadcast`` - Used by mojit binders to broadcast a message between mojits.
 - ``listen`` - Allows mojit binders to register to listen to other mojit events.
 
+.. _07_binder_api-binder2controller:
+
 Binder-to-Controller Communication
-##################################
+**********************************
 
 ``invoke`` - Used by the mojit binders to invoke actions on themselves within Mojito. 
 
-Updating DOM / Rendering Data
-#############################
+.. _07_binder_api-share_data:
 
-- ``refreshView`` - Refreshes the current DOM view for this binder without recreating the binder instance. 
-  Will call the binder's ``onRefreshView`` function when complete with the new Y.Node and HTMLElement objects.
-- ``render`` - This method renders the "data" provided into the "View" specified. The "view" must be the name 
-  of one of the files in the current Mojits "views" folder. Returns via the callback.
+Sharing and Accessing Data
+**************************
+
+- `data <../../api/classes/MojitProxy.html#property_data>`_ - Object that has methods for 
+  getting and setting data that can be shared with the server.
+- `pageData <../../api/classes/MojitProxy.html#property_pageData>`_ - Object that has 
+  methods for getting and setting data with other mojits on the page and with server-side code.
+
+.. _07_binder_api-update:
+
+Updating DOM / Rendering Data
+*****************************
+
+- ``refreshView`` - Refreshes the current DOM view for this binder without recreating the
+  binder instance. Will call the binder's ``onRefreshView`` function when complete with 
+  the new ``Y.Node`` and ``HTMLElement`` objects.
+- ``render`` - This method renders the data provided into the specified view. The "view" 
+  must have the name of one of the files in the current mojits ``views`` directories. 
+  Returns using the callback.
+
+.. _07_lesson_binder-invoke:
 
 Invoking Controller Methods
 ###########################
 
 The invoke method is critical because it allows user-driven events to trigger the 
-execution of controller functions. In the binder snippet below, the invoke 
+execution of controller functions. In the binder snippet below, the ``invoke``
 method calls the controller function show with parameters. The returned value is 
-used to update the DOM. This is the typical use of the invoke method. The controller 
+used to update the DOM. This is the typical use of the ``invoke`` method. The controller 
 may need to get data from the model, so the flow would be 
-binder->controller->model->controller->binder.
+binder->controller->model->controller->binder. We'll be using the ``invoke`` method
+in our application to refresh the data for our ``Twitter`` and ``Github`` mojits.
 
 .. code-block:: javascript 
 
@@ -240,22 +301,25 @@ binder->controller->model->controller->binder.
      });
    },
    ...
+.. _07_lesson_binder-client2server:
 
 Client to Server Communication
 ##############################
 
 If the controller has not been deployed to the client, the binder sends a request to the 
 server through a special path that Mojito creates a tunnel URL that allows the client to 
-make HTTP requests from the client to the server. The default path is http://domain:8666/tunnel, 
+make HTTP requests from the client to the server. The default path is ``http://domain:8666/tunnel``, 
 but you can configure the name of the path.
+
+.. _07_lesson_binder-broadcast:
 
 Broadcasting and Listening for Events
 #####################################
 
-The broadcast method lets you emit custom events that other mojit binders can listen to and 
-respond.  In this way, mojits can respond to user events and communicate with each other.
+The ``broadcast`` method lets you emit custom events that other mojit binders can listen 
+to and respond.  In this way, mojits can respond to user events and communicate with each other.
 
-The mojit binder below broadcasts the event ‘fire-link’ when a user clicks on a hyperlink in a 
+The mojit binder below broadcasts the event ``'fire-link'`` when a user clicks on a hyperlink in a 
 unordered list. 
 
 .. code-block:: javascript
@@ -274,7 +338,8 @@ unordered list.
      } 
    ...
 
-Another binder listening for the ‘fire-link’ event then responds by emitting the event ‘broadcast-link’. 
+Another binder listening for the ``'fire-link'`` event then responds by emitting the event 
+``'broadcast-link'``. 
 
 .. code-block:: javascript
 
@@ -290,11 +355,13 @@ Another binder listening for the ‘fire-link’ event then responds by emitting
      },
    ...
 
+.. _07_lesson_binder-refresh:
+
 Refreshing Views and Rendering Data
 ###################################
 
 Often all you want your binder to do is to refresh its associated view. From the 
-``mojitProxy`` object, you can call the refreshView method to render a new DOM node 
+``mojitProxy`` object, you can call the ``refreshView`` method to render a new DOM node 
 for the current mojit and its children, as well as reattach all of the existing 
 binders to their new nodes within the new markup. Because all binder instances 
 are retained, state can be stored within a binder’s scope.
@@ -316,88 +383,347 @@ are retained, state can be stored within a binder’s scope.
      });
    ...
 
+.. _07_binders-create:
+
 Creating the Application
 ========================
 
 #. After you have copied the application that you made in the last module (see Setting Up), 
-   change into the application ``05_getting_data``.
-#. Let’s create the Twitter mojits that get Twitter data for us.
+   change into the application ``07_binders``.
+#. Let’s create our last two mojits ``Blog`` and ``Gallery`` for the dashboard. The ``Blog``
+   mojit will display posts from the `YUI Blog <http://www.yuiblog.com/>`_, and the 
+   ``Gallery`` mojit will display the latest modules pushed to the YUI Gallery.
 
-   ``$ mojito create mojit twitterMojit``
+   - ``$ mojito create mojit Blog``
+   - ``$ mojito create mojit Gallery``
 
-#. Change to the models directory of ``twitterMojit``. We’re going to deal with getting Twitter 
-   data first.
-#. Rename the file ``foo.server.js`` to ``twitter.server.js`` and then change the registered 
-   module name to ‘TwitterSearchModel’.
-#. Open twitter.server.js in an editor, and modify the method getData, so that it looks 
-   like the snippet below. As you can see, we pass the URL to the Twitter Search API, the 
-   search query, and we configure the call to have a timeout and force the cache to be cleared.
+#. Create mojit instances for our new mojits in ``application.json`` and make them 
+   children of the ``body`` instance as shown below:
 
    .. code-block:: javascript
 
-      getData: function(count, cb) {
-
-        var url = 'http://search.twitter.com/search.json';
-        var params = {
-          q:"@yuilibrary",
-          rpp: "6"
-        };
-        var config = {
-          timeout: 5000,
-          headers: {
-            'Cache-Control': 'max-age=0'
-          }
-        };
-        Y.mojito.lib.REST.GET(url, params, config, function(err, response) {
-          if (err) {
-            return cb(err);
-          }
-          var resp = Y.JSON.parse(response._resp.responseText).results;
-          cb(null, resp);
-        });
-      }
-
-#. We also need to add the dependencies to use the REST and JSON modules:
-
-   .. code-block:: javascript
-
-        ...
-      }, '0.0.1', {requires: ['mojito', 'mojito-rest-lib','json']});
-
-#. We need to modify the controller to use the TwitterSearchModel. Open 
-   ``controller.server.js`` in an editor, add the Models addon, and modify the ``index`` 
-   method so that it’s the same as that shown below. The models addon allows you to access 
-   our model and call the model function getData.
-
-   .. code-block:: javascript
-
-      ...
-        index: function(ac) {
-          ac.models.get('TwitterSearchModel').getData({},function(err, data) {
-            if (err) {
-              ac.error(err);
-              return;
+      "body": {
+        "type": "Body",
+        "config": {
+          "children": {
+            "github": {
+              "type":"Github"
+            },
+            "calendar": {
+              "type":"Calendar"
+            },
+            "twitter": {
+              "type":"Twitter"
+            },
+            "youtube": {
+              "type": "Youtube"
+            },
+            "blog": {
+              "type": "Blog"
+            },
+            "gallery": {
+              "type": "Gallery"
             }
-            // Add mojit specific css
-            ac.assets.addCss('./index.css');
-            ac.done({
-              title: 'YUI Twitter mentions',
-              results: data
-            });
-          });
+          }
         }
-      };
-    }, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon']});
-
-
-#. Let’s replace the content of index.hb.html with the following while we’re here:
+      }
+#. Also, we'll need to add the new mojits to the template of the ``Body`` 
+   mojit (``mojits/Body/view/index.hb.html``), so that the content they create will be 
+   attached to the rendered page:
 
    .. code-block:: html
-   
+
       <div id="{{mojit_view_id}}" class="mojit">
-        <div class="mod" id="twittermojit">
+        <h4 class="bodytext">{{title}}</h4>
+        <div class="bodyStuff yui3-g-r">
+          <div class="yui3-u-1-3">
+            {{{blog}}}
+            {{{github}}}
+          </div>
+          <div class="yui3-u-1-3">
+            {{{calendar}}}
+            {{{gallery}}}
+          </div>
+          <div class="yui3-u-1-3">
+            {{{twitter}}}
+            {{{youtube}}}
+          </div>
+        </div>
+      </div>
+
+#. Change to ``mojits/Blog/models`` and rename the file ``foo.server.js`` to ``blog.server.js``.
+#. Replace the content of ``blog.server.js`` with the code below. We're using YQL again to
+   get the blog posts from a custom table.
+
+   .. code-block:: javascript
+
+      YUI.add('BlogModelYQL', function (Y, NAME) {
+
+      Y.mojito.models[NAME] = {
+        init: function (config) {
+            this.config = config;
+        },
+        getData: function (params, feedURL, callback) {
+
+          var query = "select title,link,pubDate, description, dc:creator from feed where url='{feed}' limit 5",
+                queryParams = {
+                  feed: feedURL
+                },
+                cookedQuery = Y.Lang.sub(query, queryParams);
+          Y.YQL(cookedQuery, Y.bind(this.onDataReturn, this, callback));
+        },
+        onDataReturn: function (cb, result) {
+          Y.log("blog.server onDataReturn called");
+          if (result.error === undefined) {
+
+            var results = result.query.results.item;
+            cb(results);
+          } else {
+            cb(result.error);
+          }
+        },
+      };
+    }, '0.0.1', {requires: ['yql', 'substitute']});
+
+#. Update your controller to use the model we just created. 
+
+   .. code-block:: javascript
+
+      YUI.add('Blog', function (Y, NAME) {
+
+        Y.namespace('mojito.controllers')[NAME] = {
+
+          index: function (ac) {
+            var view_type = "yui", feedURL = "http://www.yuiblog.com/blog/feed/", title = "YUI Blog posts";
+            ac.models.get('BlogModelYQL').getData({}, feedURL, function (data) {
+        
+              // Add mojit specific css.
+              ac.assets.addCss('./index.css');
+
+              // Populate blog template.
+              ac.done({
+                title: title,
+                results: data
+              });
+            });
+          }
+        };
+      }, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'mojito-params-addon', 'mojito-config-addon']});
+#. Update the template ``index.hb.html`` of the ``Blog`` mojit as well:
+
+   .. code-block:: html
+
+      <div id="{{mojit_view_id}}" class="mojit">
+        <div class="mod" id="blog">
           <h3>
             <strong>{{title}}</strong>
+            <a title="minimize module" class="min" href="#">-</a>
+            <a title="close module" class="close" href="#">x</a>
+          </h3>
+          <div class="inner">
+            <ul>
+            {{#results}}
+              <li>
+                <a href="{{link}}">{{title}}</a>
+                <span class="desc" title="AUTHOR: [ {{creator}} ] DESC: {{description}} DATE: ( {{pubDate}} )">{{description}}</span>
+              </li>
+            {{/results}}
+            </ul>
+          </div>
+        </div>
+      </div>
+
+#. Let's update the model, controller, and view of the ``Gallery`` mojit as well. First
+   rename ``foo.server.js`` to ``gallery.server.js`` and replace the contents with that
+   below. 
+
+   .. code-block:: javascript
+
+      YUI.add('GalleryModelYQL', function (Y, NAME) {
+        Y.mojito.models[NAME] = {
+          init: function (config) {
+            this.config = config;
+          },
+          getData: function (params, tablePath, callback) {
+            Y.log("gallery getData called");
+
+            var query = "use '{table}' as gallerylogs; select * from gallerylogs",
+                queryParams = {
+                    table: tablePath
+                },
+                cookedQuery = Y.Lang.sub(query, queryParams);
+
+             // Y.log("cookedQuery: " + cookedQuery);
+             Y.YQL(cookedQuery, Y.bind(this.onDataReturn, this, callback));
+          },
+          onDataReturn: function (cb, result) {
+            Y.log("onDataReturn called");
+            var itemLimit = 10, results;
+
+            if (result.error === undefined) {
+                results = result.query.results.json;
+                results.json = results.json.slice(0, itemLimit);
+
+                cb(results);
+            } else {
+                cb(result.error);
+            }
+          }
+        };
+      }, '0.0.1', {requires: ['yql', 'substitute']});
+
+   Update the controller and ``index`` template as well with the following:
+
+   .. code-block:: javascript
+
+      YUI.add('Gallery', function (Y, NAME) {
+
+        Y.namespace('mojito.controllers')[NAME] = {
+
+          index: function (ac) {
+            var view_type = "yui", tablePath = "store://owgYr7PT7CWIOWMaWs9Stb", title = "YUI Gallery Pushes";
+
+            ac.models.get('GalleryModelYQL').getData({}, tablePath, function (data) {
+              // add mojit specific css
+              ac.assets.addCss('./index.css');
+
+              // populate youtube template
+              ac.done({
+                title: title,
+                results: data
+              });
+            });
+          }
+        };
+      }, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'mojito-params-addon', 'mojito-config-addon']});
+
+   .. code-block:: html
+
+      <div id="{{mojit_view_id}}" class="mojit">
+        <div class="mod" id="gallery">
+          <h3>
+            <strong>{{title}}</strong>
+            <a title="minimize module" class="min" href="#">-</a>
+            <a title="close module" class="close" href="#">x</a>
+          </h3>
+          <div class="inner galleryFlow">
+            <ul>
+            {{#results}}
+              {{#json}}
+               <li><a href="http://yuilibrary.com/gallery/buildtag/{{.}}">{{.}}</a></li>
+              {{/json}}
+            {{/results}}
+            </ul>
+          </div>
+        </div>
+      </div>
+
+#. For the binders, the first one we'll change is that of the ``PageLayout`` mojit 
+   (``mojits/PageLayout/binders/index.js``). We're just to use the `YUI Node Class <http://yuilibrary.com/yui/docs/api/classes/Node.html>`_
+   to select a node and then add a class so that users can hide content, so we won't need 
+   to use the ``mojitProxy`` object. Update the ``bind`` function with the following, which
+   will select a node by the class, handle a click event, and then either add or remove
+   a class allowing the user to hide or show a widget.
+
+   .. code-block:: javascript
+   
+      bind: function(node) {
+        var me = this;
+        this.node = node;
+
+        Y.log("bind called");
+        Y.on("domready", function(){
+          Y.one("body").addClass("yui3-skin-sam");
+        });
+        Y.one(".mybody").delegate('click', function() {
+          if (!this.ancestor('div').hasClass('collapse')) {
+            this.ancestor('div').addClass('collapse');
+          } else {
+            this.ancestor('div').removeClass('collapse');
+          }
+        }, 'a.min');
+      }
+
+#. The next binder modification will be for the ``Twitter`` mojit. We want the binder
+   to allow users to update the Twitter feed by clicking on a button. The binder code
+   below cleans up the Twitter feed, handles click events on , and then calls the 
+   controller method ``index`` on the server. After the ``index`` method is executed, the 
+   rendered ``index.hb.html`` template is attached to the DOM. The 
+   communication between the client and server is through the ``mojitProxy`` object:
+
+   .. code-block:: javascript
+
+      YUI.add('TwitterBinderIndex', function(Y, NAME) {
+
+        Y.namespace('mojito.binders')[NAME] = {
+
+          init: function(mojitProxy) {
+            this.mojitProxy = mojitProxy;
+          },
+          bind: function (node) {
+            var me = this,
+                mp = this.mojitProxy;
+            this.node = node;
+            Y.on("domready", function () {
+              Y.log("Twitter: bind ");
+              // get elements
+              var tweetsList = Y.one("#twitter").all('li');
+              Y.Array.each(tweetsList._nodes, function (item, index, array) {
+                Y.log(item);
+                var textNode = Y.one(item).one('span');
+                textNode.setContent(textNode.getHTML().replace(/(http\S+)/i, '<a href="$1" target="_blank">$1</a>')
+                      .replace(/(@)([a-z0-9_\-]+)/i, '<a href="http://twitter.com/$2" target="_blank">$1$2</a>')
+                      .replace(/(#)(\S+)/ig, '<a href="http://twitter.com/search' + '?q=%23$2" target="_blank">$1$2</a>'));
+
+              });
+            });
+            refreshMojit = function(evt) {
+              var tgt = evt.target;
+                  evt.halt();
+                  mp.invoke('index', function(err, markup) {
+                    if (me) {
+                      me.innerHTML = markup;
+                    }
+                  });
+                };
+              // Refresh the content when user clicks refresh button.
+              Y.one("#twitter").delegate('click', refreshMojit, 'a.refresh');
+            }
+          };
+        }, '0.0.1', {requires: ['event-mouseenter', 'mojito-client']});
+#. We want to let users to be able to update the GitHub activity as well, so let's 
+   add almost the identical code to the binder of the ``Github`` binder (``mojits/Github/binders/index.js``).
+
+   .. code-block:: javascript 
+
+      bind: function (node) {
+        this.node = node;
+        var me = this.node,
+            mp = this.mojitProxy,
+            refreshMojit = function(evt) {
+              var tgt = evt.target;
+              evt.halt();
+              mp.invoke('index', function(err, markup) {
+                if (me) {
+                  me.replace(markup);
+                }
+              });
+            };
+        // Refresh the content when user clicks refresh button.
+        Y.one("#github").delegate('click', refreshMojit, 'a.refresh');
+      }
+
+#. The binders are reliant on the **refresh** icon. So, let's add that to the templates 
+    of the ``Twitter`` (``mojits/Twitter/views/index.hb.html``) and ``Github`` 
+    (``mojits/Github/views/index.hb.html``) mojits:
+
+   .. code-block:: html
+
+      <div id="{{mojit_view_id}}" class="mojit">
+        <div class="mod" id="twitter">
+          <h3>
+            <strong>{{title}}</strong>
+            <a title="refresh module" class="refresh" href="#">⟲</a>
             <a title="minimize module" class="min" href="#">-</a>
             <a title="close module" class="close" href="#">x</a>
           </h3>
@@ -411,112 +737,77 @@ Creating the Application
         </div>
       </div>
 
-#. Let’s turn our attention to the githubMojit. We have been waiting long enough to 
-   get GitHub data, but before we change any code, let’s rename the model file to 
-   ``yql.server.js``.
-#. Now we can edit the file yql.server.js. Open the file in an editor, change the 
-   module name to StatsModelYQL, and update the getData function with the code below. 
-   Notice that we are using the YQL Open Data Table github.xml, which the YQL module 
-   let’s you specify as a query parameter.
-
-   .. code-block:: javascript 
-
-      ...
-        getData: function(params, callback) {
-          var yqlTable = 'https://raw.github.com/triptych/trib/master/src/yql/github.xml',
-          query = "use '{table}' as yahoo.awooldri.github.repo; select watchers,forks from yahoo.awooldri.github.repo where id='yql' and repo='yql-tables'",
-          queryParams = {
-            table: yqlTable
-          },
-          cookedQuery = Y.substitute(query, queryParams);
-          Y.YQL(cookedQuery, Y.bind(this.onDataReturn, this, callback));
-        },
-        onDataReturn: function (cb, result) {
-          if (typeof result.error === 'undefined') {
-            var results = result.query.results.json;
-            cb(results);
-          } else {
-            cb(result.error);
-          }
-        }
-      ...
-
-#. Besides the YQL module, we also used the Substitute module, so make sure to add 
-   both of those modules to the requires array:
-
-   .. code-block:: javascript
-
-      }, '0.0.1', {requires: ['yql', 'substitute']});
-
-#. The githubMojit controller needs to get the correct model. We’re also going to 
-   simplify the ``index`` function to only use the default template. Modify the 
-   ``index`` function so that it’s the same as that below.
-
-   .. code-block:: javascript
-
-      ...
-        index: function(ac) {
-          var model = ac.models.get('StatsModelYQL');
-          Y.log(model);
-          model.getData({}, function(data){
-            Y.log("githubmojit -index - model.getData:");
-            Y.log(data);
-            ac.assets.addCss('./index.css');
-            ac.done({
-              title: "YUI GitHub Stats",
-              watchers: data.watchers,
-              forks: data.forks
-            });
-          });
-        }
-      ...
-
-#. We’re going to update our template to look more like the Twitter template. 
-   So, go ahead and replace the content of index.hb.html with the following:
-
    .. code-block:: html
 
       <div id="{{mojit_view_id}}" class="mojit">
-        <div class="mod" id="githubmojit">
+        <div class="mod" id="github">
           <h3>
             <strong>{{title}}</strong>
+            <a title="refresh module" class="refresh" href="#">⟲</a>
             <a title="minimize module" class="min" href="#">-</a>
             <a title="close module" class="close" href="#">x</a>
           </h3>
           <div class="inner">
-            <div>Github watchers: <span>{{watchers}}</span></div>
-            <div>Github forks: <span>{{forks}}</span></div>
+            <ul>
+            {{#results}}
+              <li><a href="http://github.com/{{username}}">{{username}}</a> - <a href="{{link}}">{{message}}</a></li>
+            {{/results}}
+            </ul>
           </div>
         </div>
       </div>
 
-#. Okay, we have ``githubMojit`` getting real data and even have a mojit for getting 
-   Twitter data. Did we forget anything? Yeah, we need to plug our ``twitterMojit`` 
-   into the body by making it a child of the ``body`` instance. Let’s update the ``body``
-   instance in ``application.json``:
-  
-   .. code-block:: javascript 
+#. We'll need to modify ``assets/trib.css`` to style the **refresh** icon. Add 
+   ``a.refresh`` to the ``div.mod h3`` block shown below and also the snippet that
+   positions the icon:
 
-      ...
-        "body": {
-          "type": "BodyMojit",
-          "config": {
-            "children": {
-              "github": {
-                "type":"githubMojit"
-              },
-              "twitter": {
-                "type": "twitterMojit"
-              }
-            }
-          }
-        },
-      ...
+   .. code-block:: css
 
-#. You can go ahead and start the application. You’ll see both real-time data 
-   for GitHub and Twitter. We’ll be adding more mojits with more data in the 
-   coming modules, so you may want to review the sections on YQL.
+      div.mod h3 a.close,
+      div.mod h3 a.min,
+      div.mod h3 a.refresh {
+        background-color: #F9F9FC;
+        border:1px solid #E5E6F1;
+        color: #5E6BA4;
+        text-align: center;
+        display: block;
+        height: 19px;
+        width: 17px;
+        text-decoration: none;
+        font-weight: bold;
+        right: 4px;
+        top: 1px;
+        position: absolute;
+        font-size: 80%;
+        margin: 2px;
+        padding: 0;
+      }
+      div.mod h3 a.refresh {
+        right: 50px;
+      }
+#. Go ahead and start your application. You'll see that we now have two widgets per each
+   column. The GitHub and Twitter feeds should have the **refresh** icon.
+#. Open a developer console or Firebug and then click on the **refresh** icon for the GitHub 
+   widget. You will probably not see any new content, but in the developer console, you'll 
+   see the following indicating that the controller ``index`` method was invoked through
+   the RPC tunnel and that a new binder was created for the returned content.
 
+   ::
+   
+      mojito-client: Executing "@Github/index" on the client. combo:13
+      mojito-dispatcher: Cannot expand instance "@Github". Trying with the tunnel in case it is a remote mojit. combo:13
+      mojito-dispatcher: Dispatching instance "@Github" through RPC tunnel. combo:13
+      mojito-tunnel-client: rpc success combo:13
+      mojito-client: Mojito Client state: paused. combo:13
+      mojito-client: Created binder "GithubBinderIndex" for DOM node "yui_3_10_3_2_1371606307041_16" combo:13
+      mojito-client: Attached 0 event delegates combo:13
+      mojito-client: Mojito Client state: active. 
+
+#. Congratulations, you have basically finished the dashboard application. The last few
+   modules will focus mostly on enhancing your application through configuration, adding
+   specialized templates for different devices, and adding localization.
+
+.. _07_binders-ts:
 
 Troubleshooting
 ===============
@@ -533,11 +824,17 @@ Problem Two
 Nulla pharetra aliquam neque sed tincidunt. Donec nisi eros, sagittis vitae lobortis nec, 
 interdum sed ipsum. Quisque congue tempor odio, a volutpat eros hendrerit nec. 
 
+.. _07_binders-summary:
+
 Summary
 =======
 
+.. _07_binders-qa:
+
 Q&A
 ===
+
+.. _07_binders-test:
 
 Test Yourself
 =============
@@ -546,15 +843,21 @@ Test Yourself
 - What are the four arguments passed to the methods of the REST module?
 - What is the recommended way for getting data in Mojito applications?
 
+.. _07_binders-terms:
+
 Terms
 =====
 
 - 
 
+.. _07_binders-src:
+
 Source Code
 ===========
 
 [app_part{x}](http://github.com/yahoo/mojito/examples/quickstart_guide/app_part{x})
+
+.. _07_binders-reading:
 
 Further Reading
 ===============

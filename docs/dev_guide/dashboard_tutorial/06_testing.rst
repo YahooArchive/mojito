@@ -1,6 +1,9 @@
-========================
-6. Writing Tests (Draft)
-========================
+====================
+6. Testing in Mojito
+====================
+
+
+.. _06_testing-intro:
 
 Introduction
 ============
@@ -12,9 +15,13 @@ already saw the Mojito CLI has a test command for running unit tests. To run
 functional tests, we’re going to use Arrow, which is an npm module that we’ll 
 need to install.
 
+.. _06_intro-est_time:
+
 Estimated Time
 --------------
 15 minutes
+
+.. _06_intro-what:
 
 What We’ll Cover
 ----------------
@@ -23,6 +30,8 @@ What We’ll Cover
 - model tests
 - controller tests
 - functional tests with Arrow
+
+.. _06_intro-final:
 
 Final Product
 -------------
@@ -35,8 +44,12 @@ screenshot, we’ve added some more mojits to flesh out the dashboard.
    :width: 650 px
    :alt: Screenshot of 06 testing application.
 
+.. _06_intro-before_starting:
+
 Before Starting
 ---------------
+
+.. _06_intro-before_starting:
 
 Review of the Last Module
 #########################
@@ -55,6 +68,8 @@ We covered the following in the last module:
 - YQL module
 - REST module
 - calling model from the controller
+
+.. _06_intro-setting_up:
 
 Setting Up
 ##########
@@ -79,8 +94,12 @@ Setting Up
    ``$ npm install``
 
 
+.. _06_testing-lesson:
+
 Lesson: Testing
 ===============
+
+.. _06_lesson-intro:
 
 Introduction
 ------------
@@ -89,8 +108,12 @@ Mojito uses YUITest for unit tests and relies on Arrow for functional tests.
 We’re going to cover unit tests in more detail, but also show you how to write 
 a simple functional test with Arrow.
 
+.. _06_lesson-unit:
+
 Unit Tests
 ----------
+
+.. _06_lesson_unit-location:
 
 Location
 ########
@@ -103,6 +126,8 @@ Model tests are placed in the ``/tests/models`` directory for both application a
 tests. You can also have tests for YUI modules, but we won’t be writing tests for YUI 
 modules in this module.
 
+.. _06_lesson_unit-naming_convention:
+
 File Name Convention
 ####################
 
@@ -112,6 +137,8 @@ For models, the test file name is slightly different: ``{model_name}.{affinity}.
 
 If you remember, the ``Twitter`` had the ``model twitter.server.js``, so the test file 
 for the model would be ``twitter.server-tests.js``. 
+
+.. _06_lesson_unit-writing_tests:
 
 Writing Tests
 #############
@@ -123,11 +150,16 @@ included as well as the module that is being tested (``'Github'``).
 
 ``{ requires: [ 'mojito-test', 'Github' ] }``
 
+
+.. _06_lesson_unit-components:
+
 Test Components
 ###############
 
 Before we look at the unit tests for Mojito, let’s take a look at the core components of 
 YUI tests, so you’ll have a better understanding of how the Mojito tests work.
+
+.. _06_lesson_components-suites:
 
 Test Suites 
 ***********
@@ -135,6 +167,8 @@ Test Suites
 Test suites are just a way of grouping test cases together for a module. 
 
 Example: ``var suite = new YUITest.TestSuite('myMojit-tests');``
+
+.. _06_lesson_components-cases:
 
 Test Cases
 **********
@@ -163,6 +197,7 @@ Example:
      }
    });
 
+.. _06_lesson_components-runners:
 
 Test Runners
 ************
@@ -172,6 +207,8 @@ suites, reporting back on passes and failures. Typically, you would call the run
 YUI tests, but Mojito calls run for you when running mojito test. 
 
 Example: ``YUITest.TestRunner.add(suite);``
+
+.. _06_lesson_components-assertions:
 
 Assertions
 **********
@@ -190,6 +227,7 @@ Example:
    var A = YUITest.Assert;
    A.isNotNull(controller);
 
+.. _06_lesson_components-mock_obj:
 
 Mock Objects
 ************
@@ -215,6 +253,8 @@ Example:
      }
    );
    ac.verify();
+
+.. _06_lesson_unit-controller:
 
 Controller Tests
 ################
@@ -248,6 +288,7 @@ to a variable in the test as shown below:
      // Include the module as a dependency for the test
    }, '0.0.1', {requires: ['mojito-test', 'myMojit']});
 
+.. _06_lesson_unit_controller-components:
 
 Putting the Components Together
 *******************************
@@ -363,6 +404,8 @@ the asset file that is returned, the data returned from ``ac.done`` and
      ...
    ...
 
+.. _06_lesson_unit-model:
+
 Model Tests
 ###########
 
@@ -422,7 +465,7 @@ YUI module name ``YoutubeMojitYQL`` is required and then accessed in the ``setUp
      YUITest.TestRunner.add(suite);
    }, '0.0.1', {requires: ['mojito-test', 'YoutubeModelYQL']});
 
-
+.. _06_lesson_unit-run:
 
 Running Unit Tests
 ##################
@@ -438,6 +481,7 @@ To test our githubMojit, you would specify the mojit:
 
 ``$ mojito test mojit mojits/githubMojit``
 
+.. _06_lesson-functional:
 
 Functional Tests
 ----------------
@@ -446,6 +490,8 @@ You could say that a functional tests is any test that is not a unit test, but f
 simplicity and our intent, we’re calling functional tests those that test the UI or 
 functionality of an application. So, if you want to test the DOM or DOM events, you’re 
 going to write functional tests and use Arrow. 
+
+.. _06_lesson_func-arrow:
 
 Intro to Arrow
 ##############
@@ -459,6 +505,7 @@ testing framework. We’ll look at writing tests, running a test suite, and usin
 command. To learn more about Arrow, we highly recommend that you read the 
 `Arrow documentation <https://github.com/yahoo/arrow>`_. 
 
+.. _06_func-arrow-write:
 
 Writing Arrow Tests
 *******************
@@ -498,9 +545,12 @@ modules for other tests.
      Y.Test.Runner.add(suite);
    });
 
+.. _06_func-arrow-descriptor:
 
 Test Descriptors
 ****************
+
+.. _06_arrow_descriptor-intro:
 
 Intro
 +++++
@@ -508,6 +558,8 @@ Intro
 Test Descriptors are JSON configuration files that allow you to organize your tests into 
 test suites.  You can also use test descriptors to control when and which tests execute 
 at a given phase of your development cycle. 
+
+.. _06_arrow_descriptor-config:
 
 Configurations
 ++++++++++++++
@@ -554,6 +606,7 @@ be specified on the command line:
 
 ``$  arrow <some test or test descriptor> --baseUrl=http://some.base.url.com``
 
+.. _06_arrow_descriptor-create:
 
 When to Create Test Descriptors
 +++++++++++++++++++++++++++++++
@@ -563,6 +616,8 @@ command. Once you have a set of working tests, you should organize and factor
 the tests with a test descriptor. During test development, you’ll probably 
 execute each test from the Arrow command line. However, once you have created 
 tests to validate your module, you need a way to organize and factorize the tests.
+
+.. _06_arrow_descriptor-context:
 
 Tests Based on Contexts
 +++++++++++++++++++++++
@@ -609,6 +664,8 @@ that given the context ``"environment:development"``, the tests uses a different
      }
    ]
 
+.. _06_arrow_descriptor-run_cmd:
+
 Running Arrow Command
 +++++++++++++++++++++
 
@@ -619,6 +676,8 @@ Mojito also comes with the script ``run.js`` to simplify running the built-in
 Mojito tests. You can follow the `instructions in the Mojito documentation <../topics/mojito_testing.html#mojito-built-in-functional-unit-tests>`_
 to run all of the tests or just a group of tests, which is highly recommended 
 if you are going to contribute code to the Mojito project.
+
+.. _06_arrow_descriptor-setup:
 
 Setting Up
 ++++++++++
@@ -637,6 +696,8 @@ Before you do the following, make sure that you have installed Selenium.
 #. Change to the ``examples/developer-guide/hello`` directory and start the application.
 #. In a new terminal window or tab, change to ``mojito/tests/func/examples/developerguide``.
 
+.. _06_arrow_descriptor-single_test:
+
 Single Tests
 ++++++++++++
 
@@ -645,11 +706,13 @@ Arrow command: ``$ arrow --browser=phantomjs test_hello.js --page=http://localho
 
 #. You should see the following output:
 
-::
+   ::
 
-    Passed DeveloperGuide: hello onMozilla/5.0 (Macintosh; Intel Mac OS X 10_7_5) 
-    AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.43 Safari/537.31
-    1 Passed, 0 Failed , 0 skipped 
+      Passed DeveloperGuide: hello onMozilla/5.0 (Macintosh; Intel Mac OS X 10_7_5) 
+      AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.43 Safari/537.31
+      1 Passed, 0 Failed , 0 skipped 
+
+.. _06_arrow_descriptor-using:
 
 Using Test Descriptors
 ++++++++++++++++++++++
@@ -659,6 +722,9 @@ Once again, from the ``developerguide`` directory and with the hello application
 and Selenium still running, run the following command:
 
 ``$ arrow --browser=phantomjs hello_descriptor.json``
+
+
+.. _06_testing-create:
 
 Creating the Application
 ========================
@@ -994,13 +1060,100 @@ Creating the Application
     YUITest.TestRunner.add(suite);
 }, '0.0.1', {requires: ['mojito-test', 'StatsModelYQL']});
 
-#. From the application directory, run the Github mojit tests. You should see that
-   
+#. From the application directory, run the Github mojit tests. 
 
    ``$ mojito test mojit mojits/Github``
-#. Functional tests.
+#. You should see that one test has passed and the output should look like the following:
+
+   ::
+ 
+      ✔  passed	Github-tests :: Github user tests :: test mojit
+
+     Total tests: 1	✔ Passed: 1	⚑ Deferred: 0	✖ Failed: 0	100% pass rate
+
+
+#. Now for our functional tests with Arrow. Create the directory ``arrow_tests`` to 
+   store our test files. Don't name your directory ``tests`` because Mojito will try to 
+   run the tests as YUI unit tests.
+#. In the ``arrow_tests`` directory, create the file ``test_yui_dashboard.js`` file with 
+   the content below. We're just testing that the page loads for now.
+
+   .. code-block:: javascript
+
+      YUI({
+        useConsoleOutput: true,
+        useBrowserConsole: true,
+        logInclude: { TestRunner: true }
+        }).use('node', 'node-event-simulate', 'test', 'console', function (Y) {
+
+        'use strict';
+        var suite = new Y.Test.Suite("TribApp: YUI Dashboard test"),
+            url = window.location.protocol + "//" + window.location.host + "/";
+            suite.add(new Y.Test.Case({
+              "test YUI Dashboard": function () {
+              // Tests the title in HTML header
+              Y.Assert.areEqual("Trib - YUI Developer Dashboard", Y.one('head title').get('innerHTML'));
+
+              // Tests the title within the content
+              Y.Assert.areEqual("Trib - Contribute to the Tribe", Y.one('body h1').get('innerHTML'));
+            }
+          }));
+          Y.Test.Runner.add(suite);
+        });
+#. You could run the test above directly, but we're going to create a test descriptor
+   that will allow us to easily add another test later. Remember, the ``dataprovider``
+   property defines the test and the page to be tested in a ``scenario`` array.
+
+   .. code-block:: javascript
+
+      [
+        {
+          "settings": [ "master" ],
+          "name" : "trib_app",
+          "config" :{
+            "baseUrl" : "http://localhost:8666",
+            "application" : {
+              "name":"input",
+              "path": "../"
+            }
+          },
+          "dataprovider" : {
+            "test trib app index page" : {
+              "group" : "tribapp",
+              "params" : {
+                "scenario": [
+                  {
+                    "test" : "test_yui_dashboard.js",
+                    "page" : "$$config.baseUrl$$"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "settings": [ "environment:development" ]
+        }
+      ]
+#. It's time to run our functional tests, but before we do, make sure that you have completed
+   :ref:`Setting Up <06_intro-setting_up>`, so that you have Arrow and PhantomJS installed.
    
-#. Run app.
+   - Start PhantomJS in the background: ``$ node_modules/phantomjs/bin/phantomjs --webdriver=4445 &``
+   - Start your application in the background as well: ``$ mojito start &``
+   - Run your Arrow test with the descriptor: ``$ arrow --browser=phantomjs arrow_tests/test_tribapp_descriptor.json``
+   - You'll see ``INFO`` log messages describing the running of the tests, then ``debug`` statements,
+     and finally the test result, which should be one passed test as shown below:
+
+     ::
+        
+        Passed TribApp: YUI Dashboard test onMozilla/5.0 (Macintosh; Intel Mac OS X) AppleWebKit/534.34 (KHTML, like Gecko) 
+        PhantomJS/1.9.0 Safari/534.34 1 Passed, 0 Failed , 0 skipped 
+   
+#. You can go ahead and run your application to see the content from the ``Youtube``
+   and ``Calendar`` mojits.
+
+
+.. _06_testing-ts:
 
 Troubleshooting
 ===============
@@ -1019,24 +1172,36 @@ Nulla pharetra aliquam neque sed tincidunt. Donec nisi eros, sagittis vitae lobo
 interdum sed ipsum. Quisque congue tempor odio, a volutpat eros hendrerit nec. Vestibulum ante 
 ipsum primis in faucibus orci luctus et ultriceposuere cubilia Curae;
 
+
+.. _06_testing-summary:
+
 Summary
 =======
+
+.. _06_testing-qa:
 
 Q&A
 ===
 
+.. _06_testing-test_yourself:
+
 Test Yourself
 =============
 
+.. _06_testing-terms:
 
 
 Terms
 =====
 
+.. _06_testing-src:
+
 Source Code
 ===========
 
 [app_part{x}](http://github.com/yahoo/mojito/examples/quickstart_guide/app_part{x})
+
+.. _06_testing-reading:
 
 Further Reading
 ===============
