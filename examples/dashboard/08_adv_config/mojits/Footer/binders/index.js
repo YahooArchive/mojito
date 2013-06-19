@@ -1,16 +1,16 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('PageLayoutBinderIndex', function(Y, NAME) {
+YUI.add('FooterBinderIndex', function(Y, NAME) {
 
 /**
- * The PageLayoutBinderIndex module.
+ * The FooterBinderIndex module.
  *
- * @module PageLayoutBinderIndex
+ * @module FooterBinderIndex
  */
 
     /**
-     * Constructor for the PageLayoutBinderIndex class.
+     * Constructor for the FooterBinderIndex class.
      *
-     * @class PageLayoutBinderIndex
+     * @class FooterBinderIndex
      * @constructor
      */
     Y.namespace('mojito.binders')[NAME] = {
@@ -32,19 +32,23 @@ YUI.add('PageLayoutBinderIndex', function(Y, NAME) {
         bind: function(node) {
             var me = this;
             this.node = node;
-
-             Y.log("bind called");
-             Y.on("domready", function(){
-                Y.one("body").addClass("yui3-skin-sam");
-             });
-             Y.one(".mybody").delegate('click', function() {
-                if (!this.ancestor('div').hasClass('collapse')) {
-                    this.ancestor('div').addClass('collapse');
-                } else {
-                    this.ancestor('div').removeClass('collapse');
-                }
-
-             }, 'a.min');
+            /**
+             * Example code for the bind method:
+             *
+             * node.all('dt').on('mouseenter', function(evt) {
+             *   var dd = '#dd_' + evt.target.get('text');
+             *   me.node.one(dd).addClass('sel');
+             *
+             * });
+             * node.all('dt').on('mouseleave', function(evt) {
+             *   
+             *   var dd = '#dd_' + evt.target.get('text');
+             *   me.node.one(dd).removeClass('sel');
+             *
+             * });
+             */
         }
+
     };
+
 }, '0.0.1', {requires: ['event-mouseenter', 'mojito-client']});
