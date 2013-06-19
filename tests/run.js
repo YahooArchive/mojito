@@ -22,8 +22,9 @@ var fs = require('fs'),
     arrowReportDir,
     remoteselenium,
 
-    MOJITOCLI = libpath.resolve(__dirname, '../node_modules/.bin/mojito'),
-    MOJITOLIB = libpath.resolve(cwd, '..');
+    MOJITOLIB = libpath.resolve(cwd, '..'),
+    MOJITOCLI = libpath.resolve(MOJITOLIB, 'node_modules/.bin/mojito'),
+    MOJITO_STARTED_REGEX = /Mojito v\S{4,} started.+/; //todo: use callback
 
 program.command('test')
     .description('Run unit and functional tests')
@@ -473,8 +474,10 @@ function runMojitoApp (app, cliOptions, basePath, port, params, callback) {
     }
 
     function listener(data) {
-        if (data.toString().match(/Mojito v\d+[.]\d+[.]\d+\S* started/)) {
+        var match = data.toString().match(MOJITO_STARTED_REGEX);
+        if (match) {
             p.stdout.removeListener('data', listener);
+            console.error('---' + match[0] + '---');
             callback(thePid);
         }
     }
