@@ -804,8 +804,9 @@ Creating the Application
       mojito-client: Mojito Client state: active. 
 
 #. Congratulations, you have basically finished the dashboard application. The last few
-   modules will focus mostly on enhancing your application through configuration, adding
-   specialized templates for different devices, and adding localization.
+   modules will add Mojito information, but focus mostly on enhancing your application 
+   through configuration, adding specialized templates for different devices, and 
+   adding localization.
 
 .. _07_binders-ts:
 

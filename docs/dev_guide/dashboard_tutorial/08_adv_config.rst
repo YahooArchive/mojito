@@ -30,14 +30,19 @@ What We’ll Cover
 - yui object and configurations
 - configuring the YUI seed
 - using the environment:development context
+- adding parameters and using regular expressions in the routing configurations
 
 Final Product
 -------------
 
-In the screenshot, you can see that when ... the menu...
+The biggest visible change in the latest version of our application is that it now has
+a Mojito dashboard as well as a YUI dashboard. 
 
 
-Image here!
+.. image:: images/08_adv_config.png
+   :height: 371 px
+   :width: 850 px
+   :alt: Screenshot of 08 advanced configuration application.
 
 
 Before Starting
@@ -62,85 +67,71 @@ controllers, and refresh or render templates.
 Setting Up
 ##########
 
-``$ cp -r 07_binders 08_mojit_adv_config``
+``$ cp -r 07_binders 08_adv_config``
 
-Source Code for Example
-#######################
-
-``[app_part{x}](http://github.com/yahoo/mojito/examples/quickstart_guide/app_part{x})``
 
 Lesson: Advanced Configuration
 ==============================
 
-Mojits
-------
+Application Configuration
+-------------------------
 
-We’ve already looked at the configuration files application.json and routes.json to 
-create mojit instances and define routing paths, but Mojito also has configuration files 
-that mojits can use to store key-value pairs and defaults. 
+Using YAML
+##########
 
-Default Configurations
-######################
+Mojito also supports configuration files in YAML format (JSON is a subset of YAML). 
+The YAML file extension could be .yaml or .yml. Mojito allows comments in the YAML files. 
+When both the JSON file (e.g., application.json) and the YAML file (e.g., application.yaml) 
+are present, the YAML file is used and a warning is issued. For the data types of the YAML 
+elements, please see the JSON configuration tables in Application Configuration, Routing, 
+and Mojit Configuration.
 
-As you know, the mojit instance definitions can store configurations in the config object. 
-For example, you may want a mojit instance to have specific configuration information, but 
-you may want to define default configurations as well. You define mojit defaults in the 
-``defaults.json`` file.  In the example application.json, the twitter instance defines 
-the title:
-
-.. code-block:: javascript
-
-   ...
-     "twitter": {
-       "type":"twitterMojit"
-       "config": {
-         "title": "Twitter Feed"
-       }
-     },
-   ...
-
-We can define the default URL or search query in the defaults.json file of the 
-``twitterMojit``. Because the twitter mojit instance does not define the url and query 
-properties explicitly defined, your application will use the defaults.
+Our Application Configuration in YAML
+*************************************
 
 .. code-block:: javascript
 
-   [
-     {
-       "settings": [ "master" ],
-       "config": {
-          "url" : “http://search.twitter.com/search.json”,
-          "query": "YUI"
-       }
-     }
-   ]
 
-Definitions
-***********
+Static Application Name
+#######################
 
-The ``definitions.json`` file allows your mojit to store and access configurations as well. 
-The key-value pairs in ``definitions.json`` has nothing to do with the mojit definition. 
 
-For instance, suppose you want to store the possible feed URLs for YouTube videos. In a 
-``youtubeMojit``, you may want to display different streams of videos for Mojito or YUI. 
-You could have a default or specify one in the config object of the ``youtube`` mojit 
-instance, but a better solution may be to have configurations defined in your 
-``definitions.json``.
+.. code-block:: javascript
 
-In the ``definitions.json`` of the ``youtubeMojit`` below has a series of possible feeds.
+     "staticHandling": {
+          "appName": "trib"
+        },
 
-[
-  {
-    “settings": [ "master" ],
-    “yui”: { 
-      “feed_name”: “YUI”,     
-      “url”:“https://gdata.youtube.com/feeds/base/users/yuilibrary/uploads”,
+Advanced Routing Configuration
+##############################
+
+
+Adding Parameters
+*****************
+
+[{
+    "settings": [ "master" ],
+    "root": {
+        "verbs": ["get"],
+        "path": "/",
+        "call": "tribframe.index",
+        "params": {"view_type": "yui"}
     },
-    “mojito”: {
-      “feed_name”: “Mojito”,
-      “url”: “...”
-  }
-]
+    "mojito_view":{
+        "verbs": ["get"],
+        "path": "/mojito",
+        "call": "tribframe.index",
+        "params": {"view_type": "mojito"}
+    }
+
+}]
+
+Regular Expressions for Paths
+*****************************
+
+Using Parameterized Paths 
+*************************
+
 
 YUI 
 ###
@@ -343,11 +334,85 @@ but for development and production environments or customized contexts, you may 
 need to use the query string parameters to request a context.
 
 
+
+
+Mojits
+------
+
+We’ve already looked at the configuration files application.json and routes.json to 
+create mojit instances and define routing paths, but Mojito also has configuration files 
+that mojits can use to store key-value pairs and defaults. 
+
+Default Configurations
+######################
+
+As you know, the mojit instance definitions can store configurations in the config object. 
+For example, you may want a mojit instance to have specific configuration information, but 
+you may want to define default configurations as well. You define mojit defaults in the 
+``defaults.json`` file.  In the example application.json, the twitter instance defines 
+the title:
+
+.. code-block:: javascript
+
+   ...
+     "twitter": {
+       "type":"twitterMojit"
+       "config": {
+         "title": "Twitter Feed"
+       }
+     },
+   ...
+
+We can define the default URL or search query in the defaults.json file of the 
+``twitterMojit``. Because the twitter mojit instance does not define the url and query 
+properties explicitly defined, your application will use the defaults.
+
+.. code-block:: javascript
+
+   [
+     {
+       "settings": [ "master" ],
+       "config": {
+          "url" : “http://search.twitter.com/search.json”,
+          "query": "YUI"
+       }
+     }
+   ]
+
+Definitions
+***********
+
+The ``definitions.json`` file allows your mojit to store and access configurations as well. 
+The key-value pairs in ``definitions.json`` has nothing to do with the mojit definition. 
+
+For instance, suppose you want to store the possible feed URLs for YouTube videos. In a 
+``youtubeMojit``, you may want to display different streams of videos for Mojito or YUI. 
+You could have a default or specify one in the config object of the ``youtube`` mojit 
+instance, but a better solution may be to have configurations defined in your 
+``definitions.json``.
+
+In the ``definitions.json`` of the ``youtubeMojit`` below has a series of possible feeds.
+
+[
+  {
+    “settings": [ "master" ],
+    “yui”: { 
+      “feed_name”: “YUI”,     
+      “url”:“https://gdata.youtube.com/feeds/base/users/yuilibrary/uploads”,
+    },
+    “mojito”: {
+      “feed_name”: “Mojito”,
+      “url”: “...”
+  }
+]
+
+
 Creating the Application
 ========================
 
 #. After you have copied the application that you made in the last module (see Setting Up), 
   change into the application ``08_adv_config``.
+#. 
 
 
 Troubleshooting
