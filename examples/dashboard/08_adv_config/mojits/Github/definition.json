@@ -1,0 +1,8 @@
+[
+    {
+        "settings": [ "master" ],
+        "yqlTable" : "store://gpgSGZAwQ3vaDaalPQZ44u",
+        "yuititle" : "YUI GitHub Activity",
+        "mojitotitle" : "Mojito GitHub Activity"
+    }
+]
