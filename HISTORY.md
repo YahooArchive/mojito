@@ -8,7 +8,7 @@ Notes
 
 Deprecations, Removals
 ----------------------
-The mojito command line tools included in the mojito repository were deprecated in May. Mojito Developers were asked to install and use the `mojito-cli` npm package. With this release, the **command line tools have been removed** from Mojito. Use of the commands with the latest `mojito-cli` works as before. Also, deprecated commands "profiler" and "gv" cli commands were moved to separate packages.
+* The mojito command line tools included in the mojito repository were deprecated in May. Mojito Developers were asked to install and use the `mojito-cli` npm package. With this release, the **command line tools have been removed** from Mojito. Use of the commands with the latest `mojito-cli` works as before. Also, deprecated commands "profiler" and "gv" cli commands were moved to separate packages.
 
 Note that if an application's continuous integration environment (i.e. Jenkins, Screwdriver) depends on the code for these commands to be included as part of the mojito package, the application package.json [will need to be updated](https://github.com/yahoo/mojito-cli/wiki/NpmInstallation#mojito-cli-commands-and-ci).
 
@@ -21,6 +21,7 @@ CLI change summary:
 
 More info at the [mojito-cli wiki](http://git.io/jJazAw).
 
+* mojito-carrier-addon and mojito-device-addon are moved to y_mojito package for Yahoo internal developer use only.
 
 Features
 --------
