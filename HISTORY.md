@@ -4,6 +4,25 @@ version @VERSION@
 Notes
 -----
 
+Deprecations, Removals
+----------------------
+
+Features
+--------
+
+Bug Fixes
+---------
+
+Acknowledgements
+----------------
+
+
+version 0.7.0
+=================
+
+Notes
+-----
+
 * YUI dependency was upgraded to yui@3.10.3
 
 Deprecations, Removals
