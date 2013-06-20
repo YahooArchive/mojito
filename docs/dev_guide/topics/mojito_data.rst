@@ -222,13 +222,13 @@ a coupon to a user posting information.
          "verbs": ["post"],
          "path": "/coupon/form",
          "call": "coupon.index",
-         "param": "coupon=true"
+         "params": "coupon=true"
        },
        "get": {
          "verbs": ["get"],
          "path": "/coupon/form",
          "call": "coupon.index",
-         "param": "coupon=false"
+         "params": "coupon=false"
        }
      }
    ]
