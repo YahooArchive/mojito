@@ -58,6 +58,9 @@
                     "LazyLoadRPC": {
                       "type": "LazyLoadRPC"
                     },
+                    "LazyLoadClientMojit": {
+                      "type": "LazyLoadClientMojit"
+                    },
                     "ACMojit": {
                       "base": "ACMojit",
                       "config": {

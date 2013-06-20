@@ -91,6 +91,13 @@
                     "page" : "$$config.baseUrl$$/"
                 }
             },
+            "lazyloadclientmojitclient" : {
+                "group" : "smoke,common,lazyloadclientmojitclient",
+                "params" : {
+                    "test" : "testlazyloadclientmojitclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
             "acmojitnoparamclient" : {
                 "group" : "smoke,common,acmojit",
                 "params" : {
