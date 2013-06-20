@@ -91,10 +91,10 @@
                     "page" : "$$config.baseUrl$$/"
                 }
             },
-            "lazyloadrpccommon" : {
-                "group" : "smoke,common,lazyloadrpccommon",
+            "lazyloadclientmojitclient" : {
+                "group" : "smoke,common,lazyloadclientmojitclient",
                 "params" : {
-                    "test" : "testlazyloadrpccommonclient.js",
+                    "test" : "testlazyloadclientmojitclient.js",
                     "page" : "$$config.baseUrl$$/"
                 }
             },
