@@ -1,4 +1,4 @@
-YUI.add('LazyLoadRPCCommon', function(Y, NAME) {
+YUI.add('LazyLoadClientMojit', function(Y, NAME) {
 
     Y.namespace('mojito.controllers')[NAME] = {
         
@@ -6,7 +6,7 @@ YUI.add('LazyLoadRPCCommon', function(Y, NAME) {
             ac.done();
         },
 
-        lazyloadrpccommon: function(ac) {
+        lazyloadclientmojit: function(ac) {
             var foo = ac.data.get('fooc');
             ac.data.set('barc', "barc-value set by controller");
             ac.data.set('bazc', 'From controller: ' + foo);
