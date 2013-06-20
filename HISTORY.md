@@ -4,6 +4,25 @@ version @VERSION@
 Notes
 -----
 
+Deprecations, Removals
+----------------------
+
+Features
+--------
+
+Bug Fixes
+---------
+
+Acknowledgements
+----------------
+
+
+version 0.7.0
+=================
+
+Notes
+-----
+
 * YUI dependency was upgraded to yui@3.10.3
 
 Deprecations, Removals
@@ -22,7 +41,6 @@ CLI change summary:
 More info at the [mojito-cli wiki](http://git.io/jJazAw).
 
 * mojito-carrier-addon and mojito-device-addon are moved to y_mojito package for Yahoo internal developer use only.
-
 
 Features
 --------
