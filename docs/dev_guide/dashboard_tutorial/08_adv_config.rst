@@ -69,7 +69,6 @@ Setting Up
 
 ``$ cp -r 07_binders 08_adv_config``
 
-
 Lesson: Advanced Configuration
 ==============================
 
@@ -412,9 +411,395 @@ Creating the Application
 
 #. After you have copied the application that you made in the last module (see Setting Up), 
   change into the application ``08_adv_config``.
-#. 
+#. We've been updating the path to our CSS assets for each application, but now we're going
+   to define a static application name, so we'll be able to use the same path to the 
+   CSS assets in the future and in hosting environments. Add the following to ``application.json``
+   and modify the path to the CSS asset for the last time.
+
+   .. code-block:: javascript
+
+      "staticHandling": {
+        "appName": "trib"
+      },
+      ...,
+      "assets": {
+        "top": {
+          "css": [
+            ...,
+            "/static/trib/assets/trib.css"
+          ]
+        }
+      }
+
+#. Let's also configure out application to use a specific version (overriding the default
+   version used by Mojito) with the ``yui`` object as shown below:
+
+   .. code-block:: javascript
+
+      "yui":{
+        "config": {
+          "comboBase":"http://yui.yahooapis.com/combo?",
+          "root":"3.8.1/build/",
+          "seed": [
+            "yui-base",
+            "loader-base",
+            "loader-yui3",
+            "loader-app",
+            "loader-app-base{langPath}"
+          ]
+        }
+      }
+#. We haven't touched ``routes.json`` for a long time. We're going to remove unused routes,
+   add a route to get Mojito data, and add parameters that the controller will use to determine
+   what dashboard to display (YUI or Mojito). Replace the contents of ``routes.json`` with the
+   following:
+
+   .. code-block:: javascript
+
+      [
+        {
+          "settings": [ "master" ],
+          "root": {
+            "verbs": ["get"],
+            "path": "/",
+            "call": "tribframe.index",
+            "params": {"view_type": "yui"}
+          },
+          "mojito_view":{
+            "verbs": ["get"],
+            "path": "/mojito",
+            "call": "tribframe.index",
+            "params": {"view_type": "mojito"}
+          }
+        }
+      ]
+
+#. Great, we're done with the changes to our application configuration. Now, let's simplify
+   our mojit code by adding configuration values, starting with the ``Blog`` mojit. Replace
+   the contents of ``definition.json`` (should be pretty much empty as of now) with the following:
+
+   .. code-block:: javascript
+
+      [
+        {
+          "settings": [ "master" ],
+          "mojitotitle" : "Mojito Blog posts",
+          "yuititle" : "YUI Blog posts",
+          "feedURL" : "http://www.yuiblog.com/blog/feed/"
+        }
+      ]
+#. The ``Blog`` mojit's controller needs to be modified to use the ``Config`` addon
+   to get the configuration values from ``definition.json``. Add the following to the
+   ``index`` method:
+
+   .. code-block:: javascript
+
+      var view_type = ac.params.getFromRoute('view_type') || "yui";
+
+      if (view_type === "yui") {
+        feedURL = ac.config.getDefinition('feedURL', 'notfound');
+        title = ac.config.getDefinition('yuititle', 'notitle');
+      } else if (view_type === "mojito") {
+        feedURL = ac.config.getDefinition('feedURL', 'notfound');
+        title = ac.config.getDefinition('mojitotitle', 'notitle');
+      }
+#. We're going to use the ``definition.json`` file to store YQL information as well.
+   For the ``Gallery`` mojit, we're going to get data from the 
+   `YQL store <http://developer.yahoo.com/yql/guide/yql-cloud-chapter.html>`_, which is
+   a cloud storage that YQL can access. We're going have save the YQL store in 
+   ``mojits/Gallery/definition.json`` as shown below:
+
+   .. code-block:: javascript
 
 
+      [
+        {
+          "settings": [ "master" ],
+          "mojitotitle" : "Mojito Gallery Pushes",
+          "yuititle" : "YUI Gallery Pushes",
+          "yqlTable" : "store://owgYr7PT7CWIOWMaWs9Stb"
+        }
+     ]
+
+#. The ``Gallery`` controller will also need to get the configurations with the ``Config``
+   addon, so go ahead and update the ``index`` method of the controller with the following:
+
+   .. code-block:: javascript
+
+        index: function (ac) {
+            var view_type, tablePath, title;
+            view_type = ac.params.getFromRoute('view_type') || "yui";
+
+            if (view_type === "yui") {
+                tablePath = ac.config.getDefinition('yqlTable', 'notfound');
+                title = ac.config.getDefinition('yuititle', 'notitle');
+            } else if (view_type === "mojito") {
+                tablePath = ac.config.getDefinition('yqlTable', 'notfound');
+                title = ac.config.getDefinition('mojitotitle', 'notitle');
+            }
+            ac.models.get('GalleryModelYQL').getData({}, tablePath, function (data) {
+                // add mojit specific css
+                ac.assets.addCss('./index.css');
+
+                // populate youtube template
+                ac.done({
+                    title: title,
+                    results: data
+                });
+            });
+        }
+
+#. Let's go ahead and do the same for the ``Twitter`` and ``Github`` mojits. The 
+   ``definition.json`` file for the ``Twitter`` mojit is going to store your OAuth keys
+   as well. For both mojits, you're going to determine what dashboard to display (YUI/Mojito)
+   based on the route parameters and then fetch a configuration from ``definition.json``
+   to render the appropriate data.
+
+   ``mojits/Twitter/definition.json``
+
+   .. code-block:: javascript
+
+      [
+        {
+          "settings": [ "master" ],
+          "mojitotitle" : "Mojito Twitter mentions",
+          "yuititle" : "YUI Twitter mentions",
+          "yuiquery" : "@yuilibrary",
+          "mojitoquery" : "#Mojito yahoo",
+          "oauth": {
+            "consumer_key": "[your_consumer_key]",
+            "consumer_secret": "[your_consumer_secret]",
+            "access_token_key": "[your_access_token]",
+            "access_token_secret": "[your_access_secret]"
+          }
+        }
+      ]
+
+   ``mojits/Twitter/controller.server.js``
+
+   .. code-block:: javascript
+
+      YUI.add('Twitter', function (Y, NAME) {
+
+        Y.namespace('mojito.controllers')[NAME] = {
+
+        index: function (ac) {
+            var view_type, q, title, oauth_keys=null, count=10;
+            view_type = ac.params.getFromRoute('view_type') || "yui";
+
+            if (view_type === "yui") {
+                q = ac.config.getDefinition('yuiquery', 'notfound');
+                title = ac.config.getDefinition('yuititle', 'notitle');
+            } else if (view_type === "mojito") {
+                q = ac.config.getDefinition('mojitoquery', 'notfound');
+                title = ac.config.getDefinition('mojitotitle', 'notitle');
+            }
+            // Get Twitter API keys from your developer account (https://dev.twitter.com/apps) and
+            // use the `oauth_keys` to hold your consumer key/secret and access token/secret.
+            // If you leave `oauth_keys` undefined, your app will just use mocked data.
+            // Get OAuth keys from definition.json to get real data.
+            // oauth_keys = ac.config.getDefinition('oauth');
+            ac.models.get('TwitterSearchModel').getData(count, q, oauth_keys, function (err, data) {
+                if (err) {
+                    ac.error(err);
+                    return;
+                }
+                // add mojit specific css
+                ac.assets.addCss('./index.css');
+                ac.done({
+                    title: "YUI Twitter Mentions",
+                    results: data.statuses
+                });
+            });
+          }
+        };
+      }, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'mojito-params-addon', 'mojito-config-addon']});    
+
+#. For the ``Github`` mojit, you'll need more information for the YQL table to get
+   GitHub data for Mojito and YUI, so we'll add the ``id`` and ``repo`` to the configuration
+   file ``definition.json``:
+
+   .. code-block:: javascript
+   
+      [
+        {
+          "settings": [ "master" ],
+          "yqlTable" : "store://gpgSGZAwQ3vaDaalPQZ44u",
+          "yui": {
+            "title" : "YUI GitHub Activity",
+            "id": "yui",
+            "repo": "yui3"
+          },
+          "mojito": {
+            "title" : "Mojito GitHub Activity",
+            "id": "yahoo",
+            "repo": "mojito"
+          }
+        }
+      ]
+#. You'll need to modify the ``Github`` controller and model to pass in the parameters
+   for the YQL keys. Replace the ``index`` method in the controller and the ``getData``
+   method in the model ``yql.server.js`` with the content below:
+
+   .. code-block:: javascript
+
+      index: function (ac) {
+        var view_type, yqlTable, yui, mojito, title, id, repo, model = ac.models.get('StatsModelYQL');
+        view_type = ac.params.getFromRoute('view_type') || "yui";
+
+        if (view_type === "yui") {
+          yqlTable = ac.config.getDefinition('yqlTable', '');
+          yui = ac.config.getDefinition('yui', 'notitle');
+          title = yui.title;
+          id = yui.id;
+          repo = yui.repo
+        } else if (view_type === "mojito") {
+          yqlTable = ac.config.getDefinition('yqlTable', '');
+          mojito = ac.config.getDefinition('mojito', 'notitle');
+          title = mojito.title;
+          id = mojito.id;
+          repo = mojito.repo
+        }
+        Y.log(model);
+        model.getData({}, yqlTable, id, repo, function (data) {
+          Y.log("Github -index - model.getData:");
+          Y.log(data);
+
+          // Construct special data 
+          var res = [];
+          Y.log("calling githubmap");
+          res = githubMap(ac, data);
+
+          // Add mojit specific CSS
+          ac.assets.addCss('./index.css');
+          ac.done({
+            title: title,
+            results: res
+          });
+        });
+      }
+
+   .. code-block:: javascript
+
+      getData: function (params, yqlTable, id, repo, callback) {
+        Y.log(this.config);
+        var itemLimit = "10",
+            query = "use '{table}' as github.events; select json.type, json.actor, json.payload from github.events where id='{id}' and repo='{repo}' limit {limit}",
+            queryParams = {
+              table: yqlTable,
+              limit: itemLimit,
+              id: id,
+              repo: repo
+            },
+        cookedQuery = Y.Lang.sub(query, queryParams);
+        Y.YQL(cookedQuery, Y.bind(this.onDataReturn, this, callback));
+      }
+#. Just one more small change to our child mojits before we work on the composite
+   and frame mojits. The output from our ``Blog`` mojit was pretty messy. Just replace
+   the CSS in ``mojits/Blog/assets/index.css`` with the code below:
+
+   .. code-block:: html
+
+      #blog li .desc {
+        display:block;
+        color: grey;
+        font-size: 0.8em;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        margin-left: 4px;
+        margin-top: 4px;
+      }
+#. From the screenshot of our application, you can see a button at the top right-hand corner.
+   This button allows the user to either view the YUI or the Mojito dashboard. We are 
+   going to add this button to the template for our ``PageLayout`` mojit with the following:
+
+   .. code-block:: html
+
+      <div id="{{mojit_view_id}}" class="mojit pageLayout trib" >
+        <h1>{{title}}</h1>
+        <a class="yui3-button swap" href="{{other}}">{{button_text}}</a>
+        <div class="myheader" >
+          {{{header}}}
+        </div>
+        <div class="mybody" >
+          {{{body}}}
+        </div>
+        <div class="myfooter" >
+          {{{footer}}}
+        </div>
+      </div>
+#. To provide the Handlebars expression ``{{button_test}}`` with the appropriate value,
+   we'll need to update the ``index`` method of the ``PageLayout`` controller as well:
+
+   .. code-block:: javascript
+
+      index: function(ac) {
+        var view_type = ac.params.getFromRoute('view_type') || "yui";
+        if (view_type === "yui") {
+          ac.composite.done({
+            title: "Trib - YUI Developer Dashboard",
+            button_text: "See Mojito Dashboard",
+            other: "/mojito"
+          });
+        } else if (view_type === "mojito") {
+          ac.composite.done({
+            title: "Trib - Mojito Developer Dashboard",
+            button_text: "See YUI Dashboard",
+            other: "/"
+          });
+        }
+      }
+
+#. We'll need to add a template for the Mojito data to our composite mojit ``Body`` and
+   modify the controller so that ``ac.composite.done`` is passed the correct template.
+   Create the template ``mojits/Body/views/mojito.hb.html`` with the following markup first:
+
+   .. code-block:: html
+
+      <div id="{{mojit_view_id}}" class="mojit">
+        <h4 class="bodytext">{{title}}</h4>
+        <div class="bodyStuff yui3-g-r">
+          <div class="yui3-u-1-3">
+            {{{blog}}}
+            {{{github}}}
+          </div>
+          <div class="yui3-u-1-3">
+            {{{gallery}}}
+          </div>
+          <div class="yui3-u-1-3">
+            {{{twitter}}}
+          </div>
+        <div>
+      </div>
+
+#. Update ``index`` method in ``mojits/Body/controller.server.js`` with the following so 
+   that the correct template is rendered.
+
+   .. code-block:: javascript
+
+      index: function (ac) {
+        Y.log("Body - controller.server.js index called");
+
+        var view_type = ac.params.getFromRoute('view_type') || "yui";
+
+        if (view_type === "yui") {
+          ac.composite.done({
+            title: ""
+          });
+        } else if (view_type === "mojito") {
+          ac.composite.done({
+            title: ""
+          }, {"view": {"name": "mojito"}});
+        }
+      }
+#. That ought to do it for now. We used the configuration in ``routes.json`` to
+   pass a view (template) name, stored configuration values in ``definition.json`` for
+   our mojits, configured our application to have a static name and use a specific version
+   of YUI. Go ahead and start your application and click the button to see the Mojito
+   dashboard for the first time.
+
+    
 Troubleshooting
 ===============
 
