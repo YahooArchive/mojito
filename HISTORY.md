@@ -4,15 +4,43 @@ version @VERSION@
 Notes
 -----
 
+Deprecations, Removals
+----------------------
+
+Features
+--------
+
+Bug Fixes
+---------
+
+Acknowledgements
+----------------
+
+
+version 0.7.0
+=================
+
+Notes
+-----
+
 * YUI dependency was upgraded to yui@3.10.3
 
 Deprecations, Removals
 ----------------------
-* The command line executable "mojito" was removed.
-  * Developers should install `mojito-cli` globally to use "mojito" commands from the console.
-  * Screwdrivers users need to add `mojito-cli` as a devDependency.
-  * More info at http://git.io/jJazAw
+* The mojito command line tools included in the mojito repository were deprecated in May. Mojito Developers were asked to install and use the `mojito-cli` npm package. With this release, the **command line tools have been removed** from Mojito. Use of the commands with the latest `mojito-cli` works as before. Also, deprecated commands "profiler" and "gv" cli commands were moved to separate packages.
 
+Note that if an application's continuous integration environment (i.e. Jenkins, Screwdriver) depends on the code for these commands to be included as part of the mojito package, the application package.json [will need to be updated](https://github.com/yahoo/mojito-cli/wiki/NpmInstallation#mojito-cli-commands-and-ci).
+
+CLI change summary:
+
+  * Developers should continue to install `mojito-cli` globally in their development environments to use "mojito" commands from the console. This remains the case for any recent version of Mojito.
+  * Mojito applications depending on `mojito@0.7.0` and doing CI with Screwdriver need to add `mojito-cli` as a devDependency.
+  * `mojito profiler` was re-packaged and can be [installed separately](https://github.com/yahoo/mojito-cli-profiler).
+  * `mojito gv` was re-packaged and can be [installed separately](https://github.com/yahoo/mojito-cli-gv).
+
+More info at the [mojito-cli wiki](http://git.io/jJazAw).
+
+* mojito-carrier-addon and mojito-device-addon are moved to y_mojito package for Yahoo internal developer use only.
 
 Features
 --------
