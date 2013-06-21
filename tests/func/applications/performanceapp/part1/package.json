@@ -8,6 +8,9 @@
               "email": "lzhan@yahoo-inc.com"
           }
     ],
+    "dependencies": {
+        "mojito": "*"
+    },
     "yahoo" : {
           "bugzilla" : {
               "product" : "Mojito",

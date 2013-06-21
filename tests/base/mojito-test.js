@@ -38,12 +38,10 @@ YUI.add('mojito', function(Y, NAME) {
 /* AC ADDONS */
 YUI.add('mojito-analytics-addon', function(Y, NAME) {});
 YUI.add('mojito-assets-addon', function(Y, NAME) {});
-YUI.add('mojito-carrier-addon', function(Y, NAME) {});
 YUI.add('mojito-composite-addon', function(Y, NAME) {});
 YUI.add('mojito-config-addon', function(Y, NAME) {});
 YUI.add('mojito-cookie-addon', function(Y, NAME) {});
 YUI.add('mojito-deploy-addon', function(Y, NAME) {});
-YUI.add('mojito-device-addon', function(Y, NAME) {});
 YUI.add('mojito-http-addon', function(Y, NAME) {});
 YUI.add('mojito-models-addon', function(Y, NAME) {});
 YUI.add('mojito-i13n-addon', function(Y, NAME) {});
