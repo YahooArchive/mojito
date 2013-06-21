@@ -87,7 +87,7 @@
             "lazyloadclientmojitclient" : {
                 "group" : "smoke,common,lazyloadclientmojitclient",
                 "params" : {
-                    "test" : "testlazyloadrclientmojitclient.js",
+                    "test" : "testlazyloadclientmojitclient.js",
                     "page" : "$$config.baseUrl$$/"
                 }
             },
