@@ -6,13 +6,15 @@ YUI.add('StatsModelYQL', function (Y, NAME) {
             this.config = config;
         },
 
-        getData: function (params, yqlTable, callback) {
+        getData: function (params, yqlTable, id, repo, callback) {
             Y.log(this.config);
             var itemLimit = "10",
-                query = "use '{table}' as github.events; select json.type, json.actor, json.payload from github.events where id='yui' and repo='yui3' limit {limit}",
+                query = "use '{table}' as github.events; select json.type, json.actor, json.payload from github.events where id='{id}' and repo='{repo}' limit {limit}",
                 queryParams = {
                     table: yqlTable,
-                    limit: itemLimit
+                    limit: itemLimit,
+                    id: id,
+                    repo: repo
                 },
                 cookedQuery = Y.Lang.sub(query, queryParams);
              Y.YQL(cookedQuery, Y.bind(this.onDataReturn, this, callback));
