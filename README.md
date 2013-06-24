@@ -33,14 +33,13 @@ see [Contributing Code to Mojito](https://github.com/yahoo/mojito/wiki/Contribut
 
 1. Go to http://localhost:8666/@HelloMojit/index
 
-
 1. Run Unit Tests:
 
-    $ mojito test app .
+        $ mojito test app .
 
 1. Generate documentation:
 
-    $ mojito docs app hello
+        $ mojito docs app hello
 
 ## Documentation
 
