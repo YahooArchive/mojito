@@ -17,11 +17,11 @@ in the `node_modules` directory of your application.
 
 ## Quick Start
 
-Create an app and install local Mojito:
+Create an app:
 
     $ mojito create app hello
     $ cd hello
-    $ npm install .
+
 
 Create a mojit:
 
