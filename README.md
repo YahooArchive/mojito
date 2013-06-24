@@ -7,39 +7,38 @@ on-line/off-line, multi-device, hosted application platform.
 
 [![Build Status](https://secure.travis-ci.org/yahoo/mojito.png?branch=develop)](http://travis-ci.org/yahoo/mojito)
 
-## Installation
 
-To install Mojito, you first install the package `mojito-cli`, which is the Mojito command-line tool. When you
-use the command-line tool to create Mojito applications, `mojito-cli` installs the Mojito framework (`mojito`)
-in the `node_modules` directory of your application.
+## Quick Start 
 
-    $ npm install -g mojito-cli
-
-## Quick Start
-
-Create an app:
-
-    $ mojito create app hello
-    $ cd hello
+This quick start is intended for Mojito application developers. To contribute to the Mojito project,
+see [Contributing Code to Mojito](https://github.com/yahoo/mojito/wiki/Contributing-Code-to-Mojito).
 
 
-Create a mojit:
+1. Install the Mojito command-line tool:
 
-    $ mojito create mojit HelloMojit
+        $ npm install -g mojito-cli
 
-Start the server:
+1. Create an app:
 
-    $ mojito start
+        $ mojito create app hello
+        $ cd hello
 
-Go to URL:
+1. Create a mojit:
 
-    http://localhost:8666/@HelloMojit/index
+        $ mojito create mojit HelloMojit
 
-Run Unit Tests:
+1. Start the server:
+
+        $ mojito start
+
+1. Go to http://localhost:8666/@HelloMojit/index
+
+
+1. Run Unit Tests:
 
     $ mojito test app .
 
-Generate documentation:
+1. Generate documentation:
 
     $ mojito docs app hello
 
