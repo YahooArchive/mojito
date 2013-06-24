@@ -13,10 +13,6 @@ To install Mojito, you first install the package `mojito-cli`, which is the Moji
 use the command-line tool to create Mojito applications, `mojito-cli` installs the Mojito framework (`mojito`)
 in the `node_modules` directory of your application.
 
-
-
-### via npm
-
     $ npm install -g mojito-cli
 
 ## Quick Start
@@ -59,7 +55,7 @@ Generate documentation:
 
 ### Contributing to Documentation
 
-Mojito documentation is present in /docs directory. To generate HTML documentation run the following commands 
+Mojito documentation is present in `/docs` directory. To generate HTML documentation, run the following commands 
 from the documentation directories.
 
     $ cd docs/dev_guide
