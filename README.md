@@ -9,16 +9,21 @@ on-line/off-line, multi-device, hosted application platform.
 
 ## Installation
 
+To install Mojito, you first install the package `mojito-cli`, which is the Mojito command-line tool. When you
+use the command-line tool to create Mojito applications, `mojito-cli` installs the Mojito framework (`mojito`)
+in the `node_modules` directory of your application.
+
+
 ### via GitHub
 
-    $ git clone git://github.com/yahoo/mojito.git
-    $ cd mojito
+    $ git clone git://github.com/yahoo/mojito-cli.git
+    $ cd mojito-cli
     $ npm install -g .
     $ npm install .
 
 ### via npm
 
-    $ npm install -g mojito
+    $ npm install -g mojito-cli
 
 ## Quick Start
 
