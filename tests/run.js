@@ -10,6 +10,7 @@ var fs = require('fs'),
     program = require('commander'),
     async = require('async'),
     child = require('child_process'),
+    portfinder = require('portfinder'),
     cwd = __dirname,
     pids = [],
     thePid = null,
@@ -19,6 +20,7 @@ var fs = require('fs'),
     hostname = require('os').hostname(),
     dns = require('dns'),
     hostip,
+    phantomjsport = null,
     arrowReportDir,
     remoteselenium,
 
@@ -171,7 +173,9 @@ function runUnitTests (cmd, callback) {
     if ('phantomjs' !== cmd.browser && cmd.reuseSession) {
         commandArgs.push('--reuseSession');
     }
-
+    if (phantomjsport) {
+        commandArgs.push('--phantomHost=http://localhost:'+phantomjsport+'/wd/hub');
+    }
     var filestoexclude = 'tests/base/mojito-test.js,' +
         'lib/app/autoload/mojito-client.client.js,' +
         'lib/app/autoload/perf.client.js,lib/app/autoload/perf.server.js';
@@ -219,42 +223,47 @@ function startPhantomjs(cmd, callback) {
         done,
         command,
         commandArgs;
-
-    done = function () {
-        clearTimeout(timeout);
-        p.stdout.removeListener('data', listener);
-        callback(null);
-    };
-    listener = function (data) {
-        process.stdout.write(data);
-        if (data.toString().match(/GhostDriver - Main - running on port 4445/)) {
-            done();
-        }
-    };
-
-    if (fs.existsSync(cwd + "/../node_modules/phantomjs")) {
-        command = "node";
-        commandArgs = [cwd + "/../node_modules/phantomjs/bin/phantomjs"];
-        commandArgs.push("--webdriver=4445");
-    } else {
-        command = "phantomjs";
-        commandArgs = ["--webdriver=4445"];
-    }
-    var p = runCommand(cwd, command, commandArgs, function() {
-        // If this command returns called, then it failed to launch
-        if (timeout) {
+    
+    portfinder.basePort = 4445;
+    //find available port for phantomjs
+    portfinder.getPort(function (err, port) {
+    phantomjsport = port;
+        done = function () {
             clearTimeout(timeout);
+            p.stdout.removeListener('data', listener);
+            callback(null);
+        };
+        listener = function (data) {
+            process.stdout.write(data);
+            if (data.toString().match(/GhostDriver - Main - running on port/)) {
+                done();
+            }
+        };
+    
+        if (fs.existsSync(cwd + "/../node_modules/phantomjs")) {
+            command = "node";
+            commandArgs = [cwd + "/../node_modules/phantomjs/bin/phantomjs"];
+            commandArgs.push("--webdriver="+port);
+        } else {
+            command = "phantomjs";
+            commandArgs = ["--webdriver="+port];
         }
-        console.log('phantomjs failed to start. Phantomjs needs to be installed either locally or globally');
-        pids.pop();
-        callback(1); // Trigger failure
+        var p = runCommand(cwd, command, commandArgs, function() {
+            // If this command returns called, then it failed to launch
+            if (timeout) {
+                clearTimeout(timeout);
+            }
+            console.log('phantomjs failed to start. Phantomjs needs to be installed either locally or globally');
+            pids.pop();
+            callback(1); // Trigger failure
+        });
+        p.stdout.on('data', listener);
+        pids.push(p.pid);
+        pidNames[p.pid] = 'phantomjs driver';
+        timeout = setTimeout(function () {
+            done();
+        }, 5000);
     });
-    p.stdout.on('data', listener);
-    pids.push(p.pid);
-    pidNames[p.pid] = 'phantomjs driver';
-    timeout = setTimeout(function () {
-        done();
-    }, 5000);
 }
 
 function startArrowSelenium(cmd, callback) {
@@ -337,6 +346,9 @@ function runFuncTests(cmd, desc, port, thispid, callback) {
     ];
     if ('phantomjs' !== cmd.browser && cmd.reuseSession) {
         commandArgs.push('--reuseSession');
+    }
+    if (phantomjsport) {
+        commandArgs.push('--phantomHost=http://localhost:'+phantomjsport+'/wd/hub');
     }
     if (remoteselenium) {
         commandArgs.push('--seleniumHost=' + remoteselenium);
