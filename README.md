@@ -14,12 +14,6 @@ use the command-line tool to create Mojito applications, `mojito-cli` installs t
 in the `node_modules` directory of your application.
 
 
-### via GitHub
-
-    $ git clone git://github.com/yahoo/mojito-cli.git
-    $ cd mojito-cli
-    $ npm install -g .
-    $ npm install .
 
 ### via npm
 
