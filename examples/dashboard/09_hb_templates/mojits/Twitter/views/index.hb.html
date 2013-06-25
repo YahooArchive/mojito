@@ -1,0 +1,12 @@
+<div id="{{mojit_view_id}}" class="mojit">
+    <div class="mod" id="twitter">
+        {{> widget_refresh_heading}}
+        <div class="inner">
+            <ul>
+                {{#results}}
+                    <li><strong>{{{linker from_user "http://twitter.com/" from_user }}}</strong> - <span>{{text}}</span></li>
+                {{/results}}
+            </ul>
+        </div>
+    </div>
+</div>
