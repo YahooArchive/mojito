@@ -1,4 +1,3 @@
-
 [
     {
         "settings": [ "master" ],
@@ -16,7 +15,9 @@
                     "loader-yui3",
                     "loader-app",
                     "loader-app-base{langPath}"
-                ]
+                ],
+                "debug": true,
+                "logLevel": "error" 
             }
         },
         "specs": {            
@@ -85,7 +86,24 @@
         "settings": [ "environment:development" ],
         "staticHandling": {
             "forceUpdate": true
+        },
+        "yui":{
+            "config": {
+                "debug": true,
+                "logLevel": "debug"
+            }
+        }
+    },
+    {
+        "settings": [ "environment:production" ],
+        "staticHandling": {
+            "forceUpdate": false
+        },
+        "yui":{
+            "config": {
+                "debug": false,
+                "logLevel": "none"
+            }
         }
     }
 ]
-

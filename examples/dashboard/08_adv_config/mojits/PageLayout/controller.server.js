@@ -25,6 +25,7 @@ YUI.add('PageLayout', function(Y, NAME) {
          *        to the Mojito API.
          */
         index: function(ac) {
+            Y.log("PageLayout: this log message won't show in the default context, but will show up in development.","info", NAME); 
             var view_type = ac.params.getFromRoute('view_type') || "yui";
             if (view_type === "yui") {
                 ac.composite.done({
