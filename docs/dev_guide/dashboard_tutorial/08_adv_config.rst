@@ -1,36 +1,74 @@
-============================================================
-8. Advanced Configuration: Contexts, Mojits, and YUI (Draft)
-============================================================
+=====================================================
+8. Advanced Configuration: Contexts, Routing, and YUI
+=====================================================
+
+.. _01_intro-est_time:
+.. _01_intro-cover:
+.. _01_intro-final:
+.. _01_intro-before_starting:
+.. _01_before_starting-review:
+.. _01_before_starting-prereqs:
+.. _01_before_starting-setting_up:
+.. _01_cli-lesson:
+.. _01_lesson-gen_code:
+.. _01_lesson_gen_code-create:
+.. _01_lesson-archetypes:
+.. _01_lesson_archetypes-mojito:
+.. _01_lesson-start:
+.. _01_lesson-test:
+.. _01_lesson-coverage:
+.. _01_lesson-func_tests:
+.. _01_lesson-lint:
+.. _01_lesson-util:
+.. _01_cli-create:
+.. _01_cli-ts:
+.. _01_cli-review:
+.. _01_cli-test:
+.. _01_cli_test-questions:
+.. _01_cli_test-addition_exs:
+.. _01_cli-terms:
+.. _01_cli-reading:
+
+.. _08_adv_config-intro:
 
 Introduction
 ============
 
 The good news is that your application is basically feature complete for the desktop, but we 
-still have some work to do to make it better. In this module, we’re going to learn how to 
-use the mojit configuration files defaults.json and definition.json to store data that 
-your controller can access. In turn, your controller can pass some of these configuration 
-values to the models to get data. We don’t have to hardcode the REST URIs or YQL statements 
-in the models anymore, so the models can basically get data from any given source. 
+still have some work to do to make it better. In this module, we’re going to update 
+the application-level and mojit-level configuration files. We'll update the
+``application.json`` to define a static application name (no more updating the
+path to the assets), add a new route with parameters for the Mojito dashboard, and 
+configure Mojito to usea different version of YUI. We'll also cover how to configure logging 
+levels, change the order of the logging levels, or provide logging filters. 
 
-We’ll also look at how to configure YUI in Mojito applications. Mojito comes bundled with 
-a version of YUI, but you may want a different version or want something from the gallery 
-or configure how Mojito gets YUI. You can also configure logging levels, change the order 
-of the logging levels, or provide logging filters. Let’s get started!
+As for mojit configuration, we'll be using the mojit configuration file ``definition.json`` 
+to store data that your controller can access. In turn, your controller can pass some of 
+these configuration values to the models to get data. We don’t have to hardcode the REST 
+URIs, OAuth keys, or YQL statements in the models anymore, so the models can basically get 
+data from any given source. 
+
+.. _08_intro-est_time:
 
 Estimated Time
 --------------
 
 15 minutes
 
+.. _08_intro-what:
+
 What We’ll Cover
 ----------------
 
+- using YAML for configuration files
 - default configurations and definitions
 - using the Config addon to get mojit configurations
-- yui object and configurations
+- ``yui`` object and configurations
 - configuring the YUI seed
-- using the environment:development context
+- using the ``environment:development`` context
 - adding parameters and using regular expressions in the routing configurations
+
+.. _08_intro-final:
 
 Final Product
 -------------
@@ -44,9 +82,12 @@ a Mojito dashboard as well as a YUI dashboard.
    :width: 850 px
    :alt: Screenshot of 08 advanced configuration application.
 
+.. _08_intro-before:
 
 Before Starting
 ---------------
+
+.. _08_intro_before-review:
 
 Review of the Last Module
 #########################
@@ -63,37 +104,144 @@ controllers, and refresh or render templates.
 - refreshing templates with binders
 - destroying child mojits with binders
 
+.. _08_intro_before-setup:
 
 Setting Up
 ##########
 
 ``$ cp -r 07_binders 08_adv_config``
 
+.. _08_adv_config-lesson:
+
 Lesson: Advanced Configuration
 ==============================
 
+.. _08_lesson-app_config:
+
 Application Configuration
 -------------------------
+
+.. _08_lesson_app_config-yaml:
 
 Using YAML
 ##########
 
 Mojito also supports configuration files in YAML format (JSON is a subset of YAML). 
-The YAML file extension could be .yaml or .yml. Mojito allows comments in the YAML files. 
-When both the JSON file (e.g., application.json) and the YAML file (e.g., application.yaml) 
+The YAML file extension could be ``.yaml`` or ``.yml``. Mojito allows comments in the YAML files. 
+When both the JSON file (e.g., ``application.json``) and the YAML file (e.g., ``application.yaml``) 
 are present, the YAML file is used and a warning is issued. For the data types of the YAML 
 elements, please see the JSON configuration tables in Application Configuration, Routing, 
 and Mojit Configuration.
 
+.. _08_lesson_app_config-yaml:
+
 Our Application Configuration in YAML
 *************************************
 
-.. code-block:: javascript
+If you haven't worked with YAML before, you'll be happy to know that YAML supports 
+commenting, which the current JSON schema currently does not support. If your application
+has both an ``application.json`` and an ``application.yaml``, Mojito will use the
+YAML file. To convert ``application.json`` to YAML, you can use a utility 
+such as `json2yaml <https://npmjs.org/package/json2yaml>`_.
 
+.. code-block:: yaml
+
+   # YAML supports commenting, JSON doesn't.
+   ---
+   - settings:
+     - master
+     appPort: '8666'
+     staticHandling:
+       appName: trib
+     yui:
+       config:
+         comboBase: http://yui.yahooapis.com/combo?
+         root: 3.8.1/build/
+         seed:
+         - yui-base
+         - loader-base
+         - loader-yui3
+         - loader-app
+         - loader-app-base{langPath}
+         debug: true
+         logLevel: warn
+     specs:
+       tribframe:
+         type: HTMLFrameMojit
+         config:
+           deploy: true
+           title: Trib - YUI Developer Dashboard
+           child:
+             type: PageLayout
+             config:
+               children:
+                 header:
+                   type: Header
+                 body:
+                   type: Body
+                   config:
+                     children:
+                       github:
+                         type: Github
+                       calendar:
+                         type: Calendar
+                       twitter:
+                         type: Twitter
+                       youtube:
+                         type: Youtube
+                       blog:
+                         type: Blog
+                       gallery:
+                         type: Gallery
+                 footer:
+                   type: Footer
+           assets:
+             top:
+               css:
+               - http://yui.yahooapis.com/3.9.0/build/cssnormalize/cssnormalize-min.css
+               - http://yui.yahooapis.com/gallery-2013.03.13-20-05/build/gallerycss-cssform/gallerycss-cssform-min.css
+               - http://yui.yahooapis.com/3.9.0/build/cssgrids-responsive/cssgrids-responsive-min.css
+               - http://yui.yahooapis.com/3.9.0/build/cssbutton/cssbutton-min.css
+               - http://yui.yahooapis.com/gallery-2013.03.13-20-05/build/gallerycss-csslist/gallerycss-csslist-min.css
+               - https://rawgithub.com/tilomitra/yuicss-common/master/ui.css
+               - /static/trib/assets/trib.css
+   - settings:
+     - device:iphone
+     selector: iphone
+   - settings:
+     - device:ipad
+     selector: ipad
+   - settings:
+     - environment:development
+     staticHandling:
+       forceUpdate: true
+     yui:
+       config:
+         debug: true
+         logLevel: debug
+   - settings:
+     - environment:production
+     staticHandling:
+       forceUpdate: false
+     yui:
+       config:
+         debug: false
+         logLevel: none
+
+
+.. _08_lesson_app_config-static_app_name:
 
 Static Application Name
 #######################
 
+We've been having to update the path to the assets for each application because the
+application name has been changing. Generally, you're not changing application names,
+but in a cloud-hosted environment, the path to the assets may change, so you'll want
+a way to statically define the application name so that the path to your assets is valid.
+
+To statically define assets in Mojito applications, you use the ``staticHandling`` 
+object and its property ``appName``. We're going to use ``trib`` for our application name,
+so add the code below to your ``application.json``.
 
 .. code-block:: javascript
 
@@ -101,36 +249,126 @@ Static Application Name
           "appName": "trib"
         },
 
+Now, update the path to your assets for the last time:
+
+.. code-block:: javascript
+
+   ...
+     ...
+       "assets": {
+         "top": {
+           "css": [
+             ...,
+             "/static/trib/assets/trib.css"
+           ]
+         }
+       }
+     ...
+   ...
+
+.. _08_lesson_app_config-routing:
+
 Advanced Routing Configuration
 ##############################
 
+For our application, we're going to use the ``params`` property in our routes to
+pass URL parameters to our controller, which will be used to determine what template
+to render. We won't be using regular expressions or parameterized paths in our application,
+but for the sake of completeness, we'll look at how they work.
+
+.. _08_lesson_routing-add_params:
 
 Adding Parameters
 *****************
 
-[{
-    "settings": [ "master" ],
-    "root": {
-        "verbs": ["get"],
-        "path": "/",
-        "call": "tribframe.index",
-        "params": {"view_type": "yui"}
-    },
-    "mojito_view":{
-        "verbs": ["get"],
-        "path": "/mojito",
-        "call": "tribframe.index",
-        "params": {"view_type": "mojito"}
-    }
+As you can see in our ``routes.json`` shown below, we're going to have two routing
+paths. Each path passes a different value for the ``view_type`` parameter. 
+The controller can inspect the URL parameters defined here with the ``Params``
+addon. If the controller sees that the value for the ``view_type`` is ``yui``, it
+will server the YUI dashboard, and vice versa, if the value for ``view_type`` is ``mojito``
+the template for the Mojito dashboard is rendered.
 
-}]
+.. code-block:: javascript
+
+   [
+     {
+       "settings": [ "master" ],
+       "root": {
+         "verbs": ["get"],
+         "path": "/",
+         "call": "tribframe.index",
+         "params": {"view_type": "yui"}
+       },
+       "mojito_view":{
+         "verbs": ["get"],
+         "path": "/mojito",
+         "call": "tribframe.index",
+         "params": {"view_type": "mojito"}
+       }
+     }
+   ]
+
+.. _08_lesson_routing-regex:
 
 Regular Expressions for Paths
 *****************************
 
+The route objects can contain a ``regex`` property that allows you to 
+define a regular expression and then use the key as a parameter in the 
+path. In the example below, the regular expression matches a path that starts
+with one or the numbers followed by an underscore and then the string ``Mojitos``
+or ``mojitos``:
+
+.. code-block:: javascript
+
+   [
+     {
+       "settings": [ "master" ],
+      "regex_path": {
+        "verbs": ["get"],
+        "path": "/:matched_path",
+        "regex": { "matched_path": "\d{1,2}_[Mm]ojitos?" },
+        "call": "myMojit.index"
+      }
+    }
+  ]
+
+.. _08_lesson_routing-parametrized_paths:
+
 Using Parameterized Paths 
 *************************
 
+The parameterized paths allow you to have Mojito execute the correct action based
+on the request. In our example ``routes.json`` below, if the HTTP request 
+is made on the path ``/index``, the ``index`` method of the ``tribframe`` instance
+is executed. Likewise, if the HTTP request is made to ``/mojito/index``, the
+``index`` method of ``tribframe`` instance is made, but the ``params`` property
+has different values. We use the ``params`` property to render the right template,
+but you could use a parameterized URL to call a different mojit action to render
+the appropriate template.
+
+.. code-block:: javascript
+
+
+   [
+     {
+       "settings": [ "master" ],
+       "root": {
+         "verbs": ["get"],
+         "path": "/:mojit_action",
+         "call": "tribframe.{mojit_action}",
+         "params": {"view_type": "yui"}
+       },
+       "mojito_view":{
+         "verbs": ["get"],
+         "path": "/mojito/:mojit_action",
+         "call": "tribframe.{mojit_action}",
+         "params": {"view_type": "mojito"}
+       }
+     }
+   ]
+
+.. _08_lesson_routing-yui:
 
 YUI 
 ###
@@ -145,9 +383,11 @@ include the following:
 - optimize performance for environments that may have latency issues or have limited CPU power
 - limit the loading of certain YUI modules for specific languages
 - configure logging 
-F
-or our application, we’re going to focus on configuring the YUI seed and logging. If you 
+
+For our application, we’re going to focus on configuring the YUI seed and logging. If you 
 don’t configure the YUI seed, your application will use the YUI bundled with Mojito. 
+
+.. _08_routing-yui_seed:
 
 Configuring the YUI Seed
 ************************
@@ -164,6 +404,8 @@ From the URL to the seed file, the YUI library can infer the version of the libr
 should be used, the filter that you want to use (min, debug or raw), and the CDN that is 
 serving the library.
 
+.. _08_routing-yui_seed:
+
 Seed File in Mojito Applications
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -178,12 +420,16 @@ As we have said earlier, In Mojito applications, the YUI seed is configured in
   application code are loaded in the same way as the YUI Core modules, so it is difficult 
   to simply include the YUI seed file in a template.
 
+.. _08_yui_seed-default:
+
 Default Seed File
 ^^^^^^^^^^^^^^^^^
 
 In general, you don’t need to worry about the YUI default seed because Mojito creates a 
 default configuration for the YUI seed for you. For our application, we want a specific 
 version of YUI, so we’ll need to 
+
+.. _08_yui_seed-custom:
 
 Specifying the YUI Build
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -212,12 +458,16 @@ Specifying the YUI Build
      ...
    ]
 
+.. _08_routing-logging:
+
 Logging
 *******
 
 Logging in Mojito is handled by YUI, so as you would expect, you configure logging in the 
 ``yui`` object. Mojito has six default logging levels, which you can set or modify the 
 order of. 
+
+.. _08_logging-levels:
 
 Log Levels
 ^^^^^^^^^^
@@ -231,6 +481,8 @@ The default logging levels are as follows:
 - ``error``
 - ``none``
 
+.. _08_logging_levels-default:
+
 Default Settings
 ^^^^^^^^^^^^^^^^
 
@@ -241,13 +493,16 @@ The server and client log settings have the following default values:
 - ``logLevelOrder: ['debug', 'mojito', 'info', 'warn', 'error', 'none']`` - the order in 
   which the log levels are evaluated.
 
+.. _08_logging_levels-configure:
+
 Configuring Logging
 ^^^^^^^^^^^^^^^^^^^
 
 We’ve been just using the default logging up until now, but we’re going to configure the 
 logging for production and development and leave the default settings for the master context.
 
-For our production environment, we only want to filter out everything but the
+For our production environment, we don't want any logging messages, so we're going
+to set ``debug`` to ``false`` and ``logLevel`` to ``none``:
 
 .. code-block:: javascript
 
@@ -267,7 +522,7 @@ For our production environment, we only want to filter out everything but the
    ]
 
 On the other hand, we want to make sure that we see all errors for the development 
-environment. We set debug to true and the log level to debug, which will show all possible 
+environment. We set debug to true and the log level to ``debug``, which will show all possible 
 errors.
 
 .. code-block:: javascript
@@ -285,6 +540,25 @@ errors.
      }
    ]
 
+By default, we'll want to see warnings and errors, so we'll set ``logLevel`` to
+``warn``:
+
+.. code-block:: javascript
+
+   [
+     {
+       "settings": [ "master" ],
+       "yui": {
+         "config": {
+           "debug": true,
+           "logLevel": "warn"
+         }
+       },
+       ...
+     }
+   ]
+
+.. _08_lesson_context_configs:
 
 Context Configurations
 ######################
@@ -298,13 +572,15 @@ by the device running the application or the regional environment. You may want 
 different configurations for the application when it’s running on an iOS device or if your 
 application is being viewed in a region where text is read from right to left. We’re going 
 to discuss  two types of contexts, how to configure context configurations,and then apply 
-them .
+them.
+
+.. _08_context_configs-base:
 
 Base Context
 ************
 
 The base context is statically set when you start the application. If you remember the 
-`Mojito CLI Basics module <>`_, you’ll recall there was a --context option. This option 
+`Mojito CLI Basics module <>`_, you’ll recall there was a ``--context`` option. This option 
 allows you to start an application with a base context. Thus, if you want to run your 
 application in the environment:development context, you would use the following 
 command: ``$ mojito start --context "environment:production"``
@@ -317,6 +593,8 @@ context: ``$ mojito start --context “device:iphone,lang:de”``
 When your application receives a request, you won’t be able to change the base context, 
 so Mojito also has a request context that can be applied based on the context of the 
 requestor. Let’s take a look at that next.
+
+.. _08_context_configs-request:
 
 Request Context
 ***************
@@ -332,8 +610,7 @@ The language, region, and device/OS contexts can often be extracted from the hea
 but for development and production environments or customized contexts, you may want to 
 need to use the query string parameters to request a context.
 
-
-
+.. _08_lesson-mojit:
 
 Mojits
 ------
@@ -341,6 +618,8 @@ Mojits
 We’ve already looked at the configuration files application.json and routes.json to 
 create mojit instances and define routing paths, but Mojito also has configuration files 
 that mojits can use to store key-value pairs and defaults. 
+
+.. _08_mojit-default:
 
 Default Configurations
 ######################
@@ -378,6 +657,8 @@ properties explicitly defined, your application will use the defaults.
      }
    ]
 
+.. _08_mojit_config-definition:
+
 Definitions
 ***********
 
@@ -405,6 +686,7 @@ In the ``definitions.json`` of the ``youtubeMojit`` below has a series of possib
   }
 ]
 
+.. _08_adv_config-create:
 
 Creating the Application
 ========================
@@ -432,7 +714,8 @@ Creating the Application
       }
 
 #. Let's also configure out application to use a specific version (overriding the default
-   version used by Mojito) with the ``yui`` object as shown below:
+   version used by Mojito) with the ``yui`` object as shown below. Notice that we are
+   also changing the default logging to only display ``warn`` and ``error`` messages.
 
    .. code-block:: javascript
 
@@ -446,9 +729,43 @@ Creating the Application
             "loader-yui3",
             "loader-app",
             "loader-app-base{langPath}"
-          ]
+          ],
+          "debug": true,
+          "logLevel": "warn"
         }
       }
+
+#. Add the following logging configuration to the ``environment:development`` to display
+   all logging messages and then add the context ``environment:production`` with logging
+   configuration to have caching and show no logging messages:
+
+   .. code-block:: javascript
+
+     {
+         "settings": [ "environment:development" ],
+         "staticHandling": {
+             "forceUpdate": true
+         },
+         "yui":{
+             "config": {
+                 "debug": true,
+                 "logLevel": "debug"
+             }
+         }
+     },
+     {
+         "settings": [ "environment:production" ],
+         "staticHandling": {
+             "forceUpdate": false
+         },
+         "yui":{
+             "config": {
+                 "debug": false,
+                 "logLevel": "none"
+             }
+         }
+     }
+
 #. We haven't touched ``routes.json`` for a long time. We're going to remove unused routes,
    add a route to get Mojito data, and add parameters that the controller will use to determine
    what dashboard to display (YUI or Mojito). Replace the contents of ``routes.json`` with the
@@ -730,11 +1047,13 @@ Creating the Application
         </div>
       </div>
 #. To provide the Handlebars expression ``{{button_test}}`` with the appropriate value,
-   we'll need to update the ``index`` method of the ``PageLayout`` controller as well:
+   we'll need to update the ``index`` method of the ``PageLayout`` controller as well. The
+   ``Y.log`` statement will be used to demonstrate our logging configuration.
 
    .. code-block:: javascript
 
       index: function(ac) {
+        Y.log("PageLayout: this log message won't show in the default context, but will show up in development.","info", NAME);
         var view_type = ac.params.getFromRoute('view_type') || "yui";
         if (view_type === "yui") {
           ac.composite.done({
@@ -798,8 +1117,16 @@ Creating the Application
    our mojits, configured our application to have a static name and use a specific version
    of YUI. Go ahead and start your application and click the button to see the Mojito
    dashboard for the first time.
+#. Notice from your console that you're only seeing warning messages. Try restarting
+   the application with the ``environment:development`` context to see ``info`` log
+   messages as well. You'll now see the output from ``Y.log`` statement in the controller
+   of the ``PageLayout`` mojit.
 
-    
+   ``$ mojito start --context "environment:development"``
+
+
+.. _08_adv_config-ts:    
+
 Troubleshooting
 ===============
 
@@ -814,11 +1141,17 @@ Problem Two
 Nulla pharetra aliquam neque sed tincidunt. Donec nisi eros, sagittis vitae lobortis nec, 
 interdum sed ipsum. Quisque congue tempor odio, a volutpat eros hendrerit nec. 
 
+.. _08_adv_config-summary:    
+
 Summary
 =======
 
+.. _08_adv_config-qa:    
+
 Q&A
 ===
+
+.. _08_adv_config-test:  
 
 Test Yourself
 =============
@@ -826,20 +1159,29 @@ Test Yourself
 - How do you access models from a controller?
 - What are the four arguments passed to the methods of the REST module?
 - What is the recommended way for getting data in Mojito applications?
+- Use parameterized URLs in the ``routes.json`` to render the template for the Mojito 
+  dashboard.
+
+.. _08_adv_config-term:  
 
 Terms
 =====
+
+.. _08_adv_config-src:  
 
 Source Code
 ===========
 
 [app_part{x}](http://github.com/yahoo/mojito/examples/quickstart_guide/app_part{x})
 
+
+.. _08_adv_config-reading:  
+
 Further Reading
 ===============
 
 - [Mojito Doc](http://developer.yahoo.com/cocktails/mojito/docs/)
-- 
+
 
 
 

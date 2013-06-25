@@ -57,7 +57,7 @@ we learned the following:
 Setting Up
 ##########
 
-``$ cp -r 08_mojit_adv_config 09_multiple_views``
+``$ cp -r 08_mojit_adv_config 09_hb_templates``
 
 Source Code for Example
 -----------------------
