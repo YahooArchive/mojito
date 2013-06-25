@@ -17,7 +17,7 @@
                     "loader-app-base{langPath}"
                 ],
                 "debug": true,
-                "logLevel": "error" 
+                "logLevel": "warn" 
             }
         },
         "specs": {            
