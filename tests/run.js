@@ -227,7 +227,13 @@ function startPhantomjs(cmd, callback) {
     portfinder.basePort = 4445;
     //find available port for phantomjs
     portfinder.getPort(function (err, port) {
-    phantomjsport = port;
+        if (err) {
+            console.log(err);
+            console.log('Failed to find port to start phantomjs');
+            process.exit(1);
+            return;
+        }
+        phantomjsport = port;
         done = function () {
             clearTimeout(timeout);
             p.stdout.removeListener('data', listener);
