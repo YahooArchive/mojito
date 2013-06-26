@@ -169,4 +169,4 @@ YUI.add('Github', function(Y, NAME) {
             });
         }
     };
-}, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'mojito-config-addon', 'mojito-params-addon']});
+}, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'mojito-config-addon', 'mojito-params-addon', 'mojito-helpers-addon']});
