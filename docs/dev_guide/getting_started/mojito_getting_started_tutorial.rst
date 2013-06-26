@@ -40,7 +40,6 @@ Create the Application
 Create the Sample Mojit
 =======================
 
-
 The name *mojit* is a fusion of the words module and widget. The mojit, 
 however, is neither a module nor a widget. Instead, it is best understood as 
 a unit of execution used to generate output. Mojits have an MVC structure and 
