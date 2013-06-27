@@ -14,10 +14,7 @@ behavior of the frame mojit. In this module, we’re going to use
 the built-in HTMLFrameMojit for our application. We’ll leave 
 creating a custom frame mojit as an exercise at the end of the chapter.
 
-Estimated Time
---------------
 
-15 minutes
 
 What We’ll Cover
 ----------------

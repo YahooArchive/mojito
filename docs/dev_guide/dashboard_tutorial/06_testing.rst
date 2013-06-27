@@ -15,11 +15,6 @@ already saw the Mojito CLI has a test command for running unit tests. To run
 functional tests, we’re going to use Arrow, which is an npm module that we’ll 
 need to install.
 
-.. _06_intro-est_time:
-
-Estimated Time
---------------
-15 minutes
 
 .. _06_intro-what:
 

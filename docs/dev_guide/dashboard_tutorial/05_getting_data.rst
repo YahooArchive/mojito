@@ -17,10 +17,6 @@ will finally fetch live data, and we’re going to add another mojit to get Twit
 with the help of the Node.js module `simple-twitter <https://npmjs.org/package/simple-twitter>`_.
 
 
-Estimated Time
---------------
-
-15 minutes
 
 What We’ll Cover
 ----------------

@@ -25,12 +25,7 @@ remember all those mojits that we created earlier that have been just sitting
 there unused? Well, we’re finally going to use them for the application that 
 we’ll create in this module.
 
-.. _04_intro-est_time:
 
-Estimated Time
---------------
-
-15 minutes
 
 .. _04_intro-cover:
 

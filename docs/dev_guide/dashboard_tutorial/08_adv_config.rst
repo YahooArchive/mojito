@@ -2,32 +2,6 @@
 8. Advanced Configuration: Contexts, Routing, and YUI
 =====================================================
 
-.. _01_intro-est_time:
-.. _01_intro-cover:
-.. _01_intro-final:
-.. _01_intro-before_starting:
-.. _01_before_starting-review:
-.. _01_before_starting-prereqs:
-.. _01_before_starting-setting_up:
-.. _01_cli-lesson:
-.. _01_lesson-gen_code:
-.. _01_lesson_gen_code-create:
-.. _01_lesson-archetypes:
-.. _01_lesson_archetypes-mojito:
-.. _01_lesson-start:
-.. _01_lesson-test:
-.. _01_lesson-coverage:
-.. _01_lesson-func_tests:
-.. _01_lesson-lint:
-.. _01_lesson-util:
-.. _01_cli-create:
-.. _01_cli-ts:
-.. _01_cli-review:
-.. _01_cli-test:
-.. _01_cli_test-questions:
-.. _01_cli_test-addition_exs:
-.. _01_cli-terms:
-.. _01_cli-reading:
 
 .. _08_adv_config-intro:
 
@@ -48,12 +22,7 @@ these configuration values to the models to get data. We don’t have to hardcod
 URIs, OAuth keys, or YQL statements in the models anymore, so the models can basically get 
 data from any given source. 
 
-.. _08_intro-est_time:
 
-Estimated Time
---------------
-
-15 minutes
 
 .. _08_intro-what:
 

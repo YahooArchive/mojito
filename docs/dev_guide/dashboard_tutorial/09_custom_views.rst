@@ -1,6 +1,9 @@
-==================================================
-9. Customizing Views for Different Devices (Draft)
-==================================================
+==========================================
+9. Handlebars, Templates, and Custom Views
+==========================================
+
+
+.. _10_hb_templates-intro:
 
 Introduction
 ============
@@ -12,10 +15,7 @@ which is just an identifier that is part of the file name. This allows you to ha
 templates that can be served based on the client request. The selectors can be defined for 
 different contexts, allowing you to use a selector based on the runtime environment. 
 
-Estimated Time
---------------
 
-15 minutes
 
 What We’ll Cover
 ----------------
@@ -648,11 +648,9 @@ Creating the Application
       </div>
 
 #. Okay, before we start the application, you're going to need to add the ``mojito-helpers-addon``
-   to the mojits that are using the helper: ``
-
+   to the mojits that are using the helper: ``Blog``, ``Gallery``, ``Github``, and ``Twitter``.
 #. Now fire her up. You won't see much of a difference in the look of the application,
    but your templates are smaller and cleaner because of the partials and helper.
-
 #. Append the query string parameter ``?device=iphone`` to the URL. You should see a 
    different layout for the iPhone. Try the same using ``?device=ipad``. 
 

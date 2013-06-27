@@ -12,9 +12,6 @@ nutshell, you provide localized strings, Mojito determines the language environm
 of the client, and you apply the correct localized string with an addon from your 
 controller. 
 
-Estimated Time
---------------
-15 minutes
 
 What We’ll Cover
 ----------------
@@ -49,10 +46,7 @@ Setting Up
 
 ``$ cp -r 09_multiple_views 10_localization``
 
-Source Code for Example
------------------------
 
-[app_part{x}](http://github.com/yahoo/mojito/examples/quickstart_guide/app_part{x})
 
 Lesson: Localizing Applications
 ===============================

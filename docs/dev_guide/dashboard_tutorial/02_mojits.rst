@@ -21,12 +21,6 @@ MVC structure underneath the hood. As you We’ll also discuss the difference
 between a mojit definition and a mojit instance and how those are 
 manifested in configuration. 
 
-.. _02_mojits-est_time:
-
-Estimated Time
---------------
-
-15 minutes
 
 .. _02_mojits-cover:
 

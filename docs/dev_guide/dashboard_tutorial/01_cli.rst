@@ -20,12 +20,6 @@ use the utility to sanitize code, and run tests. Our lesson
 will give an overview of the utility, covering some features 
 that you won’t use in this module, but will be using in future modules.
 
-.. _01_intro-est_time:
-
-Estimated Time
---------------
-
-10 minutes
 
 .. _01_intro-cover:
 

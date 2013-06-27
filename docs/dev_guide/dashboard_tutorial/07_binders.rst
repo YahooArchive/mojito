@@ -14,12 +14,6 @@ and manipulation called binders. Mojits can have one or more binders that are
 deployed to the client (they cannot run on the server). We’re going to create 
 some binders to allow users to update data and hide content. 
 
-.. _07_intro-est_time:
-
-Estimated Time
---------------
-
-15 minutes
 
 .. _07_intro-what:
 
