@@ -11,14 +11,14 @@ var fs = require('fs'),
     async = require('async'),
     child = require('child_process'),
     portfinder = require('portfinder'),
+    hostname = require('os').hostname(),
+    dns = require('dns'),
     cwd = __dirname,
     pids = [],
     thePid = null,
     pidNames = {},
     thePidName = null,
     returnVal = 0,
-    hostname = require('os').hostname(),
-    dns = require('dns'),
     hostip,
     phantomjsport = null,
     arrowReportDir,
@@ -54,6 +54,414 @@ console.log(process.argv.join(' '));
 console.log();
 
 program.parse(process.argv);
+
+function gethostip(callback) {
+    dns.lookup(hostname, function (err, addr, fam) {
+        if (err) {
+            callback(err);
+            return;
+        }
+        hostip = addr;
+        console.log('App running at.....' + hostip);
+        callback(null);
+    });
+}
+
+function runCommand(path, command, argv, callback) {
+    callback = callback || function () {};
+    process.chdir(path);
+    console.log(command + ' ' + argv.join(' '));
+    var cmd = child.spawn(command, argv, {
+        cwd: path,
+        env: process.env
+    });
+
+    cmd.stdout.on('data', function (data) {
+        // Don't care generally. But, specific commands may want a listener for this.
+    });
+
+    cmd.stderr.on('data', function (data) {
+        process.stdout.write(data);
+    });
+
+    cmd.on('exit', function (code) {
+        cmd.stdin.end();
+        if (0 !== code) {
+            callback('exit: child process exited with code ' + code);
+            return;
+        }
+        callback(code);
+    });
+
+    cmd.on('uncaughtException', function (err) {
+        process.stderr.write('uncaught exception: ' + err + '\n');
+        callback(1);
+    });
+
+    return cmd;
+}
+
+function startArrowServer(callback) {
+    var timeout,
+        p,
+        listener = function (data) {
+            process.stdout.write(data);
+        };
+    console.log("---Starting Arrow Server---");
+    p = runCommand(cwd, "node", [cwd + "/../node_modules/yahoo-arrow/arrow_server/server.js"], function () {
+        // If this command returns called, then it failed to launch
+        if (timeout) {
+            clearTimeout(timeout);
+        }
+        console.log('arrow_server failed to start. If it is already running' +
+            ' use \'-a\' to skip startup of arrow_server.');
+        pids.pop();
+        callback(1); // Trigger failure
+    });
+    p.stdout.on('data', listener);
+    pids.push(p.pid);
+    pidNames[p.pid] = 'arrow_server';
+    timeout = setTimeout(function () {
+        p.stdout.removeListener('data', listener); // Stop printing output from arrow_server
+        callback(null);
+    }, 5000);
+}
+
+function startPhantomjs(cmd, callback) {
+    console.log("---Starting Phantomjs---");
+    var timeout,
+        listener,
+        done,
+        p,
+        command,
+        commandArgs;
+
+    portfinder.basePort = 4445;
+    //find available port for phantomjs
+    portfinder.getPort(function (err, port) {
+        if (err) {
+            console.log(err);
+            console.log('Failed to find port to start phantomjs');
+            process.exit(1);
+            return;
+        }
+        phantomjsport = port;
+        done = function () {
+            clearTimeout(timeout);
+            p.stdout.removeListener('data', listener);
+            callback(null);
+        };
+        listener = function (data) {
+            process.stdout.write(data);
+            if (data.toString().match(/GhostDriver - Main - running on port/)) {
+                done();
+            }
+        };
+        if (fs.existsSync(cwd + "/../node_modules/phantomjs")) {
+            command = "node";
+            commandArgs = [cwd + "/../node_modules/phantomjs/bin/phantomjs"];
+            commandArgs.push("--webdriver=" + port);
+        } else {
+            command = "phantomjs";
+            commandArgs = ["--webdriver=" + port];
+        }
+        p = runCommand(cwd, command, commandArgs, function() {
+            // If this command returns called, then it failed to launch
+            if (timeout) {
+                clearTimeout(timeout);
+            }
+            console.log('phantomjs failed to start. Phantomjs needs to be installed either locally or globally');
+            pids.pop();
+            callback(1); // Trigger failure
+        });
+        p.stdout.on('data', listener);
+        pids.push(p.pid);
+        pidNames[p.pid] = 'phantomjs driver';
+        timeout = setTimeout(function () {
+            done();
+        }, 5000);
+    });
+}
+
+function startArrowSelenium(cmd, callback) {
+    console.log("---Starting Arrow Selenium---");
+    var commandArgs = [cwd + "/../node_modules/yahoo-arrow/arrow_selenium/selenium.js"];
+    if (remoteselenium) {
+        commandArgs.push('--seleniumHost=' + remoteselenium);
+    }
+    commandArgs.push("--open=" + cmd.browser);
+    runCommand(cwd, "node", commandArgs, function () {
+        callback(null);
+    });
+}
+
+function runUnitTests(cmd, callback) {
+    console.log('---Running Unit Tests---');
+
+    var descriptor = cmd.descriptor || '**/*_descriptor.json',
+        p,
+        commandArgs = [
+            cwd + "/../node_modules/yahoo-arrow/index.js",
+            "--descriptor=" + cmd.unitPath + '/' + descriptor,
+            "--exitCode=true",
+            "--keepTestReport=true",
+            "--report=true",
+            "--reportFolder=" + arrowReportDir
+        ],
+        filestoexclude = 'tests/base/mojito-test.js,' +
+            'lib/app/autoload/mojito-client.client.js,' +
+            'lib/app/autoload/perf.client.js,lib/app/autoload/perf.server.js';
+    if ('phantomjs' !== cmd.browser && cmd.reuseSession) {
+        commandArgs.push('--reuseSession');
+    }
+    if (phantomjsport) {
+        commandArgs.push('--phantomHost=http://localhost:' + phantomjsport + '/wd/hub');
+    }
+
+    commandArgs.push('--logLevel=' + cmd.logLevel);
+    commandArgs.push('--browser=' + cmd.browser);
+    cmd.driver && commandArgs.push('--driver=' + cmd.driver);
+    cmd.testName && commandArgs.push('--testName=' + cmd.testName);
+    cmd.group && commandArgs.push('--group=' + cmd.group);
+    cmd.coverage && commandArgs.push('--coverage=' + cmd.coverage);
+    cmd.coverage && commandArgs.push('--coverageExclude=' + filestoexclude);
+
+    p = runCommand(
+        cmd.unitPath,
+        "node",
+        commandArgs,
+        function (code) {
+            callback(code);
+        }
+    );
+    p.stdout.on('data', function (data) {
+        process.stdout.write(data);
+    });
+}
+
+function build(cmd, callback) {
+    var cmdArgs = [
+            'build', 'html5app', '--debug', '--libmojito', MOJITOLIB,
+            libpath.resolve(cmd.funcPath, 'applications/frameworkapp/flatfile')
+        ];
+
+    console.log('---Building Apps---');
+    runCommand(
+        cmd.funcPath + '/applications/frameworkapp/common',
+        MOJITOCLI,
+        cmdArgs,
+        callback
+    );
+}
+
+function runStaticApp(basePath, path, port, callback) {
+    console.log('---Starting static server for ' + path + ' at port ' + port);
+    var listener,
+        p = runCommand(
+            basePath + '/' + path,
+            cwd + "/../node_modules/.bin/static",
+            ['-p', port, '-c', '1'],
+            function () {}
+        );
+    thePid = p.pid;
+    thePidName = 'static ' + libpath.basename(path) + ':' + port;
+    pids.push(p.pid);
+    pidNames[p.pid] = 'static ' + libpath.basename(path) + ':' + port;
+
+    listener = function(data) {
+        if (data.toString().match(/serving \".\" at http:\/\//)) {
+            p.stdout.removeListener('data', listener);
+            callback(thePid);
+        }
+    };
+    p.stdout.on('data', listener);
+}
+
+function installDependencies(app, basePath, callback) {
+    console.log("---Starting installing dependencies---");
+    // Install with npm
+    runCommand(basePath + '/' + app.path, "npm", ["i"], function (code) {
+        if (code !== 0) {
+            // Try to install with ynpm if npm is not available
+            runCommand(basePath + '/' + app.path, "ynpm", ["i", "--registry=http://ynpm-registry.corp.yahoo.com:4080"], function (code) {
+                if (code !== 0) {
+                    // Neither npm nor ynpm is available
+                    process.stderr.write("please install npm.\n");
+                }
+                callback(code);
+            });
+        } else {
+            callback(code);
+        }
+    });
+}
+
+function runFuncTests(cmd, desc, port, thispid, callback) {
+    console.log('---Running Functional Tests---');
+
+    var group = cmd.group || null,
+        p,
+        baseUrl,
+        commandArgs;
+
+    if (cmd.baseUrl) {
+        baseUrl = cmd.baseUrl;
+    } else if (hostip) {
+        baseUrl = 'http:\/\/' + hostip + ':' + port;
+    } else {
+        baseUrl = 'http:\/\/localhost' + ':' + port;
+    }
+    commandArgs = [
+        cwd + "/../node_modules/yahoo-arrow/index.js",
+        "--descriptor=" + desc,
+        "--baseUrl=" + baseUrl,
+        "--exitCode=true",
+        "--keepTestReport=true",
+        "--report=true",
+        "--reportFolder=" + arrowReportDir,
+        "--config=" + cwd + "/config/config.js"
+    ];
+    if ('phantomjs' !== cmd.browser && cmd.reuseSession) {
+        commandArgs.push('--reuseSession');
+    }
+    if (phantomjsport) {
+        commandArgs.push('--phantomHost=http://localhost:' + phantomjsport + '/wd/hub');
+    }
+    if (remoteselenium) {
+        commandArgs.push('--seleniumHost=' + remoteselenium);
+    }
+    commandArgs.push('--logLevel=' + cmd.logLevel);
+    commandArgs.push('--browser=' + cmd.browser);
+    cmd.driver && commandArgs.push('--driver=' + cmd.driver);
+    cmd.testName && commandArgs.push('--testName=' + cmd.testName);
+    cmd.group && commandArgs.push('--group=' + cmd.group);
+    cmd.coverage && commandArgs.push('--coverage=' + cmd.coverage);
+
+    p = runCommand(
+        cmd.funcPath,
+        "node",
+        commandArgs,
+        function (code) {
+            try {
+                console.log('Shutting down pid ' + thePid + ' -- ' + thePidName);
+                process.kill(thePid);
+                pids.pop(thePid);
+            } catch (e) {
+                console.log('FAILED to shut down pid:' + thePid);
+            }
+            callback(code);
+        }
+    );
+    p.stdout.on('data', function (data) {
+        process.stdout.write(data);
+    });
+}
+
+function runMojitoApp(app, cliOptions, basePath, port, params, callback) {
+    var cmdArgs = ['start', '--debug', '--libmojito', MOJITOLIB],
+        p;
+
+    params = params || '';
+    console.log("---Starting application---");
+    if (port) {
+        cmdArgs.push(port);
+    }
+    if (params) {
+        cmdArgs.push('--context');
+        cmdArgs.push(params);
+    }
+
+    p = runCommand(basePath + '/' + app.path, MOJITOCLI, cmdArgs, function () {});
+    thePid = p.pid;
+    thePidName = app.name + ':' + port + (params ? '?' + params : '');
+    pids.push(thePid);
+    pidNames[p.pid] = thePidName;
+    if (cliOptions.debugApps) {
+        p.stdout.on('data', function(data) {
+            console.error('---DEBUG ' + port + ' STDOUT--- ' + data.toString());
+        });
+        p.stderr.on('data', function(data) {
+            console.error('---DEBUG ' + port + ' STDERR--- ' + data.toString());
+        });
+    }
+
+    function listener(data) {
+        var match = data.toString().match(MOJITO_STARTED_REGEX);
+        if (match) {
+            p.stdout.removeListener('data', listener);
+            console.error('---' + match[0] + '---');
+            callback(thePid);
+        }
+    }
+
+    p.stdout.on('data', listener);
+}
+
+function runFuncAppTests(cmd, callback) {
+    var descriptor = cmd.descriptor || '**/*_descriptor.json',
+        descriptors = [],
+        exeSeries = [];
+
+    if (descriptor === '**/*_descriptor.json') {
+        descriptors = glob.sync(cmd.funcPath + '/' + descriptor);
+    } else {
+        descriptors.push(cmd.funcPath + '/' + descriptor);
+    }
+    async.forEachSeries(descriptors, function(des, callback) {
+        var appConfig = JSON.parse(fs.readFileSync(des, 'utf8')),
+            app = appConfig[0].config.application,
+            port = cmd.port || 8666,
+            param = app.param || null,
+            type = app.type || 'mojito';
+
+        if (type === "static") {
+            exeSeries.push(build(cmd, function() {
+                runStaticApp(cmd.funcPath + '/applications', app.path, port, function(thispid) {
+                    runFuncTests(cmd, des, port, thispid, callback);
+                });
+            }));
+        } else {
+            // Install dependecies for specific projects
+            // Change here if you want your app to do npm install prior to start mojito server for test
+            if (app.path === "../../../examples/quickstartguide") {
+                exeSeries.push(installDependencies(app, cmd.funcPath + '/applications', function() {
+                    runMojitoApp(app, cmd, cmd.funcPath + '/applications', port, app.param, function(thispid) {
+                        runFuncTests(cmd, des, port, thispid, callback);
+                    });
+                }));
+            } else {
+                exeSeries.push(runMojitoApp(app, cmd, cmd.funcPath + '/applications', port, app.param, function(thispid) {
+                    runFuncTests(cmd, des, port, thispid, callback);
+                }));
+            }
+        }
+    }, function(err) {
+        callback(err);
+    });
+    async.series(exeSeries, callback);
+}
+
+function finalize(err, results) {
+    var i;
+    console.log("---in finalize---");
+    for (i = 0; i < pids.length; i += 1) {
+        console.log('Shutting down pid ' + pids[i] + ' -- ' + pidNames[pids[i]]);
+        try {
+            process.kill(pids[i]);
+        } catch (e) {
+            console.log('FAILED to shut down pid ' + pids[i] + ' -- ' + pidNames[pids[i]]);
+        }
+    }
+    if (err) {
+        console.log(err);
+        console.log('FAILED');
+        process.exit(1);
+        return;
+    }
+    console.log('Completed');
+    process.exit(0);
+
+}
 
 function test(cmd) {
     var series = [];
@@ -119,404 +527,4 @@ function test(cmd) {
         });
     }
     async.series(series, finalize);
-}
-
-function gethostip(callback) {
-    dns.lookup(hostname, function (err, addr, fam) {
-        if (err) {
-            callback(err);
-            return;
-        }
-        hostip = addr;
-        console.log('App running at.....' + hostip);
-        callback(null);
-    });
-}
-
-function startArrowServer(callback) {
-    var timeout,
-        listener = function (data) {
-            process.stdout.write(data);
-        };
-    console.log("---Starting Arrow Server---");
-    var p = runCommand(cwd, "node", [cwd+"/../node_modules/yahoo-arrow/arrow_server/server.js"], function () {
-        // If this command returns called, then it failed to launch
-        if (timeout) {
-            clearTimeout(timeout);
-        }
-        console.log('arrow_server failed to start. If it is already running' +
-            ' use \'-a\' to skip startup of arrow_server.');
-        pids.pop();
-        callback(1); // Trigger failure
-    });
-    p.stdout.on('data', listener);
-    pids.push(p.pid);
-    pidNames[p.pid] = 'arrow_server';
-    timeout = setTimeout(function () {
-        p.stdout.removeListener('data', listener); // Stop printing output from arrow_server
-        callback(null);
-    }, 5000);
-}
-
-function runUnitTests (cmd, callback) {
-    console.log('---Running Unit Tests---');
-
-    var descriptor = cmd.descriptor || '**/*_descriptor.json';
-    var commandArgs = [
-        cwd + "/../node_modules/yahoo-arrow/index.js",
-        "--descriptor=" + cmd.unitPath + '/' + descriptor,
-        "--exitCode=true",
-        "--keepTestReport=true",
-        "--report=true",
-        "--reportFolder=" + arrowReportDir
-    ];
-    if ('phantomjs' !== cmd.browser && cmd.reuseSession) {
-        commandArgs.push('--reuseSession');
-    }
-    if (phantomjsport) {
-        commandArgs.push('--phantomHost=http://localhost:'+phantomjsport+'/wd/hub');
-    }
-    var filestoexclude = 'tests/base/mojito-test.js,' +
-        'lib/app/autoload/mojito-client.client.js,' +
-        'lib/app/autoload/perf.client.js,lib/app/autoload/perf.server.js';
-
-    commandArgs.push('--logLevel=' + cmd.logLevel);
-    commandArgs.push('--browser=' + cmd.browser);
-    cmd.driver && commandArgs.push('--driver=' + cmd.driver);
-    cmd.testName && commandArgs.push('--testName=' + cmd.testName);
-    cmd.group && commandArgs.push('--group=' + cmd.group);
-    cmd.coverage && commandArgs.push('--coverage=' + cmd.coverage);
-    cmd.coverage && commandArgs.push('--coverageExclude=' + filestoexclude);
-
-    var p = runCommand(
-        cmd.unitPath,
-        "node",
-        commandArgs,
-        function (code) {
-            callback(code);
-        }
-    );
-    p.stdout.on('data', function (data) {
-        process.stdout.write(data);
-    });
-}
-
-function build(cmd, callback) {
-    var cmdArgs = [
-            'build', 'html5app', '--debug', '--libmojito', MOJITOLIB,
-            libpath.resolve(cmd.funcPath, 'applications/frameworkapp/flatfile')
-        ];
-
-    console.log('---Building Apps---');
-    runCommand(
-        cmd.funcPath + '/applications/frameworkapp/common',
-        MOJITOCLI,
-        cmdArgs,
-        callback
-    );
-}
-
-function startPhantomjs(cmd, callback) {
-    console.log("---Starting Phantomjs---");
-    var timeout,
-        listener,
-        done,
-        command,
-        commandArgs;
-    
-    portfinder.basePort = 4445;
-    //find available port for phantomjs
-    portfinder.getPort(function (err, port) {
-        if (err) {
-            console.log(err);
-            console.log('Failed to find port to start phantomjs');
-            process.exit(1);
-            return;
-        }
-        phantomjsport = port;
-        done = function () {
-            clearTimeout(timeout);
-            p.stdout.removeListener('data', listener);
-            callback(null);
-        };
-        listener = function (data) {
-            process.stdout.write(data);
-            if (data.toString().match(/GhostDriver - Main - running on port/)) {
-                done();
-            }
-        };
-    
-        if (fs.existsSync(cwd + "/../node_modules/phantomjs")) {
-            command = "node";
-            commandArgs = [cwd + "/../node_modules/phantomjs/bin/phantomjs"];
-            commandArgs.push("--webdriver="+port);
-        } else {
-            command = "phantomjs";
-            commandArgs = ["--webdriver="+port];
-        }
-        var p = runCommand(cwd, command, commandArgs, function() {
-            // If this command returns called, then it failed to launch
-            if (timeout) {
-                clearTimeout(timeout);
-            }
-            console.log('phantomjs failed to start. Phantomjs needs to be installed either locally or globally');
-            pids.pop();
-            callback(1); // Trigger failure
-        });
-        p.stdout.on('data', listener);
-        pids.push(p.pid);
-        pidNames[p.pid] = 'phantomjs driver';
-        timeout = setTimeout(function () {
-            done();
-        }, 5000);
-    });
-}
-
-function startArrowSelenium(cmd, callback) {
-    console.log("---Starting Arrow Selenium---");
-    var commandArgs = [cwd + "/../node_modules/yahoo-arrow/arrow_selenium/selenium.js"];
-    if (remoteselenium) {
-        commandArgs.push('--seleniumHost=' + remoteselenium);
-    }
-    commandArgs.push("--open=" + cmd.browser);
-    runCommand(cwd, "node", commandArgs, function () {
-        callback(null);
-    });
-}
-
-function runFuncAppTests(cmd, callback) {
-    var descriptor = cmd.descriptor || '**/*_descriptor.json',
-        descriptors = [],
-        exeSeries = [];
-    if (descriptor === '**/*_descriptor.json') {
-        descriptors = glob.sync(cmd.funcPath + '/' + descriptor);
-    } else {
-        descriptors.push(cmd.funcPath + '/' + descriptor);
-    }
-
-    async.forEachSeries(descriptors, function(des, callback) {
-        var appConfig = JSON.parse(fs.readFileSync(des, 'utf8'));
-        var app = appConfig[0].config.application,
-            port = cmd.port || 8666,
-            param = app.param || null,
-            type = app.type || 'mojito';
-        if (type === "static") {
-            exeSeries.push(build(cmd, function() {
-                runStaticApp(cmd.funcPath + '/applications', app.path, port, function(thispid) {
-                    runFuncTests(cmd, des, port, thispid, callback);
-                });
-            }));
-        } else {
-            // Install dependecies for specific projects
-            // Change here if you want your app to do npm install prior to start mojito server for test
-            if (app.path === "../../../examples/quickstartguide") {
-                exeSeries.push(installDependencies(app, cmd.funcPath + '/applications', function() {
-                    runMojitoApp(app, cmd, cmd.funcPath + '/applications', port, app.param, function(thispid) {
-                        runFuncTests(cmd, des, port, thispid, callback);
-                    });
-                }));
-            } else {
-                exeSeries.push(runMojitoApp(app, cmd, cmd.funcPath + '/applications', port, app.param, function(thispid) {
-                    runFuncTests(cmd, des, port, thispid, callback);
-                }));
-            }
-        }
-    }, function(err) {
-          callback(err);
-    });
-    async.series(exeSeries, callback);
-}
-
-function runFuncTests(cmd, desc, port, thispid, callback) {
-    console.log('---Running Functional Tests---');
-
-    var group = cmd.group || null,
-        baseUrl;
-    if (cmd.baseUrl) {
-        baseUrl = cmd.baseUrl;
-    } else if (hostip) {
-        baseUrl = 'http:\/\/' + hostip + ':' + port;
-    } else {
-        baseUrl = 'http:\/\/localhost' + ':' + port;
-    }
-
-    var commandArgs = [
-        cwd + "/../node_modules/yahoo-arrow/index.js",
-        "--descriptor=" + desc,
-        "--baseUrl=" + baseUrl,
-        "--exitCode=true",
-        "--keepTestReport=true",
-        "--report=true",
-        "--reportFolder=" + arrowReportDir,
-        "--config=" + cwd + "/config/config.js"
-    ];
-    if ('phantomjs' !== cmd.browser && cmd.reuseSession) {
-        commandArgs.push('--reuseSession');
-    }
-    if (phantomjsport) {
-        commandArgs.push('--phantomHost=http://localhost:'+phantomjsport+'/wd/hub');
-    }
-    if (remoteselenium) {
-        commandArgs.push('--seleniumHost=' + remoteselenium);
-    }
-    commandArgs.push('--logLevel=' + cmd.logLevel);
-    commandArgs.push('--browser=' + cmd.browser);
-    cmd.driver && commandArgs.push('--driver=' + cmd.driver);
-    cmd.testName && commandArgs.push('--testName=' + cmd.testName);
-    cmd.group && commandArgs.push('--group=' + cmd.group);
-    cmd.coverage && commandArgs.push('--coverage=' + cmd.coverage);
-
-    var p = runCommand(
-        cmd.funcPath,
-        "node",
-        commandArgs,
-        function (code) {
-            try {
-                console.log('Shutting down pid '+ thePid + ' -- ' + thePidName);
-                process.kill(thePid);
-                pids.pop(thePid);
-            }
-            catch(e) {
-                console.log('FAILED to shut down pid:' + thePid);
-            }
-            callback(code);
-        }
-    );
-    p.stdout.on('data', function (data) {
-        process.stdout.write(data);
-    });
-}
-
-function finalize (err, results) {
-    console.log("---in finalize---");
-    for(var i=0; i < pids.length; i++) {
-        console.log('Shutting down pid ' + pids[i] + ' -- ' + pidNames[pids[i]]);
-        try {
-            process.kill(pids[i]);
-        }
-        catch(e) {
-            console.log('FAILED to shut down pid ' + pids[i] + ' -- ' + pidNames[pids[i]]);
-        }
-    }
-    if (err) {
-        console.log(err);
-        console.log('FAILED');
-        process.exit(1);
-        return;
-    }
-    console.log('Completed');
-    process.exit(0);
-
-}
-
-function runCommand (path, command, argv, callback) {
-    callback = callback || function () {};
-    process.chdir(path);
-    console.log(command + ' ' + argv.join(' '));
-    var cmd = child.spawn(command, argv, {
-        cwd: path,
-        env: process.env
-    });
-
-    cmd.stdout.on('data', function (data) {
-        // Don't care generally. But, specific commands may want a listener for this.
-    });
-
-    cmd.stderr.on('data', function (data) {
-        process.stdout.write(data);
-    });
-
-    cmd.on('exit', function (code) {
-        cmd.stdin.end();
-        if (0 !== code) {
-            callback('exit: child process exited with code ' + code);
-            return;
-        }
-        callback(code);
-    });
-
-    cmd.on('uncaughtException', function (err) {
-        process.stderr.write('uncaught exception: ' + err+'\n');
-        callback(1);
-    });
-
-    return cmd;
-}
-
-function installDependencies (app, basePath, callback) {
-    console.log("---Starting installing dependencies---");
-    // Install with npm
-    runCommand(basePath + '/' + app.path, "npm", ["i"], function (code) {
-        if (code !== 0) {
-            // Try to install with ynpm if npm is not available
-            runCommand(basePath + '/' + app.path, "ynpm", ["i", "--registry=http://ynpm-registry.corp.yahoo.com:4080"], function (code) {
-                if (code !== 0) {
-                    // Neither npm nor ynpm is available
-                    process.stderr.write("please install npm.\n");
-                }
-                callback(code);
-            });
-        } else {
-            callback(code);
-        }
-    });
-}
-
-function runMojitoApp (app, cliOptions, basePath, port, params, callback) {
-    var cmdArgs = ['start', '--debug', '--libmojito', MOJITOLIB],
-        p;
-
-    params = params || '';
-    console.log("---Starting application---");
-    if (port) {
-        cmdArgs.push(port);
-    }
-    if (params) {
-        cmdArgs.push('--context');
-        cmdArgs.push(params);
-    }
-
-    p = runCommand(basePath + '/' + app.path, MOJITOCLI, cmdArgs, function () {});
-    thispid = p.pid;
-    thePid = p.pid;
-    thePidName = app.name + ':' + port + (params ? '?' + params : '');
-    pids.push(thePid);
-    pidNames[p.pid] = thePidName;
-    if (cliOptions.debugApps) {
-        p.stdout.on('data', function(data) {
-            console.error('---DEBUG ' + port + ' STDOUT--- ' + data.toString());
-        });
-        p.stderr.on('data', function(data) {
-            console.error('---DEBUG ' + port + ' STDERR--- ' + data.toString());
-        });
-    }
-
-    function listener(data) {
-        var match = data.toString().match(MOJITO_STARTED_REGEX);
-        if (match) {
-            p.stdout.removeListener('data', listener);
-            console.error('---' + match[0] + '---');
-            callback(thePid);
-        }
-    }
-
-    p.stdout.on('data', listener);
-}
-
-function runStaticApp (basePath, path, port, callback) {
-    console.log('---Starting static server for ' + path + ' at port ' + port);
-    var p = runCommand(basePath + '/' + path, cwd + "/../node_modules/.bin/static", ['-p', port, '-c', '1'], function () {});
-    thePid = p.pid;
-    thePidName = 'static ' + libpath.basename(path) + ':' + port;
-    pids.push(p.pid);
-    pidNames[p.pid] = 'static ' + libpath.basename(path) + ':' + port;
-
-    var listener;
-    listener = function(data) {
-        if (data.toString().match(/serving \".\" at http:\/\//)) {
-            p.stdout.removeListener('data', listener);
-            callback(thePid);
-        }
-    }
-    p.stdout.on('data', listener);
 }
