@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-/*jslint anon:true, sloppy:true, nomen:true, node:true*/
+/*jslint anon:true, sloppy:true, nomen:true, stupid:true, node:true*/
 
 var fs = require('fs'),
     path = require('path'),
@@ -26,34 +26,9 @@ var fs = require('fs'),
 
     MOJITOLIB = libpath.resolve(cwd, '..'),
     MOJITOCLI = libpath.resolve(MOJITOLIB, 'node_modules/.bin/mojito'),
-    MOJITO_STARTED_REGEX = /Mojito v\S{4,} started.+/; //todo: use callback
-
-program.command('test')
-    .description('Run unit and functional tests')
-    .option('-u, --unit', 'Run unit tests')
-    .option('-f, --func', 'Run functional tests')
-    .option('-s, --no-selenium', 'Don\'t run arrow_selenium')
-    .option('-a, --no-arrow', 'Don\'t run arrow_server')
-    .option('--debugApps', 'show STDOUT and STDERR from apps')
-    .option('--logLevel <value>', 'Arrow logLevel')
-    .option('--testName <value>', 'Arrow testName')
-    .option('--descriptor <value>', 'which descriptor to run. filename (or glob) relative to --path')
-    .option('--port <value>', 'port number to run app')
-    .option('--coverage', 'Arrow code coverage')
-    .option('--reuseSession', 'Arrow reuseSession')
-    .option('--baseUrl <value>', 'Full app path including port if there is one to run arrow tests')
-    .option('--group <value>', 'Arrow group')
-    .option('--driver <value>', 'Arrow driver')
-    .option('--browser <value>', 'Arrow browser')
-    .option('--path <value>', 'Path to find the tests. defaults to ./func or ./unit')
-    .option('--reportFolder <value>', 'Result dir. defaults to ./unit/artifact/ for unit, ./func/../../artifact/ for functional or all tests')
-    .action(test);
-
-// report how we're called, mainly to help debug CI environments
-console.log(process.argv.join(' '));
-console.log();
-
-program.parse(process.argv);
+    MOJITO_STARTED_REGEX;
+/*jslint regexp: true*/
+MOJITO_STARTED_REGEX = /Mojito v\S{4,} started.+/; //todo: use callback
 
 function gethostip(callback) {
     dns.lookup(hostname, function (err, addr, fam) {
@@ -217,14 +192,27 @@ function runUnitTests(cmd, callback) {
     if (phantomjsport) {
         commandArgs.push('--phantomHost=http://localhost:' + phantomjsport + '/wd/hub');
     }
-
-    commandArgs.push('--logLevel=' + cmd.logLevel);
-    commandArgs.push('--browser=' + cmd.browser);
-    cmd.driver && commandArgs.push('--driver=' + cmd.driver);
-    cmd.testName && commandArgs.push('--testName=' + cmd.testName);
-    cmd.group && commandArgs.push('--group=' + cmd.group);
-    cmd.coverage && commandArgs.push('--coverage=' + cmd.coverage);
-    cmd.coverage && commandArgs.push('--coverageExclude=' + filestoexclude);
+    if (cmd.logLevel) {
+        commandArgs.push('--logLevel=' + cmd.logLevel);
+    }
+    if (cmd.browser) {
+        commandArgs.push('--browser=' + cmd.browser);
+    }
+    if (cmd.driver) {
+        commandArgs.push('--driver=' + cmd.driver);
+    }
+    if (cmd.testName) {
+        commandArgs.push('--testName=' + cmd.testName);
+    }
+    if (cmd.group) {
+        commandArgs.push('--group=' + cmd.group);
+    }
+    if (cmd.coverage) {
+        commandArgs.push('--coverage=' + cmd.coverage);
+    }
+    if (cmd.coverage) {
+        commandArgs.push('--coverageExclude=' + filestoexclude);
+    }
 
     p = runCommand(
         cmd.unitPath,
@@ -269,6 +257,7 @@ function runStaticApp(basePath, path, port, callback) {
     pidNames[p.pid] = 'static ' + libpath.basename(path) + ':' + port;
 
     listener = function(data) {
+        /*jslint regexp: true*/
         if (data.toString().match(/serving \".\" at http:\/\//)) {
             p.stdout.removeListener('data', listener);
             callback(thePid);
@@ -330,12 +319,24 @@ function runFuncTests(cmd, desc, port, thispid, callback) {
     if (remoteselenium) {
         commandArgs.push('--seleniumHost=' + remoteselenium);
     }
-    commandArgs.push('--logLevel=' + cmd.logLevel);
-    commandArgs.push('--browser=' + cmd.browser);
-    cmd.driver && commandArgs.push('--driver=' + cmd.driver);
-    cmd.testName && commandArgs.push('--testName=' + cmd.testName);
-    cmd.group && commandArgs.push('--group=' + cmd.group);
-    cmd.coverage && commandArgs.push('--coverage=' + cmd.coverage);
+    if (cmd.logLevel) {
+        commandArgs.push('--logLevel=' + cmd.logLevel);
+    }
+    if (cmd.browser) {
+        commandArgs.push('--browser=' + cmd.browser);
+    }
+    if (cmd.driver) {
+        commandArgs.push('--driver=' + cmd.driver);
+    }
+    if (cmd.testName) {
+        commandArgs.push('--testName=' + cmd.testName);
+    }
+    if (cmd.group) {
+        commandArgs.push('--group=' + cmd.group);
+    }
+    if (cmd.coverage) {
+        commandArgs.push('--coverage=' + cmd.coverage);
+    }
 
     p = runCommand(
         cmd.funcPath,
@@ -488,8 +489,8 @@ function test(cmd) {
     wrench.mkdirSyncRecursive(arrowReportDir);
 
 
-    if (process.env['SELENIUM_HUB_URL']) {
-        remoteselenium = process.env['SELENIUM_HUB_URL'];
+    if (process.env.SELENIUM_HUB_URL) {
+        remoteselenium = process.env.SELENIUM_HUB_URL;
         console.log('selenium host.....' + remoteselenium);
         series.push(gethostip);
     }
@@ -528,3 +529,30 @@ function test(cmd) {
     }
     async.series(series, finalize);
 }
+
+program.command('test')
+    .description('Run unit and functional tests')
+    .option('-u, --unit', 'Run unit tests')
+    .option('-f, --func', 'Run functional tests')
+    .option('-s, --no-selenium', 'Don\'t run arrow_selenium')
+    .option('-a, --no-arrow', 'Don\'t run arrow_server')
+    .option('--debugApps', 'show STDOUT and STDERR from apps')
+    .option('--logLevel <value>', 'Arrow logLevel')
+    .option('--testName <value>', 'Arrow testName')
+    .option('--descriptor <value>', 'which descriptor to run. filename (or glob) relative to --path')
+    .option('--port <value>', 'port number to run app')
+    .option('--coverage', 'Arrow code coverage')
+    .option('--reuseSession', 'Arrow reuseSession')
+    .option('--baseUrl <value>', 'Full app path including port if there is one to run arrow tests')
+    .option('--group <value>', 'Arrow group')
+    .option('--driver <value>', 'Arrow driver')
+    .option('--browser <value>', 'Arrow browser')
+    .option('--path <value>', 'Path to find the tests. defaults to ./func or ./unit')
+    .option('--reportFolder <value>', 'Result dir. defaults to ./unit/artifact/ for unit, ./func/../../artifact/ for functional or all tests')
+    .action(test);
+
+// report how we're called, mainly to help debug CI environments
+console.log(process.argv.join(' '));
+console.log();
+
+program.parse(process.argv);
