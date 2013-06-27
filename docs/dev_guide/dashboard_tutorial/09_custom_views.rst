@@ -29,9 +29,14 @@ What We’ll Cover
 Final Product
 -------------
 
-In the screenshot, you can see that when ... the menu...
+After you finish this module, your application will now have different layouts for
+the Web, the iPad, and the iPhone as shown in the screenshot below.
 
-<Image here!>
+.. image:: images/09_hb_templates.png
+   :height: 222 px
+   :width: 740 px
+   :alt: Screenshot of 09 Handlebars template application.
+
 
 Before Starting
 ---------------
@@ -419,66 +424,60 @@ Creating the Application
 
 #. Before we go ahead and update the templates to use the partial. We're going to create
    a Handlebars helper in the ``PageLayout`` mojit that will be available to 
-   all the other mojits on the page as long as the controllers include the ``mojito-helpers-addon``.
+   all the other mojits on the page as long as their controllers include the ``mojito-helpers-addon``.
    Update ``mojits/PageLayout/controller.server.js`` with the code below that includes
    a helper that takes four arguments to create links:
 
    .. code-block:: javascript
 
-YUI.add('PageLayout', function(Y, NAME) {
+      YUI.add('PageLayout', function(Y, NAME) {
 
-    // Handlerbars helper for creating links
-    function createLink(title, url, path, css) {
-        return "<a href='" + url + path + "'" + " class='" + css + "'>" + title + "</a>";
-    }
-    Y.namespace('mojito.controllers')[NAME] = {
-        /**
-         * Method corresponding to the 'index' action.
-         *
-         * @param ac {Object} The ActionContext that provides access
-         *        to the Mojito API.
-         */
-        index: function(ac) {
+        // Handlerbars helper for creating links
+        function createLink(title, url, path, css) {
+          return "<a href='" + url + path + "'" + " class='" + css + "'>" + title + "</a>";
+        }
+        Y.namespace('mojito.controllers')[NAME] = {
+      
+          index: function(ac) {
             // Register helper for use in template
             ac.helpers.expose('linker', createLink);
 
-            Y.log("PageLayout: this log message won't show in the default context, but will show up in development.","info", NAME);
             var view_type = ac.params.getFromRoute('view_type') || "yui";
             if (view_type === "yui") {
-                ac.composite.done({
-                    title: "Trib - YUI Developer Dashboard",
-                    button_text: "See Mojito Dashboard",
-                    other: "/mojito"
-                });
+              ac.composite.done({
+                title: "Trib - YUI Developer Dashboard",
+                button_text: "See Mojito Dashboard",
+                other: "/mojito"
+              });
             } else if (view_type === "mojito") {
-                ac.composite.done({
-                    title: "Trib - Mojito Developer Dashboard",
-                    button_text: "See YUI Dashboard",
-                    other: "/"
-                });
+              ac.composite.done({
+                title: "Trib - Mojito Developer Dashboard",
+                button_text: "See YUI Dashboard",
+                other: "/"
+              });
             }
-        }
-    };
-   }, '0.0.1', {requires: ['mojito','mojito-composite-addon', 'mojito-params-addon', 'mojito-helpers-addon']});
+          }
+        };
+      }, '0.0.1', {requires: ['mojito','mojito-composite-addon', 'mojito-params-addon', 'mojito-helpers-addon']});
 
 #. Now let's start updating the templates to use the partials and helper. Starting with the
    template for the ``PageLayout`` mojit, which uses the helper, but not a partial:
 
    .. code-block:: html
 
-     <div id="{{mojit_view_id}}" class="mojit pageLayout trib" >
-  <h1>{{title}}</h1>
-  {{{linker button_text "" other "yui3-button swap"}}}
-  <div class="myheader" >
-    {{{header}}}
-  </div>
-  <div class="mybody" >
-    {{{body}}}
-  </div>
-  <div class="myfooter" >
-    {{{footer}}}
-  </div>
-</div>
+      <div id="{{mojit_view_id}}" class="mojit pageLayout trib" >
+        <h1>{{title}}</h1>
+        {{{linker button_text "" other "yui3-button swap"}}}
+        <div class="myheader" >
+          {{{header}}}
+        </div>
+        <div class="mybody" >
+          {{{body}}}
+        </div>
+        <div class="myfooter" >
+          {{{footer}}}
+        </div>
+      </div>
 
 #. We're going to update our templates so that they use the partials we just created.
    The syntax for using the partial is ``{{> partial_name}}``. Go ahead and replace the 
@@ -486,94 +485,125 @@ YUI.add('PageLayout', function(Y, NAME) {
 
   .. code-block:: html
     
-     <div id="{{mojit_view_id}}" class="mojit">
+    <div id="{{mojit_view_id}}" class="mojit">
       <div class="mod" id="blog">
         {{> widget_heading}}
         <div class="inner">
-            <ul>
-                {{#results}}
-                    <li>
-                        <a href="{{link}}">{{title}}</a>
-                        <span class="desc" title="AUTHOR: [ {{creator}} ] DESC: {{description}} DATE: ( {{pubDate}} )">{{description}}</span>
-                    </li>
-                {{/results}}
-            </ul>
+          <ul>
+          {{#results}}
+            <li>
+              {{{linker title link}}}
+              <span class="desc" title="AUTHOR: [ {{creator}} ] DESC: {{description}} DATE: ( {{pubDate}} )">{{description}}</span>
+            </li>
+          {{/results}}
+          </ul>
+        </div>
+      </div>
+    </div>
+
+#. Again, do the same for ``mojits/Calendar/views/index.hb.html``. We don't use the 
+   Handlebars helper to create links because of the complicated data structure needed
+   to create the links.
+ 
+  .. code-block:: html
+
+     <div id="{{mojit_view_id}}" class="mojit">
+       <div class="mod" id="calendar">
+         {{> widget_heading}}
+         <div class="inner">
+           <ul>
+           {{#results}}
+             <li>{{#entry}}<span>{{#summary}}{{content}}{{/summary}}</span><a href="{{#link}}{{href}}{{/link}}" title="{{#title}}{{content}}{{/title}}">{{#title}}{{content}}{{/title}}</a>{{/entry}}</li>
+           {{/results}}
+           </ul>
          </div>
        </div>
      </div>
 
-#. Again, do the same for ``mojits/Calendar/views/index.hb.html``:
- 
-  .. code-block:: html
-
-<div id="{{mojit_view_id}}" class="mojit">
-    <div class="mod" id="calendar">
-        {{> widget_heading}}
-        <div class="inner">
-            <ul>
-                {{#results}}
-                    <li>{{#entry}}<span>{{#summary}}{{content}}{{/summary}}</span><a href="{{#link}}{{href}}{{/link}}" title="{{#title}}{{content}}{{/title}}">{{#title}}{{content}}{{/title}}</a>{{/entry}}</li>
-                {{/results}}
-            </ul>
-        </div>
-    </div>
-</div>
-
-#. And for the ``Gallery`` template:
+#. And for the ``Gallery`` template (``mojits/Gallery/views/index.hb.html``):
 
    .. code-block:: html
 
-<div id="{{mojit_view_id}}" class="mojit">
-    <div class="mod" id="gallery">
-        {{> widget_heading}}
-        <div class="inner galleryFlow">
+      <div id="{{mojit_view_id}}" class="mojit">
+        <div class="mod" id="gallery">
+          {{> widget_heading}}
+          <div class="inner galleryFlow">
             <ul>
-                {{#results}}
-                    {{#json}}
-                        <li><a href="http://yuilibrary.com/gallery/buildtag/{{.}}">{{.}}</a></li>
-                    {{/json}}
-                {{/results}}
+            {{#results}}
+              {{#json}}
+                <li><a href="http://yuilibrary.com/gallery/buildtag/{{.}}">{{.}}</a></li>
+              {{/json}}
+            {{/results}}
             </ul>
+          </div>
         </div>
-    </div>
-</div>
+      </div>
 
-#. And for the ``Youtube`` template:
+#. And for the ``Youtube`` template (``mojits/Youtube/views/index.hb.html``):
+
+
+   .. code-block:: html
+
+      <div id="{{mojit_view_id}}" class="mojit">
+        <div class="mod" id="youtube">
+          {{> widget_heading}}
+          <div class="inner">
+            <ul>
+            {{#results}}
+              <li>
+                <div>{{#title}}{{content}}{{/title}}</div>
+                <iframe
+                        class="youtube-player"
+                        type="text/html"
+                        width="320"
+                        height="130"
+                        src="http://www.youtube.com/embed/{{id}}?html5=1" allowfullscreen frameborder="0">
+                </iframe>
+              </li>
+           {{/results}}
+           </ul>
+         </div>
+       </div>
+     </div>
 
 #. The Twitter and Github mojits will use the partial with the **refresh** button. Add those
    with the following:
 
+   ``mojits/Twitter/views/index.hb.html``:
+ 
    .. code-block:: html
 
-  <div id="{{mojit_view_id}}" class="mojit">
-    <div class="mod" id="twitter">
-        {{> widget_refresh_heading}}
-        <div class="inner">
+      <div id="{{mojit_view_id}}" class="mojit">
+        <div class="mod" id="twitter">
+          {{> widget_refresh_heading}}
+          <div class="inner">
             <ul>
-                {{#results}}
-                    <li><strong><a href="http://twitter.com/{{from_user}}">{{from_user}}</a></strong> - <span>{{text}}</span></li>
-                {{/results}}
+              {{#results}}
+                <li><strong>{{{linker from_user "http://twitter.com/" from_user }}}</strong> - <span>{{text}}</span></li>
+              {{/results}}
             </ul>
+          </div>
         </div>
+      </div>
     </div>
-</div>
+
+   ``mojits/Github/views/index.hb.html``:
 
    .. code-block:: html
 
 
-<div id="{{mojit_view_id}}" class="mojit">
-    <div class="mod" id="github">
+      <div id="{{mojit_view_id}}" class="mojit">
+        <div class="mod" id="github">
         {{> widget_refresh_heading}}
         <div class="inner">
-            <ul>
-                {{#results}}
-                    <li><a href="http://github.com/{{username}}">{{username}}</a> - <a href="{{link}}">{{message}}</a></li>
-                {{/results}}
-            </ul>
+          <ul>
+          {{#results}}
+            <li>{{{linker username "http://github.com/" username}}}  - {{{linker message link}}}</li>
+          {{/results}}
+          </ul>
         </div>
+      </div>
     </div>
-</div>
-
 
 #. The use of partials just made our templates cleaner. Now we're going to create templates
    that with different selectors so Mojito can render the appropriate ones depending
@@ -583,37 +613,39 @@ YUI.add('PageLayout', function(Y, NAME) {
 
    .. code-block:: html
 
-<div id="{{mojit_view_id}}" class="mojit">
-  <h4 class="bodytext">{{title}}</h4>
-  <div class="bodyStuff yui3-g-r">
-  <div class="yui3-u-1-3">
-      {{{twitter}}}
-      {{{gallery}}}
-    </div>
-    <div class="yui3-u-1-3">
-      {{{github}}}
-      {{{blog}}}
-    </div>
-    <div class="yui3-u-1-3">
-      {{{calendar}}}
-      {{{youtube}}}
-    </div>
-  <div>
-</div>
+      <div id="{{mojit_view_id}}" class="mojit">
+        <h4 class="bodytext">{{title}}</h4>
+        <div class="bodyStuff yui3-g-r">
+          <div class="yui3-u-1-3">
+            {{{twitter}}}
+            {{{gallery}}}
+          </div>
+          <div class="yui3-u-1-3">
+            {{{github}}}
+            {{{blog}}}
+          </div>
+          <div class="yui3-u-1-3">
+            {{{calendar}}}
+            {{{youtube}}}
+          </div>
+        </div>
+      </div>
 
-    **mojits/Body/views/index.iphone.hb.html**
+   **mojits/Body/views/index.iphone.hb.html**
 
-<div id="{{mojit_view_id}}" class="mojit">
-  <h4 class="bodytext">{{title}}</h4>
-  <div class="bodyStuff yui3-u-1">
-      {{{blog}}}
-      {{{github}}}
-      {{{calendar}}}
-      {{{gallery}}}
-      {{{twitter}}}
-      {{{youtube}}}
-  <div>
-</div>
+   .. code-block:: html
+
+      <div id="{{mojit_view_id}}" class="mojit">
+        <h4 class="bodytext">{{title}}</h4>
+        <div class="bodyStuff yui3-u-1">
+          {{{blog}}}
+          {{{github}}}
+          {{{calendar}}}
+          {{{gallery}}}
+          {{{twitter}}}
+          {{{youtube}}}
+        </div>
+      </div>
 
 #. Okay, before we start the application, you're going to need to add the ``mojito-helpers-addon``
    to the mojits that are using the helper: ``
