@@ -1,6 +1,6 @@
 {
-    "name": "08_adv_config",
-    "description": "My Mojito application",
+    "name": "0_hb_templates",
+    "description": "The application regarding Handlebars, templates, and device views that accompanies the dashboard tutorial.",
     "version": "0.0.1",
     "author": {
         "name": "Your Name",
