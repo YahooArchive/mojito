@@ -1,8 +1,8 @@
-
 YUI.add('PageLayout-tests', function(Y, NAME) {
 
     var suite = new YUITest.TestSuite('PageLayout-tests'),
         controller = null,
+        route_params = null,
         A = YUITest.Assert;
 
     suite.add(new YUITest.TestCase({
@@ -20,6 +20,11 @@ YUI.add('PageLayout-tests', function(Y, NAME) {
             var ac,
                 doneResults;
             ac = {
+                params: {
+                    getFromRoute: function (param) {
+                        route_param = param;
+                    }
+                }, 
                 composite: {
                     done: function(data) {
                         doneResults = data;
@@ -31,7 +36,7 @@ YUI.add('PageLayout-tests', function(Y, NAME) {
             A.isFunction(controller.index);
             controller.index(ac);
             A.isObject(doneResults);
-            A.areSame("Trib - Contribute to the Tribe", doneResults.title);
+            A.areSame("Trib - YUI Developer Dashboard", doneResults.title);
         }
         
     }));

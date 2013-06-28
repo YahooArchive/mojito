@@ -25,7 +25,7 @@ YUI.add('PageLayout', function(Y, NAME) {
          *        to the Mojito API.
          */
         index: function(ac) {
-            // Register helper for use in template
+            // Register helper for use of all mojits on page.
             ac.helpers.expose('linker', createLink);
 
             Y.log("PageLayout: this log message won't show in the default context, but will show up in development.","info", NAME); 

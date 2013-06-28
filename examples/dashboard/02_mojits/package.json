@@ -1,6 +1,6 @@
 {
-    "name": "01_mojito_cli_basics",
-    "description": "My Mojito application",
+    "name": "02_mojits",
+    "description": "Application regarding mojits that accompanies the dashboard tutorial.",
     "version": "0.0.1",
     "author": {
         "name": "Your Name",
@@ -13,7 +13,7 @@
           }
     ],
     "dependencies": {
-        "mojito": "0.5.x"
+        "mojito": "0.7.x"
     },
     "engines": {
         "node": ">0.6"
