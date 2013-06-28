@@ -23,6 +23,22 @@
                     "driver": "nodejs"
                 },
                 "group": "fw,unit,server"
+            },
+            "router": {
+                "params": {
+                    "lib": "$$config.lib$$/router.js",
+                    "test": "./test-router.js",
+                    "driver": "nodejs"
+                },
+                "group": "fw,unit,server"
+            },
+            "dispatcher": {
+                "params": {
+                    "lib": "$$config.lib$$/dispatcher.js",
+                    "test": "./test-dispatcher.js",
+                    "driver": "nodejs"
+                },
+                "group": "fw,unit,server"
             }
         }
     },
