@@ -30,9 +30,14 @@ Mojito detects the language environment of the client.
 Final Product
 -------------
 
-In the screenshot, you can see that when ... the menu...
+In the screenshot, you can see that our dashboard has three localized pages: English, 
+simplified Chinese, and Spanish. Our application only localizes the title of the page,
+but more importantly, you'll learn how to localize your own applications in the future.
 
-Image here!
+.. image:: images/10_hb_localization.png
+   :height: 254 px
+   :width: 877 px
+   :alt: Screenshot of 09 Handlebars template application.
 
 Before Starting
 ---------------
@@ -44,7 +49,7 @@ Review of the Last Module
 Setting Up
 ----------
 
-``$ cp -r 09_multiple_views 10_localization``
+``$ cp -r 09_hb 10_localization``
 
 
 
@@ -214,7 +219,106 @@ Creating the Application
 
 #. After you have copied the application that you made in the last module 
    (see Setting Up), change into the application ``10_localization``.
+#. First let's add the ``lang`` directory to the ``PageLayout`` mojit.
+#. In the ``lang`` directory, create the language resource bundle files 
+   ``PageLayout_en-US.js``, ``PageLayout_es-419.js``, and ``PageLayout_zh-Hans.js``
+   with the content below. Notice that the YUI registered name is the same as the
+   directory and file, the inclusion of the ``intl`` addon, and the registration
+   of the language bundle with ``Y.Intl.add``.
 
+   ``PageLayout_en-US.js``
+
+   .. code-block:: javascript
+
+      YUI.add("lang/PageLayout_en-US", function (Y) {
+        Y.Intl.add(
+          "PageLayout",  // associated module
+          "en-US",    // BCP 47 language tag
+          // key-value pairs for this module and language
+          {
+            YUITitle: "Trib - YUI Developer Dashboard",
+            MojitoTitle: "Trib - Mojito Developer Dashboard"
+          }
+        );
+      }, "3.1.0", {requires: ['intl']});
+
+   ``PageLayout_es-419.js``
+
+   .. code-block:: javascript
+
+      YUI.add("lang/PageLayout_es-419", function (Y) {
+        Y.Intl.add(
+          "PageLayout",  // associated module
+          "es-419",    // BCP 47 language tag
+          // key-value pairs for this module and language
+          {
+            YUITitle: "Trib - YUI Panel para desarrolladores",
+            MojitoTitle: "Trib - Mojito Panel para desarrolladores"
+          }
+        );
+      }, "3.1.0", {requires: ['intl']});
+
+   ``PageLayout_zh-Hans.js``
+
+   .. code-block:: javascript
+
+      YUI.add("lang/PageLayout_zh-Hans", function (Y) {
+        Y.Intl.add(
+         "PageLayout",  // associated module
+         "zh-Hans",    // BCP 47 language tag
+         // key-value pairs for this module and language
+         {
+           YUITitle: "Trib - YUI 开发人员仪表板",
+           MojitoTitle: "Trib - Mojito 开发人员仪表板"
+         }
+       );
+     }, "3.1.0", {requires: ['intl']});
+
+#. The controller of the ``PageLayout`` mojit will use the ``Intl`` addon to access
+   the values of the registered language bundlers. Update the ``index`` method
+   of the controller with the following:
+
+   .. code-block:: javascript
+
+      index: function(ac) {
+        // Register helper for use in template
+        ac.helpers.expose('linker', createLink);
+
+        var view_type = ac.params.getFromRoute('view_type') || "yui";
+        if (view_type === "yui") {
+          ac.composite.done({
+            title: ac.intl.lang("YUITitle"),
+            button_text: "See Mojito Dashboard",
+            other: "/mojito"
+          });
+        } else if (view_type === "mojito") {
+          ac.composite.done({
+            title: ac.intl.lang("MojitoTitle"),
+            button_text: "See YUI Dashboard",
+            other: "/"
+          });
+        }
+      }
+
+#. Also, require the ``Intl`` addon by adding the string ``mojito-intl-addon`` to the
+   ``requires`` array.
+#. Since this is our final application, let's put a little polish on the presentation
+   with background images, favicons, and CSS. Copy the following images to the specified
+   location:
+
+   - `/assets/favicon.ico <images/assets/favicon.ico>`_ to ``10_localization/assets/``
+   - `/assets/images/dust.png <images/assets/images/dust.png>`_ to ``10_localization/assets/images/``
+   - `/mojits/Blog/assets/favicon.ico <images/mojits/Blog/assets/favicon.ico>`_ to ``10_localization/mojits/Blog/assets/``
+   - `/mojits/Blog/assets/favicon-blog.png <images/mojits/Blog/assets/favicon-blog.png>`_ to ``10_localization/mojits/Blog/assets/``
+   - `/mojits/Calendar/assets/favicon-calendar.ico <images/mojits/Calendar/assets/favicon-calendar.ico>`_ to ``10_localization//mojits/Calendar/assets``
+   - `/mojits/Calendar/assets/favicon-calendar.png <images/mojits/Calendar/assets/favicon-calendar.png>`_ to ``10_localization//mojits/Calendar/assets``
+   - `/mojits/Twitter/assets/favicon.ico <images/mojits/Twitter/assets/favicon.ico>`_ to ``10_localization/mojits/Twitter/assets/``
+   - `/mojits/Twitter/assets/favicon-twitter.png <images/mojits/Twitter/assets/favicon-twitter.png>`_ to ``10_localization/mojits/Twitter/assets/``
+   - `/mojits/Gallery/assets/favicon-blog.png <images/mojits/Gallery/assets/favicon-blog.png>`_ to ``10_localization/mojits/Gallery/assets/``
+   - `/mojits/Github/assets/favicon-github.png <images/mojits/Github/assets/favicon-github.png>`_ to ``10_localization/mojits/Github/assets/``
+
+#. 
+   
 Troubleshooting
 ===============
 
