@@ -1,6 +1,6 @@
 {
     "name": "07_binders",
-    "description": "My Mojito application",
+    "description": "The application regarding binders that accompanies the dashboard tutorial.",
     "version": "0.0.1",
     "author": {
         "name": "Your Name",
@@ -13,7 +13,7 @@
           }
     ],
     "dependencies": {
-        "mojito": "0.6.x"
+        "mojito": "0.7.x"
     },
     "optionalDependencies": {
        "simple-twitter": "~1.0.0",

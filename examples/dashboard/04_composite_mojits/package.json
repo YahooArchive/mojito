@@ -1,6 +1,6 @@
 {
-    "name": "04_Composite_mojits",
-    "description": "My Mojito application",
+    "name": "04_composite_mojits",
+    "description": "The application regarding composite mojits that accompanies the dashboard tutorial.",
     "version": "0.0.1",
     "author": {
         "name": "Your Name",
@@ -13,7 +13,7 @@
           }
     ],
     "dependencies": {
-        "mojito": "0.5.x"
+        "mojito": "0.7.x"
     },
     "engines": {
         "node": ">0.6"

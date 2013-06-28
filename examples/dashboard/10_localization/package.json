@@ -1,6 +1,6 @@
 {
     "name": "10_localization",
-    "description": "My Mojito application",
+    "description": "The application regarding localization in Mojito that accompanies the dashboard tutorial.",
     "version": "0.0.1",
     "author": {
         "name": "Your Name",
