@@ -25,10 +25,8 @@ YUI.add('GithubModelFoo', function(Y, NAME) {
          * @param callback {function(err,data)} The callback function to call when the
          *        data has been retrieved.
          */
-        getData: function(callback) {
+        getData: function(err, callback) {
             callback(null, { watchers: 1, forks: 1 });
         }
-
     };
-
 }, '0.0.1', {requires: []});

@@ -20,6 +20,11 @@ YUI.add('Body-tests', function(Y) {
             var ac,
                 doneResults;
             ac = {
+                params: {
+                   getFromRoute: function(key) {
+                        return this[key];
+                    }
+                },
                 composite: {
                     done: function(data) {
                         doneResults = data;

@@ -31,8 +31,6 @@ YUI.add('Body-tests', function(Y) {
             A.isFunction(controller.index);
             controller.index(ac);
             A.isObject(doneResults);
-            A.areSame("Statistics for YUI", doneResults.title);
-            
         }
         
     }));

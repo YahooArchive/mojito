@@ -4,6 +4,7 @@ YUI.add('Github-tests', function (Y) {
     var suite = new YUITest.TestSuite('Github-tests'),
         controller = null,
         A = YUITest.Assert,
+        config_def = null,
         model;
 
     suite.add(new YUITest.TestCase({
@@ -13,18 +14,28 @@ YUI.add('Github-tests', function (Y) {
         setUp: function () {
             controller = Y.mojito.controllers.Github;
             model = Y.mojito.models.StatsModelYQL;
+            config_def = {
+                "yui": {
+                    "title" : "YUI GitHub Activity",
+                    "id": "yui",
+                    "repo": "yui3"
+                },
+                "mojito": {
+                    "title" : "Mojito GitHub Activity",
+                    "id": "yahoo",
+                    "repo": "mojito"
+                }
+             };
         },
         tearDown: function () {
             controller = null;
         },
         'test mojit': function () {
             var ac,
-                modelData,
                 assetsResults,
                 route_param,
                 doneResults,
                 def_value;
-            modelData = { x: 'y' };
             ac = {
                 assets: {
                     addCss: function (css) {
@@ -33,7 +44,7 @@ YUI.add('Github-tests', function (Y) {
                 },
                 config: {
                     getDefinition: function (key) {
-                        def_value = key;
+                        return config_def[key];
                     }
                 },
                 params: {
@@ -44,10 +55,19 @@ YUI.add('Github-tests', function (Y) {
                 models: {
                     get: function (modelName) {
                         A.areEqual('StatsModelYQL', modelName, 'wrong model name');
-                        return model;
+                        return {
+                            getData: function (params, tablePath, id, repo, cb) {
+                                return { 
+                                    onDataReturn: function (cb, data) {
+                                        cb(data);
+                                    }
+                                }; 
+                            }
+                        };
                     }
                 },
                 done: function (data) {
+                    console.log(data);
                     doneResults = data;
                 }
             };
