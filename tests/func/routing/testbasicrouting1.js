@@ -10,9 +10,9 @@ YUI({
     var suite = new Y.Test.Suite("Routing: BasicRouting1");
     
     suite.add(new Y.Test.Case({
-	     "test BasicRouting1": function(){   
-             Y.Assert.areEqual('This is a simple mojit for testing routing - SimpleRoute (route-1)', Y.one('#mytext').get('innerHTML'));
-         }
+	    "test BasicRouting1": function(){   
+        Y.Assert.areEqual('This is a simple mojit for testing routing - SimpleRoute (route-1)', Y.one('#mytext').get('innerHTML'));
+      }
    }));    
 
    Y.Test.Runner.add(suite);

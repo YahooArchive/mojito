@@ -10,6 +10,11 @@ YUI({
     var suite = new Y.Test.Suite("Routing: BasicRouting11Neg2");
     
     suite.add(new Y.Test.Case({
+        _should: {
+            ignore: {
+                'test BasicRouting11Neg2': true
+            }
+        },k
 	     "test BasicRouting11Neg2": function(){   
               Y.Assert.areEqual('/you/found/a/good/path', Y.one('#url').get('innerHTML'));
               Y.Assert.areEqual('', Y.one('#name').get('innerHTML'));
