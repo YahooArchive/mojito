@@ -21,6 +21,20 @@ app.use(mojito.middleware());
 app.mojito.attachRoutes();
 app.post('/tunnel', mojito.tunnelMiddleware());
 
+// "default": {
+//     "verbs": ["get", "post", "put", "head", "delete"],
+//     "path": "/:mojit-id/:mojit-action",
+//     "call": "{mojit-id}.{mojit-action}"
+// }
+function rt(req, res, next) {
+    mojito.dispatch(req.params.mojitType + '.' + req.params.mojitAction)(req, res, next);
+}
+app.get('/:mojitType/:mojitAction', rt);
+app.post('/:mojitType/:mojitAction', rt);
+app.put('/:mojitType/:mojitAction', rt);
+app.head('/:mojitType/:mojitAction', rt);
+app.delete('/:mojitType/:mojitAction', rt);
+
 app.get('/status', function (req, res) {
     res.send('200 OK');
 });

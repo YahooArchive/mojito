@@ -83,11 +83,7 @@
         "verbs": ["get"],
         "path": "/getModelInfo",
         "call": "GetAppLevelInfo.accessModel"
-    },
-    "default": {
-        "verbs": ["get", "post", "put", "head", "delete"],
-        "path": "/:mojit-id/:mojit-action",
-        "call": "{mojit-id}.{mojit-action}"
     }
+
 
 }]
