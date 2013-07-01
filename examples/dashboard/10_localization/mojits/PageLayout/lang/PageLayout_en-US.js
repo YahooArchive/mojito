@@ -7,7 +7,7 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
 
 
-YUI.add("lang/PageLayout_en-US.js_en-US", function (Y) {
+YUI.add("lang/PageLayout_en-US", function (Y) {
     Y.Intl.add(
         "PageLayout",  // associated module
         "en-US",    // BCP 47 language tag  
