@@ -317,8 +317,72 @@ Creating the Application
    - `/mojits/Gallery/assets/favicon-blog.png <images/mojits/Gallery/assets/favicon-blog.png>`_ to ``10_localization/mojits/Gallery/assets/``
    - `/mojits/Github/assets/favicon-github.png <images/mojits/Github/assets/favicon-github.png>`_ to ``10_localization/mojits/Github/assets/``
 
-#. 
+#. We're going to update the CSS for some mojits as well so that the images are used
+   and styles. Replace the code in the following CSS files with the content below:
+
+   ``/mojits/Blog/assets/index.css``
+
+   .. code-block:: html
+
+      #blog h3 strong {
+        background-image: url(/static/Blog/assets/favicon-blog.png);
+      }
    
+   ``/mojits/Calendar/assets/index.css``
+
+   .. code-block:: html
+
+      #calendar h3 strong {
+        background-image: url(/static/Calendar/assets/favicon-calendar.png);
+      }
+      #calendar .inner li {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+      #calendar .inner li span {
+        padding-right: 4px;
+        font-size: .8em;
+        display: inline-block;
+        width: 106px;
+        max-width: 7.6 em;
+        overflow: hidden;
+      }
+
+  ``/mojits/Gallery/assets/index.css`` 
+
+   .. code-block:: html 
+
+      #gallery h3 strong {
+        background-image: url(/static/Gallery/assets/favicon-blog.png);
+      }
+
+   ``/mojits/Github/assets/index.css`` 
+ 
+   .. code-block:: html
+
+      #github h3 strong {
+        background-image: url(/static/Github/assets/favicon-github.png);
+      }
+
+   ``/mojits/Twitter/assets/index.css``
+
+   .. code-block: html
+
+      #twitter h3 strong {
+        background-image: url(/static/Twitter/assets/favicon-twitter.png);
+      }
+
+#. Launch your application to see the application in its more finished form.
+#. To view the localized title in Chinese for the dashboard, add the query string parameter
+   ``?lang=zh-Hans`` to the URL and refresh the page. You can see the title in Spanish 
+   as well with the query string parameter ``?lang=es-419``.
+#. Congratulations, you have completed all of the modules in this tutorial. There is still
+   more to learn about Mojito, but you should have a strong grasp of the basics that you
+   can build on. If you haven't already, be sure to read the `documentation <../>`_ and the 
+   `code examples <../code_examples/>`_ as well.
+
+
 Troubleshooting
 ===============
 
