@@ -368,7 +368,7 @@ Creating the Application
 
    ``$ mojito start``
 
-#. To view your application, open the URL `http://localhost:8666/@Github/index`_ in a browser. 
+#. To view your application, open the URL http://localhost:8666/@Github/index in a browser. 
 
    It’s a strange URL, right? First, the port 8666 is the default port used by Mojito, 
    which we’ll override in the next step. As for the path, well, we haven’t set up any routes yet, 
@@ -381,7 +381,7 @@ Creating the Application
 
      
 #. Stop the application with **Ctl-C**, and the restart it with a different port by 
-   specifying the port. You can now view the application at `http://localhost:8000/@Github/index`_:
+   specifying the port. You can now view the application at http://localhost:8000/@Github/index:
      
    ``$ mojito start 8000``
 
@@ -394,7 +394,7 @@ Creating the Application
    pass  the string “environment:development”. Again, you’ll see your application at        
    the URL `http://localhost:8666/@Github/index`_.
 
-   `$ mojito start --context "environment:development"`
+   ``$ mojito start --context "environment:development"``
  
 If you open the file ``application.json``, you will see the property ``"settings"`` twice.  
 The string value given in the array assigned to ``"settings"`` is the context. 
