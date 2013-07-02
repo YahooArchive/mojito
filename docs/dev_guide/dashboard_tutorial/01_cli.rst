@@ -392,7 +392,7 @@ Creating the Application
 
    To start the application in the development context, use the option --context and   
    pass  the string “environment:development”. Again, you’ll see your application at        
-   the URL http://localhost:8666/@Github/index\.
+   the URL `http://localhost:8666/@Github/index <http://localhost:8666/@Github/index>`_.
 
    ``$ mojito start --context "environment:development"``
  
