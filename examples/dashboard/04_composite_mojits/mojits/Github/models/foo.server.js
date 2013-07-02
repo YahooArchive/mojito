@@ -18,7 +18,6 @@ YUI.add('GithubModelFoo', function(Y, NAME) {
         init: function(config) {
             this.config = config;
         },
-
         /**
          * Method that will be invoked by the mojit controller to obtain data.
          *
