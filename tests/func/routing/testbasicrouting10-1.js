@@ -9,6 +9,11 @@ YUI({
 
     var suite = new Y.Test.Suite("Routing: BasicRouting10-1");
     suite.add(new Y.Test.Case({
+        _should: {
+            ignore: {
+                'test BasicRouting10-1': true
+            }
+        },
          "test BasicRouting10-1": function(){
              Y.Assert.areEqual('Click to execute the action \'route-2\' for the mojit \'nothing\'', Y.one('#mylink').get('innerHTML'));
              Y.Assert.areEqual('/route-2/nothing', Y.one('#mylink').get('href').match(/\/route-2\/nothing/gi));

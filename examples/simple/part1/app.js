@@ -17,6 +17,12 @@ var debug = require('debug')('app'),
 app = express();
 
 app.use(mojito.middleware());
+app.mojito.attachRoutes();
+app.post('/tunnel', mojito.tunnelMiddleware());
+
+app.get('/:type/:action', function (req, res, next) {
+    mojito.dispatch(req.params.type + '.' + req.params.action)(req, res, next);
+});
 
 app.get('/status', function (req, res) {
     res.send('200 OK');

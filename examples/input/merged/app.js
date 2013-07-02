@@ -17,6 +17,20 @@ var debug = require('debug')('app'),
 app = express();
 
 app.use(mojito.middleware());
+app.mojito.attachRoutes();
+app.post('/tunnel', mojito.tunnelMiddleware());
+
+// "root": {
+//     "verbs": ["post"],
+//     "path": "/mergedparams",
+//     "call": "param-grabber.index",
+//     "params": "likes=beer"
+// },
+app.post('/mergedparams', function (req, res, next) {
+    req.params = req.params || {};
+    req.params.likes = 'beer';
+    next();
+}, mojito.dispatch('param-grabber.index'));
 
 app.get('/status', function (req, res) {
     res.send('200 OK');

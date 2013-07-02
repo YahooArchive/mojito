@@ -18,6 +18,9 @@ app = express();
 
 app.use(mojito.middleware());
 
+app.mojito.attachRoutes();
+app.post('/tunnel', mojito.tunnelMiddelware());
+
 app.get('/status', function (req, res) {
     res.send('200 OK');
 });
