@@ -45,35 +45,7 @@
         "path": "/MergePost",
         "call": "MergePoster.index"
     },
-    "mergeparams": {
-        "verbs": ["post"],
-        "path": "/MergeParams",
-        "call": "MergeParams.mergeParams",
-        "params": "likes=Beer"
-     },
-	"mergeparamssimple": {
-        "verbs": ["post"],
-        "path": "/MergeParamsSimple",
-        "call": "MergeParams.mergeParamsSimple",
-        "params": {
-		    "likes": "Beer"
-		}
-     },
-	"routeparams": {
-        "verbs": ["get"],
-        "path": "/RouteParams",
-        "call": "RouteParams.routeParams",
-        "params": {
-           "foo": "fooval",
-           "bar": "barval"
-        }
-    },
-	"routeparamssimple": {
-        "verbs": ["get"],
-        "path": "/RouteParamsSimple",
-        "call": "RouteParams.routeParamsSimple",
-        "params": "foo=fooval&bar=barval"
-    },
+
     "searchmojit": {
         "verbs": ["get"],
         "path": "/SearchMojit",
@@ -83,11 +55,7 @@
         "verbs": ["get"],
         "path": "/getModelInfo",
         "call": "GetAppLevelInfo.accessModel"
-    },
-    "default": {
-        "verbs": ["get", "post", "put", "head", "delete"],
-        "path": "/:mojit-id/:mojit-action",
-        "call": "{mojit-id}.{mojit-action}"
     }
+
 
 }]

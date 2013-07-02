@@ -75,10 +75,5 @@
         "verbs": ["get"],
         "path": "/refreshview",
         "call": "refreshViewFrame.index"
-    },
-    "default": {
-        "verbs": ["get", "post", "put", "head", "delete"],
-        "path": "/:mojit-base/:mojit-action",
-        "call": "{mojit-base}.{mojit-action}"
     }
 }]

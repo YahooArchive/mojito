@@ -5,11 +5,6 @@
       "verbs": ["get"],
       "path": "/",
       "call": "testpage.index"
-    },
-	"default": {
-        "verbs": ["get", "post", "put", "head", "delete"],
-        "path": "/:mojit-id/:mojit-action",
-        "call": "{mojit-id}.{mojit-action}"
     }
   }
 ]

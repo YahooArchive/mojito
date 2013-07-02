@@ -16,6 +16,11 @@ var express = require('express'),
 app = express();
 
 app.use(mojito.middleware());
+app.mojito.attachRoutes();
+app.post('/tunnel', mojito.tunnelMiddleware());
+
+// regex paths should be defined in `app.js`. 
+app.get(/\/|index.html/, mojito.dispatch('shelf.index'));
 
 app.get('/status', function (req, res) {
     res.send('200 OK');

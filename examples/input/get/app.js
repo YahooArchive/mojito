@@ -17,6 +17,17 @@ var debug = require('debug')('app'),
 app = express();
 
 app.use(mojito.middleware());
+app.mojito.attachRoutes();
+app.post('/tunnel', mojito.tunnelMiddleware());
+
+
+// Example usage on how to execute anonymous mojit. 
+app.get('/:mojitType/:mojitAction', function (req, res, next) {
+    var type = req.params.mojitType,
+        action = req.params.mojitAction;
+
+    return mojito.dispatch(type + '.' + action)(req, res, next);
+});
 
 app.get('/status', function (req, res) {
     res.send('200 OK');
