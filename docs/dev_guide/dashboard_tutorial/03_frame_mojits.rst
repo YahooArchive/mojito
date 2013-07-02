@@ -2,6 +2,9 @@
 3. Frame Mojits
 ===============
 
+
+..  03_frame_mojits-intro:
+
 Introduction
 ============
 
@@ -14,7 +17,7 @@ behavior of the frame mojit. In this module, we’re going to use
 the built-in HTMLFrameMojit for our application. We’ll leave 
 creating a custom frame mojit as an exercise at the end of the chapter.
 
-
+..  03_intro-what:
 
 What We’ll Cover
 ----------------
@@ -24,6 +27,8 @@ What We’ll Cover
 - parent and child mojits
 - handling assets (CSS)
 - Params addon to get query string parameters
+
+..  03_intro-final:
 
 Final Product
 -------------
@@ -39,8 +44,12 @@ based on a query parameter.
    :alt: Screenshot of 03 frame mojits application.
 
 
+..  03_intro-before:
+
 Before Starting
 ---------------
+
+..  03_intro_before-review:
 
 Review of the Last Module
 #########################
@@ -55,6 +64,8 @@ about mojits:
 - passing data from the controller to templates
 
 
+..  03_intro_before-setup:
+
 Setting Up
 ##########
 
@@ -63,9 +74,12 @@ so you’ll want to make a copy of the application that we made:
 
 ``$ cp -r 02_mojits 03_frame_mojit``
 
+..  03_frame_mojits-lesson:
 
 Lesson: Frame Mojits
 ====================
+
+..  03_lesson-intro:
 
 Introduction
 ------------
@@ -84,6 +98,8 @@ When we examine how to use the HTMLFrameMojit, you’ll learn how to configure
 this parent-child relationship, but we won’t learn about how frame mojits 
 execute child mojits until the next module Composite Mojits.
 
+..  03_lesson-htmlframemojit:
+
 HTMLFrameMojit
 --------------
 
@@ -98,6 +114,7 @@ page, and thus, the instance of the ``HTMLFrameMojit`` must be the top-level moj
 in the application. This will be clearer when we discuss configuring the 
 ``HTMLFrameMojit`` in the next section. 
 
+..  03_lesson-configuration:
 
 Configuration
 -------------
@@ -133,6 +150,8 @@ definition ``Github``.
 .. tip:: Your frame mojit can also have multiple child instances, 
          which we will discuss in Composite Mojits.
 
+..  03_lesson-deploy:
+
 Deploying to Client
 -------------------
 
@@ -162,6 +181,8 @@ you set the deploy property to true.
      }
    ]
 
+..  03_lesson-assets:
+
 Using Assets 
 ------------
 
@@ -173,6 +194,8 @@ application. Our application uses two of the three ways, but
 we’ll go over all three for good measure, but you’ll first 
 need to know where to place assets and how to let Mojito 
 find them through configuration.
+
+..  03_lesson_assets-location:
 
 Location of Assets
 ##################
@@ -186,6 +209,8 @@ For application-level assets, the convention is to use the
 ``{application_name}/assets`` directory. Mojit-level assets 
 are placed in the {application_name}/mojits/{mojit_name}/assets 
 directory.
+
+..  03_lesson_assets-configuring:
 
 Configuring Assets
 ##################
@@ -223,6 +248,8 @@ either a ``css`` or ``js`` array for defining paths to CSS or JavaScript assets.
      }
    ...
 
+..  03_lesson-static_assets:
+
 Static Assets
 -------------
 
@@ -240,6 +267,8 @@ So, for example, suppose we want the file index.css to be available to all of th
 mojits in our application 03_frame_mojits, we would place the file in the 
 following location: ``03_frame_mojits/assets/index.css``
 
+..  03_lesson_static_asset-url:
+
 Static URL to Assets
 ####################
 
@@ -252,6 +281,8 @@ application name, or the mojit name.
 
 For example, the static path for the application-level asset ``index.css`` in the our 
 application ``03_frame_mojits`` would be ``/static/03_frame_mojits/assets/index.css``.
+
+..  03_lesson_static_asset-using:
 
 Using Static Assets in a Template
 #################################
@@ -274,6 +305,8 @@ template as seen below:
        </div>
      </body>
    </html>
+
+..  03_lesson_static_asset-adding:
 
 Dynamically Adding Assets With the Controller
 #############################################
@@ -312,6 +345,8 @@ Okay, but what about attaching application-level assets with the
 Assets addon? Well, you can’t, so you either need to hard-code a static 
 URL in your template or use a frame mojit to do it for you, which is 
 what we’re going to show you next.
+
+..  03_lesson_static_assets-frame:
 
 Frame Assets
 ############
@@ -381,10 +416,9 @@ and attach the CSS and JavaScript assets in the ``<head>`` and ``<body>`` elemen
    </html>
 
 
-
-
-
 .. tips:: Nulla mattis volutpat justo, et elementum quam condimentum vel. Cras dignissim hendrerit dui, at mollis nisi commodo in. 
+
+..  03_frame_mojits-create:
 
 Creating the Application
 ========================
@@ -429,20 +463,26 @@ Creating the Application
         }
       ]
 
+   If you are looking at the path to the CSS file and wondering how it was created, 
+   review the section :ref:`Static URL to Assets <03_lesson_static_asset-url>`.
+   
+  
+
 #. The mojit instance based on the ``HTMLFrameMojit`` is what we’ll use for the root path. 
-   We won’t change the other route paths for now, so in your ``routes.json``, just add the 
-   following routing path: 
+   Replace the content of ``routes.json`` with the following. 
 
    .. code-block:: javascript
 
-      ...
-        "root": {
-          "verbs": ["get"],
-          "path": "/",
-          "call": "tribframe.index"
-        },
-      ...
-    ...
+     [
+       {
+         "settings": [ "master" ],
+         "root": {
+           "verbs": ["get"],
+           "path": "/",
+           "call": "tribframe.index"
+         }
+       }
+     ]
 
 #. Our frame mojit is configured to attach a CSS file to our page, so we’re still 
    going to need to add the CSS file to our application. Based on the static URL 
@@ -497,28 +537,28 @@ Creating the Application
         Y.namespace('mojito.controllers')[NAME] = {
 
           index: function(ac) {
+
             var model = ac.models.get('GithubModelFoo');
             Y.log(model);
             model.getData(function(err, data){
-              Y.log("Github -index - model.getData:");
-              if (err) {
-                ac.error(err);
-                return;
-              }
-              Y.log(data);
-              var view = ac.params.getFromUrl('view') || 'index';
-              Y.log(view);
-              if(view =='custom') {
-                ac.assets.addCss('/static/03_frame_mojit/assets/custom.css','top');
-              } else if(view !='index') {
-                // In case a view that doesn't exist is chosen
-                view = 'index';
-              }
-              ac.done({
-                title: "",
-                watchers: data.watchers,
-                forks: data.forks
-              }, view);
+                Y.log("Github -index - model.getData:");
+                if (err) {
+                    ac.error(err);
+                    return;
+                }
+                Y.log(data);
+                var view = ac.params.getFromUrl('view') || 'index';
+                Y.log(view);
+                if(view =='custom') {
+                   ac.assets.addCss('/static/03_frame_mojit/assets/custom.css','top');
+                } else if(view !='index') {
+                  // In case a view that doesn't exist is chosen
+                  view = 'index';
+                }
+                ac.done({
+                    title: "",
+                    github: data
+                }, view);
             });
           }
         };
@@ -573,6 +613,8 @@ Creating the Application
    You’ll see basically the same page with some shadowing. If you look at the page 
    source again, you’ll see the custom CSS file now.
 
+..  03_frame_mojits-ts:
+
 Troubleshooting
 ===============
 
@@ -591,6 +633,8 @@ Nulla pharetra aliquam neque sed tincidunt. Donec nisi eros, sagittis vitae lobo
 interdum sed ipsum. Quisque congue tempor odio, a volutpat eros hendrerit nec. Vestibulum 
 ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
 
+..  03_frame_mojits-summary:
+
 Summary
 =======
 
@@ -599,6 +643,8 @@ In this module, we covered the following:
 - blah, blah
 - blah, blah
 
+..  03_frame_mojits-qa:
+
 Q&A
 ===
 
@@ -606,11 +652,15 @@ Q&A
 - What does a frame mojit do?
 - How do you configure Mojito to find assets?
 
+..  03_frame_mojits-test:
+
 Test Yourself
 =============
 
 Read the section on Creating Custom Frame Mojits and replace the HTMLFrameMojit 
 with your own frame mojit.
+
+..  03_frame_mojits-terms:
 
 Terms
 =====
@@ -618,10 +668,14 @@ Terms
 - frame mojit
 - assets
 
+..  03_frame_mojits-src:
+
 Source Code
 ===========
 
 [app_part{x}](http://github.com/yahoo/mojito/examples/quickstart_guide/app_part{x})
+
+..  03_frame_mojits-reading:
 
 Further Reading
 ===============

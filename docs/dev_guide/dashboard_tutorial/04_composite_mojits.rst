@@ -20,7 +20,7 @@ In this module, we’re going to keep using the ``HTMLFrameMojit`` and have a ch
 that is a composite mojit, which will have several children. To make it more 
 interesting, one of the children is also a composite mojit that has a child. 
 The composite mojits will manage the child mojits that create our content, 
-while the HTMLFrameMojit will continue to put together our HTML page. Do you 
+while the ``HTMLFrameMojit`` will continue to put together our HTML page. Do you 
 remember all those mojits that we created earlier that have been just sitting 
 there unused? Well, we’re finally going to use them for the application that 
 we’ll create in this module.
@@ -601,11 +601,11 @@ Creating the Application
       }, '0.0.1', {requires: ['mojito']});
 
 
-    .. code-block:: html
+   .. code-block:: html
 
-       <div id="{{mojit_view_id}}" class="mojit">
-         <h3>{{title}}</h3>
-       </div>
+      <div id="{{mojit_view_id}}" class="mojit">
+        <h3>{{title}}</h3>
+      </div>
 
 
 #. Do the same thing for the ``Footer`` mojit. Again, mostly static content, 

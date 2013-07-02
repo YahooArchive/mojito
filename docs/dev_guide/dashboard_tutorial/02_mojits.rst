@@ -461,9 +461,8 @@ Creating the Application
 We’re going to extend the application we created in the last module with several 
 mojits and then configure mojit instances and routing paths. 
 
-After you have copied the application that you made in the last module (see Setting Up), 
-change into the application ``02_mojits``.
-
+#. After you have copied the application that you made in the last module in `Setting Up <#setting-up>`_, 
+   change into the application ``02_mojits``.
 #. Let’s create mojits that will help generate output for the different parts of 
    the HTML page:
 
@@ -615,9 +614,9 @@ change into the application ``02_mojits``.
 #. Alright, we’re ready to try out our application. Let’s first test out the 
    routes header, body, and footer. You should see the default Mojito application.
 
-   - http://localhost:8666/body/
-   - http://localhost:8666/header/
-   - http://localhost:8666/footer/
+   - http://localhost:8666/body
+   - http://localhost:8666/header
+   - http://localhost:8666/footer
 #. Now for the finale: let’s go to the route to execute our ``Github``, which 
    we modified the model, controller, and view: http://localhost:8666
 
