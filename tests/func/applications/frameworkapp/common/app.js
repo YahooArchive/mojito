@@ -31,6 +31,7 @@ app.get('/RouteParamsSimple', function (req, res, next) {
     req.params = req.params || {};
     req.params.foo = 'fooval';
     req.params.bar = 'barval';
+    next();
 }, mojito.dispatch('RouteParams.routeParamsSimple'));
 
 // "mergeparamssimple": {
@@ -44,6 +45,7 @@ app.get('/RouteParamsSimple', function (req, res, next) {
 app.post('/MergeParamsSimple', function (req, res, next) {
     req.params = req.params || {};
     req.params.likes = 'Beer';
+    next();
 }, mojito.dispatch('MergeParams.mergeParamsSimple'));
 
 
@@ -56,6 +58,7 @@ app.post('/MergeParamsSimple', function (req, res, next) {
 app.post('/MergeParams', function (req, res, next) {
     req.params = req.params || {};
     req.params.likes = 'Beer';
+    next();
 }, mojito.dispatch('MergeParams.mergeParams'));
 
 // "routeparams": {
@@ -71,7 +74,9 @@ app.get('/RouteParams', function (req, res, next) {
     req.params = req.params || {};
     req.params.foo = 'fooval';
     req.params.bar = 'barval';
+    next();
 }, mojito.dispatch('RouteParams.routeParams'));
+
 
 // "default": {
 //     "verbs": ["get", "post", "put", "head", "delete"],
