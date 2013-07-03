@@ -697,7 +697,7 @@ Single Tests
 ++++++++++++
 
 #. In the ``developerguide`` directory, we’re going to first run the test directly with the 
-Arrow command: ``$ arrow --browser=phantomjs test_hello.js --page=http://localhost:8666``
+   Arrow command: ``$ arrow --browser=phantomjs test_hello.js --page=http://localhost:8666``
 
 #. You should see the following output:
 
@@ -826,9 +826,33 @@ Creating the Application
           });
         });
       }
+#. The ``getData`` method relies on the utility function ``youtubeMap`` that formats
+   the returned response for your application. Add the ``youtubeMap`` shown below
+   to the controller, but be sure to place it above the statement 
+   ``Y.namespace('mojito.controllers')[NAME] = {``:
+
+   .. code-block:: javascript
+
+      var youtubeMap = function (ac, data) {
+        Y.log("youtubeMap called");
+      
+        var res = [];
+        Y.Array.each(data, function (itm, idx, arr) {
+          Y.log(itm);
+          var
+               title = itm.title,
+                id = itm.id.split("http://gdata.youtube.com/feeds/base/videos/")[1];
+          Y.log("youtubevid id:" + id);
+          res[idx] = {
+            title: title,
+            id: id
+          };
+        });
+        return res;
+      };
 
 #. To display the YouTube results, you'll need to replace the boilerplate code in
-    ``index.hb.html`` with the following:
+   ``index.hb.html`` with the following:
 
    .. code-block:: html
 
@@ -942,7 +966,37 @@ Creating the Application
          </div>
        </div>
 
+#. We're also going to have to update the template for our composite mojit ``Body``, so
+   that the content from our new mojits is attached to the page. Update the template
+   ``mojits/Body/views/index.hb.html`` so that it's the same as the code below:
 
+   .. code-block:: html
+
+      <div id="{{mojit_view_id}}" class="mojit">
+        <h4 class="bodytext">{{title}}</h4>
+        <div class="bodyStuff yui3-g-r">
+          <div class="yui3-u-1-3">
+            {{{github}}}
+          </div>
+          <div class="yui3-u-1-3">
+            {{{calendar}}}
+          </div>
+          <div class="yui3-u-1-3">
+            {{{twitter}}}
+            {{{youtube}}}
+          </div>
+        </div>
+      </div>
+#. You might have noticed that the template we just updated has the Handlebars expression
+   ``{{title}}``. The controller of the ``Body`` mojit needs to pass that data to the 
+   template, so update the ``ac.composite.done`` method in the controller so that it has
+   the ``title`` property:
+
+   .. code-block:: javascript
+  
+      ac.composite.done({
+        title: ""
+      })
 #. That pretty much does it for our application code, but we still need to write a unit
    test for a controller and a model. We're going to use our first mojit, ``Github`` 
    as our example. 

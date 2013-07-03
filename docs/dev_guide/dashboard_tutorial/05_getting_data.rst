@@ -515,7 +515,7 @@ Creating the Application
 
       }, '0.0.1', {requires: ['mojito', 'mojito-rest-lib','json']});
 
-#. We need to modify the controller to use the TwitterSearchModel. 
+#. We need to modify the controller to use the ``TwitterSearchModel``. 
    Open ``controller.server.js`` in an editor, add the ``Models`` addon, and 
    modify the ``index`` method so that it’s the same as that shown below. 
    The ``Models`` addon allows you to access our model and call the model 
@@ -629,8 +629,10 @@ Creating the Application
       }, '0.0.1', {requires: ['yql', 'substitute']});
 
 #. The ``Github`` controller needs to get the correct model. We’re also 
-   going to simplify the ``index`` function to only use the default template. 
-   Modify the ``index`` function so that it’s the same as that below.
+   going to simplify the ``index`` function to only use the default template and
+   add the ``mojito-assets-addon` to the ``requires`` array.
+   Modify the ``index`` function  and the ``requires`` array so that they are the same 
+   as that below. 
 
    .. code-block:: javascript
 
@@ -651,6 +653,7 @@ Creating the Application
           });
         }
       ...
+     }, '0.0.1', {requires: ['mojito', 'mojito-assets-addon','mojito-models-addon']});
 
 #. We’re going to update our template to look more like the Twitter 
    template. So, go ahead and replace the content of ``index.hb.html`` 
@@ -673,9 +676,9 @@ Creating the Application
       </div>
 
 #. Because the Github mojit displays a title for the GitHub statistics. Let's remove
-   the ``title`` property passed to ``ac.composite.done`` in ``Github/controller.server.js`` 
+   the ``title`` property passed to ``ac.composite.done`` in ``Body/controller.server.js`` 
    and the ``{{title}}`` Handlebars expression in the template 
-   ``Github/views/index.hb.html`` so they look like the following:
+   ``Body/views/index.hb.html`` so they look like the following:
 
    .. code-block::
 

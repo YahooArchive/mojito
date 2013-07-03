@@ -499,10 +499,40 @@ Creating the Application
           }
         }
       ]
+#. Update the ``routes.json`` so that we have routing paths for our child mojits and
+   one path to call our frame mojit:
+
+   .. code-block:: javascript
+
+      [
+        {
+          "settings": [ "master" ],
+          "root": {
+            "verbs": ["get"],
+            "path": "/",
+            "call": "tribframe.index"
+          },
+          "header": {
+            "verbs":["get"],
+            "path": "/header",
+            "call": "header.index"
+          },
+          "body": {
+            "verbs": ["get"],
+            "path": "/body",
+            "call": "body.index"
+          },
+          "footer": {
+          "verbs": ["get"],
+          "path": "/footer",
+          "call": "footer.index"
+        }
+      }
+    ]
 
 #. Try running the app, and you’ll see the familiar Mojito default application again. 
-   Out application works, but the composite mojit isn’t really doing much with the 
-   content of its children. That’s because it hasn’t used the Composite addon to 
+   Our application works, but the composite mojit isn’t really doing much with the 
+   content of its children. That’s because it hasn’t used the ``Composite`` addon to 
    execute its children and attached the content from those children to the template.
    The first step is have the controller of the LayoutMojit use the Composite addon 
    and call ``ac.composite.done``:
@@ -677,12 +707,12 @@ Creating the Application
           */
           index: function(ac) {
             Y.log("Body - controller.server.js index called");
-            ac.done({
+            ac.composite.done({
               title: "Statistics for YUI"
             });
           }
         };
-      }, '0.0.1', {requires: ['mojito']});
+      }, '0.0.1', {requires: ['mojito', 'mojito-composite-addon']});
 
    .. code-block:: html
 
@@ -693,30 +723,57 @@ Creating the Application
         </div>
       </div>
 
-#. When you start the app now and go to http://localhost:8666.
-   You'll notice that we're missing our Github statistics. That's because we need
-   to have the ``body`` instance attach the content from the ``github`` instance to the 
-   page by configuring a parent-child relationship in ``application.json``. 
-   In the ``application.json``, let’s hook up the ``Github`` to the ``Body``
-   by making the instance of the ``Github`` child of the composite mojit ``body``:
+#. Let's also simplify the ``Github`` mojit, removing the ``custom`` template by replacing
+   the contents with the following:
 
    .. code-block:: javascript
 
-      ...
-        "body": {
-          "type": "Body",
-          "config": {
-            "children": {
-              "github": {
-                "type":"Github"
-              }
-            }
+      YUI.add('Github', function(Y, NAME) {
+
+        Y.namespace('mojito.controllers')[NAME] = {
+
+          index: function(ac) {
+
+            var model = ac.models.get('GithubModelFoo');
+            Y.log(model);
+            model.getData(function(data){
+              Y.log("Github -index - model.getData:");
+              Y.log(data);
+              ac.done({
+                title: "",
+                watchers: data.watchers,
+                forks: data.forks
+              });
+            });
           }
-        },
-      ...
-    ...
+        };
+      }, '0.0.1', {requires: ['mojito', 'mojito-models-addon']});
 
+#. The model for the ``Github`` mojit has a slight change as well. Replace the
+   ``getData`` method with the following:
 
+   .. code-block:: javascript
+
+      getData: function(callback) {
+            callback(null, { watchers: 1, forks: 1 });
+      }
+#. Also, update the ``index.hb.html`` for the ``Github`` mojit
+   with the following markup:
+
+   .. code-block:: html
+
+      <div id="{{mojit_view_id}}" class="mojit">
+        <h4>{{title}}</h4>
+        <div class="mymodule">
+          <h3>YUI GitHub Stats</h3>
+          <div>Github watchers: <span>{{watchers}}</span></div>
+          <div>Github forks: <span>{{forks}}</span></div>
+        </div>
+      </div>
+
+#. Before we run our application, let's do a little clean up by deleting our custom 
+   template ``Github/views/custom.hb.html`` and the custom CSS (``04_composite_mojits/assets/custom.css``),
+   which we will no longer be using.
 #. Start your app again to see the mocked GitHub stats that is being attached to the
    template of the ``Body`` mojit. The page would be more useful with real data,
    so, that will be the topic of our next module.
