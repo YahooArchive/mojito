@@ -811,7 +811,9 @@ Creating the Application
       }, '0.0.1', {requires: []});
 
 #. The controller will need to get the correct module and call the ``getData`` method
-   correctly, so go ahead and update the ``index`` method:
+   correctly. We're also going to include the function ``youtubeMap`` to help format
+   the returned response from the YouTube API. For the sake of simplicity, go ahead and 
+   replace the content of ``mojits/Youtube/controller.server.js`` with the following:
 
    .. code-block:: javascript
 
@@ -931,40 +933,40 @@ Creating the Application
       }, '0.0.1', {requires: ['yql', 'substitute']});
 
 
-    .. code-block:: javascript
+   .. code-block:: javascript
 
-       index: function (ac) {
-         ac.models.get('CalendarModelYQL').getData({}, function (data) {
+      index: function (ac) {
+        ac.models.get('CalendarModelYQL').getData({}, function (data) {
 
-           // add mojit specific css
-           ac.assets.addCss('./index.css');
+          // add mojit specific css
+          ac.assets.addCss('./index.css');
 
-           // populate blog template
-           ac.done({
-             title: "YUI Calendar Info",
-             results: data
-           });
-         });
-       }
+          // populate blog template
+          ac.done({
+            title: "YUI Calendar Info",
+            results: data
+          });
+        });
+      }
 
-    .. code-block:: html
+   .. code-block:: html
 
-       <div id="{{mojit_view_id}}" class="mojit">
-         <div class="mod" id="calendar">
-           <h3>
-             <strong>{{title}}</strong>
-             <a title="minimize module" class="min" href="#">-</a>
-             <a title="close module" class="close" href="#">x</a>
-           </h3>
-           <div class="inner">
-             <ul>
-             {{#results}}
-               <li>{{#entry}}<span>{{#summary}}{{content}}{{/summary}}</span><a href="{{#link}}{{href}}{{/link}}" title="{{#title}}{{content}}{{/title}}">{{#title}}{{content}}{{/title}}</a>{{/entry}}</li>
-             {{/results}}
-             </ul>
-           </div>
-         </div>
-       </div>
+      <div id="{{mojit_view_id}}" class="mojit">
+        <div class="mod" id="calendar">
+          <h3>
+            <strong>{{title}}</strong>
+            <a title="minimize module" class="min" href="#">-</a>
+            <a title="close module" class="close" href="#">x</a>
+          </h3>
+          <div class="inner">
+            <ul>
+            {{#results}}
+              <li>{{#entry}}<span>{{#summary}}{{content}}{{/summary}}</span><a href="{{#link}}{{href}}{{/link}}" title="{{#title}}{{content}}{{/title}}">{{#title}}{{content}}{{/title}}</a>{{/entry}}</li>
+            {{/results}}
+            </ul>
+          </div>
+        </div>
+      </div>
 
 #. We're also going to have to update the template for our composite mojit ``Body``, so
    that the content from our new mojits is attached to the page. Update the template
@@ -1070,9 +1072,9 @@ Creating the Application
 #. The model test:
 
 
-    .. code-block:: javascript
+   .. code-block:: javascript
 
-       YUI.add('StatsModelYQL-tests', function(Y, NAME) {
+      YUI.add('StatsModelYQL-tests', function(Y, NAME) {
 
         var suite = new YUITest.TestSuite(NAME),
             model = null,
@@ -1096,18 +1098,18 @@ Creating the Application
             A.areSame(cfg, model.config);
             A.isFunction(model.getData);
             model.getData({}, function(cb, data) {
-                called = true;
-                A.isFunction(cb);
-                return {
-                      cb(callback, result){
-                         callback(result);
+              called = true;
+              A.isFunction(cb);
+              return {
+                cb(callback, result){
+                  callback(result);
                 };
-            });
+              });
             A.isTrue(called);
-        }
-    }));
-    YUITest.TestRunner.add(suite);
-}, '0.0.1', {requires: ['mojito-test', 'StatsModelYQL']});
+          }
+        }));
+        YUITest.TestRunner.add(suite);
+      }, '0.0.1', {requires: ['mojito-test', 'StatsModelYQL']});
 
 #. From the application directory, run the Github mojit tests. 
 
