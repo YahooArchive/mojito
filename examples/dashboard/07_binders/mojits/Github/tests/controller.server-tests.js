@@ -1,4 +1,3 @@
-
 YUI.add('Github-tests', function (Y) {
 
     var suite = new YUITest.TestSuite('Github-tests'),
@@ -59,3 +58,4 @@ YUI.add('Github-tests', function (Y) {
     YUITest.TestRunner.add(suite);
 
 }, '0.0.1', {requires: ['mojito-test', 'Github', 'StatsModelYQL']});
+

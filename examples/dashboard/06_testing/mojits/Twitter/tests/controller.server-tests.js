@@ -50,7 +50,6 @@ YUI.add('Twitter-tests', function (Y, NAME) {
                     doneResults = data;
                 }
             };
-            console.log(assetsResults);
             A.isNotNull(controller);
             A.isFunction(controller.index);
             controller.index(ac);
