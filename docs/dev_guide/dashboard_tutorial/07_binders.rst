@@ -685,8 +685,249 @@ Creating the Application
             }
           };
         }, '0.0.1', {requires: ['event-mouseenter', 'mojito-client']});
-#. We want to let users to be able to update the GitHub activity as well, so let's 
-   add almost the identical code to the binder of the ``Github`` binder (``mojits/Github/binders/index.js``).
+#. We want to let users to be able to update the GitHub activity as well. Before we start
+   working on the binders of the ``Github`` mojit, let's refine the controller, model, and
+   update the tests. First, update the ``index`` method and add the method ``githubMap`` 
+   outside the controller namespace to format the returned response with the code below.
+   We're using a YQL table that's in the `YQL hosted storage <http://developer.yahoo.com/yql/guide/yql-cloud-chapter.html>`_
+   now (``store://gpgSGZAwQ3vaDaalPQZ44u``) 
+
+   .. code-block:: javascript
+
+      index: function (ac) {
+        var yqlTable = "store://gpgSGZAwQ3vaDaalPQZ44u",
+                title = "YUI GitHub Activity",
+                model = ac.models.get('StatsModelYQL');
+            Y.log(model);
+            model.getData({}, yqlTable, function (data) {
+                Y.log("Github -index - model.getData:");
+                Y.log(data);
+
+                //construct special data
+
+                var res = [];
+                Y.log("calling githubmap");
+                res = githubMap(ac, data);
+
+                // add mojit specific css
+                ac.assets.addCss('./index.css');
+                ac.done({
+                    title: title,
+                    results: res
+                });
+            });
+        }
+
+      var githubMap = function (ac, data) {
+        Y.log("githubmap called");
+        var res = [];
+        Y.Array.each(data, function (itm, idx, arr) {
+          Y.log(itm);
+          var
+              type = itm.json.type,
+              username = itm.json.actor.login,
+              msg = "msg",
+              link = "http://www.yahoo.com";
+
+          Y.log("github controller server type:" + type);
+          if (type === "IssueCommentEvent") {
+            Y.log("issuecommentevent!");
+          }
+          switch (type) {
+            case "CommitCommentEvent":
+              msg = "Made a Comment";
+              link = itm.json.payload.comment.html_url;
+              break;
+            case "CreateEvent":
+              msg = "Created Something";
+              link = itm.json.payload.ref;
+              break;
+            case "DeleteEvent":
+              msg = "Deleted Something";
+              link = itm.json.payload.ref;
+              break;
+            case "DownloadEvent":
+              msg = "Downloaded Something";
+              link = itm.json.payload.download.html_url;
+              break;
+            case "FollowEvent":
+              msg = "Followed Someone";
+              link = itm.json.payload.target.url;
+              break;
+            case "ForkEvent":
+              msg = "Forked Something";
+              link = itm.json.payload.forkee.html_url;
+              break;
+            case "GistEvent":
+              msg = "Acted on a Gist";
+              link = itm.json.payload.gist.html_url;
+              break;
+            case "GollumEvent":
+              msg = "Acted on a Page";
+              if (typeof itm.json.payload.pages === 'array') {
+                link = itm.json.payload.pages[0].html_url;
+                } else {
+                  link = itm.json.payload.pages.html_url;
+              }
+              break;
+            case "IssueCommentEvent":
+              Y.log(" inside case IssueCommentEvent!");
+              msg = "Commented on an Issue";
+              link = itm.json.payload.comment.html_url;
+              break;
+            case "IssuesEvent":
+              msg = "Acted on an Issue";
+              link = itm.json.payload.issue.html_url;
+              break;
+            case "MemberEvent":
+              msg = "A member was added.";
+              link = itm.json.payload.member.html_url;
+              break;
+            case "PublicEvent":
+              msg = "A Repo was made Public!";
+              link = "#";
+              break;
+            case "PullRequestReviewCommentEvent":
+              msg = "Commented on a Pull Request";
+              link = itm.json.payload.comment.html_url;
+              break;
+            case "PushEvent":
+              msg = "Pushed some code";
+              if (typeof itm.json.payload.commits === 'array') {
+                link = "http://www.github.com/yui/yui3/commit/" + itm.json.payload.commits[0].sha;
+              } else {
+                link = "http://www.github.com/yui/yui3/commit/" + itm.json.payload.commits.sha;
+              }
+              break;
+            case "TeamAddEvent":
+              msg = "Added someone to a team.";
+              link = itm.json.payload.user.url;
+              break;
+            case "WatchEvent":
+              msg = "Had a Watch Event";
+              link = "#";
+              break;
+            default:
+              msg = "Did Something? Don't know.";
+              link = "#";
+              break;
+          }
+          res[idx] = {
+            type: type,
+            username: username,
+            payload: itm.json.payload,
+            message: msg,
+            link: link
+          };
+        });
+        // send the array back
+        return res;
+      };
+#. We'll need to update the ``Github`` tests as well. If you've written tests for the
+   other mojits, you'll need to be sure that they are modified as well. Update
+   the tests with the code below:
+
+   ``mojits/Github/tests/controller.server-tests.js``
+
+   .. code-block:: javascript
+
+      YUI.add('Github-tests', function (Y) {
+
+        var suite = new YUITest.TestSuite('Github-tests'),
+          controller = null,
+          A = YUITest.Assert,
+          model;
+        suite.add(new YUITest.TestCase({
+
+          name: 'Github user tests',
+          setUp: function () {
+            controller = Y.mojito.controllers.Github;
+            model = Y.mojito.models.StatsModelYQL;
+          },
+          tearDown: function () {
+            controller = null;
+          },
+          'test mojit': function () {
+            var ac,
+                modelData,
+                assetsResults,
+                route_param,
+                doneResults,
+                def_value;
+            modelData = { x: 'y' };
+            ac = {
+                assets: {
+                    addCss: function (css) {
+                        assetsResults = css;
+                    }
+                },
+                config: {
+                    getDefinition: function (key) {
+                        def_value = key;
+                    }
+                },
+                params: {
+                    getFromRoute: function (param) {
+                        route_param = param;
+                    }
+                },
+                models: {
+                    get: function (modelName) {
+                        A.areEqual('StatsModelYQL', modelName, 'wrong model name');
+                        return model;
+                    }
+                },
+                done: function (data) {
+                    doneResults = data;
+                }
+            };
+            A.isNotNull(controller);
+            A.isFunction(controller.index);
+            controller.index(ac);
+          }
+        }));
+        YUITest.TestRunner.add(suite);
+      }, '0.0.1', {requires: ['mojito-test', 'Github', 'StatsModelYQL']});
+
+   ``mojits/Github/tests/models/yql.server-tests.js``
+
+   .. code-block:: javascript
+
+      YUI.add('StatsModelYQL-tests', function(Y, NAME) {
+
+        var suite = new YUITest.TestSuite(NAME),
+            model = null,
+            yqlTable = null,
+            A = YUITest.Assert;
+        suite.add(new YUITest.TestCase({
+
+          name: 'StatsModelYQL user tests',
+          setUp: function() {
+            model = Y.mojito.models.StatsModelYQL;
+            yqlTable = "store://gpgSGZAwQ3vaDaalPQZ44u";
+          },
+          tearDown: function() {
+            model = null;
+          },
+          'test mojit model': function() {
+            var cfg = { color: 'red' };
+            A.isNotNull(model);
+            A.isFunction(model.init);
+            model.init(cfg);
+            A.areSame(cfg, model.config);
+            A.isFunction(model.getData);
+            model.getData({}, yqlTable, function(data) {
+              A.isObject(data);
+              return data;
+            });
+          }
+        }));
+        YUITest.TestRunner.add(suite);
+      }, '0.0.1', {requires: ['mojito-test', 'StatsModelYQL']});
+
+#. Before you modify the binder, try running the ``Github`` unit tests: ``$ mojito test mojits/Github``
+#. Okay, let's update the ``bind`` method of the ``Github`` with almost the  identical code 
+   we used for the ``Twitter`` binder:
 
    .. code-block:: javascript 
 

@@ -1069,7 +1069,9 @@ Creating the Application
         YUITest.TestRunner.add(suite);
       }, '0.0.1', {requires: ['mojito-test', 'Github', 'StatsModelYQL']});   
 
-#. The model test:
+#. Rename the model test to ``yql.server-tests.js`` and replace the content with the
+   code below. The test just confirms that the configuration can be initialized
+   and that the method ``getData`` is functional and returns and object.
 
 
    .. code-block:: javascript
@@ -1089,27 +1091,20 @@ Creating the Application
             model = null;
           },
           'test mojit model': function() {
-            var called = false,
-                cfg = { color: 'red' };
-
+            var cfg = { color: 'red' };
             A.isNotNull(model);
             A.isFunction(model.init);
             model.init(cfg);
             A.areSame(cfg, model.config);
             A.isFunction(model.getData);
-            model.getData({}, function(cb, data) {
-              called = true;
-              A.isFunction(cb);
-              return {
-                cb(callback, result){
-                  callback(result);
-                };
-              });
-            A.isTrue(called);
+            model.getData({}, function(data) {
+              A.isObject(data);
+              return data;
+            });
           }
         }));
         YUITest.TestRunner.add(suite);
-      }, '0.0.1', {requires: ['mojito-test', 'StatsModelYQL']});
+      }, '0.0.1', {requires: ['mojito-test', 'StatsModelYQL']}
 
 #. From the application directory, run the Github mojit tests. 
 
@@ -1118,10 +1113,10 @@ Creating the Application
 
    ::
  
-      ✔  passed	Github-tests :: Github user tests :: test mojit
+     ✔  passed	Github-tests :: Github user tests :: test mojit
+     ✔  passed	StatsModelYQL-tests :: StatsModelYQL user tests :: test mojit model
 
-     Total tests: 1	✔ Passed: 1	⚑ Deferred: 0	✖ Failed: 0	100% pass rate
-
+     Total tests: 2	✔ Passed: 2	⚑ Deferred: 0	✖ Failed: 0	100% pass rate
 
 #. Now for our functional tests with Arrow. Create the directory ``arrow_tests`` to 
    store our test files. Don't name your directory ``tests`` because Mojito will try to 

@@ -642,18 +642,21 @@ instance, but a better solution may be to have configurations defined in your
 
 In the ``definitions.json`` of the ``youtubeMojit`` below has a series of possible feeds.
 
-[
-  {
-    “settings": [ "master" ],
-    “yui”: { 
-      “feed_name”: “YUI”,     
-      “url”:“https://gdata.youtube.com/feeds/base/users/yuilibrary/uploads”,
-    },
-    “mojito”: {
-      “feed_name”: “Mojito”,
-      “url”: “...”
-  }
-]
+.. code-block:: javascript
+
+   [
+     {
+       "settings": [ "master" ],
+       "yui": { 
+         "feed_name": "YUI",     
+         "url": "https://gdata.youtube.com/feeds/base/users/yuilibrary/uploads",
+       },
+       "mojito": {
+         "feed_name": "Mojito",
+         "url": "..."
+       }
+     }
+   ]
 
 .. _08_adv_config-create:
 
@@ -661,11 +664,12 @@ Creating the Application
 ========================
 
 #. After you have copied the application that you made in the last module (see Setting Up), 
-  change into the application ``08_adv_config``.
+   change into the application ``08_adv_config``.
 #. We've been updating the path to our CSS assets for each application, but now we're going
    to define a static application name, so we'll be able to use the same path to the 
-   CSS assets in the future and in hosting environments. Add the following to ``application.json``
-   and modify the path to the CSS asset for the last time.
+   CSS assets in the future and in hosting environments. Define the static application
+   name with the ``staticHandling`` object in the ``application.json`` (shown below)
+   and then modify the path to the CSS asset for the last time.
 
    .. code-block:: javascript
 
@@ -775,19 +779,32 @@ Creating the Application
         }
       ]
 #. The ``Blog`` mojit's controller needs to be modified to use the ``Config`` addon
-   to get the configuration values from ``definition.json``. Add the following to the
-   ``index`` method:
-
+   to get the configuration values from ``definition.json``. Replace the content of
+   the ``index`` method with the following:
+  
    .. code-block:: javascript
 
-      var view_type = ac.params.getFromRoute('view_type') || "yui";
+      index: function (ac) {
+        var view_type, feedURL, title;
+        view_type = ac.params.getFromRoute('view_type') || "yui";
 
-      if (view_type === "yui") {
-        feedURL = ac.config.getDefinition('feedURL', 'notfound');
-        title = ac.config.getDefinition('yuititle', 'notitle');
-      } else if (view_type === "mojito") {
-        feedURL = ac.config.getDefinition('feedURL', 'notfound');
-        title = ac.config.getDefinition('mojitotitle', 'notitle');
+        if (view_type === "yui") {
+          feedURL = ac.config.getDefinition('feedURL', 'notfound');
+          title = ac.config.getDefinition('yuititle', 'notitle');
+        } else if (view_type === "mojito") {
+          feedURL = ac.config.getDefinition('feedURL', 'notfound');
+          title = ac.config.getDefinition('mojitotitle', 'notitle');
+        }
+        ac.models.get('BlogModelYQL').getData({}, feedURL, function (data) {
+          // add mojit specific css
+          ac.assets.addCss('./index.css');
+
+          // populate blog template
+          ac.done({
+            title: title,
+            results: data
+          });
+        });
       }
 #. We're going to use the ``definition.json`` file to store YQL information as well.
    For the ``Gallery`` mojit, we're going to get data from the 
@@ -924,8 +941,10 @@ Creating the Application
         }
       ]
 #. You'll need to modify the ``Github`` controller and model to pass in the parameters
-   for the YQL keys. Replace the ``index`` method in the controller and the ``getData``
-   method in the model ``yql.server.js`` with the content below:
+   for the YQL keys. Replace the ``index`` method in the controller, add the ``Params``
+   and ``Config`` addons to the ``requires`` array (``mojito-params-addon``, ``mojito-config-addon``),
+   and them replace the contents of the  ``getData`` method in the model ``yql.server.js`` 
+   with the content below:
 
    .. code-block:: javascript
 
@@ -980,6 +999,130 @@ Creating the Application
         cookedQuery = Y.Lang.sub(query, queryParams);
         Y.YQL(cookedQuery, Y.bind(this.onDataReturn, this, callback));
       }
+#. Right, you'll need to update the tests once again. Here are the updates for both the
+    controller and model tests. 
+
+   ``mojits/Github/tests/controller.server-tests.js``
+
+   .. code-block:: javascript
+
+      YUI.add('Github-tests', function (Y) {
+
+        var suite = new YUITest.TestSuite('Github-tests'),
+            controller = null,
+            A = YUITest.Assert,
+            config_def = null,
+            model;
+
+        suite.add(new YUITest.TestCase({
+
+          name: 'Github user tests',
+          setUp: function () {
+            controller = Y.mojito.controllers.Github;
+            model = Y.mojito.models.StatsModelYQL;
+            config_def = {
+              "yui": {
+                "title" : "YUI GitHub Activity",
+                "id": "yui",
+                "repo": "yui3"
+              },
+              "mojito": {
+                "title" : "Mojito GitHub Activity",
+                "id": "yahoo",
+                "repo": "mojito"
+              }
+            };
+          },
+          tearDown: function () {
+            controller = null;
+          },
+          'test mojit': function () {
+            var ac,
+                assetsResults,
+                route_param,
+                doneResults,
+                def_value;
+            ac = {
+              assets: {
+                addCss: function (css) {
+                  assetsResults = css;
+                }
+              },
+              config: {
+                getDefinition: function (key) {
+                  return config_def[key];
+                }
+              },
+              params: {
+                getFromRoute: function (param) {
+                  route_param = param;
+                }
+              },
+              models: {
+                get: function (modelName) {
+                  A.areEqual('StatsModelYQL', modelName, 'wrong model name');
+                  return {
+                    getData: function (params, tablePath, id, repo, cb) {
+                      return {
+                        onDataReturn: function (cb, data) {
+                          cb(data);
+                        }
+                      };
+                    }
+                  };
+                }
+              },
+              done: function (data) {
+                console.log(data);
+                doneResults = data;
+              }
+            };
+            A.isNotNull(controller);
+            A.isFunction(controller.index);
+            controller.index(ac);
+          }
+        }));
+        YUITest.TestRunner.add(suite);
+      }, '0.0.1', {requires: ['mojito-test', 'Github', 'StatsModelYQL']});
+
+   ``mojits/Github/tests/models/yql.server-tests.js``
+
+   .. code-block:: javascript
+
+      YUI.add('StatsModelYQL-tests', function(Y, NAME) {
+
+        var suite = new YUITest.TestSuite(NAME),
+            model = null,
+            yqlTable = null,
+            id = null,
+            repo = null,
+            A = YUITest.Assert;
+        suite.add(new YUITest.TestCase({
+          name: 'StatsModelYQL user tests',
+          setUp: function() {
+            model = Y.mojito.models.StatsModelYQL;
+            yqlTable = "store://gpgSGZAwQ3vaDaalPQZ44u";
+            id = "yui";
+            repo = "yui3";
+          },
+          tearDown: function() {
+            model = null;
+          },
+          'test mojit model': function() {
+            var cfg = { color: 'red' };
+            A.isNotNull(model);
+            A.isFunction(model.init);
+            model.init(cfg);
+            A.areSame(cfg, model.config);
+            A.isFunction(model.getData);
+            model.getData({}, yqlTable, id, repo, function(data) {
+              A.isObject(data);
+              return data;
+            });
+          }
+        }));
+        YUITest.TestRunner.add(suite);
+      }, '0.0.1', {requires: ['mojito-test', 'StatsModelYQL']});
 #. Just one more small change to our child mojits before we work on the composite
    and frame mojits. The output from our ``Blog`` mojit was pretty messy. Just replace
    the CSS in ``mojits/Blog/assets/index.css`` with the code below:
@@ -1016,8 +1159,9 @@ Creating the Application
         </div>
       </div>
 #. To provide the Handlebars expression ``{{button_test}}`` with the appropriate value,
-   we'll need to update the ``index`` method of the ``PageLayout`` controller as well. The
-   ``Y.log`` statement will be used to demonstrate our logging configuration.
+   we'll need to update the ``index`` method of the ``PageLayout`` controller and add the
+   ``Params`` addon to the ``requires`` array as well. The ``Y.log`` statement will be 
+   used to demonstrate our logging configuration.
 
    .. code-block:: javascript
 
@@ -1062,7 +1206,8 @@ Creating the Application
       </div>
 
 #. Update ``index`` method in ``mojits/Body/controller.server.js`` with the following so 
-   that the correct template is rendered.
+   that the correct template is rendered. Also, once again, add the ``Params`` addon  
+   to the ``requires`` array.
 
    .. code-block:: javascript
 
