@@ -1,4 +1,3 @@
-
 YUI.add('Github-tests', function (Y) {
 
     var suite = new YUITest.TestSuite('Github-tests'),

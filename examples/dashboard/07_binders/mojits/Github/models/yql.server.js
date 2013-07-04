@@ -34,3 +34,4 @@ YUI.add('StatsModelYQL', function (Y, NAME) {
         }
     };
 }, '0.0.1', {requires: ['yql', 'substitute']});
+
