@@ -13,3 +13,7 @@ before_install:
   - "wget -nv http://selenium.googlecode.com/files/selenium-server-standalone-2.30.0.jar"
   - "java -jar selenium-server-standalone-2.30.0.jar -p 4444 > /dev/null &"
   - "sleep 6"
+branches:
+  only:
+    - dimensions
+    - smarty_pants_store
