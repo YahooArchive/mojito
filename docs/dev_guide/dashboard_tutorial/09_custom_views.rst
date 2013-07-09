@@ -566,8 +566,10 @@ Creating the Application
        </div>
      </div>
 
-#. The Twitter and Github mojits will use the partial with the **refresh** button. Add those
-   with the following:
+#. The Twitter and Github mojits will use the partial with the **refresh** button. We're
+   not using the ``linker`` helper because the binders will be refreshing the content and
+   won't have access to the helper unless it invokes the parent mojit ``PageLayout``. 
+   Add the partials to the templates with the following:
 
    ``mojits/Twitter/views/index.hb.html``:
  
@@ -579,7 +581,7 @@ Creating the Application
           <div class="inner">
             <ul>
               {{#results}}
-                <li><strong>{{{linker from_user "http://twitter.com/" from_user }}}</strong> - <span>{{text}}</span></li>
+                  <li><strong><a href="http://twitter.com/{{from_user}}">{{from_user}}</a></strong> - <span>{{text}}</span></li>
               {{/results}}
             </ul>
           </div>
@@ -598,7 +600,7 @@ Creating the Application
         <div class="inner">
           <ul>
           {{#results}}
-            <li>{{{linker username "http://github.com/" username}}}  - {{{linker message link}}}</li>
+            <li><a href="http://github.com/{{username}}">{{username}}</a> - <a href="{{link}}">{{message}}</a></li>
           {{/results}}
           </ul>
         </div>
