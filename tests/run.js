@@ -68,6 +68,11 @@ function runCommand(path, command, argv, callback) {
         callback(code);
     });
 
+    cmd.on('error', function (err) {
+        process.stderr.write('error: ' + err + '\n');
+        callback(err.code);
+    });
+
     cmd.on('uncaughtException', function (err) {
         process.stderr.write('uncaught exception: ' + err + '\n');
         callback(1);
@@ -266,13 +271,12 @@ function runStaticApp(basePath, path, port, callback) {
     p.stdout.on('data', listener);
 }
 
-function installDependencies(app, basePath, callback) {
-    console.log("---Starting installing dependencies---");
-    // Install with npm
-    runCommand(basePath + '/' + app.path, "npm", ["i"], function (code) {
+function runNpm(path, args, callback) {
+    runCommand(path, "npm", args, function (code) {
         if (code !== 0) {
             // Try to install with ynpm if npm is not available
-            runCommand(basePath + '/' + app.path, "ynpm", ["i", "--registry=http://ynpm-registry.corp.yahoo.com:4080"], function (code) {
+            args.push("--registry=http://ynpm-registry.corp.yahoo.com:4080");
+            runCommand(path, "ynpm", args, function (code) {
                 if (code !== 0) {
                     // Neither npm nor ynpm is available
                     process.stderr.write("please install npm.\n");
@@ -281,6 +285,24 @@ function installDependencies(app, basePath, callback) {
             });
         } else {
             callback(code);
+        }
+    });
+}
+
+function installMojito(app, basePath, callback) {
+    console.log("---Linking mojito dependency---");
+    // Install local mojito
+    runNpm(basePath + '/' + app.path, ["i", MOJITOLIB], callback);
+}
+
+function installDependencies(app, basePath, callback) {
+    console.log("---Starting installing dependencies---");
+    // Install with npm
+    runNpm(basePath + '/' + app.path, ["i"], function (code) {
+        if (code !== 0) {
+            callback(code);
+        } else {
+            installMojito(app, basePath, callback);
         }
     });
 }
