@@ -400,14 +400,9 @@ function runMojitoApp(app, cliOptions, basePath, port, params, callback) {
 
 function runFuncAppTests(cmd, callback) {
     var descriptor = cmd.descriptor || '**/*_descriptor.json',
-        descriptors = [],
-        exeSeries = [];
-
-    if (descriptor === '**/*_descriptor.json') {
+        exeSeries = [],
         descriptors = glob.sync(cmd.funcPath + '/' + descriptor);
-    } else {
-        descriptors.push(cmd.funcPath + '/' + descriptor);
-    }
+
     async.forEachSeries(descriptors, function(des, callback) {
         var appConfig = JSON.parse(fs.readFileSync(des, 'utf8')),
             app = appConfig[0].config.application,
