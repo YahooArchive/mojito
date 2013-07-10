@@ -9,7 +9,7 @@ Introduction
 
 Mojits are basic unit of composition and reuse in a Mojito application. 
 Imagine that a rectangular square of a Web page being the visual 
-representation of a mojit. The word mojit is a compound consisting of 
+representation of a mojit. The word *mojit* is a compound consisting of 
 the stems module and widget, but the mojit is neither. The mojit is built 
 on YUI modules, but is not a module, and although can be used in separation 
 of other mojits, is not a standalone application like a widget. Regardless 
@@ -17,7 +17,7 @@ of how you try to formally understand mojits, you must understand this:
 mojits power your applications.
 
 In this module, we will creating several mojits and then looking at the 
-MVC structure underneath the hood. As you We’ll also discuss the difference 
+MVC structure underneath the hood. We’ll also discuss the difference 
 between a mojit definition and a mojit instance and how those are 
 manifested in configuration. 
 
@@ -29,8 +29,8 @@ What We’ll Cover
 
 - mojit definitions and instances
 - mojit MVC
-- ActionContext and ActionContext addons
-- views and templates
+- the ActionContext object the and ActionContext addons
+- templates
 
 .. _02_mojits-final:
 
@@ -39,8 +39,8 @@ Final Product
 
 You’ll see that our application now shows something other than the 
 default information. We’ve created new mojits and reworked the 
-githubMojit to show some information, which required changing the 
-controller, model, and view (templates).
+``Github`` mojit to show some information, which required changing the 
+controller, model, and templates).
 
 .. image:: images/02_mojits.png
    :height: 525 px
@@ -138,7 +138,7 @@ Controllers, Models, and YUI
 If you have worked with YUI before, you’ll notice pretty quickly that 
 mojit controllers and models are simply custom YUI modules that are 
 registered with ``YUI.add``. These skeleton of these custom modules also include 
-the requires array that allows you to list dependencies and a namespace:
+the ``requires`` array that allows you to list dependencies and a namespace:
 
 ``controller.server.js``
 
@@ -147,7 +147,7 @@ the requires array that allows you to list dependencies and a namespace:
    YUI.add('Github', function (Y, NAME) {
 
      Y.namespace('mojito.controllers')[NAME] = {
-     // Code here
+      // Code here
      };
    }, '0.0.1', {requires: ['mojito', 'mojito-models-addon', 'GithubModelFoo']});
 
@@ -191,7 +191,7 @@ call ``ac.done``, your application will hang until it times out.
 ActionContext Addons
 --------------------
 
-The Action Context addons provide functionality that lives both on the 
+The ``ActionContext`` addons provide functionality that lives both on the 
 server and client. Each addon provides additional functions through a 
 namespacing object that is appended to the ``ActionContext`` object. To use 
 addons, function, the addons need to require addons. The default Mojito 
@@ -203,7 +203,7 @@ more complicated, we’ll be relying on addons to do more work.
 Features
 ########
 
-The Action Context addons allow you to do the following:
+The ``ActionContext`` addons allow you to do the following:
 
 - access assets, such as CSS and JavaScript files
 - get configuration information (``application.json``, ``routes.json``, ``defaults.json``, 
@@ -213,6 +213,7 @@ The Action Context addons allow you to do the following:
 - access query and response parameters
 - get and set HTTP headers
 - create URLs
+- share data between mojits
 
 .. _02_lesson_addons-syntax:
 
@@ -222,7 +223,7 @@ Syntax
 Using the ActionContext object ``ac``, you would call a ``{method}`` from an ``{addon}`` 
 with the following syntax: ``ac.{addon}.{method}``
 
-For example, in the application that we will be building, we use the Config 
+For example, in the application that we will be building, we use the ``Config ``
 addon to get the value for the key title: ``ac.config.get('title')``
 
 .. _02_lesson-req_addons:
@@ -230,8 +231,8 @@ addon to get the value for the key title: ``ac.config.get('title')``
 Requiring Addons
 ----------------
 
-You require an addon by including an associated string in the requires 
-array of your controller. For example, in the controller below, the Config addon 
+You require an addon by including an associated string in the ``requires`` 
+array of your controller. For example, in the controller below, the ``Config`` addon 
 is required by adding the string ``'mojito-config-addon'`` to the ``requires`` array.
 
 .. code-block:: javascript
@@ -262,22 +263,22 @@ methods in the controller namespace as shown below.
      };
    ...
 
-.. _02_lesson-views:
+.. _02_lesson-templates:
 
-Views 
------
+Templates
+---------
 
-The views for Mojito applications are template files. The default templating 
-system used by Mojito is Handlebars. You can use other templating systems 
-as well, but the for the purpose of this tutorial, we’ll only be covering 
-Handlebars.
+The templates for Mojito applications are HTML files that may contain semantic templates for
+variable substitution. The default templating system used by Mojito is Handlebars. You can 
+use other templating systems as well, but the for the purpose of this tutorial, we’ll only 
+be covering Handlebars.
 
 If you know nothing about Handlebars, we suggest that you read the `Handlebars 
-documentation <http://handlebarsjs.com/>`_. When a controller function calls ac.done with 
+documentation <http://handlebarsjs.com/>`_. When a controller function calls ``ac.done`` with 
 an object as a parameter, the object can be passed to the template file. The value of the 
 property or key will replace the Handlebars expression.
 
-For example, in the controller function index below, the object ``{ status: “It’s working” }`` 
+For example, in the controller function ``index`` below, the object ``{ status: “It’s working” }`` 
 is passed by default to the template ``index.hb.html``.
 
 .. code-block:: javascript
@@ -310,8 +311,7 @@ to specify a context for a runtime environment.
 
 In the ``defaults.json`` file, you list configurations in the ``config`` object as shown 
 below. These configurations are defaults that will be used unless a mojit instance has 
-configurations with the same keys, which we will look at in the next section on mojit 
-instances.
+configurations with the same keys. 
 
 .. code-block:: javascript
 
@@ -386,7 +386,7 @@ being of type ``Github``.
        "settings": [ "master" ],
        "specs": {
          "github": {
-           “type”: “Github”
+           "type": “Github”
          }
        }
      }
@@ -434,7 +434,7 @@ From HTTP Request to Mojit Action
 The diagram below shows the relationship of mojit definition, mojit instance, 
 and routing paths. In addition, you can also see the relationship of the application 
 within the framework. Notice also that the mojit controller has the function ``index`` 
-that maps to the action index specified in the routing configuration.
+that maps to the action ``index``specified in the routing configuration.
 
 .. image:: images/mojits.png
    :height: 500 px
@@ -509,8 +509,8 @@ mojits and then configure mojit instances and routing paths.
         }
       ]
 
-#. Notice that the instance github has a config object. This allows your 
-   instance to access the property title, which we’ll look at soon.
+#. Notice that the instance ``github`` has a ``config`` object. This allows your 
+   instance to access the property ``title``, which we’ll look at soon.
 
    .. code-block:: javascript
 
@@ -632,11 +632,11 @@ Route Not Being Found
 ---------------------
 
 I started the application, but when I go to http://localhost:8666/body, 
-I get the following error: Cannot GET /body
+I get the following error: ``Cannot GET /body``
 
 It appears that you started Mojito from the wrong location. Try changing 
 to the application directory, which in this example is ``02_mojits``, and then run 
-mojito start.
+``mojito start``.
 
 Error: listen EADDRINUSE
 ------------------------
@@ -659,44 +659,67 @@ other frameworks.
 - mojit MVC
 - ActionContext and ActionContext addons
 - mojit and application configuration
-- templates for views
+- templates with Handlebars expressions
 
 .. _02_mojits-qa:     
 
 Q&A
 ===
 
-How do you...
+- **Can you extend Mojito to use other addons or libraries?**
+
+  Yes, this is a more advanced feature not included in this tutorial, but you 
+  can add libraries, use Node.js modules, or even write your own addons.
+   See the chapter `Extending Mojito <../topics/mojito_extensions.html>`_.
+
+- **Handlebars has features such as helpers and partials. Can you use them in Mojito 
+  applications?**
+
+  Yes, Mojito has a ``Helpers`` addon for registering Handlebars helpers. You can also
+  create partials for mojits or for your application. We show you how to do both
+  in the module `9. Handlebars, Templates, and Custom Views <09_custom_views>`_.
 
 .. _02_mojits-test:    
 
 Test Yourself
 =============
 
-Modify the application that we created so that it...
+- Create an additional mojit and a routing path that allows your application to execute
+  an action for that mojit.
+- Modify the mojit you created so that the model passes data to controller and that data
+  is rendered in the template.
 
 .. _02_mojits-terms:   
 
 Terms
 =====
 
-- mojit definition
-- mojit instance
-- Action Context
-- ac
+- **mojit definition** - A set of artifacts that collectively define a reusable unit of 
+  functionality known as a mojit.
+- **mojit instance** - The specification of all the information required to create a 
+  running instance of mojit functionality within an application or the
+  in-memory runtime instance of a mojit—part of the running application.
+- **Action Context** -  An essential element of the Mojito framework that gives you 
+  access to the frameworks features from within a controller function. The Mojito API
+  has an ``ActionContext``class. The controller gets an instance of this class, often 
+  referred to as ``ac``. The instance has methods and addons that give the controller
+  access to the `Mojito API <../../api/>`_
+
 
 .. _02_mojits-src:  
 
 Source Code
 ===========
 
-- [app_part{x}](http://github.com/yahoo/mojito/examples/quickstart_guide/app_part{x})
+- `02_mojits <http://github.com/yahoo/mojito/examples/dashboard/02_mojits>`_
 
 .. _02_mojits-reading:  
 
 Further Reading
 ===============
 
-- Handlebars documentation
+- `Mojits <../intro/mojito_mojits.html>`_
+- `Action Context <api_overview/mojito_action_context.html>`_
+
 - Model-view-controller
 

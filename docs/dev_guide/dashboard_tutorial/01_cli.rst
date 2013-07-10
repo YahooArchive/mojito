@@ -13,7 +13,7 @@ starting application. The utility also has commands for helping
 you develop and generate documentation. In this module, we'll 
 introduce you to the commands.
  
-In this module, we will be covering some of the more commonly 
+We will be covering some of the more commonly 
 used Mojito CLI commands to create an application, a mojit, 
 and then run our application. In addition, we'll learn how to 
 use the utility to sanitize code, and run tests. Our lesson 
@@ -132,7 +132,7 @@ the directories ``assets`` and ``mojits``.
 
 The syntax for creating a mojit is similar, and the command creates 
 template code for the MVC components and configuration files for a 
-mojit in the mojits directory.
+mojit in the ``mojits`` directory.
 
 ``$ mojito create mojit [<archetype-name>] <mojit-name>``
 
@@ -157,7 +157,7 @@ directory.  In this directory, you'll see the directories for the two
 artifacts app and mojit. Within these directories that map to the artifacts, 
 you will find the archetypes that you specify on the command line. When you 
 run mojito create app simple myApp, you are asking Mojito to copy the 
-template code in archetype/app/simple to ./myApp.
+template code in ``archetype/app/simple`` to ``./myApp``.
 
 If no archetype name is provided, the default archetype is used, 
 which is the same as running ``mojito create app default``.
@@ -168,10 +168,10 @@ Mojito Archetypes
 #################
 
 Mojito offers the following four archetypes for applications:
-simple - The minimal configuration and code needed to run an application.
-default - This archetype is run if no command-line archetype option is specified.  
-The template file for setting up routing, ``routing.json``, is created for you.
 
+- ``simple`` - The minimal configuration and code needed to run an application.
+- ``default`` - This archetype is run if no command-line archetype option is specified.  
+  The template file for setting up routing, ``routing.json``, is created for you.
 - ``full`` - The ``application.json`` and ``routes.json`` have more boilerplate code for 
   you to use than the default application.
 
@@ -180,10 +180,10 @@ Mojits have three archetypes:
 - ``simple`` - The mojit only contains a controller.
 - ``default`` - Again, this archetype is run if no command-line archetype 
   option is specified. Your MVC components are all created, binders (client-side code), 
-  and the controller has example code for using models and  Mojito addons, which are 
+  and the controller has example code for using models and Mojito addons, which are 
   built-in modules that offer features such as handling configuration, assets, 
   parameters, making REST calls, and more.
-- ``full`` - Provides the configuration file defaults.json, offers binders with 
+- ``full`` - Provides the configuration file ``defaults.json``, offers binders with 
   examples of handling client events, and more complex controller tests.
 
 If you run mojito help create, you will notice that there is a custom archetype. 
@@ -247,8 +247,8 @@ also be written to the file ``${CWD}/artifacts/test/result.xml``.
    artifacts/test/result.xml
 
 
-   ✔  passed	githubMojitModelFoo-tests :: githubMojitModelFoo user tests :: test mojit model
-   ✔  passed	githubMojit-tests :: githubMojit user tests :: test mojit
+   ✔  passed	GithubModelFoo-tests :: GithubModelFoo user tests :: test mojit model
+   ✔  passed	Github-tests :: Github user tests :: test mojit
 
    Total tests: 2	✔ Passed: 2	⚑ Deferred: 0	✖ Failed: 0	100% pass rate
 
@@ -257,9 +257,10 @@ also be written to the file ``${CWD}/artifacts/test/result.xml``.
 Code Coverage
 -------------
 
-You can add code coverage to your tests with the option --coverage or -c. To run 
-code coverage tests, you need to have Java installed. Coverage results are written 
-to the console and also to file in the directory ``{CWD}/artifacts/coverage/``. 
+You can add code coverage to your tests with the option ``--coverage`` or ``-c``. To run 
+code coverage tests, you need to have `Java <http://java.com/en/download/index.jsp>`_ 
+installed. Coverage results are written to the console and also to file in the 
+directory ``{CWD}/artifacts/coverage/``. 
 
 
 .. _01_lesson-func_tests:
@@ -268,8 +269,10 @@ Functional Tests
 ----------------
 
 To run functional and unit tests for the Mojito framework, you would use the test 
-framework Yahoo! Arrow. Follow the instructions in Running Mojito's Built-In Tests 
-to run the framework tests for Mojito.
+framework `Yahoo! Arrow <https://github.com/yahoo/arrow>`-. Follow the instructions in 
+`Mojito Framework's Unit and Functional Tests 
+<https://github.com/yahoo/mojito/wiki/Mojito-Framework's-Unit-and-Functional-Tests>`_ the 
+framework tests for Mojito.
 
 .. _01_lesson-lint:
 
@@ -304,9 +307,8 @@ Other Utilities
 The Mojito CLI also has commands for creating documentation, building HTML5 applications, 
 and creating a visual graph of dependencies. We're going to hold off on looking at 
 these commands until we have an application. Check out the 
-`Mojito CLI documentation <../reference/mojito_cmdline.html>`_ if you're itching to learn more.
-
-
+`Mojito CLI documentation <../reference/mojito_cmdline.html>`_ if you're itching to learn 
+more.
 
 .. _01_cli-create:
 
@@ -351,11 +353,11 @@ Creating the Application
 
    ``$ mojito test app -c .``
 
-#. In a browser, open the file artifacts/test/coverage/lcov-report/index.html to see the 
+#. In a browser, open the file ``artifacts/test/coverage/lcov-report/index.html`` to see the 
    code coverage report. The report gives line and function coverage. 
 
 #. Our application shouldn't have any syntax errors--if they did, we should file a GitHub 
-   ticket with Mojito, but let's run the jslint command for both the application 
+   issue with Mojito, but let's run the ``jslint`` command for both the application 
    and our one mojit:
 
    :: 
@@ -389,8 +391,8 @@ Creating the Application
    this a great deal because we will want to test new features in the development  
    environment.
 
-   To start the application in the development context, use the option --context and   
-   pass  the string “environment:development”. Again, you'll see your application at        
+   To start the application in the development context, use the option ``--context`` and   
+   pass  the string "environment:development". Again, you'll see your application at        
    the URL `http://localhost:8666/@Github/index <http://localhost:8666/@Github/index>`_.
 
    ``$ mojito start --context "environment:development"``
@@ -443,6 +445,26 @@ command-line utility:
 - linting code
 - starting applications
 - specifying ports and contexts when starting applications.
+
+.. _01_cli-qa:     
+
+Q&A
+===
+
+- **Why is there a ``mojito-cli`` and a ``mojito`` package?**
+
+  The ``mojito-cli`` package is the CLI utility for Mojito. the ``mojito`` package contains
+  the framework that your applications needs to run. Thus, you want the ``mojito-cli``
+  package to be global and the ``mojito`` package to be local in your application. You
+  don't want an application to depend on a global installation of the framework.
+
+- **Is there a way to configure your application to run on a different default port?**
+
+  Yes, the ``application.json`` has a property ``appPort`` that allows you to define
+  the default port. See `Application Configuration <../intro/mojito_configuring.html#application-configuration>`_
+  for details about the available properties in the application configuration file.
+
+
 
 .. _01_cli-test:
 
