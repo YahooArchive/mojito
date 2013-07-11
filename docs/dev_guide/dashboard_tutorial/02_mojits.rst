@@ -29,7 +29,7 @@ What We’ll Cover
 
 - mojit definitions and instances
 - mojit MVC
-- the ActionContext object the and ActionContext addons
+- the ``ActionContext`` object the and ``ActionContext`` addons
 - templates
 
 .. _02_mojits-final:
@@ -623,6 +623,24 @@ mojits and then configure mojit instances and routing paths.
    You’ll see that model data was passed to the controller and in turn passed to the 
    template, all according to our plan. 
 
+
+.. _02_mojits-review:     
+
+Module Review
+=============
+
+We covered a lot of content in his module and still missed a lot of points that 
+we hope to capture in the upcoming modules. The main focus of the module was 
+on mojits, but that is a fairly meaty topic because the mojit is central to 
+Mojito applications and one of the main things that sets it apart from 
+other frameworks.
+
+- mojit definitions and instances
+- mojit MVC
+- ActionContext and ActionContext addons
+- mojit and application configuration
+- templates with Handlebars expressions
+
 .. _02_mojits-ts:       
 
 Troubleshooting
@@ -644,22 +662,7 @@ Error: listen EADDRINUSE
 If you start Mojit and get the following error, it means that Mojito is 
 already running. You’ll need to cancel that process before you can restart Mojito.
 
-.. _02_mojits-summary:     
 
-Summary
-=======
-
-We covered a lot of content in his module and still missed a lot of points that 
-we hope to capture in the upcoming modules. The main focus of the module was 
-on mojits, but that is a fairly meaty topic because the mojit is central to 
-Mojito applications and one of the main things that sets it apart from 
-other frameworks.
-
-- mojit definitions and instances
-- mojit MVC
-- ActionContext and ActionContext addons
-- mojit and application configuration
-- templates with Handlebars expressions
 
 .. _02_mojits-qa:     
 
@@ -684,10 +687,25 @@ Q&A
 Test Yourself
 =============
 
+.. _02_mojits-questions:
+
+Questions
+---------
+
+- What is a *mojit*?
+- What is the difference between a mojit instance and a mojit definition?
+- Name four configuraton files used in Mojito applications.
+
+.. _02_mojits-addition_exs:
+
+Additional Exercises
+--------------------
+
 - Create an additional mojit and a routing path that allows your application to execute
   an action for that mojit.
 - Modify the mojit you created so that the model passes data to controller and that data
   is rendered in the template.
+
 
 .. _02_mojits-terms:   
 
@@ -705,7 +723,6 @@ Terms
   referred to as ``ac``. The instance has methods and addons that give the controller
   access to the `Mojito API <../../api/>`_
 
-
 .. _02_mojits-src:  
 
 Source Code
@@ -720,6 +737,3 @@ Further Reading
 
 - `Mojits <../intro/mojito_mojits.html>`_
 - `Action Context <api_overview/mojito_action_context.html>`_
-
-- Model-view-controller
-

@@ -613,60 +613,115 @@ Creating the Application
    You’ll see basically the same page with some shadowing. If you look at the page 
    source again, you’ll see the custom CSS file now.
 
+
+..  03_frame_mojits-summary:
+
+Module Review
+=============
+
+In this module, we covered the following:
+
+- frame mojits
+- ``HTMLFrameMojit``, Mojito's built-in frame mojit
+- configuring the ``HTMLFrameMojit`` 
+- adding assets with the ``HTMLFrameMojit``
+- deploying code to the client with the ``deploy`` property
+- adding child mojits to the ``HTMLFrameMojit``
+
 ..  03_frame_mojits-ts:
 
 Troubleshooting
 ===============
 
-Problem One
------------
+Failed to load resource: the server responded with a status of 404 (Not Found)
+------------------------------------------------------------------------------
 
-Nulla pharetra aliquam neque sed tincidunt. Donec nisi eros, sagittis vitae lobortis nec, 
-interdum sed ipsum. Quisque congue tempor odio, a volutpat eros hendrerit nec. 
-Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
+If you are getting an error on the client saying that the CSS file ``trib.css`` is not found,
+it's likely that you have not updated the application name in the path to the CSS file or
+have a typo.
+
+In the ``application.json``, make sure that the path to the CSS file in the ``css``
+array is correct:
+
+.. code-block:: javascript
+
+   ...
+     "assets": {
+       "top": {
+         "css": ["/static/03_frame_mojit/assets/trib.css"]
+       }
+     }
+   ...
 
 
-Problem Two
------------
+OK Message and No Page
+----------------------
 
-Nulla pharetra aliquam neque sed tincidunt. Donec nisi eros, sagittis vitae lobortis nec, 
-interdum sed ipsum. Quisque congue tempor odio, a volutpat eros hendrerit nec. Vestibulum 
-ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
+If you only see the text **OK** in your page, but no errors, it could mean that your
+``routes.json`` has a syntax error. Unfortunately, running ``mojito jslint`` will only
+find JSLint errors that are in JavaScript files, so you can either use another command-line
+utility to check for syntax errors, use the stie http://jslint.com/ to test the ``routes.json``,
+or use Node.js to evaluate the JSON with the following command: ``node -e 'require("./routes.json");'``
 
-..  03_frame_mojits-summary:
 
-Summary
-=======
 
-In this module, we covered the following:
-
-- blah, blah
-- blah, blah
 
 ..  03_frame_mojits-qa:
 
 Q&A
 ===
 
-- How do you configure frame mojits to deploy code to the client?
-- What does a frame mojit do?
-- How do you configure Mojito to find assets?
+
+- Is there a way to deploy code to the client without the ``HTMLFrameMojit``?
+
+  Yes, but you need to create your own frame mojit. The frame mojit deploys the files to
+  the client. 
+
+- Can child mojits of the ``HTMLFrameMojit`` also use the ``HTMLFrameMojit``?
+
+  No, the mojit instance of type ``HTMLFrameMojit`` must be the top-level mojit in the 
+  application, so there can only be one mojit using the ``HTMLFrameMojit``.
+
+- 
+
+
+
 
 ..  03_frame_mojits-test:
 
 Test Yourself
 =============
 
-Read the section on Creating Custom Frame Mojits and replace the HTMLFrameMojit 
-with your own frame mojit.
+.. _03_frame_mojits-questions:
+
+Questions
+---------
+
+- What does a frame mojit do?
+- How do you configure frame mojits to deploy code to the client?
+- How do you configure Mojito to find assets?
+
+.. _03_frame_mojits-addition_exs:
+
+Additional Exercises
+--------------------
+
+- Create another mojit, make it a child of the ``HTMLFrameMojit``, and add another asset, 
+  which could either be a JavaScript or CSS file. 
+- Read the section on `Creating Custom Frame Mojits <../topics/mojito_frame_mojits.html#creating-custom-frame-mojits>`_ 
+  and replace the ``HTMLFrameMojit`` with your own frame mojit.
 
 ..  03_frame_mojits-terms:
 
 Terms
 =====
 
-- frame mojit
-- assets
+- **frame mojits** - Mojits that construct Web pages from the skeleton HTML to the styling and 
+  content. The ``HTMLFrameMojit`` is Mojito's built-in frame mojit, but developers can 
+  create their own custom frame mojits. 
+- **assets** - Resources that are required on the clients. These resources are 
+  primarily CSS but can also be JavaScript that is ancillary to and not a core component of 
+  the Mojito application. 
 
 ..  03_frame_mojits-src:
 

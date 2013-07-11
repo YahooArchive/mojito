@@ -403,6 +403,21 @@ Although neither configuration object in ``application.json`` has many configura
 you can have many configuration objects with different configuration values that are 
 mapped to a context. 
 
+.. _01_cli-review:
+
+Module Review
+=============
+
+In this module, we covered the following features of the Mojito 
+command-line utility:
+
+- creating applications and mojits
+- running application and mojit unit tests
+- linting code
+- starting applications
+- specifying ports and contexts when starting applications.
+
+
 .. _01_cli-ts:
 
 Troubleshooting
@@ -432,19 +447,7 @@ running and that the Mojito server is listening to the same port::
 Either stop the other application or start this application so that it listens
 to a different port: ``$ mojito start 8001``
 
-.. _01_cli-review:
 
-Module Review
-=============
-
-In this module, we covered the following features of the Mojito 
-command-line utility:
-
-- creating applications and mojits
-- running application and mojit unit tests
-- linting code
-- starting applications
-- specifying ports and contexts when starting applications.
 
 .. _01_cli-qa:     
 
@@ -463,7 +466,6 @@ Q&A
   Yes, the ``application.json`` has a property ``appPort`` that allows you to define
   the default port. See `Application Configuration <../intro/mojito_configuring.html#application-configuration>`_
   for details about the available properties in the application configuration file.
-
 
 
 .. _01_cli-test:

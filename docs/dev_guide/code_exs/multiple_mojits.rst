@@ -83,21 +83,6 @@ of the ``frame`` mojit and not in the route configuration.
          "verbs": ["get"],
          "path": "/",
          "call": "frame.index"
-       },
-       "header": {
-         "verbs": ["get"],
-         "path": "/header",
-         "call": "header.index"
-       },
-       "body": {
-         "verbs": ["get"],
-         "path": "/body",
-         "call": "body.index"
-       },
-       "footer": {
-         "verbs": ["get"],
-         "path": "/footer",
-         "call": "footer.index"
        }
      }
    ]
@@ -200,21 +185,6 @@ To set up and run ``multiple_mojits``:
             "verbs": ["get"],
             "path": "/",
             "call": "frame.index"
-          },
-          "header": {
-            "verbs": ["get"],
-            "path": "/header",
-            "call": "header.index"
-          },
-          "body": {
-            "verbs": ["get"],
-            "path": "/body",
-            "call": "body.index"
-          },
-          "footer": {
-            "verbs": ["get"],
-            "path": "/footer",
-            "call": "footer.index"
           }
         }
       ]
