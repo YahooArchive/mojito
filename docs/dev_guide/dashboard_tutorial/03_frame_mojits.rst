@@ -665,7 +665,6 @@ or use Node.js to evaluate the JSON with the following command: ``node -e 'requi
 
 
 
-
 ..  03_frame_mojits-qa:
 
 Q&A
@@ -728,13 +727,16 @@ Terms
 Source Code
 ===========
 
-[app_part{x}](http://github.com/yahoo/mojito/examples/quickstart_guide/app_part{x})
+`03_frame_mojit <http://github.com/yahoo/mojito/examples/dashboard/03_frame_mojit>`_
 
 ..  03_frame_mojits-reading:
 
 Further Reading
 ===============
 
-- Using the HTML Frame Mojit
-- Attaching Assets with HTMLFrameMojit.
+- `Frame Mojits <../topics/mojito_frame_mojits.html>`_
+- `Attaching Assets with HTMLFrameMojit <../code_exs/framed_assets.html>`_
+- `HTMLFrameMojit <../topics/mojito_frame_mojits.html#htmlframemojit>`_
+- `Creating Custom Frame Mojits <../topics/mojito_frame_mojits.html#creating-custom-frame-mojits>`_
+
 
