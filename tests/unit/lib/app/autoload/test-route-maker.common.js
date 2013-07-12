@@ -91,8 +91,8 @@ YUI().use('mojito-route-maker', 'test', function (Y) {
 
         _should: {
             error: {
-                'test route maker use case #4 (-ve test)': true,
-                'test route maker where there is no match': true
+                // 'test route maker use case #4 (-ve test)': true
+                // 'test route maker where there is no match': true
             }
         },
 
@@ -103,8 +103,15 @@ YUI().use('mojito-route-maker', 'test', function (Y) {
         tearDown: function () {
         },
 
+        //
+        'test route maker where there is no match': function () {
+            var url = routeMaker.make('admin.doesnotexist', 'delete', {});
+            A.areEqual(null, url, 'wrong url for admin.doesnotexist');
+        },
         // exact match
-        'test route maker admin.help': function () {
+        // path: '/admin/help'
+        // call: 'admin.help'
+        'test route maker use case #1': function () {
             A.isFunction(routeMaker.make);
 
             var url = routeMaker.make('admin.help', 'get', {});
@@ -124,24 +131,29 @@ YUI().use('mojito-route-maker', 'test', function (Y) {
         'test route maker use case #3': function () {
             A.isFunction(routeMaker.make);
             var url = routeMaker.make('admin.support', 'get', {type: 'community'});
-            A.areEqual('/community/support', url, 'admin.help: bad URL');
+            A.areEqual('/community/support', url, 'admin.support: bad URL');
         },
         //
         //
         'test route maker use case #4 (+ve test)': function () {
             A.isFunction(routeMaker.make);
             var url = routeMaker.make('admin.submit', 'post', {type: 'community', action: 'submission'});
-            A.areEqual('/community/submission', url, 'admin.help: bad URL');
+            A.areEqual('/community/submission', url, 'admin.submit: bad URL');
         },
         // method should be POST, not GET
         'test route maker use case #4 (-ve test)': function () {
             A.isFunction(routeMaker.make);
             var url = routeMaker.make('admin.submit', 'get', {type: 'community', action: 'submission'});
-            A.areEqual('/community/submission', url, 'admin.help: bad URL');
+            A.areEqual(null, url, 'admin.submit: bad URL');
         },
+
+        // make url with query params
         //
-        'test route maker where there is no match': function () {
-            var url = routeMaker.make('admin.doesnotexist', 'delete', {});
+        // path: '/:type/support'
+        // call: '/:type/support'
+        'test route maker use case #5': function () {
+            var url = routeMaker.make('admin.support', 'get', { type: 'community', foo: 'bar' });
+            A.areEqual('/community/support?foo=bar', url, 'admin.support: bad URL');
         },
 
         // route finder
