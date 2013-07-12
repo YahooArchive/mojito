@@ -10,14 +10,14 @@ Introduction
 Mojito allows you to establish parent-child relationships between your mojits, 
 so parent mojits can execute child mojits and attach the content to the 
 parent mojit’s template. The parent mojit in this relationship is called a 
-composite mojit. The frame mojit ``HTMLFrameMojit`` that we looked in the last module is 
+*composite* mojit. The frame mojit ``HTMLFrameMojit`` that we looked in the last module is 
 also a composite mojit. In fact, all frame mojits 
 are composite mojits, but composite mojits do not have to be frame mojits. 
 A frame mojit can also have a child mojit that is a composite mojit, 
 extending the parent-child relationship. 
 
 In this module, we’re going to keep using the ``HTMLFrameMojit`` and have a child 
-that is a composite mojit, which will have several children. To make it more 
+that is a composite mojit that has several children. To make it more 
 interesting, one of the children is also a composite mojit that has a child. 
 The composite mojits will manage the child mojits that create our content, 
 while the ``HTMLFrameMojit`` will continue to put together our HTML page. Do you 
@@ -62,7 +62,7 @@ Review of the Last Module
 #########################
 
 In the last module, we discussed frame mojits, and in particular, the 
-HTMLFrameMojit that comes with Mojito. We also looked at adding CSS assets 
+``HTMLFrameMojit`` that comes with Mojito. We also looked at adding CSS assets 
 to our application using several different ways. More specifically, we 
 covered the following:
 
@@ -88,9 +88,9 @@ Lesson: Composite Mojits
 Introduction
 ------------
 
-Composite mojits are simply configuring a parent mojit to have children that 
-it can execute with the Composite addon. This allows you to have central 
-control over several mojits that are responsible for generating content for 
+Composite mojits are simply parent mojits with child mojits that 
+can be executed by the parent with the ``Composite`` addon. This allows you to have 
+central control over several mojits that are responsible for generating content for 
 parts of a page, and it also allows you to share data and configuration with 
 child mojits.
 
@@ -100,13 +100,13 @@ Configuring Composite Mojits
 ############################
 
 Configuring composite mojits is very similar to configuring frame mojits, 
-except composite mojits use the children object instead of the child object 
+except composite mojits use the ``children`` object instead of the ``child`` object 
 to define parent-child relationships. The composite mojit can also have many 
-child mojit instances defined in the children object.
+child mojit instances defined in the ``children`` object. Moreover, your application
+can have many composite mojits, but only one frame mojit. 
 
-
-In the example ``application.json`` below, the layout instance in its config has 
-defined three child mojit instances. This parent-child relationship lets the 
+In the example ``application.json`` below, the layout instance in its configuration 
+has defined three child mojit instances. This parent-child relationship lets the 
 layout instance execute the actions of its child instances and then attach the 
 content from those child instances to its template. 
 
@@ -142,7 +142,7 @@ You can imagine how our layout instance would organize the parts of the page
 such as the body, header, and footer, but we’re still going to need our ``HTMLFrameMojit`` 
 to create the HTML skeleton and attached our content. To do this, we simply make our 
 layout instance a child of the ``HTMLFrameMojit``. Notice though that our composite 
-instance is now ``child`` and **not** ``layout``.
+instance is now ``child``.
 
 .. code-block:: javascript
 
@@ -309,7 +309,7 @@ but allows for the dynamic creation of mojit instances.
 
 We’re not going to dynamically create mojit instances, so it makes more 
 sense to just use ``ac.composite.done`` to execute the child mojits. Based on 
-what we’ve learned, the controller for the parent mojit ``BodyMojit shown 
+what we’ve learned, the controller for the parent mojit ``Body`` shown 
 below should make more sense. Based on our configuration, the ``body`` instance 
 will execute the ``github`` instance. We’re also passing some data to the parent 
 template, but how does the parent template attach the content created by our 
@@ -317,7 +317,7 @@ template, but how does the parent template attach the content created by our
  
 .. code-block:: javascript
 
-   YUI.add('BodyMojit', function(Y, NAME) {
+   YUI.add('Body', function(Y, NAME) {
 
      Y.namespace('mojito.controllers')[NAME] = {
 
@@ -340,14 +340,14 @@ by Handlebars expressions. Attaching the content from child mojits to
 parent templates is done in the same way. In the parent template, you 
 use the Handlebars expressions and the mojit instance name to attach the 
 content. In our configuration, the ``body`` instance has the one child ``github``, 
-so in the template of the BodyMojit, you use the Handlebars expression 
+so in the template of the ``Body`` mojit, you use the Handlebars expression 
 ``{{github}}`` to get the content from the ``github`` instance:
 
 .. code-block:: html
 
    <div id="{{mojit_view_id}}" class="mojit">
      <h4 class="bodytext">{{title}}</h4>
-     <div class="bodyMojitStuff">
+     <div class="BodyStuff">
        {{{github}}}
      </div>
    </div>
@@ -778,34 +778,47 @@ Creating the Application
    template of the ``Body`` mojit. The page would be more useful with real data,
    so, that will be the topic of our next module.
 
+.. _04_composite_mojits-summary:
+
+Module Review
+=============
+
+In this module, we covered the following:
+
+- creating an instance of the HTMLFrameMojit
+- configuring parent-child relationships between mojits
+- adding assets with the Assets addon, with static URLs, and with the HTMLFrameMojit
+
 .. _04_composite_mojits-ts:
 
 Troubleshooting
 ===============
 
-Problem One
------------
+Error Executing Child Mojit
+---------------------------
 
-Nulla pharetra aliquam neque sed tincidunt. Donec nisi eros, sagittis vitae lobortis nec, 
-interdum sed ipsum. Quisque congue tempor odio, a volutpat eros hendrerit nec. 
-Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
+If you got the following error, chances are that you forgot to include the 
+``Composite`` addon to the ``requires`` array of your composite mojit::
 
-Problem Two
------------
+   error: (mojito-composite-addon): Error executing child mojit at 'child':
+   error: (mojito-composite-addon): Cannot call method 'done' of undefined
 
-Nulla pharetra aliquam neque sed tincidunt. Donec nisi eros, sagittis vitae lobortis nec, 
-interdum sed ipsum. Quisque congue tempor odio, a volutpat eros hendrerit nec. 
-Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
+Just add ``mojito-composite-addon`` to the ``requires`` array of the controller of
+your composite mojit as shown here:
 
-.. _04_composite_mojits-summary:
+.. code-block:: javascript
 
-Summary
-=======
+Child Mojits Not Being Rendered
+-------------------------------
 
-In this module, we covered the following:
+If you do not see your child mojits being rendered and there are no errors,
+check to see that the mojit instance defined in ``application.json`` and the 
+Handlebars expressions in the composite mojit's template is the same.
 
-- blah, blah
-- blah, blah
+For example, if you have the mojit instance ``github`` defined as a child of the
+``body`` instance, then the template of the ``body`` mojit should have the 
+Handlebars expressions ``{{github}}``.
+
 
 .. _04_composite_mojits-qa:
 
@@ -819,29 +832,49 @@ How do you...
 Test Yourself
 =============
 
+.. _04_composite_mojits-questions:
+
+Questions
+---------
+
 - What are the differences between configuring a frame mojit and a composite mojit?
 - What Handlebars expression allows you to attach the content of a child mojit?
-- What are the two Composite addon methods that allow parent mojits to execute child mojits?
+- What are the two ``Composite`` addon methods that allow parent mojits to execute child mojits?
+
+.. _04_composite_mojits-addition_exs:
+
+Additional Exercises
+--------------------
+
+- Create another mojit and configure it to be a composite mojit that is the parent
+  of ``Github``, so that you have the following parent-child structure: 
+  ``tribframe`` -> ``Body`` -> ``{new_mojit}`` -> ``github``
+- Try replacing ``ac.composite.done`` in the controller of the ``Body`` mojit with 
+  ``ac.composite.execute``. You'll need to create the configuration to pass to 
+  ``execute``. Refer to `Running Dynamically Defined Mojit Instances <../topics/mojito_run_dyn_defined_mojits.html>`_
+  for help.
+
 
 .. _04_composite_mojits-terms:
 
 Terms
 =====
 
-- composite
+- **composite mojit** - A parent mojit that has child mojits and executes those child
+  mojits with the ``Composite`` addon.
 
 .. _04_composite_mojits-src:
 
 Source Code
 ===========
 
-- [app_part{x}](http://github.com/yahoo/mojito/examples/quickstart_guide/app_part{x})
+- `04_composite_mojits <http://github.com/yahoo/mojito/examples/dashboard/04_composite_mojits>`_
 
 .. _04_composite_mojits-reading:
 
 Further Reading
 ===============
 
-- [Mojito Doc](http://developer.yahoo.com/cocktails/mojito/docs/)
-- website
+- `Composite Mojits <../topics/mojito_composite_mojits.html>`_
+- `Running Dynamically Defined Mojit Instances <../topics/mojito_run_dyn_defined_mojits.html>`_
 

@@ -681,10 +681,6 @@ Q&A
   No, the mojit instance of type ``HTMLFrameMojit`` must be the top-level mojit in the 
   application, so there can only be one mojit using the ``HTMLFrameMojit``.
 
-- 
-
-
-
 
 ..  03_frame_mojits-test:
 
