@@ -3,260 +3,198 @@
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
  */
-YUI().use('mojito-route-maker', 'test', function(Y) {
 
+/*jslint nomen:true, node:true*/
+/*global YUI*/
+
+YUI().use('mojito-route-maker', 'test', function (Y) {
     var suite = new Y.Test.Suite('mojito-route-maker-tests'),
         A = Y.Assert,
-        OA = Y.ObjectAssert;
+        OA = Y.ObjectAssert,
+        routesFixture,
+        routeMaker;
+
+    function setupFixtures() {
+        var routes,
+            fns;
+
+        fns = [
+            function (req, res, next) { next(); }
+        ];
+
+        routes = {
+            get: [{
+                // use case #1
+                path: '/admin/help',
+                method: 'get',
+                callbacks: [ fns ],
+                keys: [],
+                regexp: /^\/admin\/help\/?$/i,
+                dispatch: {
+                    call: 'admin.help',
+                    params: { },
+                    options: { }
+                }
+            }, {
+                // use case #2
+                path: '/admin/:action',
+                method: 'get',
+                callbacks: [ fns ],
+                keys: [
+                    { name: 'action', optional: false }
+                ],
+                regexp: /^\/admin\/(?:([^\/]+?))\/?$/i,
+                dispatch: {
+                    call: 'admin.support',
+                    params: { },
+                    options: { }
+                }
+            }, {
+                // use case #3
+                path: '/:type/support',
+                method: 'get',
+                callbacks: [ fns ],
+                keys: [
+                    { name: 'type', optional: false }
+                ],
+                regexp: /^\/(?:([^\/]+?))\/support\/?$/i,
+                dispatch: {
+                    call: 'admin.support',
+                    params: { },
+                    options: { }
+                }
+            }],
+            post: [{
+                // use case #4
+                path: '/:type/:action',
+                method: 'post',
+                callbacks: [ fns ],
+                keys: [
+                    { name: 'type', optional: false },
+                    { name: 'action', optional: false }
+                ],
+                regexp: /^\/(?:([^\/]+?))\/(?:([^\/]+?))\/?$/i,
+                dispatch: {
+                    call: 'admin.submit',
+                    params: { },
+                    options: { }
+                }
+            }],
+            'delete': []
+        };
+
+        routesFixture = routes;
+    }
 
     suite.add(new Y.Test.Case({
-
         name: 'make() tests',
 
-        setUp: function() {
-            routeMaker = new Y.mojito.RouteMaker(routes);
+        _should: {
+            error: {
+                'test route maker use case #4 (-ve test)': true,
+                'test route maker where there is no match': true
+            }
         },
 
-        'route maker for dynamic id and action GET': function() {
-
-            var url = routeMaker.make('foo.bar');
-
-            A.areSame('/foo/bar', url, "Bad URL");
-
+        setUp: function () {
+            setupFixtures();
+            routeMaker = new Y.mojito.RouteMaker(routesFixture);
+        },
+        tearDown: function () {
         },
 
-        'route maker for dynamic id and action POST': function() {
+        // exact match
+        'test route maker admin.help': function () {
+            A.isFunction(routeMaker.make);
 
-            var url = routeMaker.make('foo.bar', 'POST');
-
-            A.areSame('/foo/bar', url, "Bad URL");
-
+            var url = routeMaker.make('admin.help', 'get', {});
+            A.areEqual('/admin/help', url, 'foo.index: bad URL');
+        },
+        //
+        // path: '/admin/:action'
+        // call: 'admin.support'
+        'test route maker use case #2': function () {
+            A.isFunction(routeMaker.make);
+            var url = routeMaker.make('admin.support', 'get', {action: 'contactus'});
+            A.areEqual('/admin/contactus', url, 'admin.support bad URL');
+        },
+        //
+        // path: '/:type/support'
+        // call: '/:type/support'
+        'test route maker use case #3': function () {
+            A.isFunction(routeMaker.make);
+            var url = routeMaker.make('admin.support', 'get', {type: 'community'});
+            A.areEqual('/community/support', url, 'admin.help: bad URL');
+        },
+        //
+        //
+        'test route maker use case #4 (+ve test)': function () {
+            A.isFunction(routeMaker.make);
+            var url = routeMaker.make('admin.submit', 'post', {type: 'community', action: 'submission'});
+            A.areEqual('/community/submission', url, 'admin.help: bad URL');
+        },
+        // method should be POST, not GET
+        'test route maker use case #4 (-ve test)': function () {
+            A.isFunction(routeMaker.make);
+            var url = routeMaker.make('admin.submit', 'get', {type: 'community', action: 'submission'});
+            A.areEqual('/community/submission', url, 'admin.help: bad URL');
+        },
+        //
+        'test route maker where there is no match': function () {
+            var url = routeMaker.make('admin.doesnotexist', 'delete', {});
         },
 
-        'route maker for dynamic id only': function() {
-
-            var url = routeMaker.make('foo.index');
-
-            A.areSame('/foo/roger', url, "Bad URL");
-
+        // route finder
+        //
+        // exact match
+        'test route finder use case #1': function () {
+            A.isFunction(routeMaker.find);
+            var route = routeMaker.find('/admin/help', 'get');
+            A.isNotUndefined(route, 'route not found for /admin/help');
+            A.areEqual('/admin/help', route.path, 'wrong route.path for /admin/help');
         },
 
-        'route maker for dynamic action only': function() {
-
-            var url = routeMaker.make('bingo.chop');
-
-            A.areSame('/baz/chop', url, "Bad URL");
-
+        //
+        // path: /admin/:action
+        // action = showrights
+        'test route finder use case #2': function () {
+            A.isFunction(routeMaker.find);
+            var route = routeMaker.find('/admin/showrights', 'get');
+            A.isNotUndefined(route, 'route not found for /admin/showrights');
+            // A.areEqual('/admin/showrights', route.path, 'wrong route for /admin/showrights');
+            A.areEqual('showrights', route.dispatch.params.action,
+                        'wrong action for /admin/showrights');
+        },
+        //
+        // path: /:type/:action
+        // type = root
+        // action = showrights
+        //
+        // verify: that this does not match use case #2
+        'test route finder use case #3': function () {
+            var route = routeMaker.find('/root/showrights', 'post');
+            A.isNotUndefined(route, 'route not found for /root/showrights');
+            // A.areEqual('/admin/showrights', route.path, 'wrong route for /admin/showrights');
+            A.areEqual('root', route.dispatch.params.type,
+                        'wrong :type for /root/showrights');
+            A.areEqual('showrights', route.dispatch.params.action,
+                        'wrong :action for /root/showrights');
         },
 
-        'route maker for dynamic id and action and extra variable': function() {
-
-            var url = routeMaker.make('foo.bar?variable=yada');
-
-            A.areSame('/foo/bar/yada', url, "Bad URL");
-
-        },
-
-        'router make URL weather zip': function() {
-
-            var url = routeMaker.make('mojit_weather.index?zip=94032');
-
-            A.areSame('/weather/94032/', url);
-        },
-
-        'router make URL weather no zip': function() {
-
-            var url = routeMaker.make('mojit_weather.index');
-
-            A.areSame('/weather/', url);
-        },
-
-        'router make URL weather zip and rad': function() {
-
-            var url = routeMaker.make('mojit_weather.index?zip=23456&rad=23');
-
-            A.areSame('/weather/at/23456/within/23/', url);
-        },
-
-        'router make URL weather zip and rad and page': function() {
-
-            var url = routeMaker.make('mojit_weather.index?zip=23456&page=2&rad=23');
-
-            A.areSame('/weather/at/23456/within/23/section/2', url);
-        },
-
-        'wildcard works': function() {
-
-            var url = routeMaker.make('fee.fi');
-
-            A.areSame('/fee/fi', url);
-        },
-
-        'static works': function() {
-
-            var url = routeMaker.make('YMVC_default.index');
-
-            A.areSame('/index.html', url);
-        },
-
-        'mojit / action to root': function() {
-
-            var url = routeMaker.make('super.cuban');
-
-            A.areSame('/', url);
+        //
+        // path: /:type/:action
+        // type = root
+        // action = showrights
+        //
+        // verify: null is returned if no route is found for this uri
+        // why: verb is 'get', should be 'post'
+        'test route finder use case #4 (-ve test)': function () {
+            var route = routeMaker.find('/root/showrights', 'get');
+            A.isNull(route, 'no route expected for path GET /root/showrights');
         }
-
-    }));
-
-    suite.add(new Y.Test.Case({
-
-        name: 'find() tests',
-
-        setUp: function() {
-            //  Use the same routes here as we do for the 'make' tests
-            this.routeMaker = new Y.mojito.RouteMaker(routes);
-        },
-
-        'router find URL weather action GET': function() {
-
-            var url = routeMaker.find('/weather/', 'GET');
-
-            A.isNotUndefined(url);
-        },
-
-        'router find URL weather zip action GET': function() {
-
-            var url = routeMaker.find('/weather/94032/', 'GET');
-
-            A.isNotUndefined(url);
-        },
-
-        'route find URL weather zip and radius action GET': function() {
-
-            var url = routeMaker.find('/weather/at/94032/within/25/');
-
-            A.isNotUndefined(url);
-        },
-
-        'route find URL index.html': function() {
-
-            var url = routeMaker.find('index.html');
-
-            A.isNotUndefined(url);
-        },
 
     }));
 
     Y.Test.Runner.add(suite);
-
-    var routes = {
-        "weather_url_zip_rad_page": {
-            "verbs": ["get"],
-            "path": "/weather/at/:zip/within/:rad/section/:page",
-            "call": "mojit_weather.index"
-        },
-        "weather_url_zip_rad": {
-            "verbs": ["get"],
-            "path": "/weather/at/:zip/within/:rad/",
-            "call": "mojit_weather.index"
-        },
-        "weather_url_zip": {
-            "verbs": ["get"],
-            "path": "/weather/:zip/",
-            "regex": {"zip":"[0-9]+"},
-            "call": "mojit_weather.index"
-        },
-        "weather_url": {
-            "verbs": ["get"],
-            "path": "/weather/",
-            "call": "mojit_weather.index"
-        },
-        "_index_html":{
-            "path": "/index.html",
-            "call": "YMVC_default.index"
-        },
-        "_index":{
-            "path": "/",
-            "params": "fee=yoyo",
-            "call": "super.cuban"
-        },
-        "_dynamic_id_only":{
-            "verbs": ["get","post"],
-            "path": "/:id/roger",
-            "call": "{id}.index"
-        },
-        "_dynamic_action_only":{
-            "verbs": ["get","post"],
-            "path": "/baz/:action",
-            "call": "bingo.{action}"
-        },
-        "weather_url_dynamic_action": {
-            "verbs": ["get"],
-            "path": "/weathergo/:action",
-            "call": "mojit_weather.{action}"
-        },
-        "_default_module_action with value":{
-            "verbs": ["get","post"],
-            "path": "/:mojit-base/:mojit-action/:variable",
-            "call": "{mojit-base}.{mojit-action}"
-        },
-        "_default_module_action get":{
-            "verbs": ["get"],
-            "path": "/:id/:m-action",
-            "call": "{id}.{m-action}"
-        },
-        "_default_module_action post":{
-            "verbs": ["post"],
-            "path": "/:id/:m-action",
-            "call": "{id}.{m-action}"
-        },
-        "_default_module":{
-            "verbs": ["get","post","put"],
-            "path": "/:mojit-base/*",
-            "call": "{mojit-base}.index"
-        }
-    };
-
-    suite.add(new Y.Test.Case({
-
-        name: 'getComputedRoutes() tests',
-
-        setUp: function() {
-            this.routeMaker = new Y.mojito.RouteMaker(getComputedRoutes_routes);
-        },
-
-        'computedRoutes() are available after construction': function() {
-            var computedRoutes = this.routeMaker.getComputedRoutes(),
-                route = computedRoutes["index"];
-
-            OA.ownsKeys(["ext_match", "int_match"], route, "Computed routes not immediately available");
-        },
-
-        'computedRoutes() changes verbs from array to object': function() {
-            // the client-side optimization behavior depends on route calculation
-            // being skipped when verbs are changed from an array to an object
-
-            var computedRoutes = this.routeMaker.getComputedRoutes(),
-                route = computedRoutes["index_for_post"];
-
-            A.isTrue(Y.Lang.isObject(route.verbs), "Route verbs should have been converted from array to object");
-        }
-
-    }));
-
-    var getComputedRoutes_routes = {
-        "index":{
-            "path": "/index.html",
-            "call": "default.index"
-        },
-
-        "index_for_post":{
-            "verbs": ["post"],
-            "path": "/index.html",
-            "call": "default.index"
-        }
-    };
-
-    Y.Test.Runner.add(suite);
-
 });
+
