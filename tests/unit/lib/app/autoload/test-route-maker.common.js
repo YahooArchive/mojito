@@ -24,7 +24,6 @@ YUI().use('mojito-route-maker', 'test', function (Y) {
 
         routes = {
             get: [{
-                // use case #1
                 path: '/admin/help',
                 method: 'get',
                 callbacks: [ fns ],
@@ -36,7 +35,6 @@ YUI().use('mojito-route-maker', 'test', function (Y) {
                     options: { }
                 }
             }, {
-                // use case #2
                 path: '/admin/:action',
                 method: 'get',
                 callbacks: [ fns ],
@@ -50,7 +48,6 @@ YUI().use('mojito-route-maker', 'test', function (Y) {
                     options: { }
                 }
             }, {
-                // use case #3
                 path: '/:type/support',
                 method: 'get',
                 callbacks: [ fns ],
@@ -63,9 +60,22 @@ YUI().use('mojito-route-maker', 'test', function (Y) {
                     params: { },
                     options: { }
                 }
+            }, {
+                path: '/:foobar/:foo',
+                method: 'get',
+                callbacks: [ fns ],
+                keys: [
+                    { name: 'foobar', optional: false },
+                    { name: 'foo', optional: false }
+                ],
+                regexp: /^\/(?:([^\/]+?))\/support\/?$/i,
+                dispatch: {
+                    call: 'foobar.foo',
+                    params: { },
+                    options: { }
+                }
             }],
             post: [{
-                // use case #4
                 path: '/:type/:action',
                 method: 'post',
                 callbacks: [ fns ],
@@ -156,6 +166,33 @@ YUI().use('mojito-route-maker', 'test', function (Y) {
             A.areEqual('/community/support?foo=bar', url, 'admin.support: bad URL');
         },
 
+        // make url containing querystring overwrite params
+        //
+        // path: '/:type/support'
+        // call: '/:type/support'
+        'test route maker use case #6': function () {
+            var url = routeMaker.make('admin.support?type=community', 'get', { foo: 'bar' });
+            A.areEqual('/community/support', url, 'admin.support: bad URL');
+        },
+
+        // make url containing querystring with query params, even if query
+        // params contains required keys
+        //
+        // path: '/:type/support'
+        // call: '/:type/support'
+        'test route maker use case #7': function () {
+            var url = routeMaker.make('admin.support?type=community', 'get', { type: 'community', foo: 'bar' });
+            A.areEqual('/community/support', url, 'admin.support: bad URL');
+        },
+
+        // make sure :foo and :foobar are replaced correctly
+        //
+        'test route maker use case #8': function () {
+            var url = routeMaker.make('foobar.foo', 'get', { foo: 'world', foobar: 'hello' });
+            A.areEqual('/hello/world', url, 'admin.submit: bad URL');
+        },
+
+
         // route finder
         //
         // exact match
@@ -174,7 +211,9 @@ YUI().use('mojito-route-maker', 'test', function (Y) {
             var route = routeMaker.find('/admin/showrights', 'get');
             A.isNotUndefined(route, 'route not found for /admin/showrights');
             // A.areEqual('/admin/showrights', route.path, 'wrong route for /admin/showrights');
-            A.areEqual('showrights', route.dispatch.params.action,
+            // A.areEqual('showrights', route.dispatch.params.action,
+            //             'wrong action for /admin/showrights');
+            A.areEqual('showrights', route.params.action,
                         'wrong action for /admin/showrights');
         },
         //
@@ -187,9 +226,13 @@ YUI().use('mojito-route-maker', 'test', function (Y) {
             var route = routeMaker.find('/root/showrights', 'post');
             A.isNotUndefined(route, 'route not found for /root/showrights');
             // A.areEqual('/admin/showrights', route.path, 'wrong route for /admin/showrights');
-            A.areEqual('root', route.dispatch.params.type,
+            // A.areEqual('root', route.dispatch.params.type,
+            //             'wrong :type for /root/showrights');
+            // A.areEqual('showrights', route.dispatch.params.action,
+            //             'wrong :action for /root/showrights');
+            A.areEqual('root', route.params.type,
                         'wrong :type for /root/showrights');
-            A.areEqual('showrights', route.dispatch.params.action,
+            A.areEqual('showrights', route.params.action,
                         'wrong :action for /root/showrights');
         },
 
@@ -203,7 +246,22 @@ YUI().use('mojito-route-maker', 'test', function (Y) {
         'test route finder use case #4 (-ve test)': function () {
             var route = routeMaker.find('/root/showrights', 'get');
             A.isNull(route, 'no route expected for path GET /root/showrights');
+        },
+
+        //
+        // path: /:type/:action
+        // type = root
+        // action = showrights
+        //
+        // verify: null is returned if no route is found for this uri
+        // why: verb is 'get', should be 'post'
+        'test route finder use case #5': function () {
+            var route = routeMaker.find('/root/showrights', 'post');
+            A.isNotUndefined(route, 'no route expected for path POST /root/showrights');
+            A.areEqual('admin.submit', route.call,
+                       '/root/showrights: wrong route.call');
         }
+
 
     }));
 
