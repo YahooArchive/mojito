@@ -7,7 +7,7 @@
 /*jslint nomen:true, node:true*/
 /*global YUI*/
 
-YUI().use('mojito-route-maker', 'test', function (Y) {
+YUI().use('mojito-route-maker', 'test', 'dump', function (Y) {
     var suite = new Y.Test.Suite('mojito-route-maker-tests'),
         A = Y.Assert,
         OA = Y.ObjectAssert,
@@ -260,6 +260,81 @@ YUI().use('mojito-route-maker', 'test', function (Y) {
             A.isNotUndefined(route, 'no route expected for path POST /root/showrights');
             A.areEqual('admin.submit', route.call,
                        '/root/showrights: wrong route.call');
+        },
+
+        'test convertAppRoute': function () {
+            var appRoutes,
+                routes,
+                route,
+                i;
+
+            appRoutes = [{
+                path: '/bar',
+                method: 'get',
+                callbacks: [ function (req, res, next) { } ],
+                keys: [],
+                rexgexp: /^\/bar\/?$/i,
+                dispatch: {
+                    call: 'bar.index',
+                    params: {},
+                    options: {}
+                },
+                params: []
+            }, {
+                path: '/foo/:bar',
+                method: 'post',
+                callbacks: [ function (req, res, next) { } ],
+                keys: [
+                    { name: 'bar', optional: false }
+                ],
+                rexgexp: /^\/foo\/(?:([^\/]+?))\/?$/i,
+                dispatch: {
+                    call: 'foo.action',
+                    params: {
+                    },
+                    options: {}
+                },
+                params: []
+            }];
+
+            routes = [{
+                path: '/bar',
+                call: 'bar.index',
+                name: 'bar.index',
+                verbs: {
+                    GET: true
+                },
+                params: {},
+                regex: {},
+                ext_match: /^\/bar\/?$/i
+                // query: {},
+                // requires: {},
+                // ext_match: '',
+                // int_match: ''
+            }, {
+                path: '/foo/:bar',
+                call: 'bar.action',
+                name: 'bar.action',
+                verbs: {
+                    POST: true
+                },
+                params: {},
+                regex: { },
+                ext_match: /^\/bar\/?$/i
+            }];
+
+            for (i = 0; i < appRoutes.length; i = i + 1) {
+                route = routeMaker._convertAppRoute(appRoutes[i]);
+                // Y.log(Y.dump(route), 'debug');
+                A.areEqual(routes[i].path,
+                           route.path,
+                           'wrong route.path for index ' + i);
+                A.areEqual(true,
+                           route.verbs[appRoutes[i].method.toUpperCase()],
+                           'wrong route.verbs for index ' + i);
+
+            }
+
         }
 
 
