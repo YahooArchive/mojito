@@ -5,7 +5,7 @@
         "name" : "config",
 
         "config" :{
-            "baseUrl" : "http://localhost:8666",
+            "baseUrl" : "http://localhost:8666/testruntime",
             "application" : {
                 "name":"configapp",
                 "path": "./frameworkapp/configapp"
@@ -24,21 +24,21 @@
                 "group" : "functional,smoke,config,testgroup0",
                 "params" : {
                     "test" : "testDefaultConfig2.js",
-                    "page" : "$$config.baseUrl$$/?lang=de"
+                    "page" : "$$config.baseUrl$$?lang=de"
                 }
             },
             "DefaultConfig3" : {
                 "group" : "functional,smoke,config,testgroup0",
                 "params" : {
                     "test" : "testDefaultConfig3.js",
-                    "page" : "$$config.baseUrl$$/?lang=fr"
+                    "page" : "$$config.baseUrl$$?lang=fr"
                 }
             },
             "DefaultConfig4" : {
                 "group" : "functional,smoke,config,testgroup0",
                 "params" : {
                     "test" : "testDefaultConfig4.js",
-                    "page" : "$$config.baseUrl$$/?subject=math"
+                    "page" : "$$config.baseUrl$$?subject=math"
                 }
             }
         }     

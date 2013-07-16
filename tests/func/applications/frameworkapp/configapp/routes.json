@@ -11,5 +11,13 @@
         "path": "/:mojit-id/:mojit-action",
         "call": "{mojit-id}.{mojit-action}"
     }
+  },
+  {
+    "settings": [ "runtime:server" ],
+    "mainPage": {
+      "verbs": ["get"],
+      "path": "/testruntime",
+      "call": "testpage.index"
+    }
   }
 ]
