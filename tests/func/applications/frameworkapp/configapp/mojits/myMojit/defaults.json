@@ -10,10 +10,10 @@
     {
         "settings": [ "runtime:server" ],
         "config": {
-			"myenv": "This is from defaults.json:runtime:server"
+            "myenv": "This is from defaults.json:runtime:server"
         }
     },
-	{
+    {
         "settings": [ "subject:math" ],
         "config": {
             "mysubject": "This is from defaults.json:subject:math"
