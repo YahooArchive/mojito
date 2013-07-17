@@ -663,20 +663,18 @@ find JSLint errors that are in JavaScript files, so you can either use another c
 utility to check for syntax errors, use the stie http://jslint.com/ to test the ``routes.json``,
 or use Node.js to evaluate the JSON with the following command: ``node -e 'require("./routes.json");'``
 
-
-
 ..  03_frame_mojits-qa:
 
 Q&A
 ===
 
 
-- Is there a way to deploy code to the client without the ``HTMLFrameMojit``?
+- **Is there a way to deploy code to the client without the "HTMLFrameMojit"?**
 
   Yes, but you need to create your own frame mojit. The frame mojit deploys the files to
   the client. 
 
-- Can child mojits of the ``HTMLFrameMojit`` also use the ``HTMLFrameMojit``?
+- **Can child mojits of the "HTMLFrameMojit" also use the "HTMLFrameMojit"?**
 
   No, the mojit instance of type ``HTMLFrameMojit`` must be the top-level mojit in the 
   application, so there can only be one mojit using the ``HTMLFrameMojit``.

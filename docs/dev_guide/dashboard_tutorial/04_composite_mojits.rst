@@ -11,10 +11,9 @@ Mojito allows you to establish parent-child relationships between your mojits,
 so parent mojits can execute child mojits and attach the content to the 
 parent mojit’s template. The parent mojit in this relationship is called a 
 *composite* mojit. The frame mojit ``HTMLFrameMojit`` that we looked in the last module is 
-also a composite mojit. In fact, all frame mojits 
-are composite mojits, but composite mojits do not have to be frame mojits. 
-A frame mojit can also have a child mojit that is a composite mojit, 
-extending the parent-child relationship. 
+also a composite mojit. In fact, all frame mojits are composite mojits, but composite mojits 
+do not have to be frame mojits. A frame mojit can also have a child mojit that is a 
+composite mojit, extending the parent-child relationship. 
 
 In this module, we’re going to keep using the ``HTMLFrameMojit`` and have a child 
 that is a composite mojit that has several children. To make it more 
@@ -68,7 +67,7 @@ covered the following:
 
 - creating an instance of the HTMLFrameMojit
 - configuring parent-child relationships between mojits
-- adding assets with the Assets addon, with static URLs, and with the HTMLFrameMojit
+- adding assets with the Assets addon, with static URLs, and with the ``HTMLFrameMojit``
 
 .. _04_before_starting-setting_up:
 
@@ -141,7 +140,7 @@ content from those child instances to its template.
 You can imagine how our layout instance would organize the parts of the page 
 such as the body, header, and footer, but we’re still going to need our ``HTMLFrameMojit`` 
 to create the HTML skeleton and attached our content. To do this, we simply make our 
-layout instance a child of the ``HTMLFrameMojit``. Notice though that our composite 
+``tribframe`` instance a child of the ``HTMLFrameMojit``. Notice though that our composite 
 instance is now ``child``.
 
 .. code-block:: javascript
@@ -357,67 +356,20 @@ so in the template of the ``Body`` mojit, you use the Handlebars expression
 YUI CSS
 -------
 
-In this module, we use YUI CSS to style our application. We’re 
-going to look at the YUI CSS files and discuss what they do
-for the application.
+In this module, we use YUI CSS to style our application. We're not going
+to cover the YUI CSS in this tutorial, but we encourage you to read the YUI
+documentation to learn more about what the CSS does and how you can use it 
+in your own projects.
 
-.. _04_lesson_yui-normalize:
+- `Normalize CSS (normalize.css) <http://yuilibrary.com/yui/docs/cssnormalize/>`_
+- `Response Grids <http://yuilibrary.com/yui/docs/cssgrids/#responsive>`_
+  - ``forms-responsive.css``
+  - ``list-responsive.css``
+  - ``cssgrids-responsive-min.css``
 
-Normalize
-#########
+The application also uses YUI CSS for common HTML elements such as lists and forms and
+custom CSS (``trib.css``).
 
-File: "http://necolas.github.com/normalize.css/1.0.2/normalize.css",
-
-.. _04_lesson_yui-normalize:
-
-Forms
-#####
-
-File: "https://rawgithub.com/tilomitra/cssforms/master/css/forms.css",
-
-.. _04_lesson_yui-response_grid:
-
-Response Grid          
-#############
-                     
-Files
-*****
-
-- "https://rawgithub.com/tilomitra/cssforms/master/css/forms-responsive.css",
-- "https://rawgithub.com/tilomitra/csslist/master/css/list-responsive.css",
-- "http://yui.yahooapis.com/3.9.0pr3/build/cssgrids-responsive/cssgrids-responsive-min.css",
-
-.. _04_lesson_yui-buttons:
-
-Buttons
-#######
-
-- "http://yui.yahooapis.com/3.8.0/build/cssbutton/cssbutton-min.css",
-
-.. _04_lesson_yui-lists:
-
-Lists
-#####
-
-- "https://rawgithub.com/tilomitra/csslist/master/css/list-core.css",
-- "https://rawgithub.com/tilomitra/csslist/master/css/list.css",
-- "https://rawgithub.com/tilomitra/csslist/master/css/list-paginator.css",
-
-.. _04_lesson_yui-lists:             
-
-UI                                
-##
-
-- "https://rawgithub.com/tilomitra/yuicss-common/master/ui.css",
-
-.. _04_lesson_yui-custom:
-
-Custom
-######
-
--  "/static/04_composite_mojits/assets/trib.css"
-
-.. tip:: Nulla mattis volutpat justo, et elementum quam condimentum vel. 
 
 .. _04_composite_mojits-create:
 
@@ -534,8 +486,8 @@ Creating the Application
    Our application works, but the composite mojit isn’t really doing much with the 
    content of its children. That’s because it hasn’t used the ``Composite`` addon to 
    execute its children and attached the content from those children to the template.
-   The first step is have the controller of the LayoutMojit use the Composite addon 
-   and call ``ac.composite.done``:
+   The first step is have the controller of the ``PageLayout`` mojit use the ``Composite`` 
+   addon and call ``ac.composite.done``:
 
    .. code-block:: javascript
 
@@ -570,7 +522,7 @@ Creating the Application
       }, '0.0.1', {requires: ['mojito','mojito-composite-addon']});
 
 
-#. In the template of the composite mojit, we can use the child instance names in 
+#. In the template of the composite mojit, we can use the ``child`` instance names in 
    Handlebars expressions to attach the content of the rendered children to the 
    template:
 
@@ -825,7 +777,44 @@ Handlebars expressions ``{{github}}``.
 Q&A
 ===
 
-How do you...
+- **Can you inherit the configuration of another instance that has children?**
+
+  Yes, the ``base`` property allows you to inherit the mojit configuration, so instead
+  of recreating the configuration, you only need to point ``base`` at an already defined  
+  instance. See the ``base`` property in the `specs Object <../intro/mojito_configuring.html#specs-object>`_
+  configuration.
+
+  In the example below, you can see that the ``mojito_frame`` instance inherits the
+  mojit configuration of the mojit instance ``_frame`` using the ``base`` property, but
+  overrides the ``config`` property with its own configurations.
+
+  .. code-block:: javascript
+
+     "_frame": {
+       "type": "HTMLFrameMojit"
+       "config":
+       "deploy": true
+       "title": "Trib App"
+       "assets": {
+          "top": {
+            "css": [ "static/04_composite_mojits/trib.css" ]
+          }
+       }
+     },
+     "mojito_frame": {
+       "base": "_frame",
+       "config": {
+         "title": "Mojito Dashboard",
+         "child": {
+           "type": "Github",
+           "assets": {
+             "top": {
+               "css": [ "static/Github/assets/github.css" ]
+             }
+           }
+         }
+       }
+     } 
 
 .. _04_composite_mojits-test:
 
