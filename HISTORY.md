@@ -13,6 +13,8 @@ Features
 Bug Fixes
 ---------
 
+* PR #1196: fix runtime:server is not set by default when booting the app
+
 Acknowledgements
 ----------------
 
