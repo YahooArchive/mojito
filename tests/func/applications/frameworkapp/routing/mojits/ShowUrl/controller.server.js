@@ -37,11 +37,12 @@ YUI.add('ShowUrl', function (Y, NAME) {
                 data,
                 matchroute;
 
-            console.log("**********************" + mojitName);
-            console.log("**********************" + mojitAction);
-            console.log("**********************" + mojitUrlParams);
-            console.log("**********************" + mojitUrl);
-            console.log("**********************" + mojitVerb);
+			// console.log(ac.params.params);
+            console.log("********************** mojitName     : " + mojitName);
+            console.log("********************** mojitAction   : " + mojitAction);
+            console.log("********************** mojitUrlParams: " + mojitUrlParams);
+            console.log("********************** mojitUrl      : " + mojitUrl);
+            console.log("********************** mojitVerb     : " + mojitVerb);
 
             if (nameExists === "YES" && actionExists === "YES") {
                 url = "";
