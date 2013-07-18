@@ -56,6 +56,11 @@ YUI.add('ShowUrl', function (Y, NAME) {
                     } else {
                         url = ac.url.make(mojitName, mojitAction);
                     }
+					// Mojito no longer throws an exception if a url cannot be constructed.
+					// Instead, null is returned.
+					if (!url) {
+						url = '/' + mojitName + '/' + mojitAction;
+					}
                 } catch (err1) {
                     url = err1;
                 }
