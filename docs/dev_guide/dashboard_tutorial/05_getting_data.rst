@@ -828,7 +828,7 @@ Q&A
 
   Mojito does not have any native database solutions, but there is nothing preventing a 
   developer from using a Node.js modules such as `mysql <https://npmjs.org/package/mysql>`_
-  for a MySQL database or `mongodb <https://npmjs.org/package/mongodb>`_ for aMongoDB 
+  for a MySQL database or `mongodb <https://npmjs.org/package/mongodb>`_ for a MongoDB 
   database.  
 
 .. 05_getting_data-test:
