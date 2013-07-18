@@ -2,6 +2,8 @@
 5. Getting Data 
 ===============
 
+.. 05_getting_data-intro:
+
 Introduction
 ============
 
@@ -16,16 +18,18 @@ We’re going to use both methods to get some data into our application. Our ``G
 will finally fetch live data, and we’re going to add another mojit to get Twitter data 
 with the help of the Node.js module `simple-twitter <https://npmjs.org/package/simple-twitter>`_.
 
-
+.. 05_intro-what:
 
 What We’ll Cover
 ----------------
 
 - mojit models 
-- YQL and how to use it get data
+- YQL and how to use it to get data
 - accessing and calling model methods from the controller
 - using the ``Http`` class to make REST calls
 - using other forms of data such as query string parameters.
+
+.. 05_intro-final:
 
 Final Product
 -------------
@@ -38,9 +42,12 @@ and that we finally have live data for our GitHub statistics.
    :width: 650 px
    :alt: Screenshot of 05 getting data application.
 
+.. 05_intro-before:
 
 Before Starting
 ---------------
+
+.. 05_intro-review:
 
 Review of the Last Module
 #########################
@@ -56,6 +63,8 @@ for use. In summary, we covered the following:
 - using the Composite addon
 - ``ac.composite.done`` versus ``ac.composite.execute``
 - parent mojit templates
+
+.. 05_intro-setup:
 
 Setting Up
 ##########
@@ -78,10 +87,14 @@ To get live Twitter data for your application:
            "simple-twitter": "~1.0.0"
          },
        ...
-#. Install the dependencies: ``$ npm install``
+#. From the application directory, install the dependencies: ``$ npm install``
+
+.. 05_getting_started-lesson:
 
 Lesson: Getting Data
 ====================
+
+.. 05_lesson-intro:
 
 Introduction
 ------------
@@ -89,11 +102,13 @@ Introduction
 Mojito separates the data layer with models that can use the Mojito REST library or YQL. 
 In most cases, we recommend YQL because you can have a consistent API to get data from 
 different sources and can filter results with YQL statements. The response that is 
-returned from YQL is also more consistent regardless of the data sources,  making it 
+returned from YQL is also more consistent regardless of the data sources, making it 
 easier to parse. The YQL Web Service is also optimized to get data to you faster, and 
 YUI has a handy YQL module that makes using YQL even easier. We’re going to provide an 
 overview of YQL, show you how to form YQL statements, and finally how to use YUI’s 
 YQL module.
+
+.. 05_lesson-models:
 
 Models
 ------
@@ -101,11 +116,15 @@ Models
 We briefly went over the structure of models in the Mojits module when we discussed mojit 
 MVC. Let’s just summarize some of the important points about mojit models.
 
+.. 05_lesson-location:
+
 Location
 --------
 
 The location of models are in the ``models`` directory under the mojit directory. So, if 
 your mojit is ``myMojit``, the models would be found in ``myMojit/models``. 
+
+.. 05_lesson-naming_convention:
 
 File Naming Convention
 ----------------------
@@ -115,6 +134,8 @@ is an arbitrary string, and the affinity, as we have said before, indicates wher
 is running. The affinity may be ``server``, ``client``, or ``common``, where ``common``
 indicates the code can run on either the server or client. Thus, the syntax of the model 
 file name is the following: ``{model_name}.{affinity}.js``
+
+.. 05_lesson-yui_modules:
 
 Models as YUI Modules
 ---------------------
@@ -144,9 +165,12 @@ YQL in the next section.
      };
    }, '0.0.1', {requires: ['yql']});
 
+.. 05_lesson-yql_primer:
 
 YQL Primer
 ----------
+
+.. 05_lesson_yql-what:
 
 What is YQL?
 ############
@@ -158,6 +182,8 @@ YQL comes with many wide range of tables, and the developer community has
 contributed YQL Open Data Tables (ODT) as well. The table tells YQL how to 
 get the Web data, and the YQL statement (like an SQL query) tells YQL what 
 data to get from that table and how to filter that data.
+
+.. 05_lesson_yql-statements:
 
 YQL Statements
 ##############
@@ -176,6 +202,8 @@ Try running the `local search query <http://y.ahoo.it/grM5T>`_ above in the
 `YQL Console <http://developer.yahoo.com/yql/console>`_ to see the results returned
 by YQL.
 
+.. 05_lesson_yql-web_service:
+
 YQL Web Service
 ###############
 
@@ -192,6 +220,8 @@ you would make an HTTP GET call to the following URL:
 
 Fortunately, YUI’s YQL module forms the URL and makes the call for you, so you 
 just need to form the YQL statement. With that, let’s look at the YQL module.
+
+.. 05_lesson_yql-module:
 
 YQL Query Module
 ################
@@ -235,6 +265,7 @@ appropos hosted on GitHub. The results are handled by the method ``onDataReturn`
        }
    }
 
+.. 05_lesson-rest_module:
  
 Using the Mojito REST Module
 ----------------------------
@@ -293,6 +324,7 @@ with the callback.
      };
    }, '0.0.1', {requires: ['mojito-rest-lib']});
 
+.. 05_lesson-twitter_module:
 
 Using a Node.js Module to Get Twitter Data
 ------------------------------------------
@@ -379,6 +411,7 @@ provide mocked data.
      };
    }, '0.0.1', {requires: ['mojito', 'mojito-rest-lib', 'json']});
 
+.. 05_lesson-model_methods:
 
 Calling Model Methods From Controller
 -------------------------------------
@@ -443,12 +476,13 @@ is required and then used to access and use the the model.
      };
    }, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'mojito-params-addon']});
 
+.. 05_getting_data-create:
 
 Creating the Application
 ========================
 
-#. After you have copied the application that you made in the last module (see Setting Up), 
-   change into the application ``05_getting_data``.
+#. After you have copied the application that you made in the last module 
+   (see :ref:`Setting Up <05_intro-setup>`), change into the application ``05_getting_data``.
 
 #. Let’s create the Twitter mojits that get Twitter data for us.
 
@@ -727,54 +761,129 @@ Creating the Application
    data for GitHub and Twitter. We’ll be adding more mojits with more 
    data in the coming modules, so you may want to review the sections on YQL.
 
+.. 05_getting_data-ts:
 
 Troubleshooting
 ===============
 
-Problem One
------------
+Cannot call method 'get' of undefined
+-------------------------------------
 
-Nulla pharetra aliquam neque sed tincidunt. Donec nisi eros, sagittis vitae 
-lobortis nec, interdum sed ipsum. Quisque congue tempor odio, a volutpat 
-eros hendrerit nec. Vestibulum ante ipsum primis in faucibus orci luctus 
-et ultrices posuere cubilia Curae;
+If you cannot access your model, you probably have forgotten to 
+include the ``mojito-models-addon``. Just add the addon to the ``requires``
+array in your controller:
 
-Problem Two
------------
+.. code-block:: javascript
 
-Nulla pharetra aliquam neque sed tincidunt. Donec nisi eros, sagittis 
-vitae lobortis nec, interdum sed ipsum. Quisque congue tempor odio, a 
-volutpat eros hendrerit nec. Vestibulum ante ipsum primis in faucibus 
-orci luctus et ultrices posuere cubilia Curae;
+   }, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon']});
+
+
+Cannot call method 'getData' of undefined
+-----------------------------------------
+
+If you can access your model, but can't call a method in your model, you either
+tried to access a model (module) that doesn't exist or a method that doesn't exist.
+Make sure that the ``{model_name}`` in the expression ``ac.models.get({model_name});``
+is correct and that the method exists.
+
+Cannot find module 'simple-twitter'
+-----------------------------------
+
+This generally means that you forgot to install the ``simple-twitter`` module.
+Make sure the ``package.json`` file has the following and then run ``npm install`` from
+the application directory:
+
+.. code-block:: javascript
+
+   "dependencies": {
+     "mojito": "0.7.x",
+     "simple-twitter": "~1.0.0"
+   },
+
+.. 05_getting_data-summary:
 
 Summary
 =======
 
+In this module, we covered the following:
+
+- models 
+- YQL
+- calling model methods from the controller
+- make REST calls with the ``Http`` addon
+- using Node.js modules in your Mojito application
+
+.. 05_getting_data-qa:
+
 Q&A
 ===
+
+- Does Mojito support the push model of data to the client?
+
+  Currently, no. You push data to the client to initially render the page, but thereafter,
+  binders or new HTTP requests only can get new data. We'll see how to use binders to request
+  new data in `7. Mojito on the Client <07_binders.html>`_.
+
+- Does Mojito have addons or an API to use a local database?
+
+  Mojito does not have any native database solutions, but there is nothing preventing a 
+  developer from using a Node.js modules such as `mysql <https://npmjs.org/package/mysql>`_
+  for a MySQL database or `mongodb <https://npmjs.org/package/mongodb>`_ for aMongoDB 
+  database.  
+
+.. 05_getting_data-test:
 
 Test Yourself
 =============
 
+.. 05_test-questions:
+
+Questions
+---------
+
 - How do you access models from a controller?
 - What are the four arguments passed to the methods of the REST module?
 - What is the recommended way for getting data in Mojito applications?
+- How do you use Node.js modules in the controller of a mojit?
+
+.. 05_test-exs:
+
+Additional Exercises
+--------------------
+
+- Create an additional model for your ``Twitter`` mojit that returns dummy
+  tweets. Call the ``getData`` method of your new model when the Twitter API
+  returns an error.
+- Create an additional mojit that gets data with the model using YQL. 
+
+
+.. 05_getting_data-terms:
 
 Terms
 =====
 
-- YQL
-- YQL tables
+- **YQL** - An SQL-like language for querying Internet data and the Web service that
+  fetches data and returns it to clients.
+- **YQL Tables** - XML files that define the data source, keys, pagination options, authentication/security
+  options, and any other information needed by the YQL Web Service to fetch data.
+- `REST <http://en.wikipedia.org/wiki/REST>`_ 
+
+
+.. 05_getting_data-src:
 
 Source Code
 ===========
 
-[app_part{x}](http://github.com/yahoo/mojito/examples/quickstart_guide/app_part{x})
+`05_getting_data <http://github.com/yahoo/mojito/examples/dashboard/05_getting_data>`_
+
+.. 05_getting_data-reading:
 
 Further Reading
 ===============
 
-- [Mojito Doc](http://developer.yahoo.com/cocktails/mojito/docs/)
-- YQL Guide
-- Calling YQL from a Mojit
+- `Data in Mojito <../topics/mojito_data.html>`_
+- `Calling YQL from a Mojit <../code_exs/calling_yql.html>`_
+- `YQL Guide <http://developer.yahoo.com/yql/guide>`_
+- `YQL Console <http://developer.yahoo.com/yql/console/>`_
+
 
