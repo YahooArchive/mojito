@@ -13,7 +13,8 @@ We’re going to show you how to write unit and functional tests in this module,
 and we’re also going to add a few more mojits to fill out our dashboard. We 
 already saw the Mojito CLI has a test command for running unit tests. To run 
 functional tests, we’re going to use Arrow, which is an npm module that we’ll 
-need to install.
+need to install. In future modules, we won't cover the tests but expect you to 
+test your own code by writing tests.
 
 
 .. _06_intro-what:
@@ -62,7 +63,7 @@ We covered the following in the last module:
 - YQL statements
 - YQL module
 - REST module
-- calling model from the controller
+- calling the model from the controller
 
 .. _06_intro-setting_up:
 
@@ -130,7 +131,7 @@ For controller tests, the test file name has the following syntax: ``controller.
 
 For models, the test file name is slightly different: ``{model_name}.{affinity}.js``
 
-If you remember, the ``Twitter`` had the ``model twitter.server.js``, so the test file 
+If you remember, the ``Twitter`` had the model ``twitter.server.js``, so the test file 
 for the model would be ``twitter.server-tests.js``. 
 
 .. _06_lesson_unit-writing_tests:
@@ -139,7 +140,7 @@ Writing Tests
 #############
 
 As we mentioned in the introduction, unit tests in Mojito use the testing framework YUI Test. 
-To use the testing framework, you require  ``'mojito-test'`` in your test files and the module 
+To use the testing framework, you require ``'mojito-test'`` in your test files and the module 
 name that is being tested. For example, in the code snippet below, the testing framework is 
 included as well as the module that is being tested (``'Github'``).
 
@@ -210,9 +211,10 @@ Assertions
 
 Assertions are methods that check the validity of a particular action or function. If the 
 action or function is not valid, the assertion method throws an error that causes the test 
-to fail. When all assertions pass within a test method, the test  is said to have passed. 
+to fail. When all assertions pass within a test method, the test is said to have passed. 
 The YUI Test framework has assertion methods for testing equality, sameness, data types, 
-special values, and forced failures. Please see the  YUI Assertion documentation for 
+special values, and forced failures. Please see the 
+`YUI Assertion documentation <http://yuilibrary.com/yui/docs/test/#assertions>`_ for 
 details.
 
 Example:  
@@ -314,7 +316,7 @@ controller object and a ``tearDown`` method to remove the object from memory:
 
 Now comes the tests within the test case. We use a human-readable name
 for the test such as ``test mojit`` and then just test that the controller
-exists, that it has a function called ``index`` and that data is returned as shown
+exists, that it has a function called ``index``, and that data is returned as shown
 in the example below.
 
 .. code-block:: javascript
@@ -328,7 +330,7 @@ in the example below.
            ac = {
              done: function(data) {
              doneCalled = true;
-             A.isUndefined(data);
+             A.isObject(data);
            }
          };
          controller.index(ac);
@@ -465,7 +467,7 @@ YUI module name ``YoutubeMojitYQL`` is required and then accessed in the ``setUp
 Running Unit Tests
 ##################
 
-To run functional tests, you use the Mojito command-line Utility. The test command allows 
+To run functional tests, you use the Mojito command-line utility. The test command allows 
 you to test all of the mojits of an application or specify a mojit. Mojito will test all of 
 the unit tests in the tests directory. To test all the mojits in the application that we 
 are going to create this module, you would use the following:
@@ -508,8 +510,8 @@ Writing Arrow Tests
 As we’ve already said, tests for Arrow are written using YUI Test. You pass in a configuration 
 object to YUI, load the modules that your test needs with the ``use`` method, and then write the 
 test in the same way as you wrote unit tests: create a test suite, add a test case, and add 
-the test case to the runner. Like Mojito, Arrow will call the method run for you to run the 
-tests. 
+the test case to the runner. Like Mojito, Arrow will call the method ``run`` for you to run 
+the tests. 
 
 The main difference between the Mojito unit tests and Arrow tests is that Mojito unit tests 
 register the module name (with the method ``add``), and Arrow tests just load modules. The 
@@ -560,7 +562,7 @@ Configurations
 ++++++++++++++
 
 Test descriptors have configurations for describing, organizing, and factoring the tests. 
-You can configure the base URL , group tests, pass parameters, and specify the page 
+You can configure the base URL, group tests, pass parameters, and specify the page 
 to test as well as the JavaScript test to run. 
 
 The example test descriptor written to run the ``hello`` test we looked at earlier shows 
@@ -664,11 +666,12 @@ that given the context ``"environment:development"``, the tests uses a different
 Running Arrow Command
 +++++++++++++++++++++
 
-Mojito comes with built-in unit and functional tests that we’re 
+The Mojito source code comes with built-in unit and functional tests that we’re 
 going to look at to illustrate how to use the Arrow command. 
 The example tests and test descriptors are a great reference as well. 
 Mojito also comes with the script ``run.js`` to simplify running the built-in 
-Mojito tests. You can follow the `instructions in the Mojito documentation <../topics/mojito_testing.html#mojito-built-in-functional-unit-tests>`_
+Mojito tests. You can follow the `instructions in Mojito Framework's Unit and Functional Tests 
+<https://github.com/yahoo/mojito/wiki/Mojito-Framework's-Unit-and-Functional-Tests>`_
 to run all of the tests or just a group of tests, which is highly recommended 
 if you are going to contribute code to the Mojito project.
 
@@ -1198,62 +1201,121 @@ Creating the Application
 #. You can go ahead and run your application to see the content from the ``Youtube``
    and ``Calendar`` mojits.
 
+.. _06_testing-summary:
+
+Summary
+=======
+
+We covered the following topics in this chapter. 
+
+- unit tests 
+- model tests
+- controller tests
+- functional tests with Arrow
+- mock ``ActionContext`` objects
+- assertions
+
 
 .. _06_testing-ts:
 
 Troubleshooting
 ===============
 
-Problem One
------------
+TypeError: Cannot read property 'index' of undefined
+----------------------------------------------------
 
-Nulla pharetra aliquam neque sed tincidunt. Donec nisi eros, sagittis vitae lobortis nec, 
-interdum sed ipsum. Quisque congue tempor odio, a volutpat eros hendrerit nec. Vestibulum 
-ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;
-
-Problem Two
------------
-
-Nulla pharetra aliquam neque sed tincidunt. Donec nisi eros, sagittis vitae lobortis nec, 
-interdum sed ipsum. Quisque congue tempor odio, a volutpat eros hendrerit nec. Vestibulum ante 
-ipsum primis in faucibus orci luctus et ultriceposuere cubilia Curae;
+If you run unit tests and see that the ``index`` property is undefined for
+a given mojit test, you should inspect that the unit test for the mojit in question
+has included the module name in the ``requires`` array or that you have a typo
+in the expression ``Y.mojito.controllers.{mojit_module_name}``.
 
 
-.. _06_testing-summary:
+test YUI Dashboard:Unexpected error: 'null' is not an object 
+------------------------------------------------------------
 
-Summary
-=======
+If you get a null error when you run the functional tests with Arrow, it could
+mean that the application or PhantomJS is not running. Make sure you start both
+and then run the tests.
 
 .. _06_testing-qa:
 
 Q&A
 ===
 
+- Can models be mocked as well?
+
+  Yes, you can can mock an ``ActionContext`` object for model tests as well.
+  See `Mocking Models <../topics/mojito_testing.html#mojit-tests>`_.
+
+- Can I use Arrow to run the unit tests as well?
+
+  Yes, both Mojito and Arrow use YUI Test, so running the unit tests with Arrow is fairly
+  simple. For example, to run the controller tests for the ``Header`` mojit, you would
+  run the following command: 
+
+  ``$ arrow mojits/Header/tests/controller.server-tests.js --lib=mojits/Header/controller.server.js``
+
+  Naturally, use the ``test`` command that comes with the Mojito CLI utility is simpler, 
+  but you can Arrow, which also has more options.
+
+
 .. _06_testing-test_yourself:
 
 Test Yourself
 =============
 
-.. _06_testing-terms:
+.. 06_test-questions:
 
+Questions
+---------
+
+- Where do you place application and mojit test files?
+- What is the difference between a unit and a functional test?
+- What is the command for running the unit tests for the mojit ``Header``?
+- How do you mock the ``ActionContext`` object?
+- Name three of the components used in YUI tests.
+
+.. 06_test-exs:
+
+Additional Exercises
+--------------------
+
+- Write unit tests for the ``Header``, ``Footer``, and ``Youtube`` mojits.
+- Write another test case in the functional test that we created and then run the
+  functional test again.
+- Try mocking the ``ActionContext`` object in one of your controller tests.
+
+.. _06_testing-terms:
 
 Terms
 =====
+
+- `unit tests <http://en.wikipedia.org/wiki/Unit_tests>`_
+- `functional tests <http://en.wikipedia.org/wiki/Functional_testing>`_
+- **Arrow** - A test framework that integrates JavaScript, NodeJS and Selenium to promote 
+  test-driven JavaScript development. 
+- **YUI test suite** - A grouping of multiple test cases that can be run together.
+- **YUI test runner** - A singleton object used to run test cases and suites.
+- **YUI test case** - The basis of YUI tests that allows you to initialize dependencies, execute
+  tests, and clean up. 
+- **mock object** - An object created to eliminate test dependencies in test cases. In Mojito,
+  it is common to mock the ``ActionContext`` object.
+
 
 .. _06_testing-src:
 
 Source Code
 ===========
 
-[app_part{x}](http://github.com/yahoo/mojito/examples/quickstart_guide/app_part{x})
+`06_testing <http://github.com/yahoo/mojito/examples/dashboard/06_testing/>`_
 
 .. _06_testing-reading:
 
 Further Reading
 ===============
 
-- [Mojito Doc](http://developer.yahoo.com/cocktails/mojito/docs/)
-
+- `Testing <../topics/mojito_testing.html>`_
+- `Mojito Framework's Unit and Functional Tests <https://github.com/yahoo/mojito/wiki/Mojito-Framework's-Unit-and-Functional-Tests>`_
 
 
 
