@@ -19,7 +19,7 @@ YUI({
              // This was changed so that the "route.name" property that is returned
              // is set to the "route.call" property, for backward compatiblity.
              // Y.Assert.areEqual('testing-ac-url-find', Y.one('#name').get('innerHTML'));
-             Y.Assert.areEqual('goodaction.goodindex', Y.one('#name').get('innerHTML'));
+             Y.Assert.areEqual('/you/found/a/good/path.goodaction.goodindex', Y.one('#name').get('innerHTML'));
              Y.Assert.areEqual('goodaction.goodindex', Y.one('#call').get('innerHTML'));
              // Use case no longer supported.
              // Y.Assert.areEqual('garden', Y.one('#params').get('innerHTML'));

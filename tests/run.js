@@ -263,17 +263,11 @@ function startArrowSelenium(cmd, callback) {
 
 function runFuncAppTests(cmd, callback) {
     var descriptor = cmd.descriptor || '**/*_descriptor.json',
-        descriptors = [],
         exeSeries = [],
+        descriptors = glob.sync(cmd.funcPath + '/' + descriptor),
         // skip some tests (for now) until they are fixed
         skips,
         descriptors2 = [];
-
-    if (descriptor === '**/*_descriptor.json') {
-        descriptors = glob.sync(cmd.funcPath + '/' + descriptor);
-    } else {
-        descriptors.push(cmd.funcPath + '/' + descriptor);
-    }
 
     //
     // NOTE: remove those descriptors to prevent those tests to run for now

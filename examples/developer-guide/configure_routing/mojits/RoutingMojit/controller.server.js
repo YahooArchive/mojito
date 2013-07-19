@@ -14,21 +14,34 @@ YUI.add('RoutingMojit', function(Y, NAME) {
             action = ac.action,
             path = ac.http.getRequest().url,
             routes = ac.config.getRoutes();
+
+		// Mojito no longer support more than one VERB per route entry
+		// The route.name is now the route.path + '.' + route.call
         if (action === "index" && path === "/") {
             name = "root_route";
-            routes.root_route.verbs.forEach(function(n) {
-                methods += n + ", ";
-            });
+			// routes.root_route.verbs.forEach(function(n) {
+	        // 	   methods += n + ", ";
+	        // });
+
+			if (routes['/.mapped_mojit.index'].verbs['GET']) {
+                methods = 'GET';
+            }
         } else if (action==="index") {
             name = "index_route";
-            routes.index_route.verbs.forEach(function(n) {
-                methods += n + ", ";
-            });
+            // routes.index_route.verbs.forEach(function(n) {
+	        // 	   methods += n + ", ";
+	        // });
+			if (routes['/index.mapped_mojit.index'].verbs['GET']) {
+                methods = 'GET';
+            }
         } else {
             name = "show_route";
-            routes.show_route.verbs.forEach(function(n) {
-                methods += n + ", ";
-            });
+            // routes.show_route.verbs.forEach(function(n) {
+	        // 	   methods += n + ", ";
+	        // });
+			if (routes['/show.mapped_mojit.show'].verbs['POST']) {
+                methods = 'POST';
+            }
         }
         methods = methods.toUpperCase();
         return {
