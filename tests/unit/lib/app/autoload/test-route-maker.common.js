@@ -226,7 +226,7 @@ YUI().use('mojito-route-maker', 'mojito-util', 'test', 'dump', function (Y) {
             A.isNotUndefined(route, 'route not found for /admin/help');
             A.areEqual('/admin/help', route.path, 'wrong route.path for /admin/help');
             A.areEqual('admin.help', route.call, 'wrong route.dispatch');
-            A.areEqual('admin.help', route.name, 'wrong route.name');
+            A.areEqual('/admin/help.admin.help', route.name, 'wrong route.name');
             A.areEqual(true, route.verbs.GET, 'wrong route.verbs.GET for /admin/help');
             OA.areEqual({}, route.params, 'wrong route.dispatch.params');
             // route.regex uses previous mojito format
