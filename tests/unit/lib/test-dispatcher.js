@@ -42,7 +42,18 @@ YUI().use('test', function (Y) {
             };
 
             req = {
-                app: { mojito: { } },
+                app: {
+                    mojito: { },
+                    routes: {
+                        get: [{
+                            path: 'path',
+                            method: 'get',
+                            regexp: /^\/path\/?/,
+                            keys: [ ],
+                            params: { }
+                        }]
+                    }
+                },
                 url: '/admin',
                 query: { foo: 'bar' },
                 params: { foz: 'baz' },
@@ -50,6 +61,12 @@ YUI().use('test', function (Y) {
             };
 
             mid = dispatcher.dispatch('admin.help');
+
+            A.isNotUndefined(mid.dispatch, 'missing property dispatch');
+            A.areEqual('admin.help', mid.dispatch.call, 'wrong mid.dispatch.call');
+            A.isNotUndefined(mid.dispatch.params, 'missing mid.params');
+            A.isNotUndefined(mid.dispatch.options, 'missing mid.options');
+
             mid(req, res, next);
 
             A.areEqual('help', req.command.action, 'wrong action');
@@ -84,6 +101,7 @@ YUI().use('test', function (Y) {
                 context: { runtime: 'server' },
                 app: {
                     mojito: {
+                        routes: { x: 'y' },
                         Y: {
                             log: function () { },
                             mojito: {
@@ -99,8 +117,8 @@ YUI().use('test', function (Y) {
                                                 OA.areEqual({appConfig: 'true'},
                                                             output.page.appConfig,
                                                             'wrong output.page.appConfig');
-                                                OA.areEqual({ },
-                                                            output.page.routes.baz,
+                                                OA.areEqual({ x: 'y' },
+                                                            output.page.routes,
                                                             'wrong output.page.routes');
                                             }
                                         };
@@ -120,9 +138,6 @@ YUI().use('test', function (Y) {
                                             ctx,
                                             'wrong ctx');
                                 return { appConfig: 'true' };
-                            },
-                            getRoutes: function () {
-                                return { baz: { } };
                             }
                         }
                     }

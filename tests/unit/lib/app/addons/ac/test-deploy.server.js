@@ -18,7 +18,10 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
         name: 'mojito-deploy-addon tests',
 
         setUp: function() {
-            addon = new Y.mojito.addons.ac.deploy({instance: {}});
+            addon = new Y.mojito.addons.ac.deploy(
+                {instance: {}}, // command
+                {page: { routes: { 'get': { } } } } // adapter
+            );
             addon.ac = {
                 http: {
                     getHeader: function(h) {
@@ -57,9 +60,6 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
             addon.setStore({
                 getAppConfig: function() {
                     return {};
-                },
-                getRoutes: function() {
-                    return ['routes'];
                 },
                 yui: {
                     getYUIConfig: function() {
@@ -155,7 +155,8 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
             A.areSame('another drink', config.binderMap.viewId2.needs, 'config.binderMap.viewId2.needs should be "another drink"');
             A.isObject(config.appConfig, 'config.appConfig should be an object');
             A.isObject(config.appConfig.yui, 'config.appConfig.yui should be an object');
-            A.isArray(config.routes, 'config.routes should be an object');
+            A.isObject(config.routes, 'config.routes should be an object');
+            A.isObject(config.routes.get, 'config.routes.get should be an object');
             A.isObject(config.page, 'config.page should be an object');
         },
 
