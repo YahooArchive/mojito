@@ -25,7 +25,6 @@ What We’ll Cover
 - communicate with other mojits on the page
 - execute actions on the mojit that the binder is attached to
 - refreshing templates with binders
-- destroying child mojits with binders
 
 .. _07_intro-final:
 
@@ -83,7 +82,7 @@ A mojit may have zero, one, or many binders within the binders directory. Each b
 will be deployed to the browser along with the rest of the mojit code, where the 
 client-side Mojito runtime will call it appropriately. The view used to generate 
 output determines which binder is used. Thus, if the simple view is used, the 
-bindersimple.js is used. This can be overridden by setting ``view.binder`` in the meta 
+binder ``simple.js`` is used. This can be overridden by setting ``view.binder`` in the meta 
 argument to ``ac.done``. If no binder matches the view, then no binder is used.
 
 .. _07_lesson-location:
@@ -98,15 +97,15 @@ Location
 Requirements for Using Binders
 ------------------------------
 
-The top-level mojit instance defined in ``application.json`` is of type ``HTMLFrameMojit`` 
-or your own frame mojit. See `HTMLFrameMojit <../topics/mojito_frame_mojits.html#htmlframemojit>`_ 
-for an introduction and example configuration. Your application is configured to deploy 
-code to the client with the deploy property in ``application.json``. See `Configuring 
+To use binders, your application must be using the 
+`HTMLFrameMojit <../topics/mojito_frame_mojits.html#htmlframemojit>`_ or your own frame 
+mojit and be configured to deploy code to the client with the 
+``deploy`` property in ``application.json``. See `Configuring 
 Applications to Be Deployed to Client <../intro/mojito_configuring.html#configuring-applications-to-be-deployed-to-client>`_ 
-for more information. The template files (e.g., ``index.hb.html``) have containers (``div`` 
-elements) that have the ``id`` attribute assigned the value ``{{mojit_view_id}}``. 
-For example: ``<div id={{mojit_view_id}}>``. The attribute value ``{{mojit_view_id}}`` 
-allows binders to attach themselves to the DOM.
+for more information. Also, the template files (e.g., ``index.hb.html``) must have 
+containers (``div`` elements) that have the ``id`` attribute assigned the value 
+``{{mojit_view_id}}``.  For example: ``<div id={{mojit_view_id}}>``. The attribute value 
+``{{mojit_view_id}}`` allows binders to attach themselves to the DOM.
 
 .. _07_lesson-binder:
 
@@ -188,7 +187,7 @@ The ``mojitProxy`` object has the following properties:
 
 - ``config`` - the instance specification for the mojit linked to the binder
 - ``context`` - environment information such as language, device, region, site, etc.
-- ``children`` - the children of the mojit, which is defined in application.json.
+- ``children`` - the children of the mojit, which are defined in ``application.json``.
 - ``data`` - the data model that allows your binder to share and access data through a tunnel
   that data can pass between the client and server.
 - ``type`` - the name of the mojit that attached the binder to the DOM.
@@ -219,14 +218,16 @@ API Methods
 ###########
 
 In addition to  the properties of the ``mojitProxy`` object, you can also use the methods 
-of the ``MojitProxy`` class so that the binder can interact with the controller and 
+of the `MojitProxy class <http://developer.yahoo.com/cocktails/mojito/api/classes/MojitProxy.html>`_ 
+so that the binder can interact with the controller and 
 other mojits. We’re going to focus on a core set of the available methods and recommend 
 you look at the API documentation to complete the picture.
 
 In the next few sections, we’ll be using the following ``MojitProxy`` methods. The methods 
-``broadcast`` and ``liste``n allow binder code to communicate with each other. The ``invoke`` 
+``broadcast`` and ``listen`` allow binder code to communicate with each other. The ``invoke`` 
 function allows binder to call controller functions. The methods ``refreshView`` and 
-``render`` help binders to update content of a template.
+``render`` help binders to update content of a template. The namespace ``data``
+and ``pageData`` allow you to get and set data that can be shared with other mojits.
 
 .. _07_binder_api-binder2binder:
 
@@ -377,16 +378,26 @@ are retained, state can be stored within a binder’s scope.
      });
    ...
 
+.. _07_lesson_binder-share_data:
+
+Sharing Data
+############
+
+We won't be using the ``data`` or ``pageData`` namespace to share data between mojits
+in this tutorial, but we highly recommend that you read `Sharing Data <../topics/mojito_data.html#sharing-data>`_,
+which provides an overview and examples.
+
 .. _07_binders-create:
 
 Creating the Application
 ========================
 
-#. After you have copied the application that you made in the last module (see Setting Up), 
-   change into the application ``07_binders``.
+#. After you have copied the application that you made in the last module 
+   (see :ref:`Setting Up <07_intro_before-setup>`), change into the application 
+   ``07_binders``.
 #. Let’s create our last two mojits ``Blog`` and ``Gallery`` for the dashboard. The ``Blog``
    mojit will display posts from the `YUI Blog <http://www.yuiblog.com/>`_, and the 
-   ``Gallery`` mojit will display the latest modules pushed to the YUI Gallery.
+   ``Gallery`` mojit will display the latest modules pushed to the `YUI Gallery <http://yuilibrary.com/gallery/>`_.
 
    - ``$ mojito create mojit Blog``
    - ``$ mojito create mojit Gallery``
@@ -1043,63 +1054,115 @@ Creating the Application
    through configuration, adding specialized templates for different devices, and 
    adding localization.
 
+.. _07_binders-summary:
+
+Summary
+=======
+
+In this module, we covered how to use binders in Mojito applications to handle user
+interactions and update the DOM. More specifically, we looked that the following:
+
+- binder methods
+- the ``MojitProxy`` class and the ``mojitProxy`` object
+- invoking controller methods with the ``invoke`` method
+- using the ``{{mojit_view_id}}`` as the ID for containers so binders can
+  be attached to the DOM.
+
 .. _07_binders-ts:
 
 Troubleshooting
 ===============
 
-Problem One
------------
+Nothing Happening on the Client
+-------------------------------
 
-Nulla pharetra aliquam neque sed tincidunt. Donec nisi eros, sagittis vitae lobortis 
-nec, interdum sed ipsum. Quisque congue tempor odio, a volutpat eros hendrerit nec. 
+If you open the developer console, click the refresh button for either the Github
+or Twitter mojit, you should see the logs from the binder code that indicate that the
+mojits are creating new nodes and attaching content to the DOM. If you see no log messages
+and there are no errors on the server, there is a good chance that you have not configured 
+the application to deploy to the client. In ``application.json``, confirm that ``deploy``
+is set to ``true``:
 
-Problem Two
------------
+.. code-block:: javascript
+   
+   "specs": {
+     "tribframe": {
+       "type": "HTMLFrameMojit",
+       "config": {
+         "deploy": true,
+         ...
+       ...
+     ...
+   ...
 
-Nulla pharetra aliquam neque sed tincidunt. Donec nisi eros, sagittis vitae lobortis nec, 
-interdum sed ipsum. Quisque congue tempor odio, a volutpat eros hendrerit nec. 
+Log Messages on Client, But Mojit Isn't Refreshing Data
+-------------------------------------------------------
 
-.. _07_binders-summary:
+If you see log messages on the client that indicate binders are being created,
+but nothing happens when you click on the **Refresh** button to update the GitHub
+or Twitter data, you might have forgotten to add ``{{mojit_view_id}}`` to the
+``id`` attribute of the ``div`` container in that mojit's template. For example,
+the first line in the template ``index.hb.html`` for the ``Github`` mojit should be
+the following: ``<div id="{{mojit_view_id}}" class="mojit">``
 
-Summary
-=======
 
 .. _07_binders-qa:
 
 Q&A
 ===
 
+- Can the controller update Handelbars expressions without rendering the template and
+  sending it to the client?
+
+  Yes, binder code can invoke a controller method that uses ``ac.pageData.set`` to
+  update a Handlebars expression. For example, if the template for a mojit has the 
+  Handlebars expression ``{{rss_feed}}`` that contains RSS feeds. That mojit's binder
+  could invoke a controller method that would call 
+  ``ac.pageData.set('rss_feed' { rss: <some_data> })`` to update the Handlebars expression.
+
+- Can the server broadcast events to the client-side binders?
+
+  Not directly, but when a controller method is executed on the server, the binder is
+  created and attached to the DOM, so the binder can then broadcast events to other
+  binders on the page. The controller does not have a way to directly broadcast events
+  though.
+
 .. _07_binders-test:
 
 Test Yourself
 =============
 
-- How do you access models from a controller?
-- What are the four arguments passed to the methods of the REST module?
-- What is the recommended way for getting data in Mojito applications?
+- How do you configure your mojits to deploy binders to the client?
+- What object can be used by the binder to communicate with its controller and other binders?
+- What do you need in the template to allow the binder attach itself to the DOM?
+- What is the addon that allows you to share data more easily between the client/server and 
+  mojits?
 
 .. _07_binders-terms:
 
 Terms
 =====
 
-- 
+- **binders** - The client-side code for mojits that are sent to the client and attached
+  to the DOM. 
+- **mojitProxy** - An object that allows binders to communicate with the
+  server and other binders on the page.
+
 
 .. _07_binders-src:
 
 Source Code
 ===========
 
-[app_part{x}](http://github.com/yahoo/mojito/examples/quickstart_guide/app_part{x})
+`07_binders <http://github.com/yahoo/mojito/examples/dashboard/07_binders/>`_
 
 .. _07_binders-reading:
 
 Further Reading
 ===============
 
-[Mojito Doc](http://developer.yahoo.com/cocktails/mojito/docs/)
-
-- 
+- `Mojito Binders <../intro/mojito_binders.html>`_
+- `Binding Events <../code_exs/binding_events.html>`_
+- `Sharing Data <../topics/mojito_data.html#sharing-data>`_
 
 
