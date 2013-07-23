@@ -31,20 +31,12 @@ YUI.add('Twitter', function (Y, NAME) {
                 q = ac.config.getDefinition('mojitoquery', 'notfound');
                 title = ac.config.getDefinition('mojitotitle', 'notitle');
             }
-            // Get Twitter API keys from your developer account (https://dev.twitter.com/apps) and 
+
+            // Get Twitter API keys from your developer account (https://dev.twitter.com/apps) and
             // use the `oauth_keys` to hold your consumer key/secret and access token/secret.
             // If you leave `oauth_keys` undefined, your app will just use mocked data.
-            /*
-             * oauth_keys = {
-             *    "consumer_key": "xxxx",
-             *    "consumer_secret": "xxxx",
-             *    "access_token_key": "xxxx",
-             *    "access_token_secret": "xxxx"
-             * }
-            */
-
             // Get OAuth keys from definition.json to get real data.
-            // If `oauth_keys==null`, use mock data from model.
+            // oauth_keys = ac.config.getDefinition('oauth');
             ac.models.get('TwitterSearchModel').getData(count, q, oauth_keys, function (err, data) {
                 if (err) {
                     ac.error(err);
