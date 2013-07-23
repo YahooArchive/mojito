@@ -17,7 +17,6 @@
     ],
     "dependencies": {
         "debug": "*",
-        "express": "3.x",
         "glob": "~3.1.11",
         "js-yaml": "1.0.2",
         "mime": "1.2.4",
