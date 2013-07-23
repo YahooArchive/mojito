@@ -26,6 +26,8 @@ YUI().use('test', function (Y) {
             A.isFunction(function () { });
         },
 
+        // verify:
+        // - handleRequest() is called()
         'test dispatch': function () {
             A.isFunction(dispatcher.dispatch);
 
@@ -78,6 +80,68 @@ YUI().use('test', function (Y) {
 
             dispatcher.handleRequest = fn;
         },
+
+        // verify:
+        // - req.app.mojito.routes is set on first invocation
+        // - req.app.mojito.routes['get'] is set
+        // - req.app.mojito.routes['get'].dispatch is set
+        'test dispatch and verify routes cached is built': function () {
+            A.isFunction(dispatcher.dispatch);
+
+            var req,
+                res,
+                next,
+                mid,
+                handleRequestCalled = false,
+                fn,
+                cb;
+
+            fn = dispatcher.handleRequest;
+            dispatcher.handleRequest = function (req, res, next) {
+                handleRequestCalled = true;
+            };
+
+            cb = function () { };
+            cb.dispatch = { X: 'Y' };
+
+            req = {
+                app: {
+                    mojito: { },
+                    routes: {
+                        get: [{
+                            path: 'path',
+                            method: 'get',
+                            regexp: /^\/path\/?/,
+                            keys: [ ],
+                            params: { },
+                            callbacks: [ cb ]
+                        }]
+                    }
+                },
+                url: '/admin',
+                query: { },
+                params: { },
+                context: { runtime: 'server' }
+            };
+
+            mid = dispatcher.dispatch('admin.help');
+
+            mid(req, res, next);
+
+            A.isNotUndefined(req.app.mojito.routes, 'req.app.mojito.routes was not initialized!');
+            A.isNotUndefined(req.app.mojito.routes.get,
+                             'req.app.mojito.routes.get property is not set');
+            A.areEqual('path', req.app.mojito.routes.get[0].path, 'wrong path');
+            A.areEqual('get', req.app.mojito.routes.get[0].method, 'wrong method');
+            A.isNotUndefined(req.app.mojito.routes.get[0].dispatch, 'missing dispatch property');
+            A.areEqual('Y',
+                       req.app.mojito.routes.get[0].dispatch.X,
+                       'missing dispatch.X property');
+
+
+            dispatcher.handleRequest = fn;
+        },
+
 
         'test dispatch with @Admin.help TODO': function () {
             A.isFunction(dispatcher.dispatch);
