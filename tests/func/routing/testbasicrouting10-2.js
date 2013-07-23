@@ -12,7 +12,6 @@ YUI({
 
         _should: {
             ignore: {
-                'test BasicRouting10-2': true
             }
         },
 	     "test BasicRouting10-2": function(){   

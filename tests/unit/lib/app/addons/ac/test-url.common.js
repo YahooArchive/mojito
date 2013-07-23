@@ -54,11 +54,16 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
         'test find url (get) using real RouteMaker': function() {
             var addon, url;
             adapterMock.page.routes = {
-                'aroute': {
-                    'call': 'foo',
-                    'path': '/a/b/c/',
-                    'verbs': ['get']
-                }
+                'get': [{
+                    path: '/a/b/c/',
+                    method: 'get',
+                    regexp: /^(\/a\/b\/c\/?)+/,
+                    dispatch: {
+                        call: 'foo',
+                        params: { },
+                        options: { }
+                    }
+                }]
             };
 
             //need to use real find() which needs real RouteMaker
@@ -91,11 +96,16 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
         'test find http://url?with=params (get) using real RouteMaker': function() {
             var addon, url;
             adapterMock.page.routes = {
-                'aroute': {
-                    'call': 'foo',
-                    'path': '/a/b/c/',
-                    'verbs': ['get']
-                }
+                'get': [{
+                    path: '/a/b/c/',
+                    method: 'get',
+                    regexp: /^(\/a\/b\/c\/?)+/,
+                    dispatch: {
+                        call: 'foo',
+                        params: { },
+                        options: { }
+                    }
+                }]
             };
 
             //need to use real find() which needs real RouteMaker

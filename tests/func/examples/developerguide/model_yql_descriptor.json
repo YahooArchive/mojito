@@ -29,7 +29,8 @@
                             }
                         },
                         {
-                            "test" : "test_modelyql.js"
+                            "test" : "test_modelyql.js",
+                            "page": "$$config.baseUrl$$"
                         }
                     ]
                 }
