@@ -1132,11 +1132,27 @@ Q&A
 Test Yourself
 =============
 
+.. _07_test-questions:
+
+Questions
+---------
+
 - How do you configure your mojits to deploy binders to the client?
 - What object can be used by the binder to communicate with its controller and other binders?
 - What do you need in the template to allow the binder attach itself to the DOM?
 - What is the addon that allows you to share data more easily between the client/server and 
   mojits?
+
+.. _07_test-exs:
+
+Additional Exercises
+--------------------
+
+- Have the binder of the ``Github`` mojit broadcast a ``updated`` event that the
+  binder for the ``PageLayout`` mojit listens for and invokes a controller method that
+  simply logs a message that the page has refreshed data.
+- Instead of having the controller of the ``PageLayout`` mojit render one of its children,
+  have the controller use the ``Data`` addon to pass data to the templates.
 
 .. _07_binders-terms:
 

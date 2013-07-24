@@ -13,7 +13,7 @@ still have some work to do to make it better. In this module, we’re going to u
 the application-level and mojit-level configuration files. We'll update the
 ``application.json`` to define a static application name (no more updating the
 path to the assets), add a new route with parameters for the Mojito dashboard, and 
-configure Mojito to usea different version of YUI. We'll also cover how to configure logging 
+configure Mojito to use a different version of YUI. We'll also cover how to configure logging 
 levels, change the order of the logging levels, or provide logging filters. 
 
 As for mojit configuration, we'll be using the mojit configuration file ``definition.json`` 
@@ -62,16 +62,14 @@ Review of the Last Module
 #########################
 
 In the last module, we learned how to bind mojit code (binders) to the DOM and use these 
-binders to call controller functions and broadcast/listen to custom events.  Binders can 
-respond to user actions by modifying the DOM, calling controllers, getting data from the 
-controllers, and refresh or render templates.
+binders to call controller functions and attach content to the DOM. This involved learning 
+about the following:
 
 - requirements for using binders
 - allow event handlers to attach to the mojit DOM node
 - communicate with other mojits on the page
 - execute actions on the mojit that the binder is attached to
 - refreshing templates with binders
-- destroying child mojits with binders
 
 .. _08_intro_before-setup:
 
@@ -99,8 +97,9 @@ Mojito also supports configuration files in YAML format (JSON is a subset of YAM
 The YAML file extension could be ``.yaml`` or ``.yml``. Mojito allows comments in the YAML files. 
 When both the JSON file (e.g., ``application.json``) and the YAML file (e.g., ``application.yaml``) 
 are present, the YAML file is used and a warning is issued. For the data types of the YAML 
-elements, please see the JSON configuration tables in Application Configuration, Routing, 
-and Mojit Configuration.
+elements, please see the JSON configuration tables in `Application Configuration <../intro/mojito_configuring.html#application-configuration>`_, 
+`Routing <../intro/mojito_configuring.html#routing>`_, and 
+`Mojit Configuration <../intro/mojito_configuring.html#mojit-configuration>`_.
 
 .. _08_lesson_app_config-yaml:
 
@@ -119,9 +118,13 @@ such as `json2yaml <https://npmjs.org/package/json2yaml>`_.
    ---
    - settings:
      - master
+     # Port that Mojito will listen to for incoming requests
      appPort: '8666'
+     # The application name is statically defined to be `trib`
      staticHandling:
        appName: trib
+     # The application is configured to use a specific build of YUI 
+     # and the logging level is set.
      yui:
        config:
          comboBase: http://yui.yahooapis.com/combo?
@@ -134,6 +137,8 @@ such as `json2yaml <https://npmjs.org/package/json2yaml>`_.
          - loader-app-base{langPath}
          debug: true
          logLevel: warn
+     # The specs object is where our mojit instances and the
+     # parent-child mojit relationships are defined.
      specs:
        tribframe:
          type: HTMLFrameMojit
@@ -164,6 +169,8 @@ such as `json2yaml <https://npmjs.org/package/json2yaml>`_.
                          type: Gallery
                  footer:
                    type: Footer
+           # The assets for the application are specified here and will be attached
+           # to the page by the `HTMLFrameMojit`.
            assets:
              top:
                css:
@@ -174,12 +181,14 @@ such as `json2yaml <https://npmjs.org/package/json2yaml>`_.
                - http://yui.yahooapis.com/gallery-2013.03.13-20-05/build/gallerycss-csslist/gallerycss-csslist-min.css
                - https://rawgithub.com/tilomitra/yuicss-common/master/ui.css
                - /static/trib/assets/trib.css
+   # Define selectors for contexts for different devices.
    - settings:
      - device:iphone
      selector: iphone
    - settings:
      - device:ipad
      selector: ipad
+   # Use different logging levels and no cache for the development context.
    - settings:
      - environment:development
      staticHandling:
@@ -205,8 +214,9 @@ Static Application Name
 
 We've been having to update the path to the assets for each application because the
 application name has been changing. Generally, you're not changing application names,
-but in a cloud-hosted environment, the path to the assets may change, so you'll want
-a way to statically define the application name so that the path to your assets is valid.
+but in a cloud-hosted environment, the application name may be dynamically created, so 
+you'll want a way to statically define the application name so that the path to your 
+assets is valid.
 
 To statically define assets in Mojito applications, you use the ``staticHandling`` 
 object and its property ``appName``. We're going to use ``trib`` for our application name,
@@ -396,12 +406,17 @@ Default Seed File
 
 In general, you don’t need to worry about the YUI default seed because Mojito creates a 
 default configuration for the YUI seed for you. For our application, we want a specific 
-version of YUI, so we’ll need to 
+version of YUI, so we’ll need to specify the base version of YUI with the ``yui``
+object in ``application.json``.
 
 .. _08_yui_seed-custom:
 
 Specifying the YUI Build
 ^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ``base`` property specifies the combo URL and version of YUI. The ``seed`` 
+property contains the modules that will loaded with the version of the combo URL
+specified by ``base``.
 
 .. code-block:: javascript
 
@@ -533,14 +548,14 @@ Context Configurations
 ######################
 
 As we’ve said in past modules, the context is the runtime environment that an application 
-is running in. Your application can use the setting property in configuration files to 
+is running in. Your application can use the ``setting`` property in configuration files to 
 define the context and its associated configurations. For instance, as we saw in the 
 section on configuring logging, you may want to have different levels of logging for 
 production than for the development environment. The runtime environment could be defined 
 by the device running the application or the regional environment. You may want to have 
 different configurations for the application when it’s running on an iOS device or if your 
 application is being viewed in a region where text is read from right to left. We’re going 
-to discuss  two types of contexts, how to configure context configurations,and then apply 
+to discuss the two categories of contexts, how to configure context configurations, and then apply 
 them.
 
 .. _08_context_configs-base:
@@ -549,9 +564,9 @@ Base Context
 ************
 
 The base context is statically set when you start the application. If you remember the 
-`Mojito CLI Basics module <>`_, you’ll recall there was a ``--context`` option. This option 
-allows you to start an application with a base context. Thus, if you want to run your 
-application in the environment:development context, you would use the following 
+`Mojito CLI Basics module <./1_cli.html>`_, you’ll recall there was a ``--context`` option. 
+This option allows you to start an application with a base context. Thus, if you want to 
+run your application in the ``environment:development`` context, you would use the following 
 command: ``$ mojito start --context "environment:production"``
 
 The base context allows you to test your application in different environments. If you 
@@ -584,8 +599,8 @@ need to use the query string parameters to request a context.
 Mojits
 ------
 
-We’ve already looked at the configuration files application.json and routes.json to 
-create mojit instances and define routing paths, but Mojito also has configuration files 
+We’ve already looked at the configuration files ``application.json`` and ``routes.json`` 
+to create mojit instances and define routing paths, but Mojito also has configuration files 
 that mojits can use to store key-value pairs and defaults. 
 
 .. _08_mojit-default:
@@ -593,11 +608,11 @@ that mojits can use to store key-value pairs and defaults.
 Default Configurations
 ######################
 
-As you know, the mojit instance definitions can store configurations in the config object. 
-For example, you may want a mojit instance to have specific configuration information, but 
-you may want to define default configurations as well. You define mojit defaults in the 
-``defaults.json`` file.  In the example application.json, the twitter instance defines 
-the title:
+As you know, the mojit instance definitions can store configurations in the ``config`` 
+object. For example, you may want a mojit instance to have specific configuration 
+information, but you may want to define default configurations as well. You define mojit 
+defaults in the ``defaults.json`` file.  In the example ``application.json``, the ``twitter`` 
+instance defines the title:
 
 .. code-block:: javascript
 
@@ -610,9 +625,9 @@ the title:
      },
    ...
 
-We can define the default URL or search query in the defaults.json file of the 
-``twitterMojit``. Because the twitter mojit instance does not define the url and query 
-properties explicitly defined, your application will use the defaults.
+We can define the default URL or search query in the ``defaults.json`` file of the 
+``twitterMojit``. Because the ``twitter`` mojit instance does not define the ``url`` and 
+``query`` properties explicitly defined, your application will use the defaults.
 
 .. code-block:: javascript
 
@@ -634,13 +649,13 @@ Definitions
 The ``definitions.json`` file allows your mojit to store and access configurations as well. 
 The key-value pairs in ``definitions.json`` has nothing to do with the mojit definition. 
 
-For instance, suppose you want to store the possible feed URLs for YouTube videos. In a 
-``youtubeMojit``, you may want to display different streams of videos for Mojito or YUI. 
+For instance, suppose you want to store the possible feed URLs for YouTube videos. In the
+``Youtube`` mojit, you may want to display different streams of videos for Mojito or YUI. 
 You could have a default or specify one in the config object of the ``youtube`` mojit 
 instance, but a better solution may be to have configurations defined in your 
 ``definitions.json``.
 
-In the ``definitions.json`` of the ``youtubeMojit`` below has a series of possible feeds.
+In the ``definitions.json`` of the ``Youtube`` mojit below has a series of possible feeds.
 
 .. code-block:: javascript
 
@@ -663,8 +678,9 @@ In the ``definitions.json`` of the ``youtubeMojit`` below has a series of possib
 Creating the Application
 ========================
 
-#. After you have copied the application that you made in the last module (see Setting Up), 
-   change into the application ``08_adv_config``.
+#. After you have copied the application that you made in the last module 
+   (see :ref:`Setting Up <08_intro_before-setup>`), change into the application 
+   ``08_adv_config``.
 #. We've been updating the path to our CSS assets for each application, but now we're going
    to define a static application name, so we'll be able to use the same path to the 
    CSS assets in the future and in hosting environments. Define the static application
@@ -814,7 +830,6 @@ Creating the Application
 
    .. code-block:: javascript
 
-
       [
         {
           "settings": [ "master" ],
@@ -829,28 +844,28 @@ Creating the Application
 
    .. code-block:: javascript
 
-        index: function (ac) {
-            var view_type, tablePath, title;
+      index: function (ac) {
+        var view_type, tablePath, title;
             view_type = ac.params.getFromRoute('view_type') || "yui";
 
-            if (view_type === "yui") {
-                tablePath = ac.config.getDefinition('yqlTable', 'notfound');
-                title = ac.config.getDefinition('yuititle', 'notitle');
-            } else if (view_type === "mojito") {
-                tablePath = ac.config.getDefinition('yqlTable', 'notfound');
-                title = ac.config.getDefinition('mojitotitle', 'notitle');
-            }
-            ac.models.get('GalleryModelYQL').getData({}, tablePath, function (data) {
-                // add mojit specific css
-                ac.assets.addCss('./index.css');
-
-                // populate youtube template
-                ac.done({
-                    title: title,
-                    results: data
-                });
-            });
+        if (view_type === "yui") {
+          tablePath = ac.config.getDefinition('yqlTable', 'notfound');
+          title = ac.config.getDefinition('yuititle', 'notitle');
+        } else if (view_type === "mojito") {
+          tablePath = ac.config.getDefinition('yqlTable', 'notfound');
+          title = ac.config.getDefinition('mojitotitle', 'notitle');
         }
+        ac.models.get('GalleryModelYQL').getData({}, tablePath, function (data) {
+          // add mojit specific css
+          ac.assets.addCss('./index.css');
+
+          // populate youtube template
+          ac.done({
+            title: title,
+            results: data
+          });
+        });
+      }
 
 #. Let's go ahead and do the same for the ``Twitter`` and ``Github`` mojits. The 
    ``definition.json`` file for the ``Twitter`` mojit is going to store your OAuth keys
@@ -1238,55 +1253,148 @@ Creating the Application
 
    ``$ mojito start --context "environment:development"``
 
+.. _08_adv_config-summary:    
+
+Summary
+=======
+
+We covered many different types of configuration in this module. Our short list
+includes the following:
+
+- YAML application configuration 
+- statically configuring the name of the application
+- base and request contexts
+- configuring the YUI seed
+- logging configuration
+- advanced routing configuration that includes regular expressions and parameters
+- default and definition configuration files
 
 .. _08_adv_config-ts:    
 
 Troubleshooting
 ===============
 
-Problem One
------------
-Nulla pharetra aliquam neque sed tincidunt. Donec nisi eros, sagittis vitae lobortis nec, 
-interdum sed ipsum. Quisque congue tempor odio, a volutpat eros hendrerit nec. 
+Error: Invalid or expired token
+-------------------------------
 
-Problem Two
------------
+If your ``Twitter`` mojit isn't rendering a template and you get the following error,
+your OAuth tokens may be incorrect or your controller is not accessing the keys
+from ``definition.json``. Check the ``definition.json`` file, that you're requesting
+the correct key from the the file, and that your OAuth tokens that you got from Twitter
+are correct and have the proper permissions.
 
-Nulla pharetra aliquam neque sed tincidunt. Donec nisi eros, sagittis vitae lobortis nec, 
-interdum sed ipsum. Quisque congue tempor odio, a volutpat eros hendrerit nec. 
+::
 
-.. _08_adv_config-summary:    
+   error: (mojito-output-buffer): 
+   { statusCode: 401,
+   data: '{"errors":[{"message":"Invalid or expired token","code":89}]}' }
 
-Summary
-=======
+
+Cannot GET /mojito
+------------------
+
+If you click on the **See Mojito Dashboard** and see the following message, you
+probably haven't updated the ``routes.json`` to include a route path for ``/mojito``.
+
+::
+
+   Cannot GET /mojito
+
+Confirm that ``routes.json`` has the following content:
+
+.. code-block:: javascript
+
+   [
+     {
+       "settings": [ "master" ],
+       "root": {
+         "verbs": ["get"],
+         "path": "/",
+         "call": "tribframe.index",
+         "params": {"view_type": "yui"}
+       },
+       "mojito_view":{
+         "verbs": ["get"],
+         "path": "/mojito",
+         "call": "tribframe.index",
+         "params": {"view_type": "mojito"}
+       }
+     }
+   ]
+
 
 .. _08_adv_config-qa:    
 
 Q&A
 ===
 
+- Can YAML be used for other configuration files as well?
+
+- Is it possible to have a global ``definition.json`` that all mojits can access?
+
+- Do the configurations of the request context override the configurations of the
+  base context?
+
+  The configurations of the request and base context are merged. If the request and
+  base context configurations have identical keys, the values of the request context
+  override those of the base context. 
+
+- What configurations take precedence, those in ``defaults.json`` or those in
+  ``application.json``?
+
+  If the same properties exist in ``application.json`` and ``defaults.json``, the
+  values from ``application.json`` are applied. The configurations in ``defaults.json``
+  are used if the same key-value pairs don't exist in ``application.json``, thus, the 
+  name "defaults". 
+
 .. _08_adv_config-test:  
 
 Test Yourself
 =============
 
-- How do you access models from a controller?
-- What are the four arguments passed to the methods of the REST module?
-- What is the recommended way for getting data in Mojito applications?
-- Use parameterized URLs in the ``routes.json`` to render the template for the Mojito 
-  dashboard.
+.. _08_test-questions:  
+
+Questions
+---------
+
+- How do you configure the logging levels for your application?
+- What property is used to define the application name?
+- How do you set the base context?
+- What advantage does YAML configuration files have over JSON configuration files?
+- Name two advanced routing features of Mojito.
+
+.. _08_test-exs:  
+
+Additional Exercises
+--------------------
+
+- Convert the ``routes.json`` into ``routes.yaml``. Try using a JSON-to-YAML conversion
+  tool.
+- Create a new configuration object in ``application.json`` that has the context 
+  ``"device:android"`` that defines the selector ``android``. Then, create the
+  template ``index.android.html`` for the ``Body`` mojit.
+- Modify the ``routes.json`` or ``routes.yaml`` file so that the route object 
+  ``mojito_view`` uses regular expressions to capture any path that has the word
+  "mojito" or "Mojito" in it.
 
 .. _08_adv_config-term:  
 
 Terms
 =====
 
+- `YAML <http://en.wikipedia.org/wiki/YAML>`_
+- **base context** - The context or environment that an application starts in. The base context is specified on the
+  command line with the ``--context`` option. For example: ``$ mojito start --context "environment:development"``
+- **request context** - The context of an incoming request or the runtime environment of the client. The Mojito
+  server may receive an HTTP request from an Android device. Mojito will determine the context based on the
+  HTTP Header ``User-Agent`` and then apply the proper configurations based on this request context.
+
 .. _08_adv_config-src:  
 
 Source Code
 ===========
 
-[app_part{x}](http://github.com/yahoo/mojito/examples/quickstart_guide/app_part{x})
+`08_adv_config <http://github.com/yahoo/mojito/examples/dashboard/08_adv_config/>`_
 
 
 .. _08_adv_config-reading:  
