@@ -87,7 +87,14 @@
             "lazyloadrpc" : {
                 "group" : "smoke,common,lazyloadrpc",
                 "params" : {
-                    "test" : "testlazyloadclient.js",
+                    "test" : "testlazyloadrpcclient.js",
+                    "page" : "$$config.baseUrl$$/"
+                }
+            },
+            "lazyloadclientmojitclient" : {
+                "group" : "smoke,common,lazyloadclientmojitclient",
+                "params" : {
+                    "test" : "testlazyloadclientmojitclient.js",
                     "page" : "$$config.baseUrl$$/"
                 }
             },

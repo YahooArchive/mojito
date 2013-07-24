@@ -2,10 +2,14 @@
 Mojito Command Line
 ===================
 
-Mojito comes with a command line tool that provides a number of key 
+Mojito comes with a command-line tool that provides a number of key 
 capabilities for the developer, from generating code skeletons, to 
 running tests and test coverage, to cleaning up and documenting the 
 code base.
+
+All commands except ``mojito create`` must be run from within the application
+directory.
+
 
 .. _mj_cmdlne-help:
 
@@ -29,29 +33,29 @@ Archetypes are used to create skeletons for the different types of artifacts
 in a Mojito application. The skeletons only contain stripped down boilerplate 
 code that is easier to create using the command-line tool rather than by hand.
 
-To create a skeleton for a Mojito application:
+- To create a skeleton for a Mojito application:
 
-``$ mojito create app [<archetype-name>] <app-name>``
+  ``$ mojito create app [<archetype-name>] <path/to/app-name>``
 
-This will create an empty application (i.e., one with no mojits) with the name 
-provided. The application is created in a directory named ``<app-name>`` within 
-the current directory. If no archetype name is provided, the default archetype 
-is used.
+  This will create an empty application (i.e., one with no mojits) with the name 
+  provided. The application is created in a directory named ``<app-name>`` within 
+  the specified directory. If no archetype name is provided, the default archetype 
+  is used.
 
-From the application directory, use the following command to create a skeleton 
-for a mojit:
+- From the application directory, use the following command to create a skeleton 
+  for a mojit:
 
-``$ mojito create mojit [<archetype-name>] <mojit-name>``
+  ``$ mojito create mojit [<archetype-name>] <mojit-name>``
 
-This will create an empty mojit with the name provided. The command assumes it 
-is being executed within an application directory. Thus, the mojit is created 
-in a directory named ``<mojit-name>`` within a ``mojits`` subdirectory of the 
-application directory. For example, the mojit ``MyMojit`` would be created in 
-``mojits/MyMojit``.
+  This will create an empty mojit with the name provided. The command assumes it 
+  is being executed within an application directory. Thus, the mojit is created 
+  in a directory named ``<mojit-name>`` within a ``mojits`` subdirectory of the 
+  application directory. For example, the mojit ``MyMojit`` would be created in 
+  ``mojits/MyMojit``.
 
-As with application creation, if no archetype name is provided, the default 
-archetype is used. Depending upon the archetype, the skeleton may include any 
-or all of the controller, model, view, and binder.
+  As with application creation, if no archetype name is provided, the default 
+  archetype is used. Depending upon the archetype, the skeleton may include any 
+  or all of the controller, model, view, and binder.
 
 
 .. _mj_cmdlne-archetype:
@@ -66,7 +70,21 @@ Mojito offers the following three archetypes for applications and mojits.
   specified. It is a happy medium between ``simple`` and ``full``.
 - ``full`` - Provides the most comprehensive configuration and code for 
   applications.
+
+.. _archetype-custom:
+
+Custom Archetypes
+#################
  
+You can also customize archetypes and then use them to generate code. 
+For example, if you customized the template code that Mojito uses (or create your own)
+to generate boilerplate code, such as an application or a mojit,
+you could have Mojito use your archetype to generate code with the following command:
+
+``$ mojito create mojit <archetype-path> <generated_code-path>``
+
+For example: ``$ mojito create app ./my_archetypes/mobile_web_app ./my_apps/micro_blog``
+
 
 .. _mj_cmdlne-testing:
 
@@ -74,21 +92,37 @@ Testing
 =======
 
 Unit tests are run using YUI Test invoked using the Mojito command-line tool. 
-Test output is written to the console and also to the file
+Test output is written to the console and also to the file 
 ``{CWD}/artifacts/test/result.xml``, where ``{CWD}`` is the current working directory. 
-Note that it is not (yet) possible to specify an alternative output location.
+Note when you run tests, the output may overwrite the results of past tests. To avoid this,
+you can use the long option ``--directory`` or an abbreviation such as ``--dir`` to
+to specify where to write test results.
+
 
 - To run tests for an application:
 
-  ``$ mojito test app <application-path>``
+  ``$ mojito test [app] [.]``
 
-- To run the unit tests for a specific mojit:
+- To run the unit tests for a specific mojit, use one of the following:
 
-  ``$ mojito test mojit <mojit-path> [<mojit-module>]``
+  - ``$ mojito test mojit <mojit-path>``
+  - ``$ mojito test mojit <mojit-name>``
 
-  If a mojit module (i.e., the YUI module for a portion of the mojit) is 
-  specified, only the tests for that module will be run. Otherwise all tests 
-  for the mojit will be run.
+- To run the unit tests for one or more modules of a mojit, use one of the following:
+
+  - ``$ mojito test mojit <mojit-path> --testname <mojit-module1> --testname <mojit-module2> --testname <mojit-module3>``
+  - ``$ mojito test mojit <mojit-path> <mojit-module1>,<mojit-module2>,<mojit-module3>``
+
+
+   If one or more mojit modules (i.e., the YUI modules for a portion of the mojit) are 
+   specified, only the tests for those modules will be run. Otherwise all tests 
+   for the mojit will be run.
+
+- To specify the output directory for test results:
+
+
+  - ``$ mojito test [app] --directory <test_results-path>``
+  - ``$ mojito test mojit <mojit-path> --dir <test_results-path>``
 
 To run functional and unit tests for the Mojito framework,
 you would use the test framework `Yahoo! Arrow <https://github.com/yahoo/arrow>`_.
@@ -98,27 +132,31 @@ to run the framework tests for Mojito.
 .. _mj_cmdlne-code_coverage:
 
 Code Coverage
-=============
+-------------
 
 Code coverage is invoked in the same way as unit testing, but with the added 
 option ``--coverage`` or ``-c``. To run code coverage tests, you need to have 
-Java installed.
+Java installed. You can specify where to write the coverage results  using the option
+``--directory`` or ``--dir``. Coverage results are written to  
+the directory ``{CWD}/artifacts/test/coverage/`` by default. You can also specify the 
+path to write results with the long option ``--directory`` or an abbreviation such as 
+``--dir`` (see example below).
 
-Coverage results are written to the console and also to file in the directory 
-``{CWD}/artifacts/framework/coverage/``.  As with unit tests,  it is not 
-possible to specify an alternative output location.
 
 - To run code coverage for a Mojito application:
 
-  ``$ mojito test --coverage app <app-path>``
-
-- To run code coverage for Mojito applications:
-
-  ``$ mojito test app <app-path> --coverage``
+  ``$ mojito test [app] --coverage``
 
 - To run code coverage for a specific mojit:
 
-  ``$ mojito test -c mojit <mojit-path>``
+  ``$ mojito test -c [mojit] <mojit-path>``
+
+- To specify the output directory for test results:
+
+  - ``$ mojito test [app] -c --directory <path>``
+  - ``$ mojito test mojit -c <mojit-path> --dir <path>``
+
+  The coverage results will be written to ``<path>/coverage/``.
 
 .. _mj_cmdlne-start_server:
 
@@ -140,28 +178,30 @@ Sanitizing Code
 ===============
 
 Static code analysis is run using JSLint invoked using the Mojito command-line 
-tool. JSLint output is written to text files and to a ``jslint.html`` file, 
-making it easier to view the results. The output file locations are specified 
-below. Note that it is not possible to specify an alternative output location.
+tool. By default, the JSLint error report is written to 
+``{CWD}/artifacts/jslint/jslint.html``. You can also specify the directory to
+write the error report to with the long option ``--directory`` or an abbreviation such 
+as ``--dir``.
 
 - To run JSLint on the Mojito framework code:
 
-  ``$ mojito jslint``
+  ``$ mojito jslint mojito``
 
-  Output is written to ``{CWD}/artifacts/framework/jslint/``, where ``{CWD}`` 
-  is the current working directory.
+- To run JSLint on an application, including its mojits:
 
-- To run JSLint on an application, including all of its (owned) mojits:
-
-  ``$ mojito jslint app <app-name>``
-
-  Output is written to ``{app-dir}/artifacts/jslint/``.
+  ``$ mojito jslint app .``
 
 - To run JSLint on a specific mojit:
 
   ``$ mojito jslint mojit <mojit-path>``
 
-  Output is written to ``{app-dir}/artifacts/jslint/mojits/{mojit-name}``/.
+- To run JSLInt on all the files in a path:
+
+  ``$ mojito jslint [<path>]``
+
+- To write the error report to a specific directory:
+
+  ``$ mojito jslint app . --dir <path>``
 
 .. _mj_cmdlne-document_code:
 
@@ -170,8 +210,10 @@ Documenting Code
 
 API documentation is generated using `YUI Doc <http://developer.yahoo.com/yui/yuidoc/>`_, 
 which is invoked using the Mojito command-line tool. Documentation output is 
-written to files in the locations specified below. Note that it is not (yet) 
-possible to specify an alternative output location.
+written to files in the locations specified below. Because it's based on YUI Doc,
+you can start a server that displays the documentation with the option ``--server`` and 
+specify a port with ``--port``. You can also specify the output directory with the 
+the option ``--directory`` or an abbreviation such as ``--dir``.
 
 - To generate documentation for the Mojito framework itself:
 
@@ -187,34 +229,37 @@ possible to specify an alternative output location.
 
   Output is written to ``{app-dir}/artifacts/docs/``.
 
-- To generate documentation for a specific mojit, run the following from the 
-  application directory:
+- To generate documentation for a specific mojit, run one of the following:
 
-  ``$ mojito docs mojit <mojit-name>``
+  - ``$ mojito docs mojit <mojit-path>``
+  - ``$ mojito docs mojit <mojit-name>``
 
   Output is written to ``{app-dir}/artifacts/docs/mojits/{mojit-name}/``.
+
+- To start a server for the documentation:
+
+  ``$ mojito docs app --server [--port <port_number>]``
 
 .. _mj_cmdlne-version_info:
 
 Version Information
 ===================
 
-- To show the version for the Mojito framework itself:
+- To display the version of the ``mojito-cli`` package:
 
   ``$ mojito version``
 
-- To show the version for an application, run the following from the 
-  application directory: 
+- To show the version of an application and the locally installed version of Mojito: 
 
-  ``$ mojito version app <app-name>``
+  ``$ mojito version app``
 
 - To show the version for a mojit, run the following from the application 
   directory:
 
   ``$ mojito version mojit <mojit-name>``
 
-  Showing the version of the application and mojit requires that they have a 
-  ``package.json`` file.
+.. note:: Showing the version of the application and mojit requires that they have a 
+          ``package.json`` file.
 
 .. _mj_cmdlne-build_sys:
 
@@ -236,7 +281,7 @@ option.
 Build Types
 -----------
 
-The following sections describe the available build types.
+The following sections describe the available build type.
 
 .. _build_types-html5app:
 
@@ -257,103 +302,10 @@ object lets you add the ``manifest`` attribute to the ``html`` element,
 configure relative paths, and specify a list of URLs to pages to generate.
 
 
-
-.. _mj_cmdlne-compile_sys:
-
-Compile System (Deprecated)
-===========================
-
-The ``compile`` command for generating files to optimize an application for 
-production has been **deprecated** and may not be available in the future.
-
-We recommend that you use the npm module `Shaker <https://github.com/yahoo/mojito-shaker>`_,
-which lets you compile (i.e., create rollups of) one or more input files. See the 
-`Shaker documentation <http://developer.yahoo.com/cocktails/shaker/>`_ 
-to learn how to use Shaker in Mojito applications.
-
-.. _compile_sys-syntax
-
-Syntax
-------
-
-Compile files with the command below where ``<type>`` can have the following values: 
-``all``, ``inlinecss``, ``views``, ``json``, or ``rollups``.
-
-``$ mojito compile <options> <type>``
-
-In addition, the compile command takes the following three options:
-
-- ``--app``  or ``-a`` - generates files for application-level files, including files in 
-  application-level mojits
-- ``--clean`` or ``-c`` - cleans up compiled modules
-- ``--everything`` or ``-e`` - compiles everything possible and does not require a 
-  ``<type>``
-- ``--remove`` or ``-r`` - removes the files that were generated
-
-.. note:: The ``--app`` option is not supported for the ``inlinecss``, ``views``, or 
-          ``json`` types.
-
-.. _compile_sys-inline_css:
-
-Compiling Inline CSS
---------------------
-
-The command below creates files for adding inline CSS to a page. The CSS files in 
-``/mojits/{mojit_name}/assets/`` will be automatically included as inlined CSS in the 
-rendered views for mojits that are children of the ``HTMLFrameMojit``.
-
-``$ mojito compile inlinecss``
-
-.. _compile_sys-views:
-
-Compiling Views
----------------
-
-The command below pre-compiles the views in ``mojit/{mojit_name}/views`` so that a mojit's 
-controller and binder are attached to the views, making separate XHR call 
-(back to the server) unnecessary.
-
-``$ mojito compile views``
-
-.. _compile_sys-config:
-
-
-Compiling Configuration
------------------------
-
-The command below using the type ``json`` reads the JSON configuration files, such as the 
-specs, definitions, and defaults, and compiles them into JavaScript.
-
-``$ mojito compile json``
-
-
-.. _compile_sys-rollups:
-
-Compiling Rollups
------------------
-
-The command below consolidates the YUI modules in the mojits into a single YUI module, 
-making only one ``<script>`` tag needed per page. Using the ``--app`` option creates a 
-rollup containing all of the application-level YUI modules as well as all of the Mojito 
-framework code.
-
-``$ mojito compile rollups``
-
-.. _compile_sys-all:
-
-Compiling All
--------------
-
-The commands below compile inline CSS, views, and YUI modules. 
-
-``$ mojito compile all``
-
-``$ mojito compile -e``
-
 .. _mj_cmdline-dependency:
 
-Dependency Graphs
-=================
+Dependency Graphs (Deprecated)
+==============================
 
 The command below generates the Graphviz file ``{CWD}/artifacts/gv/yui.client.dot`` 
 (``{CWD}`` represents the current working directory) that describes the YUI module 

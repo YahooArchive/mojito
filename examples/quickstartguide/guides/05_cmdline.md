@@ -6,6 +6,9 @@ The following sections cover the basic functionality of the Mojito command-line
 utility. You can always run `mojito help` to see the list of available commands
 and options. 
 
+You need to run the commands from a Mojito application directory except for the
+command `create`. 
+
 ## Starting Applications ##
 
 Use the following to start the server and run the application.
@@ -20,7 +23,7 @@ number is 8666.
 
 * To run tests for an application:
 
-  `$ mojito test app <application-path>`
+  `$ mojito test app`
 
 * To run the unit tests for a specific mojit:
 
@@ -29,12 +32,13 @@ number is 8666.
 
 ## Sanitizing Code ##
 
+Output is written to `{CWD}/artifacts/framework/jslint/`, where `{CWD}` 
+is the current working directory.
+
 - To run JSLint on the Mojito framework code:
 
-  `$ mojito jslint`
+  `$ mojito jslint mojito`
 
-  Output is written to `{CWD}/artifacts/framework/jslint/`, where `{CWD}` 
-  is the current working directory.
 
 - To run JSLint on an application, including all of its (owned) mojits:
 
