@@ -1,0 +1,7 @@
+{
+	"name": "ExamplesInputMerged",
+	"version": "0.0.0",
+	"dependencies": {
+		"mojito": "*"
+	}
+}
