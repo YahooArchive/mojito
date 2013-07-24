@@ -4,6 +4,7 @@
 .svn/
 *.bak
 *~
+/docs
 /tests
 arrowreport
 artifacts
