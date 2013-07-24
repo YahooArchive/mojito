@@ -222,13 +222,13 @@ a coupon to a user posting information.
          "verbs": ["post"],
          "path": "/coupon/form",
          "call": "coupon.index",
-         "param": "coupon=true"
+         "params": "coupon=true"
        },
        "get": {
          "verbs": ["get"],
          "path": "/coupon/form",
          "call": "coupon.index",
-         "param": "coupon=false"
+         "params": "coupon=false"
        }
      }
    ]
@@ -474,11 +474,65 @@ with the name ``'user'`` if one does not exist.
 Sharing Data
 ============
 
+Overview
+--------
+
 After a mojit gets data, it may need to share that data with binders, templates, or other 
 mojits. Mojito provides the ``Data`` addon that allows your mojit controllers and binders 
-to share and access data. Data can also be refreshed in templates using the ``Data`` addon
-and Handlebars expressions. Let's look at the addon and then look at some use cases with 
-examples.
+to share and access data. 
+Data can also be refreshed in templates using the ``Data`` addon
+and Handlebars expressions. 
+
+.. _mojito_data_sharing-how:
+
+How Is Data Shared?
+###################
+
+Data is passed from the server to the client and vice versa using a remote procedural 
+call (RPC) through a tunnel. During this transmission, the state of the data is preserved. 
+When content is sent to the client as part of the page, the data and templates are rendered 
+on the server and sent to the client through the tunnel. After the initial rendering, each 
+time the mojit instance invokes an action that triggers an RPC through the tunnel, data is 
+serialized and sent to the server, where the instance is recreated with the data. If the 
+action changes the data model, the new data is then sent back through the tunnel to the 
+client to update the data model.
+
+
+Benefits 
+########
+
+The data sharing model used in Mojito is extremely flexible, allowing you to share data
+in your application in many ways. We'll look at how data is shared from the perspective
+of controllers and binders, which have access to the ``Data`` addon.
+
+Controllers
+***********
+
+Controllers can share data in the following ways:
+
+- rehydrate data of its template or all the templates on the page
+- share data with its binders or all the other mojit binders on the page
+
+Binders
+*******
+
+Binders can do the following to share/access data:
+
+- invoke an action to update data for another binder that is listening for changes in that 
+  data to update the view
+- rehydrate data in templates
+- share data with other binders on the page
+ 
+
+Potential Issues
+################
+
+When using the ``Data`` addon to share data, you should be aware of a couple of potential
+issues. When multiple RPCs are made (e.g., multiple clicks on the same button), there is no
+guarantee of the order of execution of the requests, which means you might get stale
+data. Also, if your data model contains a lot of information, the payload of the RPC
+will negatively affect performance and security as data is transmitted back and forth
+between the client and server.
 
 .. _mojito_data_sharing-data_addon:
 
@@ -616,7 +670,7 @@ mojits/StockQuotes/views/index.hb.html
    <div id="{{mojit_view_id}}">
      <h2>{{title}}</h2>
      <ul>
-     <!-- The Handlerbars block helper can iterate through the data
+     <!-- The Handlebars block helper can iterate through the data
           made available through ac.data.set in the controller.
      -->
      {{#each stock_quotes}}
