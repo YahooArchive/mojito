@@ -421,8 +421,14 @@ function runFuncAppTests(cmd, callback) {
         } else {
             // Install dependecies for specific projects
             // Change here if you want your app to do npm install prior to start mojito server for test
+            //
+            // NOTE: run.js needs to install additional dependencies for 
+            // quickstartguide. To avoid mojito installation collision,
+            // only install required dependencies.
+            //
+            // TODO: find a more generic solution
             if (app.path === "../../../examples/quickstartguide") {
-                exeSeries.push(installDependencies(app, cmd.funcPath + '/applications', function() {
+                exeSeries.push(installDependencies(app, ["node-markdown"], cmd.funcPath + '/applications', function() {
                     runMojitoApp(app, cmd, cmd.funcPath + '/applications', port, app.param, function(thispid) {
                         runFuncTests(cmd, des, port, thispid, callback);
                     });
@@ -445,14 +451,20 @@ function installMojito(app, basePath, callback) {
     runNpm(basePath + '/' + app.path, ["i", MOJITOLIB], callback);
 }
 
-function installDependencies(app, basePath, callback) {
+function installDependencies(app, args, basePath, callback) {
     console.log("---Starting installing dependencies---");
     // Install with npm
-    runNpm(basePath + '/' + app.path, ["i"], function (code) {
+    runNpm(basePath + '/' + app.path, ["i"].concat(args), function (code) {
         if (code !== 0) {
             callback(code);
         } else {
-            installMojito(app, basePath, callback);
+            // Don't install Mojito dependency for examples/quickstartguide
+            // TODO: find a more generic solution
+            if (app.path !== "../../../examples/quickstartguide") {
+                installMojito(app, basePath, callback);
+            } else {
+                callback(code);
+            }
         }
     });
 }
