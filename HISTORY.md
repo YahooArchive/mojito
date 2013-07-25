@@ -13,8 +13,23 @@ Features
 Bug Fixes
 ---------
 
+* PR #1196: fix runtime:server is not set by default when booting the app
+* Issue #1071: Putting a README.md in the mojits/ directory causes mojito to not load
+
 Acknowledgements
 ----------------
+
+
+version 0.7.1
+=================
+
+Notes
+--------
+The resource store now exposes a method loadConfigs() and an event "loadConfigs", for planned add-on authoring support.
+
+Acknowledgements
+----------------
+Thanks to David Gomez and Jacques Arnoux for contributing to this release.
 
 
 version 0.7.0

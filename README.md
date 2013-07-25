@@ -40,6 +40,16 @@ see [Contributing Code to Mojito](https://github.com/yahoo/mojito/wiki/Contribut
 1. Generate documentation:
 
         $ mojito docs app hello
+        
+## Mojito Git Branches
+
+The default branch for the Mojito GitHub repository is `develop`. To clone the version of Mojito that is the same as 
+the latest version of Mojito in the npm registry, explicitly request the `master` branch: `git clone https://github.com/yahoo/mojito.git --branch master`
+Mojito application developers should work with the `master` branch.
+
+Mojito contributors, however, should clone and make pull requests to the `develop` branch. Before you
+start contributing, please read [Contributing Code to Mojito](https://github.com/yahoo/mojito/wiki/Contributing-Code-to-Mojito).
+
 
 ## Documentation
 
