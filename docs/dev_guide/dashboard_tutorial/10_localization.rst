@@ -2,30 +2,35 @@
 10. Localizing Your App
 =======================
 
+.. _10_localization-intro:
+
 Introduction
 ============
 
-Because Mojito is built with YUI, localizing Mojito applications is fairly 
-straightforward and easy. In this module, we’re just going to localize the title 
-of our dashboard to show you how you would localize your own applications. In a 
-nutshell, you provide localized strings, Mojito determines the language environment 
-of the client, and you apply the correct localized string with an addon from your 
-controller. 
+Because Mojito is built with YUI, which has an internationalization utility, localizing 
+Mojito applications is fairly straightforward and easy. In this module, we’re just going 
+to localize the title of our dashboard to show you how you would localize your own 
+applications. In a nutshell, you provide localized strings, Mojito determines the 
+language environment of the client, and you apply the correct localized string with an 
+addon from your controller. 
 
+.. _10_intro-what:
 
 What We’ll Cover
 ----------------
 
-You can probably guess some of what we’re going to cover just by reading the 
-introduction, but more specifically, we’re going to cover how to create the 
-localized strings and how to use the addon. We’ll also discuss the ways that 
-Mojito detects the language environment of the client. 
+We’re going to cover how to store localized strings and how to use the addon to access
+those localized strings when given a language environment. We’ll also discuss the ways 
+that Mojito detects the language environment of the client. 
 
 - creating YUI resource bundles for your mojits
-- using the Intl addon to get a localized string
-- specifying the BCP 47 language tags. BCP 47 is currently the combination of 
-  RFC 5646 and RFC 4647
+- using the ``Intl`` addon to get a localized string
+- specifying the `BCP 47 language tags <http://tools.ietf.org/html/bcp47>`_. BCP 47 is 
+  currently the combination of `RFC 5646 <http://tools.ietf.org/html/rfc5646>`_ and 
+  `RFC 4647 <http://www.ietf.org/rfc/rfc4647.txt>`_
 - understanding how Mojito determines the language environment
+
+.. _10_intro-final:
 
 Final Product
 -------------
@@ -34,24 +39,40 @@ In the screenshot, you can see that our dashboard has three localized pages: Eng
 simplified Chinese, and Spanish. Our application only localizes the title of the page,
 but more importantly, you'll learn how to localize your own applications in the future.
 
-.. image:: images/10_hb_localization.png
+.. image:: images/10_localization.png
    :height: 254 px
    :width: 877 px
-   :alt: Screenshot of 09 Handlebars template application.
+   :alt: Screenshot of 10 Localization application.
+
+..  _10_intro-before:
 
 Before Starting
 ---------------
+
+..  _10_intro_before-review:
 
 Review of the Last Module
 #########################
 
 
+In the last module, we discussed how to create custom templates, Handlebars partials,
+and Handlebars helpers in Mojito. We also looked at how to configure Mojito to select 
+templates based on the context. In short, we looked at these topics:
+
+- selectors 
+- templates for different devices
+- Handlebars helpers
+- template partials
+- ``Helper`` addon
+
+..  _10_intro_before-setup:
+
 Setting Up
-----------
+##########
 
 ``$ cp -r 09_hb 10_localization``
 
-
+.. _10_localization-lesson:
 
 Lesson: Localizing Applications
 ===============================
@@ -69,6 +90,8 @@ support.
 We’re going to first look at the resource bundle files and then show how to 
 use the ``Intl`` addon to access the localized strings in those files.
 
+.. _10_lesson-rs_bundle:
+
 Resources Bundles for Languages
 -------------------------------
 
@@ -78,15 +101,21 @@ language tags are the identifiers for languages used on the internet. BCP stands
 for IETF Best Current Practice, and BCP 47 is currently the combination of RFC 
 5646 and RFC 4647. 
 
+.. _10_rs_bundle-location:
+
 Location
 ########
 
 These resource bundles are placed in the lang directory of the mojit. For example, 
-we’ll be using resource bundles for the LayoutMojit, so the resource bundles should 
-be in the following directory: ``mojits/LayoutMojit/lang``
+we’ll be using resource bundles for the ``PageLayout`` mojit, so the resource bundles 
+should be in the following directory: ``mojits/PageLayout/lang``
+
+.. _10_rs_bundle-name:
 
 Naming Syntax
 #############
+
+.. _10_rs_bundle-file:
 
 File Names
 **********
@@ -96,23 +125,27 @@ files should use the following naming convention:
 
 ``{mojit_name}_{BCP 47 tag}.js``
 
+.. _10_rs_bundle-module:
+
 YUI Module Name
 ***************
 
 The language resource files, as we’ve said, are YUI modules. You register the 
-module name with YUI.add. Thus, for the LayoutMojit, the resource bundle file 
-``FrameMojit_zh-Hans.js``.
+module name with ``YUI.add``. Thus, for the ``PageLayout`` mojit, the resource bundle file 
+``PageLayout_zh-Hans.js``.
+
+.. _10_rs_bundle-register:
 
 Registering Modules and Resource Bundles
 ########################################
 
 The YUI module name of your language bundle is registered like other modules with 
 ``YUI.add``. For example, the resource bundle for simplified Chinese in our 
-``FrameMojit``, would use the following to register the module:
+``PageLayout``, would use the following to register the module:
 
 .. code-block:: javascript
 
-   YUI.add('lang/FrameMojit_zh-Hans.js'), function(Y) {
+   YUI.add('lang/PageLayout_zh-Hans.js'), function(Y) {
      ...
    }, "3.1.0", {requires: ['intl']});
 
@@ -124,7 +157,7 @@ following:
 .. code-block:: javascript
 
    Y.Intl.add(
-     "FrameMojit",  // associated module
+     "PageLayout",  // associated module
      "zh-Hans",    // BCP 47 language tag
      // key-value pairs for this module and language
      {
@@ -137,6 +170,8 @@ For those who don’t read simplified Chinese, the localized strings that we
 registered are simply the translations  of "Trib - YUI Dashboard" and 
 "Trib - Mojito Dashboard".
 
+.. _10_intl_addon-require:
+
 Requiring the Intl Addon
 ########################
 
@@ -146,6 +181,8 @@ module, you need to require it as shown below:
 .. code-block:: javascript
 
    }, "3.1.0", {requires: ['intl']});
+
+.. _10_rs_bundle-ex:
 
 Example Resource Bundle
 #######################
@@ -166,14 +203,15 @@ Let’s look at the completed version of the resource bundle ``FrameMojit_zh-Han
      );
    }, "3.1.0", {requires: ['intl']});
 
+.. _10_intl_addon-using:
 
-Using the intl Addon to Access Resource Bundle
+Using the Intl Addon to Access Resource Bundle
 ##############################################
 
-The controller accesses the YUI intl module through the Intl addon, which is 
-required like other addons. The Intl addon has methods to get localized 
+The controller accesses the YUI ``intl`` module through the ``Intl`` addon, which is 
+required like other addons. The ``Intl`` addon has methods to get localized 
 strings from the resource bundles and to format dates. In the 
-``controller.server.js`` file below, the intl.lang gets the localized 
+``controller.server.js`` file below, ``ac.intl.lang`` gets the localized 
 string from resource bundles.
 
 .. code-block:: javascript
@@ -197,6 +235,7 @@ string from resource bundles.
      }
    ...
 
+.. _10_lang_env-determine:
 
 How Mojito Determines the Language Environment
 ##############################################
@@ -212,18 +251,19 @@ application, we want to configure Mojito to run the application on the client
 to improve the chances of serving content in the user’s preferred language and 
 date format.
 
-
+.. _10_localization-create:
 
 Creating the Application
 ========================
 
 #. After you have copied the application that you made in the last module 
-   (see Setting Up), change into the application ``10_localization``.
+   (see :ref:`Setting Up <10_intro_before-setup>`), change into the application 
+   ``10_localization``.
 #. First let's add the ``lang`` directory to the ``PageLayout`` mojit.
 #. In the ``lang`` directory, create the language resource bundle files 
    ``PageLayout_en-US.js``, ``PageLayout_es-419.js``, and ``PageLayout_zh-Hans.js``
    with the content below. Notice that the YUI registered name is the same as the
-   directory and file, the inclusion of the ``intl`` addon, and the registration
+   directory and file, the inclusion of the ``intl`` module, and the registration
    of the language bundle with ``Y.Intl.add``.
 
    ``PageLayout_en-US.js``
@@ -382,44 +422,104 @@ Creating the Application
    can build on. If you haven't already, be sure to read the `documentation <../>`_ and the 
    `code examples <../code_examples/>`_ as well.
 
-
-Troubleshooting
-===============
-
-Problem One
------------
-
-Nulla pharetra aliquam neque sed tincidunt. Donec nisi eros, sagittis vitae 
-lobortis nec, interdum sed ipsum. Quisque congue tempor odio, a volutpat eros 
-hendrerit nec. 
-
-Problem Two
------------
-
-Nulla pharetra aliquam neque sed tincidunt. Donec nisi eros, sagittis vitae 
-lobortis nec, interdum sed ipsum. Quisque congue tempor odio, a volutpat eros 
-hendrerit nec. 
+.. _10_localization-summary:
 
 Summary
 =======
 
+Our topic was a bit more focused in this module. We added localization support for
+three languages for the application heading using the ``Intl`` addon and resource bundles.
+To do this we had to learn the following:
+
+- creating resource bundles
+- adding the ``Intl`` addon to our controller
+- use the ``Intl`` addon to access the localized strings in the resource bundles
+
+
+.. _10_localization-ts:
+
+Troubleshooting
+===============
+
+Wrong language being displayed
+------------------------------
+
+Make sure that in the resource bundle file, the BCP 47 language tag has been
+passed to ``Y.Intl.add`` and that the language tag matches the tag appended
+to the module and file name. For example, the file ``PageLayout_zh-Hans.js`` should
+register the module ``"lang/PageLayout_zh-Hans"``, and the language tag ``"zh-Hans"``
+should be passed to ``Y.Intl.add``.
+
+Cannot call method 'lang' of undefined
+--------------------------------------
+
+This error may look familiar. The ``lang`` namespace is undefined because you
+have not required the ``Intl`` addon by adding the string ``mojito-intl-addon`` to
+the ``requires`` array.
+
+.. _10_localization-qa:
+
 Q&A
 ===
+
+- Can you create a global resource bundle that all mojits can use?
+
+  No, the resource bundle has to be associated with a YUI module. Each mojit
+  is registered as a YUI module that can then be associated with a resource bundle.
+  
+- Can the ``Intl`` addon format dates for a given language environment?
+
+  Yes, although we didn't use it in our application, the ``Intl`` addon has the method
+  ``formatData`` that will format dates for you. Again, 
+   Mojito is relying on the YUI module ``datatype-date`` to do this for you.
+
+.. _10_localization-test:
 
 Test Yourself
 =============
 
+.. _10_test-questions:
+
+
+Questions
+---------
+
+- What addon is used for localization and what YUI module does it rely on?
+- What are the three arguments that need to be passed to ``Y.Intl.add``?
+- What is the language tag recognized by Mojito?
+
+.. _10_test-additional_exs:
+
+Additional Exercises
+--------------------
+
+- Add a resource bundle file for German to your ``PageLayout`` mojit so that the 
+  title can be localized in German.
+- Add a ``lang`` directory and resource bundles to the ``Footer`` mojit that localizes
+  the string for the copyright message assigned to the ``title`` property.
+
+.. _10_localization-terms:
 
 Terms
 =====
 
+- `BCP 47 language tags <http://tools.ietf.org/html/bcp47>`_
+- **resource bundle** - Files that provide resources to YUI modules. In the case of
+  localization, we are using language resource bundles that associates a BCP 47 language 
+  tag and localized strings to the YUI module that can access it.
+
+.. _10_localization-src:
+
 Source Code
 ===========
 
-[app_part{x}](http://github.com/yahoo/mojito/examples/quickstart_guide/app_part{x})
+`10_localization <http://github.com/yahoo/mojito/examples/dashboard/10_localization/>`_
+
+.. _10_localization-reading:
 
 Further Reading
 ===============
 
-- [Mojito Doc](http://developer.yahoo.com/cocktails/mojito/docs/)
+- `Internationalization <http://yuilibrary.com/yui/docs/intl/>`_
+- `Internationalizing Your Application <../code_exs/i18n_apps.html>`_
 

@@ -3,7 +3,7 @@
 ==========================================
 
 
-.. _10_hb_templates-intro:
+.. _09_hb_templates-intro:
 
 Introduction
 ============
@@ -15,7 +15,7 @@ which is just an identifier that is part of the file name. This allows you to ha
 templates that can be served based on the client request. We're also going to take 
 advantage of Handlebars helpers and partials to simplify our templates. 
 
-.. _10_intro-what:
+.. _09_intro-what:
 
 What We’ll Cover
 ----------------
@@ -26,7 +26,7 @@ What We’ll Cover
 - template partials
 - ``Helper`` addon
 
-.. _10_intro-final:
+.. _09_intro-final:
 
 Final Product
 -------------
@@ -39,12 +39,12 @@ the Web, the iPad, and the iPhone as shown in the screenshot below.
    :width: 740 px
    :alt: Screenshot of 09 Handlebars template application.
 
-.. _10_intro-before:
+.. _09_intro-before:
 
 Before Starting
 ---------------
 
-.. _10_intro_before-review:
+.. _09_intro_before-review:
 
 Review of the Last Module
 #########################
@@ -63,7 +63,7 @@ we learned the following:
 - configuring YUI
 - configuring logging
 
-.. _10_intro_before-setup:
+.. _09_intro_before-setup:
 
 Setting Up
 ##########
@@ -71,12 +71,12 @@ Setting Up
 ``$ cp -r 08_mojit_adv_config 09_hb_templates``
 
 
-.. _10_hb_templates-lesson:
+.. _09_hb_templates-lesson:
 
 Lesson: Selectors and Custom Templates
 ======================================
 
-.. _10_lesson-selectors:
+.. _09_lesson-selectors:
 
 Selectors
 ---------
@@ -106,12 +106,12 @@ have all of the following controllers:
 
 See the selector Property and Selectors for for more information.
 
-.. _10_lesson_selectors-devices:
+.. _09_lesson_selectors-devices:
 
 Devices Recognized By Mojito
 ############################
 
-.. _10_lesson-devices_supported:
+.. _09_lesson-devices_supported:
 
 Supported Devices
 *****************
@@ -141,7 +141,7 @@ addition to ``index.hb.html``.
 | Blackberry      | index.blackberry.hb.html  |
 +-----------------+---------------------------+
 
-.. _10_lesson-devices_defining:
+.. _09_lesson-devices_defining:
 
 Defining Selectors
 ##################
@@ -170,7 +170,7 @@ then use the appropriate context and selector to choose resources.
      }
    ]
 
-.. _10_lesson-multiple_templates:
+.. _09_lesson-multiple_templates:
 
 Creating Multiple Templates
 ---------------------------
@@ -178,7 +178,7 @@ Creating Multiple Templates
 We’re going to change the layout and the number of modules based on the client 
 request. 
 
-.. _10_multiple_templates-hb:
+.. _09_multiple_templates-hb:
 
 Handlebars Helpers and Partials
 ###############################
@@ -207,7 +207,7 @@ After you have defined your Handlebars helper, you register it with the Helpers
 addon. The Helpers addon has several methods for getting helpers, setting 
 mojit-level helpers, or exposing helpers so that they can shared with other mojits.
 
-.. _10_multiple_templates-hb_helpers:
+.. _09_multiple_templates-hb_helpers:
 
 Helpers Addon
 #############
@@ -226,7 +226,7 @@ The Helper addon has the following three methods:
 - ``set`` - Sets a helper function for a mojit instance. Other mojit instances 
   will not have access to this helper function.
 
-.. _10_multiple_templates-hb_helpers:
+.. _09_multiple_templates-hb_helpers:
 
 Setting Helpers for a Mojit Instance
 ####################################
@@ -266,7 +266,7 @@ In the ``index.hb.html`` template, the helper toLinkHelper highlights takes as t
    {{/each}}
    </ul>
 
-.. _10_lesson-hb_helpers_global:
+.. _09_lesson-hb_helpers_global:
 
 Exposing Helpers for Global Use
 ###############################
@@ -298,7 +298,7 @@ helper to be available to other mojits, so exposing it globally makes sense.
      }
    ...
 
-.. _10_lesson-hb_helpers_using:
+.. _09_lesson-hb_helpers_using:
 
 Using the Helper in the Template
 ################################
@@ -320,7 +320,7 @@ of the properties title and user_guide:
      </ul>
    </div>
 
-.. _10_lesson-partials:
+.. _09_lesson-partials:
 
 Partials
 ########
@@ -335,7 +335,7 @@ partials.
 Now let’s look at the file naming convention, location, and usage of partials 
 before finishing up with a simple example.
 
-.. _10_lesson-partials_files:
+.. _09_lesson-partials_files:
 
 File Naming Convention
 **********************
@@ -343,12 +343,12 @@ File Naming Convention
 The file name for partials is similar to templates using Handlebars except ``{partial_name}`` 
 replaces ``{controller_function}``: ``{partial_name}.[{selector}].hb.html``
 
-.. _10_lesson-partials_location:
+.. _09_lesson-partials_location:
 
 Location of Partials
 ********************
 
-.. _10_lesson-partials_global:
+.. _09_lesson-partials_global:
 
 Global Partials
 ^^^^^^^^^^^^^^^
@@ -358,7 +358,7 @@ Global Partials
 Thus, the global partial ``foo.hb.html`` in the application ``bar_app`` would be located at
 ``bar_app/views/partials/foo.hb.html``.
 
-.. _10_lesson-partials_local:
+.. _09_lesson-partials_local:
 
 Local Partials
 ^^^^^^^^^^^^^^
@@ -368,7 +368,7 @@ Local Partials
 Thus, the local partial foo.hb.html in the mojit bar_mojit would be located at
 ``mojits/bar_mojit/views/partials/foo.hb.html``.
 
-.. _10_lesson-partials_using:
+.. _09_lesson-partials_using:
 
 Using Partials in Templates
 ***************************
@@ -378,7 +378,7 @@ To use a partial, the template uses the following syntax: ``{{> partial_name}}``
 To use the partial ``status.hb.html``, you would included the following in a 
 template: ``{{> status }}``
 
-.. _10_lesson-partials_ex:
+.. _09_lesson-partials_ex:
 
 Example
 ^^^^^^^
@@ -412,7 +412,7 @@ Example
    </div>
 
 
-.. _10_hb_templates-create:
+.. _09_hb_templates-create:
 
 Creating the Application
 ========================
@@ -697,7 +697,7 @@ Creating the Application
 
 TBD: tell them how to view the pages on their devices.
 
-.. _10_hb_templates-summary:
+.. _09_hb_templates-summary:
 
 Summary
 =======
@@ -712,7 +712,7 @@ on the context. As for the details, we went over the following topics:
 - template partials
 - ``Helper`` addon
 
-.. _10_hb_templates-ts:
+.. _09_hb_templates-ts:
 
 Troubleshooting
 ===============
@@ -735,7 +735,7 @@ exposed the ``linker`` function to other mojits using the ``Helper`` addon metho
 the helper have required the ``Helpers`` addon.
 
 
-.. _10_hb_templates-qa:
+.. _09_hb_templates-qa:
 
 
 Q&A
@@ -762,10 +762,12 @@ Q&A
   tutorial. See the `Middleware <../topics/mojito_extensions.html#middleware>`_ section
   for how to set up your files and configure your application to use custom middleware.
 
-.. _10_hb_templates-test:
+.. _109_hb_templates-test:
 
 Test Yourself
 =============
+
+.. _09_test-questions:
 
 Questions
 ---------
@@ -786,7 +788,7 @@ Additional Exercises
   Follow the instructions in `Creating and Using a View Engine Addon <../code_exs/view_engines.html>`_ for 
   first before trying it.
 
-.. _10_hb_templates-terms:
+.. _09_hb_templates-terms:
 
 Terms
 =====
@@ -801,14 +803,14 @@ Terms
   identifier iphone such as ``index.iphone.hb.html``.
 
 
-.. _10_hb_templates-src:
+.. _09_hb_templates-src:
 
 Source Code
 ===========
 
 ``[app_part{x}](http://github.com/yahoo/mojito/examples/quickstart_guide/app_part{x})``
 
-.. _10_hb_templates-reading:
+.. _09_hb_templates-reading:
 
 Further Reading
 ===============
