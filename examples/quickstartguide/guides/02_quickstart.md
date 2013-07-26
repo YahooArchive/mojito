@@ -9,10 +9,11 @@
 ## Installation Steps ##
 
 1. Get Mojito from the [npm registry](https://npmjs.org/doc/registry.html) and globally install 
-   Mojito so that it can be run from the command line. You may need to use `sudo` if you run into permission errors.
+   the Mojito CLI package (`mojito-cli`) to run Mojito commands. You may need to use `sudo` 
+   if you run into permission errors.
   
 
-   `$ npm install mojito -g`
+   `$ npm install mojito-cli -g`
 2. Confirm that Mojito has been installed by running the **help** command.
 
    `$ mojito help`

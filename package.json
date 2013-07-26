@@ -16,22 +16,14 @@
         "Lichun Zhan <lzhan@yahoo-inc.com>"
     ],
     "dependencies": {
-        "colors": "*",
         "debug": "*",
         "glob": "~3.1.11",
         "js-yaml": "1.0.2",
-        "jslint": "~0.1.9",
         "mime": "1.2.4",
-        "mkdirp": ">0.3",
         "request": "2.9.202",
-        "rimraf": ">2",
         "semver": "1.0.14",
-        "wrench": "~1.3.9",
         "ycb": "~1.0.5",
-        "yui": "~3.10.0",
-        "yuidocjs": "~0.3.14",
-        "yuitest": "~0.7.4",
-        "yuitest-coverage": "~0.0.6"
+        "yui": "~3.10.3"
     },
     "keywords": [
         "framework",
@@ -53,12 +45,15 @@
     },
     "devDependencies": {
         "async": "*",
+        "benchmark": "1.x",
         "commander": "1.0.1",
         "express": "3.x",
         "mockery": "~1.4.0",
+        "mojito-cli": "~0.1",
         "node-static": ">0.6.8",
-        "yahoo-arrow": "~0.0.77",
-        "benchmark": "1.x"
+        "wrench": "~1.3.9",
+        "yahoo-arrow": "~0.0.79",
+        "portfinder": "0.2.1"
     },
     "optionalDependencies": {
         "phantomjs": ">=1.8.0"
@@ -67,8 +62,8 @@
         "test": "cd tests && node run.js test --browser phantomjs",
         "unit": "cd tests && node run.js test -u --browser phantomjs",
         "func": "cd tests && node run.js test -f --browser phantomjs",
-        "lint": "node bin/mojito jslint",
-        "docs": "node bin/mojito docs mojito"
+        "lint": "mojito jslint app --ex examples --ex docs -p",
+        "docs": "mojito docs mojito"
     },
     "homepage": "http://developer.yahoo.com/cocktails/mojito/",
     "repository": {

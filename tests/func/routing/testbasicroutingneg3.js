@@ -12,7 +12,6 @@ YUI({
     suite.add(new Y.Test.Case({
         _should: {
             ignore: {
-                'test BasicRoutingNeg3': true
             }
         },
         "test BasicRoutingNeg3": function(){

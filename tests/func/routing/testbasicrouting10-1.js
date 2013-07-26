@@ -11,7 +11,6 @@ YUI({
     suite.add(new Y.Test.Case({
         _should: {
             ignore: {
-                'test BasicRouting10-1': true
             }
         },
          "test BasicRouting10-1": function(){

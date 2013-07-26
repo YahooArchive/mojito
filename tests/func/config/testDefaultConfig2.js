@@ -11,7 +11,7 @@ YUI({
 
      suite.add(new Y.Test.Case({
 	  "test DefaultConfig2": function(){
-          Y.Assert.areEqual('This is from defaults.json:master', Y.one('#myenv').get('innerHTML'));
+          Y.Assert.areEqual('This is from defaults.json:runtime:server', Y.one('#myenv').get('innerHTML'));
           Y.Assert.areEqual('This is from defaults.json:master', Y.one('#mysubject').get('innerHTML'));
           Y.Assert.areEqual('This is from defaults.json:lang:de', Y.one('#mylang').get('innerHTML'));
       }

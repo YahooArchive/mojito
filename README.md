@@ -7,46 +7,49 @@ on-line/off-line, multi-device, hosted application platform.
 
 [![Build Status](https://secure.travis-ci.org/yahoo/mojito.png?branch=develop)](http://travis-ci.org/yahoo/mojito)
 
-## Installation
 
-### via GitHub
+## Quick Start 
 
-    $ git clone git://github.com/yahoo/mojito.git
-    $ cd mojito
-    $ npm install -g .
-    $ npm install .
+This quick start is intended for Mojito application developers. To contribute to the Mojito project,
+see [Contributing Code to Mojito](https://github.com/yahoo/mojito/wiki/Contributing-Code-to-Mojito).
 
-### via npm
 
-    $ npm install -g mojito
+1. Install the Mojito command-line tool:
 
-## Quick Start
+        $ npm install -g mojito-cli
 
-Create an app and install local Mojito:
+1. Create an app:
 
-    $ mojito create app hello
-    $ cd hello
-    $ npm install .
+        $ mojito create app hello
+        $ cd hello
 
-Create a mojit:
+1. Create a mojit:
 
-    $ mojito create mojit HelloMojit
+        $ mojito create mojit HelloMojit
 
-Start the server:
+1. Start the server:
 
-    $ mojito start
+        $ mojito start
 
-Go to URL:
+1. Go to http://localhost:8666/@HelloMojit/index
 
-    http://localhost:8666/@HelloMojit/index
+1. Run Unit Tests:
 
-Run Unit Tests:
+        $ mojito test app .
 
-    $ mojito test app .
+1. Generate documentation:
 
-Generate documentation:
+        $ mojito docs app hello
+        
+## Mojito Git Branches
 
-    $ mojito docs app hello
+The default branch for the Mojito GitHub repository is `develop`. To clone the version of Mojito that is the same as 
+the latest version of Mojito in the npm registry, explicitly request the `master` branch: `git clone https://github.com/yahoo/mojito.git --branch master`
+Mojito application developers should work with the `master` branch.
+
+Mojito contributors, however, should clone and make pull requests to the `develop` branch. Before you
+start contributing, please read [Contributing Code to Mojito](https://github.com/yahoo/mojito/wiki/Contributing-Code-to-Mojito).
+
 
 ## Documentation
 
@@ -58,15 +61,6 @@ Generate documentation:
 * Mojito Introduction - http://developer.yahoo.com/cocktails/mojito/docs/intro/
 * Mojito Getting Started - http://developer.yahoo.com/cocktails/mojito/docs/getting_started/
 
-### Contributing to Documentation
-
-Mojito documentation is present in /docs directory. To generate HTML documentation run the following commands 
-from the documentation directories.
-
-    $ cd docs/dev_guide
-    $ make html
-
-Please note that in order to generate the documentation you will need [Sphinx](http://sphinx-doc.org/). 
 
 ### API Documentation
 

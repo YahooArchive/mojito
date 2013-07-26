@@ -24,14 +24,6 @@
                 },
                 "group": "fw,client,server"
             },
-            "carrier.server": {
-                "params": {
-                    "lib": "$$config.lib$$/app/addons/ac/carrier.server.js",
-                    "test": "./test-carrier.server.js",
-                    "driver": "nodejs"
-                },
-                "group": "fw,server"
-            },
             "composite.common": {
                 "params": {
                     "lib": "$$config.lib$$/app/addons/ac/composite.common.js,../../../../../../lib/app/autoload/output-buffer.common.js",
@@ -60,14 +52,6 @@
                 "params": {
                     "lib": "$$config.lib$$/app/addons/ac/cookie.server.js",
                     "test": "./test-cookie.server.js",
-                    "driver": "nodejs"
-                },
-                "group": "fw,server"
-            },
-            "device.server": {
-                "params": {
-                    "lib": "$$config.lib$$/app/addons/ac/device.server.js",
-                    "test": "./test-device.server.js",
                     "driver": "nodejs"
                 },
                 "group": "fw,server"
