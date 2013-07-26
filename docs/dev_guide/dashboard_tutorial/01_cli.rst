@@ -316,7 +316,7 @@ Creating the Application
 ========================
 
 #. Let's first create our application with the create command. We're using the default for the 
-   simple reason that the simple application gives us too little to work with, and the 
+   reason that the simple application gives us too little to work with, and the 
    full application includes a lot of features that we won't need and may just be confusing. 
    Once you've finished this tutorial, you very well may opt to start with the full application 
    to quicken development.
@@ -340,7 +340,7 @@ Creating the Application
 #. Since we only have one mojit, the application unit tests and the mojit unit tests 
    should be the same, but go ahead and run the following command to confirm:
 
-  ``$ mojito test mojit mojits/Github``
+   ``$ mojito test mojit mojits/Github``
 
 #. If you remember you can also test a mojit module, which is basically the module
    name that you register with ``YUI.add``. Mojit controllers and models are YUI modules.
@@ -356,7 +356,7 @@ Creating the Application
 #. In a browser, open the file ``artifacts/test/coverage/lcov-report/index.html`` to see the 
    code coverage report. The report gives line and function coverage. 
 
-#. Our application shouldn't have any syntax errors--if they did, we should file a GitHub 
+#. Our application shouldn't have any syntax errors--if it does, we should file a GitHub 
    issue with Mojito, but let's run the ``jslint`` command for both the application 
    and our one mojit:
 
@@ -365,9 +365,13 @@ Creating the Application
      $  mojito jslint app .
      $  mojito jslint mojit mojits/Github
 
-#. Alright, we've tested and linted our application, now let's go ahead and start it.
+#. Alright, we've tested and linted our application. Go ahead and start the application.
 
    ``$ mojito start``
+
+   In future modules, we won't include steps for running tests and linting your code, but highly 
+   recommend that you do this on your own to save yourself the headache of unraveling more
+   complicated errors. 
 
 #. To view your application, open the URL http://localhost:8666/@Github/index in a browser. 
 
@@ -387,9 +391,7 @@ Creating the Application
    ``$ mojito start 8000``
 
 #. As we discussed in our lesson, you can start an application in a given context, so that a 
-   specific set of configurations are applied for a runtime environment. We'll be doing       
-   this a great deal because we will want to test new features in the development  
-   environment.
+   specific set of configurations are applied for a runtime environment. 
 
    To start the application in the development context, use the option ``--context`` and   
    pass  the string "environment:development". Again, you'll see your application at        
@@ -454,14 +456,14 @@ to a different port: ``$ mojito start 8001``
 Q&A
 ===
 
-- **Why is there a ``mojito-cli`` and a ``mojito`` package?**
+- Why is there a ``mojito-cli`` and a ``mojito`` package?
 
   The ``mojito-cli`` package is the CLI utility for Mojito. the ``mojito`` package contains
   the framework that your applications needs to run. Thus, you want the ``mojito-cli``
   package to be global and the ``mojito`` package to be local in your application. You
   don't want an application to depend on a global installation of the framework.
 
-- **Is there a way to configure your application to run on a different default port?**
+- Is there a way to configure your application to run on a different default port?
 
   Yes, the ``application.json`` has a property ``appPort`` that allows you to define
   the default port. See `Application Configuration <../intro/mojito_configuring.html#application-configuration>`_
@@ -502,13 +504,13 @@ Terms
   select the archetype ``simple`` for an application, you are asking Mojito 
   to create an application using the boilerplate code from the ``simple`` 
   version of an application. 
-- mojits - The basic unit of composition and reuse in a Mojito application that uses MVC.
+- **mojits** - The basic unit of composition and reuse in a Mojito application that uses MVC.
   Visually, you can think of a mojit as the rectangular area of a page that was constructed 
   by a Mojito application.
 - `YAML <http://en.wikipedia.org/wiki/YAML>`_
-- anonymous mojit instance - A mojit instance auto-created by the Framework that you can
+- **anonymous mojit instance** - A mojit instance auto-created by the Framework that you can
   reference in your application. The syntax is the mojit name prepended with ``@``: ``@Github``
-- contexts - The runtime environment that your application runs in. For example, you can 
+- **contexts** - The runtime environment that your application runs in. For example, you can 
   run your application in a development environment with the context ``environment:development``.
 
 .. _01_cli-src:
@@ -525,5 +527,4 @@ Further Reading
 
 - `Mojito Introduction <http://developer.yahoo.com/cocktails/mojito/intro/>`_
 - `Mojito Command Line <../reference/mojito_cmdline.html>`_
-
 

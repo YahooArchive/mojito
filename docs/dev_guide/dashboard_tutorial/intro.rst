@@ -166,8 +166,8 @@ The structure of modules, in general, will include the follow sections:
   shows you where to find source code, and provides a screenshot of the final application for the module
 - **Lesson:** explains an important concept that the example is focused around.
 - **Creating the Application:** here is where you create your application and then run it. 
-- **Troubleshooting (Optional):** we provide tips for debugging common problems associated with the topic of the module.
 - **Summary:**  we recap what you’ve learned and the main takeaway points.
+- **Troubleshooting (Optional):** we provide tips for debugging common problems associated with the topic of the module.
 - **Q&A (optional):** we provide answers to commonly asked questions.
 - **Test Yourself (Optional):** we offer simple exercises to expand on what you’ve learned.
 - **Further Reading:** lists links to documentation, articles, blog posts, etc., to further your learning.
