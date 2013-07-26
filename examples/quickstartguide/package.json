@@ -33,6 +33,6 @@
     },
     "dependencies": {
         "node-markdown": "*",
-        "mojito": "git://github.com/yahoo/mojito.git#next"
+        "mojito": "*"
     }
 }
