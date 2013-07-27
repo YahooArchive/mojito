@@ -121,12 +121,11 @@ tests, and views:
    ├── defaults.json
    ├── definition.json
    ├── models
-   │   ├── foo.server.js
    │   └── model.server.js
    ├── tests
    │   ├── controller.server-tests.js
    │   └── models
-   │       └── foo.server-tests.js
+   │       └── model.server-tests.js
    └── views
        └── index.hb.html
 
@@ -149,13 +148,13 @@ the ``requires`` array that allows you to list dependencies and a namespace:
      Y.namespace('mojito.controllers')[NAME] = {
       // Code here
      };
-   }, '0.0.1', {requires: ['mojito', 'mojito-models-addon', 'GithubModelFoo']});
+   }, '0.0.1', {requires: ['mojito', 'mojito-models-addon', 'GithubModel']});
 
-``foo.server.js``
+``model.server.js``
 
 .. code-block:: javascript
 
-   YUI.add('GithubModelFoo', function(Y, NAME) {
+   YUI.add('GithubModel', function(Y, NAME) {
     
      Y.namespace('mojito.models')[NAME] = {
        init: function(config) {
@@ -568,7 +567,7 @@ mojits and then configure mojit instances and routing paths.
 #. We’re going to work a little with the MVC of ``Github``. Let’s first 
    modify the model so that it passes different data to the controller. 
    We’ll get real data in the future, but for now update the method ``getData``
-   in your model (``mojits/Github/models/foo.server.js``) so that it’s the same 
+   in your model (``mojits/Github/models/model.server.js``) so that it’s the same 
    as the following:
 
    .. code-block:: javascript
@@ -590,7 +589,7 @@ mojits and then configure mojit instances and routing paths.
           github: data
         });
       ...
-      {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'GithubModelFoo', 'mojito-config-addon']});
+      {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'GithubModel', 'mojito-config-addon']});
 
 #. Because we’ve modified the object that we are passing to the template, 
    we’ll need to modify the template as well. We’re also going to change 
@@ -612,7 +611,7 @@ mojits and then configure mojit instances and routing paths.
 
 
 #. Alright, we’re ready to try out our application. Let’s first test out the 
-   routes header, body, and footer. You should see the default Mojito application.
+   routes ``header``, ``body``, and ``footer``. You should see the default Mojito application.
 
    - http://localhost:8666/body
    - http://localhost:8666/header
@@ -669,14 +668,14 @@ already running. You’ll need to cancel that process before you can restart Moj
 Q&A
 ===
 
-- **Can you extend Mojito to use other addons or libraries?**
+- Can you extend Mojito to use other addons or libraries?
 
   Yes, this is a more advanced feature not included in this tutorial, but you 
   can add libraries, use Node.js modules, or even write your own addons.
    See the chapter `Extending Mojito <../topics/mojito_extensions.html>`_.
 
-- **Handlebars has features such as helpers and partials. Can you use them in Mojito 
-  applications?**
+- Handlebars has features such as helpers and partials. Can you use them in Mojito 
+  applications?
 
   Yes, Mojito has a ``Helpers`` addon for registering Handlebars helpers. You can also
   create partials for mojits or for your application. We show you how to do both
