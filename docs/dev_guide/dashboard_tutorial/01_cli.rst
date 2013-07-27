@@ -525,6 +525,6 @@ Source Code for Example
 Further Reading
 ===============
 
-- `Mojito Introduction <http://developer.yahoo.com/cocktails/mojito/intro/>`_
+- `Mojito Introduction <../intro/>`_
 - `Mojito Command Line <../reference/mojito_cmdline.html>`_
 
