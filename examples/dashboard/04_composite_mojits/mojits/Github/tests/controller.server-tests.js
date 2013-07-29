@@ -18,7 +18,7 @@ YUI.add('Github-tests', function (Y) {
         },
         'test mojit': function () {
             var ac,
-                modelData,
+                modelData = { watchers: 1, forks: 1},
                 assetsResults,
                 route_param,
                 doneResults,
@@ -43,8 +43,8 @@ YUI.add('Github-tests', function (Y) {
                     get: function (modelName) {
                         A.areEqual('GithubModelFoo', modelName, 'wrong model name');
                         return {
-                            getData: function(params, cb) {
-                                cb(params);
+                            getData: function(cb) {
+                                cb(modelData);
                             }
                         }
                     }
