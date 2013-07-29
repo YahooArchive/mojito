@@ -23,7 +23,7 @@ YUI.add('Github', function(Y, NAME) {
          */
         index: function(ac) {
 
-            var model = ac.models.get('GithubModelFoo');
+            var model = ac.models.get('GithubModel');
             Y.log(model);
             model.getData(function(err, data){
                 Y.log("Github -index - model.getData:");
@@ -48,4 +48,4 @@ YUI.add('Github', function(Y, NAME) {
         }
 
     };
-}, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-params-addon','mojito-models-addon', 'GithubModelFoo']});
+}, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-params-addon','mojito-models-addon']});
