@@ -26,7 +26,7 @@ What We’ll Cover
 - deploying code to client
 - parent and child mojits
 - handling assets (CSS)
-- Params addon to get query string parameters
+- ``Params`` addon to get query string parameters
 
 ..  03_intro-final:
 
@@ -239,7 +239,7 @@ either a ``css`` or ``js`` array for defining paths to CSS or JavaScript assets.
              },
              "assets": {
                "top": {
-                 "css": ["/static/03_frame_mojit/assets/trib.css"]
+                 "css": ["/static/03_frame_mojits/assets/trib.css"]
                }
              }
            }
@@ -264,7 +264,7 @@ directly beneath the application directory: ``{app_name}/assets/``
 For mojit-level assets, you just use the assets directory under a mojit: ``mojits/{mojit_name}/assets``
 
 So, for example, suppose we want the file index.css to be available to all of the 
-mojits in our application 03_frame_mojits, we would place the file in the 
+mojits in our application ``03_frame_mojits``, we would place the file in the 
 following location: ``03_frame_mojits/assets/index.css``
 
 ..  03_lesson_static_asset-url:
@@ -313,15 +313,15 @@ Dynamically Adding Assets With the Controller
 
 We do not recommend that you hard-code the static URL to your assets. 
 A better way would be to use your controller to add the assets to your page. 
-You can probably guess that we’re going to rely on a Action Context addon 
+You can probably guess that we’re going to rely on a ``ActionContextqq addons 
 to help us to this, and you’re correct.
 
-The Assets addon has methods for adding JavaScript, CSS, and meta data 
-to your page. The Assets addon knows to look in the mojit’s assets directory 
+The ``Assets`` addon has methods for adding JavaScript, CSS, and meta data 
+to your page. The ``Assets`` addon knows to look in the mojit’s assets directory 
 to find files and creates the HTML frame to attach both CSS and JavaScript assets.
 
 For example, in your mojit, if you have ``assets/index.css``, you can just pass the 
-name of the file to the Assets addon method ``addCss``:
+name of the file to the ``Assets`` addon method ``addCss``:
 
 .. code-block:: javascript
 
@@ -342,7 +342,7 @@ name of the file to the Assets addon method ``addCss``:
 
 
 Okay, but what about attaching application-level assets with the 
-Assets addon? Well, you can’t, so you either need to hard-code a static 
+``Assets`` addon? Well, you can’t, so you either need to hard-code a static 
 URL in your template or use a frame mojit to do it for you, which is 
 what we’re going to show you next.
 
@@ -448,7 +448,7 @@ Creating the Application
                 },
                 "assets": {
                   "top": {
-                    "css": ["/static/03_frame_mojit/assets/trib.css"]
+                    "css": ["/static/03_frame_mojits/assets/trib.css"]
                   }
                 }
               }
@@ -524,9 +524,9 @@ Creating the Application
 #. If you remember the screenshot for the final application, you’ll recall that our 
    application displayed two different versions of the same page. The ``HTMLFrameMojit`` 
    is going to take care of the CSS file we added earlier, but we’re going to need 
-   another CSS file for the second page. For that, we’re going to use the Assets 
+   another CSS file for the second page. For that, we’re going to use the ``Assets`` 
    addon to dynamically add custom CSS based on a query parameter. To get the query 
-   parameter, we’re going to use the Params addon. Once again, because of all the 
+   parameter, we’re going to use the ``Params`` addon. Once again, because of all the 
    changes, you might want to just replace the contents of the ``Github/controller.server.js`` 
    with the following:
 
@@ -538,7 +538,7 @@ Creating the Application
 
           index: function(ac) {
 
-            var model = ac.models.get('GithubModelFoo');
+            var model = ac.models.get('GithubModel');
             Y.log(model);
             model.getData(function(err, data){
                 Y.log("Github -index - model.getData:");
@@ -562,26 +562,27 @@ Creating the Application
             });
           }
         };
-      }, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-params-addon','mojito-models-addon', 'GithubModelFoo']});
+      }, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-params-addon','mojito-models-addon']});
 
-#. We should call out the use of the addons that we mentioned. The ``Params`` addon 
+   We should call out the use of the addons that we mentioned. The ``Params`` addon 
    method ``getFromUrl`` is going to fetch the value for the query parameter ``view``. 
    So, if the HTTP GET request is made to ``http://localhost:8666?view=custom``, 
    we’re going to get the string ``"custom"``. As for the ``Assets`` addon, we’re 
    dynamically attaching the application-level CSS file ``trib.css`` to the ``<head>`` 
    element with the method ``addCss``.
 
-#. When we called ``ac.done``, we passed the variable view as the second parameter. 
-   If you recall from the Mojits module, you can tell Mojito to render a different 
+#. When we called ``ac.done``, we passed the variable ``view`` as the second parameter. 
+   If you recall from the last module about mojits, you can request Mojito to render a different 
    template other than the default, which is the template with the same name as the 
    action being executed. In this application, we’re telling Mojito to either use 
    the default or the ``custom`` view, which means we need the custom template 
    ``custom.hb.html`` for Mojito to execute. So, in the ``views`` directory, copy the 
-   ``index.hb.html`` to ``custom.hb.html`` and just change the class of the inner ``<div>``
-   tag from ``"mymodule"`` to ``"mycustom"``.
+   ``Github/views/index.hb.html`` to ``Github/views/custom.hb.html`` and just change 
+   the class of the inner ``<div>`` tag from ``"mymodule"`` to ``"mycustom"``.
+  
    
 #. Our custom CSS doesn’t really do much, but the more important takeaway is how 
-   to choose a template other than the default and use the Assets addon to dynamically 
+   to choose a template other than the default and use the ``Assets`` addon to dynamically 
    add CSS. From your application directory, create the file ``assets/custom.css`` with 
    the following:
 
@@ -648,7 +649,7 @@ array is correct:
    ...
      "assets": {
        "top": {
-         "css": ["/static/03_frame_mojit/assets/trib.css"]
+         "css": ["/static/03_frame_mojits/assets/trib.css"]
        }
      }
    ...
@@ -721,7 +722,7 @@ Terms
 Source Code
 ===========
 
-`03_frame_mojit <http://github.com/yahoo/mojito/examples/dashboard/03_frame_mojit>`_
+`03_frame_mojits <http://github.com/yahoo/mojito/examples/dashboard/03_frame_mojit>`_
 
 ..  03_frame_mojits-reading:
 

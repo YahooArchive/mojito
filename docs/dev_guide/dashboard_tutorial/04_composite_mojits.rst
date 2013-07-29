@@ -75,7 +75,7 @@ Setting Up
 ##########
 
 
-``$ cp -r 03_frame_mojit 04_composite_mojits``
+``$ cp -r 03_frame_mojits 04_composite_mojits``
 
 .. _04_composite_mojits-lesson:
 
@@ -451,36 +451,6 @@ Creating the Application
           }
         }
       ]
-#. Update the ``routes.json`` so that we have routing paths for our child mojits and
-   one path to call our frame mojit:
-
-   .. code-block:: javascript
-
-      [
-        {
-          "settings": [ "master" ],
-          "root": {
-            "verbs": ["get"],
-            "path": "/",
-            "call": "tribframe.index"
-          },
-          "header": {
-            "verbs":["get"],
-            "path": "/header",
-            "call": "header.index"
-          },
-          "body": {
-            "verbs": ["get"],
-            "path": "/body",
-            "call": "body.index"
-          },
-          "footer": {
-          "verbs": ["get"],
-          "path": "/footer",
-          "call": "footer.index"
-        }
-      }
-    ]
 
 #. Try running the app, and you’ll see the familiar Mojito default application again. 
    Our application works, but the composite mojit isn’t really doing much with the 
@@ -631,8 +601,7 @@ Creating the Application
 
 #. In our application, the ``Body`` mojit is responsible for the dynamic content of 
    our page. Let’s update the controller and template with some 
-   content, but we’re not done with this mojit yet--just look at that 
-   empty ``<div>`` tag in the template.
+   content.
 
    .. code-block:: javascript
 
@@ -686,7 +655,7 @@ Creating the Application
 
           index: function(ac) {
 
-            var model = ac.models.get('GithubModelFoo');
+            var model = ac.models.get('GithubModel');
             Y.log(model);
             model.getData(function(data){
               Y.log("Github -index - model.getData:");
@@ -707,7 +676,7 @@ Creating the Application
    .. code-block:: javascript
 
       getData: function(callback) {
-            callback(null, { watchers: 1, forks: 1 });
+            callback({ watchers: 1, forks: 1 });
       }
 #. Also, update the ``index.hb.html`` for the ``Github`` mojit
    with the following markup:
