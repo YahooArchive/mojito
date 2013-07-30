@@ -76,14 +76,14 @@ To get live Twitter data for your application:
 #. `Create a Twitter application <https://dev.twitter.com/apps/new>`_ to get OAuth keys 
    from Twitter. You'll need a consumer key, consumer secret, access token key, and access 
    token secret.
-#. Add the ``simple-twitter`` module as a dependency in the ``package.json``:
+#. Add the ``simple-twitter`` module as a dependency in the ``package.json``. We'll be
+   using the ``simple-twitter`` module to make OAuth-authorized REST calls to the Twitter
+   Search API.
 
    .. code-block:: javascript
 
        ...
          "optionalDependencies": {
-           "yahoo-arrow": "~0.0.77",
-           "phantomjs": ">=1.8.0",
            "simple-twitter": "~1.0.0"
          },
        ...
@@ -483,13 +483,12 @@ Creating the Application
 
 #. After you have copied the application that you made in the last module 
    (see :ref:`Setting Up <05_intro-setup>`), change into the application ``05_getting_data``.
-
 #. Let’s create the Twitter mojits that get Twitter data for us.
 
    ``$ mojito create mojit Twitter``
-#. Change to the models directory of ``Twitter``. We’re going to deal with 
+#. Change to the ``models`` directory of ``Twitter``. We’re going to deal with 
    getting ``Twitter`` data first.
-#. Rename the file ``foo.server.js`` to ``twitter.server.js`` and then change the 
+#. Rename the file ``model.server.js`` to ``twitter.server.js`` and then change the 
    registered module name to ``TwitterSearchModel``.
 #. Open ``twitter.server.js`` in an editor, and modify the method ``getData``, so 
    that it looks like the snippet below. As you can see, we use the ``simple-twitter``
@@ -550,10 +549,11 @@ Creating the Application
       }, '0.0.1', {requires: ['mojito', 'mojito-rest-lib','json']});
 
 #. We need to modify the controller to use the ``TwitterSearchModel``. 
-   Open ``controller.server.js`` in an editor, add the ``Models`` addon, and 
+   Open ``controller.server.js`` in an editor,
    modify the ``index`` method so that it’s the same as that shown below. 
-   The ``Models`` addon allows you to access our model and call the model 
-   function ``getData``.
+   Make sure that the ``Models`` and ``Assets`` addon are required as well. The ``Models``
+   addon allows you to access our model and call the model function ``getData``. We're
+   going to use the ``Assets`` addon to add 
 
    .. code-block:: javascript
 
@@ -590,7 +590,7 @@ Creating the Application
             });
           }
         };
-      }, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'mojito-params-addon']});
+      }, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon']});
 
 #. Let’s replace the content of ``index.hb.html`` with the following while we’re here:
  
@@ -616,7 +616,7 @@ Creating the Application
 #. Let’s turn our attention to the ``Github`` mojit. We have been waiting long 
    enough to get GitHub data, but before we change any code, let’s rename 
    the model file to ``yql.server.js``. Now we can edit the file ``yql.server.js``. 
-   Open the file in an editor, change the module name to ``StatsModelYQL``, and update 
+   Open the file in an editor, change the module name to ``StatsModelYQL``, update 
    the ``getData`` function with the code below. Notice that we are using the YQL 
    Open Data Table ``github.xml``, which the YQL module let’s you specify as a ``query`` 
    parameter. 
@@ -664,7 +664,7 @@ Creating the Application
 
 #. The ``Github`` controller needs to get the correct model. We’re also 
    going to simplify the ``index`` function to only use the default template and
-   add the ``mojito-assets-addon` to the ``requires`` array.
+   add the ``mojito-assets-addon`` to the ``requires`` array.
    Modify the ``index`` function  and the ``requires`` array so that they are the same 
    as that below. 
 
@@ -756,6 +756,131 @@ Creating the Application
           }
         },
       ...
+#. We're going to need to update the path to our assets, but before we do that, let's 
+   update the CSS file. Replace the contents of ``assets/trib.css`` with the following 
+   and then update the path in ``application.json`` to ``static/05_getting_data/assets/trib.css``:
+
+   .. code-block:: css
+
+      body {
+        background-color: #F8F8F8;
+        padding-left: 8px;
+      }
+      div {
+        xborder: 1px solid red;
+      }
+      .pageLayout {
+        padding-top: 30px;
+      }
+      .mymodule {
+        border: 1px solid #2d2d2d;
+        margin: 8px;
+        padding: 16px;
+        border-radius: 3px;
+        box-shadow: 2px 2px 2px #DDDDDD;
+
+        /** temp until get grids going **/
+        float: left;
+      }
+      .mymodule h3 {
+        margin: 0px;
+        padding: 0px;
+        font-weight: bold;
+      }
+      .myfooter {
+        clear: left;
+      }
+      .bodytext {
+        padding-left: 4px;
+      }
+      div.mod{
+        background-color: #F9F9FC;
+        border: 1px solid #D4D8EB;
+        border-radius: 4px;
+        box-shadow: 0 0 6px rgba(0,0,0,0.15);
+        margin: 15px 8px;
+        xpadding-bottom: 1px;
+      }
+      div.mod h3 {
+        position: relative;
+        background-color: #E5E6F1;
+        border-radius: 4px 4px 0 0;
+        color: #5E6BA4;
+        font-weight: bold;
+        font-size: 1.1em;
+        margin: 0;
+        padding: 4px 7px 5px;
+      }
+      div.mod h3 strong {
+        font-weight: bold;
+        padding-left: 25px;
+        background-repeat: no-repeat;
+        background-position: 2px;
+      }
+      /** for each mojit, add a bgimage for logo **/
+      div.mod h3 a.close,
+      div.mod h3 a.min {
+        background-color: #F9F9FC;
+        border:1px solid #E5E6F1;
+        color: #5E6BA4;
+        text-align: center;
+        display: block;
+        height: 19px;
+        width: 17px;
+        text-decoration: none;
+        font-weight: bold;
+        right: 4px;
+        top: 1px;
+        position: absolute;
+        font-size: 80%;
+        margin: 2px;
+        padding: 0;
+      }
+      div.mod h3 a.min {
+        right: 25px;
+      }
+      div.minned h3 a.min {
+        right: 25px;
+      }
+      div.mod div.inner {
+        overflow: hidden;
+        xpadding-right: 8px;
+      }
+      div.inner ul {
+        margin: 0;
+        padding: 0;
+      }
+      div.inner ul li {
+        list-style-type: none;
+        margin: 0;
+        padding: 8px 4px;
+        border-top: 1px solid #ececec;
+      }
+      div.inner ul li a {
+        text-decoration: none;
+        color: #000;
+      }
+      div.inner ul li {
+        background: rgb(255,255,255); /* Old browsers */
+        background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(241,241,241,1) 48%, rgba(225,225,225,1) 100%, rgba(246,246,246,1) 100%); /* FF3.6+ */
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(48%,rgba(241,241,241,1)), color-stop(100%,rgba(225,225,225,1)), color-stop(100%,rgba(246,246,246,1))); /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(241,241,241,1) 48%,rgba(225,225,225,1) 100%,rgba(246,246,246,1) 100%); /* Chrome10+,Safari5.1+ */
+        background: -o-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(241,241,241,1) 48%,rgba(225,225,225,1) 100%,rgba(246,246,246,1) 100%); /* Opera 11.10+ */
+        background: -ms-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(241,241,241,1) 48%,rgba(225,225,225,1) 100%,rgba(246,246,246,1) 100%); /* IE10+ */
+        background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(241,241,241,1) 48%,rgba(225,225,225,1) 100%,rgba(246,246,246,1) 100%); /* W3C */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f6f6f6',GradientType=0 ); /* IE6-9 */
+      }
+      .myfooter {
+        clear: left;
+      }
+      .bodytext {
+        padding-left: 4px;
+      }
+      .galleryFlow {
+        position:relative;
+        overflow: hidden;
+        height: 10.1em;
+      }
 
 #. You can go ahead and start the application. You’ll see both real-time 
    data for GitHub and Twitter. We’ll be adding more mojits with more 
