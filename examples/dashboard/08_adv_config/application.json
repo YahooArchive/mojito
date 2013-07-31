@@ -25,7 +25,7 @@
                 "type": "HTMLFrameMojit",
                 "config": {
                     "deploy": true,
-                    "title": "Trib - YUI Developer Dashboard",
+                    "title": "Trib - YUI/Mojito Developer Dashboard",
                     "child": {
                         "type": "PageLayout",
                         "config": {
