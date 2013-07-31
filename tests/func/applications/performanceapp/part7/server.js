@@ -1,1 +1,0 @@
-module.exports = require('mojito').createServer({dir:__dirname});
