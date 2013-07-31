@@ -1,23 +1,27 @@
 [
-  {
-    "settings": [ "master" ],
-    "specs": {
-      "frame": {
-        "type": "HTMLFrameMojit", 
-        "config": {
-	  "deploy": true,
-          "child": { 
-            "type": "flickr" 
-          },
-	  "assets": {
-	    "top": {
-	      "css": [
-	        "/static/flickr/assets/index.css"
-	      ]
-	    }
-	  }
+    {
+        "settings": [ "master" ],
+        "staticHandling": {
+            "cache": false,
+            "forceUpdate": true
+        },
+        "specs": {
+            "frame": {
+                "type": "HTMLFrameMojit", 
+                "config": {
+                    "deploy": true,
+                    "child": { 
+                        "type": "flickr" 
+                    },
+                    "assets": {
+                        "top": {
+                            "css": [
+                                "/static/flickr/assets/index.css"
+                            ]
+                        }
+                    }
+                }
+            }
         }
-      }
     }
-  }
 ]
