@@ -1,6 +1,11 @@
 [
   {
     "settings": [ "master" ],
+    "staticHandling": {
+        "cache": false,
+        "forceUpdate": true,
+        "appName": "global_assets"
+    },
     "specs": {
         "ohhai": {
             "type": "HTMLFrameMojit",
@@ -19,8 +24,5 @@
                 }
             }
         }
-    },
-    "staticHandling": {
-      "appName": "global_assets"
     }
 }]
