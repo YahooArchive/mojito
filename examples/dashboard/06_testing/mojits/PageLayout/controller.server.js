@@ -26,7 +26,7 @@ YUI.add('PageLayout', function(Y, NAME) {
          */
         index: function(ac) {
             ac.composite.done({
-                title: "Trib - Contribute to the Tribe"
+                title: "Trib - YUI Developer Dashboard"
             });
         }
     };

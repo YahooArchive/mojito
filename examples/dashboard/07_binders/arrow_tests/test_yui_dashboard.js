@@ -17,10 +17,10 @@ YUI({
     suite.add(new Y.Test.Case({
         "test YUI Dashboard": function () {
             // Tests the title in HTML header
-            Y.Assert.areEqual("Trib - YUI Developer Dashboard", Y.one('head title').get('innerHTML'));
+            Y.Assert.areEqual("Trib - YUI/Mojito Developer Dashboard", Y.one('head title').get('innerHTML'));
 
             // Tests the title within the content
-            Y.Assert.areEqual("Trib - Contribute to the Tribe", Y.one('body h1').get('innerHTML'));
+            Y.Assert.areEqual("Trib - YUI Developer Dashboard", Y.one('body h1').get('innerHTML'));
         }
     }));
     Y.Test.Runner.add(suite);
