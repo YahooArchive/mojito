@@ -10,11 +10,8 @@
 'use strict';
 
 var debug = require('debug')('app'),
-    express = require('express'),
-    mojito = require('../../'),
-    app;
-
-app = express();
+    app = require('express')(),
+    mojito = require('../../')(app);
 
 app.use(mojito.middleware());
 app.mojito.attachRoutes();
