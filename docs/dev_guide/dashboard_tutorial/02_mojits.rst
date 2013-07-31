@@ -486,7 +486,7 @@ mojits and then configure mojit instances and routing paths.
             "github": {
               "type": "Github",
               "config": {
-                "title": "YUI/Mojito Dashboard Application"
+                "title": "Trib - YUI/Mojito Developer Dashboard"
               }
             },
             "header": {
@@ -517,7 +517,7 @@ mojits and then configure mojit instances and routing paths.
         "github": {
           "type": "Github",
           "config": {
-            "title": "YUI/Mojito Dashboard Application"
+            "title": "Trib - YUI/Mojito Developer Dashboard"
           }
         }
       ...

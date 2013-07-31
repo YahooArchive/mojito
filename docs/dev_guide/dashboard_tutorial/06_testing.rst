@@ -727,8 +727,8 @@ and Selenium still running, run the following command:
 Creating the Application
 ========================
 
-#. After you have copied the application that you made in the last module (see Setting Up), 
-   change into the application ``06_testing``.
+#. After you have copied the application that you made in the last module 
+   (see :ref:`Setting Up <06_intro-setting_up>`), change into the application ``06_testing``.
 #. Let’s create mojits to fill out the dashboard.
 
    ::
@@ -737,7 +737,8 @@ Creating the Application
       $ mojito create mojit Youtube
 
 #. Create mojit instances of our new mojits and make them children of the ``body``
-   instance as shown in the snippet of the ``application.json`` below:
+   instance as shown in the snippet of the ``application.json`` below and update the 
+   path to the CSS assets while you're editing the file.
 
    .. code-block:: javascript
 
@@ -762,7 +763,7 @@ Creating the Application
       }
 
 #. Let's update our new mojits, starting with the ``Youtube`` mojit.
-   Rename the ``mojits/Youtube/models/foo.server.js`` to
+   Rename the ``mojits/Youtube/models/model.server.js`` to
    ``mojits/Youtube/models/youtube.server.js``   
 
 #. We're going to use YQL to get data for our new mojits. with the following. If you are having difficulty understanding
@@ -816,7 +817,8 @@ Creating the Application
 #. The controller will need to get the correct module and call the ``getData`` method
    correctly. We're also going to include the function ``youtubeMap`` to help format
    the returned response from the YouTube API. For the sake of simplicity, go ahead and 
-   replace the content of ``mojits/Youtube/controller.server.js`` with the following:
+   replace the content of the ``index`` method of ``mojits/Youtube/controller.server.js`` 
+   with the following:
 
    .. code-block:: javascript
 
@@ -887,9 +889,9 @@ Creating the Application
         </div>
       </div>
 
-#. Let's update the code for the ``Calendar`` mojit as well. Rename ``mojits/Calendar/models/foo.server.js``
+#. Let's update the code for the ``Calendar`` mojit as well. Rename ``mojits/Calendar/models/model.server.js``
    to ``mojits/Calendar/models/calendar.server.js``, update the content, and then do the same
-   for the controller and ``index.hb.html`` with the code below:
+   for the ``index`` method of the controller and the template ``index.hb.html`` with the code below:
 
    .. code-block:: javascript
 
@@ -1004,62 +1006,64 @@ Creating the Application
       })
 #. That pretty much does it for our application code, but we still need to write a unit
    test for a controller and a model. We're going to use our first mojit, ``Github`` 
-   as our example. 
-
+   as our example. Replace the content of ``Github/tests/controller.server-tests.js``
+   with the code below. Note the use of YUI Test, accessing the controller and model,
+   creating objects for the ``ActionContext`` addons, and use of assertions.
    
    .. code-block:: javascript
 
       YUI.add('Github-tests', function (Y) {
 
         var suite = new YUITest.TestSuite('Github-tests'),
-          controller = null,
-          A = YUITest.Assert,
-          model;
-        suite.add(new YUITest.TestCase({
+            controller = null,
+            model = null
+            A = YUITest.Assert;
 
-          name: 'Github user tests',
-          setUp: function () {
+           suite.add(new YUITest.TestCase({
+
+        name: 'Github user tests',
+        setUp: function () {
             controller = Y.mojito.controllers.Github;
             model = Y.mojito.models.StatsModelYQL;
-          },
-          tearDown: function () {
+        },
+        tearDown: function () {
             controller = null;
-          },
-          'test mojit': function () {
+        },
+        'test mojit': function () {
             var ac,
                 assetsResults,
                 route_param,
                 doneResults,
                 def_value;
             ac = {
-              assets: {
-                addCss: function (css) {
-                  assetsResults = css;
-                }
-              },
-              config: {
-                getDefinition: function (key) {
-                  def_value = key;
-                }
-              },
-              params: {
-                getFromRoute: function (param) {
-                  route_param = param;
-                }
-              },
-              models: {
-                get: function (modelName) {
-                  A.areEqual('StatsModelYQL', modelName, 'wrong model name');
-                  return {
-                    getData: function(params, cb) {
-                      cb(params);
+                assets: {
+                    addCss: function (css) {
+                        assetsResults = css;
                     }
-                  }
+                },
+                config: {
+                    getDefinition: function (key) {
+                        def_value = key;
+                    }
+                },
+                params: {
+                    getFromRoute: function (param) {
+                        route_param = param;
+                    }
+                },
+                models: {
+                    get: function (modelName) {
+                        A.areEqual('StatsModelYQL', modelName, 'wrong model name');
+                        return {
+                            getData: function(params, cb) {
+                                cb(params);
+                            }
+                        }
+                    }
+                },
+                done: function (data) {
+                    doneResults = data;
                 }
-              },
-              done: function (data) {
-                doneResults = data;
-              }
             };
             A.isNotNull(controller);
             A.isFunction(controller.index);
@@ -1067,14 +1071,14 @@ Creating the Application
             A.areSame('./index.css', assetsResults);
             A.isObject(doneResults);
             A.isTrue(doneResults.hasOwnProperty('watchers'));
-          }
-        }));
-        YUITest.TestRunner.add(suite);
-      }, '0.0.1', {requires: ['mojito-test', 'Github', 'StatsModelYQL']});   
+        }
+      }));
+      YUITest.TestRunner.add(suite);
+    }, '0.0.1', {requires: ['mojito-test', 'Github', 'StatsModelYQL']}); 
 
-#. Rename the model test to ``yql.server-tests.js`` and replace the content with the
-   code below. The test just confirms that the configuration can be initialized
-   and that the method ``getData`` is functional and returns and object.
+#. Rename the model test to ``Github/tests/models/yql.server-tests.js`` and replace the 
+   content with the code below. The test just confirms that the configuration can be 
+   initialized and that the method ``getData`` is functional and returns and object.
 
 
    .. code-block:: javascript
@@ -1107,9 +1111,9 @@ Creating the Application
           }
         }));
         YUITest.TestRunner.add(suite);
-      }, '0.0.1', {requires: ['mojito-test', 'StatsModelYQL']}
+      }, '0.0.1', {requires: ['mojito-test', 'StatsModelYQL']});
 
-#. From the application directory, run the Github mojit tests. 
+#. From the application directory, run the ``Github`` mojit tests. 
 
    ``$ mojito test mojit mojits/Github``
 #. You should see that one test has passed and the output should look like the following:
@@ -1141,17 +1145,18 @@ Creating the Application
             suite.add(new Y.Test.Case({
               "test YUI Dashboard": function () {
               // Tests the title in HTML header
-              Y.Assert.areEqual("Trib - YUI Developer Dashboard", Y.one('head title').get('innerHTML'));
+              Y.Assert.areEqual("Trib - YUI/Mojito Developer Dashboard", Y.one('head title').get('innerHTML'));
 
               // Tests the title within the content
-              Y.Assert.areEqual("Trib - Contribute to the Tribe", Y.one('body h1').get('innerHTML'));
+              Y.Assert.areEqual("Trib - YUI Developer Dashboard", Y.one('body h1').get('innerHTML'));
             }
           }));
           Y.Test.Runner.add(suite);
         });
-#. You could run the test above directly, but we're going to create a test descriptor
-   that will allow us to easily add another test later. Remember, the ``dataprovider``
-   property defines the test and the page to be tested in a ``scenario`` array.
+#. You could run the test above directly, but we're going to create the test descriptor
+   file ``test_tribapp_descriptor.json`` with the code below that will allow us to easily 
+   add another test later. Remember, the ``dataprovider`` property defines the test and 
+   the page to be tested in a ``scenario`` array.
 
    .. code-block:: javascript
 
@@ -1187,16 +1192,16 @@ Creating the Application
 #. It's time to run our functional tests, but before we do, make sure that you have completed
    :ref:`Setting Up <06_intro-setting_up>`, so that you have Arrow and PhantomJS installed.
    
-   - Start PhantomJS in the background: ``$ node_modules/phantomjs/bin/phantomjs --webdriver=4445 &``
-   - Start your application in the background as well: ``$ mojito start &``
-   - Run your Arrow test with the descriptor: ``$ arrow --browser=phantomjs arrow_tests/test_tribapp_descriptor.json``
-   - You'll see ``INFO`` log messages describing the running of the tests, then ``debug`` statements,
-     and finally the test result, which should be one passed test as shown below:
+   #. Start PhantomJS in the background: ``$ node_modules/phantomjs/bin/phantomjs --webdriver=4445 &``
+   #. Start your application in the background as well: ``$ mojito start &``
+   #. Run your Arrow test with the descriptor: ``$ arrow --browser=phantomjs arrow_tests/test_tribapp_descriptor.json``
+   #. You'll see ``INFO`` log messages describing the running of the tests, then ``debug`` statements,
+      and finally the test result, which should be one passed test as shown below:
 
-     ::
+      ::
         
-        Passed TribApp: YUI Dashboard test onMozilla/5.0 (Macintosh; Intel Mac OS X) AppleWebKit/534.34 (KHTML, like Gecko) 
-        PhantomJS/1.9.0 Safari/534.34 1 Passed, 0 Failed , 0 skipped 
+         Passed TribApp: YUI Dashboard test onMozilla/5.0 (Macintosh; Intel Mac OS X) AppleWebKit/534.34 (KHTML, like Gecko) 
+         PhantomJS/1.9.0 Safari/534.34 1 Passed, 0 Failed , 0 skipped 
    
 #. You can go ahead and run your application to see the content from the ``Youtube``
    and ``Calendar`` mojits.

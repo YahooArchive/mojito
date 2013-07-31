@@ -136,7 +136,7 @@ definition ``Github``.
          "frame" : {
            "type" : "HTMLFrameMojit",
            "config": {
-             "title": "Mojito/YUI Dashboard Application",
+             "title": "Trib - YUI/Mojito Developer Dashboard",
              "child" : {
                "type" : "Github"
              }
@@ -233,7 +233,7 @@ either a ``css`` or ``js`` array for defining paths to CSS or JavaScript assets.
          "type": "HTMLFrameMojit",
          "config": {
            "deploy": true,
-           "title": "Trib - Contribute to the Tribe",
+           "title": "Trib - YUI/Mojito Developer Dashboard",
              "child": {
                "type": "Github"
              },
@@ -442,7 +442,7 @@ Creating the Application
               "type": "HTMLFrameMojit",
               "config": {
                 "deploy": true,
-                "title": "Trib - Contribute to the Tribe",
+                "title": "Trib - YUI/Mojito Developer Dashboard",
                 "child": {
                   "type": "Github"
                 },

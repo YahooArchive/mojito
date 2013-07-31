@@ -144,7 +144,7 @@ such as `json2yaml <https://npmjs.org/package/json2yaml>`_.
          type: HTMLFrameMojit
          config:
            deploy: true
-           title: Trib - YUI Developer Dashboard
+           title: Trib - YUI/Mojito Developer Dashboard
            child:
              type: PageLayout
              config:

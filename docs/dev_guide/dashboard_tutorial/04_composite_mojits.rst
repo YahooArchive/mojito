@@ -154,7 +154,7 @@ instance is now ``child``.
            "type": "HTMLFrameMojit",
            "config": {
              "deploy": true,
-             "title": "Trib - Contribute to the Tribe",
+             "title": "Trib - YUI/Mojito Developer Dashboard",
              "child": {
                "type": "PageLayout",
                "config": {
@@ -196,7 +196,7 @@ instance to be a composite mojit as well:
            "type": "HTMLFrameMojit",
            "config": {
              "deploy": true,
-             "title": "Trib - Contribute to the Tribe",
+             "title": "Trib - YUI/Mojito Developer Dashboard",
              "child": {
                "type": "PageLayout",
                "config": {
@@ -403,7 +403,7 @@ Creating the Application
               "type": "HTMLFrameMojit",
               "config": {
                 "deploy": true,
-                "title": "Trib - Contribute to the Tribe",
+                "title": "Trib - YUI/Mojito Developer Dashboard",
                 "child": {
                   "type": "PageLayout",
                   "config": {
@@ -485,7 +485,7 @@ Creating the Application
           */
           index: function(ac) {
             ac.composite.done({
-              title: "Trib - Contribute to the Tribe"
+              title: "Trib - YUI/Mojito Developer Dashboard"
             });
           }
         };
@@ -763,7 +763,7 @@ Q&A
        "type": "HTMLFrameMojit"
        "config":
        "deploy": true
-       "title": "Trib App"
+       "title": "Trib - YUI/Mojito Developer Dashboard"
        "assets": {
           "top": {
             "css": [ "static/04_composite_mojits/trib.css" ]
