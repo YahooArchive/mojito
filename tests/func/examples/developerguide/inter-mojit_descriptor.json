@@ -13,10 +13,10 @@
         },
 
         "dataprovider" : {    
-           "innermojit" : {
+           "intermojit" : {
                  "group" : "developerguide,inter-mojit",
                  "params" : {
-                             "test" : "test_innermojit.js",
+                             "test" : "test_intermojit.js",
                              "page" : "$$config.baseUrl$$"
                 }
             }
