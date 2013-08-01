@@ -37,4 +37,4 @@ YUI.add('Gallery', function (Y, NAME) {
             });
         }
     };
-}, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'mojito-params-addon', 'mojito-config-addon']});
+}, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon']});
