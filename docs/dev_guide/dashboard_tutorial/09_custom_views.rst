@@ -626,7 +626,6 @@ Creating the Application
           </div>
         </div>
       </div>
-    </div>
 
    ``mojits/Github/views/index.hb.html``:
 
@@ -635,22 +634,22 @@ Creating the Application
 
       <div id="{{mojit_view_id}}" class="mojit">
         <div class="mod" id="github">
-        {{> widget_refresh_heading}}
-        <div class="inner">
-          <ul>
-          {{#results}}
-            <li><a href="http://github.com/{{username}}">{{username}}</a> - <a href="{{link}}">{{message}}</a></li>
-          {{/results}}
-          </ul>
+          {{> widget_refresh_heading}}
+          <div class="inner">
+            <ul>
+            {{#results}}
+              <li><a href="http://github.com/{{username}}">{{username}}</a> - <a href="{{link}}">{{message}}</a></li>
+            {{/results}}
+            </ul>
+          </div>
         </div>
       </div>
-    </div>
 
 #. The use of partials just made our templates cleaner. Now we're going to create templates
    that with different selectors so Mojito can render the appropriate ones depending
    on the device making an HTTP request. Notice that the layout changes for each.
 
-   **mojits/Body/views/index.ipad.hb.html**
+   ``mojits/Body/views/index.ipad.hb.html``
 
    .. code-block:: html
 
