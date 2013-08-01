@@ -418,7 +418,7 @@ Creating the Application
 ========================
 
 #. After you have copied the application that you made in the 
-   last module (see Setting Up), change into the application 
+   last module (see :ref:`Setting Up <09_intro_before-setup>`), change into the application 
    ``09_hb_templates``.
 #. Let’s add the contexts with the selectors to ``application.json`` that will identify the templates
    for devices such as the iPad and iPhone. Because of the new configuration objects,
@@ -522,42 +522,42 @@ Creating the Application
    The syntax for using the partial is ``{{> partial_name}}``. Go ahead and replace the 
    contents of ``mojits/Blog/views/index.hb.html`` with the following:
 
-  .. code-block:: html
+   .. code-block:: html
     
-    <div id="{{mojit_view_id}}" class="mojit">
-      <div class="mod" id="blog">
-        {{> widget_heading}}
-        <div class="inner">
-          <ul>
-          {{#results}}
-            <li>
-              {{{linker title link}}}
-              <span class="desc" title="AUTHOR: [ {{creator}} ] DESC: {{description}} DATE: ( {{pubDate}} )">{{description}}</span>
-            </li>
-          {{/results}}
-          </ul>
+      <div id="{{mojit_view_id}}" class="mojit">
+        <div class="mod" id="blog">
+          {{> widget_heading}}
+          <div class="inner">
+            <ul>
+            {{#results}}
+              <li>
+                {{{linker title link}}}
+                <span class="desc" title="AUTHOR: [ {{creator}} ] DESC: {{description}} DATE: ( {{pubDate}} )">{{description}}</span>
+              </li>
+            {{/results}}
+            </ul>
+          </div>
         </div>
       </div>
-    </div>
 
 #. Again, do the same for ``mojits/Calendar/views/index.hb.html``. We don't use the 
    Handlebars helper to create links because of the complicated data structure needed
    to create the links.
  
-  .. code-block:: html
+   .. code-block:: html
 
-     <div id="{{mojit_view_id}}" class="mojit">
-       <div class="mod" id="calendar">
-         {{> widget_heading}}
-         <div class="inner">
-           <ul>
-           {{#results}}
-             <li>{{#entry}}<span>{{#summary}}{{content}}{{/summary}}</span><a href="{{#link}}{{href}}{{/link}}" title="{{#title}}{{content}}{{/title}}">{{#title}}{{content}}{{/title}}</a>{{/entry}}</li>
-           {{/results}}
-           </ul>
-         </div>
-       </div>
-     </div>
+      <div id="{{mojit_view_id}}" class="mojit">
+        <div class="mod" id="calendar">
+          {{> widget_heading}}
+          <div class="inner">
+            <ul>
+            {{#results}}
+              <li>{{#entry}}<span>{{#summary}}{{content}}{{/summary}}</span><a href="{{#link}}{{href}}{{/link}}" title="{{#title}}{{content}}{{/title}}">{{#title}}{{content}}{{/title}}</a>{{/entry}}</li>
+            {{/results}}
+            </ul>
+          </div>
+        </div>
+      </div>
 
 #. And for the ``Gallery`` template (``mojits/Gallery/views/index.hb.html``):
 
