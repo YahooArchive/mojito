@@ -755,8 +755,8 @@ Creating the Application
          }
      }
 
-#. We haven't touched ``routes.json`` for a long time. We're going to remove unused routes,
-   add a route to get Mojito data, and add parameters that the controller will use to determine
+#. We haven't touched ``routes.json`` for a long time. We're going to add
+   a route to get Mojito data, and add parameters that the controller will use to determine
    what dashboard to display (YUI or Mojito). Replace the contents of ``routes.json`` with the
    following:
 
@@ -796,7 +796,8 @@ Creating the Application
       ]
 #. The ``Blog`` mojit's controller needs to be modified to use the ``Config`` addon
    to get the configuration values from ``definition.json``. Replace the content of
-   the ``index`` method with the following:
+   the ``index`` method with the following and require the ``Config`` and ``Params`` addon
+   in the ``requires`` array:
   
    .. code-block:: javascript
 
@@ -840,7 +841,9 @@ Creating the Application
      ]
 
 #. The ``Gallery`` controller will also need to get the configurations with the ``Config``
-   addon, so go ahead and update the ``index`` method of the controller with the following:
+   addon, so go ahead and update the ``index`` method of the controller with the code
+   below. Also, make sure that you have required the ``Config`` and ``Params`` addons 
+   in the ``requires`` array.
 
    .. code-block:: javascript
 
@@ -925,7 +928,7 @@ Creating the Application
                 // add mojit specific css
                 ac.assets.addCss('./index.css');
                 ac.done({
-                    title: "YUI Twitter Mentions",
+                    title: title,
                     results: data.statuses
                 });
             });
@@ -1014,8 +1017,9 @@ Creating the Application
         cookedQuery = Y.Lang.sub(query, queryParams);
         Y.YQL(cookedQuery, Y.bind(this.onDataReturn, this, callback));
       }
+
 #. Right, you'll need to update the tests once again. Here are the updates for both the
-    controller and model tests. 
+   controller and model tests. 
 
    ``mojits/Github/tests/controller.server-tests.js``
 
@@ -1156,7 +1160,8 @@ Creating the Application
       }
 #. From the screenshot of our application, you can see a button at the top right-hand corner.
    This button allows the user to either view the YUI or the Mojito dashboard. We are 
-   going to add this button to the template for our ``PageLayout`` mojit with the following:
+   going to add this button to the ``index`` template of our ``PageLayout`` mojit with the 
+   following:
 
    .. code-block:: html
 
@@ -1249,9 +1254,13 @@ Creating the Application
 #. Notice from your console that you're only seeing warning messages. Try restarting
    the application with the ``environment:development`` context to see ``info`` log
    messages as well. You'll now see the output from ``Y.log`` statement in the controller
-   of the ``PageLayout`` mojit.
+   of the ``PageLayout`` mojit. 
 
    ``$ mojito start --context "environment:development"``
+
+   If you want to suppress log messages, just start the application with the 
+   ``environment:production`` context.
+
 
 .. _08_adv_config-summary:    
 

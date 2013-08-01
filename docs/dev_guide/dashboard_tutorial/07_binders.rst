@@ -403,7 +403,8 @@ Creating the Application
    - ``$ mojito create mojit Gallery``
 
 #. Create mojit instances for our new mojits in ``application.json`` and make them 
-   children of the ``body`` instance as shown below:
+   children of the ``body`` instance as shown below. Also, be sure to update the
+   path to the CSS assets.
 
    .. code-block:: javascript
 
@@ -456,7 +457,7 @@ Creating the Application
         </div>
       </div>
 
-#. Change to ``mojits/Blog/models`` and rename the file ``foo.server.js`` to ``blog.server.js``.
+#. Change to ``mojits/Blog/models`` and rename the file ``model.server.js`` to ``blog.server.js``.
 #. Replace the content of ``blog.server.js`` with the code below. We're using YQL again to
    get the blog posts from a custom table.
 
@@ -513,7 +514,7 @@ Creating the Application
             });
           }
         };
-      }, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'mojito-params-addon', 'mojito-config-addon']});
+      }, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon']});
 #. Update the template ``index.hb.html`` of the ``Blog`` mojit as well:
 
    .. code-block:: html
@@ -539,8 +540,8 @@ Creating the Application
       </div>
 
 #. Let's update the model, controller, and view of the ``Gallery`` mojit as well. First
-   rename ``foo.server.js`` to ``gallery.server.js`` and replace the contents with that
-   below. 
+   rename the model ``model.server.js`` to ``gallery.server.js`` and replace the contents 
+   with the code below. 
 
    .. code-block:: javascript
 
@@ -600,7 +601,7 @@ Creating the Application
             });
           }
         };
-      }, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'mojito-params-addon', 'mojito-config-addon']});
+      }, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon']});
 
    .. code-block:: html
 
@@ -698,9 +699,10 @@ Creating the Application
         }, '0.0.1', {requires: ['event-mouseenter', 'mojito-client']});
 #. We want to let users to be able to update the GitHub activity as well. Before we start
    working on the binders of the ``Github`` mojit, let's refine the controller, model, and
-   update the tests. First, update the ``index`` method and add the method ``githubMap`` 
-   outside the controller namespace to format the returned response with the code below.
-   We're using a YQL table that's in the `YQL hosted storage <http://developer.yahoo.com/yql/guide/yql-cloud-chapter.html>`_
+   update the tests. First, in the controller, update the ``index`` method and add the 
+   method ``githubMap`` outside the controller namespace to format the returned response 
+   with the code below. We're using a YQL table that's in the 
+   `YQL hosted storage <http://developer.yahoo.com/yql/guide/yql-cloud-chapter.html>`_
    now (``store://gpgSGZAwQ3vaDaalPQZ44u``) 
 
    .. code-block:: javascript
@@ -834,6 +836,45 @@ Creating the Application
         // send the array back
         return res;
       };
+#. Update the model for the ``Github`` mojit as well by replacing the content of
+   ``mojits/Github/models/yql.server.js`` with the following:
+
+   .. code-block:: javascript
+
+      YUI.add('StatsModelYQL', function (Y, NAME) {
+
+        Y.mojito.models[NAME] = {
+          init: function (config) {
+            this.config = config;
+          },
+          getData: function (params, yqlTable, callback) {
+            Y.log(this.config);
+            var itemLimit = "10",
+                query = "use '{table}' as github.events; select json.type, json.actor, json.payload from github.events where id='yui' and repo='yui3' limit {limit}",
+                queryParams = {
+                    table: yqlTable,
+                    limit: itemLimit
+                },
+                cookedQuery = Y.Lang.sub(query, queryParams);
+             Y.YQL(cookedQuery, Y.bind(this.onDataReturn, this, callback));
+          },
+          onDataReturn: function (cb, result) {
+            Y.log("onDataReturn called");
+            if (result.error === undefined) {
+
+                Y.log("github result:");
+                Y.log(result);
+                var results = {};
+                if (result && result.query && result.query.results && result.query.results.json) {
+                    results = result.query.results.json;
+                }
+                cb(results);
+            } else {
+                cb(result.error);
+            }
+          }
+      };
+   }, '0.0.1', {requires: ['yql', 'substitute']});
 #. We'll need to update the ``Github`` tests as well. If you've written tests for the
    other mojits, you'll need to be sure that they are modified as well. Update
    the tests with the code below:
@@ -960,8 +1001,8 @@ Creating the Application
       }
 
 #. The binders are reliant on the **refresh** icon. So, let's add that to the templates 
-    of the ``Twitter`` (``mojits/Twitter/views/index.hb.html``) and ``Github`` 
-    (``mojits/Github/views/index.hb.html``) mojits:
+   of the ``Twitter`` (``mojits/Twitter/views/index.hb.html``) and ``Github`` 
+   (``mojits/Github/views/index.hb.html``) mojits:
 
    .. code-block:: html
 
