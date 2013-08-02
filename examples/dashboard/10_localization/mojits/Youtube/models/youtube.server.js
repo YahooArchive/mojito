@@ -54,7 +54,7 @@ YUI.add('YoutubeModelYQL', function (Y, NAME) {
             }
         },
         _isCached: function() {
-            var updateTime = this.config['feedCacheTime'] * 60 * 1000;
+            var updateTime = this.config.feedCacheTime * 60 * 1000;
             return Y.youtubeData && (new Date().getTime() - Y.youtubeCacheTime) < updateTime;
         }
     };

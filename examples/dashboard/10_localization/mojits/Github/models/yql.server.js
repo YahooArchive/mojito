@@ -1,5 +1,6 @@
 YUI.add('StatsModelYQL', function (Y, NAME) {
 
+    'use strict';
     Y.mojito.models[NAME] = {
 
         init: function (config) {
@@ -17,7 +18,7 @@ YUI.add('StatsModelYQL', function (Y, NAME) {
                     repo: repo
                 },
                 cookedQuery = Y.Lang.sub(query, queryParams);
-             Y.YQL(cookedQuery, Y.bind(this.onDataReturn, this, callback));
+            Y.YQL(cookedQuery, Y.bind(this.onDataReturn, this, callback));
         },
         onDataReturn: function (cb, result) {
             Y.log("onDataReturn called");

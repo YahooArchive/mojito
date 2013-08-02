@@ -33,18 +33,18 @@ YUI.add('PageLayoutBinderIndex', function(Y, NAME) {
             var me = this;
             this.node = node;
 
-             Y.log("bind called");
-             Y.on("domready", function(){
+            Y.log("bind called");
+            Y.on("domready", function() {
                 Y.one("body").addClass("yui3-skin-sam");
-             });
-             Y.one(".mybody").delegate('click', function() {
+            });
+            Y.one(".mybody").delegate('click', function() {
                 if (!this.ancestor('div').hasClass('collapse')) {
                     this.ancestor('div').addClass('collapse');
                 } else {
                     this.ancestor('div').removeClass('collapse');
                 }
 
-             }, 'a.min');
+            }, 'a.min');
         }
     };
 }, '0.0.1', {requires: ['event-mouseenter', 'mojito-client']});

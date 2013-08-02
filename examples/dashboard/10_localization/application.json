@@ -3,7 +3,7 @@
         "settings": [ "master" ],
         "appPort": "8666",
         "staticHandling": {
-          "appName": "trib"
+            "appName": "trib"
         },
         "yui":{
             "config": {
@@ -25,7 +25,7 @@
                 "type": "HTMLFrameMojit",
                 "config": {
                     "deploy": true,
-                    "title": "Trib - YUI/Mojito Developer Dashboard,
+                    "title": "Trib - YUI/Mojito Developer Dashboard",
                     "child": {
                         "type": "PageLayout",
                         "config": {
@@ -75,7 +75,6 @@
                                 "https://rawgithub.com/tilomitra/yuicss-common/master/ui.css",
                                 "/static/trib/assets/trib.css"
                             ]
-
                         }
                     }
                 }
@@ -112,6 +111,6 @@
                 "debug": false,
                 "logLevel": "none"
             }
-        }
+        
     }
 ]

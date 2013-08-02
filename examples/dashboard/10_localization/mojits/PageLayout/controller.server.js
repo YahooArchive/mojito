@@ -44,4 +44,4 @@ YUI.add('PageLayout', function(Y, NAME) {
             }
         }
     };
-}, '0.0.1', {requires: ['mojito','mojito-composite-addon', 'mojito-params-addon', 'mojito-helpers-addon', 'mojito-intl-addon']});
+}, '0.0.1', {requires: ['mojito', 'mojito-composite-addon', 'mojito-params-addon', 'mojito-helpers-addon', 'mojito-intl-addon']});

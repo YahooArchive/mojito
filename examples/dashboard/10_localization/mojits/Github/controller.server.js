@@ -141,13 +141,13 @@ YUI.add('Github', function(Y, NAME) {
                 yui = ac.config.getDefinition('yui', 'notitle');
                 title = yui.title;
                 id = yui.id;
-                repo = yui.repo
+                repo = yui.repo;
             } else if (view_type === "mojito") {
                 yqlTable = ac.config.getDefinition('yqlTable', '');
                 mojito = ac.config.getDefinition('mojito', 'notitle');
                 title = mojito.title;
                 id = mojito.id;
-                repo = mojito.repo
+                repo = mojito.repo;
             }
             Y.log(model);
             model.getData({}, yqlTable, id, repo, function (data) {

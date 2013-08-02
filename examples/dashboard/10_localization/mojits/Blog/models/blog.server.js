@@ -16,8 +16,8 @@ YUI.add('BlogModelYQL', function (Y, NAME) {
                 },
                 cookedQuery = Y.Lang.sub(query, queryParams);
 
-             Y.log("blogmodel calling YQL");
-             Y.YQL(cookedQuery, Y.bind(this.onDataReturn, this, callback));
+            Y.log("blogmodel calling YQL");
+            Y.YQL(cookedQuery, Y.bind(this.onDataReturn, this, callback));
         },
         onDataReturn: function (cb, result) {
             Y.log("blog.server onDataReturn called");
