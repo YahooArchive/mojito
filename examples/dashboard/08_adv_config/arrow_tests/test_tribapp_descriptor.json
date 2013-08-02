@@ -18,6 +18,26 @@
                         {
                             "test" : "test_yui_dashboard.js",
                             "page" : "$$config.baseUrl$$"
+                        },
+                        {
+                           "controller": "locator",
+                           "params": {
+                                  "value": "a.yui3-button.swap",
+                                  "click": true
+                           }
+                        },
+                        {
+                           "test" : "test_mojito_dashboard.js"
+                        },
+                        {
+                           "controller": "locator",
+                           "params": {
+                                  "value": "a.yui3-button.swap",
+                                  "click": true
+                           }
+                        },
+                        {
+                           "test" : "test_yui_dashboard.js"
                         }
                      ]
                 }
@@ -27,5 +47,4 @@
     {
         "settings": [ "environment:development" ]
     }
-
 ]
