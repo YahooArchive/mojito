@@ -27,14 +27,15 @@ YUI.add('TwitterBinderIndex', function(Y, NAME) {
         },
 
         /**
-         * The binder method, invoked to allow the mojit to attach DOM event
-         * handlers.
-         *
-         * @param node {Node} The DOM node to which this mojit is attached.
-         */
-         bind: function (node) {
+        * The binder method, invoked to allow the mojit to attach DOM event
+        * handlers.
+        *
+        * @param node {Node} The DOM node to which this mojit is attached.
+        */
+        bind: function (node) {
             var me = this,
-                mp = this.mojitProxy;
+                mp = this.mojitProxy,
+                refreshMojit = null;
             this.node = node;
             Y.on("domready", function () {
                 Y.log("Twitter: bind ");
@@ -50,9 +51,9 @@ YUI.add('TwitterBinderIndex', function(Y, NAME) {
 
                 });
             });
-            refreshMojit = function(evt) {
+            refreshMojit = function (evt) {
                 var tgt = evt.target;
-                    evt.halt();
+                evt.halt();
                 mp.invoke('index', function(err, markup) {
                     if (me) {
                         me.innerHTML = markup;

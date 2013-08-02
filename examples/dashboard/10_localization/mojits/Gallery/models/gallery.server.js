@@ -14,8 +14,8 @@ YUI.add('GalleryModelYQL', function (Y, NAME) {
                 },
                 cookedQuery = Y.Lang.sub(query, queryParams);
 
-             // Y.log("cookedQuery: " + cookedQuery);
-             Y.YQL(cookedQuery, Y.bind(this.onDataReturn, this, callback));
+            // Y.log("cookedQuery: " + cookedQuery);
+            Y.YQL(cookedQuery, Y.bind(this.onDataReturn, this, callback));
         },
         onDataReturn: function (cb, result) {
             Y.log("onDataReturn called");

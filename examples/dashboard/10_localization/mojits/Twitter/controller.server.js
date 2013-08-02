@@ -12,6 +12,7 @@ YUI.add('Twitter', function (Y, NAME) {
      * @class Controller
      * @constructor
      */
+    'use strict';
     Y.namespace('mojito.controllers')[NAME] = {
 
         /**
@@ -21,7 +22,7 @@ YUI.add('Twitter', function (Y, NAME) {
          *        to the Mojito API.
          */
         index: function (ac) {
-            var view_type, q, title, oauth_keys, count=10;
+            var view_type, q, title, oauth_keys, count = 10;
             view_type = ac.params.getFromRoute('view_type') || "yui";
 
             if (view_type === "yui") {
