@@ -1,4 +1,3 @@
-
 [
     {
         "settings": [ "master" ],
@@ -11,7 +10,7 @@
                 "path": "../"
             }
         },
-        "dataprovider" : { 
+        "dataprovider" : {
             "test trib app index page" : {
                 "group" : "tribapp",
                 "params" : {
@@ -19,6 +18,18 @@
                         {
                             "test" : "test_yui_dashboard.js",
                             "page" : "$$config.baseUrl$$"
+                        },
+                        {
+                            "test" : "test_en-US_title.js",
+                            "page": "$$config.baseUrl$$?lang=en-US"
+                        },
+                        {
+                            "test" : "test_zh-Hans_title.js",
+                            "page": "$$config.baseUrl$$?lang=zh-Hans"
+                        },
+                        {
+                            "test" : "test_es-419_title.js",
+                            "page": "$$config.baseUrl$$?lang=es-419"
                         },
                         {
                            "controller": "locator",
@@ -43,7 +54,7 @@
                      ]
                 }
             }
-        }    
+        }
     },
     {
         "settings": [ "environment:development" ]
