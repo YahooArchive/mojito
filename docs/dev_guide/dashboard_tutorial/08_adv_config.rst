@@ -1261,6 +1261,66 @@ Creating the Application
    If you want to suppress log messages, just start the application with the 
    ``environment:production`` context.
 
+#. Lastly, because we now have a Mojito dashboard, let's add a functional test that
+   confirms that the Mojito dashboard has loaded by creating the test file 
+   ``arrow_tests/test_mojito_dashboard.js`` with the following:
+
+   .. code-block:: javascript
+
+      YUI({
+        useConsoleOutput: true,
+        useBrowserConsole: true,
+        logInclude: { TestRunner: true }
+      }).use('node', 'node-event-simulate', 'test', 'console', function (Y) {
+
+        'use strict';
+        var suite = new Y.Test.Suite("TribApp: Mojito Dashboard test"),
+            url = window.location.protocol + "//" + window.location.host + "/";
+        suite.add(new Y.Test.Case({
+          "test Mojito dashboard": function () {
+            // Tests the title in HTML header
+            Y.Assert.areEqual("Trib - YUI/Mojito Developer Dashboard", Y.one('head title').get('innerHTML'));
+
+            // Tests the  YUI button
+            Y.Assert.areEqual(url, Y.one('a.yui3-button.swap').get('href'));
+
+            // Tests the title within the content
+            Y.Assert.areEqual("Trib - Mojito Developer Dashboard", Y.one('body h1').get('innerHTML'));
+          }
+        }));
+        Y.Test.Runner.add(suite);
+      });
+#. Let's also add the new scenarios that simulate the button click to load the Mojito
+   Dashboard and then re-click the button to get back to the YUI Dashboard by adding the
+   following scenarios to the ``scenario`` array in the test descriptor 
+   ``arrow_tests/test_tribapp_descriptor.json``:
+
+   .. code-block:: javascript
+
+      {
+        "controller": "locator",
+        "params": {
+          "value": "a.yui3-button.swap",
+          "click": true
+        }
+      },
+      {
+        "test" : "test_mojito_dashboard.js"
+      },
+      {
+        "controller": "locator",
+        "params": {
+          "value": "a.yui3-button.swap",
+          "click": true
+        }
+      },
+      {
+        "test" : "test_yui_dashboard.js"
+      }
+#. Go ahead and run the Arrow tests to confirm that the button does indeed load the
+   the dashboards. If you forgot how to run the Arrow tests, refer to the 
+   module `6. Testing in Mojito <06_testing.html>`_.
+
 
 .. _08_adv_config-summary:    
 

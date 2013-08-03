@@ -358,16 +358,16 @@ Creating the Application
    - `/mojits/Github/assets/favicon-github.png <images/mojits/Github/assets/favicon-github.png>`_ to ``10_localization/mojits/Github/assets/``
 
 #. We're going to update the CSS for some mojits as well so that the images are used
-   and styles. Replace the code in the following CSS files with the content below:
-
-   ``/mojits/Blog/assets/index.css``
+   and styles. Add the code to the file ``/mojits/Blog/assets/index.css``:
 
    .. code-block:: html
 
       #blog h3 strong {
         background-image: url(/static/Blog/assets/favicon-blog.png);
       }
-   
+
+#. For the following CSS files, just replace the content with the code below:
+
    ``/mojits/Calendar/assets/index.css``
 
    .. code-block:: html
@@ -389,7 +389,7 @@ Creating the Application
         overflow: hidden;
       }
 
-  ``/mojits/Gallery/assets/index.css`` 
+   ``/mojits/Gallery/assets/index.css`` 
 
    .. code-block:: html 
 
@@ -407,7 +407,7 @@ Creating the Application
 
    ``/mojits/Twitter/assets/index.css``
 
-   .. code-block: html
+   .. code-block:: html
 
       #twitter h3 strong {
         background-image: url(/static/Twitter/assets/favicon-twitter.png);
@@ -417,10 +417,46 @@ Creating the Application
 #. To view the localized title in Chinese for the dashboard, add the query string parameter
    ``?lang=zh-Hans`` to the URL and refresh the page. You can see the title in Spanish 
    as well with the query string parameter ``?lang=es-419``.
+#. Let's add a functional test to test for a localized title as well. Create the test file
+   ``arrow_tests/test_zh-Hans_title.js`` with the following content:
+
+   .. code-block:: javascript
+
+      YUI({
+        useConsoleOutput: true,
+        useBrowserConsole: true,
+        logInclude: { TestRunner: true }
+        }).use('node', 'node-event-simulate', 'test', 'console', function (Y) {
+
+        'use strict';
+        var suite = new Y.Test.Suite("TribApp: Localization Test"),
+            url = window.location.protocol + "//" + window.location.host + "/";
+        suite.add(new Y.Test.Case({
+          "test localized title": function () {
+            Y.Assert.areEqual("Trib - YUI 开发人员仪表板", Y.one('body h1').get('innerHTML'));
+          }
+        }));
+        Y.Test.Runner.add(suite);
+      });
+#. Add the test scenario below after the first scenario specified in the ``scenario`` 
+   array in the test descriptor as well.
+
+   .. code-block:: javascript
+      {
+        "test" : "test_yui_dashboard.js",
+        "page" : "$$config.baseUrl$$"
+      },
+      {
+        "test" : "test_zh-Hans_title.js",
+        "page": "$$config.baseUrl$$?lang=zh-Hans"
+      },
+      ...
+#. Go ahead and run the functional tests again. You should see an additional test case
+   passing.
 #. Congratulations, you have completed all of the modules in this tutorial. There is still
    more to learn about Mojito, but you should have a strong grasp of the basics that you
-   can build on. If you haven't already, be sure to read the `documentation <../>`_ and the 
-   `code examples <../code_examples/>`_ as well.
+   can build on. If you haven't already, be sure to read the `documentation <../>`_ and  
+   work through the `code examples <../code_examples/>`_.
 
 .. _10_localization-summary:
 
@@ -493,6 +529,7 @@ Questions
 Additional Exercises
 --------------------
 
+- Write functional tests for the languages ``es-419`` and ``en-US``.
 - Add a resource bundle file for German to your ``PageLayout`` mojit so that the 
   title can be localized in German.
 - Add a ``lang`` directory and resource bundles to the ``Footer`` mojit that localizes
