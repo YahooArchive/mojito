@@ -722,7 +722,7 @@ Terms
 Source Code
 ===========
 
-`03_frame_mojits <http://github.com/yahoo/mojito/examples/dashboard/03_frame_mojit>`_
+`03_frame_mojits <http://github.com/yahoo/mojito/examples/dashboard/03_frame_mojits>`_
 
 ..  03_frame_mojits-reading:
 

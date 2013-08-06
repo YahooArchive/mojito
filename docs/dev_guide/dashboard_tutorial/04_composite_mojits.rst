@@ -16,8 +16,8 @@ do not have to be frame mojits. A frame mojit can also have a child mojit that i
 composite mojit, extending the parent-child relationship. 
 
 In this module, we’re going to keep using the ``HTMLFrameMojit`` and have a child 
-that is a composite mojit that has several children. To make it more 
-interesting, one of the children is also a composite mojit that has a child. 
+that is a composite mojit with several children. To make it more 
+interesting, one of its children is also a composite mojit with a child. 
 The composite mojits will manage the child mojits that create our content, 
 while the ``HTMLFrameMojit`` will continue to put together our HTML page. Do you 
 remember all those mojits that we created earlier that have been just sitting 
@@ -32,7 +32,7 @@ What We’ll Cover
 ----------------
 
 - configuring the composite mojit instance
-- using the Composite addon
+- using the ``Composite`` addon
 - passing data from parent to child mojits
 - attaching child mojits to templates
 
@@ -306,7 +306,7 @@ but allows for the dynamic creation of mojit instances.
     // the Composite addon.
   }, '0.0.1', {requires: ['mojito','mojito-composite-addon']});
 
-We’re not going to dynamically create mojit instances, so it makes more 
+We’re not going to dynamically create mojit instances in our application, so it makes more 
 sense to just use ``ac.composite.done`` to execute the child mojits. Based on 
 what we’ve learned, the controller for the parent mojit ``Body`` shown 
 below should make more sense. Based on our configuration, the ``body`` instance 
@@ -368,7 +368,7 @@ in your own projects.
   - ``cssgrids-responsive-min.css``
 
 The application also uses YUI CSS for common HTML elements such as lists and forms and
-custom CSS (``trib.css``).
+custom CSS (``trib.css``) for the containers and headings.
 
 
 .. _04_composite_mojits-create:
@@ -644,7 +644,7 @@ Creating the Application
         </div>
       </div>
 
-#. Let's also simplify the ``Github`` mojit, removing the ``custom`` template by replacing
+#. Let's also simplify the ``Github`` mojit, removing the ``custom`` view by replacing
    the contents with the following:
 
    .. code-block:: javascript

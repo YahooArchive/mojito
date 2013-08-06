@@ -10,7 +10,7 @@ Introduction
 Mojits are basic unit of composition and reuse in a Mojito application. 
 Imagine that a rectangular square of a Web page being the visual 
 representation of a mojit. The word *mojit* is a compound consisting of 
-the stems module and widget, but the mojit is neither. The mojit is built 
+the stems module and widget, but the mojit is really neither. The mojit is built 
 on YUI modules, but is not a module, and although can be used in separation 
 of other mojits, is not a standalone application like a widget. Regardless 
 of how you try to formally understand mojits, you must understand this: 
@@ -63,7 +63,7 @@ commands to do the following:
 
 - create applications and mojits
 - run application and mojit unit tests
-- lint code
+- lint and test code
 - start applications
 - specify ports and contexts when starting applications.
 
@@ -101,10 +101,10 @@ how they are created and used.
 Mojit Definitions
 -----------------
 
-To create the mojit definition, you use the command create that we looked 
+To create the mojit definition, you use the command ``create`` that we looked 
 at in the previous module. When you run ``mojito create mojit <mojit_name>``, 
 Mojito creates a directory structure with boilerplate code for your controller, 
-model, view as well as tests and configuration. 
+model, view (template) as well as tests and configuration. 
 
 As you can see from the directory structure of the default mojit below, 
 the mojits live under the mojits directory and have subdirectories for models, 
@@ -136,8 +136,8 @@ Controllers, Models, and YUI
 
 If you have worked with YUI before, you’ll notice pretty quickly that 
 mojit controllers and models are simply custom YUI modules that are 
-registered with ``YUI.add``. These skeleton of these custom modules also include 
-the ``requires`` array that allows you to list dependencies and a namespace:
+registered with ``YUI.add``. The skeleton of these custom modules include 
+the controller namespace and the ``requires`` array for specifying dependencies:
 
 ``controller.server.js``
 
@@ -173,11 +173,10 @@ In mojit controllers, functions in the ``mojito.controller`` namespace are
 passed a special object called the Action Context. We’ll be calling it 
 the ``ActionContext`` object or ``ac`` for short.
 
-The Action Context gives you access to important features of the Mojito 
+The ``ActionContext`` object gives you access to important features of the Mojito 
 framework. One critical feature is the ability to send data to templates and 
 have those templates executed. Mojito also provides a library that can be 
-accessed through the ``ac`` object through a mechanism called addons.  We’ll 
-take a look at the addon method ``done``.
+accessed through the ``ac`` object through a mechanism called addons.  
 
 For your mojits to render templates, controller functions need to call 
 the method ``ac.done``. The ``done`` method also allows you to choose the view to 
@@ -193,16 +192,18 @@ ActionContext Addons
 The ``ActionContext`` addons provide functionality that lives both on the 
 server and client. Each addon provides additional functions through a 
 namespacing object that is appended to the ``ActionContext`` object. To use 
-addons, function, the addons need to require addons. The default Mojito 
-application uses the Models and Assets addon. As our application gets 
-more complicated, we’ll be relying on addons to do more work. 
+addons, the controller need to require the addons by listing the addons
+in the ``requires`` array. The default Mojito application uses the ``Models`` and 
+``Assets`` addon. As our application gets more complicated, we’ll be relying on addons 
+to do more work. 
 
 .. _02_lesson_addons-features:
 
 Features
 ########
 
-The ``ActionContext`` addons allow you to do the following:
+The ``ActionContext`` addons offer a lot of functionality. The list below
+shows you some of the functionality: 
 
 - access assets, such as CSS and JavaScript files
 - get configuration information (``application.json``, ``routes.json``, ``defaults.json``, 
@@ -460,8 +461,8 @@ Creating the Application
 We’re going to extend the application we created in the last module with several 
 mojits and then configure mojit instances and routing paths. 
 
-#. After you have copied the application that you made in the last module in `Setting Up <#setting-up>`_, 
-   change into the application ``02_mojits``.
+#. After you have copied the application that you made in the last module in 
+   `Setting Up <#setting-up>`_, change into the application ``02_mojits``.
 #. Let’s create mojits that will help generate output for the different parts of 
    the HTML page:
 
@@ -472,7 +473,7 @@ mojits and then configure mojit instances and routing paths.
       $ mojito create mojit Footer
 
 #. In the mojits directory, you should now see the four mojits we created: ``Github``, 
-   ``BodyMojit``, ``HeaderMojit``, and ``FooterMojit``. We’re going to want to create mojit instances 
+   ``Body``, ``Header``, and ``Footer``. We’re going to want to create mojit instances 
    that use the mojit definitions. Edit the ``application.json`` so that it is the same as 
    below (feel free to just replace the content of your ``application.json``):
 
@@ -648,19 +649,16 @@ Troubleshooting
 Route Not Being Found
 ---------------------
 
-I started the application, but when I go to http://localhost:8666/body, 
-I get the following error: ``Cannot GET /body``
-
-It appears that you started Mojito from the wrong location. Try changing 
-to the application directory, which in this example is ``02_mojits``, and then run 
-``mojito start``.
+If you started the application, went to ``http://localhost:8666/body``, 
+and got the following error ``Cannot GET /body``, It appears that you started 
+Mojito from the wrong location. Try changing  to the application directory, which in this 
+example is ``02_mojits``, and then run ``mojito start``.
 
 Error: listen EADDRINUSE
 ------------------------
 
 If you start Mojit and get the following error, it means that Mojito is 
-already running. You’ll need to cancel that process before you can restart Mojito.
-
+already running. You’ll need to kill that process before you can restart Mojito.
 
 
 .. _02_mojits-qa:     
@@ -672,7 +670,7 @@ Q&A
 
   Yes, this is a more advanced feature not included in this tutorial, but you 
   can add libraries, use Node.js modules, or even write your own addons.
-   See the chapter `Extending Mojito <../topics/mojito_extensions.html>`_.
+  See the chapter `Extending Mojito <../topics/mojito_extensions.html>`_.
 
 - Handlebars has features such as helpers and partials. Can you use them in Mojito 
   applications?
