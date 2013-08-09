@@ -31,7 +31,7 @@ What We’ll Cover
 Final Product
 -------------
 
-In the screenshot, you can see that we now have a very full dashboard with data
+In the screenshot, you can see that we now have a full dashboard with data
 from GitHub, Twitter, the YUI blog, YouTube, and YUI Gallery. You can also see
 the icon **⟲**, which uses binders to refresh data when clicked.
 
@@ -78,10 +78,11 @@ Lesson: Binders
 Introduction
 ------------
 
-A mojit may have zero, one, or many binders within the binders directory. Each binder 
+Client-side code for Mojito are placed in files called binders. A mojit may have zero, 
+one, or many binders within the binders directory. Each binder 
 will be deployed to the browser along with the rest of the mojit code, where the 
 client-side Mojito runtime will call it appropriately. The view used to generate 
-output determines which binder is used. Thus, if the simple view is used, the 
+output determines which binder is used. Thus, if the ``simple`` view is used, the 
 binder ``simple.js`` is used. This can be overridden by setting ``view.binder`` in the meta 
 argument to ``ac.done``. If no binder matches the view, then no binder is used.
 
@@ -104,8 +105,10 @@ mojit and be configured to deploy code to the client with the
 Applications to Be Deployed to Client <../intro/mojito_configuring.html#configuring-applications-to-be-deployed-to-client>`_ 
 for more information. Also, the template files (e.g., ``index.hb.html``) must have 
 containers (``div`` elements) that have the ``id`` attribute assigned the value 
-``{{mojit_view_id}}``.  For example: ``<div id={{mojit_view_id}}>``. The attribute value 
+``{{mojit_view_id}}`` because the attribute value 
 ``{{mojit_view_id}}`` allows binders to attach themselves to the DOM.
+For example: ``<div id={{mojit_view_id}}>``. Mojito generates the value for
+``{{mojit_view_id}}`` at runtime. 
 
 .. _07_lesson-binder:
 
@@ -218,16 +221,15 @@ API Methods
 ###########
 
 In addition to  the properties of the ``mojitProxy`` object, you can also use the methods 
-of the `MojitProxy class <http://developer.yahoo.com/cocktails/mojito/api/classes/MojitProxy.html>`_ 
-so that the binder can interact with the controller and 
-other mojits. We’re going to focus on a core set of the available methods and recommend 
-you look at the API documentation to complete the picture.
+of the `MojitProxy class <http://developer.yahoo.com/cocktails/mojito/api/classes/MojitProxy.html>`_, 
+so that the binder can interact with the controller and other mojits. We’re going to focus 
+on a core set of the available methods and recommend you look at the API documentation to 
+complete the picture.
 
-In the next few sections, we’ll be using the following ``MojitProxy`` methods. The methods 
-``broadcast`` and ``listen`` allow binder code to communicate with each other. The ``invoke`` 
-function allows binder to call controller functions. The methods ``refreshView`` and 
-``render`` help binders to update content of a template. The namespace ``data``
-and ``pageData`` allow you to get and set data that can be shared with other mojits.
+In the next few sections, we’ll give you an overview of binder features and
+the relevant ``MojitProxy`` methods and then look at how to implement the features.
+
+
 
 .. _07_binder_api-binder2binder:
 
@@ -302,7 +304,7 @@ Client to Server Communication
 ##############################
 
 If the controller has not been deployed to the client, the binder sends a request to the 
-server through a special path that Mojito creates a tunnel URL that allows the client to 
+server through a special path called the tunnel that Mojito creates to allow the client to 
 make HTTP requests from the client to the server. The default path is ``http://domain:8666/tunnel``, 
 but you can configure the name of the path.
 
@@ -578,7 +580,8 @@ Creating the Application
         };
       }, '0.0.1', {requires: ['yql', 'substitute']});
 
-   Update the controller and ``index`` template as well with the following:
+#. Update the controller and ``index`` template of the ``Gallery`` mojit as well with the 
+   following:
 
    .. code-block:: javascript
 
@@ -629,7 +632,7 @@ Creating the Application
    to select a node and then add a class so that users can hide content, so we won't need 
    to use the ``mojitProxy`` object. Update the ``bind`` function with the following, which
    will select a node by the class, handle a click event, and then either add or remove
-   a class allowing the user to hide or show a widget.
+   a class to allow the user to hide or show a widget.
 
    .. code-block:: javascript
    
@@ -709,27 +712,29 @@ Creating the Application
 
       index: function (ac) {
         var yqlTable = "store://gpgSGZAwQ3vaDaalPQZ44u",
-                title = "YUI GitHub Activity",
-                model = ac.models.get('StatsModelYQL');
-            Y.log(model);
-            model.getData({}, yqlTable, function (data) {
-                Y.log("Github -index - model.getData:");
-                Y.log(data);
+            title = "YUI GitHub Activity",
+            model = ac.models.get('StatsModelYQL');
+        Y.log(model);
+        model.getData({}, yqlTable, function (data) {
+          Y.log("Github -index - model.getData:");
+          Y.log(data);
 
-                //construct special data
+          //construct special data
 
-                var res = [];
-                Y.log("calling githubmap");
-                res = githubMap(ac, data);
+          var res = [];
+          Y.log("calling githubmap");
+          res = githubMap(ac, data);
 
-                // add mojit specific css
-                ac.assets.addCss('./index.css');
-                ac.done({
-                    title: title,
-                    results: res
-                });
-            });
-        }
+          // Add mojit specific css
+          ac.assets.addCss('./index.css');
+          ac.done({
+            title: title,
+            results: res
+          });
+        });
+      }
+
+   .. code-block: javascript
 
       var githubMap = function (ac, data) {
         Y.log("githubmap called");
@@ -836,6 +841,7 @@ Creating the Application
         // send the array back
         return res;
       };
+
 #. Update the model for the ``Github`` mojit as well by replacing the content of
    ``mojits/Github/models/yql.server.js`` with the following:
 
@@ -876,7 +882,7 @@ Creating the Application
       };
    }, '0.0.1', {requires: ['yql', 'substitute']});
 #. We'll need to update the ``Github`` tests as well. If you've written tests for the
-   other mojits, you'll need to be sure that they are modified as well. Update
+   other mojits, you'll need to be sure that they are updated as well. Update
    the tests with the code below:
 
    ``mojits/Github/tests/controller.server-tests.js``

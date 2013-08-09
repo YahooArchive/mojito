@@ -31,7 +31,7 @@ What We’ll Cover
 
 - using YAML for configuration files
 - default configurations and definitions
-- using the Config addon to get mojit configurations
+- using the ``Config`` addon to get mojit configurations
 - ``yui`` object and configurations
 - configuring the YUI seed
 - using the ``environment:development`` context
@@ -66,9 +66,9 @@ binders to call controller functions and attach content to the DOM. This involve
 about the following:
 
 - requirements for using binders
-- allow event handlers to attach to the mojit DOM node
-- communicate with other mojits on the page
-- execute actions on the mojit that the binder is attached to
+- allowing event handlers to attach to the mojit DOM node
+- communicating with other mojits on the page
+- executing actions on the mojit that the binder is attached to
 - refreshing templates with binders
 
 .. _08_intro_before-setup:
@@ -94,7 +94,7 @@ Using YAML
 ##########
 
 Mojito also supports configuration files in YAML format (JSON is a subset of YAML). 
-The YAML file extension could be ``.yaml`` or ``.yml``. Mojito allows comments in the YAML files. 
+The YAML file extension could be ``.yaml`` or ``.yml``. 
 When both the JSON file (e.g., ``application.json``) and the YAML file (e.g., ``application.yaml``) 
 are present, the YAML file is used and a warning is issued. For the data types of the YAML 
 elements, please see the JSON configuration tables in `Application Configuration <../intro/mojito_configuring.html#application-configuration>`_, 
@@ -354,8 +354,8 @@ YUI
 
 YUI configuration in Mojito is done with the ``yui.config`` object in ``application.json``. 
 For those familiar with YUI, the ``yui.config`` object allows you to configure YUI just as 
-you would with the YUI ``config`` Class. Some of the high-level ways to configure YUI would 
-include the following:
+you would with the YUI `config Class <http://yuilibrary.com/yui/docs/api/classes/config.html>`_. 
+Some of the high-level ways to configure YUI would include the following:
 
 - select which YUI modules are included in the YUI seed file
 - configure the combo handler to use a CDN
@@ -555,8 +555,8 @@ production than for the development environment. The runtime environment could b
 by the device running the application or the regional environment. You may want to have 
 different configurations for the application when it’s running on an iOS device or if your 
 application is being viewed in a region where text is read from right to left. We’re going 
-to discuss the two categories of contexts, how to configure context configurations, and then apply 
-them.
+to discuss the two categories of contexts, how to configure context configurations, and 
+then apply them.
 
 .. _08_context_configs-base:
 
@@ -627,7 +627,7 @@ instance defines the title:
 
 We can define the default URL or search query in the ``defaults.json`` file of the 
 ``twitterMojit``. Because the ``twitter`` mojit instance does not define the ``url`` and 
-``query`` properties explicitly defined, your application will use the defaults.
+``query`` properties explicitly, your application will use the defaults.
 
 .. code-block:: javascript
 
@@ -651,7 +651,7 @@ The key-value pairs in ``definitions.json`` has nothing to do with the mojit def
 
 For instance, suppose you want to store the possible feed URLs for YouTube videos. In the
 ``Youtube`` mojit, you may want to display different streams of videos for Mojito or YUI. 
-You could have a default or specify one in the config object of the ``youtube`` mojit 
+You could have a default or specify one in the ``config`` object of the ``youtube`` mojit 
 instance, but a better solution may be to have configurations defined in your 
 ``definitions.json``.
 
@@ -1142,6 +1142,7 @@ Creating the Application
         }));
         YUITest.TestRunner.add(suite);
       }, '0.0.1', {requires: ['mojito-test', 'StatsModelYQL']});
+
 #. Just one more small change to our child mojits before we work on the composite
    and frame mojits. The output from our ``Blog`` mojit was pretty messy. Just replace
    the CSS in ``mojits/Blog/assets/index.css`` with the code below:
@@ -1158,6 +1159,7 @@ Creating the Application
         margin-left: 4px;
         margin-top: 4px;
       }
+
 #. From the screenshot of our application, you can see a button at the top right-hand corner.
    This button allows the user to either view the YUI or the Mojito dashboard. We are 
    going to add this button to the ``index`` template of our ``PageLayout`` mojit with the 
@@ -1178,6 +1180,7 @@ Creating the Application
           {{{footer}}}
         </div>
       </div>
+
 #. To provide the Handlebars expression ``{{button_test}}`` with the appropriate value,
    we'll need to update the ``index`` method of the ``PageLayout`` controller and add the
    ``Params`` addon to the ``requires`` array as well. The ``Y.log`` statement will be 
@@ -1398,8 +1401,12 @@ Q&A
 ===
 
 - Can YAML be used for other configuration files as well?
+ 
+  Yes, any of the JSON configuration files can be converted to YAML.
 
 - Is it possible to have a global ``definition.json`` that all mojits can access?
+
+  No, it's not. The ``definition.json`` file is for mojit-level configurations.
 
 - Do the configurations of the request context override the configurations of the
   base context?
@@ -1444,7 +1451,7 @@ Additional Exercises
   template ``index.android.html`` for the ``Body`` mojit.
 - Modify the ``routes.json`` or ``routes.yaml`` file so that the route object 
   ``mojito_view`` uses regular expressions to capture any path that has the word
-  "mojito" or "Mojito" in it.
+  "yui" or "YUI" in it.
 
 .. _08_adv_config-term:  
 

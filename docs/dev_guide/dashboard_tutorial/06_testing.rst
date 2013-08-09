@@ -13,8 +13,9 @@ We’re going to show you how to write unit and functional tests in this module,
 and we’re also going to add a few more mojits to fill out our dashboard. We 
 already saw the Mojito CLI has a test command for running unit tests. To run 
 functional tests, we’re going to use Arrow, which is an npm module that we’ll 
-need to install. In future modules, we won't cover the tests but expect you to 
-test your own code by writing tests.
+need to install. In future modules, we will only updating the mojit and functional tests 
+that we wrote in this module. We expect you to write tests for the other mojits on
+your own.
 
 
 .. _06_intro-what:
@@ -263,7 +264,7 @@ and then accessing the controller code with the following: ``Y.mojito.controller
 
 
 Thus, if we were going to test the controller with the register YUI module name ``myMojit``, 
-we would have ``'myMojit'`` in the required array and assign ``Y.mojito.controller.myMojit`` 
+we would have ``'myMojit'`` in the ``required`` array and assign ``Y.mojito.controller.myMojit`` 
 to a variable in the test as shown below:
 
 .. code-block:: javascript
@@ -494,13 +495,13 @@ Intro to Arrow
 ##############
 
 Arrow is a testing framework that combines JavaScript, Node.js, and PhantomJS/Selenium. It 
-attempts to make writing functional tests as easy as unit tests. In fact, you write the 
-you can write both unit and functional tests using YUI Test as well, but Mojito already has 
-a convenient test command for running unit tests, so we’re going to focus on Arrow functional tests. As 
-this is not an Arrow guide, we’re only going to scratch the surface of using the Arrow 
-testing framework. We’ll look at writing tests, running a test suite, and using the Arrow 
-command. To learn more about Arrow, we highly recommend that you read the 
-`Arrow documentation <https://github.com/yahoo/arrow>`_. 
+attempts to make writing functional tests as easy as unit tests. In fact, you write the  
+both unit and functional tests using YUI Test as well, but Mojito already has 
+a convenient test command for running unit tests, so we’re going to focus on Arrow 
+functional tests. As this is not an Arrow guide, we’re only going to scratch the surface 
+of using the Arrow testing framework. We’ll look at writing tests, running a test suite, 
+and using the Arrow command. To learn more about Arrow, we highly recommend that you read 
+the `Arrow documentation <https://github.com/yahoo/arrow>`_. 
 
 .. _06_func-arrow-write:
 
@@ -518,10 +519,10 @@ register the module name (with the method ``add``), and Arrow tests just load mo
 added difference here is that we’re using Arrow for functional tests, so the tests themselves 
 are using the DOM.
 
-In the example test for the getting started example in Mojito, the test ``"test hello"`` 
-uses an assertion to confirm that the text value of the ``<pre>`` element is ``"Hello World!"``.  
-In the example test below, the configuration object passed to YUI and the modules that are 
-loaded are used for most tests, although you may need to add configurations and load more 
+In the `example functional test for the getting started example in Mojito <https://github.com/yahoo/mojito/blob/develop/tests/func/examples/developerguide/test_hello.js>`_, 
+the test ``"test hello"`` shown below uses an assertion to confirm that the text value of 
+the ``<pre>`` element is ``"Hello World!"``.  You can also pass a
+configuration object passed to `YUI` to add configurations and load more 
 modules for other tests.
 
 .. code-block:: javascript
@@ -565,12 +566,13 @@ Test descriptors have configurations for describing, organizing, and factoring t
 You can configure the base URL, group tests, pass parameters, and specify the page 
 to test as well as the JavaScript test to run. 
 
-The example test descriptor written to run the ``hello`` test we looked at earlier shows 
-most of the important configurations. The ``name`` property allows you to describe your test, 
-the ``config`` object allows you to specify the base URL, application name, and path. The 
-``dataprovider`` object is where your tests are contained. Each test, such as ``"hello"`` 
-below, can be grouped and be passed parameters. The ``params`` object below specifies the 
-test and the page. Notice the annotations ``$$`` are used to indicate variables. 
+The `example test descriptor written <https://github.com/yahoo/mojito/blob/develop/tests/func/examples/developerguide/hello_descriptor.json>`_
+to run the ``hello`` test we looked at earlier shows most of the important configurations. 
+The ``name`` property allows you to describe your test, the ``config`` object allows you to 
+specify the base URL, application name, and path. The ``dataprovider`` object is where your 
+tests are contained. Each test, such as ``"hello"`` below, can be grouped and be passed 
+parameters. The ``params`` object below specifies the test and the page. Notice the 
+annotations ``$$`` are used to indicate variables. 
 
 .. code-block:: javascript
 
@@ -613,6 +615,8 @@ command. Once you have a set of working tests, you should organize and factor
 the tests with a test descriptor. During test development, you’ll probably 
 execute each test from the Arrow command line. However, once you have created 
 tests to validate your module, you need a way to organize and factorize the tests.
+The test descriptor will also help you run batch tests to reduce the number
+of test commands.
 
 .. _06_arrow_descriptor-context:
 
@@ -679,8 +683,6 @@ if you are going to contribute code to the Mojito project.
 
 Setting Up
 ++++++++++
-
-Before you do the following, make sure that you have installed Selenium.
 
 #. Clone Mojito: 
 
@@ -766,8 +768,9 @@ Creating the Application
    Rename the ``mojits/Youtube/models/model.server.js`` to
    ``mojits/Youtube/models/youtube.server.js``   
 
-#. We're going to use YQL to get data for our new mojits. with the following. If you are having difficulty understanding
-   the YQL statement, review the `Getting Data <../05_getting_data.html>`_ module.
+#. We're going to use YQL to get data for our new mojits. with the following. If you are 
+   having difficulty understanding the YQL statement, review the 
+   `Getting Data <../05_getting_data.html>`_ module.
 
    .. code-block:: javascript
 
@@ -835,7 +838,7 @@ Creating the Application
       }
 #. The ``getData`` method relies on the utility function ``youtubeMap`` that formats
    the returned response for your application. Add the ``youtubeMap`` shown below
-   to the controller, but be sure to place it above the statement 
+   to the controller, but be sure to place it above (or below) the block scope of
    ``Y.namespace('mojito.controllers')[NAME] = {``:
 
    .. code-block:: javascript
@@ -1008,7 +1011,7 @@ Creating the Application
    test for a controller and a model. We're going to use our first mojit, ``Github`` 
    as our example. Replace the content of ``Github/tests/controller.server-tests.js``
    with the code below. Note the use of YUI Test, accessing the controller and model,
-   creating objects for the ``ActionContext`` addons, and use of assertions.
+   creating objects for the ``ActionContext`` addons, and the use of assertions.
    
    .. code-block:: javascript
 
@@ -1203,7 +1206,7 @@ Creating the Application
          Passed TribApp: YUI Dashboard test onMozilla/5.0 (Macintosh; Intel Mac OS X) AppleWebKit/534.34 (KHTML, like Gecko) 
          PhantomJS/1.9.0 Safari/534.34 1 Passed, 0 Failed , 0 skipped 
    
-#. You can go ahead and run your application to see the content from the ``Youtube``
+#. You can go ahead and run your application to see the new content from the ``Youtube``
    and ``Calendar`` mojits.
 
 .. _06_testing-summary:
@@ -1230,7 +1233,8 @@ TypeError: Cannot read property 'index' of undefined
 ----------------------------------------------------
 
 If you run unit tests and see that the ``index`` property is undefined for
-a given mojit test, you should inspect that the unit test for the mojit in question
+a given mojit test, it most likely means that you were unable to access
+the controller. You should inspect that the unit test for the mojit in question
 has included the module name in the ``requires`` array or that you have a typo
 in the expression ``Y.mojito.controllers.{mojit_module_name}``.
 
@@ -1247,7 +1251,7 @@ and then run the tests.
 Q&A
 ===
 
-- Can models be mocked as well?
+- Can models have mocked objects as well?
 
   Yes, you can can mock an ``ActionContext`` object for model tests as well.
   See `Mocking Models <../topics/mojito_testing.html#mojit-tests>`_.

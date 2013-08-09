@@ -10,10 +10,11 @@ Introduction
 
 Thanks to the YUI responsive grid, our application adapts nicely to changes to size 
 of the browser window. We’re going to go a step further though and serve different pages 
-based on the client request. You can configure Mojito to find files based on a selector, 
-which is just an identifier that is part of the file name. This allows you to have multiple 
-templates that can be served based on the client request. We're also going to take 
-advantage of Handlebars helpers and partials to simplify our templates. 
+based on the client request. You can configure Mojito to find files based on the request
+context and a selector, which is just an identifier that is part of the file name. 
+This allows you to have multiple templates that can be served based on the client request. 
+We're also going to take advantage of Handlebars helpers and partials to simplify our
+templates. 
 
 .. _09_intro-what:
 
@@ -55,7 +56,6 @@ been working with, we introduced ``defaults.json`` and ``definition.json``. We a
 with the ``Config`` addon again, this time using the method ``getDefinition``. In short, 
 we learned the following:
 
-- evaluation of configurations
 - defining defaults
 - instance configurations
 - configurations defined in ``definitions.json``
@@ -83,7 +83,7 @@ Selectors
 
 The selector is an arbitrary user-defined string, which is used to select which 
 version of each resource to use. The selector is defined in the ``application.json`` 
-with the selector property. Because the selector is a global entity, you cannot 
+with the ``selector`` property. Because the selector is a global entity, you cannot 
 define it at the mojit level. For example, you cannot define the selector in the
 ``defaults.json`` of a mojit.
 
@@ -94,17 +94,18 @@ characters only.
 Only one selector can be used in each configuration object identified by the setting 
 property, which defines the context. The specified selectors must match the selector 
 found in the resource file names. So, for example, the template ``views/index.iphone.hb.html`` 
-has the selector iphone.
+has the selector ``iphone``.
 
 You can also have controllers that use a selector. For example, your application could 
 have all of the following controllers:
 
-- controller.common.js
-- controller.common.iphone.js
-- controller.server.js
-- controller.server.iphone.js
+- ``controller.common.js``
+- ``controller.common.iphone.js``
+- ``controller.server.js``
+- ``controller.server.iphone.js``
 
-See the selector Property and Selectors for for more information.
+See the `selector Property <../topics/mojito_resource_store.html#selector-property>`_ 
+and `Selectors <../topics/mojito_resource_store.html#selectors>`_ for for more information.
 
 .. _09_lesson_selectors-devices:
 
@@ -146,7 +147,7 @@ addition to ``index.hb.html``.
 Defining Selectors
 ##################
 
-You define selectors in application.json. We’re going to associate selectors to 
+You define selectors in `application.json`. We’re going to associate selectors to 
 runtime environments by defining the selector for specific contexts. 
 
 Mojito looks at the HTTP header User-Agent when receiving an HTTP request and will 
@@ -170,23 +171,19 @@ then use the appropriate context and selector to choose resources.
      }
    ]
 
-.. _09_lesson-multiple_templates:
-
-Creating Multiple Templates
----------------------------
-
-We’re going to change the layout and the number of modules based on the client 
-request. 
+Our application is going to change the layout by having Mojito choose
+the template based on the context and the associated selector.
+ 
 
 .. _09_multiple_templates-hb:
 
 Handlebars Helpers and Partials
-###############################
+-------------------------------
 
 Handlebars helpers in Mojito applications are defined and registered in the 
 controller. You define a Handlebars helper as a function outside the controller 
-namespace in the controller. Thus, the function toLinkHelper can be used as a 
-helper after it has been registered, which we’ll look at next.
+namespace in the controller. Thus, the function ``toLinkHelper`` 
+shown below can be registered as a helper to create links.
 
 .. code-block:: javascript
 
@@ -203,20 +200,21 @@ helper after it has been registered, which we’ll look at next.
      };
    }, '0.0.1', {requires: ['mojito', 'mojito-helpers-addon']});
 
-After you have defined your Handlebars helper, you register it with the Helpers 
-addon. The Helpers addon has several methods for getting helpers, setting 
-mojit-level helpers, or exposing helpers so that they can shared with other mojits.
+After you have defined the function that will serve as your Handlebars helper, you 
+register it with the ``Helpers`` addon. The ``Helpers`` addon has several methods for 
+getting helpers, setting mojit-level helpers, or exposing helpers so that they can shared 
+with other mojits.
 
 .. _09_multiple_templates-hb_helpers:
 
 Helpers Addon
 #############
 
-As we’ve seen with other addons, you need to require the Helpers addon by adding 
-the string ‘mojito-helpers-addon’ in the requires array of your controller. 
+As we’ve seen with other addons, you need to require the ``Helpers`` addon by adding 
+the string ``'mojito-helpers-addon'`` in the ``requires`` array of your controller. 
 You also access the addon and its methods through the ``ActionContext`` object.
 
-The Helper addon has the following three methods:
+The ``Helpers`` addon has the following three methods:
 
 - ``expose`` - Exposes a parent mojit’s helper function so that on the server 
   side any child mojit instance under a particular request can use the helper. 
@@ -232,9 +230,8 @@ Setting Helpers for a Mojit Instance
 ####################################
 
 You can expose a helper for use with a mojit instance or make it available to all 
-mojits. The reason for setting the helper for this mojit instance is that it depends 
-on a specific data structure passed to it. To register the helper toLinkHelper that 
-we defined earlier.
+mojits. To register the helper ``toLinkHelper`` that 
+we defined earlier for the use of this mojit, you use ``ac.helpers.set`` as shown here:
 
 .. code-block:: javascript
 
@@ -251,12 +248,12 @@ we defined earlier.
          ]
        };
        ac.helpers.set('toLinkHelper', toLinkHelper);
-       ac.done({ yui_info: data, highlighted_module: ac.params.url('module') || "event"});
+       ac.done({ yui: data, highlighted_module: ac.params.url('module') || "event"});
      }
    ...
 
-In the ``index.hb.html`` template, the helper toLinkHelper highlights takes as the arguments passed to it by 
-``ac.done`` to create links.
+In the ``index.hb.html`` template, the helper ``toLinkHelper`` highlights takes as the 
+arguments passed to it by ``ac.done`` to create links.
 
 .. code-block:: html
 
@@ -272,9 +269,9 @@ Exposing Helpers for Global Use
 ###############################
 
 To register a helper so that parent mojits can share them with their children, you 
-use the expose method of the Helpers addon. In the example controller below, the 
-expose method registers the helper toLinkHelper that creates links. You’d want this 
-helper to be available to other mojits, so exposing it globally makes sense.
+use the ``expose`` method of the ``Helpers`` addon. In the example controller below, the 
+``expose`` method registers the helper ``toLinkHelper`` that creates links. In most cases,
+you would want this helper to be available to other mojits.
 
 .. code-block:: javascript
 
@@ -294,7 +291,7 @@ helper to be available to other mojits, so exposing it globally makes sense.
          ]
        };
        ac.helpers.expose('toLink',toLinkHelper);
-       ac.done({ yui_info: data });
+       ac.done({ yui: data });
      }
    ...
 
@@ -303,18 +300,18 @@ helper to be available to other mojits, so exposing it globally makes sense.
 Using the Helper in the Template
 ################################
 
-After you define your handler and then register it with the ``Helper`` addon, you can 
+After you define your handler and then register it with the ``Helpers`` addon, you can 
 use the handler in your template. In the template ``index.hb.html`` below, the 
-Handlebars block helper each iterates through the objects contained in the array 
-``yui_info.modules``, and then the custom helper toLink creates links with the values 
-of the properties title and user_guide:
+Handlebars block helper ``each`` iterates through the objects contained in the array 
+``yui.modules``, and then the custom helper ``toLink`` creates links with the values 
+of the properties ``title`` and ``user_guide``:
 
 .. code-block:: javascript
 
    <div id="{{mojit_view_id}}">
      <h3>YUI Modules</h3>
      <ul>
-     {{#each yui_info.modules}}
+     {{#each yui.modules}}
        <li>{{{toLink title user_guide }}}</li>
      {{/each}}
      </ul>
@@ -365,7 +362,7 @@ Local Partials
 
 ``{app_dir}/mojits/{mojit_name}/views/partials``
 
-Thus, the local partial foo.hb.html in the mojit bar_mojit would be located at
+Thus, the local partial ``foo.hb.html`` in the mojit ``bar_mojit`` would be located at
 ``mojits/bar_mojit/views/partials/foo.hb.html``.
 
 .. _09_lesson-partials_using:
@@ -605,8 +602,8 @@ Creating the Application
        </div>
      </div>
 
-#. The Twitter and Github mojits will use the partial with the **refresh** button. We're
-   not using the ``linker`` helper because the binders will be refreshing the content and
+#. The ``Twitter`` and ``Github`` mojits will use the partial with the **refresh** button. 
+   We're not using the ``linker`` helper because the binders will be refreshing the content and
    won't have access to the helper unless it invokes the parent mojit ``PageLayout``. 
    Add the partials to the templates with the following:
 
@@ -694,7 +691,6 @@ Creating the Application
 #. Append the query string parameter ``?device=iphone`` to the URL. You should see a 
    different layout for the iPhone. Try the same using ``?device=ipad``. 
 
-TBD: tell them how to view the pages on their devices.
 
 .. _09_hb_templates-summary:
 
@@ -709,7 +705,7 @@ on the context. As for the details, we went over the following topics:
 - creating multiple multiple templates
 - Handlebars helpers
 - template partials
-- ``Helper`` addon
+- ``Helpers`` addon
 
 .. _09_hb_templates-ts:
 
@@ -733,9 +729,7 @@ exposed the ``linker`` function to other mojits using the ``Helper`` addon metho
 ``ac.helpers.expose('linker', createLink)``, and that the mojits that are using
 the helper have required the ``Helpers`` addon.
 
-
 .. _09_hb_templates-qa:
-
 
 Q&A
 ===
@@ -801,19 +795,22 @@ Terms
   ``"selector": "iphone"`` would configure the Resource Store to find resources with the 
   identifier iphone such as ``index.iphone.hb.html``.
 
-
 .. _09_hb_templates-src:
 
 Source Code
 ===========
 
-``[app_part{x}](http://github.com/yahoo/mojito/examples/quickstart_guide/app_part{x})``
+`09_hb_templates <http://github.com/yahoo/mojito/examples/dashboard/09_hb_templates>`_
 
 .. _09_hb_templates-reading:
 
 Further Reading
 ===============
 
-``[Mojito Doc](http://developer.yahoo.com/cocktails/mojito/docs/)``
+- `Views <../intro/mojito_mvc.html#views>`_
+- `Code Examples: Views <../code_exs/views.html>`_
+- `Selectors <../topics/mojito_resource_store.html#selectors>`_
+- `selector Property <../topics/mojito_resource_store.html#selector-property>`_
+
 
 

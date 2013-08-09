@@ -10,13 +10,14 @@ Introduction
 As with other MVC-based frameworks, you use models to get data although Mojito allows 
 controllers to directly fetch content as well. Thus far, our applications have been 
 just getting static data from the model, but in this module we’re going to learn how 
-to get data in a couple of different ways. The recommended way is to use YQL, an 
+to get data in a couple of different ways. The recommended way in Mojito is to use YQL, an 
 SQL-like language and Web Service that allows you to make queries on Web data. You can 
 also use the REST module that comes with Mojito to make HTTP calls to Web services.
 
-We’re going to use both methods to get some data into our application. Our ``Github`` mojit 
-will finally fetch live data, and we’re going to add another mojit to get Twitter data 
-with the help of the Node.js module `simple-twitter <https://npmjs.org/package/simple-twitter>`_.
+We’re going to use YQL to get GitHub data into our application, but we'll present an example
+of how to use the `Y.mojito.lib.REST Class <../../api/classes/Y.mojito.lib.REST.html>`_ to 
+make REST calls. We’re going to add another mojit to get Twitter data with the help of the 
+Node.js module `simple-twitter <https://npmjs.org/package/simple-twitter>`_.
 
 .. 05_intro-what:
 
@@ -26,7 +27,7 @@ What We’ll Cover
 - mojit models 
 - YQL and how to use it to get data
 - accessing and calling model methods from the controller
-- using the ``Http`` class to make REST calls
+- using the ``Y.mojito.lib.REST`` class to make REST calls
 - using other forms of data such as query string parameters.
 
 .. 05_intro-final:
@@ -54,13 +55,13 @@ Review of the Last Module
 
 In the last module, we discussed composite mojits, showing how to 
 configure the parent-child relationship between mojits and then use 
-the Composite addon to execute child mojits. Using composite mojits, 
+the `Composite` addon to execute child mojits. Using composite mojits, 
 we were able to create a page layout and add content to the body of 
 the HTML page. We also kept our frame mojit to create the HTML page 
 for use. In summary, we covered the following:
 
 - configuring composite mojits
-- using the Composite addon
+- using the `Composite` addon
 - ``ac.composite.done`` versus ``ac.composite.execute``
 - parent mojit templates
 
@@ -106,7 +107,7 @@ returned from YQL is also more consistent regardless of the data sources, making
 easier to parse. The YQL Web Service is also optimized to get data to you faster, and 
 YUI has a handy YQL module that makes using YQL even easier. We’re going to provide an 
 overview of YQL, show you how to form YQL statements, and finally how to use YUI’s 
-YQL module.
+`YQL Query module <http://yuilibrary.com/yui/docs/yql/>`_.
 
 .. 05_lesson-models:
 
@@ -114,7 +115,9 @@ Models
 ------
 
 We briefly went over the structure of models in the Mojits module when we discussed mojit 
-MVC. Let’s just summarize some of the important points about mojit models.
+MVC. Mojito models, like controllers, are just YUI modules, but use a different namespace 
+than controllers. With that in mind, let’s just summarize some of the important points 
+about mojit models.
 
 .. 05_lesson-location:
 
@@ -178,10 +181,11 @@ What is YQL?
 If you know SQL, then think of YQL as SQL for the Internet, with the Internet 
 representing a MySQL database. In reality, Internet data can only be fetched 
 by the YQL Web Service if there is a table that defines how data is accessed. 
-YQL comes with many wide range of tables, and the developer community has 
+YQL comes with many wide range of built-in tables, and the developer community has 
 contributed YQL Open Data Tables (ODT) as well. The table tells YQL how to 
 get the Web data, and the YQL statement (like an SQL query) tells YQL what 
-data to get from that table and how to filter that data.
+data to get from that table and how to filter that data. If you have questions,
+take a look at the `YQL Guide <http://developer.yahoo.com/yql/guide>`_. 
 
 .. 05_lesson_yql-statements:
 
@@ -190,7 +194,7 @@ YQL Statements
 
 The YQL language like SQL has many verbs for reading and writing data. For 
 our application, we’ll be just reading data with the ``SELECT`` verb. To filter data, 
-like SQL, you use the key word ``WHER``. YQL also includes operators such as ``LIKE`` 
+like SQL, you use the key word ``WHERE``. YQL also includes operators such as ``LIKE`` 
 for filtering, the key word ``LIMIT`` to limit the number of results, and the 
 pipe (``|``) to filter results through a function such as ``SORT``. We can’t possibly 
 cover all of the features of YQL here, but an example YQL statement can 
@@ -219,7 +223,7 @@ you would make an HTTP GET call to the following URL:
 ``http://query.yahooapis.com/v1/public/yql?q=select * from local.search where query=”pizza”``
 
 Fortunately, YUI’s YQL module forms the URL and makes the call for you, so you 
-just need to form the YQL statement. With that, let’s look at the YQL module.
+just need to form the YQL statement. With that being said, let’s look at the YQL module.
 
 .. 05_lesson_yql-module:
 
@@ -271,7 +275,7 @@ Using the Mojito REST Module
 ----------------------------
 
 The `REST module <http://developer.yahoo.com/cocktails/mojito/api/classes/Y.mojito.lib.REST.html>`_ 
-for Mojito provides an easy make HTTP calls to URLs.
+for Mojito provides an easy make HTTP calls to Web services
 
 To use the module, you add the string ``"mojito-rest-lib"`` to the ``requires`` array as 
 shown below.
@@ -293,7 +297,7 @@ Using the REST module, the HTTP calls have the following syntax:
 ``Y.mojito.lib.REST.{HTTP_VERB}}(uri, params, config, callback)``
 
 We won't be using the REST module in this application because the Twitter Search API 
-requires OAuth  authorization, which is done more easily through a library such as 
+requires OAuth authorization, which is done more easily through a library such as 
 ``simple-twitter``. We're going to just show you a simple example of using the REST 
 module for your future reference. 
 
@@ -330,8 +334,9 @@ Using a Node.js Module to Get Twitter Data
 ------------------------------------------
 
 After you have your OAuth keys and installed ``simple-twitter``, you can use
-that module in your model to get Twitter data. You can use just about any npm module
-using the Node.js ``require`` method, which is what we're going to do in the Twitter model.
+that module in your model to get Twitter data. Because Mojito runs on Node.js,
+you can use just about any npm module using the ``require`` method, which is what 
+we're going to do in the ``Twitter`` model.
 
 To help explain the model code, let's first just take a look at how
 to use the ``simple-twitter`` module. You require the module and save a reference
@@ -356,7 +361,7 @@ the returned response.
 
    tweets.get("{endpoint}", params, callback);
 
-In our Twitter model shown below, we also use the YUI JSON module to help parse
+In our ``Twitter`` model shown below, we also use the YUI JSON module to help parse
 the returned results. In case you don't want to get Twitter OAuth keys, we also 
 provide mocked data.
 
@@ -417,27 +422,13 @@ Calling Model Methods From Controller
 -------------------------------------
 
 The controller brokers all requests, calling the model, and passing data back 
-to the client or rendering templates with the data. The controller uses 
-model much like it uses addons. 
+to the client or rendering templates with the data. The controller accesses and uses 
+models much like it uses addons. 
 
 The controller needs to require the ``Models`` addon and use the method ``get`` from 
-that addon to access a model.  For example, for the controller shown below to 
-get the model registered with the name ``TwitterSearchModel``, the ``Models`` addon 
+that addon to access a model.  For example, for the controller shown below 
+to get the model registered with the name ``TwitterSearchModel``, the ``Models`` addon 
 is required and then used to access and use the the model.
-
-.. code-block:: javascript
-
-   ...
-     ...
-       index: function(ac) {
-         var q="@yuilibrary", oauth_keys, count=10;
-         ac.models.get('TwitterSearchModel').getData(count, q, oauth_keys, function (err, data) {
-           ...
-         }
-       }
-     ...
-   }, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'mojito-params-addon']});
-
 
 .. code-block:: javascript
 
@@ -483,7 +474,7 @@ Creating the Application
 
 #. After you have copied the application that you made in the last module 
    (see :ref:`Setting Up <05_intro-setup>`), change into the application ``05_getting_data``.
-#. Let’s create the Twitter mojits that get Twitter data for us.
+#. Let’s create the ``Twitter`` mojit that get Twitter data for us.
 
    ``$ mojito create mojit Twitter``
 #. Change to the ``models`` directory of ``Twitter``. We’re going to deal with 
@@ -552,8 +543,7 @@ Creating the Application
    Open ``controller.server.js`` in an editor,
    modify the ``index`` method so that it’s the same as that shown below. 
    Make sure that the ``Models`` and ``Assets`` addon are required as well. The ``Models``
-   addon allows you to access our model and call the model function ``getData``. We're
-   going to use the ``Assets`` addon to add 
+   addon allows you to access our model and call the model function ``getData``. 
 
    .. code-block:: javascript
 
@@ -618,8 +608,8 @@ Creating the Application
    the model file to ``yql.server.js``. Now we can edit the file ``yql.server.js``. 
    Open the file in an editor, change the module name to ``StatsModelYQL``, update 
    the ``getData`` function with the code below. Notice that we are using the YQL 
-   Open Data Table ``github.xml``, which the YQL module let’s you specify as a ``query`` 
-   parameter. 
+   Open Data Table ``github.xml``, which YQL allows you to use with the ``use``
+   statement. 
 
    .. code-block:: javascript
 
@@ -655,7 +645,7 @@ Creating the Application
         };
       }, '0.0.1', {requires: ['yql', 'substitute']});
 
-#. Besides the YQL module, we also used the Substitute module, so make 
+#. Besides the YQL module, we also used the ``Substitute`` module, so make 
    sure to add both of those modules to the ``requires`` array:
 
    .. code-block:: javascript
@@ -689,7 +679,7 @@ Creating the Application
       ...
      }, '0.0.1', {requires: ['mojito', 'mojito-assets-addon','mojito-models-addon']});
 
-#. We’re going to update our template to look more like the Twitter 
+#. Let's update our template to look more like the Twitter 
    template. So, go ahead and replace the content of ``index.hb.html`` 
    with the following:
 
@@ -736,7 +726,7 @@ Creating the Application
 
 #. Okay, we have ``Github`` mojit getting real data and even have a mojit 
    for getting Twitter data. Did we forget anything? Yeah, we need to 
-   plug our ``Twitter`` into the body by making it a child of the 
+   plug our ``Twitter`` mojit into the body by making it a child of the 
    ``body`` instance. Let’s update the ``body`` instance in the ``application.json``:
 
    .. code-block:: javascript
