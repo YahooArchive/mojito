@@ -2,6 +2,11 @@
 Handlebars in Mojito
 ====================
 
+.. _hb_mojito-overview:
+
+Overview
+========
+
 Handlebars is a superset of `Mustache <http://mustache.github.com/mustache.5.html>`_, 
 thus, Handlebars expressions include Mustache tags. Handlebars, however, also 
 has some additional features such as registering help function and built-in block 
@@ -36,7 +41,7 @@ snippet below, if the ``ul`` object is given, the property title is evaluated.
 .. _using_hb-partials:
 
 Partials
-########
+========
 
 Handlebars partials are simply templates using Handlebars expressions that other
 templates can include. Mojito allows you to have both global (shared by all mojits) or 
@@ -50,7 +55,7 @@ before finishing up with a simple example.
 .. _hb_partials-file_naming:
 
 File Naming Convention
-**********************
+----------------------
 
 The file name for partials is similar to templates using Handlebars except 
 ``{partial_name}`` replaces ``{controller_function}``:
@@ -59,12 +64,12 @@ The file name for partials is similar to templates using Handlebars except
 .. _hb_partials-location:
 
 Location of Partials
-********************
+--------------------
 
 .. _partials_location-global:
 
 Global Partials
-^^^^^^^^^^^^^^^
+###############
  
 ``{app_dir}/views/partials`` 
 
@@ -74,7 +79,7 @@ Thus, the global partial ``foo.hb.html`` in the application ``bar_app`` would be
 .. _partials_location-local:
 
 Local Partials
-^^^^^^^^^^^^^^
+###############
 
 ``{app_dir}/mojits/{mojit_name}/views/partials`` 
 
@@ -84,7 +89,7 @@ Thus, the local partial ``foo.hb.html`` in the mojit ``bar_mojit`` would be loca
 .. _hb_partials-use:
 
 Using Partials in Templates
-***************************
+---------------------------
 
 To use a partial, the template uses the following syntax: ``{{> partial_name}}``
 
@@ -94,7 +99,7 @@ in a template: ``{{> status }}``
 .. _hb_partials-example:
 
 Example
-*******
+-------
 
 **/my_news_app/views/partials/global_news.hb.html**
 
@@ -127,7 +132,7 @@ Example
 .. _using_hb-helpers:
 
 Helpers
-#######
+=======
 
 Handlebars comes with a set of simple monadic functions called 
 `helpers <http://handlebarsjs.com/expressions.html#helpers>`_ that
