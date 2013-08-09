@@ -20,7 +20,7 @@ What We’ll Cover
 ----------------
 
 We’re going to cover how to store localized strings and how to use the addon to access
-those localized strings when given a language environment. We’ll also discuss the ways 
+those localized strings for a given language environment. We’ll also discuss the ways 
 that Mojito detects the language environment of the client. 
 
 - creating YUI resource bundles for your mojits
@@ -63,7 +63,7 @@ templates based on the context. In short, we looked at these topics:
 - templates for different devices
 - Handlebars helpers
 - template partials
-- ``Helper`` addon
+- ``Helpers`` addon
 
 ..  _10_intro_before-setup:
 
@@ -97,7 +97,7 @@ Resources Bundles for Languages
 
 The resource bundle is simply a JavaScript file containing a YUI module that 
 registers a new module and maps a BCP language tag to key-value pairs. BCP 47 
-language tags are the identifiers for languages used on the internet. BCP stands 
+language tags are the identifiers for languages used on the Internet. BCP stands 
 for IETF Best Current Practice, and BCP 47 is currently the combination of RFC 
 5646 and RFC 4647. 
 
@@ -106,7 +106,7 @@ for IETF Best Current Practice, and BCP 47 is currently the combination of RFC
 Location
 ########
 
-These resource bundles are placed in the lang directory of the mojit. For example, 
+These resource bundles are placed in the ``lang`` directory of the mojit. For example, 
 we’ll be using resource bundles for the ``PageLayout`` mojit, so the resource bundles 
 should be in the following directory: ``mojits/PageLayout/lang``
 
@@ -166,7 +166,7 @@ following:
      }
    );
 
-For those who don’t read simplified Chinese, the localized strings that we 
+For those who don’t read simplified Chinese,= the localized strings that we 
 registered are simply the translations  of "Trib - YUI Dashboard" and 
 "Trib - Mojito Dashboard".
 
@@ -469,7 +469,7 @@ To do this we had to learn the following:
 
 - creating resource bundles
 - adding the ``Intl`` addon to our controller
-- use the ``Intl`` addon to access the localized strings in the resource bundles
+- using the ``Intl`` addon to access the localized strings in the resource bundles
 
 
 .. _10_localization-ts:
@@ -507,7 +507,7 @@ Q&A
 
   Yes, although we didn't use it in our application, the ``Intl`` addon has the method
   ``formatData`` that will format dates for you. Again, 
-   Mojito is relying on the YUI module ``datatype-date`` to do this for you.
+  Mojito is relying on YUI (the YUI module ``datatype-date``) to do this for you.
 
 .. _10_localization-test:
 
@@ -520,7 +520,7 @@ Test Yourself
 Questions
 ---------
 
-- What addon is used for localization and what YUI module does it rely on?
+- What addon is used for localization and what YUI modules does it rely on?
 - What are the three arguments that need to be passed to ``Y.Intl.add``?
 - What is the language tag recognized by Mojito?
 
