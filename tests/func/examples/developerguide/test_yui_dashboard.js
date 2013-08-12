@@ -5,7 +5,11 @@
         }).use('node', 'node-event-simulate', 'test', 'console', function (Y) {
 
         'use strict';
+<<<<<<< HEAD
         var suite = new Y.Test.Suite("Trib App: YUI Dashboard test"),
+=======
+        var suite = new Y.Test.Suite("TribApp: YUI Dashboard test"),
+>>>>>>> 8f63c4f... Added trib app and functional tests. The functional tests passed when I ran them.
             url = window.location.protocol + "//" + window.location.host + "/";
             suite.add(new Y.Test.Case({
               "test YUI Dashboard": function () {
