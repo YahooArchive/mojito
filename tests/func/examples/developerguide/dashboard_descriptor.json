@@ -1,11 +1,7 @@
 [
     {
         "settings": [ "master" ],
-<<<<<<< HEAD
-        "name" : "trib",
-=======
         "name" : "trib_app",
->>>>>>> 8f63c4f... Added trib app and functional tests. The functional tests passed when I ran them.
 
         "config" :{
             "baseUrl" : "http://localhost:8666",
@@ -15,11 +11,7 @@
             }
         },
         "dataprovider" : { 
-<<<<<<< HEAD
             "test Trib app index page" : {
-=======
-            "test trib app index page" : {
->>>>>>> 8f63c4f... Added trib app and functional tests. The functional tests passed when I ran them.
                 "group" : "tribapp",
                 "params" : {
                     "scenario": [

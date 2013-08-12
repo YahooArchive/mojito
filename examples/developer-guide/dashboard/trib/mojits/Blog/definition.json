@@ -1,13 +1,8 @@
 [
     {
         "settings": [ "master" ],
-<<<<<<< HEAD
         "mojitotitle" : "Mojito Blog Posts",
         "yuititle" : "YUI Blog Posts",
-=======
-        "mojitotitle" : "Mojito Blog posts",
-        "yuititle" : "YUI Blog posts",
->>>>>>> 8f63c4f... Added trib app and functional tests. The functional tests passed when I ran them.
         "feedURL" : "http://www.yuiblog.com/blog/feed/"
     }
 ]

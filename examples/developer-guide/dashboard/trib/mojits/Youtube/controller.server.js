@@ -54,11 +54,7 @@ YUI.add('Youtube', function (Y, NAME) {
 
                 // populate youtube template
                 ac.done({
-<<<<<<< HEAD
                     title: "YUI YouTube Videos",
-=======
-                    title: "YUI YouTube videos",
->>>>>>> 8f63c4f... Added trib app and functional tests. The functional tests passed when I ran them.
                     results: res
                 });
             });
