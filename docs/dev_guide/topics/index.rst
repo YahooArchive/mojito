@@ -15,6 +15,7 @@ are complemented by code snippets, for working code examples, see
    mojito_data
    mojito_logging
    mojito_testing
+   mojito_hb_templates
    mojito_composite_mojits
    mojito_run_dyn_defined_mojits
    mojito_frame_mojits
