@@ -11,19 +11,18 @@ YUI.add('Github-tests', function (Y) {
 
         setUp: function () {
             controller = Y.mojito.controllers.Github;
-            model = Y.mojito.models.StatsModelYQL;
+            model = Y.mojito.models.GithubModelFoo;
         },
         tearDown: function () {
             controller = null;
         },
         'test mojit': function () {
             var ac,
-                modelData,
+                modelData = { watchers: 1, forks: 1},
                 assetsResults,
                 route_param,
                 doneResults,
                 def_value;
-            modelData = { x: 'y' };
             ac = {
                 assets: {
                     addCss: function (css) {
@@ -42,23 +41,23 @@ YUI.add('Github-tests', function (Y) {
                 },
                 models: {
                     get: function (modelName) {
-                        A.areEqual('StatsModelYQL', modelName, 'wrong model name');
-                        return model;
+                        A.areEqual('GithubModelFoo', modelName, 'wrong model name');
+                        return {
+                            getData: function(cb) {
+                                cb(modelData);
+                            }
+                        }
                     }
                 },
                 done: function (data) {
                     doneResults = data;
                 }
             };
-
             A.isNotNull(controller);
             A.isFunction(controller.index);
             controller.index(ac);
         }
-
     }));
-
     YUITest.TestRunner.add(suite);
-
 }, '0.0.1', {requires: ['mojito-test', 'Github', 'StatsModelYQL']});
 

@@ -7,7 +7,7 @@
                 "type": "HTMLFrameMojit",
                 "config": {
                     "deploy": true,
-                    "title": "Trib - Contribute to the Tribe",
+                    "title": "Trib - YUI/Mojito Developer Dashboard",
                     "child": {
                         "type": "PageLayout",
                         "config": {

@@ -22,14 +22,8 @@ YUI.add('Body', function(Y, NAME) {
          *        to the Mojito API.
          */
         index: function(ac) {
-        Y.log("Body - controller.server.js index called");
-
-            ac.composite.done({
-                title: "Statistics for YUI"
-            });
-   
+            Y.log("Body - controller.server.js index called");
+            ac.composite.done({});
         }
-
     };
-
 }, '0.0.1', {requires: ['mojito','mojito-composite-addon']});

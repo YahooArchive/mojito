@@ -8,8 +8,7 @@ YUI.add('StatsModelYQL', function(Y, NAME) {
         },
 
         getData: function(params, callback) {
-            var //yqlTable = 'store://kIfKmDunyT35ymUmFHJw0M',
-                yqlTable = 'https://raw.github.com/triptych/trib/master/src/yql/github.xml',
+            var yqlTable = 'https://raw.github.com/triptych/trib/master/src/yql/github.xml',
                 query = "use '{table}' as yahoo.awooldri.github.repo; select watchers,forks from yahoo.awooldri.github.repo where id='yql' and repo='yql-tables'",
                 queryParams = {
                     table: yqlTable
@@ -19,20 +18,14 @@ YUI.add('StatsModelYQL', function(Y, NAME) {
                 Y.log("cookedQuery:" + cookedQuery);
                 Y.YQL(cookedQuery, Y.bind(this.onDataReturn, this, callback));
         },
-
         onDataReturn: function (cb, result) {
             Y.log("onDataReturn called");
             if (typeof result.error === 'undefined') {
 
                 Y.log("result:");
-                Y.log(result);
-
-
+                Y.log(result, "info", NAME);
 
                 var results = result.query.results.json;
-                Y.log("results.json:");
-                Y.log(results);
-
 
                 cb(results);
             } else {
