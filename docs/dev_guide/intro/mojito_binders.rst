@@ -179,6 +179,16 @@ a new DOM node for the current mojit and its children, as well as reattach
 all of the existing binders to their new nodes within the new markup. Because 
 all binder instances are retained, state can be stored within a binder's scope.
 
+.. _refresh_views-onRefreshView:
+
+onRefreshView
+-------------
+
+After ``refreshView`` has been called and the DOM has been refreshed, an event is
+triggered that calls the hook method ``onRefreshView``. You can use ``onRefreshView``
+to do things such as detach an event or prepare for another user action by 
+re-attaching an event.
+
 .. _refresh_views-ex:
 
 Example Usage
@@ -186,7 +196,9 @@ Example Usage
 
 The code snippet below shows how to call the ``refreshView`` method with 
 optional parameters. The ``refreshView`` method does not require a callback 
-to manage the markup returned from the action invocation.
+to manage the markup returned from the action invocation. After the DOM
+has been refreshed, ``onRefreshView`` is called, and in this example, is
+used to detach the event handler and re-attach (bind) the event to the node.
 
 .. code-block:: javascript
 
@@ -203,7 +215,28 @@ to manage the markup returned from the action invocation.
          }
        });
      });
-   ...
+
+        init: function(mojitProxy) {
+            this.mojitProxy = mojitProxy;
+        },
+        bind: function(node) {
+            var urlParams = Y.mojito.util.copy(this.mojitProxy.context);
+            var me = this;
+            this.node = node;
+            this.handle = me.node.one('#refreshViewButton').on('click', function(){
+                Y.log("****I am in the click function****");
+                me.mojitProxy.refreshView({
+                  params: {
+                    ur: urlParams 
+                  }
+                });
+            }, this);
+        },
+        onRefreshView: function() {
+            this.handle.detach();
+            this.bind.apply(this, arguments);
+        }
+
 
 .. _mojito_binders-destroy_child:
 
