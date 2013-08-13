@@ -23,7 +23,7 @@ YUI.add('Github', function(Y, NAME) {
          */
         index: function(ac) {
 
-            var model = ac.models.get('GithubModel');
+            var model = ac.models.get('GithubModelFoo');
             Y.log(model);
             model.getData(function(data){
                 Y.log("Github -index - model.getData:");

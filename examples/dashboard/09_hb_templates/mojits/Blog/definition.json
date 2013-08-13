@@ -1,8 +1,0 @@
-[
-    {
-        "settings": [ "master" ],
-        "mojitotitle" : "Mojito Blog posts",
-        "yuititle" : "YUI Blog posts",
-        "feedURL" : "http://www.yuiblog.com/blog/feed/"
-    }
-]

@@ -22,7 +22,7 @@ YUI.add('Blog', function (Y, NAME) {
          *        to the Mojito API.
          */
         index: function (ac) {
-            var view_type = "yui", feedURL = "http://www.yuiblog.com/blog/feed/", title = "YUI Blog Posts";
+            var view_type = "yui", feedURL = "http://www.yuiblog.com/blog/feed/", title = "YUI Blog posts";
 
 
             ac.models.get('BlogModelYQL').getData({}, feedURL, function (data) {

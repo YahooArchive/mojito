@@ -1,8 +1,0 @@
-[{
-    "settings": [ "master" ],
-     "root": {
-        "verbs": ["get"],
-        "path": "/",
-        "call": "tribframe.index"
-    }
-}]

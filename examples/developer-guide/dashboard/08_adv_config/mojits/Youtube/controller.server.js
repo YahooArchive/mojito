@@ -52,7 +52,7 @@ YUI.add('Youtube', function (Y, NAME) {
 
                 // populate youtube template
                 ac.done({
-                    title: "YUI YouTube Videos",
+                    title: "YUI YouTube videos",
                     results: res
                 });
             });
