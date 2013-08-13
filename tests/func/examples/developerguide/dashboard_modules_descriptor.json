@@ -1,0 +1,129 @@
+[
+    {
+        "settings": [ "master" ],
+        "name" : "trib_app",
+
+        "config" :{
+            "baseUrl" : "http://localhost:8666",
+            "application" : {
+                "name":"input",
+                "path": "../../../examples/developer-guide/dashboard/trib"
+            }
+        },
+        "dataprovider" : { 
+            "test 01_mojito_cli_basics" : {
+                "group" : "tribapp",
+                "params" : {
+                    "scenario": [
+                        {
+                            "test" : "test_01_mojito_cli_basics.js",
+                            "page" : "$$config.baseUrl$$"
+                        }
+                     ]
+                }
+            },
+            "test 02_mojits" : {
+                "group" : "tribapp",
+                "params" : {
+                    "scenario": [
+                        {
+                            "test" : "test_02_mojits.js",
+                            "page" : "$$config.baseUrl$$"
+                        }
+                     ]
+                }
+            },
+            "test 03_frame_mojits" : {
+                "group" : "tribapp",
+                "params" : {
+                    "scenario": [
+                        {
+                            "test" : "test_03_frame_mojits.js",
+                            "page" : "$$config.baseUrl$$"
+                        }
+                     ]
+                }
+            },
+            "test 04_composite_mojits" : {
+                "group" : "tribapp",
+                "params" : {
+                    "scenario": [
+                        {
+                            "test" : "test_04_composite_mojits.js",
+                            "page" : "$$config.baseUrl$$"
+                        }
+                     ]
+                }
+            },   
+            "test 05_getting_data" : {
+                "group" : "tribapp",
+                "params" : {
+                    "scenario": [
+                        {
+                            "test" : "test_05_getting_data.js",
+                            "page" : "$$config.baseUrl$$"
+                        }
+                     ]
+                }
+            },
+            "test 06_testing" : {
+                "group" : "tribapp",
+                "params" : {
+                    "scenario": [
+                        {
+                            "test" : "test_06_testing.js",
+                            "page" : "$$config.baseUrl$$"
+                        }
+                     ]
+                }
+            },
+            "test 07_binders" : {
+                "group" : "tribapp",
+                "params" : {
+                    "scenario": [
+                        {
+                            "test" : "test_07_binders.js",
+                            "page" : "$$config.baseUrl$$"
+                        }
+                     ]
+                }
+            },
+            "test 08_adv_config" : {
+                "group" : "tribapp",
+                "params" : {
+                    "scenario": [
+                        {
+                            "test" : "test_08_adv_config.js",
+                            "page" : "$$config.baseUrl$$"
+                        }
+                     ]
+                }
+            },
+            "test 09_hb_templates" : {
+                "group" : "tribapp",
+                "params" : {
+                    "scenario": [
+                        {
+                            "test" : "test_09_hb_templates.js",
+                            "page" : "$$config.baseUrl$$"
+                        }
+                     ]
+                }
+            },
+            "test 10_localization" : {
+                "group" : "tribapp",
+                "params" : {
+                    "scenario": [
+                        {
+                            "test" : "test_10_localization.js",
+                            "page" : "$$config.baseUrl$$"
+                        }
+                     ]
+                }
+            }
+        }
+    },
+    {
+        "settings": [ "environment:development" ]
+    }
+]
