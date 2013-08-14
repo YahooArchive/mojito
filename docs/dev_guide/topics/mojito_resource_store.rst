@@ -442,7 +442,7 @@ Example
 
 The selector is typically used in conjunction with a context to specify a 
 resource for a particular device. In the example ``application.json`` below, 
-the selector``ipad`` is defined when the context is ``device:ipad``. If an 
+the selector ``ipad`` is defined when the context is ``device:ipad``. If an 
 application is running in the ``device:ipad`` context, Mojito will select 
 resources with ``ipad`` identifier. Thus, Mojito might render the template 
 ``index.ipad.hb.html`` and **not** ``index.iphone.hb.html``.
