@@ -5,7 +5,7 @@
       }).use('node', 'node-event-simulate', 'test', 'console', function (Y) {
 
         'use strict';
-        var suite = new Y.Test.Suite("TribApp: Mojito Dashboard test"),
+        var suite = new Y.Test.Suite("Trib App: Mojito Dashboard test"),
             url = window.location.protocol + "//" + window.location.host + "/";
         suite.add(new Y.Test.Case({
           "test Mojito dashboard": function () {

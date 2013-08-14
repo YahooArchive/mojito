@@ -5,18 +5,15 @@
       }).use('node', 'node-event-simulate', 'test', 'console', function (Y) {
 
         'use strict';
-        var suite = new Y.Test.Suite("TribApp: Mojito Dashboard test"),
+        var suite = new Y.Test.Suite("Dashboard App: Mojits Module"),
             url = window.location.protocol + "//" + window.location.host + "/";
         suite.add(new Y.Test.Case({
-          "test Mojito dashboard": function () {
+          "test heading of page and GitHub section": function () {
             // Tests the title in HTML header
-            Y.Assert.areEqual("Trib - YUI/Mojito Developer Dashboard", Y.one('head title').get('innerHTML'));
-
-            // Tests the  YUI button
-            Y.Assert.areEqual(url, Y.one('a.yui3-button.swap').get('href'));
+            Y.Assert.areEqual("Trib - YUI/Mojito Developer Dashboard", Y.one('div h4').get('innerHTML'));
 
             // Tests the title within the content
-            Y.Assert.areEqual("Trib - Mojito Developer Dashboard", Y.one('body h1').get('innerHTML'));
+            Y.Assert.areEqual("YUI GitHub Stats", Y.one('div h3').get('innerHTML'));
           }
         }));
         Y.Test.Runner.add(suite);

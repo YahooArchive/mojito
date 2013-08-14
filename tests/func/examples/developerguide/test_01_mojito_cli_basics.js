@@ -5,15 +5,12 @@
       }).use('node', 'node-event-simulate', 'test', 'console', function (Y) {
 
         'use strict';
-        var suite = new Y.Test.Suite("Dashboard App: Composite Mojits Module"),
+        var suite = new Y.Test.Suite("Dashboard App: 01 CLI Basics App"),
             url = window.location.protocol + "//" + window.location.host + "/";
         suite.add(new Y.Test.Case({
-          "test HTML title and heading of page": function () {
+          "test page loads and shows default content": function () {
             // Tests the title in HTML header
-            Y.Assert.areEqual("Trib - YUI/Mojito Developer Dashboard", Y.one('head title').get('innerHTML'));
-
-            // Tests the title within the content
-            Y.Assert.areEqual("Trib - Contribute to the Tribe", Y.one('div h1').get('innerHTML'));
+            Y.Assert.areEqual("Mojito is working.", Y.one('#dd_status').get('innerHTML'));
           }
         }));
         Y.Test.Runner.add(suite);

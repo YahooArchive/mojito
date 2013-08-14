@@ -6,12 +6,12 @@
         "config" :{
             "baseUrl" : "http://localhost:8666",
             "application" : {
-                "name":"input",
-                "path": "../../../examples/developer-guide/dashboard/trib"
+                "name":"10_localization",
+                "path": "../../../examples/developer-guide/dashboard/10_localization"
             }
         },
         "dataprovider" : { 
-            "test Trib app index page" : {
+            "test 10_localization" : {
                 "group" : "tribapp",
                 "params" : {
                     "scenario": [

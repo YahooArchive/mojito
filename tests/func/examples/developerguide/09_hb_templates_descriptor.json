@@ -6,12 +6,12 @@
         "config" :{
             "baseUrl" : "http://localhost:8666",
             "application" : {
-                "name":"input",
-                "path": "../../../examples/developer-guide/dashboard/trib"
+                "name":"09_hb_templates",
+                "path": "../../../examples/developer-guide/dashboard/09_hb_templates"
             }
         },
-        "dataprovider" : { 
-            "test Trib app index page" : {
+        "dataprovider" : {
+            "test 09_hb_templates" : {
                 "group" : "tribapp",
                 "params" : {
                     "scenario": [
@@ -20,18 +20,6 @@
                             "page" : "$$config.baseUrl$$"
                         },
                         {
-                            "test" : "test_dashboard_en-US_title.js",
-                            "page": "$$config.baseUrl$$?lang=en-US"
-                        },
-                        {
-                            "test" : "test_dashboard_zh-Hans_title.js",
-                            "page": "$$config.baseUrl$$?lang=zh-Hans"
-                        },
-                        {
-                            "test" : "test_dashboard_es-419_title.js",
-                            "page": "$$config.baseUrl$$?lang=es-419"
-                        },
-                        { 
                            "controller": "locator",
                            "params": {
                                   "value": "a.yui3-button.swap",
@@ -54,7 +42,7 @@
                      ]
                 }
             }
-        }    
+        }
     },
     {
         "settings": [ "environment:development" ]
