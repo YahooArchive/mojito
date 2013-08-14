@@ -1,7 +1,7 @@
 [
     {
         "settings": [ "master" ],
-        "name" : "trib_app",
+        "name" : "trib",
 
         "config" :{
             "baseUrl" : "http://localhost:8666",
