@@ -198,6 +198,7 @@ YUI.add('MojitoGHGraphs', function(Y, NAME) {
 
 
         // returns promise
+        // ... fufilled with same format as getLast()
         getReleases: function(recipe) {
             return getLatest().then(function(lastBuild) {
                 var promises = [],
