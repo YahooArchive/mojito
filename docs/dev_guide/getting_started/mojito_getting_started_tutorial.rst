@@ -7,7 +7,7 @@ Tutorial: Creating Your First Application
 Prerequisite
 ============
 
-Complete the `Mojito Quickstart <../quickstart>`_, which instructs you
+Complete the `Mojito Quickstart <quickstart.html>`_, which instructs you
 how to install Mojito and use basic commands for the Mojito command-line tool.
 
 
