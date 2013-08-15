@@ -502,7 +502,7 @@ Creating the Application
         Y.namespace('mojito.controllers')[NAME] = {
 
           index: function (ac) {
-            var view_type = "yui", feedURL = "http://www.yuiblog.com/blog/feed/", title = "YUI Blog posts";
+            var view_type = "yui", feedURL = "http://www.yuiblog.com/blog/feed/", title = "YUI Blog Posts";
             ac.models.get('BlogModelYQL').getData({}, feedURL, function (data) {
         
               // Add mojit specific css.

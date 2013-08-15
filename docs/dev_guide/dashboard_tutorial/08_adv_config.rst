@@ -789,8 +789,8 @@ Creating the Application
       [
         {
           "settings": [ "master" ],
-          "mojitotitle" : "Mojito Blog posts",
-          "yuititle" : "YUI Blog posts",
+          "mojitotitle" : "Mojito Blog Posts",
+          "yuititle" : "YUI Blog Posts",
           "feedURL" : "http://www.yuiblog.com/blog/feed/"
         }
       ]
