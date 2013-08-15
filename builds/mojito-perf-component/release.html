@@ -32,11 +32,6 @@
 
 <script>
     YUI().use('MojitoGHGraphs', function (Y) {
-        var count = 20;
-        var matches = window.location.search.match(/count=(\d+)/);
-        if (matches) {
-            count = parseInt(matches[1], 10);
-        }
         Y.MojitoGH.Graphs.getReleases('jenkins-search-demo2').then(function (graphs) {
             Y.MojitoGH.Graphs.draw(graphs, {
                 agg: 'graph_agg',
