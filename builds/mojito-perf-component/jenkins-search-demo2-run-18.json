@@ -2,6 +2,7 @@
     "desc": "4e1a602-18",
     "app": "master",
     "mojito": "4e1a602",
+    "version":"0.7.0",
     "appStartMS": 14220,
     "appStartMemory": {
         "vsize": 126868,

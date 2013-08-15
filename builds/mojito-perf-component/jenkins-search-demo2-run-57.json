@@ -2,6 +2,7 @@
     "desc": "ee396c2-57",
     "app": "master",
     "mojito": "ee396c2",
+    "version":"0.7.1",
     "appStartMS": 14293,
     "appStartMemory": {
         "vsize": 125896,

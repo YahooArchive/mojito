@@ -2,6 +2,7 @@
     "desc": "3dc1893-21",
     "app": "master",
     "mojito": "3dc1893",
+    "version":"0.7.0",
     "appStartMS": 14528,
     "appStartMemory": {
         "vsize": 125764,
