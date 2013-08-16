@@ -1,0 +1,30 @@
+[
+    {
+        "settings": [ "master" ],
+        "name" : "trib",
+
+        "config" :{
+            "baseUrl" : "http://localhost:8666",
+            "application" : {
+                "name":"03_frame_mojits",
+                "path": "../../../examples/developer-guide/dashboard/03_frame_mojits"
+            }
+        },
+        "dataprovider" : { 
+            "test 03_frame_mojits" : {
+                "group" : "tribapp",
+                "params" : {
+                    "scenario": [
+                        {
+                            "test" : "test_03_frame_mojits.js",
+                            "page" : "$$config.baseUrl$$"
+                        }
+                     ]
+                }
+            }
+        }
+    },
+    {
+        "settings": [ "environment:development" ]
+    }
+]
