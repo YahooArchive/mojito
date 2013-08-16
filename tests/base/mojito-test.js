@@ -5,7 +5,7 @@
  */
 
 
-/*jslint anon:true, sloppy:true, nomen:true, node:true, unparam: true, todo: true*/
+/*jslint anon:true, sloppy:true, nomen:true, node:true, unparam: true, todo: true */
 /*global YUI*/
 
 
@@ -55,6 +55,7 @@ YUI.add('mojito-url-addon', function(Y, NAME) {});
 YUI.add('addon-rs-config', function(Y, NAME) {});
 YUI.add('addon-rs-dispatch-helper', function(Y, NAME) {});
 YUI.add('addon-rs-selector', function(Y, NAME) {});
+YUI.add('addon-rs-hotswap-yui', function(Y, NAME) {});
 YUI.add('addon-rs-url', function(Y, NAME) {});
 YUI.add('addon-rs-yui', function(Y, NAME) {});
 

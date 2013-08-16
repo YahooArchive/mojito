@@ -1,0 +1,1 @@
+YUI.add('HotswapMojit', function (Y, NAME) {'use strict'; Y.hotswap = 'originalValue'; }, '0.1.0', {requires: []});
