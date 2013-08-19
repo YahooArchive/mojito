@@ -2,6 +2,7 @@
     "desc": "5df7277-50",
     "app": "master",
     "mojito": "5df7277",
+    "version":"0.7.1",
     "appStartMS": 14452,
     "appStartMemory": {
         "vsize": 125896,

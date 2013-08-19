@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>perf charts</title>
+    <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.10.0/build/cssnormalize/cssnormalize-min.css">
+    <style>
+        .graph {
+            margin: 10px auto;
+            width: 90%;
+            max-width: 800px;
+            height: 600px;
+        }
+        h2 {
+            text-align: center;
+        }
+    </style>
+    <script src="http://yui.yahooapis.com/3.10.0/build/yui/yui-min.js"></script>
+    <script src="../../graphs/lib.js"></script>
+</head>
+<body>
+
+
+<h2><a name="overview">overview</a></h2>
+<div class="graph" id="graph_agg"></div>
+
+<h2><a name="memory">memory</a></h2>
+<div class="graph" id="graph_mem"></div>
+
+<h2><a name="startup">app startup</a></h2>
+<div class="graph" id="graph_start"></div>
+
+
+<script>
+    YUI().use('MojitoGHGraphs', function (Y) {
+        Y.MojitoGH.Graphs.getReleases('jenkins-search-demo2').then(function (graphs) {
+            Y.MojitoGH.Graphs.draw(graphs, {
+                agg: 'graph_agg',
+                mem: 'graph_mem',
+                start: 'graph_start'
+            });
+        },
+        function (err) {
+            console.log('----------------------------------- ERROR');
+            console.log(err.toString());
+        });
+    });
+</script>
+
+
+</body>
+</html>
