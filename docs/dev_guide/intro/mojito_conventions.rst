@@ -367,15 +367,32 @@ show any error messages and allows caching.
 Mojit Instance Configuration
 ############################
 
+The mojit instance configuration is contained in the ``config`` object of a mojit 
+instance. The convention is to use this ``config`` object to store values needed for 
+the implementation of the mojit execution. For example, you might store configuration
+in the ``config`` object that would be used to use a specific template. General data
+that might be shared among many mojit instances, in general, should be stored in either
+in a mojit definition file such as ``definition.json`` or in a database. For default
+mojit instance configuration, use the mojit definition file ``defaults.json``.
+
 Routing
 -------
+
+
 
 Mojit
 -----
 
-Assets
-======
+Static Assets
+=============
 
+CSS
+---
+
+The suggested method for including CSS assets in applications is to include the
+CSS files in the ``assets`` directory, specify the path to the assets in the ``assets``
+property of ``application.json``, and then have the ``HTMLFrameMojit`` attach the assets
+to the HTML skeleton. We'll go over the location, configuration, and 
 
 Using Modules
 =============
