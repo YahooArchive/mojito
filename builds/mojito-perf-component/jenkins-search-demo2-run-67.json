@@ -2,6 +2,7 @@
     "desc": "aba26fc-67",
     "app": "master",
     "mojito": "aba26fc",
+    "version":"0.7.2",
     "appStartMS": 18496,
     "appStartMemory": {
         "vsize": 123864,

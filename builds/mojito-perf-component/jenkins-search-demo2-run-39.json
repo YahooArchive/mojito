@@ -2,6 +2,7 @@
     "desc": "3250afe-39",
     "app": "master",
     "mojito": "3250afe",
+    "version":"0.7.0",
     "appStartMS": 14194,
     "appStartMemory": {
         "vsize": 125908,

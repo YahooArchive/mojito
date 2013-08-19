@@ -2,6 +2,7 @@
     "desc": "cebc0c9-80",
     "app": "master",
     "mojito": "cebc0c9",
+    "version":"0.7.2",
     "appStartMS": 14598,
     "appStartMemory": {
         "vsize": 123864,

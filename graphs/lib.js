@@ -73,7 +73,7 @@ YUI.add('MojitoGHGraphs', function(Y, NAME) {
     }
 
 
-    function buildsToGraphs(builds) {
+    function buildsToGraphs(builds, release) {
         var graphs = {
                 agg: [],
                 mem: [],
@@ -82,11 +82,14 @@ YUI.add('MojitoGHGraphs', function(Y, NAME) {
                 descs: []
             },
             vsizes = {},    // time: desc: vsize
-            b;
+            b,
+            versionprev = '',
+            version;
 
         builds.sort(function(a, b) {
             return a.build - b.build;
         });
+
         builds.forEach(function(build) {
             var buildMemMin = 0,
                 buildMemMax = 0,
@@ -99,6 +102,15 @@ YUI.add('MojitoGHGraphs', function(Y, NAME) {
             if ('object' !== typeof build) {
                 return;
             }
+
+            if(release){
+                version = build.data.version;
+                if(version === versionprev) {
+                    return;
+                };
+                versionprev = version;
+            }
+
             graphs.descs.push(build.data.desc);
             buildMemStart = build.data.appStartMemory;
 
@@ -165,7 +177,6 @@ YUI.add('MojitoGHGraphs', function(Y, NAME) {
         return graphs;
     }
 
-
     Y.namespace('MojitoGH').Graphs = {
 
 
@@ -189,8 +200,18 @@ YUI.add('MojitoGHGraphs', function(Y, NAME) {
         // returns promise
         // ... fufilled with same format as getLast()
         getReleases: function(recipe) {
-            return new Y.Promise(function(fulfill, reject) {
-                fulfill({TODO: 'TODO'});
+            return getLatest().then(function(lastBuild) {
+                var promises = [],
+                    b,
+                    build,
+                    version;
+                for (b = 0; b < lastBuild; b += 1) {
+                    build = lastBuild - b;
+                    promises.push(getBuild(recipe, build));
+                }
+                return Y.batch.apply(Y, promises).then(function(builds) {
+                    return buildsToGraphs(builds, true);
+                });
             });
         },
 
