@@ -433,13 +433,6 @@
                     "page" : "$$config.baseUrl$$/frame"
                 }
             },
-            "bz5264755" : {
-                "group" : "smoke,restlib,serveronly",
-                "params" : {
-                    "test" : "testbz5264755.js",
-                    "page" : "$$config.baseUrl$$/frame"
-                }
-            },
             "bz5590319" : {
                 "group" : "smoke,restlib,serveronly",
                 "params" : {
