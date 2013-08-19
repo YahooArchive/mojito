@@ -506,14 +506,15 @@ to set ``debug`` to ``false`` and ``logLevel`` to ``none``:
    ]
 
 On the other hand, we want to make sure that we see all errors for the development 
-environment. We set debug to true and the log level to ``debug``, which will show all possible 
+environment (i.e., the context ``environment:development``). We set debug to true and the log level 
+to ``debug``, which will show all possible 
 errors.
 
 .. code-block:: javascript
 
    [
      {
-       "settings": [ "environment:production" ],
+       "settings": [ "environment:development" ],
        "yui": {
          "config": {
            "debug": true,
