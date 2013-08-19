@@ -298,8 +298,74 @@ Configuration
 Application
 -----------
 
+Contexts
+########
+
+The application configuration file ``application.json`` allows you to map configurations
+to different runtime environments. The contexts are defined in the configuration 
+object by the ``setting`` property. In the example snippet below, different mojit instances
+are created for the developer and production environments:
+
+.. code-block:: javascript
+
+   {
+     "settings": [ "environment:development" ],
+     "specs": {
+       "test": {
+         "type": "TestMojit"
+       }
+     }
+   },
+   {
+     "settings": [ "environment:production" ],
+     "specs": {
+       "test": {
+         "type": "ProductionMojit"
+       }
+     }
+   },
+        
 
 
+Development Configurations
+##########################
+
+We recommend that you add special logging and cache configurations for the 
+``environment:development``, so that all log messages are displayed and assets
+are not cached. The ``environment:production`` context, in contrast, does not
+show any error messages and allows caching.
+
+.. code-block:: javascript
+
+   {
+     "settings": [ "environment:development" ],
+     "staticHandling": {
+        "forceUpdate": true
+     },
+     "yui":{
+       "config": {
+         "debug": true,
+         "logLevel": "debug"
+       }
+     }
+   },
+   {
+     "settings": [ "environment:production" ],
+     "staticHandling": {
+        "forceUpdate": false
+     },
+     "yui":{
+       "config": {
+            "debug": false,
+            "logLevel": "none"
+       }
+     }
+   },
+       
+ 
+
+Mojit Instance Configuration
+############################
 
 Routing
 -------
