@@ -257,7 +257,7 @@ Using Models
 ************
 
 To require Model modules in the controller, you use the ``get`` method of the
- ``Models`` addon. You pass the registered module name to the ``get`` method as shown
+``Models`` addon. You pass the registered module name to the ``get`` method as shown
 in this example:
 
 .. code-block:: javascript
@@ -336,12 +336,12 @@ YUI Modules
 This section is for custom YUI modules that developers want to include in the application code.
 
 Location
-########
+---------
 
 ``{application_name}/yui_modules``
 
 Name
-####
+----
 
 For custom YUI modules that you want to be part of your application, you should 
 
