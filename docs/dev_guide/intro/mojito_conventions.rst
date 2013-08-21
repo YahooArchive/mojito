@@ -346,31 +346,6 @@ Name
 For custom YUI modules that you want to be part of your application, you should 
 
 
-Assets
-======
-
-Assets are resources that are required on the clients. These resources are primarily 
-CSS but can also be JavaScript that is ancillary to and not a core component of the Mojito 
-application. 
-
-Location
---------
-
-Assets are available at the application or mojit levels, thus, the location of the 
-assets varies:
-
-- ``{application_name}/assets/`` (application-level assets)
-- ``mojits/{mojit_name}/assets/`` (mojit-level assets)
-
-For CSS assets, the convention is to create a ``css`` directory under the ``assets``
-directory. For JavaScript assets, the convention is to create a ``js`` directory
-under the ``assets`` directory.
-
-Naming
-------
-
-There are no naming conventions for CSS or JavaScript assets in Mojito.
-
 Addons
 ======
 
@@ -448,6 +423,10 @@ convention:
 
 Static Assets
 =============
+
+Assets are resources that are required on the clients. These resources are primarily 
+CSS but can also be JavaScript that is ancillary to and not a core component of the Mojito 
+application. 
 
 The suggested method for including CSS and JSS assets in applications is to include the
 in the ``assets`` directory, specify the path to the assets in the ``assets``
