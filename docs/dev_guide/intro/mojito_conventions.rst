@@ -2,6 +2,8 @@
 Mojito Conventions
 ==================
 
+Overview
+========
 
 This chapter is just an overview of the general conventions and practices when
 developing Mojito applications. Think of this chapter as a cheat sheet as a guideline
@@ -9,9 +11,6 @@ and an easier way to find hard-to-remember details. If you don't find the inform
 that you're looking for here, see the chapter dedicated to the topic you're interested in, 
 such as `Mojits <mojito_mojits.html>`_ or `Configuring Mojito <mojito_configuring.html>`_.
 
-
-General
-=======
 
 MVC Structure
 -------------
