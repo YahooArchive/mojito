@@ -9,6 +9,10 @@ Deprecations, Removals
 
 Features
 --------
+* PR #1195: New `resourceStore.lazyResolve:true` option in `application.json`.
+Normally, the resource store at server start pre-calculates the details for all mojits for all contexts/selectors.
+(It's optimized to only do this for dimensions/selectors that are actually used.)
+By setting this new option the resource store will skip this calculation at server start and instead do it at runtime "lazily" (as needed). This might be a good option to use if you have a large number of dimensions defined in `dimensions.json` and a lot of selectors defined in `application.json`, yet your app will only serve traffic from a subset of those, or the synchronous computation of all resolutions would make your app too slow to start. This option evens-out that process in time by only triggering it the first time it's needed and caching the result.
 
 Bug Fixes
 ---------
@@ -45,10 +49,6 @@ More info at the [mojito-cli wiki](http://git.io/jJazAw).
 Features
 --------
 * PR #1163: Rehydration of data from server to client and from client to server. Any data set thru `mojitProxy.data.set()` or `ac.data.set()` will travel back and forward between the client and server runtime to preserve the state of the mojit instance when using the rpc tunnel.
-* PR #1195: New `resourceStore.lazyResolve:true` option in `application.json`.
-Normally, the resource store at server start pre-calculates the details for all mojits for all contexts/selectors.
-(It's optimized to only do this for dimensions/selectors that are actually used.)
-By setting this new option the resource store will skip this calculation at server start and instead do it at runtime "lazily" (as needed). This might be a good option to use if you have a large number of dimensions defined in `dimensions.json` and a lot of selectors defined in `application.json`, yet your app will only serve traffic from a subset of those, or the synchronous computation of all resolutions would make your app too slow to start. This option evens-out that process in time by only triggering it the first time it's needed and caching the result.
 
 Bug Fixes
 ---------
