@@ -40,6 +40,10 @@ YUI().use(
                 A.isTrue(store._config.root === fixtures);
             },
 
+            'store is not lazy by default': function () {
+                A.isFalse(Object.keys(store._mojitDetailsCache).length === 0);
+            },
+
             'valid context': function() {
                 var success;
 
@@ -419,6 +423,20 @@ YUI().use(
                 });
             }
 
+        }));
+
+        suite.add(new Y.Test.Case({
+            name: 'Store tests -- preload fixture "lazy-resolve"',
+
+            init: function () {
+                var fixtures = libpath.join(__dirname, '../../../../fixtures/lazy-resolve');
+                store = new Y.mojito.ResourceStore({ root: fixtures });
+                store.preload();
+            },
+
+            'store is actually lazy': function () {
+                A.isTrue(Object.keys(store._mojitDetailsCache).length === 0);
+            }
         }));
 
 
