@@ -381,7 +381,7 @@ links.
      }
    ...
 
-Other child mojits that want to access the global Handlebars helper in their 
+Other mojits on the page that want to access the global Handlebars helper in their 
 templates must require the ``Helpers`` addon in their controllers as shown below:
 
 .. code-block:: javascript
