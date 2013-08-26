@@ -97,8 +97,7 @@ YUI.add('MojitoGHGraphs', function(Y, NAME) {
                 buildMemCount = 0,
                 buildMSPRTotal = 0,
                 buildMSPRCount = 0,
-                buildMemStart,
-                mem;
+                buildMemStart;
 
             if ('object' !== typeof build) {
                 return;
@@ -110,6 +109,9 @@ YUI.add('MojitoGHGraphs', function(Y, NAME) {
                     return;
                 }
                 versionprev = version;
+            }
+
+            if (release) {
                 graphs.descs.push(build.data.version);
             } else {
                 graphs.descs.push(build.data.desc);
@@ -119,7 +121,8 @@ YUI.add('MojitoGHGraphs', function(Y, NAME) {
 
             b = 0;
             build.data.bursts.forEach(function(burst) {
-                var burstMemTotal = 0,
+                var mem,
+                    burstMemTotal = 0,
                     burstMemCount = 0;
                 burst.memories.forEach(function(mem) {
                     buildMemTotal += mem.vsize;
@@ -167,23 +170,35 @@ YUI.add('MojitoGHGraphs', function(Y, NAME) {
             });
 
             if (release) {
-                graphs.agg.push({desc: build.data.version});
-                graphs.start.push({desc: build.data.version});
+                graphs.agg.push({
+                    desc: build.data.version,
+                    memMax: toKilobytes(buildMemMax),
+                    memMin: toKilobytes(buildMemMin),
+                    memStart: toKilobytes(build.data.appStartMemory.vsize),
+                    memAvg: toKilobytes(Math.floor(buildMemTotal / buildMemCount)),
+                    mspr: (Math.floor(100 * buildMSPRTotal / buildMSPRCount) / 100)
+                });
+                graphs.start.push({
+                    desc: build.data.version,
+                    mem: toKilobytes(build.data.appStartMemory.vsize),
+                    time: build.data.appStartMS
+                });
             } else {
-                graphs.agg.push({desc: build.data.desc});
-                graphs.start.push({desc: build.data.desc});
+                graphs.agg.push({
+                    desc: build.data.desc,
+                    memMax: toKilobytes(buildMemMax),
+                    memMin: toKilobytes(buildMemMin),
+                    memStart: toKilobytes(build.data.appStartMemory.vsize),
+                    memAvg: toKilobytes(Math.floor(buildMemTotal / buildMemCount)),
+                    mspr: (Math.floor(100 * buildMSPRTotal / buildMSPRCount) / 100)
+                });
+                graphs.start.push({
+                    desc: build.data.desc,
+                    mem: toKilobytes(build.data.appStartMemory.vsize),
+                    time: build.data.appStartMS
+                });
             }
-            graphs.agg.push({
-                memMax: toKilobytes(buildMemMax),
-                memMin: toKilobytes(buildMemMin),
-                memStart: toKilobytes(build.data.appStartMemory.vsize),
-                memAvg: toKilobytes(Math.floor(buildMemTotal / buildMemCount)),
-                mspr: (Math.floor(100 * buildMSPRTotal / buildMSPRCount) / 100)
-            });
-            graphs.start.push({
-                mem: toKilobytes(build.data.appStartMemory.vsize),
-                time: build.data.appStartMS
-            });
+
         });
 
         Object.keys(vsizes).forEach(function (time) {
