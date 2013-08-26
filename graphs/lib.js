@@ -103,20 +103,26 @@ YUI.add('MojitoGHGraphs', function(Y, NAME) {
                 return;
             }
 
-            if(release){
+            if (release) {
                 version = build.data.version;
-                if(version === versionprev) {
+                if (version === versionprev) {
                     return;
-                };
+                }
                 versionprev = version;
             }
 
-            graphs.descs.push(build.data.desc);
+            if (release) {
+                graphs.descs.push(build.data.version);
+            } else {
+                graphs.descs.push(build.data.desc);
+            }
+
             buildMemStart = build.data.appStartMemory;
 
             b = 0;
             build.data.bursts.forEach(function(burst) {
-                var burstMemTotal = 0,
+                var mem,
+                    burstMemTotal = 0,
                     burstMemCount = 0;
                 burst.memories.forEach(function(mem) {
                     buildMemTotal += mem.vsize;
@@ -137,32 +143,62 @@ YUI.add('MojitoGHGraphs', function(Y, NAME) {
                     graphs.mem[b] = {};
                     graphs.mem[b].burst = 'burst ' + (b + 1);
                 }
-                graphs.mem[b][build.data.desc] = toKilobytes(Math.floor(burstMemTotal / burstMemCount));
+                mem = toKilobytes(Math.floor(burstMemTotal / burstMemCount));
+                if (release) {
+                    graphs.mem[b][build.data.version] = mem;
+                } else {
+                    graphs.mem[b][build.data.desc] = mem;
+                }
+
                 b += 1;
             });
 
             build.data.bursts[0].memories.forEach(function (memory) {
-                var t = new Date(memory.when - buildMemStart.when);
+                var size,
+                    t = new Date(memory.when - buildMemStart.when);
                 t = t.toISOString();
                 if (!vsizes[t]) {
                     vsizes[t] = {};
                 }
-                vsizes[t][build.data.desc] = toKilobytes(memory.vsize);
+                size = toKilobytes(memory.vsize);
+                if (release) {
+                    vsizes[t][build.data.version] = size;
+                } else {
+                    vsizes[t][build.data.desc] = size;
+                }
+
             });
 
-            graphs.agg.push({
-                desc: build.data.desc,
-                memMax: toKilobytes(buildMemMax),
-                memMin: toKilobytes(buildMemMin),
-                memStart: toKilobytes(build.data.appStartMemory.vsize),
-                memAvg: toKilobytes(Math.floor(buildMemTotal / buildMemCount)),
-                mspr: (Math.floor(100 * buildMSPRTotal / buildMSPRCount) / 100)
-            });
-            graphs.start.push({
-                desc: build.data.desc,
-                mem: toKilobytes(build.data.appStartMemory.vsize),
-                time: build.data.appStartMS
-            });
+            if (release) {
+                graphs.agg.push({
+                    desc: build.data.version,
+                    memMax: toKilobytes(buildMemMax),
+                    memMin: toKilobytes(buildMemMin),
+                    memStart: toKilobytes(build.data.appStartMemory.vsize),
+                    memAvg: toKilobytes(Math.floor(buildMemTotal / buildMemCount)),
+                    mspr: (Math.floor(100 * buildMSPRTotal / buildMSPRCount) / 100)
+                });
+                graphs.start.push({
+                    desc: build.data.version,
+                    mem: toKilobytes(build.data.appStartMemory.vsize),
+                    time: build.data.appStartMS
+                });
+            } else {
+                graphs.agg.push({
+                    desc: build.data.desc,
+                    memMax: toKilobytes(buildMemMax),
+                    memMin: toKilobytes(buildMemMin),
+                    memStart: toKilobytes(build.data.appStartMemory.vsize),
+                    memAvg: toKilobytes(Math.floor(buildMemTotal / buildMemCount)),
+                    mspr: (Math.floor(100 * buildMSPRTotal / buildMSPRCount) / 100)
+                });
+                graphs.start.push({
+                    desc: build.data.desc,
+                    mem: toKilobytes(build.data.appStartMemory.vsize),
+                    time: build.data.appStartMS
+                });
+            }
+
         });
 
         Object.keys(vsizes).forEach(function (time) {
