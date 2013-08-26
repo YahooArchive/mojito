@@ -23,6 +23,8 @@ General
 * :ref:`Can Mojito make runtime decisions to run client-side or server-side code? <moj_run_client_server>`
 * :ref:`Can Mojito be started with Node.js instead of using "mojito start"? <moj_node_start>`
 * :ref:`How can I improve the performance of my Mojito application? <moj_optimize_performance>`
+* :ref:`Can I start an application so that it listens to requests made to a specific IP address or hostname? <moj_ip_address>`
+
 
 Configuration
 -------------
@@ -400,6 +402,29 @@ General
     using the `LazyLoadMojit <../topics/mojito_frame_mojits.html#lazyloadmojit>`_.
    
 
+
+.. _moj_ip_address:
+.. topic:: **Can I start an application so that it listens to requests made to a specific IP address or hostname?**
+
+    Although the Mojito CLI utility does not allow you to specify an IP address or hostname for your application
+    to listen to when it's started, you can modify the ``server.js`` file and start your application directory with
+    ``node``. 
+
+    In the example ``server.js`` below, you pass the port and hostname to the ``listen`` method so that the application
+    will listen to requests at the given hostname and port when you start the application with ``node server.js``:
+
+    .. code-block:: javascript
+
+       var mojito = require('mojito').createServer(),
+           port = 8111,
+           host = '127.0.0.1';
+
+        mojito.listen(port, host, function(err, app) {
+          console.log('listening on %s:%d', host, port);
+        });
+ 
+
+------------
 
 
 Configuration
