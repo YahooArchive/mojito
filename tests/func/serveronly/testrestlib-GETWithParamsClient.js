@@ -1,12 +1,8 @@
 /*
  * This is a basic func test for a Serveronly application.
  */
-YUI({
-    useConsoleOutput: true,
-    useBrowserConsole: true,
-    logInclude: { TestRunner: true }
-}).use('node', 'node-event-simulate', 'test', 'console', function (Y) {
-   
+YUI.add('serveronly-getwithparamsclient-tests', function (Y) {
+    
      var suite = new Y.Test.Suite("ServerOnly: GETWithParamsClient");
 
      suite.add(new Y.Test.Case({
@@ -23,4 +19,6 @@ YUI({
     
     Y.Test.Runner.add(suite);
 
-});
+}, '0.0.1', {requires: [
+    'node', 'node-event-simulate', 'test'
+]});
