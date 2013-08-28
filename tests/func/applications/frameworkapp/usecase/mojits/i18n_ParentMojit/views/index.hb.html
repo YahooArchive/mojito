@@ -1,12 +1,12 @@
 <div id="{{mojit_view_id}}">
     <dl>
-        <dt>status</dt>
-        <dd id="dd_status">{{status}}</dd>
-        <dt>data</dt>
-        <dd id="dd_data">
-            <b>some:</b> {{#data}}{{some}}{{/data}}
+        <dt id="parent_status">status</dt>
+        <dd id="parent_status_value">{{status}}</dd>
+        <dt id="parent_data">data</dt>
+        <dd id="parent_data_value">
+            some: {{#data}}{{some}}{{/data}}
         </dd>
-        <dt>child</dt>
-        <dd id="child_data">{{{i18n_ChildMojit}}}</dd>
+        <dt id="child">child</dt>
+        <dd id="child_value">{{{i18n_ChildMojit}}}</dd>
     </dl>
 </div>
