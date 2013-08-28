@@ -97,7 +97,7 @@
                      "page" : "$$config.baseUrl$$/i18n-2/index?lang=fr"
                 }
             },
-			"i18n3-en" : {
+            "i18n3-en" : {
                  "group" : "smoke,usecases",
                  "params" : {
                      "test" : "testi18nclient.js",
@@ -105,7 +105,7 @@
                      "lang" : "en"
                 }
             },
-			"i18n3-zh" : {
+            "i18n3-zh" : {
                  "group" : "smoke,usecases",
                  "params" : {
                      "test" : "testi18nclient.js",
