@@ -14,6 +14,23 @@
             "i18n-2": {
                 "type": "i18n_Mojit"
             },
+            "i18n-3": {
+                "type": "HTMLFrameMojit",
+		        "config": {
+                    "deploy": true,
+                    "child": {
+                        "type": "i18n_ParentMojit",
+                        "config":{
+                            "children": {
+                                "i18n_ChildMojit": {
+                                    "type": "i18n_ChildMojit",
+                                    "defer": true
+		                        }
+		                    }
+		                }
+		            }
+		        }
+		    },
             "flickr": {
                 "type": "HTMLFrameMojit",
                 "config": {
