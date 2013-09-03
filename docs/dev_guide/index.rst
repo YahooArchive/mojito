@@ -71,6 +71,7 @@ the YDN forum for Mojito, where you can post questions.
 
    intro/index
    getting_started/index
+   dashboard_tutorial/index
    code_exs/index
    topics/index
    api_overview/index
