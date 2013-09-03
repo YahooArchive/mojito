@@ -33,13 +33,13 @@ is a superset of JSON.
 Application
 ###########
 
-The configurations files found in the application directory are considered application-level 
-or shared configurations that all mojits can access.  The application configuration files 
-are ``application.json`` and ``routes.json`` or the YAML versions ``application.yaml`` 
-and ``routes.yaml``. 
+The configurations files found directly under the application directory are considered 
+application-level or shared configurations that all mojits can access.  The application 
+configuration files are ``application.json`` and ``routes.json`` or the YAML versions 
+``application.yaml`` and ``routes.yaml``. 
 
 The ``application.json`` file stores general configuration for the application as well
-as mojit instance configurations, which are covered in the `Mojits <>`_ section.
+as defines mojit instance configurations, which are covered in the `Mojits <>`_ section.
 The ``routes.json`` file is for configuring routing paths so that a path is mapped to
 the execution of a mojit action. 
 
@@ -129,7 +129,7 @@ Modules
 
 Mojito code is organized into files that are custom YUI modules. In the YUI module, 
 you use ``YUI.add`` to register a string as the name of the custom YUI modules. See
-the Mojits section for more module information for controllers, models, binders, and
+the `Mojits section <>`_ for more module information for controllers, models, binders, and
 tests.
 
 Tests
@@ -149,9 +149,10 @@ Mojito does not come with a functional testing suite, but we suggest that you us
 the npm module Arrow for writing and running functional tests. Arrow is a testing framework 
 that fuses together JavaScript, Node.js, PhantomJS, and Selenium. 
 
-Although Mojito does not have any formal conventions for using Arrow. We recommend
+Mojito does not have any formal conventions for using Arrow. We recommend
 that you read the `Arrow documentation <>`_ and the wiki 
-`Mojito Framework's Unit and Functional Tests <https://github.com/yahoo/mojito/wiki/Mojito-Framework's-Unit-and-Functional-Tests>`_.
+`Mojito Framework's Unit and Functional Tests <https://github.com/yahoo/mojito/wiki/Mojito-Framework's-Unit-and-Functional-Tests>`_
+to see some examples.
 
 
 Methods/Functions
@@ -203,7 +204,7 @@ the location of mojits with the application configurations ``mojitDirs`` and ``m
 Naming
 ######
 
-he naming convention for mojit definitions is to use an upper camel-case string and keep 
+The naming convention for mojit definitions is to use an upper camel-case string and keep 
 the name as short as possible, such as ``Flickr`` or ``FlickrPhotos``. Think of the mojit 
 definition as a class name and the instance as an instantiation of the mojit.
 
