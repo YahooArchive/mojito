@@ -1,0 +1,29 @@
+[
+    {
+        "settings": [ "master" ],
+        "name" : "trib",
+        "config" :{
+            "baseUrl" : "http://localhost:8666",
+            "application" : {
+                "name":"02_mojits",
+                "path": "../../../examples/developer-guide/dashboard/02_mojits"
+            }
+        },
+        "dataprovider" : { 
+            "test 02_mojits" : {
+                "group" : "tribapp",
+                "params" : {
+                    "scenario": [
+                        {
+                            "test" : "test_02_mojits.js",
+                            "page" : "$$config.baseUrl$$"
+                        }
+                     ]
+                }
+            }
+        }
+    },
+    {
+        "settings": [ "environment:development" ]
+    }
+]

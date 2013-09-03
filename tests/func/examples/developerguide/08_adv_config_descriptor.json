@@ -1,0 +1,50 @@
+[
+    {
+        "settings": [ "master" ],
+        "name" : "trib",
+
+        "config" :{
+            "baseUrl" : "http://localhost:8666",
+            "application" : {
+                "name":"08_adv_config",
+                "path": "../../../examples/developer-guide/dashboard/08_adv_config"
+            }
+        },
+        "dataprovider" : {
+            "test 08_adv_config" : {
+                "group" : "tribapp",
+                "params" : {
+                    "scenario": [
+                        {
+                            "test" : "test_yui_dashboard.js",
+                            "page" : "$$config.baseUrl$$"
+                        },
+                        {
+                           "controller": "locator",
+                           "params": {
+                                  "value": "a.yui3-button.swap",
+                                  "click": true
+                           }
+                        },
+                        {
+                           "test" : "test_mojito_dashboard.js"
+                        },
+                        {
+                           "controller": "locator",
+                           "params": {
+                                  "value": "a.yui3-button.swap",
+                                  "click": true
+                           }
+                        },
+                        {
+                           "test" : "test_yui_dashboard.js"
+                        }
+                     ]
+                }
+            }
+        }
+    },
+    {
+        "settings": [ "environment:development" ]
+    }
+]
