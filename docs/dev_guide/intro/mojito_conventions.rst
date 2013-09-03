@@ -219,7 +219,7 @@ Naming
 ******
 
 The default controller file is ``controller.server.js``, but you can use the affinity
-to determing where the controller will be executed and define different
+to determining where the controller will be executed and define different
 versions of the controller with the ``selector`` property in ``application.json``.
 
 Thus, the syntax for controllers is as follows: ``controller.{affinity}.{selector}.js``,
@@ -428,7 +428,7 @@ Assets are resources that are required on the clients. These resources are prima
 CSS but can also be JavaScript that is ancillary to and not a core component of the Mojito 
 application. 
 
-The suggested method for including CSS and JSS assets in applications is to include the
+The suggested method for including CSS and JS assets in applications is to include the
 in the ``assets`` directory, specify the path to the assets in the ``assets``
 property of ``application.json``, and then have the ``HTMLFrameMojit`` attach the assets
 to the HTML skeleton. You can also just hard-code the path to the assets in your templates,
@@ -456,7 +456,7 @@ the static URL. The default value for the prefix is ``/static/``,
 but you can define the prefix with the ``staticHandling.prefix`` property in ``application.json``.
 
 The *source path* for assets would either be the application or the mojit depending on the 
-evel of the resource. The *relative path* is the path relative to the source path, which
+level of the resource. The *relative path* is the path relative to the source path, which
 in the case of assets would be either ``/assets/css/`` or ``/assets/js/``.
 
 Thus, the default path to assets would have the following syntax: ``/{prefix}/{source_path}/{relative_path}``
