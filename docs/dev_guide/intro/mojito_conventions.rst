@@ -5,9 +5,9 @@ Mojito Conventions
 Overview
 ========
 
-This chapter is just an overview of the general conventions and practices when
-developing Mojito applications. Think of this chapter as a cheat sheet as a guideline
-and an easier way to find hard-to-remember details. If you don't find the information 
+This chapter is provides an overview of the general conventions and practices when
+developing Mojito applications. Think of this chapter as a guideline or a cheat sheet 
+to help you remember Mojito-specific conventions. If you don't find the information 
 that you're looking for here, see the chapter dedicated to the topic you're interested in, 
 such as `Mojits <mojito_mojits.html>`_ or `Configuring Mojito <mojito_configuring.html>`_.
 
@@ -351,11 +351,11 @@ Addons
 
 Addons are  extensions that provide functionality that lives both on the server 
 and/or client. Each addon provides additional functions through a namespace that is 
-attached directly to the ActionContext object and is available when required in a 
+attached directly to the ``ActionContext`` object and is available when required in a 
 controller.
 
 Built-In Addons
---------------------
+---------------
 
 Mojito comes with built-in addons that are accessible through the ``ActionContext`` 
 object. To access a built-in addon from a controller, you add the string 
@@ -462,13 +462,5 @@ in the case of assets would be either ``/assets/css/`` or ``/assets/js/``.
 Thus, the default path to assets would have the following syntax: ``/{prefix}/{source_path}/{relative_path}``
 For example, the default path to the application-level CSS asset ``index.css`` for the
 application ``NewsAggregator`` would be ``/static/NewsAggregator/assets/css/index.css``.
-
-
-
-
-
-
-
-
 
 
