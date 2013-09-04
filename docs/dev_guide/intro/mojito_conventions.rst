@@ -155,17 +155,6 @@ that you read the `Arrow documentation <>`_ and the wiki
 to see some examples.
 
 
-Methods/Functions
------------------
-
-The naming convention for methods and functions is to strings in lower-case camel.
-Although the term function is often used generically for both methods and functions,
-in Mojito code, you can consider functions formally as function literals that 
-are generally defined outside of the ``Y.namespace()`` block in modules. Methods in 
-Mojito code, on the other hand, are usually named function expressions and are defined
-within the ``Y.namespace()`` block.
-
-
 Mojits
 ======
 
@@ -344,7 +333,7 @@ Location
 Name
 ----
 
-For custom YUI modules that you want to be part of your application, you should 
+``{module_name}.{affinity}.js``
 
 
 Addons
@@ -360,18 +349,29 @@ Built-In Addons
 
 Mojito comes with built-in addons that are accessible through the ``ActionContext`` 
 object. To access a built-in addon from a controller, you add the string 
-``mojito-addon-{addon}`` to the ``requires`` array, where ``{addon}``
-could any of the following:
+``mojito-{addon}-addon`` to the ``requires`` array, where ``{addon}``
+could be any of the following:
 
-- ``data`` - ``Data`` addon for sharing data
-- ``models`` - ``Models`` addon for accessing models
-- ``cookies`` - ``Cookie`` addon for getting/setting cookies
-- ``helpers`` - ``Helpers`` addon for registering Handlebars helpers
 - ``assets`` - ``Assets`` addon for managing assets
 - ``config`` - ``Config`` addon for handling configurations
-- ``params`` - ``Params`` addon for managing parameters
 - ``composite`` - ``Composite`` addon to execute child mojits
+- ``cookies`` - ``Cookie`` addon for getting/setting cookies
+- ``data`` - ``Data`` addon for sharing data
+- ``helpers`` - ``Helpers`` addon for registering Handlebars helpers
+- ``http`` - ``Http`` addon for getting and setting HTTP headers, request information.
 - ``intl`` - ``Intl`` addon for localization
+- ``meta`` - ``Meta`` addon for getting and merging meta data of child mojits.
+- ``models`` - ``Models`` addon for accessing models
+- ``params`` - ``Params`` addon for managing parameters
+- ``partial`` - ``Partials`` addon for rendering partials. 
+- ``url`` - ``Url`` addon for creating and finding URLs.
+
+
+.. note:: The list of built-in ``ActionContext`` addons above is not complete. Mojito also
+          has **Resource Store** (``rs``) and **View Engine** (``view-engine``) addons.
+          See the `addons <https://github.com/yahoo/mojito/tree/develop/lib/app/addons>`_
+          directory in the Mojito source code and the `Mojito API <http://developer.yahoo.com/cocktails/mojito/api/>`_
+          documentation for more information.
 
 Custom Addons
 -------------
