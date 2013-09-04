@@ -2,6 +2,9 @@
 Mojito Conventions
 ==================
 
+
+.. _mojito_conventions-overview:
+
 Overview
 ========
 
@@ -11,6 +14,8 @@ to help you remember Mojito-specific conventions. If you don't find the informat
 that you're looking for here, see the chapter dedicated to the topic you're interested in, 
 such as `Mojits <mojito_mojits.html>`_ or `Configuring Mojito <mojito_configuring.html>`_.
 
+
+.. _conventions_overview-mvc:
 
 MVC Structure
 -------------
@@ -22,6 +27,8 @@ in the following location:
 - ``mojits/{mojit_name}/``
 - ``mojits/{mojit_name}/views/``
 
+.. _conventions_overview-config:
+
 Configuration
 -------------
 
@@ -29,6 +36,7 @@ Configurations are found in either the ``.json`` or ``.yaml`` files in the appli
 directory or under mojit directories. The configurations are composed of JSON or YAML, which
 is a superset of JSON. 
 
+.. _conventions_config-app:
 
 Application
 ###########
@@ -39,13 +47,16 @@ configuration files are ``application.json`` and ``routes.json`` or the YAML ver
 ``application.yaml`` and ``routes.yaml``. 
 
 The ``application.json`` file stores general configuration for the application as well
-as defines mojit instance configurations, which are covered in the `Mojits <>`_ section.
-The ``routes.json`` file is for configuring routing paths so that a path is mapped to
-the execution of a mojit action. 
+as defines mojit instance configurations, which are covered in the 
+:ref:`Mojits <mojito_conventions-mojits>` section. The ``routes.json`` file is for 
+configuring routing paths so that a path is mapped to the execution of a mojit action. 
 
 We're only going to cover the use of contexts, suggested settings for development
-and production, and routing. See `Configuring Mojito <>`_ for descriptions and possible 
-values for all the configurations as well as examples for configuring routing and more. 
+and production, and routing. See `Configuring Mojito <mojito_configuring.html>`_ for 
+descriptions and possible values for all the configurations as well as examples for 
+configuring routing and more. 
+
+.. _conventions_app_config-context:
 
 Contexts
 ********
@@ -74,6 +85,8 @@ are created for the developer and production environments:
      }
    },
         
+
+.. _conventions_app_config-dev_prod:
 
 Development/Production Configurations
 *************************************
@@ -110,6 +123,8 @@ show any error messages and allows caching.
      }
    },
        
+.. _conventions_config-routing:
+
 Routing
 #######
 
@@ -124,23 +139,31 @@ are defined by an object that associates a path with an action of a mojit instan
    }
 
 
+.. _conventions-modules:
+
 Modules
 -------
 
 Mojito code is organized into files that are custom YUI modules. In the YUI module, 
 you use ``YUI.add`` to register a string as the name of the custom YUI modules. See
-the `Mojits section <>`_ for more module information for controllers, models, binders, and
-tests.
+the :ref:`Mojits section <mojito_conventions-mojits>` for more module information for 
+controllers, models, binders, and tests.
+
+.. _conventions-tests:
 
 Tests
 -----
+
+.. _conventions_tests-unit:
 
 Unit
 ####
 
 Unit tests are located in the mojits and are run with the Mojito command-line utility. 
 Mojito allows you to write server-side unit tests for the controller and model.
-See the `Mojits: Tests <>`_ below for more information.
+See the :ref:`Mojits: Tests <conventions_mojits-tests>` below for more information.
+
+.. _conventions_tests-func:
 
 Functional 
 ##########
@@ -150,13 +173,17 @@ the npm module Arrow for writing and running functional tests. Arrow is a testin
 that fuses together JavaScript, Node.js, PhantomJS, and Selenium. 
 
 Mojito does not have any formal conventions for using Arrow. We recommend
-that you read the `Arrow documentation <>`_ and the wiki 
-`Mojito Framework's Unit and Functional Tests <https://github.com/yahoo/mojito/wiki/Mojito-Framework's-Unit-and-Functional-Tests>`_
-to see some examples.
+that you read the `Arrow documentation <https://github.com/yahoo/arrow/tree/master/docs>`_ 
+and the wiki `Mojito Framework's Unit and Functional Tests <https://github.com/yahoo/mojito/wiki/Mojito-Framework's-Unit-and-Functional-Tests>`_
+for examples.
 
+
+.. _mojito_conventions-mojits:
 
 Mojits
 ======
+
+.. _conventions_mojits-instances:
 
 Mojit Instances
 ---------------
@@ -165,6 +192,8 @@ The instance is defined in the application configuration file ``application.json
 and then created by Mojito when the application is started. The naming convention of
 mojit instances is to use a lower-case string, much as you would use a lower-case 
 string to name an object in JavaScript.
+
+.. _conventions_instances-config:
 
 Configuration
 #############
@@ -177,6 +206,7 @@ directory and is used to store default instance configuration values in the ``co
 object. For general data, mojits should use the ``definition.json`` file to store key-value 
 pairs not used to determine what action is executed or template is rendered.
 
+.. _conventions_mojits-definitions:
 
 Mojit Definitions
 -----------------
@@ -184,11 +214,15 @@ Mojit Definitions
 Mojit definitions are the files and code that constitute the mojit and are
 created with the command ``mojito create mojit <mojit_name>``. 
 
+.. _conventions_mojits_definitions-location:
+
 Location
 ########
 
 The default location for mojits is in ``{application_name}/mojits``, but you can specify 
 the location of mojits with the application configurations ``mojitDirs`` and ``mojitsDirs``.
+
+.. _conventions_mojits_definitions-naming:
 
 Naming
 ######
@@ -197,13 +231,19 @@ The naming convention for mojit definitions is to use an upper camel-case string
 the name as short as possible, such as ``Flickr`` or ``FlickrPhotos``. Think of the mojit 
 definition as a class name and the instance as an instantiation of the mojit.
 
+.. _conventions_mojits_def-controllers:
+
 Controllers
 ###########
+
+.. _mojits_def_controllers-location:
 
 Location
 ********
 
 ``mojits/{mojit_name}/``
+
+.. _mojits_def_controllers-naming:
 
 Naming
 ******
@@ -216,6 +256,8 @@ Thus, the syntax for controllers is as follows: ``controller.{affinity}.{selecto
 where ``{affinity}`` can be ``server``, ``common``, or ``client``, and ``{selector}``
 can either be omitted or defined by the ``selector`` property in ``application.json``.
 
+.. _mojits_def_controllers-modules:
+
 YUI Module Names
 ****************
 
@@ -223,13 +265,19 @@ The convention is for mojit controllers to register the mojit definition name as
 module name. For example, the mojit ``Flickr`` would register the module name 
 ``Flickr`` with ``YUI.add``: ``YUI.add('Flickr', function(Y, NAME) {``
 
+.. _conventions_mojits_def-models:
+
 Models
 ######
+
+.. _mojits_def_models-location:
 
 Location
 ********
 
 ``mojits/{mojit_name}/models/``
+
+.. _mojits_def_models-naming:
 
 Naming
 ******
@@ -237,11 +285,15 @@ Naming
 The default model is ``model.server.js``. The syntax for the model is ``{model_name}.{affinity}.js``,
 where ``{model_name}`` is a user-defined string.
 
+.. _mojits_def_models-module_naming:
+
 YUI Module Names
 ****************
 
 The naming of modules for mojit models has the following convention but is much looser in 
 its application: ``{mojit_name}Model``
+
+.. _mojits_def_models-using:
 
 Using Models
 ************
@@ -260,13 +312,19 @@ in this example:
    ...
   }, '0.0.1', {requires: ['mojito', 'mojito-models-addon']});
 
+.. _conventions_mojits_def-templates:
+
 Templates (Views)
 #################
+
+.. _mojits_def_templates-location:
 
 Location
 ********
 
 ``mojits/{mojit_name}/views/``
+
+.. _mojits_def_templates-naming:
 
 Naming
 ******
@@ -277,13 +335,19 @@ controller function being called or view specified, ``{selector}`` is defined by
 in ``application.json``, and ``{view_engine}`` being ``hb`` for Handlebars by default or any view engine
 implemented by the application developer.
 
+.. _conventions_mojits_def-binders:
+
 Binders
 #######
+
+.. _mojits_def_binders-location:
 
 Location
 ********
 
 ``mojits/{mojit_name}/binders/``
+
+.. _mojits_def_binders-naming:
 
 Naming
 ******
@@ -293,20 +357,28 @@ to the client by setting the application configuration ``deploy`` to ``true``, M
 binder file  ``{action}.js`` with the response body, where ``{action}`` is the controller action 
 mapped to the request URL.
 
+.. _mojits_def_binders-module_names:
+
 YUI Module Names
 ****************
 
 The naming of modules for mojit binders has the following convention: 
 ``{mojit_name}Binder{Action}``
 
+.. _conventions_mojits-tests:
+
 Tests
 -----
+
+.. _mojits_tests-location:
 
 Location
 ########
 
 - ``mojits/{mojit_name}/tests``
 - ``mojits/{mojit_name}/tests/models``
+
+.. _mojits_tests-naming:
 
 Naming
 ######
@@ -319,21 +391,28 @@ Test files use the following naming convention:
 .. note:: Mojito will run any JavaScript tests in the ``tests`` directory, but we suggest
           you use the naming convention shown above.
 
+.. _mojito_conventions-yui_modules:
 
 YUI Modules
 ===========
 
 This section is for custom YUI modules that developers want to include in the application code.
 
+.. _conventions_yui_modules-location:
+
 Location
 ---------
 
 ``{application_name}/yui_modules``
 
+.. _conventions_yui_modules-name:
+
 Name
 ----
 
 ``{module_name}.{affinity}.js``
+
+.. _conventions_yui_modules-yui_modules:
 
 Using the YUI Modules
 ---------------------
@@ -372,6 +451,8 @@ a possible example of using the helper:
    }, '1.0.0', { requires: ['mojito-models-addon', 'string-helper']});
      
 
+.. _mojito_conventions-addons:
+
 Addons
 ======
 
@@ -379,6 +460,8 @@ Addons are  extensions that provide functionality that lives both on the server
 and/or client. Each addon provides additional functions through a namespace that is 
 attached directly to the ``ActionContext`` object and is available when required in a 
 controller.
+
+.. _conventions_addons-builtin:
 
 Built-In Addons
 ---------------
@@ -409,17 +492,23 @@ could be any of the following:
           directory in the Mojito source code and the `Mojito API <http://developer.yahoo.com/cocktails/mojito/api/>`_
           documentation for more information.
 
+.. _conventions_addons-custom:
+
 Custom Addons
 -------------
 
 You can also create your own addons that you can include in controllers and then
 access through the ``ActionContext`` object just like the built-in addons.
 
+.. _addons_custom-location:
+
 Location
 ########
 
 - ``{app_dir}/addons/ac/``
 - ``{mojit_dir}/addons/ac/``
+
+.. _addons_custom-naming:
 
 Naming
 ######
@@ -430,6 +519,7 @@ is the string appended to the namespace defined in the addon, such as
 
 ``{addon_namespace}.{affinity}.js``
 
+.. _addons_custom-location:
 
 Module Names
 ############
@@ -440,13 +530,15 @@ addon, such as ``Y.namespace.addons.ac.{addon_namespace}``.
 
 ``addon-ac-{addon_namespace}``
 
+.. _conventions_addons-accessing:
 
 Accessing Addons
-----------------
+################
 
 To use an addon, you require the registered addon name in the 
 ``requires`` array of your controller.
 
+.. _conventions_mojits-tests:
 
 Tests
 -----
@@ -457,6 +549,7 @@ convention:
 - ``{mojit_name}-tests`` - (controller unit tests)
 - ``{mojit_name}Model-tests`` - (model unit tests)
 
+.. _mojito_conventions-static_assets:
 
 Static Assets
 =============
@@ -471,6 +564,8 @@ property of ``application.json``, and then have the ``HTMLFrameMojit`` attach th
 to the HTML skeleton. You can also just hard-code the path to the assets in your templates,
 but this is not the recommended approach.
 
+.. _conventions_assets-location:
+
 Location
 --------
 
@@ -484,6 +579,8 @@ For mojit-level assets, the recommended location is the following:
 
 - ``{mojit_name}/assets/css/``
 - ``{mojit_name}/assets/js/``
+
+.. _conventions_assets-path:
 
 Path
 ----
