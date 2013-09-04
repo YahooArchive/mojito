@@ -596,6 +596,7 @@ For mojit-level assets, the recommended location is the following:
 
 Path
 ----
+
 Mojito registers a path to the assets based on a prefix, a source path, and 
 the relative path to the assets. The *prefix* is the basename directory of 
 the static URL. The default value for the prefix is ``/static/``,
@@ -609,4 +610,13 @@ Thus, the default path to assets would have the following syntax: ``/{prefix}/{s
 For example, the default path to the application-level CSS asset ``index.css`` for the
 application ``NewsAggregator`` would be ``/static/NewsAggregator/assets/css/index.css``.
 
+Using Static Assets 
+-------------------
+
+There are three main ways to use static assets in your application:
+
+- Specify the asset paths in ``application.json`` for the `HTMLFrameMojit`` to attach to
+  the page. See `Code Examples: Attaching Assets with HTMLFrameMojit <../code_exs/framed_assets.html>`_.
+- Hardcode the static path to the assets in your template. See `Code Examples: Adding Assets <../code_exs/adding_assets.html>`_
+- Dynamically attach the assets with the ``Assets`` addon. See `Using the Assets Addon <../topics/mojito_assets.html#using-the-assets-addon>`_.
 
