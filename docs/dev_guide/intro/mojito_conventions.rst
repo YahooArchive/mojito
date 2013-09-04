@@ -245,8 +245,8 @@ Location
 
 .. _mojits_def_controllers-naming:
 
-Naming
-******
+File Name
+*********
 
 The default controller file is ``controller.server.js``, but you can use the affinity
 to determining where the controller will be executed and define different
@@ -279,11 +279,14 @@ Location
 
 .. _mojits_def_models-naming:
 
-Naming
-******
+File Name
+*********
 
-The default model is ``model.server.js``. The syntax for the model is ``{model_name}.{affinity}.js``,
-where ``{model_name}`` is a user-defined string.
+The syntax for the model file name is the following, where ``{model_name}`` is a 
+user-defined string:
+
+``{model_name}.{affinity}.js``
+
 
 .. _mojits_def_models-module_naming:
 
@@ -308,9 +311,11 @@ in this example:
      ...
        index: function(ac) {
          ac.models.get('FlickrModel').getData(function(err, data) {
+           ...
+         }
+       }
      ...
-   ...
-  }, '0.0.1', {requires: ['mojito', 'mojito-models-addon']});
+   }, '0.0.1', {requires: ['mojito', 'mojito-models-addon']});
 
 .. _conventions_mojits_def-templates:
 
@@ -326,14 +331,16 @@ Location
 
 .. _mojits_def_templates-naming:
 
-Naming
-******
+File Name
+*********
 
-The template file when you create a Mojito application is ``index.hb.html``. The template file names
-have the the following syntax: ``{action}.{selector}.{view_engine}.html``, where ``{action}`` is the
-controller function being called or view specified, ``{selector}`` is defined by the ``{selector}`` property
-in ``application.json``, and ``{view_engine}`` being ``hb`` for Handlebars by default or any view engine
-implemented by the application developer.
+The default template file when you create a Mojito application is ``index.hb.html``. 
+The template file names have the the following syntax, where ``{action}`` is the
+controller function being called or view specified, ``{selector}`` is defined by the 
+``{selector}`` property in ``application.json``, and ``{view_engine}`` being ``hb`` for 
+Handlebars by default or any view engine implemented by the application developer.
+
+- ``{action}.{selector}.{view_engine}.html``
 
 .. _conventions_mojits_def-binders:
 
@@ -349,13 +356,17 @@ Location
 
 .. _mojits_def_binders-naming:
 
-Naming
-******
+File Name
+*********
 
 When you use a frame mojit, such as ``HTMLFrameMojit``, and configure your application to deploy code
 to the client by setting the application configuration ``deploy`` to ``true``, Mojito will send the
-binder file  ``{action}.js`` with the response body, where ``{action}`` is the controller action 
-mapped to the request URL.
+binder file  with the response body.
+
+The file naming convention for binders is the following, where ``{action}`` is the 
+controller action mapped to the request URL.
+
+- ``{action}.js`` 
 
 .. _mojits_def_binders-module_names:
 
@@ -380,8 +391,8 @@ Location
 
 .. _mojits_tests-naming:
 
-Naming
-######
+File Name
+#########
 
 Test files use the following naming convention:
 
@@ -397,18 +408,19 @@ YUI Modules
 ===========
 
 This section is for custom YUI modules that developers want to include in the application code.
+See also `Configuring YUI in Mojito <../topics/mojito_yui_config.html>`_.
 
 .. _conventions_yui_modules-location:
 
 Location
----------
+--------
 
 ``{application_name}/yui_modules``
 
 .. _conventions_yui_modules-name:
 
-Name
-----
+File Name
+---------
 
 ``{module_name}.{affinity}.js``
 
@@ -510,8 +522,8 @@ Location
 
 .. _addons_custom-naming:
 
-Naming
-######
+File Name
+#########
 
 The naming convention for custom addons is the following, where ``{addon_namespace}``
 is the string appended to the namespace defined in the addon, such as 
