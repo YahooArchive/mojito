@@ -335,6 +335,42 @@ Name
 
 ``{module_name}.{affinity}.js``
 
+Using the YUI Modules
+---------------------
+
+The YUI module that you created registers the YUI module name with ``YUI.add``.
+In your mojit code (controllers, binders, models), you specify the module name
+as a dependency in the ``requires`` array. Your mojit code can then access the
+YUI module through the ``Y`` instance. 
+
+For example, suppose the YUI module ``string-helper`` is registered in the file ``string_helper.server.js``
+as shown below:
+
+.. code-block:: javascript
+
+   YUI.add('string-helper', function (Y) {
+     // Code goes here.
+     ...
+
+     // Add dependencies for your module in the `requires` array.
+   }, '1.0.0', { requires: []});
+
+Your controller could then access the module by requiring it. The example
+below shows how you would require our ``string-helper`` module and provides
+a possible example of using the helper:
+
+.. code-block:: javascript
+
+   YUI.add('Body', function (Y, NAME) { 
+     Y.namespace('mojito.binders')[NAME] = {
+       
+       index: function (ac) {
+           var str_helper = Y.StringHelper();
+           Y.log(str_helper.strip(" this is just a hypothetical example ");       
+       }
+     }
+   }, '1.0.0', { requires: ['mojito-models-addon', 'string-helper']});
+     
 
 Addons
 ======
