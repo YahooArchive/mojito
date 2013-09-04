@@ -1,8 +1,8 @@
-===============
-0. Introduction
-===============
+============
+Introduction
+============
 
-In this tutorial, you will be creating a dashboard application that reports 
+You will be creating a dashboard application that reports 
 GitHub activity and displays blog posts and displays tweets about Mojito and YUI. 
 We will be building our application in stages, so that you will start from the 
 most basic Mojito application and then add new features. 
@@ -11,7 +11,7 @@ The screenshot below is of the final dashboard application that you will
 be building. The application has a separate dashboard for YUI and Mojito information,
 such as GitHub statistics, Twitter feeds, YouTube videos, etc. 
 
-.. image:: images/trib_dashboard_app.png.png
+.. image:: images/trib_dashboard_app.png
    :height: 708 px
    :width: 850 px
    :alt: Screenshot of final Trib dashboard application.

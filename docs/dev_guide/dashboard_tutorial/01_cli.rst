@@ -1,5 +1,5 @@
 =====================
-01. Mojito CLI Basics
+1. Mojito CLI Basics
 =====================
 
 .. _01_cli-intro:
