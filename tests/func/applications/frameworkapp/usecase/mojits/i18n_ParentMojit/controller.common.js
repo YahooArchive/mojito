@@ -22,7 +22,7 @@ YUI.add('i18n_ParentMojit', function(Y, NAME) {
          *        to the Mojito API.
          */
         index: function(ac) {
-        	Y.log("lang="+Y.dump(Y.Intl.get(NAME)),"warn",NAME);
+            Y.log("lang="+Y.dump(Y.Intl.get(NAME)),"warn",NAME);
             ac.assets.addCss('./index.css');
             ac.composite.done({
                 status: 'Mojito is working.',
@@ -32,4 +32,4 @@ YUI.add('i18n_ParentMojit', function(Y, NAME) {
 
     };
 
-}, '0.0.1', {requires: ['mojito','dump', 'mojito-composite-addon','mojito-intl-addon','mojito-assets-addon','intl']});
+}, '0.0.1', {requires: ['mojito','dump','mojito-composite-addon','mojito-intl-addon','mojito-assets-addon','intl']});
