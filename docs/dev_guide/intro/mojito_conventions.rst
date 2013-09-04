@@ -213,7 +213,7 @@ to determining where the controller will be executed and define different
 versions of the controller with the ``selector`` property in ``application.json``.
 
 Thus, the syntax for controllers is as follows: ``controller.{affinity}.{selector}.js``,
-where ``{affinity}}`` can be ``server``, ``common``, or ``client``, and ``{selector}}``
+where ``{affinity}`` can be ``server``, ``common``, or ``client``, and ``{selector}``
 can either be omitted or defined by the ``selector`` property in ``application.json``.
 
 YUI Module Names
