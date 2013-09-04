@@ -236,25 +236,21 @@ definition as a class name and the instance as an instantiation of the mojit.
 Controllers
 ###########
 
-.. _mojits_def_controllers-location:
+.. _mojits_def_controllers-pathname:
 
-Location
+Pathname
 ********
 
-``mojits/{mojit_name}/``
+``mojits/{mojit_name}/controller.{affinity}.{selector}.js``
 
-.. _mojits_def_controllers-naming:
-
-File Name
-*********
+For the file name of the controller shown above, the ``{affinity}`` can be 
+``server``, ``common``, or ``client``, and ``{selector}``
+can either be omitted or defined by the ``selector`` property in ``application.json``.
 
 The default controller file is ``controller.server.js``, but you can use the affinity
 to determining where the controller will be executed and define different
 versions of the controller with the ``selector`` property in ``application.json``.
 
-Thus, the syntax for controllers is as follows: ``controller.{affinity}.{selector}.js``,
-where ``{affinity}`` can be ``server``, ``common``, or ``client``, and ``{selector}``
-can either be omitted or defined by the ``selector`` property in ``application.json``.
 
 .. _mojits_def_controllers-modules:
 
@@ -272,20 +268,13 @@ Models
 
 .. _mojits_def_models-location:
 
-Location
+Pathname
 ********
 
-``mojits/{mojit_name}/models/``
+``mojits/{mojit_name}/models/{model_name}.{affinity}.js``
 
-.. _mojits_def_models-naming:
-
-File Name
-*********
-
-The syntax for the model file name is the following, where ``{model_name}`` is a 
+In the model file name shown above, ``{model_name}`` is a 
 user-defined string:
-
-``{model_name}.{affinity}.js``
 
 
 .. _mojits_def_models-module_naming:
@@ -324,23 +313,18 @@ Templates (Views)
 
 .. _mojits_def_templates-location:
 
-Location
+Pathname
 ********
 
-``mojits/{mojit_name}/views/``
-
-.. _mojits_def_templates-naming:
-
-File Name
-*********
+``mojits/{mojit_name}/views/{action}.{selector}.{view_engine}.html``
 
 The default template file when you create a Mojito application is ``index.hb.html``. 
-The template file names have the the following syntax, where ``{action}`` is the
+In the template file shown above, ``{action}`` is the
 controller function being called or view specified, ``{selector}`` is defined by the 
 ``{selector}`` property in ``application.json``, and ``{view_engine}`` being ``hb`` for 
 Handlebars by default or any view engine implemented by the application developer.
 
-- ``{action}.{selector}.{view_engine}.html``
+- ````
 
 .. _conventions_mojits_def-binders:
 
@@ -349,24 +333,21 @@ Binders
 
 .. _mojits_def_binders-location:
 
-Location
+Pathname
 ********
 
-``mojits/{mojit_name}/binders/``
+``mojits/{mojit_name}/binders/{action}.js``
 
-.. _mojits_def_binders-naming:
 
-File Name
-*********
+In the binder file shown above, ``{action}`` is the 
+controller action mapped to the request URL.
 
 When you use a frame mojit, such as ``HTMLFrameMojit``, and configure your application to deploy code
 to the client by setting the application configuration ``deploy`` to ``true``, Mojito will send the
 binder file  with the response body.
 
-The file naming convention for binders is the following, where ``{action}`` is the 
-controller action mapped to the request URL.
 
-- ``{action}.js`` 
+- ```` 
 
 .. _mojits_def_binders-module_names:
 
@@ -383,21 +364,11 @@ Tests
 
 .. _mojits_tests-location:
 
-Location
+Pathname
 ########
 
-- ``mojits/{mojit_name}/tests``
-- ``mojits/{mojit_name}/tests/models``
-
-.. _mojits_tests-naming:
-
-File Name
-#########
-
-Test files use the following naming convention:
-
-- ``controller.server-tests.js``
-- ``{model_name}.{affinity}-tests.js``
+- ``mojits/{mojit_name}/tests/controller.server-tests.js``
+- ``mojits/{mojit_name}/tests/models/{model_name}.{affinity}-tests.js``
 
 .. note:: Mojito will run any JavaScript tests in the ``tests`` directory, but we suggest
           you use the naming convention shown above.
@@ -412,17 +383,11 @@ See also `Configuring YUI in Mojito <../topics/mojito_yui_config.html>`_.
 
 .. _conventions_yui_modules-location:
 
-Location
+Pathname
 --------
 
-``{application_name}/yui_modules``
+``{application_name}/yui_modules/{module_name}.{affinity}.js``
 
-.. _conventions_yui_modules-name:
-
-File Name
----------
-
-``{module_name}.{affinity}.js``
 
 .. _conventions_yui_modules-yui_modules:
 
@@ -514,22 +479,15 @@ access through the ``ActionContext`` object just like the built-in addons.
 
 .. _addons_custom-location:
 
-Location
+Pathname
 ########
 
-- ``{app_dir}/addons/ac/``
-- ``{mojit_dir}/addons/ac/``
+- ``{app_dir}/addons/ac/{addon_namespace}.{affinity}.js``
+- ``{mojit_dir}/addons/ac/{addon_namespace}.{affinity}.js``
 
-.. _addons_custom-naming:
-
-File Name
-#########
-
-The naming convention for custom addons is the following, where ``{addon_namespace}``
+For the addon files shown above, ``{addon_namespace}``
 is the string appended to the namespace defined in the addon, such as 
 ``Y.namespace.addons.ac.{addon_namespace}``.
-
-``{addon_namespace}.{affinity}.js``
 
 .. _addons_custom-location:
 
@@ -594,8 +552,8 @@ For mojit-level assets, the recommended location is the following:
 
 .. _conventions_assets-path:
 
-Path
-----
+Pathname
+--------
 
 Mojito registers a path to the assets based on a prefix, a source path, and 
 the relative path to the assets. The *prefix* is the basename directory of 
