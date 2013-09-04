@@ -12,7 +12,7 @@ YUI.add('serveronly-headerclient-tests', function (Y) {
 	            expect = ['keep-alive', 'Keep-Alive'],
 	            found = false;
 	        Y.one('#p_headers').simulate('click');
-            that.wait(function(){
+	        that.wait(function(){
                 Y.Assert.areEqual('somevalue', Y.one('#my_header').get('innerHTML'));
                 var result = Y.one('#connection').get('innerHTML');
                 for(i = 0; i< expect.length; i++){
