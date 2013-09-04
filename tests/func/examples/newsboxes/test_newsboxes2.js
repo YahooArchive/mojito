@@ -8,10 +8,13 @@ YUI.add('newsbox-tests', function (Y) {
     suite.add(new Y.Test.Case({
          
         "test newsbox2": function() {
-            Y.Assert.areEqual("Contents", Y.all('a').item(0).get('innerHTML'));
-            Y.Assert.areEqual("Source", Y.all('a').item(1).get('innerHTML'));
-            Y.Assert.areNotEqual("Ooo, could not fetch stories for", Y.one('#desc').get('innerHTML').match(/Ooo, could not fetch stories for/gi));
-            Y.Assert.isTrue(Y.one('.main-sv').hasClass('yui3-scrollview-content'));
+            var that = this;
+            that.wait(function(){
+                Y.Assert.areEqual("Contents", Y.all('a').item(0).get('innerHTML'));
+                Y.Assert.areEqual("Source", Y.all('a').item(1).get('innerHTML'));
+                Y.Assert.areNotEqual("Ooo, could not fetch stories for", Y.one('#desc').get('innerHTML').match(/Ooo, could not fetch stories for/gi));
+                Y.Assert.isTrue(Y.one('.main-sv').hasClass('yui3-scrollview-content'));
+            }, 2000);
         }
     }));    
 

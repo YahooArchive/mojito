@@ -1,14 +1,14 @@
-      YUI({
-        useConsoleOutput: true,
-        useBrowserConsole: true,
-        logInclude: { TestRunner: true }
-      }).use('node', 'node-event-simulate', 'test', 'console', function (Y) {
+YUI({
+    useConsoleOutput: true,
+    useBrowserConsole: true,
+    logInclude: { TestRunner: true }
+}).use('node', 'node-event-simulate', 'test', 'console', function (Y) {
 
-        'use strict';
-        var suite = new Y.Test.Suite("Dashboard App: Testing Module"),
-            url = window.location.protocol + "//" + window.location.host + "/";
-        suite.add(new Y.Test.Case({
-          "test HTML title and heading of page": function () {   
+    'use strict';
+    var suite = new Y.Test.Suite("Dashboard App: Testing Module"),
+        url = window.location.protocol + "//" + window.location.host + "/";
+    suite.add(new Y.Test.Case({
+        "test HTML title and heading of page": function () {
             var that = this;
             that.wait(function(){
                 // Tests the title in HTML header
@@ -17,7 +17,8 @@
                 // Tests the title within the content
                 Y.Assert.areEqual("Trib - YUI Developer Dashboard", Y.one('body h1').get('innerHTML'));
             }, 2000);
-          }
-        }));
-        Y.Test.Runner.add(suite);
-      });
+        }
+    }));
+    Y.Test.Runner.add(suite);
+});
+
