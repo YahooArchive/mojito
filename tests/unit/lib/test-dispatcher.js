@@ -21,9 +21,14 @@ YUI().use('test', function (Y) {
             dispatcher = require('../../../lib/dispatcher');
         },
         'tearDown': function () {
+            dispatcher.resetRoutesConfig();
         },
         'test OK': function () {
             A.isFunction(function () { });
+        },
+
+        'test resetRoutesConfig': function () {
+            A.isFunction(dispatcher.resetRoutesConfig);
         },
 
         // verify:
@@ -31,12 +36,15 @@ YUI().use('test', function (Y) {
         'test dispatch': function () {
             A.isFunction(dispatcher.dispatch);
 
-            var req,
+            var cb,
+                req,
                 res,
                 next,
                 mid,
                 handleRequestCalled = false,
                 fn;
+
+            cb = function () { };
 
             fn = dispatcher.handleRequest;
             dispatcher.handleRequest = function (req, res, next) {
@@ -48,11 +56,12 @@ YUI().use('test', function (Y) {
                     mojito: { },
                     routes: {
                         get: [{
-                            path: 'path',
+                            path: '/path',
                             method: 'get',
                             regexp: /^\/path\/?/,
                             keys: [ ],
-                            params: { }
+                            params: { },
+                            callbacks: [ cb ]
                         }]
                     }
                 },
@@ -85,16 +94,18 @@ YUI().use('test', function (Y) {
         // - req.app.mojito.routes is set on first invocation
         // - req.app.mojito.routes['get'] is set
         // - req.app.mojito.routes['get'].dispatch is set
-        'test dispatch and verify routes cached is built': function () {
+        'test dispatch and verify routes are annotated': function () {
             A.isFunction(dispatcher.dispatch);
 
             var req,
                 res,
                 next,
                 mid,
+                annotateCalled = false,
                 handleRequestCalled = false,
                 fn,
-                cb;
+                cb,
+                r;
 
             fn = dispatcher.handleRequest;
             dispatcher.handleRequest = function (req, res, next) {
@@ -102,42 +113,58 @@ YUI().use('test', function (Y) {
             };
 
             cb = function () { };
-            cb.dispatch = { X: 'Y' };
+            cb.dispatch = {
+                call: 'admin.help',
+                params: {},
+                options: {}
+            };
 
             req = {
                 app: {
                     mojito: { },
                     routes: {
                         get: [{
-                            path: 'path',
+                            path: '/path/annotated',
                             method: 'get',
-                            regexp: /^\/path\/?/,
+                            regexp: /^\/path\/annotated\/?/,
                             keys: [ ],
                             params: { },
                             callbacks: [ cb ]
                         }]
+                    },
+                    annotate: function (path, anns) {
+                        console.log('<><<><><><><><><><><');
+                        annotateCalled = true;
+                        A.areEqual('/path/annotated', path, 'wrong path value');
+                        A.isNotUndefined(anns, 'missing annotations');
+                        req.app.routes.get[0].annotations = anns;
                     }
                 },
-                url: '/admin',
+                url: '/path/annotated',
                 query: { },
                 params: { },
                 context: { runtime: 'server' }
             };
 
             mid = dispatcher.dispatch('admin.help');
+            A.isNotUndefined(mid.dispatch);
+            A.areEqual('admin.help', mid.dispatch.call, 'Wrong dispatch.call value');
+            // cb.dispatch = mid.dispatch;
+            req.app.routes.get[0].callbacks[0].dispatch = mid.dispatch;
+
+            // console.log(req.app.routes.get[0].callbacks[0].toString());
+            // { call: 'admin.help', params: {}, options: {} }
+            // console.log(req.app.routes.get[0].callbacks[0].dispatch);
 
             mid(req, res, next);
 
-            A.isNotUndefined(req.app.mojito.routes, 'req.app.mojito.routes was not initialized!');
-            A.isNotUndefined(req.app.mojito.routes.get,
-                             'req.app.mojito.routes.get property is not set');
-            A.areEqual('path', req.app.mojito.routes.get[0].path, 'wrong path');
-            A.areEqual('get', req.app.mojito.routes.get[0].method, 'wrong method');
-            A.isNotUndefined(req.app.mojito.routes.get[0].dispatch, 'missing dispatch property');
-            A.areEqual('Y',
-                       req.app.mojito.routes.get[0].dispatch.X,
-                       'missing dispatch.X property');
+            A.areEqual(true, annotateCalled, 'app.annotate() was not called');
 
+            r = req.app.routes.get[0];
+            A.isNotUndefined(r.annotations, 'route is missing "annotations" property');
+            A.isNotUndefined(r.annotations.dispatch, 'route is missing "dispatch" property');
+            A.areEqual('admin.help', r.annotations.dispatch.call,
+                        'dispatch.call incorrect');
 
             dispatcher.handleRequest = fn;
         },
@@ -164,8 +191,10 @@ YUI().use('test', function (Y) {
                 command: { },
                 context: { runtime: 'server' },
                 app: {
+                    getRouteMap: function () {
+                        return { foobar: { A: 'B' } };
+                    },
                     mojito: {
-                        routes: { x: 'y' },
                         Y: {
                             log: function () { },
                             mojito: {
@@ -181,8 +210,8 @@ YUI().use('test', function (Y) {
                                                 OA.areEqual({appConfig: 'true'},
                                                             output.page.appConfig,
                                                             'wrong output.page.appConfig');
-                                                OA.areEqual({ x: 'y' },
-                                                            output.page.routes,
+                                                OA.areEqual({ A: 'B' },
+                                                            output.page.routes.foobar,
                                                             'wrong output.page.routes');
                                             }
                                         };

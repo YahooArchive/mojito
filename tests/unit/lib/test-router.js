@@ -136,7 +136,22 @@ YUI().use('test', function (Y) {
             var o,
                 adminCalled = false,
                 helpCalled = false,
+                mapCalled = false,
                 postCalled = false;
+
+
+            router._app.map = function (path, name) {
+                mapCalled = true;
+                // verify that name and path matches
+                if (path === '/admin') {
+                    A.areEqual('admin', name, 'name should be "admin"');
+                } else if (path === '/help') {
+                    A.areEqual('help', name, 'name should be "help"');
+                } else {
+                    A.isTrue(false, 'invalid path: ' + path);
+                }
+
+            };
 
             router._app.get = function (path, fn) {
                 if (path === "/admin") {

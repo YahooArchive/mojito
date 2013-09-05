@@ -51,19 +51,24 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
             A.areSame('ohhai url', url);
         },
 
-        'test find url (get) using real RouteMaker': function() {
+        'test find url (get) using real RouteMaker': function () {
             var addon, url;
+
             adapterMock.page.routes = {
-                'get': [{
+                'foo': {
                     path: '/a/b/c/',
-                    method: 'get',
-                    regexp: /^(\/a\/b\/c\/?)+/,
-                    dispatch: {
-                        call: 'foo',
-                        params: { },
-                        options: { }
+                    keys: [],
+                    methods: { get: true },
+                    regexp: /^\/a\/b\/c\/?/,
+                    annotations: {
+                        name: 'foo',
+                        dispatch: {
+                            call: 'foo',
+                            params: { },
+                            options: { }
+                        }
                     }
-                }]
+                }
             };
 
             //need to use real find() which needs real RouteMaker
@@ -73,39 +78,29 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
 
             url = addon.find('/a/b/c/', 'get');
 
-            // url = {
-            //     "call": "foo",
-            //     "path": "/a/b/c/",
-            //     "verbs": {
-            //         "GET": true
-            //     },
-            //     "name": "aroute",
-            //     "params": {},
-            //     "regex": {},
-            //     "query": {},
-            //     "requires": {},
-            //     "ext_match": "^/a/b/c/$",
-            //     "int_match": "^$"
-            // }
-
-            A.areSame('foo', url.call);
+            A.areSame('foo', url.annotations.dispatch.call);
             A.areSame('/a/b/c/', url.path);
-            OA.ownsNoKeys(url.params);
+            OA.ownsNoKeys(url.annotations.dispatch.params);
         },
 
         'test find http://url?with=params (get) using real RouteMaker': function() {
             var addon, url;
             adapterMock.page.routes = {
-                'get': [{
+                'foo': {
                     path: '/a/b/c/',
-                    method: 'get',
+                    methods: {
+                        get: true
+                    },
                     regexp: /^(\/a\/b\/c\/?)+/,
-                    dispatch: {
-                        call: 'foo',
-                        params: { },
-                        options: { }
+                    annotations: {
+                        name: 'foo',
+                        dispatch: {
+                            call: 'foo',
+                            params: { },
+                            options: { }
+                        }
                     }
-                }]
+                }
             };
 
             //need to use real find() which needs real RouteMaker
@@ -114,9 +109,9 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
             addon = new Y.mojito.addons.ac.url({}, adapterMock, acMock);
 
             url = addon.find('http://xyz.com/a/b/c/?a=1&b=2', 'get');
-            A.areSame('foo', url.call);
+            A.areSame('foo', url.annotations.dispatch.call);
             A.areSame('/a/b/c/', url.path);
-            OA.ownsNoKeys(url.params);
+            OA.ownsNoKeys(url.annotations.dispatch.params);
         },
 
         'test find url (post)': function() {
