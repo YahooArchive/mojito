@@ -92,6 +92,5 @@ YUI.add('PagedFlickr', function(Y) {
     'mojito-params-addon',
     'mojito-url-addon',
     'mojito-util',
-    'ModelFlickr',
-    'intl'
+    'ModelFlickr'
 ], lang: ['de', 'en-US']});

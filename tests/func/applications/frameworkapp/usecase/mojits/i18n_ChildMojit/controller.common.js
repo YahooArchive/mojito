@@ -31,4 +31,4 @@ YUI.add('i18n_ChildMojit', function(Y, NAME) {
 
     };
 
-}, '0.0.1', {requires: ['mojito','dump','mojito-assets-addon','mojito-intl-addon','intl']});
+}, '0.0.1', {requires: ['mojito','dump','mojito-assets-addon','mojito-intl-addon']});
