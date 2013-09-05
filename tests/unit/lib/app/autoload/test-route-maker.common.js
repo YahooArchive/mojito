@@ -22,47 +22,62 @@ YUI().use('mojito-route-maker', 'mojito-util', 'test', 'dump', function (Y) {
             function (req, res, next) { next(); }
         ];
 
+
+        // The route configuration should conform to 
+        // express-map#getRouteMap() 
         routes = {
-            get: [{
+            'admin.help': {
                 path: '/admin/help',
-                method: 'get',
+                methods: { get: true },
                 callbacks: [ fns ],
                 keys: [],
                 regexp: /^\/admin\/help\/?$/i,
-                dispatch: {
-                    call: 'admin.help',
-                    params: { },
-                    options: { }
+                annotations: {
+                    name: 'admin.help',
+                    dispatch: {
+                        call: 'admin.help',
+                        params: { },
+                        options: { }
+                    }
                 }
-            }, {
+            },
+            'admin.:action': {
                 path: '/admin/:action',
-                method: 'get',
+                methods: { get: true },
                 callbacks: [ fns ],
                 keys: [
                     { name: 'action', optional: false }
                 ],
                 regexp: /^\/admin\/(?:([^\/]+?))\/?$/i,
-                dispatch: {
-                    call: 'admin.support',
-                    params: { },
-                    options: { }
+                annotations: {
+                    name: 'admin.:action',
+                    dispatch: {
+                        call: 'admin.support',
+                        params: { },
+                        options: { }
+                    }
                 }
-            }, {
+            },
+            ':type.support': {
                 path: '/:type/support',
-                method: 'get',
+                methods: { get: true },
                 callbacks: [ fns ],
                 keys: [
                     { name: 'type', optional: false }
                 ],
                 regexp: /^\/(?:([^\/]+?))\/support\/?$/i,
-                dispatch: {
-                    call: 'admin.support',
-                    params: { },
-                    options: { }
+                annotations: {
+                    name: ':type.support',
+                    dispatch: {
+                        call: 'admin.support',
+                        params: { },
+                        options: { }
+                    }
                 }
-            }, {
+            },
+            ':foo.:bar': {
                 path: '/:foobar/:foo',
-                method: 'get',
+                methods: { get: true },
                 callbacks: [ fns ],
                 keys: [
                     { name: 'foobar', optional: false },
@@ -70,28 +85,33 @@ YUI().use('mojito-route-maker', 'mojito-util', 'test', 'dump', function (Y) {
                 ],
                 // regexp: /^\/(?:([^\/]+?))\/support\/?$/i,
                 regexp: /^\/(?:([^\/]+?))\/(?:([^\/]+?))\/?$/i,
-                dispatch: {
-                    call: 'foobar.foo',
-                    params: { },
-                    options: { }
+                annotations: {
+                    name: ':foo.:bar',
+                    dispatch: {
+                        call: 'foobar.foo',
+                        params: { },
+                        options: { }
+                    }
                 }
-            }],
-            post: [{
+            },
+            ':type.:action': {
                 path: '/:type/:action',
-                method: 'post',
+                methods: { post: true },
                 callbacks: [ fns ],
                 keys: [
                     { name: 'type', optional: false },
                     { name: 'action', optional: false }
                 ],
                 regexp: /^\/(?:([^\/]+?))\/(?:([^\/]+?))\/?$/i,
-                dispatch: {
-                    call: 'admin.submit',
-                    params: { },
-                    options: { }
+                annotations: {
+                    name: ':type.:action',
+                    dispatch: {
+                        call: 'admin.submit',
+                        params: { },
+                        options: { }
+                    }
                 }
-            }],
-            'delete': []
+            }
         };
 
         routesFixture = routes;
@@ -225,14 +245,12 @@ YUI().use('mojito-route-maker', 'mojito-util', 'test', 'dump', function (Y) {
             var route = routeMaker.find('/admin/help', 'get');
             A.isNotUndefined(route, 'route not found for /admin/help');
             A.areEqual('/admin/help', route.path, 'wrong route.path for /admin/help');
-            A.areEqual('admin.help', route.call, 'wrong route.dispatch');
-            A.areEqual('/admin/help.admin.help', route.name, 'wrong route.name');
-            A.areEqual(true, route.verbs.GET, 'wrong route.verbs.GET for /admin/help');
-            OA.areEqual({}, route.params, 'wrong route.dispatch.params');
+            A.areEqual('admin.help', route.annotations.dispatch.call, 'wrong route.annotations.dispatch.call');
+            A.areEqual('admin.help', route.annotations.name, 'wrong route.annotations.name');
+            OA.areEqual({}, route.annotations.dispatch.params, 'wrong route.annotations.dispatch.params');
             // route.regex uses previous mojito format
             // OA.areEqual({}, route.regex, 'wrong route.regex');
             // Y.log('----' + route.ext_match.toString());
-            OA.areEqual(/^\/admin\/help\/?$/i, route.ext_match, 'wrong route.ext_match');
         },
 
         //
@@ -243,10 +261,9 @@ YUI().use('mojito-route-maker', 'mojito-util', 'test', 'dump', function (Y) {
             Y.log(JSON.stringify(route));
             A.isNotUndefined(route, 'route not found for /admin/showrights');
             A.areEqual('/admin/:action', route.path, 'wrong route for /admin/showrights');
-            A.areEqual('admin.support', route.call, 'wrong route.call');
-            A.areEqual('showrights', route.params.action,
+            A.areEqual('admin.support', route.annotations.dispatch.call, 'wrong route.annotatoins.dispatch.call');
+            A.areEqual('showrights', route.annotations.dispatch.params.action,
                         'wrong action for /admin/showrights');
-            OA.areEqual(/^\/admin\/(?:([^\/]+?))\/?$/i, route.ext_match, 'wrong route.ext_match');
         },
         //
         // path: /:type/:action
@@ -259,10 +276,10 @@ YUI().use('mojito-route-maker', 'mojito-util', 'test', 'dump', function (Y) {
             var route = routeMaker.find('/root/showrights', 'post');
             A.isNotUndefined(route, 'route not found for /root/showrights');
             A.areEqual('/:type/:action', route.path, 'wrong route for /root/showrights');
-            A.areEqual('admin.submit', route.call, 'wrong route.call');
-            A.areEqual('root', route.params.type,
+            A.areEqual('admin.submit', route.annotations.dispatch.call, 'wrong route.call');
+            A.areEqual('root', route.annotations.dispatch.params.type,
                         'wrong :type for /root/showrights');
-            A.areEqual('showrights', route.params.action,
+            A.areEqual('showrights', route.annotations.dispatch.params.action,
                         'wrong :action for /root/showrights');
         },
 
@@ -277,81 +294,6 @@ YUI().use('mojito-route-maker', 'mojito-util', 'test', 'dump', function (Y) {
         'test route finder use case #4 (-ve test)': function () {
             var route = routeMaker.find('/doesnotexist/root/showrights', 'get');
             A.isNull(route, 'no route expected for path GET /root/showrights');
-        },
-
-
-        'test convertAppRoute': function () {
-            var appRoutes,
-                routes,
-                route,
-                i;
-
-            appRoutes = [{
-                path: '/bar',
-                method: 'get',
-                callbacks: [ function (req, res, next) { } ],
-                keys: [],
-                rexgexp: /^\/bar\/?$/i,
-                dispatch: {
-                    call: 'bar.index',
-                    params: {},
-                    options: {}
-                },
-                params: []
-            }, {
-                path: '/foo/:bar',
-                method: 'post',
-                callbacks: [ function (req, res, next) { } ],
-                keys: [
-                    { name: 'bar', optional: false }
-                ],
-                rexgexp: /^\/foo\/(?:([^\/]+?))\/?$/i,
-                dispatch: {
-                    call: 'foo.action',
-                    params: {
-                    },
-                    options: {}
-                },
-                params: []
-            }];
-
-            routes = [{
-                path: '/bar',
-                call: 'bar.index',
-                name: 'bar.index',
-                verbs: {
-                    GET: true
-                },
-                params: {},
-                regex: {},
-                ext_match: /^\/bar\/?$/i
-                // query: {},
-                // requires: {},
-                // int_match: ''
-            }, {
-                path: '/foo/:bar',
-                call: 'bar.action',
-                name: 'bar.action',
-                verbs: {
-                    POST: true
-                },
-                params: {},
-                regex: { },
-                ext_match: /^\/bar\/?$/i
-            }];
-
-            for (i = 0; i < appRoutes.length; i = i + 1) {
-                route = routeMaker._convertAppRoute(appRoutes[i]);
-                // Y.log(Y.dump(route), 'debug');
-                A.areEqual(routes[i].path,
-                           route.path,
-                           'wrong route.path for index ' + i);
-                A.areEqual(true,
-                           route.verbs[appRoutes[i].method.toUpperCase()],
-                           'wrong route.verbs for index ' + i);
-
-            }
-
         },
 
         'test dummy': function () {
