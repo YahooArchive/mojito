@@ -32,4 +32,4 @@ YUI.add('i18n_ParentMojit', function(Y, NAME) {
 
     };
 
-}, '0.0.1', {requires: ['mojito','dump','mojito-composite-addon','mojito-intl-addon','mojito-assets-addon','intl']});
+}, '0.0.1', {requires: ['mojito','dump','mojito-composite-addon','mojito-intl-addon','mojito-assets-addon']});
