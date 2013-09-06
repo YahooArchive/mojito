@@ -55,6 +55,7 @@ YUI.add('ShowUrl', function (Y, NAME) {
                         });
                     } else {
                         url = ac.url.make(mojitName, mojitAction);
+                        // console.log('URL: ' + url); // route-1
                     }
 					// Mojito no longer throws an exception if a url cannot be constructed.
 					// Instead, null is returned.
@@ -82,10 +83,10 @@ YUI.add('ShowUrl', function (Y, NAME) {
                 if (matchroute !== null) {
                     data = {
                         url: mojitUrl,
-                        verbs: matchroute.verbs.GET,
-                        call: matchroute.call,
-                        name: matchroute.name,
-                        params: matchroute.params.secret
+                        verbs: matchroute.methods.get,
+                        call: matchroute.annotations.dispatch.call,
+                        name: matchroute.annotations.name,
+                        params: matchroute.annotations.dispatch.params.secret
                     };
                 } else {
                     data = {

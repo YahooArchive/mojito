@@ -50,7 +50,12 @@
             "verb": ["get"],
             "path": "/routepostget",
             "call": "Poster.index"
+        },
+        "testing-ac-url-find": {
+            "verb": ["get"],
+            "path": "/you/found/a/good/path",
+            "params": "secret=garden",
+            "call": "goodaction.goodindex"
         }
-
     }
 ]
