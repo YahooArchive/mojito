@@ -13,6 +13,8 @@ Features
 Bug Fixes
 ---------
 
+* Issue #1215: [regression] lang collection in metas is missing for controller 
+
 Acknowledgements
 ----------------
 
