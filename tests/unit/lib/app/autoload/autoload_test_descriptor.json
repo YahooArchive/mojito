@@ -48,14 +48,6 @@
                 },
                 "group": "fw,unit,client"
             },
-            "mojito.common": {
-                "params": {
-                    "page": "$$config.base$$/mojito-test.html",
-                    "lib": "$$config.lib$$/app/autoload/mojito.common.js",
-                    "test": "./test-mojito.common.js"
-                },
-                "group": "fw,unit,client,server"
-            },
             "output-handler.client": {
                 "params": {
                     "page": "$$config.base$$/mojito-test.html",
@@ -63,22 +55,6 @@
                     "test": "./test-output-handler.client.js"
                 },
                 "group": "fw,unit,client"
-            },
-            "mojito-perf.client": {
-                "params": {
-                    "page": "$$config.base$$/mojito-test.html",
-                    "lib": "$$config.lib$$/app/autoload/perf.client.js",
-                    "test": "./test-perf.client.js"
-                },
-                "group": "fw,unit,client"
-            },
-            "mojito-perf.server": {
-                "params": {
-                    "lib": "$$config.lib$$/app/autoload/perf.server.js",
-                    "test": "./test-perf.server.js",
-                    "driver": "nodejs"
-                },
-                "group": "fw,unit,server"
             },
             "package-walker.server": {
                 "params": {

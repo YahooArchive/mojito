@@ -381,6 +381,19 @@ links.
      }
    ...
 
+Other mojits on the page that want to access the global Handlebars helper in their 
+templates must require the ``Helpers`` addon in their controllers as shown below:
+
+.. code-block:: javascript
+
+   YUI.add('childMojit', function(Y, NAME) {
+     // This is a child mojit that wants to reference the global
+     // Handlebars helper. Although no helper code is needed in the controller,
+     // the controller must require the `Helpers` addon by adding the string
+     // `mojito-helpers-addon` to the `requires` array for its template to use the helper.
+   }, '0.0.1', {requires: ['mojito', 'mojito-helpers-addon', 'mojito-params-addon', 'highlight']});
+
+
 In the template ``index.hb.html`` below, the Handlebars block helper ``each``
 iterates through the objects contained in the array ``yui_info.modules``, and
 then the custom helper ``toLink`` creates links with the values of the properties

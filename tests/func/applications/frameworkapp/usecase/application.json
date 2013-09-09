@@ -1,6 +1,9 @@
 [
     {
         "settings": [ "master" ],
+        "resourceStore": {
+            "lazyResolve": true
+        },
         "specs": {
             "hello-1": {
                 "type": "HelloMojit"

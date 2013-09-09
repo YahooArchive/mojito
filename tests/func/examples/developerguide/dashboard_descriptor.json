@@ -1,7 +1,7 @@
 [
     {
         "settings": [ "master" ],
-        "name" : "trib_app",
+        "name" : "trib",
 
         "config" :{
             "baseUrl" : "http://localhost:8666",
@@ -11,7 +11,7 @@
             }
         },
         "dataprovider" : { 
-            "test trib app index page" : {
+            "test Trib app index page" : {
                 "group" : "tribapp",
                 "params" : {
                     "scenario": [

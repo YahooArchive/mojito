@@ -9,12 +9,40 @@ Deprecations, Removals
 
 Features
 --------
+* The `lib/store.js` has a new `getAppConfig()` function. This is a better choice
+for reading the static application configuration than `createStore()`.
+* The resource store now exposes the server's runtime YUI instance via the
+`runtimeYUI` member. Resource store addons can access it via `this.get('host').runtimeYUI`.
 
 Bug Fixes
 ---------
 
 Acknowledgements
 ----------------
+
+version 0.7.3
+=================
+
+Features
+--------
+
+* PR #1195: New `resourceStore.lazyResolve:true` option in `application.json`.
+  Normally, the resource store at server start pre-calculates the details for
+  all mojits for all contexts/selectors (it's optimized to only do this for
+  dimensions/selectors that are actually used). By setting this new option the
+  resource store will skip this calculation at server start and instead do it
+  at runtime "lazily" (as needed). This might be a good option to use if you
+  have a large number of dimensions defined in `dimensions.json` and a lot of
+  selectors defined in `application.json`, yet your app will only serve traffic
+  from a subset of those, or the synchronous computation of all resolutions
+  would make your app too slow to start. This option evens-out that process in
+  time by only triggering it the first time it's needed and caching the result.
+
+Acknowledgements
+----------------
+
+Thanks to [Jacques Arnoux](https://github.com/jarnoux) and [David
+Gomez](https://github.com/gomezd) for contributing to this release.
 
 version 0.7.2
 =================
