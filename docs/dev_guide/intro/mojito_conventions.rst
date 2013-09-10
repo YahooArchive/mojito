@@ -14,6 +14,17 @@ to help you remember Mojito-specific conventions. If you don't find the informat
 that you're looking for here, see the chapter dedicated to the topic you're interested in, 
 such as `Mojits <mojito_mojits.html>`_ or `Configuring Mojito <mojito_configuring.html>`_.
 
+The diagram below shows you the structure of a Mojito application, the differences between
+a mojit definition and instance, and how a routing path is mapped to a mojit action to
+render a template:
+
+.. image:: images/mojito_overview.png
+   :height: 550px
+   :width: 855 px
+   :scale: 80 %
+   :alt: Overview of Mojito Application
+   :align: center
+
 
 .. _conventions_overview-mvc:
 
@@ -34,7 +45,8 @@ Configuration
 
 Configurations are found in either the ``.json`` or ``.yaml`` files in the application
 directory or under mojit directories. The configurations are composed of JSON or YAML, which
-is a superset of JSON. 
+is a superset of JSON. If both JSON and YAML versions of a configuration file exist, Mojito
+will use the configurations defined in the YAML file.
 
 .. _conventions_config-app:
 
@@ -342,12 +354,10 @@ Pathname
 In the binder file shown above, ``{action}`` is the 
 controller action mapped to the request URL.
 
-When you use a frame mojit, such as ``HTMLFrameMojit``, and configure your application to deploy code
-to the client by setting the application configuration ``deploy`` to ``true``, Mojito will send the
-binder file  with the response body.
+When you use a frame mojit, such as ``HTMLFrameMojit``, and configure your application to 
+deploy code to the client by setting the application configuration ``deploy`` to ``true``, 
+Mojito will send the binder file  with the response body.
 
-
-- ```` 
 
 .. _mojits_def_binders-module_names:
 
@@ -399,8 +409,8 @@ In your mojit code (controllers, binders, models), you specify the module name
 as a dependency in the ``requires`` array. Your mojit code can then access the
 YUI module through the ``Y`` instance. 
 
-For example, suppose the YUI module ``string-helper`` is registered in the file ``string_helper.server.js``
-as shown below:
+For example, suppose the YUI module ``string-helper`` is registered in the file 
+``string_helper.server.js`` as shown below:
 
 .. code-block:: javascript
 
