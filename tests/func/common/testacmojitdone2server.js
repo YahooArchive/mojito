@@ -12,8 +12,7 @@
      suite.add(new Y.Test.Case({
 
       "test acmojitdone2server": function() {
-	      //Y.Assert.areEqual('Hello Action Context Testing', Y.one('body').get('innerHTML').match(/Hello Action Context Testing/gi));
-	      Y.Assert.areEqual('Hello Action Context Testing', 'Hello Action Context Testing');
+	      Y.Assert.areEqual('Hello Action Context Testing', Y.one('body').get('innerHTML').match(/Hello Action Context Testing/gi));
        }
 
      }));
