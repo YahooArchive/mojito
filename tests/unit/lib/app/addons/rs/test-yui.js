@@ -529,7 +529,9 @@ YUI().use(
                     A.isObject(config.groups.app.modules);
                     A.isObject(config.groups.app.modules['lang/PagedFlickr_en-US']);
                     A.isArray(config.groups.app.modules['lang/PagedFlickr_en-US'].requires);
+                    AA.itemsAreEqual(['en-US'], config.groups.app.modules['PagedFlickr'].lang);
                     AA.itemsAreEqual(['intl'], config.groups.app.modules['lang/PagedFlickr_en-US'].requires);
+                    AA.itemsAreEqual(['lang/PagedFlickr_en-US.js'], config.groups.app.modules['lang/PagedFlickr_en-US'].path);
                     A.isObject(config.groups.app.modules['mojito-client']);
                     A.isArray(config.groups.app.modules['mojito-client'].requires);
                     A.isUndefined(config.groups.app.modules['mojito-client'].expanded_map);
