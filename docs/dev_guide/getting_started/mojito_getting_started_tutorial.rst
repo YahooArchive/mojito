@@ -192,7 +192,7 @@ controller outputs different results.
         'mojito',
         'mojito-models-addon', 
         'mojito-assets-addon',
-        'HelloMojitModelFoo'
+        'HelloMojitModel'
       ]});
 
 
