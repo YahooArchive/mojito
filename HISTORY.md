@@ -9,10 +9,6 @@ Deprecations, Removals
 
 Features
 --------
-* The `lib/store.js` has a new `getAppConfig()` function. This is a better choice
-for reading the static application configuration than `createStore()`.
-* The resource store now exposes the server's runtime YUI instance via the
-`runtimeYUI` member. Resource store addons can access it via `this.get('host').runtimeYUI`.
 
 Bug Fixes
 ---------
@@ -21,6 +17,16 @@ Bug Fixes
 
 Acknowledgements
 ----------------
+
+version 0.7.4
+=================
+
+Features
+--------
+* The `lib/store.js` has a new `getAppConfig()` function. This is a better choice
+for reading the static application configuration than `createStore()`.
+* The resource store now exposes the server's runtime YUI instance via the
+`runtimeYUI` member. Resource store addons can access it via `this.get('host').runtimeYUI`.
 
 version 0.7.3
 =================

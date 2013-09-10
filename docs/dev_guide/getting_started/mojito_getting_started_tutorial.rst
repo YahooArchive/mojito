@@ -175,7 +175,7 @@ controller outputs different results.
           *        to the Mojito API.
           **/
           index: function(ac) {
-            ac.models.get('HelloMojitModelFoo').getData(function(err, data) {
+            ac.models.get('HelloMojitModel').getData(function(err, data) {
               if (err) {
                 ac.error(err);
                 return;
