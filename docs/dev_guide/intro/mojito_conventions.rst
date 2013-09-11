@@ -2,7 +2,6 @@
 Mojito Conventions
 ==================
 
-
 .. _mojito_conventions-overview:
 
 Overview
@@ -20,8 +19,8 @@ render a template:
 
 .. image:: images/mojito_overview.png
    :height: 550px
-   :width: 855 px
-   :scale: 80 %
+   :width: 855px
+   :scale: 80%
    :alt: Overview of Mojito Application
    :align: center
 
