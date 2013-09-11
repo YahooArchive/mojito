@@ -1140,22 +1140,25 @@ Creating the Application
         useConsoleOutput: true,
         useBrowserConsole: true,
         logInclude: { TestRunner: true }
-        }).use('node', 'node-event-simulate', 'test', 'console', function (Y) {
+      }).use('node', 'node-event-simulate', 'test', 'console', function (Y) {
 
         'use strict';
-        var suite = new Y.Test.Suite("TribApp: YUI Dashboard test"),
+        var suite = new Y.Test.Suite("Dashboard App: Testing Module"),
             url = window.location.protocol + "//" + window.location.host + "/";
-            suite.add(new Y.Test.Case({
-              "test YUI Dashboard": function () {
-              // Tests the title in HTML header
-              Y.Assert.areEqual("Trib - YUI/Mojito Developer Dashboard", Y.one('head title').get('innerHTML'));
+        suite.add(new Y.Test.Case({
+          "test HTML title and heading of page": function () {   
+            var that = this;
+            that.wait(function(){
+                // Tests the title in HTML header
+                Y.Assert.areEqual("Trib - YUI/Mojito Developer Dashboard", Y.one('head title').get('innerHTML'));
 
-              // Tests the title within the content
-              Y.Assert.areEqual("Trib - YUI Developer Dashboard", Y.one('body h1').get('innerHTML'));
-            }
-          }));
-          Y.Test.Runner.add(suite);
-        });
+                // Tests the title within the content
+                Y.Assert.areEqual("Trib - YUI Developer Dashboard", Y.one('body h1').get('innerHTML'));
+            }, 2000);
+          }
+        }));
+        Y.Test.Runner.add(suite);
+      });
 #. You could run the test above directly, but we're going to create the test descriptor
    file ``test_tribapp_descriptor.json`` with the code below that will allow us to easily 
    add another test later. Remember, the ``dataprovider`` property defines the test and 
