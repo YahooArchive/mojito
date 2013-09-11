@@ -335,8 +335,6 @@ controller function being called or view specified, ``{selector}`` is defined by
 ``{selector}`` property in ``application.json``, and ``{view_engine}`` being ``hb`` for 
 Handlebars by default or any view engine implemented by the application developer.
 
-- ````
-
 .. _conventions_mojits_def-binders:
 
 Binders
