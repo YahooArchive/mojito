@@ -23,4 +23,3 @@ using Mojito.
    mojito_configuring
    mojito_binders
    mojito_static_resources
- 
