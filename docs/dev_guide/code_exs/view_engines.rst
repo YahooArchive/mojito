@@ -378,7 +378,7 @@ To set up and run ``adding_view_engines``:
             });  
           }
         };
-      }, '0.0.1', {requires: ['mojito', 'myMojitModelFoo']});
+      }, '0.0.1', {requires: ['mojito', 'myMojitModel']});
  
 #. Create the template ``views/default_ve.hb.html`` that uses Handlebar 
    expressions with the following:

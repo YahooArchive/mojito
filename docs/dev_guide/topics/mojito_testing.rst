@@ -441,7 +441,7 @@ controller.server.js
            });
          }
        };
-   }, '0.0.1', {requires: ['mojito', 'myMojitModelFoo']});
+   }, '0.0.1', {requires: ['mojito', 'myMojitModel']});
 
 .. _mock_addons_ex-controller_test:
 
