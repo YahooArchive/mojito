@@ -17,7 +17,7 @@
                     "scenario": [
                         {
                             "test" : "test_01_mojito_cli_basics.js",
-                            "page" : "$$config.baseUrl$$/@Github/index"
+                            "page" : "$$config.baseUrl$$"
                         }
                      ]
                 }
