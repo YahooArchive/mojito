@@ -41,7 +41,7 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
                     make: function(query, verb, params) {
                         A.areSame('myid.myaction', query);
                         A.areSame('bar', params.foo);
-                        A.areSame('GET', verb);
+                        A.areSame('get', verb);
                         return 'ohhai url';
                     }
                 };
@@ -62,7 +62,7 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
                         A.areSame('bar', params.foo);
                         A.areSame(1, params.a);
                         A.areSame(2, params.b);
-                        A.areSame('GET', verb);
+                        A.areSame('get', verb);
                         return 'ohhai url';
                     }
                 };
@@ -80,7 +80,7 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
                     make: function(query, verb, params) {
                         A.areSame('myid.myaction', query);
                         A.areSame('bar', params.foo);
-                        A.areSame('POST', verb);
+                        A.areSame('post', verb);
                         return 'ohhai url';
                     }
                 };
@@ -97,7 +97,7 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
                 return {
                     make: function(query, verb) {
                         A.areSame('myid.myaction', query);
-                        A.areSame('GET', verb);
+                        A.areSame('get', verb);
                         return 'ohhai url';
                     }
                 };
@@ -115,7 +115,7 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
                     make: function(query, verb, params) {
                         A.areSame('myid.myaction', query);
                         A.areSame('bar', params.foo);
-                        A.areSame('GET', verb);
+                        A.areSame('get', verb);
                         return 'ohhai url';
                     }
                 };
@@ -132,7 +132,7 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
                 return {
                     make: function(query, verb, params) {
                         A.areSame('myid.myaction', query);
-                        A.areSame('GET', verb);
+                        A.areSame('get', verb);
                         return 'ohhai url';
                     }
                 };
@@ -150,7 +150,7 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
                     make: function(query, verb, params) {
                         A.areSame('myid.myaction', query);
                         A.areSame('baz', params.foo, 'queryParams should have the priority');
-                        A.areSame('GET', verb);
+                        A.areSame('get', verb);
                         return 'ohhai url';
                     }
                 };
@@ -171,7 +171,7 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
                         A.areSame('baz', params.bar);
                         A.areSame('1', params.a);
                         A.areSame('2', params.b);
-                        A.areSame('GET', verb);
+                        A.areSame('get', verb);
                         return 'ohhai url';
                     }
                 };
@@ -194,7 +194,7 @@ YUI().use('mojito-url-addon', 'test', 'querystring', function(Y) {
                         A.isUndefined(params.bar);
                         A.isUndefined(params.a);
                         A.isUndefined(params.b);
-                        A.areSame('GET', verb);
+                        A.areSame('get', verb);
                         return 'ohhai url';
                     }
                 };

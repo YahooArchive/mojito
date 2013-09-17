@@ -72,11 +72,8 @@ YUI().use('test', function (Y) {
             };
 
             mid = dispatcher.dispatch('admin.help');
-
-            A.isNotUndefined(mid.dispatch, 'missing property dispatch');
-            A.areEqual('admin.help', mid.dispatch.call, 'wrong mid.dispatch.call');
-            A.isNotUndefined(mid.dispatch.params, 'missing mid.params');
-            A.isNotUndefined(mid.dispatch.options, 'missing mid.options');
+            A.isFunction(mid, 'dispatch() should return middleware()');
+            A.areEqual(3, mid.length, 'wrong # of args');
 
             mid(req, res, next);
 
@@ -90,89 +87,6 @@ YUI().use('test', function (Y) {
             dispatcher.handleRequest = fn;
         },
 
-        // verify:
-        // - req.app.mojito.routes is set on first invocation
-        // - req.app.mojito.routes['get'] is set
-        // - req.app.mojito.routes['get'].dispatch is set
-        'test dispatch and verify routes are annotated': function () {
-            A.isFunction(dispatcher.dispatch);
-
-            var req,
-                res,
-                next,
-                mid,
-                annotateCalled = false,
-                handleRequestCalled = false,
-                fn,
-                cb,
-                r;
-
-            fn = dispatcher.handleRequest;
-            dispatcher.handleRequest = function (req, res, next) {
-                handleRequestCalled = true;
-            };
-
-            cb = function () { };
-            cb.dispatch = {
-                call: 'admin.help',
-                params: {},
-                options: {}
-            };
-
-            req = {
-                app: {
-                    mojito: { },
-                    routes: {
-                        get: [{
-                            path: '/path/annotated',
-                            method: 'get',
-                            regexp: /^\/path\/annotated\/?/,
-                            keys: [ ],
-                            params: { },
-                            callbacks: [ cb ]
-                        }]
-                    },
-                    annotate: function (path, anns) {
-                        console.log('<><<><><><><><><><><');
-                        annotateCalled = true;
-                        A.areEqual('/path/annotated', path, 'wrong path value');
-                        A.isNotUndefined(anns, 'missing annotations');
-                        req.app.routes.get[0].annotations = anns;
-                    }
-                },
-                url: '/path/annotated',
-                query: { },
-                params: { },
-                context: { runtime: 'server' }
-            };
-
-            mid = dispatcher.dispatch('admin.help');
-            A.isNotUndefined(mid.dispatch);
-            A.areEqual('admin.help', mid.dispatch.call, 'Wrong dispatch.call value');
-            // cb.dispatch = mid.dispatch;
-            req.app.routes.get[0].callbacks[0].dispatch = mid.dispatch;
-
-            // console.log(req.app.routes.get[0].callbacks[0].toString());
-            // { call: 'admin.help', params: {}, options: {} }
-            // console.log(req.app.routes.get[0].callbacks[0].dispatch);
-
-            mid(req, res, next);
-
-            A.areEqual(true, annotateCalled, 'app.annotate() was not called');
-
-            r = req.app.routes.get[0];
-            A.isNotUndefined(r.annotations, 'route is missing "annotations" property');
-            A.isNotUndefined(r.annotations.dispatch, 'route is missing "dispatch" property');
-            A.areEqual('admin.help', r.annotations.dispatch.call,
-                        'dispatch.call incorrect');
-
-            dispatcher.handleRequest = fn;
-        },
-
-
-        'test dispatch with @Admin.help TODO': function () {
-            A.isFunction(dispatcher.dispatch);
-        },
 
         // mock the request, store
         // verify:
