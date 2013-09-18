@@ -970,29 +970,30 @@ Addons/Libraries/Middleware
 .. _moj_yui:
 .. topic:: **Can I repurpose or extend existing YUI modules?**
 
-    Although Mojit developers will have access to a library of modules, we realistically 
+    Although Mojito application developers will have access to a library of modules, we realistically 
     expect modules to require some tweaking before they can be re-purposed. Mojito, 
     however, does offer facilities that make it possible and easy to extend existing 
     modules. 
 
-    For example, if you wanted to add a method to the ``Config`` addon because perhaps you would like
-    it to fetch other configurations. You could accomplish this in a number of different ways,
+    A simple and common use case would be extending a built-in addon. For example, 
+    suppose you want to add a method to the ``Config`` addon that 
+    fetches other instance configurations. You could accomplish this in a number of different ways,
     several of which are listed below:
 
     - Add the method to the ``Config`` addon (``mojito/lib/app/addons/ac/config.common.js``) in the local copy of Mojito. 
-      This is not the recommended practice, but probably the easiest and fastest.
+      This is not the recommended practice, but probably the easiest and fastest way to extend the addon.
     - Overwrite the ``Config`` addon by creating the addon ``config.common.js`` in ``{app_dir}/addons/ac`` or 
       ``mojits/{mojit_name}/addons/ac`` with the same code as the built-in ``Config`` addon and then add your
-      method. More work and requires copy-pasting, but gives you the functionality of the ``Config`` addon with
-      your own addition(s).
+      method. This requires more work and some redundancy, but your custom add will have the functionality 
+      of the ``Config`` addon as well as your additional method.
     - Create a custom addon that uses the same constructor as the built-in ``Config`` and add your new method.
       You'll be able to access your method through the namespace you defined in your custom addon. You can
       use the ``Config`` addon for its functionality and your own addon for the additional method.
     - Create a custom addon that includes ``mojito-config-addon`` in the ``requires`` array. In the 
-      constructor of your addon, mix the prototype of the ``Config`` addon with the prototype
+      constructor of your addon, mix the prototype of the ``Config`` addon with the ``prototype``
       of your addon, which might look something like the following: 
       ``Y.mix({YourConstructore}.prototype,Y.namespace("mojito.addons.ac").config.prototype);``
       You can then add your own method, and your controller can use your addon that has the functionality
       of the built-in ``Config`` addon and your added method. 
 
-
+    See the `Addons <../topics/mojito_extensions.html#addons>`_ section to learn how to create custom addons.
