@@ -53,15 +53,23 @@ Deprecations, Removals
   control on how best to handle this error.
 
 * The `ac.url.find()` and `Y.mojito.RouteMaker.find()` methods are now
-  deprecated. If applications needs to query the route object, either use the
-  `name` or `path` by leveraging `express-map`.
+  deprecated and have been removed. If applications needs to query the route
+  object, either use the `name` or `path` by leveraging `express-map`.
 
 Features
 --------
 
-* To register Mojito routes programmatically:
+* To register Mojito routes programmatically instead of using `routes.json`:
 
-    app.mojito.get('foo', '/foo', 'foo.index', { /* optional params */ });
+```
+app.get('/foo', mojito.dispatch('foo.index'));
+app.map('/foo', 'foo');
+app.map('/foo', 'get#foo.index');
+```
+
+  In addition to setting up the path `/foo` to be routed to the Mojito
+  dispatcher, setup 2 additional "aliases". The second alias is the HTTP method
+  concatenated with the `call` value using the `#` delimeter.
 
   This is equivalent to doing this in `routes.json`:
 
@@ -89,8 +97,8 @@ New Dependencies
 Bug Fixes
 ---------
 
-* `ac.config.getRoutes()` and `ac.url.find()` both returns the route object in
-  the same format.
+* `ac.config.getRoutes()` now returns the route configuration object using the
+  format from `express-map#getRouteMap()`.
 
 Acknowledgements
 ----------------
