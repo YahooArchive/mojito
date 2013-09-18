@@ -135,7 +135,7 @@ Running Mojit Instances
 The ``ac.composite.execute`` takes two parameters. The first parameter is the 
 configuration object discussed in `Configuring Child Instances`_ that define 
 the child mojit instance or instances. The second parameter is a callback that 
-is returned an object containing the rendered data from the child mojit 
+returns an object containing the rendered data from the child mojit 
 instances and an optional object containing the metadata of the children. 
 The metadata contains information about the children's binders, assets, 
 configuration, and HTTP headers and is required for binders to execute and 
@@ -398,7 +398,7 @@ and ``error``.
          var adapter = {
            done: function(data, meta){
              var body = ac.params.body();
-             var output = { "data": data, body };
+             var output = { "data": data, "body": body };
              ac.done(output);
            },
            error: function(err){ Y.log(err); }
@@ -785,11 +785,11 @@ see `Using the Composite Addon`_ and `Using ac._dispatch`_ for implementation de
 Example
 -------
 
-In this example, the ``GrandparentMojit`` uses ``ac._dispatch`` to create a 
-child mojit instance of type ``ParentMojit``, which in turn creates a child 
-mojit instance of type ``GrandchildMojit``. The child instance of type 
-``GrandchildMojit`` is executed and its rendered view is returned to its 
-parent mojit instance of type ``ParentMojit``. The content is then attached 
+In this example, the ``SecondLevelMojit`` uses ``ac._dispatch`` to create a 
+child mojit instance of type ``ThirdLevelMojit``, which in turn creates a child 
+mojit instance of type ``FourthLevelMojit``. The child instance of type 
+``FourthLevelMojit`` is executed and its rendered view is returned to its 
+parent mojit instance of type ``ThirdLevelMojit``. The content is then attached 
 to the parent mojit instance's template, which gets rendered and returned as 
 the response.
 
@@ -807,13 +807,13 @@ Application Configuration
      {
        "settings": [ "master" ],
        "specs": {
-         "frame" : {
+         "first_level" : {
            "type" : "HTMLFrameMojit",
            "config" : {
              "title" : "Fun with Dispatch and Execute",
              "deploy" : true,
              "child" : {
-               "type" : "GrandparentMojit"
+               "type" : "SecondLevelMojit"
              }
            }
          }
@@ -837,7 +837,7 @@ Application Configuration
       "framed" : {
         "verbs" : [ "get" ],
         "path" : "/",   
-        "call" : "frame.index"
+        "call" : "first_level.index"
       }         
     }   
    ]
@@ -847,26 +847,26 @@ Application Configuration
 Controllers  
 ###########   
 
-.. _execute_ex-controllers_grandparentmojit:
+.. _execute_ex-controllers_secondlevelmojit:
 
-GrandparentMojit
+SecondLevelMojit
 ****************
 
 .. code-block:: javascript
 
-   YUI.add('GrandparentMojit', function(Y, NAME) {
+   YUI.add('SecondLevelMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
        index: function(ac) {
          var command = {
            "instance": {
-             "type" : "ParentMojit",
+             "type" : "ThirdLevelMojit",
              "action": "index"
            },
            "context" : ac.context,
            "params" : {
              "body": {
-               "whoami": "ParentMojit",
-               "creator": "GrandparentMojit"
+               "whoami": "ThirdLevelMojit",
+               "creator": "SecondLevelMojit"
              }
            }
          };
@@ -875,14 +875,14 @@ GrandparentMojit
      };
    }, '0.0.1', {requires: ['mojito']});
    
-.. _execute_ex-controllers_parentmojit:
+.. _execute_ex-controllers_thirdlevelmojit:
 
-ParentMojit
-***********
+ThirdLevelMojit
+***************
 
 .. code-block:: javascript
 
-   YUI.add('ParentMojit', function(Y, NAME) {
+   YUI.add('ThirdLevelMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
        index: function(ac) {
          var params = ac.params.body();
@@ -890,11 +890,11 @@ ParentMojit
            "view": "index",
            "children": {
              "child": {
-               "type": "GrandchildMojit",
+               "type": "FourthLevelMojit",
                "action": "index",
                "config": {
-                 "creator": "ParentMojit",
-                 "whoami": "GrandchildMojit"
+                 "creator": "ThirdLevelMojit",
+                 "whoami": "FourthLevelMojit"
                }
              }
            }
@@ -906,14 +906,14 @@ ParentMojit
      };
    }, '0.0.1', {requires: ['mojito', 'mojito-composite-addon']});
 
-.. _execute_ex-controllers_grandchildmojit:
+.. _execute_ex-controllers_fourthlevelmojit:
 
-GrandchildMojit
-***************
+FourthLevelMojit
+****************
 
 .. code-block:: javascript
 
-   YUI.add('GrandchildMojit', function(Y, NAME) {
+   YUI.add('FourthLevelMojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
        index: function(ac) {
          var data = { "creator": ac.config.get("creator"), "whoami": ac.config.get("whoami") };
@@ -928,10 +928,10 @@ GrandchildMojit
 Templates
 #########
 
-.. _execute_ex-templates_grandchildmojit:
+.. _execute_ex-templates_fourthlevelmojit:
 
-GrandchildMojit
-***************
+FourthLevelMojit
+****************
 
 .. code-block:: html
 
@@ -939,10 +939,10 @@ GrandchildMojit
      <h3>I am the {{whoami}} dynamically defined and run by {{creator}}.</h3>
    </div>
 
-.. _execute_ex-templates_parentmojit:
+.. _execute_ex-templates_thirdlevelmojit:
 
-ParentMojit
-***********
+ThirdLevelMojit
+***************
 
 .. code-block:: html
 
