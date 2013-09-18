@@ -674,8 +674,8 @@ specifies a child with the ``child`` object, which in turn lists children in the
 addon. See `Composite Mojits <../topics/mojito_composite_mojits.html#composite-mojits>`_ 
 for more information.
 
-The example ``application.json`` below creates the parent mojit ``grandfather`` with the 
-child ``son``, which has the children ``grandson`` and ``granddaughter``.
+The example ``application.json`` below creates the parent mojit ``first_level`` with a 
+``child`` that has the children ``third_level_a`` and ``third_level_b``.
 
 **application.json**
 
@@ -685,18 +685,17 @@ child ``son``, which has the children ``grandson`` and ``granddaughter``.
      {
        "settings": [ "master" ],
        "specs": {
-         "grandfather": {
-           "type": "GrandparentMojit",
+         "first_level": {
+           "type": "FirstLevelMojit",
            "config": {
              "child": {
-               "son": {
-                 "type": "ChildMojit",
+                 "type": "SecondLevelMojit",
                  "children": {
-                   "grandson": {
-                     "type": "GrandchildMojit"
+                   "third_level_a": {
+                     "type": "ThirdLevelMojit"
                    },
-                   "grandaughter": {
-                     "type": "GrandchildMojit"
+                   "third_level_b": {
+                     "type": "ThirdLevelMojit"
                    }
                  }
                }
@@ -716,23 +715,22 @@ child ``son``, which has the children ``grandson`` and ``granddaughter``.
        settings:
          - "master"
        specs:
-         grandfather:
-           type: "GrandparentMojit"
+         first_level:
+           type: "FirstLevelMojit"
            config:
              child:
-               son:
-                 type: "ChildMojit"
+                 type: "SecondLevelMojit"
                  children:
-                   grandson:
-                     type: "GrandchildMojit"
-                   grandaughter:
-                     type: "GrandchildMojit"
+                   third_level_a:
+                     type: "ThirdLevelMojit"
+                   third_level_b:
+                     type: "ThirdLevelMojit"
 
 
 The child mojits can also have their own children, but beware that 
 having so many child mojits may cause memory issues. In our updated 
-example ``application.json`` below, the ``grandaughter`` mojit now has
-its own children mojits:
+example ``application.json`` below, the ``third_level_b`` mojit now has
+its own children:
 
 **application.json**
 
@@ -742,25 +740,23 @@ its own children mojits:
      {
        "settings": [ "master" ],
        "specs": {
-         "grandfather": {
-           "type": "GrandparentMojit",
+         "first_level": {
+           "type": "FirstLevelMojit",
            "config": {
              "child": {
-               "son": {
-                 "type": "ChildMojit",
-                 "children": {
-                   "grandson": {
-                     "type": "GrandchildMojit"
-                   },
-                   "grandaughter": {
-                     "type": "GrandchildMojit",
-                     "children": {
-                       "girl_doll": {
-                          "type": "GirlDollMojit"
-                       },
-                       "boy_doll": {
-                          "type": "BoyDollMojit"
-                       }
+               "type": "SecondLevelMojit",
+               "children": {
+                 "third_level_a": {
+                   "type": "ThirdLevelMojit"
+                 },
+                 "third_level_b": {
+                   "type": "ThirdLevelMojit",
+                   "children": {
+                     "fourth_level_a": {
+                        "type": "FourthLevelMojit"
+                     },
+                     "fourth_level_b": {
+                        "type": "FourthLevelMojit"
                      }
                    }
                  }
@@ -781,22 +777,21 @@ its own children mojits:
        settings:
          - "master"
        specs:
-         grandfather:
-           type: "GrandparentMojit"
+         first_level:
+           type: "FirstLevelMojit"
            config:
              child:
-               son:
-                 type: "ChildMojit"
-                 children:
-                   grandson:
-                     type: "GrandchildMojit"
-                   grandaughter:
-                     type: "GrandchildMojit"
-                     children:
-                       girl_doll:
-                         type: "GirlDollMojit"
-                       boy_doll:
-                         type: "BoyDollMojit"
+               type: "SecondLevelMojit"
+               children:
+                 third_level_a:
+                   type: "ThirdLevelMojit"
+                 third_level_b:
+                   type: "ThirdLevelMojit"
+                   children:
+                     fourth_level_a:
+                       type: "FourthLevelMojit"
+                     fourth_level_b:
+                       type: "FourthLevelMojit"
 
 
 .. _deploy_app:

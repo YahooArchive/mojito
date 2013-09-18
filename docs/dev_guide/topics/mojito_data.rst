@@ -706,6 +706,11 @@ from one mojit can be added the the template of another mojit with ``{{name}}``.
 page Object
 ###########
 
+.. _page_obj-overview:
+
+Overview
+********
+
 The ``page`` object contains all of the page data set by controllers. Templates
 can use ``{{page}}`` to access all of the available page data. The ``page``
 object is built on the server and then sent to the client, so the page data can
@@ -715,15 +720,28 @@ The ``pageData`` object serves as a mechanism for all mojits to access data in t
 ``page`` object from the client or server. Both ``ac.pageData`` and ``mojitProxy.pageData`` 
 provide access to the same page model.
 
-Now that you have a better understand of the page model and the ``page`` object,
-you can understand why passing a ``page`` object to ``ac.done`` is in your controller
-is **not** a good idea: ``ac.done({ page: "some data"})`` will override all of the page data 
-(the data set with ``pageData.set`` and contained in the ``page`` object). Also, data passed
-to ``ac.done`` or set through ``data`` or ``pageData`` object is wrapped by Mojito 
-in``this.page``. For example, the data passed to the template with either
+.. _page_obj-creation:
+
+How It's Created
+****************
+
+In the controller, when data is passed to ``ac.done`` or set through the ``data``
+or ``pageData`` namespace, Mojito wraps that data in the object ``this.page``.
+As a result of this wrapper, you can in fact also access data passed to ``ac.done`` or
+set with the ``Data`` addon through ``this.page``. For example, the data passed to the template with either
 ``ac.done({ stock_list: ["YHOO", "GOOG", "CSCO"]})`` or 
 ``ac.pagedata.set('stock_list', ["YHOO", "GOOG", "CSCO"])`` can be accessed in the template
 with ``{{stock_list}}`` or ``{{this.page.stock_list}}``.
+
+.. _page_obj-creation:
+
+Caveats
+*******
+
+Because Mojito creates this ``page`` object for you to share data, you **do not** want
+to create your own ``page`` object and pass it to ``ac.done`` because it will
+ovverride any page data set with ``pageData.set``.
+
 
 .. _page_data-ex:
 
@@ -754,7 +772,7 @@ mojits/StockQuotes/controller.server.js
              ac.error(err);
              return;
            }
-           // The data object allows the controller to set/expose the
+           // The `pageData` object allows the controller to set/expose the
            // variable stock_quotes other mojits on the page can access.
            ac.pageData.set('stock_quotes', data);
            ac.done({

@@ -706,7 +706,6 @@ template:
 .. note:: The prefix ``mojit_`` is reserved for use by Mojito, and thus, 
           user-defined variables cannot use this prefix in their names.
 
-
 .. _mvc-views-exs:
 
 Examples
@@ -714,5 +713,4 @@ Examples
 
 See `Code Examples: Views <../code_exs/#views>`_ for annotated code examples, 
 steps to run code, and source code for Mojito applications.
-
 
