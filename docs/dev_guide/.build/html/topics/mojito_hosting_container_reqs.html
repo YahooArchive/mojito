@@ -1,0 +1,255 @@
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+     <title>Startup Requirements for Mojito in Hosting Environments</title>
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '',
+        COLLAPSE_INDEX: true,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+   </head> 
+
+     <div class="header"><h1 class="heading"><a href="#">
+          <span>Mojito</span></a></h1>
+      </div>
+      <div class="topnav">
+        <p>
+        <a class="uplink" href="../">Mojito Documentation</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="../index.html" title="Mojito">Mojito</a>
+        &#160;&#160;::&#160;&#160;
+        
+           <a href="mojito_resource_store.html">Resource Store</a>
+        &#160;&#160;::&#160;&#160;
+        
+        
+           <a href="../api_overview/index.html">Mojito API Overview</a>
+        
+        </p>
+
+      </div>
+      <div class="content">
+   <div class="section" id="startup-requirements-for-mojito-in-hosting-environments">
+<h1>Startup Requirements for Mojito in Hosting Environments<a class="headerlink" href="#startup-requirements-for-mojito-in-hosting-environments" title="Permalink to this headline">¶</a></h1>
+<p>This chapter discusses the startup files needed to launch Mojito applications
+in a hosting environment. Because different versions of Mojito use different
+startup files, you may need to modify or even remove certain startup files in
+your applications, so that they may be launched in hosting environments. We
+will look at what startup files are required for each version and provide
+code examples.</p>
+<div class="section" id="mojito-v0-4-8-and-later">
+<span id="startup-reqs-v0-4-8"></span><h2>Mojito v0.4.8 and Later<a class="headerlink" href="#mojito-v0-4-8-and-later" title="Permalink to this headline">¶</a></h2>
+<p>Version 0.4.8 solidifies the changes made in version 0.4.7, removing the
+<tt class="docutils literal"><span class="pre">index.js</span></tt> file from any application archetypes (the files used to create
+new applications) and the unnecessary commented-out code in the <tt class="docutils literal"><span class="pre">server.js</span></tt>
+file. As with applications created by version 0.4.7, you should remove
+the <tt class="docutils literal"><span class="pre">index.js</span></tt> file from any applications using version 0.4.8 or later
+versions and update your <tt class="docutils literal"><span class="pre">server.js</span></tt> file to match the one provided below.</p>
+<div class="section" id="index-js">
+<span id="startup-reqs-v0-4-8-index"></span><h3>index.js<a class="headerlink" href="#index-js" title="Permalink to this headline">¶</a></h3>
+<p><strong>OBSOLETE</strong></p>
+<p>The <tt class="docutils literal"><span class="pre">index.js</span></tt> file is not created by version 0.4.7. Remove from any
+applicationsthat are using versions 0.4.7 or greater.</p>
+</div>
+<div class="section" id="server-js">
+<span id="startup-reqs-v0-4-8-server"></span><h3>server.js<a class="headerlink" href="#server-js" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="cm">/*</span>
+<span class="cm">* Copyright (c) 2011-2013, Yahoo! Inc.  All rights reserved.</span>
+<span class="cm">* Copyrights licensed under the New BSD License.</span>
+<span class="cm">* See the accompanying LICENSE file for terms.</span>
+<span class="cm">*/</span>
+
+<span class="cm">/*jslint anon:true, sloppy:true, nomen:true*/</span>
+
+<span class="nx">process</span><span class="p">.</span><span class="nx">chdir</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">);</span>
+
+<span class="cm">/*</span>
+<span class="cm">* Create the MojitoServer instance we&#39;ll interact with. Options can be passed</span>
+<span class="cm">* using an object with the desired key/value pairs.</span>
+<span class="cm">*/</span>
+<span class="kd">var</span> <span class="nx">Mojito</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;mojito&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">Mojito</span><span class="p">.</span><span class="nx">createServer</span><span class="p">();</span>
+
+<span class="c1">// ---------------------------------------------------------------------------</span>
+<span class="c1">// Different hosting environments require different approaches to starting the</span>
+<span class="c1">// server. Adjust below to match the requirements of your hosting environment.</span>
+<span class="c1">// ---------------------------------------------------------------------------</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="mojito-v0-4-7">
+<span id="startup-reqs-v0-4-7"></span><h2>Mojito v0.4.7<a class="headerlink" href="#mojito-v0-4-7" title="Permalink to this headline">¶</a></h2>
+<p>Version 0.4.7 repaired an issue with a specific hosting container and replaced
+the <tt class="docutils literal"><span class="pre">start</span></tt> method with a <tt class="docutils literal"><span class="pre">listen</span></tt> wrapper method and a <tt class="docutils literal"><span class="pre">getHttpServer</span></tt> method
+to provide access to the Node.js <tt class="docutils literal"><span class="pre">http.Server</span></tt> instance being used. This
+approach makes it possible for Mojito to support an even broader range of
+hosting containers and startup requirements.</p>
+<p>Applications running version 0.4.7 or greater no longer require an <tt class="docutils literal"><span class="pre">index.js</span></tt>
+file, although one is still provided. Such applications must use the <tt class="docutils literal"><span class="pre">server.js</span></tt>
+file shown below.</p>
+<div class="section" id="startup-reqs-v0-4-7-index">
+<span id="id1"></span><h3>index.js<a class="headerlink" href="#startup-reqs-v0-4-7-index" title="Permalink to this headline">¶</a></h3>
+<p><strong>OBSOLETE</strong></p>
+<p>Version 0.4.7 still creates the <tt class="docutils literal"><span class="pre">index.js</span></tt> file, but is not used. Remove the
+<tt class="docutils literal"><span class="pre">index.js</span></tt> file from any applications using version 0.4.7 or greater.</p>
+</div>
+<div class="section" id="startup-reqs-v0-4-7-server">
+<span id="id2"></span><h3>server.js<a class="headerlink" href="#startup-reqs-v0-4-7-server" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="cm">/*</span>
+<span class="cm">* Copyright (c) 2011-2013, Yahoo! Inc.  All rights reserved.</span>
+<span class="cm">* Copyrights licensed under the New BSD License.</span>
+<span class="cm">* See the accompanying LICENSE file for terms.</span>
+<span class="cm">*/</span>
+
+<span class="cm">/*jslint anon:true, sloppy:true, nomen:true*/</span>
+
+<span class="nx">process</span><span class="p">.</span><span class="nx">chdir</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">);</span>
+
+<span class="cm">/*</span>
+<span class="cm">* Create the MojitoServer instance we&#39;ll interact with. Options can be passed</span>
+<span class="cm">* using an object with the desired key/value pairs.</span>
+<span class="cm">*/</span>
+<span class="kd">var</span> <span class="nx">Mojito</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;mojito&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">Mojito</span><span class="p">.</span><span class="nx">createServer</span><span class="p">();</span>
+
+<span class="c1">// ---------------------------------------------------------------------------</span>
+<span class="c1">// Different hosting environments require different approaches to starting the</span>
+<span class="c1">// server. Adjust below to match the requirements of your hosting environment.</span>
+<span class="c1">// ---------------------------------------------------------------------------</span>
+
+<span class="cm">/*</span>
+<span class="cm">* Manhattan</span>
+<span class="cm">*</span>
+<span class="cm">module.exports = function(config, token) {</span>
+<span class="cm">  process.emit(&#39;application-ready&#39;, token, app.getHttpServer());</span>
+<span class="cm">};</span>
+<span class="cm">*/</span>
+
+<span class="cm">/*</span>
+<span class="cm">* Localhost and others where the default port/host combinations work.</span>
+<span class="cm">* You can provide port, host, callback parameters as needed.</span>
+<span class="cm">*/</span>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">listen</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="mojito-v0-4-6">
+<span id="startup-reqs-v0-4-6"></span><h2>Mojito v0.4.6<a class="headerlink" href="#mojito-v0-4-6" title="Permalink to this headline">¶</a></h2>
+<p><strong>NOT RECOMMENDED</strong></p>
+<p>Version 0.4.6 has been found not to work with at least one hosting container
+due to changes in how a Mojito server instance is created and the
+API of that instances. See <a class="reference internal" href="#startup-reqs-v0-4-6-server"><em>server.js</em></a>
+for details of the changes. We <strong>recommend</strong> using version 0.4.7 or
+greater.</p>
+<div class="section" id="startup-reqs-v0-4-6-index">
+<span id="id3"></span><h3>index.js<a class="headerlink" href="#startup-reqs-v0-4-6-index" title="Permalink to this headline">¶</a></h3>
+<p>The <tt class="docutils literal"><span class="pre">index.js</span></tt> file does not change for version 0.4.6.</p>
+</div>
+<div class="section" id="startup-reqs-v0-4-6-server">
+<span id="id4"></span><h3>server.js<a class="headerlink" href="#startup-reqs-v0-4-6-server" title="Permalink to this headline">¶</a></h3>
+<p>For version 0.4.6, the <tt class="docutils literal"><span class="pre">server.js</span></tt> file changes due to changes in how a Mojito
+server instance is created and the API of that instance. In this version of
+Mojito, there is a <tt class="docutils literal"><span class="pre">start</span></tt> method on the Mojito server that is used to launch a
+new server. Unfortunately, while this approach works, it retains some limitations
+and created an issue with at least one hosting container.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="cm">/*</span>
+<span class="cm">* Copyright (c) 2011-2013, Yahoo! Inc.  All rights reserved.</span>
+<span class="cm">* Copyrights licensed under the New BSD License.</span>
+<span class="cm">* See the accompanying LICENSE file for terms.</span>
+<span class="cm">*/</span>
+
+<span class="cm">/*jslint anon:true, sloppy:true*/</span>
+
+<span class="cm">/**</span>
+<span class="cm">* Create and start a new Mojito server/application.</span>
+<span class="cm">*/</span>
+
+<span class="kd">var</span> <span class="nx">Mojito</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;mojito&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">Mojito</span><span class="p">.</span><span class="nx">createServer</span><span class="p">();</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">start</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="npm-start">
+<span id="startup-reqs-v0-4-6-npm"></span><h3>npm start<a class="headerlink" href="#npm-start" title="Permalink to this headline">¶</a></h3>
+<p>Version 0.4.6 is the first version of Mojito to support <tt class="docutils literal"><span class="pre">npm</span> <span class="pre">start</span></tt> in addition
+to <tt class="docutils literal"><span class="pre">mojito</span> <span class="pre">start</span></tt> as a means for starting up a new Mojito server instance.</p>
+<p>Mojito version 0.4.6 alters Mojito&#8217;s startup logic to support <tt class="docutils literal"><span class="pre">npm</span> <span class="pre">start</span></tt> as a
+common startup mechanism and expands the number of hosting containers Mojito was
+compatible with.</p>
+</div>
+</div>
+<div class="section" id="mojito-v0-4-5-and-earlier-versions">
+<span id="startup-reqs-v0-4-5"></span><h2>Mojito v0.4.5 and Earlier Versions<a class="headerlink" href="#mojito-v0-4-5-and-earlier-versions" title="Permalink to this headline">¶</a></h2>
+<p>Version 0.4.5 and earlier versions rely exclusively on <tt class="docutils literal"><span class="pre">mojito</span> <span class="pre">start</span></tt> to
+run a new Mojito server instance, which means the <tt class="docutils literal"><span class="pre">index.js</span></tt> and <tt class="docutils literal"><span class="pre">server.js</span></tt>
+files are both required. Applications using Mojito version 0.4.5 and prior
+versions should use <tt class="docutils literal"><span class="pre">index.js</span></tt> and <tt class="docutils literal"><span class="pre">server.js</span></tt> files matching those
+below.</p>
+<div class="section" id="startup-reqs-v0-4-5-index">
+<span id="id5"></span><h3>index.js<a class="headerlink" href="#startup-reqs-v0-4-5-index" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="cm">/*</span>
+<span class="cm">* Copyright (c) 2011-2013, Yahoo! Inc.  All rights reserved.</span>
+<span class="cm">* Copyrights licensed under the New BSD License.</span>
+<span class="cm">* See the accompanying LICENSE file for terms.</span>
+<span class="cm">*/</span>
+
+
+<span class="cm">/*jslint anon:true, sloppy:true, nomen:true, node:true*/</span>
+
+<span class="nx">process</span><span class="p">.</span><span class="nx">chdir</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">);</span>
+
+<span class="cm">/**</span>
+<span class="cm">* @param {object} config The configuration object containing processing params.</span>
+<span class="cm">* @param {object} token Token used to identify the application.</span>
+<span class="cm">*/</span>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">config</span><span class="p">,</span> <span class="nx">token</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./server.js&#39;</span><span class="p">);</span>
+
+  <span class="c1">// Signal the application is ready, providing the token and app references.</span>
+  <span class="nx">process</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">&#39;application-ready&#39;</span><span class="p">,</span> <span class="nx">token</span><span class="p">,</span> <span class="nx">app</span><span class="p">);</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="startup-reqs-v0-4-5-server">
+<span id="id6"></span><h3>server.js<a class="headerlink" href="#startup-reqs-v0-4-5-server" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="cm">/*</span>
+<span class="cm">* Copyright (c) 2011-2013, Yahoo! Inc.  All rights reserved.</span>
+<span class="cm">* Copyrights licensed under the New BSD License.</span>
+<span class="cm">* See the accompanying LICENSE file for terms.</span>
+<span class="cm">*/</span>
+
+<span class="cm">/*jslint anon:true, sloppy:true*/</span>
+
+<span class="cm">/**</span>
+<span class="cm">* Returns a new Mojito server instance.</span>
+<span class="cm">*/</span>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;mojito&#39;</span><span class="p">).</span><span class="nx">createServer</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+   </div>
+

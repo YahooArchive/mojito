@@ -1,0 +1,245 @@
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+     <title>Generating URLs</title>
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '',
+        COLLAPSE_INDEX: true,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+   </head> 
+
+     <div class="header"><h1 class="heading"><a href="#">
+          <span>Mojito</span></a></h1>
+      </div>
+      <div class="topnav">
+        <p>
+        <a class="uplink" href="../">Mojito Documentation</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="../index.html" title="Mojito">Mojito</a>
+        &#160;&#160;::&#160;&#160;
+        
+           <a href="route_config.html">Configuring Routing</a>
+        &#160;&#160;::&#160;&#160;
+        
+        
+           <a href="simple_logging.html">Simple Logging</a>
+        
+        </p>
+
+      </div>
+      <div class="content">
+   <div class="section" id="generating-urls">
+<h1>Generating URLs<a class="headerlink" href="#generating-urls" title="Permalink to this headline">¶</a></h1>
+<p><strong>Time Estimate:</strong> 15 minutes</p>
+<p><strong>Difficulty Level:</strong> Intermediate</p>
+<div class="section" id="summary">
+<span id="code-exs-gen-urls-summary"></span><h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<p>This example shows you a way to generate URLs to a particular view independent of the
+controller or action of the mojit.</p>
+<p>The following topics will be covered:</p>
+<ul class="simple">
+<li>configuring routing paths to call actions from mojit instances</li>
+<li>creating a URL in the mojit controller with the <a class="reference external" href="../../api/classes/Url.common.html">Url addon</a></li>
+</ul>
+</div>
+<div class="section" id="implementation-notes">
+<span id="code-exs-gen-urls-notes"></span><h2>Implementation Notes<a class="headerlink" href="#implementation-notes" title="Permalink to this headline">¶</a></h2>
+<p>The route paths for this code example are defined in the routing configuration file
+<tt class="docutils literal"><span class="pre">routes.json</span></tt>. You can define any path and then associate that path with a mojit
+instance and an action. When the client makes an HTTP request on that path, the associated
+action on the mojit instance defined in <tt class="docutils literal"><span class="pre">application.json</span></tt> will be executed. Before
+creating the routes for the application, you first need to create the mojit instance.</p>
+<p>In the <tt class="docutils literal"><span class="pre">application.json</span></tt> below, you configure the application to use an instance of the
+mojit <tt class="docutils literal"><span class="pre">GenURLMojit</span></tt>. The instance in this example is <tt class="docutils literal"><span class="pre">mymojit</span></tt>, but the instance name
+can be any string as defined by <a class="reference external" href="http://www.ietf.org/rfc/rfc4627.txt">RFC 4627</a>.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;settings&quot;</span><span class="o">:</span> <span class="p">[</span> <span class="s2">&quot;master&quot;</span> <span class="p">],</span>
+    <span class="s2">&quot;specs&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;mymojit&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;GenURLMojit&quot;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>In the <tt class="docutils literal"><span class="pre">routes.json</span></tt>, you not only can define route paths, but you can also configure
+Mojito to respond to specific HTTP methods called on those paths. The <tt class="docutils literal"><span class="pre">routes.json</span></tt> below
+defines two route paths that only respond to HTTP GET calls. When HTTP GET calls are made
+on these two paths, Mojito executes different methods from the <tt class="docutils literal"><span class="pre">mymojit</span></tt> instance. The
+<tt class="docutils literal"><span class="pre">index</span></tt> method is executed when the root path is called, and the <tt class="docutils literal"><span class="pre">contactus</span></tt> method
+is executed when the <tt class="docutils literal"><span class="pre">/some-really-long-url-contactus</span></tt> path is called.  The
+<tt class="docutils literal"><span class="pre">routes.json</span></tt> file gives you the freedom to create route paths independent of the mojit
+controller.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;settings&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;master&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;root&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;verbs&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;get&quot;</span><span class="p">],</span>
+      <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;/&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;call&quot;</span><span class="o">:</span> <span class="s2">&quot;mymojit.index&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;contactus&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;verbs&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;get&quot;</span><span class="p">],</span>
+      <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;/some-really-long-url-contactus&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;call&quot;</span><span class="o">:</span> <span class="s2">&quot;mymojit.contactus&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>The mojit controller, however, can use the <tt class="docutils literal"><span class="pre">Url</span></tt> addon to access the route paths defined
+in <tt class="docutils literal"><span class="pre">routes.json</span></tt> to create URLs. For example, in the <tt class="docutils literal"><span class="pre">controller.server.js</span></tt> below, the
+route path that calls the <tt class="docutils literal"><span class="pre">contactus</span></tt> action is formed with <tt class="docutils literal"><span class="pre">url.make</span></tt> in the <tt class="docutils literal"><span class="pre">index</span></tt>
+function. You just pass the instance and action to <tt class="docutils literal"><span class="pre">url.make</span></tt> to create the URL based on
+the path defined in <tt class="docutils literal"><span class="pre">routes.json</span></tt>.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;GenURLMojit&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="p">,</span> <span class="nx">NAME</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">Y</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="s1">&#39;mojito.controllers&#39;</span><span class="p">)[</span><span class="nx">NAME</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+
+    <span class="nx">index</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">actionContext</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="nx">actionContext</span><span class="p">.</span><span class="nx">url</span><span class="p">.</span><span class="nx">make</span><span class="p">(</span><span class="s1">&#39;mymojit&#39;</span><span class="p">,</span> <span class="s1">&#39;contactus&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
+      <span class="nx">actionContext</span><span class="p">.</span><span class="nx">done</span><span class="p">({</span><span class="nx">contactus_url</span><span class="o">:</span> <span class="nx">url</span><span class="p">});</span>
+    <span class="p">},</span>
+    <span class="nx">contactus</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">actionContext</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">currentTime</span> <span class="o">=</span> <span class="nx">actionContext</span><span class="p">.</span><span class="nx">intl</span><span class="p">.</span><span class="nx">formatDate</span><span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">());</span>
+      <span class="nx">actionContext</span><span class="p">.</span><span class="nx">done</span><span class="p">({</span><span class="nx">currentTime</span><span class="o">:</span> <span class="nx">currentTime</span><span class="p">});</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+<span class="p">},</span> <span class="s1">&#39;0.0.1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;mojito-intl-addon&#39;</span><span class="p">,</span> <span class="s1">&#39;mojito-url-addon&#39;</span><span class="p">]});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="setting-up-this-example">
+<span id="code-exs-gen-urls-setup"></span><h2>Setting Up this Example<a class="headerlink" href="#setting-up-this-example" title="Permalink to this headline">¶</a></h2>
+<p>To set up and run <tt class="docutils literal"><span class="pre">generating_urls</span></tt>:</p>
+<ol class="arabic">
+<li><p class="first">Create your application.</p>
+<p><tt class="docutils literal"><span class="pre">$</span> <span class="pre">mojito</span> <span class="pre">create</span> <span class="pre">app</span> <span class="pre">generating_urls</span></tt></p>
+</li>
+<li><p class="first">Change to the application directory.</p>
+</li>
+<li><p class="first">Create your mojit.</p>
+<p><tt class="docutils literal"><span class="pre">$</span> <span class="pre">mojito</span> <span class="pre">create</span> <span class="pre">mojit</span> <span class="pre">GenURLMojit</span></tt></p>
+</li>
+<li><p class="first">To configure your application to use <tt class="docutils literal"><span class="pre">GenURLMojit</span></tt>, replace the code in
+<tt class="docutils literal"><span class="pre">application.json</span></tt> with the following:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;settings&quot;</span><span class="o">:</span> <span class="p">[</span> <span class="s2">&quot;master&quot;</span> <span class="p">],</span>
+    <span class="s2">&quot;specs&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;mymojit&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;GenURLMojit&quot;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">To configure routing paths, replace the code in <tt class="docutils literal"><span class="pre">routes.json</span></tt> with the following:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;settings&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;master&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;root&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;verbs&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;get&quot;</span><span class="p">],</span>
+      <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;/&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;call&quot;</span><span class="o">:</span> <span class="s2">&quot;mymojit.index&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;contactus&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;verbs&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;get&quot;</span><span class="p">],</span>
+      <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;/some-really-long-url-that-we-dont-need-to-remember-contactus&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;call&quot;</span><span class="o">:</span> <span class="s2">&quot;mymojit.contactus&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Change to <tt class="docutils literal"><span class="pre">mojits/GenURLMojit</span></tt>.</p>
+</li>
+<li><p class="first">Enable the controller to create a URL using the route paths defined in <tt class="docutils literal"><span class="pre">routes.json</span></tt>
+by replacing the code in <tt class="docutils literal"><span class="pre">controller.server.js</span></tt> with the following:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;GenURLMojit&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="p">,</span> <span class="nx">NAME</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">Y</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="s1">&#39;mojito.controllers&#39;</span><span class="p">)[</span><span class="nx">NAME</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+
+    <span class="nx">index</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">actionContext</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="nx">actionContext</span><span class="p">.</span><span class="nx">url</span><span class="p">.</span><span class="nx">make</span><span class="p">(</span><span class="s1">&#39;mymojit&#39;</span><span class="p">,</span> <span class="s1">&#39;contactus&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">);</span>
+      <span class="nx">actionContext</span><span class="p">.</span><span class="nx">done</span><span class="p">({</span><span class="nx">contactus_url</span><span class="o">:</span> <span class="nx">url</span><span class="p">});</span>
+    <span class="p">},</span>
+    <span class="nx">contactus</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">actionContext</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">currentTime</span> <span class="o">=</span> <span class="nx">actionContext</span><span class="p">.</span><span class="nx">intl</span><span class="p">.</span><span class="nx">formatDate</span><span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">());</span>
+      <span class="nx">actionContext</span><span class="p">.</span><span class="nx">done</span><span class="p">({</span><span class="nx">currentTime</span><span class="o">:</span> <span class="nx">currentTime</span><span class="p">});</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+<span class="p">},</span> <span class="s1">&#39;0.0.1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;mojito-intl-addon&#39;</span><span class="p">,</span> <span class="s1">&#39;mojito-url-addon&#39;</span><span class="p">]});</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">To display the rendered <tt class="docutils literal"><span class="pre">index</span></tt> template when HTTP GET is called on the root path,
+replace the code in <tt class="docutils literal"><span class="pre">views/index.hb.html</span></tt> with the following:</p>
+<div class="highlight-html"><div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;{{mojit_view_id}}&quot;</span> <span class="na">class=</span><span class="s">&quot;mojit&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div&gt;</span>
+    <span class="nt">&lt;p&gt;</span>This is the default page that is visible on the root path.<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;p&gt;</span>The purpose of this demo is to show that as a developer, you don&#39;t have to remember any
+    custom routing path you specify in routes.json configuration file.<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;p&gt;</span>All you need is the mojit identifier (e.g. mymojit), and the action that you are calling
+      on the mojit (e.g. contactus). See the mojits/GenURLMojit/controller.server.js for more details.
+    <span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">style=</span><span class="s">&quot;text-align: center; background-color: #0776A0&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Click <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;{{contactus_url}}&quot;</span><span class="nt">&gt;</span>here<span class="nt">&lt;/a&gt;</span> on how to Contact Us.<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">To display the rendered <tt class="docutils literal"><span class="pre">contactus</span></tt> template when the <tt class="docutils literal"><span class="pre">contactus</span></tt> action is executed,
+replace the code in <tt class="docutils literal"><span class="pre">views/contactus.hb.html</span></tt> with the following:</p>
+<div class="highlight-html"><div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;{{mojit_view_id}}&quot;</span> <span class="na">class=</span><span class="s">&quot;mojit&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div&gt;</span>
+    <span class="nt">&lt;p&gt;</span>This is the contact page last viewed on: <span class="nt">&lt;strong&gt;</span>{{currentTime}}<span class="nt">&lt;/strong&gt;</span>
+    <span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Yahoo Inc, 701 First Avenue, Sunnyvale CA 94089<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Run the server and open the following URL in a browser: <a class="reference external" href="http://localhost:8666/">http://localhost:8666/</a></p>
+</li>
+<li><p class="first">From your application, click on the
+<a class="reference external" href="http://localhost:8666/some-really-long-url-that-we-dont-need-to-remember-contactus">here</a>
+link to see the URL with the long path.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="source-code">
+<span id="code-exs-gen-urls-src"></span><h2>Source Code<a class="headerlink" href="#source-code" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="http://github.com/yahoo/mojito/tree/master/examples/developer-guide/generating_urls/routes.json">Routing Configuration</a></li>
+<li><a class="reference external" href="http://github.com/yahoo/mojito/tree/master/examples/developer-guide/generating_urls/mojits/GenURLMojit/controller.server.js">Mojit Controller</a></li>
+<li><a class="reference external" href="http://github.com/yahoo/mojito/tree/master/examples/developer-guide/generating_urls/">Generating URLs Application</a></li>
+</ul>
+</div>
+</div>
+
+   </div>
+

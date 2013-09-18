@@ -14,10 +14,6 @@ that you're looking for here, see the chapter dedicated to the topic you're inte
 such as `Mojits <mojito_mojits.html>`_ or `Configuring Mojito <mojito_configuring.html>`_.
 
 
-The diagram below shows you the structure of a Mojito application, the differences and relationship
-between a mojit definition and instance, and how a routing path is mapped to a mojit action to
-render a template:
-
 .. figure:: images/mojito_app_structure_exec_flow.jpg
    :height: 1082px
    :width: 850px
@@ -25,6 +21,9 @@ render a template:
    :alt: Mojito Application Structure and Execution Flow
    :align: left
 
+   The diagram below shows you the structure of a Mojito application, the differences between
+   a mojit definition and instance, and how a routing path is mapped to a mojit action to
+   render a template:
 
 .. _conventions_overview-mvc:
 

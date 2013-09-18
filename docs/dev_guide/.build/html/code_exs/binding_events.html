@@ -1,0 +1,942 @@
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+     <title>Binding Events</title>
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '',
+        COLLAPSE_INDEX: true,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+   </head> 
+
+     <div class="header"><h1 class="heading"><a href="#">
+          <span>Mojito</span></a></h1>
+      </div>
+      <div class="topnav">
+        <p>
+        <a class="uplink" href="../">Mojito Documentation</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="../index.html" title="Mojito">Mojito</a>
+        &#160;&#160;::&#160;&#160;
+        
+           <a href="query_params.html">Using Query Parameters</a>
+        &#160;&#160;::&#160;&#160;
+        
+        
+           <a href="intermojit_communication.html">Inter-Mojit Communication</a>
+        
+        </p>
+
+      </div>
+      <div class="content">
+   <div class="section" id="binding-events">
+<h1>Binding Events<a class="headerlink" href="#binding-events" title="Permalink to this headline">¶</a></h1>
+<p><strong>Time Estimate:</strong> 20 minutes</p>
+<p><strong>Difficulty Level:</strong> Advanced</p>
+<div class="section" id="summary">
+<span id="code-exs-events-summary"></span><h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<p>This example shows how to bind events to a mojit, configure code to run
+on the client, and make AJAX calls to the YQL Web service. The application
+listens for events and then makes AJAX calls to YQL to get Flickr photo
+information.</p>
+<p>The following topics will be covered:</p>
+<ul class="simple">
+<li>configuring the application to run on the client</li>
+<li>getting Flickr data from the model with YQL</li>
+<li>binding events through the <tt class="docutils literal"><span class="pre">mojitProxy</span></tt> object</li>
+<li>making AJAX calls to YQL from the binder</li>
+</ul>
+<div class="section" id="requirements">
+<span id="events-summary-req"></span><h3>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h3>
+<p>You will need to <a class="reference external" href="http://www.flickr.com/services/api/keys/apply/">get a Flickr API key</a>
+to run this example.</p>
+</div>
+</div>
+<div class="section" id="implementation-notes">
+<span id="code-exs-events-notes"></span><h2>Implementation Notes<a class="headerlink" href="#implementation-notes" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="configuring-the-application-to-run-on-the-client">
+<span id="events-notes-client"></span><h3>Configuring the Application to Run on the Client<a class="headerlink" href="#configuring-the-application-to-run-on-the-client" title="Permalink to this headline">¶</a></h3>
+<p>Mojito lets you configure applications to run on either the server or client
+side. This example uses binders that are deployed to the client, so we need
+to configure Mojito to deploy the application to the client, where it will
+be executed by the browser.</p>
+<p>To configure Mojito to run on the client, you simply set the <tt class="docutils literal"><span class="pre">&quot;deploy&quot;</span></tt>
+property to <tt class="docutils literal"><span class="pre">true</span></tt> in <tt class="docutils literal"><span class="pre">application.json</span></tt> as seen below.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;settings&quot;</span><span class="o">:</span> <span class="p">[</span> <span class="s2">&quot;master&quot;</span> <span class="p">],</span>
+    <span class="s2">&quot;specs&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;frame&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;HTMLFrameMojit&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;config&quot;</span><span class="o">:</span> <span class="p">{</span>
+          <span class="s2">&quot;deploy&quot;</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+          <span class="s2">&quot;child&quot;</span><span class="o">:</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;PagerMojit&quot;</span>
+          <span class="p">}</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="getting-data-with-yql-in-the-model">
+<span id="events-notes-data"></span><h3>Getting Data with YQL in the Model<a class="headerlink" href="#getting-data-with-yql-in-the-model" title="Permalink to this headline">¶</a></h3>
+<p>In the mojit model, the <a class="reference external" href="http://developer.yahoo.com/yui/3/yql/">YUI YQL Query Utility</a>
+is used to get Flickr photo information. To access the utility in your model,
+specify <tt class="docutils literal"><span class="pre">'yql'</span></tt> in the <tt class="docutils literal"><span class="pre">requires</span></tt> array as seen in the code snippet below:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;PagerMojitModel&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="p">,</span> <span class="nx">NAME</span><span class="p">)</span> <span class="p">{</span>
+  <span class="p">...</span>
+  <span class="cm">/* Code for PagerMojitModel */</span>
+  <span class="p">...</span>
+<span class="p">},</span> <span class="s1">&#39;0.0.1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;yql&#39;</span><span class="p">]});</span>
+</pre></div>
+</div>
+<p>This code example uses the <tt class="docutils literal"><span class="pre">flickr.photos.search</span></tt> table to get information
+for photos that have a title, description, or tags containing a string. For
+example, the YQL statement below returns Flickr photo information for those
+photos that have a title, description, or tags containing the string &#8220;Manhattan&#8221;.</p>
+<p>Copy the query below into the <a class="reference external" href="http://developer.yahoo.com/yql/console/">YQL Console</a>,
+replace <tt class="docutils literal"><span class="pre">{your_flickr_api_key}</span></tt> with your own Flickr API key, and then  click <strong>TEST</strong>
+to see the returned XML response.</p>
+<p><tt class="docutils literal"><span class="pre">select</span> <span class="pre">*</span> <span class="pre">from</span> <span class="pre">flickr.photos.search</span> <span class="pre">where</span> <span class="pre">text=&quot;Manhattan&quot;</span> <span class="pre">and</span> <span class="pre">api_key=&quot;{your_flickr_api_key}&quot;</span></tt></p>
+<p>The returned response contains photo information in the <tt class="docutils literal"><span class="pre">photo</span></tt> element. You extract the
+<tt class="docutils literal"><span class="pre">farm</span></tt>, <tt class="docutils literal"><span class="pre">server</span></tt>, <tt class="docutils literal"><span class="pre">id</span></tt>, and <tt class="docutils literal"><span class="pre">secret</span></tt> attributes from each photo element to create
+the photo URI as seen here:</p>
+<p><tt class="docutils literal"><span class="pre">http://farm</span> <span class="pre">+</span> <span class="pre">{farm}</span> <span class="pre">+</span> <span class="pre">static.flickr.com/</span> <span class="pre">+</span> <span class="pre">{server}</span> <span class="pre">+</span> <span class="pre">/</span> <span class="pre">+</span> <span class="pre">{id}</span> <span class="pre">+</span> <span class="pre">_</span> <span class="pre">+</span> <span class="pre">{secret}</span> <span class="pre">+</span> <span class="pre">.jpg</span></tt></p>
+<p>In the <tt class="docutils literal"><span class="pre">model.server.js</span></tt> of <tt class="docutils literal"><span class="pre">PagerMojit</span></tt> shown below, the <tt class="docutils literal"><span class="pre">YQL</span></tt> function uses the YQL
+statement above to get photo data, then parses the returned response to create the photo
+URIs. The model then wraps the photo information in an object and stores those objects in
+the <tt class="docutils literal"><span class="pre">images</span></tt> array that is sent to the controller through the <tt class="docutils literal"><span class="pre">callback</span></tt> function.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;PagerMojitModel&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="p">,</span> <span class="nx">NAME</span><span class="p">)</span> <span class="p">{</span>
+  <span class="cm">/**</span>
+<span class="cm">  * The PagerMojitModel module.</span>
+<span class="cm">  * @module PagerMojitModel</span>
+<span class="cm">  */</span>
+  <span class="cm">/**</span>
+<span class="cm">  * Constructor for the Model class.</span>
+<span class="cm">  * @class Model</span>
+<span class="cm">  * @constructor</span>
+<span class="cm">  **/</span>
+  <span class="nx">Y</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="s1">&#39;mojito.models&#39;</span><span class="p">)[</span><span class="nx">NAME</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">init</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">config</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">config</span> <span class="o">=</span> <span class="nx">config</span><span class="p">;</span>
+    <span class="p">},</span>
+    <span class="nx">getData</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">query</span><span class="p">,</span> <span class="nx">start</span><span class="p">,</span> <span class="nx">count</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+       <span class="kd">var</span> <span class="nx">q</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+      <span class="c1">// Get Flickr API key: http://www.flickr.com/services/api/keys/apply/</span>
+      <span class="kd">var</span> <span class="nx">API_KEY</span> <span class="o">=</span> <span class="s2">&quot;{your_flickr_api_key}&quot;</span><span class="p">;</span>
+      <span class="nx">start</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">start</span><span class="p">)</span> <span class="o">||</span> <span class="mi">0</span><span class="p">;</span>
+      <span class="nx">count</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">count</span><span class="p">)</span> <span class="o">||</span> <span class="mi">10</span><span class="p">;</span>
+      <span class="nx">q</span> <span class="o">=</span> <span class="s1">&#39;select * from flickr.photos.search(&#39;</span> <span class="o">+</span> <span class="nx">start</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span> <span class="o">+</span> <span class="nx">count</span> <span class="o">+</span> <span class="s1">&#39;)  where text=&quot;%&#39;</span> <span class="o">+</span> <span class="nx">query</span> <span class="o">+</span> <span class="s1">&#39;%&quot; and api_key=&quot;&#39;</span> <span class="o">+</span> <span class="nx">API_KEY</span> <span class="o">+</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">;</span>
+      <span class="nx">Y</span><span class="p">.</span><span class="nx">YQL</span><span class="p">(</span><span class="nx">q</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">rawData</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">rawData</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">results</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">callback</span><span class="p">([]);</span>
+          <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="kd">var</span> <span class="nx">rawImages</span> <span class="o">=</span> <span class="nx">rawData</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">results</span><span class="p">.</span><span class="nx">photo</span><span class="p">,</span> <span class="nx">rawImage</span> <span class="o">=</span> <span class="kc">null</span><span class="p">,</span><span class="nx">images</span> <span class="o">=</span> <span class="p">[],</span> <span class="nx">image</span> <span class="o">=</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">rawImages</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">rawImage</span> <span class="o">=</span> <span class="nx">rawImages</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+          <span class="nx">image</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="nx">title</span><span class="o">:</span> <span class="nx">rawImage</span><span class="p">.</span><span class="nx">title</span><span class="p">,</span>
+            <span class="nx">location</span><span class="o">:</span> <span class="s1">&#39;http://farm&#39;</span> <span class="o">+</span> <span class="nx">rawImage</span><span class="p">.</span><span class="nx">farm</span> <span class="o">+</span> <span class="s1">&#39;.static.flickr.com/&#39;</span> <span class="o">+</span> <span class="nx">rawImage</span><span class="p">.</span><span class="nx">server</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="nx">rawImage</span><span class="p">.</span><span class="nx">id</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="nx">rawImage</span><span class="p">.</span><span class="nx">secret</span> <span class="o">+</span> <span class="s1">&#39;.jpg&#39;</span><span class="p">,</span>
+            <span class="nx">farm</span><span class="o">:</span> <span class="nx">rawImage</span><span class="p">.</span><span class="nx">farm</span><span class="p">,</span>
+            <span class="nx">server</span><span class="o">:</span> <span class="nx">rawImage</span><span class="p">.</span><span class="nx">server</span><span class="p">,</span>
+            <span class="nx">image_id</span><span class="o">:</span> <span class="nx">rawImage</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span>
+            <span class="nx">secret</span><span class="o">:</span> <span class="nx">rawImage</span><span class="p">.</span><span class="nx">secret</span>
+          <span class="p">};</span>
+          <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">image</span><span class="p">.</span><span class="nx">title</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">image</span><span class="p">.</span><span class="nx">title</span> <span class="o">=</span> <span class="s2">&quot;Generic Title: &quot;</span> <span class="o">+</span> <span class="nx">query</span><span class="p">;</span>
+          <span class="p">}</span>
+          <span class="nx">images</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">image</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="nx">callback</span><span class="p">(</span><span class="nx">images</span><span class="p">);</span>
+      <span class="p">});</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+<span class="p">},</span> <span class="s1">&#39;0.0.1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[</span> <span class="s1">&#39;yql&#39;</span><span class="p">]});</span>
+</pre></div>
+</div>
+<p>For a more detailed explanation about how to use YQL in your Mojito application, see
+<a class="reference external" href="calling_yql.html">Calling YQL from a Mojit</a>. For more information about YQL, see the
+<a class="reference external" href="http://developer.yahoo.com/yql/guide">YQL Guide</a>.</p>
+</div>
+<div class="section" id="events-notes-bind-events">
+<span id="id1"></span><h3>Binding Events<a class="headerlink" href="#events-notes-bind-events" title="Permalink to this headline">¶</a></h3>
+<p>This section will discuss the basics of binding events in Mojito and then look at the
+binder used in this code example.</p>
+<div class="section" id="binder-basics">
+<span id="bind-events-basics"></span><h4>Binder Basics<a class="headerlink" href="#binder-basics" title="Permalink to this headline">¶</a></h4>
+<p>A mojit may have zero, one, or many binders within the <tt class="docutils literal"><span class="pre">binders</span></tt> directory. Each binder
+will be deployed to the browser along with the rest of the mojit code, where the
+client-side Mojito runtime will call it appropriately.  On the client, the binder has a
+proxy object (<tt class="docutils literal"><span class="pre">mojitProxy</span></tt>) for interacting with the mojit it represents as well as
+with other mojits on the page. Methods can be called from the <tt class="docutils literal"><span class="pre">mojitProxy</span></tt> object
+that allow binders to listen for and fire events.</p>
+<p>The binder consists of a constructor, an initializer, and a bind function. The following
+describes each component and indicates when the <tt class="docutils literal"><span class="pre">mojitProxy</span></tt> object can be used.</p>
+<ul class="simple">
+<li><strong>constructor</strong> - creates the namespace for your binder that wraps the initialization
+code and binder.</li>
+<li><strong>initializer</strong> - is passed the <tt class="docutils literal"><span class="pre">mojitProxy</span></tt> where it can be stored and used to listen
+and fire events with other binders. The <tt class="docutils literal"><span class="pre">mojitProxy</span></tt> is the only gateway back into the
+Mojito framework for your binder.</li>
+<li><strong>bind</strong> - is a function that is passed a <tt class="docutils literal"><span class="pre">Y.Node</span></tt> instance that wraps the DOM node
+representing this mojit instance. The DOM event handlers for capturing user interactions
+should be attached in this function.</li>
+</ul>
+<p>The skeleton of the <tt class="docutils literal"><span class="pre">binders/index.js</span></tt> file below illustrates the basic structure of the
+binder. For more information, see <a class="reference external" href="../intro/mojito_binders.html">Mojito Binders</a>.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;AwesomeMojitBinder&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="p">,</span> <span class="nx">NAME</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// Binder constructor</span>
+  <span class="nx">Y</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="s1">&#39;mojito.binders&#39;</span><span class="p">)[</span><span class="nx">NAME</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">init</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">mojitProxy</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">mojitProxy</span> <span class="o">=</span> <span class="nx">mojitProxy</span><span class="p">;</span>
+    <span class="p">},</span>
+    <span class="c1">// The bind function</span>
+    <span class="nx">bind</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">node</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">thatNode</span> <span class="o">=</span> <span class="nx">node</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+  <span class="nx">Y</span><span class="p">.</span><span class="nx">mojito</span><span class="p">.</span><span class="nx">registerEventBinder</span><span class="p">(</span><span class="s1">&#39;AwesomeMojit&#39;</span><span class="p">,</span> <span class="nx">Binder</span><span class="p">);</span>
+<span class="p">},</span> <span class="s1">&#39;0.0.1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;mojito&#39;</span><span class="p">]});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="examining-the-pagemojitbinder">
+<span id="bind-events-pagemojitbinder"></span><h4>Examining the PageMojitBinder<a class="headerlink" href="#examining-the-pagemojitbinder" title="Permalink to this headline">¶</a></h4>
+<p>This code example uses the binder <tt class="docutils literal"><span class="pre">PageMojitBinder</span></tt> to perform the following:</p>
+<ul class="simple">
+<li>attach <tt class="docutils literal"><span class="pre">onClick</span></tt> handlers to <tt class="docutils literal"><span class="pre">prev</span></tt> and <tt class="docutils literal"><span class="pre">next</span></tt> links</li>
+<li>invoke the <tt class="docutils literal"><span class="pre">index</span></tt> method of the controller through the <tt class="docutils literal"><span class="pre">mojitProxy</span></tt> object</li>
+<li>create an overlay with Flickr photo information received from YQL</li>
+</ul>
+<p>The <tt class="docutils literal"><span class="pre">binders/index.js</span></tt> for this code example is long and fairly involved, so we will
+dissect and analyze the code.  Let&#8217;s begin by looking at the <tt class="docutils literal"><span class="pre">bind</span></tt> function of
+<tt class="docutils literal"><span class="pre">index.js</span></tt>, which allows mojits to attach DOM event handlers.</p>
+<p>In this code snippet of <tt class="docutils literal"><span class="pre">binders/index.js</span></tt>, the <tt class="docutils literal"><span class="pre">bind</span></tt> function contains the nested
+<tt class="docutils literal"><span class="pre">updateDOM</span></tt> function that updates node content and attaches event handlers. Using the
+<tt class="docutils literal"><span class="pre">mojitProxy</span></tt> object, the nested <tt class="docutils literal"><span class="pre">flipper</span></tt> function calls the <tt class="docutils literal"><span class="pre">index</span></tt> function of
+the controller. The callback <tt class="docutils literal"><span class="pre">updateDOM</span></tt> is passed to <tt class="docutils literal"><span class="pre">index</span></tt> to update the content.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">...</span>
+  <span class="nx">bind</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">node</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">thatNode</span> <span class="o">=</span> <span class="nx">node</span><span class="p">;</span>
+    <span class="c1">// Define the action when user click on prev/next.</span>
+    <span class="kd">var</span> <span class="nx">flipper</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">target</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">target</span><span class="p">;</span>
+    <span class="c1">// Get the link to the page.</span>
+    <span class="kd">var</span> <span class="nx">page</span> <span class="o">=</span> <span class="nx">parsePage</span><span class="p">(</span><span class="nx">target</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;href&#39;</span><span class="p">));</span>
+    <span class="kd">var</span> <span class="nx">updateDOM</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">markup</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">thatNode</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;innerHTML&#39;</span><span class="p">,</span> <span class="nx">markup</span><span class="p">);</span>
+      <span class="nx">thatNode</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="s1">&#39;#nav a&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="nx">flipper</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+      <span class="nx">thatNode</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="s1">&#39;#master ul li a&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;mouseover&#39;</span><span class="p">,</span> <span class="nx">showOverlay</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+      <span class="nx">thatNode</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="s1">&#39;#master ul li a&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;mouseout&#39;</span><span class="p">,</span> <span class="nx">showOverlay</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    <span class="p">};</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">mojitProxy</span><span class="p">.</span><span class="nx">invoke</span><span class="p">(</span><span class="s1">&#39;index&#39;</span><span class="p">,</span>
+      <span class="p">{</span>
+        <span class="nx">params</span><span class="o">:</span> <span class="p">{</span><span class="nx">page</span><span class="o">:</span> <span class="nx">page</span><span class="p">},</span>
+      <span class="p">},</span> <span class="nx">updateDOM</span>
+    <span class="p">);</span>
+  <span class="p">};</span>
+<span class="p">...</span>
+</pre></div>
+</div>
+<p>The event handler for mouseovers and mouseouts are handled by the <tt class="docutils literal"><span class="pre">showOverlay</span></tt>
+function, which creates the overlay containing photo information. In the code snippet
+below, <tt class="docutils literal"><span class="pre">showOverlay</span></tt> makes an AJAX call to YQL to get photo data that is placed in an
+unordered list for the overlay.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">...</span>
+  <span class="nx">bind</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">node</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">...</span>
+    <span class="kd">var</span> <span class="nx">showOverlay</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">target</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">target</span><span class="p">;</span>
+      <span class="kd">var</span> <span class="nx">href</span> <span class="o">=</span> <span class="nx">target</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;href&#39;</span><span class="p">);</span>
+      <span class="kd">var</span> <span class="nx">imageId</span> <span class="o">=</span> <span class="nx">parseImageId</span><span class="p">(</span><span class="nx">href</span><span class="p">);</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">target</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="s1">&#39;overlayed&#39;</span><span class="p">))</span> <span class="p">{</span>
+        <span class="nx">target</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;overlayed&#39;</span><span class="p">);</span>
+        <span class="nx">thatNode</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;#display&#39;</span><span class="p">).</span><span class="nx">setContent</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;HREF: &#39;</span> <span class="o">+</span> <span class="nx">href</span><span class="p">);</span>
+        <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;IMAGE ID: &#39;</span> <span class="o">+</span> <span class="nx">imageId</span><span class="p">);</span>
+        <span class="nx">target</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;overlayed&#39;</span><span class="p">);</span>
+        <span class="c1">// Query for the image metadata</span>
+        <span class="kd">var</span> <span class="nx">query</span> <span class="o">=</span> <span class="s1">&#39;select * from flickr.photos.info where photo_id=&quot;&#39;</span> <span class="o">+</span> <span class="nx">imageId</span> <span class="o">+</span> <span class="s1">&#39;&quot; and api_key=&quot;&#39;</span> <span class="o">+</span> <span class="p">{</span><span class="nx">your_flickr_api_key</span><span class="p">}</span> <span class="o">+</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">;</span>
+        <span class="nx">thatNode</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;#display&#39;</span><span class="p">).</span><span class="nx">setContent</span><span class="p">(</span><span class="s1">&#39;Loading ...&#39;</span><span class="p">);</span>
+        <span class="nx">Y</span><span class="p">.</span><span class="nx">YQL</span><span class="p">(</span><span class="nx">query</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">raw</span><span class="p">)</span> <span class="p">{</span>
+          <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">raw</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">results</span><span class="p">.</span><span class="nx">photo</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;No results found for photoId: &#39;</span> <span class="o">+</span> <span class="nx">imageId</span><span class="p">);</span>
+            <span class="k">return</span><span class="p">;</span>
+          <span class="p">}</span>
+          <span class="kd">var</span> <span class="nx">props</span> <span class="o">=</span> <span class="nx">raw</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">results</span><span class="p">.</span><span class="nx">photo</span><span class="p">;</span>
+          <span class="kd">var</span> <span class="nx">snippet</span> <span class="o">=</span> <span class="s1">&#39;&lt;ul style=&quot;list-style-type: square;&quot;&gt;&#39;</span><span class="p">;</span>
+          <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">key</span> <span class="k">in</span> <span class="nx">props</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span><span class="p">(</span><span class="nx">props</span><span class="p">[</span><span class="nx">key</span><span class="p">])</span> <span class="o">==</span> <span class="s1">&#39;object&#39;</span><span class="p">)</span> <span class="p">{</span>
+              <span class="k">continue</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="nx">snippet</span> <span class="o">+=</span> <span class="s1">&#39;&lt;li&gt;&#39;</span> <span class="o">+</span> <span class="nx">key</span> <span class="o">+</span> <span class="s1">&#39;: &#39;</span> <span class="o">+</span> <span class="nx">props</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;&lt;/li&gt;&#39;</span><span class="p">;</span>
+          <span class="p">}</span>
+          <span class="nx">snippet</span> <span class="o">+=</span> <span class="s1">&#39;&lt;/ul&gt;&#39;</span><span class="p">;</span>
+          <span class="nx">thatNode</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;#display&#39;</span><span class="p">).</span><span class="nx">setContent</span><span class="p">(</span><span class="nx">snippet</span><span class="p">);</span>
+        <span class="p">});</span>
+      <span class="p">}</span>
+    <span class="p">};</span>
+     <span class="p">...</span>
+  <span class="p">}</span>
+<span class="p">...</span>
+</pre></div>
+</div>
+<p>Thus far, we&#8217;ve looked at the event handlers, but not the actual binding of the handlers
+to nodes. At the end of the <tt class="docutils literal"><span class="pre">bind</span></tt> function, you&#8217;ll see three important lines
+(shown below) that bind the <tt class="docutils literal"><span class="pre">flipper</span></tt> and <tt class="docutils literal"><span class="pre">showOutlay</span></tt> functions to handle click and
+mouseover events.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">...</span>
+  <span class="nx">bind</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">node</span><span class="p">)</span> <span class="p">{</span>
+  <span class="p">...</span>
+    <span class="c1">// Bind all the image links to showOverlay</span>
+    <span class="nx">thatNode</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="s1">&#39;#master ul li a&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;mouseover&#39;</span><span class="p">,</span> <span class="nx">showOverlay</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    <span class="nx">thatNode</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="s1">&#39;#master ul li a&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;mouseout&#39;</span><span class="p">,</span> <span class="nx">showOverlay</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    <span class="c1">// Bind the prev + next links to flipper</span>
+    <span class="nx">thatNode</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="s1">&#39;#nav a&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="nx">flipper</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">...</span>
+</pre></div>
+</div>
+<p>After a little analysis, the full <tt class="docutils literal"><span class="pre">binders/index.js</span></tt> below should be easier to
+understand. The binder attaches event handlers to nodes, invokes a function in the
+controller, and updates the content in the template. The binder also has a couple of
+helper functions for parsing and requires the IO and YQL modules, which are specified in
+the <tt class="docutils literal"><span class="pre">requires</span></tt> array.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;PagerMojitBinder&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="p">,</span> <span class="nx">NAME</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">API_KEY</span> <span class="o">=</span> <span class="s1">&#39;{your_flickr_api_key}&#39;</span><span class="p">;</span>
+  <span class="kd">function</span> <span class="nx">parseImageId</span><span class="p">(</span><span class="nx">link</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">matches</span> <span class="o">=</span> <span class="nx">link</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/com\/(\d+)\/(\d+)_([0-9a-z]+)\.jpg$/</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nx">matches</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+  <span class="p">}</span>
+  <span class="kd">function</span> <span class="nx">parsePage</span><span class="p">(</span><span class="nx">link</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">matches</span> <span class="o">=</span> <span class="nx">link</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/page=(\d+)/</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nx">matches</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+  <span class="p">}</span>
+
+  <span class="cm">/**</span>
+<span class="cm">  * The PagerMojitBinder module.</span>
+<span class="cm">  * @module PagerMojitBinder</span>
+<span class="cm">  */</span>
+  <span class="cm">/**</span>
+<span class="cm">  * Constructor for the Binder class.</span>
+<span class="cm">  *</span>
+<span class="cm">  * @param mojitProxy {Object} The proxy to allow</span>
+<span class="cm">  * the binder to interact with its owning mojit.</span>
+<span class="cm">  * @class Binder</span>
+<span class="cm">  * @constructor</span>
+<span class="cm">  */</span>
+  <span class="nx">Y</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="s1">&#39;mojito.binders&#39;</span><span class="p">)[</span><span class="nx">NAME</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="cm">/**</span>
+<span class="cm">    * Binder initialization method, invoked</span>
+<span class="cm">    * after all binders on the page have</span>
+<span class="cm">    * been constructed.</span>
+<span class="cm">    */</span>
+    <span class="nx">init</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">mojitProxy</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">mojitProxy</span> <span class="o">=</span> <span class="nx">mojitProxy</span><span class="p">;</span>
+    <span class="p">},</span>
+    <span class="cm">/**</span>
+<span class="cm">    * The binder method, invoked to allow the mojit</span>
+<span class="cm">    * to attach DOM event handlers.</span>
+<span class="cm">    * @param node {Node} The DOM node to which this</span>
+<span class="cm">    * mojit is attached.</span>
+<span class="cm">    */</span>
+    <span class="nx">bind</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">node</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">thatNode</span> <span class="o">=</span> <span class="nx">node</span><span class="p">;</span>
+      <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;NODE: &#39;</span> <span class="o">+</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">dump</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">node</span><span class="p">));</span>
+      <span class="c1">// define the action when user click on prev/next</span>
+      <span class="kd">var</span> <span class="nx">flipper</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">target</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">target</span><span class="p">;</span>
+        <span class="c1">// get the link to the page</span>
+        <span class="kd">var</span> <span class="nx">page</span> <span class="o">=</span> <span class="nx">parsePage</span><span class="p">(</span><span class="nx">target</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;href&#39;</span><span class="p">));</span>
+        <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;PAGE: &#39;</span> <span class="o">+</span> <span class="nx">page</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">updateDOM</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">markup</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">thatNode</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;innerHTML&#39;</span><span class="p">,</span> <span class="nx">markup</span><span class="p">);</span>
+          <span class="nx">thatNode</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="s1">&#39;#nav a&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="nx">flipper</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+          <span class="nx">thatNode</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="s1">&#39;#master ul li a&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;mouseover&#39;</span><span class="p">,</span> <span class="nx">showOverlay</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+          <span class="nx">thatNode</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="s1">&#39;#master ul li a&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;mouseout&#39;</span><span class="p">,</span> <span class="nx">showOverlay</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+        <span class="p">};</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">mojitProxy</span><span class="p">.</span><span class="nx">invoke</span><span class="p">(</span><span class="s1">&#39;index&#39;</span><span class="p">,</span>
+          <span class="p">{</span>
+            <span class="nx">params</span><span class="o">:</span> <span class="p">{</span><span class="nx">page</span><span class="o">:</span> <span class="nx">page</span><span class="p">}</span>
+          <span class="p">},</span> <span class="nx">updateDOM</span>
+        <span class="p">);</span>
+      <span class="p">};</span>
+      <span class="kd">var</span> <span class="nx">showOverlay</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">target</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">target</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">href</span> <span class="o">=</span> <span class="nx">target</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;href&#39;</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">imageId</span> <span class="o">=</span> <span class="nx">parseImageId</span><span class="p">(</span><span class="nx">href</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">target</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="s1">&#39;overlayed&#39;</span><span class="p">))</span> <span class="p">{</span>
+          <span class="nx">target</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;overlayed&#39;</span><span class="p">);</span>
+          <span class="nx">thatNode</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;#display&#39;</span><span class="p">).</span><span class="nx">setContent</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+          <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;HREF: &#39;</span> <span class="o">+</span> <span class="nx">href</span><span class="p">);</span>
+          <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;IMAGE ID: &#39;</span> <span class="o">+</span> <span class="nx">imageId</span><span class="p">);</span>
+          <span class="nx">target</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;overlayed&#39;</span><span class="p">);</span>
+          <span class="c1">// Query for the image metadata</span>
+          <span class="kd">var</span> <span class="nx">query</span> <span class="o">=</span> <span class="s1">&#39;select * from flickr.photos.info where photo_id=&quot;&#39;</span> <span class="o">+</span> <span class="nx">imageId</span> <span class="o">+</span> <span class="s1">&#39;&quot; and api_key=&quot;&#39;</span> <span class="o">+</span> <span class="nx">API_KEY</span> <span class="o">+</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">;</span>
+          <span class="nx">thatNode</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;#display&#39;</span><span class="p">).</span><span class="nx">setContent</span><span class="p">(</span><span class="s1">&#39;Loading ...&#39;</span><span class="p">);</span>
+          <span class="nx">Y</span><span class="p">.</span><span class="nx">YQL</span><span class="p">(</span><span class="nx">query</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">raw</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">raw</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">results</span><span class="p">.</span><span class="nx">photo</span><span class="p">)</span> <span class="p">{</span>
+              <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;No results found for photoId: &#39;</span> <span class="o">+</span> <span class="nx">imageId</span><span class="p">);</span>
+              <span class="k">return</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="kd">var</span> <span class="nx">props</span> <span class="o">=</span> <span class="nx">raw</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">results</span><span class="p">.</span><span class="nx">photo</span><span class="p">;</span>
+            <span class="kd">var</span> <span class="nx">snippet</span> <span class="o">=</span> <span class="s1">&#39;&lt;ul style=&quot;list-style-type: square;&quot;&gt;&#39;</span><span class="p">;</span>
+            <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">key</span> <span class="k">in</span> <span class="nx">props</span><span class="p">)</span> <span class="p">{</span>
+              <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span><span class="p">(</span><span class="nx">props</span><span class="p">[</span><span class="nx">key</span><span class="p">])</span> <span class="o">==</span> <span class="s1">&#39;object&#39;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">continue</span><span class="p">;</span>
+              <span class="p">}</span>
+              <span class="nx">snippet</span> <span class="o">+=</span> <span class="s1">&#39;&lt;li&gt;&#39;</span> <span class="o">+</span> <span class="nx">key</span> <span class="o">+</span> <span class="s1">&#39;: &#39;</span> <span class="o">+</span> <span class="nx">props</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;&lt;/li&gt;&#39;</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="nx">snippet</span> <span class="o">+=</span> <span class="s1">&#39;&lt;/ul&gt;&#39;</span><span class="p">;</span>
+            <span class="nx">thatNode</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;#display&#39;</span><span class="p">).</span><span class="nx">setContent</span><span class="p">(</span><span class="nx">snippet</span><span class="p">);</span>
+          <span class="p">});</span>
+        <span class="p">}</span>
+      <span class="p">};</span>
+      <span class="c1">// Bind all the image links to showOverlay</span>
+      <span class="nx">thatNode</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="s1">&#39;#master ul li a&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;mouseover&#39;</span><span class="p">,</span> <span class="nx">showOverlay</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+      <span class="nx">thatNode</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="s1">&#39;#master ul li a&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;mouseout&#39;</span><span class="p">,</span> <span class="nx">showOverlay</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+      <span class="c1">// Bind the prev + next links to flipper</span>
+      <span class="nx">thatNode</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="s1">&#39;#nav a&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="nx">flipper</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+<span class="p">},</span> <span class="s1">&#39;0.0.1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;yql&#39;</span><span class="p">,</span> <span class="s1">&#39;io&#39;</span><span class="p">,</span> <span class="s1">&#39;dump&#39;</span><span class="p">]});</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="using-paging">
+<span id="events-notes-paging"></span><h3>Using Paging<a class="headerlink" href="#using-paging" title="Permalink to this headline">¶</a></h3>
+<p>The paging for this code example relies on the application configuration to set route
+paths and the controller to create links to access previous and next pages.</p>
+<p>The <tt class="docutils literal"><span class="pre">routes.json</span></tt> file below configures two route paths for HTTP GET calls made on the
+root path. The <tt class="docutils literal"><span class="pre">perpage</span></tt> configuration, however, requires a query string with the
+<tt class="docutils literal"><span class="pre">page</span></tt> parameter, which is used for paging. The <tt class="docutils literal"><span class="pre">page</span></tt> parameter has the value
+<tt class="docutils literal"><span class="pre">:page</span></tt>, which is a variable that is assigned a value by the controller that we&#8217;re
+going to look shortly.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;settings&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;master&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;root&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;verbs&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;get&quot;</span><span class="p">],</span>
+      <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;/&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;call&quot;</span><span class="o">:</span> <span class="s2">&quot;frame.index&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;perpage&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;verbs&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;get&quot;</span><span class="p">],</span>
+      <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;/?page=:page&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;call&quot;</span><span class="o">:</span> <span class="s2">&quot;frame.index&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>The controller for <tt class="docutils literal"><span class="pre">PagerMojit</span></tt> performs several functions:</p>
+<ul class="simple">
+<li>uses the <tt class="docutils literal"><span class="pre">Params</span></tt> addon to get the <tt class="docutils literal"><span class="pre">page</span></tt> parameter from the query string</li>
+<li>calculates the index of the first photo on the page</li>
+<li>calls the <tt class="docutils literal"><span class="pre">getData</span></tt> function in the model to get photo data</li>
+<li>creates URLs for the <strong>next</strong> and <strong>prev</strong> links</li>
+</ul>
+<p>The <a class="reference external" href="../../api/classes/Params.common.html">Params addon</a> allows you to access variables
+from the query string parameters, the POST request bodies, or the routing systems URLs.
+In this code example, you use the <tt class="docutils literal"><span class="pre">getFromMerged</span></tt> method, which merges the parameters
+from the query string, POST request body, and the routing system URLs to give you access
+to all of the parameters. In the code snippet taken from <tt class="docutils literal"><span class="pre">controller.server.js</span></tt> below,
+the <tt class="docutils literal"><span class="pre">getFromMerged</span></tt> method is used to get the value for the <tt class="docutils literal"><span class="pre">page</span></tt> parameter and then
+calculate the index of the first photo to display:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">...</span>
+   <span class="nx">index</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">actionContext</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">page</span> <span class="o">=</span> <span class="nx">actionContext</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">getFromMerged</span><span class="p">(</span><span class="s1">&#39;page&#39;</span><span class="p">);</span>
+      <span class="kd">var</span> <span class="nx">start</span><span class="p">;</span>
+      <span class="nx">page</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">page</span><span class="p">)</span> <span class="o">||</span> <span class="mi">1</span><span class="p">;</span>
+      <span class="k">if</span> <span class="p">((</span><span class="o">!</span><span class="nx">page</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="nx">page</span><span class="o">&lt;</span><span class="mi">1</span><span class="p">))</span> <span class="p">{</span>
+        <span class="nx">page</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="c1">// Page param is 1 based, but the model is 0 based</span>
+      <span class="nx">start</span> <span class="o">=</span> <span class="p">(</span><span class="nx">page</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="nx">PAGE_SIZE</span><span class="p">;</span>
+   <span class="p">...</span>
+   <span class="p">}</span>
+<span class="p">...</span>
+</pre></div>
+</div>
+<p>To get the photo data, the controller depends on the model to call YQL to query the
+Flickr API. Using <tt class="docutils literal"><span class="pre">actionContext.get({model_name})</span></tt> lets you get a reference to the
+model. The example controller below calls the <tt class="docutils literal"><span class="pre">getData</span></tt> from the model
+<tt class="docutils literal"><span class="pre">PagerMojitModel</span></tt> with <tt class="docutils literal"><span class="pre">actionContext.models.get('PagerMojitModel').getData</span></tt>, which
+will get the returned data from YQL in the callback function. To use methods from models,
+you need to require the model in the <tt class="docutils literal"><span class="pre">requires</span></tt> array of the controller.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">...</span>
+    <span class="nx">index</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">actionContext</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">...</span>
+      <span class="c1">// Data is an array of images</span>
+      <span class="nx">actionContext</span><span class="p">.</span><span class="nx">models</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;PagerMojitModel&#39;</span><span class="p">).</span><span class="nx">getData</span><span class="p">(</span><span class="s1">&#39;mojito&#39;</span><span class="p">,</span> <span class="nx">start</span><span class="p">,</span> <span class="nx">PAGE_SIZE</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;DATA: &#39;</span> <span class="o">+</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">dump</span><span class="p">(</span><span class="nx">data</span><span class="p">));</span>
+        <span class="kd">var</span> <span class="nx">theData</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nx">data</span><span class="o">:</span> <span class="nx">data</span><span class="p">,</span> <span class="c1">// images</span>
+        <span class="nx">hasLink</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+        <span class="nx">prev</span><span class="o">:</span> <span class="p">{</span>
+          <span class="nx">title</span><span class="o">:</span> <span class="s2">&quot;prev&quot;</span> <span class="c1">// opportunity to localize</span>
+        <span class="p">},</span>
+        <span class="nx">next</span><span class="o">:</span> <span class="p">{</span>
+          <span class="nx">link</span><span class="o">:</span> <span class="nx">createLink</span><span class="p">(</span><span class="nx">actionContext</span><span class="p">,</span> <span class="p">{</span><span class="nx">page</span><span class="o">:</span> <span class="nx">page</span><span class="o">+</span><span class="mi">1</span><span class="p">}),</span>
+            <span class="nx">title</span><span class="o">:</span> <span class="s2">&quot;next&quot;</span>
+          <span class="p">},</span>
+          <span class="nx">query</span><span class="o">:</span> <span class="s1">&#39;mojito&#39;</span>
+        <span class="p">};</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">page</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">theData</span><span class="p">.</span><span class="nx">prev</span><span class="p">.</span><span class="nx">link</span> <span class="o">=</span> <span class="nx">createLink</span><span class="p">(</span><span class="nx">actionContext</span><span class="p">,</span> <span class="p">{</span><span class="nx">page</span><span class="o">:</span> <span class="nx">page</span><span class="o">-</span><span class="mi">1</span><span class="p">});</span>
+          <span class="nx">theData</span><span class="p">.</span><span class="nx">hasLink</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="nx">actionContext</span><span class="p">.</span><span class="nx">done</span><span class="p">(</span><span class="nx">theData</span><span class="p">);</span>
+      <span class="p">});</span>
+    <span class="p">}</span>
+    <span class="p">...</span>
+  <span class="p">};</span>
+<span class="p">},</span> <span class="s1">&#39;0.0.1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[</span>
+  <span class="s1">&#39;mojito&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;mojito-models-addon&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;mojito-url-addon&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;mojito-params-addon&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;PagerMojitModel&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;dump&#39;</span>
+<span class="p">]});</span>
+</pre></div>
+</div>
+<p>The URLs for the <strong>prev</strong> and <strong>next</strong> links are created by passing the mojit instance,
+the method, and the query string parameters to the <tt class="docutils literal"><span class="pre">make</span></tt> method from the <tt class="docutils literal"><span class="pre">Url</span></tt> addon.
+The code snippet below creates the query string parameters with the
+<a class="reference external" href="http://yuilibrary.com/yui/docs/api/modules/querystring.html">YUI QueryString module</a>.
+If the query string created by <tt class="docutils literal"><span class="pre">Y.QueryString.stringify</span></tt> is &#8220;page=2&#8221; ,
+<tt class="docutils literal"><span class="pre">actionContext.url.make</span></tt> would return the URL <tt class="docutils literal"><span class="pre">{domain_name}:8666/?page=2</span></tt>.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">...</span>
+  <span class="kd">function</span> <span class="nx">createLink</span><span class="p">(</span><span class="nx">actionContext</span><span class="p">,</span> <span class="nx">params</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">mergedParams</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">mojito</span><span class="p">.</span><span class="nx">util</span><span class="p">.</span><span class="nx">copy</span><span class="p">(</span><span class="nx">actionContext</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">getFromMerged</span><span class="p">());</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">k</span> <span class="k">in</span> <span class="nx">params</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">mergedParams</span><span class="p">[</span><span class="nx">k</span><span class="p">]</span> <span class="o">=</span> <span class="nx">params</span><span class="p">[</span><span class="nx">k</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">actionContext</span><span class="p">.</span><span class="nx">url</span><span class="p">.</span><span class="nx">make</span><span class="p">(</span><span class="s1">&#39;frame&#39;</span><span class="p">,</span> <span class="s1">&#39;index&#39;</span><span class="p">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">QueryString</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">mergedParams</span><span class="p">));</span>
+  <span class="p">}</span>
+<span class="p">...</span>
+</pre></div>
+</div>
+<p>Stitching the above code snippets together, we have the <tt class="docutils literal"><span class="pre">controller.server.js</span></tt> below.
+The <tt class="docutils literal"><span class="pre">index</span></tt> function relies on the model for data and the <tt class="docutils literal"><span class="pre">createLink</span></tt> function to
+create URLs for the <strong>next</strong> and <strong>prev</strong> links.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;PagerMojit&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="p">,</span> <span class="nx">NAME</span><span class="p">)</span> <span class="p">{</span>
+  <span class="cm">/**</span>
+<span class="cm">  * The PagerMojit module.</span>
+<span class="cm">  * @module PagerMojit */</span>
+  <span class="kd">var</span> <span class="nx">PAGE_SIZE</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+  <span class="cm">/**</span>
+<span class="cm">  * Constructor for the Controller class.</span>
+<span class="cm">  * @class Controller</span>
+<span class="cm">  * @constructor</span>
+<span class="cm">  */</span>
+  <span class="nx">Y</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="s1">&#39;mojito.controllers&#39;</span><span class="p">)[</span><span class="nx">NAME</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+
+    <span class="nx">index</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">actionContext</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">page</span> <span class="o">=</span> <span class="nx">actionContext</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">getFromMerged</span><span class="p">(</span><span class="s1">&#39;page&#39;</span><span class="p">);</span>
+      <span class="kd">var</span> <span class="nx">start</span><span class="p">;</span>
+      <span class="nx">page</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">page</span><span class="p">)</span> <span class="o">||</span> <span class="mi">1</span><span class="p">;</span>
+      <span class="k">if</span> <span class="p">((</span><span class="o">!</span><span class="nx">page</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="nx">page</span><span class="o">&lt;</span><span class="mi">1</span><span class="p">))</span> <span class="p">{</span>
+        <span class="nx">page</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="c1">// Page param is 1 based, but the model is 0 based</span>
+      <span class="nx">start</span> <span class="o">=</span> <span class="p">(</span><span class="nx">page</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="nx">PAGE_SIZE</span><span class="p">;</span>
+      <span class="c1">// Data is an array of images</span>
+      <span class="nx">actionContext</span><span class="p">.</span><span class="nx">models</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;PagerMojitModel&#39;</span><span class="p">).</span><span class="nx">getData</span><span class="p">(</span><span class="s1">&#39;mojito&#39;</span><span class="p">,</span> <span class="nx">start</span><span class="p">,</span> <span class="nx">PAGE_SIZE</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;DATA: &#39;</span> <span class="o">+</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">dump</span><span class="p">(</span><span class="nx">data</span><span class="p">));</span>
+        <span class="kd">var</span> <span class="nx">theData</span> <span class="o">=</span> <span class="p">{</span>
+          <span class="nx">data</span><span class="o">:</span> <span class="nx">data</span><span class="p">,</span> <span class="c1">// images</span>
+          <span class="nx">hasLink</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+          <span class="nx">prev</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">title</span><span class="o">:</span> <span class="s2">&quot;prev&quot;</span> <span class="c1">// opportunity to localize</span>
+          <span class="p">},</span>
+          <span class="nx">next</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">link</span><span class="o">:</span> <span class="nx">createLink</span><span class="p">(</span><span class="nx">actionContext</span><span class="p">,</span> <span class="p">{</span><span class="nx">page</span><span class="o">:</span> <span class="nx">page</span><span class="o">+</span><span class="mi">1</span><span class="p">}),</span>
+            <span class="nx">title</span><span class="o">:</span> <span class="s2">&quot;next&quot;</span>
+          <span class="p">},</span>
+          <span class="nx">query</span><span class="o">:</span> <span class="s1">&#39;mojito&#39;</span>
+        <span class="p">};</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">page</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">theData</span><span class="p">.</span><span class="nx">prev</span><span class="p">.</span><span class="nx">link</span> <span class="o">=</span> <span class="nx">createLink</span><span class="p">(</span><span class="nx">actionContext</span><span class="p">,</span> <span class="p">{</span><span class="nx">page</span><span class="o">:</span> <span class="nx">page</span><span class="o">-</span><span class="mi">1</span><span class="p">});</span>
+          <span class="nx">theData</span><span class="p">.</span><span class="nx">hasLink</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="nx">actionContext</span><span class="p">.</span><span class="nx">done</span><span class="p">(</span><span class="nx">theData</span><span class="p">);</span>
+      <span class="p">});</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+  <span class="c1">// generate the link to the next page based on:</span>
+  <span class="c1">// - mojit id</span>
+  <span class="c1">// - action</span>
+  <span class="c1">// - params</span>
+  <span class="kd">function</span> <span class="nx">createLink</span><span class="p">(</span><span class="nx">actionContext</span><span class="p">,</span> <span class="nx">params</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">mergedParams</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">mojito</span><span class="p">.</span><span class="nx">util</span><span class="p">.</span><span class="nx">copy</span><span class="p">(</span><span class="nx">actionContext</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">getFromMerged</span><span class="p">());</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">k</span> <span class="k">in</span> <span class="nx">params</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">mergedParams</span><span class="p">[</span><span class="nx">k</span><span class="p">]</span> <span class="o">=</span> <span class="nx">params</span><span class="p">[</span><span class="nx">k</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nx">actionContext</span><span class="p">.</span><span class="nx">url</span><span class="p">.</span><span class="nx">make</span><span class="p">(</span><span class="s1">&#39;frame&#39;</span><span class="p">,</span> <span class="s1">&#39;index&#39;</span><span class="p">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">QueryString</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">mergedParams</span><span class="p">));</span>
+  <span class="p">}</span>
+<span class="p">},</span> <span class="s1">&#39;0.0.1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[</span>
+  <span class="s1">&#39;mojito&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;mojito-models-addon&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;mojito-url-addon&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;mojito-params-addon&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;PagerMojitModel&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;dump&#39;</span>
+<span class="p">]});</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="setting-up-this-example">
+<span id="code-exs-events-setup"></span><h2>Setting Up this Example<a class="headerlink" href="#setting-up-this-example" title="Permalink to this headline">¶</a></h2>
+<p>To set up and run <tt class="docutils literal"><span class="pre">binding_events</span></tt>:</p>
+<ol class="arabic">
+<li><p class="first">Create your application.</p>
+<p><tt class="docutils literal"><span class="pre">$</span> <span class="pre">mojito</span> <span class="pre">create</span> <span class="pre">app</span> <span class="pre">binding_events</span></tt></p>
+</li>
+<li><p class="first">Change to the application directory.</p>
+</li>
+<li><p class="first">Create your mojit.</p>
+<p><tt class="docutils literal"><span class="pre">$</span> <span class="pre">mojito</span> <span class="pre">create</span> <span class="pre">mojit</span> <span class="pre">PagerMojit</span></tt></p>
+</li>
+<li><p class="first">To configure you application to run on the client and use <tt class="docutils literal"><span class="pre">HTMLFrameMojit</span></tt>, replace
+the code in <tt class="docutils literal"><span class="pre">application.json</span></tt> with the following:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;settings&quot;</span><span class="o">:</span> <span class="p">[</span> <span class="s2">&quot;master&quot;</span> <span class="p">],</span>
+    <span class="s2">&quot;specs&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;frame&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;HTMLFrameMojit&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;config&quot;</span><span class="o">:</span> <span class="p">{</span>
+          <span class="s2">&quot;deploy&quot;</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+          <span class="s2">&quot;child&quot;</span><span class="o">:</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;PagerMojit&quot;</span>
+          <span class="p">}</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">To configure routing to call the <tt class="docutils literal"><span class="pre">index</span></tt> action from the instance of the
+<tt class="docutils literal"><span class="pre">HTMLFrameMojit</span></tt>, replace the code in <tt class="docutils literal"><span class="pre">routes.json</span></tt> with the following:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;settings&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;master&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;root&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;verbs&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;get&quot;</span><span class="p">],</span>
+      <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;/&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;call&quot;</span><span class="o">:</span> <span class="s2">&quot;frame.index&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;perpage&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;verbs&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;get&quot;</span><span class="p">],</span>
+      <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;/?page=:page&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;call&quot;</span><span class="o">:</span> <span class="s2">&quot;frame.index&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Change to <tt class="docutils literal"><span class="pre">mojits/PageMojit</span></tt>.</p>
+</li>
+<li><p class="first">To have the controller get data from the model and create links for paging, replace the
+code in <tt class="docutils literal"><span class="pre">controller.server.js</span></tt> with the following:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;PagerMojit&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="p">,</span> <span class="nx">NAME</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">PAGE_SIZE</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+  <span class="cm">/**</span>
+<span class="cm">  * Constructor for the Controller class.</span>
+<span class="cm">  * @class Controller</span>
+<span class="cm">  * @constructor</span>
+<span class="cm">  */</span>
+    <span class="nx">Y</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="s1">&#39;mojito.controllers&#39;</span><span class="p">)[</span><span class="nx">NAME</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+
+      <span class="nx">index</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">actionContext</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">page</span> <span class="o">=</span> <span class="nx">actionContext</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">getFromMerged</span><span class="p">(</span><span class="s1">&#39;page&#39;</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">start</span><span class="p">;</span>
+        <span class="nx">page</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">page</span><span class="p">)</span> <span class="o">||</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">((</span><span class="o">!</span><span class="nx">page</span><span class="p">)</span> <span class="o">||</span> <span class="p">(</span><span class="nx">page</span><span class="o">&lt;</span><span class="mi">1</span><span class="p">))</span> <span class="p">{</span>
+          <span class="nx">page</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="c1">// Page param is 1 based, but the model is 0 based</span>
+        <span class="nx">start</span> <span class="o">=</span> <span class="p">(</span><span class="nx">page</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="nx">PAGE_SIZE</span><span class="p">;</span>
+        <span class="c1">// Data is an array of images</span>
+        <span class="nx">actionContext</span><span class="p">.</span><span class="nx">models</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;PagerMojitModel&#39;</span><span class="p">).</span><span class="nx">getData</span><span class="p">(</span><span class="s1">&#39;mojito&#39;</span><span class="p">,</span> <span class="nx">start</span><span class="p">,</span> <span class="nx">PAGE_SIZE</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;DATA: &#39;</span> <span class="o">+</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">dump</span><span class="p">(</span><span class="nx">data</span><span class="p">));</span>
+          <span class="kd">var</span> <span class="nx">theData</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="nx">data</span><span class="o">:</span> <span class="nx">data</span><span class="p">,</span> <span class="c1">// images</span>
+            <span class="nx">hasLink</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+            <span class="nx">prev</span><span class="o">:</span> <span class="p">{</span>
+              <span class="nx">title</span><span class="o">:</span> <span class="s2">&quot;prev&quot;</span> <span class="c1">// opportunity to localize</span>
+            <span class="p">},</span>
+            <span class="nx">next</span><span class="o">:</span> <span class="p">{</span>
+              <span class="nx">link</span><span class="o">:</span> <span class="nx">createLink</span><span class="p">(</span><span class="nx">actionContext</span><span class="p">,</span> <span class="p">{</span><span class="nx">page</span><span class="o">:</span> <span class="nx">page</span><span class="o">+</span><span class="mi">1</span><span class="p">}),</span>
+              <span class="nx">title</span><span class="o">:</span> <span class="s2">&quot;next&quot;</span>
+            <span class="p">},</span>
+            <span class="nx">query</span><span class="o">:</span> <span class="s1">&#39;mojito&#39;</span>
+          <span class="p">};</span>
+          <span class="k">if</span> <span class="p">(</span><span class="nx">page</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">theData</span><span class="p">.</span><span class="nx">prev</span><span class="p">.</span><span class="nx">link</span> <span class="o">=</span> <span class="nx">createLink</span><span class="p">(</span><span class="nx">actionContext</span><span class="p">,</span> <span class="p">{</span><span class="nx">page</span><span class="o">:</span> <span class="nx">page</span><span class="o">-</span><span class="mi">1</span><span class="p">});</span>
+            <span class="nx">theData</span><span class="p">.</span><span class="nx">hasLink</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+          <span class="p">}</span>
+          <span class="nx">actionContext</span><span class="p">.</span><span class="nx">done</span><span class="p">(</span><span class="nx">theData</span><span class="p">);</span>
+        <span class="p">});</span>
+      <span class="p">}</span>
+    <span class="p">};</span>
+    <span class="c1">// Generate the link to the next page based on:</span>
+    <span class="c1">// - mojit id</span>
+    <span class="c1">// - action</span>
+    <span class="c1">// - params</span>
+    <span class="kd">function</span> <span class="nx">createLink</span><span class="p">(</span><span class="nx">actionContext</span><span class="p">,</span> <span class="nx">params</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">mergedParams</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">mojito</span><span class="p">.</span><span class="nx">util</span><span class="p">.</span><span class="nx">copy</span><span class="p">(</span><span class="nx">actionContext</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">getFromMerged</span><span class="p">());</span>
+      <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">k</span> <span class="k">in</span> <span class="nx">params</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">mergedParams</span><span class="p">[</span><span class="nx">k</span><span class="p">]</span> <span class="o">=</span> <span class="nx">params</span><span class="p">[</span><span class="nx">k</span><span class="p">];</span>
+      <span class="p">}</span>
+      <span class="k">return</span> <span class="nx">actionContext</span><span class="p">.</span><span class="nx">url</span><span class="p">.</span><span class="nx">make</span><span class="p">(</span><span class="s1">&#39;frame&#39;</span><span class="p">,</span> <span class="s1">&#39;index&#39;</span><span class="p">,</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">QueryString</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">mergedParams</span><span class="p">));</span>
+    <span class="p">}</span>
+<span class="p">},</span> <span class="s1">&#39;0.0.1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[</span>
+  <span class="s1">&#39;mojito&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;mojito-models-addon&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;mojito-url-addon&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;mojito-params-addon&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;PagerMojitModel&#39;</span><span class="p">,</span>
+  <span class="s1">&#39;dump&#39;</span>
+<span class="p">]});</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">To get Flickr photo information using YQL, create the file <tt class="docutils literal"><span class="pre">models/model.server.js</span></tt>
+with the code below. Be sure to replace the <tt class="docutils literal"><span class="pre">'{your_flickr_api_key}'</span></tt> with your own
+Flickr API key.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;PagerMojitModel&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="p">,</span> <span class="nx">NAME</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">API_KEY</span> <span class="o">=</span> <span class="s1">&#39;{your_flickr_api_key}&#39;</span><span class="p">;</span>
+  <span class="cm">/**</span>
+<span class="cm">  * The PagerMojitModel module.</span>
+<span class="cm">  * @module PagerMojitModel</span>
+<span class="cm">  */</span>
+  <span class="cm">/**</span>
+<span class="cm">  * Constructor for the Model class.</span>
+<span class="cm">  * @class Model</span>
+<span class="cm">  * @constructor</span>
+<span class="cm">  */</span>
+  <span class="nx">Y</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="s1">&#39;mojito.models&#39;</span><span class="p">)[</span><span class="nx">NAME</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+
+    <span class="nx">getData</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">query</span><span class="p">,</span> <span class="nx">start</span><span class="p">,</span> <span class="nx">count</span><span class="p">,</span> <span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+       <span class="kd">var</span> <span class="nx">q</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+      <span class="c1">// Get Flickr API key: http://www.flickr.com/services/api/keys/apply/</span>
+      <span class="kd">var</span> <span class="nx">API_KEY</span> <span class="o">=</span> <span class="s2">&quot;{your_api_key}&quot;</span><span class="p">;</span>
+      <span class="nx">start</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">start</span><span class="p">)</span> <span class="o">||</span> <span class="mi">0</span><span class="p">;</span>
+      <span class="nx">count</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">count</span><span class="p">)</span> <span class="o">||</span> <span class="mi">10</span><span class="p">;</span>
+      <span class="nx">q</span> <span class="o">=</span> <span class="s1">&#39;select * from flickr.photos.search(&#39;</span> <span class="o">+</span> <span class="nx">start</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span> <span class="o">+</span> <span class="nx">count</span> <span class="o">+</span> <span class="s1">&#39;)  where text=&quot;%&#39;</span> <span class="o">+</span> <span class="nx">query</span> <span class="o">+</span> <span class="s1">&#39;%&quot; and api_key=&quot;&#39;</span> <span class="o">+</span> <span class="nx">API_KEY</span><span class="o">+</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">;</span>
+      <span class="nx">Y</span><span class="p">.</span><span class="nx">YQL</span><span class="p">(</span><span class="nx">q</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">rawData</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">rawData</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">results</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">callback</span><span class="p">([]);</span>
+          <span class="k">return</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="kd">var</span> <span class="nx">rawImages</span> <span class="o">=</span> <span class="nx">rawData</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">results</span><span class="p">.</span><span class="nx">photo</span><span class="p">,</span> <span class="nx">rawImage</span> <span class="o">=</span> <span class="kc">null</span><span class="p">,</span><span class="nx">images</span> <span class="o">=</span> <span class="p">[],</span> <span class="nx">image</span> <span class="o">=</span> <span class="kc">null</span><span class="p">,</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">rawImages</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">rawImage</span> <span class="o">=</span> <span class="nx">rawImages</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
+          <span class="nx">image</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="nx">title</span><span class="o">:</span> <span class="nx">rawImage</span><span class="p">.</span><span class="nx">title</span><span class="p">,</span>
+            <span class="nx">location</span><span class="o">:</span> <span class="s1">&#39;http://farm&#39;</span> <span class="o">+</span> <span class="nx">rawImage</span><span class="p">.</span><span class="nx">farm</span> <span class="o">+</span> <span class="s1">&#39;.static.flickr.com/&#39;</span> <span class="o">+</span> <span class="nx">rawImage</span><span class="p">.</span><span class="nx">server</span> <span class="o">+</span> <span class="s1">&#39;/&#39;</span> <span class="o">+</span> <span class="nx">rawImage</span><span class="p">.</span><span class="nx">id</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="nx">rawImage</span><span class="p">.</span><span class="nx">secret</span> <span class="o">+</span> <span class="s1">&#39;.jpg&#39;</span><span class="p">,</span>
+            <span class="nx">farm</span><span class="o">:</span> <span class="nx">rawImage</span><span class="p">.</span><span class="nx">farm</span><span class="p">,</span>
+            <span class="nx">server</span><span class="o">:</span> <span class="nx">rawImage</span><span class="p">.</span><span class="nx">server</span><span class="p">,</span>
+            <span class="nx">image_id</span><span class="o">:</span> <span class="nx">rawImage</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span>
+            <span class="nx">secret</span><span class="o">:</span> <span class="nx">rawImage</span><span class="p">.</span><span class="nx">secret</span>
+          <span class="p">};</span>
+          <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">image</span><span class="p">.</span><span class="nx">title</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">image</span><span class="p">.</span><span class="nx">title</span> <span class="o">=</span> <span class="s2">&quot;Generic Title: &quot;</span> <span class="o">+</span> <span class="nx">query</span><span class="p">;</span>
+          <span class="p">}</span>
+          <span class="nx">images</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">image</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="nx">callback</span><span class="p">(</span><span class="nx">images</span><span class="p">);</span>
+      <span class="p">});</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+<span class="p">},</span> <span class="s1">&#39;0.0.1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;yql&#39;</span><span class="p">]});</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">To create the binder for click events and invoke the <tt class="docutils literal"><span class="pre">index</span></tt> function of the
+controller, replace the code in <tt class="docutils literal"><span class="pre">binders/index.js</span></tt> with the code below. Again,
+Be sure to replace the <tt class="docutils literal"><span class="pre">'{your_flickr_api_key}'</span></tt> with your own Flickr API key.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;PagerMojitBinder&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="p">,</span> <span class="nx">NAME</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">API_KEY</span> <span class="o">=</span> <span class="s1">&#39;{your_flickr_api_key}&#39;</span><span class="p">;</span>
+  <span class="kd">function</span> <span class="nx">parseImageId</span><span class="p">(</span><span class="nx">link</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">matches</span> <span class="o">=</span> <span class="nx">link</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/com\/(\d+)\/(\d+)_([0-9a-z]+)\.jpg$/</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nx">matches</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+  <span class="p">}</span>
+  <span class="kd">function</span> <span class="nx">parsePage</span><span class="p">(</span><span class="nx">link</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">matches</span> <span class="o">=</span> <span class="nx">link</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/page=(\d+)/</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nx">matches</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+  <span class="p">}</span>
+
+  <span class="cm">/**</span>
+<span class="cm">  * The PagerMojitBinder module.</span>
+<span class="cm">  * @module PagerMojitBinder</span>
+<span class="cm">  */</span>
+  <span class="cm">/**</span>
+<span class="cm">  * Constructor for the Binder class.</span>
+<span class="cm">  *</span>
+<span class="cm">  * @param mojitProxy {Object} The proxy to allow</span>
+<span class="cm">  * the binder to interact with its owning mojit.</span>
+<span class="cm">  * @class Binder</span>
+<span class="cm">  * @constructor</span>
+<span class="cm">  */</span>
+  <span class="nx">Y</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="s1">&#39;mojito.binders&#39;</span><span class="p">)[</span><span class="nx">NAME</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="cm">/**</span>
+<span class="cm">    * Binder initialization method, invoked</span>
+<span class="cm">    * after all binders on the page have</span>
+<span class="cm">    * been constructed.</span>
+<span class="cm">    */</span>
+    <span class="nx">init</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">mojitProxy</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">mojitProxy</span> <span class="o">=</span> <span class="nx">mojitProxy</span><span class="p">;</span>
+    <span class="p">},</span>
+    <span class="cm">/**</span>
+<span class="cm">    * The binder method, invoked to allow the mojit</span>
+<span class="cm">    * to attach DOM event handlers.</span>
+<span class="cm">    * @param node {Node} The DOM node to which this</span>
+<span class="cm">    * mojit is attached.</span>
+<span class="cm">    */</span>
+    <span class="nx">bind</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">node</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">thatNode</span> <span class="o">=</span> <span class="nx">node</span><span class="p">;</span>
+      <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;NODE: &#39;</span> <span class="o">+</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">dump</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">node</span><span class="p">));</span>
+      <span class="c1">// define the action when user click on prev/next</span>
+      <span class="kd">var</span> <span class="nx">flipper</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">target</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">target</span><span class="p">;</span>
+        <span class="c1">// get the link to the page</span>
+        <span class="kd">var</span> <span class="nx">page</span> <span class="o">=</span> <span class="nx">parsePage</span><span class="p">(</span><span class="nx">target</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;href&#39;</span><span class="p">));</span>
+        <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;PAGE: &#39;</span> <span class="o">+</span> <span class="nx">page</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">updateDOM</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">markup</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">thatNode</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;innerHTML&#39;</span><span class="p">,</span> <span class="nx">markup</span><span class="p">);</span>
+          <span class="nx">thatNode</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="s1">&#39;#nav a&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="nx">flipper</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+          <span class="nx">thatNode</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="s1">&#39;#master ul li a&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;mouseover&#39;</span><span class="p">,</span> <span class="nx">showOverlay</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+          <span class="nx">thatNode</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="s1">&#39;#master ul li a&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;mouseout&#39;</span><span class="p">,</span> <span class="nx">showOverlay</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+        <span class="p">};</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">mojitProxy</span><span class="p">.</span><span class="nx">invoke</span><span class="p">(</span><span class="s1">&#39;index&#39;</span><span class="p">,</span>
+          <span class="p">{</span>
+            <span class="nx">params</span><span class="o">:</span> <span class="p">{</span><span class="nx">page</span><span class="o">:</span> <span class="nx">page</span><span class="p">}</span>
+          <span class="p">},</span> <span class="nx">updateDOM</span>
+        <span class="p">);</span>
+      <span class="p">};</span>
+      <span class="kd">var</span> <span class="nx">showOverlay</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">event</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">target</span> <span class="o">=</span> <span class="nx">event</span><span class="p">.</span><span class="nx">target</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">href</span> <span class="o">=</span> <span class="nx">target</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;href&#39;</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">imageId</span> <span class="o">=</span> <span class="nx">parseImageId</span><span class="p">(</span><span class="nx">href</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">target</span><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="s1">&#39;overlayed&#39;</span><span class="p">))</span> <span class="p">{</span>
+          <span class="nx">target</span><span class="p">.</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;overlayed&#39;</span><span class="p">);</span>
+          <span class="nx">thatNode</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;#display&#39;</span><span class="p">).</span><span class="nx">setContent</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+          <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;HREF: &#39;</span> <span class="o">+</span> <span class="nx">href</span><span class="p">);</span>
+          <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;IMAGE ID: &#39;</span> <span class="o">+</span> <span class="nx">imageId</span><span class="p">);</span>
+          <span class="nx">target</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;overlayed&#39;</span><span class="p">);</span>
+          <span class="c1">// Query for the image metadata</span>
+          <span class="kd">var</span> <span class="nx">query</span> <span class="o">=</span> <span class="s1">&#39;select * from flickr.photos.info where photo_id=&quot;&#39;</span> <span class="o">+</span> <span class="nx">imageId</span> <span class="o">+</span> <span class="s1">&#39;&quot; and api_key=&quot;&#39;</span> <span class="o">+</span> <span class="nx">API_KEY</span> <span class="o">+</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">;</span>
+          <span class="nx">thatNode</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;#display&#39;</span><span class="p">).</span><span class="nx">setContent</span><span class="p">(</span><span class="s1">&#39;Loading ...&#39;</span><span class="p">);</span>
+          <span class="nx">Y</span><span class="p">.</span><span class="nx">YQL</span><span class="p">(</span><span class="nx">query</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">raw</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">raw</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">results</span><span class="p">.</span><span class="nx">photo</span><span class="p">)</span> <span class="p">{</span>
+              <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;No results found for photoId: &#39;</span> <span class="o">+</span> <span class="nx">imageId</span><span class="p">);</span>
+              <span class="k">return</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="kd">var</span> <span class="nx">props</span> <span class="o">=</span> <span class="nx">raw</span><span class="p">.</span><span class="nx">query</span><span class="p">.</span><span class="nx">results</span><span class="p">.</span><span class="nx">photo</span><span class="p">;</span>
+            <span class="kd">var</span> <span class="nx">snippet</span> <span class="o">=</span> <span class="s1">&#39;&lt;ul style=&quot;list-style-type: square;&quot;&gt;&#39;</span><span class="p">;</span>
+            <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">key</span> <span class="k">in</span> <span class="nx">props</span><span class="p">)</span> <span class="p">{</span>
+              <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span><span class="p">(</span><span class="nx">props</span><span class="p">[</span><span class="nx">key</span><span class="p">])</span> <span class="o">==</span> <span class="s1">&#39;object&#39;</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">continue</span><span class="p">;</span>
+              <span class="p">}</span>
+              <span class="nx">snippet</span> <span class="o">+=</span> <span class="s1">&#39;&lt;li&gt;&#39;</span> <span class="o">+</span> <span class="nx">key</span> <span class="o">+</span> <span class="s1">&#39;: &#39;</span> <span class="o">+</span> <span class="nx">props</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;&lt;/li&gt;&#39;</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="nx">snippet</span> <span class="o">+=</span> <span class="s1">&#39;&lt;/ul&gt;&#39;</span><span class="p">;</span>
+            <span class="nx">thatNode</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;#display&#39;</span><span class="p">).</span><span class="nx">setContent</span><span class="p">(</span><span class="nx">snippet</span><span class="p">);</span>
+          <span class="p">});</span>
+        <span class="p">}</span>
+      <span class="p">};</span>
+      <span class="c1">// Bind all the image links to showOverlay</span>
+      <span class="nx">thatNode</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="s1">&#39;#master ul li a&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;mouseover&#39;</span><span class="p">,</span> <span class="nx">showOverlay</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+      <span class="nx">thatNode</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="s1">&#39;#master ul li a&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;mouseout&#39;</span><span class="p">,</span> <span class="nx">showOverlay</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+      <span class="c1">// Bind the prev + next links to flipper</span>
+      <span class="nx">thatNode</span><span class="p">.</span><span class="nx">all</span><span class="p">(</span><span class="s1">&#39;#nav a&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="nx">flipper</span><span class="p">,</span> <span class="k">this</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+<span class="p">},</span> <span class="s1">&#39;0.0.1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;yql&#39;</span><span class="p">,</span> <span class="s1">&#39;io&#39;</span><span class="p">,</span> <span class="s1">&#39;dump&#39;</span><span class="p">]});</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">To display links to photos and associated photo data in the rendered template, replace
+the code in <tt class="docutils literal"><span class="pre">views/index.hb.html</span></tt> with the following:</p>
+<div class="highlight-html"><div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;{{mojit_view_id}}&quot;</span> <span class="na">class=</span><span class="s">&quot;mojit&quot;</span> <span class="na">style=</span><span class="s">&quot;position: relative; width: 960px&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h3&gt;</span>Query Term: {{query}}<span class="nt">&lt;/h3&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;nav&quot;</span> <span class="na">style=</span><span class="s">&quot;clear: both;&quot;</span><span class="nt">&gt;</span>
+  {{#hasLink}}
+    {{#prev}}
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;{{{link}}}&quot;</span><span class="nt">&gt;</span>{{title}}<span class="nt">&lt;/a&gt;</span>
+    {{/prev}}
+  {{/hasLink}}
+  {{^hasLink}}
+    {{#prev}}{{title}}{{/prev}}
+  {{/hasLink}}
+  {{#next}}
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;{{{link}}}&quot;</span><span class="nt">&gt;</span>{{title}}<span class="nt">&lt;/a&gt;</span>
+  {{/next}}
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;master&quot;</span> <span class="na">style=</span><span class="s">&quot;width: 30%; float: left;&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;ul&gt;</span>
+    {{#data}}
+      <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;{{location}}&quot;</span> <span class="na">data-id=</span><span class="s">&quot;{{image_id}}&quot;</span><span class="nt">&gt;</span>{{title}}<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+    {{/data}}
+    <span class="nt">&lt;/ul&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">style=</span><span class="s">&quot;width: 50%; float: right&quot;</span><span class="nt">&gt;</span>
+  <span class="c">&lt;!-- load image here dynamically --&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;display&quot;</span> <span class="na">style=</span><span class="s">&quot;margin: 0 auto;&quot;</span><span class="nt">&gt;</span>
+      <span class="ni">&amp;nbsp;</span>
+    <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">From the application directory, run the server.</p>
+<p><tt class="docutils literal"><span class="pre">$</span> <span class="pre">mojito</span> <span class="pre">start</span></tt></p>
+</li>
+<li><p class="first">To view your application, go to the URL:</p>
+<p><a class="reference external" href="http://localhost:8666">http://localhost:8666</a></p>
+</li>
+</ol>
+</div>
+<div class="section" id="source-code">
+<span id="code-exs-events-src"></span><h2>Source Code<a class="headerlink" href="#source-code" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="http://github.com/yahoo/mojito/tree/master/examples/developer-guide/binding_events/application.json">Application Configuration</a></li>
+<li><a class="reference external" href="http://github.com/yahoo/mojito/tree/master/examples/developer-guide/binding_events/mojits/PagerMojit/binders/index.js">Mojit Binder</a></li>
+<li><a class="reference external" href="http://github.com/yahoo/mojito/tree/master/examples/developer-guide/binding_events/">Binding Events Application</a></li>
+</ul>
+</div>
+</div>
+
+   </div>
+

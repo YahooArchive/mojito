@@ -1,0 +1,267 @@
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+     <title>Configuring Routing</title>
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '',
+        COLLAPSE_INDEX: true,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+   </head> 
+
+     <div class="header"><h1 class="heading"><a href="#">
+          <span>Mojito</span></a></h1>
+      </div>
+      <div class="topnav">
+        <p>
+        <a class="uplink" href="../">Mojito Documentation</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="../index.html" title="Mojito">Mojito</a>
+        &#160;&#160;::&#160;&#160;
+        
+           <a href="app_config.html">Basic Configuring of Applications</a>
+        &#160;&#160;::&#160;&#160;
+        
+        
+           <a href="generating_urls.html">Generating URLs</a>
+        
+        </p>
+
+      </div>
+      <div class="content">
+   <div class="section" id="configuring-routing">
+<h1>Configuring Routing<a class="headerlink" href="#configuring-routing" title="Permalink to this headline">¶</a></h1>
+<p><strong>Time Estimate:</strong> 10 minutes</p>
+<p><strong>Difficulty Level:</strong> Beginning</p>
+<div class="section" id="summary">
+<span id="code-exs-routing-summary"></span><h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<p>This example shows how to configure routing for your Mojito application.
+In Mojito, routing is the mapping of URLs to mojit actions.</p>
+</div>
+<div class="section" id="implementation-notes">
+<span id="code-exs-routing-notes"></span><h2>Implementation Notes<a class="headerlink" href="#implementation-notes" title="Permalink to this headline">¶</a></h2>
+<p>Before you create routes for your application, you need to specify one or
+more mojit instances that can be mapped to URLs. In the <tt class="docutils literal"><span class="pre">application.json</span></tt>
+below, the <tt class="docutils literal"><span class="pre">mapped_mojit</span></tt> instance of <tt class="docutils literal"><span class="pre">RoutingMojit</span></tt> is created, which
+can then be associated in a route defined in <tt class="docutils literal"><span class="pre">routes.json</span></tt>.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;settings&quot;</span><span class="o">:</span> <span class="p">[</span> <span class="s2">&quot;master&quot;</span> <span class="p">],</span>
+    <span class="s2">&quot;specs&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;mapped_mojit&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;RoutingMojit&quot;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>The example <tt class="docutils literal"><span class="pre">routes.json</span></tt> below associates the <tt class="docutils literal"><span class="pre">mapped_mojit</span></tt> instance
+defined in <tt class="docutils literal"><span class="pre">application.json</span></tt> with a path and explicitly calls the
+<tt class="docutils literal"><span class="pre">index</span></tt> action. If the controller for <tt class="docutils literal"><span class="pre">RoutingMojit</span></tt> had the function
+<tt class="docutils literal"><span class="pre">myFunction</span></tt>, you would use the following to call it: <tt class="docutils literal"><span class="pre">mapped_mojit.myFunction</span></tt>.
+Based on the <tt class="docutils literal"><span class="pre">custom-route</span></tt> route below, when an HTTP GET call is made on
+the URL <tt class="docutils literal"><span class="pre">http:{domain}:8666/custom-route</span></tt>, the <tt class="docutils literal"><span class="pre">index</span></tt> action is called
+from the <tt class="docutils literal"><span class="pre">custom-route</span></tt> instance.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;settings&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;master&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;custom-route&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;verbs&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;get&quot;</span><span class="p">],</span>
+      <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;/custom-route&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;call&quot;</span><span class="o">:</span> <span class="s2">&quot;mapped_mojit.index&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>The name of the mojit instance is arbitrary. For example, the mojit instance
+<tt class="docutils literal"><span class="pre">mapped_mojit</span></tt> above could have just as well been called <tt class="docutils literal"><span class="pre">mojit-route</span></tt>.
+Just remember that the name of the mojit instance in <tt class="docutils literal"><span class="pre">routes.json</span></tt> has to
+be defined and have a mojit type in <tt class="docutils literal"><span class="pre">application.json</span></tt>.</p>
+<p>You can also configure multiple routes and use wildcards in <tt class="docutils literal"><span class="pre">routes.json</span></tt>.
+The modified <tt class="docutils literal"><span class="pre">routes.json</span></tt> below uses the wildcard to configure a route
+for handling HTTP POST requests and calls the method <tt class="docutils literal"><span class="pre">post_params</span></tt> from the
+<tt class="docutils literal"><span class="pre">post-route</span></tt> mojit instance.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;settings&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;master&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;custom-route&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;verbs&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;get&quot;</span><span class="p">],</span>
+      <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;/custom-route&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;call&quot;</span><span class="o">:</span> <span class="s2">&quot;mapped_mojit.index&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;another-route&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;verbs&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;post&quot;</span><span class="p">],</span>
+      <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;/*&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;call&quot;</span><span class="o">:</span> <span class="s2">&quot;mojit-post-route.post_params&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">routes.json</span></tt> above configures the routes below. Notice that the wildcard
+used for the path of <tt class="docutils literal"><span class="pre">&quot;another-route&quot;</span></tt> configures Mojito to execute
+<tt class="docutils literal"><span class="pre">post_params</span></tt> when receiving any HTTP POST requests.</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">http://localhost:8666/custom-route</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">http://localhost:8666/{any_path}</span></tt></li>
+</ul>
+</div>
+<div class="section" id="setting-up-this-example">
+<span id="code-exs-routing-setup"></span><h2>Setting Up this Example<a class="headerlink" href="#setting-up-this-example" title="Permalink to this headline">¶</a></h2>
+<p>To set up and run <tt class="docutils literal"><span class="pre">configure_routing</span></tt>:</p>
+<ol class="arabic">
+<li><p class="first">Create your application.</p>
+<p><tt class="docutils literal"><span class="pre">$</span> <span class="pre">mojito</span> <span class="pre">create</span> <span class="pre">app</span> <span class="pre">configure_routing</span></tt></p>
+</li>
+<li><p class="first">Change to the application directory.</p>
+</li>
+<li><p class="first">Create your mojit.</p>
+<p><tt class="docutils literal"><span class="pre">$</span> <span class="pre">mojito</span> <span class="pre">create</span> <span class="pre">mojit</span> <span class="pre">RoutingMojit</span></tt></p>
+</li>
+<li><p class="first">To create an instance of <tt class="docutils literal"><span class="pre">RoutingMojit</span></tt>, replace the code in
+<tt class="docutils literal"><span class="pre">application.json</span></tt> with the following:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;settings&quot;</span><span class="o">:</span> <span class="p">[</span> <span class="s2">&quot;master&quot;</span> <span class="p">],</span>
+    <span class="s2">&quot;appPort&quot;</span><span class="o">:</span> <span class="mi">8666</span><span class="p">,</span>
+    <span class="s2">&quot;specs&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;mapped_mojit&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;RoutingMojit&quot;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">To map routes to specific actions of the mojit instance, replace the
+code in <tt class="docutils literal"><span class="pre">routes.json</span></tt> with the following:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;settings&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;master&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;root_route&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;verbs&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;get&quot;</span><span class="p">,</span><span class="s2">&quot;post&quot;</span><span class="p">],</span>
+      <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;/&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;call&quot;</span><span class="o">:</span> <span class="s2">&quot;mapped_mojit.index&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;index_route&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;verbs&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;get&quot;</span><span class="p">],</span>
+      <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;/index&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;call&quot;</span><span class="o">:</span> <span class="s2">&quot;mapped_mojit.index&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;show_route&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;verbs&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;get&quot;</span><span class="p">,</span><span class="s2">&quot;post&quot;</span><span class="p">],</span>
+      <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;/show&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;call&quot;</span><span class="o">:</span> <span class="s2">&quot;mapped_mojit.show&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">mapped_mojit</span></tt> instance is created in <tt class="docutils literal"><span class="pre">application.json</span></tt> and
+configured here to be used when HTTP GET calls are made on the paths
+<tt class="docutils literal"><span class="pre">/index</span></tt> or <tt class="docutils literal"><span class="pre">/show</span></tt>.</p>
+</li>
+<li><p class="first">Change to <tt class="docutils literal"><span class="pre">mojits/RoutingMojit</span></tt>.</p>
+</li>
+<li><p class="first">Modify your controller to contain the <tt class="docutils literal"><span class="pre">index</span></tt> and <tt class="docutils literal"><span class="pre">show</span></tt> actions by
+replacing the code in <tt class="docutils literal"><span class="pre">controller.server.js</span></tt> with the following:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;RoutingMojit&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="p">,</span> <span class="nx">NAME</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// Builds object containing route information</span>
+  <span class="kd">function</span> <span class="nx">route_info</span><span class="p">(</span><span class="nx">ac</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">methods</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="nx">name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="nx">action</span> <span class="o">=</span> <span class="nx">ac</span><span class="p">.</span><span class="nx">action</span><span class="p">,</span>
+        <span class="nx">path</span> <span class="o">=</span> <span class="nx">ac</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="nx">getRequest</span><span class="p">().</span><span class="nx">url</span><span class="p">,</span>
+        <span class="nx">routes</span> <span class="o">=</span> <span class="nx">ac</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">getRoutes</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">action</span> <span class="o">===</span> <span class="s2">&quot;index&quot;</span> <span class="o">&amp;&amp;</span> <span class="nx">path</span> <span class="o">===</span> <span class="s2">&quot;/&quot;</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">name</span> <span class="o">=</span> <span class="s2">&quot;root_route&quot;</span><span class="p">;</span>
+      <span class="nx">routes</span><span class="p">.</span><span class="nx">root_route</span><span class="p">.</span><span class="nx">verbs</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">methods</span> <span class="o">+=</span> <span class="nx">n</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span><span class="p">;</span>
+      <span class="p">});</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">action</span><span class="o">===</span><span class="s2">&quot;index&quot;</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">name</span> <span class="o">=</span> <span class="s2">&quot;index_route&quot;</span><span class="p">;</span>
+      <span class="nx">routes</span><span class="p">.</span><span class="nx">index_route</span><span class="p">.</span><span class="nx">verbs</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">methods</span> <span class="o">+=</span> <span class="nx">n</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span><span class="p">;</span>
+      <span class="p">});</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+      <span class="nx">name</span> <span class="o">=</span> <span class="s2">&quot;show_route&quot;</span><span class="p">;</span>
+      <span class="nx">routes</span><span class="p">.</span><span class="nx">show_route</span><span class="p">.</span><span class="nx">verbs</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">n</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">methods</span> <span class="o">+=</span> <span class="nx">n</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span><span class="p">;</span>
+      <span class="p">});</span>
+    <span class="p">}</span>
+    <span class="nx">methods</span> <span class="o">=</span> <span class="nx">methods</span><span class="p">.</span><span class="nx">toUpperCase</span><span class="p">();</span>
+    <span class="k">return</span> <span class="p">{</span>
+      <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="nx">path</span><span class="p">,</span>
+      <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="nx">name</span><span class="p">,</span>
+      <span class="s2">&quot;methods&quot;</span><span class="o">:</span> <span class="nx">methods</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/, $/</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="p">};</span>
+  <span class="p">}</span>
+  <span class="nx">Y</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="s1">&#39;mojito.controllers&#39;</span><span class="p">)[</span><span class="nx">NAME</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">index</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">ac</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">ac</span><span class="p">.</span><span class="nx">done</span><span class="p">(</span><span class="nx">route_info</span><span class="p">(</span><span class="nx">ac</span><span class="p">));</span>
+    <span class="p">},</span>
+    <span class="nx">show</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">ac</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">ac</span><span class="p">.</span><span class="nx">done</span><span class="p">(</span><span class="nx">route_info</span><span class="p">(</span><span class="nx">ac</span><span class="p">));</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+<span class="p">},</span> <span class="s1">&#39;0.0.1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;mojito-config-addon&#39;</span><span class="p">,</span> <span class="s1">&#39;mojito-http-addon&#39;</span><span class="p">]});</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">To display your route information in your <tt class="docutils literal"><span class="pre">index</span></tt> template, replace the content of
+<tt class="docutils literal"><span class="pre">index.hb.html</span></tt> with the following:</p>
+<div class="highlight-html"><div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;{{mojit_view_id}}&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;b&gt;</span>Route Path:<span class="nt">&lt;/b&gt;</span> {{path}}<span class="nt">&lt;br/&gt;</span>
+  <span class="nt">&lt;b&gt;</span>HTTP Methods:<span class="nt">&lt;/b&gt;</span> {{methods}}<span class="nt">&lt;br/&gt;</span>
+  <span class="nt">&lt;b&gt;</span>Route Name:<span class="nt">&lt;/b&gt;</span> {{name}}
+<span class="nt">&lt;/div&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">To display your route information in your <tt class="docutils literal"><span class="pre">show</span></tt> template, create the file
+<tt class="docutils literal"><span class="pre">show.hb.html</span></tt> with the following:</p>
+<div class="highlight-html"><div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;{{mojit_view_id}}&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;b&gt;</span>Route Path:<span class="nt">&lt;/b&gt;</span> {{path}}<span class="nt">&lt;br/&gt;</span>
+  <span class="nt">&lt;b&gt;</span>HTTP Methods:<span class="nt">&lt;/b&gt;</span> {{methods}}<span class="nt">&lt;br/&gt;</span>
+  <span class="nt">&lt;b&gt;</span>Route Name:<span class="nt">&lt;/b&gt;</span> {{name}}
+<span class="nt">&lt;/div&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Run the server and open the following URL in a browser to see the <tt class="docutils literal"><span class="pre">index</span></tt>
+route: <a class="reference external" href="http://localhost:8666/index">http://localhost:8666/index</a></p>
+</li>
+<li><p class="first">To see the <tt class="docutils literal"><span class="pre">show</span></tt> route, open the following URL in a browser:</p>
+<p><a class="reference external" href="http://localhost:8666/show">http://localhost:8666/show</a></p>
+</li>
+</ol>
+</div>
+<div class="section" id="source-code">
+<span id="code-exs-routing-src"></span><h2>Source Code<a class="headerlink" href="#source-code" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="http://github.com/yahoo/mojito/tree/master/examples/developer-guide/configure_routing/application.json">Application Configuration</a></li>
+<li><a class="reference external" href="http://github.com/yahoo/mojito/tree/master/examples/developer-guide/configure_routing/routes.json">Route Configuration</a></li>
+<li><a class="reference external" href="http://github.com/yahoo/mojito/tree/master/examples/developer-guide/configure_routing/">Configure Routing Application</a></li>
+</ul>
+</div>
+</div>
+
+   </div>
+

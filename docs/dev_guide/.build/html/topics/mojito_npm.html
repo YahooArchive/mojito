@@ -1,0 +1,415 @@
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+     <title>Mojito and npm Packaging</title>
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '',
+        COLLAPSE_INDEX: true,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+   </head> 
+
+     <div class="header"><h1 class="heading"><a href="#">
+          <span>Mojito</span></a></h1>
+      </div>
+      <div class="topnav">
+        <p>
+        <a class="uplink" href="../">Mojito Documentation</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="../index.html" title="Mojito">Mojito</a>
+        &#160;&#160;::&#160;&#160;
+        
+           <a href="mojito_yui_config.html">Configuring YUI in Mojito</a>
+        &#160;&#160;::&#160;&#160;
+        
+        
+           <a href="mojito_resource_store.html">Resource Store</a>
+        
+        </p>
+
+      </div>
+      <div class="content">
+   <div class="section" id="mojito-and-npm-packaging">
+<h1>Mojito and npm Packaging<a class="headerlink" href="#mojito-and-npm-packaging" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<span id="mojito-package-overview"></span><h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>Having installed Mojito with npm 1.0, you already understand that Mojito is an
+npm package. What may not be as clear is that Mojito applications are also npm
+packages. Being an npm package, Mojito applications can have their own
+dependencies that are installed using npm. For example, after you create a
+Mojito application, you can use npm to install a local copy of the Mojito
+framework in the <tt class="docutils literal"><span class="pre">node_modules</span></tt> directory. If you deployed your application
+to a cloud server that has a Node.js runtime environment, your application
+could be run by this locally installed copy of the Mojito
+framework.</p>
+<p>Your Mojito application can also install other npm modules, even those that
+contain Mojito resources, such as mojits or middleware. Conversely, you can
+create npm modules that contain Mojito resources, so other developers can
+reuse your code.</p>
+<p>Because npm allows you to use other modules or create your own, this chapter
+is divided into two sections to meet the needs of the following two audiences:</p>
+<ul class="simple">
+<li><a class="reference internal" href="#using-shared-mojits"><em>developers using shared mojits</em></a></li>
+<li><a class="reference internal" href="#author-npm-mod-shared-mojito-resource"><em>authors creating npm modules that contain shared Mojito resources</em></a></li>
+</ul>
+<div class="section" id="mojito-resources">
+<span id="package-overview-resource"></span><h3>Mojito Resources<a class="headerlink" href="#mojito-resources" title="Permalink to this headline">¶</a></h3>
+<p>A <em>Mojito resource</em> is a piece of code or functionality used by Mojito. These
+resources can be installed with npm or live directly in the Mojito application.
+Examples of Mojito resources could be shared mojits and middleware. Developers
+using shared mojits and those authoring npm modules that contain code used by
+Mojito should be familiar with the meaning of <em>Mojito resource</em> as it will be
+used throughout this chapter.</p>
+</div>
+</div>
+<div class="section" id="using-shared-mojits">
+<span id="id1"></span><h2>Using Shared Mojits<a class="headerlink" href="#using-shared-mojits" title="Permalink to this headline">¶</a></h2>
+<p>Mojito applications can have any number of different resources installed with
+npm. Each of these resources should be specified in the  package descriptor
+file <tt class="docutils literal"><span class="pre">package.json</span></tt> of the Mojito application. When users run <tt class="docutils literal"><span class="pre">npm</span> <span class="pre">install</span></tt>
+in the application directory, npm modules containing Mojito resources and
+those not containing Mojito resources will be installed into the
+<tt class="docutils literal"><span class="pre">node_modules</span></tt> directory. Your Mojito application will have access to
+all of the installed npm modules as soon as the application starts.</p>
+<p>For details about npm packages, see the
+<a class="reference external" href="http://npmjs.org/doc/json.html">npm&#8217;s package.json handling</a>.</p>
+<div class="section" id="general-process-of-using-shared-mojits">
+<span id="process-spec-install-dependencies"></span><h3>General Process of Using Shared Mojits<a class="headerlink" href="#general-process-of-using-shared-mojits" title="Permalink to this headline">¶</a></h3>
+<p>The following steps are just a guideline and not definitive instructions.
+Your application may not need to install any npm modules.</p>
+<ol class="arabic">
+<li><p class="first">Create a Mojito application.</p>
+</li>
+<li><p class="first">Add any needed dependencies to <tt class="docutils literal"><span class="pre">dependencies</span></tt> object in <tt class="docutils literal"><span class="pre">package.json</span></tt>.</p>
+</li>
+<li><p class="first">Install dependencies with npm.</p>
+<p><tt class="docutils literal"><span class="pre">{app_dir}$</span> <span class="pre">npm</span> <span class="pre">install</span></tt></p>
+</li>
+<li><p class="first">When Mojito starts, your application will have access to the installed
+npm modules.</p>
+</li>
+</ol>
+<div class="section" id="example-package-json">
+<span id="process-spec-install-dependencies-ex"></span><h4>Example package.json<a class="headerlink" href="#example-package-json" title="Permalink to this headline">¶</a></h4>
+<p>The dependencies include Mojito, the <tt class="docutils literal"><span class="pre">async</span></tt> module, and the shared mojit
+<tt class="docutils literal"><span class="pre">form_mojit</span></tt> (example) that will be installed in <tt class="docutils literal"><span class="pre">node_modules</span></tt> when you
+run <tt class="docutils literal"><span class="pre">npm</span> <span class="pre">install</span></tt> from the Mojito application directory.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
+   <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;helloworld&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;description&quot;</span><span class="o">:</span> <span class="s2">&quot;My Mojito application&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;version&quot;</span><span class="o">:</span> <span class="s2">&quot;0.0.1&quot;</span><span class="p">,</span>
+   <span class="s2">&quot;author&quot;</span><span class="o">:</span> <span class="p">{</span>
+     <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;Your Name&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;email&quot;</span><span class="o">:</span> <span class="s2">&quot;nobody@yahoo-inc.com&quot;</span>
+   <span class="p">},</span>
+   <span class="s2">&quot;contributors&quot;</span><span class="o">:</span> <span class="p">[</span>
+     <span class="p">{</span>
+       <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;Your Name&quot;</span><span class="p">,</span>
+       <span class="s2">&quot;email&quot;</span><span class="o">:</span> <span class="s2">&quot;nobody@yahoo-inc.com&quot;</span>
+     <span class="p">}</span>
+   <span class="p">],</span>
+   <span class="s2">&quot;dependencies&quot;</span><span class="o">:</span> <span class="p">{</span>
+     <span class="s2">&quot;mojito&quot;</span><span class="o">:</span> <span class="s2">&quot;&gt;= 0.3.0&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;async&quot;</span><span class="o">:</span> <span class="s2">&quot;~0.1&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;form_mojit&quot;</span> <span class="o">:</span> <span class="s2">&quot;1.x&quot;</span>
+   <span class="p">},</span>
+   <span class="s2">&quot;engines&quot;</span><span class="o">:</span> <span class="p">{</span>
+     <span class="s2">&quot;node&quot;</span><span class="o">:</span> <span class="s2">&quot;&gt;=0.4.5&quot;</span>
+   <span class="p">},</span>
+   <span class="s2">&quot;scripts&quot;</span><span class="o">:</span> <span class="p">{</span>
+     <span class="s2">&quot;start&quot;</span><span class="o">:</span> <span class="s2">&quot;mojito start&quot;</span>
+   <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="authoring-an-npm-module-containing-shared-mojito-resources">
+<span id="author-npm-mod-shared-mojito-resource"></span><h2>Authoring an npm Module Containing Shared Mojito Resources<a class="headerlink" href="#authoring-an-npm-module-containing-shared-mojito-resources" title="Permalink to this headline">¶</a></h2>
+<p>Developers who have created Mojito resources that they would like to share with
+others can package the Mojito resources in an npm module. The npm module is
+simply a container for the Mojito resource(s). The npm module must specify that
+it contains a Mojito resource in its <tt class="docutils literal"><span class="pre">package.json</span></tt>.</p>
+<div class="section" id="general-process-of-authoring-an-npm-module-containing-shared-mojito-resources">
+<span id="res-def-metadata"></span><h3>General Process of Authoring an npm Module Containing Shared Mojito Resources<a class="headerlink" href="#general-process-of-authoring-an-npm-module-containing-shared-mojito-resources" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>Create your Mojito resource.</li>
+<li>Specify that the npm module contains Mojito resources in <tt class="docutils literal"><span class="pre">package.json</span></tt>.
+See <a class="reference internal" href="#resource-def-metadata"><em>Resource Definition Metadata</em></a> to learn how.</li>
+<li>Publish the module to the <a class="reference external" href="http://npmjs.org/doc/registry.html">npm registry</a>.</li>
+</ol>
+</div>
+<div class="section" id="resource-definition-metadata">
+<span id="resource-def-metadata"></span><h3>Resource Definition Metadata<a class="headerlink" href="#resource-definition-metadata" title="Permalink to this headline">¶</a></h3>
+<p>The npm module containing a Mojito resource is specified by the <tt class="docutils literal"><span class="pre">mojito</span></tt> object
+in <tt class="docutils literal"><span class="pre">package.json</span></tt>. The <tt class="docutils literal"><span class="pre">mojito</span></tt> object, a property of the <tt class="docutils literal"><span class="pre">yahoo</span></tt> object,
+defines the type and location of the resource as well as the required version of
+Mojito to use the resource as shown in the example below. See <a class="reference internal" href="#moj-object"><em>mojito object</em></a>
+for details about the properties of the <tt class="docutils literal"><span class="pre">mojito</span></tt> object.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="s2">&quot;yahoo&quot;</span><span class="o">:</span> <span class="p">{</span>
+  <span class="s2">&quot;mojito&quot;</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s2">&quot;version&quot;</span><span class="o">:</span> <span class="s2">&quot;{required Mojito version}&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;type&quot;</span><span class="o">:</span>  <span class="s2">&quot;{resource_type}&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;location&quot;</span><span class="o">:</span> <span class="s2">&quot;{location_of_resource}&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="section" id="mojito-object">
+<span id="moj-object"></span><h4>mojito object<a class="headerlink" href="#mojito-object" title="Permalink to this headline">¶</a></h4>
+<p>The following table describes the properties of the <tt class="docutils literal"><span class="pre">mojito</span></tt> object that
+specifies the resource type and location.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="23%" />
+<col width="16%" />
+<col width="41%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Field Name</th>
+<th class="head">Data Type</th>
+<th class="head">Required?</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">location</span></tt></td>
+<td>String</td>
+<td>No</td>
+<td>The subdirectory in the
+npm package where the
+resource can be found. The
+default location is the
+package directory.</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">type</span></tt></td>
+<td>String</td>
+<td>Yes</td>
+<td>Specifies the resource
+type. The following are
+the possible values:
+<tt class="docutils literal"><span class="pre">&quot;mojit&quot;</span></tt>, <tt class="docutils literal"><span class="pre">&quot;bundle&quot;</span></tt>
+See <a class="reference internal" href="#res-types"><em>Mojito Package Types</em></a> for
+details.</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">version</span></tt></td>
+<td>String</td>
+<td>No</td>
+<td>The version of Mojito
+required to use the
+resource.
+For example: <tt class="docutils literal"><span class="pre">&quot;&gt;0.4&quot;</span></tt></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="mojito-package-types">
+<span id="res-types"></span><h4>Mojito Package Types<a class="headerlink" href="#mojito-package-types" title="Permalink to this headline">¶</a></h4>
+<p>Currently, Mojito packages can be of type <tt class="docutils literal"><span class="pre">mojit</span></tt> or <tt class="docutils literal"><span class="pre">bundle</span></tt>. See the
+sections below for more details.</p>
+<div class="section" id="mojit">
+<span id="mojit-type"></span><h5>mojit<a class="headerlink" href="#mojit" title="Permalink to this headline">¶</a></h5>
+<p>The <tt class="docutils literal"><span class="pre">mojit</span></tt> type specifies that the npm module contains a mojit. The
+resources in the mojit (controller, models, views, etc.) will be looked for at
+the location specified by the <tt class="docutils literal"><span class="pre">&quot;location&quot;</span></tt> field of the <tt class="docutils literal"><span class="pre">mojito</span></tt> object.
+For example, the controller will be looked for in the following location:</p>
+<p><tt class="docutils literal"><span class="pre">{location}/controller.{affinity}.{selector}.js</span></tt></p>
+</div>
+<div class="section" id="bundle">
+<span id="bundle-type"></span><h5>bundle<a class="headerlink" href="#bundle" title="Permalink to this headline">¶</a></h5>
+<p>The <tt class="docutils literal"><span class="pre">bundle</span></tt> type specifies that the npm module contains several resources.</p>
+<p>The following table shows where Mojito will automatically search for the different
+resources. The <tt class="docutils literal"><span class="pre">{location}</span></tt> is the location specified by the <tt class="docutils literal"><span class="pre">location</span></tt> property of
+the <tt class="docutils literal"><span class="pre">mojito</span></tt> object.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="22%" />
+<col width="42%" />
+<col width="37%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Resource</th>
+<th class="head">Auto-Detected Location</th>
+<th class="head">Notes</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>mojits</td>
+<td><tt class="docutils literal"><span class="pre">{location}/mojits/</span></tt></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>actions</td>
+<td><tt class="docutils literal"><span class="pre">{location}/actions/</span></tt></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>addons</td>
+<td><tt class="docutils literal"><span class="pre">{location}/addons/{subtype}/</span></tt></td>
+<td>The <tt class="docutils literal"><span class="pre">{subtype}</span></tt> for addons
+can be <tt class="docutils literal"><span class="pre">ac</span></tt> for ActionContext
+addons or <tt class="docutils literal"><span class="pre">view-engines</span></tt> for
+template rendering engine.</td>
+</tr>
+<tr class="row-odd"><td>assets</td>
+<td><tt class="docutils literal"><span class="pre">{location}/assets/</span></tt></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>binders</td>
+<td><tt class="docutils literal"><span class="pre">{location}/binders/</span></tt></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>lang</td>
+<td><tt class="docutils literal"><span class="pre">{location}/lang/</span></tt></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>models</td>
+<td><tt class="docutils literal"><span class="pre">{location}/models/</span></tt></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-odd"><td>views</td>
+<td><tt class="docutils literal"><span class="pre">{location}/views/</span></tt></td>
+<td>&nbsp;</td>
+</tr>
+<tr class="row-even"><td>YUI modules</td>
+<td><tt class="docutils literal"><span class="pre">{location}/yui_modules/</span></tt>
+<tt class="docutils literal"><span class="pre">{location}/autoload/</span></tt></td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="section" id="examples">
+<span id="resource-def-examples"></span><h3>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
+<p><strong>package.json</strong></p>
+<p>The example <tt class="docutils literal"><span class="pre">package.json</span></tt> has the <tt class="docutils literal"><span class="pre">yahoo</span></tt> object that specifies that this
+npm module contains a Mojito resource.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
+  <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;mojito_sample_app&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;description&quot;</span><span class="o">:</span> <span class="s2">&quot;A test app to show how to create the package.json file&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;version&quot;</span><span class="o">:</span> <span class="s2">&quot;0.0.2&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;author&quot;</span><span class="o">:</span> <span class="s2">&quot;Joe Hacker &lt;jhacker@yahoo.com&gt;&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;contributors&quot;</span><span class="o">:</span> <span class="p">[</span>
+     <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;Noel Jays&quot;</span><span class="p">,</span> <span class="s2">&quot;email&quot;</span><span class="o">:</span> <span class="s2">&quot;njays@yahoo.com&quot;</span><span class="p">}</span>
+  <span class="p">],</span>
+  <span class="s2">&quot;yahoo&quot;</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s2">&quot;mojito&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;mojit&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;version&quot;</span><span class="o">:</span> <span class="s2">&quot;0.3.0&quot;</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;engines&quot;</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s2">&quot;node&quot;</span><span class="o">:</span> <span class="s2">&quot;&gt; 0.4&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;npm&quot;</span><span class="o">:</span> <span class="s2">&quot;&gt; 1.0&quot;</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;dependencies&quot;</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s2">&quot;mojito&quot;</span><span class="o">:</span> <span class="s2">&quot;~0.3.0&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>Mojito Application Using Shared Resources</strong></p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">mojito_app</span><span class="o">/</span>
+           <span class="nx">application</span><span class="p">.</span><span class="nx">json</span>
+           <span class="kr">package</span><span class="p">.</span><span class="nx">json</span>
+           <span class="nx">mojits</span><span class="o">/</span>
+                  <span class="nx">A</span><span class="o">/</span>
+                    <span class="nx">A</span><span class="p">.</span><span class="nx">common</span><span class="p">.</span><span class="nx">js</span>
+                    <span class="nx">definition</span><span class="p">.</span><span class="nx">json</span>
+                    <span class="nx">views</span><span class="o">/</span>
+                    <span class="nx">index</span><span class="o">/</span>
+                          <span class="nx">index</span><span class="p">.</span><span class="nx">hb</span><span class="p">.</span><span class="nx">html</span>
+                    <span class="nx">binders</span><span class="o">/</span>
+                            <span class="nx">index</span><span class="o">/</span>
+                                  <span class="nx">index</span><span class="p">.</span><span class="nx">js</span>
+                  <span class="nx">B</span><span class="o">/</span>
+                    <span class="p">...</span>
+                  <span class="nx">C</span><span class="o">/</span>
+                    <span class="p">...</span>
+           <span class="nx">yui_modules</span><span class="o">/</span>
+                       <span class="nx">liba</span><span class="p">.</span><span class="nx">js</span>
+                       <span class="nx">libb</span><span class="p">.</span><span class="nx">js</span>
+           <span class="nx">node_modules</span><span class="o">/</span>
+                        <span class="nx">mojito</span><span class="o">-</span><span class="nx">mojit</span><span class="o">-</span><span class="nx">RMP</span><span class="o">/</span>
+                                         <span class="kr">package</span><span class="p">.</span><span class="nx">json</span>
+                                         <span class="p">{</span>
+                                           <span class="s2">&quot;yahoo&quot;</span><span class="o">:</span> <span class="p">{</span>
+                                             <span class="s2">&quot;mojito&quot;</span><span class="o">:</span> <span class="p">{</span>
+                                               <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;mojit&quot;</span><span class="p">,</span>
+                                               <span class="s2">&quot;version&quot;</span><span class="o">:</span> <span class="s2">&quot;*&quot;</span>
+                                             <span class="p">}</span>
+                                           <span class="p">}</span>
+                                         <span class="p">}</span>
+                                         <span class="nx">controller</span><span class="p">.</span><span class="nx">common</span><span class="p">.</span><span class="nx">js</span>
+                        <span class="nx">mojito</span><span class="o">-</span><span class="nx">middleware</span><span class="o">-</span><span class="nx">redirect</span><span class="o">/</span>
+                                                   <span class="kr">package</span><span class="p">.</span><span class="nx">json</span>
+                                                   <span class="p">{</span>
+                                                     <span class="s2">&quot;yahoo&quot;</span><span class="o">:</span> <span class="p">{</span>
+                                                       <span class="s2">&quot;mojito&quot;</span><span class="o">:</span> <span class="p">{</span>
+                                                         <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;bundle&quot;</span><span class="p">,</span>
+                                                         <span class="s2">&quot;version&quot;</span><span class="o">:</span> <span class="s2">&quot;*&quot;</span>
+                                                       <span class="p">}</span>
+                                                     <span class="p">}</span>
+                                                   <span class="p">}</span>
+                                                   <span class="nx">middleware</span><span class="o">/</span>
+                                                              <span class="nx">mojito</span><span class="o">-</span><span class="nx">middleware</span><span class="o">-</span><span class="nx">redirect</span><span class="p">.</span><span class="nx">js</span>
+                        <span class="nx">mojito</span><span class="o">-</span><span class="nx">viewengine</span><span class="o">-</span><span class="nx">dust</span><span class="o">/</span>
+                                               <span class="kr">package</span><span class="p">.</span><span class="nx">json</span>
+                                               <span class="p">{</span>
+                                                 <span class="s2">&quot;yahoo&quot;</span><span class="o">:</span> <span class="p">{</span>
+                                                   <span class="s2">&quot;mojito&quot;</span><span class="o">:</span> <span class="p">{</span>
+                                                     <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;bundle&quot;</span><span class="p">,</span>
+                                                        <span class="s2">&quot;version&quot;</span><span class="o">:</span> <span class="s2">&quot;*&quot;</span>
+                                                   <span class="p">}</span>
+                                                 <span class="p">}</span>
+                                               <span class="p">}</span>
+                                               <span class="nx">mojito</span><span class="o">-</span><span class="nx">viewengine</span><span class="o">-</span><span class="nx">dust</span><span class="p">.</span><span class="nx">common</span><span class="p">.</span><span class="nx">js</span>
+                                               <span class="nx">node_modules</span><span class="o">/</span>
+                                                            <span class="nx">dust</span><span class="o">/</span>
+                                                                 <span class="p">...</span> <span class="nx">actual</span> <span class="nx">dust</span> <span class="nx">library</span> <span class="p">...</span>
+                        <span class="nx">mojito</span><span class="o">/</span>
+                               <span class="kr">package</span><span class="p">.</span><span class="nx">json</span>
+                               <span class="p">{</span>
+                                 <span class="s2">&quot;yahoo&quot;</span><span class="o">:</span> <span class="p">{</span>
+                                   <span class="s2">&quot;mojito&quot;</span><span class="o">:</span> <span class="p">{</span>
+                                     <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;bundle&quot;</span><span class="p">,</span>
+                                     <span class="s2">&quot;location&quot;</span><span class="o">:</span> <span class="s2">&quot;lib/app&quot;</span><span class="p">,</span>
+                                     <span class="s2">&quot;version&quot;</span><span class="o">:</span> <span class="s2">&quot;*&quot;</span>
+                                   <span class="p">}</span>
+                                 <span class="p">}</span>
+                               <span class="p">}</span>
+                               <span class="nx">lib</span><span class="o">/</span>
+                               <span class="nx">app</span><span class="o">/</span>
+                                   <span class="p">...</span>
+                        <span class="nx">async</span><span class="o">/</span>
+                              <span class="nx">LICENSE</span>
+                              <span class="nx">Makefile</span>
+                              <span class="nx">README</span><span class="p">.</span><span class="nx">md</span>
+                              <span class="nx">index</span><span class="p">.</span><span class="nx">js</span>
+                              <span class="nx">lib</span><span class="o">/</span>
+                                  <span class="nx">async</span><span class="p">.</span><span class="nx">js</span>
+                              <span class="kr">package</span><span class="p">.</span><span class="nx">json</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+   </div>
+

@@ -1,0 +1,138 @@
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+     <title>Overview</title>
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '',
+        COLLAPSE_INDEX: true,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+   </head> 
+
+     <div class="header"><h1 class="heading"><a href="#">
+          <span>Mojito</span></a></h1>
+      </div>
+      <div class="topnav">
+        <p>
+        <a class="uplink" href="../">Mojito Documentation</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="../index.html" title="Mojito">Mojito</a>
+        &#160;&#160;::&#160;&#160;
+        
+           <a href="index.html">Introducing Mojito</a>
+        &#160;&#160;::&#160;&#160;
+        
+        
+           <a href="mojito_quicktour.html">Mojito: A Quick Tour</a>
+        
+        </p>
+
+      </div>
+      <div class="content">
+   <div class="section" id="overview">
+<h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="what-is-mojito">
+<span id="mojito-overview-what"></span><h2>What is Mojito?<a class="headerlink" href="#what-is-mojito" title="Permalink to this headline">¶</a></h2>
+<p>Mojito is a <a class="reference external" href="http://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller">model-view-controller (MVC)</a>
+application framework built on YUI 3 that enables agile development of Web applications.
+Mojito allows developers to use a combination of configuration and an MVC architecture to
+create applications. Because client and server components are both written in JavaScript,
+Mojito can run on the client (browser) or the server (Node.js).</p>
+<p>Mojito offers the following features, some of which are discussed in the next section:</p>
+<ul class="simple">
+<li>Local development environment and tools (Yahoo! independent stack)</li>
+<li>Library for simplifying internationalization &amp; localization</li>
+<li>Integrated unit testing</li>
+<li>Device specific presentation (Hero, Mobile, TV, Web, etc.)</li>
+</ul>
+</div>
+<div class="section" id="why-mojito">
+<span id="mojito-overview-why"></span><h2>Why Mojito?<a class="headerlink" href="#why-mojito" title="Permalink to this headline">¶</a></h2>
+<p>The best way to illustrate why you should use Mojito for creating Web applications is to
+give an example. Suppose you wanted to create a slideboard application that
+lets users quickly view news articles from various sources. Your application needs to be
+available on a variety of devices and use the appropriate UI elements of the device.
+For example, the application on the Web should provide rich interaction using the mouse,
+whereas, the application on a tablet or phone should provide the same rich interaction
+using the touchscreen.</p>
+<p>You also want people from all over to be able to use your slideboard application, so you
+will need to support internationalization and localization. Users should be able to see
+the application in their local language or choose their preferred language.</p>
+<p>In the following, we will discuss how Mojito makes it easier to create the slideboard
+application.</p>
+<div class="section" id="one-language">
+<span id="mojito-overview-why-one-lang"></span><h3>One Language<a class="headerlink" href="#one-language" title="Permalink to this headline">¶</a></h3>
+<p>Your slideboard application will need to fetch articles either through some API or an RSS
+feed. Most conventional Web applications that need data have both server-side and
+client-side components. The server-side script, written in a language such as Python,
+Perl, Ruby, PHP, or Java, fetches data and then passes the data to client-side script
+written in JavaScript. The one Web application would have at least two languages and
+would need to make at least two network calls: one to the data source, and one between
+the server-side and client-side code to transmit data.</p>
+<p>Because Mojito is written entirely in JavaScript, your application code can run on the
+server or be deployed to the client. From the client, you can use the
+<a class="reference external" href="http://yuilibrary.com/yui/docs/yql/">YUI YQL Utility</a>, to get all types of Web data,
+removing the need for the client to fetch data from your server.</p>
+</div>
+<div class="section" id="two-runtimes">
+<span id="mojito-overview-why-two-runtimes"></span><h3>Two Runtimes<a class="headerlink" href="#two-runtimes" title="Permalink to this headline">¶</a></h3>
+<p>Your application code can be configured to run on the server or be deployed to the client.
+If your application is configured to deploy code to the client, Mojito will determine
+whether the client can execute JavaScript before deployment. If the client cannot execute
+JavaScript, your application code will instead execute on the server. You write one code
+base, configure where code should optimally run, and then let Mojito determine at runtime
+to either deploy the code or run it on the server. Whether running on the client or server,
+your code can use the <a class="reference external" href="http://yuilibrary.com/yui/docs/yql/">YUI YQL Utility</a> to get all
+types of Web data.</p>
+</div>
+<div class="section" id="views-for-different-devices">
+<span id="mojito-overview-why-device-views"></span><h3>Views for Different Devices<a class="headerlink" href="#views-for-different-devices" title="Permalink to this headline">¶</a></h3>
+<p>Your slideboard application is a Web application, but we want users to view it on tablets
+and smart phones as well. Do you create separate versions of your application? Do you
+write code logic that serves the correct version?</p>
+<p>Mojito can identify the calling device by examining the HTTP header <tt class="docutils literal"><span class="pre">User-Agent</span></tt>. You
+create custom views for different devices, and Mojito will render and serve the correct
+device-specific views.</p>
+</div>
+<div class="section" id="progressive-enhancement">
+<span id="mojito-overview-why-prog-enhancement"></span><h3>Progressive Enhancement<a class="headerlink" href="#progressive-enhancement" title="Permalink to this headline">¶</a></h3>
+<p>You want your users to be able to take advantage of the rich features of the device they
+are using. Users skimming through articles on an iPad should be able to use the touch
+screen, and Web users should have features such as mouseovers and right-clicks. Handling
+these UI events requires JavaScript, so how do you handle them when the client has
+disabled JavaScript?</p>
+<p>Mojito allows you to serve code to the client, so that your users can use the rich
+interactive features of their devices, but Mojito also allows you to handle cases when the
+client has not enabled JavaScript. You can write HTML and CSS so your page functions
+without JavaScript sure that your application works with just HTML and CSS. Because Mojito
+runs on <a class="reference external" href="http://nodejs.org/">Node.js</a> the code intended to be deployed to the client can
+instead run on the server.</p>
+</div>
+<div class="section" id="localization-and-internationalization">
+<span id="mojito-overview-why-loc-intl"></span><h3>Localization and Internationalization<a class="headerlink" href="#localization-and-internationalization" title="Permalink to this headline">¶</a></h3>
+<p>Mojito is built on <a class="reference external" href="http://yuilibrary.com/">YUI 3</a>, which has an internationalization
+utility that allows you to handle monolingual and multilingual applications. Using the
+<a class="reference external" href="http://yuilibrary.com/yui/docs/intl/">YUI Internationalization utility</a> and
+<a class="reference external" href="http://yuilibrary.com/yui/docs/intl/#yrb">Yahoo! Resource Bundles (YRB)</a>, your
+slideboard application could use one language for the UI and serve the content in a
+different language.</p>
+</div>
+</div>
+</div>
+
+   </div>
+

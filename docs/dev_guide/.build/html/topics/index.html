@@ -1,0 +1,175 @@
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+     <title>Developer Topics</title>
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '',
+        COLLAPSE_INDEX: true,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+   </head> 
+
+     <div class="header"><h1 class="heading"><a href="#">
+          <span>Mojito</span></a></h1>
+      </div>
+      <div class="topnav">
+        <p>
+        <a class="uplink" href="../">Mojito Documentation</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="../index.html" title="Mojito">Mojito</a>
+        &#160;&#160;::&#160;&#160;
+        
+           <a href="../code_exs/multiple_mojits.html">Using Multiple Mojits</a>
+        &#160;&#160;::&#160;&#160;
+        
+        
+           <a href="mojito_assets.html">Assets</a>
+        
+        </p>
+
+      </div>
+      <div class="content">
+   <div class="section" id="developer-topics">
+<h1>Developer Topics<a class="headerlink" href="#developer-topics" title="Permalink to this headline">¶</a></h1>
+<p>The following sections provide conceptual information and instruction for some
+of the core components of the Mojito framework. Although the developer topics
+are complemented by code snippets, for working code examples, see
+<a class="reference external" href="../code_exs/">Code Examples</a>.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="mojito_assets.html">Assets</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mojito_assets.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_assets.html#location-of-asset-files">Location of Asset Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_assets.html#configuration">Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_assets.html#accessing-assets-from-an-application">Accessing Assets from an Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_assets.html#using-the-assets-addon">Using the Assets Addon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_assets.html#yui-assets">YUI Assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_assets.html#rolling-up-static-assets">Rolling Up Static Assets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_assets.html#inline-css">Inline CSS</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mojito_data.html">Data in Mojito</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mojito_data.html#getting-input-and-cookie-data">Getting Input and Cookie Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_data.html#sharing-data">Sharing Data</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mojito_logging.html">Logging</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mojito_logging.html#log-levels">Log Levels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_logging.html#log-defaults">Log Defaults</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_logging.html#log-configuration">Log Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_logging.html#customizing-logging">Customizing Logging</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mojito_testing.html">Testing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mojito_testing.html#conventions">Conventions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_testing.html#application-tests">Application Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_testing.html#mojit-tests">Mojit Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_testing.html#testing-standards">Testing Standards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_testing.html#controller-tests">Controller Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_testing.html#testing-with-the-mockactioncontext-object">Testing with the MockActionContext Object</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_testing.html#model-tests">Model Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_testing.html#mojito-built-in-functional-unit-tests">Mojito Built-In Functional/Unit Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mojito_hb_templates.html">Handlebars in Mojito</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mojito_hb_templates.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_hb_templates.html#partials">Partials</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_hb_templates.html#helpers">Helpers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mojito_composite_mojits.html">Composite Mojits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mojito_composite_mojits.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_composite_mojits.html#creating-parent-and-child-mojit-instances">Creating Parent and Child Mojit Instances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_composite_mojits.html#executing-child-mojits">Executing Child Mojits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_composite_mojits.html#passing-data-to-the-parent-template">Passing Data to the Parent Template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_composite_mojits.html#specifying-the-view-for-a-parent-mojit">Specifying the View for a Parent Mojit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_composite_mojits.html#attaching-assets-to-a-parent-template">Attaching Assets to a Parent Template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_composite_mojits.html#displaying-child-mojits-in-view">Displaying Child Mojits in View</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_composite_mojits.html#propagating-child-mojit-errors-to-parent-mojits">Propagating Child Mojit Errors to Parent Mojits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_composite_mojits.html#dynamically-defining-child-mojits">Dynamically Defining Child Mojits</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mojito_run_dyn_defined_mojits.html">Running Dynamically Defined Mojit Instances</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mojito_run_dyn_defined_mojits.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_run_dyn_defined_mojits.html#use-cases">Use Cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_run_dyn_defined_mojits.html#should-i-use-ac-composite-execute-or-ac-dispatch">Should I Use ac.composite.execute or ac._dispatch?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_run_dyn_defined_mojits.html#using-the-composite-addon">Using the Composite Addon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_run_dyn_defined_mojits.html#using-ac-dispatch">Using ac._dispatch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_run_dyn_defined_mojits.html#using-ac-dispatch-with-ac-composite-execute">Using ac._dispatch with ac.composite.execute</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mojito_frame_mojits.html">Frame Mojits</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mojito_frame_mojits.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_frame_mojits.html#htmlframemojit">HTMLFrameMojit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_frame_mojits.html#lazyloadmojit">LazyLoadMojit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_frame_mojits.html#creating-custom-frame-mojits">Creating Custom Frame Mojits</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mojito_extensions.html">Extending Mojito</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mojito_extensions.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_extensions.html#addons">Addons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_extensions.html#middleware">Middleware</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_extensions.html#libraries">Libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_extensions.html#view-engines">View Engines</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mojito_using_contexts.html">Using Context Configurations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mojito_using_contexts.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_using_contexts.html#what-is-a-context">What is a Context?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_using_contexts.html#how-does-mojito-resolve-context-configurations">How Does Mojito Resolve Context Configurations?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_using_contexts.html#defining-configurations-for-contexts">Defining Configurations for Contexts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_using_contexts.html#static-configurations">Static Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_using_contexts.html#dynamically-changing-configurations">Dynamically Changing Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_using_contexts.html#creating-custom-contexts">Creating Custom Contexts</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mojito_yui_config.html">Configuring YUI in Mojito</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mojito_yui_config.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_yui_config.html#yui-seed-file">YUI Seed File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_yui_config.html#configuration-of-the-mojito-seed-file">Configuration of the Mojito Seed File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_yui_config.html#getting-yui-to-your-application">Getting YUI to Your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_yui_config.html#yui-app-group">YUI App Group</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mojito_npm.html">Mojito and npm Packaging</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mojito_npm.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_npm.html#using-shared-mojits">Using Shared Mojits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_npm.html#authoring-an-npm-module-containing-shared-mojito-resources">Authoring an npm Module Containing Shared Mojito Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mojito_resource_store.html">Resource Store</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mojito_resource_store.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_resource_store.html#resources">Resources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_resource_store.html#resource-metadata">Resource Metadata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_resource_store.html#how-does-the-resource-store-work">How Does the Resource Store Work?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_resource_store.html#creating-your-own-resource-store-addons">Creating Your Own Resource Store Addons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_resource_store.html#resource-store-built-in-addons">Resource Store Built-In Addons</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mojito_hosting_container_reqs.html">Startup Requirements for Mojito in Hosting Environments</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mojito_hosting_container_reqs.html#mojito-v0-4-8-and-later">Mojito v0.4.8 and Later</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_hosting_container_reqs.html#mojito-v0-4-7">Mojito v0.4.7</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_hosting_container_reqs.html#mojito-v0-4-6">Mojito v0.4.6</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_hosting_container_reqs.html#mojito-v0-4-5-and-earlier-versions">Mojito v0.4.5 and Earlier Versions</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+   </div>
+

@@ -1,0 +1,101 @@
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+     <title>REST Library</title>
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '',
+        COLLAPSE_INDEX: true,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+   </head> 
+
+     <div class="header"><h1 class="heading"><a href="#">
+          <span>Mojito</span></a></h1>
+      </div>
+      <div class="topnav">
+        <p>
+        <a class="uplink" href="../">Mojito Documentation</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="../index.html" title="Mojito">Mojito</a>
+        &#160;&#160;::&#160;&#160;
+        
+           <a href="mojito_addons.html">Action Context Addons</a>
+        &#160;&#160;::&#160;&#160;
+        
+        
+           <a href="mojito_client_obj.html">Client Object</a>
+        
+        </p>
+
+      </div>
+      <div class="content">
+   <div class="section" id="rest-library">
+<h1>REST Library<a class="headerlink" href="#rest-library" title="Permalink to this headline">¶</a></h1>
+<p>Mojito has a library to make it easier to make a REST calls to Web services from your
+model. For implementation details, see
+<a class="reference external" href="../../api/classes/Y.mojito.lib.REST.html">Class Y.mojito.lib.REST</a> in the Mojito API
+documentation.</p>
+<div class="section" id="including-library">
+<span id="mojito-rest-lib-incl"></span><h2>Including Library<a class="headerlink" href="#including-library" title="Permalink to this headline">¶</a></h2>
+<p>To use the REST library, include the string &#8216;mojito-rest-lib&#8217; in the <tt class="docutils literal"><span class="pre">requires</span></tt> array,
+which instructs YUI to load the library. Once the library is loaded,  you can use
+<a class="reference external" href="../../api/classes/Y.mojito.lib.REST.html">Y.mojito.lib.REST</a> to make REST calls..</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;MyModel&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="p">,</span> <span class="nx">NAME</span><span class="p">)</span> <span class="p">{</span>
+  <span class="p">...</span>
+  <span class="c1">// Make the REST call.</span>
+  <span class="nx">Y</span><span class="p">.</span><span class="nx">mojito</span><span class="p">.</span><span class="nx">lib</span><span class="p">.</span><span class="nx">REST</span><span class="p">.</span><span class="nx">GET</span><span class="p">(</span><span class="s2">&quot;http://example.com&quot;</span><span class="p">);</span>
+    <span class="p">...</span>
+  <span class="c1">// Ask YUI to load the library w/ &#39;mojito-rest-lib&#39;.</span>
+<span class="p">},</span> <span class="s1">&#39;0.0.1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;mojito&#39;</span><span class="p">,</span> <span class="s1">&#39;mojito-rest-lib&#39;</span><span class="p">]});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="example">
+<span id="mojito-rest-lib-ex"></span><h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<p>In the model for the <tt class="docutils literal"><span class="pre">recipeSearch</span></tt> mojit below, the REST library is used to make a
+GET call to the Recipe Puppy API.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;ProductSearchModel&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="p">,</span> <span class="nx">NAME</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nx">Y</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="s1">&#39;mojito.models&#39;</span><span class="p">)[</span><span class="nx">NAME</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">recipeSearch</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">count</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="s1">&#39;http://www.recipepuppy.com/api/&#39;</span><span class="p">;</span>
+      <span class="kd">var</span> <span class="nx">params</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nx">i</span><span class="o">:</span><span class="s2">&quot;onions,garlic&quot;</span><span class="p">,</span>
+        <span class="nx">q</span><span class="o">:</span><span class="s2">&quot;omelet&quot;</span><span class="p">,</span>
+        <span class="nx">p</span><span class="o">:</span><span class="mi">1</span>
+      <span class="p">};</span>
+      <span class="kd">var</span> <span class="nx">config</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nx">timeout</span><span class="o">:</span> <span class="mi">5000</span><span class="p">,</span>
+        <span class="nx">headers</span><span class="o">:</span> <span class="p">{</span>
+          <span class="s1">&#39;Cache-Control&#39;</span><span class="o">:</span> <span class="s1">&#39;max-age=0&#39;</span>
+        <span class="p">}</span>
+      <span class="p">};</span>
+      <span class="nx">Y</span><span class="p">.</span><span class="nx">mojito</span><span class="p">.</span><span class="nx">lib</span><span class="p">.</span><span class="nx">REST</span><span class="p">.</span><span class="nx">GET</span><span class="p">(</span><span class="nx">url</span><span class="p">,</span> <span class="nx">params</span><span class="p">,</span> <span class="nx">config</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+          <span class="k">return</span> <span class="nx">cb</span><span class="p">(</span><span class="nx">err</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="nx">cb</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">response</span><span class="p">);</span>
+      <span class="p">});</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+<span class="p">},</span> <span class="s1">&#39;0.0.1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;mojito&#39;</span><span class="p">,</span> <span class="s1">&#39;mojito-rest-lib&#39;</span><span class="p">]});</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+   </div>
+

@@ -1,0 +1,271 @@
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+     <title>Attaching Assets with HTMLFrameMojit</title>
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '',
+        COLLAPSE_INDEX: true,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+   </head> 
+
+     <div class="header"><h1 class="heading"><a href="#">
+          <span>Mojito</span></a></h1>
+      </div>
+      <div class="topnav">
+        <p>
+        <a class="uplink" href="../">Mojito Documentation</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="../index.html" title="Mojito">Mojito</a>
+        &#160;&#160;::&#160;&#160;
+        
+           <a href="adding_assets.html">Adding CSS</a>
+        &#160;&#160;::&#160;&#160;
+        
+        
+           <a href="dynamic_assets.html">Dynamically Adding CSS to Different Devices</a>
+        
+        </p>
+
+      </div>
+      <div class="content">
+   <div class="section" id="attaching-assets-with-htmlframemojit">
+<h1>Attaching Assets with HTMLFrameMojit<a class="headerlink" href="#attaching-assets-with-htmlframemojit" title="Permalink to this headline">¶</a></h1>
+<p><strong>Time Estimate:</strong> 15 minutes</p>
+<p><strong>Difficulty:</strong> Intermediate</p>
+<div class="section" id="summary">
+<span id="code-exs-frame-assets-summary"></span><h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<p>This example shows how to configure an application to use the HTML Frame Mojit
+(<tt class="docutils literal"><span class="pre">HTMLFrameMojit</span></tt>) with predefined assets (CSS) that are attached to the rendered
+template of a mojit.</p>
+<p>The following topics will be covered:</p>
+<ul class="simple">
+<li>configuring the application to use the <tt class="docutils literal"><span class="pre">HTMLFrameMojit</span></tt></li>
+<li>configuring the <tt class="docutils literal"><span class="pre">HTMLFrameMojit</span></tt> to automatically include assets in the rendered
+template</li>
+</ul>
+</div>
+<div class="section" id="implementation-notes">
+<span id="code-exs-frame-assets-notes"></span><h2>Implementation Notes<a class="headerlink" href="#implementation-notes" title="Permalink to this headline">¶</a></h2>
+<p>This example code&#8217;s <tt class="docutils literal"><span class="pre">application.json</span></tt>, shown below, configures the application to use
+the HTML Frame Mojit and to include CSS assets. The <tt class="docutils literal"><span class="pre">HTMLFrameMojit</span></tt> creates the
+HTML skeleton and includes the CSS in the <tt class="docutils literal"><span class="pre">&lt;head&gt;</span></tt> tag because of the <tt class="docutils literal"><span class="pre">&quot;top&quot;</span></tt> property.
+To configure Mojito, place the CSS at the bottom, wrap the <tt class="docutils literal"><span class="pre">css</span></tt> array in the &#8220;bottom&#8221;
+property. You can also include JavaScript by including the path to JavaScript files in a
+<tt class="docutils literal"><span class="pre">js</span></tt> array. If you do not use the <tt class="docutils literal"><span class="pre">HTMLFrameMojit</span></tt>, you have to explicitly include
+assets as <a class="reference external" href="../intro/mojito_static_resources.html">static resources</a> in your template.
+To learn more about the <tt class="docutils literal"><span class="pre">HTMLFrameMojit</span></tt>, see the code example
+<a class="reference external" href="./htmlframe_view.html">Using the HTML Frame Mojit</a>.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;settings&quot;</span><span class="o">:</span> <span class="p">[</span> <span class="s2">&quot;master&quot;</span> <span class="p">],</span>
+    <span class="s2">&quot;specs&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;frame&quot;</span> <span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span> <span class="o">:</span> <span class="s2">&quot;HTMLFrameMojit&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;config&quot;</span><span class="o">:</span> <span class="p">{</span>
+          <span class="s2">&quot;child&quot;</span> <span class="o">:</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span> <span class="o">:</span> <span class="s2">&quot;framed&quot;</span>
+          <span class="p">},</span>
+          <span class="s2">&quot;assets&quot;</span><span class="o">:</span> <span class="p">{</span>
+            <span class="s2">&quot;top&quot;</span><span class="o">:</span> <span class="p">{</span>
+              <span class="s2">&quot;css&quot;</span><span class="o">:</span> <span class="p">[</span>
+                <span class="s2">&quot;/static/framed/assets/index.css&quot;</span>
+              <span class="p">]</span>
+            <span class="p">}</span>
+          <span class="p">}</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>The template <tt class="docutils literal"><span class="pre">index.hb.html</span></tt> below uses the asset <tt class="docutils literal"><span class="pre">index.css</span></tt>, but you do not need to
+include them in the file. If you use the same name for your CSS file as the name of your
+template and place the CSS in the mojit <tt class="docutils literal"><span class="pre">assets</span></tt> directory, <tt class="docutils literal"><span class="pre">HTMLFrameMojit</span></tt> will
+automatically include the assets in the <tt class="docutils literal"><span class="pre">&lt;head&gt;</span></tt> tag for you and then inject the
+rendered template into the <tt class="docutils literal"><span class="pre">&lt;body&gt;</span></tt> tag.</p>
+<p>For example, the <tt class="docutils literal"><span class="pre">mojits/framed/assets/index.css</span></tt> file will automatically be included in
+the <tt class="docutils literal"><span class="pre">&lt;head&gt;</span></tt> tag of the rendered <tt class="docutils literal"><span class="pre">mojits/framed/views/index.hb.html</span></tt> template. When the
+<tt class="docutils literal"><span class="pre">index.hb.index</span></tt> template below is rendered, it will be embedded in an HTML skeleton
+that includes a <tt class="docutils literal"><span class="pre">&lt;html&gt;</span></tt>, <tt class="docutils literal"><span class="pre">&lt;head&gt;</span></tt>, and <tt class="docutils literal"><span class="pre">&lt;body&gt;</span></tt> tags. If the <tt class="docutils literal"><span class="pre">/assets/index.css</span></tt>
+file exists, it will automatically be injected into the <tt class="docutils literal"><span class="pre">&lt;head&gt;</span></tt> tag.</p>
+<div class="highlight-html"><div class="highlight"><pre><span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;</span>
+  <span class="c1">// Changes background color of the header.</span>
+  <span class="c1">// Note: JavaScript code should not be hard</span>
+  <span class="c1">//coded into the template. It&#39;s done</span>
+  <span class="c1">// here to simplify the code example.</span>
+  <span class="kd">function</span> <span class="nx">setColor</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">color</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">).</span><span class="nx">style</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="nx">color</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;{{mojit_view_id}}&quot;</span> <span class="na">class=</span><span class="s">&quot;mojit&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h2</span> <span class="na">id=</span><span class="s">&quot;header&quot;</span><span class="nt">&gt;</span>{{title}}<span class="nt">&lt;/h2&gt;</span>
+  <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;toolbar&quot;</span><span class="nt">&gt;</span>
+    {{#colors}}
+      <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">onClick=</span><span class="s">&quot;setColor(&#39;header&#39;,&#39;{{rgb}}&#39;);&quot;</span><span class="nt">&gt;</span>{{id}}<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+    {{/colors}}
+  <span class="nt">&lt;/ul&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If you do not use the <tt class="docutils literal"><span class="pre">HTMLFrameMojit</span></tt> or use CSS with a different name than
+the template, you will have to explicitly reference your CSS files in the
+<tt class="docutils literal"><span class="pre">assets</span></tt> directory. For example, if you have
+<tt class="docutils literal"><span class="pre">/mojits/{mojit_name}/assets/simple.css</span></tt>, you can use the HTML
+<tt class="docutils literal"><span class="pre">&lt;link&gt;</span></tt> tag to reference the CSS at the following location:
+<tt class="docutils literal"><span class="pre">/static/{mojit_name}/assets/simple.css</span></tt></p>
+</div>
+</div>
+<div class="section" id="setting-up-this-example">
+<span id="code-exs-frame-assets-setup"></span><h2>Setting Up this Example<a class="headerlink" href="#setting-up-this-example" title="Permalink to this headline">¶</a></h2>
+<p>To create and run <tt class="docutils literal"><span class="pre">framed_assets</span></tt>:</p>
+<ol class="arabic">
+<li><p class="first">Create your application.</p>
+<p><tt class="docutils literal"><span class="pre">$</span> <span class="pre">mojito</span> <span class="pre">create</span> <span class="pre">app</span> <span class="pre">framed_assets</span></tt></p>
+</li>
+<li><p class="first">Change to the application directory.</p>
+</li>
+<li><p class="first">Create your mojit.</p>
+<p><tt class="docutils literal"><span class="pre">$</span> <span class="pre">mojito</span> <span class="pre">create</span> <span class="pre">mojit</span> <span class="pre">framed</span></tt></p>
+</li>
+<li><p class="first">To configure your application to have assets, replace the code in <tt class="docutils literal"><span class="pre">application.json</span></tt>
+with the following:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;settings&quot;</span><span class="o">:</span> <span class="p">[</span> <span class="s2">&quot;master&quot;</span> <span class="p">],</span>
+    <span class="s2">&quot;specs&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;frame&quot;</span> <span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span> <span class="o">:</span> <span class="s2">&quot;HTMLFrameMojit&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;config&quot;</span><span class="o">:</span> <span class="p">{</span>
+          <span class="s2">&quot;child&quot;</span> <span class="o">:</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span> <span class="o">:</span> <span class="s2">&quot;framed&quot;</span>
+          <span class="p">},</span>
+          <span class="s2">&quot;assets&quot;</span><span class="o">:</span> <span class="p">{</span>
+            <span class="s2">&quot;top&quot;</span><span class="o">:</span> <span class="p">{</span>
+              <span class="s2">&quot;css&quot;</span><span class="o">:</span> <span class="p">[</span>
+                <span class="s2">&quot;/static/framed/assets/index.css&quot;</span>
+              <span class="p">]</span>
+            <span class="p">}</span>
+          <span class="p">}</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">To configure routing, replace the code in <tt class="docutils literal"><span class="pre">routes.json</span></tt> with the following:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;settings&quot;</span><span class="o">:</span> <span class="p">[</span> <span class="s2">&quot;master&quot;</span> <span class="p">],</span>
+    <span class="s2">&quot;_framed_view&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;verbs&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;get&quot;</span><span class="p">],</span>
+      <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;/&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;call&quot;</span><span class="o">:</span> <span class="s2">&quot;frame.index&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Change to <tt class="docutils literal"><span class="pre">mojits/framed</span></tt>.</p>
+</li>
+<li><p class="first">Modify your controller to pass an array of objects to the template by replacing the
+code in <tt class="docutils literal"><span class="pre">controller.server.js</span></tt> with the following:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;framed&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="p">,</span> <span class="nx">NAME</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">Y</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="s1">&#39;mojito.controllers&#39;</span><span class="p">)[</span><span class="nx">NAME</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+
+    <span class="nx">index</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">ac</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nx">title</span><span class="o">:</span> <span class="s2">&quot;Framed Assets&quot;</span><span class="p">,</span>
+        <span class="nx">colors</span><span class="o">:</span> <span class="p">[</span>
+          <span class="p">{</span><span class="nx">id</span><span class="o">:</span> <span class="s2">&quot;green&quot;</span><span class="p">,</span> <span class="nx">rgb</span><span class="o">:</span> <span class="s2">&quot;#616536&quot;</span><span class="p">},</span>
+          <span class="p">{</span><span class="nx">id</span><span class="o">:</span> <span class="s2">&quot;brown&quot;</span><span class="p">,</span> <span class="nx">rgb</span><span class="o">:</span> <span class="s2">&quot;#593E1A&quot;</span><span class="p">},</span>
+          <span class="p">{</span><span class="nx">id</span><span class="o">:</span> <span class="s2">&quot;grey&quot;</span><span class="p">,</span>  <span class="nx">rgb</span><span class="o">:</span> <span class="s2">&quot;#777B88&quot;</span><span class="p">},</span>
+          <span class="p">{</span><span class="nx">id</span><span class="o">:</span> <span class="s2">&quot;blue&quot;</span><span class="p">,</span>  <span class="nx">rgb</span><span class="o">:</span> <span class="s2">&quot;#3D72A4&quot;</span><span class="p">},</span>
+          <span class="p">{</span><span class="nx">id</span><span class="o">:</span> <span class="s2">&quot;red&quot;</span><span class="p">,</span>  <span class="nx">rgb</span><span class="o">:</span> <span class="s2">&quot;#990033&quot;</span><span class="p">}</span>
+        <span class="p">]</span>
+      <span class="p">};</span>
+      <span class="nx">ac</span><span class="p">.</span><span class="nx">done</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+<span class="p">},</span> <span class="s1">&#39;0.0.1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[]});</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Include the assets in your template by replacing the code in <tt class="docutils literal"><span class="pre">views/index.hb.html</span></tt>
+with the following:</p>
+<div class="highlight-html"><div class="highlight"><pre><span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;</span>
+  <span class="c1">// Changes background color of the header.</span>
+  <span class="c1">// Note: JavaScript code should not be hard</span>
+  <span class="c1">//coded into the template. It&#39;s done</span>
+  <span class="c1">// here to simplify the code example.</span>
+  <span class="kd">function</span> <span class="nx">setColor</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">color</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">id</span><span class="p">).</span><span class="nx">style</span><span class="p">.</span><span class="nx">backgroundColor</span> <span class="o">=</span> <span class="nx">color</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;{{mojit_view_id}}&quot;</span> <span class="na">class=</span><span class="s">&quot;mojit&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h2</span> <span class="na">id=</span><span class="s">&quot;header&quot;</span><span class="nt">&gt;</span>{{title}}<span class="nt">&lt;/h2&gt;</span>
+  <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;toolbar&quot;</span><span class="nt">&gt;</span>
+  {{#colors}}
+    <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">onClick=</span><span class="s">&quot;setColor(&#39;header&#39;,&#39;{{rgb}}&#39;);&quot;</span><span class="nt">&gt;</span>{{id}}<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  {{/colors}}
+  <span class="nt">&lt;/ul&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Replace the contents of <tt class="docutils literal"><span class="pre">assets/index.css</span></tt> for the CSS of your page with the
+following:</p>
+<div class="highlight-css"><div class="highlight"><pre><span class="nc">.mojit</span> <span class="p">{</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="k">auto</span><span class="p">;</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">40</span><span class="o">%</span><span class="p">;</span>
+  <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nt">ul</span><span class="nc">.toolbar</span> <span class="p">{</span>
+  <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="k">auto</span><span class="p">;</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">17.0em</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nc">.toolbar</span> <span class="nt">li</span> <span class="p">{</span> <span class="k">display</span><span class="o">:</span><span class="k">inline</span><span class="p">;</span> <span class="p">}</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">From the application directory, run the server.</p>
+<p><tt class="docutils literal"><span class="pre">$</span> <span class="pre">mojito</span> <span class="pre">start</span></tt></p>
+</li>
+<li><p class="first">To view your application, go to the URL:</p>
+<p><a class="reference external" href="http://localhost:8666">http://localhost:8666</a></p>
+</li>
+</ol>
+</div>
+<div class="section" id="source-code">
+<span id="code-exs-frame-assets-src"></span><h2>Source Code<a class="headerlink" href="#source-code" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="http://github.com/yahoo/mojito/tree/master/examples/developer-guide/framed_assets/mojits/framed/assets/">Assets</a></li>
+<li><a class="reference external" href="http://github.com/yahoo/mojito/tree/master/examples/developer-guide/framed_assets/mojits/framed/views/index.hb.html">Index Template</a></li>
+<li><a class="reference external" href="http://github.com/yahoo/mojito/tree/master/examples/developer-guide/framed_assets/">Framed Assets Application</a></li>
+</ul>
+</div>
+</div>
+
+   </div>
+

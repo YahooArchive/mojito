@@ -1,0 +1,408 @@
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+     <title>Handlebars in Mojito</title>
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '',
+        COLLAPSE_INDEX: true,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+   </head> 
+
+     <div class="header"><h1 class="heading"><a href="#">
+          <span>Mojito</span></a></h1>
+      </div>
+      <div class="topnav">
+        <p>
+        <a class="uplink" href="../">Mojito Documentation</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="../index.html" title="Mojito">Mojito</a>
+        &#160;&#160;::&#160;&#160;
+        
+           <a href="mojito_testing.html">Testing</a>
+        &#160;&#160;::&#160;&#160;
+        
+        
+           <a href="mojito_composite_mojits.html">Composite Mojits</a>
+        
+        </p>
+
+      </div>
+      <div class="content">
+   <div class="section" id="handlebars-in-mojito">
+<h1>Handlebars in Mojito<a class="headerlink" href="#handlebars-in-mojito" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<span id="hb-mojito-overview"></span><h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>Handlebars is a superset of <a class="reference external" href="http://mustache.github.com/mustache.5.html">Mustache</a>,
+thus, Handlebars expressions include Mustache tags. Handlebars, however, also
+has some additional features such as registering help function and built-in block
+helpers, iterators, and access to object properties through the dot operator
+(i.e, <tt class="docutils literal"><span class="pre">{{house.price}}</span></tt>).  We&#8217;re just going to look at a few
+Handlebars expressions as an introduction. See the
+<a class="reference external" href="http://handlebarsjs.com/">Handlebars documentation</a> for more information
+examples.</p>
+<p>One of the things that we mentioned already is block helpers, which help you
+iterate through arrays. You could use the block helper <tt class="docutils literal"><span class="pre">#each</span></tt> shown below
+to iterate through an array of strings:</p>
+<div class="highlight-html"><div class="highlight"><pre><span class="nt">&lt;ul&gt;</span>
+  {{#each view_engines}}
+  <span class="nt">&lt;li&gt;</span>{{this}}<span class="nt">&lt;/li&gt;</span>
+  {{/each}}
+<span class="nt">&lt;/ul&gt;</span>
+</pre></div>
+</div>
+<p>Another interesting block helper used in this example is <tt class="docutils literal"><span class="pre">#with</span></tt>, which will
+invoke a block when given a specified context. For example, in the code
+snippet below, if the <tt class="docutils literal"><span class="pre">ul</span></tt> object is given, the property title is evaluated.</p>
+<div class="highlight-html"><div class="highlight"><pre>{{#with ul}}
+  <span class="nt">&lt;h3&gt;</span>{{title}}<span class="nt">&lt;/h3&gt;</span>
+{{/with}}
+</pre></div>
+</div>
+</div>
+<div class="section" id="partials">
+<span id="using-hb-partials"></span><h2>Partials<a class="headerlink" href="#partials" title="Permalink to this headline">¶</a></h2>
+<p>Handlebars partials are simply templates using Handlebars expressions that other
+templates can include. Mojito allows you to have both global (shared by all mojits) or
+local (available only to one mojit) partials depending on the context. Global and local
+partials are used the same way in templates, but the location of the partials is
+different. Data that is available to templates is also available to partials.</p>
+<p>Now let&#8217;s look at the file naming convention, location, and usage of partials
+before finishing up with a simple example.</p>
+<div class="section" id="file-naming-convention">
+<span id="hb-partials-file-naming"></span><h3>File Naming Convention<a class="headerlink" href="#file-naming-convention" title="Permalink to this headline">¶</a></h3>
+<p>The file name for partials is similar to templates using Handlebars except
+<tt class="docutils literal"><span class="pre">{partial_name}</span></tt> replaces <tt class="docutils literal"><span class="pre">{controller_function}</span></tt>:
+<tt class="docutils literal"><span class="pre">{partial_name}.[{selector}].hb.html</span></tt></p>
+</div>
+<div class="section" id="location-of-partials">
+<span id="hb-partials-location"></span><h3>Location of Partials<a class="headerlink" href="#location-of-partials" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="global-partials">
+<span id="partials-location-global"></span><h4>Global Partials<a class="headerlink" href="#global-partials" title="Permalink to this headline">¶</a></h4>
+<p><tt class="docutils literal"><span class="pre">{app_dir}/views/partials</span></tt></p>
+<p>Thus, the global partial <tt class="docutils literal"><span class="pre">foo.hb.html</span></tt> in the application <tt class="docutils literal"><span class="pre">bar_app</span></tt> would be located at
+<tt class="docutils literal"><span class="pre">bar_app/views/partials/foo.hb.html</span></tt>.</p>
+</div>
+<div class="section" id="local-partials">
+<span id="partials-location-local"></span><h4>Local Partials<a class="headerlink" href="#local-partials" title="Permalink to this headline">¶</a></h4>
+<p><tt class="docutils literal"><span class="pre">{app_dir}/mojits/{mojit_name}/views/partials</span></tt></p>
+<p>Thus, the local partial <tt class="docutils literal"><span class="pre">foo.hb.html</span></tt> in the mojit <tt class="docutils literal"><span class="pre">bar_mojit</span></tt> would be located at
+<tt class="docutils literal"><span class="pre">mojits/bar_mojit/views/partials/foo.hb.html</span></tt>.</p>
+</div>
+</div>
+<div class="section" id="using-partials-in-templates">
+<span id="hb-partials-use"></span><h3>Using Partials in Templates<a class="headerlink" href="#using-partials-in-templates" title="Permalink to this headline">¶</a></h3>
+<p>To use a partial, the template uses the following syntax: <tt class="docutils literal"><span class="pre">{{&gt;</span> <span class="pre">partial_name}}</span></tt></p>
+<p>To use the partial <tt class="docutils literal"><span class="pre">status.hb.html</span></tt>, you would included the following
+in a template: <tt class="docutils literal"><span class="pre">{{&gt;</span> <span class="pre">status</span> <span class="pre">}}</span></tt></p>
+</div>
+<div class="section" id="example">
+<span id="hb-partials-example"></span><h3>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h3>
+<p><strong>/my_news_app/views/partials/global_news.hb.html</strong></p>
+<div class="highlight-html"><div class="highlight"><pre><span class="nt">&lt;div&gt;</span>
+   <span class="nt">&lt;h3&gt;</span>Global News<span class="nt">&lt;/h3&gt;</span>
+   {{global_news_stories}}
+<span class="nt">&lt;/div&gt;</span>
+</pre></div>
+</div>
+<p><strong>/my_news_app/mojits/newsMojit/views/partials/local_news.hb.html</strong></p>
+<div class="highlight-html"><div class="highlight"><pre><span class="nt">&lt;div&gt;</span>
+   <span class="nt">&lt;h3&gt;</span>Local News<span class="nt">&lt;/h3&gt;</span>
+   {{local_news_stories}}
+<span class="nt">&lt;/div&gt;</span>
+</pre></div>
+</div>
+<p><strong>/my_news_app/mojits/newsMojit/views/index.hb.html</strong></p>
+<div class="highlight-html"><div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;{{mojit_view_id}}&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h2&gt;</span>Today&#39;s News Stories<span class="nt">&lt;/h2&gt;</span>
+  {{&gt; global_news}}
+  {{&gt; local_news}}
+<span class="nt">&lt;/div&gt;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="helpers">
+<span id="using-hb-helpers"></span><h2>Helpers<a class="headerlink" href="#helpers" title="Permalink to this headline">¶</a></h2>
+<p>Handlebars comes with a set of simple monadic functions called
+<a class="reference external" href="http://handlebarsjs.com/expressions.html#helpers">helpers</a> that
+you can call in Handlebars expressions. Some helpers are called
+<a class="reference external" href="http://handlebarsjs.com/block_helpers.html">block helpers</a> because
+they are iterators. You can also create new helpers and register them
+using the <a class="reference external" href="http://developer.yahoo.com/cocktails/mojito/api/classes/Helpers.common.html">Helpers addon</a>.
+We&#8217;ll take a look how in Mojito application to use both simple helper and block helpers
+and then show you how to create and register your own helpers.</p>
+<div class="section" id="using-helpers">
+<span id="hb-using-helpers"></span><h3>Using Helpers<a class="headerlink" href="#using-helpers" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="basic-helpers">
+<span id="using-helpers-basic"></span><h4>Basic Helpers<a class="headerlink" href="#basic-helpers" title="Permalink to this headline">¶</a></h4>
+<p>We are calling helpers that don&#8217;t iterate <em>basic</em> helpers to distinguish them
+from block helpers that do iterate. An example of a basic helper would be
+<tt class="docutils literal"><span class="pre">link</span></tt>, which takes two arguments and outputs an HTML <tt class="docutils literal"><span class="pre">a</span></tt> tag.</p>
+<p>To use the <tt class="docutils literal"><span class="pre">link</span></tt> helper in a Mojito application, your controller passes
+data to the template that uses the <tt class="docutils literal"><span class="pre">link</span></tt> helper in a Handlebars expression.
+In the example controller below, the method <tt class="docutils literal"><span class="pre">ac.done</span></tt> passes the object
+<tt class="docutils literal"><span class="pre">yahoo_link</span></tt> to the template:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">...</span>
+<span class="nx">index</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">ac</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">yahoo_link</span> <span class="o">=</span> <span class="p">{</span> <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;Yahoo!&quot;</span><span class="p">,</span> <span class="nx">url</span><span class="o">:</span> <span class="s2">&quot;http://www.yahoo.com&quot;</span> <span class="p">};</span>
+  <span class="nx">ac</span><span class="p">.</span><span class="nx">done</span><span class="p">(</span><span class="nx">yahoo_link</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="p">...</span>
+</pre></div>
+</div>
+<p>In the <tt class="docutils literal"><span class="pre">index.hb.html</span></tt> template, the <tt class="docutils literal"><span class="pre">link</span></tt> method can create an HTML <tt class="docutils literal"><span class="pre">a</span></tt>
+tag with the <tt class="docutils literal"><span class="pre">name</span></tt> and <tt class="docutils literal"><span class="pre">url</span></tt> properties:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{{</span><span class="nx">link</span> <span class="nx">yahoo_link</span><span class="p">.</span><span class="nx">name</span> <span class="nx">yahoo_link</span><span class="p">.</span><span class="nx">url</span><span class="p">}}</span>
+</pre></div>
+</div>
+<p>This creates the following link: <tt class="docutils literal"><span class="pre">&lt;a</span> <span class="pre">href=&quot;http://www.yahoo.com&quot;&gt;Yahoo!&lt;/a&gt;</span></tt></p>
+</div>
+<div class="section" id="id2">
+<h4>Block Helpers<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<p>As we&#8217;ve mentioned earlier, block helpers allow you to iterate through the properties
+of an object or through items in an array. The syntax for using block helpers is
+different that using basic helpers. The pound sign &#8220;#&#8221; is prepended to the
+helper name and the helper must have a closing Handlebars expression.
+Within the opening and closing Handlebars expressions for iterators, you can access
+items of the list that you are iterating over.</p>
+<p>Let&#8217;s use of the block helper <tt class="docutils literal"><span class="pre">each</span></tt> to iterate over an array of objects
+and then use the properties of the objects with the <tt class="docutils literal"><span class="pre">link</span></tt> helper to create
+a list of links.</p>
+<p>In this example controller, we pass an array of objects with links and names of
+Yahoo! pages to <tt class="docutils literal"><span class="pre">ac.done</span></tt>:</p>
+<p>In the template, we can now use the block helper <tt class="docutils literal"><span class="pre">each</span></tt> to
+create links with the objects and their properties <tt class="docutils literal"><span class="pre">name</span></tt> and <tt class="docutils literal"><span class="pre">url</span></tt>:</p>
+</div>
+</div>
+<div class="section" id="creating-custom-helpers">
+<span id="hb-creating-helpers"></span><h3>Creating Custom Helpers<a class="headerlink" href="#creating-custom-helpers" title="Permalink to this headline">¶</a></h3>
+<p>As an aid to those used Handlebars helpers, we&#8217;ll first look at
+how Handlebars helpers are used in Node.js applications and then
+contrast that with how they are used in Mojito applications.</p>
+<div class="section" id="node-js-applications">
+<span id="creating-helpers-node"></span><h4>Node.js Applications<a class="headerlink" href="#node-js-applications" title="Permalink to this headline">¶</a></h4>
+<p>To create custom Handlebars helpers in a Node.js application, you use the
+Handlebars method <tt class="docutils literal"><span class="pre">registerHelper</span></tt> to register your helper so that
+it can be used in Handlebars expressions.</p>
+<p>In the example Node.js script below, the <tt class="docutils literal"><span class="pre">makeLink</span></tt></p>
+<div class="highlight-javascript"><pre>#!/usr/local/bin/node
+
+var Handlebars = require('handlebars');
+var context = { title: "My New Post", url: "http://mywebsite.com/new-post" };
+var source = "&lt;div&gt;{{makeLink title url}}&lt;/div&gt;";
+// Registering a Handlebars helper that can be used
+// in the Handlebars expression in the HTML (`source`).
+Handlebars.registerHelper('makeLink', function(text, url) {
+  text = Handlebars.Utils.escapeExpression(text);
+  url  = Handlebars.Utils.escapeExpression(url);
+  var result = '&lt;a href="' + url + '"&gt;' + text + '&lt;/a&gt;';
+  return new Handlebars.SafeString(result);
+});
+var template = Handlebars.compile(source);
+var html = template(context);
+// Output: &lt;div&gt;&lt;a href="http://mywebsite.com/new-post"&gt;My New Post&lt;/a&gt;&lt;/div&gt;
+console.log(html);</pre>
+</div>
+</div>
+<div class="section" id="mojito-applications">
+<span id="creating-helpers-mojito"></span><h4>Mojito Applications<a class="headerlink" href="#mojito-applications" title="Permalink to this headline">¶</a></h4>
+<p>To use custom Handlebars helpers in a Mojito application, you also need to register
+your helper, but instead of using <tt class="docutils literal"><span class="pre">registerHelper</span></tt>, you use the
+<a class="reference external" href="http://developer.yahoo.com/cocktails/mojito/api/classes/Helpers.common.html">Helpers addon</a>.
+The <tt class="docutils literal"><span class="pre">Helpers</span></tt> addon has several methods for getting helpers, setting mojit-level
+helpers, or exposing helpers so that they can shared with other mojits.</p>
+<p>Let&#8217;s take a quick look at the <tt class="docutils literal"><span class="pre">Helper</span></tt> addon, show how to use the addon methods
+to register helpers, and finally provide you with an example that includes both the
+controller and corresponding template.</p>
+<div class="section" id="mojito-helpers-addon">
+<span id="id4"></span><h5>Helpers Addon<a class="headerlink" href="#mojito-helpers-addon" title="Permalink to this headline">¶</a></h5>
+<p>As with other addons, you need to require the <tt class="docutils literal"><span class="pre">Helpers</span></tt> addon by adding the string
+<tt class="docutils literal"><span class="pre">mojito-helpers-addon</span></tt> in the <tt class="docutils literal"><span class="pre">requires</span></tt> array of your controller. You also access the
+addon and its methods through the <tt class="docutils literal"><span class="pre">ActionContext</span></tt> object.</p>
+<p>The <tt class="docutils literal"><span class="pre">Helper</span></tt> addon has the following three methods:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">expose</span></tt> - Exposes a parent mojit&#8217;s helper function so that on the server side any
+child mojit instance under a particular request can use the helper. On the client, any
+child mojit instance on the page can use the helper.</li>
+<li><tt class="docutils literal"><span class="pre">get</span></tt> - Allows you to get a specify helper (if given an argument) or all the helpers
+if not given any arguments.</li>
+<li><tt class="docutils literal"><span class="pre">set</span></tt> - Sets a helper function for a mojit instance. Other mojit instances will not
+have access to this helper function.</li>
+</ul>
+</div>
+<div class="section" id="setting-helpers-for-a-mojit-instance">
+<span id="helpers-addon-set-mojit"></span><h5>Setting Helpers for a Mojit Instance<a class="headerlink" href="#setting-helpers-for-a-mojit-instance" title="Permalink to this headline">¶</a></h5>
+<p>To register a helper for a mojit instance, you use the <tt class="docutils literal"><span class="pre">set</span></tt> method of the <tt class="docutils literal"><span class="pre">Helpers</span></tt>
+addon. In the example controller below, the <tt class="docutils literal"><span class="pre">set</span></tt> method registers the helper
+<tt class="docutils literal"><span class="pre">highlightModuleHelper</span></tt> that uses the YUI <tt class="docutils literal"><span class="pre">Highlight</span></tt> class to highlight strings.
+The reason for setting the helper for this mojit instance is that it depends on
+a specific data structure passed to it.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">...</span>
+  <span class="kd">function</span> <span class="nx">highlightModuleHelper</span><span class="p">(</span><span class="nx">mods</span><span class="p">,</span> <span class="nx">highlighted_module</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">mod_names</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">l</span><span class="o">=</span><span class="nx">mods</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">l</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">){</span>
+      <span class="nx">mod_names</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">mods</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">name</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="nx">mod_names</span> <span class="o">=</span> <span class="nx">mod_names</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Highlight</span><span class="p">.</span><span class="nx">words</span><span class="p">(</span><span class="nx">mod_names</span><span class="p">,</span> <span class="nx">highlighted_module</span><span class="p">,</span> <span class="p">{</span>
+     <span class="nx">caseSensitive</span><span class="o">:</span><span class="kc">false</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
+  <span class="nx">index</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">ac</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">{</span>
+          <span class="nx">modules</span><span class="o">:</span> <span class="p">[</span>
+            <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;event&quot;</span><span class="p">,</span> <span class="nx">user_guide</span><span class="o">:</span> <span class="s2">&quot;http://yuilibrary.com/yui/docs/event/&quot;</span><span class="p">,</span> <span class="nx">title</span><span class="o">:</span> <span class="s2">&quot;Event Utility&quot;</span><span class="p">},</span>
+            <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;node&quot;</span><span class="p">,</span> <span class="nx">user_guide</span><span class="o">:</span> <span class="s2">&quot;http://yuilibrary.com/yui/docs/node/&quot;</span><span class="p">,</span>  <span class="nx">title</span><span class="o">:</span> <span class="s2">&quot;Node Utility&quot;</span><span class="p">},</span>
+            <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;base&quot;</span><span class="p">,</span> <span class="nx">user_guide</span><span class="o">:</span> <span class="s2">&quot;http://yuilibrary.com/yui/docs/base/&quot;</span><span class="p">,</span> <span class="nx">title</span><span class="o">:</span> <span class="s2">&quot;Base&quot;</span> <span class="p">},</span>
+            <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;test&quot;</span><span class="p">,</span> <span class="nx">user_guide</span><span class="o">:</span> <span class="s2">&quot;http://yuilibrary.com/yui/docs/test/&quot;</span><span class="p">,</span> <span class="nx">title</span><span class="o">:</span> <span class="s2">&quot;YUI Test&quot;</span><span class="p">},</span>
+            <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;cookie&quot;</span><span class="p">,</span> <span class="nx">user_guide</span><span class="o">:</span> <span class="s2">&quot;http://yuilibrary.com/yui/docs/cookie/&quot;</span><span class="p">,</span>  <span class="nx">title</span><span class="o">:</span> <span class="s2">&quot;Cookie Utility&quot;</span><span class="p">},</span>
+            <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;yql&quot;</span><span class="p">,</span> <span class="nx">user_guide</span><span class="o">:</span> <span class="s2">&quot;http://yuilibrary.com/yui/docs/yql/&quot;</span><span class="p">,</span> <span class="nx">title</span><span class="o">:</span> <span class="s2">&quot;YQL Query&quot;</span><span class="p">}</span>
+          <span class="p">]</span>
+        <span class="p">};</span>
+    <span class="nx">ac</span><span class="p">.</span><span class="nx">helpers</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;highlightModule&#39;</span><span class="p">,</span> <span class="nx">highlightModuleHelper</span><span class="p">);</span>
+    <span class="nx">ac</span><span class="p">.</span><span class="nx">done</span><span class="p">({</span> <span class="nx">yui_info</span><span class="o">:</span> <span class="nx">data</span><span class="p">,</span> <span class="nx">highlighted_module</span><span class="o">:</span> <span class="nx">ac</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">url</span><span class="p">(</span><span class="s1">&#39;module&#39;</span><span class="p">)</span> <span class="o">||</span> <span class="s2">&quot;event&quot;</span><span class="p">});</span>
+  <span class="p">}</span>
+<span class="p">...</span>
+</pre></div>
+</div>
+<p>In the <tt class="docutils literal"><span class="pre">index.hb.html</span></tt> template, the helper <tt class="docutils literal"><span class="pre">highlightModule</span></tt> highlights
+takes as the arguments passed to it by <tt class="docutils literal"><span class="pre">ac.done</span></tt> and highlights the strings matching
+the values assigned to <tt class="docutils literal"><span class="pre">highlighted_module</span></tt>:</p>
+<div class="highlight-html"><div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;{{mojit_view_id}}&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h3&gt;</span>Highlighted Products:<span class="nt">&lt;/h3&gt;</span>
+  {{{highlightModule yui_info.modules highlighted_module }}
+<span class="nt">&lt;/div&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="exposing-helpers-for-global-use">
+<span id="helpers-addon-set-global"></span><h5>Exposing Helpers for Global Use<a class="headerlink" href="#exposing-helpers-for-global-use" title="Permalink to this headline">¶</a></h5>
+<p>To register a helper so that parent mojits can share them with their children, you use the
+<tt class="docutils literal"><span class="pre">expose</span></tt> method of the <tt class="docutils literal"><span class="pre">Helpers</span></tt> addon. In the example controller below, the
+<tt class="docutils literal"><span class="pre">expose</span></tt> method registers the helper <tt class="docutils literal"><span class="pre">toLinkHelper</span></tt> that creates links. It makes sense
+to expose this helper so that its child mojit instances can also use the helper to create
+links.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">...</span>
+  <span class="kd">function</span> <span class="nx">toLinkHelper</span><span class="p">(</span><span class="nx">title</span><span class="p">,</span> <span class="nx">url</span><span class="p">)</span> <span class="p">{</span>
+     <span class="k">return</span> <span class="s2">&quot;&lt;a href=&#39;&quot;</span> <span class="o">+</span> <span class="nx">url</span> <span class="o">+</span> <span class="s2">&quot;&#39;&gt;&quot;</span> <span class="o">+</span> <span class="nx">title</span> <span class="o">+</span> <span class="s2">&quot;&lt;/a&gt;&quot;</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nx">index</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">ac</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">{</span>
+          <span class="nx">modules</span><span class="o">:</span> <span class="p">[</span>
+            <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;event&quot;</span><span class="p">,</span> <span class="nx">user_guide</span><span class="o">:</span> <span class="s2">&quot;http://yuilibrary.com/yui/docs/event/&quot;</span><span class="p">,</span> <span class="nx">title</span><span class="o">:</span> <span class="s2">&quot;Event Utility&quot;</span><span class="p">},</span>
+            <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;node&quot;</span><span class="p">,</span> <span class="nx">user_guide</span><span class="o">:</span> <span class="s2">&quot;http://yuilibrary.com/yui/docs/node/&quot;</span><span class="p">,</span>  <span class="nx">title</span><span class="o">:</span> <span class="s2">&quot;Node Utility&quot;</span><span class="p">},</span>
+            <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;base&quot;</span><span class="p">,</span> <span class="nx">user_guide</span><span class="o">:</span> <span class="s2">&quot;http://yuilibrary.com/yui/docs/base/&quot;</span><span class="p">,</span> <span class="nx">title</span><span class="o">:</span> <span class="s2">&quot;Base&quot;</span> <span class="p">},</span>
+            <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;test&quot;</span><span class="p">,</span> <span class="nx">user_guide</span><span class="o">:</span> <span class="s2">&quot;http://yuilibrary.com/yui/docs/test/&quot;</span><span class="p">,</span> <span class="nx">title</span><span class="o">:</span> <span class="s2">&quot;YUI Test&quot;</span><span class="p">},</span>
+            <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;cookie&quot;</span><span class="p">,</span> <span class="nx">user_guide</span><span class="o">:</span> <span class="s2">&quot;http://yuilibrary.com/yui/docs/cookie/&quot;</span><span class="p">,</span>  <span class="nx">title</span><span class="o">:</span> <span class="s2">&quot;Cookie Utility&quot;</span><span class="p">},</span>
+            <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;yql&quot;</span><span class="p">,</span> <span class="nx">user_guide</span><span class="o">:</span> <span class="s2">&quot;http://yuilibrary.com/yui/docs/yql/&quot;</span><span class="p">,</span> <span class="nx">title</span><span class="o">:</span> <span class="s2">&quot;YQL Query&quot;</span><span class="p">}</span>
+          <span class="p">]</span>
+        <span class="p">};</span>
+    <span class="nx">ac</span><span class="p">.</span><span class="nx">helpers</span><span class="p">.</span><span class="nx">expose</span><span class="p">(</span><span class="s1">&#39;toLink&#39;</span><span class="p">,</span><span class="nx">toLinkHelper</span><span class="p">);</span>
+    <span class="nx">ac</span><span class="p">.</span><span class="nx">done</span><span class="p">({</span> <span class="nx">yui_info</span><span class="o">:</span> <span class="nx">data</span> <span class="p">});</span>
+  <span class="p">}</span>
+<span class="p">...</span>
+</pre></div>
+</div>
+<p>Other mojits on the page that want to access the global Handlebars helper in their
+templates must require the <tt class="docutils literal"><span class="pre">Helpers</span></tt> addon in their controllers as shown below:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;childMojit&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="p">,</span> <span class="nx">NAME</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// This is a child mojit that wants to reference the global</span>
+  <span class="c1">// Handlebars helper. Although no helper code is needed in the controller,</span>
+  <span class="c1">// the controller must require the `Helpers` addon by adding the string</span>
+  <span class="c1">// `mojito-helpers-addon` to the `requires` array for its template to use the helper.</span>
+<span class="p">},</span> <span class="s1">&#39;0.0.1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;mojito&#39;</span><span class="p">,</span> <span class="s1">&#39;mojito-helpers-addon&#39;</span><span class="p">,</span> <span class="s1">&#39;mojito-params-addon&#39;</span><span class="p">,</span> <span class="s1">&#39;highlight&#39;</span><span class="p">]});</span>
+</pre></div>
+</div>
+<p>In the template <tt class="docutils literal"><span class="pre">index.hb.html</span></tt> below, the Handlebars block helper <tt class="docutils literal"><span class="pre">each</span></tt>
+iterates through the objects contained in the array <tt class="docutils literal"><span class="pre">yui_info.modules</span></tt>, and
+then the custom helper <tt class="docutils literal"><span class="pre">toLink</span></tt> creates links with the values of the properties
+<tt class="docutils literal"><span class="pre">title</span></tt> and <tt class="docutils literal"><span class="pre">user_guide</span></tt>:</p>
+<div class="highlight-html"><div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;{{mojit_view_id}}&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h3&gt;</span>YUI Modules<span class="nt">&lt;/h3&gt;</span>
+  <span class="nt">&lt;ul&gt;</span>
+  {{#each yui_info.modules}}
+    <span class="nt">&lt;li&gt;</span>{{{toLink title user_guide }}}<span class="nt">&lt;/li&gt;</span>
+  {{/each}}
+  <span class="nt">&lt;/ul&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="helpers-addon-ex">
+<span id="id5"></span><h5>Example<a class="headerlink" href="#helpers-addon-ex" title="Permalink to this headline">¶</a></h5>
+<div class="section" id="controller-server-js">
+<span id="helpers-ex-controller"></span><h6>controller.server.js<a class="headerlink" href="#controller-server-js" title="Permalink to this headline">¶</a></h6>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;helperMojit&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="p">,</span> <span class="nx">NAME</span><span class="p">)</span> <span class="p">{</span>
+
+  <span class="kd">function</span> <span class="nx">toLinkHelper</span><span class="p">(</span><span class="nx">title</span><span class="p">,</span> <span class="nx">url</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="s2">&quot;&lt;a href=&#39;&quot;</span> <span class="o">+</span> <span class="nx">url</span> <span class="o">+</span> <span class="s2">&quot;&#39;&gt;&quot;</span> <span class="o">+</span> <span class="nx">title</span> <span class="o">+</span> <span class="s2">&quot;&lt;/a&gt;&quot;</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="kd">function</span> <span class="nx">highlightModuleHelper</span><span class="p">(</span><span class="nx">mods</span><span class="p">,</span> <span class="nx">highlighted_module</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">mod_names</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">l</span><span class="o">=</span><span class="nx">mods</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="nx">l</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">){</span>
+      <span class="nx">mod_names</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">mods</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">name</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="nx">mod_names</span> <span class="o">=</span> <span class="nx">mod_names</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;, &#39;</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">Highlight</span><span class="p">.</span><span class="nx">words</span><span class="p">(</span><span class="nx">mod_names</span><span class="p">,</span> <span class="nx">highlighted_module</span><span class="p">,</span> <span class="p">{</span>
+      <span class="nx">caseSensitive</span><span class="o">:</span><span class="kc">false</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
+  <span class="nx">Y</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="s1">&#39;mojito.controllers&#39;</span><span class="p">)[</span><span class="nx">NAME</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">index</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">ac</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">ac</span><span class="p">.</span><span class="nx">helpers</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;toLink&#39;</span><span class="p">,</span> <span class="nx">toLinkHelper</span><span class="p">);</span>
+      <span class="nx">ac</span><span class="p">.</span><span class="nx">helpers</span><span class="p">.</span><span class="nx">expose</span><span class="p">(</span><span class="s1">&#39;highlightModule&#39;</span><span class="p">,</span> <span class="nx">highlightModuleHelper</span><span class="p">);</span>
+      <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nx">modules</span><span class="o">:</span> <span class="p">[</span>
+          <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;event&quot;</span><span class="p">,</span> <span class="nx">user_guide</span><span class="o">:</span> <span class="s2">&quot;http://yuilibrary.com/yui/docs/event/&quot;</span><span class="p">,</span> <span class="nx">title</span><span class="o">:</span> <span class="s2">&quot;Event Utility&quot;</span><span class="p">},</span>
+          <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;node&quot;</span><span class="p">,</span> <span class="nx">user_guide</span><span class="o">:</span> <span class="s2">&quot;http://yuilibrary.com/yui/docs/node/&quot;</span><span class="p">,</span>  <span class="nx">title</span><span class="o">:</span> <span class="s2">&quot;Node Utility&quot;</span><span class="p">},</span>
+          <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;base&quot;</span><span class="p">,</span> <span class="nx">user_guide</span><span class="o">:</span> <span class="s2">&quot;http://yuilibrary.com/yui/docs/base/&quot;</span><span class="p">,</span> <span class="nx">title</span><span class="o">:</span> <span class="s2">&quot;Base&quot;</span> <span class="p">},</span>
+          <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;test&quot;</span><span class="p">,</span> <span class="nx">user_guide</span><span class="o">:</span> <span class="s2">&quot;http://yuilibrary.com/yui/docs/test/&quot;</span><span class="p">,</span> <span class="nx">title</span><span class="o">:</span> <span class="s2">&quot;YUI Test&quot;</span><span class="p">},</span>
+          <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;cookie&quot;</span><span class="p">,</span> <span class="nx">user_guide</span><span class="o">:</span> <span class="s2">&quot;http://yuilibrary.com/yui/docs/cookie/&quot;</span><span class="p">,</span>  <span class="nx">title</span><span class="o">:</span> <span class="s2">&quot;Cookie Utility&quot;</span><span class="p">},</span>
+          <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;yql&quot;</span><span class="p">,</span> <span class="nx">user_guide</span><span class="o">:</span> <span class="s2">&quot;http://yuilibrary.com/yui/docs/yql/&quot;</span><span class="p">,</span> <span class="nx">title</span><span class="o">:</span> <span class="s2">&quot;YQL Query&quot;</span><span class="p">}</span>
+        <span class="p">]</span>
+      <span class="p">};</span>
+      <span class="nx">ac</span><span class="p">.</span><span class="nx">done</span><span class="p">({</span> <span class="nx">yui_info</span><span class="o">:</span> <span class="nx">data</span><span class="p">,</span> <span class="nx">highlighted_module</span><span class="o">:</span> <span class="nx">ac</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">url</span><span class="p">(</span><span class="s1">&#39;module&#39;</span><span class="p">)</span> <span class="o">||</span> <span class="s2">&quot;event&quot;</span><span class="p">});</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+<span class="p">},</span> <span class="s1">&#39;0.0.1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;mojito&#39;</span><span class="p">,</span> <span class="s1">&#39;mojito-helpers-addon&#39;</span><span class="p">,</span> <span class="s1">&#39;mojito-params-addon&#39;</span><span class="p">,</span> <span class="s1">&#39;highlight&#39;</span><span class="p">]});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="index-hb-html">
+<span id="helpers-ex-template"></span><h6>index.hb.html<a class="headerlink" href="#index-hb-html" title="Permalink to this headline">¶</a></h6>
+<div class="highlight-html"><div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;{{mojit_view_id}}&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h3&gt;</span>YUI Modules<span class="nt">&lt;/h3&gt;</span>
+  <span class="nt">&lt;ul&gt;</span>
+  {{#each yui_info.modules}}
+    <span class="nt">&lt;li&gt;</span>{{{toLink title user_guide }}}<span class="nt">&lt;/li&gt;</span>
+  {{/each}}
+  <span class="nt">&lt;/ul&gt;</span>
+  <span class="nt">&lt;h3&gt;</span>Highlighted Products:<span class="nt">&lt;/h3&gt;</span>
+  {{{highlightModule yui_info.modules highlighted_module }}
+<span class="nt">&lt;/div&gt;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+   </div>
+

@@ -1,0 +1,215 @@
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+     <title>Action Context</title>
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '',
+        COLLAPSE_INDEX: true,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+   </head> 
+
+     <div class="header"><h1 class="heading"><a href="#">
+          <span>Mojito</span></a></h1>
+      </div>
+      <div class="topnav">
+        <p>
+        <a class="uplink" href="../">Mojito Documentation</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="../index.html" title="Mojito">Mojito</a>
+        &#160;&#160;::&#160;&#160;
+        
+           <a href="index.html">Mojito API Overview</a>
+        &#160;&#160;::&#160;&#160;
+        
+        
+           <a href="mojito_addons.html">Action Context Addons</a>
+        
+        </p>
+
+      </div>
+      <div class="content">
+   <div class="section" id="action-context">
+<h1>Action Context<a class="headerlink" href="#action-context" title="Permalink to this headline">¶</a></h1>
+<p>The Action Context is an essential element of the Mojito framework that gives you access
+to the frameworks features from within a controller function. To use the Action Context,
+you create an instance of the <tt class="docutils literal"><span class="pre">ActionContext</span></tt> class, which we will call <tt class="docutils literal"><span class="pre">ac</span></tt> for
+short. From <tt class="docutils literal"><span class="pre">ac</span></tt>, you can call methods to execute mojit actions within either a server
+or client context. See the <a class="reference external" href="../../api/classes/ActionContext.html">ActionContext Class</a>
+for the methods available from <tt class="docutils literal"><span class="pre">ac</span></tt>.</p>
+<div class="section" id="done-method">
+<span id="ac-done"></span><h2>done Method<a class="headerlink" href="#done-method" title="Permalink to this headline">¶</a></h2>
+<p>One of the most common methods used from an instance of the <tt class="docutils literal"><span class="pre">ActionContext</span></tt> class is
+<tt class="docutils literal"><span class="pre">done</span></tt>, which lets you pass data from the controller to a view. You can also optionally
+pass meta data that contains the view name, mojit definitions, binders, assets, HTTP information,
+and a callback function. We&#8217;ll look at the <tt class="docutils literal"><span class="pre">meta</span></tt> object more closely in the next
+section.</p>
+<p>See the <a class="reference external" href="http://developer.yahoo.com/cocktails/mojito/api/classes/ActionContext.html#method_done">done method</a>
+in the <a class="reference external" href="http://developer.yahoo.com/cocktails/mojito/api/">Mojito API Documentation</a> for
+more information about the parameters and to see the source code.</p>
+<div class="section" id="meta-object">
+<span id="done-meta"></span><h3>meta Object<a class="headerlink" href="#meta-object" title="Permalink to this headline">¶</a></h3>
+<p>By default, Mojito builds the metadata that is used when the method <tt class="docutils literal"><span class="pre">done</span></tt> executes and
+renders a template. You can, however, pass an object to override the defaults, such as the
+view name, mojit definitions, the assets, the view engine, HTTP information, etc.</p>
+<p>Generally, the only time you would need to pass the <tt class="docutils literal"><span class="pre">meta</span></tt> object is in the following
+cases:</p>
+<ul class="simple">
+<li>you want to render a different template than the default</li>
+<li>a parent mojit is executing child mojits with the methods
+<a class="reference external" href="http://developer.yahoo.com/cocktails/mojito/api/classes/Composite.common.html#method_done">ac.composite.done</a>
+or <a class="reference external" href="http://developer.yahoo.com/cocktails/mojito/api/classes/ActionContext.html#method__dispatch">ac._dispatch</a>.</li>
+</ul>
+<p>In the first case, suppose you want the <tt class="docutils literal"><span class="pre">index</span></tt> function of your controller to use the template
+<tt class="docutils literal"><span class="pre">foo.hb.html</span></tt> instead of the default <tt class="docutils literal"><span class="pre">index.hb.html</span></tt>. You would call <tt class="docutils literal"><span class="pre">ac.done</span></tt> with the
+following <tt class="docutils literal"><span class="pre">meta</span></tt> object (second argument) as shown below:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">...</span>
+  <span class="nx">index</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">actionContext</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">ac</span><span class="p">.</span><span class="nx">done</span><span class="p">({</span> <span class="nx">data</span><span class="o">:</span> <span class="s2">&quot;Example of how to specify the templates&quot;</span> <span class="p">},</span> <span class="p">{</span> <span class="nx">view</span><span class="o">:</span> <span class="p">{</span> <span class="nx">name</span><span class="o">:</span> <span class="s2">&quot;foo&quot;</span> <span class="p">}});</span>
+  <span class="p">}</span>
+<span class="p">...</span>
+</pre></div>
+</div>
+<p>In the more complicated second case where metadata needs to be passed to either <tt class="docutils literal"><span class="pre">ac.composite.done</span></tt>
+or <tt class="docutils literal"><span class="pre">ac._dispatch</span></tt> so a parent mojit can execute children,
+you may need to merge the metadata of both the parent and children. Below is
+an example <tt class="docutils literal"><span class="pre">meta</span></tt> object containing mojit definitions and metadata about binders, assets,
+and the HTTP response.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span>
+  <span class="nx">children</span><span class="o">:</span>
+  <span class="p">{</span>
+    <span class="nx">child</span><span class="o">:</span>
+    <span class="p">{</span>
+      <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;FrameMojit&#39;</span><span class="p">,</span>
+      <span class="nx">config</span><span class="o">:</span> <span class="p">[</span><span class="nb">Object</span><span class="p">],</span>
+      <span class="nx">action</span><span class="o">:</span> <span class="s1">&#39;index&#39;</span><span class="p">,</span>
+      <span class="nx">instanceId</span><span class="o">:</span> <span class="s1">&#39;yui_3_7_3_1_1360791588420_57&#39;</span>
+    <span class="p">},</span>
+    <span class="nx">header</span><span class="o">:</span>
+    <span class="p">{</span>
+      <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;HeaderMojit&#39;</span><span class="p">,</span>
+      <span class="nx">instanceId</span><span class="o">:</span> <span class="s1">&#39;yui_3_7_3_1_1360791588420_58&#39;</span><span class="p">,</span>
+      <span class="nx">viewId</span><span class="o">:</span> <span class="s1">&#39;yui_3_7_3_1_1360791588865_8&#39;</span><span class="p">,</span>
+      <span class="nx">params</span><span class="o">:</span> <span class="kc">undefined</span>
+    <span class="p">},</span>
+    <span class="nx">body</span><span class="o">:</span>
+    <span class="p">{</span>
+      <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;BodyMojit&#39;</span><span class="p">,</span>
+      <span class="nx">instanceId</span><span class="o">:</span> <span class="s1">&#39;yui_3_7_3_1_1360791588420_59&#39;</span><span class="p">,</span>
+      <span class="nx">viewId</span><span class="o">:</span> <span class="s1">&#39;yui_3_7_3_1_1360791588865_9&#39;</span><span class="p">,</span>
+      <span class="nx">params</span><span class="o">:</span> <span class="kc">undefined</span>
+    <span class="p">},</span>
+    <span class="nx">footer</span><span class="o">:</span>
+    <span class="p">{</span>
+      <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;FooterMojit&#39;</span><span class="p">,</span>
+      <span class="nx">instanceId</span><span class="o">:</span> <span class="s1">&#39;yui_3_7_3_1_1360791588420_60&#39;</span><span class="p">,</span>
+      <span class="nx">viewId</span><span class="o">:</span> <span class="s1">&#39;yui_3_7_3_1_1360791588865_10&#39;</span><span class="p">,</span>
+      <span class="nx">params</span><span class="o">:</span> <span class="kc">undefined</span> <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nx">assets</span><span class="o">:</span> <span class="p">{</span> <span class="nx">bottom</span><span class="o">:</span> <span class="p">{</span> <span class="nx">js</span><span class="o">:</span> <span class="p">[]</span> <span class="p">}</span> <span class="p">},</span>
+    <span class="nx">http</span><span class="o">:</span> <span class="p">{</span> <span class="nx">code</span><span class="o">:</span> <span class="mi">200</span><span class="p">,</span> <span class="nx">headers</span><span class="o">:</span> <span class="p">{</span> <span class="s1">&#39;content-type&#39;</span><span class="o">:</span> <span class="p">[</span><span class="nb">Object</span><span class="p">]</span> <span class="p">}</span> <span class="p">},</span>
+    <span class="nx">binders</span><span class="o">:</span>
+    <span class="p">{</span>
+      <span class="nx">yui_3_7_3_1_1360791588865_8</span><span class="o">:</span>
+      <span class="p">{</span>
+        <span class="nx">base</span><span class="o">:</span> <span class="kc">undefined</span><span class="p">,</span>
+        <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;HeaderMojitBinderIndex&#39;</span><span class="p">,</span>
+        <span class="nx">action</span><span class="o">:</span> <span class="s1">&#39;index&#39;</span><span class="p">,</span>
+        <span class="nx">config</span><span class="o">:</span> <span class="p">[</span><span class="nb">Object</span><span class="p">],</span>
+        <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;HeaderMojit&#39;</span><span class="p">,</span>
+        <span class="nx">viewId</span><span class="o">:</span> <span class="s1">&#39;yui_3_7_3_1_1360791588865_8&#39;</span><span class="p">,</span>
+        <span class="nx">instanceId</span><span class="o">:</span> <span class="s1">&#39;yui_3_7_3_1_1360791588420_58&#39;</span><span class="p">,</span>
+        <span class="nx">children</span><span class="o">:</span> <span class="kc">undefined</span>
+      <span class="p">},</span>
+      <span class="nx">yui_3_7_3_1_1360791588865_9</span><span class="o">:</span>
+      <span class="p">{</span>
+        <span class="nx">base</span><span class="o">:</span> <span class="kc">undefined</span><span class="p">,</span>
+        <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;BodyMojitBinderIndex&#39;</span><span class="p">,</span>
+        <span class="nx">action</span><span class="o">:</span> <span class="s1">&#39;index&#39;</span><span class="p">,</span>
+        <span class="nx">config</span><span class="o">:</span> <span class="p">[</span><span class="nb">Object</span><span class="p">],</span>
+        <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;BodyMojit&#39;</span><span class="p">,</span>
+        <span class="nx">viewId</span><span class="o">:</span> <span class="s1">&#39;yui_3_7_3_1_1360791588865_9&#39;</span><span class="p">,</span>
+        <span class="nx">instanceId</span><span class="o">:</span> <span class="s1">&#39;yui_3_7_3_1_1360791588420_59&#39;</span><span class="p">,</span>
+        <span class="nx">children</span><span class="o">:</span> <span class="kc">undefined</span>
+      <span class="p">},</span>
+      <span class="nx">yui_3_7_3_1_1360791588865_10</span><span class="o">:</span>
+      <span class="p">{</span>
+        <span class="nx">base</span><span class="o">:</span> <span class="kc">undefined</span><span class="p">,</span>
+        <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;FooterMojitBinderIndex&#39;</span><span class="p">,</span>
+        <span class="nx">action</span><span class="o">:</span> <span class="s1">&#39;index&#39;</span><span class="p">,</span>
+        <span class="nx">config</span><span class="o">:</span> <span class="p">[</span><span class="nb">Object</span><span class="p">],</span>
+        <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;FooterMojit&#39;</span><span class="p">,</span>
+        <span class="nx">viewId</span><span class="o">:</span> <span class="s1">&#39;yui_3_7_3_1_1360791588865_10&#39;</span><span class="p">,</span>
+        <span class="nx">instanceId</span><span class="o">:</span> <span class="s1">&#39;yui_3_7_3_1_1360791588420_60&#39;</span><span class="p">,</span>
+        <span class="nx">children</span><span class="o">:</span> <span class="kc">undefined</span>
+      <span class="p">},</span>
+      <span class="nx">yui_3_7_3_1_1360791588865_11</span><span class="o">:</span>
+      <span class="p">{</span>
+        <span class="nx">base</span><span class="o">:</span> <span class="kc">undefined</span><span class="p">,</span>
+        <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;FrameMojitBinderIndex&#39;</span><span class="p">,</span>
+        <span class="nx">action</span><span class="o">:</span> <span class="s1">&#39;index&#39;</span><span class="p">,</span>
+        <span class="nx">config</span><span class="o">:</span> <span class="p">[</span><span class="nb">Object</span><span class="p">],</span>
+        <span class="nx">type</span><span class="o">:</span> <span class="s1">&#39;FrameMojit&#39;</span><span class="p">,</span>
+        <span class="nx">viewId</span><span class="o">:</span> <span class="s1">&#39;yui_3_7_3_1_1360791588865_11&#39;</span><span class="p">,</span>
+        <span class="nx">instanceId</span><span class="o">:</span> <span class="s1">&#39;yui_3_7_3_1_1360791588420_57&#39;</span><span class="p">,</span>
+        <span class="nx">children</span><span class="o">:</span> <span class="p">[</span><span class="nb">Object</span><span class="p">]</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="section" id="example">
+<span id="done-ex"></span><h4>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h4>
+<p>In the example
+<tt class="docutils literal"><span class="pre">controller.server.js</span></tt> below, the <tt class="docutils literal"><span class="pre">done</span></tt> method sends the <tt class="docutils literal"><span class="pre">data</span></tt> object to the
+<tt class="docutils literal"><span class="pre">index</span></tt> template and specifies that the template <tt class="docutils literal"><span class="pre">foo.hb.html</span></tt> should be used instead
+of the default <tt class="docutils literal"><span class="pre">index.hb.html</span></tt>.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;HelloMojit&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="p">,</span> <span class="nx">NAME</span><span class="p">)</span> <span class="p">{</span>
+  <span class="cm">/**</span>
+<span class="cm">  * The HelloMojit module.</span>
+<span class="cm">  *</span>
+<span class="cm">  * @module HelloMojit</span>
+<span class="cm">  */</span>
+  <span class="cm">/**</span>
+<span class="cm">  * Constructor for the Controller class.</span>
+<span class="cm">  *</span>
+<span class="cm">  * @class Controller</span>
+<span class="cm">  * @constructor</span>
+<span class="cm">  */</span>
+  <span class="nx">Y</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="s1">&#39;mojito.controllers&#39;</span><span class="p">)[</span><span class="nx">NAME</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="cm">/**</span>
+<span class="cm">    * Method corresponding to the &#39;index&#39; action.</span>
+<span class="cm">    *</span>
+<span class="cm">    * @param ac {Object} The action context that</span>
+<span class="cm">    * provides access to the Mojito API.</span>
+<span class="cm">    */</span>
+    <span class="nx">index</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">ac</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;data&quot;</span><span class="o">:</span><span class="s2">&quot;data passed to the index template&quot;</span> <span class="p">};</span>
+      <span class="nx">ac</span><span class="p">.</span><span class="nx">done</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="p">{</span> <span class="nx">view</span><span class="o">:</span> <span class="p">{</span> <span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;foo&quot;</span> <span class="p">}});</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+<span class="p">},</span> <span class="s1">&#39;0.0.1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[]});</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+   </div>
+

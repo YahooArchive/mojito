@@ -1,0 +1,438 @@
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+     <title>Creating and Using a View Engine Addon</title>
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '',
+        COLLAPSE_INDEX: true,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+   </head> 
+
+     <div class="header"><h1 class="heading"><a href="#">
+          <span>Mojito</span></a></h1>
+      </div>
+      <div class="topnav">
+        <p>
+        <a class="uplink" href="../">Mojito Documentation</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="../index.html" title="Mojito">Mojito</a>
+        &#160;&#160;::&#160;&#160;
+        
+           <a href="scroll_views.html">Including YUI Modules in Views</a>
+        &#160;&#160;::&#160;&#160;
+        
+        
+           <a href="assets.html">Assets</a>
+        
+        </p>
+
+      </div>
+      <div class="content">
+   <div class="section" id="creating-and-using-a-view-engine-addon">
+<h1>Creating and Using a View Engine Addon<a class="headerlink" href="#creating-and-using-a-view-engine-addon" title="Permalink to this headline">¶</a></h1>
+<p><strong>Time Estimate:</strong> 15 minutes</p>
+<p><strong>Difficulty Level:</strong> Intermediate</p>
+<div class="section" id="summary">
+<span id="code-exs-view-engine-addon-summary"></span><h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<p>This example shows how to install a third-party rendering engine
+(Embedded Javascript), create a view engine addon that uses the
+installed rendering engine, and create a template for the view engine.
+Mojito uses the <a class="reference external" href="https://github.com/wycats/handlebars.js/">Handlebars</a>
+rendering engine by default.</p>
+<p>The following topics will be covered:</p>
+<ul class="simple">
+<li>using <tt class="docutils literal"><span class="pre">npm</span></tt> to install the rendering engine</li>
+<li>creating a view engine addon</li>
+<li>using Embedded JavaScript (EJS) in the template</li>
+</ul>
+</div>
+<div class="section" id="implementation-notes">
+<span id="code-exs-view-engine-addon-notes"></span><h2>Implementation Notes<a class="headerlink" href="#implementation-notes" title="Permalink to this headline">¶</a></h2>
+<p>Before you create your application, you should take a look at the following
+sections to better understand how the application works. The focus here is
+to give you a practical example that you can use to add your own view engines
+and also to show some of important points of using view engines in Mojito
+applications. For more comprehensive but less hands-on documentation, see
+<a class="reference external" href="../topics/mojito_extensions.html#view-engines">Developer Topics: View Engines</a>.</p>
+<div class="section" id="what-is-a-view-engine">
+<span id="ve-addon-notes-what"></span><h3>What Is a View Engine?<a class="headerlink" href="#what-is-a-view-engine" title="Permalink to this headline">¶</a></h3>
+<p>A view engine is code that applies data returned by the controller to a view.
+This is most often done by interpreting the view as a template. View engines
+in Mojito can function at either the application or mojit level. This example
+uses an application-level view engine addon, allowing multiple mojits to use it
+although the example only uses one mojit.</p>
+</div>
+<div class="section" id="installing-a-rendering-engine">
+<span id="ve-addon-notes-install"></span><h3>Installing a Rendering Engine<a class="headerlink" href="#installing-a-rendering-engine" title="Permalink to this headline">¶</a></h3>
+<p>You could write your own rendering engine or copy code into your Mojito
+application, but this example follows the most common use case of installing
+a rendering engine with <tt class="docutils literal"><span class="pre">npm</span></tt>. We will be installing the rendering engine
+<a class="reference external" href="http://embeddedjs.com/">EJS</a> with <tt class="docutils literal"><span class="pre">npm</span></tt>.</p>
+<p>Because your Mojito application is simply a <tt class="docutils literal"><span class="pre">npm</span></tt> module, you can have a
+<tt class="docutils literal"><span class="pre">node_modules</span></tt> directory for locally installing other modules. Thus, from
+your application directory, you would use the following <tt class="docutils literal"><span class="pre">npm</span></tt> command to
+install <tt class="docutils literal"><span class="pre">ejs</span></tt>:</p>
+<p><tt class="docutils literal"><span class="pre">$</span> <span class="pre">npm</span> <span class="pre">install</span> <span class="pre">ejs</span></tt></p>
+<p>After you have installed <tt class="docutils literal"><span class="pre">ejs</span></tt>, a <tt class="docutils literal"><span class="pre">node_modules</span></tt> directory will be created
+with the contents similar to the following:</p>
+<div class="highlight-javascript"><pre>node_modules
+├── ejs/
+│   ├── History.md
+│   ├── Makefile
+│   ├── Readme.md
+│   ├── benchmark.js
+│   ├── ejs.js
+│   ├── ejs.min.js
+│   ├── examples/
+│   │   ├── client.html
+│   │   ├── list.ejs
+│   │   └── list.js
+│   ├── index.js
+│   ├── lib/
+│   │   ├── ejs.js
+│   │   ├── filters.js
+│   │   └── utils.js
+│   ├── package.json
+│   ├── support/
+│   │   └── compile.js
+│   └── test/
+│       ├── ejs.test.js
+│       └── fixtures/
+...</pre>
+</div>
+</div>
+<div class="section" id="creating-the-view-engine-addon">
+<span id="ve-addon-notes-create"></span><h3>Creating the View Engine Addon<a class="headerlink" href="#creating-the-view-engine-addon" title="Permalink to this headline">¶</a></h3>
+<p>The view engine addon like other addons is simply a YUI module that lives in the
+<tt class="docutils literal"><span class="pre">addons/view-engines</span></tt> directory. For the application-level view engine addons
+that this example is using, the view engine addon will be in
+<tt class="docutils literal"><span class="pre">{app_dir}/addons/view-engines</span></tt>.</p>
+<div class="section" id="requirements">
+<span id="ve-addon-create-req"></span><h4>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h4>
+<p>The view engine addon must have the following:</p>
+<ul>
+<li><p class="first">a <tt class="docutils literal"><span class="pre">YUI.add</span></tt> statement to register the addon. For example, we register the
+view engine addon with the name <tt class="docutils literal"><span class="pre">addons-viewengine-ejs</span></tt> in our code example
+as seen below.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;addons-viewengine-ejs&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="p">,</span> <span class="nx">NAME</span><span class="p">)</span> <span class="p">{</span>
+
+  <span class="c1">// The addon name &#39;addons-viewengine-hb&#39; is registered by YUI.add</span>
+
+<span class="p">},</span> <span class="s1">&#39;0.1.0&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[]});</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">a prototype of the object has the following two methods <tt class="docutils literal"><span class="pre">render</span></tt> and
+<tt class="docutils literal"><span class="pre">compiler</span></tt> as shown below. We will look at the <tt class="docutils literal"><span class="pre">render</span></tt> and <tt class="docutils literal"><span class="pre">compile</span></tt>
+methods more closely in the next section.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">...</span>
+
+  <span class="nx">EjsAdapter</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+
+    <span class="nx">render</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">mojitType</span><span class="p">,</span> <span class="nx">tmpl</span><span class="p">,</span> <span class="nx">adapter</span><span class="p">,</span> <span class="nx">meta</span><span class="p">,</span> <span class="nx">more</span><span class="p">)</span> <span class="p">{</span>
+      <span class="p">...</span>
+    <span class="p">},</span>
+    <span class="nx">compiler</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">tmpl</span><span class="p">)</span> <span class="p">{</span>
+      <span class="p">...</span>
+   <span class="p">}</span>
+   <span class="p">...</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">an object that is assigned to <tt class="docutils literal"><span class="pre">Y.mojito.addons.viewEngines.{view_engine_name}</span></tt>.
+In our example, the constructor <tt class="docutils literal"><span class="pre">EjsAdapter</span></tt> is assigned to the namespace
+<tt class="docutils literal"><span class="pre">Y.namespace('mojito.addons.viewEngines').ejs</span></tt> or <tt class="docutils literal"><span class="pre">Y.mojito.addons.viewEngines.ejs</span></tt>.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">...</span>
+
+  <span class="kd">function</span> <span class="nx">EjsAdapter</span><span class="p">(</span><span class="nx">viewId</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">viewId</span> <span class="o">=</span> <span class="nx">viewId</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="p">...</span>
+  <span class="nx">Y</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="s1">&#39;mojito.addons.viewEngines&#39;</span><span class="p">).</span><span class="nx">ejs</span> <span class="o">=</span> <span class="nx">EjsAdapter</span><span class="p">;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="render-and-compile">
+<span id="ve-addon-create-render-compile"></span><h4>render and compile<a class="headerlink" href="#render-and-compile" title="Permalink to this headline">¶</a></h4>
+<p>The <tt class="docutils literal"><span class="pre">render</span></tt> method renders the template and sends the output to the
+methods <tt class="docutils literal"><span class="pre">adapter.flush</span></tt> or <tt class="docutils literal"><span class="pre">adapter.done</span></tt> that execute and return the
+page to the client.</p>
+<p>The implementation of how the <tt class="docutils literal"><span class="pre">render</span></tt> method is up to the developer.
+You could write code or use a library to render the template, but in this
+example we use the instance <tt class="docutils literal"><span class="pre">ejs</span></tt> to compile the view.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">...</span>
+
+<span class="cm">/**</span>
+<span class="cm">* Renders the EJS template using the data provided.</span>
+<span class="cm">* @method render</span>
+<span class="cm">* @param {object} data The data to render.</span>
+<span class="cm">* @param {string} mojitType The name of the mojit type.</span>
+<span class="cm">* @param {string} tmpl The name of the template to render.</span>
+<span class="cm">* @param {object} adapter The output adapter to use.</span>
+<span class="cm">* @param {object} meta Optional metadata.</span>
+<span class="cm">* @param {boolean} more Whether there will be more content later.</span>
+<span class="cm">*/</span>
+<span class="nx">render</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">mojitType</span><span class="p">,</span> <span class="nx">tmpl</span><span class="p">,</span> <span class="nx">adapter</span><span class="p">,</span> <span class="nx">meta</span><span class="p">,</span> <span class="nx">more</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">me</span> <span class="o">=</span> <span class="k">this</span><span class="p">,</span>
+  <span class="nx">handleRender</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">output</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="nx">output</span><span class="p">.</span><span class="nx">addListener</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">c</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">adapter</span><span class="p">.</span><span class="nx">flush</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">meta</span><span class="p">);</span>
+    <span class="p">});</span>
+
+    <span class="nx">output</span><span class="p">.</span><span class="nx">addListener</span><span class="p">(</span><span class="s1">&#39;end&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">more</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">adapter</span><span class="p">.</span><span class="nx">done</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nx">meta</span><span class="p">);</span>
+      <span class="p">}</span>
+    <span class="p">});</span>
+  <span class="p">};</span>
+  <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">ejs</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">compile</span><span class="p">(</span><span class="nx">tmpl</span><span class="p">),</span><span class="nx">data</span><span class="p">);</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+  <span class="nx">adapter</span><span class="p">.</span><span class="nx">done</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span><span class="nx">meta</span><span class="p">);</span>
+
+<span class="p">},</span>
+<span class="p">...</span>
+</pre></div>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">compile</span></tt> method is required to run the command <tt class="docutils literal"><span class="pre">mojito</span> <span class="pre">compile</span> <span class="pre">views</span></tt>.
+In our example, the <tt class="docutils literal"><span class="pre">compile</span></tt> method also reads the template file and returns
+a string to <tt class="docutils literal"><span class="pre">render</span></tt> so that it can be rendered by <tt class="docutils literal"><span class="pre">ejs</span></tt>.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">...</span>
+
+<span class="nx">compiler</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">tmpl</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="nx">tmpl</span><span class="p">,</span> <span class="s1">&#39;utf8&#39;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>In the above code snippet, the <tt class="docutils literal"><span class="pre">compile</span></tt> method simply returns the template
+file to the <tt class="docutils literal"><span class="pre">render</span></tt> method, where the instance of the EJS rendering engine
+calls <tt class="docutils literal"><span class="pre">render</span></tt> to render the template file into a string. The implementation
+of the <tt class="docutils literal"><span class="pre">compile</span></tt> method in the addon could have been written to call
+<tt class="docutils literal"><span class="pre">ejs.render</span></tt>.</p>
+</div>
+</div>
+<div class="section" id="ejs-templates">
+<span id="ve-addon-notes-ejs-templates"></span><h3>EJS Templates<a class="headerlink" href="#ejs-templates" title="Permalink to this headline">¶</a></h3>
+<p>EJS is similar to <tt class="docutils literal"><span class="pre">ERB</span></tt> that is used by
+<a class="reference external" href="http://rubyonrails.org/">Ruby on Rails</a>. The embedded JavaScript is
+wrapped in <tt class="docutils literal"><span class="pre">&lt;%</span></tt> and <tt class="docutils literal"><span class="pre">%&gt;</span></tt>. If you want to evaluate code so that
+the returned value is inserted into the HTML string, you use <tt class="docutils literal"><span class="pre">&lt;%=</span></tt> as
+seen below, where the variable <tt class="docutils literal"><span class="pre">title</span></tt> is substituted with a value.</p>
+<div class="highlight-html"><pre>&lt;h2&gt; &lt;%= title %&gt;&lt;/h2&gt;</pre>
+</div>
+<p>You can do most of the same things with EJS as you can with JavaScript.
+For example, you can iterate through an array in the same way as shown here:</p>
+<div class="highlight-html"><pre>&lt;ul&gt;
+  &lt;% for(var i=0;i&lt;view_engines.length;i++){ %&gt;
+  &lt;li&gt;&lt;%= view_engines[i] %&gt;&lt;/li&gt;
+  &lt;% } %&gt;
+&lt;/ul&gt;</pre>
+</div>
+<p>EJS also has view helpers for creating links and forms, much like <tt class="docutils literal"><span class="pre">ERB</span></tt>.
+See <a class="reference external" href="http://embeddedjs.com/getting_started.html">Getting Started with EJS</a>
+for more information.</p>
+</div>
+</div>
+<div class="section" id="setting-up-this-example">
+<span id="code-exs-view-engine-addon-setup"></span><h2>Setting Up this Example<a class="headerlink" href="#setting-up-this-example" title="Permalink to this headline">¶</a></h2>
+<p>To set up and run <tt class="docutils literal"><span class="pre">adding_view_engines</span></tt>:</p>
+<ol class="arabic">
+<li><p class="first">Create your application.</p>
+<p><tt class="docutils literal"><span class="pre">$</span> <span class="pre">mojito</span> <span class="pre">create</span> <span class="pre">app</span> <span class="pre">adding_view_engines</span></tt></p>
+</li>
+<li><p class="first">Change to the application directory.</p>
+</li>
+<li><p class="first">Create your mojit.</p>
+<p><tt class="docutils literal"><span class="pre">$</span> <span class="pre">mojito</span> <span class="pre">create</span> <span class="pre">mojit</span> <span class="pre">myMojit</span></tt></p>
+</li>
+<li><p class="first">To specify that your application use <tt class="docutils literal"><span class="pre">myMojit</span></tt>, replace the code in
+<tt class="docutils literal"><span class="pre">application.json</span></tt> with  the following:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;settings&quot;</span><span class="o">:</span> <span class="p">[</span> <span class="s2">&quot;master&quot;</span> <span class="p">],</span>
+    <span class="s2">&quot;specs&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;myMojit&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;myMojit&quot;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">To configure routing so controller functions using different templates are
+used, replace the code in <tt class="docutils literal"><span class="pre">routes.json</span></tt> with the following:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;settings&quot;</span><span class="o">:</span> <span class="p">[</span> <span class="s2">&quot;master&quot;</span> <span class="p">],</span>
+    <span class="s2">&quot;mu&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;verbs&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;get&quot;</span><span class="p">],</span>
+      <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;/&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;call&quot;</span><span class="o">:</span> <span class="s2">&quot;myMojit.default_ve&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;hb&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;verbs&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;get&quot;</span><span class="p">],</span>
+      <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;/ejs&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;call&quot;</span><span class="o">:</span> <span class="s2">&quot;myMojit.added_ve&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Install the <tt class="docutils literal"><span class="pre">ejs</span></tt> module.</p>
+<p><tt class="docutils literal"><span class="pre">$</span> <span class="pre">npm</span> <span class="pre">install</span> <span class="pre">ejs</span></tt></p>
+</li>
+<li><p class="first">Create the addons directory for your view engine addon.</p>
+<p><tt class="docutils literal"><span class="pre">$</span> <span class="pre">mkdir</span> <span class="pre">-p</span> <span class="pre">addons/view-engines</span></tt></p>
+</li>
+<li><p class="first">Change to the <tt class="docutils literal"><span class="pre">addons/view-engines</span></tt> directory that you created.</p>
+</li>
+<li><p class="first">Create the view engine addon file <tt class="docutils literal"><span class="pre">ejs.server.js</span></tt> with the following code:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;addons-viewengine-ejs&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="p">,</span> <span class="nx">NAME</span><span class="p">)</span> <span class="p">{</span>
+
+  <span class="kd">var</span> <span class="nx">ejs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;ejs&#39;</span><span class="p">),</span>
+  <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">);</span>
+  <span class="kd">function</span> <span class="nx">EjsAdapter</span><span class="p">(</span><span class="nx">viewId</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">viewId</span> <span class="o">=</span> <span class="nx">viewId</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nx">EjsAdapter</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+
+    <span class="nx">render</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">mojitType</span><span class="p">,</span> <span class="nx">tmpl</span><span class="p">,</span> <span class="nx">adapter</span><span class="p">,</span> <span class="nx">meta</span><span class="p">,</span> <span class="nx">more</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">me</span> <span class="o">=</span> <span class="k">this</span><span class="p">,</span>
+      <span class="nx">handleRender</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">output</span><span class="p">)</span> <span class="p">{</span>
+
+                <span class="nx">output</span><span class="p">.</span><span class="nx">addListener</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">c</span><span class="p">)</span> <span class="p">{</span>
+                  <span class="nx">adapter</span><span class="p">.</span><span class="nx">flush</span><span class="p">(</span><span class="nx">c</span><span class="p">,</span> <span class="nx">meta</span><span class="p">);</span>
+                <span class="p">});</span>
+                <span class="nx">output</span><span class="p">.</span><span class="nx">addListener</span><span class="p">(</span><span class="s1">&#39;end&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">more</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="nx">adapter</span><span class="p">.</span><span class="nx">done</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nx">meta</span><span class="p">);</span>
+                  <span class="p">}</span>
+                <span class="p">});</span>
+              <span class="p">};</span>
+              <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Rendering template &quot;&#39;</span> <span class="o">+</span> <span class="nx">tmpl</span> <span class="o">+</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">,</span> <span class="s1">&#39;mojito&#39;</span><span class="p">,</span> <span class="nx">NAME</span><span class="p">);</span>
+              <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">ejs</span><span class="p">.</span><span class="nx">render</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">compiler</span><span class="p">(</span><span class="nx">tmpl</span><span class="p">),</span><span class="nx">data</span><span class="p">);</span>
+              <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+              <span class="nx">adapter</span><span class="p">.</span><span class="nx">done</span><span class="p">(</span><span class="nx">result</span><span class="p">,</span><span class="nx">meta</span><span class="p">);</span>
+            <span class="p">},</span>
+            <span class="nx">compiler</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">tmpl</span><span class="p">)</span> <span class="p">{</span>
+              <span class="k">return</span> <span class="nx">fs</span><span class="p">.</span><span class="nx">readFileSync</span><span class="p">(</span><span class="nx">tmpl</span><span class="p">,</span> <span class="s1">&#39;utf8&#39;</span><span class="p">);</span>
+            <span class="p">}</span>
+          <span class="p">};</span>
+          <span class="nx">Y</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="s1">&#39;mojito.addons.viewEngines&#39;</span><span class="p">).</span><span class="nx">ejs</span> <span class="o">=</span> <span class="nx">EjsAdapter</span><span class="p">;</span>
+<span class="p">},</span> <span class="s1">&#39;0.1.0&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[]});</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Change to the <tt class="docutils literal"><span class="pre">adding_view_engines/mojits/myMojit</span></tt> directory.</p>
+</li>
+<li><p class="first">Replace the code in <tt class="docutils literal"><span class="pre">controller.server.js</span></tt> with the following:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;myMojit&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="p">,</span> <span class="nx">NAME</span><span class="p">)</span> <span class="p">{</span>
+
+  <span class="nx">Y</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="s1">&#39;mojito.controllers&#39;</span><span class="p">)[</span><span class="nx">NAME</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+
+    <span class="nx">default_ve</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">ac</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">ac</span><span class="p">.</span><span class="nx">done</span><span class="p">({</span>
+        <span class="s2">&quot;title&quot;</span><span class="o">:</span> <span class="s2">&quot;Handlebars at work!&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;view_engines&quot;</span><span class="o">:</span> <span class="p">[</span>
+          <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;EJS&quot;</span><span class="p">},</span>
+          <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;Jade&quot;</span><span class="p">},</span>
+          <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;dust&quot;</span><span class="p">},</span>
+          <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="o">:</span> <span class="s2">&quot;underscore&quot;</span> <span class="p">}</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;ul&quot;</span><span class="o">:</span> <span class="p">{</span> <span class="s2">&quot;title&quot;</span><span class="o">:</span> <span class="s1">&#39;Here are some of the other available rendering engines:&#39;</span> <span class="p">},</span>
+      <span class="p">});</span>
+    <span class="p">},</span>
+    <span class="nx">added_ve</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">ac</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">ac</span><span class="p">.</span><span class="nx">done</span><span class="p">({</span>
+        <span class="s2">&quot;title&quot;</span><span class="o">:</span> <span class="s2">&quot;EJS at work!&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;view_engines&quot;</span><span class="o">:</span> <span class="p">[</span> <span class="s2">&quot;Jade&quot;</span><span class="p">,</span> <span class="s2">&quot;Dust&quot;</span><span class="p">,</span><span class="s2">&quot;underscore&quot;</span> <span class="p">],</span>
+        <span class="s2">&quot;ul&quot;</span><span class="o">:</span> <span class="p">{</span> <span class="s2">&quot;title&quot;</span><span class="o">:</span> <span class="s1">&#39;In addition to Handlebars and EJS, you can also use these rendering engines:&#39;</span> <span class="p">}</span>
+      <span class="p">});</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+<span class="p">},</span> <span class="s1">&#39;0.0.1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;mojito&#39;</span><span class="p">,</span> <span class="s1">&#39;myMojitModelFoo&#39;</span><span class="p">]});</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Create the template <tt class="docutils literal"><span class="pre">views/default_ve.hb.html</span></tt> that uses Handlebar
+expressions with the following:</p>
+<div class="highlight-html"><div class="highlight"><pre><span class="nt">&lt;h2&gt;</span>{{title}}<span class="nt">&lt;/h2&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;{{mojit_view_id}}&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h3&gt;</span>
+  {{#ul}}
+    {{title}}
+  {{/ul}}
+  {{^ul}}
+    Besides Handlebars, here are some other rendering engines:
+  {{/ul}}
+  <span class="nt">&lt;/h3&gt;</span>
+  <span class="nt">&lt;ul&gt;</span>
+  {{#view_engines}}
+    <span class="nt">&lt;li&gt;</span>{{name}}<span class="nt">&lt;/li&gt;</span>
+  {{/view_engines}}
+  <span class="nt">&lt;/ul&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Create the template <tt class="docutils literal"><span class="pre">views/added_ve.ejs.html</span></tt> that uses EJS with the
+following:</p>
+<div class="highlight-html"><pre>&lt;h2&gt; &lt;%= title %&gt;&lt;/h2&gt;
+&lt;div id=&lt;%= mojit_view_id %&gt;&gt;
+  &lt;h3&gt;&lt;%= ul.title %&gt;&lt;/h3&gt;
+  &lt;ul&gt;
+    &lt;% for(var i=0;i&lt;view_engines.length;i++){ %&gt;
+    &lt;li&gt;&lt;%= view_engines[i] %&gt;&lt;/li&gt;
+    &lt;% } %&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;</pre>
+</div>
+</li>
+<li><p class="first">From your application directory, start Mojito.</p>
+<p><tt class="docutils literal"><span class="pre">$</span> <span class="pre">mojito</span> <span class="pre">start</span></tt></p>
+</li>
+<li><p class="first">Open the following URL in your browser to see the template rendered by the
+Handlebars rendering engine.</p>
+<p><a class="reference external" href="http://localhost:8666/">http://localhost:8666/</a></p>
+</li>
+<li><p class="first">Now see the template rendered by the EJS rendering engine at the following
+URL:</p>
+<p><a class="reference external" href="http://localhost:8666/ejs">http://localhost:8666/ejs</a></p>
+</li>
+<li><p class="first">Great, your application is using two different rendering engines. You should
+now be ready to add your own view engine that uses a rendering engine such as
+Jade.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="source-code">
+<span id="code-exs-view-engine-addon-src"></span><h2>Source Code<a class="headerlink" href="#source-code" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="http://github.com/yahoo/mojito/tree/master/examples/developer-guide/adding_view_engines/">View Engines</a></li>
+<li><a class="reference external" href="http://github.com/yahoo/mojito/tree/master/examples/developer-guide/adding_view_engines/addons/view-engines/ejs.server.js">View Engine Addon</a></li>
+<li><a class="reference external" href="http://github.com/yahoo/mojito/tree/master/examples/developer-guide/adding_view_engines/mojits/myMojit/views/">Templates</a></li>
+</ul>
+</div>
+</div>
+
+   </div>
+

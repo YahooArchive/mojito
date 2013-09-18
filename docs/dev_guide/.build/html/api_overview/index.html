@@ -1,0 +1,93 @@
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+     <title>Mojito API Overview</title>
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '',
+        COLLAPSE_INDEX: true,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+   </head> 
+
+     <div class="header"><h1 class="heading"><a href="#">
+          <span>Mojito</span></a></h1>
+      </div>
+      <div class="topnav">
+        <p>
+        <a class="uplink" href="../">Mojito Documentation</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="../index.html" title="Mojito">Mojito</a>
+        &#160;&#160;::&#160;&#160;
+        
+           <a href="../topics/mojito_hosting_container_reqs.html">Startup Requirements for Mojito in Hosting Environments</a>
+        &#160;&#160;::&#160;&#160;
+        
+        
+           <a href="mojito_action_context.html">Action Context</a>
+        
+        </p>
+
+      </div>
+      <div class="content">
+   <div class="section" id="mojito-api-overview">
+<h1>Mojito API Overview<a class="headerlink" href="#mojito-api-overview" title="Permalink to this headline">¶</a></h1>
+<p>This section introduces some of the main features of the Mojito API. Please see the
+<a class="reference external" href="../../api/">Mojito API documentation</a> that has been built using
+<a class="reference external" href="http://yuilibrary.com/projects/yuidoc">YUI Doc</a> and is continuously updated.</p>
+<p>The API contains the following five modules:</p>
+<ul class="simple">
+<li><strong>ActionContext</strong> - is a key module of the Mojito framework, giving you access to the
+frameworks features from within a controller function.</li>
+<li><strong>Addons</strong> - extensions that provide functionality that lives both on the server
+and/or client. Each addon provides additional functions through a namespace that is
+attached directly to the <tt class="docutils literal"><span class="pre">Action</span> <span class="pre">Context</span></tt> object and is available when required in a
+controller.</li>
+<li><strong>CommonLibs</strong> - is a utility library containing methods to handle cookies, access input
+parameters, and make REST calls.</li>
+<li><strong>MojitoClient</strong> - is the client-side Mojito runtime module containing methods that
+allow inter-mojit communication through the <tt class="docutils literal"><span class="pre">mojitProxy</span></tt> object.</li>
+<li><strong>MojitServer</strong> - is the module that provides access to the Mojito server.</li>
+</ul>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="mojito_action_context.html">Action Context</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mojito_action_context.html#done-method">done Method</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mojito_addons.html">Action Context Addons</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mojito_addons.html#syntax">Syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_addons.html#requiring-addons">Requiring Addons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_addons.html#addon-examples">Addon Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_addons.html#creating-addons">Creating Addons</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mojito_rest_lib.html">REST Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mojito_rest_lib.html#including-library">Including Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_rest_lib.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mojito_client_obj.html">Client Object</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mojito_client_obj.html#pausing-mojits">Pausing Mojits</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mojito_client_obj.html#resuming-mojits">Resuming Mojits</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+   </div>
+

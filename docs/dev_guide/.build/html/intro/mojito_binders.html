@@ -1,0 +1,342 @@
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+     <title>Mojito Binders</title>
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '',
+        COLLAPSE_INDEX: true,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+   </head> 
+
+     <div class="header"><h1 class="heading"><a href="#">
+          <span>Mojito</span></a></h1>
+      </div>
+      <div class="topnav">
+        <p>
+        <a class="uplink" href="../">Mojito Documentation</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="../index.html" title="Mojito">Mojito</a>
+        &#160;&#160;::&#160;&#160;
+        
+           <a href="mojito_configuring.html">Configuring Mojito</a>
+        &#160;&#160;::&#160;&#160;
+        
+        
+           <a href="mojito_static_resources.html">Static Resources</a>
+        
+        </p>
+
+      </div>
+      <div class="content">
+   <div class="section" id="mojito-binders">
+<h1>Mojito Binders<a class="headerlink" href="#mojito-binders" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<span id="mojito-binders-overview"></span><h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>Each mojit you create can have some specific code called binders that is only
+deployed to the browser. The code can perform the following three functions:</p>
+<ul class="simple">
+<li>allow event handlers to attach to the mojit DOM node</li>
+<li>communicate with other mojits on the page</li>
+<li>execute actions on the mojit that the binder is attached to</li>
+</ul>
+<p>A mojit may have zero, one, or many binders within the <tt class="docutils literal"><span class="pre">binders</span></tt> directory.
+Each binder will be deployed to the browser along with the rest of the mojit
+code, where the client-side Mojito runtime will call it appropriately. The view
+used to generate output determines which binder is used. Thus, if the <tt class="docutils literal"><span class="pre">simple</span></tt>
+view is used, the binder <tt class="docutils literal"><span class="pre">simple.js</span></tt> is used. This can be overridden by setting
+<tt class="docutils literal"><span class="pre">view.binder</span></tt> in the <tt class="docutils literal"><span class="pre">meta</span></tt> argument to
+<a class="reference external" href="../../api/classes/ActionContext.html#method_done">ac.done</a>.
+If no binder matches the view, then no binder is used.</p>
+</div>
+<div class="section" id="application-requirements-for-using-binders">
+<span id="mojito-binders-app-reqs"></span><h2>Application Requirements for Using Binders<a class="headerlink" href="#application-requirements-for-using-binders" title="Permalink to this headline">¶</a></h2>
+<p>To use binders, your application is required to have the following:</p>
+<ul class="simple">
+<li>The top-level mojit instance defined in <tt class="docutils literal"><span class="pre">application.json</span></tt> is of type
+<tt class="docutils literal"><span class="pre">HTMLFrameMojit</span></tt> or your own frame mojit. See
+<a class="reference external" href="../topics/mojito_frame_mojits.html#htmlframemojit">HTMLFrameMojit</a>
+for an introduction and example configuration.</li>
+<li>Your application is configured to deploy code to the client with the
+<tt class="docutils literal"><span class="pre">deploy</span></tt> property in <tt class="docutils literal"><span class="pre">application.json</span></tt>. See
+<a class="reference external" href="../intro/mojito_configuring.html#configuring-applications-to-be-deployed-to-client">Configuring Applications to Be Deployed to Client</a> for more information.</li>
+<li>The template files (e.g., <tt class="docutils literal"><span class="pre">index.hb.html</span></tt>) have
+containers (<tt class="docutils literal"><span class="pre">div</span></tt> elements) that have the <tt class="docutils literal"><span class="pre">id</span></tt> attribute assigned the
+value <tt class="docutils literal"><span class="pre">{{mojit_view_id}}</span></tt>. For example: <tt class="docutils literal"><span class="pre">&lt;div</span> <span class="pre">id={{mojit_view_id}}&gt;</span></tt>. The
+attribute value <tt class="docutils literal"><span class="pre">{{mojit_view_id}}</span></tt> allows binders to attach themselves to
+the DOM.</li>
+</ul>
+<p>See <a class="reference external" href="../code_exs/binding_events.html">Binding Events</a> for a documented
+example that uses binders.</p>
+</div>
+<div class="section" id="anatomy-of-the-binder">
+<span id="mojito-binders-anatomy"></span><h2>Anatomy of the Binder<a class="headerlink" href="#anatomy-of-the-binder" title="Permalink to this headline">¶</a></h2>
+<p>A binder essentially has the two essential functions <tt class="docutils literal"><span class="pre">init</span></tt> and <tt class="docutils literal"><span class="pre">bind</span></tt>.
+The <tt class="docutils literal"><span class="pre">init</span></tt> function initializes the binder and contains the <tt class="docutils literal"><span class="pre">mojitProxy</span></tt>
+object. The <tt class="docutils literal"><span class="pre">bind</span></tt> function allows the binder to be attached to the DOM.</p>
+<p>The example binder below shows the basic structure of a binder. The binder
+is for the <tt class="docutils literal"><span class="pre">AwesomeMojit</span></tt> mojit and contains the <tt class="docutils literal"><span class="pre">init</span></tt> and <tt class="docutils literal"><span class="pre">bind</span></tt>
+functions that initialize and allow the binder code to be attached to the DOM.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;AwesomeMojitBinder&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="p">,</span> <span class="nx">NAME</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">Y</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="s1">&#39;mojito.binders&#39;</span><span class="p">)[</span><span class="nx">NAME</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">init</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">mojitProxy</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">mojitProxy</span> <span class="o">=</span> <span class="nx">mojitProxy</span><span class="p">;</span>
+    <span class="p">},</span>
+    <span class="nx">bind</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">node</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+<span class="p">},</span> <span class="s1">&#39;0.0.1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;node&#39;</span><span class="p">]});</span>
+</pre></div>
+</div>
+<p>An instance of the binder above will be created whenever the <tt class="docutils literal"><span class="pre">index</span></tt> function
+of <tt class="docutils literal"><span class="pre">AwesomeMojit</span></tt> is executed, and its corresponding DOM node is attached to
+a client page. Mojito will select that DOM node and pass it into the <tt class="docutils literal"><span class="pre">bind</span></tt>
+function. This allows you to write code to capture UI events and interact with
+Mojito or other mojit binders.</p>
+<div class="section" id="init">
+<span id="binders-anatomy-init"></span><h3>init<a class="headerlink" href="#init" title="Permalink to this headline">¶</a></h3>
+<p>The <tt class="docutils literal"><span class="pre">init</span></tt> method is called with an instance of a mojit proxy specific for
+this mojit binder instance. The mojit proxy can be used at this point to listen
+for events. It is typical to store the mojit proxy for later use as well. The
+mojit proxy is the only gateway back into the Mojito framework for your binder.</p>
+</div>
+<div class="section" id="bind">
+<span id="binders-anatomy-bind"></span><h3>bind<a class="headerlink" href="#bind" title="Permalink to this headline">¶</a></h3>
+<p>The <tt class="docutils literal"><span class="pre">bind</span></tt> method is passed a <tt class="docutils literal"><span class="pre">Y.Node</span></tt> instance that wraps the DOM node
+representing this mojit instance within the DOM. It will be called after all
+other binders on the page have been constructed and their <tt class="docutils literal"><span class="pre">init</span></tt> methods
+have been called. The mojit proxy can be used at this point to broadcast
+events. Users should attach DOM event handlers in <tt class="docutils literal"><span class="pre">bind</span></tt> to capture user
+interactions.</p>
+<p>For Mojito to reference the DOM node representing the mojit instance and pass
+it to the <tt class="docutils literal"><span class="pre">bind</span></tt> function, the root element of the mojit&#8217;s template must
+have the <tt class="docutils literal"><span class="pre">id</span></tt> attribute with the Handlebars expression <tt class="docutils literal"><span class="pre">{{mojit_view_id}}</span></tt>.
+Mojito will render <tt class="docutils literal"><span class="pre">{{mojit_view_id}}</span></tt> into a unique ID that can be used to
+select the DOM node.</p>
+<p>For example, the root element <tt class="docutils literal"><span class="pre">&lt;div&gt;</span></tt> in the template below has the <tt class="docutils literal"><span class="pre">id</span></tt>
+attribute with the value <tt class="docutils literal"><span class="pre">{{mojit_view_id}}</span></tt>. This <tt class="docutils literal"><span class="pre">id</span></tt> lets Mojito
+reference the <tt class="docutils literal"><span class="pre">Y.Node</span></tt> instance wrapping the DOM node representing the
+mojit instance within the DOM. If this <tt class="docutils literal"><span class="pre">&lt;div&gt;</span></tt> element does not have this
+<tt class="docutils literal"><span class="pre">id</span></tt> value, no node will be passed to the <tt class="docutils literal"><span class="pre">bind</span></tt> function.</p>
+<div class="highlight-html"><div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;{{mojit_view_id}}&quot;</span> <span class="na">class=</span><span class="s">&quot;container&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;logo-nav&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;h1&gt;</span>Slide<span class="nt">&lt;em&gt;</span>board<span class="nt">&lt;/em&gt;&lt;/h1&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;toc&quot;</span> <span class="na">class=</span><span class="s">&quot;toc&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;ul&gt;</span>
+      {{{weather}}}
+      {{#tiles}}
+        <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;{{link}}&quot;</span><span class="nt">&gt;</span>{{name}}<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+      {/tiles}}
+    <span class="nt">&lt;/ul&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="mojitproxy-object">
+<span id="binders-anatomy-mojitproxy"></span><h3>mojitProxy Object<a class="headerlink" href="#mojitproxy-object" title="Permalink to this headline">¶</a></h3>
+<p>Each binder, when constructed by Mojito on the client, is given a proxy object
+for interactions with the mojit it represents as well as with other mojits on
+the page. This <tt class="docutils literal"><span class="pre">mojitProxy</span></tt> should be saved with <tt class="docutils literal"><span class="pre">this</span></tt> for use in the
+other parts of the binder.</p>
+<p>From the <tt class="docutils literal"><span class="pre">mojitProxy</span></tt>, you can access properties that use the interface and
+provides the information below:</p>
+<p><strong>Mojit config</strong> - the instance specification for the mojit linked to the binder
+and uses the following syntax:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">mojitProxy</span><span class="p">.</span><span class="nx">config</span>
+</pre></div>
+</div>
+<p><strong>Mojit context</strong> - environment information such as language, device, region,
+site, etc.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">mojitProxy</span><span class="p">.</span><span class="nx">context</span>
+</pre></div>
+</div>
+<p><strong>Mojit children</strong> - the children of the mojit, which is defined in <tt class="docutils literal"><span class="pre">application.json</span></tt>.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">mojitProxy</span><span class="p">.</span><span class="nx">children</span>
+</pre></div>
+</div>
+<p><strong>Mojit type</strong> - the name of the mojit that attached the binder to the DOM.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">mojitProxy</span><span class="p">.</span><span class="nx">type</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="refreshing-views">
+<span id="mojito-binders-refresh-views"></span><h2>Refreshing Views<a class="headerlink" href="#refreshing-views" title="Permalink to this headline">¶</a></h2>
+<p>Often all you want your binder to do is to refresh its associated view. From
+the <tt class="docutils literal"><span class="pre">mojitProxy</span></tt> object, you can call the <tt class="docutils literal"><span class="pre">refreshView</span></tt> method to render
+a new DOM node for the current mojit and its children, as well as reattach
+all of the existing binders to their new nodes within the new markup. Because
+all binder instances are retained, state can be stored within a binder&#8217;s scope.</p>
+<div class="section" id="onrefreshview">
+<span id="refresh-views-onrefreshview"></span><h3>onRefreshView<a class="headerlink" href="#onrefreshview" title="Permalink to this headline">¶</a></h3>
+<p>After <tt class="docutils literal"><span class="pre">refreshView</span></tt> has been called and the DOM has been refreshed, an event is
+triggered that calls the hook method <tt class="docutils literal"><span class="pre">onRefreshView</span></tt>. You can use <tt class="docutils literal"><span class="pre">onRefreshView</span></tt>
+to do things such as detach an event or prepare for another user action by
+re-attaching an event.</p>
+</div>
+<div class="section" id="example-usage">
+<span id="refresh-views-ex"></span><h3>Example Usage<a class="headerlink" href="#example-usage" title="Permalink to this headline">¶</a></h3>
+<p>The code snippet below shows how to call the <tt class="docutils literal"><span class="pre">refreshView</span></tt> method with
+optional parameters. The <tt class="docutils literal"><span class="pre">refreshView</span></tt> method does not require a callback
+to manage the markup returned from the action invocation. After the DOM
+has been refreshed, <tt class="docutils literal"><span class="pre">onRefreshView</span></tt> is called, and in this example, is
+used to detach the event handler and re-attach (bind) the event to the node.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">...</span>
+  <span class="nx">mojitProxy</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="s1">&#39;flickr-image-detail&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">payload</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">urlParams</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">mojito</span><span class="p">.</span><span class="nx">util</span><span class="p">.</span><span class="nx">copy</span><span class="p">(</span><span class="nx">mojitProxy</span><span class="p">.</span><span class="nx">context</span><span class="p">);</span>
+    <span class="kd">var</span> <span class="nx">routeParams</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="nx">image</span><span class="o">:</span> <span class="nx">payload</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">id</span>
+    <span class="p">};</span>
+    <span class="nx">mojitProxy</span><span class="p">.</span><span class="nx">refreshView</span><span class="p">({</span>
+      <span class="nx">params</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">url</span><span class="o">:</span> <span class="nx">urlParams</span><span class="p">,</span>
+        <span class="nx">route</span><span class="o">:</span> <span class="nx">routeParams</span>
+      <span class="p">}</span>
+    <span class="p">});</span>
+  <span class="p">});</span>
+
+     <span class="nx">init</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">mojitProxy</span><span class="p">)</span> <span class="p">{</span>
+         <span class="k">this</span><span class="p">.</span><span class="nx">mojitProxy</span> <span class="o">=</span> <span class="nx">mojitProxy</span><span class="p">;</span>
+     <span class="p">},</span>
+     <span class="nx">bind</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">node</span><span class="p">)</span> <span class="p">{</span>
+         <span class="kd">var</span> <span class="nx">urlParams</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">mojito</span><span class="p">.</span><span class="nx">util</span><span class="p">.</span><span class="nx">copy</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">mojitProxy</span><span class="p">.</span><span class="nx">context</span><span class="p">);</span>
+         <span class="kd">var</span> <span class="nx">me</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+         <span class="k">this</span><span class="p">.</span><span class="nx">node</span> <span class="o">=</span> <span class="nx">node</span><span class="p">;</span>
+         <span class="k">this</span><span class="p">.</span><span class="nx">handle</span> <span class="o">=</span> <span class="nx">me</span><span class="p">.</span><span class="nx">node</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;#refreshViewButton&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+             <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;****I am in the click function****&quot;</span><span class="p">);</span>
+             <span class="nx">me</span><span class="p">.</span><span class="nx">mojitProxy</span><span class="p">.</span><span class="nx">refreshView</span><span class="p">({</span>
+               <span class="nx">params</span><span class="o">:</span> <span class="p">{</span>
+                 <span class="nx">ur</span><span class="o">:</span> <span class="nx">urlParams</span>
+               <span class="p">}</span>
+             <span class="p">});</span>
+         <span class="p">},</span> <span class="k">this</span><span class="p">);</span>
+     <span class="p">},</span>
+     <span class="nx">onRefreshView</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+         <span class="k">this</span><span class="p">.</span><span class="nx">handle</span><span class="p">.</span><span class="nx">detach</span><span class="p">();</span>
+         <span class="k">this</span><span class="p">.</span><span class="nx">bind</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="nx">arguments</span><span class="p">);</span>
+     <span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="destroying-child-mojits">
+<span id="mojito-binders-destroy-child"></span><h2>Destroying Child Mojits<a class="headerlink" href="#destroying-child-mojits" title="Permalink to this headline">¶</a></h2>
+<p>A mojit binder can attempt to destroy a child mojit on the page by calling the
+<tt class="docutils literal"><span class="pre">destroyChild</span></tt> method from the <tt class="docutils literal"><span class="pre">mojitProxy</span></tt> object. The <tt class="docutils literal"><span class="pre">destroyChild</span></tt>
+method accepts one parameter that identifies the child mojit to be destroyed.
+That parameter can either be the <tt class="docutils literal"><span class="pre">slot</span></tt> or <tt class="docutils literal"><span class="pre">_viewId</span></tt> that identify the child
+mojit.</p>
+<p>After being destroyed, the child&#8217;s DOM node is detached, destroyed, and its
+binder life-cycle events (<tt class="docutils literal"><span class="pre">unbind</span></tt>, <tt class="docutils literal"><span class="pre">destroy</span></tt>) are executed.</p>
+<div class="section" id="destroy-child-ex">
+<span id="id1"></span><h3>Example Usage<a class="headerlink" href="#destroy-child-ex" title="Permalink to this headline">¶</a></h3>
+<p>The code snippet below uses the <tt class="docutils literal"><span class="pre">destroyChild</span></tt> method to remove the child
+nodes based on the <tt class="docutils literal"><span class="pre">_viewId</span></tt>.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">...</span>
+  <span class="nx">bind</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">node</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">destroy</span> <span class="o">=</span> <span class="nx">node</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s2">&quot;#destroyButton&quot;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">childId</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">node</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;#&#39;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">mojitProxy</span><span class="p">.</span><span class="nx">_viewId</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">);</span>
+      <span class="nx">mojitProxy</span><span class="p">.</span><span class="nx">destroyChild</span><span class="p">(</span><span class="nx">childId</span><span class="p">);</span>
+    <span class="p">},</span> <span class="k">this</span><span class="p">);</span>
+  <span class="p">...</span>
+  <span class="p">}</span>
+<span class="p">...</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="class-mojitproxy">
+<span id="mojito-binders-class-mojitproxy"></span><h2>Class MojitProxy<a class="headerlink" href="#class-mojitproxy" title="Permalink to this headline">¶</a></h2>
+<p>See the <a class="reference external" href="../../api/classes/MojitProxy.html">Class MojitProxy</a> in the Mojito
+API Reference.</p>
+<div class="section" id="binder-examples">
+<span id="class-mojitproxy-exs"></span><h3>Binder Examples<a class="headerlink" href="#binder-examples" title="Permalink to this headline">¶</a></h3>
+<p>The following example shows a typical binder. To see how to use binders in a
+working example, see the <a class="reference external" href="../code_exs/events.html">Code Examples: Events</a>.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;ChickenMojitBinder&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="p">,</span> <span class="nx">NAME</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">Y</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="s1">&#39;mojito.binders&#39;</span><span class="p">)[</span><span class="nx">NAME</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">init</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">mojitProxy</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Binder(&#39;</span> <span class="o">+</span> <span class="nx">mojitProxy</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">id</span> <span class="o">+</span> <span class="s1">&#39;)&#39;</span><span class="p">,</span> <span class="s1">&#39;debug&#39;</span><span class="p">,</span> <span class="nx">NAME</span><span class="p">);</span>
+      <span class="c1">// Store object and ID for later use</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">mojitProxy</span> <span class="o">=</span> <span class="nx">mojitProxy</span><span class="p">;</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">id</span> <span class="o">=</span> <span class="nx">mojitProxy</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">id</span><span class="p">;</span>
+      <span class="c1">// Listen for cluck events from other chickens</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">mojitProxy</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="s1">&#39;cluck&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">evt</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">id</span> <span class="o">+</span> <span class="s1">&#39; heard cluck from &#39;</span> <span class="o">+</span> <span class="nx">evt</span><span class="p">.</span><span class="nx">source</span><span class="p">.</span><span class="nx">id</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">node</span><span class="p">)</span> <span class="p">{</span>
+          <span class="k">this</span><span class="p">.</span><span class="nx">node</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s1">&#39;&lt;p&gt;&#39;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">id</span> <span class="o">+</span> <span class="s1">&#39; heard cluck from &#39;</span> <span class="o">+</span> <span class="nx">evt</span><span class="p">.</span><span class="nx">source</span><span class="p">.</span><span class="nx">id</span> <span class="o">+</span> <span class="s1">&#39;&lt;/p&gt;&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
+      <span class="p">},</span> <span class="k">this</span><span class="p">);</span>
+    <span class="p">},</span>
+    <span class="nx">bind</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">node</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;bind(&#39;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">id</span> <span class="o">+</span> <span class="s1">&#39;)&#39;</span><span class="p">,</span> <span class="s1">&#39;debug&#39;</span><span class="p">,</span> <span class="nx">NAME</span><span class="p">);</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">node</span> <span class="o">=</span> <span class="nx">node</span><span class="p">;</span>
+      <span class="nx">node</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">id</span> <span class="o">+</span> <span class="s1">&#39; clicked&#39;</span><span class="p">,</span> <span class="s1">&#39;debug&#39;</span><span class="p">,</span> <span class="nx">NAME</span><span class="p">);</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">mojitProxy</span><span class="p">.</span><span class="nx">broadcast</span><span class="p">(</span><span class="s1">&#39;cluck&#39;</span><span class="p">);</span>
+      <span class="p">},</span> <span class="k">this</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">},</span> <span class="s1">&#39;0.0.1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;node&#39;</span><span class="p">]});</span>
+</pre></div>
+</div>
+<p>This example binder shows how to use the methods <tt class="docutils literal"><span class="pre">refreshView</span></tt> and <tt class="docutils literal"><span class="pre">destroyChild</span></tt>.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;ParentBinderIndex&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="p">,</span> <span class="nx">NAME</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">Y</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="s1">&#39;mojito.binders&#39;</span><span class="p">)[</span><span class="nx">NAME</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">init</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">mojitProxy</span><span class="p">)</span>   <span class="p">{</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">mojitProxy</span> <span class="o">=</span> <span class="nx">mojitProxy</span><span class="p">;</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">myid</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">guid</span><span class="p">();</span>
+    <span class="p">},</span>
+    <span class="nx">bind</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">node</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">mp</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">mojitProxy</span><span class="p">;</span>
+      <span class="kd">var</span> <span class="nx">id</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">myid</span><span class="p">;</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">node</span> <span class="o">=</span> <span class="nx">node</span><span class="p">;</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">buttonClickHandler</span> <span class="o">=</span> <span class="nx">node</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;#&#39;</span> <span class="o">+</span> <span class="nx">mp</span><span class="p">.</span><span class="nx">_viewId</span> <span class="o">+</span> <span class="s1">&#39;_ParentRefresh&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">mp</span><span class="p">.</span><span class="nx">refreshView</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span> <span class="nx">meta</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;refresh complete&#39;</span><span class="p">,</span> <span class="s1">&#39;warn&#39;</span><span class="p">,</span> <span class="nx">NAME</span><span class="p">);</span>
+        <span class="p">});</span>
+      <span class="p">});</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">destroyHandler</span> <span class="o">=</span> <span class="nx">node</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;#&#39;</span> <span class="o">+</span> <span class="nx">mp</span><span class="p">.</span><span class="nx">_viewId</span> <span class="o">+</span> <span class="s1">&#39;_destroyButton&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">childId</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">node</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;#&#39;</span> <span class="o">+</span> <span class="nx">mp</span><span class="p">.</span><span class="nx">_viewId</span> <span class="o">+</span> <span class="s1">&#39;_destroyInput&#39;</span><span class="p">).</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;value&#39;</span><span class="p">);</span>
+        <span class="nx">mp</span><span class="p">.</span><span class="nx">destroyChild</span><span class="p">(</span><span class="nx">childId</span><span class="p">);</span>
+      <span class="p">},</span> <span class="k">this</span><span class="p">);</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">moHandler</span> <span class="o">=</span> <span class="nx">node</span><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;h3&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;mouseover&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;parent: &#39;</span> <span class="o">+</span> <span class="nx">id</span><span class="p">,</span> <span class="s1">&#39;info&#39;</span><span class="p">,</span> <span class="nx">NAME</span><span class="p">);</span>
+      <span class="p">});</span>
+    <span class="p">},</span>
+    <span class="nx">onRefreshView</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">element</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">myid</span> <span class="o">+</span> <span class="s1">&#39; refreshed&#39;</span><span class="p">,</span> <span class="s1">&#39;info&#39;</span><span class="p">,</span> <span class="nx">NAME</span><span class="p">);</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">buttonClickHandler</span><span class="p">.</span><span class="nx">detach</span><span class="p">();</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">destroyHandler</span><span class="p">.</span><span class="nx">detach</span><span class="p">();</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">moHandler</span><span class="p">.</span><span class="nx">detach</span><span class="p">();</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">bind</span><span class="p">(</span><span class="nx">node</span><span class="p">,</span> <span class="nx">element</span><span class="p">);</span>
+    <span class="p">},</span>
+    <span class="nx">destroy</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">myid</span> <span class="o">+</span> <span class="s1">&#39; destroyed!&#39;</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+<span class="p">},</span> <span class="s1">&#39;0.0.1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;mojito-client&#39;</span><span class="p">]});</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+   </div>
+

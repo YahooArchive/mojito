@@ -1,0 +1,519 @@
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+     <title>Using Query Parameters</title>
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '',
+        COLLAPSE_INDEX: true,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+   </head> 
+
+     <div class="header"><h1 class="heading"><a href="#">
+          <span>Mojito</span></a></h1>
+      </div>
+      <div class="topnav">
+        <p>
+        <a class="uplink" href="../">Mojito Documentation</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="../index.html" title="Mojito">Mojito</a>
+        &#160;&#160;::&#160;&#160;
+        
+           <a href="cookies.html">Using Cookies</a>
+        &#160;&#160;::&#160;&#160;
+        
+        
+           <a href="binding_events.html">Binding Events</a>
+        
+        </p>
+
+      </div>
+      <div class="content">
+   <div class="section" id="using-query-parameters">
+<h1>Using Query Parameters<a class="headerlink" href="#using-query-parameters" title="Permalink to this headline">¶</a></h1>
+<p><strong>Time Estimate:</strong> 15 minutes</p>
+<p><strong>Difficulty Level:</strong> Intermediate</p>
+<div class="section" id="summary">
+<span id="code-exs-qp-summary"></span><h2>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">¶</a></h2>
+<p>This example shows how to access query parameters from the URL, the POST body,
+and the routing configuration of your Mojito application.</p>
+<p>The following topics will be covered:</p>
+<ul class="simple">
+<li>using the <a class="reference external" href="../../api/classes/Params.common.html">Params addon</a> to access
+parameters</li>
+<li>setting and getting parameters from your route configuration</li>
+</ul>
+</div>
+<div class="section" id="implementation-notes">
+<span id="code-exs-qp-notes"></span><h2>Implementation Notes<a class="headerlink" href="#implementation-notes" title="Permalink to this headline">¶</a></h2>
+<p>The mojit controller of this code example has four functions, each using
+methods from the <tt class="docutils literal"><span class="pre">Params</span></tt> addon to access different types of parameters.
+Let&#8217;s start by learning how to access the query string parameters in the
+first function.</p>
+<p>The <tt class="docutils literal"><span class="pre">example1</span></tt> function below gets all of the query string parameters using
+<tt class="docutils literal"><span class="pre">params.getFromUrl</span></tt>. To get a specific parameter, just pass a key to
+<tt class="docutils literal"><span class="pre">params.getFromUrl(key)</span></tt>. In the code below, the key-value pairs that are
+fetched by <tt class="docutils literal"><span class="pre">params.getFromUrl()</span></tt> are wrapped in objects that are pushed to
+the array <tt class="docutils literal"><span class="pre">paramsArray</span></tt>. The array is assigned to <tt class="docutils literal"><span class="pre">params</span></tt>, which is then
+passed to the <tt class="docutils literal"><span class="pre">example1</span></tt> template. By default, the function sends data to the
+template with the same name.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">...</span>
+  <span class="c1">// Read from query string</span>
+  <span class="c1">// e.g., GET /example1?foo=bar</span>
+  <span class="nx">example1</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">actionContext</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Returns all of the key-value pairs in</span>
+    <span class="c1">// the query string.</span>
+    <span class="kd">var</span> <span class="nx">params</span> <span class="o">=</span> <span class="nx">actionContext</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">getFromUrl</span><span class="p">(),</span>
+    <span class="nx">paramsArray</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="c1">// Create an object for each key-value pair and</span>
+    <span class="c1">// push those objects to an array, which is then</span>
+    <span class="c1">// assigned to &#39;params&#39; that is available in</span>
+    <span class="c1">// index template (index.hb.html).</span>
+    <span class="nx">Y</span><span class="p">.</span><span class="nb">Object</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">params</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">param</span><span class="p">,</span> <span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">paramsArray</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span><span class="nx">key</span><span class="o">:</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">value</span><span class="o">:</span> <span class="nx">param</span><span class="p">});</span>
+    <span class="p">});</span>
+    <span class="nx">Y</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;GET PARAMS: &#39;</span> <span class="o">+</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">dump</span><span class="p">(</span><span class="nx">paramsArray</span><span class="p">));</span>
+    <span class="nx">actionContext</span><span class="p">.</span><span class="nx">done</span><span class="p">(</span>
+      <span class="p">{</span>
+        <span class="nx">title</span><span class="o">:</span> <span class="s2">&quot;Show all query string parameters&quot;</span><span class="p">,</span>
+        <span class="nx">params</span><span class="o">:</span> <span class="nx">paramsArray</span>
+      <span class="p">},</span>
+      <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;index&#39;</span><span class="p">}</span>
+    <span class="p">);</span>
+  <span class="p">},</span>
+<span class="p">...</span>
+<span class="p">},</span> <span class="s1">&#39;0.0.1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;dump&#39;</span><span class="p">,</span> <span class="s1">&#39;mojito-params-addon&#39;</span><span class="p">]});</span>
+</pre></div>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">example2</span></tt> function below uses <tt class="docutils literal"><span class="pre">params.getFromBody()</span></tt> to extract
+parameters from the POST body. Once again, the array of objects containing
+the key-value pairs is passed to the <tt class="docutils literal"><span class="pre">example2</span></tt> template, where the array
+is available through the <tt class="docutils literal"><span class="pre">params</span></tt> variable.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">...</span>
+  <span class="c1">// Read parameters from POST body</span>
+  <span class="c1">// e.g., POST /example2 with POST body</span>
+  <span class="nx">example2</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">actionContext</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">params</span> <span class="o">=</span> <span class="nx">actionContext</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">getFromBody</span><span class="p">(),</span>
+    <span class="nx">paramsArray</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="nx">Y</span><span class="p">.</span><span class="nb">Object</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">params</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">param</span><span class="p">,</span> <span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">paramsArray</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span><span class="nx">key</span><span class="o">:</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">value</span><span class="o">:</span> <span class="nx">param</span><span class="p">});</span>
+    <span class="p">});</span>
+    <span class="nx">actionContext</span><span class="p">.</span><span class="nx">done</span><span class="p">(</span>
+      <span class="p">{</span>
+        <span class="nx">title</span><span class="o">:</span> <span class="s2">&quot;Show all POST parameters&quot;</span><span class="p">,</span>
+        <span class="nx">params</span><span class="o">:</span> <span class="nx">paramsArray</span>
+      <span class="p">},</span>
+      <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;index&#39;</span><span class="p">}</span>
+    <span class="p">);</span>
+  <span class="p">},</span>
+<span class="p">...</span>
+<span class="p">},</span> <span class="s1">&#39;0.0.1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;dump&#39;</span><span class="p">,</span> <span class="s1">&#39;mojito-params-addon&#39;</span><span class="p">]});</span>
+</pre></div>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">example3</span></tt> function below uses <tt class="docutils literal"><span class="pre">params.getFromRoute()</span></tt> to access the
+parameters that are specified in <tt class="docutils literal"><span class="pre">routes.json</span></tt>, which we will look at in
+the next code snippet.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">...</span>
+  <span class="c1">// Read parameters from routing system</span>
+  <span class="nx">example3</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">actionContext</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">params</span> <span class="o">=</span> <span class="nx">actionContext</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">getFromRoute</span><span class="p">(),</span>
+    <span class="nx">paramsArray</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="nx">Y</span><span class="p">.</span><span class="nb">Object</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">params</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">param</span><span class="p">,</span> <span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">paramsArray</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span><span class="nx">key</span><span class="o">:</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">value</span><span class="o">:</span> <span class="nx">param</span><span class="p">});</span>
+    <span class="p">});</span>
+    <span class="nx">actionContext</span><span class="p">.</span><span class="nx">done</span><span class="p">(</span>
+      <span class="p">{</span>
+        <span class="nx">title</span><span class="o">:</span> <span class="s2">&quot;Show all ROUTING parameters (see routes.json)&quot;</span><span class="p">,</span>
+        <span class="nx">params</span><span class="o">:</span> <span class="nx">paramsArray</span>
+      <span class="p">},</span>
+      <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;index&#39;</span><span class="p">}</span>
+    <span class="p">);</span>
+  <span class="p">},</span>
+<span class="p">...</span>
+<span class="p">},</span> <span class="s1">&#39;0.0.1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;dump&#39;</span><span class="p">,</span> <span class="s1">&#39;mojito-params-addon&#39;</span><span class="p">]});</span>
+</pre></div>
+</div>
+<p>In the <tt class="docutils literal"><span class="pre">routes.json</span></tt> file below, you see parameters are set for the
+<tt class="docutils literal"><span class="pre">example3</span></tt> and <tt class="docutils literal"><span class="pre">example4</span></tt> route. Notice that <tt class="docutils literal"><span class="pre">example3</span></tt> only accepts
+HTTP GET calls, whereas <tt class="docutils literal"><span class="pre">example4</span></tt> allows both HTTP GET and POST calls.
+Storing parameters in your routing configuration allows you to associate
+them with a function, an HTTP method, and a URL path.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;settings&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;master&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;root&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;verbs&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;get&quot;</span><span class="p">],</span>
+      <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;/&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;call&quot;</span><span class="o">:</span> <span class="s2">&quot;frame.index&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;example1&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;verbs&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;get&quot;</span><span class="p">],</span>
+      <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;/example1&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;call&quot;</span><span class="o">:</span> <span class="s2">&quot;frame.example1&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;example2&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;verbs&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;get&quot;</span><span class="p">,</span> <span class="s2">&quot;post&quot;</span><span class="p">],</span>
+      <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;/example2&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;call&quot;</span><span class="o">:</span> <span class="s2">&quot;frame.example2&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;example3&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;verbs&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;get&quot;</span><span class="p">],</span>
+      <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;/example3&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;call&quot;</span><span class="o">:</span> <span class="s2">&quot;frame.example3&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;params&quot;</span><span class="o">:</span> <span class="p">{</span> <span class="s2">&quot;from&quot;</span><span class="o">:</span> <span class="s2">&quot;routing&quot;</span><span class="p">,</span> <span class="s2">&quot;foo&quot;</span><span class="o">:</span> <span class="s2">&quot;bar&quot;</span><span class="p">,</span> <span class="s2">&quot;bar&quot;</span><span class="o">:</span> <span class="s2">&quot;foo&quot;</span> <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;example4&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;verbs&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;get&quot;</span><span class="p">,</span> <span class="s2">&quot;post&quot;</span><span class="p">],</span>
+      <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;/example4&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;call&quot;</span><span class="o">:</span> <span class="s2">&quot;frame.example4&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;params&quot;</span><span class="o">:</span> <span class="p">{</span> <span class="s2">&quot;from&quot;</span><span class="o">:</span> <span class="s2">&quot;routing&quot;</span><span class="p">,</span> <span class="s2">&quot;foo3&quot;</span><span class="o">:</span> <span class="s2">&quot;bar3&quot;</span> <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>In the <tt class="docutils literal"><span class="pre">example4</span></tt> function below, you find the parameters catch-all method
+<tt class="docutils literal"><span class="pre">params.getFromMerged</span></tt>. Using <tt class="docutils literal"><span class="pre">params.getFromMerged</span></tt>, you can get the query
+string parameters, the POST body parameters, and the parameters set in
+<tt class="docutils literal"><span class="pre">routes.json</span></tt> at one time. You can also get a specific parameter by passing
+a key to <tt class="docutils literal"><span class="pre">params.getFromMerged(key)</span></tt>. For example,
+<tt class="docutils literal"><span class="pre">params.getFromMerged(&quot;from&quot;)</span></tt> would return the value &#8220;routing&#8221; from the</p>
+<blockquote>
+<div>parameters set in the <tt class="docutils literal"><span class="pre">routes.json</span></tt> shown above.</div></blockquote>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">...</span>
+  <span class="c1">// Read the merged map created by Mojito of all</span>
+  <span class="c1">// input parameters from the URL query string (GET),</span>
+  <span class="c1">// the POST body, and any routing parameters</span>
+  <span class="c1">// that may have been attached during the routing look up.</span>
+  <span class="c1">// Priority of merging is : Route -&gt; GET -&gt; POST</span>
+  <span class="nx">example4</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">actionContext</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">params</span> <span class="o">=</span> <span class="nx">actionContext</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">getFromMerged</span><span class="p">(),</span>
+    <span class="nx">paramsArray</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="nx">Y</span><span class="p">.</span><span class="nb">Object</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">params</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">param</span><span class="p">,</span> <span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">paramsArray</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span><span class="nx">key</span><span class="o">:</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">value</span><span class="o">:</span> <span class="nx">param</span><span class="p">});</span>
+    <span class="p">});</span>
+    <span class="nx">actionContext</span><span class="p">.</span><span class="nx">done</span><span class="p">(</span>
+      <span class="p">{</span>
+        <span class="nx">title</span><span class="o">:</span> <span class="s2">&quot;Show all ROUTING parameters (see routes.json)&quot;</span><span class="p">,</span>
+        <span class="nx">params</span><span class="o">:</span> <span class="nx">paramsArray</span>
+      <span class="p">},</span>
+      <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;index&#39;</span><span class="p">}</span>
+    <span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">...</span>
+<span class="p">},</span> <span class="s1">&#39;0.0.1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;dump&#39;</span><span class="p">,</span> <span class="s1">&#39;mojito-params-addon&#39;</span><span class="p">]});</span>
+</pre></div>
+</div>
+<p>The methods of the <tt class="docutils literal"><span class="pre">Params</span></tt> addon have the following aliases for simplification:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="60%" />
+<col width="40%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Method</th>
+<th class="head">Alias</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">getAll()</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">all()</span></tt></td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">getFromBody()</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">body()</span></tt></td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">getFromFiles()</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">files()</span></tt></td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">getFromMerged()</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">merged()</span></tt></td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">getfromRoute()</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">route()</span></tt></td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">getFromUrl()</span></tt></td>
+<td><tt class="docutils literal"><span class="pre">url()</span></tt></td>
+</tr>
+</tbody>
+</table>
+<p>For more information, see the <a class="reference external" href="../../api/classes/Params.common.html">Params addon</a> in
+the Mojito API documentation.</p>
+</div>
+<div class="section" id="setting-up-this-example">
+<span id="code-exs-qp-ex"></span><h2>Setting Up this Example<a class="headerlink" href="#setting-up-this-example" title="Permalink to this headline">¶</a></h2>
+<p>To set up and run <tt class="docutils literal"><span class="pre">using_parameters</span></tt>:</p>
+<ol class="arabic">
+<li><p class="first">Create your application.</p>
+<p><tt class="docutils literal"><span class="pre">$</span> <span class="pre">mojito</span> <span class="pre">create</span> <span class="pre">app</span> <span class="pre">using_parameters</span></tt></p>
+</li>
+<li><p class="first">Change to the application directory.</p>
+</li>
+<li><p class="first">Create your mojit.</p>
+<p><tt class="docutils literal"><span class="pre">$</span> <span class="pre">mojito</span> <span class="pre">create</span> <span class="pre">mojit</span> <span class="pre">QueryMojit</span></tt></p>
+</li>
+<li><p class="first">To specify that your application use <tt class="docutils literal"><span class="pre">QueryMojit</span></tt>, replace the code in
+<tt class="docutils literal"><span class="pre">application.json</span></tt> with the following:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;settings&quot;</span><span class="o">:</span> <span class="p">[</span> <span class="s2">&quot;master&quot;</span> <span class="p">],</span>
+    <span class="s2">&quot;specs&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;frame&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;QueryMojit&quot;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">To configure the routing for your application, replace the code in <tt class="docutils literal"><span class="pre">routes.json</span></tt> with
+the following:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;settings&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;master&quot;</span><span class="p">],</span>
+    <span class="s2">&quot;root&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;verbs&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;get&quot;</span><span class="p">],</span>
+      <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;/&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;call&quot;</span><span class="o">:</span> <span class="s2">&quot;frame.index&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;example1&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;verbs&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;get&quot;</span><span class="p">],</span>
+      <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;/example1&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;call&quot;</span><span class="o">:</span> <span class="s2">&quot;frame.example1&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;example2&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;verbs&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;get&quot;</span><span class="p">,</span> <span class="s2">&quot;post&quot;</span><span class="p">],</span>
+      <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;/example2&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;call&quot;</span><span class="o">:</span> <span class="s2">&quot;frame.example2&quot;</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;example3&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;verbs&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;get&quot;</span><span class="p">],</span>
+      <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;/example3&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;call&quot;</span><span class="o">:</span> <span class="s2">&quot;frame.example3&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;params&quot;</span><span class="o">:</span> <span class="p">{</span> <span class="s2">&quot;from&quot;</span><span class="o">:</span> <span class="s2">&quot;routing&quot;</span><span class="p">,</span> <span class="s2">&quot;foo&quot;</span><span class="o">:</span> <span class="s2">&quot;bar&quot;</span><span class="p">,</span> <span class="s2">&quot;bar&quot;</span><span class="o">:</span> <span class="s2">&quot;foo&quot;</span> <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;example4&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;verbs&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;get&quot;</span><span class="p">,</span> <span class="s2">&quot;post&quot;</span><span class="p">],</span>
+      <span class="s2">&quot;path&quot;</span><span class="o">:</span> <span class="s2">&quot;/example4&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;call&quot;</span><span class="o">:</span> <span class="s2">&quot;frame.example4&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;params&quot;</span><span class="o">:</span> <span class="p">{</span> <span class="s2">&quot;from&quot;</span><span class="o">:</span> <span class="s2">&quot;routing&quot;</span><span class="p">,</span> <span class="s2">&quot;foo3&quot;</span><span class="o">:</span> <span class="s2">&quot;bar3&quot;</span> <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">Change to <tt class="docutils literal"><span class="pre">mojits/QueryMojit</span></tt>.</p>
+</li>
+<li><p class="first">Modify the controller to access different query parameters by replacing the code in
+<tt class="docutils literal"><span class="pre">controller.server.js</span></tt> with the following:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;QueryMojit&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="p">,</span> <span class="nx">NAME</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">Y</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="s1">&#39;mojito.controllers&#39;</span><span class="p">)[</span><span class="nx">NAME</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+
+    <span class="nx">index</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">actionContext</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">actionContext</span><span class="p">.</span><span class="nx">done</span><span class="p">(</span><span class="s1">&#39;Mojito is working.&#39;</span><span class="p">);</span>
+    <span class="p">},</span>
+    <span class="c1">// Read from query string</span>
+    <span class="c1">// e.g. GET /example1?foo=bar</span>
+    <span class="nx">example1</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">actionContext</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">params</span> <span class="o">=</span> <span class="nx">actionContext</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">getFromUrl</span><span class="p">(),</span>
+      <span class="nx">paramsArray</span> <span class="o">=</span> <span class="p">[];</span>
+      <span class="nx">Y</span><span class="p">.</span><span class="nb">Object</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">params</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">param</span><span class="p">,</span> <span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">paramsArray</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span><span class="nx">key</span><span class="o">:</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">value</span><span class="o">:</span> <span class="nx">param</span><span class="p">});</span>
+      <span class="p">});</span>
+      <span class="nx">actionContext</span><span class="p">.</span><span class="nx">done</span><span class="p">(</span>
+      <span class="p">{</span>
+        <span class="nx">title</span><span class="o">:</span> <span class="s2">&quot;Show all query string parameters&quot;</span><span class="p">,</span>
+        <span class="nx">params</span><span class="o">:</span> <span class="nx">paramsArray</span>
+      <span class="p">},</span>
+      <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;index&#39;</span><span class="p">}</span>
+       <span class="p">);</span>
+    <span class="p">},</span>
+    <span class="c1">// Read parameters from POST body</span>
+    <span class="c1">// e.g. POST /example2 with POST body</span>
+    <span class="nx">example2</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">actionContext</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">params</span> <span class="o">=</span> <span class="nx">actionContext</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">getFromBody</span><span class="p">(),</span>
+      <span class="nx">paramsArray</span> <span class="o">=</span> <span class="p">[];</span>
+      <span class="nx">Y</span><span class="p">.</span><span class="nb">Object</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">params</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">param</span><span class="p">,</span> <span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">paramsArray</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span><span class="nx">key</span><span class="o">:</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">value</span><span class="o">:</span> <span class="nx">param</span><span class="p">});</span>
+      <span class="p">});</span>
+      <span class="nx">actionContext</span><span class="p">.</span><span class="nx">done</span><span class="p">(</span>
+        <span class="p">{</span>
+          <span class="nx">title</span><span class="o">:</span> <span class="s2">&quot;Show all POST parameters&quot;</span><span class="p">,</span>
+          <span class="nx">params</span><span class="o">:</span> <span class="nx">paramsArray</span>
+        <span class="p">},</span>
+        <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;index&#39;</span><span class="p">}</span>
+      <span class="p">);</span>
+    <span class="p">},</span>
+    <span class="c1">// Read parameters from routing system</span>
+    <span class="nx">example3</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">actionContext</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">params</span> <span class="o">=</span> <span class="nx">actionContext</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">getFromRoute</span><span class="p">(),</span>
+      <span class="nx">paramsArray</span> <span class="o">=</span> <span class="p">[];</span>
+      <span class="nx">Y</span><span class="p">.</span><span class="nb">Object</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">params</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">param</span><span class="p">,</span> <span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">paramsArray</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span><span class="nx">key</span><span class="o">:</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">value</span><span class="o">:</span> <span class="nx">param</span><span class="p">});</span>
+      <span class="p">});</span>
+      <span class="nx">actionContext</span><span class="p">.</span><span class="nx">done</span><span class="p">(</span>
+        <span class="p">{</span>
+          <span class="nx">title</span><span class="o">:</span> <span class="s2">&quot;Show all ROUTING parameters (see routes.json)&quot;</span><span class="p">,</span>
+          <span class="nx">params</span><span class="o">:</span> <span class="nx">paramsArray</span>
+        <span class="p">},</span>
+        <span class="p">{</span> <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;index&#39;</span><span class="p">}</span>
+      <span class="p">);</span>
+    <span class="p">},</span>
+    <span class="c1">// Read the merged map created by Mojito</span>
+    <span class="c1">// of all input parameters from URL query</span>
+    <span class="c1">// string (GET), the POST body, and any</span>
+    <span class="c1">// routing parameters that may have been</span>
+    <span class="c1">// attached during routing look up..</span>
+    <span class="c1">// Priority of merging is : Route -&gt; GET -&gt; POST</span>
+    <span class="nx">example4</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">actionContext</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">params</span> <span class="o">=</span> <span class="nx">actionContext</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">getFromMerged</span><span class="p">(),</span>
+      <span class="nx">paramsArray</span> <span class="o">=</span> <span class="p">[];</span>
+      <span class="nx">Y</span><span class="p">.</span><span class="nb">Object</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">params</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">param</span><span class="p">,</span> <span class="nx">key</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">paramsArray</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span><span class="nx">key</span><span class="o">:</span> <span class="nx">key</span><span class="p">,</span> <span class="nx">value</span><span class="o">:</span> <span class="nx">param</span><span class="p">});</span>
+      <span class="p">});</span>
+      <span class="nx">actionContext</span><span class="p">.</span><span class="nx">done</span><span class="p">(</span>
+        <span class="p">{</span>
+          <span class="nx">title</span><span class="o">:</span> <span class="s2">&quot;Show all ROUTING parameters (see routes.json)&quot;</span><span class="p">,</span>
+          <span class="nx">params</span><span class="o">:</span> <span class="nx">paramsArray</span>
+        <span class="p">},</span>
+        <span class="p">{</span><span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;index&#39;</span><span class="p">}</span>
+      <span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+<span class="p">},</span> <span class="s1">&#39;0.0.1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;dump&#39;</span><span class="p">,</span> <span class="s1">&#39;mojito-params-addon&#39;</span><span class="p">]});</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">To display the key-value pairs from the query string parameters, create the template
+<tt class="docutils literal"><span class="pre">views/example1.hb.html</span></tt> with the following:</p>
+<div class="highlight-html"><div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;{{mojit_view_id}}&quot;</span> <span class="na">class=</span><span class="s">&quot;mojit&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h2&gt;</span>{{title}}<span class="nt">&lt;/h2&gt;</span>
+  List of key value pairs:
+  <span class="nt">&lt;ul&gt;</span>
+  {{#params}}
+    <span class="nt">&lt;li&gt;</span>{{key}} =&gt; {{value}}<span class="nt">&lt;/li&gt;</span>
+  {{/params}}
+  <span class="nt">&lt;/ul&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">To display the key-value pairs from the POST request body parameters, create the
+template <tt class="docutils literal"><span class="pre">views/example2.hb.html</span></tt> with the following:</p>
+<div class="highlight-html"><div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;post_params&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h2&gt;</span>Form for Posting Parameters<span class="nt">&lt;/h2&gt;</span>
+  <span class="nt">&lt;form</span> <span class="na">method=</span><span class="s">&quot;post&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;p&gt;</span>
+      Framework: <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;text&quot;</span> <span class="na">name=</span><span class="s">&quot;framework&quot;</span> <span class="na">value=</span><span class="s">&quot;Mojito&quot;</span><span class="nt">/&gt;&lt;br/&gt;</span>
+      Addon Used: <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;text&quot;</span> <span class="na">name=</span><span class="s">&quot;addon&quot;</span> <span class="na">value=</span><span class="s">&quot;params&quot;</span><span class="nt">/&gt;&lt;br/&gt;</span>
+      Method Called: <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;text&quot;</span> <span class="na">name=</span><span class="s">&quot;method&quot;</span> <span class="na">value=</span><span class="s">&quot;getFromBody()&quot;</span><span class="nt">/&gt;&lt;br/&gt;</span>
+      <span class="nt">&lt;h3&gt;</span>Type of Parameters Passed<span class="nt">&lt;/h3&gt;</span>
+      <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;radio&quot;</span> <span class="na">name=</span><span class="s">&quot;param_type&quot;</span> <span class="na">value=</span><span class="s">&quot;POST&quot;</span> <span class="na">checked</span><span class="nt">&gt;</span> POST Body<span class="nt">&lt;/input&gt;&lt;br/&gt;</span>
+      <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;radio&quot;</span> <span class="na">name=</span><span class="s">&quot;param_type&quot;</span> <span class="na">value=</span><span class="s">&quot;query string&quot;</span><span class="nt">&gt;</span> Query String<span class="nt">&lt;/input&gt;&lt;br/&gt;&lt;br/&gt;</span>
+      <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;submit&quot;</span> <span class="na">value=</span><span class="s">&quot;Submit&quot;</span><span class="nt">/&gt;</span>
+      <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;reset&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;/form&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;{{mojit_view_id}}&quot;</span> <span class="na">class=</span><span class="s">&quot;mojit&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h2&gt;</span>{{title}}<span class="nt">&lt;/h2&gt;</span>
+  List of key value pairs:
+  <span class="nt">&lt;ul&gt;</span>
+    {{#params}}
+    <span class="nt">&lt;li&gt;</span>{{key}} =&gt; {{value}}<span class="nt">&lt;/li&gt;</span>
+    {{/params}}
+  <span class="nt">&lt;/ul&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">To display the key-value pairs set in <tt class="docutils literal"><span class="pre">routes.json</span></tt>, create the template
+<tt class="docutils literal"><span class="pre">views/example3.hb.html</span></tt> with the following:</p>
+<div class="highlight-html"><div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;{{mojit_view_id}}&quot;</span> <span class="na">class=</span><span class="s">&quot;mojit&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h2&gt;</span>{{title}}<span class="nt">&lt;/h2&gt;</span>
+  List of key value pairs:
+  <span class="nt">&lt;ul&gt;</span>
+    {{#params}}
+    <span class="nt">&lt;li&gt;</span>{{key}} =&gt; {{value}}<span class="nt">&lt;/li&gt;</span>
+    {{/params}}
+  <span class="nt">&lt;/ul&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">To display all of the available parameters, create the template
+<tt class="docutils literal"><span class="pre">views/example4.hb.html</span></tt> with the following:</p>
+<div class="highlight-html"><div class="highlight"><pre><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;post_params&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h2&gt;</span>Form for Posting Parameters<span class="nt">&lt;/h2&gt;</span>
+  <span class="nt">&lt;form</span> <span class="na">method=</span><span class="s">&quot;post&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;p&gt;</span>
+      Framework: <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;text&quot;</span> <span class="na">name=</span><span class="s">&quot;framework&quot;</span> <span class="na">value=</span><span class="s">&quot;Mojito&quot;</span><span class="nt">/&gt;&lt;br/&gt;</span>
+      Addon Used: <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;text&quot;</span> <span class="na">name=</span><span class="s">&quot;addon&quot;</span> <span class="na">value=</span><span class="s">&quot;params&quot;</span><span class="nt">/&gt;&lt;br/&gt;</span>
+      Method Called: <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;text&quot;</span> <span class="na">name=</span><span class="s">&quot;method&quot;</span> <span class="na">value=</span><span class="s">&quot;getFromBody()&quot;</span><span class="nt">/&gt;&lt;br/&gt;</span>
+      <span class="nt">&lt;h3&gt;</span>Type of Parameters Passed<span class="nt">&lt;/h3&gt;</span>
+      <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;radio&quot;</span> <span class="na">name=</span><span class="s">&quot;param_type&quot;</span> <span class="na">value=</span><span class="s">&quot;POST&quot;</span> <span class="na">checked</span><span class="nt">&gt;</span> POST Body<span class="nt">&lt;/input&gt;&lt;br/&gt;</span>
+      <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;radio&quot;</span> <span class="na">name=</span><span class="s">&quot;param_type&quot;</span> <span class="na">value=</span><span class="s">&quot;query string&quot;</span><span class="nt">&gt;</span> Query String<span class="nt">&lt;/input&gt;&lt;br/&gt;&lt;br/&gt;</span>
+      <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;submit&quot;</span> <span class="na">value=</span><span class="s">&quot;Submit&quot;</span><span class="nt">/&gt;</span>
+      <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;reset&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;/form&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;{{mojit_view_id}}&quot;</span> <span class="na">class=</span><span class="s">&quot;mojit&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h2&gt;</span>{{title}}<span class="nt">&lt;/h2&gt;</span>
+  List of key value pairs:
+  <span class="nt">&lt;ul&gt;</span>
+    {{#params}}
+    <span class="nt">&lt;li&gt;</span>{{key}} =&gt; {{value}}<span class="nt">&lt;/li&gt;</span>
+    {{/params}}
+  <span class="nt">&lt;/ul&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">From the application directory, run the server.</p>
+<p><tt class="docutils literal"><span class="pre">$</span> <span class="pre">mojito</span> <span class="pre">start</span></tt></p>
+</li>
+<li><p class="first">To see the query string parameters fetched by the controller, go to the URL with the
+query string below:</p>
+<p><a class="reference external" href="http://localhost:8666/example1?foo=bar&amp;bar=foo">http://localhost:8666/example1?foo=bar&amp;bar=foo</a></p>
+</li>
+<li><p class="first">To see the POST body parameters fetched by the controller, go to the URL below and
+submit the form on the page.</p>
+<p><a class="reference external" href="http://localhost:8666/example2">http://localhost:8666/example2</a></p>
+</li>
+<li><p class="first">To see the parameters set in <tt class="docutils literal"><span class="pre">routes.json</span></tt>, go to the URL below:</p>
+<p><a class="reference external" href="http://localhost:8666/example3">http://localhost:8666/example3</a></p>
+</li>
+<li><p class="first">To see the query string parameters, the post body parameters, and those set in
+<tt class="docutils literal"><span class="pre">routes.json</span></tt>, go to the URL below and submit the form on the page:</p>
+<p><a class="reference external" href="http://localhost:8666/example4?foo=bar&amp;bar=foo">http://localhost:8666/example4?foo=bar&amp;bar=foo</a></p>
+</li>
+</ol>
+</div>
+<div class="section" id="source-code">
+<span id="code-exs-qp-src"></span><h2>Source Code<a class="headerlink" href="#source-code" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="http://github.com/yahoo/mojito/tree/master/examples/developer-guide/using_parameters/mojits/QueryMojit/">Mojit Controller</a></li>
+<li><a class="reference external" href="http://github.com/yahoo/mojito/tree/master/examples/developer-guide/using_parameters/routes.json">Routing Configuration</a></li>
+<li><a class="reference external" href="http://github.com/yahoo/mojito/tree/master/examples/developer-guide/using_parameters/">Using Parameters Application</a></li>
+</ul>
+</div>
+</div>
+
+   </div>
+

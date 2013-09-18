@@ -1,0 +1,493 @@
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+     <title>Testing</title>
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '',
+        COLLAPSE_INDEX: true,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+   </head> 
+
+     <div class="header"><h1 class="heading"><a href="#">
+          <span>Mojito</span></a></h1>
+      </div>
+      <div class="topnav">
+        <p>
+        <a class="uplink" href="../">Mojito Documentation</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="../index.html" title="Mojito">Mojito</a>
+        &#160;&#160;::&#160;&#160;
+        
+           <a href="mojito_logging.html">Logging</a>
+        &#160;&#160;::&#160;&#160;
+        
+        
+           <a href="mojito_hb_templates.html">Handlebars in Mojito</a>
+        
+        </p>
+
+      </div>
+      <div class="content">
+   <div class="section" id="testing">
+<h1>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h1>
+<p>Mojito provides a testing framework based on <a class="reference external" href="http://yuilibrary.com/yuitest/">YUI Test</a> that
+allows you to run unit tests for modules, applications, mojit controllers,
+mojit models, and mojit binders.</p>
+<p>The next few sections show you how to run specific tests with the <tt class="docutils literal"><span class="pre">mojito</span></tt>
+command.</p>
+<div class="section" id="conventions">
+<span id="mojito-testing-conventions"></span><h2>Conventions<a class="headerlink" href="#conventions" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">Tests should be in the following directories:</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">{app_name}/tests</span></tt> - application tests</li>
+<li><tt class="docutils literal"><span class="pre">{app_name}/mojits/{mojit_name}/tests</span></tt> - mojit tests</li>
+<li><tt class="docutils literal"><span class="pre">{app_name}/yui_modules/{yui_module}/tests</span></tt> - tests for
+application-level YUI modules</li>
+<li><tt class="docutils literal"><span class="pre">{app_name}/mojits/{mojit_name}/yui_modules/{yui_module}/tests</span></tt> - tests for
+mojit-level YUI modules</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Syntax for the name of the test file: <tt class="docutils literal"><span class="pre">{yui_module}.{affinity}-tests.js</span></tt></p>
+<p>For example, the name of the unit test YUI module for the <tt class="docutils literal"><span class="pre">HelloMojit</span></tt> mojit
+with the <tt class="docutils literal"><span class="pre">server</span></tt>   affinity would be <tt class="docutils literal"><span class="pre">HelloMojit.server-tests.js</span></tt>.</p>
+</li>
+<li><p class="first">The unit test YUI module should include the target module and the <tt class="docutils literal"><span class="pre">mojito-test</span></tt>
+module in the <tt class="docutils literal"><span class="pre">requires</span></tt> array. The requires array includes the <tt class="docutils literal"><span class="pre">mojito-test</span></tt>
+module and the target module <tt class="docutils literal"><span class="pre">HelloMojit</span></tt>:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">{</span> <span class="nx">requires</span><span class="o">:</span> <span class="p">[</span> <span class="s1">&#39;mojito-test&#39;</span><span class="p">,</span> <span class="s1">&#39;HelloMojit&#39;</span> <span class="p">]</span> <span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Test files that are <strong>not</strong> in a <tt class="docutils literal"><span class="pre">tests</span></tt> directory may be found by
+Mojito as long as the file name has the suffix <tt class="docutils literal"><span class="pre">-tests</span></tt>. The
+suggested practice though is to place all test files in the <tt class="docutils literal"><span class="pre">tests</span></tt>
+directories shown above.</p>
+</div>
+</div>
+<div class="section" id="application-tests">
+<span id="mojito-testing-application"></span><h2>Application Tests<a class="headerlink" href="#application-tests" title="Permalink to this headline">¶</a></h2>
+<p>The following command runs tests for all of the mojits of a Mojito application.</p>
+<p><tt class="docutils literal"><span class="pre">$</span> <span class="pre">mojito</span> <span class="pre">test</span> <span class="pre">app</span> <span class="pre">{path-to-app}/{application-name}</span></tt></p>
+<p>To run one specific test in your application, use the following where <tt class="docutils literal"><span class="pre">[test-name]</span></tt> is
+either the YUI module or the module to be tested.</p>
+<p><tt class="docutils literal"><span class="pre">$</span> <span class="pre">mojito</span> <span class="pre">test</span> <span class="pre">app</span> <span class="pre">{path-to-app}/{application-name}</span> <span class="pre">[test-name]</span></tt></p>
+</div>
+<div class="section" id="mojit-tests">
+<span id="mojito-testing-mojit"></span><h2>Mojit Tests<a class="headerlink" href="#mojit-tests" title="Permalink to this headline">¶</a></h2>
+<p>You create unit tests for your mojits and execute them also using the <tt class="docutils literal"><span class="pre">mojito</span></tt>
+command. Mojit tests must require (included in the YUI <tt class="docutils literal"><span class="pre">require</span></tt> array) the
+module undergoing testing and the Mojito Test module <tt class="docutils literal"><span class="pre">mojito-test</span></tt>. For
+example, if the <tt class="docutils literal"><span class="pre">Foo</span></tt> module was being tested, the <tt class="docutils literal"><span class="pre">requires</span></tt> array would
+include the <tt class="docutils literal"><span class="pre">Foo</span></tt> and <tt class="docutils literal"><span class="pre">mojit-test</span></tt> modules as seen here:
+<tt class="docutils literal"><span class="pre">requires:</span> <span class="pre">[</span> <span class="pre">'Foo',</span> <span class="pre">'mojit-test']</span></tt></p>
+<p>By default, Mojito uses the <a class="reference external" href="http://yuilibrary.com/yuitest/">YUI Test</a>
+framework for the <a class="reference external" href="http://en.wikipedia.org/wiki/Test_harness">test harness</a>
+and assertion functions. Each mojit test will be executed within a YUI
+instance along with its required dependencies, so you can be assured to only
+have properly scoped values.</p>
+<div class="section" id="types-of-mojit-tests">
+<span id="mojit-testing-types"></span><h3>Types of Mojit Tests<a class="headerlink" href="#types-of-mojit-tests" title="Permalink to this headline">¶</a></h3>
+<p>The following two types of mojit tests exist:</p>
+<ul class="simple">
+<li>controller tests</li>
+<li>model tests</li>
+</ul>
+</div>
+</div>
+<div class="section" id="testing-standards">
+<span id="mojito-testing-standards"></span><h2>Testing Standards<a class="headerlink" href="#testing-standards" title="Permalink to this headline">¶</a></h2>
+<p>To use the Mojito test harness, you are required to name files and testing
+modules according to certain rules. The name of the test file must have the
+same <a class="reference external" href="../reference/glossary.html">affinity</a> as the file being tested and
+have the string <tt class="docutils literal"><span class="pre">-tests</span></tt> appended to the affinity. For example, the mojit
+controller with the <tt class="docutils literal"><span class="pre">common</span></tt> affinity would be <tt class="docutils literal"><span class="pre">controller.common.js</span></tt>,
+so the name of the test file must be <tt class="docutils literal"><span class="pre">controller.common-tests.js</span></tt>.</p>
+<p>The <tt class="docutils literal"><span class="pre">controller.common.js</span></tt> below registers the <tt class="docutils literal"><span class="pre">Foo</span></tt> module.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;Foo&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="p">)</span> <span class="p">{</span>
+  <span class="p">...</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<p>To test the <tt class="docutils literal"><span class="pre">Foo</span></tt>, module, the the test file <tt class="docutils literal"><span class="pre">controller.common-tests.js</span></tt> would
+require the <tt class="docutils literal"><span class="pre">Foo</span></tt> and &#8216;mojito-test&#8217; modules as seen below.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;Foo-tests&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="p">)</span> <span class="p">{</span>
+  <span class="p">...</span>
+<span class="p">},</span> <span class="s1">&#39;VERSION&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;mojito-test&#39;</span><span class="p">,</span> <span class="s1">&#39;Foo&#39;</span><span class="p">]});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="controller-tests">
+<span id="mojito-testing-controller"></span><h2>Controller Tests<a class="headerlink" href="#controller-tests" title="Permalink to this headline">¶</a></h2>
+<p>A mojit can have one or more controllers that have different affinities. For each
+controller, you can create create a test controller with the same affinity or use
+<tt class="docutils literal"><span class="pre">controller.common-tests.js</span></tt>, which tests controllers with any affinity. For example,
+<tt class="docutils literal"><span class="pre">controller.server.js</span></tt> can be tested with <tt class="docutils literal"><span class="pre">controller.server-tests.js</span></tt> or
+<tt class="docutils literal"><span class="pre">controller.common-tests.js</span></tt>.</p>
+<div class="section" id="example">
+<span id="controller-tests-ex"></span><h3>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h3>
+<p>The <tt class="docutils literal"><span class="pre">controller.server.js</span></tt> below requires the <tt class="docutils literal"><span class="pre">Foo</span></tt> module.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;Foo&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="p">,</span> <span class="nx">NAME</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">Y</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="s1">&#39;mojito.controllers&#39;</span><span class="p">)[</span><span class="nx">NAME</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">index</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">ac</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">ac</span><span class="p">.</span><span class="nx">done</span><span class="p">();</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+<span class="p">},</span> <span class="s1">&#39;0.0.1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[]});</span>
+</pre></div>
+</div>
+<p>To test the controller of the <tt class="docutils literal"><span class="pre">Foo</span></tt> mojit, create a file in the tests
+directory called <tt class="docutils literal"><span class="pre">controller.common-tests.js</span></tt> that includes the <tt class="docutils literal"><span class="pre">Foo-tests</span></tt>
+module as seen below. Note that the reference to the controller is gotten
+using <tt class="docutils literal"><span class="pre">Y.mojito.controllers[NAME]</span></tt>.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;Foo-tests&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="p">,</span> <span class="nx">NAME</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">suite</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">YUITest</span><span class="p">.</span><span class="nx">TestSuite</span><span class="p">(</span><span class="nx">NAME</span><span class="p">),</span>
+  <span class="nx">controller</span> <span class="o">=</span> <span class="kc">null</span><span class="p">,</span>
+  <span class="nx">A</span> <span class="o">=</span> <span class="nx">YUITest</span><span class="p">.</span><span class="nx">Assert</span><span class="p">;</span>
+  <span class="nx">suite</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="k">new</span> <span class="nx">YUITest</span><span class="p">.</span><span class="nx">TestCase</span><span class="p">({</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Foo tests&#39;</span><span class="p">,</span>
+    <span class="nx">setUp</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="nx">controller</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">mojito</span><span class="p">.</span><span class="nx">controllers</span><span class="p">.</span><span class="nx">Foo</span><span class="p">;</span>
+    <span class="p">},</span>
+    <span class="nx">tearDown</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="nx">controller</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;test mojit&#39;</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">ac</span><span class="p">,</span> <span class="nx">doneCalled</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+      <span class="nx">A</span><span class="p">.</span><span class="nx">isNotNull</span><span class="p">(</span><span class="nx">controller</span><span class="p">);</span>
+      <span class="nx">A</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">controller</span><span class="p">.</span><span class="nx">index</span><span class="p">);</span>
+      <span class="nx">ac</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="nx">done</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">doneCalled</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+          <span class="nx">A</span><span class="p">.</span><span class="nx">isUndefined</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+        <span class="p">}</span>
+      <span class="p">};</span>
+      <span class="nx">controller</span><span class="p">.</span><span class="nx">index</span><span class="p">(</span><span class="nx">ac</span><span class="p">);</span>
+      <span class="nx">A</span><span class="p">.</span><span class="nx">isTrue</span><span class="p">(</span><span class="nx">doneCalled</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}));</span>
+  <span class="nx">YUITest</span><span class="p">.</span><span class="nx">TestRunner</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">suite</span><span class="p">);</span>
+<span class="p">},</span> <span class="s1">&#39;0.0.1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;mojito-test&#39;</span><span class="p">,</span> <span class="s1">&#39;Foo&#39;</span><span class="p">]});</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="testing-with-the-mockactioncontext-object">
+<span id="mojito-testing-mockactioncontext"></span><h2>Testing with the MockActionContext Object<a class="headerlink" href="#testing-with-the-mockactioncontext-object" title="Permalink to this headline">¶</a></h2>
+<p>The <tt class="docutils literal"><span class="pre">mojito-test</span></tt> YUI module allows you to create the mock object
+<tt class="docutils literal"><span class="pre">MockActionContext</span></tt> to test without dependencies. Using the
+<tt class="docutils literal"><span class="pre">MockActionContext</span></tt> object, you can easily build an <tt class="docutils literal"><span class="pre">ActionContext</span></tt>
+for your controller, addon, and model tests. To learn more information
+about using YUI to create mock objects, see
+<a class="reference external" href="http://yuilibrary.com/yuitest/#mockobjects">YUI Test Standalone Library: Mock Objects</a>.</p>
+<div class="section" id="using-the-mock-actioncontext">
+<span id="mockactioncontext-testing-using"></span><h3>Using the Mock ActionContext<a class="headerlink" href="#using-the-mock-actioncontext" title="Permalink to this headline">¶</a></h3>
+<p>The following sections will explain the below example code that creates a
+simple <tt class="docutils literal"><span class="pre">MockActionContext</span></tt> that tests the <tt class="docutils literal"><span class="pre">done</span></tt> function and verifies
+it was called correctly.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">ac</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">mojito</span><span class="p">.</span><span class="nx">MockActionContext</span><span class="p">();</span>
+<span class="nx">ac</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span>
+  <span class="p">{</span>
+    <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;done&#39;</span><span class="p">,</span>
+    <span class="nx">args</span><span class="o">:</span> <span class="p">[</span><span class="nx">YUITest</span><span class="p">.</span><span class="nx">Mock</span><span class="p">.</span><span class="nx">Value</span><span class="p">.</span><span class="nb">Object</span><span class="p">],</span>
+    <span class="nx">run</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">YUITest</span><span class="p">.</span><span class="nx">ObjectAssert</span><span class="p">.</span><span class="nx">areEqual</span><span class="p">({</span> <span class="nx">just</span><span class="o">:</span> <span class="s1">&#39;testing&#39;</span> <span class="p">});</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">);</span>
+<span class="nx">Y</span><span class="p">.</span><span class="nx">mojito</span><span class="p">.</span><span class="nx">controller</span><span class="p">.</span><span class="nx">actionUnderTest</span><span class="p">(</span><span class="nx">ac</span><span class="p">);</span>
+<span class="nx">ac</span><span class="p">.</span><span class="nx">verify</span><span class="p">();</span>
+</pre></div>
+</div>
+<div class="section" id="creating-the-mockactioncontext-object">
+<span id="mockactioncontext-testing-creating"></span><h4>Creating the MockActionContext Object<a class="headerlink" href="#creating-the-mockactioncontext-object" title="Permalink to this headline">¶</a></h4>
+<p>To mock the <tt class="docutils literal"><span class="pre">ActionContext</span></tt>, the <tt class="docutils literal"><span class="pre">mojito-test</span></tt> YUI module provides the
+<tt class="docutils literal"><span class="pre">MockActionContext</span></tt> constructor that returns a mocked <tt class="docutils literal"><span class="pre">ActionContext</span></tt>
+as shown below:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">ac</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">mojito</span><span class="p">.</span><span class="nx">MockActionContext</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="setting-test-expectations">
+<span id="mockactioncontext-testing-expectations"></span><h4>Setting Test Expectations<a class="headerlink" href="#setting-test-expectations" title="Permalink to this headline">¶</a></h4>
+<p>To test with the <tt class="docutils literal"><span class="pre">MockActionContext</span></tt> object, you use the <tt class="docutils literal"><span class="pre">expect</span></tt> method
+and pass it an <tt class="docutils literal"><span class="pre">expectation</span></tt> object containing the properties <tt class="docutils literal"><span class="pre">method</span></tt>,
+<tt class="docutils literal"><span class="pre">args</span></tt>, and <tt class="docutils literal"><span class="pre">run</span></tt>. These properties, in turn, contain the controller
+method to test, the function parameters, and the test function.</p>
+<p>In the code snippet below, the <tt class="docutils literal"><span class="pre">expect</span></tt> method creates a test for the
+controller method <tt class="docutils literal"><span class="pre">done</span></tt>, using the <tt class="docutils literal"><span class="pre">YUITest</span></tt> module to perform an
+assertion on the function&#8217;s return value.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">ac</span><span class="p">.</span><span class="nx">expect</span><span class="p">({</span>
+  <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;done&#39;</span><span class="p">,</span>
+  <span class="nx">args</span><span class="o">:</span> <span class="p">[</span><span class="nx">YUITest</span><span class="p">.</span><span class="nx">Mock</span><span class="p">.</span><span class="nx">Value</span><span class="p">.</span><span class="nb">Object</span><span class="p">],</span>
+  <span class="nx">run</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">YUITest</span><span class="p">.</span><span class="nx">ObjectAssert</span><span class="p">.</span><span class="nx">areEqual</span><span class="p">({</span> <span class="nx">just</span><span class="o">:</span> <span class="s1">&#39;testing&#39;</span> <span class="p">});</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="configuring-mojito-to-test-mockactioncontext-object">
+<span id="mockactioncontext-testing-configure"></span><h4>Configuring Mojito to Test MockActionContext Object<a class="headerlink" href="#configuring-mojito-to-test-mockactioncontext-object" title="Permalink to this headline">¶</a></h4>
+<p>To configure Mojito to use your <tt class="docutils literal"><span class="pre">MockActionContext</span></tt> object to run test,
+use the following, where <tt class="docutils literal"><span class="pre">{actionUnderTest}</span></tt> is the action you are testing.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">Y</span><span class="p">.</span><span class="nx">mojito</span><span class="p">.</span><span class="nx">controller</span><span class="p">.{</span><span class="nx">actionUnderTest</span><span class="p">}(</span><span class="nx">ac</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>If the <tt class="docutils literal"><span class="pre">{actionUnderTest}</span></tt> function fails to call the <tt class="docutils literal"><span class="pre">done</span></tt> function, calls
+it more than one time, or calls it with the wrong parameters, the test will
+fail.</p>
+<div class="section" id="running-the-test">
+<span id="mockactioncontext-testing-run"></span><h5>Running the Test<a class="headerlink" href="#running-the-test" title="Permalink to this headline">¶</a></h5>
+<p>Finally, run the expectation by call the <tt class="docutils literal"><span class="pre">verify</span></tt> method from the
+<tt class="docutils literal"><span class="pre">MockActionContext</span></tt> object as seen here:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">ac</span><span class="p">.</span><span class="nx">verify</span><span class="p">();</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Expectations for addons, models, and extras will be be verified
+automatically when you call the main <tt class="docutils literal"><span class="pre">verify</span></tt> function from the
+<tt class="docutils literal"><span class="pre">MockActionContext</span></tt> object.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="example-expectations">
+<span id="mockac-testing-expectations-ex"></span><h3>Example Expectations<a class="headerlink" href="#example-expectations" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="passing-multiple-expectation-objects">
+<span id="testing-expectations-ex-pass-objs"></span><h4>Passing Multiple expectation Objects<a class="headerlink" href="#passing-multiple-expectation-objects" title="Permalink to this headline">¶</a></h4>
+<p>You can pass many <tt class="docutils literal"><span class="pre">expectation</span></tt> objects to the <tt class="docutils literal"><span class="pre">expect</span></tt> method:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">ac</span><span class="p">.</span><span class="nx">assets</span><span class="p">.</span><span class="nx">expect</span><span class="p">({</span>
+  <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;preLoadImages&#39;</span><span class="p">,</span>
+  <span class="nx">args</span><span class="o">:</span> <span class="p">[</span><span class="nx">YUITest</span><span class="p">.</span><span class="nx">Mock</span><span class="p">.</span><span class="nx">Value</span><span class="p">.</span><span class="nb">Object</span><span class="p">],</span>
+  <span class="nx">run</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">arr</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">OA</span><span class="p">.</span><span class="nx">areEqual</span><span class="p">([</span><span class="s1">&#39;thepath&#39;</span><span class="p">,</span><span class="s1">&#39;thepath&#39;</span><span class="p">],</span> <span class="nx">arr</span><span class="p">);</span>
+  <span class="p">},</span>
+  <span class="nx">callCount</span><span class="o">:</span> <span class="mi">1</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;getUrl&#39;</span><span class="p">,</span>
+    <span class="nx">args</span><span class="o">:</span> <span class="p">[</span><span class="nx">YUITest</span><span class="p">.</span><span class="nx">Mock</span><span class="p">.</span><span class="nx">Value</span><span class="p">.</span><span class="nb">String</span><span class="p">],</span>
+    <span class="nx">returns</span><span class="o">:</span> <span class="s1">&#39;thepath&#39;</span><span class="p">,</span>
+    <span class="nx">callCount</span><span class="o">:</span> <span class="mi">3</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;addCss&#39;</span><span class="p">,</span>
+    <span class="nx">args</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;thepath&#39;</span><span class="p">]</span>
+  <span class="p">}</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="chaining-expect-methods">
+<span id="testing-expectations-ex-chain-methods"></span><h4>Chaining expect Methods<a class="headerlink" href="#chaining-expect-methods" title="Permalink to this headline">¶</a></h4>
+<p>You can also chain <tt class="docutils literal"><span class="pre">expect</span></tt> methods:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">ac</span><span class="p">.</span><span class="nx">assets</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span>
+  <span class="p">{</span>
+    <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;preLoadImages&#39;</span><span class="p">,</span>
+    <span class="nx">args</span><span class="o">:</span> <span class="p">[</span><span class="nx">YUITest</span><span class="p">.</span><span class="nx">Mock</span><span class="p">.</span><span class="nx">Value</span><span class="p">.</span><span class="nb">Object</span><span class="p">],</span>
+    <span class="nx">run</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">arr</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">OA</span><span class="p">.</span><span class="nx">areEqual</span><span class="p">([</span><span class="s1">&#39;thepath&#39;</span><span class="p">,</span><span class="s1">&#39;thepath&#39;</span><span class="p">],</span> <span class="nx">arr</span><span class="p">);</span>
+    <span class="p">},</span>
+    <span class="nx">callCount</span><span class="o">:</span> <span class="mi">1</span>
+  <span class="p">}).</span><span class="nx">expect</span><span class="p">({</span>
+    <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;getUrl&#39;</span><span class="p">,</span>
+    <span class="nx">args</span><span class="o">:</span> <span class="p">[</span><span class="nx">YUITest</span><span class="p">.</span><span class="nx">Mock</span><span class="p">.</span><span class="nx">Value</span><span class="p">.</span><span class="nb">String</span><span class="p">],</span>
+    <span class="nx">returns</span><span class="o">:</span> <span class="s1">&#39;thepath&#39;</span><span class="p">,</span>
+    <span class="nx">callCount</span><span class="o">:</span> <span class="mi">3</span>
+  <span class="p">}).</span><span class="nx">expect</span><span class="p">({</span>
+    <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;addCss&#39;</span><span class="p">,</span>
+    <span class="nx">args</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;thepath&#39;</span><span class="p">]</span>
+  <span class="p">});</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="mocking-addons">
+<span id="mock-addons"></span><h3>Mocking Addons<a class="headerlink" href="#mocking-addons" title="Permalink to this headline">¶</a></h3>
+<p>To use the MockActionContext object to test different addons, you specify
+the namespaces of the addons within the <tt class="docutils literal"><span class="pre">MockActionContext</span></tt> constructor:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">ac</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">mojito</span><span class="p">.</span><span class="nx">MockActionContext</span><span class="p">({</span>
+  <span class="nx">addons</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;intl&#39;</span><span class="p">,</span> <span class="s1">&#39;assets&#39;</span><span class="p">]</span>
+<span class="p">});</span>
+<span class="nx">ac</span><span class="p">.</span><span class="nx">intl</span><span class="p">.</span><span class="nx">expect</span><span class="p">({</span>
+  <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;lang&#39;</span><span class="p">,</span>
+  <span class="nx">args</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;UPDATING&#39;</span><span class="p">],</span>
+  <span class="nx">returns</span><span class="o">:</span> <span class="s1">&#39;updating, yo&#39;</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+<div class="section" id="mocking-custom-addons">
+<span id="mock-custom-addons"></span><h4>Mocking Custom Addons<a class="headerlink" href="#mocking-custom-addons" title="Permalink to this headline">¶</a></h4>
+<p>To create a custom addon that contains functions within a property, you might
+have an addon that is used in the following way:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">ac</span><span class="p">.</span><span class="nx">customAddon</span><span class="p">.</span><span class="nx">params</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;key&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>To test the addon, you pass the <tt class="docutils literal"><span class="pre">addons</span></tt> array with a list of the addons
+you want to test to the <tt class="docutils literal"><span class="pre">MockActionContext</span></tt> constructor as seen below:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">ac</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">mojito</span><span class="p">.</span><span class="nx">MockActionContext</span><span class="p">(</span>
+  <span class="p">{</span>
+    <span class="nx">addons</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;customAddon&#39;</span><span class="p">],</span>
+    <span class="nx">extras</span><span class="o">:</span> <span class="p">{</span> <span class="nx">customAddon</span><span class="o">:</span> <span class="s1">&#39;params&#39;</span><span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+<p>This will give you a mock object at <tt class="docutils literal"><span class="pre">ac.customAddon.params</span></tt> from which you can
+call <tt class="docutils literal"><span class="pre">expect</span></tt>.</p>
+</div>
+<div class="section" id="mocking-models">
+<span id="mock-models"></span><h4>Mocking Models<a class="headerlink" href="#mocking-models" title="Permalink to this headline">¶</a></h4>
+<p>To test models with the <tt class="docutils literal"><span class="pre">MockActionContext</span></tt> object, you pass the <tt class="docutils literal"><span class="pre">models</span></tt>
+array with the model YUI modules as is done with addons:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">ac</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">mojito</span><span class="p">.</span><span class="nx">MockActionContext</span><span class="p">(</span>
+  <span class="p">{</span>
+    <span class="nx">addons</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;intl&#39;</span><span class="p">,</span> <span class="s1">&#39;params&#39;</span><span class="p">],</span>
+    <span class="nx">models</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;foo&#39;</span><span class="p">]</span>
+  <span class="p">}</span>
+<span class="p">);</span>
+<span class="nx">ac</span><span class="p">.</span><span class="nx">models</span><span class="p">.</span><span class="nx">foo</span><span class="p">.</span><span class="nx">expect</span><span class="p">(</span>
+  <span class="p">{</span>
+    <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;getData&#39;</span><span class="p">,</span>
+    <span class="nx">args</span><span class="o">:</span> <span class="p">[</span><span class="nx">YUITest</span><span class="p">.</span><span class="nx">Mock</span><span class="p">.</span><span class="nx">Value</span><span class="p">.</span><span class="nb">Object</span><span class="p">,</span>
+    <span class="nx">YUITest</span><span class="p">.</span><span class="nx">Mock</span><span class="p">.</span><span class="nx">Value</span><span class="p">.</span><span class="nb">Function</span><span class="p">],</span>
+    <span class="nx">run</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">prms</span><span class="p">,</span> <span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">cb</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="p">{</span><span class="nx">my</span><span class="o">:</span> <span class="s1">&#39;data&#39;</span><span class="p">});</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="example-mockaction-test">
+<span id="mock-addons-ex"></span><h3>Example MockAction Test<a class="headerlink" href="#example-mockaction-test" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="controller-server-js">
+<span id="mock-addons-ex-controller"></span><h4>controller.server.js<a class="headerlink" href="#controller-server-js" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;myMojit&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="p">,</span> <span class="nx">NAME</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">Y</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="s1">&#39;mojito.controllers&#39;</span><span class="p">)[</span><span class="nx">NAME</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">index</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">ac</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">ac</span><span class="p">.</span><span class="nx">done</span><span class="p">({</span>
+           <span class="nx">status</span><span class="o">:</span> <span class="s1">&#39;Mojito is working.&#39;</span><span class="p">,</span>
+        <span class="p">});</span>
+      <span class="p">}</span>
+    <span class="p">};</span>
+<span class="p">},</span> <span class="s1">&#39;0.0.1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;mojito&#39;</span><span class="p">,</span> <span class="s1">&#39;myMojitModelFoo&#39;</span><span class="p">]});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="controller-server-tests-js">
+<span id="mock-addons-ex-controller-test"></span><h4>controller.server-tests.js<a class="headerlink" href="#controller-server-tests-js" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;tester-tests&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">suite</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">YUITest</span><span class="p">.</span><span class="nx">TestSuite</span><span class="p">(</span><span class="s1">&#39;tester-tests&#39;</span><span class="p">),</span>
+      <span class="nx">controller</span> <span class="o">=</span> <span class="kc">null</span><span class="p">,</span>
+      <span class="nx">A</span> <span class="o">=</span> <span class="nx">YUITest</span><span class="p">.</span><span class="nx">Assert</span><span class="p">;</span>
+
+  <span class="nx">suite</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="k">new</span> <span class="nx">YUITest</span><span class="p">.</span><span class="nx">TestCase</span><span class="p">({</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;tester user tests&#39;</span><span class="p">,</span>
+    <span class="nx">setUp</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="nx">controller</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">mojito</span><span class="p">.</span><span class="nx">controllers</span><span class="p">.</span><span class="nx">tester</span><span class="p">;</span>
+    <span class="p">},</span>
+    <span class="nx">tearDown</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="nx">controller</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;test mojit&#39;</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">ac</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">mojito</span><span class="p">.</span><span class="nx">MockActionContext</span><span class="p">({});</span>
+      <span class="nx">A</span><span class="p">.</span><span class="nx">isNotNull</span><span class="p">(</span><span class="nx">controller</span><span class="p">);</span>
+      <span class="nx">A</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">controller</span><span class="p">.</span><span class="nx">index</span><span class="p">);</span>
+      <span class="nx">ac</span><span class="p">.</span><span class="nx">expect</span><span class="p">({</span>
+        <span class="nx">method</span><span class="o">:</span> <span class="s1">&#39;done&#39;</span><span class="p">,</span>
+        <span class="nx">args</span><span class="o">:</span> <span class="p">[</span><span class="nx">YUITest</span><span class="p">.</span><span class="nx">Mock</span><span class="p">.</span><span class="nx">Value</span><span class="p">.</span><span class="nb">Object</span><span class="p">],</span>
+        <span class="nx">callCount</span><span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="nx">run</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">data</span><span class="p">){</span>
+          <span class="nx">YUITest</span><span class="p">.</span><span class="nx">ObjectAssert</span><span class="p">.</span><span class="nx">areEqual</span><span class="p">({</span> <span class="nx">status</span><span class="o">:</span> <span class="s1">&#39;Mojito is working.&#39;</span> <span class="p">},</span><span class="nx">data</span><span class="p">);</span>
+        <span class="p">}</span>
+      <span class="p">});</span>
+      <span class="nx">controller</span><span class="p">.</span><span class="nx">index</span><span class="p">(</span><span class="nx">ac</span><span class="p">);</span>
+      <span class="nx">ac</span><span class="p">.</span><span class="nx">verify</span><span class="p">();</span>
+    <span class="p">}</span>
+  <span class="p">}));</span>
+  <span class="nx">YUITest</span><span class="p">.</span><span class="nx">TestRunner</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">suite</span><span class="p">);</span>
+<span class="p">},</span> <span class="s1">&#39;0.0.1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;mojito-test&#39;</span><span class="p">,</span> <span class="s1">&#39;myMojit&#39;</span><span class="p">]});</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="model-tests">
+<span id="mojito-testing-models"></span><h2>Model Tests<a class="headerlink" href="#model-tests" title="Permalink to this headline">¶</a></h2>
+<p>Model tests are largely the same as controller tests, except there can be
+many of them. The model tests are placed in the <tt class="docutils literal"><span class="pre">tests/models</span></tt> directory.
+You can create multiple model tests or use <tt class="docutils literal"><span class="pre">models.common-tests.js</span></tt> to test
+both server and client models.</p>
+<div class="section" id="mojito-testing-models-ex">
+<span id="id1"></span><h3>Example<a class="headerlink" href="#mojito-testing-models-ex" title="Permalink to this headline">¶</a></h3>
+<p>The <tt class="docutils literal"><span class="pre">model.server.js</span></tt> below includes the <tt class="docutils literal"><span class="pre">FooModel</span></tt> module.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;FooModel&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="p">,</span> <span class="nx">NAME</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">Y</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="s1">&#39;mojito.models&#39;</span><span class="p">)[</span><span class="nx">NAME</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">getData</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">callback</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">callback</span><span class="p">({</span><span class="nx">some</span><span class="o">:</span><span class="s1">&#39;data&#39;</span><span class="p">});</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+<span class="p">},</span> <span class="s1">&#39;0.0.1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[]});</span>
+</pre></div>
+</div>
+<p>The <tt class="docutils literal"><span class="pre">tests/models/models.common-tests.js</span></tt> test below includes the
+<tt class="docutils literal"><span class="pre">FooModel-tests</span></tt> module and the <tt class="docutils literal"><span class="pre">requires</span></tt> array contains the <tt class="docutils literal"><span class="pre">FooModel</span></tt>
+module.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;FooModel-tests&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="p">,</span> <span class="nx">NAME</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">suite</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">YUITest</span><span class="p">.</span><span class="nx">TestSuite</span><span class="p">(</span><span class="nx">NAME</span><span class="p">),</span>
+  <span class="nx">model</span> <span class="o">=</span> <span class="kc">null</span><span class="p">,</span>
+  <span class="nx">A</span> <span class="o">=</span> <span class="nx">YUITest</span><span class="p">.</span><span class="nx">Assert</span><span class="p">;</span>
+  <span class="nx">suite</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="k">new</span> <span class="nx">YUITest</span><span class="p">.</span><span class="nx">TestCase</span><span class="p">({</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Foo model tests&#39;</span><span class="p">,</span>
+    <span class="nx">setUp</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="nx">model</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">mojito</span><span class="p">.</span><span class="nx">models</span><span class="p">.</span><span class="nx">FooModel</span><span class="p">;</span>
+    <span class="p">},</span>
+    <span class="nx">tearDown</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="nx">model</span> <span class="o">=</span> <span class="kc">null</span><span class="p">;</span>
+    <span class="p">},</span>
+    <span class="s1">&#39;test mojit model&#39;</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="nx">A</span><span class="p">.</span><span class="nx">isNotNull</span><span class="p">(</span><span class="nx">model</span><span class="p">);</span>
+      <span class="nx">A</span><span class="p">.</span><span class="nx">isFunction</span><span class="p">(</span><span class="nx">model</span><span class="p">.</span><span class="nx">getData</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}));</span>
+  <span class="nx">YUITest</span><span class="p">.</span><span class="nx">TestRunner</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">suite</span><span class="p">);</span>
+<span class="p">},</span> <span class="s1">&#39;0.0.1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;mojito-test&#39;</span><span class="p">,</span> <span class="s1">&#39;FooModel&#39;</span><span class="p">]});</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="mojito-built-in-functional-unit-tests">
+<span id="moj-tests-func-unit"></span><h2>Mojito Built-In Functional/Unit Tests<a class="headerlink" href="#mojito-built-in-functional-unit-tests" title="Permalink to this headline">¶</a></h2>
+<p>Mojito&#8217;s built-in functional and unit tests are intended for use by Mojito contributors.
+Because this developer guide contains documentation intended for Mojito application developers,
+we have moved the instructions for running the built-in tests to the wiki
+<a class="reference external" href="https://github.com/yahoo/mojito/wiki/Mojito-Framework's-Unit-and-Functional-Tests">Mojito Framework&#8217;s Unit and Functional Tests</a>.</p>
+</div>
+</div>
+
+   </div>
+

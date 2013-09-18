@@ -1,0 +1,741 @@
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+     <title>Configuring YUI in Mojito</title>
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '',
+        COLLAPSE_INDEX: true,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+   </head> 
+
+     <div class="header"><h1 class="heading"><a href="#">
+          <span>Mojito</span></a></h1>
+      </div>
+      <div class="topnav">
+        <p>
+        <a class="uplink" href="../">Mojito Documentation</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="../index.html" title="Mojito">Mojito</a>
+        &#160;&#160;::&#160;&#160;
+        
+           <a href="mojito_using_contexts.html">Using Context Configurations</a>
+        &#160;&#160;::&#160;&#160;
+        
+        
+           <a href="mojito_npm.html">Mojito and npm Packaging</a>
+        
+        </p>
+
+      </div>
+      <div class="content">
+   <div class="section" id="configuring-yui-in-mojito">
+<h1>Configuring YUI in Mojito<a class="headerlink" href="#configuring-yui-in-mojito" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<span id="yui-config-intro"></span><h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>Mojito allows you to configure the YUI seed file and use YUI groups for dynamically
+loading modules in applications. By customizing YUI configuration in Mojito,
+you have finer grain control over the modules included in the seed
+and the combo handler used for dynamically loading YUI modules. Developers
+can also just use Mojito&#8217;s default YUI configurations, which are optimized
+for improved performance.</p>
+<div class="section" id="benefits-of-customizing-yui-configuration">
+<span id="yui-config-intro-benefits"></span><h3>Benefits of Customizing YUI Configuration<a class="headerlink" href="#benefits-of-customizing-yui-configuration" title="Permalink to this headline">¶</a></h3>
+<p>Developers can customize YUI configuration in Mojito applications
+to do the following:</p>
+<ul class="simple">
+<li>select which YUI modules are included in the YUI seed file</li>
+<li>configure the combo handler to use a CDN</li>
+<li>optimize performance for environments that may have latency issues
+or have limited CPU power</li>
+<li>limit the loading of certain YUI modules for specific languages</li>
+</ul>
+</div>
+</div>
+<div class="section" id="yui-seed-file">
+<span id="yui-config-seed"></span><h2>YUI Seed File<a class="headerlink" href="#yui-seed-file" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="seed-file-in-yui-applications">
+<span id="seed-yui"></span><h3>Seed File in YUI Applications<a class="headerlink" href="#seed-file-in-yui-applications" title="Permalink to this headline">¶</a></h3>
+<p>To use YUI in Web pages, you include a small JavaScript file called the
+YUI seed file. The YUI seed file allows you to load other YUI components on your page.
+The seed file is added to your Web page by with following <tt class="docutils literal"><span class="pre">&lt;script&gt;</span></tt> tag.</p>
+<p><tt class="docutils literal"><span class="pre">&lt;script</span> <span class="pre">src=&quot;http://yui.yahooapis.com/3.8.0/build/yui/yui-min.js&quot;&gt;&lt;/script&gt;</span></tt></p>
+<p>From the URL to the seed file, the YUI library can infer the version of the library that
+should be used, the filter that you want to use (min, debug or raw), and the CDN that is
+serving the library.</p>
+</div>
+<div class="section" id="seed-file-in-mojito-applications">
+<span id="seed-mojito"></span><h3>Seed File in Mojito Applications<a class="headerlink" href="#seed-file-in-mojito-applications" title="Permalink to this headline">¶</a></h3>
+<p>In Mojito applications, the YUI seed is configured in <tt class="docutils literal"><span class="pre">application.json</span></tt> rather than
+including a <tt class="docutils literal"><span class="pre">&lt;script&gt;</span></tt> tag in templates. Thus, the information inferred from
+the URL to the YUI seed file in YUI applications is instead provided
+in the <tt class="docutils literal"><span class="pre">yui.config.seed</span></tt> object of <tt class="docutils literal"><span class="pre">application.json</span></tt>.
+We will look at <tt class="docutils literal"><span class="pre">yui.config.seed</span></tt> in <a class="reference internal" href="#seed-configure"><em>Configuration of the Seed File</em></a>.</p>
+<p>Mojito uses configuration for the YUI seed because of the following reasons:</p>
+<ul class="simple">
+<li>The YUI library is bundled with the application using npm, so loading
+modules is done differently.</li>
+<li>Mojito applications may run as mobile applications that have connectivity
+issues preventing access to the YUI seed file.</li>
+<li>When applications are started, new YUI modules, part of the Mojito code, and part of the
+application code are loaded in the same way as the YUI Core modules, so
+it is difficult to simply include the YUI seed file in a template.</li>
+</ul>
+<div class="section" id="mojito-s-default-seed-file">
+<span id="seed-default"></span><h4>Mojito&#8217;s Default Seed File<a class="headerlink" href="#mojito-s-default-seed-file" title="Permalink to this headline">¶</a></h4>
+<p>Mojito creates a default configuration for the YUI seed, so most users do not
+need to configure the YUI seed as the default configuration is sufficient.
+Developers who want finer grain control over the loader for performance
+optimization should consider customizing the configuration for the YUI seed.</p>
+</div>
+</div>
+</div>
+<div class="section" id="configuration-of-the-mojito-seed-file">
+<span id="seed-configure"></span><h2>Configuration of the Mojito Seed File<a class="headerlink" href="#configuration-of-the-mojito-seed-file" title="Permalink to this headline">¶</a></h2>
+<p>Starting from Mojito v0.5.0, developers can configure the YUI seed
+using the <tt class="docutils literal"><span class="pre">yui.config.seed</span></tt> object in <tt class="docutils literal"><span class="pre">application.json</span></tt> file.</p>
+<p>In the example <tt class="docutils literal"><span class="pre">application.json</span></tt> below, the YUI seed includes
+the modules specified in the <tt class="docutils literal"><span class="pre">seed</span></tt> object.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;settings&quot;</span><span class="o">:</span> <span class="p">[</span> <span class="s2">&quot;master&quot;</span> <span class="p">],</span>
+    <span class="s2">&quot;yui&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;config&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;seed&quot;</span><span class="o">:</span> <span class="p">[</span>
+          <span class="s2">&quot;yui-base&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;loader-base&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;loader-yui3&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;loader-app&quot;</span>
+        <span class="p">]</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>If your application has language bundles, Mojito will also auto-generate language versions
+of the <tt class="docutils literal"><span class="pre">loader-app</span></tt> module (e.g, <tt class="docutils literal"><span class="pre">loader-app_en-US</span></tt>). The <tt class="docutils literal"><span class="pre">loader-app</span></tt> module and
+its language versions are synthetic modules, which are different than
+the other modules in the example <tt class="docutils literal"><span class="pre">application.json</span></tt> above that are just YUI Core modules.
+We will discuss the differences in more detail in
+<a class="reference internal" href="#seed-configure-modules"><em>Synthetic Modules in Mojito</em></a>.</p>
+<div class="section" id="what-modules-should-be-in-the-seed">
+<span id="seed-configure-modules"></span><h3>What Modules Should Be in the Seed?<a class="headerlink" href="#what-modules-should-be-in-the-seed" title="Permalink to this headline">¶</a></h3>
+<p>When including modules as part of the seed, developers need to decide
+which modules are critical and understand what modules are available to
+Mojito applications. In theory, all YUI modules that are part of Mojito core, YUI core,
+and your application can be part of the seed. You can also add non-core YUI modules to
+be part of the seed, but we recommend that you don&#8217;t unless you have a strong reason to
+do so because the seed file should be as small as possible.</p>
+<p>In addition, Mojito generates a few more virtual files (in memory, not actual physical
+files) that we will call <em>synthetic</em> modules, which you can also include in the <tt class="docutils literal"><span class="pre">seed</span></tt>
+object. We will discuss synthetic modules and how to use them next.</p>
+</div>
+<div class="section" id="synthetic-modules-in-mojito">
+<span id="seed-configure-synthetic"></span><h3>Synthetic Modules in Mojito<a class="headerlink" href="#synthetic-modules-in-mojito" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="what-are-synthetic-modules">
+<span id="synthetic-mods-what"></span><h4>What Are Synthetic Modules?<a class="headerlink" href="#what-are-synthetic-modules" title="Permalink to this headline">¶</a></h4>
+<p>When you run <tt class="docutils literal"><span class="pre">mojito</span> <span class="pre">start</span></tt> or use an alternative way to boot your application,
+the Mojito store analyzes the directory structure and dependencies to try to understand the
+structure and then make assumptions. From this analysis, the synthetic modules
+create application metadata that can be used by YUI Loader to load the application and
+Mojito modules on demand. Without this metadata, the application cannot function.</p>
+<p>Synthetic modules are not physical files. If you need
+to generate physical files for a CDN from the synthetic modules, you can
+use <a class="reference external" href="http://developer.yahoo.com/cocktails/shaker/">Shaker</a>.
+For production, we recommend using Shaker, especially in the case that your mojits contain
+language resource bundles.</p>
+</div>
+<div class="section" id="base-and-resolved-synthetic-modules">
+<span id="synthetic-mods-base-resolved"></span><h4>Base and Resolved Synthetic Modules<a class="headerlink" href="#base-and-resolved-synthetic-modules" title="Permalink to this headline">¶</a></h4>
+<p>Synthetic modules can have <em>base</em> and <em>resolved</em> versions. The <strong>base</strong> synthetic
+modules have the suffix <tt class="docutils literal"><span class="pre">-base</span></tt>, and the <strong>resolved</strong> synthetic modules have the suffix
+<tt class="docutils literal"><span class="pre">-resolved</span></tt>.</p>
+<p>In general, the base synthetic modules contain basic metadata that
+is consumed and processed recursively by the YUI Loader on the client
+to generate the file(s) needed to be loaded when a particular module is used.</p>
+<p>The resolved synthetic modules have the expanded metadata, so no
+process is needed to determine which file(s) need to be loaded when a
+particular module is used.</p>
+<p>The base synthetic module requires less memory than the resolved synthetic module,
+but requires more CPU power to process because the YUI loader has to recursively
+consume and process metadata. The resolved synthetic module, in contrast, requires
+more memory but less CPU power because the metadata is expanded.
+See the <a class="reference external" href="http://yuilibrary.com/yui/docs/api/classes/Loader.html#method_resolve">resolve</a>
+method of the <a class="reference external" href="http://yuilibrary.com/yui/docs/api/classes/Loader.html">Loader</a>
+class in the YUI API documentation for more information.</p>
+<p>When using resolved synthetic modules, your application is restricted to using
+YUI Core modules that are required in Mojito or application modules.
+For example, if the YUI Core modules <tt class="docutils literal"><span class="pre">autocomplete-list</span></tt> is not required by
+a binder, controller, module, or any other custom YUI module in your application,
+Mojito will assume that the <tt class="docutils literal"><span class="pre">autocomplete-list</span></tt> metadata is not really needed
+and will not include it in the resolved metadata to keep the size of the
+expanded metadata as small as possible. This is important if you have integration
+tests or functional tests that are meant to inject dynamic modules and dependencies,
+or if you have custom <tt class="docutils literal"><span class="pre">Y.use</span></tt> statements that are not controlled by Mojito.</p>
+</div>
+<div class="section" id="synthetic-modules-for-multiple-languages">
+<span id="synthetic-mods-mult-langs"></span><h4>Synthetic Modules for Multiple Languages<a class="headerlink" href="#synthetic-modules-for-multiple-languages" title="Permalink to this headline">¶</a></h4>
+<p>Your application can run in multiple languages, but you should not load all available
+language bundles in the client runtime for performance reasons. Instead, you can use
+synthetic modules to load modules based on the languages specified in the request
+information and the user preferences. Mojito will locate the corresponding synthetic
+module name based on the language context.</p>
+<div class="section" id="restrictions">
+<span id="synthetic-mult-langs-restriction"></span><h5>Restrictions<a class="headerlink" href="#restrictions" title="Permalink to this headline">¶</a></h5>
+<p>Not all synthetic modules can be customized per language.
+Only <strong>base</strong> and <strong>resolved</strong> synthetic modules can have language versions.
+Also, the default synthetic modules, such as <tt class="docutils literal"><span class="pre">loader-app</span></tt>,
+always exists, so, if no language is specified, but many language resource bundles
+exist for a mojit, then the default synthetic module will load the metadata for all of
+the modules. If an application has multiple mojits each with dozens of language bundles,
+the amount of metadata can be considerable.</p>
+</div>
+</div>
+<div class="section" id="creation-of-synthetic-files">
+<span id="synthetic-mods-create"></span><h4>Creation of Synthetic Files<a class="headerlink" href="#creation-of-synthetic-files" title="Permalink to this headline">¶</a></h4>
+<p>In terms of extending Mojito&#8217;s functionality, if you create a Resource Store addon, you
+can create new synthetic modules and control the seed generation by piping into
+<a class="reference external" href="http://developer.yahoo.com/cocktails/mojito/api/classes/RSAddonYUI.html#method_getAppSeedFiles">getAppSeedFiles</a>
+method of the <a class="reference external" href="http://developer.yahoo.com/cocktails/mojito/api/classes/RSAddonYUI.html">RSAddonYUI Class</a>.</p>
+</div>
+</div>
+<div class="section" id="performance-optimization">
+<span id="seed-configure-optimize-perf"></span><h3>Performance Optimization<a class="headerlink" href="#performance-optimization" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="default-application-optimization">
+<span id="optimize-perf-default"></span><h4>Default Application Optimization<a class="headerlink" href="#default-application-optimization" title="Permalink to this headline">¶</a></h4>
+<p>In mobile and applications requiring high performance, relying on the YUI Loader to compute
+and resolve dependencies recursively could drastically affect the
+boot time. For that, Mojito is smart enough to use
+<a class="reference external" href="http://yuilibrary.com/yui/docs/api/classes/Loader.html#method_resolve]">Y.Loader-&gt;resolve</a>
+to expand the loader application metadata, which is considerable larger than the regular
+metadata computed through <tt class="docutils literal"><span class="pre">loader-app-base_{lang_tag}</span></tt>.</p>
+</div>
+<div class="section" id="minimize-the-size-of-the-seed-file">
+<span id="optimize-perf-seed-size"></span><h4>Minimize the Size of the Seed File<a class="headerlink" href="#minimize-the-size-of-the-seed-file" title="Permalink to this headline">¶</a></h4>
+<p>Only include critical modules in the seed. Mojito can load other
+required modules later.</p>
+</div>
+<div class="section" id="use-synthetic-modules-for-yui-core-modules">
+<span id="optimize-perf-synth-mods"></span><h4>Use Synthetic Modules for YUI Core Modules<a class="headerlink" href="#use-synthetic-modules-for-yui-core-modules" title="Permalink to this headline">¶</a></h4>
+<p>Mojito already has default optimization for application metadata, but you
+can use base and synthetic modules to optimize performance for YUI Core modules
+as well.</p>
+<p>In the <tt class="docutils literal"><span class="pre">application.json</span></tt> below, a resolved synthetic module is
+used to optimize the YUI Core module <tt class="docutils literal"><span class="pre">loader-yui3</span></tt>.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;settings&quot;</span><span class="o">:</span> <span class="p">[</span> <span class="s2">&quot;master&quot;</span> <span class="p">],</span>
+    <span class="s2">&quot;yui&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;config&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;seed&quot;</span><span class="o">:</span> <span class="p">[</span>
+          <span class="s2">&quot;yui-base&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;loader-base&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;loader-yui3-resolved&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;loader-app&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;loader-app-resolved&quot;</span>
+        <span class="p">]</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="use-base-synthetic-modules-to-reduce-latency-and-memory">
+<span id="optimize-perf-base-synth"></span><h4>Use Base Synthetic Modules to Reduce Latency and Memory<a class="headerlink" href="#use-base-synthetic-modules-to-reduce-latency-and-memory" title="Permalink to this headline">¶</a></h4>
+<p>The base synthetic modules are small, making them ideal for applications that
+may have connectivity issues. You should also take into consideration that
+your application will require more CPU power when using base synthetic modules.
+For desktop applications, when you have more CPU power, you should use
+base synthetic modules.</p>
+</div>
+<div class="section" id="use-resolved-synthetic-modules-to-use-less-cpu-power">
+<span id="optimize-perf-resolved-synth"></span><h4>Use Resolved Synthetic Modules to Use Less CPU Power<a class="headerlink" href="#use-resolved-synthetic-modules-to-use-less-cpu-power" title="Permalink to this headline">¶</a></h4>
+<p>Resolved synthetic modules require less CPU power because they do not require recursive
+computation as the computation was already done at the server side. The size of the
+resolved synthetic module in memory, however, is much larger than
+the base synthetic module. For mobile devices, which have less CPU power, you
+should use resolved synthetic modules.</p>
+</div>
+<div class="section" id="use-contexts-to-customize-seed-to-runtime-environment">
+<span id="optimize-perf-contexts"></span><h4>Use Contexts to Customize Seed to Runtime Environment<a class="headerlink" href="#use-contexts-to-customize-seed-to-runtime-environment" title="Permalink to this headline">¶</a></h4>
+<p>Contexts allow you to have different configurations for different runtime environments.
+As we have discussed, base synthetic modules are better suited for desktop applications
+because of the high demand for CPU power, while resolved synthetic modules are better
+suited for mobile devices that do not have as much CPU power. With context configurations,
+you can configure the runtime to use the better suited synthetic module.</p>
+<p>In this example <tt class="docutils literal"><span class="pre">application.json</span></tt>, the context <tt class="docutils literal"><span class="pre">device:iphone</span></tt> uses
+a resolved synthetic module that expands metadata to reduce the CPU power
+needed by iPhone clients.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;settings&quot;</span><span class="o">:</span> <span class="p">[</span> <span class="s2">&quot;master&quot;</span> <span class="p">],</span>
+    <span class="s2">&quot;yui&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;config&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;seed&quot;</span><span class="o">:</span> <span class="p">[</span>
+          <span class="s2">&quot;yui-base&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;loader-base&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;loader-yui3&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;loader-app&quot;</span>
+        <span class="p">]</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;settings&quot;</span><span class="o">:</span> <span class="p">[</span> <span class="s2">&quot;device:iphone&quot;</span> <span class="p">],</span>
+    <span class="s2">&quot;yui&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;config&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;seed&quot;</span><span class="o">:</span> <span class="p">[</span>
+          <span class="s2">&quot;yui-base&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;loader-base&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;loader-yui3&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;loader-app&quot;</span>
+        <span class="p">]</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="getting-yui-to-your-application">
+<span id="yui-getting-to-app"></span><h2>Getting YUI to Your Application<a class="headerlink" href="#getting-yui-to-your-application" title="Permalink to this headline">¶</a></h2>
+<p>Your application can use the methods and any combination of
+the methods below to load YUI modules.</p>
+<ul class="simple">
+<li>Use the YUI version that comes with Mojito.</li>
+<li>Get YUI from the YUI CDN.</li>
+<li>Use a custom CDN to serve YUI.</li>
+<li>Bundle YUI with the application and configure your application to use it.</li>
+</ul>
+<p>In the following sections, we&#8217;ll discuss the methods above, list the pros and
+cons of each, and provide an example application configuration.</p>
+<p>To better understand how to configure YUI in Mojito, we also recommend that you
+refer to documentation for the configuration object
+<a class="reference external" href="../intro/mojito_configuring.html#yui-conf">yui.config</a>, which provides descriptions
+as well as possible and default values of its properties.</p>
+<div class="section" id="using-the-yui-version-bundled-with-mojito">
+<span id="serving-to-app-yui-with-mojito"></span><h3>Using the YUI Version Bundled with Mojito<a class="headerlink" href="#using-the-yui-version-bundled-with-mojito" title="Permalink to this headline">¶</a></h3>
+<p>Mojito comes with YUI, so developers don&#8217;t need to worry about getting
+YUI or which version to use. Using the bundled YUI version also allows Mojito applications
+to load YUI modules more quickly and efficiently. Developers can use the default
+configurations, and thus, not need to do any configuration, or configure Mojito to
+include specific YUI modules to be part of the seed. In either case, Mojito will combo
+handle the modules in the seed, so that only one HTTP request is needed.</p>
+<p>Before looking at the default configurations or configuring Mojito to include specific
+modules in the seed, let&#8217;s look at the pros and cons of using the YUI version bundled
+with Mojito.</p>
+<div class="section" id="pros">
+<span id="yui-with-mojito-pros-cons"></span><h4>Pros<a class="headerlink" href="#pros" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>The default configuration is optimized, so developers don&#8217;t need to provide any
+additional configuration.</li>
+<li>Mojito will handle the combo handling for you, so only one HTTP request is needed
+to fetch the YUI modules.</li>
+</ul>
+</div>
+<div class="section" id="cons">
+<span id="yui-with-mojito-cons"></span><h4>Cons<a class="headerlink" href="#cons" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>You are limited to using the YUI version bundled with Mojito.</li>
+</ul>
+</div>
+<div class="section" id="default-configuration">
+<span id="yui-with-mojito-default"></span><h4>Default Configuration<a class="headerlink" href="#default-configuration" title="Permalink to this headline">¶</a></h4>
+<p>Without setting any YUI configurations with <tt class="docutils literal"><span class="pre">yui.config</span></tt> in <tt class="docutils literal"><span class="pre">application.json</span></tt>,
+Mojito by default will use the configurations below to load the YUI modules <tt class="docutils literal"><span class="pre">yui-base</span></tt>,
+<tt class="docutils literal"><span class="pre">loader-base</span></tt>, and <tt class="docutils literal"><span class="pre">loader-yui3</span></tt> from the version of YUI that comes with Mojito.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;settings&quot;</span><span class="o">:</span> <span class="p">[</span> <span class="s2">&quot;master&quot;</span> <span class="p">],</span>
+    <span class="s2">&quot;yui&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;config&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;seed&quot;</span><span class="o">:</span> <span class="p">[</span>
+          <span class="s2">&quot;yui-base&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;loader-base&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;loader-yui3&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;loader-app&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;loader-app-base{langPath}&quot;</span>
+        <span class="p">]</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <tt class="docutils literal"><span class="pre">loader-app</span></tt> and <tt class="docutils literal"><span class="pre">loader-app-base{langPath}</span></tt> modules are
+<a class="reference internal" href="#seed-configure-synthetic"><em>synthetic module</em></a>
+that loads the information and organizes the Mojito code and modules that your
+application needs, but does not load YUI or affect the loading of YUI.</p>
+</div>
+</div>
+<div class="section" id="specifying-yui-modules">
+<span id="yui-with-mojito-specifying"></span><h4>Specifying YUI Modules<a class="headerlink" href="#specifying-yui-modules" title="Permalink to this headline">¶</a></h4>
+<p>As we mentioned earlier, you can also configure Mojito to load specific modules from the
+YUI version bundled with Mojito by adding the module names to the <tt class="docutils literal"><span class="pre">yui.config.seed</span></tt>
+array.</p>
+<p>The example <tt class="docutils literal"><span class="pre">application.json</span></tt> below configures Mojito to load the YUI
+modules <tt class="docutils literal"><span class="pre">json-parse</span></tt> and <tt class="docutils literal"><span class="pre">json-stringify</span></tt> as well as the default modules.
+Remember though, when you load additional modules, you are increasing the size
+of the seed file and may negatively impact performance.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;settings&quot;</span><span class="o">:</span> <span class="p">[</span> <span class="s2">&quot;master&quot;</span> <span class="p">],</span>
+    <span class="s2">&quot;yui&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;config&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;seed&quot;</span><span class="o">:</span> <span class="p">[</span>
+          <span class="s2">&quot;yui-base&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;loader-base&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;loader-yui3&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;json-parse&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;json-stringify&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;loader-app&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;loader-app-base{langPath}&quot;</span>
+        <span class="p">]</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>Note: modules in <tt class="docutils literal"><span class="pre">seed</span></tt> array will not be expanded, which means that their dependencies will
+not be automatically included until they are used by your application code.</p>
+</div>
+</div>
+<div class="section" id="using-the-yui-cdn">
+<span id="serving-to-app-yui-cdn"></span><h3>Using the YUI CDN<a class="headerlink" href="#using-the-yui-cdn" title="Permalink to this headline">¶</a></h3>
+<p>You can also fetch YUI directly from the YUI CDN by specifying the URLs to the
+version of YUI from the YUI CDN in the <tt class="docutils literal"><span class="pre">seed</span></tt> object.</p>
+<div class="section" id="yui-cdn-pros">
+<span id="id1"></span><h4>Pros<a class="headerlink" href="#yui-cdn-pros" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>By serving YUI from the YUI CDN, you can choose the version of YUI to serve
+and have your application from the client load YUI.</li>
+</ul>
+</div>
+<div class="section" id="yui-cdn-cons">
+<span id="id2"></span><h4>Cons<a class="headerlink" href="#yui-cdn-cons" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Your application will need to make separate HTTP requests to get YUI from the YUI CDN in
+addition to loading <tt class="docutils literal"><span class="pre">loader-app</span></tt> and <tt class="docutils literal"><span class="pre">loader-app-base{langPath}</span></tt> from mojito directly
+to get the application ready.</li>
+</ul>
+</div>
+<div class="section" id="example">
+<span id="yui-cdn-ex"></span><h4>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h4>
+<p>In the example <tt class="docutils literal"><span class="pre">application.json</span></tt> below, the <tt class="docutils literal"><span class="pre">seed</span></tt> array includes the <tt class="docutils literal"><span class="pre">yui-base</span></tt>
+module from the YUI bundled with Mojito and the <tt class="docutils literal"><span class="pre">loader-base</span></tt> and <tt class="docutils literal"><span class="pre">loader-yui3</span></tt> modules
+from the YUI CDN. To serve the YUI modules in the seed, your application will have
+to make two HTTP requests, something you should consider when choosing to get
+modules from the YUI CDN.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;settings&quot;</span><span class="o">:</span> <span class="p">[</span> <span class="s2">&quot;master&quot;</span> <span class="p">],</span>
+    <span class="s2">&quot;yui&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;config&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;seed&quot;</span><span class="o">:</span> <span class="p">[</span>
+          <span class="s2">&quot;http://yui.yahooapis.com/combo?3.8.1/yui-base/yui-base-min.js&amp;3.8.1/loader-base/loader-base-min.js&amp;3.8.1/loader-yui3/loader-yui3-min.js&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;loader-app&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;loader-app-base{langPath}&quot;</span>
+        <span class="p">]</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="using-a-custom-cdn-to-load-yui">
+<span id="serving-to-app-custom-cdn"></span><h3>Using a Custom CDN to Load YUI<a class="headerlink" href="#using-a-custom-cdn-to-load-yui" title="Permalink to this headline">¶</a></h3>
+<p>Using a custom CDN to load YUI is done in the same way as loading YUI from the
+YUI CDN.</p>
+<div class="section" id="custom-cdn-pros">
+<span id="id3"></span><h4>Pros<a class="headerlink" href="#custom-cdn-pros" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>By serving YUI from a custom CDN, you can choose the version of YUI to serve
+and have your application from the client load YUI.</li>
+</ul>
+</div>
+<div class="section" id="custom-cdn-cons">
+<span id="id4"></span><h4>Cons<a class="headerlink" href="#custom-cdn-cons" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>You application need to make separate HTTP requests to get YUI from the YUI CDN and
+any YUI modules from the YUI that comes bundled with Mojito.</li>
+</ul>
+</div>
+<div class="section" id="custom-cdn-ex">
+<span id="id5"></span><h4>Example<a class="headerlink" href="#custom-cdn-ex" title="Permalink to this headline">¶</a></h4>
+<p>In the example below, we simply fetch the YUI seed files from an Amazon S3 over SSL.
+Again, Mojito will make three separate HTTP requests to get the files from the CDN.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;settings&quot;</span><span class="o">:</span> <span class="p">[</span> <span class="s2">&quot;master&quot;</span> <span class="p">],</span>
+    <span class="s2">&quot;yui&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;config&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;seed&quot;</span><span class="o">:</span> <span class="p">[</span>
+          <span class="s2">&quot;https://mybucket.s3.amazonaws.com/my_yui_version/yui-base/yui-base-min.js&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;https://mybucket.s3.amazonaws.com/my_yui_version/yui-base/loader-base-min.js&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;https://mybucket.s3.amazonaws.com/my_yui_version/yui-base/loader-yui3-min.js&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;loader-app&quot;</span><span class="p">,</span>
+          <span class="s2">&quot;loader-app-base{langPath}&quot;</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;gallery&quot;</span><span class="o">:</span> <span class="s2">&quot;gallery-2013.01.16-21-05&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;base&quot;</span><span class="o">:</span> <span class="s2">&quot;http://yui.yahooapis.com/3.8.1/build/&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;comboBase&quot;</span><span class="o">:</span> <span class="s2">&quot;http://yui.yahooapis.com/combo?&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;root&quot;</span><span class="o">:</span> <span class="s2">&quot;3.8.1/build/&quot;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="using-the-yui-bundled-with-your-application">
+<span id="serving-to-app-yui-app"></span><h3>Using the YUI Bundled With Your Application<a class="headerlink" href="#using-the-yui-bundled-with-your-application" title="Permalink to this headline">¶</a></h3>
+<p>Unless you have a strong reason for bundling YUI with your application,
+we strongly recommend that you use the version of YUI that comes with Mojito or
+load YUI from the YUI CDN.</p>
+<p>To bundle YUI with your application, you install YUI in a directory within your
+application, and then configure the application to point to the directory, so your
+application can serve it as a static asset. You use the <tt class="docutils literal"><span class="pre">yui.config</span></tt> object in
+<tt class="docutils literal"><span class="pre">application.json</span></tt> to specify the file path and whether you want to combo handle the
+modules.</p>
+<p>Let&#8217;s review the pros and cons and then show you an example configuration for
+serving YUI bundled with an application.</p>
+<div class="section" id="yui-app-pros">
+<span id="id6"></span><h4>Pros<a class="headerlink" href="#yui-app-pros" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>By bundling YUI with your application, you can choose the version of YUI to serve.</li>
+<li>If you deploy the YUI bundled with your application to the client, the application
+can use the YUI when offline. For example, your application can run as an HTML5
+or hybrid application (e.g., PhoneGap).</li>
+</ul>
+</div>
+<div class="section" id="yui-app-cons">
+<span id="id7"></span><h4>Cons<a class="headerlink" href="#yui-app-cons" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Node.js is not very good at serving static assets (i.e., YUI), so the performance of
+your application may be negatively impacted.</li>
+<li>Static assets are not versioned and are generally cached in browsers. Thus,
+although you update the YUI version bundled with your application, the client
+may still be using an older version: this is the most convincing reason to use
+a CDN, which avoids this problem.</li>
+</ul>
+</div>
+<div class="section" id="yui-app-ex">
+<span id="id8"></span><h4>Example<a class="headerlink" href="#yui-app-ex" title="Permalink to this headline">¶</a></h4>
+<p>In the example <tt class="docutils literal"><span class="pre">application.json</span></tt> below, the <tt class="docutils literal"><span class="pre">base</span></tt> property
+specifies the file path for loading YUI bundled in the application.
+Because <tt class="docutils literal"><span class="pre">combine</span></tt> is <tt class="docutils literal"><span class="pre">false</span></tt>, the <tt class="docutils literal"><span class="pre">comboBase</span></tt>, <tt class="docutils literal"><span class="pre">root</span></tt>, and
+<tt class="docutils literal"><span class="pre">comboSep</span></tt> will not be be used to load YUI with the built-in combo handler.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;settings&quot;</span><span class="o">:</span> <span class="p">[</span> <span class="s2">&quot;master&quot;</span> <span class="p">],</span>
+    <span class="s2">&quot;yui&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;config&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;base&quot;</span><span class="o">:</span> <span class="s2">&quot;/static/yui/&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;combine&quot;</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+        <span class="s2">&quot;comboBase&quot;</span><span class="o">:</span> <span class="s2">&quot;/combo~&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;comboSep&quot;</span><span class="o">:</span> <span class="s2">&quot;~&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;root&quot;</span><span class="o">:</span> <span class="s2">&quot;/static/yui/&quot;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="yui-app-group">
+<span id="yui-config-app-grp"></span><h2>YUI App Group<a class="headerlink" href="#yui-app-group" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="introduction">
+<span id="app-grp-intro"></span><h3>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h3>
+<p>By default, YUI defines the three groups <tt class="docutils literal"><span class="pre">default</span></tt>, <tt class="docutils literal"><span class="pre">gallery</span></tt>, and <tt class="docutils literal"><span class="pre">yui2</span></tt>.
+In Mojito v0.5.0, we introduce the group <tt class="docutils literal"><span class="pre">app</span></tt> as part of the loader metadata. This
+new group aggregates all the YUI modules defined in Mojito core and in the application and
+contains configuration that define how YUI manages those modules when they are needed.</p>
+<div class="section" id="why-use-the-app-group">
+<span id="app-grp-intro-why"></span><h4>Why Use the App Group?<a class="headerlink" href="#why-use-the-app-group" title="Permalink to this headline">¶</a></h4>
+<p>Groups are an important part of the YUI Loader configuration because they allow
+developers to define buckets of files that can be loaded from different mediums and
+sources. For example, by using the <tt class="docutils literal"><span class="pre">app</span></tt> group, you can load YUI modules from a CDN
+and change the group configurations for a particular environment.</p>
+<p>For more details about the group configuration, refer to the
+<a class="reference external" href="http://YUIlibrary.com/YUI/docs/api/classes/config.html#property_groups">groups</a>
+property of the <a class="reference external" href="http://yuilibrary.com/YUI/docs/api/classes/config.html">YUI config Class</a>.</p>
+<p>. _app_grp-using:</p>
+</div>
+</div>
+<div class="section" id="configuration-of-the-app-group">
+<h3>Configuration of  the App Group<a class="headerlink" href="#configuration-of-the-app-group" title="Permalink to this headline">¶</a></h3>
+<p>In the <tt class="docutils literal"><span class="pre">application.json</span></tt> file, you can use the <tt class="docutils literal"><span class="pre">yui.config.groups</span></tt> object
+to configure the following properties for the combo handler.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="18%" />
+<col width="11%" />
+<col width="46%" />
+<col width="25%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Property</th>
+<th class="head">Data Type</th>
+<th class="head">Example</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">combine</span></tt></td>
+<td>boolean</td>
+<td><tt class="docutils literal"><span class="pre">combine:</span> <span class="pre">true</span></tt></td>
+<td>Determines whether this
+group has a combo service.</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">comboSep</span></tt></td>
+<td>string</td>
+<td><tt class="docutils literal"><span class="pre">comboSep:</span> <span class="pre">';'</span></tt></td>
+<td>The separator for this
+group&#8217;s combo handler.</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">maxURLLength</span></tt></td>
+<td>number</td>
+<td><tt class="docutils literal"><span class="pre">maxURLLength:</span> <span class="pre">500</span></tt></td>
+<td>The maximum length of the
+URL for this server.</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">base</span></tt></td>
+<td>string</td>
+<td><tt class="docutils literal"><span class="pre">base:</span> <span class="pre">'http://yui.yahooapis.com/3.8.0/build/'</span></tt></td>
+<td>The base path/URL for
+non-combo paths.</td>
+</tr>
+<tr class="row-even"><td><tt class="docutils literal"><span class="pre">comboBase</span></tt></td>
+<td>string</td>
+<td><tt class="docutils literal"><span class="pre">comboBase:</span> <span class="pre">'http://mycompany.com/cdn/'</span></tt></td>
+<td>The path/URL to the combo
+service.</td>
+</tr>
+<tr class="row-odd"><td><tt class="docutils literal"><span class="pre">root</span></tt></td>
+<td>string</td>
+<td><tt class="docutils literal"><span class="pre">root:</span> <span class="pre">'0.1.0/mybuild/'</span></tt></td>
+<td>A prefix to the path
+attribute when building
+combo URLs.</td>
+</tr>
+</tbody>
+</table>
+<p>In the example <tt class="docutils literal"><span class="pre">application.json</span></tt>, the <tt class="docutils literal"><span class="pre">app</span></tt> group is configured
+so that YUI modules are loaded from a CDN.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;settings&quot;</span><span class="o">:</span> <span class="p">[</span> <span class="s2">&quot;master&quot;</span> <span class="p">],</span>
+    <span class="s2">&quot;yui&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;config&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;groups&quot;</span><span class="o">:</span> <span class="p">{</span>
+          <span class="s2">&quot;app&quot;</span><span class="o">:</span> <span class="p">{</span>
+            <span class="s2">&quot;combine&quot;</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+            <span class="s2">&quot;maxURLLength&quot;</span><span class="o">:</span> <span class="mi">516</span><span class="p">,</span>
+            <span class="s2">&quot;base&quot;</span><span class="o">:</span> <span class="s2">&quot;http://companycdn.com/path/to/files&quot;</span>
+          <span class="p">}</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="default-combo-handler-of-mojito">
+<span id="app-grp-default-combo"></span><h3>Default Combo Handler of Mojito<a class="headerlink" href="#default-combo-handler-of-mojito" title="Permalink to this headline">¶</a></h3>
+<p>Mojito comes with an extended version of the
+<tt class="docutils literal"><span class="pre">mojito-handler-static</span></tt> middleware that implements a fully functional
+combo handler that supports cache, fallbacks when proxies cut the URL, and more. This
+combo handler adheres to the recommendations in the blog post
+<a class="reference external" href="http://www.YUIblog.com/blog/2012/11/06/managing-your-javascript-modules-with-YUI-3-stockpile-2/">Managing your JavaScript Modules with YUI 3 Stockpile</a>
+by <a class="reference external" href="http://jjlindal.net/jafl/">John Lindal</a>, and it is the default configuration used
+for the Mojito application if the <tt class="docutils literal"><span class="pre">app</span></tt> group is not configured.</p>
+<p>The following are the default configurations for the <tt class="docutils literal"><span class="pre">app</span></tt> group:</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">comboBase:</span> <span class="pre">&quot;/combo~&quot;</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">comboSep:</span> <span class="pre">&quot;~&quot;</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">root:</span> <span class="pre">&quot;&quot;</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">maxURLLength:</span> <span class="pre">1024</span></tt></li>
+</ul>
+</div>
+<div class="section" id="inheritance-of-default-group-configurations">
+<span id="app-grp-inherit-default"></span><h3>Inheritance of Default Group Configurations<a class="headerlink" href="#inheritance-of-default-group-configurations" title="Permalink to this headline">¶</a></h3>
+<p>You can inherit the default configurations of the <tt class="docutils literal"><span class="pre">app</span></tt> group by setting
+the <tt class="docutils literal"><span class="pre">yui.config.combine</span></tt> property to <tt class="docutils literal"><span class="pre">true</span></tt>.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;settings&quot;</span><span class="o">:</span> <span class="p">[</span> <span class="s2">&quot;environment:development&quot;</span> <span class="p">],</span>
+    <span class="s2">&quot;yui&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;config&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;combine&quot;</span><span class="o">:</span> <span class="kc">true</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>You can also use the <tt class="docutils literal"><span class="pre">combo</span></tt> property to disable the combo handler. In the
+example <tt class="docutils literal"><span class="pre">application.json</span></tt> below, the combo handler is disabled in
+the <tt class="docutils literal"><span class="pre">environment:development</span></tt> context:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;settings&quot;</span><span class="o">:</span> <span class="p">[</span> <span class="s2">&quot;master&quot;</span> <span class="p">],</span>
+    <span class="s2">&quot;yui&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;config&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;combine&quot;</span><span class="o">:</span> <span class="kc">true</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;settings&quot;</span><span class="o">:</span> <span class="p">[</span> <span class="s2">&quot;environment:development&quot;</span> <span class="p">],</span>
+    <span class="s2">&quot;yui&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;config&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;combine&quot;</span><span class="o">:</span> <span class="kc">false</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p>By disabling the combo handler, the YUI Core modules will not be using the combo handler,
+and the <tt class="docutils literal"><span class="pre">app</span></tt> group will also inherit that configuration.</p>
+</div>
+<div class="section" id="shaker-integration">
+<span id="app-grp-shaker"></span><h3>Shaker Integration<a class="headerlink" href="#shaker-integration" title="Permalink to this headline">¶</a></h3>
+<p>The <tt class="docutils literal"><span class="pre">mojito-shaker</span></tt> 3.x extension will be able to control the configurations defined
+by the <tt class="docutils literal"><span class="pre">app</span></tt> group if you decide to push your assets into a CDN like Amazon. Shaker will
+also version the files and create the necessary rollups to accelerate caching and booting
+in the client runtime. To learn how to use the <tt class="docutils literal"><span class="pre">mojito-shaker</span></tt> extension,
+see the <a class="reference external" href="http://developer.yahoo.com/cocktails/shaker/">Shaker documentation</a>.</p>
+</div>
+</div>
+</div>
+
+   </div>
+

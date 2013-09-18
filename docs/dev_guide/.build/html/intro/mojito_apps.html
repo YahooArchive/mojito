@@ -1,0 +1,217 @@
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+     <title>Mojito Applications</title>
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '',
+        COLLAPSE_INDEX: true,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+   </head> 
+
+     <div class="header"><h1 class="heading"><a href="#">
+          <span>Mojito</span></a></h1>
+      </div>
+      <div class="topnav">
+        <p>
+        <a class="uplink" href="../">Mojito Documentation</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="../index.html" title="Mojito">Mojito</a>
+        &#160;&#160;::&#160;&#160;
+        
+           <a href="mojito_architecture.html">Mojito Architecture</a>
+        &#160;&#160;::&#160;&#160;
+        
+        
+           <a href="mojito_mojits.html">Mojits</a>
+        
+        </p>
+
+      </div>
+      <div class="content">
+   <div class="section" id="mojito-applications">
+<h1>Mojito Applications<a class="headerlink" href="#mojito-applications" title="Permalink to this headline">¶</a></h1>
+<p>Mojito allows developers to use a combination of configuration and an MVC
+architecture to create applications. Because client and server components
+are both written in JavaScript, Mojito can run on the client (browser) or
+the server (Node.js). The figure below shows the MVC architecture of Mojito
+and what components can run on the client/server or just the client.</p>
+<img alt="../_images/basic_mojit.gif" src="../_images/basic_mojit.gif" style="width: 400px; height: 355px;" />
+<div class="section" id="overview">
+<span id="mojito-apps-overview"></span><h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>Mojito applications contains JSON configuration files and directories for
+storing JavaScript, HTML, and CSS. The configuration files can be used to
+define relationships between code components, assets, routing paths, defaults
+and are available at the application and mojit level. The directory structure
+of a Mojito application reflects the MVC architecture and separates resources,
+such as assets, libraries, middleware, etc.</p>
+<p>To create a Mojito application, you use the command-line tool <tt class="docutils literal"><span class="pre">mojito</span></tt>. When
+the command below is run, Mojito creates a directory structure with files for
+configuration and other directories for CSS and mojits.</p>
+<p><tt class="docutils literal"><span class="pre">$</span> <span class="pre">mojito</span> <span class="pre">create</span> <span class="pre">app</span> <span class="pre">&lt;mojito_app&gt;</span></tt></p>
+<p>Mojito applications can have one or more mojits. Mojits are the basic unit of
+composition and reuse in a Mojito application. They consist of Javascript and
+markup, and follow the MVC pattern. You can think of mojits as the engines
+that create the rectangular areas of a page.</p>
+<p>To create a mojit, you run the command below from the application directory,
+which creates another directory structure and files that include the mojit
+controller, model, binder, and view.</p>
+<p><tt class="docutils literal"><span class="pre">$</span> <span class="pre">mojito</span> <span class="pre">create</span> <span class="pre">mojit</span> <span class="pre">&lt;mojito_app&gt;</span></tt></p>
+</div>
+<div class="section" id="application-files-and-directories">
+<span id="mojito-apps-files-dirs"></span><h2>Application Files and Directories<a class="headerlink" href="#application-files-and-directories" title="Permalink to this headline">¶</a></h2>
+<p>Each Mojito application contains configuration files and directories for mojits
+and assets.</p>
+<p>The principal files and directories of a Mojito application are listed below are
+globally available to all mojits. Those marked with an asterisk are not created by default.</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">addons</span></tt>* - directory containing additional addons for Mojito.</li>
+<li><tt class="docutils literal"><span class="pre">assets</span></tt> - general directory containing CSS files for all mojits.</li>
+<li><tt class="docutils literal"><span class="pre">application.json</span></tt> - application configuration file that lets you specify
+the port and the mojits used by the application.</li>
+<li><tt class="docutils literal"><span class="pre">default.json</span></tt>* - file that sets default values for all specifications.</li>
+<li><tt class="docutils literal"><span class="pre">index.js</span></tt> - file providing integration with a cloud-based environment
+where Mojito applications can run.</li>
+<li><tt class="docutils literal"><span class="pre">mojits</span></tt> - directory storing the mojits. See <a class="reference internal" href="#mojit-files-and-directories">Mojit Files and Directories</a>
+for a description of the directory contents.</li>
+<li><tt class="docutils literal"><span class="pre">package.json</span></tt> - configuration file for deploying the application.</li>
+<li><tt class="docutils literal"><span class="pre">routes.json</span></tt> - configuration file for mapping routing paths to actions.</li>
+<li><tt class="docutils literal"><span class="pre">yui_modules</span></tt>* - directory of JavaScript files that contain YUI modules added
+with <tt class="docutils literal"><span class="pre">YUI.add</span></tt>. These files are automatically included if required by a
+YUI module.</li>
+</ul>
+</div>
+<div class="section" id="mojits">
+<span id="mojito-apps-mojits"></span><h2>Mojits<a class="headerlink" href="#mojits" title="Permalink to this headline">¶</a></h2>
+<p>Mojits are the basic unit of composition and reuse in a Mojito application.
+This section covers the details of the files and directories contained in a
+mojit. To get an overview about mojits and learn about their architecture and
+structure, see <a class="reference external" href="mojito_mojits.html">Mojits</a>.</p>
+<div class="section" id="mojit-files-and-directories">
+<span id="mojito-apps-mojits-files"></span><h3>Mojit Files and Directories<a class="headerlink" href="#mojit-files-and-directories" title="Permalink to this headline">¶</a></h3>
+<p>When you create a mojit, a directory structure containing template files is
+auto-generated. The template files are for the model, views, controller, tests,
+and configuration.</p>
+<p>The principal directories and template files are listed below with a short
+description. Those marked with an asterisk are not created by default. The
+allowed values for <tt class="docutils literal"><span class="pre">{affinity}</span></tt> are <tt class="docutils literal"><span class="pre">client</span></tt>, <tt class="docutils literal"><span class="pre">common</span></tt>, and <tt class="docutils literal"><span class="pre">server</span></tt>.
+The <a class="reference external" href="../reference/glossary.html">affinity</a> specifies where the resource
+is available.</p>
+<ul>
+<li><p class="first"><tt class="docutils literal"><span class="pre">actions</span></tt> - directory of JavaScript files containing methods to add to the
+controller. Actions are useful for maintaining large controllers.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">assets</span></tt> - directory for storing CSS or JavaScript files.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">yui_modules</span></tt> - directory containing JavaScript files that contain YUI
+modules added with <tt class="docutils literal"><span class="pre">YUI.add</span></tt>. These files are automatically included if required by a
+YUI module. Both the application directory and mojit directory can have <tt class="docutils literal"><span class="pre">yui_modules</span></tt>
+directories.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">binders</span></tt> - directory containing event binding files for the mojit.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">controller.server.js</span></tt> - the mojit controller that runs on the server. You
+can also create the file <tt class="docutils literal"><span class="pre">controller.client.js</span></tt> to have a mojit controller
+that runs on the client or the file <tt class="docutils literal"><span class="pre">controller.common.js</span></tt> that can run
+on the client or server.</p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">models</span></tt> - directory containing the model scripts.</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">model.server.js</span></tt> - default model that runs on the server. You can also
+create the file <tt class="docutils literal"><span class="pre">model.client.js</span></tt> that runs on the client or
+<tt class="docutils literal"><span class="pre">model.common.js</span></tt> that can run  on either the client or server. Models
+can be given names as well, such as <tt class="docutils literal"><span class="pre">{model_name}.server.js</span></tt>.</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">tests</span></tt> - directory containing the controller, model, and YUI module unit tests.
+The structure of <tt class="docutils literal"><span class="pre">tests</span></tt> mirrors its parent mojit&#8217;s directory structure.</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">controller.{affinity}-tests.js</span></tt> - the unit tests for the mojit
+controllers.</li>
+<li><tt class="docutils literal"><span class="pre">{model_name}.{affinity}-tests.js</span></tt> - the unit tests for the mojit
+models.</li>
+<li><tt class="docutils literal"><span class="pre">{module_name}.{affinity}-tests.js</span></tt> - the unit tests for YUI modules,
+which are located in <tt class="docutils literal"><span class="pre">mojits/{mojit_name}/yui_modules</span></tt> directory.</li>
+<li>Example of module and corresponding test:</li>
+<li><tt class="docutils literal"><span class="pre">{app_name}/mojits/{mojit_name}/yui_modules/{module_name}.{affinity}.js</span></tt></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">{app_name}/mojits/{mojit_name}/tests/yui_modules/{module_name}.{affinity}-tests.js</span></tt></p>
+</li>
+<li><p class="first"><tt class="docutils literal"><span class="pre">views</span></tt> - directory containing the templates.</p>
+<blockquote>
+<div><ul class="simple">
+<li><tt class="docutils literal"><span class="pre">index.hb.html</span></tt> - the default template for the mojit. You can create other
+templates that get content from functions in the mojit controllers.</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="application-directory-structure">
+<span id="mojito-apps-dir-struct"></span><h2>Application Directory Structure<a class="headerlink" href="#application-directory-structure" title="Permalink to this headline">¶</a></h2>
+<p>The following shows the directory structure of a Mojito application that
+has one mojit. The allowed values for <tt class="docutils literal"><span class="pre">{affinity}</span></tt> are <tt class="docutils literal"><span class="pre">client</span></tt>,
+<tt class="docutils literal"><span class="pre">common</span></tt>, and <tt class="docutils literal"><span class="pre">server</span></tt>. The <a class="reference external" href="../reference/glossary.html">affinity</a>
+specifies where the resource is available. The <tt class="docutils literal"><span class="pre">{view_engine}</span></tt> is the
+engine that renders tags used in a templating system. For example, the value
+<tt class="docutils literal"><span class="pre">hb</span></tt> in <tt class="docutils literal"><span class="pre">index.hb.html</span></tt> instructs Mojito to use the Handlebars
+rendering engine.</p>
+<div class="highlight-javascript"><pre>[mojito_app]/
+|-- application.json
+|-- assets/
+|   `-- favicon.icon
+|-- yui_modules/
+|   `-- *.{affinity}.js
+|-- index.js
+|-- mojits/
+|   `-- [mojit_name]
+|       |-- assets/
+|       |-- yui_modules/
+|       |   `-- *.{affinity}.js
+|       |-- binders/
+|       |   `-- {view_name}.js
+|       |-- controller.{affinity}.js
+|       |-- defaults.json
+|       |-- definition.json
+|       |-- lang/
+|       |   `-- {mojit_name}_{lang}.js
+|       |-- models/
+|       |   `-- {model_name}.{affinity}.js
+|       |-- tests/
+|       |   |-- yui_modules/
+|       |   |   `-- {module_name}.{affinity}-tests.js
+|       |   |-- controller.{affinity}-tests.js
+|       |   `-- models/
+|       |      `-- {model_name}.{affinity}-tests.js
+|       `-- views/
+|           |-- {view_name}.{view_engine}.html
+|           `-- {view_name}.{device}.{view_engine}.html
+|-- package.json
+|-- routes.json
+|-- server.js</pre>
+</div>
+</div>
+</div>
+
+   </div>
+

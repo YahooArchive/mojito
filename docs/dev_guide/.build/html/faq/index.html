@@ -1,0 +1,932 @@
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+     <title>Mojito: FAQ</title>
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '',
+        COLLAPSE_INDEX: true,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+   </head> 
+
+     <div class="header"><h1 class="heading"><a href="#">
+          <span>Mojito</span></a></h1>
+      </div>
+      <div class="topnav">
+        <p>
+        <a class="uplink" href="../">Mojito Documentation</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="../index.html" title="Mojito">Mojito</a>
+        &#160;&#160;::&#160;&#160;
+        
+           <a href="../api_overview/mojito_client_obj.html">Client Object</a>
+        &#160;&#160;::&#160;&#160;
+        
+        
+           <a href="../reference/index.html">Mojito Reference</a>
+        
+        </p>
+
+      </div>
+      <div class="content">
+   <div class="section" id="mojito-faq">
+<h1>Mojito: FAQ<a class="headerlink" href="#mojito-faq" title="Permalink to this headline">¶</a></h1>
+<p>This page answers some of the most common questions we get about Mojito. For
+troubleshooting issues, see
+<a class="reference external" href="../reference/mojito_troubleshooting.html">Mojito: Troubleshooting</a>.</p>
+<div class="section" id="questions">
+<h2>Questions<a class="headerlink" href="#questions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="general">
+<h3>General<a class="headerlink" href="#general" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><a class="reference internal" href="#moj-langs"><em>What languages can I use to develop mojits?</em></a></li>
+<li><a class="reference internal" href="#moj-offline"><em>Can I work on Mojito applications offline?</em></a></li>
+<li><a class="reference internal" href="#moj-windows"><em>Does Mojito work in a Windows environment?</em></a></li>
+<li><a class="reference internal" href="#moj-nodemon"><em>Do I have to restart Mojito to see updates that I&#8217;ve made to my application?</em></a></li>
+<li><a class="reference internal" href="#moj-req-persistent"><em>Is the Mojito Y instance persistent across requests?</em></a></li>
+<li><a class="reference internal" href="#moj-lazyloading"><em>Does Mojito support lazy loading?</em></a></li>
+<li><a class="reference internal" href="#moj-caching"><em>Does Mojito have API methods for handling caching? If not, what&#8217;s the best way for Mojito
+applications to handle caching?</em></a></li>
+<li><a class="reference internal" href="#moj-run-client-server"><em>Can Mojito make runtime decisions to run client-side or server-side code?</em></a></li>
+<li><a class="reference internal" href="#moj-node-start"><em>Can Mojito be started with Node.js instead of using &#8220;mojito start&#8221;?</em></a></li>
+<li><a class="reference internal" href="#moj-optimize-performance"><em>How can I improve the performance of my Mojito application?</em></a></li>
+<li><a class="reference internal" href="#moj-ip-address"><em>Can I start an application so that it listens to requests made to a specific IP address or hostname?</em></a></li>
+</ul>
+</div>
+<div class="section" id="configuration">
+<h3>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><a class="reference internal" href="#moj-deploy"><em>How do I configure Mojito to deploy my application to the client?</em></a></li>
+<li><a class="reference internal" href="#moj-client"><em>How do I configure mojits to run on the client?</em></a></li>
+<li><a class="reference internal" href="#moj-config-port"><em>How do I configure the Mojito server to listen to specific port?</em></a></li>
+<li><a class="reference internal" href="#moj-definition-defaults"><em>What is the difference between &#8216;definition.json&#8217; and &#8216;defaults.json&#8217;?</em></a></li>
+</ul>
+</div>
+<div class="section" id="data">
+<h3>Data<a class="headerlink" href="#data" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><a class="reference internal" href="#moj-content"><em>How do I get content for my mojits?</em></a></li>
+<li><a class="reference internal" href="#moj-share-data"><em>How is data shared among mojits?</em></a></li>
+<li><a class="reference internal" href="#moj-parent-mojit-data"><em>How does a parent mojit send data to the template?</em></a></li>
+<li><a class="reference internal" href="#moj-params-controller-binder"><em>In Mojito applications, how are parameters passed from the controller to binders?</em></a></li>
+<li><a class="reference internal" href="#moj-pass-data-parent-to-child"><em>How can data be passed from a parent mojit to its child mojits?</em></a></li>
+</ul>
+</div>
+<div class="section" id="binders">
+<h3>Binders<a class="headerlink" href="#binders" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><a class="reference internal" href="#moj-binders"><em>What are binders and what do they do?</em></a></li>
+</ul>
+</div>
+<div class="section" id="css-javascript-assets">
+<h3>CSS/JavaScript Assets<a class="headerlink" href="#css-javascript-assets" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><a class="reference internal" href="#moj-assets"><em>How do I add assets templates?</em></a></li>
+<li><a class="reference internal" href="#moj-dyn-assets"><em>How are assets dynamically added to views?</em></a></li>
+</ul>
+</div>
+<div class="section" id="http-headers-responses">
+<h3>HTTP Headers/Responses<a class="headerlink" href="#http-headers-responses" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><a class="reference internal" href="#moj-req-res-instances"><em>Can Mojito applications access the &#8216;request&#8217; or &#8216;response&#8217; instances of the Node.js classes
+&#8216;http.ServerRequest&#8217; and &#8216;http.ServerResponse&#8217;?</em></a></li>
+<li><a class="reference internal" href="#moj-access-headers"><em>Is it possible to access HTTP headers from a Mojito application?</em></a></li>
+<li><a class="reference internal" href="#moj-cookie-exp"><em>How does a Mojito application set the expiration of a cookie in the HTTP response?</em></a></li>
+</ul>
+</div>
+<div class="section" id="mojits">
+<h3>Mojits<a class="headerlink" href="#mojits" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><a class="reference internal" href="#mojit-exp"><em>What is a mojit?</em></a></li>
+<li><a class="reference internal" href="#moj-children"><em>Can mojits have child mojits?</em></a></li>
+<li><a class="reference internal" href="#moj-objects"><em>How do mojits share objects?</em></a></li>
+<li><a class="reference internal" href="#moj-dynamic-creation"><em>Can mojit instances be dynamically defined and then run?</em></a></li>
+<li><a class="reference internal" href="#moj-resources"><em>Is there a way to make all of the resources, such as assets, addons, binders, models, of one mojit available to other mojits?</em></a></li>
+<li><a class="reference internal" href="#moj-names-hyphens"><em>Why does Mojito replace hyphens in the names of my mojits with underscores?</em></a></li>
+<li><a class="reference internal" href="#moj-reuse"><em>Can I extend or re-use mojits?</em></a></li>
+</ul>
+</div>
+<div class="section" id="views">
+<h3>Views<a class="headerlink" href="#views" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><a class="reference internal" href="#moj-partials"><em>Does Mojito support view partials?</em></a></li>
+<li><a class="reference internal" href="#moj-devices"><em>Do I have to create separate mojits for different devices?</em></a></li>
+<li><a class="reference internal" href="#moj-refresh-view"><em>How do I refresh the view on the client?</em></a></li>
+<li><a class="reference internal" href="#moj-different-templating"><em>Can I use a different templating system other than Handlebars?</em></a></li>
+<li><a class="reference internal" href="#moj-controller-specify-view"><em>Can the mojit controller specify which template should be rendered?</em></a></li>
+</ul>
+</div>
+<div class="section" id="logging-testing">
+<h3>Logging/Testing<a class="headerlink" href="#logging-testing" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><a class="reference internal" href="#moj-log-level"><em>How do I change the logging levels for my Mojito application?</em></a></li>
+<li><a class="reference internal" href="#moj-mod-log-exclusion"><em>Is there a way to exclude specific modules from logging on the client?</em></a></li>
+<li><a class="reference internal" href="#moj-client-server-logging"><em>Can logging be configured to be different for the client and server?</em></a></li>
+</ul>
+</div>
+<div class="section" id="addons-libraries-middleware">
+<h3>Addons/Libraries/Middleware<a class="headerlink" href="#addons-libraries-middleware" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><a class="reference internal" href="#moj-api-addons"><em>Does the Mojito framework offer API methods or addons?</em></a></li>
+<li><a class="reference internal" href="#moj-yui"><em>Can I repurpose or extend existing YUI modules?</em></a></li>
+</ul>
+</div>
+</div>
+<div class="section" id="answers">
+<h2>Answers<a class="headerlink" href="#answers" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id1">
+<h3>General<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<div class="topic" id="moj-langs">
+<p class="topic-title first"><strong>What languages can I use to develop mojits?</strong></p>
+<p>JavaScript is the programming language of Cocktails. All modules are written in
+JavaScript, and JavaScript only. Modules that require server-side execution do so
+through a server-side JavaScript execution engine.</p>
+</div>
+<hr class="docutils" />
+<div class="topic" id="moj-offline">
+<p class="topic-title first"><strong>Can I work on Mojito applications offline?</strong></p>
+<p>The tools used in developing mojit modules (mojits) work offline, without requiring
+access to networked resources. When networked (cloud) resources are required due to the
+modules own nature, e.g., retrieving data from a back-end service, Cocktails provides
+facilities to mock these resources and simulate their behavior with dummy (local)
+implementations.</p>
+</div>
+<hr class="docutils" />
+<div class="topic" id="moj-windows">
+<p class="topic-title first"><strong>Does Mojito work in a Windows environment?</strong></p>
+<p>Unfortunately, Mojito is only supported on Unix-based systems. We hope to support
+Mojito on Windows in the future, so please check the
+<a class="reference external" href="`https://github.com/yahoo/mojito/wiki">Mojito Releases Notes</a> on GitHub for the
+latest updates.</p>
+</div>
+<div class="topic" id="moj-nodemon">
+<p class="topic-title first"><strong>Do I have to restart Mojito to see updates that I&#8217;ve made to my application?</strong></p>
+<p>No, you can use the development environment with certain configurations or use
+an external module such as <tt class="docutils literal"><span class="pre">nodemon</span></tt> or <tt class="docutils literal"><span class="pre">supervisor</span></tt> to start Mojito, which will
+automatically update any changes that you&#8217;ve made to your application.</p>
+<p><strong>I. Using the Development Environment</strong></p>
+<ol class="arabic">
+<li><p class="first">In your <tt class="docutils literal"><span class="pre">application.json</span></tt>, add the configuration object with the
+<tt class="docutils literal"><span class="pre">settings</span></tt> property given the array <tt class="docutils literal"><span class="pre">[</span> <span class="pre">&quot;environment:development&quot;</span> <span class="pre">]</span></tt> with the
+configurations for <tt class="docutils literal"><span class="pre">staticHandling</span></tt>, <tt class="docutils literal"><span class="pre">viewEngine</span></tt>, and <tt class="docutils literal"><span class="pre">yui</span></tt> shown
+below.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;settings&quot;</span><span class="o">:</span> <span class="p">[</span> <span class="s2">&quot;master&quot;</span> <span class="p">],</span>
+    <span class="s2">&quot;appPort&quot;</span><span class="o">:</span> <span class="s2">&quot;8666&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;specs&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;frame&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;HTMLFrameMojit&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;config&quot;</span><span class="o">:</span> <span class="p">{</span>
+          <span class="s2">&quot;deploy&quot;</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+          <span class="s2">&quot;child&quot;</span><span class="o">:</span> <span class="p">{</span>
+            <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;foo&quot;</span>
+          <span class="p">}</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;settings&quot;</span><span class="o">:</span> <span class="p">[</span> <span class="s2">&quot;environment:development&quot;</span> <span class="p">],</span>
+    <span class="s2">&quot;staticHandling&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;forceUpdate&quot;</span><span class="o">:</span> <span class="kc">true</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;viewEngine&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;cacheTemplates&quot;</span><span class="o">:</span> <span class="kc">false</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;yui&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;config&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;combine&quot;</span><span class="o">:</span> <span class="kc">false</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Your application has to deploy code to the client, so
+<tt class="docutils literal"><span class="pre">deploy</span></tt> must be set to <tt class="docutils literal"><span class="pre">true</span></tt>.</p>
+</div>
+</li>
+<li><p class="first">Start your application with the context <tt class="docutils literal"><span class="pre">environment:development</span></tt>:</p>
+<p><tt class="docutils literal"><span class="pre">$</span> <span class="pre">mojito</span> <span class="pre">start</span> <span class="pre">--context</span> <span class="pre">environment:development</span></tt></p>
+</li>
+<li><p class="first">Open your application in a browser.</p>
+</li>
+<li><p class="first">Modify code in your binders or templates.</p>
+</li>
+<li><p class="first">Refresh your browser to see the updates in your application.</p>
+</li>
+</ol>
+<p><strong>Caveats</strong></p>
+<p>Although binder code and templates will be updated after you refresh your browser,
+resources, such as a model or controller, with a <tt class="docutils literal"><span class="pre">server</span></tt> or <tt class="docutils literal"><span class="pre">common</span></tt> affinity
+are executed in the Node.js environment, and therefore, will not get refreshed.
+You will need to restart your application to see changes. Also, meta data for modules,
+such as adding a module dependency to the <tt class="docutils literal"><span class="pre">requires</span></tt> array will not be reflected
+until you restart the application.</p>
+<p><strong>II. Using External Modules</strong></p>
+<p>You will need <tt class="docutils literal"><span class="pre">npm</span></tt> to install <tt class="docutils literal"><span class="pre">nodemon</span></tt> or <tt class="docutils literal"><span class="pre">supervisor</span></tt>. To use <tt class="docutils literal"><span class="pre">nodemon</span></tt>,
+you will need a script to start the server.</p>
+<p>Follow the steps below to use <tt class="docutils literal"><span class="pre">nodemon</span></tt>:</p>
+<ol class="arabic">
+<li><p class="first">Install <tt class="docutils literal"><span class="pre">nodemon</span></tt>:  <tt class="docutils literal"><span class="pre">$</span> <span class="pre">sudo</span> <span class="pre">npm</span> <span class="pre">install</span> <span class="pre">nodemon</span> <span class="pre">-g</span></tt></p>
+</li>
+<li><p class="first">In your Mojito application directory, create the file <tt class="docutils literal"><span class="pre">devel.js</span></tt> with the
+following:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./server.js&#39;</span><span class="p">).</span><span class="nx">listen</span><span class="p">(</span><span class="mi">8666</span><span class="p">,</span> <span class="kc">null</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;----STARTED----&#39;</span><span class="p">);</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Nodemon will not honor the app port from the settings&#39;</span><span class="p">);</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;The application is running under http://localhost:8666/&#39;</span><span class="p">);</span>
+<span class="p">});</span>
+</pre></div>
+</div>
+</li>
+<li><p class="first">From your application directory, start Mojito with <tt class="docutils literal"><span class="pre">nodemon</span></tt>:</p>
+<p><tt class="docutils literal"><span class="pre">$</span> <span class="pre">nodemon</span> <span class="pre">devel.js</span></tt></p>
+</li>
+</ol>
+<p>To use <a class="reference external" href="https://github.com/isaacs/node-supervisor">supervisor</a>, follow these steps:</p>
+<ol class="arabic">
+<li><p class="first">Globally install <tt class="docutils literal"><span class="pre">supervisor</span></tt>.</p>
+<p><tt class="docutils literal"><span class="pre">$</span> <span class="pre">sudo</span> <span class="pre">npm</span> <span class="pre">install</span> <span class="pre">supervisor</span> <span class="pre">-g</span></tt></p>
+</li>
+<li><p class="first">From a Mojito application directory, start Mojito with <tt class="docutils literal"><span class="pre">supervisor</span></tt>:</p>
+<p><tt class="docutils literal"><span class="pre">$</span> <span class="pre">supervisor</span> <span class="pre">-x</span> <span class="pre">path/to/mojito/bin/mojito</span> <span class="pre">start</span></tt></p>
+</li>
+<li><p class="first">View your application in a browser.</p>
+</li>
+<li><p class="first">In a separate terminal window, make changes to the source code of the application.</p>
+</li>
+<li><p class="first">Refresh the page to view the modified application.</p>
+</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><tt class="docutils literal"><span class="pre">supervisor</span></tt> will only update files with extensions <tt class="docutils literal"><span class="pre">node</span></tt> or <tt class="docutils literal"><span class="pre">js</span></tt> by
+default. To have <tt class="docutils literal"><span class="pre">supervisor</span></tt> watch files with other extensions, use the
+option <tt class="docutils literal"><span class="pre">-e</span></tt> or <tt class="docutils literal"><span class="pre">--extensions</span></tt>: <tt class="docutils literal"><span class="pre">$</span> <span class="pre">supervisor</span> <span class="pre">-e</span> <span class="pre">js,json,html</span> <span class="pre">-x</span> <span class="pre">path/to/mojito</span> <span class="pre">start</span></tt></p>
+</div>
+</div>
+<hr class="docutils" />
+<div class="topic" id="moj-req-persistent">
+<p class="topic-title first"><strong>Is the Mojito Y instance persistent across requests?</strong></p>
+<p>Yes, each mojit will have a Y instance that is persistent (by default) for every
+successive request. Computing YUI dependencies for every request negatively affects
+performance. You can change this behavior through the settings or you can deal with it
+at the mojit level, recreating the object.</p>
+</div>
+<hr class="docutils" />
+<div class="topic" id="moj-lazyloading">
+<p class="topic-title first"><strong>Does Mojito support lazy loading?</strong></p>
+<p>Yes, the Mojito framework comes with the frame mojit <tt class="docutils literal"><span class="pre">LazyLoadMojit</span></tt> specifically
+for lazy loading. The <tt class="docutils literal"><span class="pre">LazyLoadMojit</span></tt> allows you to defer the loading of a mojit
+instance by first dispatching the <tt class="docutils literal"><span class="pre">LazyLoadMojit</span></tt> as a proxy to the client. From the
+client, <tt class="docutils literal"><span class="pre">LazyLoadMojit</span></tt> can then request Mojito to load the proxied mojit. This
+allows your Mojito application to load the page quickly and then lazily load parts of
+the page. See <a class="reference external" href="../topics/mojito_frame_mojits.html#lazyloadmojit">LazyLoadMojit</a>
+to learn more.</p>
+</div>
+<hr class="docutils" />
+<div class="topic" id="moj-caching">
+<p class="topic-title first"><strong>Does Mojito have API methods for handling caching? If not, what&#8217;s the best
+       way for Mojito applications to handle caching?</strong></p>
+<p>Mojito currently does not have any API methods for handling caching. Although there is
+no definitive solution for caching for Mojito, here are a few possible ways to cache
+for Mojito applications:</p>
+<ul>
+<li><p class="first"><strong>Client-Side Caching</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="../reference/mojito_cmdline.html#html5app">Create an HTML5 application</a> and
+use the <tt class="docutils literal"><span class="pre">manifest.cache</span></tt> file.</li>
+<li>Leverage the HTML5 <tt class="docutils literal"><span class="pre">localStorage</span></tt> object.</li>
+<li>Use the <a class="reference external" href="http://yuilibrary.com/gallery/show/storage-lite">Storage Lite</a> YUI
+module that selects the best available local storage API supported by the browser
+it&#8217;s running in.</li>
+<li><a class="reference external" href="../topics/mojito_extensions.html#creating-new-addons">Create an addon</a> that
+uses a singleton.</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first"><strong>Server-Side Caching (implementation depends on server)</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li>Use the <tt class="docutils literal"><span class="pre">fs</span></tt> Node.js module to write to the file system.</li>
+<li>Use one of the Node.js modules for caching: <a class="reference external" href="http://cloudhead.io/cradle">cradle</a>,
+<a class="reference external" href="https://github.com/mranney/node_redis">nodejs_redis</a>,
+<a class="reference external" href="https://github.com/substack/node-optimist">node-optimist</a>, etc.</li>
+<li>Implement a tried and tested caching solution such as <a class="reference external" href="http://memcached.org/">memcached</a>.</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div>
+<hr class="docutils" />
+<div class="topic" id="moj-run-client-server">
+<p class="topic-title first"><strong>Can Mojito make runtime decisions to run client-side or server-side code?</strong></p>
+<p>Yes, but it&#8217;s up to the programmer to configure the application to be deployed to the
+client. Also, your application should have client and server versions, indicated by an
+<a class="reference external" href="../reference/glossary.html#affinity">affinity</a>, of the controller, models, addons,
+etc., that you want to run on both the client and the server. To configure Mojito to
+deploy application code to the client, you set the <tt class="docutils literal"><span class="pre">deploy</span></tt> property of the
+application configuration to <tt class="docutils literal"><span class="pre">true</span></tt>.
+See <a class="reference external" href="../intro/mojito_configuring.html#configuring-applications-to-be-deployed-to-client">Configuring Applications to Be Deployed to Client</a>
+for more information.</p>
+<p>Mojito determines the client device based on the HTTP header <tt class="docutils literal"><span class="pre">User-Agent</span></tt> or the
+value of the query string parameter <tt class="docutils literal"><span class="pre">device</span></tt> and then will render the appropriate
+view if it exists&#8211;it&#8217;s up to the developer to create the views. For example, if an
+iPhone is making a request, Mojito will render the view <tt class="docutils literal"><span class="pre">index.iphone.hb.html</span></tt> if it
+has been created. See <a class="reference external" href="../intro/mojito_mvc.html#naming-convention">Views: Naming Conventions</a>
+for more information.</p>
+</div>
+<hr class="docutils" />
+<div class="topic" id="moj-node-start">
+<p class="topic-title first"><strong>Can Mojito be started with Node.js instead of using &#8220;mojito start&#8221;?</strong></p>
+<p>Yes. Although there is not a standard way for starting Mojito with Node.js, you could
+do the following:</p>
+<div class="highlight-javascript"><pre>$ node --debug `which mojito` start</pre>
+</div>
+<p>Or you could specify the path to start a locally installed version of Mojito:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">$</span> <span class="nx">node</span> <span class="o">--</span><span class="nx">debug</span> <span class="nx">node_modules</span><span class="o">/</span><span class="nx">mojito</span><span class="o">/</span><span class="nx">bin</span><span class="o">/</span><span class="nx">mojito</span> <span class="nx">start</span>
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="topic" id="moj-optimize-performance">
+<p class="topic-title first"><strong>How can I improve the performance of my Mojito application?</strong></p>
+<p>The following sections offer some ideas about how to improve the performance of your
+Mojito application, but are by no means exhaustive. You should also review online
+articles about improving Node.js performance, such as
+<a class="reference external" href="http://bit.ly/uFyio2">Blazing fast node.js: 10 performance tips
+from LinkedIn Mobile</a> written by software engineer Shravya
+Garlapati.</p>
+<p><strong>Don&#8217;t Add User Data to ac.context</strong></p>
+<p>The <tt class="docutils literal"><span class="pre">context</span></tt> property of the <tt class="docutils literal"><span class="pre">ActionContext</span></tt> object contains a small set of
+key-value pairs that define the run-time environment under which a mojit runs. These
+key-value pairs are used as a cache key. Adding your own key/values to <tt class="docutils literal"><span class="pre">ac.context</span></tt>
+will cause the cache to bloat.</p>
+<p>As an alternative, you can share data using the following methods:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Parent mojits can share data with the child mojits by attaching data to the
+<tt class="docutils literal"><span class="pre">ActionContext</span></tt> object in the parent mojit&#8217;s controller. For example, in the
+parent mojit, you could add an object to <tt class="docutils literal"><span class="pre">ac.composite.command.params.body</span></tt>
+that the children can then access with
+<tt class="docutils literal"><span class="pre">ac.composite.command.params.body['{obj_name}']</span></tt>.</li>
+<li>From the server and before mojits are executed, middleware can be used to share
+information about static handling and routing.</li>
+<li>Assets and data can be shared through the
+<a class="reference external" href="../reference/glossary.html#view-template">template</a> of a parent mojit or
+through a frame mojit such as
+<a class="reference external" href="../topics/mojito_frame_mojits.html#htmlframemojit">HTMLFrameMojit</a> that
+creates a parent template.</li>
+</ul>
+</div></blockquote>
+<p><strong>Rollup/Minify Assets</strong></p>
+<p>Rolling up and minifying assets will reduce the number of network calls and improve
+load time. For <strong>rolling up assets</strong>, we recommend that you use
+<a class="reference external" href="https://github.com/yahoo/mojito-shaker">Shaker</a>, which is a static asset rollup
+manager.</p>
+<p>Mojito also allows you to configure your app to use rollups by setting the
+<tt class="docutils literal"><span class="pre">useRollups</span></tt> property in the <tt class="docutils literal"><span class="pre">application.json</span></tt> file to <tt class="docutils literal"><span class="pre">true</span></tt> as shown below:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="s2">&quot;staticHandling&quot;</span><span class="o">:</span> <span class="p">{</span>
+  <span class="s2">&quot;useRollups&quot;</span><span class="o">:</span> <span class="kc">true</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>You can also compile rollups, inline CSS, or views using the Mojito command-line
+utility. See the <a class="reference external" href="../reference/mojito_cmdline.html#compile-system">Compile System</a>
+to learn how.</p>
+<p>For <strong>minification</strong>, we recommend Shaker again. Other choices could be <a class="reference external" href="http://yuilibrary.com/download/yuicompressor/">YUI Compressor</a> or an npm module such as
+<a class="reference external" href="https://github.com/mishoo/UglifyJS">UglifyJS</a>.</p>
+<p><strong>Use Lazy Loading</strong></p>
+<p>From the client, your Mojito application should lazy load assets as often as possible.
+For example, the <a class="reference external" href="http://yuilibrary.com/yui/docs/imageloader/">YUI ImageLoader Utility</a>
+can be used to help you lazy load images. You can even lazy load a mojit from the client
+using the <a class="reference external" href="../topics/mojito_frame_mojits.html#lazyloadmojit">LazyLoadMojit</a>.</p>
+</div>
+<div class="topic" id="moj-ip-address">
+<p class="topic-title first"><strong>Can I start an application so that it listens to requests made to a specific IP address or hostname?</strong></p>
+<p>Although the Mojito CLI utility does not allow you to specify an IP address or hostname for your application
+to listen to when it&#8217;s started, you can modify the <tt class="docutils literal"><span class="pre">server.js</span></tt> file and start your application directory with
+<tt class="docutils literal"><span class="pre">node</span></tt>.</p>
+<p>In the example <tt class="docutils literal"><span class="pre">server.js</span></tt> below, you pass the port and hostname to the <tt class="docutils literal"><span class="pre">listen</span></tt> method so that the application
+will listen to requests at the given hostname and port when you start the application with <tt class="docutils literal"><span class="pre">node</span> <span class="pre">server.js</span></tt>:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">mojito</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;mojito&#39;</span><span class="p">).</span><span class="nx">createServer</span><span class="p">(),</span>
+    <span class="nx">port</span> <span class="o">=</span> <span class="mi">8111</span><span class="p">,</span>
+    <span class="nx">host</span> <span class="o">=</span> <span class="s1">&#39;127.0.0.1&#39;</span><span class="p">;</span>
+
+ <span class="nx">mojito</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="nx">port</span><span class="p">,</span> <span class="nx">host</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">app</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;listening on %s:%d&#39;</span><span class="p">,</span> <span class="nx">host</span><span class="p">,</span> <span class="nx">port</span><span class="p">);</span>
+ <span class="p">});</span>
+</pre></div>
+</div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="section" id="id3">
+<h3>Configuration<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<div class="topic" id="moj-deploy">
+<p class="topic-title first"><strong>How do I configure Mojito to deploy my application to the client?</strong></p>
+<p>Binders always get deployed to the client, but to deploy your controller to the
+client, you need to use the <a class="reference external" href="../topics/mojito_frame_mojits.html#htmlframemojit">HTMLFrameMojit</a>
+and set the <tt class="docutils literal"><span class="pre">deploy</span></tt> field to <tt class="docutils literal"><span class="pre">true</span></tt> in the <tt class="docutils literal"><span class="pre">application.json</span></tt> file. See
+<a class="reference external" href="../topics/mojito_frame_mojits.html#deploying-to-client">Deploying to Client</a>
+for more details.</p>
+</div>
+<hr class="docutils" />
+<div class="topic" id="moj-client">
+<p class="topic-title first"><strong>How do you configure mojits to run on the client?</strong></p>
+<p>Run Mojito at build time to generate the HTML page using <tt class="docutils literal"><span class="pre">mojito</span> <span class="pre">build</span> <span class="pre">html5app</span></tt>.
+This runs the Mojito infrastructure as if it were a running server instance and prints
+out the resulting HTML+JSON required to bootstrap a client-side mojit.
+Among other things, it leads down a path where it&#8217;s very hard to do
+incremental builds because the Web server abstraction makes it hard to do the timestamp
+resolution that incremental builds require. A better approach would be to allow people
+to hard-code the top-level mojit bootstrap code by publishing mojit creation APIs that
+can be called from the top level.</p>
+</div>
+<hr class="docutils" />
+<div class="topic" id="moj-config-port">
+<p class="topic-title first"><strong>How do I configure the Mojito server to listen to specific port?</strong></p>
+<p>In the <a class="reference external" href="../intro/mojito_configuring.html#configuration-object">configuration Object</a>
+of <tt class="docutils literal"><span class="pre">application.json</span></tt>, you set the <tt class="docutils literal"><span class="pre">appPort</span></tt> property to the port number that you
+want Mojito to listen to.</p>
+</div>
+<hr class="docutils" />
+<div class="topic" id="moj-definition-defaults">
+<p class="topic-title first"><strong>What is the difference between &#8216;definition.json&#8217; and &#8216;defaults.json&#8217;?</strong></p>
+<p>The <tt class="docutils literal"><span class="pre">definitions.json</span></tt> file stores the class-level mojit values and is ideal for
+storing metadata. The <tt class="docutils literal"><span class="pre">defaults.json</span></tt> file stories default configurations for your
+mojit instance that will be overridden if they are found in the <tt class="docutils literal"><span class="pre">application.json</span></tt>
+file. See <a class="reference external" href="../intro/mojito_configuring.html#configuring-defaults-for-mojit-instances">Configuring Defaults for Mojit Instances</a>
+and <a class="reference external" href="../intro/mojito_configuring.html#mojit-configuration">Mojit Configuration: Configuring Metadata</a>
+for more information.</p>
+</div>
+</div>
+<div class="section" id="id5">
+<h3>Data<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
+<div class="topic" id="moj-content">
+<p class="topic-title first"><strong>How do I get content for my mojits?</strong></p>
+<p>YQL is the preferred method for accessing data in Mojito applications. YUI 3 also has
+a <a class="reference external" href="http://yuilibrary.com/gallery/show/yql">YQL module</a> that makes calling the YQL
+Web Service easy.</p>
+</div>
+<hr class="docutils" />
+<div class="topic" id="moj-share-data">
+<p class="topic-title first"><strong>How is data shared among mojits?</strong></p>
+<p>You can create an application-level mojit that can share data with its children. Your
+application-level mojit would have a model to get data that can be stored data in a
+Model object. The child mojits can then access this data through the application-level
+mojit&#8217;s model.</p>
+</div>
+<hr class="docutils" />
+<div class="topic" id="moj-parent-mojit-data">
+<p class="topic-title first"><strong>How does a parent mojit send data to the template?</strong></p>
+<p>From the controller of the parent mojit, pass an object to <tt class="docutils literal"><span class="pre">ac.composite.done</span></tt>
+containing key-value pairs that can be added
+to the view template as Handlebars expressions. For example, the key <tt class="docutils literal"><span class="pre">foo</span></tt>
+shown below can be included in the template as the Handlebars expression <tt class="docutils literal"><span class="pre">{{foo}}</span></tt>.
+The <tt class="docutils literal"><span class="pre">{{foo}}</span></tt> expression will be replaced by the value &#8216;bar&#8217; when the template
+is rendered.:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="c1">// Inside parent mojit</span>
+<span class="nx">ac</span><span class="p">.</span><span class="nx">composite</span><span class="p">.</span><span class="nx">done</span><span class="p">({</span><span class="s2">&quot;foo&quot;</span><span class="o">:</span> <span class="s2">&quot;bar&quot;</span><span class="p">});</span>
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="topic" id="moj-params-controller-binder">
+<p class="topic-title first"><strong>In Mojito applications, how are parameters passed from the controller to binders?</strong></p>
+<p>Your controllers can pass parameters to binders using the <tt class="docutils literal"><span class="pre">Data</span></tt> addon.
+The controller requires the <tt class="docutils literal"><span class="pre">Data</span></tt> addon and then uses the <tt class="docutils literal"><span class="pre">data</span></tt> object with
+the <tt class="docutils literal"><span class="pre">set</span></tt> method to set (or expose) data for the client code (binders or templates):
+<tt class="docutils literal"><span class="pre">ac.data.set('app_framework',</span> <span class="pre">&quot;Mojito&quot;);</span></tt></p>
+<p>From the binder, the <tt class="docutils literal"><span class="pre">mojitProxy</span></tt> object can then access the data set by the controller
+from the <tt class="docutils literal"><span class="pre">data</span></tt> object with the <tt class="docutils literal"><span class="pre">get</span></tt> method: <tt class="docutils literal"><span class="pre">mojitProxy.data.get('app_framework');</span></tt></p>
+<p>The mojit&#8217;s template can access the set data through a Handlebars expression, so
+the <tt class="docutils literal"><span class="pre">index.hb.html</span></tt> could use <tt class="docutils literal"><span class="pre">{{app_framework}}</span></tt> to get the data set in the controller.</p>
+<p>The <tt class="docutils literal"><span class="pre">Data</span></tt> addon also allows you to share page-level data, so that mojits on the
+page can share data through <tt class="docutils literal"><span class="pre">ac.pageData.set</span></tt> and <tt class="docutils literal"><span class="pre">ac.pageData.get</span></tt> or <tt class="docutils literal"><span class="pre">mojitProxy.pageData.get</span></tt>.
+See  <a class="reference external" href="../topics/mojito_data.html#sharing">Sharing Data</a> for more information and example code.</p>
+</div>
+<hr class="docutils" />
+<div class="topic" id="moj-pass-data-parent-to-child">
+<p class="topic-title first"><strong>How can data be passed from a parent mojit to its child mojits?</strong></p>
+<p>Currently the only way to do this is to pass data to the children in either the
+children config or parameters. If you use <tt class="docutils literal"><span class="pre">ac.composite.execute</span></tt> you can
+create/modify the children configuration in code before calling
+<tt class="docutils literal"><span class="pre">ac.composite.execute</span></tt>. See <a class="reference external" href="../../api/classes/Composite.common.html#method_execute">ac.composite.execute</a>
+for more information.</p>
+<p>If you want to pass the data to the children in the parameters, you can do that with
+the <tt class="docutils literal"><span class="pre">ac._dispatch</span></tt> function. See
+<a class="reference external" href="../../api/classes/ActionContext.html#method__dispatch">ac._dispatch</a> for more
+information.</p>
+</div>
+</div>
+<div class="section" id="id6">
+<h3>Binders<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
+<div class="topic" id="moj-binders">
+<p class="topic-title first"><strong>What are binders and what do they do?</strong></p>
+<p>Binders are mojit code that is only deployed to the browser. A mojit may have zero,
+one, or many binders. The code can perform the following three functions:</p>
+<blockquote>
+<div><ul class="simple">
+<li>allow event handlers to attach to the mojit DOM node</li>
+<li>communicate with other mojits on the page</li>
+<li>execute actions on the mojit that the binder is attached to</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="id7">
+<h3>CSS/JavaScript Assets<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
+<div class="topic" id="moj-assets">
+<p class="topic-title first"><strong>How do I add assets templates?</strong></p>
+<p>You define the location of application-level or mojit-level assets in the
+<tt class="docutils literal"><span class="pre">application.json</span></tt> file. Once the location of your assets has been configured, you
+can statically add the path to the assets in your template. You can also add assets to
+your view using the <a class="reference external" href="../../api/classes/Assets.common.html">Assets addon</a> if your
+application is using the <tt class="docutils literal"><span class="pre">HTMLFrameMojit</span></tt>. See the <a class="reference external" href="../topics/mojito_assets.html">Assets</a>
+documentation for implementation details.</p>
+</div>
+<hr class="docutils" />
+<div class="topic" id="moj-dyn-assets">
+<p class="topic-title first"><strong>How are assets dynamically added to views?</strong></p>
+<p>The <a class="reference external" href="../../api/classes/Assets.common.html">Assets addon</a> allow you to dynamically
+add to your view. You need to use the <tt class="docutils literal"><span class="pre">HTMLFrameMojit</span></tt>, however, to use the
+<tt class="docutils literal"><span class="pre">Assets</span> <span class="pre">addon</span></tt>. See
+<a class="reference external" href="../topics/mojito_assets.html#using-the-assets-addon">Using the Assets Addon</a> for
+more information.</p>
+</div>
+</div>
+<div class="section" id="id9">
+<h3>HTTP Headers/Responses<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<div class="topic" id="moj-req-res-instances">
+<p class="topic-title first"><strong>Can Mojito applications access the &#8216;request&#8217; or &#8216;response&#8217; instances of the
+       Node.js classes &#8216;http.ServerRequest&#8217; and &#8216;http.ServerResponse&#8217;?</strong></p>
+<p>Yes, the Mojito API has the <tt class="docutils literal"><span class="pre">ActionContext</span></tt> addon <tt class="docutils literal"><span class="pre">Http.server</span></tt> that has methods
+for getting the <tt class="docutils literal"><span class="pre">request</span></tt> and <tt class="docutils literal"><span class="pre">response</span></tt> instances of the Node.js classes
+<tt class="docutils literal"><span class="pre">http.ServerRequest</span></tt> and <tt class="docutils literal"><span class="pre">http.ServerResponse</span></tt>. From the <tt class="docutils literal"><span class="pre">ActionContext</span></tt> object
+<tt class="docutils literal"><span class="pre">ac</span></tt> shown below, you call <tt class="docutils literal"><span class="pre">http.getRequest</span></tt> and <tt class="docutils literal"><span class="pre">http.getResponse</span></tt> to get the
+<tt class="docutils literal"><span class="pre">request</span></tt> and <tt class="docutils literal"><span class="pre">response</span></tt> instances. See <a class="reference external" href="../../api/classes/Http.server.html">Class Http.server</a>
+for more information.</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="kd">var</span> <span class="nx">request</span> <span class="o">=</span> <span class="nx">ac</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="nx">getRequest</span><span class="p">();</span>
+<span class="kd">var</span> <span class="nx">response</span> <span class="o">=</span> <span class="nx">ac</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="nx">getResponse</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<hr class="docutils" />
+<div class="topic" id="moj-access-headers">
+<p class="topic-title first"><strong>Is it possible to access HTTP headers from a Mojito application?</strong></p>
+<p>Yes, the Mojito API has the <tt class="docutils literal"><span class="pre">ActionContext</span></tt> addon <tt class="docutils literal"><span class="pre">Http.server</span></tt> that allows you to
+get, set, and add HTTP headers. See <a class="reference external" href="../../api/classes/Http.server.html">Class Http.server</a>
+for the available methods.</p>
+</div>
+<hr class="docutils" />
+<div class="topic" id="moj-cookie-exp">
+<p class="topic-title first"><strong>How does a Mojito application set the expiration of a cookie in the HTTP response?</strong></p>
+<p>The controller of your application can get the HTTP response with the <tt class="docutils literal"><span class="pre">Http</span></tt>
+addon and then set the cookie and the max age (expiration) with the <tt class="docutils literal"><span class="pre">Cookie</span></tt> addon.
+In the example controller below, the cookie is set to expire in two weeks.
+Note that the value for <tt class="docutils literal"><span class="pre">maxAge</span></tt> is in milliseconds and that you need to
+require <tt class="docutils literal"><span class="pre">mojito-cookie-addon</span></tt> and <tt class="docutils literal"><span class="pre">mojito-http-addon</span></tt> to use the addons.</p>
+<div class="highlight-javascript"><div class="highlight"><pre> <span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;setCookie&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="p">,</span> <span class="nx">NAME</span><span class="p">)</span> <span class="p">{</span>
+
+   <span class="nx">Y</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="s1">&#39;mojito.controllers&#39;</span><span class="p">)[</span><span class="nx">NAME</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+
+     <span class="nx">index</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">ac</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">ac</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="nx">getResponse</span><span class="p">().</span><span class="nx">cookie</span><span class="p">(</span><span class="s2">&quot;cookie_set&quot;</span><span class="p">,</span> <span class="s2">&quot;true&quot;</span><span class="p">,</span> <span class="p">{</span> <span class="s2">&quot;maxAge&quot;</span><span class="o">:</span> <span class="mi">1209600000</span> <span class="p">});</span>
+      <span class="nx">ac</span><span class="p">.</span><span class="nx">done</span><span class="p">({</span>
+          <span class="nx">status</span><span class="o">:</span> <span class="s1">&#39;Cookie set to expire in two weeks (maxAge in milliseconds).&#39;</span><span class="p">,</span>
+      <span class="p">});</span>
+    <span class="p">}</span>
+  <span class="p">};</span>
+<span class="p">},</span> <span class="s1">&#39;0.0.1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;mojito&#39;</span><span class="p">,</span> <span class="s1">&#39;mojito-cookie-addon&#39;</span><span class="p">,</span> <span class="s1">&#39;mojito-http-addon&#39;</span><span class="p">]});</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id11">
+<h3>Mojits<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
+<div class="topic" id="mojit-exp">
+<p class="topic-title first"><strong>What is a mojit?</strong></p>
+<p>The basic unit of composition and reuse in a Mojito application. It typically
+corresponds to a rectangular area of a page and uses MVC.</p>
+</div>
+<hr class="docutils" />
+<div class="topic" id="moj-children">
+<p class="topic-title first"><strong>Can mojits have child mojits?</strong></p>
+<p>Yes, you can configure your application to have mojits that have one or more child
+mojits. The parent mojit can execute the child mojits using the
+<a class="reference external" href="../../api/classes/Composite.common.html">Composite addon</a>.
+See <a class="reference external" href="../intro/mojito_configuring.html#configuring-applications-to-have-multiple-mojits">Configuring Applications to Have Multiple Mojit</a>
+and <a class="reference external" href="../topics/mojito_composite_mojits.html#composite-mojits">Composite Mojits</a>.</p>
+<p>You can also use frame mojits, such as <a class="reference external" href="../topics/mojito_frame_mojits.html#htmlframemojit">HTMLFrameMojit</a>
+that can execute one or more child mojits.</p>
+</div>
+<hr class="docutils" />
+<div class="topic" id="moj-objects">
+<p class="topic-title first"><strong>How do mojits share objects?</strong></p>
+<p>You create an application-level middleware or an ActionContext addon that all mojits
+can access. Your mojits can use this middleware or the ActionContext addon to share
+objects. See <a class="reference external" href="../topics/mojito_extensions.html#creating-new-addons">Creating Addons</a>
+and <a class="reference external" href="../topics/mojito_extensions.html#middleware">Middleware</a> for implementation
+details.</p>
+</div>
+<hr class="docutils" />
+<div class="topic" id="moj-dynamic-creation">
+<p class="topic-title first"><strong>Can mojit instances be dynamically defined and then run?</strong></p>
+<p>You can run dynamically defined instances of mojits that you created with the Mojito
+command-line tool. You would create these instances in a mojit controller using the
+<tt class="docutils literal"><span class="pre">ActionContext</span></tt> object with either the <tt class="docutils literal"><span class="pre">_dispatch</span></tt> or <tt class="docutils literal"><span class="pre">execute</span></tt> methods.
+See <a class="reference external" href="../topics/mojito_run_dyn_defined_mojits.html">Running Dynamically Defined Mojit Instances</a>
+for more information.</p>
+</div>
+<hr class="docutils" />
+<div class="topic" id="moj-resources">
+<p class="topic-title first"><strong>Is there a way to make all of the resources, such as assets, addons, binders,
+       models, of one mojit available to other mojits?</strong></p>
+<p>To make the resources of one mojit available to other mojits, you set the <tt class="docutils literal"><span class="pre">appLevel</span></tt>
+property in the <tt class="docutils literal"><span class="pre">definition.json</span></tt> file to <tt class="docutils literal"><span class="pre">true</span></tt>. Mojits wanting to use the
+resources of application-level mojit must include the YUI module of the
+application-level mojit in the <tt class="docutils literal"><span class="pre">requires</span></tt> array.
+See <a class="reference external" href="../intro/mojito_configuring.html#configuring-metadata">Configuring Metadata</a>
+for more information.</p>
+</div>
+<hr class="docutils" />
+<div class="topic" id="moj-names-hyphens">
+<p class="topic-title first"><strong>Why does Mojito replace hyphens in the names of my mojits with underscores?</strong></p>
+<p>The ECMAScript syntax for <tt class="docutils literal"><span class="pre">Identifiers</span></tt> does not allow hyphens, so Mojito replaces
+them with underscores. See the section <strong>Identifier Names and Identifiers</strong> in the
+<a class="reference external" href="http://www.ecmascript.org/docs.php">ECMAScript Documentation</a> for the syntax rules
+for <tt class="docutils literal"><span class="pre">Identifier</span></tt> and <tt class="docutils literal"><span class="pre">IdentifierName</span></tt>.</p>
+</div>
+<hr class="docutils" />
+<div class="topic" id="moj-reuse">
+<p class="topic-title first"><strong>Can I extend or re-use mojits?</strong></p>
+<p>Although inheritance isn&#8217;t supported in mojits, there are ways of
+re-using mojit definitions and configuration, application building blocks, and
+extending mojits.</p>
+<p>The following sections offer a brief introduction to re-use and extension in Mojito
+as well as what cannot be re-used or extended.</p>
+<p><strong>Re-Using Mojit Definitions</strong></p>
+<p>You can re-use a mojit definition by using the <a class="reference external" href="../intro/mojito_configuring.html#specs-object">specs.base</a>
+property in <tt class="docutils literal"><span class="pre">application.json</span></tt>, so that mojit instance uses the same mojit
+definition of another mojit instance. This allows you to define a mojit instance
+once and have many instances use it.</p>
+<p>For example, the mojit instances <tt class="docutils literal"><span class="pre">index_page</span></tt> and <tt class="docutils literal"><span class="pre">profile_page</span></tt> use the
+re-use the <tt class="docutils literal"><span class="pre">basic_page</span></tt> mojit definition in the <tt class="docutils literal"><span class="pre">application.json</span></tt>
+below:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="p">[</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;settings&quot;</span><span class="o">:</span> <span class="p">[</span> <span class="s2">&quot;master&quot;</span> <span class="p">],</span>
+    <span class="s2">&quot;specs&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;basic_page&quot;</span><span class="o">:</span> <span class="p">{</span>
+              <span class="s2">&quot;type&quot;</span><span class="o">:</span> <span class="s2">&quot;HTMLFrameMojit&quot;</span><span class="p">,</span>
+              <span class="s2">&quot;config&quot;</span><span class="o">:</span> <span class="p">{</span>
+                <span class="s2">&quot;child&quot;</span> <span class="o">:</span> <span class="p">{</span>
+                 <span class="s2">&quot;config&quot;</span> <span class="o">:</span> <span class="p">{</span>
+                   <span class="s2">&quot;children&quot;</span> <span class="o">:</span> <span class="p">{</span>
+                     <span class="s2">&quot;header&quot;</span> <span class="o">:</span> <span class="p">{</span>
+                       <span class="s2">&quot;type&quot;</span> <span class="o">:</span> <span class="s2">&quot;Header&quot;</span>
+                     <span class="p">},</span>
+                     <span class="s2">&quot;footer&quot;</span> <span class="o">:</span> <span class="p">{</span>
+                       <span class="s2">&quot;type&quot;</span> <span class="o">:</span> <span class="s2">&quot;Footer&quot;</span>
+                     <span class="p">}</span>
+                   <span class="p">}</span>
+                 <span class="p">}</span>
+               <span class="p">},</span>
+        <span class="s2">&quot;index_page&quot;</span><span class="o">:</span> <span class="p">{</span>
+          <span class="s2">&quot;base&quot;</span> <span class="o">:</span> <span class="s2">&quot;basic_page&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;config&quot;</span><span class="o">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;title&quot;</span><span class="o">:</span> <span class="s2">&quot;Home Page&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;child&quot;</span> <span class="o">:</span> <span class="p">{</span>
+                      <span class="s2">&quot;type&quot;</span> <span class="o">:</span> <span class="s2">&quot;Index&quot;</span>
+              <span class="p">}</span>
+            <span class="p">}</span>
+          <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;profile_page&quot;</span><span class="o">:</span> <span class="p">{</span>
+          <span class="s2">&quot;base&quot;</span> <span class="o">:</span> <span class="s2">&quot;basic_page&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;config&quot;</span><span class="o">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;title&quot;</span><span class="o">:</span> <span class="s2">&quot;Your Profile&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;child&quot;</span> <span class="o">:</span> <span class="p">{</span>
+                      <span class="s2">&quot;type&quot;</span> <span class="o">:</span> <span class="s2">&quot;Profile&quot;</span>
+              <span class="p">}</span>
+            <span class="p">}</span>
+          <span class="p">}</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+<p><strong>Re-Using Application Building Blocks</strong></p>
+<p>In general, instead of extending a mojit, you would create a new
+mojit and then re-use building blocks such as YUI modules, assets,
+models, etc. For example, instead of having the <tt class="docutils literal"><span class="pre">stockProfile</span></tt> mojit
+extend the <tt class="docutils literal"><span class="pre">stockQuote</span></tt> mojit to get stock quotes, your <tt class="docutils literal"><span class="pre">stockProfile</span></tt>
+mojit could use the same addon, YUI module, or model to get the stock quotes.</p>
+<p>See the following chapters on assets, extending Mojito, and models:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="../topics/mojito_assets.html">Assets</a> - learn how to configure, access, and
+use the <tt class="docutils literal"><span class="pre">Assets</span></tt> addon.</li>
+<li><a class="reference external" href="../topics/mojito_extensions.html">Extending Mojito</a> - learn how
+to create addons and add YUI modules.</li>
+<li><a class="reference external" href="../intro/mojito_mvc.html#models">Models</a> - learn how to create and access
+models.</li>
+</ul>
+</div></blockquote>
+<p><strong>Requiring the Controller of Another Mojit</strong></p>
+<p>Starting with Mojito v0.5, you can create a new controller that requires
+the controller from another mojit. You simply require and merge the controller
+of the other mojit as shown below:</p>
+<div class="highlight-javascript"><div class="highlight"><pre><span class="nx">YUI</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">Y</span><span class="p">,</span> <span class="nx">NAME</span><span class="p">)</span> <span class="p">{</span>
+
+  <span class="nx">Y</span><span class="p">.</span><span class="nx">namespace</span><span class="p">(</span><span class="s1">&#39;mojito.controllers&#39;</span><span class="p">)[</span><span class="nx">NAME</span><span class="p">]</span> <span class="o">=</span> <span class="nx">Y</span><span class="p">.</span><span class="nx">merge</span><span class="p">(</span><span class="nx">Y</span><span class="p">.</span><span class="nx">mojito</span><span class="p">.</span><span class="nx">controllers</span><span class="p">.</span><span class="nx">Foo</span><span class="p">,</span> <span class="p">{</span>
+    <span class="nx">anotherNewAction</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">ac</span><span class="p">){</span>
+     <span class="c1">// do something</span>
+    <span class="p">},</span>
+    <span class="nx">redefinedAction</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">ac</span><span class="p">)</span> <span class="p">{</span>
+      <span class="c1">// do something</span>
+      <span class="c1">// you can also play with:</span>
+      <span class="c1">// Y.mojito.controllers.Foo.redefinedAction.apply()</span>
+    <span class="p">}</span>
+  <span class="p">});</span>
+
+<span class="p">},</span> <span class="s1">&#39;0.0.1&#39;</span><span class="p">,</span> <span class="p">{</span><span class="nx">requires</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;foo&#39;</span><span class="p">]});</span>
+</pre></div>
+</div>
+<p>The same principle applies to binders and models.</p>
+<p><strong>What Can&#8217;t Be Re-Used/Extended?</strong></p>
+<p>The mojit configuration files <tt class="docutils literal"><span class="pre">definition.json</span></tt> and <tt class="docutils literal"><span class="pre">defaults.json</span></tt> cannot be
+re-used like the controller, binder(s), and model(s). In the near future, you will
+be able to re-use these configurations with the help of the <tt class="docutils literal"><span class="pre">import_settings</span></tt>
+directive in JSON and YAML files. Assets are also not extensible, so they will
+have to be included manually.</p>
+</div>
+</div>
+<div class="section" id="id14">
+<h3>Views<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h3>
+<div class="topic" id="moj-partials">
+<p class="topic-title first"><strong>Does Mojito support view partials?</strong></p>
+<p>Mojito does not support partials, but you do have the following options for rendering
+data through a template:</p>
+<blockquote>
+<div><ul class="simple">
+<li>use a child mojit instead of a view partial</li>
+<li>render data from a binder through a specific template with the
+<a class="reference external" href="../../api/classes/MojitProxy.html#method_render">render</a> method.</li>
+<li>render data from the controller using <a class="reference external" href="../../api/classes/Partial.common.html#method_render">ac.partial.render</a>.</li>
+</ul>
+</div></blockquote>
+<p>Not clear what view partials are? See <a class="reference external" href="../reference/glossary.html#view-partial">view partial</a>
+in the <a class="reference external" href="../reference/glossary.html">Mojito: Glossary</a>.</p>
+</div>
+<hr class="docutils" />
+<div class="topic" id="moj-devices">
+<p class="topic-title first"><strong>Do I have to create separate mojits for different devices?</strong></p>
+<p>The platform&#8217;s capabilities allow mojits to be executed (and their results displayed)
+on every device in either set. For a module developer, the benefit is obvious: a single
+codebase that can address a wide range of devices. Mojits may still need to be
+customized for a specific device (or device class), however, to take advantage of
+device-specific capabilities. The platform does not perform an automated
+translation/degradation of HTML5 views to simpler layouts, for example.</p>
+</div>
+<hr class="docutils" />
+<div class="topic" id="moj-refresh-view">
+<p class="topic-title first"><strong>How do I refresh the view on the client?</strong></p>
+<p>To refresh a view, you need to deploy a binder on the client. From the <tt class="docutils literal"><span class="pre">mojitProxy</span></tt>
+object of the binder, you can call the <tt class="docutils literal"><span class="pre">refreshView</span></tt> method to render a new DOM node
+for the current mojit and its children, as well as reattach all of the existing
+binders to their new nodes within the new markup. Because all binder instances are
+retained, state can be stored within a binder&#8217;s scope. See
+<a class="reference external" href="../intro/mojito_binders.html#refreshing-views">Refreshing Views</a> and the
+<a class="reference external" href="../../api/classes/MojitProxy.html">MojitProxy Class</a> in the Mojito API
+documentation for more information.</p>
+</div>
+<hr class="docutils" />
+<div class="topic" id="moj-different-templating">
+<p class="topic-title first"><strong>Can I use a different templating system other than Handlebars?</strong></p>
+<p>Mojito currently only comes with a Handlebars rendering engine, but you can add other
+rendering engines for templating systems such as EJS or Jade. See the
+<a class="reference external" href="../topics/mojito_extensions.html#view-engines">View Engine</a> documentation for
+implementation details.</p>
+</div>
+<hr class="docutils" />
+<div class="topic" id="moj-controller-specify-view">
+<p class="topic-title first"><strong>Can the mojit controller specify which template should be rendered?</strong></p>
+<p>Yes, you can pass a <tt class="docutils literal"><span class="pre">view</span></tt> object as the second parameter to <tt class="docutils literal"><span class="pre">ac.done</span></tt> to specify
+which template should receive the data and be rendered.
+See <a class="reference external" href="../intro/mojito_mvc.html#specifying-the-view">Controllers: Specifying the View</a>
+for details.</p>
+</div>
+</div>
+<div class="section" id="id15">
+<h3>Logging/Testing<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h3>
+<div class="topic" id="moj-log-level">
+<p class="topic-title first"><strong>How do I change the logging levels for my Mojito application?</strong></p>
+<p>You can set log levels for your application using the <tt class="docutils literal"><span class="pre">yui.config</span></tt> object in
+<tt class="docutils literal"><span class="pre">application.json</span></tt>. You can also set default log levels using the <tt class="docutils literal"><span class="pre">yui.config</span></tt>
+object in the <tt class="docutils literal"><span class="pre">defaults.json</span></tt> at the application or mojit level.</p>
+<p>See <a class="reference external" href="../topics/mojito_logging.html">Logging</a> for details and the code example
+<a class="reference external" href="../code_exs/simple_logging.html">Simple Logging</a>.</p>
+</div>
+<hr class="docutils" />
+<div class="topic" id="moj-mod-log-exclusion">
+<p class="topic-title first"><strong>Is there a way to exclude specific modules from logging on the client?</strong></p>
+<p>Yes, you can use the <tt class="docutils literal"><span class="pre">logExclude</span></tt> property of the <tt class="docutils literal"><span class="pre">yui.config</span></tt> object to
+exclude the logging of specified modules.</p>
+<p>For example, the logging configuration set by <tt class="docutils literal"><span class="pre">yui.config</span></tt> below excludes
+logging from the module <tt class="docutils literal"><span class="pre">pagingBinder</span></tt>:</p>
+<div class="highlight-javascript"><div class="highlight"><pre> <span class="p">...</span>
+    <span class="s2">&quot;yui&quot;</span><span class="o">:</span> <span class="p">{</span>
+      <span class="s2">&quot;config&quot;</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s2">&quot;logExclude&quot;</span><span class="o">:</span> <span class="s2">&quot;pagingBinder&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;logLevel&quot;</span><span class="o">:</span> <span class="s2">&quot;info&quot;</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">...</span>
+</pre></div>
+</div>
+<p>See <a class="reference external" href="../topics/mojito_logging.html#including-and-excluding-modules-from-logging">Including and Excluding Modules From Logging</a>
+for more information.</p>
+</div>
+<hr class="docutils" />
+<div class="topic" id="moj-client-server-logging">
+<p class="topic-title first"><strong>Can logging be configured to be different for the client and server?</strong></p>
+<p>Yes, the <tt class="docutils literal"><span class="pre">application.json</span></tt> configuration file uses the <tt class="docutils literal"><span class="pre">yui.config</span></tt> object
+for configuring logging. You can use contexts to customize logging for
+different runtime environments. For instance, you could use the <tt class="docutils literal"><span class="pre">&quot;runtime:client&quot;</span></tt>
+context to configure client-side logging and the <tt class="docutils literal"><span class="pre">&quot;master&quot;</span></tt> context to configure
+server-side logging. You can also use the properties <tt class="docutils literal"><span class="pre">logExclude</span></tt> and <tt class="docutils literal"><span class="pre">logInclude</span></tt>
+of the <tt class="docutils literal"><span class="pre">yui.config</span></tt> object to log or not log certain components
+of your application.</p>
+<p>See <a class="reference external" href="../intro/mojito_configuring.html#yui_config">config Object</a>
+and the <a class="reference external" href="../topics/mojito_logging.html#log-configuration">Log Configuration</a> for
+implementation details.</p>
+</div>
+</div>
+<div class="section" id="id16">
+<h3>Addons/Libraries/Middleware<a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h3>
+<div class="topic" id="moj-api-addons">
+<p class="topic-title first"><strong>Does the Mojito framework offer API methods or addons?</strong></p>
+<p>The Mojito framework provides API methods and addons through the <tt class="docutils literal"><span class="pre">ActionContext</span></tt>
+object. For an overview of the API and addons, see
+<a class="reference external" href="../api_overview/">Mojito API Overview</a>. To see the API specifications and the
+available addons, see the <a class="reference external" href="../../api/">Mojito API documentation</a>.</p>
+</div>
+<hr class="docutils" />
+<div class="topic" id="moj-yui">
+<p class="topic-title first"><strong>Can I repurpose or extend existing YUI modules?</strong></p>
+<p>Although Mojito application developers will have access to a library of modules, we realistically
+expect modules to require some tweaking before they can be re-purposed. Mojito,
+however, does offer facilities that make it possible and easy to extend existing
+modules.</p>
+<p>A simple and common use case would be extending a built-in addon. For example,
+suppose you want to add a method to the <tt class="docutils literal"><span class="pre">Config</span></tt> addon that
+fetches other instance configurations. You could accomplish this in a number of different ways,
+several of which are listed below:</p>
+<ul class="simple">
+<li>Add the method to the <tt class="docutils literal"><span class="pre">Config</span></tt> addon (<tt class="docutils literal"><span class="pre">mojito/lib/app/addons/ac/config.common.js</span></tt>) in the local copy of Mojito.
+This is not the recommended practice, but probably the easiest and fastest way to extend the addon.</li>
+<li>Overwrite the <tt class="docutils literal"><span class="pre">Config</span></tt> addon by creating the addon <tt class="docutils literal"><span class="pre">config.common.js</span></tt> in <tt class="docutils literal"><span class="pre">{app_dir}/addons/ac</span></tt> or
+<tt class="docutils literal"><span class="pre">mojits/{mojit_name}/addons/ac</span></tt> with the same code as the built-in <tt class="docutils literal"><span class="pre">Config</span></tt> addon and then add your
+method. This requires more work and some redundancy, but your custom add will have the functionality
+of the <tt class="docutils literal"><span class="pre">Config</span></tt> addon as well as your additional method.</li>
+<li>Create a custom addon that uses the same constructor as the built-in <tt class="docutils literal"><span class="pre">Config</span></tt> and add your new method.
+You&#8217;ll be able to access your method through the namespace you defined in your custom addon. You can
+use the <tt class="docutils literal"><span class="pre">Config</span></tt> addon for its functionality and your own addon for the additional method.</li>
+<li>Create a custom addon that includes <tt class="docutils literal"><span class="pre">mojito-config-addon</span></tt> in the <tt class="docutils literal"><span class="pre">requires</span></tt> array. In the
+constructor of your addon, mix the prototype of the <tt class="docutils literal"><span class="pre">Config</span></tt> addon with the <tt class="docutils literal"><span class="pre">prototype</span></tt>
+of your addon, which might look something like the following:
+<tt class="docutils literal"><span class="pre">Y.mix({YourConstructore}.prototype,Y.namespace(&quot;mojito.addons.ac&quot;).config.prototype);</span></tt>
+You can then add your own method, and your controller can use your addon that has the functionality
+of the built-in <tt class="docutils literal"><span class="pre">Config</span></tt> addon and your added method.</li>
+</ul>
+<p>See the <a class="reference external" href="../topics/mojito_extensions.html#addons">Addons</a> section to learn how to create custom addons.</p>
+</div>
+</div>
+</div>
+</div>
+
+   </div>
+
