@@ -17,7 +17,7 @@
         "flickr_by_page": {
             "verb": ["get"],
             "path": "/flickr/page/:page",
-            "call": "flickr.index"
+            "call": "flickr3.index"
         },
         "flickr_by_page5": {
             "verb": ["get"],
