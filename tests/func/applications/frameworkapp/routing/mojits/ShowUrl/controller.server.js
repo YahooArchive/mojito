@@ -72,28 +72,6 @@ YUI.add('ShowUrl', function (Y, NAME) {
                 };
                 //ac.http.setHeader('content-type', 'text/html');
                 ac.done(data);
-            } else if (urlExists === "YES") {
-                matchroute = "";
-                try {
-                    matchroute = ac.url.find(mojitUrl, mojitVerb);
-                } catch (err2) {
-                    url = err2;
-                }
-                console.log(matchroute);
-                if (matchroute !== null) {
-                    data = {
-                        url: mojitUrl,
-                        verbs: matchroute.methods.get,
-                        call: matchroute.annotations.dispatch.call,
-                        name: matchroute.annotations.name,
-                        params: matchroute.annotations.dispatch.params.secret
-                    };
-                } else {
-                    data = {
-                        url: mojitUrl
-                    };
-                }
-                ac.done(data);
             }
         }
     };

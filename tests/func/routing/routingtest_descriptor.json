@@ -149,43 +149,6 @@
                    ]
                 }
             },
-            "BasicRouting11" : {
-                "group" : "functional,smoke,routing",
-                "params" : {
-                    "scenario": [
-                         {
-                             "page" : "$$config.baseUrl$$/showurl?mojit_url=/you/found/a/good/path"
-                         },
-                         {
-                             "test" : "testbasicrouting11pos.js"
-                         },
-                         {
-                             "page" : "$$config.baseUrl$$/showurl?mojit_url=/you/found/a/good/path?abc=efg"
-                         },
-                         {
-                             "test" : "testbasicrouting11pos.js"
-                         },
-                         {
-                             "page" : "$$config.baseUrl$$/showurl?mojit_url=/you/found/a/good/path&mojit_verb=GET"
-                         },
-                         {
-                             "test" : "testbasicrouting11pos.js"
-                         },
-                         {
-                             "page" : "$$config.baseUrl$$/showurl?mojit_url=/you/found/a/bad/path"
-                         },
-                         {
-                             "test" : "testbasicrouting11neg1.js"
-                         },
-                         {
-                             "page" : "$$config.baseUrl$$/showurl?mojit_url=/you/found/a/good/path&mojit_verb=POST"
-                         },
-                         {
-                             "test" : "testbasicrouting11neg2.js"
-                         }
-                   ]
-                }
-            },
             "BasicRoutingNeg1" : {
                 "group" : "functional,smoke,routing",
                 "params" : {

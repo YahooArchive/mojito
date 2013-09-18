@@ -17,19 +17,13 @@ YUI.add('RoutingMojit', function(Y, NAME) {
 
         if (action === "index" && path === "/") {
             name = "root_route";
-            if (routes[name].methods.get) {
-                methods = 'GET';
-            }
+            methods = 'GET';
         } else if (action === "index") {
             name = "index_route";
-			if (routes[name].methods.get) {
-                methods = 'GET';
-            }
+            methods = 'GET';
         } else {
             name = "show_route";
-			if (routes[name].methods.post) {
-                methods = 'POST';
-            }
+            methods = 'POST';
         }
         methods = methods.toUpperCase();
         return {
