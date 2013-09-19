@@ -231,11 +231,15 @@ Testing
 -------
 
 The Mojito CLI utility also lets you use YUI Test to run unit tests for mojit code. 
-Fortunately, Mojito comes with some YUI Test code for you to use. We'll 
+In this module, we're just going to look at how to use the CLI to run tests. We'll 
 go into detail about how to write tests in the `6. Testing in Mojito <06_testing.html>`_ 
 module. 
 
-For now, let's look at how to invoke tests with the ``test`` command. To run 
+Because Mojito creates some boilerplate YUI Test code when you create a mojit, 
+you can try using the ``test`` command without having to write tests. Of course, you'll want
+to write your own tests as you develop your application.
+
+For now, let's just look at how to invoke tests with the ``test`` command. To run 
 unit tests for all of your mojits, use the following: 
 
 ``$ mojito test app``
@@ -280,7 +284,7 @@ Functional Tests
 ----------------
 
 To run functional and unit tests for the Mojito framework, you would use the test 
-framework `Yahoo! Arrow <https://github.com/yahoo/arrow>`-. Follow the instructions in 
+framework `Yahoo! Arrow <https://github.com/yahoo/arrow>`_. Follow the instructions in 
 `Mojito Framework's Unit and Functional Tests 
 <https://github.com/yahoo/mojito/wiki/Mojito-Framework's-Unit-and-Functional-Tests>`_ the 
 framework tests for Mojito. We're also going to cover functional tests in 
@@ -378,22 +382,25 @@ Creating the Application
      $  mojito jslint app .
      $  mojito jslint mojit mojits/Github
 
-#. Alright, we've tested and linted our application. Go ahead and start the application.
-
+#. Alright, we've tested and linted our application. Go ahead and start the application
+   by running the following from your application directory.
+   
    ``$ mojito start``
 
    In future modules, we won't include steps for running tests and linting your code, but highly 
    recommend that you do this on your own to save yourself the headache of unraveling more
    complicated errors. 
 
-#. To view your application, open the URL http://localhost:8666/@Github/index in a browser. 
+#. To view your application, open the URL http://localhost:8666/@Github/index in a browser. This
+   is the page created and served by your application.
 
    It's a strange URL, right? First, the port 8666 is the default port used by Mojito, 
    which we'll override in the next step. As for the path, well, we haven't set up any routes yet, 
    but the syntax for routes is as follows: ``/{mojit_instance}/{action}``.
 
-   We haven't created a mojit instance yet (we'll do that in the next module), but 
-   fortunately, Mojito creates for us an anonymous instance of the mojit ``Github`` by 
+   We haven't created a mojit instance, which is an in-memory instance created from the
+   mojit code (mojit definition), but we'll do that in the next module.
+   Fortunately, Mojito creates for us an anonymous instance of the mojit ``Github`` by 
    prepending ``@`` to the mojit name. As for ``'index'``, it's an action called from the mojit 
    instance. 
 
@@ -506,7 +513,7 @@ Additional Exercises
 - Create an application with three mojits, test the app, test a module from 
   one of the mojits, and then run the application in the context ``"environment:development"``.
 - Build documentation for the application you created and for the Mojito framework.
-  See the chapter `Mojito Command Line <reference/mojito_cmdline.html>`_ if you need
+  See the chapter `Mojito Command Line <../reference/mojito_cmdline.html>`_ if you need
   help.
 
 .. _01_cli-terms:
@@ -533,7 +540,7 @@ Terms
 Source Code for Example
 =======================
 
-`01_mojito_cli_basics <http://github.com/yahoo/mojito/examples/dashboard/01_mojito_cli_basics>`_
+`01_mojito_cli_basics <https://github.com/yahoo/mojito/tree/develop/examples/developer-guide/dashboard/01_mojito_cli_basics>`_
 
 .. _01_cli-reading:
 

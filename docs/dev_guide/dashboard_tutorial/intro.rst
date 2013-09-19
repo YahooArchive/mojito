@@ -116,9 +116,30 @@ of the page.
 Before Starting
 ===============
 
-You’ll need to install Node.js, npm, and Mojito for this tutorial, so go ahead and 
-complete the `Mojito Quickstart <../getting_started/quickstart.html>`_. The quickstart will 
-also show you how run simple Mojito commands to create and run a simple application.
+
+.. _intro_before-what:
+
+What You Should Do
+------------------
+We expect that you have read the `Introducing Mojito <../intro/>`_ and completed
+the `Mojito Quickstart <../getting_started/quickstart.html>`_.
+The introduction will give you an overview of Mojito, and the quickstart 
+will show you what you need to install and how to run simple Mojito commands to create 
+and run a simple application.
+ 
+.. _intro_before-what:
+
+What You Should Know 
+--------------------
+
+You should also be familiar with the concepts below that are specific to Mojito before
+you get started. We will be covering each in more detail throughout the tutorial.
+
+- `mojit <../reference/glossary.html#mojit>`_
+- `binder <../reference/glossary.html#binder>`_
+- `affinity <../reference/glossary.html#affinity>`_
+- `context  <../reference/glossary.html#context>`_
+- `archetype <../reference/glossary.html#archetype>`_
 
 .. _dashboard_intro-reqs:
 
