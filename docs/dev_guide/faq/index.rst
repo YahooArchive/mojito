@@ -696,7 +696,7 @@ Mojits
            models, of one mojit available to other mojits?**
 
     To make the resources of one mojit available to other mojits, you set the ``appLevel`` 
-    property in the ``application.json`` file to ``true``. Mojits wanting to use the 
+    property in the ``definition.json`` file to ``true``. Mojits wanting to use the 
     resources of application-level mojit must include the YUI module of the 
     application-level mojit in the ``requires`` array. 
     See `Configuring Metadata <../intro/mojito_configuring.html#configuring-metadata>`_ 
@@ -891,7 +891,7 @@ Views
 .. _moj_controller_specify_view:  
 .. topic:: **Can the mojit controller specify which template should be rendered?** 
 
-    Yes, you can a ``view`` object as the second parameter to ``ac.done`` that specifies 
+    Yes, you can pass a ``view`` object as the second parameter to ``ac.done`` to specify
     which template should receive the data and be rendered.
     See `Controllers: Specifying the View <../intro/mojito_mvc.html#specifying-the-view>`_ 
     for details.
@@ -970,9 +970,30 @@ Addons/Libraries/Middleware
 .. _moj_yui:
 .. topic:: **Can I repurpose or extend existing YUI modules?**
 
-    Although Mojit developers will have access to a library of modules, we realistically 
+    Although Mojito application developers will have access to a library of modules, we realistically 
     expect modules to require some tweaking before they can be re-purposed. Mojito, 
     however, does offer facilities that make it possible and easy to extend existing 
     modules. 
-    
 
+    A simple and common use case would be extending a built-in addon. For example, 
+    suppose you want to add a method to the ``Config`` addon that 
+    fetches other instance configurations. You could accomplish this in a number of different ways,
+    several of which are listed below:
+
+    - Add the method to the ``Config`` addon (``mojito/lib/app/addons/ac/config.common.js``) in the local copy of Mojito. 
+      This is not the recommended practice, but probably the easiest and fastest way to extend the addon.
+    - Overwrite the ``Config`` addon by creating the addon ``config.common.js`` in ``{app_dir}/addons/ac`` or 
+      ``mojits/{mojit_name}/addons/ac`` with the same code as the built-in ``Config`` addon and then add your
+      method. This requires more work and some redundancy, but your custom add will have the functionality 
+      of the ``Config`` addon as well as your additional method.
+    - Create a custom addon that uses the same constructor as the built-in ``Config`` and add your new method.
+      You'll be able to access your method through the namespace you defined in your custom addon. You can
+      use the ``Config`` addon for its functionality and your own addon for the additional method.
+    - Create a custom addon that includes ``mojito-config-addon`` in the ``requires`` array. In the 
+      constructor of your addon, mix the prototype of the ``Config`` addon with the ``prototype``
+      of your addon, which might look something like the following: 
+      ``Y.mix({YourConstructore}.prototype,Y.namespace("mojito.addons.ac").config.prototype);``
+      You can then add your own method, and your controller can use your addon that has the functionality
+      of the built-in ``Config`` addon and your added method. 
+
+    See the `Addons <../topics/mojito_extensions.html#addons>`_ section to learn how to create custom addons.
