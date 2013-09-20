@@ -39,7 +39,7 @@
         "route-2-wild3": {
             "verbs": ["get"],
             "path": "/*/route2",
-            "call": "XXXXXXroute-2.index"
+            "call": "route-2-wildcard.index"
         },
         "showurl": {
             "verbs": ["get"],
