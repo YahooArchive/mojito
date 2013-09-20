@@ -42,6 +42,15 @@ affinity
    file is used on the server. Likewise, if both ``common`` and ``server`` are given, 
    then the ``common`` file is used on the client and the ``server`` file is used on the server.
 
+archetype
+---------
+
+   A type of resource that the Mojito CLI utility can generate boilerplate code for. The Mojito CLI
+   utility recognizes the archetypes ``simple``, ``default``, and ``full`` to generate code for
+   different types of applications and mojits, but users can define archetypes so that Mojito can
+   generate code for any type of resource. See 
+   `Creating Code from Archetypes <../reference/mojito_cmdline.html#creating-code-from-archetypes>`_ 
+   for more information. 
 
 assets
 ------
@@ -76,6 +85,17 @@ composite mojits
 
    When a parent mojit controls the execution and layout of child mojits. See 
    `Mojito Developer Topics: Composite Mojits <../topics/mojito_composite_mojits.html>`_
+   for more information.
+
+context
+-------
+
+   The runtime environment of a Mojito application that determines which configurations are applied. 
+   For example, your application may run on different devices or in different language environments.  
+   Each runtime environment could be a context that is associated with a set of configuations. 
+   The context can be statically set (base context) on the command line or dynamically set (request context) 
+   in the HTTP headers and/or the request query string. The configurations for request contexts override 
+   those of the base context. See `Using Context Configurations <../topics/mojito_using_contexts.html>`_
    for more information.
 
 controller
