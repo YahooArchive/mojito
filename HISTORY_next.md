@@ -40,47 +40,65 @@ Deprecations, Removals
 
 * `routes.json` configuration is no longer loaded by default. To tell Mojito to
   do so, use the following:
-      
+
       app.mojito.attachRoutes();
 
+  Applications can also pass in an array of route configuration names if
+  needed.
+
 * `routes.json` configuration only support `call` and `path` properties.
-
-  The recommended way to register route with Mojito is via the `app.VERB()`
-  methods from Express.
-
-  For more detail information, please check any of the applications under
-  `examples/` folder.
 
 * `ac.url.make()` and `Y.mojito.RouteMaker.make()` no longer throws exception.
   Instead, the api returns `null` in order to provide the application more
   control on how best to handle this error.
 
+* The `ac.url.find()` and `Y.mojito.RouteMaker.find()` methods are now
+  deprecated and have been removed. If applications needs to query the route
+  object, either use the `name` or `path` by leveraging `express-map`.
 
 Features
 --------
 
-* For the application to register a route, a new API has been introduced:
-  `mojito.dispatch`.
+* To register Mojito routes programmatically instead of using `routes.json`:
 
-  `app.get('/foo', mojito.dispatch('admin.help'));` is equivalent to the
-  following configuration:
+```
+app.get('/foo', mojito.dispatch('foo.index'));
+app.map('/foo', 'foo');
+app.map('/foo', 'get#foo.index');
+```
+
+  In addition to setting up the path `/foo` to be routed to the Mojito
+  dispatcher, setup 2 additional "aliases". The second alias is the HTTP method
+  concatenated with the `call` value using the `#` delimeter.
+
+  This is equivalent to doing this in `routes.json`:
 
 ```
 [{
     "settings": [ "master" ],
-    "/foo": {
+    "foo": {
         verbs: [ "get" ],
         path: "/foo",
-        call: "admin.help"
+        call: "foo.index",
+        params: { /* optional prams */ }
     }
 }]
 ```
 
+  For more detail information, please check any of the applications under
+  `examples/` folder.
+
+New Dependencies
+----------------
+
+* Mojito now leverages the following packages for its routing implementation: 
+  `express-map` and `express-annotations`
+
 Bug Fixes
 ---------
 
-* `ac.config.getRoutes()` and `ac.url.find()` both returns the route object in
-  the same format.
+* `ac.config.getRoutes()` now returns the route configuration object using the
+  format from `express-map#getRouteMap()`.
 
 Acknowledgements
 ----------------

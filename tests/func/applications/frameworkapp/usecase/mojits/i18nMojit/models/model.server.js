@@ -31,11 +31,13 @@ YUI.add('i18nMojitModel', function(Y, NAME) {
              var API_KEY = '84921e87fb8f2fc338c3ff9bf51a412e';
              var q = 'select * from flickr.photos.search where text="%' + queryString + '" and api_key="' + API_KEY + '"';
              Y.YQL(q, function(rawYqlData) {
-                 var rawPhotos = rawYqlData.query.results.photo,
+                 var rawPhotos,
                      rawPhoto = null,
                      photos = [],
                      photo = null,
                      i = 0;
+
+                 rawPhotos = rawYqlData.query.results && rawYqlData.query.results.photo || [];
 
                  for (; i<rawPhotos.length; i++) {
                      rawPhoto = rawPhotos[i];
