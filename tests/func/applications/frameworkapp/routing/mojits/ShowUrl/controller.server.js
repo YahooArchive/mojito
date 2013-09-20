@@ -55,6 +55,7 @@ YUI.add('ShowUrl', function (Y, NAME) {
                         });
                     } else {
                         url = ac.url.make(mojitName, mojitAction);
+                        // console.log('URL: ' + url); // route-1
                     }
 					// Mojito no longer throws an exception if a url cannot be constructed.
 					// Instead, null is returned.
@@ -70,28 +71,6 @@ YUI.add('ShowUrl', function (Y, NAME) {
                     action: mojitAction
                 };
                 //ac.http.setHeader('content-type', 'text/html');
-                ac.done(data);
-            } else if (urlExists === "YES") {
-                matchroute = "";
-                try {
-                    matchroute = ac.url.find(mojitUrl, mojitVerb);
-                } catch (err2) {
-                    url = err2;
-                }
-                console.log(matchroute);
-                if (matchroute !== null) {
-                    data = {
-                        url: mojitUrl,
-                        verbs: matchroute.verbs.GET,
-                        call: matchroute.call,
-                        name: matchroute.name,
-                        params: matchroute.params.secret
-                    };
-                } else {
-                    data = {
-                        url: mojitUrl
-                    };
-                }
                 ac.done(data);
             }
         }
