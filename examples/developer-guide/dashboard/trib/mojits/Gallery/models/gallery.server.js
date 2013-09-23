@@ -1,6 +1,12 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
 /*global YUI*/
 YUI.add('GalleryModelYQL', function (Y, NAME) {
+
+    function mockData() {
+        return {
+            json: [ "gallery_test"]
+        } 
+    }
     Y.mojito.models[NAME] = {
         init: function (config) {
             this.config = config;
@@ -37,6 +43,8 @@ YUI.add('GalleryModelYQL', function (Y, NAME) {
                 if (result && result.query && result.query.results && result.query.results.json) {
                     results = result.query.results.json;
                     results.json = results.json.slice(0, itemLimit);
+                } else {
+                    cb(mockData());
                 }
 
                 Y.galleryData = results;
