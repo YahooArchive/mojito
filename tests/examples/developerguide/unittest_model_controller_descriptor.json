@@ -1,0 +1,30 @@
+[
+    {
+        "settings": [ "master" ],
+
+        "name" : "unittest_model_controller",
+
+        "config" :{
+            "baseUrl" : "http://localhost:8666",
+            "application" : {
+                "name":"unittest_model_controller",
+                "path": "../../../examples/developer-guide/unittest_model_controller"
+            }
+        },
+
+        "dataprovider" : {    
+           "unittestmodelcontroller" : {
+                 "group" : "developerguide,unittest_model_controller",
+                 "params" : {
+                             "test" : "test_unittest_model_controller.js",
+                             "page" : "$$config.baseUrl$$/"
+                }
+            }
+        }     
+    },
+
+    {
+        "settings": [ "environment:development" ]
+    }
+
+]

@@ -1,0 +1,30 @@
+[
+    {
+        "settings": [ "master" ],
+
+        "name" : "simple_assets",
+
+        "config" :{
+            "baseUrl" : "http://localhost:8666",
+            "application" : {
+                "name":"simple_assets",
+                "path": "../../../examples/developer-guide/simple_assets"
+            }
+        },
+
+        "dataprovider" : {    
+           "simpleassets" : {
+                 "group" : "developerguide,simple_assets",
+                 "params" : {
+                             "test" : "test_simple_assets.js",
+                             "page" : "$$config.baseUrl$$"
+                }
+            }
+        }     
+    },
+
+    {
+        "settings": [ "environment:development" ]
+    }
+
+]
