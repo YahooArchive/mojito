@@ -1,0 +1,30 @@
+[
+    {
+        "settings": [ "master" ],
+
+        "name" : "framed_assets",
+
+        "config" :{
+            "baseUrl" : "http://localhost:8666",
+            "application" : {
+                "name":"framed_assets",
+                "path": "../../../examples/developer-guide/framed_assets"
+            }
+        },
+
+        "dataprovider" : {    
+           "framedassets" : {
+                 "group" : "developerguide,framed_assets",
+                 "params" : {
+                             "test" : "test_framed_assets.js",
+                             "page" : "$$config.baseUrl$$/"
+                }
+            }
+        }     
+    },
+
+    {
+        "settings": [ "environment:development" ]
+    }
+
+]
