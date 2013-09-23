@@ -326,14 +326,13 @@ General
 .. topic:: **Can Mojito be started with Node.js instead of using "mojito start"?**
 
     Yes. Although there is not a standard way for starting Mojito with Node.js, you could 
-    do the following::
+    run the following from your application directory::
     
-       $ node --debug `which mojito` start
+       $ node --debug server.js
     
-    
-    Or you could specify the path to start a locally installed version of Mojito::
-    
-       $ node --debug node_modules/mojito/bin/mojito start
+   
+    This will allow you to debug your server-side code with a tool such as 
+    `node-inspector <https://github.com/node-inspector/node-inspector>`_.
 
 ------------
 

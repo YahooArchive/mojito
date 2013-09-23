@@ -172,6 +172,9 @@ the application configuration file, ``application.json``. The default port
 number is 8666. See :ref:`Specifying Context <mj_cmdline-context>` to learn 
 how to use the ``--context`` option.
 
+.. note:: You can also start your application with Node.js by running the following command
+          from the application directory: ``$ node --debug server.js``
+
 .. _mj_cmdlne-js_lint:
 
 Sanitizing Code
