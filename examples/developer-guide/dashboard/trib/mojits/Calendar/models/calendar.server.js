@@ -1,6 +1,18 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
 /*global YUI*/
 YUI.add('CalendarModelYQL', function (Y, NAME) {
+
+    function mockData() {
+        return {
+                   entry: [ 
+                       {  
+                           summary: { content: "Test Calendar Event" }, 
+                           link: { href: "http://yuilibrary.com/projects/yui3/calendar" },
+                           title: { content: "Test Event" }
+                        }
+                   ]
+        };
+    }        
     Y.mojito.models[NAME] = {
         init: function (config) {
             this.config = config;
