@@ -1,0 +1,232 @@
+{
+    "desc": "c2fa669-113",
+    "app": "master",
+    "mojito": "c2fa669",
+    "version": "0.7.4",
+    "appStartMS": 13958,
+    "appStartMemory": {
+        "vsize": 123832,
+        "rss": 97972,
+        "when": 1380065710208
+    },
+    "bursts": [
+        {
+            "header": "httperf --hog --client=0/1 --server=shakecorner.corp.yahoo.com --port=8666 --uri=/ --send-buffer=4096 --recv-buffer=16384 --num-conns=2000 --num-calls=1\nMaximum connect burst length: 1",
+            "total": {
+                "connections": 2000,
+                "requests": 2000,
+                "replies": 2000,
+                "test-duration": 253.294
+            },
+            "connection": {
+                "rate": {
+                    "cps": 7.9,
+                    "mspc": 126.6,
+                    "maxConcurrent": 1
+                },
+                "time": {
+                    "min": 121,
+                    "avg": 126,
+                    "max": 300,
+                    "median": 122,
+                    "stddev": 10,
+                    "connect": 24
+                },
+                "length": 1
+            },
+            "request": {
+                "rps": 7.9,
+                "mspr": 126.6,
+                "size": 79
+            },
+            "reply": {
+                "rate": {
+                    "min": 7.4,
+                    "avg": 7.9,
+                    "max": 8.2,
+                    "stddev": 0.2,
+                    "samples": 50
+                },
+                "time": {
+                    "response": 53.5,
+                    "transfer": 49.1
+                },
+                "size": {
+                    "header": 173,
+                    "content": 20601,
+                    "footer": 2,
+                    "total": 20776
+                },
+                "status": {
+                    "1xx": 0,
+                    "2xx": 2000,
+                    "3xx": 0,
+                    "4xx": 0,
+                    "5xx": 0
+                }
+            },
+            "misc": {
+                "cpu": {
+                    "user": 80.3,
+                    "system": 170.68,
+                    "pct": {
+                        "user": 31.7,
+                        "system": 67.4,
+                        "total": 99.1
+                    }
+                },
+                "net": {
+                    "KBps": 160.8
+                }
+            },
+            "errors": {
+                "total": 0,
+                "client-timo": 0,
+                "socket-timo": 0,
+                "connrefused": 0,
+                "connreset": 0,
+                "fd-unavail": 0,
+                "addrunavail": 0,
+                "ftab-full": 0,
+                "other": 0
+            },
+            "memories": [
+                {
+                    "vsize": 153688,
+                    "rss": 108400,
+                    "when": 1380065718437
+                },
+                {
+                    "vsize": 155736,
+                    "rss": 110500,
+                    "when": 1380065719078
+                },
+                {
+                    "vsize": 157784,
+                    "rss": 112344,
+                    "when": 1380065719715
+                },
+                {
+                    "vsize": 159832,
+                    "rss": 114204,
+                    "when": 1380065720355
+                },
+                {
+                    "vsize": 160856,
+                    "rss": 116036,
+                    "when": 1380065720993
+                },
+                {
+                    "vsize": 160856,
+                    "rss": 116124,
+                    "when": 1380065721635
+                },
+                {
+                    "vsize": 148568,
+                    "rss": 103340,
+                    "when": 1380065722914
+                },
+                {
+                    "vsize": 148568,
+                    "rss": 103340,
+                    "when": 1380065723551
+                },
+                {
+                    "vsize": 148568,
+                    "rss": 103340,
+                    "when": 1380065724192
+                },
+                {
+                    "vsize": 148568,
+                    "rss": 103340,
+                    "when": 1380065724833
+                },
+                {
+                    "vsize": 148568,
+                    "rss": 104140,
+                    "when": 1380065725470
+                },
+                {
+                    "vsize": 148568,
+                    "rss": 104140,
+                    "when": 1380065726111
+                },
+                {
+                    "vsize": 148568,
+                    "rss": 104140,
+                    "when": 1380065726753
+                },
+                {
+                    "vsize": 148568,
+                    "rss": 104140,
+                    "when": 1380065727392
+                },
+                {
+                    "vsize": 148568,
+                    "rss": 104140,
+                    "when": 1380065728029
+                },
+                {
+                    "vsize": 148568,
+                    "rss": 104140,
+                    "when": 1380065728671
+                },
+                {
+                    "vsize": 150616,
+                    "rss": 105960,
+                    "when": 1380065731233
+                },
+                {
+                    "vsize": 152664,
+                    "rss": 107740,
+                    "when": 1380065731869
+                },
+                {
+                    "vsize": 153688,
+                    "rss": 108492,
+                    "when": 1380065732507
+                },
+                {
+                    "vsize": 153688,
+                    "rss": 108492,
+                    "when": 1380065733144
+                },
+                {
+                    "vsize": 153688,
+                    "rss": 108492,
+                    "when": 1380065733784
+                },
+                {
+                    "vsize": 153688,
+                    "rss": 108492,
+                    "when": 1380065734425
+                },
+                {
+                    "vsize": 153688,
+                    "rss": 108492,
+                    "when": 1380065735069
+                },
+                {
+                    "vsize": 153688,
+                    "rss": 109264,
+                    "when": 1380065735710
+                },
+                {
+                    "vsize": 153688,
+                    "rss": 109264,
+                    "when": 1380065736347
+                },
+                {
+                    "vsize": 153688,
+                    "rss": 109264,
+                    "when": 1380065736989
+                },
+                {
+                    "vsize": 153688,
+                    "rss": 109264,
+                    "when": 1380065737630
+                }
+            ]
+        }
+    ]
+}
