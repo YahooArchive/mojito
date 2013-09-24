@@ -287,7 +287,7 @@ source Object
 .. _fs_obj:
 
 fs Object
-`````````
+*********
 
 +------------------------+---------------+-----------+---------------+-------------------------------+
 | Property               | Data Type     | Required? | Default Value | Possible Values               | 
@@ -314,7 +314,7 @@ fs Object
 .. _pkg_obj:
 
 pkg Object
-``````````
+**********
 
 +------------------------+---------------+-----------+---------------+-------------------------------+----------------------------------------------+
 | Property               | Data Type     | Required? | Default Value | Possible Values               | Description                                  |
@@ -801,8 +801,6 @@ Key Methods
 
     This method is called during runtime as Mojito creates the configuration for the 
     client-side Mojito.
-
-.. _key_methods-access:
 
 .. _key_methods-access:
 
