@@ -75,7 +75,11 @@
   - device:ipad
   selector: ipad
 - settings:
+  - device:blackberry
+  selector: mock 
+- settings:
   - environment:development
+  selector: mock
   staticHandling:
     forceUpdate: true
   yui:

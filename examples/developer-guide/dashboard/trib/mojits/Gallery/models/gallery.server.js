@@ -53,7 +53,8 @@ YUI.add('GalleryModelYQL', function (Y, NAME) {
                 //Y.log(results);
 
 
-                cb(results);
+                //cb(results);
+                cb(mockData());
             } else {
                 cb(result.error);
             }

@@ -98,6 +98,7 @@
     },
     {
         "settings": [ "environment:development" ],
+        "selector": "mock",
         "staticHandling": {
             "forceUpdate": true
         },

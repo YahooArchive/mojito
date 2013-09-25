@@ -5,11 +5,13 @@ YUI.add('StatsModelYQL', function (Y, NAME) {
     function mockData() {
         return [ 
             {
-                type: "test_activity",
-                username: "test user",
-                payload: "test content",
-                message: "test message",
-                link: "github.com/yahoo/mojito"
+                json: {
+                    type: "test_activity",
+                    actor: "test user",
+                    payload: "test content",
+                    message: "test message",
+                    link: "github.com/yahoo/mojito"
+                }
             }
         ];
     }
@@ -57,7 +59,8 @@ YUI.add('StatsModelYQL', function (Y, NAME) {
                 Y.log("github: results.json:");
                 Y.log(results);
 
-                cb(results);
+                //cb(results);
+                cb(mockData());
             } else {
                 cb(result.error);
             }
