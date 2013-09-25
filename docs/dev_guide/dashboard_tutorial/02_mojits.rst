@@ -582,7 +582,7 @@ mojits and then configure mojit instances and routing paths.
    (``mojits/Github/controller.server.js``) in an editor and update the 
    object that is passed to ``ac.done`` and the addons required with the following:
 
-   .. code-block:: 
+   .. code-block:: javascript
 
       ...
         ac.done({
