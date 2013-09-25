@@ -48,8 +48,9 @@ YUI.add('CalendarModelYQL', function (Y, NAME) {
 
                 if (result && result.query && result.query.results && result.query.results.feed) {
                     results = result.query.results.feed;
+                } else {
+                   cb(mockData());
                 }
-
 
                 //Y.log("results 0 summary . content");
                 //Y.log(results[0].entry.summary.content);
@@ -69,8 +70,8 @@ YUI.add('CalendarModelYQL', function (Y, NAME) {
                 //Y.log("results: ");
                 //Y.log(results);
 
-
-                cb(results);
+                //cb(results);
+                cb(mockData());
             } else {
                 cb(result.error);
             }

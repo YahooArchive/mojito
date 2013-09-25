@@ -2,6 +2,14 @@
 /*global YUI*/
 YUI.add('YoutubeModelYQL', function (Y, NAME) {
 
+    function mockData() {
+       return [
+           {
+               title: { content: "No videos found." },
+               id: "http://gdata.youtube.com/feeds/base/videos/ dummyID"
+           }
+       ];
+    }
     Y.mojito.models[NAME] = {
         init: function (config) {
             this.config = config;
@@ -41,14 +49,15 @@ YUI.add('YoutubeModelYQL', function (Y, NAME) {
                     Y.youtubeCacheTime = new Date().getTime();
 
                 } else {
-                    results = null;
+                    cb(mockData());
                 }
 
                 //Y.log("results: ");
                 //Y.log(results);
 
 
-                cb(results);
+                //cb(results);
+                cb(mockData());
             } else {
                 cb(result.error);
             }

@@ -55,7 +55,6 @@ YUI.add('BlogModelYQL', function (Y, NAME) {
                 Y.blogData = results;
                 Y.blogCacheTime = new Date().getTime();
 
-
                 cb(results);
             } else {
                 cb(result.error);

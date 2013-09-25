@@ -22,6 +22,7 @@ YUI.add('Blog', function (Y, NAME) {
          *        to the Mojito API.
          */
         index: function (ac) {
+            Y.log(ac.config.getAppConfig(),"info");
             var view_type, feedURL, title;
             view_type = ac.params.getFromRoute('view_type') || "yui";
 
@@ -49,4 +50,4 @@ YUI.add('Blog', function (Y, NAME) {
 
     };
 
-}, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'mojito-params-addon', 'mojito-config-addon', 'mojito-helpers-addon']});
+}, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'mojito-params-addon', 'mojito-config-addon', 'mojito-helpers-addon', 'mojito-config-addon']});
