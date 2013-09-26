@@ -1,18 +1,7 @@
+
 /*jslint anon:true, sloppy:true, nomen:true*/
 /*global YUI*/
 YUI.add('CalendarModelYQL', function (Y, NAME) {
-
-    function mockData() {
-        return {
-                   entry: [ 
-                       {  
-                           summary: { content: "Test Calendar Event" }, 
-                           link: { href: "http://yuilibrary.com/projects/yui3/calendar" },
-                           title: { content: "Test Event" }
-                        }
-                   ]
-        };
-    }        
     Y.mojito.models[NAME] = {
         init: function (config) {
             this.config = config;
@@ -48,9 +37,8 @@ YUI.add('CalendarModelYQL', function (Y, NAME) {
 
                 if (result && result.query && result.query.results && result.query.results.feed) {
                     results = result.query.results.feed;
-                } else {
-                   cb(mockData());
                 }
+
 
                 //Y.log("results 0 summary . content");
                 //Y.log(results[0].entry.summary.content);
@@ -70,8 +58,8 @@ YUI.add('CalendarModelYQL', function (Y, NAME) {
                 //Y.log("results: ");
                 //Y.log(results);
 
-                //cb(results);
-                cb(mockData());
+
+                cb(results);
             } else {
                 cb(result.error);
             }
