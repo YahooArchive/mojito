@@ -1,15 +1,8 @@
+
 /*jslint anon:true, sloppy:true, nomen:true*/
 /*global YUI*/
 YUI.add('BlogModelYQL', function (Y, NAME) {
 
-    function mockData() {
-       return {
-          title: "Test Blog Post",
-          "link": "www.yui.blog",
-          "description": "This is a test blog post.",
-          "pubDate": "Fri Sep 20 18:32:01 PDT 2013" 
-       };
-    }
     Y.mojito.models[NAME] = {
         init: function (config) {
             this.config = config;
@@ -45,8 +38,6 @@ YUI.add('BlogModelYQL', function (Y, NAME) {
 
                 if (result && result.query && result.query.results && result.query.results.item) {
                     results = result.query.results.item;
-                } else {
-                    cb(mockData());
                 }
 
                 Y.log("result.query.results.item = results: ");
@@ -54,6 +45,7 @@ YUI.add('BlogModelYQL', function (Y, NAME) {
 
                 Y.blogData = results;
                 Y.blogCacheTime = new Date().getTime();
+
 
                 cb(results);
             } else {
