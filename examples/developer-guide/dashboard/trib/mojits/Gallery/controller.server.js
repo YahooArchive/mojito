@@ -44,7 +44,7 @@ YUI.add('Gallery', function (Y, NAME) {
                 ac.done({
                     title: title,
                     results: data
-                });
+                }, data.view);
             });
         }
 

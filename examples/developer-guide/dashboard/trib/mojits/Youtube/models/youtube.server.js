@@ -2,14 +2,6 @@
 /*global YUI*/
 YUI.add('YoutubeModelYQL', function (Y, NAME) {
 
-    function mockData() {
-       return [
-           {
-               title: { content: "No videos found." },
-               id: "http://gdata.youtube.com/feeds/base/videos/ dummyID"
-           }
-       ];
-    }
     Y.mojito.models[NAME] = {
         init: function (config) {
             this.config = config;
@@ -36,31 +28,26 @@ YUI.add('YoutubeModelYQL', function (Y, NAME) {
         },
         onDataReturn: function (cb, result) {
             Y.log("youtube.server onDataReturn called");
-            if (result.error === undefined) {
+            var results = [];
+            results.view = "index";
+            if (result && result.query && result.query.results === null) {
+                // Handle the case where no results are returned.
+                results.view = "none";
+            } else if (result.error === undefined) {
 
                 //Y.log("result: ");
                 //Y.log(result);
 
-                var results = {};
-
-                if (result && result.query && result.query.results && result.query.results.entry) {
+                if (result.query.results.entry) {
                     results = result.query.results.entry;
                     Y.youtubeData = results;
                     Y.youtubeCacheTime = new Date().getTime();
-
-                } else {
-                    cb(mockData());
-                }
-
-                //Y.log("results: ");
-                //Y.log(results);
-
-
-                //cb(results);
-                cb(mockData());
+                } 
             } else {
-                cb(result.error);
+                results = result;
+                results.view = "error";
             }
+            cb(results);
         },
         _isCached: function() {
             var updateTime = this.config.feedCacheTime * 60 * 1000;

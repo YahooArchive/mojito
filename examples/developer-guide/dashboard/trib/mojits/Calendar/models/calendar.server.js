@@ -28,14 +28,19 @@ YUI.add('CalendarModelYQL', function (Y, NAME) {
         },
         onDataReturn: function (cb, result) {
             Y.log("calendar.server onDataReturn called");
+            Y.log(result);
             var results = [];
-            if (result.error === undefined) {
+            results.view = "index";
+            if (result.query && result.query.results === null) {
+                // Handle the case where no results are handled.
+                results.view = "none";
+            } else if (result.error === undefined) {
 
                 Y.log("onDataReturn: CalendarModelYQL...");
                 Y.log("result: ");
                 Y.log(result);
 
-                if (result && result.query && result.query.results && result.query.results.feed) {
+                if (result.query && result.query.results && result.query.results.feed) {
                     results = result.query.results.feed;
                 }
 
@@ -46,7 +51,7 @@ YUI.add('CalendarModelYQL', function (Y, NAME) {
                     Y.log(val.entry.summary.content);
                     var tempDate = val.entry.summary.content;
                     // strip off 'br', 'When:'' and 'to' elements to get date
-                    tempDate = tempDate.split("<")[0].split("When:")[1].split("to ")[0];
+                    tempDate = tempDate.split("<")[0].split("When:")[1]; 
 
                     val.entry.summary.content = tempDate;
 
@@ -59,10 +64,12 @@ YUI.add('CalendarModelYQL', function (Y, NAME) {
                 //Y.log(results);
 
 
-                cb(results);
             } else {
-                cb(result.error);
+                results = result;
+                results.view = "error";
             }
+            Y.log(results, "info");
+            cb(results);    
         },
         _isCached: function() {
             var updateTime = this.config.feedCacheTime * 60 * 1000;

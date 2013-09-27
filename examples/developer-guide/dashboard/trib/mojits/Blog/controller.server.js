@@ -39,12 +39,13 @@ YUI.add('Blog', function (Y, NAME) {
                 //Y.log(data);
                 // add mojit specific css
                 ac.assets.addCss('./index.css');
-
+                Y.log(data.view, "info");
+                Y.log(data.error, "info");
                 // populate blog template
                 ac.done({
                     title: title,
                     results: data
-                });
+                }, data.view);
             });
         }
 

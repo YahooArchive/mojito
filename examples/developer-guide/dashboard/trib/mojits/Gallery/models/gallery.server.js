@@ -2,11 +2,6 @@
 /*global YUI*/
 YUI.add('GalleryModelYQL', function (Y, NAME) {
 
-    function mockData() {
-        return {
-            json: [ "gallery_test"]
-        } 
-    }
     Y.mojito.models[NAME] = {
         init: function (config) {
             this.config = config;
@@ -32,32 +27,32 @@ YUI.add('GalleryModelYQL', function (Y, NAME) {
 
         onDataReturn: function (cb, result) {
             Y.log("onDataReturn called");
-            var itemLimit = 10, results = [];
-
-            if (result.error === undefined) {
+            var itemLimit = 10, results = []; 
+            results.view = "index";
+            if (result.query && result.query.results === null) {
+                // Handle case where no results are returned.
+                results.view = "none"; 
+            } else if (result.error === undefined) {
 
                 Y.log("gallery onDataReturn result:");
                 Y.log(result);
                 Y.log(result.query.results.json);
 
-                if (result && result.query && result.query.results && result.query.results.json) {
+                if (result.query.results.json) {
                     results = result.query.results.json;
                     results.json = results.json.slice(0, itemLimit);
-                } else {
-                    cb(mockData());
-                }
+                } 
 
                 Y.galleryData = results;
                 Y.galleryCacheTime = new Date().getTime();
                 //Y.log("results.json:");
                 //Y.log(results);
 
-
-                //cb(results);
-                cb(mockData());
             } else {
-                cb(result.error);
+                results = result; 
+                results.view = "error";
             }
+            cb(results);
         },
         _isCached: function() {
             var updateTime = this.config.feedCacheTime * 60 * 1000;

@@ -61,7 +61,7 @@ YUI.add('Github', function (Y, NAME) {
                 var res = [];
 
                 //Y.log("calling githubmap");
-
+                Y.log(data, "info");    
                 res = self.githubMap(ac, data);
 
 
@@ -72,8 +72,8 @@ YUI.add('Github', function (Y, NAME) {
 
                 ac.done({
                     title: title,
-                    results: res
-                });
+                    results: res 
+                }, data.view);
             });
         },
 
@@ -87,12 +87,12 @@ YUI.add('Github', function (Y, NAME) {
          *
          */
         githubMap: function(ac, data) {
-
+            if (data.error || data === null) {
+               return data;
+            } 
             Y.log("githubmap called");
             var res = [];
-
             Y.Array.each(data, function (itm, idx, arr) {
-                Y.log(itm);
                 var
                     type = itm.json.type,
                     username = itm.json.actor.login,

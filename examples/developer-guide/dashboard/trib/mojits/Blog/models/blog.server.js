@@ -34,9 +34,14 @@ YUI.add('BlogModelYQL', function (Y, NAME) {
         onDataReturn: function (cb, result) {
             Y.log("blog.server onDataReturn called");
             var results = [];
-            if (result.error === undefined) {
+            results.view = "index";
+            if (result.query && result.query.results === null) {
+                // Handle the case where no results are returned.
+                Y.log("No results.", "info");
+                results.view = "none";
+            } else if (result.error === undefined) {
 
-                if (result && result.query && result.query.results && result.query.results.item) {
+                if (result.query.results.item) {
                     results = result.query.results.item;
                 }
 
@@ -46,11 +51,11 @@ YUI.add('BlogModelYQL', function (Y, NAME) {
                 Y.blogData = results;
                 Y.blogCacheTime = new Date().getTime();
 
-
-                cb(results);
             } else {
-                cb(result.error);
+                results = result;
+                results.view = "error";
             }
+            cb(results);
         },
         _isCached: function() {
             var updateTime = this.config.feedCacheTime * 60 * 1000;

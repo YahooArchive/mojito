@@ -37,7 +37,7 @@ YUI.add('Calendar', function (Y, NAME) {
                 ac.done({
                     title: "YUI Calendar Info",
                     results: data
-                });
+                }, data.view);
             });
         }
 
