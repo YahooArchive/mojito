@@ -2,19 +2,6 @@
 /*global YUI*/
 YUI.add('StatsModelYQL', function (Y, NAME) {
 
-    function mockData() {
-        return [ 
-            {
-                json: {
-                    type: "test_activity",
-                    actor: "test user",
-                    payload: "test content",
-                    message: "test message",
-                    link: "github.com/yahoo/mojito"
-                }
-            }
-        ];
-    }
     Y.mojito.models[NAME] = {
 
         init: function (config) {
@@ -43,27 +30,29 @@ YUI.add('StatsModelYQL', function (Y, NAME) {
         },
         onDataReturn: function (cb, repo, result) {
             Y.log("github: onDataReturn called");
-            if (result.error === undefined) {
+            var results = [];
+            results.view = "index";
+            if (result.query && result.query.results === null) {
+                // Handle the case where no results are returned.
+                results.view = "none";
+            } else if (result.error === undefined) {
 
                 Y.log("github: result:");
                 Y.log(result);
-                var results = {};
-                if (result && result.query && result.query.results && result.query.results.json) {
+                if (result.query.results.json) {
 
                     results = result.query.results.json;
                     Y.yqlData[repo] = results;
                     Y.yqlCacheTime = new Date().getTime();
-                } else {
-                   cb(mockData()); 
-                }
+                } 
                 Y.log("github: results.json:");
                 Y.log(results);
 
-                //cb(results);
-                cb(mockData());
             } else {
-                cb(result.error);
+                results = result;
+                results.view = "error";
             }
+            cb(results);
         },
         _isCached: function(repo) {
             var updateTime = this.config.feedCacheTime * 60 * 1000;

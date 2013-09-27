@@ -8,6 +8,9 @@ YUI.add('Youtube', function (Y, NAME) {
  * @module Youtube
  */
     var youtubeMap = function (ac, data) {
+        if(data.error || data == null) {
+            return data;
+        }
         Y.log("youtube: youtubeMap called");
         Y.log("youtube: data");
         Y.log(data);
@@ -56,7 +59,7 @@ YUI.add('Youtube', function (Y, NAME) {
                 ac.done({
                     title: "YUI YouTube Videos",
                     results: res
-                });
+                }, data.view);
             });
         }
     };
