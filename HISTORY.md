@@ -13,10 +13,19 @@ Features
 Bug Fixes
 ---------
 
-* Issue #1215: [regression] lang collection in metas is missing for controller 
-
 Acknowledgements
 ----------------
+
+
+version 0.7.5
+=================
+
+Bug Fixes
+---------
+
+* Issue #1215: [regression] lang collection in metas is missing for controller 
+* Issue #1238 Lower Resource Store log messages for duplicate resources from
+  "info" to "debug"
 
 version 0.7.4
 =================
