@@ -1,16 +1,16 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('myMojitModel', function(Y, NAME) {
+YUI.add('contextModelMojitModel', function(Y, NAME) {
 
 /**
- * The myMojitModel module.
+ * The contextModelMojitModel module.
  *
- * @module myMojit
+ * @module contextModelMojit
  */
 
     /**
-     * Constructor for the myMojitModel class.
+     * Constructor for the contextModelMojitModel class.
      *
-     * @class myMojitModel
+     * @class contextModelMojitModel
      * @constructor
      */
     Y.namespace('mojito.models')[NAME] = {

@@ -13,11 +13,28 @@
         },
 
         "dataprovider" : {     
-           "hello" : {
-                "group" : "smoke,usecases",
+            "hello" : {
+                "group" : "smoke,usecases,hello",
                 "params" : {
                     "test" : "testhello.js",
                     "page" : "$$config.baseUrl$$/hello-1/index"
+                }
+            },
+            "contextmodel" : {
+                "group" : "smoke,usecases,lichun",
+                "params" : {
+                    "scenario": [
+                        {
+                            "test" : "testcontextmodel.js",
+                            "page" : "$$config.baseUrl$$/@contextModelMojit/index",
+                            "testName": "Default"
+                        },
+                        {
+                            "test" : "testcontextmodel.js",
+                            "page" : "$$config.baseUrl$$/@contextModelMojit/index?device=iphone",
+                            "testName": "iPhone"
+                        }
+                    ]
                 }
             },
             "flickr1" : {
