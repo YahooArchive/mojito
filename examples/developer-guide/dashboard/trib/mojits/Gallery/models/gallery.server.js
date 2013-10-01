@@ -20,7 +20,6 @@ YUI.add('GalleryModelYQL', function (Y, NAME) {
                     cookedQuery = Y.Lang.sub(query, queryParams);
 
                     //Y.log("cookedQuery: " + cookedQuery);
-
                 Y.YQL(cookedQuery, Y.bind(this.onDataReturn, this, callback));
             }
         },
@@ -28,29 +27,22 @@ YUI.add('GalleryModelYQL', function (Y, NAME) {
         onDataReturn: function (cb, result) {
             Y.log("onDataReturn called");
             var itemLimit = 10, results = []; 
-            results.view = "index";
-            if (result.query && result.query.results === null) {
-                // Handle case where no results are returned.
-                results.view = "none"; 
-            } else if (result.error === undefined) {
+            if (result.error === undefined) {
 
                 Y.log("gallery onDataReturn result:");
                 Y.log(result);
-                Y.log(result.query.results.json);
 
-                if (result.query.results.json) {
+                if (result && result.query && result.query.results && result.query.results.json) {
                     results = result.query.results.json;
                     results.json = results.json.slice(0, itemLimit);
-                } 
-
-                Y.galleryData = results;
-                Y.galleryCacheTime = new Date().getTime();
-                //Y.log("results.json:");
-                //Y.log(results);
+                    Y.galleryData = results;
+                    Y.galleryCacheTime = new Date().getTime();
+                } else {
+                    results = new Error({ error: { description: "The returned response was malformed." }}); 
+                }
 
             } else {
                 results = result; 
-                results.view = "error";
             }
             cb(results);
         },

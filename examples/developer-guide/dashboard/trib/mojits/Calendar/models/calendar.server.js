@@ -30,45 +30,32 @@ YUI.add('CalendarModelYQL', function (Y, NAME) {
             Y.log("calendar.server onDataReturn called");
             Y.log(result);
             var results = [];
-            results.view = "index";
-            if (result.query && result.query.results === null) {
-                // Handle the case where no results are handled.
-                results.view = "none";
-            } else if (result.error === undefined) {
+            if (result.error === undefined) {
 
                 Y.log("onDataReturn: CalendarModelYQL...");
                 Y.log("result: ");
                 Y.log(result);
 
-                if (result.query && result.query.results && result.query.results.feed) {
+                if (result && result.query && result.query.results && result.query.results.feed) {
                     results = result.query.results.feed;
+                    //Y.log("results 0 summary . content");
+                    //Y.log(results[0].entry.summary.content);
+                    Y.Array.each(results, function (val, key, obj) {
+                        Y.log(val.entry.summary.content);
+                        var tempDate = val.entry.summary.content;
+                        // Strip off 'br', 'When:'' and 'to' elements to get date
+                        tempDate = tempDate.split("<")[0].split("When:")[1]; 
+                        val.entry.summary.content = tempDate;
+                        Y.log(val.entry.summary.content);
+                    });
+                    Y.calendarData = results;
+                    Y.calendarCacheTime = new Date().getTime();
+                } else {
+                    results = new Error({ error: { description: "Malformed response couldn't be parsed." }});
                 }
-
-
-                //Y.log("results 0 summary . content");
-                //Y.log(results[0].entry.summary.content);
-                Y.Array.each(results, function (val, key, obj) {
-                    Y.log(val.entry.summary.content);
-                    var tempDate = val.entry.summary.content;
-                    // strip off 'br', 'When:'' and 'to' elements to get date
-                    tempDate = tempDate.split("<")[0].split("When:")[1]; 
-
-                    val.entry.summary.content = tempDate;
-
-                    Y.log(val.entry.summary.content);
-                });
-
-                Y.calendarData = results;
-                Y.calendarCacheTime = new Date().getTime();
-                //Y.log("results: ");
-                //Y.log(results);
-
-
             } else {
                 results = result;
-                results.view = "error";
             }
-            Y.log(results, "info");
             cb(results);    
         },
         _isCached: function() {

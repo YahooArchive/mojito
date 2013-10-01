@@ -31,15 +31,11 @@ YUI.add('StatsModelYQL', function (Y, NAME) {
         onDataReturn: function (cb, repo, result) {
             Y.log("github: onDataReturn called");
             var results = [];
-            results.view = "index";
-            if (result.query && result.query.results === null) {
-                // Handle the case where no results are returned.
-                results.view = "none";
-            } else if (result.error === undefined) {
+            if (result.error === undefined) {
 
                 Y.log("github: result:");
                 Y.log(result);
-                if (result.query.results.json) {
+                if (result.query && result.query.results && result.query.results.json) {
 
                     results = result.query.results.json;
                     Y.yqlData[repo] = results;
@@ -50,7 +46,6 @@ YUI.add('StatsModelYQL', function (Y, NAME) {
 
             } else {
                 results = result;
-                results.view = "error";
             }
             cb(results);
         },

@@ -55,28 +55,30 @@ YUI.add('Github', function (Y, NAME) {
             model.getData({}, yqlTable, id, repo, function (data) {
                 //Y.log("Github -index - model.getData:");
                 //Y.log(data);
-
-                //construct special data
-
                 var res = [];
 
                 //Y.log("calling githubmap");
                 Y.log(data, "info");    
-                res = self.githubMap(ac, data);
-
-
 
                 // add mojit specific css
                 ac.assets.addCss('./index.css');
-
-
-                ac.done({
-                    title: title,
-                    results: res 
-                }, data.view);
+                if(data.error) {
+                    // Found errors: render `error` template.
+                    ac.done({
+                        title: title,
+                        results: data
+                    }, "error");
+                } else {
+                    // Construct special data
+                    res = self.githubMap(ac, data);
+                    // Populate and render template.
+                    ac.done({
+                        title: title,
+                        results: res 
+                    });
+                }
             });
         },
-
         /**
          * Method for reading in the GitHub json data and returning
          *    the right link and title.
@@ -87,9 +89,6 @@ YUI.add('Github', function (Y, NAME) {
          *
          */
         githubMap: function(ac, data) {
-            if (data.error || data === null) {
-               return data;
-            } 
             Y.log("githubmap called");
             var res = [];
             Y.Array.each(data, function (itm, idx, arr) {
@@ -103,7 +102,6 @@ YUI.add('Github', function (Y, NAME) {
                 if (type === "IssueCommentEvent") {
                     Y.log("issuecommentevent!");
                 }
-
                 switch (type) {
                 case "CommitCommentEvent":
                     msg = "Made a Comment";
@@ -186,9 +184,7 @@ YUI.add('Github', function (Y, NAME) {
                     msg = "Did Something? Don't know.";
                     link = "#";
                     break;
-
                 }
-
                 res[idx] = {
                     type: type,
                     username: username,
@@ -197,13 +193,8 @@ YUI.add('Github', function (Y, NAME) {
                     link: link
                 };
             });
-
             // send the array back
             return res;
-
-
         }
-
     };
-
 }, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'mojito-params-addon', 'mojito-config-addon']});

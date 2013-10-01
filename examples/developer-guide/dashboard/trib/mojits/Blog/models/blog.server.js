@@ -34,26 +34,19 @@ YUI.add('BlogModelYQL', function (Y, NAME) {
         onDataReturn: function (cb, result) {
             Y.log("blog.server onDataReturn called");
             var results = [];
-            results.view = "index";
-            if (result.query && result.query.results === null) {
-                // Handle the case where no results are returned.
-                Y.log("No results.", "info");
-                results.view = "none";
-            } else if (result.error === undefined) {
+            if (result.error === undefined) {
 
-                if (result.query.results.item) {
+                if (result && result.query && result.query.results && result.query.results.item) {
                     results = result.query.results.item;
+                    Y.blogData = results;
+                    Y.blogCacheTime = new Date().getTime();
+                } else {
+                    results = new Error({ error: { description: "The returned response is malformed." }});
                 }
-
                 Y.log("result.query.results.item = results: ");
                 Y.log(results);
-
-                Y.blogData = results;
-                Y.blogCacheTime = new Date().getTime();
-
             } else {
                 results = result;
-                results.view = "error";
             }
             cb(results);
         },

@@ -2,11 +2,13 @@
     <div class="mod" id="calendar">
         {{> widget_heading}}
         <div class="inner">
-            <ul>
-                {{#results}}
+            {{#each results}}
+                <ul>
                     <li>{{#entry}}<span>{{#summary}}{{content}}{{/summary}}</span><a href="{{#link}}{{href}}{{/link}}" title="{{#title}}{{content}}{{/title}}">{{#title}}{{content}}{{/title}}</a>{{/entry}}</li>
-                {{/results}}
-            </ul>
+                </ul>
+            {{else}}
+               <span class="none">Sorry, no results were returned. Try refreshing the page again.</span> 
+            {{/each}}
         </div>
     </div>
 </div>
