@@ -29,23 +29,19 @@ YUI.add('YoutubeModelYQL', function (Y, NAME) {
         onDataReturn: function (cb, result) {
             Y.log("youtube.server onDataReturn called");
             var results = [];
-            results.view = "index";
-            if (result && result.query && result.query.results === null) {
-                // Handle the case where no results are returned.
-                results.view = "none";
-            } else if (result.error === undefined) {
+            if (result.error === undefined) {
 
                 //Y.log("result: ");
                 //Y.log(result);
-
-                if (result.query.results.entry) {
+                if (result && result.query && result.query.results && result.query.results.entry) {
                     results = result.query.results.entry;
                     Y.youtubeData = results;
                     Y.youtubeCacheTime = new Date().getTime();
-                } 
+                } else {
+                    results = new Error({ error: { description: "The returned response was malformed." }});
+                }
             } else {
                 results = result;
-                results.view = "error";
             }
             cb(results);
         },

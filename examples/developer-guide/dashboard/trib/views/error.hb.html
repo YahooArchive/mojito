@@ -2,7 +2,8 @@
    <div class="mod" id="blog">
        {{> widget_heading}}
        <div class="inner">
-           {{#each results}}
+           <b>Error: </b>
+           {{#each results.error}}
 	        <span id="error">{{.}} </span>
            {{/each}}
        </div>

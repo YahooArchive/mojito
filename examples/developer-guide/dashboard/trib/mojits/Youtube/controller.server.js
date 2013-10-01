@@ -14,7 +14,6 @@ YUI.add('Youtube', function (Y, NAME) {
         Y.log("youtube: youtubeMap called");
         Y.log("youtube: data");
         Y.log(data);
-
         var res = [];
 
         Y.Array.each(data, function (itm, idx, arr) {
@@ -27,7 +26,6 @@ YUI.add('Youtube', function (Y, NAME) {
                 id: id
             };
         });
-
         return res;
     };
     /**
@@ -48,18 +46,25 @@ YUI.add('Youtube', function (Y, NAME) {
             ac.models.get('YoutubeModelYQL').getData({}, function (data) {
                 Y.log("Youtube controller.server.js -index - model.getData:");
                 Y.log(data);
-                var res = [];
-                res = youtubeMap(ac, data);
+                var res = [], title = "YUI YouTube Videos";
 
                 Y.log("youtubmojit results:");
                 Y.log(res);
-
-
-                // populate youtube template
-                ac.done({
-                    title: "YUI YouTube Videos",
-                    results: res
-                }, data.view);
+                if (data.error) {
+                    // Found errors: render `error` template.
+                    ac.done({
+                        title: title,
+                        results: data 
+                    }, "error");
+                } else {
+                    // Create data structure from Web service response.
+                    res = youtubeMap(ac, data);
+                    // Populate and render template.
+                    ac.done({
+                        title: title,
+                        results: res
+                    });
+                }
             });
         }
     };

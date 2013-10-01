@@ -2,8 +2,8 @@
     <div class="mod" id="youtube">
         {{> widget_heading}}
         <div class="inner">
-            <ul>
-                {{#results}}
+            {{#each results}}
+                <ul>
                     <li>
                         <div>{{#title}}{{content}}{{/title}}</div>
                         <iframe
@@ -14,8 +14,10 @@
                             src="http://www.youtube.com/embed/{{id}}?html5=1" allowfullscreen frameborder="0">
                         </iframe>
                     </li>
-                {{/results}}
-            </ul>
+                </ul>
+            {{else}} 
+                <span class="none">Sorry, no results were returned. Try refreshing the page again.</span> 
+            {{/each}}
         </div>
     </div>
 </div>
