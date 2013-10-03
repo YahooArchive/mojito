@@ -13,6 +13,8 @@ Features
 Bug Fixes
 ---------
 
+* Issue #1251: easy way to get contextualized models
+
 Acknowledgements
 ----------------
 
