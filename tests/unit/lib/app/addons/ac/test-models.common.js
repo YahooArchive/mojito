@@ -18,7 +18,9 @@ YUI().use('mojito-models-addon', 'test', function(Y) {
             };
 
             var addon = new Y.mojito.addons.ac.models({
-                instance: {}
+                instance: {
+                    models: {}
+                }
             }, adapter);
 
             var model = addon.get('foo');
@@ -66,6 +68,28 @@ YUI().use('mojito-models-addon', 'test', function(Y) {
             var model2 = addon.get('foo');
             A.areSame(model1, model2, 'requesting an existing instance should return the refence');
             A.areSame(1, initCounter, 'init method should be called once');
+        },
+
+        'use model filename': function () {
+            var adapter = {
+                page: {}
+            };
+
+            var addon = new Y.mojito.addons.ac.models({
+                instance: {
+                    models: {
+                        foofile: 'foo'
+                    }
+                }
+            }, adapter);
+
+            Y.mojito.models.foo = {
+                init: function (c) {
+                }
+            };
+
+            var model = addon.get('foofile');
+            A.isObject(model, 'registered model should return an instance');
         }
 
     }));
@@ -86,13 +110,17 @@ YUI().use('mojito-models-addon', 'test', function(Y) {
 
             // creating first addon instance
             var addon1 = new Y.mojito.addons.ac.models({
-                instance: {}
+                instance: {
+                    models: {}
+                }
             }, adapter);
             addon1.expose('bar', bar);
 
             // creating second addon instance
             var addon2 = new Y.mojito.addons.ac.models({
-                instance: {}
+                instance: {
+                    models: {}
+                }
             }, adapter);
 
             // testing models
@@ -158,7 +186,9 @@ YUI().use('mojito-models-addon', 'test', function(Y) {
             };
             // creating first addon instance
             var addon = new Y.mojito.addons.ac.models({
-                instance: {}
+                instance: {
+                    models: {}
+                }
             }, adapter);
             addon.set('baz', baz);
             addon.expose('baz');
