@@ -19,7 +19,7 @@ suite.add(new YUITest.TestCase({
                 called2 = false,
                 cfg = { color: 'red' };
 
-            Y.log("gallery.server-tests.js");
+            Y.log("gallery.server-tests.js", "info", NAME);
 
             A.isNotNull(model);
             A.isFunction(model.init);
@@ -60,7 +60,7 @@ suite.add(new YUITest.TestCase({
                 called2 = false,
                 cfg = { color: 'red' };
 
-            Y.log("gallery.server-tests.js");
+            Y.log("gallery.server-tests.js", "info", NAME);
 
             A.isNotNull(model);
             A.isFunction(model.init);
@@ -84,8 +84,8 @@ suite.add(new YUITest.TestCase({
 
             model.onDataReturn(function(data){
                 called2 = true;
-            }, {
-                error: "some error",
+              },
+              {
                 query:{
                     results:{
                         json:{
@@ -95,11 +95,7 @@ suite.add(new YUITest.TestCase({
                 }
             });
             A.isTrue(called2);
-
         }
-
     }));
-
     YUITest.TestRunner.add(suite);
-
 }, '0.0.1', {requires: ['mojito-test', 'GalleryModelYQL']});

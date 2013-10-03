@@ -8,19 +8,16 @@ YUI.add('Youtube', function (Y, NAME) {
  * @module Youtube
  */
     var youtubeMap = function (ac, data) {
-        if(data.error || data == null) {
-            return data;
-        }
-        Y.log("youtube: youtubeMap called");
-        Y.log("youtube: data");
-        Y.log(data);
+        Y.log("youtube: youtubeMap called", "info", NAME);
+        Y.log("youtube: data", "info", NAME);
+        Y.log(data, "info", NAME);
         var res = [];
 
         Y.Array.each(data, function (itm, idx, arr) {
-            Y.log(itm);
+            Y.log(itm, "info", NAME);
             var title = itm.title,
                 id = itm.id.split("http://gdata.youtube.com/feeds/base/videos/")[1];
-            //Y.log("youtubevid id:" + id);
+            //Y.log("youtubevid id:" + id, "info", NAME);
             res[idx] = {
                 title: title,
                 id: id
@@ -44,18 +41,14 @@ YUI.add('Youtube', function (Y, NAME) {
          */
         index: function (ac) {
             ac.models.get('YoutubeModelYQL').getData({}, function (data) {
-                Y.log("Youtube controller.server.js -index - model.getData:");
-                Y.log(data);
+                Y.log("Youtube controller.server.js -index - model.getData:", "info", NAME);
+                Y.log(data, "info", NAME);
                 var res = [], title = "YUI YouTube Videos";
 
-                Y.log("youtubmojit results:");
-                Y.log(res);
+                Y.log("youtubmojit results:", "info", NAME);
+                Y.log(res, "info", NAME);
                 if (data.error) {
-                    // Found errors: render `error` template.
-                    ac.done({
-                        title: title,
-                        results: data 
-                    }, "error");
+                    ac.error(data);
                 } else {
                     // Create data structure from Web service response.
                     res = youtubeMap(ac, data);

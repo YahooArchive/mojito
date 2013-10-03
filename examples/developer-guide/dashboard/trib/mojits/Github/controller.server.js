@@ -8,7 +8,6 @@ YUI.add('Github', function (Y, NAME) {
  * @module Github
  */
 
-
         /**
          * Constructor for the Controller class.
          *
@@ -48,26 +47,22 @@ YUI.add('Github', function (Y, NAME) {
                 id = mojito.id;
                 repo = mojito.repo;
             }
-            Y.log("github: model: ");
-            Y.log(model);
+            Y.log("github: model: ", "info", NAME);
+            Y.log(model, "info", NAME);
 
 
             model.getData({}, yqlTable, id, repo, function (data) {
-                //Y.log("Github -index - model.getData:");
-                //Y.log(data);
+                //Y.log("Github -index - model.getData:", "info", NAME);
+                //Y.log(data, "info", NAME);
                 var res = [];
 
-                //Y.log("calling githubmap");
-                Y.log(data, "info");    
+                //Y.log("calling githubmap", "info", NAME);
+                Y.log(data, "info", NAME);    
 
                 // add mojit specific css
                 ac.assets.addCss('./index.css');
                 if(data.error) {
-                    // Found errors: render `error` template.
-                    ac.done({
-                        title: title,
-                        results: data
-                    }, "error");
+                    ac.error(data);
                 } else {
                     // Construct special data
                     res = self.githubMap(ac, data);
@@ -89,7 +84,7 @@ YUI.add('Github', function (Y, NAME) {
          *
          */
         githubMap: function(ac, data) {
-            Y.log("githubmap called");
+            Y.log("githubmap called", "info", NAME);
             var res = [];
             Y.Array.each(data, function (itm, idx, arr) {
                 var
@@ -98,9 +93,9 @@ YUI.add('Github', function (Y, NAME) {
                     msg = "msg",
                     link = "http://www.yahoo.com";
 
-                Y.log("github controller server type:" + type);
+                Y.log("github controller server type:" + type, "info", NAME);
                 if (type === "IssueCommentEvent") {
-                    Y.log("issuecommentevent!");
+                    Y.log("issuecommentevent!", "info", NAME);
                 }
                 switch (type) {
                 case "CommitCommentEvent":
@@ -140,7 +135,7 @@ YUI.add('Github', function (Y, NAME) {
                     }
                     break;
                 case "IssueCommentEvent":
-                    Y.log(" inside case IssueCommentEvent!");
+                    Y.log(" inside case IssueCommentEvent!", "info", NAME);
                     msg = "Commented on an Issue";
                     link = itm.json.payload.comment.html_url;
                     break;

@@ -10,7 +10,7 @@ YUI.add('StatsModelYQL', function (Y, NAME) {
             Y.yqlData = {};
         },
         getData: function (params, yqlTable, id, repo, callback) {
-            Y.log(this.config);
+            Y.log(this.config, "info", NAME);
             if (this._isCached(repo)) {
                 callback(Y.yqlData);
             } else {
@@ -23,26 +23,26 @@ YUI.add('StatsModelYQL', function (Y, NAME) {
                         repo: repo
                     },
                     cookedQuery = Y.Lang.sub(query, queryParams);
-                Y.log("github: yql.server getData called");
-                Y.log("github: cookedQuery:" + cookedQuery);
+                Y.log("github: yql.server getData called", "info", NAME);
+                Y.log("github: cookedQuery:" + cookedQuery, "info", NAME);
                 Y.YQL(cookedQuery, Y.bind(this.onDataReturn, this, callback, repo));
             }
         },
         onDataReturn: function (cb, repo, result) {
-            Y.log("github: onDataReturn called");
+            Y.log("github: onDataReturn called", "info", NAME);
             var results = [];
             if (result.error === undefined) {
 
-                Y.log("github: result:");
-                Y.log(result);
+                Y.log("github: result:", "info", NAME);
+                Y.log(result, "info", NAME);
                 if (result.query && result.query.results && result.query.results.json) {
 
                     results = result.query.results.json;
                     Y.yqlData[repo] = results;
                     Y.yqlCacheTime = new Date().getTime();
                 } 
-                Y.log("github: results.json:");
-                Y.log(results);
+                Y.log("github: results.json:", "info", NAME);
+                Y.log(results, "info", NAME);
 
             } else {
                 results = result;

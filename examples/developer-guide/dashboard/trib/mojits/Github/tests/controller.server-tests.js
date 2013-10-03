@@ -1,5 +1,5 @@
 
-YUI.add('Github-tests', function (Y) {
+YUI.add('Github-tests', function (Y, NAME) {
 
     var suite = new YUITest.TestSuite('Github-tests'),
         controller = null,

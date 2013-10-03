@@ -1,5 +1,5 @@
 
-YUI.add('Calendar-tests', function (Y) {
+YUI.add('Calendar-tests', function (Y, NAME) {
 
     var suite = new YUITest.TestSuite('Calendar-tests'),
         controller = null,
@@ -21,7 +21,7 @@ YUI.add('Calendar-tests', function (Y) {
                 modelData,
                 assetsResults,
                 doneResults;
-            modelData = { x: 'y' };
+            modelData = { x: 'y', error: { "description": "Error" }};
             ac = {
                 assets: {
                     addCss: function (css) {
@@ -33,13 +33,16 @@ YUI.add('Calendar-tests', function (Y) {
                         A.areEqual('CalendarModelYQL', modelName, 'wrong model name');
                         return {
                             getData: function (params, cb) {
-                                Y.log("controller test for calendar")
-                                cb(null, modelData);
+                                Y.log("controller test for calendar", "info", NAME)
+                                cb(modelData);
                             }
                         };
                     }
                 },
                 done: function (data) {
+                    doneResults = data;
+                },
+                error: function (data) {
                     doneResults = data;
                 }
             };

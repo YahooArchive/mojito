@@ -7,7 +7,7 @@ YUI.add('YoutubeModelYQL', function (Y, NAME) {
             this.config = config;
         },
         getData: function (params, callback) {
-            Y.log("youtube server getData called");
+            Y.log("youtube server getData called", "info", NAME);
 
             if (this._isCached()) {
                 callback(Y.youtubeData);
@@ -20,19 +20,19 @@ YUI.add('YoutubeModelYQL', function (Y, NAME) {
                     },
                     cookedQuery = Y.Lang.sub(query, queryParams);
 
-                Y.log("youtube cookedQuery: " + cookedQuery);
+                Y.log("youtube cookedQuery: " + cookedQuery, "info", NAME);
 
                 Y.YQL(cookedQuery, Y.bind(this.onDataReturn, this, callback));
             }
 
         },
         onDataReturn: function (cb, result) {
-            Y.log("youtube.server onDataReturn called");
+            Y.log("youtube.server onDataReturn called", "info", NAME);
             var results = [];
             if (result.error === undefined) {
 
-                //Y.log("result: ");
-                //Y.log(result);
+                //Y.log("result: ", "info", NAME);
+                //Y.log(result, "info", NAME);
                 if (result && result.query && result.query.results && result.query.results.entry) {
                     results = result.query.results.entry;
                     Y.youtubeData = results;

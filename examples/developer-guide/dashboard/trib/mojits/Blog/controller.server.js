@@ -35,17 +35,13 @@ YUI.add('Blog', function (Y, NAME) {
             }
 
             ac.models.get('BlogModelYQL').getData({}, feedURL, function (data) {
-                //Y.log("Blog - index - model.getData:");
-                //Y.log(data);
+                Y.log("Blog - index - model.getData:", "info", NAME);
+                Y.log(data, "info", NAME);
                 // add mojit specific css
                 ac.assets.addCss('./index.css');
                 Y.log("In Blog controller: ", "info"); 
                 if(data.error) {
-                   // Error was found, so render `error` template.
-                   ac.done({ 
-                      title: title, 
-                      results: data 
-                   }, "error");
+                   ac.error(data); 
                 } else {
                   // Populate and render blog template.
                   ac.done({

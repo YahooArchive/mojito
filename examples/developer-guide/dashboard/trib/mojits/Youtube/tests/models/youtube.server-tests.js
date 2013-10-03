@@ -19,7 +19,7 @@ YUI.add('YoutubeModelYQL-tests', function (Y, NAME) {
                 called2 = false,
                 cfg = { color: 'red' };
 
-            Y.log("youtube.server-tests.js");
+            Y.log("youtube.server-tests.js", "info", NAME);
 
             A.isNotNull(model);
             A.isFunction(model.init);
