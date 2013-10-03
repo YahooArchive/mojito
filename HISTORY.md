@@ -13,6 +13,18 @@ Features
 Bug Fixes
 ---------
 
+* Issue #1251: easy way to get contextualized models
+
+Acknowledgements
+----------------
+
+
+version 0.7.5
+=================
+
+Bug Fixes
+---------
+
 * Issue #1215: [regression] lang collection in metas is missing for controller 
 
 Acknowledgements
