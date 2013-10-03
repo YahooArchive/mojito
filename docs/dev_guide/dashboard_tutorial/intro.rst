@@ -21,9 +21,32 @@ such as GitHub statistics, Twitter feeds, YouTube videos, etc.
 Who Should Use This Tutorial?
 =============================
 
-Anyone interested in developing Web applications for the desktop and mobile 
-devices will benefit from using Mojito. Those developers who have used 
+Intermediate to advanced developers interested in creating Web applications for the 
+desktop and mobile devices will benefit from using Mojito. Those developers who have used 
 the YUI library and Node.js will have an easier time learning how to use Mojito.
+
+.. _intro_before-what:
+
+What You Should Know 
+--------------------
+
+Before you start the tutorial, we recommend that you be familiar with the 
+following technology:
+
+- `Node.js <http://nodejs.org/>`_
+- `YUI <http://yuilibrary.com/>`_
+- `YQL <http://developer.yahoo.com/yql/>`_
+- `Handlebars <http://handlebarsjs.com/>`_
+- `npm <https://npmjs.org/>`_
+
+And, you should also understand some of the basic concepts and terminology of Mojito:
+
+- `mojit <../reference/glossary.html#mojit>`_
+- `binder <../reference/glossary.html#binder>`_
+- `affinity <../reference/glossary.html#affinity>`_
+- `context  <../reference/glossary.html#context>`_
+- `archetype <../reference/glossary.html#archetype>`_
+
 
 .. _dashboard_intro-what:
 
@@ -128,20 +151,6 @@ The introduction will give you an overview of Mojito, and the quickstart
 will show you what you need to install and how to run simple Mojito commands to create 
 and run a simple application.
  
-.. _intro_before-what:
-
-What You Should Know 
---------------------
-
-You should also be familiar with the concepts below that are specific to Mojito before
-you get started. We will be covering each in more detail throughout the tutorial.
-
-- `mojit <../reference/glossary.html#mojit>`_
-- `binder <../reference/glossary.html#binder>`_
-- `affinity <../reference/glossary.html#affinity>`_
-- `context  <../reference/glossary.html#context>`_
-- `archetype <../reference/glossary.html#archetype>`_
-
 .. _dashboard_intro-reqs:
 
 Requirements
@@ -171,7 +180,7 @@ Recommended
 Software
 --------
 
-- ``nodemon`` - This package is basically a monitoring script that will allow you 
+- `nodemon <https://npmjs.org/package/nodemon>`_: This package is basically a monitoring script that will allow you 
   to start Mojito applications, make changes, and see the changes reflected immediately. 
 
 .. _dashboard_intro-reading:
