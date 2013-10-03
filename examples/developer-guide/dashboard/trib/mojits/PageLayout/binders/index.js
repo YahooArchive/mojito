@@ -49,7 +49,7 @@ YUI.add('PageLayoutBinderIndex', function (Y, NAME) {
              * });
              */
 
-            Y.log("bind called");
+            Y.log("bind called", "info", NAME);
             Y.on("domready", function () {
                 Y.one("body").addClass("yui3-skin-sam");
             });

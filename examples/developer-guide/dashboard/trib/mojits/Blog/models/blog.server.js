@@ -8,8 +8,8 @@ YUI.add('BlogModelYQL', function (Y, NAME) {
             this.config = config;
         },
         getData: function (params, feedURL, callback) {
-            Y.log("blogmojit getData called");
-            Y.log(this.config);
+            Y.log("blogmojit getData called", "info", NAME);
+            Y.log(this.config, "info", NAME);
 
             var query = "select title,link,pubDate, description, dc:creator from feed where url='{feed}' limit 5",
                 queryParams = {
@@ -17,22 +17,22 @@ YUI.add('BlogModelYQL', function (Y, NAME) {
                 },
                 cookedQuery = Y.Lang.sub(query, queryParams);
 
-            Y.log("blog cookedQuery: " + cookedQuery);
+            Y.log("blog cookedQuery: " + cookedQuery, "info", NAME);
 
             if (this._isCached()) {
-                //Y.log("blogData! skip YQL");
-                //Y.log(Y.blogData);
+                //Y.log("blogData! skip YQL", "info", NAME);
+                //Y.log(Y.blogData, "info", NAME);
 
                 callback(Y.blogData);
             } else {
-                Y.namespace("blogData");
-                Y.log("blogmodel calling YQL");
+                Y.namespace("blogData", "info", NAME);
+                Y.log("blogmodel calling YQL", "info", NAME);
                 Y.YQL(cookedQuery, Y.bind(this.onDataReturn, this, callback));
             }
 
         },
         onDataReturn: function (cb, result) {
-            Y.log("blog.server onDataReturn called");
+            Y.log("blog.server onDataReturn called", "info", NAME);
             var results = [];
             if (result.error === undefined) {
 
@@ -43,8 +43,8 @@ YUI.add('BlogModelYQL', function (Y, NAME) {
                 } else {
                     results = new Error({ error: { description: "The returned response is malformed." }});
                 }
-                Y.log("result.query.results.item = results: ");
-                Y.log(results);
+                Y.log("result.query.results.item = results: ", "info", NAME);
+                Y.log(results, "info", NAME);
             } else {
                 results = result;
             }
@@ -55,5 +55,4 @@ YUI.add('BlogModelYQL', function (Y, NAME) {
             return Y.blogData && (new Date().getTime() - Y.blogCacheTime) < updateTime;
         }
     };
-
 }, '0.0.1', {requires: ['yql', 'substitute']});

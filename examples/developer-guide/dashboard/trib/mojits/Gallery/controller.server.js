@@ -34,16 +34,12 @@ YUI.add('Gallery', function (Y, NAME) {
                 title = ac.config.getDefinition('mojitotitle', 'notitle');
             }
             ac.models.get('GalleryModelYQL').getData({}, tablePath, function (data) {
-                Y.log("Gallery -index - model.getData returned to controller:");
-                Y.log(data); 
+                Y.log("Gallery -index - model.getData returned to controller:", "info", NAME);
+                Y.log(data, "info", NAME); 
                 // add mojit specific css
                 ac.assets.addCss('./index.css');
                 if (data.error) {
-                    // Found error, so render `error` template.
-                    ac.done({
-                        title: title,
-                        results: data
-                    }, "error");
+                    ac.error(data);
                 } else {
                     // Populate and render template.
                     ac.done({

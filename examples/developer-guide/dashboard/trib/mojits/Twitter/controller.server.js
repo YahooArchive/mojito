@@ -42,12 +42,12 @@ YUI.add('Twitter', function (Y, NAME) {
                 }
 
                 //ac.assets.addCss('./index.css');
-                //Y.log("twitterData:");
+                //Y.log("twitterData:", "info", NAME);
 
                 // add mojit specific css
                 ac.assets.addCss('./index.css');
 
-                //Y.log(data);
+                //Y.log(data, "info", NAME);
 
                 ac.done({
                     title: title,

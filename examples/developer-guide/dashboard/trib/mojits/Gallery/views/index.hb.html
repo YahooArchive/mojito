@@ -2,13 +2,13 @@
     <div class="mod" id="gallery">
         {{> widget_heading}}
         <div class="inner galleryFlow">
+            <ul>
             {{#each results.json}}
-                <ul>
-                    <li>{{{linker this "http://yuilibrary.com/gallery/buildtag/" this }}}</a></li>
-                </ul>
+                <li>{{{linker this "http://yuilibrary.com/gallery/buildtag/" this }}}</a></li>
             {{else}}
-                <span class="none">Sorry, no results were returned. Try refreshing the page again.</span> 
+                <li class="none">Sorry, no results were returned. Try refreshing the page again.</li> 
             {{/each}}
+             </ul>
         </div>
     </div>
 </div>

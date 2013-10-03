@@ -8,7 +8,7 @@ YUI.add('GalleryModelYQL', function (Y, NAME) {
         },
 
         getData: function (params, tablePath, callback) {
-            Y.log("gallery getData called");
+            Y.log("gallery getData called", "info", NAME);
 
             if (this._isCached()) {
                 callback(Y.galleryData);
@@ -19,18 +19,18 @@ YUI.add('GalleryModelYQL', function (Y, NAME) {
                     },
                     cookedQuery = Y.Lang.sub(query, queryParams);
 
-                    //Y.log("cookedQuery: " + cookedQuery);
+                    //Y.log("cookedQuery: " + cookedQuery, "info", NAME);
                 Y.YQL(cookedQuery, Y.bind(this.onDataReturn, this, callback));
             }
         },
 
         onDataReturn: function (cb, result) {
-            Y.log("onDataReturn called");
+            Y.log("onDataReturn called", "info", NAME);
             var itemLimit = 10, results = []; 
             if (result.error === undefined) {
 
-                Y.log("gallery onDataReturn result:");
-                Y.log(result);
+                Y.log("gallery onDataReturn result:", "info", NAME);
+                Y.log(result, "info", NAME);
 
                 if (result && result.query && result.query.results && result.query.results.json) {
                     results = result.query.results.json;

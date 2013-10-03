@@ -2,13 +2,13 @@
     <div class="mod" id="github">
         {{> widget_refresh_heading}}
         <div class="inner">
+            <ul>
             {{#each results}}
-                <ul>
-                    <li><a href="http://github.com/{{username}}">{{username}}</a> - <a href="{{link}}">{{message}}</a></li>
-                </ul>
+                <li><a href="http://github.com/{{username}}">{{username}}</a> - <a href="{{link}}">{{message}}</a></li>
             {{else}}
-                <span class="none">Sorry, no results were returned. Try refreshing the page again.</span> 
+                <li class="none">Sorry, no results were returned. Try refreshing the page again.</li> 
             {{/each}}
+            </ul>
         </div>
     </div>
 </div>

@@ -19,7 +19,7 @@ suite.add(new YUITest.TestCase({
                 called2 = false,
                 cfg = { color: 'red' };
 
-            Y.log("github: yql.server-tests.js");
+            Y.log("github: yql.server-tests.js", "info", NAME);
 
             A.isNotNull(model);
             A.isFunction(model.init);
@@ -61,7 +61,7 @@ suite.add(new YUITest.TestCase({
                 called2 = false,
                 cfg = { color: 'red' };
 
-            Y.log("github: yql.server-tests.js");
+            Y.log("github: yql.server-tests.js", "info", NAME);
 
             A.isNotNull(model);
             A.isFunction(model.init);
