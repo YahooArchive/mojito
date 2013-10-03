@@ -7,20 +7,27 @@
 Introduction
 ============
 
-Mojits are basic unit of composition and reuse in a Mojito application. 
+Mojits are the basic unit of composition and reuse in a Mojito application. 
 Imagine that a rectangular square of a Web page being the visual 
 representation of a mojit. The word *mojit* is a compound consisting of 
-the stems module and widget, but the mojit is really neither. The mojit is built 
-on YUI modules, but is not a module, and although can be used in separation 
+the stems module and widget, but a mojit is really neither. The mojit is built 
+on YUI modules, but is not a module, and although it can be used independently 
 of other mojits, is not a standalone application like a widget. Regardless 
 of how you try to formally understand mojits, you must understand this: 
 mojits power your applications.
 
-In this module, we will creating several mojits and then looking at the 
+In this module, we will be creating several mojits and then looking at the 
 MVC structure underneath the hood. We’ll also discuss the difference 
 between a mojit definition and a mojit instance and how those are 
 manifested in configuration. 
 
+
+.. _02_mojits-time_est:
+
+Time Estimate
+-------------
+
+15 minutes
 
 .. _02_mojits-cover:
 
@@ -29,7 +36,7 @@ What We’ll Cover
 
 - mojit definitions and instances
 - mojit MVC
-- the ``ActionContext`` object the and ``ActionContext`` addons
+- the ``ActionContext`` object and `the `ActionContext`` addons
 - templates
 
 .. _02_mojits-final:
@@ -62,12 +69,12 @@ command-line utility and then learned how to use the basic
 commands to do the following:
 
 - create applications and mojits
-- run application and mojit unit tests
+- run applications and mojit unit tests
 - lint and test code
 - start applications
 - specify ports and contexts when starting applications.
 
-. _02_before_starting-prereqs:
+.. _02_before_starting-prereqs:
 
 Setting Up
 ##########
@@ -89,12 +96,12 @@ What is a Mojit?
 
 Mojits can be thought of as both physical entities represented physically 
 by a directory structure and as executable code. The physical files of a 
-mojit are what we call the mojit definition and where you most clearly see 
-mojit’s MVC structure of the mojit. The executable code, or the instantiation 
+mojit are what we call the mojit definition and where you most clearly see the
+mojit’s MVC structure. The executable code, or the instantiation 
 of the mojit definition, is called the mojit instance.
 
 We’re going to take a closer look at both the mojit definition and instance, 
-how they are created and used.
+and how they are created and used.
 
 .. _02_lesson-mojit_def:
 
@@ -270,7 +277,7 @@ Templates
 
 The templates for Mojito applications are HTML files that may contain semantic templates for
 variable substitution. The default templating system used by Mojito is Handlebars. You can 
-use other templating systems as well, but the for the purpose of this tutorial, we’ll only 
+use other templating systems as well, but for the purposes of this tutorial, we’ll only 
 be covering Handlebars.
 
 If you know nothing about Handlebars, we suggest that you read the `Handlebars 
@@ -447,7 +454,7 @@ that maps to the action ``index``specified in the routing configuration.
 Recommended Naming Conventions for Mojits
 -----------------------------------------
 
-When create mojits (mojit definitions) with the command-line tool, we will be using upper 
+When creating mojits (mojit definitions) with the command-line tool, we will be using upper 
 camel case for the mojit name, such as ``Github``. For mojit instances, we will be using 
 lower case, such as ``github``. This is the typical convention when defining a class and 
 creating an object, so you can think of the mojit definition as the class definition and 
@@ -462,7 +469,7 @@ We’re going to extend the application we created in the last module with sever
 mojits and then configure mojit instances and routing paths. 
 
 #. After you have copied the application that you made in the last module in 
-   `Setting Up <#setting-up>`_, change into the application ``02_mojits``.
+   `Setting Up <#setting-up>`_, change into the application directory ``02_mojits``.
 #. Let’s create mojits that will help generate output for the different parts of 
    the HTML page:
 
@@ -573,9 +580,12 @@ mojits and then configure mojit instances and routing paths.
 
    .. code-block:: javascript
 
-      getData: function(callback) {
+      getData: function(callback, err) {
         callback(null, { watchers: 1, forks: 1 });
       }
+   
+   .. note:: If you are using a version of Mojito prior to v0.7.0, the default model
+             name will be ``foo`` and not ``model``.
 
 #. We’re also going to update the controller so that we’re passing pseudo 
    GitHub data to the template. Open the controller of ``Github``
@@ -630,14 +640,14 @@ Module Review
 =============
 
 We covered a lot of content in his module and still missed a lot of points that 
-we hope to capture in the upcoming modules. The main focus of the module was 
-on mojits, but that is a fairly meaty topic because the mojit is central to 
+we hope to capture in the upcoming modules. The main focus of this module was 
+mojits, but that is a fairly meaty topic because the mojit is central to 
 Mojito applications and one of the main things that sets it apart from 
 other frameworks.
 
 - mojit definitions and instances
 - mojit MVC
-- ActionContext and ActionContext addons
+- ``ActionContext`` and ``ActionContext`` addons
 - mojit and application configuration
 - templates with Handlebars expressions
 
@@ -677,7 +687,7 @@ Q&A
 
   Yes, Mojito has a ``Helpers`` addon for registering Handlebars helpers. You can also
   create partials for mojits or for your application. We show you how to do both
-  in the module `9. Handlebars, Templates, and Custom Views <09_custom_views>`_.
+  in the module `9. Handlebars, Templates, and Custom Views <09_custom_views.html>`_.
 
 .. _02_mojits-test:    
 
@@ -709,16 +719,21 @@ Additional Exercises
 Terms
 =====
 
-- **mojit definition** - A set of artifacts that collectively define a reusable unit of 
-  functionality known as a mojit.
-- **mojit instance** - The specification of all the information required to create a 
-  running instance of mojit functionality within an application or the
-  in-memory runtime instance of a mojit—part of the running application.
-- **Action Context** -  An essential element of the Mojito framework that gives you 
-  access to the frameworks features from within a controller function. The Mojito API
-  has an ``ActionContext``class. The controller gets an instance of this class, often 
-  referred to as ``ac``. The instance has methods and addons that give the controller
-  access to the `Mojito API <../../api/>`_
+**mojit definition** 
+   A set of artifacts that collectively define a reusable unit of 
+   functionality known as a mojit.
+
+**mojit instance** 
+   The specification of all the information required to create a 
+   running instance of mojit functionality within an application or the
+   in-memory runtime instance of a mojit—part of the running application.
+
+**Action Context** 
+   An essential element of the Mojito framework that gives you 
+   access to the frameworks features from within a controller function. The Mojito API
+   has an ``ActionContext`` class. The controller gets an instance of this class, often 
+   referred to as ``ac``. The instance has methods and addons that give the controller
+   access to the `Mojito API <../../api/>`_
 
 .. _02_mojits-src:  
 
@@ -733,4 +748,4 @@ Further Reading
 ===============
 
 - `Mojits <../intro/mojito_mojits.html>`_
-- `Action Context <api_overview/mojito_action_context.html>`_
+- `Action Context <../api_overview/mojito_action_context.html>`_

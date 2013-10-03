@@ -19,6 +19,13 @@ of how to use the `Y.mojito.lib.REST Class <../../api/classes/Y.mojito.lib.REST.
 make REST calls. We’re going to add another mojit to get Twitter data with the help of the 
 Node.js module `simple-twitter <https://npmjs.org/package/simple-twitter>`_.
 
+.. _05_intro-time_est:
+
+Time Estimate
+-------------
+
+20 minutes
+
 .. 05_intro-what:
 
 What We’ll Cover
@@ -77,7 +84,7 @@ To get live Twitter data for your application:
 #. `Create a Twitter application <https://dev.twitter.com/apps/new>`_ to get OAuth keys 
    from Twitter. You'll need a consumer key, consumer secret, access token key, and access 
    token secret.
-#. Add the ``simple-twitter`` module as a dependency in the ``package.json``. We'll be
+#. Add the ``simple-twitter`` module as a dependency in ``package.json``. We'll be
    using the ``simple-twitter`` module to make OAuth-authorized REST calls to the Twitter
    Search API.
 
@@ -181,7 +188,7 @@ What is YQL?
 If you know SQL, then think of YQL as SQL for the Internet, with the Internet 
 representing a MySQL database. In reality, Internet data can only be fetched 
 by the YQL Web Service if there is a table that defines how data is accessed. 
-YQL comes with many wide range of built-in tables, and the developer community has 
+YQL comes with a wide range of built-in tables, and the developer community has 
 contributed YQL Open Data Tables (ODT) as well. The table tells YQL how to 
 get the Web data, and the YQL statement (like an SQL query) tells YQL what 
 data to get from that table and how to filter that data. If you have questions,
@@ -192,7 +199,7 @@ take a look at the `YQL Guide <http://developer.yahoo.com/yql/guide>`_.
 YQL Statements
 ##############
 
-The YQL language like SQL has many verbs for reading and writing data. For 
+The YQL language, like SQL, has many verbs for reading and writing data. For 
 our application, we’ll be just reading data with the ``SELECT`` verb. To filter data, 
 like SQL, you use the key word ``WHERE``. YQL also includes operators such as ``LIKE`` 
 for filtering, the key word ``LIMIT`` to limit the number of results, and the 
@@ -480,7 +487,7 @@ Creating the Application
 #. Change to the ``models`` directory of ``Twitter``. We’re going to deal with 
    getting ``Twitter`` data first.
 #. Rename the file ``model.server.js`` to ``twitter.server.js`` and then change the 
-   registered module name to ``TwitterSearchModel``.
+   registered module name from ``TwitterModel`` to ``TwitterSearchModel``.
 #. Open ``twitter.server.js`` in an editor, and modify the method ``getData``, so 
    that it looks like the snippet below. As you can see, we use the ``simple-twitter``
    module to make the REST calls to the Twitter Search API. We've also added mocked 
@@ -540,7 +547,7 @@ Creating the Application
       }, '0.0.1', {requires: ['mojito', 'mojito-rest-lib','json']});
 
 #. We need to modify the controller to use the ``TwitterSearchModel``. 
-   Open ``controller.server.js`` in an editor,
+   Open ``mojits/Twitter/controller.server.js`` in an editor,
    modify the ``index`` method so that it’s the same as that shown below. 
    Make sure that the ``Models`` and ``Assets`` addon are required as well. The ``Models``
    addon allows you to access our model and call the model function ``getData``. 
@@ -991,11 +998,15 @@ Additional Exercises
 Terms
 =====
 
-- **YQL** - An SQL-like language for querying Internet data and the Web service that
-  fetches data and returns it to clients.
-- **YQL Tables** - XML files that define the data source, keys, pagination options, authentication/security
-  options, and any other information needed by the YQL Web Service to fetch data.
-- `REST <http://en.wikipedia.org/wiki/REST>`_ 
+**YQL** 
+   An SQL-like language for querying Internet data and the Web service that
+   fetches data and returns it to clients.
+
+**YQL Tables** 
+   XML files that define the data source, keys, pagination options, authentication/security
+   options, and any other information needed by the YQL Web Service to fetch data.
+
+`REST <http://en.wikipedia.org/wiki/REST>`_ 
 
 
 .. 05_getting_data-src:
@@ -1003,7 +1014,7 @@ Terms
 Source Code
 ===========
 
-`05_getting_data <http://github.com/yahoo/mojito/examples/dashboard/05_getting_data>`_
+`05_getting_data <https://github.com/yahoo/mojito/tree/develop/examples/developer-guide/dashboard/05_getting_data>`_
 
 .. 05_getting_data-reading:
 

@@ -31,10 +31,10 @@ What We Want You to Learn
 =========================
 
 During each module, we want to emphasize a specific topic and create an 
-application, so that you learn something that you can build on and have 
+application, so that you will learn something that you can build on and have 
 yet another application under your belt. More importantly though, we want 
 to show you how to develop Web applications with Mojito, and when 
-you’re finished, you should feel confident enough to use Mojito to 
+you’re finished, feel confident enough to use Mojito to 
 add features to your own Web application.
 
 .. _dashboard_intro-about_tut:
@@ -42,7 +42,7 @@ add features to your own Web application.
 About the Tutorial
 ==================
 
-You’ll be creating a standalone application for each module, which we 
+You’ll be creating a standalone application for each module, which 
 will be displayed in a screenshot in the introduction. The application 
 that you create in a modules will be used as the starting point for the 
 proceeding module. The idea is to build a complex and full-featured 
@@ -63,12 +63,12 @@ The structure of modules, in general, will include the follow sections:
 - **Intro:** describes what you’ll be learning, gives a time estimate, lists prerequisites, 
   shows you where to find source code, and provides a screenshot of the final application for the module
 - **Lesson:** explains an important concept that the example is focused around.
-- **Creating the Application:** here is where you create your application and then run it. 
-- **Summary:**  we recap what you’ve learned and the main takeaway points.
-- **Troubleshooting (Optional):** we provide tips for debugging common problems associated with the topic of the module.
-- **Q&A (optional):** we provide answers to commonly asked questions.
-- **Test Yourself (Optional):** we offer simple exercises to expand on what you’ve learned.
-- **Further Reading:** lists links to documentation, articles, blog posts, etc., to further your learning.
+- **Creating the Application:**  where you create your application and then run it. 
+- **Summary:**  recap what you’ve learned and the main takeaway points.
+- **Troubleshooting (Optional):** tips for debugging common problems associated with the topic of the module.
+- **Q&A (optional):** answers to commonly asked questions.
+- **Test Yourself (Optional):** simple exercises to expand on what you’ve learned.
+- **Further Reading:** links to documentation, articles, blog posts, etc., to further your learning.
 
 .. _dashboard_intro-about_app:
 
@@ -91,6 +91,7 @@ Technology Used in Application
 ------------------------------
 
 Besides Mojito, your dashboard application also relies on the following technologies:
+
 - Node.js
 - YUI CSS (with normalize)
 - YUI
@@ -184,8 +185,9 @@ New to Node.js?
 ---------------
 
 Because Mojito runs in the Node.js environment on the server, we recommend that 
-if you do not have experience using Node.js or npm, go through the Node.js documentation 
-and How to Node. Understanding the Node.js module system, why not to write blocking code, 
+if you do not have experience using Node.js or npm, go through the 
+`Node.js documentation <http://nodejs.org/api/>`_ and `How to Node <http://howtonode.org/>`_. 
+Understanding the Node.js module system, why not to write blocking code, 
 being familiar with the API and utilities, will all help you develop and debug Mojito 
 applications. You’ll also learn how to use npm modules and Node.js core modules to do 
 work for your applications. 
@@ -206,8 +208,8 @@ developing Mojito applications.
 What’s Covered?
 ===============
 
-The tutorial is divided into the following 12 (15?) self-contained modules, each covering 
-an critical topic for development. 
+The tutorial is divided into the following ten self-contained modules, each covering 
+a critical topic for development. 
 
 #. Mojito CLI Basics
 #. Mojits: Powering Your App

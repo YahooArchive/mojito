@@ -14,26 +14,34 @@ two built-in frame mojits that you can use by creating instances,
 just like you would do with your own mojits. Mojito also makes it 
 easy to create your own frame mojits if you want to customize the 
 behavior of the frame mojit. In this module, we’re going to use 
-the built-in HTMLFrameMojit for our application. We’ll leave 
+the built-in ``HTMLFrameMojit`` for our application. We’ll leave 
 creating a custom frame mojit as an exercise at the end of the chapter.
+
+
+.. _03_intro-time_est:
+
+Time Estimate
+-------------
+
+15 minutes
 
 ..  03_intro-what:
 
 What We’ll Cover
 ----------------
 
-- configuring the HTMLFrameMojit
+- configuring ``HTMLFrameMojit``
 - deploying code to client
 - parent and child mojits
 - handling assets (CSS)
-- ``Params`` addon to get query string parameters
+- get query string parameters with the ``Params`` addon
 
 ..  03_intro-final:
 
 Final Product
 -------------
 
-In this module, you’ll be creating an output with similar output, 
+In this module, you’ll be creating an application that displays similar output, 
 but we’ll be relying on the frame mojit to create the page and 
 insert assets (CSS). The application will create two pages, one 
 based on a query parameter.
@@ -313,7 +321,7 @@ Dynamically Adding Assets With the Controller
 
 We do not recommend that you hard-code the static URL to your assets. 
 A better way would be to use your controller to add the assets to your page. 
-You can probably guess that we’re going to rely on a ``ActionContextqq addons 
+You can probably guess that we’re going to rely on a ``ActionContext`` addons 
 to help us to this, and you’re correct.
 
 The ``Assets`` addon has methods for adding JavaScript, CSS, and meta data 
@@ -530,7 +538,7 @@ Creating the Application
    changes, you might want to just replace the contents of the ``Github/controller.server.js`` 
    with the following:
 
-   .. code-block::
+   .. code-block:: javascript
 
       YUI.add('Github', function(Y, NAME) {
 
@@ -610,7 +618,7 @@ Creating the Application
    skeleton, inserted the value for the ``<title>`` element and attached our CSS and 
    some JavaScript files.
 
-#. To look at our custom template and CSS, append the query parameter ``?view=custom``. 
+#. To look at our custom template and CSS, append the query parameter ``/?view=custom``. 
    You’ll see basically the same page with some shadowing. If you look at the page 
    source again, you’ll see the custom CSS file now.
 
@@ -661,7 +669,7 @@ OK Message and No Page
 If you only see the text **OK** in your page, but no errors, it could mean that your
 ``routes.json`` has a syntax error. Unfortunately, running ``mojito jslint`` will only
 find JSLint errors that are in JavaScript files, so you can either use another command-line
-utility to check for syntax errors, use the stie http://jslint.com/ to test the ``routes.json``,
+utility to check for syntax errors, use the website http://jslint.com/ to test the ``routes.json``,
 or use Node.js to evaluate the JSON with the following command: ``node -e 'require("./routes.json");'``
 
 ..  03_frame_mojits-qa:
@@ -710,20 +718,22 @@ Additional Exercises
 Terms
 =====
 
-- **frame mojits** - Mojits that construct Web pages from the skeleton HTML to the styling and 
-  content. The ``HTMLFrameMojit`` is Mojito's built-in frame mojit, but developers can 
-  create their own custom frame mojits. 
-- **assets** - Resources that are required on the clients. These resources are 
-  primarily CSS but can also be JavaScript that is ancillary to and not a core component of 
-  the Mojito application. 
+**frame mojits**
+   Mojits that construct Web pages from the skeleton HTML to the styling and 
+   content. The ``HTMLFrameMojit`` is Mojito's built-in frame mojit, but developers can 
+   create their own custom frame mojits. 
+**assets** 
+   Resources that are required on the clients. These resources are 
+   primarily CSS but can also be JavaScript that is ancillary to and not a core component of 
+   the Mojito application. 
 
 ..  03_frame_mojits-src:
 
 Source Code
 ===========
 
-`03_frame_mojits <http://github.com/yahoo/mojito/examples/dashboard/03_frame_mojits>`_
-
+`03_frame_mojits <https://github.com/yahoo/mojito/tree/develop/examples/developer-guide/dashboard/03_frame_mojits>`_
+- 
 ..  03_frame_mojits-reading:
 
 Further Reading
@@ -733,5 +743,3 @@ Further Reading
 - `Attaching Assets with HTMLFrameMojit <../code_exs/framed_assets.html>`_
 - `HTMLFrameMojit <../topics/mojito_frame_mojits.html#htmlframemojit>`_
 - `Creating Custom Frame Mojits <../topics/mojito_frame_mojits.html#creating-custom-frame-mojits>`_
-
-

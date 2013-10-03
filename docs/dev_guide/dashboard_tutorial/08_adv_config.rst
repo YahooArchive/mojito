@@ -23,6 +23,12 @@ URIs, OAuth keys, or YQL statements in the models anymore, so the models can bas
 data from any given source. 
 
 
+.. _08_intro-time_est:
+
+Time Estimate
+-------------
+
+20 minutes
 
 .. _08_intro-what:
 
@@ -49,6 +55,7 @@ a Mojito dashboard as well as a YUI dashboard.
 .. image:: images/08_adv_config.png
    :height: 371 px
    :width: 850 px
+   :scale: 80 %
    :alt: Screenshot of 08 advanced configuration application.
 
 .. _08_intro-before:
@@ -264,7 +271,7 @@ As you can see in our ``routes.json`` shown below, we're going to have two routi
 paths. Each path passes a different value for the ``view_type`` parameter. 
 The controller can inspect the URL parameters defined here with the ``Params``
 addon. If the controller sees that the value for the ``view_type`` is ``yui``, it
-will server the YUI dashboard, and vice versa, if the value for ``view_type`` is ``mojito``
+will serve the YUI dashboard, and vice versa, if the value for ``view_type`` is ``mojito``
 the template for the Mojito dashboard is rendered.
 
 .. code-block:: javascript
@@ -565,7 +572,7 @@ Base Context
 ************
 
 The base context is statically set when you start the application. If you remember the 
-`Mojito CLI Basics module <./1_cli.html>`_, you’ll recall there was a ``--context`` option. 
+`Mojito CLI Basics module <./01_cli.html>`_, you’ll recall there was a ``--context`` option. 
 This option allows you to start an application with a base context. Thus, if you want to 
 run your application in the ``environment:development`` context, you would use the following 
 command: ``$ mojito start --context "environment:production"``
@@ -586,13 +593,13 @@ Request Context
 
 The request context can be determined by the HTTP headers, such as the ``User-Agent`` for 
 the device/OS, or from the query string parameters. Thus, when your application receives 
-the HTTP header below, it will look for the context ``“device:android”``:
+the HTTP header below, it will look for the context ``“device:android”``::
 
-HTTP header "User-Agent:Mozilla/5.0 (Linux; U; Android 2.3; en-us)”
+   HTTP header "User-Agent:Mozilla/5.0 (Linux; U; Android 2.3; en-us)”
 
-The same context could be requested with the query string parameter “?device=android”. 
+The same context could be requested with the query string parameter ``?device=android``. 
 The language, region, and device/OS contexts can often be extracted from the header files, 
-but for development and production environments or customized contexts, you may want to 
+but for development and production environments or customized contexts, you may need to 
 need to use the query string parameters to request a context.
 
 .. _08_lesson-mojit:
@@ -962,7 +969,7 @@ Creating the Application
 #. You'll need to modify the ``Github`` controller and model to pass in the parameters
    for the YQL keys. Replace the ``index`` method in the controller, add the ``Params``
    and ``Config`` addons to the ``requires`` array (``mojito-params-addon``, ``mojito-config-addon``),
-   and them replace the contents of the  ``getData`` method in the model ``yql.server.js`` 
+   and then replace the contents of the  ``getData`` method in the model ``yql.server.js`` 
    with the content below:
 
    .. code-block:: javascript
@@ -1019,7 +1026,7 @@ Creating the Application
         Y.YQL(cookedQuery, Y.bind(this.onDataReturn, this, callback));
       }
 
-#. Right, you'll need to update the tests once again. Here are the updates for both the
+#. You'll need to update the tests once again. Here are the updates for both the
    controller and model tests. 
 
    ``mojits/Github/tests/controller.server-tests.js``
@@ -1229,7 +1236,7 @@ Creating the Application
         <div>
       </div>
 
-#. Update ``index`` method in ``mojits/Body/controller.server.js`` with the following so 
+#. Update the ``index`` method in ``mojits/Body/controller.server.js`` with the following so 
    that the correct template is rendered. Also, once again, add the ``Params`` addon  
    to the ``requires`` array.
 
@@ -1459,19 +1466,23 @@ Additional Exercises
 Terms
 =====
 
-- `YAML <http://en.wikipedia.org/wiki/YAML>`_
-- **base context** - The context or environment that an application starts in. The base context is specified on the
-  command line with the ``--context`` option. For example: ``$ mojito start --context "environment:development"``
-- **request context** - The context of an incoming request or the runtime environment of the client. The Mojito
-  server may receive an HTTP request from an Android device. Mojito will determine the context based on the
-  HTTP Header ``User-Agent`` and then apply the proper configurations based on this request context.
+`YAML <http://en.wikipedia.org/wiki/YAML>`_
+
+**base context** 
+   The context or environment that an application starts in. The base context is specified on the
+   command line with the ``--context`` option. For example: ``$ mojito start --context "environment:development"``
+
+**request context** 
+   The context of an incoming request or the runtime environment of the client. The Mojito
+   server may receive an HTTP request from an Android device. Mojito will determine the context based on the
+   HTTP Header ``User-Agent`` and then apply the proper configurations based on this request context.
 
 .. _08_adv_config-src:  
 
 Source Code
 ===========
 
-`08_adv_config <http://github.com/yahoo/mojito/examples/dashboard/08_adv_config/>`_
+`08_adv_config <https://github.com/yahoo/mojito/tree/develop/examples/developer-guide/dashboard/08_adv_config>`_
 
 
 .. _08_adv_config-reading:  
@@ -1479,10 +1490,6 @@ Source Code
 Further Reading
 ===============
 
-- [Mojito Doc](http://developer.yahoo.com/cocktails/mojito/docs/)
-
-
-
-
+- `Mojito Doc <http://developer.yahoo.com/cocktails/mojito/docs/>`_
 
 

@@ -13,10 +13,16 @@ We’re going to show you how to write unit and functional tests in this module,
 and we’re also going to add a few more mojits to fill out our dashboard. We 
 already saw the Mojito CLI has a test command for running unit tests. To run 
 functional tests, we’re going to use Arrow, which is an npm module that we’ll 
-need to install. In future modules, we will only updating the mojit and functional tests 
+need to install. In future modules, we will be updating the mojit and functional tests 
 that we wrote in this module. We expect you to write tests for the other mojits on
 your own.
 
+.. _06_intro-time_est:
+
+Time Estimate
+-------------
+
+25 minutes
 
 .. _06_intro-what:
 
@@ -132,7 +138,7 @@ For controller tests, the test file name has the following syntax: ``controller.
 
 For models, the test file name is slightly different: ``{model_name}.{affinity}.js``
 
-If you remember, the ``Twitter`` had the model ``twitter.server.js``, so the test file 
+If you remember, the ``Twitter`` mojit had the model ``twitter.server.js``, so the test file 
 for the model would be ``twitter.server-tests.js``. 
 
 .. _06_lesson_unit-writing_tests:
@@ -232,7 +238,7 @@ Mock Objects
 
 Mock objects are used to eliminate test dependencies on other objects. In Mojito, you often 
 create a mock version of the ``ActionContext`` object to test methods such as ``done``. 
-The expect method allows you to set up expectations for the mock object that can later be
+The ``expect`` method allows you to set up expectations for the mock object that can later be
 verified with the ``verify`` method. The example below helps illustrate how the two methods 
 work together.
 
@@ -484,7 +490,7 @@ To test our githubMojit, you would specify the mojit:
 Functional Tests
 ----------------
 
-You could say that a functional tests is any test that is not a unit test, but for 
+You could say that a functional test is any test that is not a unit test, but for 
 simplicity and our intent, we’re calling functional tests those that test the UI or 
 functionality of an application. So, if you want to test the DOM or DOM events, you’re 
 going to write functional tests and use Arrow. 
@@ -1302,24 +1308,34 @@ Additional Exercises
 Terms
 =====
 
-- `unit tests <http://en.wikipedia.org/wiki/Unit_tests>`_
-- `functional tests <http://en.wikipedia.org/wiki/Functional_testing>`_
-- **Arrow** - A test framework that integrates JavaScript, NodeJS and Selenium to promote 
-  test-driven JavaScript development. 
-- **YUI test suite** - A grouping of multiple test cases that can be run together.
-- **YUI test runner** - A singleton object used to run test cases and suites.
-- **YUI test case** - The basis of YUI tests that allows you to initialize dependencies, execute
-  tests, and clean up. 
-- **mock object** - An object created to eliminate test dependencies in test cases. In Mojito,
-  it is common to mock the ``ActionContext`` object.
+`unit tests <http://en.wikipedia.org/wiki/Unit_tests>`_
 
+`functional tests <http://en.wikipedia.org/wiki/Functional_testing>`_
+
+**Arrow** 
+   A test framework that integrates JavaScript, NodeJS and Selenium to promote 
+   test-driven JavaScript development. 
+
+**YUI test suite** 
+   A grouping of multiple test cases that can be run together.
+
+**YUI test runner** 
+   A singleton object used to run test cases and suites.
+
+**YUI test case** 
+   The basis of YUI tests that allows you to initialize dependencies, execute
+   tests, and clean up. 
+
+**mock object** 
+   An object created to eliminate test dependencies in test cases. In Mojito,
+   it is common to mock the ``ActionContext`` object.
 
 .. _06_testing-src:
 
 Source Code
 ===========
 
-`06_testing <http://github.com/yahoo/mojito/examples/dashboard/06_testing/>`_
+`06_testing <https://github.com/yahoo/mojito/tree/develop/examples/developer-guide/dashboard/06_testing>`_
 
 .. _06_testing-reading:
 

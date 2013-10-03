@@ -19,6 +19,13 @@ use the utility to sanitize code, and run tests. Our lesson
 will give an overview of the utility, covering some features 
 that you won't use in this module, but will be using in future modules.
 
+.. _01_intro-time_est:
+
+Time Estimate
+-------------
+
+10 minutes
+
 
 .. _01_intro-cover:
 
@@ -162,7 +169,8 @@ select the archetype ``simple`` for an application, you are asking Mojito
 to create an application using the boilerplate code from the *simple* 
 version of an application. 
 
-This is reflected in the Mojito source, where you’ll find an ``archetypes`` 
+This is reflected in the Mojito source, where you’ll find an 
+`archetypes <https://github.com/yahoo/mojito/tree/develop/lib/app/archetypes>`_
 directory.  In this directory, you'll see the directories for the two 
 artifacts ``app`` and ``mojit``. Within these directories that map to the artifacts, 
 you will find the archetypes that you specify on the command line. When you 
@@ -359,7 +367,7 @@ Creating the Application
 
    ``$ mojito test mojit mojits/Github``
 
-#. If you remember you can also test a mojit module, which is basically the module
+#. You can also test a mojit module, which is basically the module
    name that you register with ``YUI.add``. Mojit controllers and models are YUI modules.
 
    ``$ mojito test mojit mojits/Github Github``
@@ -392,7 +400,7 @@ Creating the Application
    complicated errors. 
 
 #. To view your application, open the URL http://localhost:8666/@Github/index in a browser. This
-   is the page created and served by your application.
+   is the :ref:`page <01_intro-final>` created and served by your application.
 
    It's a strange URL, right? First, the port 8666 is the default port used by Mojito, 
    which we'll override in the next step. As for the path, well, we haven't set up any routes yet, 
@@ -406,10 +414,11 @@ Creating the Application
 
      
 #. Stop the application with **Ctl-C**, and the restart it with a different port by 
-   specifying the port. You can now view the application at http://localhost:8000/@Github/index:
+   specifying the port. 
      
    ``$ mojito start 8000``
 
+   You can now view the application at http://localhost:8000/@Github/index.
 #. As we discussed in our lesson, you can start an application in a given context, so that a 
    specific set of configurations are applied for a runtime environment. 
 
@@ -473,8 +482,8 @@ to a different port: ``$ mojito start 8001``
 
 .. _01_cli-qa:     
 
-Q&A
-===
+Q\&A
+====
 
 - Why is there a ``mojito-cli`` and a ``mojito`` package?
 
@@ -521,19 +530,28 @@ Additional Exercises
 Terms
 =====
 
-- **archetypes** - Different versions of template 
-  code for an artifact such as an application or a mojit. So, when you 
-  select the archetype ``simple`` for an application, you are asking Mojito 
-  to create an application using the boilerplate code from the ``simple`` 
-  version of an application. 
-- **mojits** - The basic unit of composition and reuse in a Mojito application that uses MVC.
-  Visually, you can think of a mojit as the rectangular area of a page that was constructed 
-  by a Mojito application.
-- `YAML <http://en.wikipedia.org/wiki/YAML>`_
-- **anonymous mojit instance** - A mojit instance auto-created by the Framework that you can
-  reference in your application. The syntax is the mojit name prepended with ``@``: ``@Github``
-- **contexts** - The runtime environment that your application runs in. For example, you can 
-  run your application in a development environment with the context ``environment:development``.
+**archetypes** 
+   Different versions of template 
+   code for an artifact such as an application or a mojit. So, when you 
+   select the archetype ``simple`` for an application, you are asking Mojito 
+   to create an application using the boilerplate code from the ``simple`` 
+   version of an application. 
+
+**mojits** 
+   The basic unit of composition and reuse in a Mojito application that uses MVC.
+   Visually, you can think of a mojit as the rectangular area of a page that was constructed 
+   by a Mojito application.
+
+`YAML <http://en.wikipedia.org/wiki/YAML>`_
+
+**anonymous mojit instance** 
+   A mojit instance auto-created by the Framework that you can
+   reference in your application. The syntax is the mojit name prepended with ``@``. For
+   example: ``@Github``
+
+**context** 
+   The runtime environment that your application runs in. For example, you can 
+   run your application in a development environment with the context ``environment:development``.
 
 .. _01_cli-src:
 

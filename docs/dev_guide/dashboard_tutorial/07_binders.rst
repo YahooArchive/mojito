@@ -14,6 +14,12 @@ and manipulation called binders. Mojits can have one or more binders that are
 deployed to the client (they cannot run on the server). We’re going to create 
 some binders to allow users to update data and hide content. 
 
+.. _07_intro-time_est:
+
+Time Estimate
+-------------
+
+20 minutes
 
 .. _07_intro-what:
 
@@ -24,7 +30,7 @@ What We’ll Cover
 - allow event handlers to attach to the mojit DOM node
 - communicate with other mojits on the page
 - execute actions on the mojit that the binder is attached to
-- refreshing templates with binders
+- refresh templates with binders
 
 .. _07_intro-final:
 
@@ -98,7 +104,7 @@ Location
 Requirements for Using Binders
 ------------------------------
 
-To use binders, your application must be using the 
+To use binders, your application must be using 
 `HTMLFrameMojit <../topics/mojito_frame_mojits.html#htmlframemojit>`_ or your own frame 
 mojit and be configured to deploy code to the client with the 
 ``deploy`` property in ``application.json``. See `Configuring 
@@ -275,7 +281,7 @@ Invoking Controller Methods
 
 The invoke method is critical because it allows user-driven events to trigger the 
 execution of controller functions. In the binder snippet below, the ``invoke``
-method calls the controller function show with parameters. The returned value is 
+method calls the controller function ``show`` with parameters. The returned value is 
 used to update the DOM. This is the typical use of the ``invoke`` method. The controller 
 may need to get data from the model, so the flow would be 
 binder->controller->model->controller->binder. We'll be using the ``invoke`` method
@@ -1078,7 +1084,7 @@ Creating the Application
       div.mod h3 a.refresh {
         right: 50px;
       }
-#. Go ahead and start your application. You'll see that we now have two widgets per each
+#. Go ahead and start your application. You'll see that we now have two widgets per 
    column. The GitHub and Twitter feeds should have the **refresh** icon.
 #. Open a developer console or Firebug and then click on the **refresh** icon for the GitHub 
    widget. You will probably not see any new content, but in the developer console, you'll 
@@ -1206,10 +1212,12 @@ Additional Exercises
 Terms
 =====
 
-- **binders** - The client-side code for mojits that are sent to the client and attached
-  to the DOM. 
-- **mojitProxy** - An object that allows binders to communicate with the
-  server and other binders on the page.
+**binders** 
+   The client-side code for mojits that are sent to the client and attached
+   to the DOM. 
+**mojitProxy** 
+   An object that allows binders to communicate with the
+   server and other binders on the page.
 
 
 .. _07_binders-src:
@@ -1217,7 +1225,7 @@ Terms
 Source Code
 ===========
 
-`07_binders <http://github.com/yahoo/mojito/examples/dashboard/07_binders/>`_
+`07_binders <https://github.com/yahoo/mojito/tree/develop/examples/developer-guide/dashboard/07_binders>`_
 
 .. _07_binders-reading:
 
@@ -1227,5 +1235,4 @@ Further Reading
 - `Mojito Binders <../intro/mojito_binders.html>`_
 - `Binding Events <../code_exs/binding_events.html>`_
 - `Sharing Data <../topics/mojito_data.html#sharing-data>`_
-
 

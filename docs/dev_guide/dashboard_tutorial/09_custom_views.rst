@@ -16,13 +16,21 @@ This allows you to have multiple templates that can be served based on the clien
 We're also going to take advantage of Handlebars helpers and partials to simplify our
 templates. 
 
+
+.. _09_intro-time_est:
+
+Time Estimate
+-------------
+
+20 minutes
+
 .. _09_intro-what:
 
 What We’ll Cover
 ----------------
 
 - selectors - how to define them and how they are used.
-- creating multiple multiple templates
+- creating multiple templates
 - Handlebars helpers
 - template partials
 - ``Helper`` addon
@@ -118,7 +126,7 @@ Supported Devices
 *****************
 
 Mojito can examine the HTTP header User Agent and detect the following devices/browsers. 
-The example templates would based on selectors defined for each context. For our application, 
+The example templates would be based on selectors defined for each context. For our application, 
 we’re only going to be creating templates for the iPhone, iPad, and Android devices in 
 addition to ``index.hb.html``.
 
@@ -458,7 +466,7 @@ Creating the Application
         <a title="close module" class="close" href="#">x</a>
       </h3>
 
-#. Before we go ahead and update the templates to use the partial. We're going to create
+#. Before we go ahead and update the templates to use the partial, we're going to create
    a Handlebars helper in the ``PageLayout`` mojit that will be available to 
    all the other mojits on the page as long as their controllers include the ``mojito-helpers-addon``.
    Update ``mojits/PageLayout/controller.server.js`` with the code below that includes
@@ -643,7 +651,7 @@ Creating the Application
       </div>
 
 #. The use of partials just made our templates cleaner. Now we're going to create templates
-   that with different selectors so Mojito can render the appropriate ones depending
+   with different selectors so Mojito can render the appropriate ones depending
    on the device making an HTTP request. Notice that the layout changes for each.
 
    ``mojits/Body/views/index.ipad.hb.html``
@@ -702,7 +710,7 @@ features of Handlebars, and configure Mojito to select templates based
 on the context. As for the details, we went over the following topics:
 
 - selectors - how to define them and how they are used.
-- creating multiple multiple templates
+- creating multiple templates
 - Handlebars helpers
 - template partials
 - ``Helpers`` addon
@@ -747,7 +755,7 @@ Q&A
 
   You can configure the directories where Mojito looks for mojits and route configuration
   files with the properties ``mojitDirs``, ``mojitsDirs``, and ``routesFiles``. See
-  See the descriptions of those properties in the `configuration Object <../intro/mojito_configuring.html#configuration-object>`_.
+  the descriptions of those properties in the `configuration Object <../intro/mojito_configuring.html#configuration-object>`_.
   
 - Is there a way to use middleware in Mojito?
 

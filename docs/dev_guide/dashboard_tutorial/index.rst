@@ -3,9 +3,9 @@ Mojito Dashboard Tutorial
 =========================
 
 This tutorial includes an introduction and ten modules. Each module
-explains a topic and then shows you how to build an Mojito application 
+explains a topic and then shows you how to build a Mojito application 
 that focuses on the discussed topic. The applications you create 
-build on the those you created in prior modules, so the final
+build on those you created in prior modules, so the final
 application is simply an aggregate of everything you learned. Our goal is that 
 by the end of the tutorial that you will have the skills and knowledge to use Mojito to
 build your own applications.

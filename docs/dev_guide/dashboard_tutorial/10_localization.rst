@@ -14,6 +14,13 @@ applications. In a nutshell, you provide localized strings, Mojito determines th
 language environment of the client, and you apply the correct localized string with an 
 addon from your controller. 
 
+.. _010_intro-time_est:
+
+Time Estimate
+-------------
+
+15 minutes
+
 .. _10_intro-what:
 
 What We’ll Cover
@@ -70,7 +77,7 @@ templates based on the context. In short, we looked at these topics:
 Setting Up
 ##########
 
-``$ cp -r 09_hb 10_localization``
+``$ cp -r 09_hb_templates 10_localization``
 
 .. _10_localization-lesson:
 
@@ -132,7 +139,7 @@ YUI Module Name
 
 The language resource files, as we’ve said, are YUI modules. You register the 
 module name with ``YUI.add``. Thus, for the ``PageLayout`` mojit, the resource bundle file 
-``PageLayout_zh-Hans.js``.
+will be ``PageLayout_zh-Hans.js``.
 
 .. _10_rs_bundle-register:
 
@@ -166,8 +173,8 @@ following:
      }
    );
 
-For those who don’t read simplified Chinese,= the localized strings that we 
-registered are simply the translations  of "Trib - YUI Dashboard" and 
+For those who don’t read simplified Chinese, the localized strings that we 
+registered are simply the translations of "Trib - YUI Dashboard" and 
 "Trib - Mojito Dashboard".
 
 .. _10_intl_addon-require:
@@ -242,8 +249,8 @@ How Mojito Determines the Language Environment
 
 When running on the client side, YUI can detect the browser settings to select 
 the default translation and date format. On the server, the preferred language 
-and date format is determined by HTTP header the order of languages listed in 
-the mojit controller.
+and date format is determined by HTTP header from the client and the order of 
+languages listed in the mojit controller.
 
 Fortunately, Mojito lets you configure applications to run on either the server 
 or client side. Because this code example illustrates how to localize your 
@@ -346,19 +353,19 @@ Creating the Application
    with background images, favicons, and CSS. Copy the following images to the specified
    location:
 
-   - `/assets/favicon.ico <images/assets/favicon.ico>`_ to ``10_localization/assets/``
-   - `/assets/images/dust.png <images/assets/images/dust.png>`_ to ``10_localization/assets/images/``
-   - `/mojits/Blog/assets/favicon.ico <images/mojits/Blog/assets/favicon.ico>`_ to ``10_localization/mojits/Blog/assets/``
-   - `/mojits/Blog/assets/favicon-blog.png <images/mojits/Blog/assets/favicon-blog.png>`_ to ``10_localization/mojits/Blog/assets/``
-   - `/mojits/Calendar/assets/favicon-calendar.ico <images/mojits/Calendar/assets/favicon-calendar.ico>`_ to ``10_localization//mojits/Calendar/assets``
-   - `/mojits/Calendar/assets/favicon-calendar.png <images/mojits/Calendar/assets/favicon-calendar.png>`_ to ``10_localization//mojits/Calendar/assets``
-   - `/mojits/Twitter/assets/favicon.ico <images/mojits/Twitter/assets/favicon.ico>`_ to ``10_localization/mojits/Twitter/assets/``
-   - `/mojits/Twitter/assets/favicon-twitter.png <images/mojits/Twitter/assets/favicon-twitter.png>`_ to ``10_localization/mojits/Twitter/assets/``
-   - `/mojits/Gallery/assets/favicon-blog.png <images/mojits/Gallery/assets/favicon-blog.png>`_ to ``10_localization/mojits/Gallery/assets/``
-   - `/mojits/Github/assets/favicon-github.png <images/mojits/Github/assets/favicon-github.png>`_ to ``10_localization/mojits/Github/assets/``
+   - `/assets/favicon.ico <https://github.com/yahoo/mojito/blob/develop/examples/developer-guide/dashboard/trib/assets/favicon.ico>`_ to ``10_localization/assets/``
+   - `/assets/images/dust.png <https://github.com/yahoo/mojito/blob/develop/examples/developer-guide/dashboard/trib/assets/images/dust.png>`_ to ``10_localization/assets/images/``
+   - `/mojits/Blog/assets/favicon.ico <https://github.com/yahoo/mojito/blob/develop/examples/developer-guide/dashboard/trib/mojits/Blog/assets/favicon.ico>`_ to ``10_localization/mojits/Blog/assets/``
+   - `/mojits/Blog/assets/favicon-blog.png <https://github.com/yahoo/mojito/blob/develop/examples/developer-guide/dashboard/trib/mojits/Blog/assets/favicon-blog.png>`_ to ``10_localization/mojits/Blog/assets/``
+   - `/mojits/Calendar/assets/favicon-calendar.ico <https://github.com/yahoo/mojito/blob/develop/examples/developer-guide/dashboard/trib/mojits/Calendar/assets/favicon-calendar.ico>`_ to ``10_localization//mojits/Calendar/assets``
+   - `/mojits/Calendar/assets/favicon-calendar.png <https://github.com/yahoo/mojito/blob/develop/examples/developer-guide/dashboard/trib/mojits/Calendar/assets/favicon-calendar.png>`_ to ``10_localization//mojits/Calendar/assets``
+   - `/mojits/Twitter/assets/favicon.ico <https://github.com/yahoo/mojito/blob/develop/examples/developer-guide/dashboard/trib/mojits/Twitter/assets/favicon.ico>`_ to ``10_localization/mojits/Twitter/assets/``
+   - `/mojits/Twitter/assets/favicon-twitter.png <https://github.com/yahoo/mojito/blob/develop/examples/developer-guide/dashboard/trib/mojits/Twitter/assets/favicon-twitter.png>`_ to ``10_localization/mojits/Twitter/assets/``
+   - `/mojits/Gallery/assets/favicon-blog.png <https://github.com/yahoo/mojito/blob/develop/examples/developer-guide/dashboard/trib/mojits/Gallery/assets/favicon-blog.png>`_ to ``10_localization/mojits/Gallery/assets/``
+   - `/mojits/Github/assets/favicon-github.png <https://github.com/yahoo/mojito/blob/develop/examples/developer-guide/dashboard/trib/mojits/Github/assets/favicon-github.png>`_ to ``10_localization/mojits/Github/assets/``
 
-#. We're going to update the CSS for some mojits as well so that the images are used
-   and styles. Add the code to the file ``/mojits/Blog/assets/index.css``:
+#. We're going to update the CSS for some mojits as well so that the images and styles are used.
+   Add the code to the file ``/mojits/Blog/assets/index.css``:
 
    .. code-block:: html
 
@@ -456,7 +463,7 @@ Creating the Application
 #. Congratulations, you have completed all of the modules in this tutorial. There is still
    more to learn about Mojito, but you should have a strong grasp of the basics that you
    can build on. If you haven't already, be sure to read the `documentation <../>`_ and  
-   work through the `code examples <../code_examples/>`_.
+   work through the `code examples <../code_exs/>`_.
 
 .. _10_localization-summary:
 
@@ -550,7 +557,8 @@ Terms
 Source Code
 ===========
 
-`10_localization <http://github.com/yahoo/mojito/examples/dashboard/10_localization/>`_
+`10_localization <https://github.com/yahoo/mojito/tree/develop/examples/developer-guide/dashboard/10_localization>`_
+`trib <https://github.com/yahoo/mojito/tree/develop/examples/developer-guide/dashboard/trib>`_
 
 .. _10_localization-reading:
 

@@ -25,6 +25,12 @@ there unused? Well, we’re finally going to use them for the application that
 we’ll create in this module.
 
 
+.. _04_intro-time_est:
+
+Time Estimate
+-------------
+
+15 minutes
 
 .. _04_intro-cover:
 
@@ -181,7 +187,7 @@ As of now, the only mojit that we have that is creating content is ``Github``.
 As you would expect, we’d want that content to be in the body of our HTML document. 
 The ``Body`` mojit seems like the right mojit to handle this content. We might want 
 other mojits creating content for the body as well. It does sound as if our ``Body``
-should be a composite mojit as well, and there are not limitations to using composite 
+should be a composite mojit as well, and there are no limitations to using composite 
 mojits (aside from possible performance problems), so let’s configure the ``body`` 
 instance to be a composite mojit as well:
 
@@ -234,7 +240,7 @@ Executing Child Mojits With the Composite Addon
 The controller of the parent mojit uses the ``Composite`` addon to execute 
 its child mojits. Like other addons, you require the ``Composite`` addon and 
 have access to it through the ``ActionContext`` object. The ``Composite`` addon 
-the two methods ``done`` and ``execute`` for executing child mojit. The snippet 
+provides the two methods ``done`` and ``execute`` for executing child mojit. The snippet 
 from the parent controller below uses the method ``ac.composite.done``:
 
 .. code-block:: javascript
@@ -456,8 +462,9 @@ Creating the Application
    Our application works, but the composite mojit isn’t really doing much with the 
    content of its children. That’s because it hasn’t used the ``Composite`` addon to 
    execute its children and attached the content from those children to the template.
-   The first step is have the controller of the ``PageLayout`` mojit use the ``Composite`` 
-   addon and call ``ac.composite.done``:
+   The first step is have the controller ``mojits/PageLayout/controller.server.js`` 
+   use the ``Composite`` addon and call ``ac.composite.done``:
+  
 
    .. code-block:: javascript
 
@@ -492,9 +499,9 @@ Creating the Application
       }, '0.0.1', {requires: ['mojito','mojito-composite-addon']});
 
 
-#. In the template of the composite mojit, we can use the ``child`` instance names in 
-   Handlebars expressions to attach the content of the rendered children to the 
-   template:
+#. In the template ``mojits/PageLayout/views/index.hb.html``, we can use the ``child`` 
+   instance names in Handlebars expressions to attach the content of the rendered 
+   children to the template:
 
    .. code-block:: html
 
@@ -515,8 +522,8 @@ Creating the Application
    content being rendered three times and attached to the page. The next step is 
    to modify our children so that we have more interesting content.
 
-#. For the ``Header`` mojit, update the ``controller.server.js`` and ``index.hb.html`` with the 
-   content below. Note that our controller is not contributing much because 
+#. Update ``mojits/Header/controller.server.js`` and ``mojits/Header/views/index.hb.html`` 
+   with the content below. Note that our controller is not contributing much because 
    the content is mostly static.
 
    .. code-block:: javascript
@@ -729,6 +736,8 @@ your composite mojit as shown here:
 
 .. code-block:: javascript
 
+   }, '0.0.1', {requires: ['mojito','mojito-composite-addon']}); 
+
 Child Mojits Not Being Rendered
 -------------------------------
 
@@ -818,15 +827,16 @@ Additional Exercises
 Terms
 =====
 
-- **composite mojit** - A parent mojit that has child mojits and executes those child
-  mojits with the ``Composite`` addon.
+**composite mojit**
+   A parent mojit that has child mojits and executes those child
+   mojits with the ``Composite`` addon.
 
 .. _04_composite_mojits-src:
 
 Source Code
 ===========
 
-- `04_composite_mojits <http://github.com/yahoo/mojito/examples/dashboard/04_composite_mojits>`_
+- `04_composite_mojits <https://github.com/yahoo/mojito/tree/develop/examples/developer-guide/dashboard/04_composite_mojits>`_
 
 .. _04_composite_mojits-reading:
 
