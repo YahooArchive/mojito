@@ -39,7 +39,7 @@ YUI.add('Blog', function (Y, NAME) {
                 Y.log(data, "info", NAME);
                 // add mojit specific css
                 ac.assets.addCss('./index.css');
-                Y.log("In Blog controller: ", "info"); 
+                Y.log("In Blog controller: ", "info", NAME); 
                 if(data.error) {
                    ac.error(data); 
                 } else {
