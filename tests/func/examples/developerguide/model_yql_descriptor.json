@@ -19,18 +19,7 @@
                     "scenario": [
                         {
                             "test" : "test_modelyql.js",
-                            "page" : "$$config.baseUrl$$"
-                        },
-                        {
-                            "controller": "locator",
-                            "params": {
-                                  "value": "a",
-                                  "click": true
-                            }
-                        },
-                        {
-                            "test" : "test_modelyql.js",
-                            "page": "$$config.baseUrl$$"
+                            "page" : "$$config.baseUrl$$/?device=iphone"
                         }
                     ]
                 }
