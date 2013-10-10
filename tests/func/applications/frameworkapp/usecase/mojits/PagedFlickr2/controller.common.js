@@ -21,7 +21,7 @@ YUI.add('PagedFlickr2', function(Y, NAME) {
             // parameter is base-0.
             start = (page-1) * PAGESIZE;
 
-            ac.models.get('PagedFlickr2Model').getFlickrImages('mojito', start, PAGESIZE, function(images) {
+            ac.models.get('model').getFlickrImages('mojito', start, PAGESIZE, function(images) {
                 var dateString = ac.intl.formatDate(new Date());
                 Y.log("config1 from controller----"+Y.JSON.stringify(ac.config.get('config1')));
                 var data = {

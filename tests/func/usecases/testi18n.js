@@ -10,7 +10,7 @@ YUI.add('usecases-testi18n-tests', function (Y) {
             Y.Assert.areEqual('Enjoy your Flickr Images!', title.match(/Enjoy your Flickr Images!/gi));
             var imagelink = Y.all('a').item(1).get('href');
             Y.Assert.areEqual('http:', imagelink.match(/http:/gi));
-            Y.Assert.areEqual('static.flickr.com', imagelink.match(/static.flickr.com/gi));
+            Y.Assert.areEqual('/static/usecase/assets', imagelink.match(/\/static\/usecase\/assets/gi));
             Y.Intl.add("datatype-date-format", "en-US", {
                 "x":"%d/%m/%Y"
             });

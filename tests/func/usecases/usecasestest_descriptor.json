@@ -41,77 +41,77 @@
                  "group" : "smoke,usecases",
                  "params" : {
                      "test" : "testflickr1.js",
-                     "page" : "$$config.baseUrl$$/flickr-1/index"
+                     "page" : "$$config.baseUrl$$/flickr-1/index?device=iphone"
                 }
             },
             "i18n" : {
                  "group" : "smoke,usecases",
                  "params" : {
                      "test" : "testi18n.js",
-                     "page" : "$$config.baseUrl$$/i18n-1/index"
+                     "page" : "$$config.baseUrl$$/i18n-1/index?device=iphone"
                 }
             },
             "i18n-en" : {
                  "group" : "smoke,usecases",
                  "params" : {
                      "test" : "testi18n.js",
-                     "page" : "$$config.baseUrl$$/i18n-1/index?lang=en-US"
+                     "page" : "$$config.baseUrl$$/i18n-1/index?lang=en-US&device=iphone"
                 }
             },
             "i18n-de" : {
                  "group" : "smoke,usecases",
                  "params" : {
                      "test" : "testi18n-de.js",
-                     "page" : "$$config.baseUrl$$/i18n-1/index?lang=de"
+                     "page" : "$$config.baseUrl$$/i18n-1/index?lang=de&device=iphone"
                 }
             },
             "i18n-fr" : {
                  "group" : "smoke,usecases",
                  "params" : {
                      "test" : "testi18n-neg.js",
-                     "page" : "$$config.baseUrl$$/i18n-1/index?lang=fr"
+                     "page" : "$$config.baseUrl$$/i18n-1/index?lang=fr&device=iphone"
                 }
             },
             "i18n-intlLang" : {
                  "group" : "smoke,usecases",
                  "params" : {
                      "test" : "testi18nintlLang.js",
-                     "page" : "$$config.baseUrl$$/i18n-1/index"
+                     "page" : "$$config.baseUrl$$/i18n-1/index?device=iphone"
                 }
             },
             "i18n-intlLang-de" : {
                  "group" : "smoke,usecases",
                  "params" : {
                      "test" : "testi18nintlLang.js",
-                     "page" : "$$config.baseUrl$$/i18n-1/index?lang=de"
+                     "page" : "$$config.baseUrl$$/i18n-1/index?lang=de&device=iphone"
                 }
             },
             "i18n2" : {
                  "group" : "smoke,usecases",
                  "params" : {
                      "test" : "testi18n.js",
-                     "page" : "$$config.baseUrl$$/i18n-2/index"
+                     "page" : "$$config.baseUrl$$/i18n-2/index?device=iphone"
                 }
             },
             "i18n2-en" : {
                  "group" : "smoke,usecases",
                  "params" : {
                      "test" : "testi18n.js",
-                     "page" : "$$config.baseUrl$$/i18n-2/index?lang=en-US"
+                     "page" : "$$config.baseUrl$$/i18n-2/index?lang=en-US&device=iphone"
                 }
             },
             "i18n2-de" : {
                  "group" : "smoke,usecases",
                  "params" : {
                      "test" : "testi18n-de.js",
-                     "page" : "$$config.baseUrl$$/i18n-2/index?lang=de"
+                     "page" : "$$config.baseUrl$$/i18n-2/index?lang=de&device=iphone"
                 }
             },
             "i18n2-fr" : {
                  "group" : "smoke,usecases",
                  "params" : {
                      "test" : "testi18n-neg.js",
-                     "page" : "$$config.baseUrl$$/i18n-2/index?lang=fr"
+                     "page" : "$$config.baseUrl$$/i18n-2/index?lang=fr&device=iphone"
                 }
             },
             "i18n3-en" : {
@@ -136,7 +136,7 @@
                     "scenario": [
                         {
                            "test" : "testpagedflickr.js",
-                           "page" : "$$config.baseUrl$$/flickr"
+                           "page" : "$$config.baseUrl$$/flickr?device=iphone"
                         },
                         {
                            "controller": "locator",
@@ -156,7 +156,7 @@
                            }
                         },
                         {
-                           "test" : "testpagedflickr.js"
+                           "test" : "testpagedflickr.js?device=iphone"
                         }
                      ]
                 }
@@ -167,7 +167,7 @@
                     "scenario": [
                         {
                            "test" : "testpagedflickr-de.js",
-                           "page" : "$$config.baseUrl$$/flickr?lang=de"
+                           "page" : "$$config.baseUrl$$/flickr?lang=de&device=iphone"
                         },
                         {
                            "controller": "locator",
@@ -196,14 +196,14 @@
                  "group" : "smoke,usecases",
                  "params" : {
                      "test" : "testpreinit.js",
-                     "page" : "$$config.baseUrl$$/flickr2"
+                     "page" : "$$config.baseUrl$$/flickr2?device=iphone"
                 }
             },
             "preattachbinder" : {
                  "group" : "smoke,usecases",
                  "params" : {
                      "test" : "testpreattachedbinder.js",
-                     "page" : "$$config.baseUrl$$/flickr2"
+                     "page" : "$$config.baseUrl$$/flickr2?device=iphone"
                 }
             }
         }     

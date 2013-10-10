@@ -9,7 +9,7 @@ YUI.add('usecases-testflickr1-tests', function (Y) {
             Y.Assert.areEqual('Hello, world!', Y.one('#flickrtitle').get('innerHTML'));
             var imagelink = Y.all('#image a').item(1).get('href');
             Y.Assert.areEqual('http:', imagelink.match(/http:/gi));
-            Y.Assert.areEqual('static.flickr.com', imagelink.match(/static.flickr.com/gi));
+            Y.Assert.areEqual('/static/usecase/assets', imagelink.match(/\/static\/usecase\/assets/gi));
         }
     }));
 

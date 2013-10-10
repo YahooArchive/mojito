@@ -24,7 +24,7 @@ YUI.add('i18nMojit', function(Y, NAME) {
          *        to the Mojito API.
          */
         index: function(ac) {
-            ac.models.get('i18nMojitModel').getFlickrImages('mojito', function(images) {
+            ac.models.get('model').getFlickrImages('mojito', function(images) {
 	            var dateString = ac.intl.formatDate(new Date());
 	            var tempStr = ac.intl.lang("TITLE");
 	            console.log("*********************TITLE: " + tempStr);

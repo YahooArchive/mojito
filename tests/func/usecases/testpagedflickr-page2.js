@@ -9,8 +9,8 @@ YUI.add('usecases-testpagedflickr-page2-tests', function (Y) {
             Y.Assert.areEqual('Enjoy your Flickr Images!', Y.one('h2').get('innerHTML').match(/Enjoy your Flickr Images!/gi));
             Y.Assert.areEqual("previous", Y.all('#paginate a').item(0).get('innerHTML'));
             Y.Assert.areEqual("next", Y.all('#paginate a').item(1).get('innerHTML'));
-            Y.Assert.areEqual("flickr?page=1", Y.all('#paginate a').item(0).get('href').match(/flickr\?page=1/gi));
-            Y.Assert.areEqual("flickr?page=3", Y.all('#paginate a').item(1).get('href').match(/flickr\?page=3/gi));
+            Y.Assert.areEqual("page=1", Y.all('#paginate a').item(0).get('href').match(/page=1/gi));
+            Y.Assert.areEqual("page=3", Y.all('#paginate a').item(1).get('href').match(/page=3/gi));
         }
     }));
 
