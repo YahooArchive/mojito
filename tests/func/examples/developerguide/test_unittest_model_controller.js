@@ -14,7 +14,7 @@ YUI.add('example-testunitestmodelcontroller-tests', function (Y) {
                     Y.Assert.fail("No pic is shown on the page!");
                 }
                 for(i=0; i<Y.all('a').size(); i++){
-                    Y.Assert.areEqual("static.flickr.com", Y.all('a').item(i).getAttribute('href').match(/static.flickr.com/gi));
+                    Y.Assert.areEqual("/static/flickr/assets", Y.all('a').item(i).getAttribute('href').match(/\/static\/flickr\/assets/gi));
                 };
             }, 2000);
          }

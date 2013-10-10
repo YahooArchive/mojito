@@ -2,22 +2,23 @@
     {
         "settings": [ "master" ],
         "specs": {
-         "frame": {
-          "type": "HTMLFrameMojit",
-          "config": {
-            "deploy": true,
-            "child": {
-             "type":"flickr"
-            },
-           "assets": {
-            "top": {
-             "css":[
-              "/static/flickr/assets/index.css"
-              ]
+            "frame": {
+                "type": "HTMLFrameMojit", 
+                "config": {
+                    "deploy": true,
+                    "child": { 
+                        "type": "flickr" 
+                    },
+                    "assets": {
+                        "top": {
+                            "css": [
+                                "/static/flickr/assets/index.css"
+                            ]
+                        }
+                    }
+                }
             }
-           }
-           }
-         }
         }
-    }
+    },
+    { "settings": [ "device:iphone" ], "selector": "iphone" }
 ]

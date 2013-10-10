@@ -55,6 +55,16 @@ YUI.add('PagerMojitModel', function(Y, NAME) {
                 }
                 callback(images);
             });
+        },
+        getContent: function (imageId, callback) {
+            var query = 'select * from flickr.photos.info where photo_id="' + imageId + '" and api_key="' + API_KEY + '"';
+            Y.YQL(query, function (rawData) {
+                if (!rawData.query.results) {
+                    callback([]);
+                    return;
+                }
+                callback(rawData);
+            });
         }
     };
 }, '0.0.1', {requires: ['mojito', 'yql']});

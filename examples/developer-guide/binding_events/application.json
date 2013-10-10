@@ -1,16 +1,17 @@
 [
-  {
-    "settings": [ "master" ],
-    "specs": {
-      "frame": {
-        "type": "HTMLFrameMojit",
-        "config": {
-            "deploy": true,
-            "child": {
-                "type": "PagerMojit"
+    {
+        "settings": [ "master" ],
+        "specs": {
+            "frame": {
+                "type": "HTMLFrameMojit",
+                "config": {
+                    "deploy": true,
+                    "child": {
+                        "type": "PagerMojit"
+                    }
+                }
             }
         }
-      }
-    }
-  }
+    },
+    { "settings": [ "device:iphone" ], "selector": "iphone" }
 ]

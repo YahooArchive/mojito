@@ -47,36 +47,40 @@ YUI.add('PagerMojitBinder', function (Y, NAME) {
     */
         bind: function(node) {
             var thatNode = node,
+                self = this,
                 showOverlay = function(event) {
                     var target = event.target,
                         href = target.get('href'),
-                        imageId = parseImageId(href),
-                        // Query for the image metadata
-                        query = 'select * from flickr.photos.info where photo_id="' + imageId + '" and api_key="' + API_KEY + '"';
+                        imageId = parseImageId(href);
                     if (target.hasClass('overlayed')) {
                         target.removeClass('overlayed');
                         thatNode.one('#display').setContent('');
                     } else {
                         target.addClass('overlayed');
                         thatNode.one('#display').setContent('Loading ...');
-                        Y.YQL(query, function(raw) {
-                            if (!raw.query.results.photo) {
-                                Y.log('No results found for photoId: ' + imageId);
-                                return;
-                            }
-                            var props = raw.query.results.photo,
-                                snippet = '<ul style="list-style-type: square;">',
-                                key;
-                            for (key in props) {
-                                if (props.hasOwnProperty(key)) {
-                                    if (typeof (props[key]) === 'object') {
-                                        continue;
-                                    }
-                                    snippet += '<li>' + key + ': ' + props[key] + '</li>';
+                        self.mojitProxy.data.set('imageId', imageId);
+                        self.mojitProxy.invoke('contentModel',{},
+                            function(error, raw){
+                                if (error) {
+                                    Y.log("Error found:"+ error);
                                 }
-                            }
-                            snippet += '</ul>';
-                            thatNode.one('#display').setContent(snippet);
+                                if (!raw.query.results.photo) {
+                                    Y.log('No results found for photoId: ' + imageId);
+                                    return;
+                                }
+                                var props = raw.query.results.photo,
+                                    snippet = '<ul style="list-style-type: square;">',
+                                    key;
+                                for (key in props) {
+                                    if (props.hasOwnProperty(key)) {
+                                        if (typeof (props[key]) === 'object') {
+                                            continue;
+                                        }
+                                        snippet += '<li>' + key + ': ' + props[key] + '</li>';
+                                    }
+                                }
+                                snippet += '</ul>';
+                                thatNode.one('#display').setContent(snippet);
                         });
                     }
                 },
