@@ -185,7 +185,7 @@ which is the same as running ``mojito create app default``.
 Mojito Archetypes
 #################
 
-Mojito offers the following four archetypes for applications:
+Mojito offers the following three archetypes for applications:
 
 - ``simple`` - The minimal configuration and code needed to run an application.
 - ``default`` - This archetype is run if no command-line archetype option is specified.  
