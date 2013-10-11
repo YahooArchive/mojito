@@ -192,8 +192,9 @@ Mojito offers the following four archetypes for applications:
   The template file for setting up routing, ``routing.json``, is created for you.
 - ``full`` - The ``application.json`` and ``routes.json`` have more boilerplate code for 
   you to use than the default application.
-- ``yahoo`` - This archetype was originally intended for hybrid applications that would use a JavaScript API
-  to access the native APIs of Android and iOS devices, but it is now being deprecated.
+- ``yahoo`` - This archetype was created so that the ``dimensions.json`` file that defines
+  contexts would conform more closely to `Yahoo Configuration Bundles (YCB) <https://github.com/yahoo/ycb>`_.
+  This archetype is in the process of being removed.
 
 Mojits have three archetypes:
 
