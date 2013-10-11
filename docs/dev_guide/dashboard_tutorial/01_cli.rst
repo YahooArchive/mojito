@@ -185,13 +185,15 @@ which is the same as running ``mojito create app default``.
 Mojito Archetypes
 #################
 
-Mojito offers the following three archetypes for applications:
+Mojito offers the following four archetypes for applications:
 
 - ``simple`` - The minimal configuration and code needed to run an application.
 - ``default`` - This archetype is run if no command-line archetype option is specified.  
   The template file for setting up routing, ``routing.json``, is created for you.
 - ``full`` - The ``application.json`` and ``routes.json`` have more boilerplate code for 
   you to use than the default application.
+- ``yahoo`` - This archetype was originally intended for hybrid applications that would use a JavaScript API
+  to access the native APIs of Android and iOS devices, but it is now being deprecated.
 
 Mojits have three archetypes:
 
