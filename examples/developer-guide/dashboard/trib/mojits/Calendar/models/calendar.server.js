@@ -57,7 +57,12 @@ YUI.add('CalendarModelYQL', function (Y, NAME) {
                 // Results had an error
                 err= result;
             }
-            cb(err, results);    
+            // Return valid results or error in callback to controller.
+            if (err) {
+              cb(err);
+            } else {
+              cb(null, results);
+            }
         },
         _isCached: function() {
             var updateTime = this.config.feedCacheTime * 60 * 1000;

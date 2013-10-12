@@ -34,6 +34,7 @@ YUI.add('BlogModelYQL', function (Y, NAME) {
         onDataReturn: function (cb, result) {
             Y.log("blog.server onDataReturn called", "info", NAME);
             var results = [], err = null;
+                
             if (!result.error) {
 
                 if (result && result.query && result.query.results && result.query.results.item) {
@@ -49,7 +50,12 @@ YUI.add('BlogModelYQL', function (Y, NAME) {
                 // Results had an error.
                 err = result;
             }
-            cb(err, results);
+            // Return valid results or error in callback to controller.
+            if (err) {
+              cb(err);
+            } else {
+              cb(null, results);
+            }
         },
         _isCached: function() {
             var updateTime = this.config.feedCacheTime * 60 * 1000;

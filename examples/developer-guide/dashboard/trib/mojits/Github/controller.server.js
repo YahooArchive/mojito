@@ -65,7 +65,7 @@ YUI.add('Github', function (Y, NAME) {
                     ac.error(err);
                 } else {
                     // Construct special data
-                    res = self.githubMap(ac, data);
+                    res = self.githubMap(data);
                     // Populate and render template.
                     ac.done({
                         title: title,
@@ -83,7 +83,7 @@ YUI.add('Github', function (Y, NAME) {
          * @param data {Array} The array of GitHub actions
          *
          */
-        githubMap: function(ac, data) {
+        githubMap: function(data) {
             Y.log("githubmap called", "info", NAME);
             var res = [];
             Y.Array.each(data, function (itm, idx, arr) {
