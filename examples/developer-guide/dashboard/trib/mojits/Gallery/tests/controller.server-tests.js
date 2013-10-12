@@ -46,14 +46,17 @@ YUI.add('Gallery-tests', function (Y) {
                         A.areEqual('GalleryModelYQL', modelName, 'wrong model name');
                         return {
                             getData: function (params, tablePath, cb) {
-                                cb(null, modelData);
+                                cb(modelData);
                             }
                         };
                     }
                 },
                 done: function (data) {
                     doneResults = data;
-                }
+                },
+                error: function(data) {
+                    doneResults = data;
+                } 
             };
             A.isNotNull(controller);
             A.isFunction(controller.index);
@@ -92,14 +95,17 @@ YUI.add('Gallery-tests', function (Y) {
                         A.areEqual('GalleryModelYQL', modelName, 'wrong model name');
                         return {
                             getData: function (params, tablePath, cb) {
-                                cb(null, modelData);
+                                cb(modelData);
                             }
                         };
                     }
                 },
                 done: function (data) {
                     doneResults = data;
-                }
+                },
+                error: function (data) {
+                    doneResults = data;
+                },
             };
             A.isNotNull(controller);
             A.isFunction(controller.index);

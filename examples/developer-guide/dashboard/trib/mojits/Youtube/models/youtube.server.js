@@ -7,7 +7,7 @@ YUI.add('YoutubeModelYQL', function (Y, NAME) {
             this.config = config;
         },
         getData: function (params, callback) {
-            Y.log("youtube server getData called");
+            Y.log("youtube server getData called", "info", NAME);
 
             if (this._isCached()) {
                 callback(Y.youtubeData);
@@ -20,37 +20,34 @@ YUI.add('YoutubeModelYQL', function (Y, NAME) {
                     },
                     cookedQuery = Y.Lang.sub(query, queryParams);
 
-                Y.log("youtube cookedQuery: " + cookedQuery);
+                Y.log("youtube cookedQuery: " + cookedQuery, "info", NAME);
 
                 Y.YQL(cookedQuery, Y.bind(this.onDataReturn, this, callback));
             }
 
         },
         onDataReturn: function (cb, result) {
-            Y.log("youtube.server onDataReturn called");
-            if (result.error === undefined) {
+            Y.log("youtube.server onDataReturn called", "info", NAME);
+            var results = [], err = null;
+            if (!result.error) {
 
-                //Y.log("result: ");
-                //Y.log(result);
-
-                var results = {};
-
+                //Y.log("result: ", "info", NAME);
+                //Y.log(result, "info", NAME);
                 if (result && result.query && result.query.results && result.query.results.entry) {
                     results = result.query.results.entry;
                     Y.youtubeData = results;
                     Y.youtubeCacheTime = new Date().getTime();
-
                 } else {
-                    results = null;
+                    err = new Error({ error: { description: "The returned response was malformed." }});
                 }
-
-                //Y.log("results: ");
-                //Y.log(results);
-
-
-                cb(results);
             } else {
-                cb(result.error);
+                err = result;
+            }
+            // Return valid results or error in callback to controller.
+            if (err) {
+              cb(err);
+            } else {
+              cb(null, results);
             }
         },
         _isCached: function() {

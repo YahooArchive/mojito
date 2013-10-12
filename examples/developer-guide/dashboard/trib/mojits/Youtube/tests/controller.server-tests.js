@@ -1,5 +1,5 @@
 
-YUI.add('Youtube-tests', function (Y) {
+YUI.add('Youtube-tests', function (Y, NAME) {
 
     var suite = new YUITest.TestSuite('Youtube-tests'),
         controller = null,
@@ -11,8 +11,8 @@ YUI.add('Youtube-tests', function (Y) {
 
         setUp: function () {
             controller = Y.mojito.controllers.Youtube;
-            //Y.log("controllers");
-            //Y.log(Y.mojito.controllers);
+            //Y.log("controllers", "info", NAME);
+            //Y.log(Y.mojito.controllers, "info", NAME);
         },
         tearDown: function () {
             controller = null;
@@ -40,8 +40,8 @@ YUI.add('Youtube-tests', function (Y) {
 
                         return {
                             getData: function (params, cb) {
-                                Y.log("youtube: modelData");
-                                Y.log(modelData);
+                                Y.log("youtube: modelData", "info", NAME);
+                                Y.log(modelData, "info", NAME);
 
                                 cb(modelData);
                             }
