@@ -7,7 +7,7 @@ YUI.add('Youtube', function (Y, NAME) {
  *
  * @module Youtube
  */
-    var youtubeMap = function (ac, data) {
+    var youtubeMap = function (data) {
         Y.log("youtube: youtubeMap called", "info", NAME);
         Y.log("youtube: data", "info", NAME);
         Y.log(data, "info", NAME);
@@ -51,7 +51,7 @@ YUI.add('Youtube', function (Y, NAME) {
                     ac.error(err);
                 } else {
                     // Create data structure from Web service response.
-                    res = youtubeMap(ac, data);
+                    res = youtubeMap(data);
                     // Populate and render template.
                     ac.done({
                         title: title,
