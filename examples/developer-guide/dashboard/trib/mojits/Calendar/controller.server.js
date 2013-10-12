@@ -22,7 +22,7 @@ YUI.add('Calendar', function (Y, NAME) {
          *        to the Mojito API.
          */
         index: function (ac) {
-            ac.models.get('CalendarModelYQL').getData({}, function (data) {
+            ac.models.get('CalendarModelYQL').getData({}, function (err, data) {
                 var title = "YUI Calendar Info";
                 //Y.log("Calendar -index - model.getData:", "info", NAME);
                 //Y.log(data, "info", NAME);
@@ -33,8 +33,8 @@ YUI.add('Calendar', function (Y, NAME) {
 
                 // Add mojit specific CSS
                 ac.assets.addCss('./index.css');
-                if(data.error) {
-                    ac.error(data);
+                if(err) {
+                    ac.error(err);
                 } else {
                     // Populate and render calendar template
                     ac.done({

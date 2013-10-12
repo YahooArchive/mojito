@@ -40,15 +40,15 @@ YUI.add('Youtube', function (Y, NAME) {
          *        to the Mojito API.
          */
         index: function (ac) {
-            ac.models.get('YoutubeModelYQL').getData({}, function (data) {
+            ac.models.get('YoutubeModelYQL').getData({}, function (err, data) {
                 Y.log("Youtube controller.server.js -index - model.getData:", "info", NAME);
                 Y.log(data, "info", NAME);
                 var res = [], title = "YUI YouTube Videos";
 
                 Y.log("youtubmojit results:", "info", NAME);
                 Y.log(res, "info", NAME);
-                if (data.error) {
-                    ac.error(data);
+                if (err) {
+                    ac.error(err);
                 } else {
                     // Create data structure from Web service response.
                     res = youtubeMap(ac, data);

@@ -29,8 +29,8 @@ YUI.add('CalendarModelYQL', function (Y, NAME) {
         onDataReturn: function (cb, result) {
             Y.log("calendar.server onDataReturn called", "info", NAME);
             Y.log(result, "info", NAME);
-            var results = [];
-            if (result.error === undefined) {
+            var results = [], err = null;
+            if (!result.error) {
 
                 Y.log("onDataReturn: CalendarModelYQL...", "info", NAME);
                 Y.log("result: ", "info", NAME);
@@ -51,12 +51,13 @@ YUI.add('CalendarModelYQL', function (Y, NAME) {
                     Y.calendarData = results;
                     Y.calendarCacheTime = new Date().getTime();
                 } else {
-                    results = new Error({ error: { description: "Malformed response couldn't be parsed." }});
+                    err = new Error({ error: { description: "Malformed response couldn't be parsed." }});
                 }
             } else {
-                results = result;
+                // Results had an error
+                err= result;
             }
-            cb(results);    
+            cb(err, results);    
         },
         _isCached: function() {
             var updateTime = this.config.feedCacheTime * 60 * 1000;

@@ -33,22 +33,23 @@ YUI.add('BlogModelYQL', function (Y, NAME) {
         },
         onDataReturn: function (cb, result) {
             Y.log("blog.server onDataReturn called", "info", NAME);
-            var results = [];
-            if (result.error === undefined) {
+            var results = [], err = null;
+            if (!result.error) {
 
                 if (result && result.query && result.query.results && result.query.results.item) {
                     results = result.query.results.item;
                     Y.blogData = results;
                     Y.blogCacheTime = new Date().getTime();
                 } else {
-                    results = new Error({ error: { description: "The returned response is malformed." }});
+                    err = new Error({ error: { description: "The returned response is malformed." }});
                 }
                 Y.log("result.query.results.item = results: ", "info", NAME);
                 Y.log(results, "info", NAME);
             } else {
-                results = result;
+                // Results had an error.
+                err = result;
             }
-            cb(results);
+            cb(err, results);
         },
         _isCached: function() {
             var updateTime = this.config.feedCacheTime * 60 * 1000;
