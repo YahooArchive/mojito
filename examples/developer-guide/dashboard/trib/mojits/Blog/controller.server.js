@@ -34,14 +34,14 @@ YUI.add('Blog', function (Y, NAME) {
                 title = ac.config.getDefinition('mojitotitle', 'notitle');
             }
 
-            ac.models.get('BlogModelYQL').getData({}, feedURL, function (data) {
+            ac.models.get('BlogModelYQL').getData({}, feedURL, function (err, data) {
                 Y.log("Blog - index - model.getData:", "info", NAME);
                 Y.log(data, "info", NAME);
                 // add mojit specific css
                 ac.assets.addCss('./index.css');
                 Y.log("In Blog controller: ", "info", NAME); 
-                if(data.error) {
-                   ac.error(data); 
+                if(err) {
+                   ac.error(err); 
                 } else {
                   // Populate and render blog template.
                   ac.done({

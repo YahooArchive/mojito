@@ -30,8 +30,8 @@ YUI.add('StatsModelYQL', function (Y, NAME) {
         },
         onDataReturn: function (cb, repo, result) {
             Y.log("github: onDataReturn called", "info", NAME);
-            var results = [];
-            if (result.error === undefined) {
+            var results = [], err = null;
+            if (!result.error) {
 
                 Y.log("github: result:", "info", NAME);
                 Y.log(result, "info", NAME);
@@ -40,14 +40,17 @@ YUI.add('StatsModelYQL', function (Y, NAME) {
                     results = result.query.results.json;
                     Y.yqlData[repo] = results;
                     Y.yqlCacheTime = new Date().getTime();
+                } else {
+                    err = new Error({ error: { description: "The returned response is malformed." }});
                 } 
                 Y.log("github: results.json:", "info", NAME);
                 Y.log(results, "info", NAME);
 
             } else {
-                results = result;
+                // Results had an error.
+                err = result;
             }
-            cb(results);
+            cb(err, results);
         },
         _isCached: function(repo) {
             var updateTime = this.config.feedCacheTime * 60 * 1000;

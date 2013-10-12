@@ -26,8 +26,8 @@ YUI.add('GalleryModelYQL', function (Y, NAME) {
 
         onDataReturn: function (cb, result) {
             Y.log("onDataReturn called", "info", NAME);
-            var itemLimit = 10, results = []; 
-            if (result.error === undefined) {
+            var itemLimit = 10, results = [], err = null; 
+            if (!result.error) {
 
                 Y.log("gallery onDataReturn result:", "info", NAME);
                 Y.log(result, "info", NAME);
@@ -38,13 +38,14 @@ YUI.add('GalleryModelYQL', function (Y, NAME) {
                     Y.galleryData = results;
                     Y.galleryCacheTime = new Date().getTime();
                 } else {
-                    results = new Error({ error: { description: "The returned response was malformed." }}); 
+                    err = new Error({ error: { description: "The returned response was malformed." }}); 
                 }
 
             } else {
-                results = result; 
+                // Response had an error.
+                err = result; 
             }
-            cb(results);
+            cb(err, results);
         },
         _isCached: function() {
             var updateTime = this.config.feedCacheTime * 60 * 1000;

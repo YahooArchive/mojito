@@ -51,7 +51,7 @@ YUI.add('Github', function (Y, NAME) {
             Y.log(model, "info", NAME);
 
 
-            model.getData({}, yqlTable, id, repo, function (data) {
+            model.getData({}, yqlTable, id, repo, function (err, data) {
                 //Y.log("Github -index - model.getData:", "info", NAME);
                 //Y.log(data, "info", NAME);
                 var res = [];
@@ -61,8 +61,8 @@ YUI.add('Github', function (Y, NAME) {
 
                 // add mojit specific css
                 ac.assets.addCss('./index.css');
-                if(data.error) {
-                    ac.error(data);
+                if(err) {
+                    ac.error(err);
                 } else {
                     // Construct special data
                     res = self.githubMap(ac, data);

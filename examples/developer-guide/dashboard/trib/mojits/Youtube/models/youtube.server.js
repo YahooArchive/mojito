@@ -28,8 +28,8 @@ YUI.add('YoutubeModelYQL', function (Y, NAME) {
         },
         onDataReturn: function (cb, result) {
             Y.log("youtube.server onDataReturn called", "info", NAME);
-            var results = [];
-            if (result.error === undefined) {
+            var results = [], err = null;
+            if (!result.error) {
 
                 //Y.log("result: ", "info", NAME);
                 //Y.log(result, "info", NAME);
@@ -38,12 +38,12 @@ YUI.add('YoutubeModelYQL', function (Y, NAME) {
                     Y.youtubeData = results;
                     Y.youtubeCacheTime = new Date().getTime();
                 } else {
-                    results = new Error({ error: { description: "The returned response was malformed." }});
+                    err = new Error({ error: { description: "The returned response was malformed." }});
                 }
             } else {
-                results = result;
+                err = result;
             }
-            cb(results);
+            cb(err, results);
         },
         _isCached: function() {
             var updateTime = this.config.feedCacheTime * 60 * 1000;
