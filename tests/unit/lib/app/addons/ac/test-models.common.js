@@ -35,15 +35,17 @@ YUI().use('mojito-models-addon', 'test', function(Y) {
 
             var addon = new Y.mojito.addons.ac.models({
                 instance: {
-                    config: 123
+                    models: {
+                        foo: 'baz'
+                    }
                 }
             }, adapter);
 
-            Y.mojito.models.foo = {
+            Y.mojito.models.baz = {
                 init: function (c) {
-                    A.areSame(123, c, 'init of the model should recieve the instance config');
                 }
             };
+
             var model = addon.get('foo');
             A.isObject(model, 'registered model should return an instance');
         },
@@ -54,11 +56,15 @@ YUI().use('mojito-models-addon', 'test', function(Y) {
             };
 
             var addon = new Y.mojito.addons.ac.models({
-                instance: {}
+                instance: {
+                    models: {
+                        foo: 'baz'
+                    }
+                }
             }, adapter);
 
             var initCounter = 0;
-            Y.mojito.models.foo = {
+            Y.mojito.models.baz = {
                 init: function (c) {
                     initCounter++;
                 }
@@ -68,30 +74,7 @@ YUI().use('mojito-models-addon', 'test', function(Y) {
             var model2 = addon.get('foo');
             A.areSame(model1, model2, 'requesting an existing instance should return the refence');
             A.areSame(1, initCounter, 'init method should be called once');
-        },
-
-        'use model filename': function () {
-            var adapter = {
-                page: {}
-            };
-
-            var addon = new Y.mojito.addons.ac.models({
-                instance: {
-                    models: {
-                        foofile: 'foo'
-                    }
-                }
-            }, adapter);
-
-            Y.mojito.models.foo = {
-                init: function (c) {
-                }
-            };
-
-            var model = addon.get('foofile');
-            A.isObject(model, 'registered model should return an instance');
         }
-
     }));
 
     suite.add(new Y.Test.Case({
@@ -138,7 +121,11 @@ YUI().use('mojito-models-addon', 'test', function(Y) {
             };
 
             var addon = new Y.mojito.addons.ac.models({
-                instance: {}
+                instance: {
+                    models: {
+                        foo: 'cuba'
+                    }
+                }
             }, adapter);
 
             var localModel = {
@@ -149,9 +136,9 @@ YUI().use('mojito-models-addon', 'test', function(Y) {
             };
 
             Y.mojito.models.cuba = localModel;
-            addon.expose('cuba', globalModel);
+            addon.expose('foo', globalModel);
 
-            model = addon.get('cuba');
+            model = addon.get('foo');
             A.isObject(model, 'registered model should return an instance');
             A.areSame(globalModel, model, 'global registered should have priority over local models');
         },
