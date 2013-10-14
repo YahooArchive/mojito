@@ -9,7 +9,7 @@ YUI.add('TwitterSearchModel', function (Y, NAME) {
         getData: function (count, q, oauth, cb) {
             var mock_yui_data, mock_mojito_data, Twitter, tweets;
             // Confirm OAuth keys have been passed
-            Y.log("twitter: oauth");
+            Y.log("twitter: oauth", "info", NAME);
             Y.log(oauth, "info", NAME);
             if (oauth) {
                 Twitter = require('simple-twitter');

@@ -22,25 +22,27 @@ YUI.add('Calendar', function (Y, NAME) {
          *        to the Mojito API.
          */
         index: function (ac) {
-            ac.models.get('CalendarModelYQL').getData({}, function (data) {
-                //Y.log("Calendar -index - model.getData:");
-                //Y.log(data);
-                //Y.log("data 0 :");
-                //Y.log(data[0]);
-                //Y.log("data 1 :");
-                //Y.log(data[1]);
+            ac.models.get('CalendarModelYQL').getData({}, function (err, data) {
+                var title = "YUI Calendar Info";
+                //Y.log("Calendar -index - model.getData:", "info", NAME);
+                //Y.log(data, "info", NAME);
+                //Y.log("data 0 :", "info", NAME);
+                //Y.log(data[0], "info", NAME);
+                //Y.log("data 1 :", "info", NAME);
+                //Y.log(data[1], "info", NAME);
 
-                // add mojit specific css
+                // Add mojit specific CSS
                 ac.assets.addCss('./index.css');
-
-                // populate blog template
-                ac.done({
-                    title: "YUI Calendar Info",
-                    results: data
-                });
+                if(err) {
+                    ac.error(err);
+                } else {
+                    // Populate and render calendar template
+                    ac.done({
+                        title: title,
+                        results: data
+                    });
+                }
             });
         }
-
     };
-
 }, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon']});

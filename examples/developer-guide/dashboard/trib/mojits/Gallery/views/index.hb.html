@@ -3,12 +3,12 @@
         {{> widget_heading}}
         <div class="inner galleryFlow">
             <ul>
-                {{#results}}
-                    {{#json}}
-                        <li>{{{linker this "http://yuilibrary.com/gallery/buildtag/" this }}}</a></li>
-                    {{/json}}
-                {{/results}}
-            </ul>
+            {{#each results.json}}
+                <li>{{{linker this "http://yuilibrary.com/gallery/buildtag/" this }}}</a></li>
+            {{else}}
+                <li class="none">Sorry, no results were returned. Try refreshing the page again.</li> 
+            {{/each}}
+             </ul>
         </div>
     </div>
 </div>

@@ -8,7 +8,6 @@ YUI.add('Github', function (Y, NAME) {
  * @module Github
  */
 
-
         /**
          * Constructor for the Controller class.
          *
@@ -48,35 +47,33 @@ YUI.add('Github', function (Y, NAME) {
                 id = mojito.id;
                 repo = mojito.repo;
             }
-            Y.log("github: model: ");
-            Y.log(model);
+            Y.log("github: model: ", "info", NAME);
+            Y.log(model, "info", NAME);
 
 
-            model.getData({}, yqlTable, id, repo, function (data) {
-                //Y.log("Github -index - model.getData:");
-                //Y.log(data);
-
-                //construct special data
-
+            model.getData({}, yqlTable, id, repo, function (err, data) {
+                //Y.log("Github -index - model.getData:", "info", NAME);
+                //Y.log(data, "info", NAME);
                 var res = [];
 
-                //Y.log("calling githubmap");
-
-                res = self.githubMap(ac, data);
-
-
+                //Y.log("calling githubmap", "info", NAME);
+                Y.log(data, "info", NAME);    
 
                 // add mojit specific css
                 ac.assets.addCss('./index.css');
-
-
-                ac.done({
-                    title: title,
-                    results: res
-                });
+                if(err) {
+                    ac.error(err);
+                } else {
+                    // Construct special data
+                    res = self.githubMap(data);
+                    // Populate and render template.
+                    ac.done({
+                        title: title,
+                        results: res 
+                    });
+                }
             });
         },
-
         /**
          * Method for reading in the GitHub json data and returning
          *    the right link and title.
@@ -86,24 +83,20 @@ YUI.add('Github', function (Y, NAME) {
          * @param data {Array} The array of GitHub actions
          *
          */
-        githubMap: function(ac, data) {
-
-            Y.log("githubmap called");
+        githubMap: function(data) {
+            Y.log("githubmap called", "info", NAME);
             var res = [];
-
             Y.Array.each(data, function (itm, idx, arr) {
-                Y.log(itm);
                 var
                     type = itm.json.type,
                     username = itm.json.actor.login,
                     msg = "msg",
                     link = "http://www.yahoo.com";
 
-                Y.log("github controller server type:" + type);
+                Y.log("github controller server type:" + type, "info", NAME);
                 if (type === "IssueCommentEvent") {
-                    Y.log("issuecommentevent!");
+                    Y.log("issuecommentevent!", "info", NAME);
                 }
-
                 switch (type) {
                 case "CommitCommentEvent":
                     msg = "Made a Comment";
@@ -142,7 +135,7 @@ YUI.add('Github', function (Y, NAME) {
                     }
                     break;
                 case "IssueCommentEvent":
-                    Y.log(" inside case IssueCommentEvent!");
+                    Y.log(" inside case IssueCommentEvent!", "info", NAME);
                     msg = "Commented on an Issue";
                     link = itm.json.payload.comment.html_url;
                     break;
@@ -186,9 +179,7 @@ YUI.add('Github', function (Y, NAME) {
                     msg = "Did Something? Don't know.";
                     link = "#";
                     break;
-
                 }
-
                 res[idx] = {
                     type: type,
                     username: username,
@@ -197,13 +188,8 @@ YUI.add('Github', function (Y, NAME) {
                     link: link
                 };
             });
-
             // send the array back
             return res;
-
-
         }
-
     };
-
 }, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'mojito-params-addon', 'mojito-config-addon']});

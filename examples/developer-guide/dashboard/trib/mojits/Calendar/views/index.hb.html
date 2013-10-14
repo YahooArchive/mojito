@@ -3,9 +3,11 @@
         {{> widget_heading}}
         <div class="inner">
             <ul>
-                {{#results}}
-                    <li>{{#entry}}<span>{{#summary}}{{content}}{{/summary}}</span><a href="{{#link}}{{href}}{{/link}}" title="{{#title}}{{content}}{{/title}}">{{#title}}{{content}}{{/title}}</a>{{/entry}}</li>
-                {{/results}}
+            {{#each results}}
+                <li>{{#entry}}<span>{{#summary}}{{content}}{{/summary}}</span><a href="{{#link}}{{href}}{{/link}}" title="{{#title}}{{content}}{{/title}}">{{#title}}{{content}}{{/title}}</a>{{/entry}}</li>
+            {{else}}
+               <li class="none">Sorry, no results were returned. Try refreshing the page again.</li> 
+            {{/each}}
             </ul>
         </div>
     </div>

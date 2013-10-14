@@ -50,12 +50,12 @@ YUI.add('TwitterBinderIndex', function (Y, NAME) {
                 mp = this.mojitProxy;
             this.node = node;
             Y.on("domready", function () {
-                Y.log("Twitter: bind ");
+                Y.log("Twitter: bind ", "info", NAME);
                 // get elements
                 var tweetsList = Y.one("#twitter").all('li');
-                Y.log(tweetsList._nodes);
+                Y.log(tweetsList._nodes, "info", NAME);
                 Y.Array.each(tweetsList._nodes, function (item, index, array) {
-                    Y.log(item);
+                    Y.log(item, "info", NAME);
                     var textNode = Y.one(item).one('span');
                     textNode.setContent(textNode.getHTML().replace(/(http\S+)/i, '<a href="$1" target="_blank">$1</a>')
                                 .replace(/(@)([a-z0-9_\-]+)/i, '<a href="http://twitter.com/$2" target="_blank">$1$2</a>')

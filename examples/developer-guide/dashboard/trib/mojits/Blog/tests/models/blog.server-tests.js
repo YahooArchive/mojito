@@ -19,7 +19,7 @@ suite.add(new YUITest.TestCase({
                 called2 = false,
                 cfg = { color: 'red' };
 
-            Y.log("blog.server-tests.js");
+            Y.log("blog.server-tests.js", "info", NAME);
 
             A.isNotNull(model);
             A.isFunction(model.init);
@@ -62,7 +62,7 @@ suite.add(new YUITest.TestCase({
                 Y.blogData = "somedata";
                 Y.blogCacheTime = new Date().getTime();
 
-            Y.log("blog.server-tests.js");
+            Y.log("blog.server-tests.js", "info", NAME);
 
             A.isNotNull(model);
             A.isFunction(model.init);
