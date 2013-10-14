@@ -33,7 +33,7 @@ YUI.add('Gallery', function (Y, NAME) {
                 tablePath = ac.config.getDefinition('yqlTable', 'notfound');
                 title = ac.config.getDefinition('mojitotitle', 'notitle');
             }
-            ac.models.get('GalleryModelYQL').getData({}, tablePath, function (data) {
+            ac.models.get('gallery').getData({}, tablePath, function (data) {
                 // add mojit specific css
                 ac.assets.addCss('./index.css');
 

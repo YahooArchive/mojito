@@ -41,7 +41,7 @@ YUI.add('PagerMojit', function (Y, NAME) {
         index: function(actionContext) {
             var page = 0,
                 start,
-                model = actionContext.models.get('PagerMojitModel');
+                model = actionContext.models.get('model');
             if (actionContext.params.hasOwnProperty('merged')) {
                 page = actionContext.params.merged('page');
             } else {

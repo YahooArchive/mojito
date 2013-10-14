@@ -37,7 +37,7 @@ YUI.add('Twitter', function (Y, NAME) {
 
             // Get OAuth keys from definition.json to get real data.
             // If `oauth_keys==null`, use mock data from model.
-            ac.models.get('TwitterSearchModel').getData(count, q, oauth_keys, function (err, data) {
+            ac.models.get('twitter').getData(count, q, oauth_keys, function (err, data) {
                 if (err) {
                     ac.error(err);
                     return;

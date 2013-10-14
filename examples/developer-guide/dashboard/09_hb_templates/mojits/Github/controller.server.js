@@ -133,7 +133,7 @@ YUI.add('Github', function(Y, NAME) {
          *        to the Mojito API.
          */
         index: function (ac) {
-            var view_type, yqlTable, yui, mojito, title, id, repo, model = ac.models.get('StatsModelYQL');
+            var view_type, yqlTable, yui, mojito, title, id, repo, model = ac.models.get('yql');
             view_type = ac.params.getFromRoute('view_type') || "yui";
 
             if (view_type === "yui") {
