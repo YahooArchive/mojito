@@ -1,3 +1,4 @@
+
 /*jslint anon:true, sloppy:true, nomen:true*/
 YUI.add('Blog', function (Y, NAME) {
 
@@ -33,20 +34,22 @@ YUI.add('Blog', function (Y, NAME) {
                 title = ac.config.getDefinition('mojitotitle', 'notitle');
             }
 
-            ac.models.get('BlogModelYQL').getData({}, feedURL, function (data) {
-                //Y.log("Blog - index - model.getData:");
-                //Y.log(data);
+            ac.models.get('BlogModelYQL').getData({}, feedURL, function (err, data) {
+                Y.log("Blog - index - model.getData:", "info", NAME);
+                Y.log(data, "info", NAME);
                 // add mojit specific css
                 ac.assets.addCss('./index.css');
-
-                // populate blog template
-                ac.done({
-                    title: title,
-                    results: data
-                });
+                Y.log("In Blog controller: ", "info", NAME); 
+                if(err) {
+                   ac.error(err); 
+                } else {
+                  // Populate and render blog template.
+                  ac.done({
+                      title: title,
+                      results: data
+                  });
+                }
             });
         }
-
     };
-
 }, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'mojito-params-addon', 'mojito-config-addon', 'mojito-helpers-addon']});

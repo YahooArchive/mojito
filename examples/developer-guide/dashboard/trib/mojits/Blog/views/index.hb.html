@@ -2,14 +2,16 @@
     <div class="mod" id="blog">
         {{> widget_heading}}
         <div class="inner">
-            <ul>
-                {{#results}}
-                    <li>
-                       {{{linker title link}}} 
+            <ul> 
+            {{#each results}}
+                <li>
+                    {{{linker title link}}} 
                         <span class="desc" title="AUTHOR: [ {{creator}} ] DESC: {{description}} DATE: ( {{pubDate}} )">{{description}}</span>
-                    </li>
-                {{/results}}
-            </ul>
+                </li>
+          {{else}}
+               <li class="none">Sorry, no results were returned. Try refreshing the page again.</li>
+          {{/each}}
+          </ul>
         </div>
     </div>
 </div>

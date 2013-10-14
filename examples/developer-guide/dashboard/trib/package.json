@@ -13,7 +13,7 @@
           }
     ],
     "dependencies": {
-        "mojito": "0.5.x"
+        "mojito": "0.7.x"
     },
     "optionalDependencies": {
        "yahoo-arrow": "~0.0.77",
