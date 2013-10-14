@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('RESTLibModel', function(Y) {
+YUI.add('RESTLibModel', function(Y, NAME) {
 
 /**
  * The RESTLibModel module.
@@ -15,7 +15,7 @@ YUI.add('RESTLibModel', function(Y) {
      * @class Model
      * @constructor
      */
-    Y.mojito.models.RESTLib = {
+    Y.mojito.models[NAME] = {
 
         init: function(mojitSpec) {
             this.spec = mojitSpec;

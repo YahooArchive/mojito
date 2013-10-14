@@ -10,7 +10,7 @@ YUI.add('SimpleModel', function(Y, NAME) {
         },
 
         simpleModel: function(ac){
-            ac.models.get('SimpleModel').getTurkeyImages(function(turkeys) {
+            ac.models.get('model').getTurkeyImages(function(turkeys) {
                 //ac.http.setHeader('content-type', 'text/html');
                 ac.done({turkeys: turkeys});
             });	
@@ -22,7 +22,7 @@ YUI.add('SimpleModel', function(Y, NAME) {
 		},
 		
 		configModel: function(ac){
-            ac.models.get('SimpleModel').getConfigFromModel(function(myconfig) {
+            ac.models.get('model').getConfigFromModel(function(myconfig) {
                 ac.done({myconfig: myconfig});
            });	
 		}

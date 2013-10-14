@@ -29,7 +29,7 @@ YUI.add('Binders', function(Y, NAME) {
         },
         myIndex: function(ac) {
             //Y.log("In the myIndex");
-            var model = ac.models.get('Binders');
+            var model = ac.models.get('model');
             ac.data.set('id', ac.config.get('id'));
             ac.data.set('config_data', ac.config.get('config_data'));
             model.getData(function(data) {
