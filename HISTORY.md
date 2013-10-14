@@ -4,11 +4,30 @@ version @VERSION@
 Notes
 -----
 
+* **!IMPORTANT!** This release contains a notable backward-incompatible change. 
+  See "Deprecations, Removals" below.
+
 Deprecations, Removals
 ----------------------
 
+* **!Backwards-Incompatible Change!** Getting model instance by passing model 
+  YUI module name to `ac.models.get` has been removed.
+
 Features
 --------
+
+* Contextualized model support is added:
+  ac.models.get(modelName) will take the model's logical name (filename minus 
+  the affinity and context parts)and return contextualized model instance. 
+
+  For example: 
+  Different model files can be provided for different context settings under models directory:
+  .../models/
+             mymodel.common.iphone.js
+             mymodel.common.js
+
+  Under certain context, calling ac.models.get('mymodel') from controller will 
+  get corresponding model object instance.
 
 Bug Fixes
 ---------
