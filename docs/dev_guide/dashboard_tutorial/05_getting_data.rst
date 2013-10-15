@@ -160,7 +160,7 @@ YQL in the next section.
 
 .. code-block:: javascript
 
-   YUI.add('GithubModel', function(Y, NAME) {
+   YUI.add('yql', function(Y, NAME) {
 
      // The namespace for the model that passes the
      // name 
@@ -434,8 +434,14 @@ models much like it uses addons.
 
 The controller needs to require the ``Models`` addon and use the method ``get`` from 
 that addon to access a model.  For example, for the controller shown below 
-to get the model registered with the name ``TwitterSearchModel``, the ``Models`` addon 
-is required and then used to access and use the the model.
+to get the model with the file name ``twitter.{affinity}.{selector}.js``, the ``Models`` addon 
+is required and then used to access and use the the model. In our application,
+the file will be ``twitter.server.js``, but you could have a version for the
+client that uses the affinity ``client`` or you could have a model with a
+different selector that is chosen based on the context, which we'll learn
+about in `9. Handlebars, Templates, and Custom Views <09_custom_views.html>`_, 
+when we use selectors to choose the appropriate template for a client, such
+as an iPhone template or an Android template.
 
 .. code-block:: javascript
 
@@ -458,7 +464,7 @@ is required and then used to access and use the the model.
          */
          // Get OAuth keys from definition.json to get real data.
          // If `oauth_keys==null`, use mock data from model.
-         ac.models.get('TwitterSearchModel').getData(count, q, oauth_keys, function (err, data) {
+         ac.models.get('twitter').getData(count, q, oauth_keys, function (err, data) {
            if (err) {
              ac.error(err);
              return;
@@ -546,7 +552,7 @@ Creating the Application
 
       }, '0.0.1', {requires: ['mojito', 'mojito-rest-lib','json']});
 
-#. We need to modify the controller to use the ``TwitterSearchModel``. 
+#. We need to modify the controller to use the model ``twitter.server.js``. 
    Open ``mojits/Twitter/controller.server.js`` in an editor,
    modify the ``index`` method so that it’s the same as that shown below. 
    Make sure that the ``Models`` and ``Assets`` addon are required as well. The ``Models``
@@ -573,7 +579,7 @@ Creating the Application
 
             // Get OAuth keys from definition.json to get real data.
             // If `oauth_keys==null`, use mock data from model.
-            ac.models.get('TwitterSearchModel').getData(count, q, oauth_keys, function (err, data) {
+            ac.models.get('twitter').getData(count, q, oauth_keys, function (err, data) {
               if (err) {
                 ac.error(err);
                 return;
@@ -670,7 +676,7 @@ Creating the Application
       ...
         index: function(ac) {
         
-          var model = ac.models.get('StatsModelYQL');
+          var model = ac.models.get('yql');
           Y.log(model);
           model.getData({}, function(data){
             Y.log("githubmojit -index - model.getData:");
@@ -920,7 +926,8 @@ Cannot call method 'getData' of undefined
 If you can access your model, but can't call a method in your model, you either
 tried to access a model (module) that doesn't exist or a method that doesn't exist.
 Make sure that the ``{model_name}`` in the expression ``ac.models.get({model_name});``
-is correct and that the method exists.
+is correct and that the method exists. The ``{{model_name}}`` is the prefix of the
+model file name: ``{{model_name}}.{{affinity}}.{{selector}}``
 
 Cannot find module 'simple-twitter'
 -----------------------------------
@@ -1025,5 +1032,4 @@ Further Reading
 - `Calling YQL from a Mojit <../code_exs/calling_yql.html>`_
 - `YQL Guide <http://developer.yahoo.com/yql/guide>`_
 - `YQL Console <http://developer.yahoo.com/yql/console/>`_
-
 
