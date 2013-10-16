@@ -497,9 +497,15 @@ calculate the index of the first photo to display:
    ...
 
 To get the photo data, the controller depends on the model to call YQL to query the 
-Flickr API. Using ``actionContext.get({model_name})`` lets you get a reference to the 
-model. The example controller below calls the ``getData`` from the model 
-``PagerMojitModel`` with ``actionContext.models.get('PagerMojitModel').getData``, which 
+Flickr API. Using ``actionContext.get({model_file_prefix})`` lets you get a reference to the 
+model. The file naming convention for models is ``{model_file_prefix}.{affinity}.{selector}.js``.
+The ``{affinity}`` can have the values ``server``, ``client``, or ``common``. The ``{selector}``
+is defined by the ``selector`` property in ``application.json``, but does not need to be defined.
+The ``{model_file_prefix}`` is an arbitrary string defined by the user. So, for example, 
+our model in this example is ``model.server.js``, so ``{model_file_prefix}`` is ``model``.
+
+The example controller below calls the ``getData`` from the model 
+with ``actionContext.models.get('model').getData``, which 
 will get the returned data from YQL in the callback function. To use methods from models, 
 you need to require the model in the ``requires`` array of the controller. 
 
@@ -509,7 +515,7 @@ you need to require the model in the ``requires`` array of the controller.
        index: function(actionContext) {
        ...
          // Data is an array of images
-         actionContext.models.get('PagerMojitModel').getData('mojito', start, PAGE_SIZE, function(data) {
+         actionContext.models.get('model').getData('mojito', start, PAGE_SIZE, function(data) {
            Y.log('DATA: ' + Y.dump(data));
            var theData = {
            data: data, // images
@@ -589,7 +595,7 @@ create URLs for the **next** and **prev** links.
          // Page param is 1 based, but the model is 0 based
          start = (page - 1) * PAGE_SIZE;
          // Data is an array of images
-         actionContext.models.get('PagerMojitModel').getData('mojito', start, PAGE_SIZE, function(data) {
+         actionContext.models.get('model').getData('mojito', start, PAGE_SIZE, function(data) {
            Y.log('DATA: ' + Y.dump(data));
            var theData = {
              data: data, // images
@@ -713,7 +719,7 @@ To set up and run ``binding_events``:
               // Page param is 1 based, but the model is 0 based
               start = (page - 1) * PAGE_SIZE;
               // Data is an array of images
-              actionContext.models.get('PagerMojitModel').getData('mojito', start, PAGE_SIZE, function(data) {
+              actionContext.models.get('model').getData('mojito', start, PAGE_SIZE, function(data) {
                 Y.log('DATA: ' + Y.dump(data));
                 var theData = {
                   data: data, // images

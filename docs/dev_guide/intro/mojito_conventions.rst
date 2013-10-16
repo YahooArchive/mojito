@@ -253,7 +253,7 @@ Controllers
 Pathname
 ********
 
-``mojits/{mojit_name}/controller.{affinity}.{selector}.js``
+``mojits/{mojit_name}/controller.{affinity}.[{selector}].js``
 
 For the file name of the controller shown above, the ``{affinity}`` can be 
 ``server``, ``common``, or ``client``, and ``{selector}``
@@ -283,7 +283,7 @@ Models
 Pathname
 ********
 
-``mojits/{mojit_name}/models/{model_name}.{affinity}.js``
+``mojits/{mojit_name}/models/{model_name}.{affinity}.[{selector}].js``
 
 In the model file name shown above, ``{model_name}`` is a 
 user-defined string:
@@ -302,16 +302,19 @@ its application: ``{mojit_name}Model``
 Using Models
 ************
 
-To require Model modules in the controller, you use the ``get`` method of the
-``Models`` addon. You pass the registered module name to the ``get`` method as shown
-in this example:
+To access models, you need to require the ``mojito-models-addon``. The 
+``Models`` addon provides a ``models`` namespace from the ``ac`` object from
+which you can use the ``get`` method to access models.
+
+You pass the ``{model_name}`` (see :ref:`Pathname <mojits_def_models-location>`) to the 
+``get`` method to access your model as shown in this example. 
 
 .. code-block:: javascript
 
    ...
      ...
        index: function(ac) {
-         ac.models.get('FlickrModel').getData(function(err, data) {
+         ac.models.get('model').getData(function(err, data) {
            ...
          }
        }

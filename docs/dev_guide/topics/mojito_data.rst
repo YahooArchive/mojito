@@ -614,7 +614,7 @@ mojits/StockQuotes/controller.server.js
      Y.namespace('mojito.controllers')[NAME] = {
        index: function(ac) {
          // Model gets stock quote prices
-         ac.models.get('StockQuotesModel').getData(function(err, data) {
+         ac.models.get('stock').getData(function(err, data) {
            if (err) {
              ac.error(err);
              return;
