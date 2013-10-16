@@ -15,7 +15,7 @@ Mojito can run on the client (browser) or the server (Node.js).
 
 Mojito offers the following features, some of which are discussed in the next section:
 
-- Local development environment and tools (Yahoo! independent stack)
+- Local development environment and tools (Yahoo independent stack)
 - Library for simplifying internationalization & localization
 - Integrated unit testing
 - Device specific presentation (Hero, Mobile, TV, Web, etc.)
@@ -111,7 +111,7 @@ Localization and Internationalization
 Mojito is built on `YUI 3 <http://yuilibrary.com/>`_, which has an internationalization 
 utility that allows you to handle monolingual and multilingual applications. Using the 
 `YUI Internationalization utility <http://yuilibrary.com/yui/docs/intl/>`_ and 
-`Yahoo! Resource Bundles (YRB) <http://yuilibrary.com/yui/docs/intl/#yrb>`_, your 
+`Yahoo Resource Bundles (YRB) <http://yuilibrary.com/yui/docs/intl/#yrb>`_, your 
 slideboard application could use one language for the UI and serve the content in a 
 different language.
 

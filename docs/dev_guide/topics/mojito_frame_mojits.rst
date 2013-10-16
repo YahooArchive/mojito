@@ -203,7 +203,7 @@ similar to the HTML below.
    <!DOCTYPE HTML>
    <html>
      <head><script type="text/javascript">var MOJITO_INIT=Date.now();</script>
-       <meta name="creator" content="Yahoo! Mojito 0.1.0">
+       <meta name="creator" content="Yahoo Mojito 0.1.0">
        <title>Powered by Mojito 0.1.0</title>
        <link rel="stylesheet" type="text/css" href="/static/framed/assets/css/index.css"/>
      </head>
@@ -697,7 +697,7 @@ index.hb.html
        <meta name="{{name}}" content="{{content}}">
      {{/meta}}
      {{^meta}}
-       <meta name="creator" content="Yahoo! Mojito {{mojito_version}}">
+       <meta name="creator" content="Yahoo Mojito {{mojito_version}}">
      {{/meta}}
        <title>{{page-title}}</title>
         {{{top}}}
