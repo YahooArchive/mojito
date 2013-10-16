@@ -18,7 +18,7 @@ Features
 
 * Contextualized model support is added:
   ac.models.get(modelName) will take the model's logical name (filename minus 
-  the affinity and context parts)and return contextualized model instance. 
+  the affinity and context parts) and return contextualized model instance. 
 
   For example: 
   Different model files can be provided for different context settings under models directory:
@@ -26,8 +26,7 @@ Features
              mymodel.common.iphone.js
              mymodel.common.js
 
-  Under certain context, calling ac.models.get('mymodel') from controller will 
-  get corresponding model object instance.
+  Calling `ac.models.get('mymodel')` will return the model which is appropriate for the current context.
 
 Bug Fixes
 ---------

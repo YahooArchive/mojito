@@ -63,6 +63,7 @@ YUI.add('PagerMojitBinder', function (Y, NAME) {
                             function(error, raw){
                                 if (error) {
                                     Y.log("Error found:"+ error);
+                                    return;
                                 }
                                 if (!raw.query.results.photo) {
                                     Y.log('No results found for photoId: ' + imageId);
