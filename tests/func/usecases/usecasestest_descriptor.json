@@ -21,7 +21,7 @@
                 }
             },
             "contextmodel" : {
-                "group" : "smoke,usecases,lichun",
+                "group" : "smoke,usecases",
                 "params" : {
                     "scenario": [
                         {
