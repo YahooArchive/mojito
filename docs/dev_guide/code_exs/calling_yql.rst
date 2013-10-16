@@ -184,7 +184,7 @@ statement. The YQL Statement and the
 passed to the ``search`` function of the model.
 
 To access model functions from the controller, you use the Action Context (``ac``) object with the 
-following syntax: ``ac.models.get({model_file_prefix})``. To 
+following syntax: ``ac.models.get({model_name})``. To 
 access the model from the controller, you would use ``ac.models.get('model')`` as seen in the 
 ``controller.server.js`` below. Once the callback function passed to ``search`` returns the array of 
 photo objects, the ``done`` method sends the ``photos`` array and the query string parameters to 

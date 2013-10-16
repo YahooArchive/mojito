@@ -497,12 +497,12 @@ calculate the index of the first photo to display:
    ...
 
 To get the photo data, the controller depends on the model to call YQL to query the 
-Flickr API. Using ``actionContext.get({model_file_prefix})`` lets you get a reference to the 
-model. The file naming convention for models is ``{model_file_prefix}.{affinity}.{selector}.js``.
+Flickr API. Using ``actionContext.get({model_name})`` lets you get a reference to the 
+model. The file naming convention for models is ``{model_name}.{affinity}.{selector}.js``.
 The ``{affinity}`` can have the values ``server``, ``client``, or ``common``. The ``{selector}``
 is defined by the ``selector`` property in ``application.json``, but does not need to be defined.
-The ``{model_file_prefix}`` is an arbitrary string defined by the user. So, for example, 
-our model in this example is ``model.server.js``, so ``{model_file_prefix}`` is ``model``.
+The ``{model_name}`` is an arbitrary string defined by the user. So, for example, 
+our model in this example is ``model.server.js``, so ``{model_file_name}`` is ``model``.
 
 The example controller below calls the ``getData`` from the model 
 with ``actionContext.models.get('model').getData``, which 
