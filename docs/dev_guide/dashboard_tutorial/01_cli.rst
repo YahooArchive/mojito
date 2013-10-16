@@ -295,7 +295,7 @@ Functional Tests
 ----------------
 
 To run functional and unit tests for the Mojito framework, you would use the test 
-framework `Yahoo! Arrow <https://github.com/yahoo/arrow>`_. Follow the instructions in 
+framework `Yahoo Arrow <https://github.com/yahoo/arrow>`_. Follow the instructions in 
 `Mojito Framework's Unit and Functional Tests 
 <https://github.com/yahoo/mojito/wiki/Mojito-Framework's-Unit-and-Functional-Tests>`_ the 
 framework tests for Mojito. We're also going to cover functional tests in 
