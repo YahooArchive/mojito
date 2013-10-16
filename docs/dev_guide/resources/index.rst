@@ -63,7 +63,7 @@ Screencasts/Videos
 | utube.com/watch?v=oNki-D0lCsM&list=UUTHcgWOTU6gPje1g_U | Express, HTML5, optimization, adaptation, multiple     | Axis, the "Reuse-Reduce-Replace" software philosophy,  |                                                        |
 | 29tfQ&index=1&feature=plcp>`_                          | runtimes, application context, device connectivity     | and the notions of optimization and adaptation.        |                                                        |
 +--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+
-| `YUI Open Hours: Yahoo! Axis: Mojito <http://www.youtu | Mojito, YUI plugins,  code reuse,                      | Yahoo! engineers Caridy Patiño and Eugene Kashida      | Caridy Patiño, Eugene Kashida                          |
+| `YUI Open Hours: Yahoo! Axis: Mojito <http://www.youtu | Mojito, YUI plugins,  code reuse,                      | Yahoo engineers Caridy Patiño and Eugene Kashida       | Caridy Patiño, Eugene Kashida                          |
 | be.com/watch?v=vIvFbJo1Fj8&list=UUTHcgWOTU6gPje1g_U29t | Y.CL (communication layer)                             | discuss what Y! Axis is and the architecture decisions |                                                        |
 | fQ&index=5&feature=plc>`_                              |                                                        | that were made, such as hybrid vs native vs web.       |                                                        |
 +--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+
@@ -71,7 +71,7 @@ Screencasts/Videos
 | w.youtube.com/watch?v=1T5KMozs6Sc&list=UUTHcgWOTU6gPj  | binders, dimensions                                    | uses some of the advanced configuration features of    |                                                        |
 | e1g_U29tfQ&index=4&feature=plcp>`_                     |                                                        | Mojito.                                                |                                                        |
 +--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+--------------------------------------------------------+
-| `YUI Open Hours: Mojito <http://www.youtube.com/watch? | Mojito, YUI, YQL, mojits, assets, Shaker, affinities,  | Yahoo! engineers Fabian Frank and Diego Ferreiro show  | Fabian Frank, Diego Ferreiro                           |
+| `YUI Open Hours: Mojito <http://www.youtube.com/watch? | Mojito, YUI, YQL, mojits, assets, Shaker, affinities,  | Yahoo engineers Fabian Frank and Diego Ferreiro show   | Fabian Frank, Diego Ferreiro                           |
 | v=Odn3uXahSfs&list=UUTHcgWOTU6gPje1g_U29tfQ&index=2    | app/routing configuration, deploying app to client,    | how to get started using Mojito and create a basic     |                                                        |
 | &feature=plcp>`_                                       | ActionContext object, mojitProxy object, binders,      | Mojito app.                                            |                                                        |
 |                                                        | testing, JSLint, creating documentation                |                                                        |                                                        |
@@ -249,7 +249,7 @@ Articles
 Blogs
 #####
 
-- `Yahoo! Announces Cocktails – Shaken, Not Stirred <http://developer.yahoo.com/blogs/ydn/posts/2011/11/yahoo-announces-cocktails-%E2%80%93-shaken-not-stirred/>`_
+- `Yahoo Announces Cocktails – Shaken, Not Stirred <http://developer.yahoo.com/blogs/ydn/posts/2011/11/yahoo-announces-cocktails-%E2%80%93-shaken-not-stirred/>`_
 - `How YQL powers Cocktails, the technology behind Livestand <http://developer.yahoo.com/blogs/ydn/posts/2011/11/how-yql-powers-cocktails-the-technology-behind-livestand/>`_
 
 .. _additional_resources-archived_docs:

@@ -159,7 +159,7 @@ OAuth
 
    An open standard that enables users to share information stored on one site with 
    another site without giving out the user ID and password. See the 
-   `Yahoo! OAuth Quick Start Guide <http://developer.yahoo.com/oauth/guide/oauth-guide.html>`_ 
+   `Yahoo OAuth Quick Start Guide <http://developer.yahoo.com/oauth/guide/oauth-guide.html>`_ 
    for more information.
 
 Shaker
@@ -197,7 +197,7 @@ view partial
 YUI
 ---
 
-   Acronym for `Yahoo! User Interface <http://developer.yahoo.com/yui/>`_. A set of 
+   Acronym for `Yahoo User Interface <http://developer.yahoo.com/yui/>`_. A set of 
    utilities, written in JavaScript and CSS, 
    for building rich, interactive Web applications.
    

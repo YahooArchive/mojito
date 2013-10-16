@@ -125,7 +125,7 @@ to specify where to write test results.
   - ``$ mojito test mojit <mojit-path> --dir <test_results-path>``
 
 To run functional and unit tests for the Mojito framework,
-you would use the test framework `Yahoo! Arrow <https://github.com/yahoo/arrow>`_.
+you would use the test framework `Yahoo Arrow <https://github.com/yahoo/arrow>`_.
 Follow the instructions in `Running Mojito’s Built-In Tests <../topics/mojito_testing.html#running-mojito-s-built-in-tests>`_
 to run the framework tests for Mojito.
 
