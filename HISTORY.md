@@ -13,8 +13,12 @@ Features
 Bug Fixes
 ---------
 
+* PR #1264: better output handler response header check
+
 Acknowledgements
 ----------------
+
+Special thanks to [Jacques Arnoux](https://github.com/jarnoux) for contributing to this release.
 
 
 version 0.7.5
