@@ -74,7 +74,7 @@ example, the child mojit creates the ``<div>`` tag and its content.
    <!DOCTYPE HTML>
      <html>
        <head>
-         <meta name="creator" content="Yahoo! Mojito 0.0.1">
+         <meta name="creator" content="Yahoo Mojito 0.0.1">
          <title>HTMLFrameMojit Example</title>
        </head>
        <body>
