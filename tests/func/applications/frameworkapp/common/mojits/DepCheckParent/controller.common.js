@@ -9,7 +9,7 @@ YUI.add('DepCheckParent', function(Y, NAME) {
         },
         'mytest': function(ac) {
             //ac.models.AppLevelMojit.getData(function(mydata){
-            ac.models.get('DepCheckModel').getData(function(mydata) {
+            ac.models.get('model').getData(function(mydata) {
                 Y.log("data....." + mydata);
                 ac.done({
                     data: mydata

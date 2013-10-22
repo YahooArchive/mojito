@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
  */
-YUI.add('BindersModel', function(Y) {
+YUI.add('BindersModel', function(Y, NAME) {
 
 /**
  * The BindersModel module.
@@ -15,7 +15,7 @@ YUI.add('BindersModel', function(Y) {
      * @class Model
      * @constructor
      */
-    Y.mojito.models.Binders = {
+    Y.mojito.models[NAME] = {
 
         init: function(mojitSpec) {
             this.spec = mojitSpec;
@@ -45,16 +45,10 @@ YUI.add('BindersModel', function(Y) {
 	function randomChicken() {
 
 	    var chickens = [
-	        'http://scienceblogs.com/gregladen/chicken.jpg',
-	        'http://www.ecorazzi.com/wp-content/uploads/2008/02/chicken_baby_large.jpg',
-	        'http://www.city-data.com/forum/attachments/new-jersey/44238d1246317620-what-everyones-plans-4th-july-finished_chicken.jpg',
-	        'http://blogs.chesterchronicle.co.uk/and-finally/chicken-0011.jpg',
-	        'http://www.world-agriculture.com/images/chicken.jpg',
-	        'http://www.nextnature.net/wp-content/uploads/2006/10/chicken3~.jpg',
-	        'http://bernardoh.files.wordpress.com/2007/04/chicken.jpg',
-	        'http://www.nandosusa.com/images/barkChicken.gif',
-	        'http://4.bp.blogspot.com/_2b-Ntp4vckw/SgggFZpkrYI/AAAAAAAADfg/BCJ6OaZPKM8/s400/chicken.jpg',
-	        'http://veganica.com/works/a1/p1360_chicken-tude.jpg'
+	        '/static/Binders/assets/BanffPark.jpg',
+            '/static/Binders/assets/Calgary.jpg',
+            '/static/Binders/assets/JasperPark.jpg',
+            '/static/Binders/assets/RockMountain.jpg'
 	    ];
 
 	    return chickens[Math.floor(Math.random()*10)];

@@ -10,7 +10,7 @@ YUI.add('myMojit', function(Y, NAME) {
 
         index: function(ac) {
 
-            ac.models.get('message').get(function(data) {
+            ac.models.get('model').get(function(data) {
                 data.title = ac.intl.lang('TITLE');
                 ac.done(data);
             });

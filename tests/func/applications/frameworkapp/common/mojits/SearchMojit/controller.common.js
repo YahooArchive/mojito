@@ -11,7 +11,7 @@ YUI.add('SearchMojit', function(Y, NAME) {
                 zip = ac.params.getFromMerged('zip') || '94089',
                 result = { query: query, zip: zip };
             
-            ac.models.get('SearchMojitModel').getData(query, zip, function(r) {
+            ac.models.get('localsearch').getData(query, zip, function(r) {
                 
                 // demo: return a random number of results
                 var count = Math.floor(Math.random()*11),

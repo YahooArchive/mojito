@@ -41,7 +41,7 @@ YUI.add('PagerMojit', function (Y, NAME) {
         index: function(actionContext) {
             var page = 0,
                 start,
-                model = actionContext.models.get('PagerMojitModel');
+                model = actionContext.models.get('model');
             if (actionContext.params.hasOwnProperty('merged')) {
                 page = actionContext.params.merged('page');
             } else {
@@ -74,6 +74,12 @@ YUI.add('PagerMojit', function (Y, NAME) {
                 }
                 actionContext.done(theData);
             });
+        },
+        contentModel: function(actionContext) {
+            var imageId = actionContext.data.get('imageId');
+            actionContext.models.get('model').getContent(imageId, function(data){
+                actionContext.done(data, 'json');
+            });
         }
     };
 }, '0.0.1', {requires: [
@@ -81,6 +87,7 @@ YUI.add('PagerMojit', function (Y, NAME) {
     'mojito-models-addon',
     'mojito-params-addon',
     'mojito-url-addon',
+    'mojito-data-addon',
     'PagerMojitModel',
     'dump'
 ]});
