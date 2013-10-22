@@ -1,5 +1,5 @@
 
-YUI.add('Blog-tests', function (Y) {
+YUI.add('Blog-tests', function (Y, NAME) {
 
     var suite = new YUITest.TestSuite('Blog-tests'),
         controller = null,
@@ -13,8 +13,8 @@ YUI.add('Blog-tests', function (Y) {
         setUp: function () {
             controller = Y.mojito.controllers.Blog;
             model = Y.mojito.models.BlogModelYQL;
-            //Y.log("controllers");
-            //Y.log(Y.mojito.controllers);
+            //Y.log("controllers", "info", NAME);
+            //Y.log(Y.mojito.controllers, "info", NAME);
         },
         tearDown: function () {
             controller = null;
@@ -30,8 +30,8 @@ YUI.add('Blog-tests', function (Y) {
             ac = {
                 assets: {
                     addCss: function (css) {
-                        Y.log("addCss called");
-                        Y.log(css);
+                        Y.log("addCss called", "info", NAME);
+                        Y.log(css, "info", NAME);
                         assetsResults = css;
                     }
                 },
@@ -42,7 +42,7 @@ YUI.add('Blog-tests', function (Y) {
                 },
                 params: {
                     getFromRoute: function (param) {
-                        Y.log("getFromRoute called")
+                        Y.log("getFromRoute called", "info", NAME)
                         route_param = param;
                         return 'yui';
                     }
@@ -50,13 +50,13 @@ YUI.add('Blog-tests', function (Y) {
                 models: {
                     get: function (modelName) {
                         A.areEqual('BlogModelYQL', modelName, 'wrong model name');
-                        Y.log("blog: ac.models.get called");
+                        Y.log("blog: ac.models.get called", "info", NAME);
                         return {
                             getData: function (params, feedURL, cb) {
-                                Y.log("blog: models get getData called.");
+                                Y.log("blog: models get getData called.", "info", NAME);
                                 return {
                                     onDataReturn: function (cb, result) {
-                                        Y.log("blog: in onDataReturn");
+                                        Y.log("blog: in onDataReturn", "info", NAME);
                                        cb(result);
                                     }
                                 }
@@ -87,8 +87,8 @@ YUI.add('Blog-tests', function (Y) {
             ac = {
                 assets: {
                     addCss: function (css) {
-                        Y.log("addCss called");
-                        Y.log(css);
+                        Y.log("addCss called", "info", NAME);
+                        Y.log(css, "info", NAME);
                         assetsResults = css;
                     }
                 },
@@ -99,7 +99,7 @@ YUI.add('Blog-tests', function (Y) {
                 },
                 params: {
                     getFromRoute: function (param) {
-                        Y.log("getFromRoute called")
+                        Y.log("getFromRoute called", "info", NAME)
                         route_param = param;
                         return 'mojito';
                     }
@@ -107,7 +107,7 @@ YUI.add('Blog-tests', function (Y) {
                 models: {
                     get: function (modelName) {
                         A.areEqual('BlogModelYQL', modelName, 'wrong model name');
-                        Y.log("ac.models.get called");
+                        Y.log("ac.models.get called", "info", NAME);
                         return {
                             getData: function (params, feedURL, cb) {
                                 return {

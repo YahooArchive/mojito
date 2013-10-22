@@ -32,9 +32,12 @@ Bug Fixes
 ---------
 
 * Issue #1251: easy way to get contextualized models
+* PR #1264: better output handler response header check
 
 Acknowledgements
 ----------------
+
+Special thanks to [Jacques Arnoux](https://github.com/jarnoux) for contributing to this release.
 
 
 version 0.7.5

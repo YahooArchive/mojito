@@ -2,7 +2,6 @@
 /*global YUI*/
 YUI.add('StatsModelYQL', function (Y, NAME) {
 
-
     Y.mojito.models[NAME] = {
 
         init: function (config) {
@@ -11,7 +10,7 @@ YUI.add('StatsModelYQL', function (Y, NAME) {
             Y.yqlData = {};
         },
         getData: function (params, yqlTable, id, repo, callback) {
-            Y.log(this.config);
+            Y.log(this.config, "info", NAME);
             if (this._isCached(repo)) {
                 callback(Y.yqlData);
             } else {
@@ -24,32 +23,37 @@ YUI.add('StatsModelYQL', function (Y, NAME) {
                         repo: repo
                     },
                     cookedQuery = Y.Lang.sub(query, queryParams);
-                Y.log("github: yql.server getData called");
-                Y.log("github: cookedQuery:" + cookedQuery);
+                Y.log("github: yql.server getData called", "info", NAME);
+                Y.log("github: cookedQuery:" + cookedQuery, "info", NAME);
                 Y.YQL(cookedQuery, Y.bind(this.onDataReturn, this, callback, repo));
             }
         },
         onDataReturn: function (cb, repo, result) {
-            Y.log("github: onDataReturn called");
-            if (result.error === undefined) {
+            Y.log("github: onDataReturn called", "info", NAME);
+            var results = [], err = null;
+            if (!result.error) {
 
-                Y.log("github: result:");
-                Y.log(result);
-                var results = {};
-                if (result && result.query && result.query.results && result.query.results.json) {
+                Y.log("github: result:", "info", NAME);
+                Y.log(result, "info", NAME);
+                if (result.query && result.query.results && result.query.results.json) {
 
                     results = result.query.results.json;
                     Y.yqlData[repo] = results;
                     Y.yqlCacheTime = new Date().getTime();
-                }
-
-                Y.log("github: results.json:");
-                Y.log(results);
-
-
-                cb(results);
+                } else {
+                    err = new Error({ error: { description: "The returned response is malformed." }});
+                } 
+                Y.log("github: results.json:", "info", NAME);
+                Y.log(results, "info", NAME);
             } else {
-                cb(result.error);
+                // Results had an error.
+                err = result;
+            }
+            // Return valid results or error in callback to controller.
+            if (err) {
+              cb(err);
+            } else {
+              cb(null, results);
             }
         },
         _isCached: function(repo) {
@@ -58,7 +62,5 @@ YUI.add('StatsModelYQL', function (Y, NAME) {
                 return Y.yqlData[repo] && (new Date().getTime() - Y.yqlCacheTime) < updateTime;
             }
         }
-
     };
-
 }, '0.0.1', {requires: ['yql', 'substitute']});

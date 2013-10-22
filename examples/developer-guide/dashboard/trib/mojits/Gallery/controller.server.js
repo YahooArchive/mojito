@@ -33,21 +33,21 @@ YUI.add('Gallery', function (Y, NAME) {
                 tablePath = ac.config.getDefinition('yqlTable', 'notfound');
                 title = ac.config.getDefinition('mojitotitle', 'notitle');
             }
-
-            ac.models.get('GalleryModelYQL').getData({}, tablePath, function (data) {
-                //Y.log("Gallery -index - model.getData:");
-                //Y.log(data); 
+            ac.models.get('GalleryModelYQL').getData({}, tablePath, function (err, data) {
+                Y.log("Gallery -index - model.getData returned to controller:", "info", NAME);
+                Y.log(data, "info", NAME); 
                 // add mojit specific css
                 ac.assets.addCss('./index.css');
-
-                // populate youtube template
-                ac.done({
-                    title: title,
-                    results: data
-                });
+                if (err) {
+                    ac.error(err);
+                } else {
+                    // Populate and render template.
+                    ac.done({
+                        title: title,
+                        results: data
+                    });
+                }
             });
         }
-
     };
-
 }, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'mojito-params-addon', 'mojito-config-addon', 'mojito-helpers-addon']});
