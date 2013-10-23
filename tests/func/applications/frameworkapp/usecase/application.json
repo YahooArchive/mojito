@@ -8,6 +8,9 @@
             "hello-1": {
                 "type": "HelloMojit"
             },
+            "context-model": {
+                "type": "contextModelMojit"
+            },
             "flickr-1": {
                 "type": "Flickr"
             },

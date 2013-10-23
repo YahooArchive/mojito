@@ -74,6 +74,12 @@ YUI.add('PagerMojit', function (Y, NAME) {
                 }
                 actionContext.done(theData);
             });
+        },
+        contentModel: function(actionContext) {
+            var imageId = actionContext.data.get('imageId');
+            actionContext.models.get('model').getContent(imageId, function(data){
+                actionContext.done(data, 'json');
+            });
         }
     };
 }, '0.0.1', {requires: [
@@ -81,6 +87,7 @@ YUI.add('PagerMojit', function (Y, NAME) {
     'mojito-models-addon',
     'mojito-params-addon',
     'mojito-url-addon',
+    'mojito-data-addon',
     'PagerMojitModel',
     'dump'
 ]});

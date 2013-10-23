@@ -72,7 +72,7 @@ YUI.add('HttpAddonParent', function(Y, NAME) {
             var reqObj = ac.http.getRequest();
             var hostPort = reqObj.headers.host;
             var isXhr = ac.params.getFromUrl('isXhr') || 'false';
-            ac.models.get('HttpAddonParent').callWS(hostPort, isXhr, function(error, response){
+            ac.models.get('model').callWS(hostPort, isXhr, function(error, response){
                 if (!error)
                 {
                     ac.http.setHeader('content-type', 'text/html');
