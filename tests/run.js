@@ -218,6 +218,9 @@ function runUnitTests(cmd, callback) {
     if (cmd.coverage) {
         commandArgs.push('--coverageExclude=' + filestoexclude);
     }
+    if (cmd.seleniumHost) {
+        commandArgs.push('--seleniumHost=' + cmd.seleniumHost);
+    }
 
     p = runCommand(
         cmd.unitPath,
@@ -358,6 +361,9 @@ function runFuncTests(cmd, desc, port, thispid, callback) {
     }
     if (cmd.coverage) {
         commandArgs.push('--coverage=' + cmd.coverage);
+    }
+    if (cmd.seleniumHost) {
+        commandArgs.push('--seleniumHost=' + cmd.seleniumHost);
     }
 
     p = runCommand(
@@ -563,6 +569,7 @@ program.command('test')
     .option('--baseUrl <value>', 'Full app path including port if there is one to run arrow tests')
     .option('--group <value>', 'Arrow group')
     .option('--driver <value>', 'Arrow driver')
+    .option('--seleniumHost <value>', 'Selenium host')
     .option('--browser <value>', 'Arrow browser')
     .option('--path <value>', 'Path to find the tests. defaults to ./func or ./unit')
     .option('--reportFolder <value>', 'Result dir. defaults to ./unit/artifact/ for unit, ./func/../../artifact/ for functional or all tests')
