@@ -64,7 +64,7 @@ The file names and contents are as follows, use your favorite editor to create b
 
 By creating the above files you have told Mojito that the Flickr mojit supports both English and German translations.
 
-#### Implement our Localized Controller
+#### Implement Our Localized Controller
 
 YUI3 provides support for Internationalization. Our actionContext provides access to our language modules and the current language. We will use that language to correctly format our date, and access the localized templates to feed our views with the properly localized strings from our resource bundles. What's new here is the inclusion of the YUI3 intl and datatype-date-format libraries, as well as, accessing the actionContext to get our lang setting (to use for the date) and our resource bundle strings.
 
@@ -77,7 +77,7 @@ Here is our updated controller:
         Y.mojito.controllers[NAME] = {
 
             index: function(ac) {
-                ac.models.get('ModelFlickr').getFlickrImages('mojito', function(images) {
+                ac.models.get('model').getFlickrImages('mojito', function(images) {
                     var dateString = ac.intl.formatDate(new Date());
                     var data = {
                         images: images,

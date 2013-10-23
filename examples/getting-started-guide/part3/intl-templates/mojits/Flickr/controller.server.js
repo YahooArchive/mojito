@@ -22,7 +22,7 @@ YUI.add('Flickr', function (Y, NAME) {
          *        to the Mojito API.
          */
         index: function(ac) {
-            ac.models.get('FlickrModel').getFlickrImages('mojito', function(images) {
+            ac.models.get('model').getFlickrImages('mojito', function(images) {
                 var dateString = ac.intl.formatDate(new Date());
                 var data = {
                     images: images,

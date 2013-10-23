@@ -47,7 +47,7 @@ We can also update our controller to provide some mock values now just to ensure
         Y.mojito.controllers[NAME] = {
 
             index: function(ac) {
-                ac.models.get('ModelFlickr').getFlickrImages('mojito', function(images) {
+                ac.models.get('model').getFlickrImages('mojito', function(images) {
                     var dateString = ac.intl.formatDate(new Date());
                     data = {
                         images: images,
@@ -286,7 +286,7 @@ For the controller, we'll make things a little simpler. We'll just expose a "pag
                 // parameter is base-0.
                 start = (page-1) * PAGESIZE;
 
-                ac.models.get('ModelFlickr').getFlickrImages('mojito', start, PAGESIZE, function(err, images) {
+                ac.models.get('model').getFlickrImages('mojito', start, PAGESIZE, function(err, images) {
 
                     var dateString, data;
 
