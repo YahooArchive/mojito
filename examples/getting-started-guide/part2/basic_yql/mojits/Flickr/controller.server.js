@@ -23,7 +23,7 @@ YUI.add('Flickr', function (Y, NAME) {
          * @return {}       
          */
         index: function(ac) {
-            ac.models.get('FlickrModel').getFlickrImages('mojito', function(images) {
+            ac.models.get('model').getFlickrImages('mojito', function(images) {
 
                 ac.flush({images: images});
 

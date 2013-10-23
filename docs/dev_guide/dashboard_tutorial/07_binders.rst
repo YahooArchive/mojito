@@ -509,7 +509,7 @@ Creating the Application
 
           index: function (ac) {
             var view_type = "yui", feedURL = "http://www.yuiblog.com/blog/feed/", title = "YUI Blog Posts";
-            ac.models.get('BlogModelYQL').getData({}, feedURL, function (data) {
+            ac.models.get('blog').getData({}, feedURL, function (data) {
         
               // Add mojit specific css.
               ac.assets.addCss('./index.css');
@@ -598,7 +598,7 @@ Creating the Application
           index: function (ac) {
             var view_type = "yui", tablePath = "store://owgYr7PT7CWIOWMaWs9Stb", title = "YUI Gallery Pushes";
 
-            ac.models.get('GalleryModelYQL').getData({}, tablePath, function (data) {
+            ac.models.get('gallery').getData({}, tablePath, function (data) {
               // add mojit specific css
               ac.assets.addCss('./index.css');
 
@@ -719,7 +719,7 @@ Creating the Application
       index: function (ac) {
         var yqlTable = "store://gpgSGZAwQ3vaDaalPQZ44u",
             title = "YUI GitHub Activity",
-            model = ac.models.get('StatsModelYQL');
+            model = ac.models.get('yql');
         Y.log(model);
         model.getData({}, yqlTable, function (data) {
           Y.log("Github -index - model.getData:");

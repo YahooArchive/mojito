@@ -662,7 +662,7 @@ Creating the Application
 
           index: function(ac) {
 
-            var model = ac.models.get('GithubModel');
+            var model = ac.models.get('model');
             Y.log(model);
             model.getData(function(data){
               Y.log("Github -index - model.getData:");

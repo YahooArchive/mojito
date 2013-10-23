@@ -55,7 +55,7 @@ Edit `mojits/PagedFlickr/controller.server.js` to contain the following:
                 // parameter is base-0.
                 start = (page-1) * PAGESIZE;
 
-                ac.models.get('ModelFlickr').getFlickrImages('mojito', start, PAGESIZE, function(err, images) {
+                ac.models.get('flickr').getFlickrImages('mojito', start, PAGESIZE, function(err, images) {
                    var dateString, data;
 
                     // on model error, fail fast
@@ -375,7 +375,7 @@ Here's the `mojits/FlickrDetail/controller.js`:
                     return;
                 }
 
-                ac.models.get('ModelFlickr').getFlickrDetail(image, function(err, details) {
+                ac.models.get('flickr').getFlickrDetail(image, function(err, details) {
                     if (err) {
                         ac.error(new Error("YQL Error"));
                         return;
@@ -736,7 +736,7 @@ There's one more small change that we need to make. We need to update the PagedF
                 // parameter is base-0.
                 start = (page-1) * PAGESIZE;
 
-                ac.models.get('ModelFlickr').getFlickrImages('mojito', start, PAGESIZE, function(err, images) {
+                ac.models.get('flickr').getFlickrImages('mojito', start, PAGESIZE, function(err, images) {
                    var dateString, data;
 
                     // on model error, fail fast

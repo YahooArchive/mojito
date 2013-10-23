@@ -417,8 +417,8 @@ default routes created by Mojito. You instead map routing paths to mojit
 actions in the configuration file ``routes.json``.  The configuration object that 
 defines routing information has properties for defining the routing path, HTTP 
 methods that are accepted, parameters, and the mojit actions to execute. In the 
-example ``routes.json`` below, the root object configures the application to execute 
-the action index of the mojit foo when an HTTP GET call is made to the path ``"/"``:
+example ``routes.json`` below, the ``root`` object configures the application to execute 
+the action index of the mojit ``github`` when an HTTP GET call is made to the path ``"/"``:
 
 .. code-block:: javascript
 

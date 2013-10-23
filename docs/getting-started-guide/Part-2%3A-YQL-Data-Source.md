@@ -27,7 +27,7 @@ Now you have a directory in front of you called `basic_yql`, which is a runnable
 
 Any invalid characters (like `-`) will be converted to an underscore character.
 
-### Create a new Flickr mojit
+### Create a New Flickr Mojit
 
     $ cd basic_yql
     $ mojito create mojit simple Flickr
@@ -111,7 +111,7 @@ Let's take a quick look at the controller at `mojits/Flickr/controller.server.js
             },
 
             index: function(ac) {
-                ac.models.get('ModelFlickr').getFlickrImages('mojito', function(images) {
+                ac.models.get('model').getFlickrImages('mojito', function(images) {
                     ac.done({images: images});
                 });
             }
@@ -131,7 +131,7 @@ The Action Context is the API for Mojito that is provided to a controller action
 
 The Action Context is an abstraction that allows you to write code that can run either on the server or within the browser. If you would like to access server specific features (like the HTTP Request object itself), you can specify this using _Addons_. **Action Context Addons** will be described elsewhere.
 
-#### Using views
+#### Using Views
 
 The controller we were working with has a function called `index`, this is called an **action** in Mojito-speak. Each action might have a view template to match the data it outputs in the `views` directory. When we created our mojit using the Mojito command line tool, an `index.mu.html` file was created in the `views` directory. When the controller passed the flickr images into the action context (`ac.done(images)`) above, Mojito took that as a request to pass this data through a template and render it into HTML. Mojito's convention is to look for a file matching the action being executed, so because we were executing the `index` action, Mojito will attempt to pass that data through a template called `index.mu.html` in the views directory.
 
@@ -168,7 +168,7 @@ We have defined one mojit to be available of the type `Flickr`. We can access th
 
 Now point your browser to [http://localhost:8666/flickr/index](http://localhost:8666/flickr/index).
 
-#### Configure a route
+#### Configure a Route
 
 Within this state, the only URL that applies to this application is [http://localhost:8666/flickr/index](http://localhost:8666/flickr/index). You can provide further configuration to open up further URLs to execute this mojit. To do so, create a `routes.json` file alongside the `application.json` file.
 

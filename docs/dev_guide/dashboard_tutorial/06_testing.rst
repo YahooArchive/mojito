@@ -832,7 +832,7 @@ Creating the Application
    .. code-block:: javascript
 
       index: function (ac) {
-        ac.models.get('YoutubeModelYQL').getData({}, function (data) {
+        ac.models.get('youtube').getData({}, function (data) {
           var res = [];
               res = youtubeMap(ac, data);
           // populate youtube template
@@ -950,7 +950,7 @@ Creating the Application
    .. code-block:: javascript
 
       index: function (ac) {
-        ac.models.get('CalendarModelYQL').getData({}, function (data) {
+        ac.models.get('calendar').getData({}, function (data) {
 
           // add mojit specific css
           ac.assets.addCss('./index.css');

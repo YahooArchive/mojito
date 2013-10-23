@@ -56,7 +56,7 @@ YUI.add('PagedFlickr', function (Y, NAME) {
             // parameter is base-0.
             start = (page - 1) * PAGESIZE;
 
-            ac.models.get('ModelFlickr').getFlickrImages('mojito', start, PAGESIZE, function(err, images) {
+            ac.models.get('flickr').getFlickrImages('mojito', start, PAGESIZE, function(err, images) {
                var dateString, data;
 
                 // on model error, fail fast
