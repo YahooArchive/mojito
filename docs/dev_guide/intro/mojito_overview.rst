@@ -111,7 +111,7 @@ Localization and Internationalization
 Mojito is built on `YUI 3 <http://yuilibrary.com/>`_, which has an internationalization 
 utility that allows you to handle monolingual and multilingual applications. Using the 
 `YUI Internationalization utility <http://yuilibrary.com/yui/docs/intl/>`_ and 
-`Yahoo Resource Bundles (YRB) <http://yuilibrary.com/yui/docs/intl/#yrb>`_, your 
+`Yahoo Resource Bundles (YRB) <http://yuilibrary.com/yui/docs/intl/-yrb>`_, your 
 slideboard application could use one language for the UI and serve the content in a 
 different language.
 
@@ -128,7 +128,7 @@ from which much of the following content is based on.
 .. _differences-control_be_ui:
 
 Controlling the Back-End UI Layer 
-################################
+---------------------------------
 
 In the past, applications were often divided into two discrete parts (client/server) 
 that were written by two groups of specialized engineers: front-end and back-end engineers. 
@@ -159,7 +159,7 @@ the Mojito application developers, allowing you to control the payload:
 .. _differences-existing_service:
 
 Building on an Existing HTTP-Based Service
-##########################################
+------------------------------------------
 
 Frameworks such as Rails and Django allow you to connect directly to a database through
 object-relational mapping (ORM) with no intermediate service layer. With Mojito, you
