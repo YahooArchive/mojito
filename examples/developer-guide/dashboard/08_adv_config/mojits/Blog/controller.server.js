@@ -32,7 +32,7 @@ YUI.add('Blog', function (Y, NAME) {
                 feedURL = ac.config.getDefinition('feedURL', 'notfound');
                 title = ac.config.getDefinition('mojitotitle', 'notitle');
             }
-            ac.models.get('BlogModelYQL').getData({}, feedURL, function (data) {
+            ac.models.get('blog').getData({}, feedURL, function (data) {
                 // add mojit specific css
                 ac.assets.addCss('./index.css');
 

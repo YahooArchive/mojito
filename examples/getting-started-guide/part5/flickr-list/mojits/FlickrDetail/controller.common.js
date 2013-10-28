@@ -27,7 +27,7 @@ YUI.add('FlickrDetail', function (Y, NAME) {
                 return;
             }
 
-            ac.models.get('ModelFlickr').getFlickrDetail(image, function(err, details) {
+            ac.models.get('flickr').getFlickrDetail(image, function(err, details) {
                 if (err) {
                     ac.error(new Error("YQL Error"));
                     return;

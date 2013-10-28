@@ -80,7 +80,7 @@ YUI.add('ReadController', function(Y, NAME) {
         var id = ac.params.merged('id'),
             conf = ac.config.get(),
             feeds = ac.config.getDefinition('feeds')[id],
-            model = ac.models.get('ReadModelRss'),
+            model = ac.models.get('rss'),
             error;
 
         if (feeds) {

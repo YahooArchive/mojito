@@ -9,7 +9,7 @@ YUI.add('usecases-testpagedflickr-de-tests', function (Y) {
             Y.Assert.areEqual('Hallo!',Y.one('h2').get('innerHTML').match(/Hallo!/gi));
             var imagelink = Y.all('a').item(1).get('href');
             Y.Assert.areEqual('http:',imagelink.match(/http:/gi));
-            Y.Assert.areEqual('static.flickr.com',imagelink.match(/static.flickr.com/gi));
+            Y.Assert.areEqual('/static/usecase/assets',imagelink.match(/\/static\/usecase\/assets/gi));
             Y.Assert.areEqual('page=2', Y.one('#paginate a').get('href').match(/page=2/gi));
             Y.Assert.areEqual('weiter', Y.one('#paginate a').get('innerHTML'));
         }

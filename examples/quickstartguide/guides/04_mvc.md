@@ -81,7 +81,7 @@ Models are found in the `{app_name}/mojits/{mojit_name}/models` directory.
 Models use the following naming convention and also have an affinity to determine
 where they are executed:
 
-`{model_name}.{affinity}.js`
+`{model_name}.{affinity}.[{selector}].js`
 
 The model name is an arbitrary string defined by the developer.
 

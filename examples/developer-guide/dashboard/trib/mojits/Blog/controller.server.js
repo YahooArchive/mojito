@@ -34,7 +34,7 @@ YUI.add('Blog', function (Y, NAME) {
                 title = ac.config.getDefinition('mojitotitle', 'notitle');
             }
 
-            ac.models.get('BlogModelYQL').getData({}, feedURL, function (err, data) {
+            ac.models.get('blog').getData({}, feedURL, function (err, data) {
                 Y.log("Blog - index - model.getData:", "info", NAME);
                 Y.log(data, "info", NAME);
                 // add mojit specific css

@@ -28,7 +28,7 @@ YUI.add('Github', function (Y, NAME) {
                 yui,
                 mojito,
                 title,
-                model = ac.models.get('StatsModelYQL'),
+                model = ac.models.get('yql'),
                 id,
                 repo,
                 self = this;

@@ -1,6 +1,6 @@
-YUI.add('SimpleModelModel', function(Y) {
+YUI.add('SimpleModelModel', function(Y, NAME) {
     
-   Y.mojito.models.SimpleModel = {   
+   Y.mojito.models[NAME] = {
         init: function(cfg) {
             this.cfg = cfg;
         },
@@ -9,23 +9,19 @@ YUI.add('SimpleModelModel', function(Y) {
             var photos = [
                 {
                     "title": "Wild turkey1",
-                    "url": "http://farm8.static.flickr.com/7456/8802989034_d4be06b6c9.jpg"
+                    "url": "/static/SimpleModel/assets/BanffPark.jpg"
                 },
                 {
                     "title": "Wild turkey2",
-                    "url": "http://farm3.static.flickr.com/2810/8790605005_ffabf53846.jpg"      
+                    "url": "/static/SimpleModel/assets/Calgary.jpg"      
                 },
                 {
                     "title": "Wild turkey3",
-                    "url": "http://farm8.static.flickr.com/7345/8796117836_bf224fdbfe.jpg"
+                    "url": "/static/SimpleModel/assets/JasperPark.jpg"
                 },
                 {
                     "title": "Wild turkey4",
-                    "url": "http://farm6.static.flickr.com/5332/8795818514_85d111d8e7.jpg"           
-                },
-                {
-                    "title": "Wild turkey5",
-                    "url": "http://farm6.static.flickr.com/5446/8784176565_6f21f6b7d5.jpg"           
+                    "url": "/static/SimpleModel/assets/RockMountain.jpg"           
                 }
             ];
             //add delay to simulate the async nature of YQL

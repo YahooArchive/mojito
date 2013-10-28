@@ -820,7 +820,7 @@ Creating the Application
           feedURL = ac.config.getDefinition('feedURL', 'notfound');
           title = ac.config.getDefinition('mojitotitle', 'notitle');
         }
-        ac.models.get('BlogModelYQL').getData({}, feedURL, function (data) {
+        ac.models.get('blog').getData({}, feedURL, function (data) {
           // add mojit specific css
           ac.assets.addCss('./index.css');
 
@@ -866,7 +866,7 @@ Creating the Application
           tablePath = ac.config.getDefinition('yqlTable', 'notfound');
           title = ac.config.getDefinition('mojitotitle', 'notitle');
         }
-        ac.models.get('GalleryModelYQL').getData({}, tablePath, function (data) {
+        ac.models.get('gallery').getData({}, tablePath, function (data) {
           // add mojit specific css
           ac.assets.addCss('./index.css');
 
@@ -928,7 +928,7 @@ Creating the Application
             // If you leave `oauth_keys` undefined, your app will just use mocked data.
             // Get OAuth keys from definition.json to get real data.
             // oauth_keys = ac.config.getDefinition('oauth');
-            ac.models.get('TwitterSearchModel').getData(count, q, oauth_keys, function (err, data) {
+            ac.models.get('twitter').getData(count, q, oauth_keys, function (err, data) {
                 if (err) {
                     ac.error(err);
                     return;
@@ -975,7 +975,7 @@ Creating the Application
    .. code-block:: javascript
 
       index: function (ac) {
-        var view_type, yqlTable, yui, mojito, title, id, repo, model = ac.models.get('StatsModelYQL');
+        var view_type, yqlTable, yui, mojito, title, id, repo, model = ac.models.get('yql');
         view_type = ac.params.getFromRoute('view_type') || "yui";
 
         if (view_type === "yui") {

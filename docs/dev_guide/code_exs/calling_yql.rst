@@ -184,8 +184,8 @@ statement. The YQL Statement and the
 passed to the ``search`` function of the model.
 
 To access model functions from the controller, you use the Action Context (``ac``) object with the 
-following syntax: ``ac.models.get({model_name})``. This code example uses the ``flickr`` mojit, so to 
-access the model from the controller, you would use ``ac.models.get('flickrModel')`` as seen in the 
+following syntax: ``ac.models.get({model_name})``. To 
+access the model from the controller, you would use ``ac.models.get('model')`` as seen in the 
 ``controller.server.js`` below. Once the callback function passed to ``search`` returns the array of 
 photo objects, the ``done`` method sends the ``photos`` array and the query string parameters to 
 the ``index`` template.
@@ -200,7 +200,7 @@ the ``index`` template.
          page = (ac.params.getFromUrl('page') || 0) / 1,
          count = (ac.params.getFromUrl('size') || 20) / 1,
          start = page * count;
-         var model = ac.models.get('flickrModel');
+         var model = ac.models.get('model');
          model.search (q, start, count, function(photos) {
            ac.done (
              {
@@ -369,7 +369,7 @@ To set up and run ``model_yql``:
               count = (ac.params.getFromUrl('count') || 20) / 1;
             }
             var start = page * count;
-            var model = ac.models.get('flickrModel');
+            var model = ac.models.get('model');
             model.search (q, start, count, function(photos) {
               ac.done (
                 {
@@ -445,5 +445,4 @@ Source Code
 - `Mojit Model <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/model_yql/mojits/flickr/models/model.server.js>`_
 - `Mojit Controller <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/model_yql/mojits/flickr/controller.server.js>`_
 - `Flickr Application <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/model_yql/>`_
-
 

@@ -38,7 +38,7 @@ YUI.add('Youtube', function(Y, NAME) {
          *        to the Mojito API.
          */
         index: function (ac) {
-            ac.models.get('YoutubeModelYQL').getData({}, function (data) {
+            ac.models.get('youtube').getData({}, function (data) {
                 Y.log("Youtube -index - model.getData:");
                 Y.log(data);
                 var res = [];
