@@ -151,7 +151,7 @@ the Mojito application developers, allowing you to control the payload:
 
 .. image:: images/nodejs_be_ui.png
    :height: 591 px
-   :width: 200 px
+   :width: 508 px
    :scale: 50 %
    :alt: Node.js/Mojito serving as the back-end UI layer.
    :align: right
