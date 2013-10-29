@@ -10,7 +10,7 @@ YUI.add('YoutubeModelYQL', function (Y, NAME) {
             Y.log("youtube server getData called", "info", NAME);
 
             if (this._isCached()) {
-                callback(Y.youtubeData);
+                callback(null, Y.youtubeData);
             } else {
                 var
                     feedURL = "https://gdata.youtube.com/feeds/base/users/yuilibrary/uploads",

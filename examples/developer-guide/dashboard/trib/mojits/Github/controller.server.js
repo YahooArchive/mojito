@@ -62,6 +62,7 @@ YUI.add('Github', function (Y, NAME) {
                 // add mojit specific css
                 ac.assets.addCss('./index.css');
                 if(err) {
+                    Y.log(err, "info", NAME);
                     ac.error(err);
                 } else {
                     // Construct special data

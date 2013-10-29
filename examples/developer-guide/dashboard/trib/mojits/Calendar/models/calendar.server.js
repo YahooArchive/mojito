@@ -19,7 +19,7 @@ YUI.add('CalendarModelYQL', function (Y, NAME) {
 
             if (this._isCached()) {
                 Y.log("calendarData! skip YQL", "info", NAME);
-                callback(Y.calendarData);
+                callback(null, Y.calendarData);
             } else {
                 Y.namespace("calendarData");
                 Y.log("calendarModel calling YQL", "info", NAME);
