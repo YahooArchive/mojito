@@ -174,6 +174,9 @@ proxy that will make HTTP requests to other Web services based on rules defined 
 This is an important point to remember for those developers who are coming from Rails, Django,
 and other frameworks that allow you to directly interact with a database. In general,
 your Mojito applications will need to make HTTP requests to a service that handles 
-database queries or to Web services.
+database queries or to Web services. You can make HTTP requests with the 
+`Y.mojito.lib.REST Class <http://developer.yahoo.com/cocktails/mojito/api/classes/Y.mojito.lib.REST.html>`_.
+
+
 
 
