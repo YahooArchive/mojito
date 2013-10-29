@@ -10,7 +10,6 @@ Prerequisite
 Complete the `Mojito Quickstart <quickstart.html>`_, which instructs you
 how to install Mojito and use basic commands for the Mojito command-line tool.
 
-
 In this tutorial, you create a simple application that serves a single page and 
 uses a controller to generate output. 
 
@@ -191,8 +190,7 @@ controller outputs different results.
       }, '0.0.1', {requires: [
         'mojito',
         'mojito-models-addon', 
-        'mojito-assets-addon',
-        'HelloMojitModel'
+        'mojito-assets-addon'
       ]});
 
 
@@ -200,6 +198,10 @@ controller outputs different results.
    and the "action" is just a method called on the controller object. 
    The result of the method are communicated back to Mojito through the 
    ``actionContext`` object. 
+
+   Models in Mojito rely on HTTP-based services to get data and do not generally connect
+   directly to a database through an ORM. We recommend `YQL <http://developer.yahoo.com/yql>`_
+   to fetch data from Web services.
 
 #. Change to the ``tests`` directory.
 
