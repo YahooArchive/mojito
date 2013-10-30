@@ -7,7 +7,8 @@ module.exports = function(config) {
             req.context = {};
         }
         query = url.parse(req.url, true).query || {};
-        req.context.environment = query.environment || '';
+        req.context.runtime = config.context.runtime || 'server';
+        req.context.environment = query.environment || 'development';
         next();
     };
 };
