@@ -14,17 +14,14 @@ YUI.add('YqlWeatherModel', function(Y, NAME) {
     Y.mojito.models[NAME] = {
 
         fetch: function(location, callback) {
-            data = {
-                temp: "72",
-                text: "clear"
-            };
-            error = null
+            var error = null,
+                data = {
+                    temp: "72",
+                    text: "clear"
+                };
+            
             callback(error, data);
         }
     };
 
 }, '0.0.1', {requires: ['mojito', 'yql', 'jsonp-url']});
-
-/*
-http://query.yahooapis.com/v1/public/yql?loc=san+francisco,california&env=store://datatables.org/alltableswithkeys&format=json&q=SELECT+item.condition,item.description+FROM+weather.forecast+WHERE+location+IN(SELECT+id+FROM+weather.search+WHERE+query=@loc)+LIMIT+1
-*/
