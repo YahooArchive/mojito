@@ -19,7 +19,7 @@
                     "scenario": [
                         {
                             "test" : "test_newsboxes1.js",
-                            "page" : "$$config.baseUrl$$"
+                            "page" : "$$config.baseUrl$$/?devide=iphone"
                         },
                         {
                            "controller": "locator",
