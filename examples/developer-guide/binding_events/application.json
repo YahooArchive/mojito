@@ -1,24 +1,4 @@
 [
-<<<<<<< HEAD
-  {
-    "settings": [ "master" ],
-    "staticHandling": {
-        "cache": false,
-        "forceUpdate": true
-    },
-    "yui": {
-        "config": {
-            "debug": false
-        }
-    },
-    "specs": {
-      "frame": {
-        "type": "HTMLFrameMojit",
-        "config": {
-            "deploy": true,
-            "child": {
-                "type": "PagerMojit"
-=======
     {
         "settings": [ "master" ],
         "middleware": ["middleware/mojito-contextualizer.js"],
@@ -31,7 +11,6 @@
                         "type": "PagerMojit"
                     }
                 }
->>>>>>> c4b36e9... Added middleware and updated app configs so that apps use mocked models by default.
             }
         }
     },
