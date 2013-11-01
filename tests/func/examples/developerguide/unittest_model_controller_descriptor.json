@@ -17,7 +17,7 @@
                  "group" : "developerguide,unittest_model_controller",
                  "params" : {
                              "test" : "test_unittest_model_controller.js",
-                             "page" : "$$config.baseUrl$$/?device=iphone"
+                             "page" : "$$config.baseUrl$$"
                 }
             }
         }     

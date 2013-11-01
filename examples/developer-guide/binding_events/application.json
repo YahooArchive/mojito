@@ -1,4 +1,5 @@
 [
+<<<<<<< HEAD
   {
     "settings": [ "master" ],
     "staticHandling": {
@@ -17,8 +18,22 @@
             "deploy": true,
             "child": {
                 "type": "PagerMojit"
+=======
+    {
+        "settings": [ "master" ],
+        "middleware": ["middleware/mojito-contextualizer.js"],
+        "specs": {
+            "frame": {
+                "type": "HTMLFrameMojit",
+                "config": {
+                    "deploy": true,
+                    "child": {
+                        "type": "PagerMojit"
+                    }
+                }
+>>>>>>> c4b36e9... Added middleware and updated app configs so that apps use mocked models by default.
             }
         }
     },
-    { "settings": [ "device:iphone" ], "selector": "iphone" }
+    { "settings": [ "environment:development" ], "selector": "mocked" }
 ]

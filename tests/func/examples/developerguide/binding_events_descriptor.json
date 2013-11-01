@@ -19,7 +19,7 @@
                     "scenario": [
                         {
                             "test" : "test_binding_events.js",
-                            "page" : "$$config.baseUrl$$/?device=iphone"
+                            "page" : "$$config.baseUrl$$"
                         },
                         {
                            "controller": "locator",
