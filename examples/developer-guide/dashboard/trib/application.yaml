@@ -77,7 +77,6 @@
   - device:ipad
   selector: ipad
 - settings:
-  - runtime:server
   - environment:development
   staticHandling:
     forceUpdate: true
