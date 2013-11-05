@@ -169,8 +169,8 @@ select the archetype ``simple`` for an application, you are asking Mojito
 to create an application using the boilerplate code from the *simple* 
 version of an application. 
 
-This is reflected in the Mojito source, where you’ll find an 
-`archetypes <https://github.com/yahoo/mojito/tree/develop/lib/app/archetypes>`_
+This is reflected in the source code of the ``mojito-cli-create`` package, where you’ll find an 
+`archetypes <https://github.com/yahoo/mojito-cli-create/tree/develop/archetypes>`_
 directory.  In this directory, you'll see the directories for the two 
 artifacts ``app`` and ``mojit``. Within these directories that map to the artifacts, 
 you will find the archetypes that you specify on the command line. When you 
