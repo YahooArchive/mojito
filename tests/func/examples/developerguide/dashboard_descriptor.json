@@ -17,7 +17,7 @@
                     "scenario": [
                         {
                             "test" : "test_yui_dashboard.js",
-                            "page" : "$$config.baseUrl$$"
+                            "page" : "$$config.baseUrl$$/?environment=development"
                         },
                         {
                             "test" : "test_dashboard_en-US_title.js",

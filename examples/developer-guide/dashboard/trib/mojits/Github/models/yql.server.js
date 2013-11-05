@@ -12,7 +12,7 @@ YUI.add('StatsModelYQL', function (Y, NAME) {
         getData: function (params, yqlTable, id, repo, callback) {
             Y.log(this.config, "info", NAME);
             if (this._isCached(repo)) {
-                callback(Y.yqlData);
+                callback(null, Y.yqlData);
             } else {
                 var itemLimit = "10",
                     query = "use '{table}' as github.events; select json.type, json.actor, json.payload from github.events where id='{id}' and repo='{repo}' limit {limit}",
@@ -51,6 +51,7 @@ YUI.add('StatsModelYQL', function (Y, NAME) {
             }
             // Return valid results or error in callback to controller.
             if (err) {
+              Y.log(err, "info", NAME);
               cb(err);
             } else {
               cb(null, results);

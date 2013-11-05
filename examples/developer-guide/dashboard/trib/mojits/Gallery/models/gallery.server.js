@@ -11,7 +11,7 @@ YUI.add('GalleryModelYQL', function (Y, NAME) {
             Y.log("gallery getData called", "info", NAME);
 
             if (this._isCached()) {
-                callback(Y.galleryData);
+                callback(null, Y.galleryData);
             } else {
                 var query = "use '{table}' as gallerylogs; select * from gallerylogs",
                     queryParams = {

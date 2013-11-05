@@ -1,6 +1,7 @@
 [
     {
         "settings": [ "master" ],
+        "middleware": ["middleware/mojito-contextualizer.js"],
         "specs": {
             "frame": {
                 "type": "HTMLFrameMojit",
@@ -13,5 +14,5 @@
             }
         }
     },
-    { "settings": [ "device:iphone" ], "selector": "iphone" }
+    { "settings": [ "environment:development" ], "selector": "mocked" }
 ]
