@@ -23,7 +23,7 @@ YUI.add('BlogModelYQL', function (Y, NAME) {
                 //Y.log("blogData! skip YQL", "info", NAME);
                 //Y.log(Y.blogData, "info", NAME);
 
-                callback(Y.blogData);
+                callback(null, Y.blogData);
             } else {
                 Y.namespace("blogData", "info", NAME);
                 Y.log("blogmodel calling YQL", "info", NAME);

@@ -2,6 +2,8 @@
 - settings:
   - master
   appPort: '8666'
+  middleware: 
+  - middleware/mojito-contextualizer.js
   staticHandling:
     appName: trib
   yui:
@@ -76,6 +78,7 @@
   selector: ipad
 - settings:
   - environment:development
+  selector: mocked
   staticHandling:
     forceUpdate: true
   yui:

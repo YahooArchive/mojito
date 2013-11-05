@@ -2,6 +2,7 @@
     {
         "settings": [ "master" ],
         "appPort": "8666",
+        "middleware": ["middleware/mojito-contextualizer.js"],
         "staticHandling": {
           "appName": "trib"
         },
@@ -98,6 +99,7 @@
     },
     {
         "settings": [ "environment:development" ],
+        "selector": "mocked",
         "staticHandling": {
             "forceUpdate": true
         },
