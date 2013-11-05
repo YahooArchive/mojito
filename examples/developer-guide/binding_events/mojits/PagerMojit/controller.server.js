@@ -54,7 +54,7 @@ YUI.add('PagerMojit', function (Y, NAME) {
             // Page param is 1 based, but the model is 0 based       
             start = (page - 1) * PAGE_SIZE;
             // Data is an array of images
-            model.getData('mojito', start, PAGE_SIZE, function(data) {
+            model.getData('model', start, PAGE_SIZE, function(data) {
                 Y.log('DATA: ' + Y.dump(data));
                 var theData = {
                     data: data, // images
