@@ -4,6 +4,30 @@ version @VERSION@
 Notes
 -----
 
+
+Deprecations, Removals
+----------------------
+
+
+Features
+--------
+
+
+Bug Fixes
+---------
+
+
+
+Acknowledgements
+----------------
+
+
+version 0.8.0
+=============
+
+Notes
+-----
+
 * **!IMPORTANT!** This release contains a notable backward-incompatible change. 
   See "Deprecations, Removals" below.
 
@@ -12,6 +36,9 @@ Deprecations, Removals
 
 * **!Backwards-Incompatible Change!** Getting model instance by passing model 
   YUI module name to `ac.models.get` has been removed.
+* Cleanup: The `archetypes` directory containing boilerplate template code has been 
+  removed from the `mojito` package because the template code is located 
+  in [mojito-cli-create](https://github.com/yahoo/mojito-cli-create).
 
 Features
 --------
@@ -33,6 +60,8 @@ Bug Fixes
 
 * Issue #1251: easy way to get contextualized models
 * PR #1264: better output handler response header check
+* PR #1270: removed `archetypes` directory and boilerplate template code for apps/mojits. 
+* PR #1278: added middleware and updated app configs so that apps can use mocked models.
 
 Acknowledgements
 ----------------
