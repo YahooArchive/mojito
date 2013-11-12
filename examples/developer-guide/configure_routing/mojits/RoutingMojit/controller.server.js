@@ -15,23 +15,15 @@ YUI.add('RoutingMojit', function(Y, NAME) {
             path = ac.http.getRequest().url,
             routes = ac.config.getRoutes();
 
-		// Mojito no longer support more than one VERB per route entry
-		// The route.name is now the route.path + '.' + route.call
         if (action === "index" && path === "/") {
             name = "root_route";
-			if (routes['/.mapped_mojit.index'].verbs['GET']) {
-                methods = 'GET';
-            }
-        } else if (action==="index") {
+            methods = 'GET';
+        } else if (action === "index") {
             name = "index_route";
-			if (routes['/index.mapped_mojit.index'].verbs['GET']) {
-                methods = 'GET';
-            }
+            methods = 'GET';
         } else {
             name = "show_route";
-			if (routes['/show.mapped_mojit.show'].verbs['POST']) {
-                methods = 'POST';
-            }
+            methods = 'POST';
         }
         methods = methods.toUpperCase();
         return {

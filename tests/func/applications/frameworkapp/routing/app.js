@@ -20,17 +20,6 @@ app.use(mojito.middleware());
 app.mojito.attachRoutes();
 app.post('/tunnel', mojito.tunnelMiddleware());
 
-// "testing-ac-url-find": {
-//     "verb": ["get"],
-//     "path": "/you/found/a/good/path",
-//     "params": "secret=garden",
-//     "call": "goodaction.goodindex"
-// },
-app.get('/you/found/a/good/path', function (req, res, next) {
-    req.params = req.params || {};
-    req.params.secret = 'garden';
-    next();
-}, mojito.dispatch('goodaction.goodindex'));
 
 // "_any_mojit_particular_action": {
 //     "verbs": ["get"],

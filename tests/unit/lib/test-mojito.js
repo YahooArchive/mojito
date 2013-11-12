@@ -673,8 +673,7 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
 
         'test configureAppInstance': function () {
             var dispatcher,
-                madeY,      // the Y instance made in mojito.js
-                appwtf = {
+                app = {
                     store: {
                         getAllURLDetails: function () {
                             return {};
@@ -721,16 +720,19 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
                     use: function (x) {
                         dispatcher = x;
                     }
+                },
+                options = {},
+                appConfig = {
+                    perf: true,
+                    middleware: ['mojito-handler-dispatcher']
                 };
 
-            Mojito.Server.prototype._configureLogger = function(y) {
-                madeY = y;
-            };
-            Mojito.Server.prototype._configureAppInstance(appwtf);
+            options.Y = Mojito.Server.prototype._createYUIInstance(options, appConfig);
+            Mojito.Server.prototype._configureAppInstance(app, options, appConfig);
             dispatcher({command: {}}, {}, function() {});
-            A.isObject(madeY.mojito.Dispatcher.outputHandler, 'output handler object');
-            A.isObject(madeY.mojito.Dispatcher.outputHandler.page, 'page object');
-            A.isObject(madeY.mojito.Dispatcher.outputHandler.page.staticAppConfig, 'staticAppConfig object');
+            A.isObject(options.Y.mojito.Dispatcher.outputHandler, 'output handler object');
+            A.isObject(options.Y.mojito.Dispatcher.outputHandler.page, 'page object');
+            A.isObject(options.Y.mojito.Dispatcher.outputHandler.page.staticAppConfig, 'staticAppConfig object');
         }
         */
 

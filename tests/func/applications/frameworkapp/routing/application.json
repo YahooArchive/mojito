@@ -15,6 +15,12 @@
                     "id": "route-2"
                 }
             },
+            "route-2-wildcard": {
+                "type": "SimpleRoute2",
+                "config": {
+                    "id": "route-2-wildcard"
+                }
+            },
             "route-base": {
                 "type": "SimpleRoute2",
                 "config": {

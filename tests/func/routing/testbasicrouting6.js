@@ -11,7 +11,7 @@
 
      suite.add(new Y.Test.Case({
 	     "test BasicRouting6": function(){  
-             Y.Assert.areEqual('This is another simple mojit for testing routing - SimpleRoute2 (route-2)', Y.one('#mytext').get('innerHTML'));
+             Y.Assert.areEqual('This is another simple mojit for testing routing - SimpleRoute2 (route-2-wildcard)', Y.one('#mytext').get('innerHTML'));
          }
    }));    
 
