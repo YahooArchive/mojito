@@ -34,7 +34,7 @@ YUI.add('RESTLib', function(Y, NAME) {
 
 	        simpleWSCall: function(ac) {
 	        	var hostPort = getHostNameAndPort(ac);
-	            ac.models.get('RESTLib').callWSGET(hostPort, function(error, response){
+	            ac.models.get('model').callWSGET(hostPort, function(error, response){
 	                if (!error)
 	                {
 	                    //console.log("This is the response: " + response);
@@ -54,7 +54,7 @@ YUI.add('RESTLib', function(Y, NAME) {
 	        inspectResponse: function(ac) {
 	        	var hostPort = getHostNameAndPort(ac);
 	            //console.log("***************************HostPort: " + hostPort);
-	            ac.models.get('RESTLib').callWSGET(hostPort, function(error, response){
+	            ac.models.get('model').callWSGET(hostPort, function(error, response){
 	                if (!error)
 	                {
 	                    //console.log(response.getHeaders());
@@ -80,7 +80,7 @@ YUI.add('RESTLib', function(Y, NAME) {
 	        WSTimeout: function(ac)
 	        {
 	        	var hostPort = getHostNameAndPort(ac);
-	            ac.models.get('RESTLib').callTimeoutWS(hostPort, function(error, response){
+	            ac.models.get('model').callTimeoutWS(hostPort, function(error, response){
 	                if (!error)
 	                {
 	                    ac.done(response);
@@ -97,7 +97,7 @@ YUI.add('RESTLib', function(Y, NAME) {
 	        inspectError: function(ac)
 	        {
 	        	var hostPort = getHostNameAndPort(ac);
-	            ac.models.get('RESTLib').callInvalidWS(hostPort, function(error, response){
+	            ac.models.get('model').callInvalidWS(hostPort, function(error, response){
 	                if (!error)
 	                {
 	                	ac.http.setHeader('content-type', 'text/html');
@@ -138,11 +138,11 @@ YUI.add('RESTLib', function(Y, NAME) {
 
 	            if (negativeTest === "true")
 	            {
-	                ac.models.get('RESTLib').wsWithGETParamsNeg(hostPort, sprintNumToPass, outFunction);
+	                ac.models.get('model').wsWithGETParamsNeg(hostPort, sprintNumToPass, outFunction);
 	            }
 	            else
 	            {
-	                ac.models.get('RESTLib').wsWithGETParams(hostPort, sprintNumToPass, outFunction);
+	                ac.models.get('model').wsWithGETParams(hostPort, sprintNumToPass, outFunction);
 	            }
 	        },
 
@@ -167,11 +167,11 @@ YUI.add('RESTLib', function(Y, NAME) {
 
 	            if (negativeTest === "true")
 	            {
-	                ac.models.get('RESTLib').wsWithPOSTParamsNeg(hostPort, sprintNumToPass, outFunction);
+	                ac.models.get('model').wsWithPOSTParamsNeg(hostPort, sprintNumToPass, outFunction);
 	            }
 	            else
 	            {
-	                ac.models.get('RESTLib').wsWithPOSTParams(hostPort, sprintNumToPass, outFunction);
+	                ac.models.get('model').wsWithPOSTParams(hostPort, sprintNumToPass, outFunction);
 	            }
 	        },
 
@@ -195,15 +195,15 @@ YUI.add('RESTLib', function(Y, NAME) {
 	                }
 	            };
 
-	            ac.models.get('RESTLib').wsWithPUTParams(hostPort, sprintNumToPass, outFunction);
+	            ac.models.get('model').wsWithPUTParams(hostPort, sprintNumToPass, outFunction);
 
 	            /*if (negativeTest === "true")
 	            {
-	                ac.models.get('RESTLib').wsWithPUTParamsNeg(hostPort, sprintNumToPass, outFunction);
+	                ac.models.get('model').wsWithPUTParamsNeg(hostPort, sprintNumToPass, outFunction);
 	            }
 	            else
 	            {
-	                ac.models.get('RESTLib').wsWithPUTParams(hostPort, sprintNumToPass, outFunction);
+	                ac.models.get('model').wsWithPUTParams(hostPort, sprintNumToPass, outFunction);
 	            }*/
 	        },
 
@@ -227,7 +227,7 @@ YUI.add('RESTLib', function(Y, NAME) {
 	                }
 	            };
 
-	            ac.models.get('RESTLib').wsWithDELETEParams(hostPort, sprintNumToPass, outFunction);
+	            ac.models.get('model').wsWithDELETEParams(hostPort, sprintNumToPass, outFunction);
 	        },
 
 	        testHEAD: function(ac)
@@ -250,7 +250,7 @@ YUI.add('RESTLib', function(Y, NAME) {
 	                }
 	            };
 
-	            ac.models.get('RESTLib').wsWithHEAD(hostPort, sprintNumToPass, outFunction);
+	            ac.models.get('model').wsWithHEAD(hostPort, sprintNumToPass, outFunction);
 	        },
 
 	        testHeaders: function(ac)
@@ -269,7 +269,7 @@ YUI.add('RESTLib', function(Y, NAME) {
 	                    console.log("This is the error: " + JSON.stringify(error));
 	                }
 	            };
-	            ac.models.get('RESTLib').wsWithHeadersSettings(hostPort, outFunction);
+	            ac.models.get('model').wsWithHeadersSettings(hostPort, outFunction);
 
 	        },
 
@@ -283,7 +283,7 @@ YUI.add('RESTLib', function(Y, NAME) {
 	        },
 
 	        myWS: function(ac){
-	            ac.models.get('RESTLib').myTimeConsumingWS(function (output){
+	            ac.models.get('model').myTimeConsumingWS(function (output){
 	            	ac.http.setHeader('content-type', 'text/html');
 	                ac.done(output);
 	            });

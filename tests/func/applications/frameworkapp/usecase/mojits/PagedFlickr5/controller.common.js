@@ -39,7 +39,7 @@ YUI.add('PagedFlickr5', function(Y, NAME) {
             // parameter is base-0.
             start = (page-1) * PAGESIZE;
 
-            ac.models.get('PagedFlickr5Model').getFlickrImages('mojito', start, PAGESIZE, function(images) {
+            ac.models.get('model').getFlickrImages('mojito', start, PAGESIZE, function(images) {
 
                 var dateString = ac.intl.formatDate(new Date());
                 var data = {

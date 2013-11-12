@@ -4,14 +4,46 @@ version @VERSION@
 Notes
 -----
 
+* **!IMPORTANT!** This release contains a notable backward-incompatible change. 
+  See "Deprecations, Removals" below.
+
 Deprecations, Removals
 ----------------------
+
+* **!Backwards-Incompatible Change!** Getting model instance by passing model 
+  YUI module name to `ac.models.get` has been removed.
 
 Features
 --------
 
+* Contextualized model support is added:
+  ac.models.get(modelName) will take the model's logical name (filename minus 
+  the affinity and context parts) and return contextualized model instance. 
+
+  For example: 
+  Different model files can be provided for different context settings under models directory:
+  .../models/
+             mymodel.common.iphone.js
+             mymodel.common.js
+
+  Calling `ac.models.get('mymodel')` will return the model which is appropriate for the current context.
+
 Bug Fixes
 ---------
+
+* Issue #1251: easy way to get contextualized models
+
+Acknowledgements
+----------------
+
+
+version 0.7.5
+=================
+
+Bug Fixes
+---------
+
+* Issue #1215: [regression] lang collection in metas is missing for controller 
 
 Acknowledgements
 ----------------

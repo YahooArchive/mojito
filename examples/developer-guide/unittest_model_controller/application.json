@@ -23,5 +23,6 @@
                 }
             }
         }
-    }
+    },
+    { "settings": [ "device:iphone" ], "selector": "iphone" }
 ]

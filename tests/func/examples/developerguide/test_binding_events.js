@@ -16,8 +16,7 @@ YUI({
                   Y.Assert.areEqual('prev', Y.one('#nav').get('innerHTML').match(/prev/gi));
                   Y.Assert.areEqual('next', Y.one('#nav a').get('innerHTML'));
                   var imagelink = Y.all('a').item(1).get('href');
-                  Y.Assert.areEqual('http:',imagelink.match(/http:/gi));
-                  Y.Assert.areEqual('static.flickr.com',imagelink.match(/static.flickr.com/gi));
+                  Y.Assert.areEqual('/static/PagerMojit/assets/pic.com/1234',imagelink.match(/\/static\/PagerMojit\/assets\/pic.com\/1234/gi));
              }
          }));    
 

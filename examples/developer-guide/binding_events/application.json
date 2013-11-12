@@ -19,7 +19,6 @@
                 "type": "PagerMojit"
             }
         }
-      }
-    }
-  }
+    },
+    { "settings": [ "device:iphone" ], "selector": "iphone" }
 ]

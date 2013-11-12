@@ -72,7 +72,7 @@ YUI.add('ShelfController', function (Y, NAME) {
                 tiles: []
             },
             processedTitle,
-            model = ac.models.get('GuideModel'),
+            model = ac.models.get('guide'),
             afterGetGuides = function (guides) {
 
                 // Iterates through each guide to be added to the view template array

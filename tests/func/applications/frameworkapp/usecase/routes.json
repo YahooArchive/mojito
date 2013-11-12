@@ -1,7 +1,11 @@
 [
     {
         "settings": [ "master" ],
-        
+        "i18n-3": {
+            "verb": ["get"],
+            "path": "/i18n-3",
+            "call": "i18n-3.index"
+        },
         "flickr_base": {
             "verb": ["get"],
             "path": "/flickr",

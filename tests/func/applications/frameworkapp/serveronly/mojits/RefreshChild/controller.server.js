@@ -25,7 +25,7 @@ YUI.add('RefreshChild', function(Y, NAME) {
          *        to the Mojito API.
          */
         index: function(ac) {
-            ac.models.get('RefreshChildModelFoo').getData(function(err, data) {
+            ac.models.get('foo').getData(function(err, data) {
                 if (err) {
                     ac.error(err);
                     return;

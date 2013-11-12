@@ -58,7 +58,7 @@ YUI.add('ReadController', function(Y, NAME) {
     **/
     function compose(guidemeta, data, ac, callback) {
         var vu = {},
-            model = ac.models.get('GuideModel'),
+            model = ac.models.get('guide'),
             afterGetAdjacentFiles = function (prevFilename, nextFilename) {
                 // Checks filenames are not null
                 if (prevFilename && nextFilename) {
@@ -106,7 +106,7 @@ YUI.add('ReadController', function(Y, NAME) {
     **/
     function index(ac) {
         var guidemeta = {},
-            model = ac.models.get('GuideModel'),
+            model = ac.models.get('guide'),
             error,
             afterComposed = function(viewData) {
                 ac.done(viewData);
