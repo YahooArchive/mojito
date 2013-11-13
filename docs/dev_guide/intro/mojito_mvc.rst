@@ -399,9 +399,11 @@ you use the following syntax: ``ac.models.get('{model_name}').{model_function}``
 You also need to require the ``Models`` addon by adding the string 
 ``"mojito-models-addon"`` to the ``requires`` array.
 
-The ``{model_name}`` is the YUI module name that is passed to ``YUI.add`` of the 
-model file, not the model file name. The example controller below shows the 
-syntax for calling the model from a controller. 
+The ``{model_name}`` is the prefix of the
+model file, which has the following naming convention: ``{model_name}.{affinity}.[{selector}].js`` 
+
+The example controller below shows the syntax for calling the model from a controller. 
+
 
 .. code-block:: javascript
 
@@ -416,11 +418,11 @@ syntax for calling the model from a controller.
      '{model_name}'
    ]});
 
-For example, if you wanted to use the ``photo_search`` function in the model for the 
-``flickr`` mojit, you would use the following: ``ac.models.get('flickr').photo_search(args, callback);``
+For example, if you wanted to use the ``photo_search`` function in the model ``models/flickr.server.js``,
+you would use the following: ``ac.models.get('flickr').photo_search(args, callback);``
 
 The ``controller.server.js`` below shows a simple example of calling 
-``get_data`` from the model ``simpleModel``.
+``get_data`` from the model ``models/flickr.server.js``.
 
 .. code-block:: javascript
 
@@ -428,7 +430,7 @@ The ``controller.server.js`` below shows a simple example of calling
      Y.namespace('mojito.controllers')[NAME] = {  
 
        index: function(ac) {
-         var model = ac.models.get('simpleModel');
+         var model = ac.models.get('flickr');
          model.get_data (function(data) {
            ac.done (
              {
@@ -706,7 +708,6 @@ template:
 .. note:: The prefix ``mojit_`` is reserved for use by Mojito, and thus, 
           user-defined variables cannot use this prefix in their names.
 
-
 .. _mvc-views-exs:
 
 Examples
@@ -714,5 +715,4 @@ Examples
 
 See `Code Examples: Views <../code_exs/#views>`_ for annotated code examples, 
 steps to run code, and source code for Mojito applications.
-
 

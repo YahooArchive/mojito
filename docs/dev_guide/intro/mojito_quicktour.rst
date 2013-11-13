@@ -67,5 +67,3 @@ because it can still communicate with the server through event-driven modules ca
 binders. The binders make it simple to update content or dynamically change the page. 
 Your application can also customize views for different devices by rendering HTML markup 
 from templating systems such as `Handlebars <http://handlebarsjs.com/>`_.
-
-

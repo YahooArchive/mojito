@@ -166,7 +166,7 @@ In the example controller below, the method ``ac.done`` passes the object
 
    ...
    index: function(ac) {
-     var yahoo_link = { name: "Yahoo!", url: "http://www.yahoo.com" };
+     var yahoo_link = { name: "Yahoo", url: "http://www.yahoo.com" };
      ac.done(yahoo_link);
    }
    ...
@@ -178,7 +178,7 @@ tag with the ``name`` and ``url`` properties:
 
     {{link yahoo_link.name yahoo_link.url}}
 
-This creates the following link: ``<a href="http://www.yahoo.com">Yahoo!</a>``
+This creates the following link: ``<a href="http://www.yahoo.com">Yahoo</a>``
 
 
 Block Helpers
@@ -196,16 +196,16 @@ and then use the properties of the objects with the ``link`` helper to create
 a list of links.
 
 In this example controller, we pass an array of objects with links and names of
-Yahoo! pages to ``ac.done``:
+Yahoo pages to ``ac.done``:
 
 .. code-block:: javascript
    ...
    index: function(ac) {
      var yahoo_links = [
-       { name: "Yahoo!", url: "http://www.yahoo.com" },
-       { name: "Yahoo! Finance", url: "http://finance.yahoo.com" },
-       { name: "Yahoo! News", url: "http://news.yahoo.com" },
-       { name: "Yahoo! Movies", url: "http://movies.yahoo.com" }
+       { name: "Yahoo", url: "http://www.yahoo.com" },
+       { name: "Yahoo Finance", url: "http://finance.yahoo.com" },
+       { name: "Yahoo News", url: "http://news.yahoo.com" },
+       { name: "Yahoo Movies", url: "http://movies.yahoo.com" }
       ];
       ac.done(yahoo_links);
     }

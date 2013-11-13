@@ -20,7 +20,7 @@ using Mojito.
    mojito_apps
    mojito_mojits
    mojito_mvc
+   mojito_conventions
    mojito_configuring
    mojito_binders
    mojito_static_resources
- 

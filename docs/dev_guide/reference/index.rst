@@ -11,4 +11,3 @@ This reference includes the following sections:
    mojito_troubleshooting
    glossary
 
-

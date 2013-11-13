@@ -22,7 +22,7 @@ the model, view, and controller. This common MVC core executes across devices
 and on both client and server and is one of the key elements which gives Mojito 
 its power. As the diagram illustrates, Mojito runs on various clients, uses 
 HTTP for all client-server communication, and typically accesses data with the 
-Yahoo! Query Language (YQL) due to its power, ease-of-use, and ability to run 
+Yahoo Query Language (YQL) due to its power, ease-of-use, and ability to run 
 from either the client or server.
 
 
