@@ -1,10 +1,6 @@
 [
     {
         "settings": [ "master" ],
-        "staticHandling": {
-            "cache": false,
-            "forceUpdate": true
-        },
         "specs": {
             "frame": {
                 "type": "HTMLFrameMojit",
@@ -27,7 +23,8 @@
                         "top": {
                             "css":[
                                 "/static/MasterMojit/assets/css/style.css",
-                                "/static/SenderMojit/assets/css/style.css"
+                                "/static/SenderMojit/assets/css/style.css",
+                                "/static/ReceiverMojit/assets/css/style.css"
                             ]
                         }
                     }

@@ -22,7 +22,7 @@ YUI.add('Body', function(Y, NAME) {
          *        to the Mojito API.
          */
         index: function(ac) {
-            ac.models.get('BodyModelFoo').getData(function(err, data) {
+            ac.models.get('model').getData(function(err, data) {
                 if (err) {
                     ac.error(err);
                     return;

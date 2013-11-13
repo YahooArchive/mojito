@@ -1,10 +1,6 @@
 [
   {
     "settings": [ "master" ],
-    "staticHandling": {
-        "cache": false,
-        "forceUpdate": true
-    },
     "specs": {
       "mapped_mojit": {
         "type": "RoutingMojit"

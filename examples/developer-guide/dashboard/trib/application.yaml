@@ -78,6 +78,7 @@
   selector: ipad
 - settings:
   - environment:development
+  selector: mocked
   staticHandling:
     forceUpdate: true
   yui:

@@ -37,7 +37,7 @@ YUI.add('Twitter', function (Y, NAME) {
             // If you leave `oauth_keys` undefined, your app will just use mocked data.
             // Get OAuth keys from definition.json to get real data.
             // oauth_keys = ac.config.getDefinition('oauth');
-            ac.models.get('TwitterSearchModel').getData(count, q, oauth_keys, function (err, data) {
+            ac.models.get('twitter').getData(count, q, oauth_keys, function (err, data) {
                 if (err) {
                     ac.error(err);
                     return;

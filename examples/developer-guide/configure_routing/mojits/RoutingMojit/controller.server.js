@@ -14,16 +14,21 @@ YUI.add('RoutingMojit', function(Y, NAME) {
             action = ac.action,
             path = ac.http.getRequest().url,
             routes = ac.config.getRoutes();
-
         if (action === "index" && path === "/") {
             name = "root_route";
-            methods = 'GET';
-        } else if (action === "index") {
+            routes.root_route.verbs.forEach(function(n) {
+                methods += n + ", ";
+            });
+        } else if (action==="index") {
             name = "index_route";
-            methods = 'GET';
+            routes.index_route.verbs.forEach(function(n) {
+                methods += n + ", ";
+            });
         } else {
             name = "show_route";
-            methods = 'POST';
+            routes.show_route.verbs.forEach(function(n) {
+                methods += n + ", ";
+            });
         }
         methods = methods.toUpperCase();
         return {

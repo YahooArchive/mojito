@@ -1,10 +1,6 @@
 [
   {
     "settings": [ "master" ],
-    "staticHandling": {
-        "cache": false,
-        "forceUpdate": true
-    },
     "appPort": 8666,
     "specs": {
       "hello": {

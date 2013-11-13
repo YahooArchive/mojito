@@ -136,7 +136,7 @@ YUI.add('Github', function(Y, NAME) {
         index: function (ac) {
             var yqlTable = "store://gpgSGZAwQ3vaDaalPQZ44u", 
                 title = "YUI GitHub Activity", 
-                model = ac.models.get('StatsModelYQL');
+                model = ac.models.get('yql');
             Y.log(model);
             model.getData({}, yqlTable, function (data) {
                 Y.log("Github -index - model.getData:");

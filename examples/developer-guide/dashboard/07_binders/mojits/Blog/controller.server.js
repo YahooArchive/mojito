@@ -25,7 +25,7 @@ YUI.add('Blog', function (Y, NAME) {
             var view_type = "yui", feedURL = "http://www.yuiblog.com/blog/feed/", title = "YUI Blog Posts";
 
 
-            ac.models.get('BlogModelYQL').getData({}, feedURL, function (data) {
+            ac.models.get('model').getData({}, feedURL, function (data) {
                 // add mojit specific css
                 ac.assets.addCss('./index.css');
 

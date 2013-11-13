@@ -4,15 +4,15 @@
         "middleware": [ "middleware/mojito-contextualizer.js" ],
         "specs": {
             "frame": {
-                "type": "HTMLFrameMojit",
+                "type": "HTMLFrameMojit", 
                 "config": {
                     "deploy": true,
-                    "child": {
-                        "type":"flickr"
+                    "child": { 
+                        "type": "flickr" 
                     },
                     "assets": {
                         "top": {
-                            "css":[
+                            "css": [
                                 "/static/flickr/assets/index.css"
                             ]
                         }

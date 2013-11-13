@@ -40,12 +40,11 @@ YUI.add('Youtube', function (Y, NAME) {
          *        to the Mojito API.
          */
         index: function (ac) {
-            ac.models.get('YoutubeModelYQL').getData({}, function (err, data) {
+            ac.models.get('youtube').getData({}, function (err, data) {
                 Y.log("Youtube controller.server.js -index - model.getData:", "info", NAME);
                 Y.log(data, "info", NAME);
                 var res = [], title = "YUI YouTube Videos";
 
-<<<<<<< HEAD
                 Y.log("youtubmojit results:", "info", NAME);
                 Y.log(res, "info", NAME);
                 if (err) {
@@ -59,13 +58,6 @@ YUI.add('Youtube', function (Y, NAME) {
                         results: res
                     });
                 }
-=======
-                // populate youtube template
-                ac.done({
-                    title: "YUI YouTube Videos",
-                    results: res
-                });
->>>>>>> 763850d... Added module apps and functional tests for them.
             });
         }
     };
