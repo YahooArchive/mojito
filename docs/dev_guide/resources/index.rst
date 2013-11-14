@@ -263,6 +263,8 @@ in ``package.json`` and then running ``npm install`` or by running ``npm install
 
 - https://github.com/yahoo/mojito-rs-hotswap
 - https://github.com/yahoo/mojito-shaker
+- https://github.com/yahoo/mojito-markup-test
+- https://github.com/yahoo/mojito-cli-dimension
 - 
 
 
