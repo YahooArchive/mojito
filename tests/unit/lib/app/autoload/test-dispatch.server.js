@@ -185,6 +185,7 @@ YUI.add('mojito-dispatcher-server-tests', function(Y, NAME) {
             store.validateContext = function (context) {
                 var error = new Error('Invalid context dimension key "foo"');
                 error.code = 400; //bad request
+                throw error;
             };
             dispatcher._createActionContext = function (c) {
                 A.fail('adapter.error should be called instead');
