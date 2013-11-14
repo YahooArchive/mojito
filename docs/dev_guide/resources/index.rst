@@ -260,12 +260,23 @@ Node.js Packages for Use With Mojito
 
 The following packages can be installed in Mojito applications by adding the package as a dependency
 in ``package.json`` and then running ``npm install`` or by running ``npm install <pkg_name>``.
+To learn how to use the packages, click on the link to view the ``README.md``. 
 
-- https://github.com/yahoo/mojito-rs-hotswap
-- https://github.com/yahoo/mojito-shaker
-- https://github.com/yahoo/mojito-markup-test
-- https://github.com/yahoo/mojito-cli-dimension
-- 
+- `Mojito Resource Store Hotswap Plugin <https://github.com/yahoo/mojito-rs-hotswap>`_ -  Allows you
+  to make live code changes and see them reflected in your running application without 
+  without having to restart the ``node`` process. 
+- `Mojito Pipeline <https://github.com/yahoo/mojito-pipeline>`_ - allows a Mojito 
+  application to selectively schedule the rendering, the streaming, and the displaying 
+  of mojits of the page from the server to client (browser).
+- `Mojito Shaker <https://github.com/yahoo/mojito-shaker>`_ - provides a way to manage assets
+  for Mojito applications. It gives users absolute control in transforming, validating, 
+  uploading, organizing, and combining resources in order to maximize performance and 
+  build dynamic applications. 
+- `Mojito Markup Test Utility <https://github.com/yahoo/mojito-markup-test>`_ - allows you to
+  write tests that render mojit views with mocked data and exposes the resulting markup 
+  so it can be validated using YUI Node module.
+- `Mojito Dimensions Base <https://github.com/yahoo/mojito-dimensions-base>`_ - 
+- `Mojito CLI Dimension Tool <https://github.com/yahoo/mojito-cli-dimension>`_ - 
 
 
 .. _additional_resources-archived_docs:
