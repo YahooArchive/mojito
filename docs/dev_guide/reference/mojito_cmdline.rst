@@ -125,7 +125,7 @@ to specify where to write test results.
   - ``$ mojito test mojit <mojit-path> --dir <test_results-path>``
 
 To run functional and unit tests for the Mojito framework,
-you would use the test framework `Yahoo! Arrow <https://github.com/yahoo/arrow>`_.
+you would use the test framework `Yahoo Arrow <https://github.com/yahoo/arrow>`_.
 Follow the instructions in `Running Mojito’s Built-In Tests <../topics/mojito_testing.html#running-mojito-s-built-in-tests>`_
 to run the framework tests for Mojito.
 
@@ -171,6 +171,9 @@ The port number specified in the command above overrides the port number in
 the application configuration file, ``application.json``. The default port 
 number is 8666. See :ref:`Specifying Context <mj_cmdline-context>` to learn 
 how to use the ``--context`` option.
+
+.. note:: You can also start your application with Node.js by running the following command
+          from the application directory: ``$ node --debug server.js``
 
 .. _mj_cmdlne-js_lint:
 

@@ -185,13 +185,16 @@ which is the same as running ``mojito create app default``.
 Mojito Archetypes
 #################
 
-Mojito offers the following three archetypes for applications:
+Mojito offers the following four archetypes for applications:
 
 - ``simple`` - The minimal configuration and code needed to run an application.
 - ``default`` - This archetype is run if no command-line archetype option is specified.  
   The template file for setting up routing, ``routing.json``, is created for you.
 - ``full`` - The ``application.json`` and ``routes.json`` have more boilerplate code for 
   you to use than the default application.
+- ``yahoo`` - This archetype was created so that the ``dimensions.json`` file that defines
+  contexts would conform more closely to `Yahoo Configuration Bundles (YCB) <https://github.com/yahoo/ycb>`_.
+  This archetype is in the process of being removed.
 
 Mojits have three archetypes:
 
@@ -292,7 +295,7 @@ Functional Tests
 ----------------
 
 To run functional and unit tests for the Mojito framework, you would use the test 
-framework `Yahoo! Arrow <https://github.com/yahoo/arrow>`_. Follow the instructions in 
+framework `Yahoo Arrow <https://github.com/yahoo/arrow>`_. Follow the instructions in 
 `Mojito Framework's Unit and Functional Tests 
 <https://github.com/yahoo/mojito/wiki/Mojito-Framework's-Unit-and-Functional-Tests>`_ the 
 framework tests for Mojito. We're also going to cover functional tests in 
