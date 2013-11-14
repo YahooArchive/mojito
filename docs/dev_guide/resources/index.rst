@@ -8,6 +8,7 @@ The following sections provide supplementary material about Mojito:
 - :ref:`additional_resources-screencasts`
 - :ref:`additional_resources-community`
 - :ref:`res_community-pubs`
+- :ref:`mojito_related_packages`
 - :ref:`additional_resources-archived_docs`
 
 
@@ -251,6 +252,19 @@ Blogs
 
 - `Yahoo Announces Cocktails – Shaken, Not Stirred <http://developer.yahoo.com/blogs/ydn/posts/2011/11/yahoo-announces-cocktails-%E2%80%93-shaken-not-stirred/>`_
 - `How YQL powers Cocktails, the technology behind Livestand <http://developer.yahoo.com/blogs/ydn/posts/2011/11/how-yql-powers-cocktails-the-technology-behind-livestand/>`_
+
+.. _mojito_related_packages:
+
+Node.js Packages for Use With Mojito
+====================================
+
+The following packages can be installed in Mojito applications by adding the package as a dependency
+in ``package.json`` and then running ``npm install`` or by running ``npm install <pkg_name>``.
+
+- https://github.com/yahoo/mojito-rs-hotswap
+- https://github.com/yahoo/mojito-shaker
+- 
+
 
 .. _additional_resources-archived_docs:
 
