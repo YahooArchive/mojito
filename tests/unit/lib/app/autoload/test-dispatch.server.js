@@ -173,6 +173,35 @@ YUI.add('mojito-dispatcher-server-tests', function(Y, NAME) {
             dispatcher._createActionContext = _createActionContext;
         },
 
+        'test dispatch with invalid context': function () {
+            var tunnel,
+                adapterError,
+                adapterErrorCalled,
+                _createActionContext = dispatcher._createActionContext;
+
+            dispatcher.init(store, tunnel);
+            // if the expandInstance calls with an error, the tunnel
+            // should be tried.
+            store.validateContext = function (context) {
+                var error = new Error('Invalid context dimension key "foo"');
+                error.code = 400; //bad request
+            };
+            dispatcher._createActionContext = function (c) {
+                A.fail('adapter.error should be called instead');
+            };
+            dispatcher.dispatch(command, {
+                error: function (error) {
+                    adapterError = error;
+                    adapterErrorCalled = true;
+                }
+            });
+            A.isTrue(adapterErrorCalled, 'adapter.error should be called for invalid context');
+            A.areEqual(400, adapterError.code, 'adapter.error should be called with custom error');
+
+            // restoring references
+            dispatcher._createActionContext = _createActionContext;
+        },
+
         'test dispatch with rpc and tunnel': function () {
             var tunnel,
                 tunnelCommand;
