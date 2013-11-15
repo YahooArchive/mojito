@@ -133,7 +133,7 @@ To set up and run ``configure_routing``:
         {
           "settings": ["master"],
           "root_route": {
-            "verbs": ["get","post"],
+            "verbs": ["get"],
             "path": "/",
             "call": "mapped_mojit.index"
           },
@@ -143,7 +143,7 @@ To set up and run ``configure_routing``:
             "call": "mapped_mojit.index"
           },
           "show_route": {
-            "verbs": ["get","post"],
+            "verbs": ["post"],
             "path": "/show",
             "call": "mapped_mojit.show"
           }
@@ -170,19 +170,12 @@ To set up and run ``configure_routing``:
               routes = ac.config.getRoutes();
           if (action === "index" && path === "/") {
             name = "root_route";
-            routes.root_route.verbs.forEach(function(n) {
-                methods += n + ", ";
-            });
+            method = 'GET';
           } else if (action==="index") {
             name = "index_route";
-            routes.index_route.verbs.forEach(function(n) {
-                methods += n + ", ";
-            });
           } else {
             name = "show_route";
-            routes.show_route.verbs.forEach(function(n) {
-                methods += n + ", ";
-            });
+            methods = 'POST'; 
           }
           methods = methods.toUpperCase();
           return {
