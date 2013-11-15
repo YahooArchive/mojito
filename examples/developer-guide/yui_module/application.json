@@ -1,5 +1,9 @@
 [{
     "settings": [ "master" ],
+    "staticHandling": {
+        "cache": false,
+        "forceUpdate": true
+    },
     "specs": {
         "notepad": {
             "type": "HTMLFrameMojit",
