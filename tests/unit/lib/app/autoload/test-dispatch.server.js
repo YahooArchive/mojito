@@ -7,7 +7,7 @@ YUI.add('mojito-dispatcher-server-tests', function(Y, NAME) {
 
     var suite = new Y.Test.Suite(NAME),
         A = Y.Assert,
-        dispatcher = Y.mojito.Dispatcher,
+        dispatcher,
         store,
         command,
         adapter;
@@ -17,6 +17,7 @@ YUI.add('mojito-dispatcher-server-tests', function(Y, NAME) {
         name: 'dispatch',
 
         'setUp': function() {
+            dispatcher = Y.mojito.util.heir(Y.mojito.Dispatcher);
             store = {
                 getStaticAppConfig: function() {
                     return { yui: {} };
@@ -57,6 +58,7 @@ YUI.add('mojito-dispatcher-server-tests', function(Y, NAME) {
         },
 
         'tearDown': function() {
+            dispatcher = null;
             store = null;
             command = null;
             adapter = null;
@@ -119,8 +121,7 @@ YUI.add('mojito-dispatcher-server-tests', function(Y, NAME) {
 
         'test dispatch with valid controller': function () {
             var tunnel,
-                acCommand,
-                _createActionContext = dispatcher._createActionContext;
+                acCommand;
 
             errorTriggered = false;
             dispatcher.init(store, tunnel);
@@ -142,15 +143,11 @@ YUI.add('mojito-dispatcher-server-tests', function(Y, NAME) {
                 }
             });
             A.areSame(command, acCommand, 'AC should be created based on the original command');
-
-            // restoring references
-            dispatcher._createActionContext = _createActionContext;
         },
 
         'test dispatch with invalid controller': function () {
             var tunnel,
-                adapterErrorCalled,
-                _createActionContext = dispatcher._createActionContext;
+                adapterErrorCalled;
 
             errorTriggered = false;
             dispatcher.init(store, tunnel);
@@ -168,16 +165,12 @@ YUI.add('mojito-dispatcher-server-tests', function(Y, NAME) {
                 }
             });
             A.isTrue(adapterErrorCalled, 'adapter.error should be called for invalid controllers');
-
-            // restoring references
-            dispatcher._createActionContext = _createActionContext;
         },
 
         'test dispatch with invalid context': function () {
             var tunnel,
                 adapterError,
-                adapterErrorCalled,
-                _createActionContext = dispatcher._createActionContext;
+                adapterErrorCalled;
 
             dispatcher.init(store, tunnel);
             // if the expandInstance calls with an error, the tunnel
@@ -198,9 +191,6 @@ YUI.add('mojito-dispatcher-server-tests', function(Y, NAME) {
             });
             A.isTrue(adapterErrorCalled, 'adapter.error should be called for invalid context');
             A.areEqual(400, adapterError.code, 'adapter.error should be called with custom error');
-
-            // restoring references
-            dispatcher._createActionContext = _createActionContext;
         },
 
         'test dispatch with rpc and tunnel': function () {
