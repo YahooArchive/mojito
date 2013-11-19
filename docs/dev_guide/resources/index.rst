@@ -263,7 +263,7 @@ in ``package.json`` and then running ``npm install`` or by running ``npm install
 To learn how to use the packages, click on the link to view the ``README.md``. 
 
 - `Mojito Resource Store Hotswap Plugin <https://github.com/yahoo/mojito-rs-hotswap>`_ -  Allows you
-  to make live code changes and see them reflected in your running application without 
+  to make live code changes and see them reflected in your running application 
   without having to restart the ``node`` process. 
 - `Mojito Pipeline <https://github.com/yahoo/mojito-pipeline>`_ - allows a Mojito 
   application to selectively schedule the rendering, the streaming, and the displaying 
@@ -275,8 +275,11 @@ To learn how to use the packages, click on the link to view the ``README.md``.
 - `Mojito Markup Test Utility <https://github.com/yahoo/mojito-markup-test>`_ - allows you to
   write tests that render mojit views with mocked data and exposes the resulting markup 
   so it can be validated using YUI Node module.
-- `Mojito Dimensions Base <https://github.com/yahoo/mojito-dimensions-base>`_ - 
-- `Mojito CLI Dimension Tool <https://github.com/yahoo/mojito-cli-dimension>`_ - 
+- `Mojito Dimensions Base <https://github.com/yahoo/mojito-dimensions-base>`_ - allows you 
+  choose multiple versions of Mojito at runtime for bucket testing based on the ``selector``.
+- `Mojito CLI Dimension Tool <https://github.com/yahoo/mojito-cli-dimension>`_ - utility
+  for creating dimensions ``super-bundle`` (see `Mojito Dimensions Base <https://github.com/yahoo/mojito-dimensions-base>`_) 
+  packages for running bucket tests.
 
 
 .. _additional_resources-archived_docs:
@@ -288,3 +291,5 @@ Archived Documentation
 - Mojito v0.4 (`General <http://developer.yahoo.com/cocktails/mojito/v0.4/docs/>`_\/`API <http://developer.yahoo.com/cocktails/mojito/v0.4/api/>`_)
 - Mojito v0.5 (`General <http://developer.yahoo.com/cocktails/mojito/v0.5/docs/>`_\/`API <http://developer.yahoo.com/cocktails/mojito/v0.5/api/>`_)
 - Mojito v0.6 (`General <http://developer.yahoo.com/cocktails/mojito/v0.6/docs/>`_\/`API <http://developer.yahoo.com/cocktails/mojito/v0.6/api/>`_)
+- Mojito v0.7 (`General <http://developer.yahoo.com/cocktails/mojito/v0.6/docs/>`_\/`API <http://developer.yahoo.com/cocktails/mojito/v0.7/api/>`_)
+
