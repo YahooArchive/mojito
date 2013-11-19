@@ -291,5 +291,5 @@ Archived Documentation
 - Mojito v0.4 (`General <http://developer.yahoo.com/cocktails/mojito/v0.4/docs/>`_\/`API <http://developer.yahoo.com/cocktails/mojito/v0.4/api/>`_)
 - Mojito v0.5 (`General <http://developer.yahoo.com/cocktails/mojito/v0.5/docs/>`_\/`API <http://developer.yahoo.com/cocktails/mojito/v0.5/api/>`_)
 - Mojito v0.6 (`General <http://developer.yahoo.com/cocktails/mojito/v0.6/docs/>`_\/`API <http://developer.yahoo.com/cocktails/mojito/v0.6/api/>`_)
-- Mojito v0.7 (`General <http://developer.yahoo.com/cocktails/mojito/v0.6/docs/>`_\/`API <http://developer.yahoo.com/cocktails/mojito/v0.7/api/>`_)
+- Mojito v0.7 (`General <http://developer.yahoo.com/cocktails/mojito/v0.7/docs/>`_\/`API <http://developer.yahoo.com/cocktails/mojito/v0.7/api/>`_)
 
