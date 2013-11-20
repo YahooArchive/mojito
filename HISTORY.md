@@ -12,6 +12,7 @@ Deprecations, Removals
 Features
 --------
 
+* Handle invalid context exceptions with output handler
 
 Bug Fixes
 ---------
@@ -21,6 +22,7 @@ Bug Fixes
 Acknowledgements
 ----------------
 
+Special thanks to [David Gomez](https://github.com/gomezd) for his contributions to this release.
 
 version 0.8.0
 =============
