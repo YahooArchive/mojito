@@ -17,7 +17,7 @@ Features
 Bug Fixes
 ---------
 
-
+* fix issue #1254 Allow the same context to be used multiple times in configuration
 
 Acknowledgements
 ----------------

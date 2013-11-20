@@ -398,7 +398,11 @@ YUI().use('addon-rs-config', 'mojito-util', 'mojito-test-extra', 'base', 'oop', 
                 libpath.join(fixtures, 'application2.json')
             ];
             ycb = store.config.createMultipartYCB(paths);
-            A.isUndefined(ycb);
+            A.isObject(ycb);
+            config = ycb.read({runtime: 'client'});
+            A.isObject(config);
+            A.areSame('testVal2-app2', config.testKey2);
+            A.areSame('testVal4', config.testKey4);
         },
 
 
