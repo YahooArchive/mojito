@@ -23,8 +23,5 @@
                 }
             }
         }
-    },
-    "staticHandling": {
-      "appName": "global_assets"
     }
 }]
