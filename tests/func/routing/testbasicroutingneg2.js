@@ -11,7 +11,7 @@ YUI({
 
     suite.add(new Y.Test.Case({
         "test BasicRoutingNeg2": function(){
-            Y.Assert.areEqual("Cannot GET /complete/invalid/path", Y.one('pre').get('innerHTML'));
+            Y.Assert.areEqual("Cannot GET /complete/invalid/path", Y.one('body').get('innerHTML').match(/Cannot GET \/complete\/invalid\/path/gi));
         }
     }));
 
