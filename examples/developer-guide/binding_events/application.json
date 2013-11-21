@@ -1,6 +1,10 @@
 [
     {
         "settings": [ "master" ],
+        "staticHandling": {
+            "cache": false,
+            "forceUpdate": true
+        },
         "middleware": ["middleware/mojito-contextualizer.js"],
         "specs": {
             "frame": {
