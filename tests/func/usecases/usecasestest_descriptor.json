@@ -196,14 +196,14 @@
                  "group" : "smoke,usecases",
                  "params" : {
                      "test" : "testpreinit.js",
-                     "page" : "$$config.baseUrl$$/flickr2?device=iphone"
+                     "page" : "$$config.baseUrl$$/flickr2"
                 }
             },
             "preattachbinder" : {
                  "group" : "smoke,usecases",
                  "params" : {
                      "test" : "testpreattachedbinder.js",
-                     "page" : "$$config.baseUrl$$/flickr2?device=iphone"
+                     "page" : "$$config.baseUrl$$/flickr2"
                 }
             }
         }     
