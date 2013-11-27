@@ -120,8 +120,15 @@ YUI().use('mojito-composite-addon', 'test', function(Y) {
                 }
                 c.execute(config1, function(data1, meta1) {
                     A.isString(data1.kid_c, "missing kid_c data");
+                    A.areSame('kid_c__meta', meta1.kid_c, "wrong kid_c meta");
+                    A.isUndefined(data1.kid_a, "should not have info about kid_a");
+                    A.isUndefined(data1.kid_b, "should not have info about kid_b");
+                    A.isUndefined(meta1.kid_a, "should not have info about kid_a");
+                    A.isUndefined(meta1.kid_b, "should not have info about kid_b");
                 });
 
+                A.isUndefined(data.kid_c, "should not have info about kid_b");
+                A.isUndefined(meta.kid_c, "should not have info about kid_a");
             });
 
             A.isTrue(exeCbCalled, "execute callback never called");
