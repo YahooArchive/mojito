@@ -112,6 +112,16 @@ YUI().use('mojito-composite-addon', 'test', function(Y) {
                 A.isString(meta.kid_b, "missing kid_b meta");
                 A.areSame('kid_a__meta', meta.kid_a, "wrong kid_a meta");
                 A.areSame('kid_b__meta', meta.kid_b, "wrong kid_b meta");
+
+                config1 = {
+                    children: {
+                        kid_c: { id: 'kid_c', type: 'kidc' }
+                    }
+                }
+                c.execute(config1, function(data1, meta1) {
+                    A.isString(data1.kid_c, "missing kid_c data");
+                });
+
             });
 
             A.isTrue(exeCbCalled, "execute callback never called");
