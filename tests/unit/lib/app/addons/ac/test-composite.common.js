@@ -100,8 +100,29 @@ YUI().use('mojito-composite-addon', 'test', function(Y) {
                         kid_b: { id: 'kid_b', type: 'kidb' }
                     }
                 },
+                config1 = {
+                    children: {
+                        kid_c: { id: 'kid_c', type: 'kidc' }
+                    }
+                },
+                config2 = {
+                    children: {
+                        kid_d: { id: 'kid_d', type: 'kidd' }
+                    }
+                },
+                config3 = {
+                    children: {
+                        kid_e: { id: 'kid_e', type: 'kide' }
+                    }
+                },
                 exeCbCalled = false;
+            
+            c.execute(config3, function(data, meta) {
+                exeCbCalled = true;
+                A.isString(data.kid_e, "missing kid_e data");
+                A.areSame('kid_e__data', data.kid_e, "wrong kid_e data");
 
+            });
             c.execute(config, function(data, meta) {
                 exeCbCalled = true;
                 A.isString(data.kid_a, "missing kid_a data");
@@ -113,11 +134,12 @@ YUI().use('mojito-composite-addon', 'test', function(Y) {
                 A.areSame('kid_a__meta', meta.kid_a, "wrong kid_a meta");
                 A.areSame('kid_b__meta', meta.kid_b, "wrong kid_b meta");
 
-                config1 = {
-                    children: {
-                        kid_c: { id: 'kid_c', type: 'kidc' }
-                    }
-                }
+                c.execute(config2, function(data, meta) {
+                exeCbCalled = true;
+                A.isString(data.kid_d, "missing kid_d data");
+                A.areSame('kid_d__data', data.kid_d, "wrong kid_d data");
+
+                });
                 c.execute(config1, function(data1, meta1) {
                     A.isString(data1.kid_c, "missing kid_c data");
                     A.areSame('kid_c__meta', meta1.kid_c, "wrong kid_c meta");
@@ -127,8 +149,10 @@ YUI().use('mojito-composite-addon', 'test', function(Y) {
                     A.isUndefined(meta1.kid_b, "should not have info about kid_b");
                 });
 
-                A.isUndefined(data.kid_c, "should not have info about kid_b");
-                A.isUndefined(meta.kid_c, "should not have info about kid_a");
+                A.isUndefined(data.kid_c, "should not have info about kid_c");
+                A.isUndefined(meta.kid_c, "should not have info about kid_c");
+                A.isUndefined(data.kid_d, "should not have info about kid_d");
+                A.isUndefined(meta.kid_d, "should not have info about kid_d");
             });
 
             A.isTrue(exeCbCalled, "execute callback never called");
