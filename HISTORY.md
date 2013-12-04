@@ -7,11 +7,26 @@ Notes
 Deprecations, Removals
 ----------------------
 
+Features
+--------
+
+Bug Fixes
+---------
+
+* Issue #1280: Composite.execute cannot be called multiple times in the same mojit
+
+Acknowledgements
+----------------
+
+
+version 0.8.1
+=================
 
 Features
 --------
 
 * Handle invalid context exceptions with output handler
+* Allow merging of YCB configs with the same context (by using ycb@1.1.0)
 
 Bug Fixes
 ---------
