@@ -121,6 +121,16 @@ YUI().use('mojito-composite-addon', 'test', function(Y) {
                 exeCbCalled = true;
                 A.isString(data.kid_e, "missing kid_e data");
                 A.areSame('kid_e__data', data.kid_e, "wrong kid_e data");
+                A.isString(meta.kid_e, "missing kid_e meta");
+                A.areSame('kid_e__meta', meta.kid_e, "wrong kid_e meta");
+                A.isUndefined(data.kid_a, "should not have info about kid_a");
+                A.isUndefined(meta.kid_a, "should not have info about kid_a");
+                A.isUndefined(data.kid_b, "should not have info about kid_b");
+                A.isUndefined(meta.kid_b, "should not have info about kid_b");
+                A.isUndefined(data.kid_c, "should not have info about kid_c");
+                A.isUndefined(meta.kid_c, "should not have info about kid_c");
+                A.isUndefined(data.kid_d, "should not have info about kid_d");
+                A.isUndefined(meta.kid_d, "should not have info about kid_d");
 
             });
             c.execute(config, function(data, meta) {
@@ -134,25 +144,43 @@ YUI().use('mojito-composite-addon', 'test', function(Y) {
                 A.areSame('kid_a__meta', meta.kid_a, "wrong kid_a meta");
                 A.areSame('kid_b__meta', meta.kid_b, "wrong kid_b meta");
 
-                c.execute(config2, function(data, meta) {
-                exeCbCalled = true;
-                A.isString(data.kid_d, "missing kid_d data");
-                A.areSame('kid_d__data', data.kid_d, "wrong kid_d data");
-
+                c.execute(config1, function(data, meta) {
+                    A.isString(data.kid_c, "missing kid_c data");
+                    A.areSame('kid_c__data', data.kid_c, "wrong kid_c data");
+                    A.isString(meta.kid_c, "missing kid_c meta");
+                    A.areSame('kid_c__meta', meta.kid_c, "wrong kid_c meta");
+                    A.isUndefined(data.kid_a, "should not have info about kid_a");
+                    A.isUndefined(meta.kid_a, "should not have info about kid_a");
+                    A.isUndefined(data.kid_b, "should not have info about kid_b");
+                    A.isUndefined(meta.kid_b, "should not have info about kid_b");
+                    A.isUndefined(data.kid_d, "should not have info about kid_d");
+                    A.isUndefined(meta.kid_d, "should not have info about kid_d");
+                    A.isUndefined(data.kid_e, "should not have info about kid_e");
+                    A.isUndefined(meta.kid_e, "should not have info about kid_e");
                 });
-                c.execute(config1, function(data1, meta1) {
-                    A.isString(data1.kid_c, "missing kid_c data");
-                    A.areSame('kid_c__meta', meta1.kid_c, "wrong kid_c meta");
-                    A.isUndefined(data1.kid_a, "should not have info about kid_a");
-                    A.isUndefined(data1.kid_b, "should not have info about kid_b");
-                    A.isUndefined(meta1.kid_a, "should not have info about kid_a");
-                    A.isUndefined(meta1.kid_b, "should not have info about kid_b");
+                
+                c.execute(config2, function(data, meta) {
+                    exeCbCalled = true;
+                    A.isString(data.kid_d, "missing kid_d data");
+                    A.areSame('kid_d__data', data.kid_d, "wrong kid_d data");
+                    A.isString(meta.kid_d, "missing kid_d meta");
+                    A.areSame('kid_d__meta', meta.kid_d, "wrong kid_d meta");
+                    A.isUndefined(data.kid_a, "should not have info about kid_a");
+                    A.isUndefined(meta.kid_a, "should not have info about kid_a");
+                    A.isUndefined(data.kid_b, "should not have info about kid_b");
+                    A.isUndefined(meta.kid_b, "should not have info about kid_b");
+                    A.isUndefined(data.kid_c, "should not have info about kid_c");
+                    A.isUndefined(meta.kid_c, "should not have info about kid_c");
+                    A.isUndefined(data.kid_e, "should not have info about kid_e");
+                    A.isUndefined(meta.kid_e, "should not have info about kid_e");
                 });
 
                 A.isUndefined(data.kid_c, "should not have info about kid_c");
                 A.isUndefined(meta.kid_c, "should not have info about kid_c");
                 A.isUndefined(data.kid_d, "should not have info about kid_d");
                 A.isUndefined(meta.kid_d, "should not have info about kid_d");
+                A.isUndefined(data.kid_e, "should not have info about kid_e");
+                A.isUndefined(meta.kid_e, "should not have info about kid_e");
             });
 
             A.isTrue(exeCbCalled, "execute callback never called");
