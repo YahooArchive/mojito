@@ -387,7 +387,7 @@ To set up and run ``model_yql``:
         'flickrModel'
       ]});
 
-#. Replace the contents of ``assets/index.css`` for the application's CSS with the following:
+#. Replace the contents of ``flickr/assets/index.css`` for the ``flickr` mojit's CSS with the following:
 
    .. code-block:: css
 
