@@ -650,7 +650,11 @@ ParentMojit
            "context" : ac.context,
            "params" : {}
          };
-         ac._dispatch(command, ac);
+         var newAdapter = new Y.mojito.OutputBuffer("childBuffer", function(err, data, meta) {
+           ac.done(data, meta);
+         });
+         newAdapter = Y.mix(newAdapter, ac._adapter);
+         ac._dispatch(command, newAdapter);
        }
      };
    }, '0.0.1', {requires: ['mojito', 'mojito-assets-addon']});
