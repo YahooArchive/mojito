@@ -1,0 +1,267 @@
+{
+    "desc": "aa10413-170",
+    "app": "master",
+    "mojito": "aa10413",
+    "version": "0.8.1",
+    "appStartMS": 14014,
+    "appStartMemory": {
+        "vsize": 109320,
+        "rss": 83736,
+        "when": 1386380074530
+    },
+    "bursts": [
+        {
+            "header": "httperf --hog --client=0/1 --server=shakecorner.corp.yahoo.com --port=8666 --uri=/ --send-buffer=4096 --recv-buffer=16384 --num-conns=2000 --num-calls=1\nMaximum connect burst length: 1",
+            "total": {
+                "connections": 2000,
+                "requests": 2000,
+                "replies": 2000,
+                "test-duration": 252.806
+            },
+            "connection": {
+                "rate": {
+                    "cps": 7.9,
+                    "mspc": 126.4,
+                    "maxConcurrent": 1
+                },
+                "time": {
+                    "min": 121,
+                    "avg": 126,
+                    "max": 309,
+                    "median": 122,
+                    "stddev": 7,
+                    "connect": 24
+                },
+                "length": 1
+            },
+            "request": {
+                "rps": 7.9,
+                "mspr": 126.4,
+                "size": 79
+            },
+            "reply": {
+                "rate": {
+                    "min": 7.4,
+                    "avg": 7.9,
+                    "max": 8.2,
+                    "stddev": 0.1,
+                    "samples": 50
+                },
+                "time": {
+                    "response": 53.3,
+                    "transfer": 49
+                },
+                "size": {
+                    "header": 173,
+                    "content": 20601,
+                    "footer": 2,
+                    "total": 20776
+                },
+                "status": {
+                    "1xx": 0,
+                    "2xx": 2000,
+                    "3xx": 0,
+                    "4xx": 0,
+                    "5xx": 0
+                }
+            },
+            "misc": {
+                "cpu": {
+                    "user": 79.2,
+                    "system": 170.63,
+                    "pct": {
+                        "user": 31.3,
+                        "system": 67.5,
+                        "total": 98.8
+                    }
+                },
+                "net": {
+                    "KBps": 161.1
+                }
+            },
+            "errors": {
+                "total": 0,
+                "client-timo": 0,
+                "socket-timo": 0,
+                "connrefused": 0,
+                "connreset": 0,
+                "fd-unavail": 0,
+                "addrunavail": 0,
+                "ftab-full": 0,
+                "other": 0
+            },
+            "memories": [
+                {
+                    "vsize": 146824,
+                    "rss": 101436,
+                    "when": 1386380082788
+                },
+                {
+                    "vsize": 148872,
+                    "rss": 103408,
+                    "when": 1386380083428
+                },
+                {
+                    "vsize": 150920,
+                    "rss": 105388,
+                    "when": 1386380084068
+                },
+                {
+                    "vsize": 150920,
+                    "rss": 105528,
+                    "when": 1386380084712
+                },
+                {
+                    "vsize": 144776,
+                    "rss": 100524,
+                    "when": 1386380086045
+                },
+                {
+                    "vsize": 144776,
+                    "rss": 100652,
+                    "when": 1386380086684
+                },
+                {
+                    "vsize": 144776,
+                    "rss": 100892,
+                    "when": 1386380087325
+                },
+                {
+                    "vsize": 144776,
+                    "rss": 100892,
+                    "when": 1386380087965
+                },
+                {
+                    "vsize": 144776,
+                    "rss": 100892,
+                    "when": 1386380088606
+                },
+                {
+                    "vsize": 144776,
+                    "rss": 100892,
+                    "when": 1386380089245
+                },
+                {
+                    "vsize": 144776,
+                    "rss": 100896,
+                    "when": 1386380090524
+                },
+                {
+                    "vsize": 144776,
+                    "rss": 100896,
+                    "when": 1386380091164
+                },
+                {
+                    "vsize": 144776,
+                    "rss": 100896,
+                    "when": 1386380091804
+                },
+                {
+                    "vsize": 146824,
+                    "rss": 102092,
+                    "when": 1386380092443
+                },
+                {
+                    "vsize": 148872,
+                    "rss": 104000,
+                    "when": 1386380093085
+                },
+                {
+                    "vsize": 148872,
+                    "rss": 104096,
+                    "when": 1386380093727
+                },
+                {
+                    "vsize": 150920,
+                    "rss": 106000,
+                    "when": 1386380094368
+                },
+                {
+                    "vsize": 149896,
+                    "rss": 104800,
+                    "when": 1386380095007
+                },
+                {
+                    "vsize": 149896,
+                    "rss": 104800,
+                    "when": 1386380095648
+                },
+                {
+                    "vsize": 149896,
+                    "rss": 105296,
+                    "when": 1386380096927
+                },
+                {
+                    "vsize": 149896,
+                    "rss": 105672,
+                    "when": 1386380097566
+                },
+                {
+                    "vsize": 149896,
+                    "rss": 105808,
+                    "when": 1386380098205
+                },
+                {
+                    "vsize": 149896,
+                    "rss": 105944,
+                    "when": 1386380098845
+                },
+                {
+                    "vsize": 149896,
+                    "rss": 105948,
+                    "when": 1386380099484
+                },
+                {
+                    "vsize": 149896,
+                    "rss": 106020,
+                    "when": 1386380100124
+                },
+                {
+                    "vsize": 149896,
+                    "rss": 106020,
+                    "when": 1386380101406
+                },
+                {
+                    "vsize": 149896,
+                    "rss": 106020,
+                    "when": 1386380102046
+                },
+                {
+                    "vsize": 149896,
+                    "rss": 106024,
+                    "when": 1386380103328
+                },
+                {
+                    "vsize": 150920,
+                    "rss": 106352,
+                    "when": 1386380103969
+                },
+                {
+                    "vsize": 150920,
+                    "rss": 105212,
+                    "when": 1386380104608
+                },
+                {
+                    "vsize": 150920,
+                    "rss": 105216,
+                    "when": 1386380105248
+                },
+                {
+                    "vsize": 150920,
+                    "rss": 105216,
+                    "when": 1386380105887
+                },
+                {
+                    "vsize": 150920,
+                    "rss": 105352,
+                    "when": 1386380106526
+                },
+                {
+                    "vsize": 150920,
+                    "rss": 106464,
+                    "when": 1386380107165
+                }
+            ]
+        }
+    ]
+}
