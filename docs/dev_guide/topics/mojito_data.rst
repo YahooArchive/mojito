@@ -534,6 +534,15 @@ data. Also, if your data model contains a lot of information, the payload of the
 will negatively affect performance and security as data is transmitted back and forth
 between the client and server.
 
+Also, the ``pageData`` object is not preserved during RPC calls, meaning
+that the object is not passed between the client and server when making tunnel 
+requests. This is a limitation because Mojito can't predict the size of ``pageData``,
+so it's not possible to resolve conflicts between what is returned from a tunnel request 
+and what was potentially changed on the client at the page level. 
+If you want to preserve the state during RPC calls, we recommend you use the ``data`` object, 
+which is more self-contained per mojit instance, although it does not necessarily mean you will 
+not have conflicts. 
+
 .. _mojito_data_sharing-data_addon:
 
 Data Addon
