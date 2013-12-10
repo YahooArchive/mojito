@@ -1,0 +1,127 @@
+{
+    "desc": "6d24767-178",
+    "app": "master",
+    "mojito": "6d24767",
+    "version": "0.8.1",
+    "appStartMS": 14135,
+    "appStartMemory": {
+        "vsize": 109500,
+        "rss": 83920,
+        "when": 1386700599863
+    },
+    "bursts": [
+        {
+            "header": "httperf --hog --client=0/1 --server=shakecorner.corp.yahoo.com --port=8666 --uri=/ --send-buffer=4096 --recv-buffer=16384 --num-conns=2000 --num-calls=1\nMaximum connect burst length: 1",
+            "total": {
+                "connections": 2000,
+                "requests": 2000,
+                "replies": 2000,
+                "test-duration": 252.748
+            },
+            "connection": {
+                "rate": {
+                    "cps": 7.9,
+                    "mspc": 126.4,
+                    "maxConcurrent": 1
+                },
+                "time": {
+                    "min": 122,
+                    "avg": 126,
+                    "max": 268,
+                    "median": 122,
+                    "stddev": 7,
+                    "connect": 24
+                },
+                "length": 1
+            },
+            "request": {
+                "rps": 7.9,
+                "mspr": 126.4,
+                "size": 79
+            },
+            "reply": {
+                "rate": {
+                    "min": 7.4,
+                    "avg": 7.9,
+                    "max": 8.2,
+                    "stddev": 0.2,
+                    "samples": 50
+                },
+                "time": {
+                    "response": 53.2,
+                    "transfer": 49.1
+                },
+                "size": {
+                    "header": 173,
+                    "content": 20601,
+                    "footer": 2,
+                    "total": 20776
+                },
+                "status": {
+                    "1xx": 0,
+                    "2xx": 2000,
+                    "3xx": 0,
+                    "4xx": 0,
+                    "5xx": 0
+                }
+            },
+            "misc": {
+                "cpu": {
+                    "user": 79.85,
+                    "system": 170.06,
+                    "pct": {
+                        "user": 31.6,
+                        "system": 67.3,
+                        "total": 98.9
+                    }
+                },
+                "net": {
+                    "KBps": 161.1
+                }
+            },
+            "errors": {
+                "total": 0,
+                "client-timo": 0,
+                "socket-timo": 0,
+                "connrefused": 0,
+                "connreset": 0,
+                "fd-unavail": 0,
+                "addrunavail": 0,
+                "ftab-full": 0,
+                "other": 0
+            },
+            "memories": [
+                {
+                    "vsize": 146004,
+                    "rss": 101480,
+                    "when": 1386700608121
+                },
+                {
+                    "vsize": 148052,
+                    "rss": 103428,
+                    "when": 1386700608764
+                },
+                {
+                    "vsize": 149076,
+                    "rss": 105368,
+                    "when": 1386700609408
+                },
+                {
+                    "vsize": 150100,
+                    "rss": 105548,
+                    "when": 1386700610053
+                },
+                {
+                    "vsize": 143956,
+                    "rss": 100520,
+                    "when": 1386700610758
+                },
+                {
+                    "vsize": 143956,
+                    "rss": 100588,
+                    "when": 1386700611401
+                }
+            ]
+        }
+    ]
+}
