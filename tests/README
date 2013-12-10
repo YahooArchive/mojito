@@ -79,8 +79,8 @@ The params property is an object containing specific parameters. The three of
 interest to us are "page", "lib", and "test".
 
 The "page" setting for each unit test refers to the mojito-test.html file. The
-mojito-test.html file is a pure HTML file which loads common libraries (yui
-3.5.1, yui-test, and mojito-test) which ensure that each file-under-test has an
+mojito-test.html file is a pure HTML file which loads common libraries (yui,
+yui-test, and mojito-test) which ensure that each file-under-test has an
 isolated context in which to execute. [NOTE we're investigating how to properly
 default to a common page to 'dry' this up].
 
@@ -151,71 +151,5 @@ suite with one or more tests, and finally add the suite to the Y.Test.Runner.
 Test Execution
 ==============
 
-To run the unit tests you must first start the arrow_server process:
-
-$ arrow_server
-
-Second, for client-side testing you'll need to start selenium. In the example
-below you'll want to replace the jar file version with your version.
-
-$ java -Dwebdriver.firefox.profile=default -jar /usr/local/src/selenium/selenium-server-standalone-2.22.0.jar"
-
-Once the two server processes are running it's recommended that you open a
-browser on the WebDriver hub and create a session you can reuse. Navigate your
-browser (Firefox is a good choice here) to http://localhost:4444/wd/hub and
-create a session. Use Firefox as the browser for best results (and so you can
-leverage FireBug to help debug your tests as needed).
-
-With a session running enter the following command, substituting the specific
-descriptor file name you prefer:
-
-arrow --driver=selenium --reuseSession=true
-     ./unit/lib/app/addons/ac/test_descriptor.json
-
-If you want to test only framework tests you can add --group=fw to the command.
-
-If you want to run a specific test you can add --test={testname} to the command.
-
-
-base File Overview
-==================
-
-mojito-test.html
-----------------
-
-A simple html file which includes yui-3.5.1, yui-test.js, and mojito-test.js,
-the three common library files isolated unit tests will require. This file is
-typically referenced in test descriptor files as a "page" property or on the
-arrow command line via the --page parameter.
-
-mojito-test.js
---------------
-
-A set of common utility functions which provide test capability including
-common mock objects and common test infrastructure.
-
-This file specifically handles add() operations for the mojito elements
-typically referenced in file-under-test 'requires' blocks so these files can be
-loaded and tested in true isolation.
-
-In addition, this file provides a set of common mocking functions which can be
-used in test files to quickly create mocks for common Mojito objects.
-
-This file is loaded after yui-3.5.1.js and yui-test.js but before any "lib" and
-"test" files defined in the test descriptor files.
-
-yui-3.5.1.js
-------------
-
-An unminified snapshot of YUI 3.5.1 for setting baseline YUI functionality. This
-file is referenced first in the <head> of mojito-test.html. The value of this
-file is that it ensures all tests work with a common, debugger-friendly, version
-of the YUI framework.
-
-yui-test.js
------------
-
-Required to work around a current Arrow bug which fails to properly load the
-test module. This file is loaded after yui-3.5.1.js and before mojito-test.js in
-the <head> of mojito-test.html.
+See [Mojito Framework's Unit and Functional Tests](https://github.com/yahoo/mojito/wiki/Mojito-Framework's-Unit-and-Functional-Tests) for instructions on how to run the functional tests found in the `tests` directory.
 
