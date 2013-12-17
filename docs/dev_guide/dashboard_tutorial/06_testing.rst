@@ -1209,7 +1209,7 @@ Creating the Application
 
       .. note:: If PhantomJS is unable to start, try running the command above in another shell window.
    #. Start your application in the background as well: ``$ mojito start &``
-   #. Run your Arrow test with the descriptor: ``$ node_modules/yahoo-arrow/index.js --browser=phantomjs arrow_tests/test_tribapp_descriptor.json --baseUrl=http://localhost:866 --phantomHost=http://localhost:4445/wd/hub``
+   #. Run your Arrow test with the descriptor: ``$ node_modules/yahoo-arrow/index.js --browser=phantomjs arrow_tests/test_tribapp_descriptor.json --baseUrl=http://localhost:8666 --phantomHost=http://localhost:4445/wd/hub``
    #. You'll see ``INFO`` log messages describing the running of the tests, then ``debug`` statements,
       and finally the test result, which should be one passed test as shown below:
 
