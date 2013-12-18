@@ -13,6 +13,8 @@ Features
 Bug Fixes
 ---------
 
+* Issue #1280: Composite.execute cannot be called multiple times in the same mojit
+
 Acknowledgements
 ----------------
 
