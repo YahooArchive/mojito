@@ -4,14 +4,11 @@ version @VERSION@
 Notes
 -----
 
-
 Deprecations, Removals
 ----------------------
 
-
 Features
 --------
-
 
 Bug Fixes
 ---------
@@ -20,6 +17,26 @@ Bug Fixes
 
 Acknowledgements
 ----------------
+
+
+version 0.8.1
+=================
+
+Features
+--------
+
+* Handle invalid context exceptions with output handler
+* Allow merging of YCB configs with the same context (by using ycb@1.1.0)
+
+Bug Fixes
+---------
+
+* fix issue #1254 Allow the same context to be used multiple times in configuration
+
+Acknowledgements
+----------------
+
+Special thanks to [David Gomez](https://github.com/gomezd) for his contributions to this release.
 
 
 version 0.8.0

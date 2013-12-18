@@ -8,6 +8,7 @@ The following sections provide supplementary material about Mojito:
 - :ref:`additional_resources-screencasts`
 - :ref:`additional_resources-community`
 - :ref:`res_community-pubs`
+- :ref:`mojito_related_packages`
 - :ref:`additional_resources-archived_docs`
 
 
@@ -252,6 +253,35 @@ Blogs
 - `Yahoo Announces Cocktails – Shaken, Not Stirred <http://developer.yahoo.com/blogs/ydn/posts/2011/11/yahoo-announces-cocktails-%E2%80%93-shaken-not-stirred/>`_
 - `How YQL powers Cocktails, the technology behind Livestand <http://developer.yahoo.com/blogs/ydn/posts/2011/11/how-yql-powers-cocktails-the-technology-behind-livestand/>`_
 
+.. _mojito_related_packages:
+
+Node.js Packages for Use With Mojito
+====================================
+
+The following packages can be installed in Mojito applications by adding the package as a dependency
+in ``package.json`` and then running ``npm install`` or by running ``npm install <pkg_name>``.
+To learn how to use the packages, click on the link to view the ``README.md``. 
+
+- `Mojito Resource Store Hotswap Plugin <https://github.com/yahoo/mojito-rs-hotswap>`_ -  Allows you
+  to make live code changes and see them reflected in your running application 
+  without having to restart the ``node`` process. 
+- `Mojito Pipeline <https://github.com/yahoo/mojito-pipeline>`_ - allows a Mojito 
+  application to selectively schedule the rendering, the streaming, and the displaying 
+  of mojits of the page from the server to client (browser).
+- `Mojito Shaker <https://github.com/yahoo/mojito-shaker>`_ - provides a way to manage assets
+  for Mojito applications. It gives users absolute control in transforming, validating, 
+  uploading, organizing, and combining resources in order to maximize performance and 
+  build dynamic applications. 
+- `Mojito Markup Test Utility <https://github.com/yahoo/mojito-markup-test>`_ - allows you to
+  write tests that render mojit views with mocked data and exposes the resulting markup 
+  so it can be validated using YUI Node module.
+- `Mojito Dimensions Base <https://github.com/yahoo/mojito-dimensions-base>`_ - allows you 
+  choose multiple versions of Mojito at runtime for bucket testing based on the ``selector``.
+- `Mojito CLI Dimension Tool <https://github.com/yahoo/mojito-cli-dimension>`_ - utility
+  for creating dimensions ``super-bundle`` (see `Mojito Dimensions Base <https://github.com/yahoo/mojito-dimensions-base>`_) 
+  packages for running bucket tests.
+
+
 .. _additional_resources-archived_docs:
 
 Archived Documentation
@@ -261,3 +291,5 @@ Archived Documentation
 - Mojito v0.4 (`General <http://developer.yahoo.com/cocktails/mojito/v0.4/docs/>`_\/`API <http://developer.yahoo.com/cocktails/mojito/v0.4/api/>`_)
 - Mojito v0.5 (`General <http://developer.yahoo.com/cocktails/mojito/v0.5/docs/>`_\/`API <http://developer.yahoo.com/cocktails/mojito/v0.5/api/>`_)
 - Mojito v0.6 (`General <http://developer.yahoo.com/cocktails/mojito/v0.6/docs/>`_\/`API <http://developer.yahoo.com/cocktails/mojito/v0.6/api/>`_)
+- Mojito v0.7 (`General <http://developer.yahoo.com/cocktails/mojito/v0.7/docs/>`_\/`API <http://developer.yahoo.com/cocktails/mojito/v0.7/api/>`_)
+

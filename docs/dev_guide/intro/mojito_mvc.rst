@@ -246,7 +246,7 @@ A controller should have the basic structure shown below.
 
 .. code-block:: javascript
 
-   YUI.add('{mojit_name}', function(Y, NAME)
+   YUI.add('{mojit_name}', function(Y, NAME) {
      // Module name is {mojit-name}
      // Constructor for the Controller class.
      Y.namespace('mojito.controllers')[NAME] = {

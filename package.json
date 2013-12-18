@@ -1,6 +1,6 @@
 {
     "name": "mojito",
-    "version": "0.8.0",
+    "version": "0.8.1",
     "description": "Mojito provides an architecture, components and tools for developers to build complex web applications faster.",
     "author": "Drew Folta <folta@yahoo-inc.com>",
     "contributors": [
@@ -21,7 +21,7 @@
         "mime": "1.2.4",
         "request": "2.9.202",
         "semver": "1.0.14",
-        "ycb": "~1.0.5",
+        "ycb": "~1.1.0",
         "yui": "~3.10.3"
     },
     "keywords": [
@@ -46,7 +46,7 @@
         "mojito-cli": "~0.1",
         "node-static": ">0.6.8",
         "wrench": "~1.3.9",
-        "yahoo-arrow": "0.0.82",
+        "yahoo-arrow": "0.0.86",
         "portfinder": "0.2.1"
     },
     "optionalDependencies": {
