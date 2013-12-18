@@ -1204,9 +1204,12 @@ Creating the Application
 #. It's time to run our functional tests, but before we do, make sure that you have completed
    :ref:`Setting Up <06_intro-setting_up>`, so that you have Arrow and PhantomJS installed.
    
+   #. Start the Arrow server in the background: ``$ node_modules/yahoo-arrow/server.js &``
    #. Start PhantomJS in the background: ``$ node_modules/phantomjs/bin/phantomjs --webdriver=4445 &``
+
+      .. note:: If PhantomJS is unable to start, try running the command above in another shell window.
    #. Start your application in the background as well: ``$ mojito start &``
-   #. Run your Arrow test with the descriptor: ``$ arrow --browser=phantomjs arrow_tests/test_tribapp_descriptor.json``
+   #. Run your Arrow test with the descriptor: ``$ node_modules/yahoo-arrow/index.js --browser=phantomjs arrow_tests/test_tribapp_descriptor.json --baseUrl=http://localhost:8666 --phantomHost=http://localhost:4445/wd/hub``
    #. You'll see ``INFO`` log messages describing the running of the tests, then ``debug`` statements,
       and finally the test result, which should be one passed test as shown below:
 
@@ -1214,7 +1217,7 @@ Creating the Application
         
          Passed TribApp: YUI Dashboard test onMozilla/5.0 (Macintosh; Intel Mac OS X) AppleWebKit/534.34 (KHTML, like Gecko) 
          PhantomJS/1.9.0 Safari/534.34 1 Passed, 0 Failed , 0 skipped 
-   
+  
 #. You can go ahead and run your application to see the new content from the ``Youtube``
    and ``Calendar`` mojits.
 
@@ -1344,6 +1347,4 @@ Further Reading
 
 - `Testing <../topics/mojito_testing.html>`_
 - `Mojito Framework's Unit and Functional Tests <https://github.com/yahoo/mojito/wiki/Mojito-Framework's-Unit-and-Functional-Tests>`_
-
-
 
