@@ -1062,7 +1062,7 @@ Creating the Application
                 },
                 models: {
                     get: function (modelName) {
-                        A.areEqual('StatsModelYQL', modelName, 'wrong model name');
+                        A.areEqual('yql', modelName, 'wrong model name');
                         return {
                             getData: function(params, cb) {
                                 cb(params);
@@ -1159,7 +1159,7 @@ Creating the Application
                 Y.Assert.areEqual("Trib - YUI/Mojito Developer Dashboard", Y.one('head title').get('innerHTML'));
 
                 // Tests the title within the content
-                Y.Assert.areEqual("Trib - YUI Developer Dashboard", Y.one('body h1').get('innerHTML'));
+                Y.Assert.areEqual("Trib - Contribute to the Tribe", Y.one('body h1').get('innerHTML'));
             }, 2000);
           }
         }));
@@ -1204,7 +1204,7 @@ Creating the Application
 #. It's time to run our functional tests, but before we do, make sure that you have completed
    :ref:`Setting Up <06_intro-setting_up>`, so that you have Arrow and PhantomJS installed.
    
-   #. Start the Arrow server in the background: ``$ node_modules/yahoo-arrow/server.js &``
+   #. Start the Arrow server in the background: ``$ node_modules/yahoo-arrow/arrow_server/server.js &``
    #. Start PhantomJS in the background: ``$ node_modules/phantomjs/bin/phantomjs --webdriver=4445 &``
 
       .. note:: If PhantomJS is unable to start, try running the command above in another shell window.
