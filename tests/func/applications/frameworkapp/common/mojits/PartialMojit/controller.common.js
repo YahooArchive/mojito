@@ -43,7 +43,7 @@ YUI.add('PartialMojit', function(Y, NAME) {
         	   ac.done(mymarkup);
             });*/
             //ac.done(data);
-            ac.partial.render(data, "sub", function(error, mymarkup){
+            ac.partial.render(data, "testdir/sub", function(error, mymarkup){
 		       Y.log("HereController....."+mymarkup);
         	   ac.done(mymarkup);
             })
