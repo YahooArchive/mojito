@@ -336,80 +336,223 @@
                 }
             },
             "SimpleWSCallClient" : {
-                "group" : "smoke,restlib,serveronly",
+                "group" : "smoke,restlib,serveronly,client",
                 "params" : {
-                    "test" : "testrestlib-SimpleWSCallClient.js",
-                    "page" : "$$config.baseUrl$$/restWSFrame/index"
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/restWSFrame/index"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#p_simpleWS",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testrestlib-SimpleWSCallClient.js"
+                        }
+                    ]
                 }
             },
             "inspectResponseClient" : {
-                "group" : "smoke,restlib,serveronly",
+                "group" : "smoke,restlib,serveronly,client",
                 "params" : {
-                    "test" : "testrestlib-inspectResponseClient.js",
-                    "page" : "$$config.baseUrl$$/restWSFrame/index"
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/restWSFrame/index"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#p_inspectResp",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testrestlib-inspectResponseClient.js"
+                        }
+                    ]
                 }
             },
             "inspectResponseHeaderClient" : {
-                "group" : "smoke,restlib,serveronly",
+                "group" : "smoke,restlib,serveronly,client",
                 "params" : {
-                    "test" : "testrestlib-inspectResponseHeaderClient.js",
-                    "page" : "$$config.baseUrl$$/restWSFrame/index"
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/restWSFrame/index"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#p_inspectResp",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testrestlib-inspectResponseHeaderClient.js"
+                        }
+                    ]
                 }
             },
             "inspectErrorClient" : {
-                "group" : "smoke,restlib,serveronly",
+                "group" : "smoke,restlib,serveronly,client",
                 "params" : {
-                    "test" : "testrestlib-inspectErrorClient.js",
-                    "page" : "$$config.baseUrl$$/restWSFrame/index"
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/restWSFrame/index"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#p_inspectErr",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testrestlib-inspectErrorClient.js"
+                        }
+                    ]
                 }
             },
             "GETWithParamsClient" : {
-                "group" : "smoke,restlib,serveronly",
+                "group" : "smoke,restlib,serveronly,client",
                 "params" : {
-                    "test" : "testrestlib-GETWithParamsClient.js",
-                    "page" : "$$config.baseUrl$$/restWSFrame/index"
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/restWSFrame/index"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#p_getParam",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testrestlib-GETWithParamsClient.js"
+                        }
+                    ]
                 }
             },
             "GETWithParamsNegativeClient" : {
-                "group" : "smoke,restlib,serveronly",
+                "group" : "smoke,restlib,serveronly,client",
                 "params" : {
-                    "test" : "testrestlib-GETWithParamsNegativeClient.js",
-                    "page" : "$$config.baseUrl$$/restWSFrame/index"
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/restWSFrame/index"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#p_getParamNegative",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testrestlib-GETWithParamsNegativeClient.js"
+                        }
+                    ]
                 }
             },
             "POSTWithParamsClient" : {
-                "group" : "smoke,restlib,serveronly",
+                "group" : "smoke,restlib,serveronly,client",
                 "params" : {
-                    "test" : "testrestlib-POSTWithParamsClient.js",
-                    "page" : "$$config.baseUrl$$/restWSFrame/index"
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/restWSFrame/index"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#p_postParam",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testrestlib-POSTWithParamsClient.js"
+                        }
+                    ]
                 }
             },
             "POSTWithParamsNegativeClient" : {
-                "group" : "smoke,restlib,serveronly",
+                "group" : "smoke,restlib,serveronly,client",
                 "params" : {
-                    "test" : "testrestlib-POSTWithParamsNegativeClient.js",
-                    "page" : "$$config.baseUrl$$/restWSFrame/index"
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/restWSFrame/index"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#p_postParamNegative",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testrestlib-POSTWithParamsNegativeClient.js"
+                        }
+                    ]
                 }
             },
             "PUTWithParamsClient" : {
-                "group" : "smoke,restlib,serveronly",
+                "group" : "smoke,restlib,serveronly,client",
                 "params" : {
-                    "test" : "testrestlib-PUTWithParamsClient.js",
-                    "page" : "$$config.baseUrl$$/restWSFrame/index"
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/restWSFrame/index"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#p_putParam",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testrestlib-PUTWithParamsClient.js"
+                        }
+                    ]
                 }
             },
             "DELETEWithParamsClient" : {
-                "group" : "smoke,restlib,serveronly",
+                "group" : "smoke,restlib,serveronly,client",
                 "params" : {
-                    "test" : "testrestlib-DELETEWithParamsClient.js",
-                    "page" : "$$config.baseUrl$$/restWSFrame/index"
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/restWSFrame/index"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#p_deleteParam",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testrestlib-DELETEWithParamsClient.js"
+                        }
+                    ]
                 }
             },
             "HeadersClient" : {
-                "group" : "smoke,restlib,serveronly",
+                "group" : "smoke,restlib,serveronly,client",
                 "params" : {
-                    "test" : "testrestlib-HeadersClient.js",
-                    "page" : "$$config.baseUrl$$/restWSFrame/index"
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/restWSFrame/index"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#p_headers",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testrestlib-HeadersClient.js"
+                        }
+                    ]
                 }
             },
             "bz5300267" : {
@@ -483,10 +626,34 @@
                 }
             },
             "refreshview" : {
-                "group" : "smoke,restlib,serveronly",
+                "group" : "smoke,restlib,serveronly,refreshview",
                 "params" : {
-                    "test" : "testRefreshview.js",
-                    "page" : "$$config.baseUrl$$/refreshview"
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/refreshview"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#refreshViewButton"
+                            }
+                        },
+                        {
+                            "test" : "testRefreshview.js",
+                            "testName": "Page1"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#refreshViewButton",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testRefreshview.js",
+                            "testName": "Page2"
+                        }
+                    ]
                 }
             }
         }     
