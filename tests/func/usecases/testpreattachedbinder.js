@@ -3,14 +3,13 @@ YUI.add('usecases-testpreattachedbinder-tests', function (Y) {
 
     suite.add(new Y.Test.Case({
         "test preattachedbinder": function() {
-            var that = this;
-            Y.Assert.areEqual('Enjoy your Flickr Images!',Y.one('h2').get('innerHTML').match(/Enjoy your Flickr Images!/gi));
-            Y.Assert.areEqual('\"This is the config for config1 in application.json\"', Y.one('#myconfig').get('innerHTML'));
-                Y.one('#paginate a').simulate('click');
-            that.wait(function(){
+            if(ARROW.testParams["testName"] === "Page1") {
+                Y.Assert.areEqual('Enjoy your Flickr Images!',Y.one('h2').get('innerHTML').match(/Enjoy your Flickr Images!/gi));
+                Y.Assert.areEqual('\"This is the config for config1 in application.json\"', Y.one('#myconfig').get('innerHTML'));
+            } else {
                 Y.Assert.areEqual('Hallo!',Y.one('h2').get('innerHTML').match(/Hallo!/gi));
                 Y.Assert.areEqual('\"mynewconfig\"', Y.one('#myconfig').get('innerHTML'));
-            }, 2000);
+            }
         }
     }));
 

@@ -6,16 +6,13 @@ YUI.add('usecases-testcontextmodel-tests', function (Y) {
 
     suite.add(new Y.Test.Case({
         "test contextualizedmodel": function() {
-            var that = this;
-            that.wait(function(){
-                if(ARROW.testParams["testName"] === "Default") {
-                    Y.Assert.areEqual('Regular view', Y.one('#title').get('innerHTML'));
-                    Y.Assert.areEqual('Hello Mojito', Y.one('#msg').get('innerHTML'));
-                } else {
-                    Y.Assert.areEqual('IPhone view', Y.one('#title').get('innerHTML'));
-                    Y.Assert.areEqual('Hello Iphone Data', Y.one('#msg').get('innerHTML'));
-                }
-            }, 1000);
+            if(ARROW.testParams["testName"] === "Default") {
+                Y.Assert.areEqual('Regular view', Y.one('#title').get('innerHTML'));
+                Y.Assert.areEqual('Hello Mojito', Y.one('#msg').get('innerHTML'));
+            } else {
+                Y.Assert.areEqual('IPhone view', Y.one('#title').get('innerHTML'));
+                Y.Assert.areEqual('Hello Iphone Data', Y.one('#msg').get('innerHTML'));
+            }
         }
     }));    
 
