@@ -14,10 +14,49 @@
 
         "dataprovider" : {    
             "deviceassets" : {
-			    "group" : "developerguide,device_assets",
+                "group" : "developerguide,device_assets",
                 "params" : {
-					"test" : "test_device_assets.js",
-                    "page" : "$$config.baseUrl$$"
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "using": "xpath",
+                                "value": "/html/body/div/ul/li/a",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "test_device_assets.js",
+                            "testName": "first"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "using": "xpath",
+                                "value": "/html/body/div/ul/li[2]/a",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "test_device_assets.js",
+                            "testName": "second"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "using": "xpath",
+                                "value": "/html/body/div/ul/li[3]/a",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "test_device_assets.js",
+                            "testName": "third"
+                        }
+                    ]
                 }
             }
         }     

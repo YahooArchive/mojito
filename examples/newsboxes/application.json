@@ -1,7 +1,7 @@
 [{
     "settings": ["master"],
 
-    "appPort": 8000,
+    "appPort": 8666,
     "builds": {
         "html5app": {
             "attachManifest": true,

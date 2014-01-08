@@ -13,13 +13,22 @@
         },
 
         "dataprovider" : {    
-           "modelyql" : {
-                 "group" : "developerguide,model_yql",
-                 "params" : {
+            "modelyql" : {
+                "group" : "developerguide,model_yql",
+                "params" : {
                     "scenario": [
                         {
-                            "test" : "test_modelyql.js",
                             "page" : "$$config.baseUrl$$/?environment=development"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "using": "xpath",
+                                "value": "/html/body/div/ul/li/a/img"
+                            }
+                        },
+                        {
+                            "test" : "test_modelyql.js"
                         }
                     ]
                 }

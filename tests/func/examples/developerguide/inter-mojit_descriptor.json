@@ -13,11 +13,37 @@
         },
 
         "dataprovider" : {    
-           "intermojit" : {
-                 "group" : "developerguide,inter-mojit",
-                 "params" : {
-                             "test" : "test_intermojit.js",
-                             "page" : "$$config.baseUrl$$"
+            "intermojit" : {
+                "group" : "developerguide,inter-mojit",
+                "params" : {
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "using": "xpath",
+                                "value": "/html/body/div/table/tbody/tr/td/div/h3"
+                            }
+                        },
+                        {
+                            "test" : "test_intermojit.js",
+                            "testName": "first"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "using": "xpath",
+                                "value": "/html/body/div/table/tbody/tr/td/div/ul/li/a",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "test_intermojit.js",
+                            "testName": "second"
+                        }
+                    ]
                 }
             }
         }     

@@ -148,9 +148,21 @@
             "i18n3-en" : {
                  "group" : "smoke,usecases",
                  "params" : {
-                     "test" : "testi18nclient.js",
-                     "page" : "$$config.baseUrl$$/i18n-3/index?lang=en",
-                     "lang" : "en"
+                     "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/i18n-3/index?lang=en"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#child_status"
+                            }
+                        },
+                        {
+                            "test" : "testi18nclient.js",
+                            "lang" : "en"
+                        }
+                    ]
                 }
             },
             "i18n3-zh" : {
