@@ -163,8 +163,7 @@
                         {
                             "controller": "locator",
                             "params": {
-                                "using": "xpath",
-                                "value": "//*[@id='child_status']"
+                                "value": "#child_status"
                             }
                         },
                         {
