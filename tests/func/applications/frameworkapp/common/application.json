@@ -10,7 +10,7 @@
       "myconfig2": "This is myconfig2 from top application.json",
       "myconfig3": "This is myconfig3 from top application.json"
     },
-    "appPort": 4081,
+    "appPort": 8666,
     "yui": {
       "config": {
         "debug": true,

@@ -7,10 +7,7 @@ YUI.add('common-testacpartialrenderserver-tests', function (Y) {
      suite.add(new Y.Test.Case({
 
 	     "test acpartailrenderserver": function() {
-             var that = this;
-	         that.wait(function(){
-	             Y.Assert.areEqual(Y.one('pre').get('innerHTML').match(/this is my data: data not from url/gi), 'this is my data: data not from url');
-	         }, 2000);
+             Y.Assert.areEqual('this is my data: data not from url', Y.one('pre').get('innerHTML').match(/this is my data: data not from url/gi));
          }
 
      }));

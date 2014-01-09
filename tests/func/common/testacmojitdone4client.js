@@ -12,12 +12,11 @@ YUI({
     suite.add(new Y.Test.Case({
          
        "test acmojitdone4client": function() {
-          var that = this;
-          Y.one('#testcase > option[value="done4"]').set('selected','selected'); 
-          Y.one('#acMojitButton').simulate('click');
-          that.wait(function(){
+          if (ARROW.testParams["testName"] === "part1") {
+              Y.one('#testcase > option[value="done4"]').set('selected','selected'); 
+          } else {
 	            Y.Assert.areEqual('Saab,Volvo,BMW', Y.one('#ACMojitTest').get('innerHTML').match(/Saab,Volvo,BMW/gi));
-          }, 4000);
+          };
       }
 
       }));

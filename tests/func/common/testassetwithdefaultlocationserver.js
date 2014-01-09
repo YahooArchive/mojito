@@ -12,15 +12,11 @@ YUI({
     suite.add(new Y.Test.Case({
 
         "test withdefaultlocationserver": function() {
-            var that = this;
-            Y.one('#js1_button').simulate('click');
-            that.wait(function(){
+            if (ARROW.testParams["testName"] === "part1") {
                 Y.Assert.areEqual('I was appended by the recently added javascript file - js1.js.', Y.one('#para_node').get('innerHTML').match(/I was appended by the recently added javascript file - js1.js./gi));
-                Y.one('#js2_button').simulate('click');
-                that.wait(function(){
-                    Y.Assert.areEqual('I was appended by the recently added javascript file - js2.js.', Y.one('#para_node').get('innerHTML').match(/I was appended by the recently added javascript file - js2.js./gi));
-                }, 4000);
-            }, 4000);
+            } else {
+                Y.Assert.areEqual('I was appended by the recently added javascript file - js2.js.', Y.one('#para_node').get('innerHTML').match(/I was appended by the recently added javascript file - js2.js./gi));
+            };
         }
 
      }));

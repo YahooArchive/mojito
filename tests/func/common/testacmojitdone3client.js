@@ -12,12 +12,11 @@ YUI({
     suite.add(new Y.Test.Case({
          
        "test acmojitdone3client": function() {
-          var that = this;
-          Y.one('#testcase > option[value="done3"]').set('selected','selected'); 
-          Y.one('#acMojitButton').simulate('click');
-          that.wait(function(){
+          if (ARROW.testParams["testName"] === "part1") {
+              Y.one('#testcase > option[value="done3"]').set('selected','selected'); 
+          } else {
               Y.Assert.areEqual('Hello Action Context Testing', Y.one('#ACMojitTest').get('innerHTML').match(/Hello Action Context Testing/gi));
-          }, 4000);
+          };
       }
       }));
 
