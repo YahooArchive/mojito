@@ -11,18 +11,15 @@ YUI({
 
     suite.add(new Y.Test.Case({
 
-	  "test statefulclient": function() {
-          var that = this;
-          Y.one('#inputbox').set('value', "baseball");
-          Y.one('#pitchbutton').simulate('click');
-          that.wait(function(){
-              Y.Assert.areEqual('pitched: baseball', Y.one('#ControllerCachingResult').get('innerHTML').match(/pitched: baseball/gi));
-          }, 4000);
-          Y.one('#retrievebutton').simulate('click');
-          that.wait(function(){
-              Y.Assert.areEqual('ball: baseball', Y.one('#ControllerCachingResult').get('innerHTML').match(/ball: baseball/gi));
-          }, 4000);
-     }
+        "test statefulclient": function() {
+            if (ARROW.testParams["testName"] === "part1") {
+                Y.one('#inputbox').set('value', "baseball");
+            } else if (ARROW.testParams["testName"] === "part2") {
+                Y.Assert.areEqual('pitched: baseball', Y.one('#ControllerCachingResult').get('innerHTML').match(/pitched: baseball/gi));
+            } else {
+                Y.Assert.areEqual('ball: baseball', Y.one('#ControllerCachingResult').get('innerHTML').match(/ball: baseball/gi));
+            };
+        }
 
    }));
 

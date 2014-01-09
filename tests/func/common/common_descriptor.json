@@ -235,17 +235,43 @@
                 }
             },
             "lazyloadrpc" : {
-                "group" : "smoke,common,lazyloadrpc",
+                "group" : "smoke,common,lazyload",
                 "params" : {
-                    "test" : "testlazyloadrpcclient.js",
-                    "page" : "$$config.baseUrl$$/"
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#lazyloadrpcButton",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testlazyloadrpcclient.js"
+                        }
+                    ]
                 }
             },
             "lazyloadclientmojitclient" : {
-                "group" : "smoke,common,lazyloadclientmojitclient",
+                "group" : "smoke,common,lazyload",
                 "params" : {
-                    "test" : "testlazyloadclientmojitclient.js",
-                    "page" : "$$config.baseUrl$$/"
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#lazyloadclientmojitButton",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testlazyloadclientmojitclient.js"
+                        }
+                    ]
                 }
             },
             "acmojitnoparamclient" : {
@@ -747,17 +773,43 @@
                 }
             },
             "testconfigindefinitionfilenegclient" : {
-                "group" : "smoke,common",
+                "group" : "smoke,common,config",
                 "params" : {
-                    "test" : "testconfigindefinitionfilenegclient.js",
-                    "page" : "$$config.baseUrl$$/"
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#config_button",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testconfigindefinitionfilenegclient.js"
+                        }
+                    ]
                 }
             },
             "testmojitproxydestroychild" : {
-                "group" : "smoke,common",
+                "group" : "smoke,common,proxy",
                 "params" : {
-                    "test" : "testmojitproxydestroychild.js",
-                    "page" : "$$config.baseUrl$$/"
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#destroychildButton",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testmojitproxydestroychild.js"
+                        }
+                    ]
                 }
             },
             "testcontrollercachingclient" : {
@@ -825,24 +877,78 @@
                 }
             },
             "teststatefulclient" : {
-                "group" : "smoke,common",
+                "group" : "smoke,common,stateful",
                 "params" : {
-                    "test" : "teststatefulclient.js",
-                    "page" : "$$config.baseUrl$$/"
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/"
+                        },
+                        {
+                            "test" : "teststatefulclient.js",
+                            "testName": "part1"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#pitchbutton",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "teststatefulclient.js",
+                            "testName": "part2"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#retrievebutton",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "teststatefulclient.js"
+                        }
+                    ]
                 }
             },
             "testdependencyclient" : {
-                "group" : "smoke,common",
+                "group" : "smoke,common,dep",
                 "params" : {
-                    "test" : "testdependencyclient.js",
-                    "page" : "$$config.baseUrl$$/"
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#DepCheckParentButton",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testdependencyclient.js"
+                        }
+                    ]
                 }
             },
             "testlazyloadclient" : {
-                "group" : "smoke,common",
+                "group" : "smoke,common,lazyload",
                 "params" : {
-                    "test" : "testlazyloadclient.js",
-                    "page" : "$$config.baseUrl$$/"
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#lazyLoadButton",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testlazyloadclient.js"
+                        }
+                    ]
                 }
             },
             "testclientresume" : {
@@ -933,146 +1039,471 @@
                 }
             },
             "testsimplemodelclient" : {
-                "group" : "smoke,common",
+                "group" : "smoke,common,model",
                 "params" : {
-                    "test" : "testsimplemodelclient.js",
-                    "page" : "$$config.baseUrl$$/"
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#simpleModelButton",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testsimplemodelclient.js"
+                        }
+                    ]
                 }
             },
             "testmojitproxybroadcaststaticlistenall" : {
-                "group" : "smoke,common",
+                "group" : "smoke,common,broadcast",
                 "params" : {
-                    "test" : "testmojitproxybroadcaststaticlistenall.js",
-                    "page" : "$$config.baseUrl$$/"
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#staticButton",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testmojitproxybroadcaststaticlistenall.js",
+                            "testName": "part1"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#sendbutton",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testmojitproxybroadcaststaticlistenall.js"
+                        }
+                    ]
                 }
             },
             "testmojitproxybroadcaststaticlisten2" : {
-                "group" : "smoke,common",
+                "group" : "smoke,common,broadcast",
                 "params" : {
-                    "test" : "testmojitproxybroadcaststaticlisten2.js",
-                    "page" : "$$config.baseUrl$$/"
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#staticButton",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testmojitproxybroadcaststaticlisten2.js",
+                            "testName": "part1"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#sendbutton",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testmojitproxybroadcaststaticlisten2.js"
+                        }
+                    ]
                 }
             },
             "testmojitproxybroadcaststaticlisten1" : {
-                "group" : "smoke,common",
+                "group" : "smoke,common,broadcast",
                 "params" : {
-                    "test" : "testmojitproxybroadcaststaticlisten1.js",
-                    "page" : "$$config.baseUrl$$/"
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#staticButton",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testmojitproxybroadcaststaticlisten1.js",
+                            "testName": "part1"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#sendbutton",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testmojitproxybroadcaststaticlisten1.js"
+                        }
+                    ]
                 }
             },
             "testmojitproxybroadcaststaticlisten" : {
-                "group" : "smoke,common",
+                "group" : "smoke,common,broadcast",
                 "params" : {
-                    "test" : "testmojitproxybroadcaststaticlisten.js",
-                    "page" : "$$config.baseUrl$$/"
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#staticButton",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testmojitproxybroadcaststaticlisten.js",
+                            "testName": "part1"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#sendbutton",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testmojitproxybroadcaststaticlisten.js"
+                        }
+                    ]
                 }
             },
             "testmojitproxybroadcastdynamic" : {
-                "group" : "smoke,common",
+                "group" : "smoke,common,broadcast",
                 "params" : {
-                    "test" : "testmojitproxybroadcastdynamic.js",
-                    "page" : "$$config.baseUrl$$/"
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#dynamicButton",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testmojitproxybroadcastdynamic.js",
+                            "testName": "part1"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#childred"
+                            }
+                        },
+                        {
+                            "test" : "testmojitproxybroadcastdynamic.js"
+                        }
+                    ]
                 }
             },
             "testmojitproxyrender" : {
-                "group" : "smoke,common",
+                "group" : "smoke,common,proxy",
                 "params" : {
-                    "test" : "testmojitproxyrender.js",
-                    "page" : "$$config.baseUrl$$/?test=abc"
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/?test=abc"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#mojitProxyMojitButton",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testmojitproxyrender.js"
+                        }
+                    ]
                 }
             },
             "testmojitproxyrefreshview" : {
-                "group" : "smoke,common",
+                "group" : "smoke,common,proxy",
                 "params" : {
-                    "test" : "testmojitproxyrefreshview.js",
-                    "page" : "$$config.baseUrl$$/"
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#mojitProxyRefreshButton",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testmojitproxyrefreshview.js",
+                            "testName": "part1"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#refreshViewButton",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testmojitproxyrefreshview.js"
+                        }
+                    ]
                 }
             },
             "testmojitproxygetid" : {
-                "group" : "smoke,common",
+                "group" : "smoke,common,proxy",
                 "params" : {
-                    "test" : "testmojitproxygetid.js",
-                    "page" : "$$config.baseUrl$$/"
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#mojitProxyMojitButton",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testmojitproxygetid.js"
+                        }
+                    ]
                 }
             },
             "testmojitproxygetfromurl" : {
-                "group" : "smoke,common",
+                "group" : "smoke,common,proxy",
                 "params" : {
-                    "test" : "testmojitproxygetfromurl.js",
-                    "page" : "$$config.baseUrl$$/?test=abc"
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/?test=abc"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#mojitProxyMojitButton",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testmojitproxygetfromurl.js"
+                        }
+                    ]
                 }
             },
             "testgetparamsclient" : {
-                "group" : "smoke,common",
+                "group" : "smoke,common,getparam",
                 "params" : {
-                    "test" : "testgetparamsclient.js",
-                    "page" : "$$config.baseUrl$$/"
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#allParamsButton",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testgetparamsclient.js"
+                        }
+                    ]
                 }
             },
             "testgetparamssimpleclient" : {
-                "group" : "smoke,common",
+                "group" : "smoke,common,getparam",
                 "params" : {
-                    "test" : "testgetparamssimpleclient.js",
-                    "page" : "$$config.baseUrl$$/"
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#allParamsSimpleButton",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testgetparamssimpleclient.js"
+                        }
+                    ]
                 }
             },
             "testgetparamsbyvalueclient" : {
-                "group" : "smoke,common",
+                "group" : "smoke,common,getparam",
                 "params" : {
-                    "test" : "testgetparamsbyvalueclient.js",
-                    "page" : "$$config.baseUrl$$/"
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#paramsByValueButton",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testgetparamsbyvalueclient.js"
+                        }
+                    ]
                 }
             },
             "testgetparamsbyvaluesimpleclient" : {
-                "group" : "smoke,common",
+                "group" : "smoke,common,getparam",
                 "params" : {
-                    "test" : "testgetparamsbyvaluesimpleclient.js",
-                    "page" : "$$config.baseUrl$$/"
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#paramsByValueSimpleButton",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testgetparamsbyvaluesimpleclient.js"
+                        }
+                    ]
                 }
             },
             "testmergeparamsclient" : {
-                "group" : "smoke,common",
+                "group" : "smoke,common,mergeparam",
                 "params" : {
-                    "test" : "testmergeparamsclient.js",
-                    "page" : "$$config.baseUrl$$/"
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#mergeParamsButton",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testmergeparamsclient.js"
+                        }
+                    ]
                 }
             },
             "testmergeparamssimpleclient" : {
-                "group" : "smoke,common",
+                "group" : "smoke,common,mergeparam",
                 "params" : {
-                    "test" : "testmergeparamssimpleclient.js",
-                    "page" : "$$config.baseUrl$$/"
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#mergeParamsSimpleButton",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testmergeparamssimpleclient.js"
+                        }
+                    ]
                 }
             },
             "testpostparamsclient" : {
-                "group" : "smoke,common",
+                "group" : "smoke,common,postparam",
                 "params" : {
-                    "test" : "testpostparamsclient.js",
-                    "page" : "$$config.baseUrl$$/"
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#postParamsButton",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testpostparamsclient.js"
+                        }
+                    ]
                 }
             },
             "testpostparamssimpleclient" : {
-                "group" : "smoke,common",
+                "group" : "smoke,common,postparam",
                 "params" : {
-                    "test" : "testpostparamssimpleclient.js",
-                    "page" : "$$config.baseUrl$$/"
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#postParamsSimpleButton",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testpostparamssimpleclient.js"
+                        }
+                    ]
                 }
             },
             "testrouteparamsclient" : {
-                "group" : "smoke,common",
+                "group" : "smoke,common,routeparam",
                 "params" : {
-                    "test" : "testrouteparamsclient.js",
-                    "page" : "$$config.baseUrl$$/"
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#routeParamsButton",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testrouteparamsclient.js"
+                        }
+                    ]
                 }
             },
             "testrouteparamssimpleclient" : {
-                "group" : "smoke,common",
+                "group" : "smoke,common,routeparam",
                 "params" : {
-                    "test" : "testrouteparamssimpleclient.js",
-                    "page" : "$$config.baseUrl$$/"
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#routeParamsSimpleButton",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testrouteparamssimpleclient.js"
+                        }
+                    ]
                 }
             },
-			"acmojitserver" : {
+            "acmojitserver" : {
                 "group" : "smoke,common,acmojit",
                 "params" : {
                     "test" : "testacmojitserver.js",

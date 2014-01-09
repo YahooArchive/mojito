@@ -12,12 +12,8 @@ YUI({
     suite.add(new Y.Test.Case({
  
         "test mojitproxygetid": function() {
-            var that = this;
-            Y.one('#mojitProxyMojitButton').simulate('click');
-            that.wait(function(){
-	            Y.log("************"+Y.one('#thisid').get('innerHTML'));
-	            Y.Assert.areEqual('yui_', Y.one('#thisid').get('innerHTML').match(/yui_/gi));
-            }, 4000);
+            Y.log("************"+Y.one('#thisid').get('innerHTML'));
+            Y.Assert.areEqual('yui_', Y.one('#thisid').get('innerHTML').match(/yui_/gi));
         }
     }));
 
