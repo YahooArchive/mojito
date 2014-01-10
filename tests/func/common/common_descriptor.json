@@ -1053,6 +1053,12 @@
                             }
                         },
                         {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#SimpleModelTitle"
+                            }
+                        },
+                        {
                             "test" : "testsimplemodelclient.js"
                         }
                     ]

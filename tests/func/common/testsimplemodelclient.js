@@ -9,9 +9,9 @@ YUI.add("common-testsimplemodelclient", function(Y) {
 
         "test simplemodelclient": function() {
             Y.Assert.areEqual('Turkey Viewer 1.0', Y.one('#SimpleModelTitle').get('innerHTML').match(/Turkey Viewer 1.0/gi));
-                var imglist = Y.all('img');
-                imglist.each(function (taskNode) {
-                    Y.Assert.areEqual('/static/SimpleModel/assets', taskNode.get('src').match(/\/static\/SimpleModel\/assets/gi));
+            var imglist = Y.all('img');
+            imglist.each(function (taskNode) {
+                Y.Assert.areEqual('/static/SimpleModel/assets', taskNode.get('src').match(/\/static\/SimpleModel\/assets/gi));
             });
         }
 
