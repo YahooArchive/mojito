@@ -58,12 +58,15 @@ The ``init`` function initializes the binder and contains the ``mojitProxy``
 object. The ``bind`` function allows the binder to be attached to the DOM.
 
 The example binder below shows the basic structure of a binder. The binder 
-is for the ``AwesomeMojit`` mojit and contains the ``init`` and ``bind`` 
+is for the ``Awesome`` mojit and contains the ``init`` and ``bind`` 
 functions that initialize and allow the binder code to be attached to the DOM.
+The module and class naming syntax of mojit controllers, models, and binders 
+follow that of YUI, so the module name for the mojit ``Awesomet`` is 
+``awesome-binder-index`` and the class name is ``AwesomeBinderIndex``. 
 
 .. code-block:: javascript
 
-   YUI.add('AwesomeMojitBinder', function(Y, NAME) {
+   YUI.add('awesome-binder-index', function(Y, NAME) {
      Y.namespace('mojito.binders')[NAME] = {
        init: function(mojitProxy) {
          this.mojitProxy = mojitProxy;
@@ -74,7 +77,7 @@ functions that initialize and allow the binder code to be attached to the DOM.
    }, '0.0.1', {requires: ['node']});
 
 An instance of the binder above will be created whenever the ``index`` function 
-of ``AwesomeMojit`` is executed, and its corresponding DOM node is attached to 
+of the mojit ``Awesome`` is executed, and its corresponding DOM node is attached to 
 a client page. Mojito will select that DOM node and pass it into the ``bind``
 function. This allows you to write code to capture UI events and interact with 
 Mojito or other mojit binders.
@@ -290,7 +293,7 @@ working example, see the `Code Examples: Events <../code_exs/events.html>`_.
 
 .. code-block:: javascript
 
-   YUI.add('ChickenMojitBinder', function(Y, NAME) {
+   YUI.add('chicken-binder-index', function(Y, NAME) {
      Y.namespace('mojito.binders')[NAME] = {
        init: function(mojitProxy) {
          Y.log('Binder(' + mojitProxy.config.id + ')', 'debug', NAME);
@@ -320,7 +323,7 @@ This example binder shows how to use the methods ``refreshView`` and ``destroyCh
 
 .. code-block:: javascript
 
-   YUI.add('ParentBinderIndex', function(Y, NAME) {
+   YUI.add('parent-binder-index', function(Y, NAME) {
      Y.namespace('mojito.binders')[NAME] = {
        init: function(mojitProxy)   {
          this.mojitProxy = mojitProxy;
