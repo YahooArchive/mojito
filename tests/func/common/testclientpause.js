@@ -12,18 +12,11 @@ YUI({
     suite.add(new Y.Test.Case({
 
         "test clientpause": function() {
-            var that = this;
-            Y.one('#mojitProxyPauseResumeButton').simulate('click');
-            that.wait(function(){
-	            Y.Assert.areEqual('Testing ac.pause And ac.resume', Y.one('#MojitProxyMojitResult').get('innerHTML').match(/Testing ac.pause And ac.resume/gi));
-	            Y.one('#pauseButton').simulate('click');
-	            that.wait(function(){
-		            Y.one('#mojitProxyMojitButton').simulate('click');
-		            that.wait(function(){
-			            Y.Assert.areEqual('Testing ac.pause And ac.resume', Y.one('#MojitProxyMojitResult').get('innerHTML').match(/Testing ac.pause And ac.resume/gi));
-		            }, 4000);
-	            }, 4000);
-            }, 4000);
+            if (ARROW.testParams["testName"] === "part1") {
+                Y.Assert.areEqual('Testing ac.pause And ac.resume', Y.one('#MojitProxyMojitResult').get('innerHTML').match(/Testing ac.pause And ac.resume/gi));
+            } else {
+                Y.Assert.areEqual('Testing ac.pause And ac.resume', Y.one('#MojitProxyMojitResult').get('innerHTML').match(/Testing ac.pause And ac.resume/gi));
+            };
         }
 
     }));

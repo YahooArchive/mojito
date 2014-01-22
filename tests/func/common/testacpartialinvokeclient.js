@@ -8,11 +8,8 @@ YUI.add('common-testacpartialrenderclient-tests', function (Y) {
     suite.add(new Y.Test.Case({
 
         "test ACPartailRenderClient": function() {
-             var that = this;
-             Y.one('#partialRenderButton').simulate('click');
-             that.wait(function(){
-                 Y.Assert.areEqual('this is my data: data not from url', Y.one('#subdata').get('innerHTML').match(/this is my data: data not from url/gi));
-             }, 4000);
+            Y.Assert.areEqual('This is mytest1', Y.one('#partialrenderlabel1').get('innerHTML').match(/This is mytest1/gi));
+            Y.Assert.areEqual('data from url', Y.one('#thisdata').get('innerHTML').match(/data from url/gi));
         }   
 
     }));

@@ -13,11 +13,50 @@
         },
 
         "dataprovider" : {    
-           "framedassets" : {
-                 "group" : "developerguide,framed_assets",
-                 "params" : {
-                             "test" : "test_framed_assets.js",
-                             "page" : "$$config.baseUrl$$/"
+            "framedassets" : {
+                "group" : "developerguide,framed_assets",
+                "params" : {
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "using": "xpath",
+                                "value": "/html/body/div/ul/li/a",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "test_framed_assets.js",
+                            "testName": "first"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "using": "xpath",
+                                "value": "/html/body/div/ul/li[2]/a",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "test_framed_assets.js",
+                            "testName": "second"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "using": "xpath",
+                                "value": "/html/body/div/ul/li[3]/a",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "test_framed_assets.js",
+                            "testName": "third"
+                        }
+                    ]
                 }
             }
         }     

@@ -6,10 +6,7 @@ YUI.add('usecases-testhello-tests', function (Y) {
 
     suite.add(new Y.Test.Case({
         "test hello": function() {
-            var that = this;
-            that.wait(function(){
-                Y.Assert.areEqual('Mojito is working.', Y.one('pre').get('innerHTML'));
-            }, 1000);
+            Y.Assert.areEqual('Mojito is working.', Y.one('pre').get('innerHTML'));
         }
     }));    
 

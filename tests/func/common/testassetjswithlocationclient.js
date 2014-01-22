@@ -11,17 +11,13 @@ YUI({
 
     suite.add(new Y.Test.Case({
 
-	  "test assetjswithlocationclient": function() {
-          var that = this;
-          Y.one('#assets_loc_button').simulate('click');
-          that.wait(function(){
-	            //check if the javascripts are load in the header
-	            var pat1 = /\/static\/AssetsMojit\/assets\/js\/js1.js/gi;
-	            var pat2 = /\/static\/AssetsMojit\/assets\/js\/js2.js/gi;
-	            Y.Assert.areEqual('/static/AssetsMojit/assets/js/js1.js', checkscript(Y.one('head'), 'script', 'src', pat1));
-	            Y.Assert.areEqual('/static/AssetsMojit/assets/js/js2.js', checkscript(Y.one('head'), 'script', 'src', pat2));     				
-          }, 4000);
-      }
+        "test assetjswithlocationclient": function() {
+            //check if the javascripts are load in the header
+            var pat1 = /\/static\/AssetsMojit\/assets\/js\/js1.js/gi;
+            var pat2 = /\/static\/AssetsMojit\/assets\/js\/js2.js/gi;
+            Y.Assert.areEqual('/static/AssetsMojit/assets/js/js1.js', checkscript(Y.one('head'), 'script', 'src', pat1));
+            Y.Assert.areEqual('/static/AssetsMojit/assets/js/js2.js', checkscript(Y.one('head'), 'script', 'src', pat2));     				
+        }
 
      }));
 

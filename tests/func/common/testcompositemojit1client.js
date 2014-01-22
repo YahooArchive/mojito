@@ -8,20 +8,13 @@ YUI.add('compositemojit1client-tests', function (Y) {
     suite.add(new Y.Test.Case({
 
 	    "test compositemojit1client": function() {
-            var that = this;
-            Y.one('#composite_mojit_button').simulate('click');
-            that.wait(function(){
-                Y.one('#nav_h3').simulate('click');
-                that.wait(function(){
-                    Y.Assert.areEqual('news heard a click from nav \(type\: CM_Nav\) with the data\:', Y.one('#click1').get('innerHTML').match(/news heard a click from nav \(type\: CM_Nav\) with the data\:/gi));
-                    Y.Assert.areEqual('Hi News!', Y.one('#click1').get('innerHTML').match(/Hi News!/gi));
-                    Y.one('#nav_h3').simulate('click');
-                    that.wait(function(){
-                        Y.Assert.areEqual('news heard a click from nav \(type\: CM_Nav\) with the data\:', Y.one('#click2').get('innerHTML').match(/news heard a click from nav \(type\: CM_Nav\) with the data\:/gi));
-                        Y.Assert.areEqual('Hi News!', Y.one('#click1').get('innerHTML').match(/Hi News!/gi));
-                    }, 4000);
-    	        }, 4000);
-            }, 4000);
+            if (ARROW.testParams["testName"] === "part1") {
+                Y.Assert.areEqual('news heard a click from nav \(type\: CM_Nav\) with the data\:', Y.one('#click1').get('innerHTML').match(/news heard a click from nav \(type\: CM_Nav\) with the data\:/gi));
+                Y.Assert.areEqual('Hi News!', Y.one('#click1').get('innerHTML').match(/Hi News!/gi));
+            } else {
+                Y.Assert.areEqual('news heard a click from nav \(type\: CM_Nav\) with the data\:', Y.one('#click2').get('innerHTML').match(/news heard a click from nav \(type\: CM_Nav\) with the data\:/gi));
+                Y.Assert.areEqual('Hi News!', Y.one('#click1').get('innerHTML').match(/Hi News!/gi));
+            };
         }
 
    }));

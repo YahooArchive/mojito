@@ -16,22 +16,53 @@
             "hello" : {
                 "group" : "smoke,usecases,hello",
                 "params" : {
-                    "test" : "testhello.js",
-                    "page" : "$$config.baseUrl$$/hello-1/index"
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/hello-1/index"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "using": "xpath",
+                                "value": "/html/body/pre"
+                            }
+                        },
+                        {
+                            "test" : "testhello.js"
+                        }
+                    ]
                 }
             },
             "contextmodel" : {
-                "group" : "smoke,usecases",
+                "group" : "smoke,usecases,contextmodel",
                 "params" : {
                     "scenario": [
                         {
-                            "test" : "testcontextmodel.js",
-                            "page" : "$$config.baseUrl$$/@contextModelMojit/index",
-                            "testName": "Default"
+                            "page" : "$$config.baseUrl$$/@contextModelMojit/index"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "using": "xpath",
+                                "value": "//*[@id='title']"
+                            }
                         },
                         {
                             "test" : "testcontextmodel.js",
-                            "page" : "$$config.baseUrl$$/@contextModelMojit/index?device=iphone",
+                            "testName": "Default"
+                        },
+                        {
+                            "page" : "$$config.baseUrl$$/@contextModelMojit/index?device=iphone"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "using": "xpath",
+                                "value": "//*[@id='title']"
+                            }
+                        },
+                        {
+                            "test" : "testcontextmodel.js",
                             "testName": "iPhone"
                         }
                     ]
@@ -117,53 +148,85 @@
             "i18n3-en" : {
                  "group" : "smoke,usecases",
                  "params" : {
-                     "test" : "testi18nclient.js",
-                     "page" : "$$config.baseUrl$$/i18n-3/index?lang=en",
-                     "lang" : "en"
+                     "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/i18n-3/index?lang=en"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#child_status"
+                            }
+                        },
+                        {
+                            "test" : "testi18nclient.js",
+                            "lang" : "en"
+                        }
+                    ]
                 }
             },
             "i18n3-zh" : {
-                 "group" : "smoke,usecases",
-                 "params" : {
-                     "test" : "testi18nclient.js",
-                     "page" : "$$config.baseUrl$$/i18n-3/index?lang=zh",
-                     "lang" : "zh"
-                }
-            },
-            "pagedflickr" : {
-                 "group" : "smoke,usecases",
+                 "group" : "smoke,usecases,i18nclient",
                  "params" : {
                     "scenario": [
                         {
-                           "test" : "testpagedflickr.js",
-                           "page" : "$$config.baseUrl$$/flickr?device=iphone"
+                            "page" : "$$config.baseUrl$$/i18n-3/index?lang=zh"
                         },
                         {
-                           "controller": "locator",
-                           "params": {
-                                  "value": "#paginate a",
-                                  "click": true
+                            "controller": "locator",
+                            "params": {
+                                "value": "#child_status"
+                            }
+                        },
+                        {
+                            "test" : "testi18nclient.js",
+                            "lang" : "zh"
+                        }
+                    ]
+                }
+            },
+            "pagedflickr" : {
+                 "group" : "smoke,usecases,pagedflickr",
+                 "params" : {
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/flickr?device=iphone"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#paginate a"
                            }
                         },
                         {
-                           "test" : "testpagedflickr-page2.js"
+                            "test" : "testpagedflickr.js"
                         },
                         {
-                           "controller": "locator",
-                           "params": {
-                                  "value": "#paginate a",
-                                  "click": true
+                            "controller": "locator",
+                            "params": {
+                                "value": "#paginate a",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testpagedflickr-page2.js"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#paginate a",
+                                "click": true
                            }
                         },
                         {
                            "test" : "testpagedflickr.js?device=iphone"
                         }
-                     ]
+                    ]
                 }
             },
             "pagedflickr-de" : {
-                 "group" : "smoke,usecases",
-                 "params" : {
+                "group" : "smoke,usecases",
+                "params" : {
                     "scenario": [
                         {
                            "test" : "testpagedflickr-de.js",
@@ -189,21 +252,69 @@
                         {
                            "test" : "testpagedflickr-de.js"
                         }
-                     ]
+                    ]
                 }
             },
             "preinit" : {
-                 "group" : "smoke,usecases",
-                 "params" : {
-                     "test" : "testpreinit.js",
-                     "page" : "$$config.baseUrl$$/flickr2"
+                "group" : "smoke,usecases,preinit",
+                "params" : {
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/flickr2"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#paginate a"
+                            }
+                        },
+                        {
+                            "test" : "testpreinit.js",
+                            "testName": "Page1"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#paginate a",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testpreinit.js",
+                            "testName": "Page2"
+                        }
+                    ]
                 }
             },
             "preattachbinder" : {
-                 "group" : "smoke,usecases",
-                 "params" : {
-                     "test" : "testpreattachedbinder.js",
-                     "page" : "$$config.baseUrl$$/flickr2"
+                "group" : "smoke,usecases,preattachbinder",
+                "params" : {
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/flickr2"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#paginate a"
+                            }
+                        },
+                        {
+                            "test" : "testpreattachedbinder.js",
+                            "testName": "Page1"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#paginate a",
+                                "click": true
+                            }
+                        },
+                        {
+                            "test" : "testpreattachedbinder.js",
+                            "testName": "Page2"
+                        }
+                    ]
                 }
             }
         }     

@@ -1,7 +1,7 @@
 [
     {
         "settings": [ "master" ],
-		"appPort": 4083,
+		"appPort": 8666,
 		"YouCanSeeMe": {
 			"youcanseeme": "itispublic"
 		},

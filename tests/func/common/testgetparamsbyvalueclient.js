@@ -11,15 +11,11 @@ YUI({
 
     suite.add(new Y.Test.Case({
         "test getparamsbyvalueclient": function() {
-            var that = this;
-            Y.one('#paramsByValueButton').simulate('click');
-            that.wait(function(){
-	            Y.Assert.areEqual('Input Parameters Testing', Y.one('#iptitle').get('innerHTML').match(/Input Parameters Testing/gi));
-                Y.Assert.areEqual('GET Parameters', Y.one('#gptitle').get('innerHTML').match(/GET Parameters/gi));
-                Y.Assert.areEqual('Params by key', Y.one('#desc').get('innerHTML').match(/Params by key/gi));
-                Y.Assert.areEqual('Does the \"foo\" param exist\?', Y.one('#question').get('innerHTML').match(/Does the \"foo\" param exist\?/gi));
-                Y.Assert.areEqual('YES', Y.one('#answer').get('innerHTML').match(/YES/gi));
-            }, 4000);
+            Y.Assert.areEqual('Input Parameters Testing', Y.one('#iptitle').get('innerHTML').match(/Input Parameters Testing/gi));
+            Y.Assert.areEqual('GET Parameters', Y.one('#gptitle').get('innerHTML').match(/GET Parameters/gi));
+            Y.Assert.areEqual('Params by key', Y.one('#desc').get('innerHTML').match(/Params by key/gi));
+            Y.Assert.areEqual('Does the \"foo\" param exist\?', Y.one('#question').get('innerHTML').match(/Does the \"foo\" param exist\?/gi));
+            Y.Assert.areEqual('YES', Y.one('#answer').get('innerHTML').match(/YES/gi));
         }
 
     }));

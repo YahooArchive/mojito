@@ -8,18 +8,14 @@ YUI.add('common-testlazyloadrpcclient-tests', function (Y) {
     suite.add(new Y.Test.Case({
 
         "test LazyLoadRPCClient": function() {
-            var that = this;
-            Y.one('#lazyloadrpcButton').simulate('click');
-            that.wait(function(){
-                Y.Assert.areEqual('Lazy load succeeded:', Y.one('#LazyLoadRPCtitle').get('innerHTML'));
-                Y.Assert.areEqual('foo-value set by binder', Y.one('#LazyLoadRPCfoo').get('innerHTML'));
-                Y.Assert.areEqual('bar-value set by controller', Y.one('#LazyLoadRPCbar').get('innerHTML'));
-                Y.Assert.areEqual('From controller: foo-value set by binder', Y.one('#LazyLoadRPCbaz').get('innerHTML'));
-                Y.Assert.areEqual('Data has changed: 2 times', Y.one('#LazyLoadRPCcount').get('innerHTML'));
-            }, 2000);
+            Y.Assert.areEqual('Lazy load succeeded:', Y.one('#LazyLoadRPCtitle').get('innerHTML'));
+            Y.Assert.areEqual('foo-value set by binder', Y.one('#LazyLoadRPCfoo').get('innerHTML'));
+            Y.Assert.areEqual('bar-value set by controller', Y.one('#LazyLoadRPCbar').get('innerHTML'));
+            Y.Assert.areEqual('From controller: foo-value set by binder', Y.one('#LazyLoadRPCbaz').get('innerHTML'));
+            Y.Assert.areEqual('Data has changed: 2 times', Y.one('#LazyLoadRPCcount').get('innerHTML'));
         }
-	  
     }));
+    
     Y.Test.Runner.add(suite);
 
 }, '0.0.1', { requires: [

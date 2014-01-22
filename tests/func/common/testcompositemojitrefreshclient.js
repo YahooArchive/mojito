@@ -11,25 +11,21 @@ YUI({
 
     suite.add(new Y.Test.Case({
 
-	    "test compositemojitrefreshclient": function() {
-            var that = this;
-            Y.one('#composite_mojit_button').simulate('click');
-            that.wait(function(){
-	            Y.Assert.areEqual('Refresh this module', Y.one('#footertitle').get('innerHTML').match(/Refresh this module/gi));
-	            Y.Assert.areEqual('This module has been refreshed ', Y.one('#footercomment').get('innerHTML').match(/This module has been refreshed /gi));
-	            Y.Assert.areEqual('0', Y.one('#footercomment').get('innerHTML').match(/0/gi));
-	            Y.Assert.areEqual('times', Y.one('#footercomment').get('innerHTML').match(/times/gi));
-	            Y.one('#footerfresh').simulate('click');
-	            that.wait(function(){
-		            Y.Assert.areEqual('This module has been refreshed ', Y.one('#footercomment').get('innerHTML').match(/This module has been refreshed /gi));
-		            Y.Assert.areEqual('1', Y.one('#footercomment').get('innerHTML').match(/1/gi));
-		            Y.Assert.areEqual('times', Y.one('#footercomment').get('innerHTML').match(/times/gi));
-	            }, 4000);
-            }, 4000);
+        "test compositemojitrefreshclient": function() {
+            if (ARROW.testParams["testName"] === "part1") {
+                Y.Assert.areEqual('Refresh this module', Y.one('#footertitle').get('innerHTML').match(/Refresh this module/gi));
+                Y.Assert.areEqual('This module has been refreshed ', Y.one('#footercomment').get('innerHTML').match(/This module has been refreshed /gi));
+                Y.Assert.areEqual('0', Y.one('#footercomment').get('innerHTML').match(/0/gi));
+                Y.Assert.areEqual('times', Y.one('#footercomment').get('innerHTML').match(/times/gi));
+            } else {
+                Y.Assert.areEqual('This module has been refreshed ', Y.one('#footercomment').get('innerHTML').match(/This module has been refreshed /gi));
+                Y.Assert.areEqual('1', Y.one('#footercomment').get('innerHTML').match(/1/gi));
+                Y.Assert.areEqual('times', Y.one('#footercomment').get('innerHTML').match(/times/gi));
+            };
         }
 
-   }));
+    }));
 
-   Y.Test.Runner.add(suite);
+    Y.Test.Runner.add(suite);
 
 });

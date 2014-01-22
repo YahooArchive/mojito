@@ -11,28 +11,24 @@ YUI({
 
     suite.add(new Y.Test.Case({
 
-	  "test assetjswithdefaultlocationclient": function() {
-          var that = this;
-          Y.one('#assets_default_button').simulate('click');
-          that.wait(function(){
-	            //check if the scripts are load in the header
-	            var pat1 = /\/static\/AssetsMojit\/assets\/js\/js1.js/gi;
-	            var pat2 = /\/static\/AssetsMojit\/assets\/js\/js2.js/gi;
-	            Y.Assert.areEqual('/static/AssetsMojit/assets/js/js1.js', checkscript(Y.one('head'), 'script', 'src', pat1));
-	            Y.Assert.areEqual('/static/AssetsMojit/assets/js/js2.js', checkscript(Y.one('head'), 'script', 'src', pat2));       				
-            }, 4000);
+        "test assetjswithdefaultlocationclient": function() {
+            //check if the scripts are load in the header
+            var pat1 = /\/static\/AssetsMojit\/assets\/js\/js1.js/gi;
+            var pat2 = /\/static\/AssetsMojit\/assets\/js\/js2.js/gi;
+            Y.Assert.areEqual('/static/AssetsMojit/assets/js/js1.js', checkscript(Y.one('head'), 'script', 'src', pat1));
+            Y.Assert.areEqual('/static/AssetsMojit/assets/js/js2.js', checkscript(Y.one('head'), 'script', 'src', pat2));
         }
 
-     }));
+    }));
 
-     Y.Test.Runner.add(suite);
+    Y.Test.Runner.add(suite);
 
-     function checkscript(mynode, assetLoc, assetTag, assetPat){
-         var mystring;
-         mynode.all(assetLoc).each(function (taskNode){
-             var mysrc = taskNode.get(assetTag).match(assetPat);
-             if(mysrc!=null){ mystring=mysrc; }   
-         });
-         return mystring;
-     }
+    function checkscript(mynode, assetLoc, assetTag, assetPat){
+        var mystring;
+        mynode.all(assetLoc).each(function (taskNode){
+            var mysrc = taskNode.get(assetTag).match(assetPat);
+            if(mysrc!=null){ mystring=mysrc; }   
+        });
+        return mystring;
+    }
 });

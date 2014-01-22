@@ -12,12 +12,11 @@ YUI({
     suite.add(new Y.Test.Case({
          
        "test acmojitdone5client": function() {
-          var that = this;
-          Y.one('#testcase > option[value="done5"]').set('selected','selected'); 
-          Y.one('#acMojitButton').simulate('click');
-          that.wait(function(){
+          if (ARROW.testParams["testName"] === "part1") {
+              Y.one('#testcase > option[value="done5"]').set('selected','selected'); 
+          } else {
               Y.Assert.areEqual('\{\"mycars\":[\"Saab\",\"Volvo\",\"BMW\"\]\}', Y.one('#ACMojitResult').get('innerHTML').match(/\{\"mycars\":\[\"Saab\",\"Volvo\",\"BMW\"\]\}/gi));
-          }, 4000);
+          };
       }
 
       }));

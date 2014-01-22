@@ -10,17 +10,13 @@ YUI({
     var suite = new Y.Test.Suite("Common: mojitproxyrefreshview");
 
     suite.add(new Y.Test.Case({
- 
+
         "test mojitproxyrefreshview": function() {
-            var that = this;
-            Y.one('#mojitProxyRefreshButton').simulate('click');
-            that.wait(function(){
-	            Y.Assert.areEqual('Testing ac.refreshView', Y.one('#MojitProxyMojitResult').get('innerHTML').match(/Testing ac.refreshView/gi));
-	            Y.one('#refreshViewButton').simulate('click');
-	            that.wait(function(){
-		            Y.Assert.areEqual('Testing ac.refreshView', Y.one('#MojitProxyMojitResult').get('innerHTML').match(/Testing ac.refreshView/gi));
-	            }, 4000);
-            }, 4000);
+            if (ARROW.testParams["testName"] === "part1") {
+                Y.Assert.areEqual('Testing ac.refreshView', Y.one('#MojitProxyMojitResult').get('innerHTML').match(/Testing ac.refreshView/gi));
+            } else {
+                Y.Assert.areEqual('Testing ac.refreshView', Y.one('#MojitProxyMojitResult').get('innerHTML').match(/Testing ac.refreshView/gi));
+            };
         }
 
     }));

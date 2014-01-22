@@ -8,17 +8,13 @@ YUI.add('common-testlazyloadclientmojitclient-tests', function (Y) {
     suite.add(new Y.Test.Case({
 
         "test LazyLoadClientMojitClient": function() {
-            var that = this;
-            Y.one('#lazyloadclientmojitButton').simulate('click');
-            that.wait(function(){
-                Y.Assert.areEqual('Lazy load succeeded:', Y.one('#LazyLoadClientMojittitle').get('innerHTML'));
-                Y.Assert.areEqual('fooc-value set by binder', Y.one('#LazyLoadClientMojitfoo').get('innerHTML'));
-                Y.Assert.areEqual('barc-value set by controller', Y.one('#LazyLoadClientMojitbar').get('innerHTML'));
-                Y.Assert.areEqual('From controller: fooc-value set by binder', Y.one('#LazyLoadClientMojitbaz').get('innerHTML'));
-                Y.Assert.areEqual('Data has changed: 3 times', Y.one('#LazyLoadClientMojitcount').get('innerHTML'));
-            }, 2000);
+            Y.Assert.areEqual('Lazy load succeeded:', Y.one('#LazyLoadClientMojittitle').get('innerHTML'));
+            Y.Assert.areEqual('fooc-value set by binder', Y.one('#LazyLoadClientMojitfoo').get('innerHTML'));
+            Y.Assert.areEqual('barc-value set by controller', Y.one('#LazyLoadClientMojitbar').get('innerHTML'));
+            Y.Assert.areEqual('From controller: fooc-value set by binder', Y.one('#LazyLoadClientMojitbaz').get('innerHTML'));
+            Y.Assert.areEqual('Data has changed: 3 times', Y.one('#LazyLoadClientMojitcount').get('innerHTML'));
         }
-	  
+
     }));
     Y.Test.Runner.add(suite);
 

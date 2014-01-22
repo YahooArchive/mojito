@@ -14,22 +14,20 @@ YUI({
     suite.add(new Y.Test.Case({
 
         "test intermojit": function () {
-            var that = this,
-                i;
-            that.wait(function () {
+            var i;
+            if (ARROW.testParams["testName"] === "first") {
                 Y.Assert.areEqual("List of images for testing", Y.one('h3').get('innerHTML'));
                 for (i = 0; i < Y.all('a').size(); i++) {
                     Y.Assert.areEqual("static.flickr.com", Y.all('a').item(i).getAttribute('href').match(/static.flickr.com/gi));
                     Y.Assert.areEqual("Image", Y.all('a').item(i).get('innerHTML').match(/Image/gi));
                 }
-                Y.all('a').item(0).simulate('click');
-                that.wait(function () {
-                    Y.Assert.areEqual('Image matching the link clicked on the left.', Y.all('h3').item(1).get('innerHTML'));
-                    Y.Assert.areEqual("static.flickr.com", Y.one('img').getAttribute('src').match(/static.flickr.com/gi));
-                }, 2000);
-            }, 2000);
+            } else {
+                Y.Assert.areEqual('Image matching the link clicked on the left.', Y.all('h3').item(1).get('innerHTML'));
+                Y.Assert.areEqual("static.flickr.com", Y.one('img').getAttribute('src').match(/static.flickr.com/gi));
+            }
         }
     }));
+    
     Y.Test.Runner.add(suite);
 });
 

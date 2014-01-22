@@ -13,14 +13,27 @@
         },
 
         "dataprovider" : {    
-           "unittestmodelcontroller" : {
-                 "group" : "developerguide,unittest_model_controller",
-                 "params" : {
-                             "test" : "test_unittest_model_controller.js",
-                             "page" : "$$config.baseUrl$$/?environment=development"
+            "unittestmodelcontroller" : {
+                "group" : "developerguide,unittest_model_controller",
+                "params" : {
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$/?environment=development"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "using": "xpath",
+                                "value": "/html/body/div/ul/li"
+                            }
+                        },
+                        {
+                            "test" : "test_unittest_model_controller.js"
+                        }
+                    ]
                 }
             }
-        }     
+        }
     },
 
     {

@@ -54,7 +54,7 @@
         "mojito-cli": "~0.1",
         "node-static": ">0.6.8",
         "wrench": "~1.3.9",
-        "yahoo-arrow": "0.0.87",
+        "yahoo-arrow": "0.0.89",
         "portfinder": "0.2.1"
     },
     "optionalDependencies": {
