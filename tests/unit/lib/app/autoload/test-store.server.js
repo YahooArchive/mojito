@@ -149,7 +149,7 @@ YUI().use(
             'server mojit instance views and binders': function() {
                 var instance = {type:'test_mojit_1'};
                 store.expandInstanceForEnv('client', instance, {}, function(err, instance) {
-                    A.areSame(3, Y.Object.keys(instance.views).length);
+                    A.areSame(4, Y.Object.keys(instance.views).length);
 
                     A.isObject(instance.views['test_1']);
                     A.areSame('/static/test_mojit_1/views/test_1.hb.html', instance.views['test_1']['content-path']);
