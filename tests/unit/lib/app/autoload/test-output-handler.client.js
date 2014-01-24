@@ -121,7 +121,7 @@ YUI({useBrowserConsole: true}).use(
                         assets: {
                             bottom: {
                                 js: ['index.js'],
-                                css: ['index.css'],
+                                css: ['index.css', "abc.css"],
                                 blob: ['<meta id="blobTest" />']
                             },
                             top: {
@@ -130,13 +130,14 @@ YUI({useBrowserConsole: true}).use(
                             }
                         }
                     };
-
                 Y.Get = Y.Mock();
                 Y.Mock.expect(Y.Get, {
                     method: 'css',
                     args: [Y.Mock.Value.Any, Y.Mock.Value.Object],
                     run: function (css, options) {
                         Y.Assert.isArray(css);
+                        Y.Assert.areEqual("index.css", css[0]);
+                        Y.Assert.isUndefined(css[1]);
                         Y.Assert.isFunction(options.onEnd);
                     }
                 });
@@ -149,6 +150,19 @@ YUI({useBrowserConsole: true}).use(
                         Y.Assert.isFunction(options.onEnd);
                     }
                 });
+
+                document = Y.Mock();
+                var ele = document.createElement( 'link' );
+                ele.setAttribute("href", "abc.css");
+                Y.Mock.expect(document, {
+                    method: 'getElementsByTagName',
+                    args: [Y.Mock.Value.Any],
+                    returns: [ele],
+                    run: function (link) {
+                        Y.Assert.isString(link);
+                        Y.Assert.areEqual("link", link);
+                    }
+                });
                 outputHandler.callback = function (err, data, meta) {
                     Y.Assert.isNull(err);
                     Y.Assert.isString(data);
@@ -158,6 +172,7 @@ YUI({useBrowserConsole: true}).use(
                 outputHandler.done(inputData, inputMeta);
                 Y.Assert.isObject(Y.one('#blobTest'));
                 Y.Mock.verify(Y.Get);
+                Y.Mock.verify(document);
             },
 
             "test error": function () {
