@@ -13,11 +13,18 @@ Features
 Bug Fixes
 ---------
 
-* Issue #1280: Composite.execute cannot be called multiple times in the same mojit
+* Issue #1306: ac.partial.render() throws error for handlebar custom helper
 
 Acknowledgements
 ----------------
 
+version 0.8.2
+=================
+
+Bug Fixes
+---------
+
+* Issue #1280: Composite.execute cannot be called multiple times in the same mojit
 
 version 0.8.1
 =================

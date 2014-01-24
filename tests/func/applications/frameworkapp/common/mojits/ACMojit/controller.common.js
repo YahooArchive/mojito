@@ -61,9 +61,9 @@ YUI.add('ActionContextMojit', function(Y, NAME) {
             }else if(test=="done8"){
                 ac.done({data:"Hello, world!--from done"}, {view: {name: "mytemplate"}});
             }else if(test=="done9"){
-                ac.done({ foo: null }, {view: {name: "mytemplate1"}});
+                ac.done({ foo: null }, {view: {name: "testdir/mytemplate1"}});
             }else if(test=="done10"){
-                ac.done({ foo: [ 1, 2, null, 4 ]}, {view: {name: "mytemplate1"}} );
+                ac.done({ foo: [ 1, 2, null, 4 ]}, {view: {name: "testdir/mytemplate1"}} );
             }else if(test=="flush8"){
                 ac.flush({data:"Hello, world!--from flush"}, {view: {name: "mytemplate"}});
                 ac.done();
