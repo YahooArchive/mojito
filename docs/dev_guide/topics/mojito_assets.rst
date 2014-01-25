@@ -260,7 +260,7 @@ array as seen in the example mojit controller below.
 
 .. code-block:: javascript
 
-   YUI.add('textProcessor', function(Y, NAME){
+   YUI.add('textprocessor', function(Y, NAME){
      Y.namespace('mojito.controllers')[NAME] = { 
        index: function(ac) {
          // Use the 'substitute' module

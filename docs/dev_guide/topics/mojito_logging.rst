@@ -178,11 +178,11 @@ We recommend that you pass the first three parameters to
 
 In the example binder below, ``Y.log`` logs
 a message at the ``info`` level and specifies the module
-through ``NAME``, which in this case contains the value ``DemoBinderIndex``.
+through ``NAME``, which in this case contains the value ``demo-binder-index``.
 
 .. code-block:: javascript
 
-   YUI.add('DemoBinderIndex', function(Y, NAME) {
+   YUI.add('demo-binder-index', function(Y, NAME) {
     Y.namespace('mojito.binders')[NAME] = {
         init: function(mojitProxy) {
             this.mojitProxy = mojitProxy;
@@ -231,7 +231,7 @@ of the ``yui.config`` object to include or exclude logging
 from YUI modules of your application. 
 
 The configuration below excludes logging from the YUI module 
-``FinanceModelStocks``:
+``finance-model-stocks``:
 
 .. code-block:: javascript
 
@@ -239,7 +239,7 @@ The configuration below excludes logging from the YUI module
      "config": {
       "debug": true,
       "logLevel": "info",
-      "logExclude": { "FinanceModelStocks": true } 
+      "logExclude": { "finance-model-stocks": true } 
      }
    }
 
@@ -250,14 +250,14 @@ from the log:
 
 .. code-block:: javascript
 
-   YUI.add('FinanceModelStocks', function (Y, NAME) {
+   YUI.add('finance-model-stocks', function (Y, NAME) {
 
      Y.namespace('mojito.models')[NAME] = {
 
        init: function (config) {
          // The following log message will be excluded from the log
-         // because "logExclude": { "FinanceModelStocks" }.
-         // NAME => "FinanceModelStocks"
+         // because "logExclude": { "finance-model-stocks" }.
+         // NAME => "finance-model-stocks"
          Y.log('this message will be excluded', 'info', NAME);
          this.config = config;
        },

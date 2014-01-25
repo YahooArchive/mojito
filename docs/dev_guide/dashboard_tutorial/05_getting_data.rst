@@ -315,7 +315,7 @@ with the callback.
 .. code-block:: javascript
 
 
-   YUI.add('GroupsModel', function(Y, NAME) {
+   YUI.add('groups-model', function(Y, NAME) {
 
      Y.namespace('mojito.models')[NAME] = {
 
@@ -374,7 +374,7 @@ provide mocked data.
 
 .. code-block:: javascript
 
-   YUI.add('TwitterSearchModel', function (Y, NAME) {
+   YUI.add('twittersearch-model', function (Y, NAME) {
      Y.mojito.models[NAME] = {
 
        init: function (config) {
@@ -445,7 +445,7 @@ as an iPhone template or an Android template.
 
 .. code-block:: javascript
 
-   YUI.add('Twitter', function (Y, NAME) {
+   YUI.add('twitter', function (Y, NAME) {
 
      Y.namespace('mojito.controllers')[NAME] = {
        index: function (ac) {
@@ -493,7 +493,7 @@ Creating the Application
 #. Change to the ``models`` directory of ``Twitter``. We’re going to deal with 
    getting ``Twitter`` data first.
 #. Rename the file ``model.server.js`` to ``twitter.server.js`` and then change the 
-   registered module name from ``TwitterModel`` to ``TwitterSearchModel``.
+   registered module name from ``twitter-model`` to ``twittersearch-model``.
 #. Open ``twitter.server.js`` in an editor, and modify the method ``getData``, so 
    that it looks like the snippet below. As you can see, we use the ``simple-twitter``
    module to make the REST calls to the Twitter Search API. We've also added mocked 
@@ -619,14 +619,14 @@ Creating the Application
 #. Let’s turn our attention to the ``Github`` mojit. We have been waiting long 
    enough to get GitHub data, but before we change any code, let’s rename 
    the model file to ``yql.server.js``. Now we can edit the file ``yql.server.js``. 
-   Open the file in an editor, change the module name to ``StatsModelYQL``, update 
+   Open the file in an editor, change the module name to ``stats-model-yql``, update 
    the ``getData`` function with the code below. Notice that we are using the YQL 
    Open Data Table ``github.xml``, which YQL allows you to use with the ``use``
    statement. 
 
    .. code-block:: javascript
 
-      YUI.add('StatsModelYQL', function(Y, NAME) {
+      YUI.add('stats-model-yql', function(Y, NAME) {
 
         Y.mojito.models[NAME] = {
 

@@ -111,7 +111,7 @@ view to the HTML DOM.
 
 .. code-block:: javascript
 
-   YUI.add('scrollBinderIndex', function (Y, NAME) {
+   YUI.add('scroll-binder-index', function (Y, NAME) {
 
      Y.namespace('mojito.binders')[NAME] = {
        init: function (mojitProxy) {
@@ -267,7 +267,7 @@ To set up and run ``scroll_views``:
 
    .. code-block:: javascript
 
-      YUI.add('scrollBinderIndex', function (Y, NAME) {
+      YUI.add('scroll-binder-index', function (Y, NAME) {
 
         Y.namespace('mojito.binders')[NAME] = {
           init: function (mojitProxy) {

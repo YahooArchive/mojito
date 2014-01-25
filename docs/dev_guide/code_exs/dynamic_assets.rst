@@ -406,4 +406,3 @@ Source Code
 - `Mojit Controller <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/device_assets/mojits/device/controller.server.js>`_
 - `Device Assets Application <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/device_assets/>`_
 
-

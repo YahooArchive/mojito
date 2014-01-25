@@ -65,12 +65,12 @@ The parent mojit instance defined in ``application.json`` can access the
 The controller methods of the parent mojit can use the ``Config`` addon
 to get the application configuration with the method ``getAppConfig``.
 
-In the example controller of ``ParentMojit`` below, the ``index`` function saves 
+In the example controller of ``parent`` mojit below, the ``index`` function saves 
 and displays the ``children`` object that lists the child mojits.
 
 .. code-block:: javascript
 
-   YUI.add('ParentMojit', function(Y, NAME) {
+   YUI.add('parent', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
        index: function(ac) {
          var app_config = ac.config.getAppConfig();
@@ -97,7 +97,7 @@ as ``{{{child_mojit}}}`` in the parent template.
 
 .. code-block:: javascript
 
-   YUI.add('ParentMojit', function(Y, NAME) {
+   YUI.add('parent', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
        index: function(ac) {
          ac.composite.done();
@@ -105,12 +105,12 @@ as ``{{{child_mojit}}}`` in the parent template.
      };
    }, '0.1.0', {requires: ['mojito', 'mojito-composite-addon']});
 
-If ``ParentMojit`` above is the parent of ``ChildMojit``, the controller of 
-``ChildMojit`` shown below will execute ``ac.done`` in the ``index`` function.
+If ``parent`` above is the parent of ``child``, the controller of 
+``child`` shown below will execute ``ac.done`` in the ``index`` function.
 
 .. code-block:: javascript
 
-   YUI.add('ChildMojit', function(Y, NAME) {
+   YUI.add('child', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
        index: function(ac) {
          ac.done({ title: 'Child Mojit'});
@@ -134,7 +134,7 @@ the value ``'Welcome'`` when the template is rendered.
 .. code-block:: javascript
 
    
-   YUI.add('ParentMojit', function(Y, NAME) {
+   YUI.add('parent', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
        index: function(ac) {
          ac.composite.done({ parent_data: 'Welcome'});
@@ -158,7 +158,7 @@ The example controller of parent mojit passes data and selects the template
 
 .. code-block:: javascript
 
-   YUI.add('ParentMojit', function(Y, NAME) {
+   YUI.add('parent', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
        index: function(ac) {
          ac.composite.done({ parent_data: 'Welcome'}, { "view": { "name": "page" }});
@@ -174,7 +174,7 @@ binder to use with the ``page`` template.
 
 .. code-block:: javascript
 
-   YUI.add('ParentMojit', function(Y, NAME) {
+   YUI.add('parent', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
        index: function(ac) {
          ac.composite.done({ parent_data: 'Welcome'}, 
@@ -199,7 +199,7 @@ of the rendered page.
 
 .. code-block:: javascript
 
-   YUI.add('ParentMojit', function(Y, NAME) {
+   YUI.add('parent', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
        index: function(ac) {
          ac.composite.done({ parent_data: 'Welcome'}, {
@@ -215,8 +215,6 @@ of the rendered page.
        }
      };
    }, '0.1.0', {requires: ['mojito', 'mojito-composite-addon']});
-
-
 
 
 .. _mojito_composite-child_view:
@@ -279,15 +277,15 @@ will resume executing the other child mojits.
        "appPort": 8666,
        "specs": {
          "parent": {
-           "type": "parentMojit",
+           "type": "Parent",
            "config" : {
              "children": {
                "fluff": {
-                 "type": "fluffMojit",
+                 "type": "Fluff",
                  "propagateFailure": false
                },
                "real_content": {
-                 "type": "contentMojit",
+                 "type": "Content",
                  "propagateFailure": true
                }
              }

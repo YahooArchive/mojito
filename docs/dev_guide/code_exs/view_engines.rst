@@ -354,7 +354,7 @@ To set up and run ``adding_view_engines``:
 
    .. code-block:: javascript
    
-      YUI.add('myMojit', function(Y, NAME) {
+      YUI.add('mymojit', function(Y, NAME) {
 
         Y.namespace('mojito.controllers')[NAME] = {   
   
@@ -378,7 +378,7 @@ To set up and run ``adding_view_engines``:
             });  
           }
         };
-      }, '0.0.1', {requires: ['mojito', 'myMojitModelFoo']});
+      }, '0.0.1', {requires: ['mojito', 'mymojit-model-foo']});
  
 #. Create the template ``views/default_ve.hb.html`` that uses Handlebar 
    expressions with the following:

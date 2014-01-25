@@ -253,7 +253,7 @@ To use the ``LazyLoadMojit``, the ``application.json`` must do the following:
 - create a container mojit that has children mojit instances (``"children": { ... }``)
 - defer the dispatch of the mojit instance that will be lazily loaded (``"defer": true``)
 
-In the example ``application.json`` below, the child mojit instance ``myLazyMojit`` is 
+In the example ``application.json`` below, the child mojit instance ``myLazy`` is 
 configured to be lazily loaded. The action (``hello``) of the proxied mojit is also 
 configured to be executed after lazy loading is complete.
 
@@ -271,12 +271,12 @@ configured to be executed after lazy loading is complete.
                "type": "Container",
                "config": {
                  "children": {
-                   "myLazyMojit": {
+                   "myLazy": {
                      "type": "LazyPants",
                      "action": "hello",
                      "defer": true
                    },
-                   "myActiveMojit": {
+                   "myActive": {
                       "type": "GoGetter",
                    }
                  }
@@ -313,11 +313,11 @@ requirements for using ``LazyLoadMojit``:
   to the client
 - creates the ``child`` mojit instance that has the ``children`` object 
   specifying child mojit instance
-- configures the ``myLazyMojit`` instance to defer being dispatched, which 
+- configures the ``myLazy`` mojit instance to defer being dispatched, which 
   causes it to be lazily loaded by ``LazyLoadMojit``
 
 In this ``application.json``, the ``parent`` mojit instance has the one child 
-``myLazyMojit``. The ``myLazyMojit`` mojit instance of type ``LazyChild`` is 
+``myLazy``. The ``myLazy`` mojit instance of type ``LazyChild`` is 
 the mojit that will be lazily loaded by ``LazyLoadMojit``. In a production 
 application, you could configure the application to have many child instances 
 that are lazily loaded after the parent mojit instance is already loaded onto 
@@ -337,7 +337,7 @@ the page.
                "type": "Container",
                "config": {
                  "children": {
-                   "myLazyMojit": {
+                   "myLazy": {
                      "type": "LazyChild",
                      "action": "hello",
                      "defer": true
@@ -361,7 +361,7 @@ The ``Container`` mojit uses ``ac.composite.done`` to execute its child mojits.
 
 .. code-block:: javascript
 
-   YUI.add('Container', function(Y, NAME) {
+   YUI.add('container', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
      /**
      * Method corresponding to the 'index' action.
@@ -378,14 +378,14 @@ The ``Container`` mojit uses ``ac.composite.done`` to execute its child mojits.
 Instead of waiting for the child mojit to execute, the partially rendered view 
 of the ``Container`` mojit is immediately sent to the client. After the child 
 mojit is lazily loaded, the content of the executed child replaces the Handlebars 
-expression ``{{{myLazyMojit}}}``.
+expression ``{{{myLazy}}}``.
 
 .. code-block:: html
 
    <div id="{{mojit_view_id}}">
      <h1>Lazy Loading</h1>
      <hr/>
-       {{{myLazyMojit}}
+       {{{myLazy}}
      <hr/>
    </div>
 
@@ -396,12 +396,12 @@ LazyChild Mojit
 ###############
 
 The ``LazyLoadMojit`` in the ``application.json`` is configured to lazily load 
-the mojit instance ``myLazyMojit`` and then call the action ``hello``. Thus, 
+the mojit instance ``myLazy`` and then call the action ``hello``. Thus, 
 the ``index`` function in the ``LazyChild`` mojit below is never called.
 
 .. code-block:: javascript
 
-   YUI.add('LazyChild', function(Y, NAME) {
+   YUI.add('lazychild', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
        hello: function(ac) {
          ac.done({time: new Date()});
@@ -482,8 +482,8 @@ The configuration to use a custom frame mojit should be similar to the configura
 for using the ``HTMLFrameMojit``, but you have more flexibility because you
 have control over the implementation of the frame mojit.
 
-In the ``application.json`` below, the instance ``fm`` of the frame mojit ``MyFrameMojit`` 
-is configured to have children mojits. The implementation of ``MyFrameMojit`` will
+In the ``application.json`` below, the instance ``fm`` of the frame mojit ``MyFrame`` 
+is configured to have children mojits. The implementation of ``MyFrame`` will
 need to get the configuration of the ``children`` and then execute them
 using the Composite addon.
 
@@ -495,17 +495,17 @@ using the Composite addon.
        "appPort": "8666",
        "specs": {
          "fm": {
-           "type": "MyFrameMojit",
+           "type": "MyFrame",
            "config": {
              "children": {
                "header": {
-                 "type": "HeaderMojit"
+                 "type": "Header"
                },
                "body": {
-                 "type": "BodyMojit"
+                 "type": "Body"
                },
                "footer": {
-                 "type": "FooterMojit"
+                 "type": "Footer"
                }
              }
            }
@@ -531,21 +531,21 @@ your ``application.json`` might be similar to the following:
        "appPort": "8666",
        "specs": {
          "fm": {
-           "type": "MyFrameMojit",
+           "type": "MyFrame",
            "config": {
              "title": "Title of HTML page",
              "child" : {
-               "type" : "BodyMojit",
+               "type" : "Body",
                "config": {
                  "children": {
                    "header": {
-                     "type": "HeaderMojit"
+                     "type": "Header"
                    },
                    "body": {
-                     "type": "ContentMojit"
+                     "type": "Content"
                    },
                    "footer": {
-                     "type": "FooterMojit"
+                     "type": "Footer"
                    }
                  }
                }
@@ -605,17 +605,17 @@ application.json
        "appPort": "8666",
        "specs": {
          "ms": {
-           "type": "IntlHTMLFrameMojit",
+           "type": "IntlHTMLFrame",
            "config": {
              "children": {
                "header": {
-                 "type": "HeaderMojit"
+                 "type": "Header"
                },
                "body": {
-                 "type": "BodyMojit"
+                 "type": "Body"
                },
                "footer": {
-                 "type": "FooterMojit"
+                 "type": "Footer"
                }
              }
            }
@@ -624,15 +624,15 @@ application.json
      } 
    ]
 
-IntlHTMLFrameMojit
-##################
+IntlHTMLFrame
+#############
 
 controller.server.js
 ********************
 
 .. code-block:: javascript
 
-   YUI.add('IntlHTMLFrameMojit', function (Y, NAME) {
+   YUI.add('intlhtmlframe', function (Y, NAME) {
      'use strict';
      Y.namespace('mojito.controllers')[NAME] = {
        index: function (ac) {

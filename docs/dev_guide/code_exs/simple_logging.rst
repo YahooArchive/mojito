@@ -132,12 +132,12 @@ below will report the message at the log level that is configured in
 ``application.json`` or use the default (``debug``) if
 no log level is set with ``logLevel``. The second use of ``Y.log`` will 
 use the log level ``info``. Both statements specify the reporting module 
-``logBinderIndex``.
+``log-binder-index``.
 
 .. code-block:: javascript
 
-   Y.log("This message will be reported at the log level set in application.json or the default level.", null, "logBinderIndex");
-   Y.log("This log message will be reported at the INFO log level.", "info", "logBinderIndex");
+   Y.log("This message will be reported at the log level set in application.json or the default level.", null, "log-binder-index");
+   Y.log("This log message will be reported at the INFO log level.", "info", "log-binder-index");
 
 .. _code_exs_logging-setup:
 
@@ -230,7 +230,7 @@ To set up and run ``simple_logging``:
 
    .. code-block:: javascript
 
-      YUI.add('logBinderIndex', function(Y, NAME) {
+      YUI.add('log-binder-index', function(Y, NAME) {
         Y.namespace('mojito.binders')[NAME] = {
           init: function(mojitProxy) {
             this.mojitProxy = mojitProxy;
@@ -288,5 +288,4 @@ Source Code
 - `Logging Configuration <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/simple_logging/application.json>`_
 - `Mojit Controller <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/simple_logging/mojits/log/controller.server.js>`_
 - `Binder <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/simple_logging/mojits/log/binders/index.js>`_
-
 

@@ -110,7 +110,7 @@ Example
       {{global_news_stories}}
    </div>
 
-**/my_news_app/mojits/newsMojit/views/partials/local_news.hb.html**
+**/my_news_app/mojits/news/views/partials/local_news.hb.html**
 
 .. code-block:: html
 
@@ -119,7 +119,7 @@ Example
       {{local_news_stories}}
    </div>
 
-**/my_news_app/mojits/newsMojit/views/index.hb.html**
+**/my_news_app/mojits/news/views/index.hb.html**
 
 .. code-block:: html
 
@@ -386,7 +386,7 @@ templates must require the ``Helpers`` addon in their controllers as shown below
 
 .. code-block:: javascript
 
-   YUI.add('childMojit', function(Y, NAME) {
+   YUI.add('child', function(Y, NAME) {
      // This is a child mojit that wants to reference the global
      // Handlebars helper. Although no helper code is needed in the controller,
      // the controller must require the `Helpers` addon by adding the string
@@ -423,7 +423,7 @@ controller.server.js
 
 .. code-block:: javascript
 
-   YUI.add('helperMojit', function(Y, NAME) {
+   YUI.add('helper', function(Y, NAME) {
 
      function toLinkHelper(title, url) {
        return "<a href='" + url + "'>" + title + "</a>";
