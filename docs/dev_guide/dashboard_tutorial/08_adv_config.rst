@@ -626,7 +626,7 @@ instance defines the title:
 
    ...
      "twitter": {
-       "type":"twitterMojit"
+       "type":"Twitter"
        "config": {
          "title": "Twitter Feed"
        }
@@ -634,7 +634,7 @@ instance defines the title:
    ...
 
 We can define the default URL or search query in the ``defaults.json`` file of the 
-``twitterMojit``. Because the ``twitter`` mojit instance does not define the ``url`` and 
+``Twitter``. Because the ``twitter`` mojit instance does not define the ``url`` and 
 ``query`` properties explicitly, your application will use the defaults.
 
 .. code-block:: javascript
@@ -908,7 +908,7 @@ Creating the Application
 
    .. code-block:: javascript
 
-      YUI.add('Twitter', function (Y, NAME) {
+      YUI.add('twitter', function (Y, NAME) {
 
         Y.namespace('mojito.controllers')[NAME] = {
 
@@ -1033,9 +1033,9 @@ Creating the Application
 
    .. code-block:: javascript
 
-      YUI.add('Github-tests', function (Y) {
+      YUI.add('github-tests', function (Y) {
 
-        var suite = new YUITest.TestSuite('Github-tests'),
+        var suite = new YUITest.TestSuite('github-tests'),
             controller = null,
             A = YUITest.Assert,
             config_def = null,
@@ -1045,8 +1045,8 @@ Creating the Application
 
           name: 'Github user tests',
           setUp: function () {
-            controller = Y.mojito.controllers.Github;
-            model = Y.mojito.models.StatsModelYQL;
+            controller = Y.mojito.controllers["github"];
+            model = Y.mojito.models["stats-model-yql"]
             config_def = {
               "yui": {
                 "title" : "YUI GitHub Activity",
@@ -1087,7 +1087,7 @@ Creating the Application
               },
               models: {
                 get: function (modelName) {
-                  A.areEqual('StatsModelYQL', modelName, 'wrong model name');
+                  A.areEqual('stats-model-yql', modelName, 'wrong model name');
                   return {
                     getData: function (params, tablePath, id, repo, cb) {
                       return {
@@ -1110,13 +1110,13 @@ Creating the Application
           }
         }));
         YUITest.TestRunner.add(suite);
-      }, '0.0.1', {requires: ['mojito-test', 'Github', 'StatsModelYQL']});
+      }, '0.0.1', {requires: ['mojito-test', 'github', 'stats-model-yql']});
 
    ``mojits/Github/tests/models/yql.server-tests.js``
 
    .. code-block:: javascript
 
-      YUI.add('StatsModelYQL-tests', function(Y, NAME) {
+      YUI.add('stats-model-yql-tests', function(Y, NAME) {
 
         var suite = new YUITest.TestSuite(NAME),
             model = null,
@@ -1125,9 +1125,9 @@ Creating the Application
             repo = null,
             A = YUITest.Assert;
         suite.add(new YUITest.TestCase({
-          name: 'StatsModelYQL user tests',
+          name: 'stats-model-yql user tests',
           setUp: function() {
-            model = Y.mojito.models.StatsModelYQL;
+            model = Y.mojito.models["stats-model-yql"]
             yqlTable = "store://gpgSGZAwQ3vaDaalPQZ44u";
             id = "yui";
             repo = "yui3";
@@ -1149,7 +1149,7 @@ Creating the Application
           }
         }));
         YUITest.TestRunner.add(suite);
-      }, '0.0.1', {requires: ['mojito-test', 'StatsModelYQL']});
+      }, '0.0.1', {requires: ['mojito-test', 'stats-model-yql']});
 
 #. Just one more small change to our child mojits before we work on the composite
    and frame mojits. The output from our ``Blog`` mojit was pretty messy. Just replace

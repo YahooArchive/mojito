@@ -1124,9 +1124,9 @@ The table below describes the properties of the ``route`` object of  ``routes.js
 |                |                      |               | mojit instance can also be created by prepending       |
 |                |                      |               | "@" to the mojit type. For example, the following      |
 |                |                      |               | would create an anonymous mojit instance of type       |
-|                |                      |               | ``HelloMojit`` and call the ``index`` action for       |
-|                |                      |               | the ``HelloMojit`` mojit: ``call:                      |
-|                |                      |               | "@HelloMojito.index"``                                 |
+|                |                      |               | ``Hellot`` and call the ``index`` action for           |
+|                |                      |               | the ``Hello`` mojit: ``call:                           |
+|                |                      |               | "@Hello.index"``                                       |
 +----------------+----------------------+---------------+--------------------------------------------------------+
 | ``params``     | string               | No            | Query string parameters that developers can            |
 |                |                      |               | associate with a route path. The default value is an   | 

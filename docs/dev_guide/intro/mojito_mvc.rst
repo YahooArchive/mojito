@@ -4,7 +4,7 @@ MVC in Mojito
 
 The MVC architecture in Mojito incorporates a clear separation of the 
 controller, model, and view. The controller is pivotal in the sense that it controls 
-all interactions in the MVC of Mojito.The controller retrieves data from the model 
+all interactions in the MVC of Mojito. The controller retrieves data from the model 
 and passes it to the view. Client requests for data are sent to the controller, 
 which in turn fetches data from the model and passes the data to the client. 
 
@@ -338,13 +338,13 @@ In the application configure file ``application.json`` below, the mojit instance
        "appPort": 8666,
        "specs": {
          "hello": {
-           "type": "HelloMojit"
+           "type": "Hello"
          }
        }
      }
    ]
 
-The controller for the ``HelloMojit`` mojit has an ``index`` function that we 
+The controller for the ``Hello`` mojit has an ``index`` function that we 
 want to call when an HTTP GET call is made on the root path. To do this, the 
 route configuration file ``routes.json`` maps the ``hello`` instance and the 
 ``index`` action to the root path with the ``path`` and ``call`` properties 
@@ -370,7 +370,7 @@ are available as Mojito actions.
 
 .. code-block:: javascript
 
-   YUI.add('Stateful', function(Y, NAME) {
+   YUI.add('stateful', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = {  
 
        index: function(ac) {
@@ -442,7 +442,7 @@ The ``controller.server.js`` below shows a simple example of calling
      };
    }, '0.0.1', {requires: [
      'mojito-models-addon',
-     'simpleModel'
+     'simple-model'
    ]});
 
 For a more detailed example, see `Calling the Model`_ and 
@@ -467,10 +467,10 @@ object to the ``index`` template.
 
 .. code-block:: javascript
 
-   YUI.add('UserMojit', function(Y, NAME) {
+   YUI.add('user', function(Y, NAME) {
      /**
-     * The HelloMojit module.
-     * @module HelloMojit
+     * The user module.
+     * @module user 
      */
      /**
      * Constructor for the Controller class.
@@ -512,10 +512,10 @@ instead of the default ``user`` template.
 
 .. code-block:: javascript
 
-   YUI.add('UserMojit', function(Y, NAME) {
+   YUI.add('user', function(Y, NAME) {
      /**
-     * The HelloMojit module.
-     * @module HelloMojit
+     * The user module.
+     * @module user 
      */
      /**
      * Constructor for the Controller class.

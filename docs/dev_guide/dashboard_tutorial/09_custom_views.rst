@@ -195,7 +195,7 @@ shown below can be registered as a helper to create links.
 
 .. code-block:: javascript
 
-   YUI.add('helperMojit', function(Y, NAME) {
+   YUI.add('helper', function(Y, NAME) {
 
      function toLinkHelper(title, url) {
        return "<a href='" + url + "'>" + title + "</a>";
