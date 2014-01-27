@@ -24,16 +24,16 @@ Conventions
        mojit-level YUI modules
 - Syntax for the name of the test file: ``{yui_module}.{affinity}-tests.js``
 
-  For example, the name of the unit test YUI module for the ``HelloMojit`` mojit 
-  with the ``server``   affinity would be ``HelloMojit.server-tests.js``.
+  For example, the name of the unit test for the ``Hello`` mojit (``hello`` YUI module) 
+  with the ``server`` affinity would be ``hello.server-tests.js``.
 
 - The unit test YUI module should include the target module and the ``mojito-test`` 
   module in the ``requires`` array. The requires array includes the ``mojito-test`` 
-  module and the target module ``HelloMojit``:
+  module and the target module ``hello``:
 
   .. code-block:: javascript
 
-     { requires: [ 'mojito-test', 'HelloMojit' ] }
+     { requires: [ 'mojito-test', 'hello' ] }
 
 .. note:: Test files that are **not** in a ``tests`` directory may be found by 
           Mojito as long as the file name has the suffix ``-tests``. The 
@@ -62,9 +62,9 @@ Mojit Tests
 You create unit tests for your mojits and execute them also using the ``mojito`` 
 command. Mojit tests must require (included in the YUI ``require`` array) the 
 module undergoing testing and the Mojito Test module ``mojito-test``. For 
-example, if the ``Foo`` module was being tested, the ``requires`` array would 
-include the ``Foo`` and ``mojit-test`` modules as seen here: 
-``requires: [ 'Foo', 'mojit-test']``
+example, if the ``foo`` module was being tested, the ``requires`` array would 
+include the ``foo`` and ``mojit-test`` modules as seen here: 
+``requires: [ 'foo', 'mojit-test']``
 
 By default, Mojito uses the `YUI Test <http://yuilibrary.com/yuitest/>`_ 
 framework for the `test harness <http://en.wikipedia.org/wiki/Test_harness>`_ 
@@ -94,22 +94,22 @@ have the string ``-tests`` appended to the affinity. For example, the mojit
 controller with the ``common`` affinity would be ``controller.common.js``, 
 so the name of the test file must be ``controller.common-tests.js``.
 
-The ``controller.common.js`` below registers the ``Foo`` module.
+The ``controller.common.js`` below registers the ``foo`` module.
 
 .. code-block:: javascript
 
-   YUI.add('Foo', function(Y) {
+   YUI.add('foo', function(Y) {
      ...
    });
 
-To test the ``Foo``, module, the the test file ``controller.common-tests.js`` would 
-require the ``Foo`` and 'mojito-test' modules as seen below.
+To test the ``foo``, module, the the test file ``controller.common-tests.js`` would 
+require the ``foo`` and 'mojito-test' modules as seen below.
 
 .. code-block:: javascript
 
-   YUI.add('Foo-tests', function(Y) {
+   YUI.add('foo-tests', function(Y) {
      ...
-   }, 'VERSION', {requires: ['mojito-test', 'Foo']});
+   }, 'VERSION', {requires: ['mojito-test', 'foo']});
 
 
 .. _mojito_testing-controller:
@@ -128,11 +128,11 @@ controller, you can create create a test controller with the same affinity or us
 Example
 -------
 
-The ``controller.server.js`` below requires the ``Foo`` module.
+The ``controller.server.js`` below requires the ``foo`` module.
 
 .. code-block:: javascript
 
-   YUI.add('Foo', function(Y, NAME) {
+   YUI.add('foo', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
        index: function(ac) {
          ac.done();
@@ -140,21 +140,21 @@ The ``controller.server.js`` below requires the ``Foo`` module.
      };
    }, '0.0.1', {requires: []});
 
-To test the controller of the ``Foo`` mojit, create a file in the tests 
-directory called ``controller.common-tests.js`` that includes the ``Foo-tests`` 
+To test the controller of the ``Foo`` mojit (``foo`` YUI module), create a file in the tests 
+directory called ``controller.common-tests.js`` that includes the ``foo-tests`` 
 module as seen below. Note that the reference to the controller is gotten 
 using ``Y.mojito.controllers[NAME]``.
 
 .. code-block:: javascript
 
-   YUI.add('Foo-tests', function(Y, NAME) {
+   YUI.add('foo-tests', function(Y, NAME) {
      var suite = new YUITest.TestSuite(NAME),
      controller = null,
      A = YUITest.Assert;
      suite.add(new YUITest.TestCase({
        name: 'Foo tests',
        setUp: function() {
-         controller = Y.mojito.controllers.Foo;
+         controller = Y.mojito.controllers["foo"];
        },
        tearDown: function() {
          controller = null;
@@ -174,7 +174,7 @@ using ``Y.mojito.controllers[NAME]``.
        }
      }));
      YUITest.TestRunner.add(suite);
-   }, '0.0.1', {requires: ['mojito-test', 'Foo']});
+   }, '0.0.1', {requires: ['mojito-test', 'foo']});
 
 .. _mojito_testing-mockactioncontext:
 
@@ -433,7 +433,7 @@ controller.server.js
 
 .. code-block:: javascript
 
-   YUI.add('myMojit', function(Y, NAME) {
+   YUI.add('mymojit', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = {
        index: function(ac) {
            ac.done({
@@ -441,7 +441,7 @@ controller.server.js
            });
          }
        };
-   }, '0.0.1', {requires: ['mojito', 'myMojitModelFoo']});
+   }, '0.0.1', {requires: ['mojito', 'mymojit-model-foo']});
 
 .. _mock_addons_ex-controller_test:
 
@@ -458,7 +458,7 @@ controller.server-tests.js
      suite.add(new YUITest.TestCase({
        name: 'tester user tests',
        setUp: function() {
-         controller = Y.mojito.controllers.tester;
+         controller = Y.mojito.controllers["tester"];
        },
        tearDown: function() {
          controller = null;
@@ -480,7 +480,7 @@ controller.server-tests.js
        }
      }));
      YUITest.TestRunner.add(suite);
-   }, '0.0.1', {requires: ['mojito-test', 'myMojit']});
+   }, '0.0.1', {requires: ['mojito-test', 'mymojit']});
 
 
 .. _mojito_testing-models:
@@ -498,11 +498,11 @@ both server and client models.
 Example
 -------
 
-The ``model.server.js`` below includes the ``FooModel`` module.
+The ``model.server.js`` below includes the ``foo-model`` module.
 
 .. code-block:: javascript
 
-   YUI.add('FooModel', function(Y, NAME) {
+   YUI.add('foo-model', function(Y, NAME) {
      Y.namespace('mojito.models')[NAME] = {      
        getData: function(callback) {
          callback({some:'data'});
@@ -511,19 +511,19 @@ The ``model.server.js`` below includes the ``FooModel`` module.
    }, '0.0.1', {requires: []});
 
 The ``tests/models/models.common-tests.js`` test below includes the 
-``FooModel-tests`` module and the ``requires`` array contains the ``FooModel`` 
+``foo-model-tests`` module and the ``requires`` array contains the ``foo-model`` 
 module.
 
 .. code-block:: javascript
 
-   YUI.add('FooModel-tests', function(Y, NAME) {
+   YUI.add('foo-model-tests', function(Y, NAME) {
      var suite = new YUITest.TestSuite(NAME),
      model = null,
      A = YUITest.Assert;
      suite.add(new YUITest.TestCase({
        name: 'Foo model tests',
        setUp: function() {
-         model = Y.mojito.models.FooModel;
+         model = Y.mojito.models["foo-model"];
        },
        tearDown: function() {
          model = null;
@@ -534,7 +534,7 @@ module.
        }
      }));
      YUITest.TestRunner.add(suite);
-   }, '0.0.1', {requires: ['mojito-test', 'FooModel']});
+   }, '0.0.1', {requires: ['mojito-test', 'foo-model']});
 
 
 .. _moj_tests-func_unit:

@@ -540,7 +540,7 @@ Creating the Application
 
    .. code-block:: javascript
 
-      YUI.add('Github', function(Y, NAME) {
+      YUI.add('github', function(Y, NAME) {
 
         Y.namespace('mojito.controllers')[NAME] = {
 

@@ -919,14 +919,14 @@ Logging/Testing
     exclude the logging of specified modules.
 
     For example, the logging configuration set by ``yui.config`` below excludes 
-    logging from the module ``pagingBinder``:
+    logging from the module ``paging-binder-index``:
 
     .. code-block:: javascript
 
        ...
           "yui": {
             "config": {
-              "logExclude": "pagingBinder",
+              "logExclude": "paging-binder-index",
               "logLevel": "info"
             }
           }

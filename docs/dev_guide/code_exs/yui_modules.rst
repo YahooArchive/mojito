@@ -86,7 +86,7 @@ is listed as a dependency in the ``requires`` array.
 
 .. code-block:: javascript
 
-   YUI.add('NotepadBinderIndex', function (Y, NAME) {
+   YUI.add('notepad-binder-index', function (Y, NAME) {
      Y.namespace('mojito.binders')[NAME] = {
        init: function(mojitProxy) {
          this.mp = mojitProxy;
@@ -188,7 +188,7 @@ To set up and run ``yui_module``:
 
    .. code-block:: javascript
 
-      YUI.add('Notepad', function(Y, NAME) {
+      YUI.add('notepad', function(Y, NAME) {
         Y.namespace('mojito.controllers')[NAME] = {   
           index: function(ac) {
             ac.done();
@@ -201,7 +201,7 @@ To set up and run ``yui_module``:
 
    .. code-block:: javascript
 
-      YUI.add('NotepadBinderIndex', function (Y, NAME) {
+      YUI.add('notepad-binder-index', function (Y, NAME) {
 
         Y.namespace('mojito.binders')[NAME] = {
           init: function (mojitProxy) {
