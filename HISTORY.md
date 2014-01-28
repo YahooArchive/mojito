@@ -16,6 +16,14 @@ Bug Fixes
 Acknowledgements
 ----------------
 
+version 0.8.3
+=================
+
+Bug Fixes
+---------
+
+* Issue #1306: ac.partial.render() throws error for handlebar custom helper
+
 version 0.8.2
 =================
 
