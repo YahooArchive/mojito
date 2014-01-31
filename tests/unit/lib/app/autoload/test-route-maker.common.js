@@ -35,7 +35,7 @@ YUI().use('mojito-route-maker', 'mojito-util', 'test', 'dump', function (Y) {
                 regexp: /^\/admin\/help\/?$/i,
                 annotations: {
                     name: 'admin.help',
-                    names: ['admin.help', 'get#admin.help'],
+                    aliases: ['admin.help', 'get#admin.help'],
                     dispatch: {
                         call: 'admin.help',
                         params: { },
@@ -50,7 +50,7 @@ YUI().use('mojito-route-maker', 'mojito-util', 'test', 'dump', function (Y) {
                 regexp: /^\/admin\/help\/?$/i,
                 annotations: {
                     name: 'admin.help',
-                    names: ['admin.help', 'get#admin.help'],
+                    aliases: ['admin.help', 'get#admin.help'],
                     dispatch: {
                         call: 'admin.help',
                         params: { },
@@ -67,7 +67,7 @@ YUI().use('mojito-route-maker', 'mojito-util', 'test', 'dump', function (Y) {
                 regexp: /^\/admin\/(?:([^\/]+?))\/?$/i,
                 annotations: {
                     name: 'admin.:action',
-                    names: ['admin.:action', 'get#admin.support'],
+                    aliases: ['admin.:action', 'get#admin.support'],
                     dispatch: {
                         call: 'admin.support',
                         params: { },
@@ -84,7 +84,7 @@ YUI().use('mojito-route-maker', 'mojito-util', 'test', 'dump', function (Y) {
                 regexp: /^\/admin\/(?:([^\/]+?))\/?$/i,
                 annotations: {
                     name: 'admin.:action',
-                    names: ['admin.:action', 'get#admin.support'],
+                    aliases: ['admin.:action', 'get#admin.support'],
                     dispatch: {
                         call: 'admin.support',
                         params: { },
@@ -102,7 +102,7 @@ YUI().use('mojito-route-maker', 'mojito-util', 'test', 'dump', function (Y) {
                 regexp: /^\/(?:([^\/]+?))\/support\/?$/i,
                 annotations: {
                     name: ':type.support',
-                    names: [':type.support', 'get#:type.support'],
+                    aliases: [':type.support', 'get#{type}.support'],
                     dispatch: {
                         call: 'admin.support',
                         params: { },
@@ -110,7 +110,7 @@ YUI().use('mojito-route-maker', 'mojito-util', 'test', 'dump', function (Y) {
                     }
                 }
             },
-            'get#:type.support': {
+            'get#{type}.support': {
                 path: '/:type/support',
                 callbacks: [ fns ],
                 keys: [
@@ -119,7 +119,7 @@ YUI().use('mojito-route-maker', 'mojito-util', 'test', 'dump', function (Y) {
                 regexp: /^\/(?:([^\/]+?))\/support\/?$/i,
                 annotations: {
                     name: ':type.support',
-                    names: [':type.support', 'get#:type.support'],
+                    aliases: [':type.support', 'get#{type}.support'],
                     dispatch: {
                         call: 'admin.support',
                         params: { },
@@ -138,7 +138,7 @@ YUI().use('mojito-route-maker', 'mojito-util', 'test', 'dump', function (Y) {
                 regexp: /^\/(?:([^\/]+?))\/(?:([^\/]+?))\/?$/i,
                 annotations: {
                     name: ':foo.:bar',
-                    names: [':foo.:bar', 'get#foobar.foo'],
+                    aliases: [':foo.:bar', 'get#foobar.foo'],
                     dispatch: {
                         call: 'foobar.foo',
                         params: { },
@@ -156,7 +156,7 @@ YUI().use('mojito-route-maker', 'mojito-util', 'test', 'dump', function (Y) {
                 regexp: /^\/(?:([^\/]+?))\/(?:([^\/]+?))\/?$/i,
                 annotations: {
                     name: ':foo.:bar',
-                    names: [':foo.:bar', 'get#foobar.foo'],
+                    aliases: [':foo.:bar', 'get#foobar.foo'],
                     dispatch: {
                         call: 'foobar.foo',
                         params: { },
@@ -174,7 +174,7 @@ YUI().use('mojito-route-maker', 'mojito-util', 'test', 'dump', function (Y) {
                 regexp: /^\/(?:([^\/]+?))\/(?:([^\/]+?))\/?$/i,
                 annotations: {
                     name: ':type.:action',
-                    names: [':type.:action', 'post#admin.submit'],
+                    aliases: [':type.:action', 'post#admin.submit'],
                     dispatch: {
                         call: 'admin.submit',
                         params: { },
@@ -192,7 +192,7 @@ YUI().use('mojito-route-maker', 'mojito-util', 'test', 'dump', function (Y) {
                 regexp: /^\/(?:([^\/]+?))\/(?:([^\/]+?))\/?$/i,
                 annotations: {
                     name: ':type.:action',
-                    names: [':type.:action', 'post#admin.submit'],
+                    aliases: [':type.:action', 'post#admin.submit'],
                     dispatch: {
                         call: 'admin.submit',
                         params: { },
@@ -347,6 +347,51 @@ YUI().use('mojito-route-maker', 'mojito-util', 'test', 'dump', function (Y) {
 
             url = routeMaker.make('foobar.foo', 'get', { foo: 'world', foobar: 'hello', x: 'y' });
             A.areEqual('/hello/world?x=y', url, '#5.2 foobar.foo: bad URL');
+        },
+
+
+        // find()
+        //
+        // find('/admin/help', 'get')
+        'test find(/admin/help, get) use case #1': function () {
+            var route = routeMaker.find('/admin/help', 'get');
+            A.isNotNull(route, 'find(/admin/help, get) not found');
+            A.areEqual('admin.help',
+                       route.call,
+                       'call value does not match admin.help');
+        },
+        // find('/admin/help', 'post')
+        'test find(/admin/help, post) use case #2': function () {
+            var route = routeMaker.find('/admin/help', 'post');
+            A.isNull(route, 'find(/admin/help, post) should return null');
+        },
+        // find('/admin/support', 'get') matches get#admin.support
+        'test find(/admin/support, get) use case #3': function () {
+            var route = routeMaker.find('/admin/support', 'get');
+            A.isNotNull(route, 'find(/admin/support, get) not found');
+            A.areEqual('admin.support',
+                       route.call,
+                       'call value does not match admin.support');
+            A.areEqual('support', route.params.action, 'action does not match');
+        },
+        // find('/foo/support', 'get') matches get#{type}.support
+        'test find(/foo/support, get) use case #4': function () {
+            var route = routeMaker.find('/foo/support', 'get');
+            A.isNotNull(route, 'find(/foo/support, get) not found');
+            A.areEqual('foo.support',
+                       route.call,
+                       'call value does not match foo.support');
+            A.areEqual('foo', route.params.type, ':type does not match');
+        },
+        // find('/yahoo/rocks', 'get') matches get#foobar.foo
+        'test find(/yahoo/rocks, get) use case #4': function () {
+            var route = routeMaker.find('/yahoo/rocks', 'get');
+            A.isNotNull(route, 'find(/yahoo/rocks, get) not found');
+            A.areEqual('foobar.foo',
+                       route.call,
+                       'call value does not match foobar.foo');
+            A.areEqual('yahoo', route.params.foobar, 'foobar does not match');
+            A.areEqual('rocks', route.params.foo, 'bar does not match');
         }
 
     }));
