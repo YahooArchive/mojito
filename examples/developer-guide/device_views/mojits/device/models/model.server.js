@@ -6,12 +6,12 @@
 
 /*jslint anon:true, sloppy:true, nomen:true*/
 
-YUI.add('deviceModel', function (Y, NAME) {
+YUI.add('device-model', function (Y, NAME) {
 
 /**
- * The deviceModel module.
+ * The device-model module.
  *
- * @module deviceModel
+ * @module device-model
  */
 
     /**

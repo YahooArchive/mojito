@@ -1,11 +1,11 @@
 
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('Calendar', function (Y, NAME) {
+YUI.add('calendar', function (Y, NAME) {
 
 /**
- * The Calendar module.
+ * The calendar module.
  *
- * @module Calendar
+ * @module calendar
  */
 
     /**
@@ -24,7 +24,7 @@ YUI.add('Calendar', function (Y, NAME) {
          */
         index: function (ac) {
             ac.models.get('calendar').getData({}, function (data) {
-                Y.log("Calendar -index - model.getData:");
+                Y.log("calendar -index - model.getData:");
                 Y.log(data);
 
                 // add mojit specific css
@@ -32,7 +32,7 @@ YUI.add('Calendar', function (Y, NAME) {
 
                 // populate blog template
                 ac.done({
-                    title: "YUI Calendar Info",
+                    title: "YUI calendar Info",
                     results: data
                 });
             });

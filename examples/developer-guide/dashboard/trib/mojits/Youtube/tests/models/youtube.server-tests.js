@@ -1,14 +1,14 @@
-YUI.add('YoutubeModelYQL-tests', function (Y, NAME) {
+YUI.add('youtube-model-yql-tests', function (Y, NAME) {
 
     var suite = new YUITest.TestSuite(NAME),
         model = null,
         A = YUITest.Assert;
 
     suite.add(new YUITest.TestCase({
-        name: "YoutubeModelYQL user tests",
+        name: "youtube-model-yql user tests",
 
         setUp: function () {
-            model = Y.mojito.models.YoutubeModelYQL;
+            model = Y.mojito.models["youtube-model-yql"];
         },
 
         tearDown: function () {
@@ -70,4 +70,4 @@ YUI.add('YoutubeModelYQL-tests', function (Y, NAME) {
 
 
 
-}, '0.0.1', {requires: ['mojito-test', 'YoutubeModelYQL']});
+}, '0.0.1', {requires: ['mojito-test', 'youtube-model-yql']});

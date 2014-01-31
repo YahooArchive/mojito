@@ -1,7 +1,7 @@
 
 /*jslint anon:true, sloppy:true, nomen:true*/
 /*global YUI*/
-YUI.add('CalendarMockedModelYQL', function (Y, NAME) {
+YUI.add('calendarmocked-model-yql', function (Y, NAME) {
     Y.mojito.models[NAME] = {
         init: function (config) {
             this.config = config;

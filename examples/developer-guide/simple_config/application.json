@@ -3,7 +3,7 @@
     "settings": [ "master" ],
     "specs": {
       "simple": {
-        "type": "SimpleMojit"
+        "type": "Simple"
       }
     } 
   }

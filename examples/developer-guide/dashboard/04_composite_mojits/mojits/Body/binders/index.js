@@ -1,10 +1,10 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('BodyBinderIndex', function(Y, NAME) {
+YUI.add('body-binder-index', function(Y, NAME) {
 
 /**
- * The BodyBinderIndex module.
+ * The body-binder-index module.
  *
- * @module BodyBinderIndex
+ * @module body-binder-index 
  */
 
     /**

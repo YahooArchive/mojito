@@ -1,10 +1,10 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('Footer', function (Y, NAME) {
+YUI.add('footer', function (Y, NAME) {
 
 /**
- * The Footer module.
+ * The footer module.
  *
- * @module Footer
+ * @module footer
  */
 
     /**

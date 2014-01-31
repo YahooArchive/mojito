@@ -6,12 +6,12 @@
 
 /*jslint anon:true, sloppy:true, nomen:true*/
 
-YUI.add('deviceBinderIndex', function (Y, NAME) {
+YUI.add('device-binder-index', function (Y, NAME) {
 
 /**
- * The deviceBinderIndex module.
+ * The device-binder-index module.
  *
- * @module deviceBinderIndex
+ * @module device-binder-index
  */
 
     /**

@@ -1,10 +1,10 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('Body', function(Y, NAME) {
+YUI.add('body', function(Y, NAME) {
 
 /**
- * The Body module.
+ * The body module.
  *
- * @module Body
+ * @module body
  */
 
     /**

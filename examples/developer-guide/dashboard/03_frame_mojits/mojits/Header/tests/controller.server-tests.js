@@ -1,16 +1,16 @@
 
-YUI.add('Header-tests', function(Y) {
+YUI.add('header-tests', function(Y) {
 
-    var suite = new YUITest.TestSuite('Header-tests'),
+    var suite = new YUITest.TestSuite('header-tests'),
         controller = null,
         A = YUITest.Assert;
 
     suite.add(new YUITest.TestCase({
         
-        name: 'Header user tests',
+        name: 'header user tests',
         
         setUp: function() {
-            controller = Y.mojito.controllers.Header;
+            controller = Y.mojito.controllers["header"];
         },
         tearDown: function() {
             controller = null;
@@ -30,7 +30,7 @@ YUI.add('Header-tests', function(Y) {
                 },
                 models: {
                     get: function(modelName) {
-                        A.areEqual('HeaderModelFoo', modelName, 'wrong model name');
+                        A.areEqual('model', modelName, 'wrong model name');
                         return {
                             getData: function(cb) {
                                 cb(null, modelData);
@@ -59,4 +59,4 @@ YUI.add('Header-tests', function(Y) {
     
     YUITest.TestRunner.add(suite);
     
-}, '0.0.1', {requires: ['mojito-test', 'Header']});
+}, '0.0.1', {requires: ['mojito-test', 'header']});

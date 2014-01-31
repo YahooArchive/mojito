@@ -1,10 +1,10 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('Github', function(Y, NAME) {
+YUI.add('github', function(Y, NAME) {
 
 /**
- * The Github module.
+ * The github module.
  *
- * @module Github
+ * @module github
  */
 
     /**
@@ -37,4 +37,4 @@ YUI.add('Github', function(Y, NAME) {
 
     };
 
-}, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'GithubModelFoo']});
+}, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'github-model']});

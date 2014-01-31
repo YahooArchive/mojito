@@ -1,10 +1,10 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('Calendar', function (Y, NAME) {
+YUI.add('calendar', function (Y, NAME) {
 
 /**
- * The Calendar module.
+ * The calendar module.
  *
- * @module Calendar
+ * @module calendar
  */
 
     /**
@@ -23,8 +23,8 @@ YUI.add('Calendar', function (Y, NAME) {
          */
         index: function (ac) {
             ac.models.get('calendar').getData({}, function (err, data) {
-                var title = "YUI Calendar Info";
-                //Y.log("Calendar -index - model.getData:", "info", NAME);
+                var title = "YUI calendar Info";
+                //Y.log("calendar -index - model.getData:", "info", NAME);
                 //Y.log(data, "info", NAME);
                 //Y.log("data 0 :", "info", NAME);
                 //Y.log(data[0], "info", NAME);

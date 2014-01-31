@@ -7,7 +7,7 @@
 	        "config":{	
 		  "deploy": true,
                   "child": {
-                    "type": "MainMojit"
+                    "type": "Main"
                   }
 	       }
             }

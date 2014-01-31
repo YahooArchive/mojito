@@ -1,11 +1,11 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
 /*global YUI*/
-YUI.add('PageLayout', function (Y, NAME) {
+YUI.add('pagelayout', function (Y, NAME) {
 
 /**
- * The PageLayout module.
+ * The pagelayout module.
  *
- * @module PageLayout 
+ * @module pagelayout 
  */
     // Handlerbars helper for creating links
     function createLink(title, url, path, css) {

@@ -1,10 +1,10 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('Github', function(Y, NAME) {
+YUI.add('github', function(Y, NAME) {
 
 /**
- * The Github module.
+ * The github module.
  *
- * @module Github
+ * @module github
  */
     var githubMap = function (ac, data) {
         Y.log("githubmap called");
@@ -151,7 +151,7 @@ YUI.add('Github', function(Y, NAME) {
             }
             Y.log(model);
             model.getData({}, yqlTable, id, repo, function (data) {
-                Y.log("Github -index - model.getData:");
+                Y.log("github -index - model.getData:");
                 Y.log(data);
 
                 //construct special data

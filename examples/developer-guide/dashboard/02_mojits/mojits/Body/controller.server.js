@@ -1,10 +1,10 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('Body', function(Y, NAME) {
+YUI.add('body', function(Y, NAME) {
 
 /**
- * The Body module.
+ * The body module.
  *
- * @module Body
+ * @module body
  */
 
     /**
@@ -37,4 +37,4 @@ YUI.add('Body', function(Y, NAME) {
 
     };
 
-}, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'BodyModelFoo']});
+}, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'body-model']});

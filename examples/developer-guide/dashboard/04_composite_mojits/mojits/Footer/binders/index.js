@@ -1,10 +1,10 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('FooterMojitBinderIndex', function(Y, NAME) {
+YUI.add('footer-binder-index', function(Y, NAME) {
 
 /**
- * The FooterMojitBinderIndex module.
+ * The footer-binder-index module.
  *
- * @module FooterMojitBinderIndex
+ * @module footer-binder-index
  */
 
     /**

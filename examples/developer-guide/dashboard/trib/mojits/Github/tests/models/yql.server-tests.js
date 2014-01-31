@@ -1,4 +1,4 @@
-YUI.add('StatsModelYQL-tests', function (Y, NAME) {
+YUI.add('stats-model-yql-tests', function (Y, NAME) {
     var suite = new YUITest.TestSuite(NAME),
         model = null,
         A = YUITest.Assert;
@@ -7,7 +7,7 @@ suite.add(new YUITest.TestCase({
         name: "StatsModelYQL user tests",
 
         setUp: function () {
-            model = Y.mojito.models.StatsModelYQL;
+            model = Y.mojito.models["stats-model-yql"];
         },
 
         tearDown: function () {
@@ -105,4 +105,4 @@ suite.add(new YUITest.TestCase({
 
     YUITest.TestRunner.add(suite);
 
-}, '0.0.1', {requires: ['mojito-test', 'StatsModelYQL']});
+}, '0.0.1', {requires: ['mojito-test', 'stats-model-yql']});

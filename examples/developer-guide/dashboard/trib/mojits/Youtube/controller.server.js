@@ -1,6 +1,6 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
 /*global YUI*/
-YUI.add('Youtube', function (Y, NAME) {
+YUI.add('youtube', function (Y, NAME) {
 
 /**
  * The Youtube module.

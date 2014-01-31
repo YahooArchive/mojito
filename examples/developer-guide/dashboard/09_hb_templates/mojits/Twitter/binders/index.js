@@ -2,12 +2,12 @@
  * Copyright (c) 2012 Yahoo! Inc. All rights reserved.
  */
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('TwitterBinderIndex', function(Y, NAME) {
+YUI.add('twitter-binder-index', function(Y, NAME) {
 
 /**
- * The TwitterBinderIndex module.
+ * The twitter-binder-index
  *
- * @module TwitterBinderIndex
+ * @module twitter-binder-index
  */
 
     /**
