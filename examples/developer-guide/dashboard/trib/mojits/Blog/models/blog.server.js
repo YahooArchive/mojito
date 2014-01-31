@@ -1,7 +1,7 @@
 
 /*jslint anon:true, sloppy:true, nomen:true*/
 /*global YUI*/
-YUI.add('BlogModelYQL', function (Y, NAME) {
+YUI.add('blog-model-yql', function (Y, NAME) {
 
     Y.mojito.models[NAME] = {
         init: function (config) {

@@ -1,16 +1,16 @@
 
-YUI.add('Calendar-tests', function (Y, NAME) {
+YUI.add('calendar-tests', function (Y, NAME) {
 
-    var suite = new YUITest.TestSuite('Calendar-tests'),
+    var suite = new YUITest.TestSuite('calendar-tests'),
         controller = null,
         A = YUITest.Assert;
 
     suite.add(new YUITest.TestCase({
 
-        name: 'Calendar user tests',
+        name: 'calendar user tests',
 
         setUp: function () {
-            controller = Y.mojito.controllers.Calendar;
+            controller = Y.mojito.controllers["calendar"];
         },
         tearDown: function () {
             controller = null;
@@ -30,7 +30,7 @@ YUI.add('Calendar-tests', function (Y, NAME) {
                 },
                 models: {
                     get: function (modelName) {
-                        A.areEqual('CalendarModelYQL', modelName, 'wrong model name');
+                        A.areEqual('calendar', modelName, 'wrong model name');
                         return {
                             getData: function (params, cb) {
                                 Y.log("controller test for calendar", "info", NAME)
@@ -60,4 +60,4 @@ YUI.add('Calendar-tests', function (Y, NAME) {
     }));
     YUITest.TestRunner.add(suite);
 
-}, '0.0.1', {requires: ['mojito-test', 'Calendar']});
+}, '0.0.1', {requires: ['mojito-test', 'calendar']});

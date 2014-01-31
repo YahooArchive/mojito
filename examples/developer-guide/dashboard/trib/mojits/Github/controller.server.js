@@ -1,11 +1,11 @@
 /*jslint anon:true, sloppy:true, nomen:true, indent: 4, white: false*/
 /*global YUI*/
-YUI.add('Github', function (Y, NAME) {
+YUI.add('github', function (Y, NAME) {
 
 /**
- * The Github module.
+ * The github module.
  *
- * @module Github
+ * @module github
  */
 
         /**
@@ -52,7 +52,7 @@ YUI.add('Github', function (Y, NAME) {
 
 
             model.getData({}, yqlTable, id, repo, function (err, data) {
-                //Y.log("Github -index - model.getData:", "info", NAME);
+                //Y.log("github -index - model.getData:", "info", NAME);
                 //Y.log(data, "info", NAME);
                 var res = [];
 

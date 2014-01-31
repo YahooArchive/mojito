@@ -6,7 +6,7 @@
 
 /*jslint anon:true, sloppy:true, nomen:true*/
 
-YUI.add('scrollBinderIndex', function (Y, NAME) {
+YUI.add('scroll-binder-index', function (Y, NAME) {
 
     Y.namespace('mojito.binders')[NAME] = {
         init: function (mojitProxy) {

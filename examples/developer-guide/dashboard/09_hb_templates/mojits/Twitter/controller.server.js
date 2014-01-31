@@ -1,9 +1,9 @@
-YUI.add('Twitter', function (Y, NAME) {
+YUI.add('twitter', function (Y, NAME) {
 
 /**
- * The Twitter module.
+ * The twitter module.
  *
- * @module Twitter
+ * @module twitter
  */
 
     /**
@@ -32,7 +32,7 @@ YUI.add('Twitter', function (Y, NAME) {
                 title = ac.config.getDefinition('mojitotitle', 'notitle');
             }
 
-            // Get Twitter API keys from your developer account (https://dev.twitter.com/apps) and
+            // Get twitter API keys from your developer account (https://dev.twitter.com/apps) and
             // use the `oauth_keys` to hold your consumer key/secret and access token/secret.
             // If you leave `oauth_keys` undefined, your app will just use mocked data.
             // Get OAuth keys from definition.json to get real data.

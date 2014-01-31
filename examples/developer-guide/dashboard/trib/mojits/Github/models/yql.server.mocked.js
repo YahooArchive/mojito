@@ -1,6 +1,6 @@
 /*jslint anon:true, sloppy:true, nomen:true, indent: 4, white: false*/
 /*global YUI*/
-YUI.add('StatsMockedModelYQL', function (Y, NAME) {
+YUI.add('statsmocked-model-yql', function (Y, NAME) {
 
     Y.mojito.models[NAME] = {
 

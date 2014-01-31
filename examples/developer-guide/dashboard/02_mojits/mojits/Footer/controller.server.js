@@ -1,10 +1,10 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('Footer', function(Y, NAME) {
+YUI.add('footer', function(Y, NAME) {
 
 /**
- * The Footer module.
+ * The footer module.
  *
- * @module Footer
+ * @module footer
  */
 
     /**
@@ -37,4 +37,4 @@ YUI.add('Footer', function(Y, NAME) {
 
     };
 
-}, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'FooterModelFoo']});
+}, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'footer-model']});

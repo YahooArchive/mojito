@@ -1,10 +1,10 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('Github', function(Y, NAME) {
+YUI.add('github', function(Y, NAME) {
 
 /**
- * The Github module.
+ * The github module.
  *
- * @module Github
+ * @module github
  */
     var githubMap = function (ac, data) {
         Y.log("githubmap called");

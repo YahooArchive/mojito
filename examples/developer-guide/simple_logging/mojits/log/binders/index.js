@@ -1,4 +1,4 @@
-YUI.add('logBinderIndex', function(Y, NAME) {
+YUI.add('log-binder-index', function(Y, NAME) {
     Y.namespace('mojito.binders')[NAME] = {
         init: function(mojitProxy) {
             this.mojitProxy = mojitProxy;

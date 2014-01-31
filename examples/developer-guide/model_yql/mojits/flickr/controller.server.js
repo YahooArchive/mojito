@@ -38,5 +38,5 @@ YUI.add('flickr', function (Y, NAME) {
     'mojito',
     'mojito-params-addon',
     'mojito-models-addon',
-    'flickrModel'
+    'flickr-model'
 ]});

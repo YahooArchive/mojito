@@ -1,6 +1,6 @@
 /*jslint anon:true, sloppy:true, nomen:true, indent: 4, white: false*/
 /*global YUI*/
-YUI.add('StatsModelYQL', function (Y, NAME) {
+YUI.add('stats-model-yql', function (Y, NAME) {
 
     Y.mojito.models[NAME] = {
 

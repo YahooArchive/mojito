@@ -1,16 +1,17 @@
 
-YUI.add('Footer-tests', function(Y) {
+YUI.add('footer-tests', function(Y) {
 
-    var suite = new YUITest.TestSuite('Footer-tests'),
+    var suite = new YUITest.TestSuite('footer-tests'),
         controller = null,
         A = YUITest.Assert;
 
     suite.add(new YUITest.TestCase({
         
-        name: 'Footer user tests',
+        name: 'footer user tests',
         
         setUp: function() {
-            controller = Y.mojito.controllers.Footer;
+
+            controller = Y.mojito.controllers["footer"];
         },
         tearDown: function() {
             controller = null;
@@ -30,7 +31,7 @@ YUI.add('Footer-tests', function(Y) {
                 },
                 models: {
                     get: function(modelName) {
-                        A.areEqual('FooterModelFoo', modelName, 'wrong model name');
+                        A.areEqual('model', modelName, 'wrong model name');
                         return {
                             getData: function(cb) {
                                 cb(null, modelData);
@@ -59,4 +60,4 @@ YUI.add('Footer-tests', function(Y) {
     
     YUITest.TestRunner.add(suite);
     
-}, '0.0.1', {requires: ['mojito-test', 'Footer']});
+}, '0.0.1', {requires: ['mojito-test', 'footer']});
