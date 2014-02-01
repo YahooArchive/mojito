@@ -10,7 +10,7 @@
         "type": "HTMLFrameMojit",
         "config":{
           "child": {
-            "type": "CookieMojit"
+            "type": "Cookie"
           }
         }
       }

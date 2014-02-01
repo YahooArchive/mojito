@@ -6,12 +6,12 @@
 
 /*jslint anon:true, sloppy:true, nomen:true*/
 
-YUI.add('QueryMojitModel', function (Y, NAME) {
+YUI.add('query-model', function (Y, NAME) {
 
 /**
- * The QueryMojitModel module.
+ * The query-model module.
  *
- * @module QueryMojitModel
+ * @module query-model
  */
 
     /**

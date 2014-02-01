@@ -6,14 +6,15 @@
 
 /*jslint anon:true, sloppy:true, nomen:true*/
 
-YUI.add("lang/PageLayout_zh-Hans", function (Y) {
+
+YUI.add("lang/PageLayout_en-US", function (Y) {
     Y.Intl.add(
-        "PageLayout",  // associated module
-        "zh-Hans",    // BCP 47 language tag 
+        "pagelayout",  // associated module
+        "en-US",    // BCP 47 language tag  
         // key-value pairs for this module and language
         {
-            YUITitle: "Trib - YUI 开发人员仪表板",
-            MojitoTitle: "Trib - Mojito 开发人员仪表板"
+            YUITitle: "Trib - YUI Developer Dashboard",
+            MojitoTitle: "Trib - Mojito Developer Dashboard"
         }
     );
 }, "3.1.0", {requires: ['intl']});

@@ -6,7 +6,7 @@
 
 /*jslint anon:true, sloppy:true, nomen:true*/
 
-YUI.add('ContactUs', function (Y, NAME) {
+YUI.add('contactus', function (Y, NAME) {
 
     Y.namespace('mojito.controllers')[NAME] = {
 
