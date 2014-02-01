@@ -6,7 +6,7 @@
 
 /*jslint anon:true, sloppy:true, nomen:true*/
 
-YUI.add('NotepadBinderIndex', function (Y, NAME) {
+YUI.add('notepad-binder-index', function (Y, NAME) {
 
     Y.namespace('mojito.binders')[NAME] = {
 

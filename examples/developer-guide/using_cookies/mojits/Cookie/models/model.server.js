@@ -6,12 +6,12 @@
 
 /*jslint anon:true, sloppy:true, nomen:true*/
 
-YUI.add('CookieMojitModel', function (Y, NAME) {
+YUI.add('cookie-model', function (Y, NAME) {
 
 /**
- * The CookieMojitModel module.
+ * The cookie-model module.
  *
- * @module CookieMojitModel
+ * @module cookie-model
  */
 
     /**

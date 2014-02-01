@@ -6,7 +6,7 @@
 
 /*jslint anon:true, sloppy:true, nomen:true*/
 
-YUI.add('QueryMojit', function (Y, NAME) {
+YUI.add('Query', function (Y, NAME) {
     Y.namespace('mojito.controllers')[NAME] = {
         index: function (actionContext) {
             actionContext.done('Mojito is working.');

@@ -6,7 +6,7 @@
 
 /*jslint anon:true, sloppy:true, nomen:true*/
 
-YUI.add('CookieMojit', function (Y, NAME) {
+YUI.add('cookie', function (Y, NAME) {
 
     Y.namespace('mojito.controllers')[NAME] = {
         index: function (actionContext) {

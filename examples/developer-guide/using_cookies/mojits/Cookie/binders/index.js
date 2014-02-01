@@ -6,12 +6,12 @@
 
 /*jslint anon:true, sloppy:true, nomen:true*/
 
-YUI.add('CookieMojitBinderIndex', function (Y, NAME) {
+YUI.add('cookie-binder-index', function (Y, NAME) {
 
 /**
- * The CookieMojitBinderIndex module.
+ * The cookie-binder-index module.
  *
- * @module CookieMojitBinderIndex
+ * @module cookie-binder-index
  */
 
     /**

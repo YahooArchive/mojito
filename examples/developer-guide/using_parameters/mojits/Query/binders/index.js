@@ -6,12 +6,12 @@
 
 /*jslint anon:true, sloppy:true, nomen:true*/
 
-YUI.add('QueryMojitBinderIndex', function (Y, NAME) {
+YUI.add('query-binder-index', function (Y, NAME) {
 
 /**
- * The QueryMojitBinderIndex module.
+ * The query-binder-index module.
  *
- * @module QueryMojitBinderIndex
+ * @module query-binder-index
  */
 
     /**
