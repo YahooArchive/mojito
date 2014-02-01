@@ -85,7 +85,7 @@ YUI().use('test', function (Y) {
             A.isFunction(router.readConfigYCB);
 
             var o;
-            
+
             o = router.readConfigYCB('routes01.json');
             OA.areEqual(routes01Mock.admin,
                        o.admin,
@@ -186,6 +186,68 @@ YUI().use('test', function (Y) {
             A.areEqual(true, adminCalled, '/admin handler was not installed');
             A.areEqual(true, helpCalled, '/help handler was not installed');
             A.areEqual(false, postCalled, 'app.post() should not have been called');
+        },
+
+        // verify that routesFiles is retrieved from appConfig
+        'test attachRoutes with no args returns empty array': function () {
+            A.isFunction(router.attachRoutes);
+
+            var fnCalled = false;
+
+            router._app.mojito.store = {
+                getStaticAppConfig: function () {
+                    fnCalled = true;
+                    return {
+                        routesFiles: []
+                    };
+                }
+            };
+            router.attachRoutes();
+
+            A.areEqual(true,
+                       fnCalled,
+                       'mojito.store.getStaticAppConfig() was not called');
+        },
+
+        // verify getStaticAppConfig() is not called if attachRoutes is called
+        // with empty array
+        ' test attachRoutes with empty array': function () {
+            A.isFunction(router.attachRoutes);
+
+            var fnCalled = false;
+
+            router._app.mojito.store = {
+                getStaticAppConfig: function () {
+                    fnCalled = true;
+                    return {
+                        routesFiles: []
+                    };
+                }
+            };
+            router.attachRoutes([]);
+
+            A.areEqual(false,
+                       fnCalled,
+                       'mojito.store.getStaticAppConfig() should not have been called');
+        },
+
+        // verify routesFiles is converted to an array if a filename is passed
+        ' test attachRoutes with string arg': function () {
+            A.isFunction(router.attachRoutes);
+
+            var fnCalled = false;
+
+            router.getRoutes = function (arg) {
+                fnCalled = true;
+                A.isString(arg, 'arg should be of type array');
+                A.areEqual('routes.json', arg, 'incorrect routes.json filename');
+                return []; // HACK so that registerRoutes does nothing
+            };
+            router.attachRoutes('routes.json');
+
+            A.areEqual(true,
+                       fnCalled,
+                       'router.getRoutes() should have been called');
         }
 
     }));
