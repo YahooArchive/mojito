@@ -31,6 +31,12 @@
                             }
                         },
                         {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#ACMojitTest"
+                            }
+                        },
+                        {
                             "test" : "testacmojitdone1client.js"
                         }
                     ]
@@ -50,6 +56,12 @@
                             "params": {
                                 "value": "#acMojitButton",
                                 "click": true
+                            }
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#ACMojitResult"
                             }
                         },
                         {
@@ -923,6 +935,12 @@
                             "params": {
                                 "value": "#DepCheckParentButton",
                                 "click": true
+                            }
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#myarray"
                             }
                         },
                         {
