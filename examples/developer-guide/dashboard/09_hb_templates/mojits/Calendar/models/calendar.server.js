@@ -1,7 +1,7 @@
 
 /*jslint anon:true, sloppy:true, nomen:true*/
 /*global YUI*/
-YUI.add('CalendarModelYQL', function (Y, NAME) {
+YUI.add('calendar-model-yql', function (Y, NAME) {
     Y.mojito.models[NAME] = {
         init: function (config) {
             this.config = config;
@@ -30,7 +30,7 @@ YUI.add('CalendarModelYQL', function (Y, NAME) {
             Y.log("calendar.server onDataReturn called");
             if (result.error === undefined) {
 
-                Y.log("onDataReturn: CalendarModelYQL...");
+                Y.log("onDataReturn: calendar-model-yql...");
                 Y.log("result: ");
                 Y.log(result);
 

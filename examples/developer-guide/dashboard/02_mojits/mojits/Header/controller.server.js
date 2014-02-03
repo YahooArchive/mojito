@@ -1,10 +1,10 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('Header', function(Y, NAME) {
+YUI.add('header', function(Y, NAME) {
 
 /**
- * The Header module.
+ * The header module.
  *
- * @module Header
+ * @module header
  */
 
     /**
@@ -37,4 +37,4 @@ YUI.add('Header', function(Y, NAME) {
 
     };
 
-}, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'HeaderModelFoo']});
+}, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'header-model']});

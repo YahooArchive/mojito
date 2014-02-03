@@ -6,12 +6,12 @@
 
 /*jslint anon:true, sloppy:true, nomen:true*/
 
-YUI.add('framedModel', function (Y, NAME) {
+YUI.add('framed-model', function (Y, NAME) {
 
 /**
- * The framedModel module.
+ * The framed-model module.
  *
- * @module framedModel
+ * @module framed-model
  */
 
     /**

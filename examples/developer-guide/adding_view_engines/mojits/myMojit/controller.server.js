@@ -1,6 +1,6 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
 
-YUI.add('myMojit', function (Y, NAME) {
+YUI.add('mymojit', function (Y, NAME) {
 
     Y.namespace('mojito.controllers')[NAME] = {
 
@@ -24,4 +24,4 @@ YUI.add('myMojit', function (Y, NAME) {
             });
         }
     };
-}, '0.0.1', {requires: ['mojito', 'myMojitModelFoo']});
+}, '0.0.1', {requires: ['mojito', 'mymojit-model-foo']});

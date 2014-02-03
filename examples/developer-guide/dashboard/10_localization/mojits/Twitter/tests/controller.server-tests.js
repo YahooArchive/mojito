@@ -1,18 +1,18 @@
 
 
-YUI.add('Twitter-tests', function (Y, NAME) {
+YUI.add('twitter-tests', function (Y, NAME) {
 
-    var suite = new YUITest.TestSuite('Twitter-tests'),
+    var suite = new YUITest.TestSuite('twitter-tests'),
         controller = null,
         A = YUITest.Assert,
         model;
 
     suite.add(new YUITest.TestCase({
 
-        name: 'Twitter user tests',
+        name: 'twitter user tests',
         setUp: function () {
-            controller = Y.mojito.controllers.Twitter;
-            model = Y.mojito.models.TwitterSearchModel;
+            controller = Y.mojito.controllers["twitter"];
+            model = Y.mojito.models["twittersearch-model"];
         },
         tearDown: function () {
             controller = null;
@@ -42,7 +42,7 @@ YUI.add('Twitter-tests', function (Y, NAME) {
                 },
                 models: {
                     get: function (modelName) {
-                        A.areEqual('TwitterSearchModel', modelName, 'wrong model name');
+                        A.areEqual('twitter', modelName, 'wrong model name');
                         return model;
                     }
                 },
@@ -57,4 +57,4 @@ YUI.add('Twitter-tests', function (Y, NAME) {
         }
     }));
     YUITest.TestRunner.add(suite);
-}, '0.0.1', {requires: ['mojito-test', 'Twitter', 'TwitterSearchModel']});
+}, '0.0.1', {requires: ['mojito-test', 'twitter', 'twittersearch-model']});

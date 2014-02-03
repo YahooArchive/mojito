@@ -1,11 +1,11 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
 /*global YUI*/
-YUI.add('PageLayoutBinderIndex', function (Y, NAME) {
+YUI.add('pagelayout-binder-index', function (Y, NAME) {
 
 /**
- * The PageLayoutBinderIndex module.
+ * The pagelayout-binder-index module.
  *
- * @module PageLayoutBinderIndex
+ * @module pagelayout-binder-index
  */
 
     /**

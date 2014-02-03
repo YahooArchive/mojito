@@ -1,15 +1,15 @@
-YUI.add('Body-tests', function(Y) {
+YUI.add('body-tests', function(Y) {
 
-    var suite = new YUITest.TestSuite('Body-tests'),
+    var suite = new YUITest.TestSuite('body-tests'),
         controller = null,
         A = YUITest.Assert;
 
     suite.add(new YUITest.TestCase({
         
-        name: 'Body user tests',
+        name: 'body user tests',
         
         setUp: function() {
-            controller = Y.mojito.controllers.Body;
+            controller = Y.mojito.controllers["body"];
         },
         tearDown: function() {
             controller = null;
@@ -40,4 +40,4 @@ YUI.add('Body-tests', function(Y) {
     
     YUITest.TestRunner.add(suite);
     
-}, '0.0.1', {requires: ['mojito-test', 'Body']});
+}, '0.0.1', {requires: ['mojito-test', 'body']});

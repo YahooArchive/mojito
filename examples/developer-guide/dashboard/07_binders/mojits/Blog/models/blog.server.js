@@ -1,6 +1,6 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
 /*global YUI*/
-YUI.add('BlogModelYQL', function (Y, NAME) {
+YUI.add('blog-model-yql', function (Y, NAME) {
 
     Y.mojito.models[NAME] = {
         init: function (config) {
@@ -16,7 +16,7 @@ YUI.add('BlogModelYQL', function (Y, NAME) {
                 },
                 cookedQuery = Y.Lang.sub(query, queryParams);
 
-             Y.log("blogmodel calling YQL");
+             Y.log("blog-model calling YQL");
              Y.YQL(cookedQuery, Y.bind(this.onDataReturn, this, callback));
         },
         onDataReturn: function (cb, result) {

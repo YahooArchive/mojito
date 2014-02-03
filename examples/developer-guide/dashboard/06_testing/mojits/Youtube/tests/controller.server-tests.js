@@ -1,16 +1,16 @@
 
-YUI.add('Youtube-tests', function(Y) {
+YUI.add('youtube-tests', function(Y) {
 
-    var suite = new YUITest.TestSuite('Youtube-tests'),
+    var suite = new YUITest.TestSuite('youtube-tests'),
         controller = null,
         A = YUITest.Assert;
 
     suite.add(new YUITest.TestCase({
         
-        name: 'Youtube user tests',
+        name: 'youtube user tests',
         
         setUp: function() {
-            controller = Y.mojito.controllers.Youtube;
+            controller = Y.mojito.controllers["youtube"];
         },
         tearDown: function() {
             controller = null;
@@ -25,7 +25,7 @@ YUI.add('Youtube-tests', function(Y) {
             ac = {
                 models: {
                     get: function(modelName) {
-                        A.areEqual('YoutubeModelYQL', modelName, 'wrong model name');
+                        A.areEqual('youtube', modelName, 'wrong model name');
                         return {
                             getData: function(config, cb) {
                                 cb(null, modelData);
@@ -48,4 +48,4 @@ YUI.add('Youtube-tests', function(Y) {
     
     YUITest.TestRunner.add(suite);
     
-}, '0.0.1', {requires: ['mojito-test', 'Youtube']});
+}, '0.0.1', {requires: ['mojito-test', 'youtube']});

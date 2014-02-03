@@ -3,7 +3,7 @@
     "settings": [ "master" ],
     "specs": {
       "mapped_mojit": {
-        "type": "RoutingMojit"
+        "type": "Routing"
       }
     }
   }

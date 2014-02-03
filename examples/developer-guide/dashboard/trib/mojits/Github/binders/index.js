@@ -1,10 +1,10 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('GithubBinderIndex', function (Y, NAME) {
+YUI.add('github-binder-index', function (Y, NAME) {
 
 /**
- * The GithubBinderIndex module.
+ * The github-binder-index module.
  *
- * @module GithubBinderIndex
+ * @module github-binder-index
  */
 
     /**

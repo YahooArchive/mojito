@@ -8,7 +8,7 @@
                 "config": {
                     "deploy": true,
                     "child": {
-                        "type": "PagerMojit"
+                        "type": "Pager"
                     }
                 }
             }
