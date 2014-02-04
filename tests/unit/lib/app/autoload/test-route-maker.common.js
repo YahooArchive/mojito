@@ -251,6 +251,45 @@ YUI().use('mojito-route-maker', 'mojito-util', 'test', 'dump', function (Y) {
             A.areEqual(null, url, 'wrong url for admin.doesnotexist');
         },
 
+        'test linkTo use case #1': function () {
+            A.isFunction(routeMaker.linkTo);
+
+            var url = routeMaker.linkTo(':type.support', {
+                type: 'admin'
+            });
+            A.areEqual('/admin/support', url, 'wrong url');
+        },
+
+        'test linkTo use case #2': function () {
+            var url = routeMaker.linkTo('get#{type}.support', {
+                type: 'yahoo'
+            });
+            A.areEqual('/yahoo/support', url, 'wrong url');
+        },
+
+        'test linkTo use case #3': function () {
+            var url = routeMaker.linkTo(':foo.:bar', {
+                foobar: 'hello',
+                foo: 'world'
+            });
+            A.areEqual('/hello/world', url, 'wrong url');
+
+            url = routeMaker.linkTo('get#foobar.foo', {
+                foobar: 'hello',
+                foo: 'world'
+            });
+            A.areEqual('/hello/world', url, 'wrong url');
+        },
+
+        // test missing context params
+        'test linkTo use case #4': function () {
+            var url = routeMaker.linkTo(':foo.:bar', {
+                foobar: 'hello'
+            });
+            A.areEqual('/hello/undefined', url, 'wrong url');
+        },
+
+
         // exact match
         // path: '/admin/help'
         // call: 'admin.help'
