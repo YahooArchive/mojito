@@ -10,13 +10,17 @@
 'use strict';
 
 var express = require('express'),
-    mojito = require('../../'),
+    libmojito = require('../../'),
+    mojito,
     app;
 
 app = express();
+app.set('port', 8666);
+libmojito.extend(app, {});
+mojito = app.mojito;
 
 app.use(mojito.middleware());
-app.mojito.attachRoutes();
+mojito.attachRoutes();
 app.post('/tunnel', mojito.tunnelMiddleware());
 
 // regex paths should be defined in `app.js`. 
