@@ -15,9 +15,11 @@ var debug = require('debug')('app'),
     app;
 
 app = express();
+app.set('port', process.env.PORT || 8666);
+mojito.extend(app);
 
-app.use(mojito.middleware());
-app.get('/', mojito.dispatch('@Github.index'));
+app.use(app.mojito.middleware());
+app.get('/', app.mojito.dispatch('@Github.index'));
 
 
 app.listen(app.get('port'), function () {
