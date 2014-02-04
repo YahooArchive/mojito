@@ -17,7 +17,8 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
         OA = Y.ObjectAssert,
 
         mojito_src = Y.MOJITO_DIR + 'lib/mojito',
-        Mojito = require(mojito_src),
+        libmojito = require(mojito_src),
+        Mojito,
 
         realServer,
         realConfig,
@@ -36,19 +37,91 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
         setUp: function () {
             // Save original server type so we can mock it in tests.
             // realServer = Mojito.Server;
+            Mojito = libmojito.Mojito;
         },
 
         tearDown: function () {
             // Restore the original server type.
             // Mojito.Server = realServer;
             server = null;
+            Mojito = null;
         },
 
         // TODO: This is a dummy test in place while the `app.js` work is going
         // on. Tests will be added once we have a good design for now `locator`
         // and `dispatcher` will work together.
-        'Mojito express integration WIP': function () {
-            A.isObject(Mojito);
+
+
+        'test extend() - called once': function () {
+            A.isFunction(libmojito.extend);
+            A.isFunction(libmojito.Mojito);
+
+            function AB() {
+            }
+            AB.prototype.param = function () { };
+            var app = new AB(),
+                realInit = libmojito.Mojito.prototype._init,
+                initWasCalled = false;
+
+            libmojito.Mojito.prototype._init = function () {
+                initWasCalled = true;
+            };
+
+            app = libmojito.extend(app, { options: { runtime: 'server' }});
+
+            A.isNotUndefined(app['@mojito']);
+            A.isFunction(app['@mojito']);
+            A.areEqual(true, initWasCalled, '_init() was not called');
+            A.isTrue(libmojito.Mojito === app['@mojito'], 'Mojito function is not the same');
+
+            libmojito.Mojito.prototype._init = realInit;
+        },
+
+        'test extend() - called two times': function () {
+            function AB() { }
+            var app = AB;
+
+            app['@mojito'] = 'MojitoFn';
+            app = libmojito.extend(app, { options: { runtime: 'server' }});
+            A.areEqual('MojitoFn', app['@mojito'], '@mojito property mismatch');
+        },
+
+        'test ctr': function () {
+            var Mojito = libmojito.Mojito,
+                realInit = Mojito.prototype._init,
+                initWasCalled = false, 
+                app = { param: function () { } },
+                mojito;
+
+            Mojito.prototype._init = function () {
+                initWasCalled = true;
+            };
+
+            mojito = new Mojito(app, { context: { foo: 'bar' } });
+
+            A.isTrue(app === mojito._app, 'app mismatch');
+            OA.areEqual({}, mojito._config, '_config mismatch');
+            OA.areEqual({foo: 'bar'}, mojito._options.context, 'context mismatch');
+            // A.areEqual(__dirname, mojito._options.mojitoRoot, 'mojitoRoot mismatch');
+            A.isTrue(mojito._options.mojitoRoot.indexOf('/mojito/lib') > -1, 'incorrect mojito install location');
+            A.isTrue(mojito === app.mojito, 'mojito instance mismatch');
+
+            A.areEqual(true, initWasCalled, '_init() function was not called');
+
+            Mojito.prototype._init = realInit;
+        },
+
+        'test init()': function () {
+            A.isFunction(Mojito.prototype._init);
+        },
+        'test _configureYUI()': function () {
+            A.isFunction(Mojito.prototype._configureYUI);
+        },
+        'test _createYUIInstance': function () {
+            A.isFunction(Mojito.prototype._createYUIInstance);
+        },
+        'test _configureAppInstance': function () {
+            A.isFunction(Mojito.prototype._configureAppInstance);
         }
 
         /*

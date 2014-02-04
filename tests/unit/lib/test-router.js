@@ -140,7 +140,6 @@ YUI().use('test', function (Y) {
                 mapCalled = false,
                 postCalled = false;
 
-
             router._app.map = function (path, name) {
                 mapCalled = true;
                 // verify that name and path matches
@@ -211,7 +210,7 @@ YUI().use('test', function (Y) {
 
         // verify getStaticAppConfig() is not called if attachRoutes is called
         // with empty array
-        ' test attachRoutes with empty array': function () {
+        'test attachRoutes with empty array': function () {
             A.isFunction(router.attachRoutes);
 
             var fnCalled = false;
@@ -232,7 +231,7 @@ YUI().use('test', function (Y) {
         },
 
         // verify routesFiles is converted to an array if a filename is passed
-        ' test attachRoutes with string arg': function () {
+        'test attachRoutes with string arg': function () {
             A.isFunction(router.attachRoutes);
 
             var fnCalled = false;
