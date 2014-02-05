@@ -12,7 +12,7 @@
             }
         },
 
-        "dataprovider" : {     
+        "dataprovider" : {
             "HttpAddonRequestObject" : {
                 "group" : "smoke,httpaddon,serveronly",
                 "params" : {
@@ -583,6 +583,12 @@
                             "params": {
                                 "value": "#p_headers",
                                 "click": true
+                            }
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#my_header"
                             }
                         },
                         {
