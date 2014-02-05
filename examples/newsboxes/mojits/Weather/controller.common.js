@@ -9,14 +9,14 @@
 /*global YUI*/
 
 
-YUI.add('WeatherController', function(Y, NAME) {
+YUI.add('weather', function(Y, NAME) {
 
     Y.namespace('mojito.controllers')[NAME] = {
 
         index: function(ac) {
             var location = 'san francisco, california';
 
-            ac.models.get('YqlWeatherModel').fetch(location, function(error, response) {
+            ac.models.get('yqlweather').fetch(location, function(error, response) {
                 return ac.done(response);
             });
         }
@@ -25,4 +25,4 @@ YUI.add('WeatherController', function(Y, NAME) {
 }, '0.0.1', {requires: [
     'mojito',
     'mojito-models-addon',
-    'YqlWeatherModel']});
+    'yqlweather-model']});

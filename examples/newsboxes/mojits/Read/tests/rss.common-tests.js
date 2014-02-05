@@ -9,7 +9,7 @@
 /*global YUI,YUITest*/
 
 
-YUI.add('ReadModelRss-tests', function(Y, NAME) {
+YUI.add('read-model-rss-tests', function(Y, NAME) {
     'use strict';
 
     var suite = new YUITest.TestSuite(NAME),
@@ -155,7 +155,7 @@ YUI.add('ReadModelRss-tests', function(Y, NAME) {
         name: 'rss model tests',
 
         setUp: function() {
-            rss = Y.mojito.models.ReadModelRss;
+            rss = Y.mojito.models["read-model-rss"];
         },
 
         tearDown: function() {
@@ -211,5 +211,5 @@ YUI.add('ReadModelRss-tests', function(Y, NAME) {
 
 }, '0.0.1', {requires: [
     'mojito-test',
-    'ReadModelRss'
+    'read-model-rss'
 ]});
