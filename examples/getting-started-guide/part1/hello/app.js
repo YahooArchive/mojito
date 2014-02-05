@@ -15,8 +15,10 @@ var debug = require('debug')('app'),
     app;
 
 app = express();
+app.set('port', process.env.PORT || 8666);
+mojito.extend(app);
 
-app.use(mojito.middleware());
+app.use(app.mojito.middleware());
 
 app.use(app.router);
 

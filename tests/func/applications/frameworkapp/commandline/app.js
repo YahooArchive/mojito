@@ -15,11 +15,13 @@ var debug = require('debug')('app'),
     app;
 
 app = express();
+app.set('port', process.env.PORT || 8666);
+mojito.extend(app);
 
-app.use(mojito.middleware());
+app.use(app.mojito.middleware());
 
 app.mojito.attachRoutes();
-app.post('/tunnel', mojito.tunnelMiddelware());
+app.post('/tunnel', app.mojito.tunnelMiddelware());
 
 app.get('/status', function (req, res) {
     res.send('200 OK');

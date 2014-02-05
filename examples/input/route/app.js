@@ -11,15 +11,17 @@
 
 var debug = require('debug')('app'),
     express = require('express'),
-    mojito = require('../../../'),
-    app;
+    libmojito = require('../../../'),
+    app,
+    mojito;
 
 app = express();
+app.set('port', process.env.PORT || 8666);
+libmojito.extend(app);
+mojito = app.mojito;
 
 app.use(mojito.middleware());
-
-
-app.mojito.attachRoutes();
+mojito.attachRoutes();
 app.post('/tunnel', mojito.tunnelMiddleware());
 
 // This shows an example how to setup route params for specific paths
