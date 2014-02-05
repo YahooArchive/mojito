@@ -588,7 +588,7 @@
                         {
                             "controller": "locator",
                             "params": {
-                                "value": "#output"
+                                "value": "#my_header"
                             }
                         },
                         {
