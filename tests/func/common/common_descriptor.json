@@ -926,6 +926,12 @@
                             }
                         },
                         {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#myarray"
+                            }
+                        },
+                        {
                             "test" : "testdependencyclient.js"
                         }
                     ]
