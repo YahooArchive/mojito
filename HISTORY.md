@@ -13,6 +13,9 @@ Features
 Bug Fixes
 ------------
 
+* Issue #1306: ac.partial.render() throws error for handlebar custom helper
+* Issue #1312: request for MojitProxy.refreshView() not to reload css-assets
+
 Acknowledgements
 ----------------
 
