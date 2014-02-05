@@ -15,9 +15,15 @@ YUI.add('usecases-testi18n-tests', function (Y) {
                 "x":"%d/%m/%Y"
             });
             Y.Intl.setLang("datatype-date-format", "en-US");
+            var date = new Date();
+                UTCDate = new Date();
+            UTCDate.setTime(date.getTime()+date.getTimezoneOffset()*60000)
             var mydate = Y.DataType.Date.format(new Date(), {format:"%d/%m/%Y"});
-            var expecteddate = mydate.slice(3,6)+mydate.slice(0,3)+mydate.slice(8,10);
-            Y.Assert.areEqual(expecteddate, title.substr(title.indexOf('-')+2, 8));
+                myUTCDate = Y.DataType.Date.format(UTCDate, {format:"%d/%m/%Y"});
+            var expecteddate1 = mydate.slice(3,6)+mydate.slice(0,3)+mydate.slice(8,10);
+                expecteddate2 = myUTCDate.slice(3,6)+mydate.slice(0,3)+mydate.slice(8,10);
+                actualdate = title.substr(title.indexOf('-')+2, 8);
+            Y.Assert.isTrue(expecteddate1 === actualdate || expecteddate2 == actualdate);
         }
     }));
 
