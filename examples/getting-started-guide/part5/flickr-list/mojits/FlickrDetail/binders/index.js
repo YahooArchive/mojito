@@ -4,12 +4,12 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('FlickrDetailBinderIndex', function (Y, NAME) {
+YUI.add('flickrdetail-binder-index', function (Y, NAME) {
 
 /**
- * The FlickrDetailBinder module.
+ * The flickrdetail-binder-index module.
  *
- * @module FlickrDetailBinder
+ * @module flickrdetail-binder-index
  */
     "use strict";
     /**

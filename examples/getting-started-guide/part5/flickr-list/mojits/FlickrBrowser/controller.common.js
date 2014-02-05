@@ -4,14 +4,14 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('FlickrBrowser', function (Y, NAME) {
+YUI.add('flickrbrowser', function (Y, NAME) {
 
     "use strict";
 
 /**
- * The FlickrBrowser module.
+ * The flickrbrowser module.
  *
- * @module FlickrBrowser
+ * @module flickrbrowser
  */
 
     /**

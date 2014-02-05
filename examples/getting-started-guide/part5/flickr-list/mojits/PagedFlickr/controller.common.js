@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('PagedFlickr', function (Y, NAME) {
+YUI.add('pagedflickr', function (Y, NAME) {
     "use strict";
 
     function selfUrl(ac, mojitType, mods) {
@@ -18,9 +18,9 @@ YUI.add('PagedFlickr', function (Y, NAME) {
         return ac.url.make(mojitType, 'index', Y.QueryString.stringify(params));
     }
 /**
- * The PagedFlickr module.
+ * The pagedflickr module.
  *
- * @module PagedFlickr
+ * @module pagedflickr
  */
 
     var PAGESIZE = 6;
@@ -56,7 +56,7 @@ YUI.add('PagedFlickr', function (Y, NAME) {
             // parameter is base-0.
             start = (page - 1) * PAGESIZE;
 
-            ac.models.get('ModelFlickr').getFlickrImages('mojito', start, PAGESIZE, function(err, images) {
+            ac.models.get('flickr').getFlickrImages('mojito', start, PAGESIZE, function(err, images) {
                var dateString, data;
 
                 // on model error, fail fast
@@ -100,5 +100,5 @@ YUI.add('PagedFlickr', function (Y, NAME) {
     'mojito-url-addon',
     'mojito-util',
     'querystring-stringify',
-    'ModelFlickr'
+    'flickr-model'
 ], lang: ['de', 'en-US']});

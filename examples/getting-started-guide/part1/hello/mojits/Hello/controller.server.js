@@ -4,13 +4,13 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('HelloMojit', function (Y, NAME) {
+YUI.add('hello', function (Y, NAME) {
 
     "use strict";
 /**
- * The HelloMojit module.
+ * The hello module.
  *
- * @module HelloMojit
+ * @module hello
  */
 
     /**

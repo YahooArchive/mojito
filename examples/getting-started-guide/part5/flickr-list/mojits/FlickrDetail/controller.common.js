@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('FlickrDetail', function (Y, NAME) {
+YUI.add('flickrdetail', function (Y, NAME) {
 
     "use strict";
 
@@ -27,7 +27,7 @@ YUI.add('FlickrDetail', function (Y, NAME) {
                 return;
             }
 
-            ac.models.get('ModelFlickr').getFlickrDetail(image, function(err, details) {
+            ac.models.get('flickr').getFlickrDetail(image, function(err, details) {
                 if (err) {
                     ac.error(new Error("YQL Error"));
                     return;
@@ -71,5 +71,5 @@ YUI.add('FlickrDetail', function (Y, NAME) {
     'mojito-params-addon',
     'mojito-intl-addon',
     'mojito-models-addon',
-    'ModelFlickr'
+    'flickr-model'
 ], lang: ['de', 'en-US']});
