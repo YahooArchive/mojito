@@ -560,6 +560,12 @@
                             }
                         },
                         {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#output"
+                            }
+                        },
+                        {
                             "test" : "testrestlib-DELETEWithParamsClient.js"
                         }
                     ]
@@ -577,6 +583,12 @@
                             "params": {
                                 "value": "#p_headers",
                                 "click": true
+                            }
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#output"
                             }
                         },
                         {
