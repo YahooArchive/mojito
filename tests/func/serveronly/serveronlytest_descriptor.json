@@ -586,12 +586,6 @@
                             }
                         },
                         {
-                            "controller": "locator",
-                            "params": {
-                                "value": "#output"
-                            }
-                        },
-                        {
                             "test" : "testrestlib-HeadersClient.js"
                         }
                     ]
