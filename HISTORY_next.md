@@ -58,11 +58,6 @@ Deprecations, Removals
   Applications that rely on this API should familiaze with the `express-map`
   package by querying the route object by `name` or `path`.
 
-* The resource store instance is now available by using:
-
-      var rs = app.get('mojito store');
-      // var versions = rs.getResourceVersions();
-
 Features
 --------
 
