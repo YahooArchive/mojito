@@ -56,6 +56,9 @@ Deprecations, Removals
   deprecated and have been removed. If applications needs to query the route
   object, either use the `name` or `path` by leveraging `express-map`.
 
+* Expanded metadata is now removed. This means we will not longer support
+  synthetic modules that were expanded by default, e.g.: `loader-yui3-base`, `loader-yui3-expanded` and `loader-app-resolved`. If you are using any of those 3 entries in the YUI configuration, you should use `loader-app` and loader-app-base` as your seed modules. In fact we recommend to not customize `yui.config.seed` in your `application.json`.
+
 Features
 --------
 
