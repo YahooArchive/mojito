@@ -29,4 +29,4 @@ YUI.add('MultiAction', function(Y, NAME) {
         inst2: function(ac) { ac.done({data: "hello from inst2"}); },
     };
 
-}, '0.0.1', {requires: ['mojito', 'MultiActionModelFoo']});
+}, '0.0.1', {requires: ['mojito']});
