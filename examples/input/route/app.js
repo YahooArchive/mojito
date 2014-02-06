@@ -12,17 +12,15 @@
 var debug = require('debug')('app'),
     express = require('express'),
     libmojito = require('../../../'),
-    app,
-    mojito;
+    app;
 
 app = express();
 app.set('port', process.env.PORT || 8666);
 libmojito.extend(app);
-mojito = app.mojito;
 
-app.use(mojito.middleware());
-mojito.attachRoutes();
-app.post('/tunnel', mojito.tunnelMiddleware());
+app.use(libmojito.middleware());
+app.mojito.attachRoutes();
+app.post('/tunnel', libmojito.tunnelMiddleware());
 
 // This shows an example how to setup route params for specific paths
 // Previously, this was done via `routes.json` using the `params` property.
@@ -32,7 +30,7 @@ app.get('/', function (req, res, next) {
     req.params.foo = 'fooval';
     req.params.bar = 'barval';
     next();
-}, mojito.dispatch('route-grabber.index'));
+}, libmojito.dispatch('route-grabber.index'));
 
 app.get('/status', function (req, res) {
     res.send('200 OK');

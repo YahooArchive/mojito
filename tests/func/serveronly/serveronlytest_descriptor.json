@@ -350,6 +350,12 @@
                             }
                         },
                         {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#output"
+                            }
+                        },
+                        {
                             "test" : "testrestlib-SimpleWSCallClient.js"
                         }
                     ]
@@ -367,6 +373,24 @@
                             "params": {
                                 "value": "#p_inspectResp",
                                 "click": true
+                            }
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#code"
+                            }
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#msg"
+                            }
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#output"
                             }
                         },
                         {
@@ -390,6 +414,12 @@
                             }
                         },
                         {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#headers"
+                            }
+                        },
+                        {
                             "test" : "testrestlib-inspectResponseHeaderClient.js"
                         }
                     ]
@@ -407,6 +437,12 @@
                             "params": {
                                 "value": "#p_inspectErr",
                                 "click": true
+                            }
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#td_inspectErr"
                             }
                         },
                         {

@@ -12,17 +12,15 @@
 var debug = require('debug')('app'),
     express = require('express'),
     libmojito = require('../../../'),
-    app,
-    mojito;
+    app;
 
 app = express();
 app.set('port', process.env.PORT || 8666);
 libmojito.extend(app);
-mojito = app.mojito;
 
-app.use(mojito.middleware());
-mojito.attachRoutes();
-app.post('/tunnel', mojito.tunnelMiddleware());
+app.use(libmojito.middleware());
+app.mojito.attachRoutes();
+app.post('/tunnel', libmojito.tunnelMiddleware());
 
 app.get('/status', function (req, res) {
     res.send('200 OK');

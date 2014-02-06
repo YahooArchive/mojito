@@ -11,20 +11,18 @@
 
 var express = require('express'),
     libmojito = require('../../'),
-    mojito,
     app;
 
 app = express();
 app.set('port', 8666);
-libmojito.extend(app, {});
-mojito = app.mojito;
+libmojito.extend(app);
 
-app.use(mojito.middleware());
-mojito.attachRoutes();
-app.post('/tunnel', mojito.tunnelMiddleware());
+app.use(libmojito.middleware());
+app.mojito.attachRoutes();
+app.post('/tunnel', libmojito.tunnelMiddleware());
 
 // regex paths should be defined in `app.js`. 
-app.get(/\/|index.html/, mojito.dispatch('shelf.index'));
+app.get(/\/|index.html/, libmojito.dispatch('shelf.index'));
 
 app.get('/status', function (req, res) {
     res.send('200 OK');

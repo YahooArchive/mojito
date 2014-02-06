@@ -12,20 +12,18 @@
 var debug = require('debug')('app'),
     express = require('express'),
     libmojito = require('../../../'),
-    app,
-    mojito;
+    app;
 
 app = express();
 app.set('port', process.env.PORT || 8666);
 libmojito.extend(app);
-mojito = app.mojito;
 
-app.use(mojito.middleware());
-mojito.attachRoutes();
-app.post('/tunnel', mojito.tunnelMiddleware());
+app.use(libmojito.middleware());
+app.mojito.attachRoutes();
+app.post('/tunnel', libmojito.tunnelMiddleware());
 
 app.get('/:type/:action', function (req, res, next) {
-    mojito.dispatch(req.params.type + '.' + req.params.action)(req, res, next);
+    libmojito.dispatch(req.params.type + '.' + req.params.action)(req, res, next);
 });
 
 app.get('/status', function (req, res) {
