@@ -11,16 +11,16 @@
 
 var debug = require('debug')('app'),
     express = require('express'),
-    mojito = require('../../../../'),
+    libmojito = require('../../../../'),
     app;
 
 app = express();
 app.set('port', process.env.PORT || 8666);
-mojito.extend(app);
+libmojito.extend(app);
 
-app.use(app.mojito.middleware());
+app.use(libmojito.middleware());
 app.mojito.attachRoutes();
-app.post('/tunnel', app.mojito.tunnelMiddleware());
+app.post('/tunnel', libmojito.tunnelMiddleware());
 
 app.get('/status', function (req, res) {
     res.send('200 OK');
