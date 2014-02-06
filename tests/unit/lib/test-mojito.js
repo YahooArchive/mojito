@@ -40,7 +40,10 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
             // realServer = Mojito.Server;
 
             function expressFn() {}
-            expressFn.prototype.param = function () {};
+            expressFn.prototype = {
+                param: function () {},
+                set: function () {}
+            };
             app = new expressFn();
 
             storeMock = {
