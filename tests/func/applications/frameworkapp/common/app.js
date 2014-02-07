@@ -12,7 +12,8 @@
 var debug = require('debug')('app'),
     express = require('express'),
     libmojito = require('../../../../..'),
-    app;
+    app,
+    dispatcherMiddleware;
 
 app = express();
 app.set('port', process.env.PORT || 8666);
@@ -29,12 +30,7 @@ app.post('/tunnel', libmojito.tunnelMiddleware());
 //     "call": "RouteParams.routeParamsSimple",
 //     "params": "foo=fooval&bar=barval"
 // },
-app.get('/RouteParamsSimple', function (req, res, next) {
-    req.params = req.params || {};
-    req.params.foo = 'fooval';
-    req.params.bar = 'barval';
-    next();
-}, libmojito.dispatch('RouteParams.routeParamsSimple'));
+app.get('/RouteParamsSimple', libmojito.dispatch('RouteParams.routeParamsSimple', { foo: 'fooval', bar: 'barval'}));
 
 // "mergeparamssimple": {
 //     "verbs": ["post"],
@@ -72,12 +68,7 @@ app.post('/MergeParams', function (req, res, next) {
 //        "bar": "barval"
 //     }
 // },
-app.get('/RouteParams', function (req, res, next) {
-    req.params = req.params || {};
-    req.params.foo = 'fooval';
-    req.params.bar = 'barval';
-    next();
-}, libmojito.dispatch('RouteParams.routeParams'));
+app.get('/RouteParams', libmojito.dispatch('RouteParams.routeParams', {foo: 'fooval', bar: 'barval'}));
 
 
 // "default": {
@@ -85,14 +76,12 @@ app.get('/RouteParams', function (req, res, next) {
 //     "path": "/:mojit-id/:mojit-action",
 //     "call": "{mojit-id}.{mojit-action}"
 // }
-function rt(req, res, next) {
-    libmojito.dispatch(req.params.mojitType + '.' + req.params.mojitAction)(req, res, next);
-}
-app.get('/:mojitType/:mojitAction', rt);
-app.post('/:mojitType/:mojitAction', rt);
-app.put('/:mojitType/:mojitAction', rt);
-app.head('/:mojitType/:mojitAction', rt);
-app['delete']('/:mojitType/:mojitAction', rt);
+dispatcherMiddleware = libmojito.dispatch('{mojitType}.{mojitAction}');
+app.get('/:mojitType/:mojitAction', dispatcherMiddleware);
+app.post('/:mojitType/:mojitAction', dispatcherMiddleware);
+app.put('/:mojitType/:mojitAction', dispatcherMiddleware);
+app.head('/:mojitType/:mojitAction', dispatcherMiddleware);
+app['delete']('/:mojitType/:mojitAction', dispatcherMiddleware);
 
 app.get('/status', function (req, res) {
     res.send('200 OK');
