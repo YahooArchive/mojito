@@ -12,7 +12,8 @@
 var debug = require('debug')('app'),
     express = require('express'),
     libmojito = require('../../../../..'),
-    app;
+    app,
+    mid;
 
 app = express();
 app.set('port', process.env.PORT || 8666);
@@ -28,21 +29,17 @@ app.post('/tunnel', libmojito.tunnelMiddleware());
 //     "path": "/:mojit-id/run_index",
 //     "call": "{mojit-id}.index"
 // },
-app.get('/:mojitId/run_index', function (req, res, next) {
-    return libmojito.dispatch(req.params.mojitId + '.index')(req, res, next);
-});
+app.get('/:mojitId/run_index', libmojito.dispatch('{mojitId}.index'));
 
 // "_any_mojit_action": {
 //     "verbs": ["get", "post", "put"],
 //     "path": "/:mojit-id/:mojit-action",
 //     "call": "{mojit-id}.{mojit-action}"
 // }
-function rt(req, res, next) {
-    return libmojito.dispatch(req.params.mojitId + '.' + req.params.mojitAction)(req, res, next);
-}
-app.get('/:mojitId/:mojitAction', rt);
-app.post('/:mojitId/:mojitAction', rt);
-app.put('/:mojitId/:mojitAction', rt);
+mid = libmojito.dispatch('{mojitId}.{mojitAction}');
+app.get('/:mojitId/:mojitAction', mid);
+app.post('/:mojitId/:mojitAction', mid);
+app.put('/:mojitId/:mojitAction', mid);
 
 app.get('/status', function (req, res) {
     res.send('200 OK');

@@ -29,12 +29,7 @@ app.post('/tunnel', libmojito.tunnelMiddleware());
 //     "call": "RouteParams.routeParamsSimple",
 //     "params": "foo=fooval&bar=barval"
 // },
-app.get('/RouteParamsSimple', function (req, res, next) {
-    req.params = req.params || {};
-    req.params.foo = 'fooval';
-    req.params.bar = 'barval';
-    next();
-}, libmojito.dispatch('RouteParams.routeParamsSimple'));
+app.get('/RouteParamsSimple', libmojito.dispatch('RouteParams.routeParamsSimple', { foo: 'fooval', bar: 'barval'}));
 
 // "mergeparamssimple": {
 //     "verbs": ["post"],
@@ -72,12 +67,7 @@ app.post('/MergeParams', function (req, res, next) {
 //        "bar": "barval"
 //     }
 // },
-app.get('/RouteParams', function (req, res, next) {
-    req.params = req.params || {};
-    req.params.foo = 'fooval';
-    req.params.bar = 'barval';
-    next();
-}, libmojito.dispatch('RouteParams.routeParams'));
+app.get('/RouteParams', libmojito.dispatch('RouteParams.routeParams', {foo: 'fooval', bar: 'barval'}));
 
 
 // "default": {

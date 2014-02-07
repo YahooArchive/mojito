@@ -11,20 +11,41 @@ YUI().use('test', function (Y) {
     var A = Y.Assert,
         AA = Y.ArrayAssert,
         OA = Y.ObjectAssert,
+        sub = Y.Lang.sub,
         libpath = require('path'),
         mockery = require('mockery'),
         suite = new Y.Test.Suite('lib/dispatcher tests'),
-        dispatcher;
+        dispatcher,
+        req,
+        res,
+        next;
 
     suite.add(new Y.Test.Case({
         'setUp': function () {
             dispatcher = require('../../../lib/dispatcher');
+
+            req = {
+                app: {
+                    mojito: {
+                        Y: {
+                            Lang: {
+                                sub: sub
+                            }
+                        }
+                    },
+                    routes: {}
+                },
+                url: '/',
+                query: {},
+                params: {},
+                context: { runtime: 'server' }
+            };
+            res = {
+            };
+            next = function () {};
         },
         'tearDown': function () {
             dispatcher.resetRoutesConfig();
-        },
-        'test OK': function () {
-            A.isFunction(function () { });
         },
 
         'test resetRoutesConfig': function () {
@@ -37,9 +58,6 @@ YUI().use('test', function (Y) {
             A.isFunction(dispatcher.dispatch);
 
             var cb,
-                req,
-                res,
-                next,
                 mid,
                 handleRequestCalled = false,
                 fn;
@@ -51,25 +69,20 @@ YUI().use('test', function (Y) {
                 handleRequestCalled = true;
             };
 
-            req = {
-                app: {
-                    mojito: { },
-                    routes: {
-                        get: [{
-                            path: '/path',
-                            method: 'get',
-                            regexp: /^\/path\/?/,
-                            keys: [ ],
-                            params: { },
-                            callbacks: [ cb ]
-                        }]
-                    }
-                },
-                url: '/admin',
-                query: { foo: 'bar' },
-                params: { foz: 'baz' },
-                context: { runtime: 'server' }
+            req.app.routes = {
+                get: [{
+                    path: '/path',
+                    method: 'get',
+                    regexp: /^\/path\/?/,
+                    keys: [ ],
+                    params: { },
+                    callbacks: [ cb ]
+                }]
             };
+            req.url = '/admin';
+            req.query = { foo: 'bar' };
+            req.params = { foz: 'baz' };
+            req.context = { runtime: 'server' };
 
             mid = dispatcher.dispatch('admin.help');
             A.isFunction(mid, 'dispatch() should return middleware()');
@@ -87,6 +100,66 @@ YUI().use('test', function (Y) {
             dispatcher.handleRequest = fn;
         },
 
+        // verify that parametrized calls are replaced
+        'test dispatch() with parametrized calls': function () {
+            var mid,
+                fn;
+
+            fn = dispatcher.handleRequest;
+            dispatcher.handleRequest = function () {};
+
+            req.url = '/:type/:action';
+            req.query = { foo: 'bar' };
+            req.params = { type: 'admin', action: 'help' };
+            req.context = { runtime: 'server' };
+
+            mid = dispatcher.dispatch('{type}.{action}', { foo: 'bar' });
+
+            A.isFunction(mid);
+
+            mid(req, res, next);
+
+            dispatcher.handleRequest = fn; // restore asap
+
+            A.areEqual('admin',
+                       req.command.instance.base,
+                       'mojit base mismatch');
+            A.areEqual('help',
+                       req.command.action,
+                       'mojit action mismatch');
+
+        },
+
+        // test for Anonymous mojit
+        'test dispatch() with parametrized calls for anonymous mojit': function () {
+            var mid,
+                fn;
+
+            fn = dispatcher.handleRequest;
+            dispatcher.handleRequest = function () {};
+
+            req.url = '/:type/:action';
+            req.query = { foo: 'bar' };
+            req.params = { type: '@Admin', action: 'help' };
+            req.context = { runtime: 'server' };
+
+            mid = dispatcher.dispatch('{type}.{action}', { foo: 'bar' });
+
+            A.isFunction(mid);
+
+            mid(req, res, next);
+
+            dispatcher.handleRequest = fn; // restore asap
+
+            A.areEqual('Admin',
+                       req.command.instance.type,
+                       'mojit type mismatch');
+            A.areEqual('help',
+                       req.command.action,
+                       'mojit action mismatch');
+
+        },
+
 
         // mock the request, store
         // verify:
@@ -95,10 +168,7 @@ YUI().use('test', function (Y) {
         'test handleRequest when no errors': function () {
             A.isFunction(dispatcher.handleRequest);
 
-            var req,
-                res,
-                next,
-                nextCalled = false,
+            var nextCalled = false,
                 dispatcherCalled = false;
 
             req = {
@@ -110,6 +180,9 @@ YUI().use('test', function (Y) {
                     },
                     mojito: {
                         Y: {
+                            Lang: {
+                                sub: sub
+                            },
                             log: function () { },
                             mojito: {
                                 Dispatcher: {
@@ -165,16 +238,8 @@ YUI().use('test', function (Y) {
         'test handleRequest when no command': function () {
             A.isFunction(dispatcher.handleRequest);
 
-            var req,
-                res,
-                next,
-                nextCalled = false;
+            var nextCalled = false;
 
-            req = {
-                context: {},
-                app: { mojito: { store: { } } }
-            };
-            res = { };
             next = function () {
                 nextCalled = true;
             };
