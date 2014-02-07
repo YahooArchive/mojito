@@ -11,15 +11,17 @@
 
 var debug = require('debug')('app'),
     express = require('express'),
-    mojito = require('../../../../..'),
+    libmojito = require('../../../../..'),
     app;
 
 app = express();
+app.set('port', process.env.PORT || 8666);
+libmojito.extend(app);
 
-app.use(mojito.middleware());
+app.use(libmojito.middleware());
 
 app.mojito.attachRoutes();
-app.post('/tunnel', mojito.tunnelMiddleware());
+app.post('/tunnel', libmojito.tunnelMiddleware());
 
 // "routeparamssimple": {
 //     "verbs": ["get"],
@@ -32,7 +34,7 @@ app.get('/RouteParamsSimple', function (req, res, next) {
     req.params.foo = 'fooval';
     req.params.bar = 'barval';
     next();
-}, mojito.dispatch('RouteParams.routeParamsSimple'));
+}, libmojito.dispatch('RouteParams.routeParamsSimple'));
 
 // "mergeparamssimple": {
 //     "verbs": ["post"],
@@ -46,7 +48,7 @@ app.post('/MergeParamsSimple', function (req, res, next) {
     req.params = req.params || {};
     req.params.likes = 'Beer';
     next();
-}, mojito.dispatch('MergeParams.mergeParamsSimple'));
+}, libmojito.dispatch('MergeParams.mergeParamsSimple'));
 
 
 // "mergeparams": {
@@ -59,7 +61,7 @@ app.post('/MergeParams', function (req, res, next) {
     req.params = req.params || {};
     req.params.likes = 'Beer';
     next();
-}, mojito.dispatch('MergeParams.mergeParams'));
+}, libmojito.dispatch('MergeParams.mergeParams'));
 
 // "routeparams": {
 //     "verbs": ["get"],
@@ -75,7 +77,7 @@ app.get('/RouteParams', function (req, res, next) {
     req.params.foo = 'fooval';
     req.params.bar = 'barval';
     next();
-}, mojito.dispatch('RouteParams.routeParams'));
+}, libmojito.dispatch('RouteParams.routeParams'));
 
 
 // "default": {
@@ -84,7 +86,7 @@ app.get('/RouteParams', function (req, res, next) {
 //     "call": "{mojit-id}.{mojit-action}"
 // }
 function rt(req, res, next) {
-    mojito.dispatch(req.params.mojitType + '.' + req.params.mojitAction)(req, res, next);
+    libmojito.dispatch(req.params.mojitType + '.' + req.params.mojitAction)(req, res, next);
 }
 app.get('/:mojitType/:mojitAction', rt);
 app.post('/:mojitType/:mojitAction', rt);

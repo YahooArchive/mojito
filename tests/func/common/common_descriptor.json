@@ -13,7 +13,7 @@
             }
         },
 
-        "dataprovider" : {     
+        "dataprovider" : {
             "acmojitdone1client" : {
                 "group" : "smoke,common,acmojit",
                 "params" : {
@@ -935,6 +935,12 @@
                             "params": {
                                 "value": "#DepCheckParentButton",
                                 "click": true
+                            }
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#myarray"
                             }
                         },
                         {

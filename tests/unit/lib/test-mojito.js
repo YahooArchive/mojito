@@ -11,13 +11,15 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
 
     var suite = new Y.Test.Suite('mojito tests'),
         path = require('path'),
+        mockery = require('mockery'),
         A = Y.Assert,
         V = Y.Mock.Value,
         AA = Y.ArrayAssert,
         OA = Y.ObjectAssert,
 
         mojito_src = Y.MOJITO_DIR + 'lib/mojito',
-        Mojito = require(mojito_src),
+        libmojito = require(mojito_src),
+        storeMock,
 
         realServer,
         realConfig,
@@ -36,6 +38,34 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
         setUp: function () {
             // Save original server type so we can mock it in tests.
             // realServer = Mojito.Server;
+
+            function expressFn() {}
+            expressFn.prototype = {
+                param: function () {},
+                set: function () {}
+            };
+            app = new expressFn();
+
+            storeMock = {
+                createStore: function () {
+                    return {
+                        yui: {
+                            getModulesConfig: function () {
+                                return [];
+                            },
+                            langs: []
+                        }
+                    };
+                }
+            };
+
+            mockery.enable({
+                warnOnReplace: false,
+                warnOnUnregistered: false,
+                useCleanCache: true
+            });
+            mockery.registerMock('./store', storeMock);
+
         },
 
         tearDown: function () {
@@ -47,92 +77,55 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
         // TODO: This is a dummy test in place while the `app.js` work is going
         // on. Tests will be added once we have a good design for now `locator`
         // and `dispatcher` will work together.
-        'Mojito express integration WIP': function () {
-            A.isObject(Mojito);
+
+
+        'test extend() - called once': function () {
+            A.isFunction(libmojito.extend);
+
+            libmojito.extend(app, { options: { runtime: 'server' }});
+
+            A.isNotUndefined(app['@mojito']);
+            A.isFunction(app['@mojito']);
+        },
+
+        'test extend() - called two times': function () {
+
+            app['@mojito'] = 'MojitoFn';
+            app = libmojito.extend(app, { options: { runtime: 'server' }});
+            A.areEqual('MojitoFn', app['@mojito'], '@mojito property mismatch');
+        },
+
+        'test ctr': function () {
+            var mojito;
+
+            libmojito.extend(app, { context: { runtime: 'server' }});
+            mojito = app.mojito;
+
+            A.isTrue(app === mojito._app, 'app mismatch');
+            OA.areEqual({}, mojito._config, '_config mismatch');
+            OA.areEqual({runtime: 'server'}, mojito._options.context, 'context mismatch');
+            A.isTrue(mojito._options.mojitoRoot.indexOf('/mojito/lib') > -1, 'incorrect mojito install location');
+            A.isTrue(mojito === app.mojito, 'mojito instance mismatch');
+        },
+
+        'test _init()': function () {
+            libmojito.extend(app);
+            A.isFunction(app.mojito._init);
+        },
+        'test _configureYUI()': function () {
+            libmojito.extend(app);
+            A.isFunction(app.mojito._configureYUI);
+        },
+        'test _createYUIInstance': function () {
+            libmojito.extend(app);
+            A.isFunction(app.mojito._createYUIInstance);
+        },
+        'test _configureAppInstance': function () {
+            libmojito.extend(app);
+            A.isFunction(app.mojito._configureAppInstance);
         }
 
         /*
-        'Mojito object is returned from require()': function () {
-            A.isObject(Mojito);
-        },
-
-        'Mojito has a MOJITO_INIT timestamp': function () {
-            A.isNumber(Mojito.MOJITO_INIT);
-        },
-
-        'Mojito.Server is a constructor function': function () {
-            A.isFunction(Mojito.Server);
-        },
-
-        'Mojito.Server is returned from createServer': function () {
-
-            // Mock the server to avoid YUI loader/Resource store issues.
-            Mojito.Server = function () {};
-
-            server = Mojito.createServer();
-            A.isObject(server);
-            A.isInstanceOf(Mojito.Server, server);
-        },
-
-        'createServer() properly passes options': function () {
-            var passed,
-                options;
-
-            // Mock the server type and capture options.
-            Mojito.Server = function(options) {
-                passed = options;
-            };
-
-            options = {'port': 2222};
-
-            server = Mojito.createServer(options);
-            OA.areEqual(options, passed);
-        }
-
-    }));
-
-    suite.add(new Y.Test.Case({
-
-        name: 'Mojito.Server general interface tests',
-
-        setUp: function () {
-            // Mock the configure function so majority of tests don't have to.
-            realConfig = Mojito.Server.prototype._configureAppInstance;
-            Mojito.Server.prototype._configureAppInstance =
-                function(app, opts) {};
-        },
-
-        tearDown: function () {
-            // Restore the original configure function.
-            Mojito.Server.prototype._configureAppInstance = realConfig;
-        },
-
-        'new Mojito.Server() creates an express server instance': function () {
-            server = new Mojito.Server();
-            A.isObject(server._app);
-        },
-
-        'new Mojito.Server() defaults options properly': function () {
-            server = new Mojito.Server();
-            A.isObject(server._options);
-        },
-
-        'new Mojito.Server() accepts options properly': function () {
-            var options = {
-                    port: 2222
-                };
-
-            server = new Mojito.Server(options);
-            A.areEqual(server._options.port, 2222);
-        },
-
-        'new Mojito.Server() defaults port properly': function () {
-            process.env.PORT = 2222;
-            server = new Mojito.Server();
-            A.areEqual(server._options.port, 2222);
-        }
-
-    }));
 
     suite.add(new Y.Test.Case({
 

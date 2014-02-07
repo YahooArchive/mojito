@@ -11,14 +11,16 @@
 
 var debug = require('debug')('app'),
     express = require('express'),
-    mojito = require('../../../../..'),
+    libmojito = require('../../../../..'),
     app;
 
 app = express();
+app.set('port', process.env.PORT || 8666);
+libmojito.extend(app);
 
-app.use(mojito.middleware());
+app.use(libmojito.middleware());
 app.mojito.attachRoutes();
-app.post('/tunnel', mojito.tunnelMiddleware());
+app.post('/tunnel', libmojito.tunnelMiddleware());
 
 
 // "_any_mojit_particular_action": {
@@ -27,7 +29,7 @@ app.post('/tunnel', mojito.tunnelMiddleware());
 //     "call": "{mojit-id}.index"
 // },
 app.get('/:mojitId/run_index', function (req, res, next) {
-    return mojito.dispatch(req.params.mojitId + '.index')(req, res, next);
+    return libmojito.dispatch(req.params.mojitId + '.index')(req, res, next);
 });
 
 // "_any_mojit_action": {
@@ -36,7 +38,7 @@ app.get('/:mojitId/run_index', function (req, res, next) {
 //     "call": "{mojit-id}.{mojit-action}"
 // }
 function rt(req, res, next) {
-    return mojito.dispatch(req.params.mojitId + '.' + req.params.mojitAction)(req, res, next);
+    return libmojito.dispatch(req.params.mojitId + '.' + req.params.mojitAction)(req, res, next);
 }
 app.get('/:mojitId/:mojitAction', rt);
 app.post('/:mojitId/:mojitAction', rt);

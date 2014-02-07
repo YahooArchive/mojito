@@ -11,14 +11,16 @@
 
 var debug = require('debug')('app'),
     express = require('express'),
-    mojito = require('../../../../..'),
+    libmojito = require('../../../../..'),
     app;
 
 app = express();
+app.set('port', process.env.PORT || 8666);
+libmojito.extend(app);
 
-app.use(mojito.middleware());
+app.use(libmojito.middleware());
 app.mojito.attachRoutes();
-app.post('/tunnel', mojito.tunnelMiddleware());
+app.post('/tunnel', libmojito.tunnelMiddleware());
 
 // "default": {
 //     "verbs": ["get", "post", "put", "head", "delete"],
@@ -26,7 +28,7 @@ app.post('/tunnel', mojito.tunnelMiddleware());
 //     "call": "{mojit-base}.{mojit-action}"
 // }
 function rt(req, res, next) {
-    mojito.dispatch(req.params.mojitBase + '.' + req.params.mojitAction)(req, res, next);
+    libmojito.dispatch(req.params.mojitBase + '.' + req.params.mojitAction)(req, res, next);
 }
 app.get('/:mojitBase/:mojitAction', rt);
 app.post('/:mojitBase/:mojitAction', rt);

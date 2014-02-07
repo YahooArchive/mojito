@@ -11,17 +11,19 @@
 
 var debug = require('debug')('app'),
     express = require('express'),
-    mojito = require('../../../../..'),
+    libmojito = require('../../../../..'),
     app;
 
 app = express();
+app.set('port', process.env.PORT || 8666);
+libmojito.extend(app);
 
-app.use(mojito.middleware());
+app.use(libmojito.middleware());
 app.mojito.attachRoutes();
-app.post('/tunnel', mojito.tunnelMiddleware());
+app.post('/tunnel', libmojito.tunnelMiddleware());
 
 function rt(req, res, next) {
-    return mojito.dispatch(req.params.type + '.' + req.params.action)(req, res, next);
+    return libmojito.dispatch(req.params.type + '.' + req.params.action)(req, res, next);
 }
 app.get('/:type/:action', rt);
 app.post('/:type/:action', rt);

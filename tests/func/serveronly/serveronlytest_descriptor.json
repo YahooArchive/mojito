@@ -12,7 +12,7 @@
             }
         },
 
-        "dataprovider" : {     
+        "dataprovider" : {
             "HttpAddonRequestObject" : {
                 "group" : "smoke,httpaddon,serveronly",
                 "params" : {
@@ -350,6 +350,12 @@
                             }
                         },
                         {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#output"
+                            }
+                        },
+                        {
                             "test" : "testrestlib-SimpleWSCallClient.js"
                         }
                     ]
@@ -367,6 +373,24 @@
                             "params": {
                                 "value": "#p_inspectResp",
                                 "click": true
+                            }
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#code"
+                            }
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#msg"
+                            }
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#output"
                             }
                         },
                         {
@@ -390,6 +414,12 @@
                             }
                         },
                         {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#headers"
+                            }
+                        },
+                        {
                             "test" : "testrestlib-inspectResponseHeaderClient.js"
                         }
                     ]
@@ -407,6 +437,12 @@
                             "params": {
                                 "value": "#p_inspectErr",
                                 "click": true
+                            }
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#td_inspectErr"
                             }
                         },
                         {
@@ -430,6 +466,12 @@
                             }
                         },
                         {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#output"
+                            }
+                        },
+                        {
                             "test" : "testrestlib-GETWithParamsClient.js"
                         }
                     ]
@@ -447,6 +489,12 @@
                             "params": {
                                 "value": "#p_getParamNegative",
                                 "click": true
+                            }
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#output"
                             }
                         },
                         {
@@ -470,6 +518,12 @@
                             }
                         },
                         {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#output"
+                            }
+                        },
+                        {
                             "test" : "testrestlib-POSTWithParamsClient.js"
                         }
                     ]
@@ -487,6 +541,12 @@
                             "params": {
                                 "value": "#p_postParamNegative",
                                 "click": true
+                            }
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#output"
                             }
                         },
                         {
@@ -510,6 +570,12 @@
                             }
                         },
                         {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#output"
+                            }
+                        },
+                        {
                             "test" : "testrestlib-PUTWithParamsClient.js"
                         }
                     ]
@@ -530,6 +596,12 @@
                             }
                         },
                         {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#output"
+                            }
+                        },
+                        {
                             "test" : "testrestlib-DELETEWithParamsClient.js"
                         }
                     ]
@@ -547,6 +619,12 @@
                             "params": {
                                 "value": "#p_headers",
                                 "click": true
+                            }
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#my_header"
                             }
                         },
                         {
