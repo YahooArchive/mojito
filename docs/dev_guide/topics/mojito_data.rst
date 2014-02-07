@@ -73,7 +73,7 @@ parameter is retrieved:
 
 .. code-block:: javascript
 
-   YUI.add('ParamsMojit', function(Y, NAME) {
+   YUI.add('params', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
        getNameParam: function(actionContext) {
          var nameParam = actionContext.params.getFromUrl('name');
@@ -99,7 +99,7 @@ the ``qs_params`` array, which ``ac.done`` makes available in the template.
 
 .. code-block:: javascript
 
-   YUI.add('ParamsMojit', function(Y, NAME) {
+   YUI.add('prams', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
        ...
        getAllParams: function(actionContext) {
@@ -141,7 +141,7 @@ and then uses the ``done`` method to make it accessible to the template.
 
 .. code-block:: javascript
 
-   YUI.add('ParamsMojit', function(Y, NAME) {
+   YUI.add('params', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
        getPostName: function(actionContext) {
          var postName = actionContext.params.getFromBody('name');
@@ -168,7 +168,7 @@ template.
 
 .. code-block:: javascript
 
-   YUI.add('ParamsMojit', function(Y, NAME) {
+   YUI.add('params', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
        ...
        getAllParams: function(actionContext) {
@@ -257,7 +257,7 @@ to determine whether the user gets a coupon.
 
 .. code-block:: javascript
 
-   YUI.add('CouponMojit', function(Y, NAME) {
+   YUI.add('coupon', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
        index: function(actionContext) {
          var sendCoupon = actionContext.params.getFromRoute('coupon');
@@ -290,7 +290,7 @@ a URL.
 
 .. code-block:: javascript
 
-   YUI.add('LinkMojit', function(Y, NAME) {
+   YUI.add('link', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
        index: function(actionContext) {
          var routeParams = actionContext.params.getFromRoute();
@@ -337,7 +337,7 @@ In the example controller below, the ``name`` parameter is obtained using
 
 .. code-block:: javascript
 
-   YUI.add('MergedParamsMojit', function(Y, NAME) {
+   YUI.add('mergedparams', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
        getPostName: function(actionContext) {
          var mergedName = actionContext.params.getFromMerged('name');
@@ -360,7 +360,7 @@ To get all of the GET, POST, and routing parameters, call ``getFromMerged`` or
 
 .. code-block:: javascript
 
-   YUI.add('MergedParamsMojit', function(Y, NAME) {
+   YUI.add('mergedparams', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
        ...
        getAllParams: function(actionContext) {
@@ -428,7 +428,7 @@ template.
 
 .. code-block:: javascript
 
-   YUI.add('CookieMojit', function(Y, NAME) {
+   YUI.add('cookie', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
        index: function(actionContext) {
          var user = actionContext.cookie.get('user');
@@ -453,7 +453,7 @@ with the name ``'user'`` if one does not exist.
 
 .. code-block:: javascript
 
-   YUI.add('CookieMojit', function(Y, NAME) {
+   YUI.add('cookie', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
        index: function(actionContext) {
          var user = actionContext.cookie.get('user');
@@ -477,24 +477,27 @@ Sharing Data
 Overview
 --------
 
-After a mojit gets data, it may need to share that data with binders, templates, or other 
-mojits. Mojito provides the ``Data`` addon that allows your mojit controllers and binders 
-to share and access data. 
-Data can also be refreshed in templates using the ``Data`` addon
-and Handlebars expressions. 
+After a mojit gets data, it may need to share that data with binders, 
+templates, or other mojits. Mojito provides the ``Data`` addon that allows your 
+mojit controllers and binders to share and access data. Data can also be 
+refreshed in templates using the ``Data`` addon and Handlebars expressions. 
+
 
 .. _mojito_data_sharing-how:
 
 How Is Data Shared?
 ###################
 
-Data is passed from the server to the client and vice versa using a remote procedural 
-call (RPC) through a tunnel. During this transmission, the state of the data is preserved. 
-When content is sent to the client as part of the page, the data and templates are rendered 
-on the server and sent to the client through the tunnel. After the initial rendering, each 
-time the mojit instance invokes an action that triggers an RPC through the tunnel, data is 
-serialized and sent to the server, where the instance is recreated with the data. If the 
-action changes the data model, the new data is then sent back through the tunnel to the 
+Data is passed from the server to the client and vice versa using a remote 
+procedural call (RPC) through a tunnel. During this transmission, the state of 
+the data is preserved. 
+
+When content is sent to the client as part of the page, the data and templates 
+are rendered on the server and sent to the client through the tunnel. After the 
+initial rendering, each time the mojit instance invokes an action that triggers 
+an RPC through the tunnel, data is serialized and sent to the server, where the 
+instance is recreated with the data. If the action changes the data model, the 
+new data is then sent back through the tunnel to the 
 client to update the data model.
 
 
@@ -610,7 +613,7 @@ mojits/StockQuotes/controller.server.js
 
 .. code-block:: javascript
 
-   YUI.add('StockQuotes', function(Y, NAME) {
+   YUI.add('stockquotes', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = {
        index: function(ac) {
          // Model gets stock quote prices
@@ -628,7 +631,7 @@ mojits/StockQuotes/controller.server.js
          });
        }
      };
-   }, '0.0.1', {requires: ['mojito', 'mojito-models-addon', 'StockQuotesModel', 'mojito-data-addon']});
+   }, '0.0.1', {requires: ['mojito', 'mojito-models-addon', 'stockquotes-model', 'mojito-data-addon']});
 
 .. _server_client_ex-binder:
 
@@ -637,7 +640,7 @@ mojits/StockQuotes/binders/binder.js
 
 .. code-block:: javascript
 
-   YUI.add('StockQuotesBinderIndex', function(Y, NAME) {
+   YUI.add('stockquotes-binder-index', function(Y, NAME) {
      Y.namespace('mojito.binders')[NAME] = {
        init: function(mojitProxy) {
          this.mojitProxy = mojitProxy;
@@ -749,7 +752,7 @@ Example
 #######
 
 In this example, we're expanding on the idea of sharing stock price information.
-The ``StockQuoteMojit`` mojit shares the stock price quotes with other mojits
+The ``StockQuotes`` mojit shares the stock price quotes with other mojits
 with the ``pageData``. 
 
 As with previous example, we show how to access and attach shared data to the page with 
@@ -763,7 +766,7 @@ mojits/StockQuotes/controller.server.js
 
 .. code-block:: javascript
 
-   YUI.add('StockQuotes', function(Y, NAME) {
+   YUI.add('stockquotes', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = {
        index: function(ac) {
          // Model gets stock quote prices
@@ -781,7 +784,7 @@ mojits/StockQuotes/controller.server.js
          });
        }
      };
-   }, '0.0.1', {requires: ['mojito', 'mojito-models-addon', 'StockQuotesModel', 'mojito-data-addon']});
+   }, '0.0.1', {requires: ['mojito', 'mojito-models-addon', 'stockquotes-model', 'mojito-data-addon']});
 
 .. _page_data_ex`-binder:
 
@@ -790,7 +793,7 @@ mojits/StockQuotes/binders/index.js
 
 .. code-block:: javascript
 
-   YUI.add('StockQuotesBinderIndex', function(Y, NAME) {
+   YUI.add('stockquotes-binder-index', function(Y, NAME) {
      Y.namespace('mojito.binders')[NAME] = {
        init: function(mojitProxy) {
          this.mojitProxy = mojitProxy;
@@ -826,7 +829,7 @@ This example listens for changes to ``ticker_list``.
 
 .. code-block:: javascript
 
-   YUI.add('StockTickerBinderIndex', function(Y, NAME) {
+   YUI.add('stockticker-binder-index', function(Y, NAME) {
 
      Y.namespace('mojito.binders')[NAME] = {
        init: function(mojitProxy) {

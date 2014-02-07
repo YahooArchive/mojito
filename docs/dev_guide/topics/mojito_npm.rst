@@ -253,7 +253,6 @@ the ``mojito`` object.
 Examples
 --------
 
-
 **package.json**
 
 The example ``package.json`` has the ``yahoo`` object that specifies that this 

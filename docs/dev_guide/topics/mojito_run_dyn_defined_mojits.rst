@@ -148,14 +148,14 @@ are returned in the callback and then made available to the mojit's template.
 
 .. code-block:: javascript
 
-   YUI.add('FrameMojit', function(Y, NAME) {
+   YUI.add('frame', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
        index: function(actionContext) {
          var cfg = { view: "index", 
                      children: { 
-                       header: { type: "HeaderMojit", action: "index"}, 
-                       body: { type: "BodyMojit", action: "index" }, 
-                       footer: { type: "FooterMojit", action: "index" }
+                       header: { type: "Header", action: "index" }, 
+                       body: { type: "Body", action: "index" }, 
+                       footer: { type: "Footer", action: "index" }
                      }
                    };
          // The 'meta' object containing metadata about the children's binders, assets, 
@@ -202,20 +202,20 @@ Controllers
 
 .. _dyn_controllers-parentmojit:
 
-ParentMojit
-***********
+Parent
+******
 
 .. code-block:: javascript
 
-   YUI.add('ParentMojit', function(Y, NAME) {
+   YUI.add('parent', function(Y, NAME) {
       Y.namespace('mojito.controllers')[NAME] = { 
         index: function(ac) {
           var cfg = {
             "children": {
               "dynamic_child": {
-                "type": "DynamicChildMojit",
+                "type": "DynamicChild",
                   "config": {
-                    "caller": "ParentMojit"
+                    "caller": "Parent"
                   }
                 }
               }
@@ -233,16 +233,16 @@ ParentMojit
 
 .. _dyn_controllers-dynchild:
 
-DynamicChildMojit
-*****************
+DynamicChild
+************
 
 .. code-block:: javascript
 
-   YUI.add('DynamicChildMojit', function(Y, NAME) {
+   YUI.add('dynamicchild', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
        index: function(ac) {
          var caller = ac.config.get("caller");       
-         if("ParentMojit"==caller){
+         if("Parent"==caller){
            ac.done({ "content": "I have been dynamically defined and run by " + caller + "."});
          }
          else {
@@ -260,8 +260,8 @@ Templates
 
 .. _dyn_templates-parentmojit:
 
-ParentMojit
-***********
+Parent
+******
 
 .. code-block:: html
 
@@ -271,8 +271,8 @@ ParentMojit
 
 .. _dyn_templates-dynchild:
 
-DynamicChildMojit
-*****************
+DynamicChild
+************
 
 .. code-block:: html
 
@@ -286,13 +286,13 @@ DynamicChildMojit
 Rendered Views
 ##############
 
-- ``localhost:8666/@ParentMojit/index``
+- ``localhost:8666/@Parent/index``
 
    ::
 
-      I have been dynamically defined and run by ParentMojit.
+      I have been dynamically defined and run by Parent.
 
-- ``localhost:8666/@DynamicChildMojit/index``
+- ``localhost:8666/@DynamicChild/index``
 
    ::
   
@@ -329,7 +329,7 @@ mojit metadata, which could cause unexpected results.
 Command Object
 ##############
 
-In the ``command`` object below, a mojit instance of type ``MessengerMojit`` and 
+In the ``command`` object below, a mojit instance of type ``Messenger`` and 
 the action to execute are specified. The new mojit instance is also passed 
 parameters.
 
@@ -337,7 +337,7 @@ parameters.
 
    var command = {
      "instance" : {
-       "type": "MessengerMojit"
+       "type": "Messenger"
      },
      "action": "index",
      "context": ac.context,
@@ -392,7 +392,7 @@ and ``error``.
 
 .. code-block:: javascript
 
-   YUI.add('MotherlodeMojit', function(Y, NAME) {
+   YUI.add('Motherlode', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
        index: function(ac) {
          var adapter = {
@@ -405,7 +405,7 @@ and ``error``.
          }; 
          var command = {
            "instance" : {
-             "type": "MessengerMojit",
+             "type": "Messenger",
              "action": "index"
            },
            "context": ac.context,
@@ -443,8 +443,8 @@ Examples
 Example One
 ***********
 
-In this example, the mojit ``CreatorMojit`` dynamically creates the child
-mojit instance of type ``SpawnedMojit``. The child mojit instance gets data 
+In this example, the mojit ``Creator`` dynamically creates the child
+mojit instance of type ``Spawned``. The child mojit instance gets data 
 from its parent mojit and then renders its template. The rendered template 
 is returned to the parent mojit, which inserts the content into its own 
 template.
@@ -462,7 +462,7 @@ Application Configuration
        "settings": [ "master" ],
        "specs": {
          "creator": {
-           "type":"CreatorMojit"
+           "type":"Creator"
          }
        }
      }
@@ -475,26 +475,26 @@ Controllers
 
 .. _templates_exs_controllers-creatormojit:
 
-CreatorMojit
-````````````
+Creator
+```````
 
 .. code-block:: javascript 
 
-   YUI.add('CreatorMojit', function(Y, NAME) {
+   YUI.add('creator', function(Y, NAME) {
    
       Y.namespace('mojito.controllers')[NAME] = { 
         index: function(ac) {
           var buffer = '';
           var command = {
             "instance" : {
-              "type": "SpawnedMojit",
+              "type": "Spawned",
               "action": "index"
             },
             "context": ac.context,
             "params": {
               "route": { "name":"creator" },
               "url": { "path":"/creator" },
-              "body": { "message":"I have been defined and run by CreatorMojit." }
+              "body": { "message":"I have been defined and run by Creator." }
             }
           };
           var adapter = {
@@ -521,12 +521,12 @@ CreatorMojit
 
 .. _templates_exs_controllers-spawnedmojit:
 
-SpawnedMojit
-````````````
+Spawned
+```````
 
 .. code-block:: javascript 
 
-   YUI.add('SpawnedMojit', function(Y, NAME) {
+   YUI.add('spawned', function(Y, NAME) {
    
       Y.namespace('mojito.controllers')[NAME] = { 
 
@@ -547,8 +547,8 @@ Templates
 
 .. _templates_exs-templates_spawnedmojit:
 
-SpawnedMojit
-````````````
+Spawned
+```````
 
 .. code-block:: html 
 
@@ -563,8 +563,8 @@ SpawnedMojit
 
 .. _templates_exs-templates_creatormojit:
 
-CreatorMojit
-````````````
+Creator
+```````
    
 .. code-block:: html
 
@@ -601,7 +601,7 @@ Application Configuration
              "title" : "Fun with Dispatch",
              "deploy" : true,              
              "child" : {                   
-               "type" : "ParentMojit"                   
+               "type" : "Parent"                   
              }                             
            }                       
          }                 
@@ -631,12 +631,12 @@ Controllers
 
 .. _templates_ex_two-controllers_parentmojit:
 
-ParentMojit
-```````````
+Parent
+``````
 
 .. code-block:: javascript
 
-   YUI.add('ParentMojit', function(Y, NAME) {
+   YUI.add('parent', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
        index: function(ac) {
          ac.assets.addCss("/static/parent/assets/index.css", "top");
@@ -645,7 +645,7 @@ ParentMojit
        dispatch: function(ac) { 
          var command = {
            "instance" : {
-             "type" : "ChildMojit",
+             "type" : "Child",
            },
            "context" : ac.context,
            "params" : {}
@@ -658,12 +658,12 @@ ParentMojit
 
 .. _templates_ex_two-controllers_childmojit:
 
-ChildMojit
-``````````
+Child
+`````
 
 .. code-block:: javascript
 
-   YUI.add('ChildMojit', function(Y, NAME) {
+   YUI.add('child', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
        index: function(ac) {
          ac.assets.addCss("/static/child/assets/index.css", "top");
@@ -680,12 +680,12 @@ Binders
 
 .. _templates_ex_two-binders_parentmojit:
 
-ParentMojit
-```````````
+Parent
+``````
 
 .. code-block:: javascript
 
-   YUI.add('ParentMojitBinderIndex', function(Y, NAME) {
+   YUI.add('parent-binder-index', function(Y, NAME) {
      Y.namespace('mojito.binders')[NAME] = {
        init: function(mojitProxy) {
          this.mojitProxy = mojitProxy;
@@ -708,12 +708,12 @@ ParentMojit
 
 .. _templates_ex_two-binders_childmojit:
 
-ChildMojit
-``````````
+Child
+`````
 
 .. code-block:: javascript
 
-   YUI.add('ChildMojitBinderIndex', function(Y, NAME) {
+   YUI.add('child-binder-index', function(Y, NAME) {
      Y.namespace('mojito.binders')[NAME] = {
        init: function(mojitProxy) {
          this.mojitProxy = mojitProxy;
@@ -737,8 +737,8 @@ Templates
 
 .. _templates_ex_two-templates_parentmojit:
 
-ParentMojit
-```````````
+Parent
+``````
 
 .. code-block:: html
 
@@ -751,8 +751,8 @@ ParentMojit
 
 .. _templates_ex_two-templates_childmojit:
 
-ChildMojit
-``````````
+Child
+`````
 
 .. code-block:: html
 
@@ -785,11 +785,11 @@ see `Using the Composite Addon`_ and `Using ac._dispatch`_ for implementation de
 Example
 -------
 
-In this example, the ``SecondLevelMojit`` uses ``ac._dispatch`` to create a 
-child mojit instance of type ``ThirdLevelMojit``, which in turn creates a child 
-mojit instance of type ``FourthLevelMojit``. The child instance of type 
-``FourthLevelMojit`` is executed and its rendered view is returned to its 
-parent mojit instance of type ``ThirdLevelMojit``. The content is then attached 
+In this example, the ``SecondLevel`` uses ``ac._dispatch`` to create a 
+child mojit instance of type ``ThirdLevel``, which in turn creates a child 
+mojit instance of type ``FourthLevel``. The child instance of type 
+``FourthLevel`` is executed and its rendered view is returned to its 
+parent mojit instance of type ``ThirdLevel``. The content is then attached 
 to the parent mojit instance's template, which gets rendered and returned as 
 the response.
 
@@ -813,7 +813,7 @@ Application Configuration
              "title" : "Fun with Dispatch and Execute",
              "deploy" : true,
              "child" : {
-               "type" : "SecondLevelMojit"
+               "type" : "SecondLevel"
              }
            }
          }
@@ -849,24 +849,24 @@ Controllers
 
 .. _execute_ex-controllers_secondlevelmojit:
 
-SecondLevelMojit
-****************
+SecondLevel
+***********
 
 .. code-block:: javascript
 
-   YUI.add('SecondLevelMojit', function(Y, NAME) {
+   YUI.add('SecondLevel', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
        index: function(ac) {
          var command = {
            "instance": {
-             "type" : "ThirdLevelMojit",
+             "type" : "ThirdLevel",
              "action": "index"
            },
            "context" : ac.context,
            "params" : {
              "body": {
-               "whoami": "ThirdLevelMojit",
-               "creator": "SecondLevelMojit"
+               "whoami": "ThirdLevel",
+               "creator": "SecondLevel"
              }
            }
          };
@@ -877,12 +877,12 @@ SecondLevelMojit
    
 .. _execute_ex-controllers_thirdlevelmojit:
 
-ThirdLevelMojit
-***************
+ThirdLevel
+**********
 
 .. code-block:: javascript
 
-   YUI.add('ThirdLevelMojit', function(Y, NAME) {
+   YUI.add('ThirdLevel', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
        index: function(ac) {
          var params = ac.params.body();
@@ -890,11 +890,11 @@ ThirdLevelMojit
            "view": "index",
            "children": {
              "child": {
-               "type": "FourthLevelMojit",
+               "type": "FourthLevel",
                "action": "index",
                "config": {
-                 "creator": "ThirdLevelMojit",
-                 "whoami": "FourthLevelMojit"
+                 "creator": "ThirdLevel",
+                 "whoami": "FourthLevel"
                }
              }
            }
@@ -908,12 +908,12 @@ ThirdLevelMojit
 
 .. _execute_ex-controllers_fourthlevelmojit:
 
-FourthLevelMojit
-****************
+FourthLevel
+***********
 
 .. code-block:: javascript
 
-   YUI.add('FourthLevelMojit', function(Y, NAME) {
+   YUI.add('FourthLevel', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
        index: function(ac) {
          var data = { "creator": ac.config.get("creator"), "whoami": ac.config.get("whoami") };
@@ -930,8 +930,8 @@ Templates
 
 .. _execute_ex-templates_fourthlevelmojit:
 
-FourthLevelMojit
-****************
+FourthLevel
+***********
 
 .. code-block:: html
 
@@ -941,8 +941,8 @@ FourthLevelMojit
 
 .. _execute_ex-templates_thirdlevelmojit:
 
-ThirdLevelMojit
-***************
+ThirdLevel
+**********
 
 .. code-block:: html
 

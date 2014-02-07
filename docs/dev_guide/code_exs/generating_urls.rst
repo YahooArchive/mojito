@@ -31,7 +31,7 @@ action on the mojit instance defined in ``application.json`` will be executed. B
 creating the routes for the application, you first need to create the mojit instance.
 
 In the ``application.json`` below, you configure the application to use an instance of the 
-mojit ``GenURLMojit``. The instance in this example is ``mymojit``, but the instance name 
+mojit ``GenerateURL``. The instance in this example is ``mymojit``, but the instance name 
 can be any string as defined by `RFC 4627 <http://www.ietf.org/rfc/rfc4627.txt>`_.
 
 .. code-block:: javascript
@@ -41,7 +41,7 @@ can be any string as defined by `RFC 4627 <http://www.ietf.org/rfc/rfc4627.txt>`
        "settings": [ "master" ],
        "specs": {
          "mymojit": {
-           "type": "GenURLMojit"
+           "type": "GenerateURL"
          }
        }
      }
@@ -82,7 +82,7 @@ the path defined in ``routes.json``.
 
 .. code-block:: javascript
 
-   YUI.add('GenURLMojit', function(Y, NAME) {
+   YUI.add('generateurl', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = {   
 
        index: function(actionContext) {
@@ -109,8 +109,8 @@ To set up and run ``generating_urls``:
 #. Change to the application directory.
 #. Create your mojit.
 
-   ``$ mojito create mojit GenURLMojit``
-#. To configure your application to use ``GenURLMojit``, replace the code in 
+   ``$ mojito create mojit GenerateURL``
+#. To configure your application to use ``GenerateURL``, replace the code in 
    ``application.json`` with the following:
 
    .. code-block:: javascript
@@ -120,7 +120,7 @@ To set up and run ``generating_urls``:
           "settings": [ "master" ],
           "specs": {
             "mymojit": {
-              "type": "GenURLMojit"
+              "type": "GenerateURL"
             }
           }
         }
@@ -146,13 +146,13 @@ To set up and run ``generating_urls``:
         }
       ]
 
-#. Change to ``mojits/GenURLMojit``.
+#. Change to ``mojits/GenerateURL``.
 #. Enable the controller to create a URL using the route paths defined in ``routes.json`` 
    by replacing the code in ``controller.server.js`` with the following:
 
    .. code-block:: javascript
 
-      YUI.add('GenURLMojit', function(Y, NAME) {
+      YUI.add('generateurl', function(Y, NAME) {
         Y.namespace('mojito.controllers')[NAME] = {   
 
           index: function(actionContext) {

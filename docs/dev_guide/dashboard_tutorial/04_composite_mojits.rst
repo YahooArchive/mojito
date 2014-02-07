@@ -322,7 +322,7 @@ template, but how does the parent template attach the content created by our
  
 .. code-block:: javascript
 
-   YUI.add('Body', function(Y, NAME) {
+   YUI.add('body', function(Y, NAME) {
 
      Y.namespace('mojito.controllers')[NAME] = {
 
@@ -468,7 +468,7 @@ Creating the Application
 
    .. code-block:: javascript
 
-      YUI.add('PageLayout', function(Y, NAME) {
+      YUI.add('pagelayout', function(Y, NAME) {
 
         /**
         * The PageLayout module.
@@ -529,12 +529,12 @@ Creating the Application
    .. code-block:: javascript
 
       /*jslint anon:true, sloppy:true, nomen:true*/
-      YUI.add('Header', function(Y, NAME) {
+      YUI.add('header', function(Y, NAME) {
 
         /**
-        * The Header module.
+        * The header module.
         *
-        * @module Header
+        * @module header
         */
 
         /**
@@ -572,12 +572,12 @@ Creating the Application
 
    .. code-block:: javascript
 
-      YUI.add('Footer', function(Y, NAME) {
+      YUI.add('footer', function(Y, NAME) {
 
         /**
-        * The Footer module.
+        * The footer module.
         *
-        * @module Footer
+        * @module footer
         */
         /**
         * Constructor for the Controller class.
@@ -607,17 +607,17 @@ Creating the Application
       </div>
 
 #. In our application, the ``Body`` mojit is responsible for the dynamic content of 
-   our page. Let’s update the controller and template with some 
+   our page. Let's update the controller and template with some 
    content.
 
    .. code-block:: javascript
 
-      YUI.add('Body', function(Y, NAME) {
+      YUI.add('body', function(Y, NAME) {
 
         /**
-        * The Body module.
+        * The body module.
         *
-        * @module Body
+        * @module body
         */
 
         /**
@@ -656,7 +656,7 @@ Creating the Application
 
    .. code-block:: javascript
 
-      YUI.add('Github', function(Y, NAME) {
+      YUI.add('github', function(Y, NAME) {
 
         Y.namespace('mojito.controllers')[NAME] = {
 

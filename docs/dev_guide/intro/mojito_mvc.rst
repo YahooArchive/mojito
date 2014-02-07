@@ -4,7 +4,7 @@ MVC in Mojito
 
 The MVC architecture in Mojito incorporates a clear separation of the 
 controller, model, and view. The controller is pivotal in the sense that it controls 
-all interactions in the MVC of Mojito.The controller retrieves data from the model 
+all interactions in the MVC of Mojito. The controller retrieves data from the model 
 and passes it to the view. Client requests for data are sent to the controller, 
 which in turn fetches data from the model and passes the data to the client. 
 
@@ -31,8 +31,8 @@ Location
 --------
 
 Models are found in the ``models`` directory of each mojit. For the application 
-``hello`` with the mojit ``HelloMojit``, the path to the models would be 
-``hello/mojits/HelloMojit/models``.
+``hello`` with the mojit ``Hello``, the path to the models would be 
+``hello/mojits/Hello/models``.
 
 .. _mvc_models-naming:
 
@@ -45,17 +45,17 @@ where a resource is available. Thus, the name of the model file is
 ``server``, or ``client``. 
 
 When adding the model as a module with ``YUI.add``,  we suggest 
-you use the following syntax: ``{mojit_name}Model{Model_name}``
+you use the following syntax: ``{lowercased_mojit_name}-model-{model_name}``
 
 For the default model ``model.server.js``, the suggested convention is 
-``{mojit_name}Model`` for the module name.
+``{lowercased_mojit_name}-model`` for the module name.
 
 Thus, the ``YUI.add`` statement in ``photos/models/flickr.server.js`` would 
 be the following:
 
 .. code-block:: javascript
 
-   YUI.add("photosModelFlickr", function(Y, NAME) {
+   YUI.add("photos-model-flickr", function(Y, NAME) {
       ...
    }
 
@@ -68,7 +68,7 @@ A model should have the basic structure shown below.
 
 .. code-block:: javascript
 
-   YUI.add('{mojit_name}Model{Model_name}', function(Y, NAME) {
+   YUI.add('{lowercased_mojit_name}-model-{model_name}', function(Y, NAME) {
      // Models must register themselves with YUI.add
      // Namespace for models
      Y.namespace('mojito.models')[NAME] = {
@@ -102,7 +102,7 @@ The following objects and methods form the backbone of the model.
 
 
 The example model below shows you how the objects and methods are used. The 
-``galleryModelFlickr`` model is registered with ``YUI.add``, and the namespace 
+``gallery-model-flickr`` model is registered with ``YUI.add``, and the namespace 
 for the model is created with ``Y.namespace('mojito.models')[NAME]``. The 
 ``init`` function stores the date so it can be used by other functions, and 
 the ``requires`` array instructs Mojito to load the YUI module ``yql`` for 
@@ -110,7 +110,7 @@ getting data.
 
 .. code-block:: javascript
 
-   YUI.add('galleryModelFlickr', function(Y, NAME) {
+   YUI.add('gallery-model-flickr', function(Y, NAME) {
    
      // Models must register themselves in the 
      // Namespace for model
@@ -154,7 +154,7 @@ Example
 
 .. code-block:: javascript
 
-   YUI.add('weatherModelForecast', function(Y, NAME) {
+   YUI.add('weather-model-forecast', function(Y, NAME) {
      // Models must register themselves in the
      // Namespace for model
      Y.namespace('mojito.models')[NAME] = {
@@ -199,8 +199,8 @@ Location
 --------
 
 Controllers are found in the mojit directory. For the application 
-``hello`` with the mojit ``HelloMojit``, the path to the controller would be 
-``hello/mojits/HelloMojit/controller.server.js``.
+``hello`` with the mojit ``Hello``, the path to the controller would be 
+``hello/mojits/Hello/controller.server.js``.
 
 .. _mvc_controllers-naming:
 
@@ -246,7 +246,7 @@ A controller should have the basic structure shown below.
 
 .. code-block:: javascript
 
-   YUI.add('{mojit_name}', function(Y, NAME)
+   YUI.add('{lowercased_mojit_name}', function(Y, NAME) {
      // Module name is {mojit-name}
      // Constructor for the Controller class.
      Y.namespace('mojito.controllers')[NAME] = {
@@ -338,13 +338,13 @@ In the application configure file ``application.json`` below, the mojit instance
        "appPort": 8666,
        "specs": {
          "hello": {
-           "type": "HelloMojit"
+           "type": "Hello"
          }
        }
      }
    ]
 
-The controller for the ``HelloMojit`` mojit has an ``index`` function that we 
+The controller for the ``Hello`` mojit has an ``index`` function that we 
 want to call when an HTTP GET call is made on the root path. To do this, the 
 route configuration file ``routes.json`` maps the ``hello`` instance and the 
 ``index`` action to the root path with the ``path`` and ``call`` properties 
@@ -370,7 +370,7 @@ are available as Mojito actions.
 
 .. code-block:: javascript
 
-   YUI.add('Stateful', function(Y, NAME) {
+   YUI.add('stateful', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = {  
 
        index: function(ac) {
@@ -442,7 +442,7 @@ The ``controller.server.js`` below shows a simple example of calling
      };
    }, '0.0.1', {requires: [
      'mojito-models-addon',
-     'simpleModel'
+     'simple-model'
    ]});
 
 For a more detailed example, see `Calling the Model`_ and 
@@ -467,10 +467,10 @@ object to the ``index`` template.
 
 .. code-block:: javascript
 
-   YUI.add('UserMojit', function(Y, NAME) {
+   YUI.add('user', function(Y, NAME) {
      /**
-     * The HelloMojit module.
-     * @module HelloMojit
+     * The user module.
+     * @module user 
      */
      /**
      * Constructor for the Controller class.
@@ -512,10 +512,10 @@ instead of the default ``user`` template.
 
 .. code-block:: javascript
 
-   YUI.add('UserMojit', function(Y, NAME) {
+   YUI.add('user', function(Y, NAME) {
      /**
-     * The HelloMojit module.
-     * @module HelloMojit
+     * The user module.
+     * @module user 
      */
      /**
      * Constructor for the Controller class.

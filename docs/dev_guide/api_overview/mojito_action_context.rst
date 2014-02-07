@@ -67,28 +67,28 @@ and the HTTP response.
      { 
        child: 
        { 
-         type: 'FrameMojit',
+         type: 'Frame',
          config: [Object],
          action: 'index',
          instanceId: 'yui_3_7_3_1_1360791588420_57' 
        },
        header: 
        { 
-         type: 'HeaderMojit',
+         type: 'Header',
          instanceId: 'yui_3_7_3_1_1360791588420_58',
          viewId: 'yui_3_7_3_1_1360791588865_8',
          params: undefined 
        },
        body: 
        { 
-         type: 'BodyMojit',
+         type: 'Body',
          instanceId: 'yui_3_7_3_1_1360791588420_59',
          viewId: 'yui_3_7_3_1_1360791588865_9',
          params: undefined 
        },
        footer: 
        { 
-         type: 'FooterMojit',
+         type: 'Footer',
          instanceId: 'yui_3_7_3_1_1360791588420_60',
          viewId: 'yui_3_7_3_1_1360791588865_10',
          params: undefined } 
@@ -100,10 +100,10 @@ and the HTTP response.
          yui_3_7_3_1_1360791588865_8: 
          { 
            base: undefined,
-           name: 'HeaderMojitBinderIndex',
+           name: 'header-binder-index',
            action: 'index',
            config: [Object],
-           type: 'HeaderMojit',
+           type: 'Header',
            viewId: 'yui_3_7_3_1_1360791588865_8',
            instanceId: 'yui_3_7_3_1_1360791588420_58',
            children: undefined 
@@ -111,10 +111,10 @@ and the HTTP response.
          yui_3_7_3_1_1360791588865_9: 
          { 
            base: undefined,
-           name: 'BodyMojitBinderIndex',
+           name: 'body-binder-index',
            action: 'index',
            config: [Object],
-           type: 'BodyMojit',
+           type: 'Body',
            viewId: 'yui_3_7_3_1_1360791588865_9',
            instanceId: 'yui_3_7_3_1_1360791588420_59',
            children: undefined 
@@ -122,10 +122,10 @@ and the HTTP response.
          yui_3_7_3_1_1360791588865_10: 
          { 
            base: undefined,
-           name: 'FooterMojitBinderIndex',
+           name: 'footer-binder-index',
            action: 'index',
            config: [Object],
-           type: 'FooterMojit',
+           type: 'Footer',
            viewId: 'yui_3_7_3_1_1360791588865_10',
            instanceId: 'yui_3_7_3_1_1360791588420_60',
            children: undefined 
@@ -133,10 +133,10 @@ and the HTTP response.
          yui_3_7_3_1_1360791588865_11: 
          { 
            base: undefined,
-           name: 'FrameMojitBinderIndex',
+           name: 'frame-binder-index',
            action: 'index',
            config: [Object],
-           type: 'FrameMojit',
+           type: 'Frame',
            viewId: 'yui_3_7_3_1_1360791588865_11',
            instanceId: 'yui_3_7_3_1_1360791588420_57',
            children: [Object] 
@@ -157,11 +157,11 @@ of the default ``index.hb.html``.
 
 .. code-block:: javascript
 
-   YUI.add('HelloMojit', function(Y, NAME) {
+   YUI.add('Hello', function(Y, NAME) {
      /**
-     * The HelloMojit module.
+     * The Hello module.
      *
-     * @module HelloMojit
+     * @module Hello
      */
      /**
      * Constructor for the Controller class.
