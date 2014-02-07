@@ -13,7 +13,7 @@ var debug = require('debug')('app'),
     express = require('express'),
     libmojito = require('../../../../..'),
     app,
-    mid;
+    dispatcherMiddleware;
 
 app = express();
 app.set('port', process.env.PORT || 8666);
@@ -23,12 +23,12 @@ app.use(libmojito.middleware());
 app.mojito.attachRoutes();
 app.post('/tunnel', libmojito.tunnelMiddleware());
 
-mid = libmojito.dispatch('{type}.{action}');
-app.get('/:type/:action', mid);
-app.post('/:type/:action', mid);
-app.put('/:type/:action', mid);
-app.head('/:type/:action', mid);
-app['delete']('/:type/:action', mid);
+dispatcherMiddleware = libmojito.dispatch('{type}.{action}');
+app.get('/:type/:action', dispatcherMiddleware);
+app.post('/:type/:action', dispatcherMiddleware);
+app.put('/:type/:action', dispatcherMiddleware);
+app.head('/:type/:action', dispatcherMiddleware);
+app['delete']('/:type/:action', dispatcherMiddleware);
 
 app.get('/status', function (req, res) {
     res.send('200 OK');

@@ -31,9 +31,7 @@ app.get('/flickr5', function (req, res, next) {
 }, libmojito.dispatch('flickr5.index'));
 
 // default
-app.get('/:type/:action', function (req, res, next) {
-    libmojito.dispatch(req.params.type + '.' + req.params.action)(req, res, next);
-});
+app.get('/:type/:action', libmojito.dispatch('{type}.{action}'));
 
 app.get('/status', function (req, res) {
     res.send('200 OK');
