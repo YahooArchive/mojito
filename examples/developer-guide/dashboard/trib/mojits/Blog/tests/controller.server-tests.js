@@ -1,18 +1,18 @@
 
-YUI.add('Blog-tests', function (Y, NAME) {
+YUI.add('blog-tests', function (Y, NAME) {
 
-    var suite = new YUITest.TestSuite('Blog-tests'),
+    var suite = new YUITest.TestSuite('blog-tests'),
         controller = null,
         A = YUITest.Assert,
         model;
 
     suite.add(new YUITest.TestCase({
 
-        name: 'Blog user tests',
+        name: 'blog user tests',
 
         setUp: function () {
-            controller = Y.mojito.controllers.Blog;
-            model = Y.mojito.models.BlogModelYQL;
+            controller = Y.mojito.controllers["blog"];
+            model = Y.mojito.models["blog-model-yql"];
             //Y.log("controllers", "info", NAME);
             //Y.log(Y.mojito.controllers, "info", NAME);
         },
@@ -49,7 +49,7 @@ YUI.add('Blog-tests', function (Y, NAME) {
                 },
                 models: {
                     get: function (modelName) {
-                        A.areEqual('BlogModelYQL', modelName, 'wrong model name');
+                        A.areEqual('blog', modelName, 'wrong model name');
                         Y.log("blog: ac.models.get called", "info", NAME);
                         return {
                             getData: function (params, feedURL, cb) {
@@ -106,7 +106,7 @@ YUI.add('Blog-tests', function (Y, NAME) {
                 },
                 models: {
                     get: function (modelName) {
-                        A.areEqual('BlogModelYQL', modelName, 'wrong model name');
+                        A.areEqual('blog', modelName, 'wrong model name');
                         Y.log("ac.models.get called", "info", NAME);
                         return {
                             getData: function (params, feedURL, cb) {
@@ -133,4 +133,4 @@ YUI.add('Blog-tests', function (Y, NAME) {
 
     }));
     YUITest.TestRunner.add(suite);
-}, '0.0.1', {requires: ['mojito-test', 'Blog', 'BlogModelYQL']});
+}, '0.0.1', {requires: ['mojito-test', 'blog', 'blog-model-yql']});

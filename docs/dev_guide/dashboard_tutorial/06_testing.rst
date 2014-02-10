@@ -149,9 +149,9 @@ Writing Tests
 As we mentioned in the introduction, unit tests in Mojito use the testing framework YUI Test. 
 To use the testing framework, you require ``'mojito-test'`` in your test files and the module 
 name that is being tested. For example, in the code snippet below, the testing framework is 
-included as well as the module that is being tested (``'Github'``).
+included as well as the module that is being tested (``'github'``).
 
-``{ requires: [ 'mojito-test', 'Github' ] }``
+``{ requires: [ 'mojito-test', 'github' ] }``
 
 
 .. _06_lesson_unit-components:
@@ -169,7 +169,7 @@ Test Suites
 
 Test suites are just a way of grouping test cases together for a module. 
 
-Example: ``var suite = new YUITest.TestSuite('myMojit-tests');``
+Example: ``var suite = new YUITest.TestSuite('mymojit-tests');``
 
 .. _06_lesson_components-cases:
 
@@ -190,7 +190,7 @@ Example:
    var test_case1 = new YUITest.TestCase({
      name: 'myMojit user tests',
      setUp: function() {
-       controller = Y.mojito.controllers.myMojit;
+       controller = Y.mojito.controllers["mymojit"];
      },
      tearDown: function() {
        controller = null;
@@ -266,17 +266,17 @@ Controller Tests
 Now that you have a basic understanding of YUI test, writing controller tests should be 
 fairly easy. You’ll need to do one thing specific to Mojito and that is get the YUI module 
 of the controller to test. You do this by requiring the YUI module name for the controller 
-and then accessing the controller code with the following: ``Y.mojito.controller.{YUI_module_name}``
+and then accessing the controller code with the following: ``Y.mojito.controller["{YUI_module_name}"]``
 
 
 Thus, if we were going to test the controller with the register YUI module name ``myMojit``, 
-we would have ``'myMojit'`` in the ``required`` array and assign ``Y.mojito.controller.myMojit`` 
+we would have ``'myMojit'`` in the ``required`` array and assign ``Y.mojito.controller["mymojit"]`` 
 to a variable in the test as shown below:
 
 .. code-block:: javascript
 
-   YUI.add('myMojit-tests', function(Y) {
-     var suite = new YUITest.TestSuite('myMojit-tests'),
+   YUI.add('mymojit-tests', function(Y) {
+     var suite = new YUITest.TestSuite('mymojit-tests'),
          controller = null,
          A = YUITest.Assert;
 
@@ -285,12 +285,12 @@ to a variable in the test as shown below:
        name: 'myMojit user tests',
        setUp: function() {
          // Fetch the module for the controller
-         controller = Y.mojito.controllers.myMojit;
+         controller = Y.mojito.controllers["mymojit"];
        },
        ... 
      YUITest.TestRunner.add(suite);
      // Include the module as a dependency for the test
-   }, '0.0.1', {requires: ['mojito-test', 'myMojit']});
+   }, '0.0.1', {requires: ['mojito-test', 'mymojit']});
 
 .. _06_lesson_unit_controller-components:
 
@@ -302,7 +302,7 @@ module:
 
 .. code-block:: javascript
 
-   YUI.add('githubMojit-tests', function(Y, NAME) {
+   YUI.add('github-tests', function(Y, NAME) {
      var suite = new YUITest.TestSuite(NAME);
 
 You add a test case to the suite with a ``setUp`` method that accesses the 
@@ -314,7 +314,7 @@ controller object and a ``tearDown`` method to remove the object from memory:
      suite.add(new YUITest.TestCase({
        name: 'Foo tests',
        setUp: function() {
-         controller = Y.mojito.controllers.Foo;
+         controller = Y.mojito.controllers["foo"];
        },
        tearDown: function() {
          controller = null;
@@ -357,7 +357,7 @@ testing (YUI registered name for the controller) to the ``requires`` array:
 
 .. code-block:: javascript
 
-   }, '0.0.1', {requires: ['mojito-test', 'Foo']});
+   }, '0.0.1', {requires: ['mojito-test', 'foo']});
 
 
 You can also add properties to the ``ac`` object to mimic the ``ActionContext``
@@ -383,7 +383,7 @@ the asset file that is returned, the data returned from ``ac.done`` and
            },
            models: {
              get: function (modelName) {
-               A.areEqual('githubMojitModelFoo', modelName, 'wrong model name');
+               A.areEqual('github-model', modelName, 'wrong model name');
                return {
                  getData: function (cb) {
                    cb(null, modelData);
@@ -414,13 +414,13 @@ Model Tests
 ###########
 
 The model tests have the same structure as controller tests with the exception of 
-how you access the module. You use ``Y.mojito.models.{YUI module name}`` to access the 
+how you access the module. You use ``Y.mojito.models["{YUI module name}"]`` to access the 
 model. Again, you also have to require ``mojito-test`` and the YUI registered module 
 name for the model. The test suite, test cases, ``setUp``/``tearDown`` methods, and 
 assertions all work in the same way. 
 
 In the example model test that we’ll be creating later, the model with the registered 
-YUI module name ``YoutubeMojitYQL`` is required and then accessed in the ``setUp`` method.
+YUI module name ``youtube-model-yql`` is required and then accessed in the ``setUp`` method.
 
 .. code-block:: javascript
 
@@ -429,26 +429,26 @@ YUI module name ``YoutubeMojitYQL`` is required and then accessed in the ``setUp
          model = null,
          A = YUITest.Assert;
      suite.add(new YUITest.TestCase({
-       name: "YoutubeModelYQL user tests",
+       name: "youtube-model-yql user tests",
        setUp: function (){
-         model = Y.mojito.models.YoutubeModelYQL;
+         model = Y.mojito.models["youtube-model-yql"];
        },
        ...
      ...
-   }, '0.0.1', {requires: ['mojito-test', 'YoutubeModelYQL']});
+   }, '0.0.1', {requires: ['mojito-test', 'youtube-model-yql']});
 
 
 .. code-block:: javascript
 
-   YUI.add('YoutubeModelYQL-tests', function (Y, NAME) {
+   YUI.add('youtube-model-yql-tests', function (Y, NAME) {
 
      var suite = new YUITest.TestSuite(NAME),
          model = null,
          A = YUITest.Assert;
      suite.add(new YUITest.TestCase({
-       name: "YoutubeModelYQL user tests",
+       name: "youtube-model-yql user tests",
        setUp: function (){
-         model = Y.mojito.models.YoutubeModelYQL;
+         model = Y.mojito.models["youtube-model-yql"];
        },
        tearDown: function (){
          mode = null;
@@ -467,7 +467,7 @@ YUI module name ``YoutubeMojitYQL`` is required and then accessed in the ``setUp
        }
      }));
      YUITest.TestRunner.add(suite);
-   }, '0.0.1', {requires: ['mojito-test', 'YoutubeModelYQL']});
+   }, '0.0.1', {requires: ['mojito-test', 'youtube-model-yql']});
 
 .. _06_lesson_unit-run:
 
@@ -481,9 +481,9 @@ are going to create this module, you would use the following:
 
 ``$ mojito test app .``
 
-To test our githubMojit, you would specify the mojit:
+To test our ``Github``, you would specify the mojit:
 
-``$ mojito test mojit mojits/githubMojit``
+``$ mojito test mojit mojits/Github``
 
 .. _06_lesson-functional:
 
@@ -780,7 +780,7 @@ Creating the Application
 
    .. code-block:: javascript
 
-      YUI.add('YoutubeModelYQL', function(Y, NAME) {
+      YUI.add('youtube-model-yql', function(Y, NAME) {
 
         Y.namespace('mojito.models')[NAME] = {
 
@@ -904,7 +904,7 @@ Creating the Application
 
    .. code-block:: javascript
 
-      YUI.add('CalendarModelYQL', function (Y, NAME) {
+      YUI.add('calendar-model-yql', function (Y, NAME) {
         Y.mojito.models[NAME] = {
           init: function (config) {
             this.config = config;
@@ -1021,9 +1021,9 @@ Creating the Application
    
    .. code-block:: javascript
 
-      YUI.add('Github-tests', function (Y) {
+      YUI.add('github-tests', function (Y) {
 
-        var suite = new YUITest.TestSuite('Github-tests'),
+        var suite = new YUITest.TestSuite('github-tests'),
             controller = null,
             model = null
             A = YUITest.Assert;
@@ -1032,8 +1032,8 @@ Creating the Application
 
         name: 'Github user tests',
         setUp: function () {
-            controller = Y.mojito.controllers.Github;
-            model = Y.mojito.models.StatsModelYQL;
+            controller = Y.mojito.controllers["github"];
+            model = Y.mojito.models["stats-model-yql"];
         },
         tearDown: function () {
             controller = null;
@@ -1083,7 +1083,7 @@ Creating the Application
         }
       }));
       YUITest.TestRunner.add(suite);
-    }, '0.0.1', {requires: ['mojito-test', 'Github', 'StatsModelYQL']}); 
+    }, '0.0.1', {requires: ['mojito-test', 'github', 'stats-model-yql']}); 
 
 #. Rename the model test to ``Github/tests/models/yql.server-tests.js`` and replace the 
    content with the code below. The test just confirms that the configuration can be 
@@ -1092,16 +1092,16 @@ Creating the Application
 
    .. code-block:: javascript
 
-      YUI.add('StatsModelYQL-tests', function(Y, NAME) {
+      YUI.add('stats-model-yql-tests', function(Y, NAME) {
 
         var suite = new YUITest.TestSuite(NAME),
             model = null,
             A = YUITest.Assert;
         suite.add(new YUITest.TestCase({
 
-          name: 'StatsModelYQL user tests',
+          name: 'stats-model-yql user tests',
           setUp: function() {
-            model = Y.mojito.models.StatsModelYQL;
+            model = Y.mojito.models["stats-model-yql"];
           },
           tearDown: function() {
             model = null;
@@ -1120,7 +1120,7 @@ Creating the Application
           }
         }));
         YUITest.TestRunner.add(suite);
-      }, '0.0.1', {requires: ['mojito-test', 'StatsModelYQL']});
+      }, '0.0.1', {requires: ['mojito-test', 'stats-model-yql']});
 
 #. From the application directory, run the ``Github`` mojit tests. 
 
@@ -1129,8 +1129,8 @@ Creating the Application
 
    ::
  
-     ✔  passed	Github-tests :: Github user tests :: test mojit
-     ✔  passed	StatsModelYQL-tests :: StatsModelYQL user tests :: test mojit model
+     ✔  passed	github-tests :: Github user tests :: test mojit
+     ✔  passed	stats-model-yql-tests :: stats-model-yql user tests :: test mojit model
 
      Total tests: 2	✔ Passed: 2	⚑ Deferred: 0	✖ Failed: 0	100% pass rate
 

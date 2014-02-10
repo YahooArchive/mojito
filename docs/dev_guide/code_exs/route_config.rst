@@ -21,7 +21,7 @@ Implementation Notes
 
 Before you create routes for your application, you need to specify one or 
 more mojit instances that can be mapped to URLs. In the ``application.json`` 
-below, the ``mapped_mojit`` instance of ``RoutingMojit`` is created, which 
+below, the ``mapped_mojit`` instance of the ``Routing`` mojit is created, which 
 can then be associated in a route defined in ``routes.json``.
 
 .. code-block:: javascript
@@ -31,7 +31,7 @@ can then be associated in a route defined in ``routes.json``.
        "settings": [ "master" ],
        "specs": {
          "mapped_mojit": {
-           "type": "RoutingMojit"
+           "type": "Routing"
          }
        }
      }
@@ -39,7 +39,7 @@ can then be associated in a route defined in ``routes.json``.
 
 The example ``routes.json`` below associates the ``mapped_mojit`` instance 
 defined in ``application.json`` with a path and explicitly calls the 
-``index`` action. If the controller for ``RoutingMojit`` had the function 
+``index`` action. If the controller for the ``Routing`` mojit had the function 
 ``myFunction``, you would use the following to call it: ``mapped_mojit.myFunction``.  
 Based on the ``custom-route`` route below, when an HTTP GET call is made on 
 the URL ``http:{domain}:8666/custom-route``, the ``index`` action is called 
@@ -106,8 +106,8 @@ To set up and run ``configure_routing``:
 #. Change to the application directory.
 #. Create your mojit.
 
-   ``$ mojito create mojit RoutingMojit``
-#. To create an instance of ``RoutingMojit``, replace the code in 
+   ``$ mojito create mojit Routing``
+#. To create an instance of the ``Routing`` mojit, replace the code in 
    ``application.json`` with the following:
 
    .. code-block:: javascript
@@ -118,7 +118,7 @@ To set up and run ``configure_routing``:
           "appPort": 8666,
           "specs": {
             "mapped_mojit": {
-              "type": "RoutingMojit"
+              "type": "Routing"
             }
           }
         }
@@ -154,13 +154,13 @@ To set up and run ``configure_routing``:
    configured here to be used when HTTP GET calls are made on the paths 
    ``/index`` or ``/show``.
 
-#. Change to ``mojits/RoutingMojit``.
+#. Change to ``mojits/Routing``.
 #. Modify your controller to contain the ``index`` and ``show`` actions by 
    replacing the code in ``controller.server.js`` with the following:
 
    .. code-block:: javascript
 
-      YUI.add('RoutingMojit', function(Y, NAME) {
+      YUI.add('routing', function(Y, NAME) {
         // Builds object containing route information
         function route_info(ac) {
           var methods = "",

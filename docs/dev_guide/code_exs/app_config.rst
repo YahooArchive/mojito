@@ -20,7 +20,7 @@ Implementation Notes
 
 The ``application.json`` file is used to specify the mojits that your application can use. 
 The example ``application.json`` below specifies that the application use the mojit 
-``SimpleMojit``.
+``Simple``.
 
 .. code-block:: javascript
 
@@ -29,7 +29,7 @@ The example ``application.json`` below specifies that the application use the mo
        "settings": [ "master" ],
        "specs": {
          "simple": {
-           "type": "SimpleMojit"
+           "type": "Simple"
          }
        }
      }
@@ -69,8 +69,8 @@ To set up and run ``simple_config``:
 #. Change to the application directory.
 #. Create your mojit.
 
-   ``$ mojito create mojit SimpleMojit``
-#. To specify that your application use ``SimpleMojit``, replace the code in 
+   ``$ mojito create mojit Simple``
+#. To specify that your application use ``Simple``, replace the code in 
    ``application.json`` with the following:
 
    .. code-block:: javascript
@@ -80,7 +80,7 @@ To set up and run ``simple_config``:
           "settings": [ "master" ],
           "specs": {
             "simple": {
-              "type": "SimpleMojit"
+              "type": "Simple"
             }
           }
         }

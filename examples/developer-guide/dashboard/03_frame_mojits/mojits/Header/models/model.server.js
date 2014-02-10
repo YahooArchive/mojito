@@ -1,16 +1,16 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('HeaderModelFoo', function(Y, NAME) {
+YUI.add('header-model', function(Y, NAME) {
 
 /**
- * The HeaderModelFoo module.
+ * The header-model module.
  *
  * @module Header
  */
 
     /**
-     * Constructor for the HeaderModelFoo class.
+     * Constructor for the HeaderModel class.
      *
-     * @class HeaderModelFoo
+     * @class HeaderModel
      * @constructor
      */
     Y.namespace('mojito.models')[NAME] = {

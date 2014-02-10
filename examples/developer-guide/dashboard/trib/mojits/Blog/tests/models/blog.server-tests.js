@@ -1,13 +1,13 @@
-YUI.add('BlogModelYQL-tests', function (Y, NAME) {
+YUI.add('blog-model-yql-tests', function (Y, NAME) {
     var suite = new YUITest.TestSuite(NAME),
         model = null,
         A = YUITest.Assert;
 
 suite.add(new YUITest.TestCase({
-        name: "BlogModelYQL user tests",
+        name: "blog-model-yql user tests",
 
         setUp: function () {
-            model = Y.mojito.models.BlogModelYQL;
+            model = Y.mojito.models["blog-model-yql"];
         },
 
         tearDown: function () {
@@ -103,4 +103,4 @@ suite.add(new YUITest.TestCase({
 
     YUITest.TestRunner.add(suite);
 
-}, '0.0.1', {requires: ['mojito-test', 'BlogModelYQL']});
+}, '0.0.1', {requires: ['mojito-test', 'blog-model-yql']});

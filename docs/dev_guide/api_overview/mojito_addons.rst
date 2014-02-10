@@ -109,4 +109,3 @@ Because customized addons are not part of the standard API, but an extension of 
 the instructions for creating addons can be found in 
 `Creating New Addons <../topics/mojito_extensions.html#creating-new-addons>`_.
 
-

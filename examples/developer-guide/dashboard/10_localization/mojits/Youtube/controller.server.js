@@ -1,11 +1,11 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
 /*global YUI*/
-YUI.add('Youtube', function (Y, NAME) {
+YUI.add('youtube', function (Y, NAME) {
 
 /**
- * The Youtube module.
+ * The youtube module.
  *
- * @module Youtube
+ * @module youtube
  */
     var youtubeMap = function (ac, data) {
         Y.log("youtubeMap called");
@@ -41,7 +41,7 @@ YUI.add('Youtube', function (Y, NAME) {
          */
         index: function (ac) {
             ac.models.get('youtube').getData({}, function (data) {
-                Y.log("Youtube -index - model.getData:");
+                Y.log("youtube -index - model.getData:");
                 Y.log(data);
                 var res = [];
                 res = youtubeMap(ac, data);
@@ -60,4 +60,4 @@ YUI.add('Youtube', function (Y, NAME) {
 
     };
 
-}, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'YoutubeModelYQL']});
+}, '0.0.1', {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'youtube-model-yql']});

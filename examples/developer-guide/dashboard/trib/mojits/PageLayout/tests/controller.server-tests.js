@@ -1,22 +1,22 @@
 
-YUI.add('PageLayout-tests', function (Y) {
+YUI.add('pagelayout-tests', function (Y) {
 
-    var suite = new YUITest.TestSuite('PageLayout-tests'),
+    var suite = new YUITest.TestSuite('pagelayout-tests'),
         controller = null,
         A = YUITest.Assert;
 
     suite.add(new YUITest.TestCase({
 
-        name: 'PageLayout user tests',
+        name: 'pagelayout user tests',
 
         setUp: function () {
-            controller = Y.mojito.controllers.PageLayout;
+            controller = Y.mojito.controllers["pagelayout"];
         },
         tearDown: function () {
             controller = null;
         },
 
-        'test mojit PageLayout 001': function () {
+        'test mojit pagelayout 001': function () {
             var ac,
                 modelData,
                 assetsResults,
@@ -67,7 +67,7 @@ YUI.add('PageLayout-tests', function (Y) {
             A.isObject(doneResults);
         },
 
-        'test mojit PageLayout 002': function () {
+        'test mojit pagelayout 002': function () {
             var ac,
                 modelData,
                 assetsResults,
@@ -116,4 +116,4 @@ YUI.add('PageLayout-tests', function (Y) {
     }));
     YUITest.TestRunner.add(suite);
 
-}, '0.0.1', {requires: ['mojito-test', 'PageLayout']});
+}, '0.0.1', {requires: ['mojito-test', 'pagelayout']});

@@ -8,17 +8,17 @@
     "appPort": 8666,
     "specs": {
       "parent": {
-        "type": "FrameMojit", 
+        "type": "Frame", 
         "config" : {
           "children": {
             "header": {
-              "type": "HeaderMojit"
+              "type": "Header"
             },
             "body": {
-              "type": "BodyMojit"
+              "type": "Body"
             },
             "footer": {
-              "type": "FooterMojit"
+              "type": "Footer"
             }
           }
         }

@@ -1,14 +1,14 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('YoutubeModelYQL', function(Y, NAME) {
+YUI.add('youtube-model-yql', function(Y, NAME) {
 
 /**
- * The YoutubeModelYQL module.
+ * The youtube-model-yql module.
  *
- * @module Youtube
+ * @module youtube-model-yql
  */
 
     /**
-     * Constructor for the YoutubeModelFoo class.
+     * Constructor for the YoutubeModelYQL class.
      *
      * @class YoutubeModelYQL
      * @constructor

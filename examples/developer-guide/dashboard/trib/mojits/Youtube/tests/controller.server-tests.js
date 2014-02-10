@@ -1,7 +1,7 @@
 
-YUI.add('Youtube-tests', function (Y, NAME) {
+YUI.add('youtube-tests', function (Y, NAME) {
 
-    var suite = new YUITest.TestSuite('Youtube-tests'),
+    var suite = new YUITest.TestSuite('youtube-tests'),
         controller = null,
         A = YUITest.Assert;
 
@@ -10,7 +10,7 @@ YUI.add('Youtube-tests', function (Y, NAME) {
         name: 'Youtube user tests',
 
         setUp: function () {
-            controller = Y.mojito.controllers.Youtube;
+            controller = Y.mojito.controllers["youtube"];
             //Y.log("controllers", "info", NAME);
             //Y.log(Y.mojito.controllers, "info", NAME);
         },
@@ -21,7 +21,8 @@ YUI.add('Youtube-tests', function (Y, NAME) {
         'test mojit 001': function () {
             var ac,
                 assetsResults,
-                doneResults;
+                doneResults,
+                errMessage;
                 modelData = [
                     {
                         title: 'sometitle',
@@ -36,21 +37,24 @@ YUI.add('Youtube-tests', function (Y, NAME) {
                 },
                 models: {
                     get: function (modelName) {
-                        A.areEqual('YoutubeModelYQL', modelName, 'wrong model name');
+                        A.areEqual('youtube', modelName, 'wrong model name');
 
                         return {
                             getData: function (params, cb) {
                                 Y.log("youtube: modelData", "info", NAME);
                                 Y.log(modelData, "info", NAME);
 
-                                cb(modelData);
+                                cb(null, modelData);
                             }
                         };
                     }
                 },
                 done: function (data) {
                     doneResults = data;
-                }
+                },
+                error: function(err) {
+                    errMessage = err;
+                } 
             };
 
             A.isNotNull(controller);
@@ -60,4 +64,4 @@ YUI.add('Youtube-tests', function (Y, NAME) {
         }
     }));
     YUITest.TestRunner.add(suite);
-}, '0.0.1', {requires: ['mojito-test', 'Youtube']});
+}, '0.0.1', {requires: ['mojito-test', 'youtube']});

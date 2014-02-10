@@ -1,4 +1,4 @@
-YUI.add('TwitterSearchModel', function (Y, NAME) {
+YUI.add('twittersearch-model', function (Y, NAME) {
     'use strict';
     Y.mojito.models[NAME] = {
 

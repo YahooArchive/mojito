@@ -1,16 +1,16 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('FooterModelFoo', function(Y, NAME) {
+YUI.add('footer-model', function(Y, NAME) {
 
 /**
- * The FooterModelFoo module.
+ * The footer-model module.
  *
- * @module Footer
+ * @module footer-model
  */
 
     /**
-     * Constructor for the FooterModelFoo class.
+     * Constructor for the FooterModel class.
      *
-     * @class FooterModelFoo
+     * @class FooterModel
      * @constructor
      */
     Y.namespace('mojito.models')[NAME] = {

@@ -45,7 +45,7 @@ To make the application return a string we want, replace the code in
 
 .. code-block:: javascript
 
-  YUI.add('myMojit', function(Y, NAME) {
+  YUI.add('mymojit', function(Y, NAME) {
   
     Y.namespace('mojito.controllers')[NAME] = {
 

@@ -7,7 +7,7 @@
     },
     "specs": { 
       "frame": {
-        "type": "QueryMojit"
+        "type": "Query"
       }
     }
   }

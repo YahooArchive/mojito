@@ -1,10 +1,10 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('GithubModel', function(Y, NAME) {
+YUI.add('github-model', function(Y, NAME) {
 
 /**
- * The GithubModel module.
+ * The github-model module.
  *
- * @module Github
+ * @module github-model
  */
 
     /**

@@ -1,11 +1,11 @@
 
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('Calendar', function (Y, NAME) {
+YUI.add('calendar', function (Y, NAME) {
 
 /**
- * The Calendar module.
+ * The calendar module.
  *
- * @module Calendar
+ * @module calendar
  */
 
     /**

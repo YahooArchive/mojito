@@ -1,10 +1,10 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('TwitterBinderIndex', function (Y, NAME) {
+YUI.add('twitter-binder-index', function (Y, NAME) {
 
 /**
- * The TwitterBinderIndex module.
+ * The twitter-binder-index module.
  *
- * @module TwitterBinderIndex
+ * @module twitter-binder-index
  */
 
     /**

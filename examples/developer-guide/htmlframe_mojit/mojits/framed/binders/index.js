@@ -6,12 +6,12 @@
 
 /*jslint anon:true, sloppy:true, nomen:true*/
 
-YUI.add('framedBinderIndex', function (Y, NAME) {
+YUI.add('framed-binder-index', function (Y, NAME) {
 
 /**
- * The framedBinderIndex module.
+ * The framed-binder-index module.
  *
- * @module framedBinderIndex
+ * @module framed-binder-index
  */
 
     /**

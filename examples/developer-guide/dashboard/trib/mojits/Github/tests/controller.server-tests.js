@@ -1,18 +1,18 @@
 
-YUI.add('Github-tests', function (Y, NAME) {
+YUI.add('github-tests', function (Y, NAME) {
 
-    var suite = new YUITest.TestSuite('Github-tests'),
+    var suite = new YUITest.TestSuite('github-tests'),
         controller = null,
         A = YUITest.Assert,
         model;
 
     suite.add(new YUITest.TestCase({
 
-        name: 'Github user tests',
+        name: 'github user tests',
 
         setUp: function () {
-            controller = Y.mojito.controllers.Github;
-            model = Y.mojito.models.StatsModelYQL;
+            controller = Y.mojito.controllers["github"];
+            model = Y.mojito.models["stats-model-yql"];
         },
         tearDown: function () {
             controller = null;
@@ -55,7 +55,7 @@ YUI.add('Github-tests', function (Y, NAME) {
                 },
                 models: {
                     get: function (modelName) {
-                        A.areEqual('StatsModelYQL', modelName, 'wrong model name');
+                        A.areEqual('yql', modelName, 'wrong model name');
                         return {
                             getData: function (params, feedURL, cb) {
                                 return {
@@ -386,7 +386,7 @@ YUI.add('Github-tests', function (Y, NAME) {
                 },
                 models: {
                     get: function (modelName) {
-                        A.areEqual('StatsModelYQL', modelName, 'wrong model name');
+                        A.areEqual('yql', modelName, 'wrong model name');
                         return {
                             getData: function (params, feedURL, cb) {
                                 return {
@@ -417,4 +417,4 @@ YUI.add('Github-tests', function (Y, NAME) {
 
     YUITest.TestRunner.add(suite);
 
-}, '0.0.1', {requires: ['mojito-test', 'Github', 'StatsModelYQL']});
+}, '0.0.1', {requires: ['mojito-test', 'github', 'stats-model-yql']});

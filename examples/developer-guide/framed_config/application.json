@@ -1,20 +1,16 @@
 [
-    {
-        "settings": [ "master" ],
-        "staticHandling": {
-            "cache": false,
-            "forceUpdate": true
-        },
-        "specs": {
-            "frame": {
-                "type": "HTMLFrameMojit",
-	        "config":{	
-		  "deploy": true,
-                  "child": {
-                    "type": "MainMojit"
-                  }
-	       }
-            }
+  {
+    "settings": [ "master" ],
+    "specs": {
+      "frame": {
+        "type": "HTMLFrameMojit",
+        "config": {
+          "deploy": true,
+          "child": {
+            "type": "Main"
+          }
         }
+      }
     }
+  }
 ]

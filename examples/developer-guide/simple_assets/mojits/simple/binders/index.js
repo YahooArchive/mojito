@@ -6,12 +6,12 @@
 
 /*jslint anon:true, sloppy:true, nomen:true*/
 
-YUI.add('simpleBinderIndex', function(Y, NAME) {
+YUI.add('simple-binder-index', function(Y, NAME) {
 
 /**
- * The simpleBinderIndex module.
+ * The simple-binder-index module.
  *
- * @module simpleBinderIndex
+ * @module simple-binder-index
  */
 
     /**

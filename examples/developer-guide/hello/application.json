@@ -8,7 +8,7 @@
     "appPort": 8666,
     "specs": {
       "hello": {
-        "type": "HelloMojit"
+        "type": "Hello"
       }
     }
   }
