@@ -1,6 +1,6 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
 /*global YUI*/
-YUI.add('GalleryModelYQL', function (Y, NAME) {
+YUI.add('gallery-model-yql', function (Y, NAME) {
 
     Y.mojito.models[NAME] = {
         init: function (config) {

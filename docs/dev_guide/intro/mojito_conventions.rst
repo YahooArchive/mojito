@@ -84,7 +84,7 @@ are created for the developer and production environments:
      "settings": [ "environment:development" ],
      "specs": {
        "test": {
-         "type": "TestMojit"
+         "type": "Test"
        }
      }
    },
@@ -92,7 +92,7 @@ are created for the developer and production environments:
      "settings": [ "environment:production" ],
      "specs": {
        "test": {
-         "type": "ProductionMojit"
+         "type": "Production"
        }
      }
    },
@@ -269,9 +269,9 @@ versions of the controller with the ``selector`` property in ``application.json`
 YUI Module Names
 ****************
 
-The convention is for mojit controllers to register the mojit definition name as the 
+The convention is for mojit controllers to register the lowercased definition name as the 
 module name. For example, the mojit ``Flickr`` would register the module name 
-``Flickr`` with ``YUI.add``: ``YUI.add('Flickr', function(Y, NAME) {``
+``flickr`` with ``YUI.add``: ``YUI.add('flickr', function(Y, NAME) {``
 
 .. _conventions_mojits_def-models:
 
@@ -294,8 +294,10 @@ user-defined string:
 YUI Module Names
 ****************
 
-The naming of modules for mojit models has the following convention but is much looser in 
-its application: ``{mojit_name}Model``
+The naming convention of modules for mojit models uses the lowercased definition name prepended
+to ``-model``:  ``{mojit_name}-model``
+
+Thus, the module name for the model of the ``Flickr`` mojit would be ``flickr-model``.
 
 .. _mojits_def_models-using:
 
@@ -365,8 +367,11 @@ Mojito will send the binder file  with the response body.
 YUI Module Names
 ****************
 
-The naming of modules for mojit binders has the following convention: 
-``{mojit_name}Binder{Action}``
+The naming of modules for mojit binders uses the following convention: 
+``{lowercased_mojit_name}-binder-{action}``
+
+For example, the module name for the ``index`` binder of the ``Flickr`` mojit would
+be ``flickr-binder-index``.
 
 .. _conventions_mojits-tests:
 
@@ -428,7 +433,7 @@ a possible example of using the helper:
 
 .. code-block:: javascript
 
-   YUI.add('Body', function (Y, NAME) { 
+   YUI.add('body', function (Y, NAME) { 
      Y.namespace('mojito.binders')[NAME] = {
        
        index: function (ac) {
@@ -527,8 +532,8 @@ Tests
 The module names for both controller and model unit tests using the following naming
 convention: 
 
-- ``{mojit_name}-tests`` - (controller unit tests)
-- ``{mojit_name}Model-tests`` - (model unit tests)
+- ``{lowercased_mojit_name}-tests`` - (controller unit tests)
+- ``{lowercased_mojit_name}-model-tests`` - (model unit tests)
 
 .. _mojito_conventions-static_assets:
 

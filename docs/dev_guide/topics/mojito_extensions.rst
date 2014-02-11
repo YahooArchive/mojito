@@ -196,7 +196,7 @@ the addon namespace: ``ac.cheese.{addon_method}``
 
 .. code-block:: javascript
 
-   YUI.add('Foo', function(Y, NAME) {
+   YUI.add('foo', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
        index: function(ac) {
          // Use the namespace defined by the 
@@ -248,7 +248,7 @@ application by prefixing it with "./".
        ],
        "specs": {
          "hello": {
-           "type": "HelloMojit"
+           "type": "Hello"
          }
        }
      }
@@ -372,7 +372,7 @@ called from an instance (i.e., ``uid``) of the module.
 
 .. code-block:: javascript
 
-   YUI.add('HelloMojit', function(Y, NAME) {
+   YUI.add('hello', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
        index: function(ac) {
          var user_name = ac.params.getFromMerged("name") || "User";

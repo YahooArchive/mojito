@@ -7,7 +7,7 @@
     },
     "specs": {
       "simple": {
-        "type": "SimpleMojit"
+        "type": "Simple"
       }
     } 
   }

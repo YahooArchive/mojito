@@ -131,7 +131,7 @@ The example binder below shows its basic structure:
 
 .. code-block:: javascript
 
-   YUI.add('BlogBinderIndex', function(Y, NAME) {
+   YUI.add('blog-binder-index', function(Y, NAME) {
      Y.namespace('mojito.binders')[NAME] = {
        init: function(mojitProxy) {
          this.mojitProxy = mojitProxy;
@@ -206,7 +206,7 @@ information below:
 
 .. code-block:: javascript
 
-   YUI.add('githubModel', function(Y, NAME) {
+   YUI.add('github-model', function(Y, NAME) {
 
      // The namespace for the model that passes the
      // name.
@@ -471,7 +471,7 @@ Creating the Application
 
    .. code-block:: javascript
 
-      YUI.add('BlogModelYQL', function (Y, NAME) {
+      YUI.add('blog-model-yql', function (Y, NAME) {
 
       Y.mojito.models[NAME] = {
         init: function (config) {
@@ -503,7 +503,7 @@ Creating the Application
 
    .. code-block:: javascript
 
-      YUI.add('Blog', function (Y, NAME) {
+      YUI.add('blog', function (Y, NAME) {
 
         Y.namespace('mojito.controllers')[NAME] = {
 
@@ -553,7 +553,7 @@ Creating the Application
 
    .. code-block:: javascript
 
-      YUI.add('GalleryModelYQL', function (Y, NAME) {
+      YUI.add('gallery-model-yql', function (Y, NAME) {
         Y.mojito.models[NAME] = {
           init: function (config) {
             this.config = config;
@@ -591,7 +591,7 @@ Creating the Application
 
    .. code-block:: javascript
 
-      YUI.add('Gallery', function (Y, NAME) {
+      YUI.add('gallery', function (Y, NAME) {
 
         Y.namespace('mojito.controllers')[NAME] = {
 
@@ -668,7 +668,7 @@ Creating the Application
 
    .. code-block:: javascript
 
-      YUI.add('TwitterBinderIndex', function(Y, NAME) {
+      YUI.add('twitter-binder-index', function(Y, NAME) {
 
         Y.namespace('mojito.binders')[NAME] = {
 
@@ -853,7 +853,7 @@ Creating the Application
 
    .. code-block:: javascript
 
-      YUI.add('StatsModelYQL', function (Y, NAME) {
+      YUI.add('stats-model-yql', function (Y, NAME) {
 
         Y.mojito.models[NAME] = {
           init: function (config) {
@@ -895,9 +895,9 @@ Creating the Application
 
    .. code-block:: javascript
 
-      YUI.add('Github-tests', function (Y) {
+      YUI.add('github-tests', function (Y) {
 
-        var suite = new YUITest.TestSuite('Github-tests'),
+        var suite = new YUITest.TestSuite('github-tests'),
           controller = null,
           A = YUITest.Assert,
           model;
@@ -905,8 +905,8 @@ Creating the Application
 
           name: 'Github user tests',
           setUp: function () {
-            controller = Y.mojito.controllers.Github;
-            model = Y.mojito.models.StatsModelYQL;
+            controller = Y.mojito.controllers["github"];
+            model = Y.mojito.models["stats-model-yql"];
           },
           tearDown: function () {
             controller = null;
@@ -937,7 +937,7 @@ Creating the Application
                 },
                 models: {
                     get: function (modelName) {
-                        A.areEqual('StatsModelYQL', modelName, 'wrong model name');
+                        A.areEqual('stats-model-yql', modelName, 'wrong model name');
                         return model;
                     }
                 },
@@ -951,13 +951,13 @@ Creating the Application
           }
         }));
         YUITest.TestRunner.add(suite);
-      }, '0.0.1', {requires: ['mojito-test', 'Github', 'StatsModelYQL']});
+      }, '0.0.1', {requires: ['mojito-test', 'github', 'stats-model-yql']});
 
    ``mojits/Github/tests/models/yql.server-tests.js``
 
    .. code-block:: javascript
 
-      YUI.add('StatsModelYQL-tests', function(Y, NAME) {
+      YUI.add('stats-model-yql-tests', function(Y, NAME) {
 
         var suite = new YUITest.TestSuite(NAME),
             model = null,
@@ -965,9 +965,9 @@ Creating the Application
             A = YUITest.Assert;
         suite.add(new YUITest.TestCase({
 
-          name: 'StatsModelYQL user tests',
+          name: 'stats-model-yql user tests',
           setUp: function() {
-            model = Y.mojito.models.StatsModelYQL;
+            model = Y.mojito.models["stats-model-yql"];
             yqlTable = "store://gpgSGZAwQ3vaDaalPQZ44u";
           },
           tearDown: function() {
@@ -987,7 +987,7 @@ Creating the Application
           }
         }));
         YUITest.TestRunner.add(suite);
-      }, '0.0.1', {requires: ['mojito-test', 'StatsModelYQL']});
+      }, '0.0.1', {requires: ['mojito-test', 'stats-model-yql']});
 
 #. Before you modify the binder, try running the ``Github`` unit tests: ``$ mojito test mojits/Github``
 #. Okay, let's update the ``bind`` method of the ``Github`` with almost the  identical code 
@@ -1098,7 +1098,7 @@ Creating the Application
       mojito-dispatcher: Dispatching instance "@Github" through RPC tunnel. combo:13
       mojito-tunnel-client: rpc success combo:13
       mojito-client: Mojito Client state: paused. combo:13
-      mojito-client: Created binder "GithubBinderIndex" for DOM node "yui_3_10_3_2_1371606307041_16" combo:13
+      mojito-client: Created binder "github-binder-index" for DOM node "yui_3_10_3_2_1371606307041_16" combo:13
       mojito-client: Attached 0 event delegates combo:13
       mojito-client: Mojito Client state: active. 
 

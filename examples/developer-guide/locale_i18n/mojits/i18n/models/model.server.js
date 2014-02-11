@@ -6,12 +6,12 @@
 
 /*jslint anon:true, sloppy:true, nomen:true*/
 
-YUI.add('i18nModel', function (Y, NAME) {
+YUI.add('i18n-model', function (Y, NAME) {
 
 /**
- * The i18nModel module.
+ * The i18n-model module.
  *
- * @module i18nModel
+ * @module i18n-model
  */
 
     /**

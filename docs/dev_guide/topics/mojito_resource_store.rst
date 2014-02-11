@@ -991,7 +991,7 @@ Controller
 
 .. code-block:: javascript
 
-   YUI.add('Viewer', function(Y, NAME) {
+   YUI.add('viewer', function(Y, NAME) {
    
      Y.namespace('mojito.controllers')[NAME] = { 
 

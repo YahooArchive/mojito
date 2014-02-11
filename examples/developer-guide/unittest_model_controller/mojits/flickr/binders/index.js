@@ -6,12 +6,12 @@
 
 /*jslint anon:true, sloppy:true, nomen:true*/
 
-YUI.add('flickrBinderIndex', function (Y, NAME) {
+YUI.add('flickr-binder-index', function (Y, NAME) {
 
 /**
- * The flickrBinderIndex module.
+ * The flickr-binder-index module.
  *
- * @module flickrBinderIndex
+ * @module flickr-binder-index
  */
 
     /**

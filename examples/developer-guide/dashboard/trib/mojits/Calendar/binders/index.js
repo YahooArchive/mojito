@@ -1,10 +1,10 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('CalendarBinderIndex', function (Y, NAME) {
+YUI.add('calendar-binder-index', function (Y, NAME) {
 
 /**
- * The CalendarBinderIndex module.
+ * The calendar-binder-index module.
  *
- * @module CalendarBinderIndex
+ * @module calendar-binder-index
  */
 
     /**

@@ -1,10 +1,10 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('HeaderBinderIndex', function(Y, NAME) {
+YUI.add('header-binder-index', function(Y, NAME) {
 
 /**
- * The HeaderBinderIndex module.
+ * The header-binder-index module.
  *
- * @module HeaderBinderIndex
+ * @module header-binder-index
  */
 
     /**

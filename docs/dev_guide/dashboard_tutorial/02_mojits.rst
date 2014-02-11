@@ -150,18 +150,18 @@ the controller namespace and the ``requires`` array for specifying dependencies:
 
 .. code-block:: javascript
 
-   YUI.add('Github', function (Y, NAME) {
+   YUI.add('github', function (Y, NAME) {
 
      Y.namespace('mojito.controllers')[NAME] = {
       // Code here
      };
-   }, '0.0.1', {requires: ['mojito', 'mojito-models-addon', 'GithubModel']});
+   }, '0.0.1', {requires: ['mojito', 'mojito-models-addon', 'github-model']});
 
 ``model.server.js``
 
 .. code-block:: javascript
 
-   YUI.add('GithubModel', function(Y, NAME) {
+   YUI.add('github-model', function(Y, NAME) {
     
      Y.namespace('mojito.models')[NAME] = {
        init: function(config) {
@@ -244,7 +244,7 @@ is required by adding the string ``'mojito-config-addon'`` to the ``requires`` a
 
 .. code-block:: javascript
 
-   YUI.add('Github', function(Y, NAME) {
+   YUI.add('github', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = {
        index: function(ac) {
          var title = ac.config.get(‘title’);
@@ -600,7 +600,7 @@ mojits and then configure mojit instances and routing paths.
           github: data
         });
       ...
-      {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'GithubModel', 'mojito-config-addon']});
+      {requires: ['mojito', 'mojito-assets-addon', 'mojito-models-addon', 'github-model', 'mojito-config-addon']});
 
 #. Because we’ve modified the object that we are passing to the template, 
    we’ll need to modify the template as well. We’re also going to change 

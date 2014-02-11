@@ -6,7 +6,7 @@
 
 /*jslint anon:true, sloppy:true, nomen:true*/
 
-YUI.add('iphoneflickrModel', function (Y, NAME) {
+YUI.add('iphoneflickr-model', function (Y, NAME) {
     Y.namespace('mojito.models')[NAME] = {
 
         init: function(config) {

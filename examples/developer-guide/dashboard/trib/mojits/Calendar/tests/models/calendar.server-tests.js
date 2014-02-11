@@ -1,13 +1,13 @@
-YUI.add('CalendarModelYQL-tests', function (Y, NAME) {
+YUI.add('calendar-model-yql-tests', function (Y, NAME) {
     var suite = new YUITest.TestSuite(NAME),
         model = null,
         A = YUITest.Assert;
 
 suite.add(new YUITest.TestCase({
-        name: "CalendarModelYQL user tests",
+        name: "calendar-model-yql user tests",
 
         setUp: function () {
-            model = Y.mojito.models.CalendarModelYQL;
+            model = Y.mojito.models["calendar-model-yql"];
         },
 
         tearDown: function () {
@@ -66,4 +66,4 @@ suite.add(new YUITest.TestCase({
 
     YUITest.TestRunner.add(suite);
 
-}, '0.0.1', {requires: ['mojito-test', 'CalendarModelYQL']});
+}, '0.0.1', {requires: ['mojito-test', 'calendar-model-yql']});

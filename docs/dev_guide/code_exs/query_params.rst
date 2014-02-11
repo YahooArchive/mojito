@@ -229,8 +229,8 @@ To set up and run ``using_parameters``:
 #. Change to the application directory.
 #. Create your mojit.
 
-   ``$ mojito create mojit QueryMojit``
-#. To specify that your application use ``QueryMojit``, replace the code in 
+   ``$ mojito create mojit Query``
+#. To specify that your application use the mojit ``Query``, replace the code in 
    ``application.json`` with the following:
 
    .. code-block:: javascript
@@ -240,7 +240,7 @@ To set up and run ``using_parameters``:
           "settings": [ "master" ],
           "specs": {
             "frame": {
-              "type": "QueryMojit"
+              "type": "Query"
             }
           }
         }
@@ -284,13 +284,13 @@ To set up and run ``using_parameters``:
         }
       ]
 
-#. Change to ``mojits/QueryMojit``.
+#. Change to ``mojits/Query``.
 #. Modify the controller to access different query parameters by replacing the code in 
    ``controller.server.js`` with the following:
 
    .. code-block:: javascript
 
-      YUI.add('QueryMojit', function(Y, NAME) {
+      YUI.add('query', function(Y, NAME) {
         Y.namespace('mojito.controllers')[NAME] = {   
 
           index: function(actionContext) {
@@ -480,7 +480,7 @@ To set up and run ``using_parameters``:
 Source Code
 ===========
 
-- `Mojit Controller <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/using_parameters/mojits/QueryMojit/>`_
+- `Mojit Controller <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/using_parameters/mojits/Query/>`_
 - `Routing Configuration <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/using_parameters/routes.json>`_
 - `Using Parameters Application <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/using_parameters/>`_
 

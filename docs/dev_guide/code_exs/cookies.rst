@@ -39,7 +39,7 @@ Mojito uses the `YUI 3 Cookie Module <http://developer.yahoo.com/yui/3/api/Cooki
 
 .. code-block:: javascript
 
-   YUI.add('CookieMojit', function(Y, NAME) {
+   YUI.add('cookie', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = {   
        index: function(actionContext) {
          var requestCookieValue = actionContext.cookie.get('request_cookie');
@@ -102,9 +102,9 @@ To set up and run ``using_cookies``:
 #. Change to the application directory.
 #. Create your mojit.
 
-   ``$ mojito create mojit CookieMojit``
+   ``$ mojito create mojit Cookie``
 #. To configure your application to use the ``HTMLFrameMojit`` and its child mojit 
-   ``CookieMojit``, replace the code in ``application.json`` with the following:
+   ``Cookie``, replace the code in ``application.json`` with the following:
 
    .. code-block:: javascript
 
@@ -116,7 +116,7 @@ To set up and run ``using_cookies``:
               "type": "HTMLFrameMojit",
               "config":{
                 "child": {
-                  "type": "CookieMojit"
+                  "type": "Cookie"
                 }
               }
             }
@@ -144,13 +144,13 @@ To set up and run ``using_cookies``:
         }
       ]
 
-#. Change to ``mojits/CookieMojit``.
+#. Change to ``mojits/Cookie``.
 #. To set a cookie from your controller, replace the code in ``controller.server.js`` with 
    the following:
 
    .. code-block:: javascript
 
-      YUI.add('CookieMojit', function(Y, NAME) {
+      YUI.add('Cookie', function(Y, NAME) {
         Y.namespace('mojito.controllers')[NAME] = {   
 
           index: function(actionContext) {

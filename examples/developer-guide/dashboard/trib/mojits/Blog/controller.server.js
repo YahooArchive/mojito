@@ -1,11 +1,11 @@
 
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('Blog', function (Y, NAME) {
+YUI.add('blog', function (Y, NAME) {
 
 /**
- * The Blog module.
+ * The blog module.
  *
- * @module Blog
+ * @module blog
  */
 
     /**
@@ -35,11 +35,11 @@ YUI.add('Blog', function (Y, NAME) {
             }
 
             ac.models.get('blog').getData({}, feedURL, function (err, data) {
-                Y.log("Blog - index - model.getData:", "info", NAME);
+                Y.log("blog - index - model.getData:", "info", NAME);
                 Y.log(data, "info", NAME);
                 // add mojit specific css
                 ac.assets.addCss('./index.css');
-                Y.log("In Blog controller: ", "info", NAME); 
+                Y.log("In blog controller: ", "info", NAME); 
                 if(err) {
                    ac.error(err); 
                 } else {

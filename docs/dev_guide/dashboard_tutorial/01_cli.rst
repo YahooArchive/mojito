@@ -213,6 +213,12 @@ For example, you may have your own template application or mojit that you would
 like to use again. You can just run the following to reuse your template: 
 ``mojito create custom <path-to-your-template-code> name``
 
+Mojito also has a ``demo`` archetype that allows you to easily create the ``quickstartguide`` that
+serves documentation and serves as an example application. You can also add your own demo application
+to the ``archetypes/demo`` directory of the ``mojito-cli-create`` package. To create the
+demo application ``quickstartguide``, you run the following command ``mojito create demo quickstartguide qs``,
+where ``qs`` is your local copy of the ``quickstartguide`` application.
+
 .. _01_lesson-start:
 
 Starting the Server
@@ -273,8 +279,8 @@ also be written to the file ``${CWD}/artifacts/test/result.xml``.
    artifacts/test/result.xml
 
 
-   ✔  passed	GithubModelFoo-tests :: GithubModelFoo user tests :: test mojit model
-   ✔  passed	Github-tests :: Github user tests :: test mojit
+   ✔  passed	github-model-tests :: github-model user tests :: test mojit model
+   ✔  passed	github-tests :: Github user tests :: test mojit
 
    Total tests: 2	✔ Passed: 2	⚑ Deferred: 0	✖ Failed: 0	100% pass rate
 
@@ -373,8 +379,9 @@ Creating the Application
 #. You can also test a mojit module, which is basically the module
    name that you register with ``YUI.add``. Mojit controllers and models are YUI modules.
 
-   ``$ mojito test mojit mojits/Github Github``
+   ``$ mojito test mojit mojits/Github github``
 
+   Notice that module names are lowercased (``github``).
 #. Mojito's test command comes with a very useful option for getting coverage results. 
    Run the command for application unit tests, but add the option ``-c`` to get coverage 
    results as well.

@@ -1,10 +1,10 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('Youtube', function(Y, NAME) {
+YUI.add('youtube', function(Y, NAME) {
 
 /**
- * The Youtube module.
+ * The youtube module.
  *
- * @module Youtube
+ * @module youtube
  */
     var youtubeMap = function (ac, data) {
         Y.log("youtubeMap called");

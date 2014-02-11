@@ -11,14 +11,14 @@
                 "config": {
                     "deploy": true,
                     "child": {
-                        "type": "MasterMojit",
+                        "type": "Master",
                         "config":{
                             "children": {
                                 "sender": {
-                                    "type": "SenderMojit"
+                                    "type": "Sender"
                                 },
                                 "receiver": {
-                                    "type": "ReceiverMojit"
+                                    "type": "Receiver"
                                 }
                             }
                         }

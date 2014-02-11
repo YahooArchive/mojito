@@ -37,7 +37,7 @@ GET call to the Recipe Puppy API.
 
 .. code-block:: javascript
 
-   YUI.add('ProductSearchModel', function(Y, NAME) {
+   YUI.add('recipesearch-model', function(Y, NAME) {
       Y.namespace('mojito.models')[NAME] = {
        recipeSearch: function(count, cb) {
          var url = 'http://www.recipepuppy.com/api/';

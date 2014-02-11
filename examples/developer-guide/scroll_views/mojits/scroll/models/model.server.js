@@ -6,7 +6,7 @@
 
 /*jslint anon:true, sloppy:true, nomen:true*/
 
-YUI.add('scrollModel', function (Y, NAME) {
+YUI.add('scroll-model', function (Y, NAME) {
 
     Y.namespace('mojito.models')[NAME] = {
 

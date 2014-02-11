@@ -347,7 +347,7 @@ The ``specs`` object contains the mojit instances associated with a context.
        "settings": [ "environment:production" ],
        "specs": {
          "photos": {
-           "type": "PhotoMojit"
+           "type": "Photo"
          }
        }
      },
@@ -369,7 +369,7 @@ The ``config`` object stores configuration for a mojit that is mapped to the con
        "settings": ["device:iphone"],
        "specs": {
          "iphone": {
-           "type": "iPhoneMojit",
+           "type": "iPhone",
            "config": {
              "viewport_width": 320
            }
@@ -401,7 +401,7 @@ context configuration.
        "settings": [ "master" ],
        "specs": {
          "mainPage": {
-           "type": "TestMojit"
+           "type": "Test"
            "config": {
              "env": "This is the default environment."
            }
@@ -412,7 +412,7 @@ context configuration.
        "settings": [ "environment:development" ],
        "specs": {
          "mainPage": {
-           "type": "TestMojit",
+           "type": "Test",
            "config": {
              "env": "I am in the development environment."
            }
@@ -423,7 +423,7 @@ context configuration.
        "settings": [ "environment:production" ],
        "specs": {
          "mainPage": {
-           "type": "TestMojit",
+           "type": "Test",
            "config": {
              "env": "I am in the production environment."
            }
@@ -434,7 +434,7 @@ context configuration.
        "settings": [ "environment:production", "device:kindle" ],
        "specs": {
          "mainPage": {
-           "type": "TestMojit",
+           "type": "Test",
            "config": {
              "env": "I am in the production environment for Kindles."
            }
@@ -583,7 +583,7 @@ configurations of the current context.
 .. code-block:: javascript
 
 
-   YUI.add('TestMojit', function(Y, NAME) {
+   YUI.add('test', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = {
        index: function(ac) {
          var cfg = {

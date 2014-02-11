@@ -1,10 +1,10 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('Blog', function (Y, NAME) {
+YUI.add('blog', function (Y, NAME) {
 
 /**
- * The Blog module.
+ * The blog module.
  *
- * @module Blog
+ * @module blog
  */
 
     /**

@@ -1,4 +1,4 @@
-YUI.add('StatsModelYQL', function (Y, NAME) {
+YUI.add('stats-model-yql', function (Y, NAME) {
 
     'use strict';
     Y.mojito.models[NAME] = {

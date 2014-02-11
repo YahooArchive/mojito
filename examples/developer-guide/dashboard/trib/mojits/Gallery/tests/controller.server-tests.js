@@ -1,18 +1,18 @@
 
-YUI.add('Gallery-tests', function (Y) {
+YUI.add('gallery-tests', function (Y) {
 
-    var suite = new YUITest.TestSuite('Gallery-tests'),
+    var suite = new YUITest.TestSuite('gallery-tests'),
         controller = null,
         model = null,
         A = YUITest.Assert;
 
     suite.add(new YUITest.TestCase({
 
-        name: 'Gallery user tests',
+        name: 'gallery user tests',
 
         setUp: function () {
-            controller = Y.mojito.controllers.Gallery;
-            model = Y.mojito.models.GalleryModelYQL;
+            controller = Y.mojito.controllers["gallery"];
+            model = Y.mojito.models["gallery-model-yql"];
         },
         tearDown: function () {
             controller = null;
@@ -43,7 +43,7 @@ YUI.add('Gallery-tests', function (Y) {
                 },
                 models: {
                     get: function (modelName) {
-                        A.areEqual('GalleryModelYQL', modelName, 'wrong model name');
+                        A.areEqual('gallery', modelName, 'wrong model name');
                         return {
                             getData: function (params, tablePath, cb) {
                                 cb(modelData);
@@ -92,7 +92,7 @@ YUI.add('Gallery-tests', function (Y) {
                 },
                 models: {
                     get: function (modelName) {
-                        A.areEqual('GalleryModelYQL', modelName, 'wrong model name');
+                        A.areEqual('gallery', modelName, 'wrong model name');
                         return {
                             getData: function (params, tablePath, cb) {
                                 cb(modelData);
@@ -115,4 +115,4 @@ YUI.add('Gallery-tests', function (Y) {
 
     YUITest.TestRunner.add(suite);
 
-}, '0.0.1', {requires: ['mojito-test', 'Gallery', 'GalleryModelYQL']});
+}, '0.0.1', {requires: ['mojito-test', 'gallery', 'gallery-model-yql']});

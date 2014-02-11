@@ -7,7 +7,7 @@
     },
     "specs": {
       "mymojit": {
-        "type": "GenURLMojit"
+        "type": "GenerateURL"
       }
     }
   }
