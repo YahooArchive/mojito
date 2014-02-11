@@ -1,10 +1,10 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('GalleryBinderIndex', function (Y, NAME) {
+YUI.add('gallery-binder-index', function (Y, NAME) {
 
 /**
- * The GalleryBinderIndex module.
+ * The gallery-binder-index module.
  *
- * @module GalleryBinderIndex
+ * @module gallery-binder-index
  */
 
     /**

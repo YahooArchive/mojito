@@ -1,13 +1,13 @@
-YUI.add('TwitterSearchModel-tests', function (Y, NAME) {
+YUI.add('twittersearch-model-tests', function (Y, NAME) {
     var suite = new YUITest.TestSuite(NAME),
         model = null,
         A = YUITest.Assert;
 
 suite.add(new YUITest.TestCase({
-        name: "TwitterSearchModel user tests",
+        name: "twittersearch-model user tests",
 
         setUp: function () {
-            model = Y.mojito.models.TwitterSearchModel;
+            model = Y.mojito.models["twittersearch-model"];
         },
 
         tearDown: function () {
@@ -47,4 +47,4 @@ suite.add(new YUITest.TestCase({
 
     YUITest.TestRunner.add(suite);
 
-}, '0.0.1', {requires: ['mojito-test', 'TwitterSearchModel']});
+}, '0.0.1', {requires: ['mojito-test', 'twittersearch-model']});

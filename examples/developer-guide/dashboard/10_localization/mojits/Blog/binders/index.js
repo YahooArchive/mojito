@@ -1,10 +1,10 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('BlogBinderIndex', function (Y, NAME) {
+YUI.add('blog-binder-index', function (Y, NAME) {
 
 /**
- * The BlogBinderIndex module.
+ * The blog-binder-index module.
  *
- * @module BlogBinderIndex
+ * @module blog-binder-index
  */
 
     /**

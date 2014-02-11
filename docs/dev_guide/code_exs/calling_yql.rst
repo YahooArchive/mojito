@@ -102,7 +102,7 @@ controller through the ``callback`` function.
 
 .. code-block: javascript
 
-   YUI.add('flickrModel', function(Y, NAME) {
+   YUI.add('flickr-model', function(Y, NAME) {
      // Flickr requires an API key
      var API_KEY = '{your_flickr_api_key}';
      Y.namespace('mojito.models')[NAME] = {
@@ -214,7 +214,7 @@ the ``index`` template.
        };
      }, '0.0.1', {requires: [
      'mojito-models-addon', 'mojito-params-addon',
-     'flickrModel'
+     'flickr-model'
    ]});
 
 Setting Up this Example
@@ -280,7 +280,7 @@ To set up and run ``model_yql``:
 
    .. code-block:: javascript
 
-      YUI.add('flickrModel', function(Y, NAME) {
+      YUI.add('flickr-model', function(Y, NAME) {
         // Replace '{your_flickr_api_key}' with your own Flickr
         // API key.
         var API_KEY = '{your_flickr_api_key}';
@@ -340,7 +340,7 @@ To set up and run ``model_yql``:
 
    .. code-block:: javascript
 
-      YUI.add('flickrModel', function(Y, NAME) {
+      YUI.add('flickr-model', function(Y, NAME) {
         // Replace '{your_flickr_api_key}' with your own Flickr
         // API key.
         var API_KEY = '{your_flickr_api_key}';
@@ -384,7 +384,7 @@ To set up and run ``model_yql``:
         };
       }, '0.0.1', {requires: [
         'mojito-models-addon', 'mojito-params-addon',
-        'flickrModel'
+        'flickr-model'
       ]});
 
 #. Replace the contents of ``assets/index.css`` for the application's CSS with the following:

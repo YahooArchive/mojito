@@ -6,12 +6,12 @@
 
 /*jslint anon:true, sloppy:true, nomen:true*/
 
-YUI.add('i18nBinderIndex', function (Y, NAME) {
+YUI.add('i18n-binder-index', function (Y, NAME) {
 
 /**
- * The i18nBinderIndex module.
+ * The i18n-binder-index module.
  *
- * @module i18nBinderIndex
+ * @module i18n-binder-index
  */
 
     /**

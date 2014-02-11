@@ -60,7 +60,7 @@ property to ``true`` in ``application.json`` as seen below.
            "config": {
              "deploy": true,
              "child": {
-               "type": "PagerMojit"
+               "type": "Pager"
              }
            }
          }
@@ -79,9 +79,9 @@ specify ``'yql'`` in the ``requires`` array as seen in the code snippet below:
 
 .. code-block:: javascript
 
-   YUI.add('PagerMojitModel', function(Y, NAME) {
+   YUI.add('pager-model', function(Y, NAME) {
      ...
-     /* Code for PagerMojitModel */
+     /* Code for pager-model */
      ...
    }, '0.0.1', {requires: ['yql']});
 
@@ -103,7 +103,7 @@ the photo URI as seen here:
 ``http://farm + {farm} + static.flickr.com/ + {server} + / + {id} + _ + {secret} + .jpg``
 
 
-In the ``model.server.js`` of ``PagerMojit`` shown below, the ``YQL`` function uses the YQL 
+In the ``model.server.js`` of ``Pager`` mojit shown below, the ``YQL`` function uses the YQL 
 statement above to get photo data, then parses the returned response to create the photo 
 URIs. The model then wraps the photo information in an object and stores those objects in 
 the ``images`` array that is sent to the controller through the ``callback`` function.
@@ -111,10 +111,10 @@ the ``images`` array that is sent to the controller through the ``callback`` fun
 
 .. code-block:: javascript
 
-   YUI.add('PagerMojitModel', function(Y, NAME) {
+   YUI.add('pager-model', function(Y, NAME) {
      /**
-     * The PagerMojitModel module.
-     * @module PagerMojitModel
+     * The pager-model module.
+     * @module pager-model
      */
      /**
      * Constructor for the Model class.
@@ -201,7 +201,7 @@ binder. For more information, see `Mojito Binders <../intro/mojito_binders.html>
 
 .. code-block:: javascript
 
-   YUI.add('AwesomeMojitBinder', function(Y, NAME) {
+   YUI.add('awesome-binder-index', function(Y, NAME) {
      // Binder constructor
      Y.namespace('mojito.binders')[NAME] = {
        init: function(mojitProxy) {
@@ -212,15 +212,14 @@ binder. For more information, see `Mojito Binders <../intro/mojito_binders.html>
          var thatNode = node;
        }
      };
-     Y.mojito.registerEventBinder('AwesomeMojit', Binder);
    }, '0.0.1', {requires: ['mojito']});
 
 .. _bind_events-pagemojitbinder:
 
-Examining the PageMojitBinder
-#############################
+Examining the Pager Binder
+##########################
 
-This code example uses the binder ``PageMojitBinder`` to perform the following:
+This code example uses the binder module ``page-binder-index`` to perform the following:
 
 - attach ``onClick`` handlers to ``prev`` and ``next`` links
 - invoke the ``index`` method of the controller through the ``mojitProxy`` object
@@ -332,7 +331,7 @@ the ``requires`` array.
 
 .. code-block:: javascript
 
-   YUI.add('PagerMojitBinder', function(Y, NAME) {
+   YUI.add('pager-binder-index', function(Y, NAME) {
      var API_KEY = '{your_flickr_api_key}';
      function parseImageId(link) {
        var matches = link.match(/com\/(\d+)\/(\d+)_([0-9a-z]+)\.jpg$/);
@@ -344,8 +343,8 @@ the ``requires`` array.
      }
 
      /**
-     * The PagerMojitBinder module.
-     * @module PagerMojitBinder
+     * The pager-binder-index module.
+     * @module pager-binder-index
      */
      /**
      * Constructor for the Binder class.
@@ -465,7 +464,7 @@ going to look shortly.
      }
    ]
 
-The controller for ``PagerMojit`` performs several functions:
+The controller for ``Pager`` performs several functions:
 
 - uses the ``Params`` addon to get the ``page`` parameter from the query string
 - calculates the index of the first photo on the page
@@ -543,7 +542,7 @@ you need to require the model in the ``requires`` array of the controller.
      'mojito-models-addon', 
      'mojito-url-addon', 
      'mojito-params-addon', 
-     'PagerMojitModel',
+     'pager-model',
      'dump'
    ]});
 
@@ -573,10 +572,10 @@ create URLs for the **next** and **prev** links.
 
 .. code-block:: javascript
 
-   YUI.add('PagerMojit', function(Y, NAME) {
+   YUI.add('pager', function(Y, NAME) {
      /**
-     * The PagerMojit module.
-     * @module PagerMojit */
+     * The pager module.
+     * @module pager */
      var PAGE_SIZE = 10;
      /**
      * Constructor for the Controller class.
@@ -633,7 +632,7 @@ create URLs for the **next** and **prev** links.
      'mojito-models-addon', 
      'mojito-url-addon', 
      'mojito-params-addon', 
-     'PagerMojitModel',
+     'pager-model',
      'dump'
    ]});
 
@@ -650,7 +649,7 @@ To set up and run ``binding_events``:
 #. Change to the application directory.
 #. Create your mojit.
 
-   ``$ mojito create mojit PagerMojit``
+   ``$ mojito create mojit Pager``
 #. To configure you application to run on the client and use ``HTMLFrameMojit``, replace 
    the code in ``application.json`` with the following:
 
@@ -665,7 +664,7 @@ To set up and run ``binding_events``:
               "config": {
                 "deploy": true,
                 "child": {
-                  "type": "PagerMojit"
+                  "type": "Pager"
                 }
               }
             }
@@ -694,13 +693,13 @@ To set up and run ``binding_events``:
         }
       ]
 
-#. Change to ``mojits/PageMojit``.
+#. Change to ``mojits/Pager``.
 #. To have the controller get data from the model and create links for paging, replace the 
    code in ``controller.server.js`` with the following:
 
    .. code-block:: javascript
 
-      YUI.add('PagerMojit', function(Y, NAME) {
+      YUI.add('pager', function(Y, NAME) {
         var PAGE_SIZE = 10;
         /**
         * Constructor for the Controller class.
@@ -757,7 +756,7 @@ To set up and run ``binding_events``:
         'mojito-models-addon', 
         'mojito-url-addon', 
         'mojito-params-addon', 
-        'PagerMojitModel',
+        'pager-model',
         'dump'
       ]});
 
@@ -768,11 +767,11 @@ To set up and run ``binding_events``:
 
    .. code-block:: javascript
 
-      YUI.add('PagerMojitModel', function(Y, NAME) {
+      YUI.add('pager-model', function(Y, NAME) {
         var API_KEY = '{your_flickr_api_key}';
         /**
-        * The PagerMojitModel module.
-        * @module PagerMojitModel
+        * The pager-model module.
+        * @module pager-model
         */
         /**
         * Constructor for the Model class.
@@ -821,7 +820,7 @@ To set up and run ``binding_events``:
 
    .. code-block:: javascript
 
-      YUI.add('PagerMojitBinder', function(Y, NAME) {
+      YUI.add('pager-binder-index', function(Y, NAME) {
         var API_KEY = '{your_flickr_api_key}';
         function parseImageId(link) {
           var matches = link.match(/com\/(\d+)\/(\d+)_([0-9a-z]+)\.jpg$/);
@@ -833,8 +832,8 @@ To set up and run ``binding_events``:
         }
 
         /**
-        * The PagerMojitBinder module.
-        * @module PagerMojitBinder
+        * The pager-binder-index module.
+        * @module pager-binder-index
         */
         /**
         * Constructor for the Binder class.
@@ -969,5 +968,5 @@ Source Code
 ===========
 
 - `Application Configuration <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/binding_events/application.json>`_
-- `Mojit Binder <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/binding_events/mojits/PagerMojit/binders/index.js>`_
+- `Mojit Binder <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/binding_events/mojits/Pager/binders/index.js>`_
 - `Binding Events Application <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/binding_events/>`_

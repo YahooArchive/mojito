@@ -1,11 +1,11 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
 /*global YUI*/
-YUI.add('Gallery', function (Y, NAME) {
+YUI.add('gallery', function (Y, NAME) {
 
 /**
- * The Gallery module.
+ * The gallery module.
  *
- * @module Gallery
+ * @module gallery
  */
 
     /**
@@ -34,7 +34,7 @@ YUI.add('Gallery', function (Y, NAME) {
                 title = ac.config.getDefinition('mojitotitle', 'notitle');
             }
             ac.models.get('gallery').getData({}, tablePath, function (err, data) {
-                Y.log("Gallery -index - model.getData returned to controller:", "info", NAME);
+                Y.log("gallery -index - model.getData returned to controller:", "info", NAME);
                 Y.log(data, "info", NAME); 
                 // add mojit specific css
                 ac.assets.addCss('./index.css');

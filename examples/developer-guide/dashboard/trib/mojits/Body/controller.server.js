@@ -1,10 +1,10 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('Body', function (Y, NAME) {
+YUI.add('body', function (Y, NAME) {
 
 /**
- * The Body module.
+ * The body module.
  *
- * @module Body
+ * @module body
  */
 
     /**
@@ -22,7 +22,7 @@ YUI.add('Body', function (Y, NAME) {
          *        to the Mojito API.
          */
         index: function (ac) {
-            Y.log("Body - controller.server.js index called");
+            Y.log("body - controller.server.js index called");
 
             var view_type = ac.params.getFromRoute('view_type') || "yui";
 

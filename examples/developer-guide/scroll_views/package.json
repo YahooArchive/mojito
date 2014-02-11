@@ -1,5 +1,5 @@
 {
-    "name": "{{name}}",
+    "name": "scroll_views",
     "description": "My hackday 2011 Mojito application",
     "version": "0.1.0",
     "author": "Your Name <nobody@yahoo-inc.com>",
@@ -13,7 +13,7 @@
         "start": "mojito start"
     },
     "dependencies": {
-        "mojito": ">= 0.1.0"
+        "mojito": ">= 0.8.0"
     },
     "devDependencies": {},
     "engines": {

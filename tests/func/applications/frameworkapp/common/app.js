@@ -11,15 +11,18 @@
 
 var debug = require('debug')('app'),
     express = require('express'),
-    mojito = require('../../../../..'),
-    app;
+    libmojito = require('../../../../..'),
+    app,
+    dispatcherMiddleware;
 
 app = express();
+app.set('port', process.env.PORT || 8666);
+libmojito.extend(app);
 
-app.use(mojito.middleware());
+app.use(libmojito.middleware());
 
 app.mojito.attachRoutes();
-app.post('/tunnel', mojito.tunnelMiddleware());
+app.post('/tunnel', libmojito.tunnelMiddleware());
 
 // "routeparamssimple": {
 //     "verbs": ["get"],
@@ -27,12 +30,7 @@ app.post('/tunnel', mojito.tunnelMiddleware());
 //     "call": "RouteParams.routeParamsSimple",
 //     "params": "foo=fooval&bar=barval"
 // },
-app.get('/RouteParamsSimple', function (req, res, next) {
-    req.params = req.params || {};
-    req.params.foo = 'fooval';
-    req.params.bar = 'barval';
-    next();
-}, mojito.dispatch('RouteParams.routeParamsSimple'));
+app.get('/RouteParamsSimple', libmojito.dispatch('RouteParams.routeParamsSimple', { foo: 'fooval', bar: 'barval'}));
 
 // "mergeparamssimple": {
 //     "verbs": ["post"],
@@ -46,7 +44,7 @@ app.post('/MergeParamsSimple', function (req, res, next) {
     req.params = req.params || {};
     req.params.likes = 'Beer';
     next();
-}, mojito.dispatch('MergeParams.mergeParamsSimple'));
+}, libmojito.dispatch('MergeParams.mergeParamsSimple'));
 
 
 // "mergeparams": {
@@ -59,7 +57,7 @@ app.post('/MergeParams', function (req, res, next) {
     req.params = req.params || {};
     req.params.likes = 'Beer';
     next();
-}, mojito.dispatch('MergeParams.mergeParams'));
+}, libmojito.dispatch('MergeParams.mergeParams'));
 
 // "routeparams": {
 //     "verbs": ["get"],
@@ -70,12 +68,7 @@ app.post('/MergeParams', function (req, res, next) {
 //        "bar": "barval"
 //     }
 // },
-app.get('/RouteParams', function (req, res, next) {
-    req.params = req.params || {};
-    req.params.foo = 'fooval';
-    req.params.bar = 'barval';
-    next();
-}, mojito.dispatch('RouteParams.routeParams'));
+app.get('/RouteParams', libmojito.dispatch('RouteParams.routeParams', {foo: 'fooval', bar: 'barval'}));
 
 
 // "default": {
@@ -83,14 +76,12 @@ app.get('/RouteParams', function (req, res, next) {
 //     "path": "/:mojit-id/:mojit-action",
 //     "call": "{mojit-id}.{mojit-action}"
 // }
-function rt(req, res, next) {
-    mojito.dispatch(req.params.mojitType + '.' + req.params.mojitAction)(req, res, next);
-}
-app.get('/:mojitType/:mojitAction', rt);
-app.post('/:mojitType/:mojitAction', rt);
-app.put('/:mojitType/:mojitAction', rt);
-app.head('/:mojitType/:mojitAction', rt);
-app['delete']('/:mojitType/:mojitAction', rt);
+dispatcherMiddleware = libmojito.dispatch('{mojitType}.{mojitAction}');
+app.get('/:mojitType/:mojitAction', dispatcherMiddleware);
+app.post('/:mojitType/:mojitAction', dispatcherMiddleware);
+app.put('/:mojitType/:mojitAction', dispatcherMiddleware);
+app.head('/:mojitType/:mojitAction', dispatcherMiddleware);
+app['delete']('/:mojitType/:mojitAction', dispatcherMiddleware);
 
 app.get('/status', function (req, res) {
     res.send('200 OK');

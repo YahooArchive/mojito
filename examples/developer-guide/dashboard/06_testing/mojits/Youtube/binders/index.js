@@ -1,10 +1,10 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('YoutubeBinderIndex', function(Y, NAME) {
+YUI.add('youtube-binder-index', function(Y, NAME) {
 
 /**
- * The YoutubeBinderIndex module.
+ * The youtube-binder-index module.
  *
- * @module YoutubeBinderIndex
+ * @module youtube-binder-index
  */
 
     /**

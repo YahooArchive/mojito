@@ -68,6 +68,9 @@ Mojito offers the following three archetypes for applications and mojits.
 - ``simple`` - The minimal configuration and code needed to run an application.
 - ``default`` - This archetype is run if no command-line archetype option is 
   specified. It is a happy medium between ``simple`` and ``full``.
+- ``demo`` - This archetype is only availabe for applications, but let's you 
+  create demo applications. The built-in demo application is the quickstart 
+  application that serves documentation and serves as an example application.
 - ``full`` - Provides the most comprehensive configuration and code for 
   applications.
 
@@ -344,6 +347,4 @@ is a comma-separated list of key-value pairs. Each key-value pair is separated
 by a colon. Try to avoid using whitespace, commas, and colons in the keys and values.
 
 ``$ mojito start --context "key1:value1,key2:value2,key3:value3"``
-
-
 

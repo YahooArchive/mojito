@@ -11,28 +11,29 @@
 
 var debug = require('debug')('app'),
     express = require('express'),
-    mojito = require('../../../../..'),
-    app;
+    libmojito = require('../../../../..'),
+    app,
+    dispatcherMiddleware;
 
 app = express();
+app.set('port', process.env.PORT || 8666);
+libmojito.extend(app);
 
-app.use(mojito.middleware());
+app.use(libmojito.middleware());
 app.mojito.attachRoutes();
-app.post('/tunnel', mojito.tunnelMiddleware());
+app.post('/tunnel', libmojito.tunnelMiddleware());
 
 // "default": {
 //     "verbs": ["get", "post", "put", "head", "delete"],
 //     "path": "/:mojit-base/:mojit-action",
 //     "call": "{mojit-base}.{mojit-action}"
 // }
-function rt(req, res, next) {
-    mojito.dispatch(req.params.mojitBase + '.' + req.params.mojitAction)(req, res, next);
-}
-app.get('/:mojitBase/:mojitAction', rt);
-app.post('/:mojitBase/:mojitAction', rt);
-app.put('/:mojitBase/:mojitAction', rt);
-app.head('/:mojitBase/:mojitAction', rt);
-app['delete']('/:mojitBase/:mojitAction', rt);
+dispatcherMiddleware = libmojito.dispatch('{mojitBase}.{mojitAction}');
+app.get('/:mojitBase/:mojitAction', dispatcherMiddleware);
+app.post('/:mojitBase/:mojitAction', dispatcherMiddleware);
+app.put('/:mojitBase/:mojitAction', dispatcherMiddleware);
+app.head('/:mojitBase/:mojitAction', dispatcherMiddleware);
+app['delete']('/:mojitBase/:mojitAction', dispatcherMiddleware);
 
 app.get('/status', function (req, res) {
     res.send('200 OK');

@@ -1,11 +1,11 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
 /*global YUI*/
-YUI.add('Gallery', function (Y, NAME) {
+YUI.add('gallery', function (Y, NAME) {
 
 /**
- * The Gallery module.
+ * The gallery module.
  *
- * @module Gallery
+ * @module gallery
  */
 
     /**

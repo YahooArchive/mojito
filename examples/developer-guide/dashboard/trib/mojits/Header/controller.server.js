@@ -1,10 +1,10 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('Header', function (Y, NAME) {
+YUI.add('header', function (Y, NAME) {
 
 /**
- * The Header module.
+ * The header module.
  *
- * @module Header
+ * @module header
  */
 
     /**

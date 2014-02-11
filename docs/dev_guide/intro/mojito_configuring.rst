@@ -532,10 +532,10 @@ mojit instances ``sign_in`` and ``sign_out`` are defined:
        "settings": [ "master" ],
        "specs": {
          "sign_in": {
-           "type": "SignInMojit"
+           "type": "SignIn"
          },
          "sign_out": {
-           "type": "SignOutMojit"
+           "type": "SignOut"
          }
        }
      }
@@ -551,9 +551,9 @@ mojit instances ``sign_in`` and ``sign_out`` are defined:
          - "master"
        specs:
          sign_in:
-           type: "SignInMojit"
+           type: "SignIn"
          sign_out:
-           type: "SignOutMojit"
+           type: "SignOut"
 
 
    
@@ -564,7 +564,7 @@ Parent Mojit With Child Mojit
 
 A mojit instance can be configured to have a child mojit using the ``child`` 
 object. In the example ``application.json`` below, the mojit instance ``parent`` 
-of type ``ParentMojit`` has a child mojit of type ``ChildMojit``.
+of type ``Parent`` has a child mojit of type ``Child``.
 
 
 **application.json**
@@ -576,10 +576,10 @@ of type ``ParentMojit`` has a child mojit of type ``ChildMojit``.
        "settings": [ "master" ],
        "specs": {
          "parent": {
-           "type": "ParentMojit",
+           "type": "Parent",
            "config": {
              "child": {
-               "type": "ChildMojit"
+               "type": "Child"
              }
            }
          }
@@ -597,10 +597,10 @@ of type ``ParentMojit`` has a child mojit of type ``ChildMojit``.
          - "master"
        specs:
          parent:
-           type: "ParentMojit"
+           type: "Parent"
            config:
              child:
-               type: "ChildMojit"
+               type: "Child"
 
 
 .. _config_mult_mojits-parent_children:
@@ -615,7 +615,7 @@ See `Composite Mojits <../topics/mojito_composite_mojits.html#composite-mojits>`
 for more information.
 
 In the example ``application.json`` below, the mojit instance ``father`` of type 
-``ParentMojit`` has the children ``son`` and ``daughter`` of type ``ChildMojit``.
+``Parent`` has the children ``son`` and ``daughter`` of type ``Child``.
 
 
 **application.json**
@@ -627,14 +627,14 @@ In the example ``application.json`` below, the mojit instance ``father`` of type
        "settings": [ "master" ],
        "specs": {
          "father": {
-           "type": "ParentMojit",
+           "type": "Parent",
            "config": {
              "children": {
                "son": {
-                 "type": "ChildMojit"
+                 "type": "Child"
                },
                "daughter": {
-                 "type": "ChildMojit"
+                 "type": "Child"
                }
              }
            }
@@ -653,13 +653,13 @@ In the example ``application.json`` below, the mojit instance ``father`` of type
          - "master"
        specs:
          father:
-           type: "ParentMojit"
+           type: "Parent"
            config:
              children:
                son:
-                 type: "ChildMojit"
+                 type: "Child"
                daughter:
-                 type: "ChildMojit"
+                 type: "Child"
 
 
 
@@ -686,16 +686,16 @@ The example ``application.json`` below creates the parent mojit ``first_level`` 
        "settings": [ "master" ],
        "specs": {
          "first_level": {
-           "type": "FirstLevelMojit",
+           "type": "FirstLevel",
            "config": {
              "child": {
-                 "type": "SecondLevelMojit",
+                 "type": "SecondLevel",
                  "children": {
                    "third_level_a": {
-                     "type": "ThirdLevelMojit"
+                     "type": "ThirdLevel"
                    },
                    "third_level_b": {
-                     "type": "ThirdLevelMojit"
+                     "type": "ThirdLevel"
                    }
                  }
                }
@@ -716,15 +716,15 @@ The example ``application.json`` below creates the parent mojit ``first_level`` 
          - "master"
        specs:
          first_level:
-           type: "FirstLevelMojit"
+           type: "FirstLevel"
            config:
              child:
-                 type: "SecondLevelMojit"
+                 type: "SecondLevel"
                  children:
                    third_level_a:
-                     type: "ThirdLevelMojit"
+                     type: "ThirdLevel"
                    third_level_b:
-                     type: "ThirdLevelMojit"
+                     type: "ThirdLevel"
 
 
 The child mojits can also have their own children, but beware that 
@@ -741,22 +741,22 @@ its own children:
        "settings": [ "master" ],
        "specs": {
          "first_level": {
-           "type": "FirstLevelMojit",
+           "type": "FirstLevel",
            "config": {
              "child": {
-               "type": "SecondLevelMojit",
+               "type": "SecondLevel",
                "children": {
                  "third_level_a": {
-                   "type": "ThirdLevelMojit"
+                   "type": "ThirdLevel"
                  },
                  "third_level_b": {
-                   "type": "ThirdLevelMojit",
+                   "type": "ThirdLevel",
                    "children": {
                      "fourth_level_a": {
-                        "type": "FourthLevelMojit"
+                        "type": "FourthLevel"
                      },
                      "fourth_level_b": {
-                        "type": "FourthLevelMojit"
+                        "type": "FourthLevel"
                      }
                    }
                  }
@@ -778,20 +778,20 @@ its own children:
          - "master"
        specs:
          first_level:
-           type: "FirstLevelMojit"
+           type: "FirstLevel"
            config:
              child:
-               type: "SecondLevelMojit"
+               type: "SecondLevel"
                children:
                  third_level_a:
-                   type: "ThirdLevelMojit"
+                   type: "ThirdLevel"
                  third_level_b:
-                   type: "ThirdLevelMojit"
+                   type: "ThirdLevel"
                    children:
                      fourth_level_a:
-                       type: "FourthLevelMojit"
+                       type: "FourthLevel"
                      fourth_level_b:
-                       type: "FourthLevelMojit"
+                       type: "FourthLevel"
 
 
 .. _deploy_app:
@@ -839,7 +839,7 @@ application to be deployed to the client.
            "config": {
              "deploy": true,
              "child": {
-               "type": "PagerMojit"
+               "type": "Pager"
              }
            }
          }
@@ -861,7 +861,7 @@ application to be deployed to the client.
            config:
              deploy: true
              child:
-               type: "PagerMojit"
+               type: "Pager"
 
 
 .. _app_config-ex:
@@ -1000,19 +1000,19 @@ property in ``definition.json`` to ``true`` as seen below:
    ]
 
 To use an application-level mojit, other mojits must include the YUI module name in the 
-``requires`` array of the controller. For example, to use the ``FooMojitModel`` module of 
-the application-level ``Foo`` mojit, the controller of the Bar mojit would include 
-``'FooMojitModel'`` in the ``requires`` array as seen below:
+``requires`` array of the controller. For example, to use the ``foo-model`` module of 
+the application-level ``Foo`` mojit, the controller of the ``Bar`` mojit would include 
+``'foo-model'`` in the ``requires`` array as seen below:
 
 .. code-block:: javascript
 
-   YUI.add('BarMojit', function(Y, NAME) {
+   YUI.add('bar', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
        index: function(actionContext) {
          actionContext.done({title: "Body"});
        }
      };
-   }, '0.0.1', {requires: ['FooMojitModel']});
+   }, '0.0.1', {requires: ['foo-model']});
 
 
 .. _configure_mojit-defaults:
@@ -1124,9 +1124,9 @@ The table below describes the properties of the ``route`` object of  ``routes.js
 |                |                      |               | mojit instance can also be created by prepending       |
 |                |                      |               | "@" to the mojit type. For example, the following      |
 |                |                      |               | would create an anonymous mojit instance of type       |
-|                |                      |               | ``HelloMojit`` and call the ``index`` action for       |
-|                |                      |               | the ``HelloMojit`` mojit: ``call:                      |
-|                |                      |               | "@HelloMojito.index"``                                 |
+|                |                      |               | ``Hellot`` and call the ``index`` action for           |
+|                |                      |               | the ``Hello`` mojit: ``call:                           |
+|                |                      |               | "@Hello.index"``                                       |
 +----------------+----------------------+---------------+--------------------------------------------------------+
 | ``params``     | string               | No            | Query string parameters that developers can            |
 |                |                      |               | associate with a route path. The default value is an   | 
@@ -1177,7 +1177,7 @@ Single Route
 
 To create a route, you need to create a mojit instance that can be mapped to a 
 path. In the ``application.json`` below, the ``hello`` instance of type 
-``HelloMojit`` is defined.
+``Hello`` is defined.
 
 **application.json**
 
@@ -1189,7 +1189,7 @@ path. In the ``application.json`` below, the ``hello`` instance of type
        "appPort": 8666,
        "specs": {
          "hello": {
-           "type": "HelloMojit"
+           "type": "Hello"
          }
        }
      }
@@ -1206,10 +1206,10 @@ path. In the ``application.json`` below, the ``hello`` instance of type
        appPort: 8666
        specs: 
          hello: 
-           type: "HelloMojit"
+           type: "Hello"
 
 
-The ``hello`` instance and a function in the ``HelloMojit`` controller can now 
+The ``hello`` instance and a function in the ``Hello`` controller can now 
 be mapped to a route path in ``routes.json`` file. In the ``routes.json`` below, 
 the ``index`` function is called when an HTTP GET call is made on the root path.
 
@@ -1244,9 +1244,9 @@ the ``index`` function is called when an HTTP GET call is made on the root path.
 
 
 Instead of using the ``hello`` mojit instance defined in the ``application.json`` 
-shown above, you can create an anonymous instance of ``HelloMojit`` for mapping 
+shown above, you can create an anonymous instance of ``Hello`` for mapping 
 an action to a route path. In the ``routes.json`` below,  an anonymous instance 
-of ``HelloMojit`` is made by prepending "@" to the mojit type.
+of ``Hello`` is made by prepending "@" to the mojit type.
 
 **routes.json**
 
@@ -1258,7 +1258,7 @@ of ``HelloMojit`` is made by prepending "@" to the mojit type.
        "hello index": {
          "verbs": ["get"],
          "path": "/",
-         "call": "@HelloMojit.index",
+         "call": "@Hello.index",
          "params": { "first_visit": true }
        }
      }
@@ -1276,7 +1276,7 @@ of ``HelloMojit`` is made by prepending "@" to the mojit type.
          verbs:
            - "get"
          path: "/"
-         call: "@HelloMojit.index"
+         call: "@Hello.index"
          params:
            first_visit: true
 
@@ -1603,7 +1603,7 @@ you would use ``ac.config.getAppConfig().specs`` as shown here:
 
 .. code-block:: javascript
 
-      YUI.add('myMojit', function(Y, NAME) {
+      YUI.add('mymojit', function(Y, NAME) {
         Y.namespace('mojito.controllers')[NAME] = {
           index: function(ac) {
             // Get the 'specs' object from the application configuration 
@@ -1626,7 +1626,7 @@ of the ``Config`` addon.
 
 .. code-block:: javascript
 
-      YUI.add('myMojit', function(Y, NAME) {
+      YUI.add('mymojit', function(Y, NAME) {
         Y.namespace('mojito.controllers')[NAME] = {
           index: function(ac) {
             // Get the routing configuration through

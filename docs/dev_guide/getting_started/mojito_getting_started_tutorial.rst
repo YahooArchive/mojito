@@ -49,7 +49,7 @@ the views (and assets) used to render the output. The definition also
 contains unit tests for the code.
 
 The instance configuration is what configures each instance of your mojit. For 
-example, you might have an ``RSSMojit`` which is used to display an RSS feed. 
+example, you might have an ``RSS`` mojit that is used to display an RSS feed. 
 The mojit definition would have the code and views for fetching and rendering a 
 feed, and the instance configuration would have the RSS URL 
 to fetch, how many items to show, and whether to show thumbnails, etc.
@@ -59,12 +59,12 @@ models or views in this tutorial.
 
 #. Create the mojit for your ``minty_app`` application.
 
-   ``$ mojito create mojit HelloMojit``
+   ``$ mojito create mojit Hello``
 
    The `Mojito command-line tool <../reference/mojito_cmdline.html>`_ creates 
-   a canned mojit named ``HelloMojit``.
+   a canned mojit named ``Hello``.
 
-#. To configure your application to use ``HelloMojit``, replace the code in 
+#. To configure your application to use the mojit ``Hello``, replace the code in 
    ``application.json`` with the following:
 
    .. code-block:: javascript
@@ -75,13 +75,13 @@ models or views in this tutorial.
           "appPort": 8666,
           "specs": {
             "hello": {
-              "type": "HelloMojit"
+              "type": "Hello"
             }
           }
         }
       ]
 
-   Here you have defined the instance ``hello`` of the ``HelloMojit`` mojit, 
+   Here you have defined the instance ``hello`` of the ``Hello`` mojit, 
    which will allow you to call the functions in the mojit controller.
 
 #. To set up a new route for executing your mojit, create the routing 
@@ -130,7 +130,7 @@ Start the Server
              some: data
 
    The text was served by the controller, the ``controller.server.js`` file in the 
-   ``minty_app/mojits/HelloMojit`` directory. You will learn more about the controller in 
+   ``minty_app/mojits/Hello`` directory. You will learn more about the controller in 
    :ref:`Modify the Sample Mojit <first_app-modify_mojit>`.
 
 #. Stop the server by going back to your terminal pressing **^C**.
@@ -144,19 +144,19 @@ Modify the Sample Mojit
 You will now modify the controller, so that the ``index`` function called in the 
 controller outputs different results.
 
-#. Change to ``mojits/HelloMojit``.
+#. Change to ``mojits/Hello``.
 #. Edit ``controller.server.js`` and replace the string 'Mojito is working.' in 
    the code with 'Doing well, thanks.'. Your ``controller.server.js`` should look similar 
    to the following code:
 
    .. code-block:: javascript
 
-      YUI.add('HelloMojit', function(Y, NAME) {
+      YUI.add('hello', function(Y, NAME) {
 
         /**
-        * The HelloMojit module.
+        * The hello module.
         *
-        * @module HelloMojit
+        * @module hello
         **/
 
        /**
@@ -211,17 +211,17 @@ controller outputs different results.
 
    .. code-block:: javascript
 
-      YUI.add('HelloMojit-tests', function(Y) {
+      YUI.add('hello-tests', function(Y) {
 
-        var suite = new YUITest.TestSuite('HelloMojit-tests'),
+        var suite = new YUITest.TestSuite('hello-tests'),
             controller = null,
             A = YUITest.Assert;
 
         suite.add(new YUITest.TestCase({
         
-          name: 'HelloMojit user tests',
+          name: 'Hello user tests',
           setUp: function() {
-            controller = Y.mojito.controllers.HelloMojit;
+            controller = Y.mojito.controllers["hello"];
           },
           tearDown: function() {
             controller = null;
@@ -263,7 +263,7 @@ controller outputs different results.
           }
         }));
         YUITest.TestRunner.add(suite);
-      }, '0.0.1', {requires: ['mojito-test', 'HelloMojit']});
+      }, '0.0.1', {requires: ['mojito-test', 'hello']});
 
    Mojito has the unit test given in ``controller.server-tests.js`` confirms 
    that the output from the action index is the same as the 

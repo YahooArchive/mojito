@@ -1,10 +1,10 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('Twitter', function (Y, NAME) {
+YUI.add('twitter', function (Y, NAME) {
 
 /**
- * The Twitter module.
+ * The twitter module.
  *
- * @module Twitter
+ * @module twitter
  */
 
     /**

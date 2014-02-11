@@ -8,9 +8,9 @@ action
    A method of a mojit instance (``{mojit_instance}.{action}``) that invokes a call to a 
    function of a mojit controller when an HTTP request is made on an associated routing 
    path. For example, suppose the root path is associated with the mojit instance and 
-   action ``hello.index``, and the ``hello`` instance is of type ``HelloMojit``. When an 
+   action ``hello.index``, and the ``hello`` instance is of type ``Hello``. When an 
    HTTP request is made on the root path, the action ``index`` would invoke the ``index`` 
-   function of the ``HelloMojit`` controller.
+   function of the ``Hello`` controller.
 
 
 Action Context

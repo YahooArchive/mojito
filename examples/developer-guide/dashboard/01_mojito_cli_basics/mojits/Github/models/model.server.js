@@ -1,16 +1,16 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('GithubModelFoo', function(Y, NAME) {
+YUI.add('github-model', function(Y, NAME) {
 
 /**
- * The GithubModelFoo module.
+ * The github-model module.
  *
- * @module Github
+ * @module github-model
  */
 
     /**
      * Constructor for the GithubModelFoo class.
      *
-     * @class GithubModelFoo
+     * @class GithubModel
      * @constructor
      */
     Y.namespace('mojito.models')[NAME] = {

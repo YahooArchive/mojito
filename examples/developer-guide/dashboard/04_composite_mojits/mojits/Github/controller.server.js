@@ -1,10 +1,10 @@
 /*jslint anon:true, sloppy:true, nomen:true*/
-YUI.add('Github', function(Y, NAME) {
+YUI.add('github', function(Y, NAME) {
 
 /**
- * The Github module.
+ * The github module.
  *
- * @module Github
+ * @module github
  */
 
     /**
@@ -26,7 +26,7 @@ YUI.add('Github', function(Y, NAME) {
             var model = ac.models.get('model');
             Y.log(model);
             model.getData(function(data){
-                Y.log("Github -index - model.getData:");
+                Y.log("github -index - model.getData:");
                 Y.log(data);
 
                 ac.done({

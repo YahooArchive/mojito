@@ -1,16 +1,16 @@
 
-YUI.add('PageLayout-tests', function(Y, NAME) {
+YUI.add('pagelayout-tests', function(Y, NAME) {
 
-    var suite = new YUITest.TestSuite('PageLayout-tests'),
+    var suite = new YUITest.TestSuite('pagelayout-tests'),
         controller = null,
         A = YUITest.Assert;
 
     suite.add(new YUITest.TestCase({
         
-        name: 'PageLayout user tests',
+        name: 'pagelayout user tests',
         
         setUp: function() {
-            controller = Y.mojito.controllers.PageLayout;
+            controller = Y.mojito.controllers["pagelayout"];
         },
         tearDown: function() {
             controller = null;
@@ -31,11 +31,11 @@ YUI.add('PageLayout-tests', function(Y, NAME) {
             A.isFunction(controller.index);
             controller.index(ac);
             A.isObject(doneResults);
-            A.areSame("Trib - Contribute to the Tribe", doneResults.title);
+            A.areSame("Trib - YUI Developer Dashboard", doneResults.title);
         }
         
     }));
     
     YUITest.TestRunner.add(suite);
     
-}, '0.0.1', {requires: ['mojito-test', 'PageLayout']});
+}, '0.0.1', {requires: ['mojito-test', 'pagelayout']});
