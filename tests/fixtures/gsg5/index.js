@@ -15,3 +15,4 @@ module.exports = function(config, token) {
     // send the application to Manhattan along with the token
     process.emit("application-ready", token, http.createServer(app));
 };
+
