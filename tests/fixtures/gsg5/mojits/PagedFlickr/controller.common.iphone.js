@@ -1,7 +1,7 @@
 /*
 * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
 */
-YUI.add('PagedFlickr', function(Y) {
+YUI.add('PagedFlickr', function(Y, NAME) {
 
 /**
  * The PagedFlickr module.
@@ -17,7 +17,7 @@ YUI.add('PagedFlickr', function(Y) {
      * @class Controller
      * @constructor
      */
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         /**
          * Method corresponding to the 'index' action.
@@ -42,7 +42,7 @@ YUI.add('PagedFlickr', function(Y) {
             // parameter is base-0.
             start = (page-1) * PAGESIZE;
 
-            ac.models.flickr.getFlickrImages('mojito', start, PAGESIZE, function(err, images) {
+            ac.models.get('flickr').getFlickrImages('mojito', start, PAGESIZE, function(err, images) {
                var dateString, data;
 
                 // on model error, fail fast
@@ -87,4 +87,4 @@ YUI.add('PagedFlickr', function(Y) {
         return ac.url.make(mojitType, 'index', params);
     }
 
-}, '0.0.1', {requires: ['mojito-intl-addon', 'mojito-util', 'ModelFlickr'], lang: ['de', 'en-US']});
+}, '0.0.1', {requires: ['mojito-intl-addon', 'mojito-params-addon', 'mojito-url-addon', 'mojito-models-addon',  'mojito-util', 'ModelFlickr'], lang: ['de', 'en-US']});
