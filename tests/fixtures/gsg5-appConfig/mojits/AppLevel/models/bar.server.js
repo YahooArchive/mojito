@@ -15,7 +15,7 @@ YUI.add('AppLevelModelBar', function(Y, NAME) {
      * @class Model
      * @constructor
      */
-    Y.mojito.models.AppLevelModelBar = {
+    Y.namespace('mojito.models').AppLevelModelBar = {
 
         init: function(config) {
             this.config = config;

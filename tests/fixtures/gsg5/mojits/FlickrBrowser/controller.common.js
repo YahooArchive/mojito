@@ -1,7 +1,7 @@
 /*
 * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
 */
-YUI.add('FlickrBrowser', function(Y) {
+YUI.add('FlickrBrowser', function(Y, NAME) {
 
 /**
  * The FlickrBrowser module.
@@ -15,7 +15,7 @@ YUI.add('FlickrBrowser', function(Y) {
      * @class Controller
      * @constructor
      */
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         /**
          * Method corresponding to the 'index' action.
@@ -30,4 +30,4 @@ YUI.add('FlickrBrowser', function(Y) {
     };
 
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito-composite-addon']});

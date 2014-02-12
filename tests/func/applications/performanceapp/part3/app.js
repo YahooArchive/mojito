@@ -1,17 +1,11 @@
 /*
-* Copyright (c) 2011-2013, Yahoo! Inc.  All rights reserved.
-* Copyrights licensed under the New BSD License.
-* See the accompanying LICENSE file for terms.
+* Copyright (c) 2011 Yahoo! Inc. All rights reserved.
 */
-
-
-/*jslint node:true*/
-
 'use strict';
 
 var debug = require('debug')('app'),
     express = require('express'),
-    libmojito = require('../../../../..'),
+    libmojito = require('../../../../../'),
     app;
 
 app = express();
@@ -22,16 +16,7 @@ app.use(libmojito.middleware());
 app.mojito.attachRoutes();
 app.post('/tunnel', libmojito.tunnelMiddleware());
 
-// flickr5
-app.get('/flickr5', function (req, res, next) {
-    req.param = req.param || {};
-    req.param.image = '0';
-    req.param.page = '1';
-    next();
-}, libmojito.dispatch('flickr5.index'));
-
-// default
-app.get('/:type/:action', libmojito.dispatch('{type}.{action}'));
+app.get('/:base/:action', libmojito.dispatch('{base}.{action}'));
 
 app.get('/status', function (req, res) {
     res.send('200 OK');
