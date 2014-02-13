@@ -11,14 +11,16 @@
 
 var debug = require('debug')('app'),
     express = require('express'),
-    mojito = require('../../../'),
+    libmojito = require('../../../'),
     app;
 
 app = express();
+app.set('port', process.env.PORT || 8666);
+libmojito.extend(app);
 
-app.use(mojito.middleware());
+app.use(libmojito.middleware());
 app.mojito.attachRoutes();
-app.post('/tunnel', mojito.tunnelMiddleware());
+app.post('/tunnel', libmojito.tunnelMiddleware());
 
 
 // Example usage on how to execute anonymous mojit. 
@@ -26,7 +28,7 @@ app.get('/:mojitType/:mojitAction', function (req, res, next) {
     var type = req.params.mojitType,
         action = req.params.mojitAction;
 
-    return mojito.dispatch(type + '.' + action)(req, res, next);
+    return libmojito.dispatch(type + '.' + action)(req, res, next);
 });
 
 app.get('/status', function (req, res) {

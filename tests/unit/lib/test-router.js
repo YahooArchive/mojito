@@ -27,7 +27,7 @@ YUI().use('test', function (Y) {
             utilMock = {
                 readConfig: function (path) {
                     var o;
-                    if (path === "routes01.json") {
+                    if (path.indexOf("routes01.json") > -1) {
                         o = [{
                             settings: [ "master" ],
                             admin: {
@@ -35,7 +35,7 @@ YUI().use('test', function (Y) {
                                 call: 'admin.help'
                             }
                         }];
-                    } else if (path === "routes02.json") {
+                    } else if (path.indexOf("routes02.json") > -1) {
                         o = [{
                             settings: [ "master" ],
                             help: {
@@ -85,7 +85,7 @@ YUI().use('test', function (Y) {
             A.isFunction(router.readConfigYCB);
 
             var o;
-            
+
             o = router.readConfigYCB('routes01.json');
             OA.areEqual(routes01Mock.admin,
                        o.admin,
@@ -140,7 +140,6 @@ YUI().use('test', function (Y) {
                 mapCalled = false,
                 postCalled = false;
 
-
             router._app.map = function (path, name) {
                 mapCalled = true;
                 // verify that name and path matches
@@ -186,6 +185,111 @@ YUI().use('test', function (Y) {
             A.areEqual(true, adminCalled, '/admin handler was not installed');
             A.areEqual(true, helpCalled, '/help handler was not installed');
             A.areEqual(false, postCalled, 'app.post() should not have been called');
+        },
+
+        // verify that routesFiles is retrieved from appConfig
+        'test attachRoutes with no args returns empty array': function () {
+            A.isFunction(router.attachRoutes);
+
+            var fnCalled = false;
+
+            router._app.mojito.store = {
+                getStaticAppConfig: function () {
+                    fnCalled = true;
+                    return {
+                        routesFiles: []
+                    };
+                }
+            };
+            router.attachRoutes();
+
+            A.areEqual(true,
+                       fnCalled,
+                       'mojito.store.getStaticAppConfig() was not called');
+        },
+
+        // verify that routesFiles retrieved from appConfig is resolved to the
+        // appDir
+        'test attachRoutes routesFile is resolved': function () {
+            A.isFunction(router.attachRoutes);
+
+            var fnCalled = false,
+                getRoutesCalled = false,
+                originalGetRoutes;
+
+            originalGetRoutes = router.getRoutes;
+            router.getRoutes = function (routesFile) {
+                getRoutesCalled = true;
+                A.areEqual('/base/app/dir/routes01.json',
+                           routesFile,
+                           'routesFile mismatch');
+                return [];
+            };
+            router._app.mojito.options.root = '/base/app/dir';
+            router._app.mojito.store = {
+                getStaticAppConfig: function () {
+                    fnCalled = true;
+                    return {
+                        routesFiles: ['routes01.json']
+                    };
+                }
+            };
+            router.attachRoutes();
+
+            A.areEqual(true,
+                       getRoutesCalled,
+                       'router.getRoutes() was not called');
+            A.areEqual(true,
+                       fnCalled,
+                       'mojito.store.getStaticAppConfig() was not called');
+            router.getRoutes = originalGetRoutes;
+        },
+
+        // verify getStaticAppConfig() is not called if attachRoutes is called
+        // with empty array
+        'test attachRoutes with empty array': function () {
+            A.isFunction(router.attachRoutes);
+
+            var fnCalled = false;
+
+            router._app.mojito.store = {
+                getStaticAppConfig: function () {
+                    fnCalled = true;
+                    return {
+                        routesFiles: []
+                    };
+                }
+            };
+            router.attachRoutes([]);
+
+            A.areEqual(false,
+                       fnCalled,
+                       'mojito.store.getStaticAppConfig() should not have been called');
+        },
+
+        // verify routesFiles is converted to an array if a filename is passed
+        'test attachRoutes with string arg': function () {
+            A.isFunction(router.attachRoutes);
+
+            var fnCalled = false,
+                originalGetRoutes;
+
+            originalGetRoutes = router.getRoutes;
+            router._app.mojito.options.root = '/base/app/dir';
+            router.getRoutes = function (arg) {
+                fnCalled = true;
+                A.isString(arg, 'arg should be of type array');
+                A.areEqual('/base/app/dir/routes.json',
+                           arg,
+                           'incorrect routes.json filename');
+                return []; // HACK so that registerRoutes does nothing
+            };
+            router.attachRoutes('routes.json');
+
+            A.areEqual(true,
+                       fnCalled,
+                       'router.getRoutes() should have been called');
+            router.getRoutes = originalGetRoutes;
         }
 
     }));

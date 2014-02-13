@@ -13,7 +13,7 @@ unnecessary conflict on every merge.
 This is a document in progress as more work is being done on #next.
 ```
 
-This release introduces a set of new APIs and concepts. 
+This release introduces a set of new APIs and concepts.
 
 Please refer to some of the examples apps under the `examples/` folder to get
 an overview of what have changed.
@@ -24,19 +24,19 @@ Deprecations, Removals
 * Mojito no longer supports `index.js` and `server.js` to start up the server.
   Applications will instead instantiate Mojito as follows:
 
-      var mojito = require('mojito'),
+      var libmojito = require('mojito'),
           express = require('express'),
           app;
 
       app = express();
-      // "app.mojito" refers to the Mojito instance as part of the Express app
-      // "mojito" refers to the Mojito module that exposes helpers - see below
+      libmojito.extend(app, { /* context */ });
+      // at this point, access mojito instance via `app.mojito`
 
 * Middleware configuration is no longer supported via `application.json`.
   Applications can register their middleware using the Express API. To enable
   Mojito middleware, use the following:
 
-      app.use(mojito.middleware());
+      app.use(libmojito.middleware());
 
 * `routes.json` configuration is no longer loaded by default. To tell Mojito to
   do so, use the following:
@@ -53,8 +53,10 @@ Deprecations, Removals
   control on how best to handle this error.
 
 * The `ac.url.find()` and `Y.mojito.RouteMaker.find()` methods are now
-  deprecated and have been removed. If applications needs to query the route
-  object, either use the `name` or `path` by leveraging `express-map`.
+  deprecated and will be removed in a future version.
+
+  Applications that rely on this API should familiaze with the `express-map`
+  package by querying the route object by `name` or `path`.
 
 Features
 --------
@@ -62,6 +64,7 @@ Features
 * To register Mojito routes programmatically instead of using `routes.json`:
 
 ```
+// app.js
 app.get('/foo', mojito.dispatch('foo.index'));
 app.map('/foo', 'foo');
 app.map('/foo', 'get#foo.index');
@@ -71,7 +74,7 @@ app.map('/foo', 'get#foo.index');
   dispatcher, setup 2 additional "aliases". The second alias is the HTTP method
   concatenated with the `call` value using the `#` delimeter.
 
-  This is equivalent to doing this in `routes.json`:
+  This is equivalent to doing this in `routes.json` in "pre-next":
 
 ```
 [{

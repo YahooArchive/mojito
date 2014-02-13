@@ -1,7 +1,7 @@
 /*
 * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
 */
-YUI.add('PagedFlickr', function(Y) {
+YUI.add('PagedFlickr', function(Y, NAME) {
 
 /**
  * The PagedFlickr module.
@@ -17,7 +17,7 @@ YUI.add('PagedFlickr', function(Y) {
      * @class Controller
      * @constructor
      */
-    Y.mojito.controller = {
+    Y.namespace('mojito.controller')[NAME] = {
 
         /**
          * Method corresponding to the 'index' action.

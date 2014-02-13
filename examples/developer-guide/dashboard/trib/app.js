@@ -11,26 +11,28 @@
 
 var debug = require('debug')('app'),
     express = require('express'),
-    mojito = require('../../../../'),
+    libmojito = require('../../../../'),
     app;
 
 app = express();
+app.set('port', process.env.PORT || 8666);
+libmojito.extend(app);
 
-app.use(mojito.middleware());
+app.use(libmojito.middleware());
 
 app.get('/', function (req, res, next) {
     req.params.view_type = "yui";
     next();
-}, mojito.dispatch('tribframe.index'));
+}, libmojito.dispatch('tribframe.index'));
 
 app.get('/mojito', function (req, res, next) {
     req.params.view_type = "mojito";
     next();
-}, mojito.dispatch('tribframe.index'));
+}, libmojito.dispatch('tribframe.index'));
 
-app.get('/header', mojito.dispatch('header.index'));
-app.get('/body', mojito.dispatch('body.index'));
-app.get('/footer', mojito.dispatch('footer.index'));
+app.get('/header', libmojito.dispatch('header.index'));
+app.get('/body', libmojito.dispatch('body.index'));
+app.get('/footer', libmojito.dispatch('footer.index'));
 
 app.listen(app.get('port'), function () {
     debug('Server listening on port ' + app.get('port') + ' ' +

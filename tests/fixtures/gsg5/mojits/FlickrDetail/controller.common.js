@@ -1,9 +1,9 @@
 /*
 * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
 */
-YUI.add('FlickrDetail', function(Y) {
+YUI.add('FlickrDetail', function(Y, NAME) {
 
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         index: function(ac) {
 
@@ -22,7 +22,7 @@ YUI.add('FlickrDetail', function(Y) {
                 return;
             }
 
-            ac.models.flickr.getFlickrDetail(image, function(err, details) {
+            ac.models.get('flickr').getFlickrDetail(image, function(err, details) {
                 if (err) {
                     ac.error(new Error("YQL Error"));
                     return;
@@ -58,4 +58,4 @@ YUI.add('FlickrDetail', function(Y) {
 
     };
 
-}, '0.0.1', {requires: ['mojito-intl-addon', 'ModelFlickr'], lang: ['de', 'en-US']});
+}, '0.0.1', {requires: ['mojito-intl-addon', 'mojito-assets-addon', 'mojito-params-addon', 'mojito-models-addon', 'ModelFlickr'], lang: ['de', 'en-US']});

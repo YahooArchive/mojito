@@ -13,7 +13,7 @@
             }
         },
 
-        "dataprovider" : {     
+        "dataprovider" : {
             "acmojitdone1client" : {
                 "group" : "smoke,common,acmojit",
                 "params" : {
@@ -28,6 +28,12 @@
                             "params": {
                                 "value": "#acMojitButton",
                                 "click": true
+                            }
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#ACMojitTest"
                             }
                         },
                         {
@@ -50,6 +56,12 @@
                             "params": {
                                 "value": "#acMojitButton",
                                 "click": true
+                            }
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#ACMojitResult"
                             }
                         },
                         {
@@ -923,6 +935,18 @@
                             "params": {
                                 "value": "#DepCheckParentButton",
                                 "click": true
+                            }
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#myarray"
+                            }
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#myarray"
                             }
                         },
                         {

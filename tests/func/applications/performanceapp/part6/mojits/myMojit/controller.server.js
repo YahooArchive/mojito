@@ -3,11 +3,11 @@
  */
 YUI.add('myMojit', function(Y, NAME) {
 
-    Y.mojito.controller = {
+    Y.namespace('mojito.controllers')[NAME] = {
 
         index: function(ac) {
 
-            ac.models.get('message').get(function(data){
+            ac.models.get('model').get(function(data){
                 ac.done(data);
             });
             
