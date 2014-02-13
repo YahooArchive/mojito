@@ -3,7 +3,7 @@
 */
 YUI.add('myMojitModel', function(Y, NAME) {
 
-    Y.mojito.models.message = {
+    Y.namespace('mojito.models').message = {
 
         get: function(callback) {
 

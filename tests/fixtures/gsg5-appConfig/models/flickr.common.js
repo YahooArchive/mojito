@@ -3,7 +3,7 @@
  */
 YUI.add('ModelFlickr', function(Y) {
 
-    Y.mojito.models.flickr = {
+    Y.namespace('mojito.models').flickr = {
 
         getFlickrImages: function(queryString, start, count, callback) {
             var q;

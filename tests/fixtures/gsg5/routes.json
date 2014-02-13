@@ -13,10 +13,6 @@
             "path": "/flickr",
             "param": "page=1&image=0",
             "call": "flickr.index"
-        },
-        
-        "detail": {
-            
         }
 
     }
