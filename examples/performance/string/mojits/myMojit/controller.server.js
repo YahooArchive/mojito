@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('myMojit', function(Y, NAME) {
+YUI.add('mymojit', function(Y, NAME) {
 
     Y.namespace('mojito.controllers')[NAME] = {
 

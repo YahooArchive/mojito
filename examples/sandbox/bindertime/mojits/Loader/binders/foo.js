@@ -4,12 +4,12 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('LoaderBinderFoo', function(Y, NAME) {
+YUI.add('loader-binder-foo', function(Y, NAME) {
 
 /**
- * The LoaderBinder module.
+ * The loader-binder-foo module.
  *
- * @module LoaderBinder
+ * @module loader-binder-foo
  */
 
     Y.namespace('mojito.binders')[NAME] = {

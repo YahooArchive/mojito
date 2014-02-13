@@ -4,12 +4,12 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('Container', function(Y, NAME) {
+YUI.add('container', function(Y, NAME) {
 
 /**
- * The Container module.
+ * The container module.
  *
- * @module Container
+ * @module container
  */
 
     /**
@@ -33,4 +33,4 @@ YUI.add('Container', function(Y, NAME) {
 
     };
 
-}, '0.0.1', {requires: ['mojito']});
+}, '0.0.1', {requires: ['mojito', 'mojito-composite-addon', 'mojito-assets-addon']});

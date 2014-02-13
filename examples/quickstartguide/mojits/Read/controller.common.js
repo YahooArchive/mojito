@@ -20,7 +20,7 @@ For more info, visit: http://developer.yahoo.com/cocktails/mojito/docs/intro/moj
 Displays guide content in a horizontally flickable scrollview.
 @class ReadController
 **/
-YUI.add('ReadController', function(Y, NAME) {
+YUI.add('read', function(Y, NAME) {
     'use strict';
     var LIB_MD;// Markdown library
 
@@ -151,5 +151,5 @@ YUI.add('ReadController', function(Y, NAME) {
     'mojito-params-addon',
     'mojito-url-addon',
     'mojito-intl-addon',
-    'GuideModel'
+    'guide-model'
 ]});

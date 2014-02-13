@@ -4,18 +4,18 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('ClickLog-tests', function(Y) {
+YUI.add('clicklog-tests', function(Y) {
 
-    var suite = new YUITest.TestSuite('ClickLog-tests'),
+    var suite = new YUITest.TestSuite('clicklog-tests'),
         controller = null,
         A = YUITest.Assert;
     
     suite.add(new YUITest.TestCase({
         
-        name: 'ClickLog user tests',
+        name: 'clicklog user tests',
         
         setUp: function() {
-            controller = Y.mojito.controllers.ClickLog;
+            controller = Y.mojito.controllers["clicklog"];
         },
         tearDown: function() {
             controller = null;
@@ -46,4 +46,4 @@ YUI.add('ClickLog-tests', function(Y) {
     
     YUITest.TestRunner.add(suite);
     
-}, '0.0.1', {requires: ['mojito-test', 'ClickLog']});
+}, '0.0.1', {requires: ['mojito-test', 'clicklog']});

@@ -4,12 +4,12 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('RedChild', function(Y, NAME) {
+YUI.add('redchild', function(Y, NAME) {
 
 /**
- * The RedChild module.
+ * The redchild module.
  *
- * @module RedChild
+ * @module redchild
  */
 
     /**
@@ -32,4 +32,4 @@ YUI.add('RedChild', function(Y, NAME) {
 
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito-config-addon']});

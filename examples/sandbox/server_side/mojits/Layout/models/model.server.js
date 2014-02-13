@@ -4,12 +4,12 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('LayoutModel', function(Y, NAME) {
+YUI.add('layout-model', function(Y, NAME) {
 
 /**
- * The LayoutModel module.
+ * The layout-model module.
  *
- * @module LayoutModel
+ * @module layout-model
  */
 
     /**
@@ -18,7 +18,7 @@ YUI.add('LayoutModel', function(Y, NAME) {
      * @class Model
      * @constructor
      */
-    Y.mojito.models.Layout = {
+    Y.namespace("mojito.models")[NAME]= {
 
         init: function(config) {
             this.config = config;

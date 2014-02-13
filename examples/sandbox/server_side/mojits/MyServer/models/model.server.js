@@ -4,12 +4,12 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('MyServerModel', function(Y, NAME) {
+YUI.add('myserver-model', function(Y, NAME) {
 
 /**
- * The MyServerModel module.
+ * The myserver-model module.
  *
- * @module MyServerModel
+ * @module myserver-model
  */
 
     /**
@@ -18,7 +18,7 @@ YUI.add('MyServerModel', function(Y, NAME) {
      * @class Model
      * @constructor
      */
-    Y.mojito.models.MyServer = {
+    Y.namespace("mojito.models")[NAME] = {
 
         init: function(config) {
             this.config = config;

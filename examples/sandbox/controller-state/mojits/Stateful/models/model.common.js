@@ -4,12 +4,12 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('StatefulModel', function(Y) {
+YUI.add('stateful-model', function(Y) {
 
 /**
- * The StatefulModel module.
+ * The stateful-model module.
  *
- * @module StatefulModel
+ * @module stateful-model
  */
 
     /**

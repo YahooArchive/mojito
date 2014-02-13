@@ -20,7 +20,7 @@ For more info, visit: http://developer.yahoo.com/cocktails/mojito/docs/intro/moj
 /*global YUI*/
 
 
-YUI.add('ReadIndexBinder', function(Y, NAME) {
+YUI.add('read-binder-index', function(Y, NAME) {
 
     Y.namespace('mojito.binders')[NAME] = {
 
