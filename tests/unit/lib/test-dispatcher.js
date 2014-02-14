@@ -185,6 +185,12 @@ YUI().use('test', function (Y) {
                             },
                             log: function () { },
                             mojito: {
+                                hooks: {
+                                    enableHookGroup: function () { },
+                                    hook: function (label, hook, req, res) {
+                                        A.areEqual('AppDispatch', label, 'Y.mojito.hooks.hook() label mismatch');
+                                    }
+                                },
                                 Dispatcher: {
                                     init: function (store) {
                                         return {
@@ -203,9 +209,6 @@ YUI().use('test', function (Y) {
                                             }
                                         };
                                     }
-                                },
-                                hooks: {
-                                    enableHookGroup: function () { }
                                 }
                             }
                         },
