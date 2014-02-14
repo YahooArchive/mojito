@@ -156,41 +156,6 @@ use `Shaker <http://developer.yahoo.com/cocktails/shaker/>`_.
 For production, we recommend using Shaker, especially in the case that your mojits contain 
 language resource bundles.
 
-.. _synthetic_mods-base_resolved:
-
-Base and Resolved Synthetic Modules
-###################################
-
-Synthetic modules can have *base* and *resolved* versions. The **base** synthetic
-modules have the suffix ``-base``, and the **resolved** synthetic modules have the suffix
-``-resolved``. 
-
-In general, the base synthetic modules contain basic metadata that 
-is consumed and processed recursively by the YUI Loader on the client
-to generate the file(s) needed to be loaded when a particular module is used.
-
-The resolved synthetic modules have the expanded metadata, so no 
-process is needed to determine which file(s) need to be loaded when a 
-particular module is used. 
-
-The base synthetic module requires less memory than the resolved synthetic module,
-but requires more CPU power to process because the YUI loader has to recursively
-consume and process metadata. The resolved synthetic module, in contrast, requires 
-more memory but less CPU power because the metadata is expanded.
-See the `resolve <http://yuilibrary.com/yui/docs/api/classes/Loader.html#method_resolve>`_
-method of the `Loader <http://yuilibrary.com/yui/docs/api/classes/Loader.html>`_
-class in the YUI API documentation for more information.
-
-When using resolved synthetic modules, your application is restricted to using 
-YUI Core modules that are required in Mojito or application modules. 
-For example, if the YUI Core modules ``autocomplete-list`` is not required by 
-a binder, controller, module, or any other custom YUI module in your application, 
-Mojito will assume that the ``autocomplete-list`` metadata is not really needed 
-and will not include it in the resolved metadata to keep the size of the 
-expanded metadata as small as possible. This is important if you have integration 
-tests or functional tests that are meant to inject dynamic modules and dependencies, 
-or if you have custom ``Y.use`` statements that are not controlled by Mojito.
-
 .. _synthetic_mods-mult_langs:
 
 Synthetic Modules for Multiple Languages
@@ -209,8 +174,8 @@ Restrictions
 ************
 
 Not all synthetic modules can be customized per language. 
-Only **base** and **resolved** synthetic modules can have language versions. 
-Also, the default synthetic modules, such as ``loader-app``,
+Only **loader-app-base** synthetic module can have language versions. 
+Also, the default synthetic modules ``loader-app-base``,
 always exists, so, if no language is specified, but many language resource bundles 
 exist for a mojit, then the default synthetic module will load the metadata for all of 
 the modules. If an application has multiple mojits each with dozens of language bundles,
@@ -225,132 +190,6 @@ In terms of extending Mojito's functionality, if you create a Resource Store add
 can create new synthetic modules and control the seed generation by piping into 
 `getAppSeedFiles <http://developer.yahoo.com/cocktails/mojito/api/classes/RSAddonYUI.html#method_getAppSeedFiles>`_ 
 method of the `RSAddonYUI Class <http://developer.yahoo.com/cocktails/mojito/api/classes/RSAddonYUI.html>`_. 
-
-.. _seed_configure-optimize_perf:
-
-Performance Optimization
-------------------------
-
-.. _optimize_perf-default:
-
-Default Application Optimization
-################################
-
-In mobile and applications requiring high performance, relying on the YUI Loader to compute 
-and resolve dependencies recursively could drastically affect the
-boot time. For that, Mojito is smart enough to use 
-`Y.Loader->resolve <http://yuilibrary.com/yui/docs/api/classes/Loader.html#method_resolve]>`_
-to expand the loader application metadata, which is considerable larger than the regular 
-metadata computed through ``loader-app-base_{lang_tag}``. 
-
-.. _optimize_perf-seed_size:
-
-Minimize the Size of the Seed File
-##################################
-
-Only include critical modules in the seed. Mojito can load other 
-required modules later.
-
-.. _optimize_perf-synth_mods:
-
-Use Synthetic Modules for YUI Core Modules
-##########################################
-
-Mojito already has default optimization for application metadata, but you
-can use base and synthetic modules to optimize performance for YUI Core modules
-as well.
-
-In the ``application.json`` below, a resolved synthetic module is 
-used to optimize the YUI Core module ``loader-yui3``.
-
-.. code-block:: javascript
-
-   [
-     {
-       "settings": [ "master" ],
-       "yui": {
-         "config": {
-           "seed": [
-             "yui-base",
-             "loader-base",
-             "loader-yui3-resolved",
-             "loader-app",
-             "loader-app-resolved"
-           ]
-         }
-       }
-     }
-   ] 
-
-.. _optimize_perf-base_synth:
-
-Use Base Synthetic Modules to Reduce Latency and Memory
-#######################################################
-
-The base synthetic modules are small, making them ideal for applications that 
-may have connectivity issues. You should also take into consideration that
-your application will require more CPU power when using base synthetic modules.
-For desktop applications, when you have more CPU power, you should use 
-base synthetic modules.  
-
-.. _optimize_perf-resolved_synth:
-
-Use Resolved Synthetic Modules to Use Less CPU Power
-####################################################
-
-Resolved synthetic modules require less CPU power because they do not require recursive 
-computation as the computation was already done at the server side. The size of the 
-resolved synthetic module in memory, however, is much larger than
-the base synthetic module. For mobile devices, which have less CPU power, you
-should use resolved synthetic modules. 
-
-.. _optimize_perf-contexts:
-
-Use Contexts to Customize Seed to Runtime Environment
-#####################################################
-
-Contexts allow you to have different configurations for different runtime environments.
-As we have discussed, base synthetic modules are better suited for desktop applications
-because of the high demand for CPU power, while resolved synthetic modules are better
-suited for mobile devices that do not have as much CPU power. With context configurations,
-you can configure the runtime to use the better suited synthetic module.
-
-In this example ``application.json``, the context ``device:iphone`` uses
-a resolved synthetic module that expands metadata to reduce the CPU power
-needed by iPhone clients.
-
-.. code-block:: javascript
-
-   [
-     {
-       "settings": [ "master" ],
-       "yui": {
-         "config": {
-           "seed": [
-             "yui-base",
-             "loader-base",
-             "loader-yui3",
-             "loader-app"
-           ]
-         }
-       }
-     },
-     {
-       "settings": [ "device:iphone" ],
-       "yui": {
-         "config": {
-           "seed": [
-             "yui-base",
-             "loader-base",
-             "loader-yui3",
-             "loader-app"
-           ]
-         }
-       }
-     }
-   ]
-
-
 
 .. _yui-getting_to_app:
 
