@@ -58,6 +58,9 @@ Deprecations, Removals
   Applications that rely on this API should familiaze with the `express-map`
   package by querying the route object by `name` or `path`.
 
+* Expanded metadata is now removed. This means we will not longer support
+  synthetic modules that were expanded by default, e.g.: `loader-yui3-base`, `loader-yui3-expanded` and `loader-app-resolved`. If you are using any of those 3 entries in the YUI configuration, you should use `loader-app` and loader-app-base` as your seed modules. In fact we recommend to not customize `yui.config.seed` in your `application.json`.
+
 Features
 --------
 
