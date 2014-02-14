@@ -15,7 +15,7 @@ var debug = require('debug')('app'),
     app;
 
 app = express();
-
+mojito.extend(app);
 app.use(mojito.middleware());
 app.mojito.attachRoutes();
 app.post('/tunnel', mojito.tunnelMiddleware());
