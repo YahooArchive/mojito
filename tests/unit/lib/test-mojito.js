@@ -104,7 +104,7 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
             A.isTrue(app === mojito._app, 'app mismatch');
             OA.areEqual({}, mojito._config, '_config mismatch');
             OA.areEqual({runtime: 'server'}, mojito._options.context, 'context mismatch');
-            A.isTrue(mojito._options.mojitoRoot.indexOf('/mojito/lib') > -1, 'incorrect mojito install location');
+            A.isString(mojito._options.mojitoRoot, 'incorrect mojito install location');
             A.isTrue(mojito === app.mojito, 'mojito instance mismatch');
         },
 
