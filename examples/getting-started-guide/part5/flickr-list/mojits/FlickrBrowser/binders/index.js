@@ -4,12 +4,12 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('FlickrBrowserBinderIndex', function (Y, NAME) {
+YUI.add('flickrbrowser-binder-index', function (Y, NAME) {
     "use strict";
 /**
- * The FlickrBrowserBinderIndex module.
+ * The flickrbrowser-binder-index module.
  *
- * @module FlickrBrowserBinderIndex
+ * @module flickrbrowser-binder-index
  */
 
     /**

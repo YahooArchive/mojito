@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 /*jslint plusplus: true */
-YUI.add('PagedFlickrModel', function (Y, NAME) {
+YUI.add('pagedflickr-model', function (Y, NAME) {
     "use strict";
     var API_KEY = '84921e87fb8f2fc338c3ff9bf51a412e';
     function buildFlickrUrlFromRecord(record) {

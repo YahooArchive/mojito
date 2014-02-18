@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('PagedFlickr', function (Y, NAME) {
+YUI.add('pagedflickr', function (Y, NAME) {
 
     "use strict";
     var PAGESIZE = 9;
@@ -32,7 +32,7 @@ YUI.add('PagedFlickr', function (Y, NAME) {
             // parameter is base-0.
             start = (page - 1) * PAGESIZE;
 
-            ac.models.get('PagedFlickrModel').getFlickrImages('mojito', start, PAGESIZE, function(err, images) {
+            ac.models.get('model').getFlickrImages('mojito', start, PAGESIZE, function(err, images) {
 
                 var dateString, data;
 
@@ -65,5 +65,5 @@ YUI.add('PagedFlickr', function (Y, NAME) {
     'mojito-params-addon',
     'mojito-url-addon',
     'mojito-util',
-    'PagedFlickrModel'
+    'pagedflickr-model'
 ], lang: ['de', 'en-US']});

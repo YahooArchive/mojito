@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('PagedFlickrBinderIndex', function (Y, NAME) {
+YUI.add('pagedflickr-binder-index', function (Y, NAME) {
     "use strict";
 
 /**

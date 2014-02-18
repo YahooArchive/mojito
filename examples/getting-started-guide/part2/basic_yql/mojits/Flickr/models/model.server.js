@@ -5,7 +5,7 @@
  */
 
 /*jslint plusplus:true */
-YUI.add('FlickrModel', function (Y, NAME) {
+YUI.add('flickr-model', function (Y, NAME) {
     "use strict";
 
     var API_KEY = '84921e87fb8f2fc338c3ff9bf51a412e';
