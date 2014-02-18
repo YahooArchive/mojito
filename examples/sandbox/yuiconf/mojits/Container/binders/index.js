@@ -4,12 +4,12 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('ContainerBinderIndex', function(Y, NAME) {
+YUI.add('container-binder-index', function(Y, NAME) {
 
 /**
- * The ContainerBinderIndex module.
+ * The container-binder-index module.
  *
- * @module ContainerBinderIndex
+ * @module container-binder-index
  */
 
     /**

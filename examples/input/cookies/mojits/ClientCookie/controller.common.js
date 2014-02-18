@@ -4,12 +4,12 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('ClientCookie', function(Y, NAME) {
+YUI.add('clientcookie', function(Y, NAME) {
 
 /**
- * The ClientCookie module.
+ * The clientcookie module.
  *
- * @module ClientCookie
+ * @module clientcookie
  */
 
     /**

@@ -9,7 +9,7 @@
 /*global YUI*/
 
 
-YUI.add('ReadIndexBinder', function(Y, NAME) {
+YUI.add('read-binder-index', function(Y, NAME) {
 
     Y.namespace('mojito.binders')[NAME] = {
 

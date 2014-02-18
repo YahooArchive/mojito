@@ -8,9 +8,9 @@ YUI.add('pagedflickr-binder-index', function (Y, NAME) {
     "use strict";
 
 /**
- * The PagedFlickrBinder module.
+ * The pagedflickr-binder-index module.
  *
- * @module PagedFlickrBinder
+ * @module pagedflickr-binder-index
  */
 
     /**

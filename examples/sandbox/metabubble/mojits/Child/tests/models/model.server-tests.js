@@ -4,9 +4,9 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('ChildModel-tests', function(Y) {
+YUI.add('child-model-tests', function(Y) {
     
-    var suite = new YUITest.TestSuite('ChildModel-tests'),
+    var suite = new YUITest.TestSuite('child-model-tests'),
         model = null,
         A = YUITest.Assert;
     
@@ -15,7 +15,7 @@ YUI.add('ChildModel-tests', function(Y) {
         name: 'Child model user tests',
         
         setUp: function() {
-            model = Y.mojito.models.Child;
+            model = Y.mojito.models["child-model"];
         },
         tearDown: function() {
             model = null;
@@ -30,4 +30,4 @@ YUI.add('ChildModel-tests', function(Y) {
     
     YUITest.TestRunner.add(suite);
     
-}, '0.0.1', {requires: ['mojito-test', 'ChildModel']});
+}, '0.0.1', {requires: ['mojito-test', 'child-model']});

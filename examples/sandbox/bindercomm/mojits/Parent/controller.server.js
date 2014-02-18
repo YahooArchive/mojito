@@ -4,12 +4,12 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('Parent', function(Y, NAME) {
+YUI.add('parent', function(Y, NAME) {
 
 /**
- * The Parent module.
+ * The parent module.
  *
- * @module Parent
+ * @module parent
  */
 
     /**
@@ -74,4 +74,4 @@ YUI.add('Parent', function(Y, NAME) {
 
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito-composite-addon', 'mojito-assets-addon']});

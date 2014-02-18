@@ -4,9 +4,9 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('ParentModel', function(Y, NAME) {
+YUI.add('parent-model', function(Y, NAME) {
 
-    Y.mojito.models.Parent = {
+    Y.namespace("mojito.models")[NAME] = {
 
         init: function(config) {
             this.config = config;

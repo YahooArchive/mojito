@@ -4,9 +4,6 @@
 * See the accompanying LICENSE file for terms.
 */
 
-
-/*jslint node:true*/
-
 'use strict';
 
 var debug = require('debug')('app'),
@@ -25,6 +22,16 @@ app.post('/tunnel', libmojito.tunnelMiddleware());
 app.get('/status', function (req, res) {
     res.send('200 OK');
 });
+app.get('/', mojito.dispatch('server.pitch'));
+
+// Example usage on how to execute anonymous mojit.
+app.get('/:mojitType/:mojitAction', function (req, res, next) {
+    var type = req.params.mojitType,
+        action = req.params.mojitAction;
+
+    mojito.dispatch(type + '.' + action)(req,res,next);
+});
+
 
 app.listen(app.get('port'), function () {
     debug('Server listening on port ' + app.get('port') + ' ' +

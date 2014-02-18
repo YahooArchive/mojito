@@ -4,12 +4,12 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('LazyPantsBinderHello', function(Y, NAME) {
+YUI.add('lazypants-binder-hello', function(Y, NAME) {
 
 /**
- * The LazyPantsBinderHello module.
+ * The lazypants-binder-hello module.
  *
- * @module LazyPantsBinderHello
+ * @module lazypants-binder-hello
  */
 
     /**

@@ -26,7 +26,7 @@ For more info, visit: http://developer.yahoo.com/cocktails/mojito/docs/topics/mo
 /*global YUI, YUITest*/
 
 
-YUI.add('ReadController-tests', function(Y, NAME) {
+YUI.add('read-tests', function(Y, NAME) {
     'use strict';
 
     var suite = new YUITest.TestSuite(NAME),
@@ -38,13 +38,13 @@ YUI.add('ReadController-tests', function(Y, NAME) {
 
     suite.add(new YUITest.TestCase({
 
-        name: 'ReadController tests',
+        name: 'read tests',
 
         // setup function is always called before each test runs
         setUp: function() {
             A.isNull(controller);
             // Fetches the controller we are going to test
-            controller = Y.mojito.controllers.ReadController;
+            controller = Y.mojito.controllers["read"];
             A.isNotNull(controller);
         },
 
@@ -70,7 +70,7 @@ YUI.add('ReadController-tests', function(Y, NAME) {
                     // Declares the addons will be used
                     addons: ["url"],
                     // Declares the models will be used
-                    models: ['GuideModel']
+                    models: ['guide']
                 }),
                 // Initializes other input arguments for test
                 guidemeta = {
@@ -111,7 +111,7 @@ YUI.add('ReadController-tests', function(Y, NAME) {
             };
 
             // Sets up expectation objects with model
-            ac.models.GuideModel.expect({
+            ac.models["guide"].expect({
                 method: "getGuide",
                 args: [M.Value.Object, M.Value.Function],
                 run: function(guidemeta, cb){
@@ -162,7 +162,7 @@ YUI.add('ReadController-tests', function(Y, NAME) {
                 // Initializes an ActionContext mock object
                 ac = new MA({
                     // Declares the models will be used
-                    models: ['GuideModel']
+                    models: ['guide']
                 }),
                 // Initializes other input arguments for test
                 guidemeta = {
@@ -188,7 +188,7 @@ YUI.add('ReadController-tests', function(Y, NAME) {
             };
 
             // Sets up expectation objects with model
-            ac.models.GuideModel.expect({
+            ac.models["guide"].expect({
                 method: "getGuide",
                 args: [M.Value.Object, M.Value.Function],
                 run: function(guidemeta, cb){
@@ -285,7 +285,7 @@ YUI.add('ReadController-tests', function(Y, NAME) {
                     // Declares the addons will be used
                     addons: ['params', "url"],
                     // Declares the models will be used
-                    models: ['GuideModel']
+                    models: ['guide']
                 });
 
             // Sets up expectation objects with addon
@@ -320,7 +320,7 @@ YUI.add('ReadController-tests', function(Y, NAME) {
             };
 
             // Sets up expectation objects with model
-            ac.models.GuideModel.expect({
+            ac.models["guide"].expect({
                 method: "getGuide",
                 args: [M.Value.Object, M.Value.Function],
                 run: function(guidemeta, cb){
@@ -371,7 +371,7 @@ YUI.add('ReadController-tests', function(Y, NAME) {
                     // Declares the addons will be used
                     addons: ['params', "intl"],
                     // Declares the models will be used
-                    models: ['GuideModel']
+                    models: ['guide']
                 });
 
             // Sets up expectation objects with addon
@@ -399,7 +399,7 @@ YUI.add('ReadController-tests', function(Y, NAME) {
             };
 
             // Sets up expectation objects with model
-            ac.models.GuideModel.expect({
+            ac.models["guide"].expect({
                 method: "getGuide",
                 args: [M.Value.Object, M.Value.Function],
                 run: function(guidemeta, cb){
@@ -432,5 +432,5 @@ YUI.add('ReadController-tests', function(Y, NAME) {
 
 }, '0.0.1', {requires: [
     'mojito-test',
-    'ReadController'
+    'read'
 ]});

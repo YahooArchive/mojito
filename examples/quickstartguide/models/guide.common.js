@@ -21,7 +21,7 @@ Fetches guide file names, titles, and contents via accessing file system.
 Used by @Shelf and @Read mojits.
 @class GuideModel
 **/
-YUI.add('GuideModel', function (Y, NAME) {
+YUI.add('guide-model', function (Y, NAME) {
     'use strict';
     var LIB_PATH,// Nodejs path library
         LIB_FS,// Nodejs file system library
@@ -98,8 +98,8 @@ YUI.add('GuideModel', function (Y, NAME) {
                 if (err) {
                     throw {
                         // Localize program generated text. See .js files under lang/
-                        name: Y.Intl.get('GuideModel').READ_DIR_ERROR_NAME,
-                        message: Y.Intl.get('GuideModel').READ_DIR_ERROR_MESSAGE
+                        name: Y.Intl.get('guide-model').READ_DIR_ERROR_NAME,
+                        message: Y.Intl.get('guide-model').READ_DIR_ERROR_MESSAGE
                     };
                 }
                 // Sends back result

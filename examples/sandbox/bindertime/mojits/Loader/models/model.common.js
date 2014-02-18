@@ -4,12 +4,12 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('LoaderModel', function(Y, NAME) {
+YUI.add('loader-model', function(Y, NAME) {
 
 /**
- * The LoaderModel module.
+ * The loader-model module.
  *
- * @module LoaderModel
+ * @module loader-model
  */
 
     /**
@@ -18,7 +18,7 @@ YUI.add('LoaderModel', function(Y, NAME) {
      * @class Model
      * @constructor
      */
-    Y.mojito.models.Loader = {
+     Y.namespace('mojito.models')[NAME] = {
 
         init: function(config) {
             this.config = config;

@@ -11,9 +11,9 @@ YUI.add('flickr-model', function (Y, NAME) {
     var API_KEY = '84921e87fb8f2fc338c3ff9bf51a412e';
 
 /**
- * The FlickrModel module.
+ * The flickr-model module.
  *
- * @module FlickrModel
+ * @module flickr-model
  */
 
     function buildFlickrUrlFromRecord(record) {

@@ -7,7 +7,7 @@
 /*global YUI*/
 
 
-YUI.add('ShelfController', function (Y, NAME) {
+YUI.add('shelf', function (Y, NAME) {
     'use strict';
 
     /**

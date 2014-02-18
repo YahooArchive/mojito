@@ -4,14 +4,14 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('ClickLogBinderIndex', function(Y, NAME) {
+YUI.add('clicklog-binder-index', function(Y, NAME) {
 
 /**
- * The ClickLog index binder.
+ * The clicklog-binder-index index binder.
  * This binder looks for clicks on the clicker and uses mojitProxy.render() to
  * create UI about each click
  *
- * @module ClickLogBinderIndex
+ * @module clicklog-binder-index
  */
 
     /**

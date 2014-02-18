@@ -4,21 +4,21 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('ContainerModelFoo', function(Y) {
+YUI.add('lazypants-model', function(Y, NAME) {
 
 /**
- * The ContainerModelFoo module.
+ * The lazypants-model module.
  *
- * @module Container
+ * @module LazyPants
  */
 
     /**
-     * Constructor for the ContainerModelFoo class.
+     * Constructor for the lazypants-model class.
      *
-     * @class ContainerModelFoo
+     * @class lazypants-model
      * @constructor
      */
-    Y.mojito.models.ContainerModelFoo = {
+    Y.namespace("mojito.models")[NAME] = {
 
         init: function(config) {
             this.config = config;
