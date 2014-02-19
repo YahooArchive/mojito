@@ -26,7 +26,9 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
         realListen,
         listened,
         server,
-        app;
+        app,
+        Mojito,
+        ExpressFn;
 
     // workaround for issue with arrow when isatty===false
     process.stdout.isTTY = true;
@@ -39,12 +41,14 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
             // Save original server type so we can mock it in tests.
             // realServer = Mojito.Server;
 
-            function expressFn() {}
-            expressFn.prototype = {
+            ExpressFn = function() {};
+            ExpressFn.prototype = {
                 param: function () {},
                 set: function () {}
             };
-            app = new expressFn();
+            app = new ExpressFn();
+
+            Mojito = libmojito.extend(new ExpressFn())['@mojito'];
 
             storeMock = {
                 createStore: function () {
@@ -109,20 +113,116 @@ YUI().use('mojito', 'mojito-test-extra', 'test', function (Y) {
         },
 
         'test _init()': function () {
+            var configureAppInstanceFn,
+                createYUIInstanceFn,
+                configureAppInstanceWasCalled = false,
+                createYUIInstanceWasCalled = false;
+
+            createYUIInstanceFn = Mojito.prototype._createYUIInstance;
+            configureAppInstanceFn = Mojito.prototype._configureAppInstance;
+
+            Mojito.prototype._createYUIInstance = function (options, appConfig) {
+                createYUIInstanceWasCalled = true;
+                A.areEqual(process.cwd(),
+                           options.root,
+                           'wrong options.root');
+                return {
+                    config: {
+                        loglevel: 'debug'
+                    },
+                    use: function () { },
+                    on: function () { },
+                    applyConfig: function () { }
+                };
+            };
+            Mojito.prototype._configureAppInstance = function (app, store, options, appConfig) {
+                configureAppInstanceWasCalled = true;
+                A.areEqual(process.cwd(),
+                           options.root,
+                           'wrong options.root');
+            };
+
+            // cheat
+            app = new ExpressFn();
             libmojito.extend(app);
             A.isFunction(app.mojito._init);
+            A.areEqual(true, configureAppInstanceWasCalled, '_configureAppInstance was not called');
+            A.areEqual(true, createYUIInstanceWasCalled, '_createYUIInstance was not called');
+
+            Mojito.prototype._configureAppInstance = configureAppInstanceFn;
+            Mojito.prototype._createYUIInstance = createYUIInstanceFn;
         },
         'test _configureYUI()': function () {
             libmojito.extend(app);
             A.isFunction(app.mojito._configureYUI);
         },
         'test _createYUIInstance': function () {
-            libmojito.extend(app);
-            A.isFunction(app.mojito._createYUIInstance);
+            var m,
+                options,
+                appConfig,
+                YY;
+
+            appConfig = {
+                yui: {
+                    config: {
+                        combine: false, // verify those are deleted
+                        base: '/foo' // verify those are deleted
+                    }
+                },
+                perf: { foo: 'bar' }
+            };
+            options = {
+                Y: {
+                    applyConfig: function () { },
+                    use: function () {
+                        var modules = Array.prototype.slice.call(arguments);
+                        // console.error(JSON.stringify(modules));
+                        A.areEqual(2, modules.length, 'missing modules passed to Y.use()');
+                    }
+                }
+            };
+
+            m = new Mojito(app, options);
+            YY = m._createYUIInstance(options, appConfig);
+            // console.log(appConfig);
+            A.isUndefined(appConfig.combine, 'appConfig.combine should be deleted');
+            A.isUndefined(appConfig.base, 'appConfig.base should be deleted');
         },
         'test _configureAppInstance': function () {
-            libmojito.extend(app);
-            A.isFunction(app.mojito._configureAppInstance);
+            var m,
+                options,
+                configureYUI;
+
+            configureYUI = Mojito.prototype._configureYUI;
+            Mojito.prototype._configureYUI = function (Y, store) {
+                return ['foo', 'bar'];
+            };
+
+            options = {
+                Y: {
+                    applyConfig: function () { },
+                    use: function () {
+                        var modules = Array.prototype.slice.call(arguments);
+                        // console.error(JSON.stringify(modules));
+                        A.areEqual(2, modules.length, 'missing modules passed to Y.use()');
+                    }
+                }
+            };
+
+            m = new Mojito(app, options);
+            m._configureAppInstance(app, storeMock, options, {});
+
+            A.isNotUndefined(app.mojito.store, 'missing app.mojito.store');
+            A.isNotUndefined(app.mojito.Y, 'missing app.mojito.Y');
+            A.isNotUndefined(app.mojito.context, 'missing app.mojito.context');
+            A.isNotUndefined(app.mojito.options, 'missing app.mojito.options');
+            A.isNotUndefined(app.mojito._app, 'missing app.mojito._app');
+            A.isNotUndefined(app.mojito.attachRoutes, 'missing app.mojito.attachRoutes');
+            A.areEqual(true,
+                       typeof app.mojito.Y.use === 'function',
+                       'app.mojito.Y.use should be a function');
+
+            Mojito.prototype._configureYUI = configureYUI;
         }
 
         /*
