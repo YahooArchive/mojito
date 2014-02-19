@@ -24,12 +24,7 @@ YUI().use('test', function (Y) {
         'setUp': function () {
             libmiddleware = require('../../../lib/middleware');
 
-            req = {
-                app: {
-                    mojito: {
-                    }
-                }
-            };
+            req = {};
             res = {};
             next = function () {};
         },
@@ -60,47 +55,6 @@ YUI().use('test', function (Y) {
             var midFn = libmiddleware.middleware();
 
             A.isFunction(midFn);
-        },
-
-        // verify that :
-        // - "mojito-*" named middleware export a function that returns a
-        //   middleware
-        // - otherwise should export middleware function
-        'test middleware() invocation': function () {
-            var midFn = libmiddleware.middleware(),
-                count = 0;
-
-            req.app.mojito = {
-                Y: {
-                    log: function () {}
-                },
-                store: {
-                    getStaticAppConfig: function () {
-                        return {
-                            middleware: [
-                                'mojito-foo.js',
-                                'foo.js'
-                            ]
-                        };
-                    }
-                },
-                options: {
-                    root: libpath.resolve(__dirname, '../../fixtures', 'middleware')
-                },
-                _options: {
-                    context: { foo: 'bar' }
-                }
-            };
-
-            next = function () { count = count + 1; };
-
-            midFn(req, res, next);
-
-            A.areEqual(1, count, 'next() should be invoked once');
-            A.isNotUndefined(res.midConfig.Y);
-            A.isNotUndefined(res.midConfig.store);
-            A.isNotUndefined(res.midConfig.logger);
-            A.isNotUndefined(res.midConfig.context);
         }
 
     }));
