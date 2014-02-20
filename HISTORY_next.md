@@ -34,9 +34,19 @@ Deprecations, Removals
 
 * Middleware configuration is no longer supported via `application.json`.
   Applications can register their middleware using the Express API. To enable
-  Mojito middleware, use the following:
+  Mojito default list of middleware, use the following:
 
       app.use(libmojito.middleware());
+
+  If you want to have more granular control, use the following:
+
+      app.use(libmojito.middleware['mojito-handler-static']());
+      app.use(libmojito.middleware['mojito-parser-body']());
+      app.use(libmojito.middleware['mojito-parser-cookies']());
+      app.use(myCustomContextualizerMiddleware());
+      app.use(libmojito.middleware['mojito-contextualizer']());
+      app.use(libmojito.middleware['mojito-handler-tunnel']());
+      app.use(anotherCustomMiddleware());
 
 * `routes.json` configuration is no longer loaded by default. To tell Mojito to
   do so, use the following:
