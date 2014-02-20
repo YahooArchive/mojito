@@ -226,59 +226,78 @@ Introduction
 Middleware is code that can handle (or modify) the HTTP request in the server. 
 Because Mojito middleware is based on the HTTP middleware 
 `Connect <http://senchalabs.github.com/connect/>`_,  the code must follow 
-the Connect API. Also, because each piece of middleware is a Node.js module, it 
-should use ``module.exports`` to create a function to handle incoming requests.
+the Connect API.
 
 .. _extending_middleware-configure:
 
 Configuring Middleware
 ----------------------
 
-To use middleware, the path to its code must be listed in the ``middleware`` 
-array in ``application.json``. The path can be marked as relative to the 
-application by prefixing it with "./".
+Mojito ships with a default list of middleware to facilitate the use of the
+mojito dispatcher. These middleware are responsible for augmenting the request
+object for dispatcher to function, or just simply giving access to the RPC
+tunnel or static assets. Here is the default list in order:
 
 .. code-block:: javascript
 
    [
-     {
-       "settings": [ "master" ],
-       "middleware": [
-         "./middleware/static.js"
-       ],
-       "specs": {
-         "hello": {
-           "type": "Hello"
-         }
-       }
-     }
+      'mojito-handler-static',
+      'mojito-parser-body',
+      'mojito-parser-cookies',
+      'mojito-contextualizer',
+      'mojito-handler-tunnel'
    ]
 
-.. _extending_middleware-location:
+Mojito also provides a sugar method to use them in your ``Express`` application
+through ``app.use()``, just like any traditinal ``Connect`` middleware. This is
+the recommended way of using the default mojito middleware:
 
-Location of Middleware
-----------------------
+.. code-block:: javascript
 
-We suggest that middleware be located in the directory ``{app_dir}/middleware/``, 
-but this is only a convention and not required. The name of the file is not important.
+    var express = require('express'),
+        libmojito = require('mojito'),
+        app;
+
+    app = express();
+    libmojito.extend(app);
+    app.use(libmojito.middleware());
+
+By calling ``libmojito.middleware()``, your express application will execute all
+default mojito middleware in the right order.
 
 .. _extending_middleware-example:
 
 Example
 -------
 
-The simple example below of middleware intercepts an HTTP request and lowercases 
-URLs containing the string "module_" before the URLs are received by the server.
+If the default list of mojito middleware does not fit your needs, you can use
+each individual middleware to provide a custom order and a custom organization,
+the following is an example of the mix-in between default mojito middleware and
+application specific middleware:
 
 .. code-block:: javascript
 
-   module.exports = function (req, res, next) {
-     if (req.url.indexOf('module_') > -1) {
-       req.url = req.url.toLowerCase();
-     }
-     next();
-   };
+    var express = require('express'),
+        libmojito = require('mojito'),
+        app;
 
+    app = express();
+    libmojito.extend(app);
+    app.use(function (req, res, next) {
+      // inline middleware to intercept an HTTP request and lowercases
+      // URLs containing the string "module_"
+      if (req.url.indexOf('module_') > -1) {
+        req.url = req.url.toLowerCase();
+      }
+      next();
+    });
+    app.use(libmojito.middleware['mojito-handler-static']());
+    app.use(libmojito.middleware['mojito-parser-body']());
+    app.use(libmojito.middleware['mojito-parser-cookies']());
+    app.use(libmojito.middleware['mojito-contextualizer']());
+    app.use(customContextualizerMiddleware());
+    app.use(libmojito.middleware['mojito-handler-tunnel']());
+    app.use(anotherCustomMiddleware());
 
 .. _mojito_extending-libraries:
 

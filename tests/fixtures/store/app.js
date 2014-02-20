@@ -14,7 +14,6 @@ libmojito.extend(app);
 
 app.use(libmojito.middleware());
 app.mojito.attachRoutes();
-app.post('/tunnel', libmojito.tunnelMiddleware());
 
 app.get('/status', function (req, res) {
     res.send('200 OK');

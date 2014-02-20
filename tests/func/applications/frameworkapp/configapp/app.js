@@ -21,7 +21,6 @@ libmojito.extend(app);
 
 app.use(libmojito.middleware());
 app.mojito.attachRoutes();
-app.post('/tunnel', libmojito.tunnelMiddleware());
 
 dispatcherMiddleware = libmojito.dispatch('{type}.{action}');
 app.get('/:type/:action', dispatcherMiddleware);

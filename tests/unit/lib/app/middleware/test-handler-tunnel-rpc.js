@@ -13,20 +13,25 @@ YUI().use('mojito-test-extra', 'test', function (Y) {
     var A  = Y.Assert,
         AA = Y.ArrayAssert,
         OA = Y.ObjectAssert,
-
-        factory = require(Y.MOJITO_DIR + 'lib/app/middleware/mojito-handler-tunnel-rpc'),
-        expandedContext = null,
+        mockery = require('mockery'),
+        factory,
+        dispatcher,
+        expandedContext,
         req,
         nextCallCount,
         middleware,
         store,
         config;
 
+    mockery.resetCache();
 
     Y.Test.Runner.add(new Y.Test.Case({
         name: 'tunnel handler rpc tests',
 
         setUp: function () {
+            dispatcher = require(Y.MOJITO_DIR + 'lib/dispatcher');
+            factory = require(Y.MOJITO_DIR + 'lib/app/middleware/mojito-handler-tunnel-rpc');
+            expandedContext = null;
             nextCallCount = 0;
 
             store = {
@@ -60,6 +65,7 @@ YUI().use('mojito-test-extra', 'test', function (Y) {
         },
 
         tearDown: function () {
+            mockery.resetCache();
             store           = null;
             config          = null;
             nextCallCount   = null;
@@ -68,6 +74,9 @@ YUI().use('mojito-test-extra', 'test', function (Y) {
         },
 
         'handler should exit early if not an rpc request': function () {
+            dispatcher.handleRequest = function () {
+                throw new Error('this middleware should call next() instead');
+            };
             req._tunnel.rpcReq = null;
 
             middleware = factory();
@@ -80,9 +89,12 @@ YUI().use('mojito-test-extra', 'test', function (Y) {
         },
 
         'handler should override execution context to "server"': function () {
+            dispatcher.handleRequest = function () {
+                nextCallCount += 1;
+            };
             middleware = factory();
             middleware(req, null, function () {
-                nextCallCount += 1;
+                throw new Error('this middleware should be final, and should not call next()');
             });
 
             A.areSame(1, nextCallCount, 'next() handler should have been called');
@@ -90,11 +102,14 @@ YUI().use('mojito-test-extra', 'test', function (Y) {
         },
 
         'handler should set execution context to "server"': function () {
+            dispatcher.handleRequest = function () {
+                nextCallCount += 1;
+            };
             req.body.context.runtime = null;
 
             middleware = factory();
             middleware(req, null, function () {
-                nextCallCount += 1;
+                throw new Error('this middleware should be final, and should not call next()');
             });
 
             A.areSame(1, nextCallCount, 'next() handler should have been called');

@@ -20,7 +20,6 @@ libmojito.extend(app);
 
 app.use(libmojito.middleware());
 app.mojito.attachRoutes();
-app.post('/tunnel', libmojito.tunnelMiddleware());
 
 app.get('/:type/:action', function (req, res, next) {
     libmojito.dispatch(req.params.type + '.' + req.params.action)(req, res, next);

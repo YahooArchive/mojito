@@ -20,8 +20,6 @@ libmojito.extend(app);
 
 app.use(libmojito.middleware());
 app.mojito.attachRoutes();
-app.post('/tunnel', libmojito.tunnelMiddleware());
-
 
 // Example usage on how to execute anonymous mojit. 
 app.get('/:mojitType/:mojitAction', function (req, res, next) {

@@ -5,7 +5,6 @@
             "cache": false,
             "forceUpdate": true
         },
-        "middleware": ["middleware/mojito-contextualizer.js"],
         "specs": {
             "frame": {
                 "type": "HTMLFrameMojit",
@@ -18,5 +17,8 @@
             }
         }
     },
-    { "settings": [ "environment:development" ], "selector": "mocked" }
+    {
+        "settings": [ "environment:development" ],
+        "selector": "mocked"
+    }
 ]
