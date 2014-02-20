@@ -20,7 +20,6 @@ libmojito.extend(app);
 
 app.use(libmojito.middleware());
 app.mojito.attachRoutes();
-app.post('/tunnel', libmojito.tunnelMiddleware());
 
 // flickr5
 app.get('/flickr5', function (req, res, next) {

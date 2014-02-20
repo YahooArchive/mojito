@@ -20,7 +20,6 @@ libmojito.extend(app);
 
 app.use(libmojito.middleware());
 app.mojito.attachRoutes();
-app.post('/tunnel', libmojito.tunnelMiddleware());
 
 // This shows an example how to setup route params for specific paths
 // Previously, this was done via `routes.json` using the `params` property.

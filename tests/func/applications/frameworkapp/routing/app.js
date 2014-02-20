@@ -21,8 +21,6 @@ libmojito.extend(app);
 
 app.use(libmojito.middleware());
 app.mojito.attachRoutes();
-app.post('/tunnel', libmojito.tunnelMiddleware());
-
 
 // "_any_mojit_particular_action": {
 //     "verbs": ["get"],
