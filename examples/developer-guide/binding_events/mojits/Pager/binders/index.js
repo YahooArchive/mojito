@@ -97,7 +97,13 @@ YUI.add('pager-binder-index', function (Y, NAME) {
                             thatNode.all('#master ul li a').on('mouseout', showOverlay);
                         };
                     event.preventDefault();
-                    self.mojitProxy.invoke('index', { params: {page: page} }, updateDOM);
+                    self.mojitProxy.invoke('index', {
+                        params: {
+                            url: {
+                                page: page
+                            }
+                        },
+                    }, updateDOM);
                 };
             // Bind all the image links to showOverlay
             thatNode.all('#master ul li a').on('mouseover', showOverlay);
