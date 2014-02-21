@@ -43,7 +43,7 @@
         "npm": ">1.0"
     },
     "peerDependencies": {
-        "express": "3.x"
+        "express": "3.4.1"
     },
     "devDependencies": {
         "async": "*",
