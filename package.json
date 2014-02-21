@@ -42,8 +42,6 @@
         "node": ">0.6",
         "npm": ">1.0"
     },
-    "peerDependencies": {
-    },
     "devDependencies": {
         "async": "*",
         "benchmark": "1.x",
