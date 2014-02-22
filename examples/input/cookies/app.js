@@ -16,7 +16,7 @@ app.set('port', process.env.PORT || 8666);
 libmojito.extend(app);
 
 app.use(libmojito.middleware());
-app.mojito.attachRoutes();
+app.libmojito.attachRoutes();
 app.post('/tunnel', libmojito.tunnelMiddleware());
 
 app.get('/status', function (req, res) {
@@ -38,3 +38,4 @@ app.listen(app.get('port'), function () {
                'in ' + app.get('env') + ' mode');
 });
 module.exports = app;
+

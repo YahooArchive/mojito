@@ -12,6 +12,7 @@
 var debug = require('debug')('app'),
     express = require('express'),
     libmojito = require('../../../'),
+    contextualizer_middleware = require('./middleware/mojito-contextualizer'),
     app;
 
 app = express();
@@ -19,6 +20,7 @@ app.set('port', process.env.PORT || 8666);
 libmojito.extend(app);
 
 app.use(libmojito.middleware());
+app.use(contextualizer_middleware());
 app.mojito.attachRoutes();
 app.post('/tunnel', libmojito.tunnelMiddleware());
 
@@ -31,3 +33,4 @@ app.listen(app.get('port'), function () {
                'in ' + app.get('env') + ' mode');
 });
 module.exports = app;
+

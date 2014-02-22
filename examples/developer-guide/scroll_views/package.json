@@ -13,9 +13,12 @@
         "start": "mojito start"
     },
     "dependencies": {
-        "mojito": ">= 0.8.0"
+        "debug": "*",
+        "mojito": "~0.9.0"
     },
-    "devDependencies": {},
+    "devDependencies": {
+        "mojito-cli": ">= 0.2.0"
+    },
     "engines": {
         "node": "*"
     }

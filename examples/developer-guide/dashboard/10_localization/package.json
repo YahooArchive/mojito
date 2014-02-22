@@ -13,13 +13,15 @@
           }
     ],
     "dependencies": {
-        "mojito": "~0.8.0"
+        "debug": "*",
+        "mojito": "~0.9.0"
     },
-    "optionalDependencies": {
-       "simple-twitter": "~1.0.0",
-       "yahoo-arrow": "~0.0.77",
-       "phantomjs": ">=1.8.0"
-    },    
+    "devDependencies": {
+        "mojito-cli": ">= 0.2.0",
+        "simple-twitter": "~1.0.0",
+        "yahoo-arrow": "~0.0.77",
+        "phantomjs": ">=1.8.0"
+    },
     "engines": {
         "node": ">0.8"
     }

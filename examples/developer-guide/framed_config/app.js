@@ -30,3 +30,5 @@ app.listen(app.get('port'), function () {
     debug('Server listening on port ' + app.get('port') + ' ' +
                'in ' + app.get('env') + ' mode');
 });
+module.exports = app;
+
