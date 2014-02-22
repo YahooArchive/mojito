@@ -1,4 +1,4 @@
-module.exports = function(config) {
+module.exports = function() {
     var url = require('url'),
         query;
     return function(req, res, next) {

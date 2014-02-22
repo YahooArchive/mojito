@@ -12,15 +12,16 @@
 var debug = require('debug')('app'),
     express = require('express'),
     libmojito = require('../../../'),
+    customContextualizerMiddleware = require('./middleware/mojito-contextualizer.js'),
     app;
 
 app = express();
 app.set('port', process.env.PORT || 8666);
 libmojito.extend(app);
 
+app.use(customContextualizerMiddleware());
 app.use(libmojito.middleware());
 app.mojito.attachRoutes();
-app.post('/tunnel', libmojito.tunnelMiddleware());
 
 app.get('/status', function (req, res) {
     res.send('200 OK');

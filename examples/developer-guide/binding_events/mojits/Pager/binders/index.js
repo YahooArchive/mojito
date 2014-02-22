@@ -90,19 +90,26 @@ YUI.add('pager-binder-index', function (Y, NAME) {
                     var target = event.target,
                     // get the link to the page 
                         page = parsePage(target.get('href')),
-                        updateDOM = function(markup) {
+                        updateDOM = function(err, markup) {
                             thatNode.set('innerHTML', markup);
-                            thatNode.all('#nav a').on('click', flipper, this);
-                            thatNode.all('#master ul li a').on('mouseover', showOverlay, this);
-                            thatNode.all('#master ul li a').on('mouseout', showOverlay, this);
+                            thatNode.all('#nav a').on('click', flipper);
+                            thatNode.all('#master ul li a').on('mouseover', showOverlay);
+                            thatNode.all('#master ul li a').on('mouseout', showOverlay);
                         };
-                    this.mojitProxy.invoke('index', { params: {page: page} }, updateDOM);
+                    event.preventDefault();
+                    self.mojitProxy.invoke('index', {
+                        params: {
+                            url: {
+                                page: page
+                            }
+                        },
+                    }, updateDOM);
                 };
             // Bind all the image links to showOverlay
-            thatNode.all('#master ul li a').on('mouseover', showOverlay, this);
-            thatNode.all('#master ul li a').on('mouseout', showOverlay, this);
+            thatNode.all('#master ul li a').on('mouseover', showOverlay);
+            thatNode.all('#master ul li a').on('mouseout', showOverlay);
             // Bind the prev + next links to flipper
-            thatNode.all('#nav a').on('click', flipper, this);
+            thatNode.all('#nav a').on('click', flipper);
         }
     };
 }, '0.0.1', {requires: ['yql', 'io', 'dump', 'mojito-client']});

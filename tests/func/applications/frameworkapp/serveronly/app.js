@@ -21,7 +21,6 @@ libmojito.extend(app);
 
 app.use(libmojito.middleware());
 app.mojito.attachRoutes();
-app.post('/tunnel', libmojito.tunnelMiddleware());
 
 // "default": {
 //     "verbs": ["get", "post", "put", "head", "delete"],

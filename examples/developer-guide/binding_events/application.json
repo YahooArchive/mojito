@@ -17,5 +17,8 @@
             }
         }
     },
-    { "settings": [ "environment:development" ], "selector": "mocked" }
+    {
+        "settings": [ "environment:development" ],
+        "selector": "mocked"
+    }
 ]

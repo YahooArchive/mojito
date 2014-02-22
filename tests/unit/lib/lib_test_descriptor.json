@@ -39,6 +39,14 @@
                     "driver": "nodejs"
                 },
                 "group": "fw,unit,server"
+            },
+            "middleware": {
+                "params": {
+                    "lib": "$$config.lib$$/middleware.js",
+                    "test": "./test-middleware.js",
+                    "driver": "nodejs"
+                },
+                "group": "fw,unit,server"
             }
         }
     },

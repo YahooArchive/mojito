@@ -2,7 +2,6 @@
     {
         "settings": [ "master" ],
         "appPort": "8666",
-        "middleware": ["middleware/mojito-contextualizer.js"],
         "staticHandling": {
           "appName": "trib"
         },

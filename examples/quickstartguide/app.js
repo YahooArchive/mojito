@@ -19,7 +19,6 @@ libmojito.extend(app);
 
 app.use(libmojito.middleware());
 app.mojito.attachRoutes();
-app.post('/tunnel', libmojito.tunnelMiddleware());
 
 // regex paths should be defined in `app.js`. 
 app.get(/\/|index.html/, libmojito.dispatch('shelf.index'));

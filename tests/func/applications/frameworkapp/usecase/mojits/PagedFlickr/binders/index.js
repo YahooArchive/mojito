@@ -26,7 +26,11 @@ YUI.add('PagedFlickrBinder', function(Y, NAME) {
                 evt.halt();
                 
                 this.mojitProxy.invoke('index', {
-                    params: {page: page},
+                    params: {
+                        url: {
+                            page: page
+                        }
+                    },
                     callback: updateDOM,
                     scope: this
                 });

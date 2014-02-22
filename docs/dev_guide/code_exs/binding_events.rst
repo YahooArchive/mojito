@@ -875,7 +875,11 @@ To set up and run ``binding_events``:
               };
               this.mojitProxy.invoke('index',
                 {
-                  params: {page: page}
+                  params: {
+                    url: {
+                      page: page
+                    }
+                  }
                 }, updateDOM
               );
             };

@@ -1227,14 +1227,14 @@
                             }
                         },
                         {
-                            "test" : "testmojitproxybroadcastdynamic.js",
-                            "testName": "part1"
-                        },
-                        {
                             "controller": "locator",
                             "params": {
                                 "value": "#childred"
                             }
+                        },
+                        {
+                            "test" : "testmojitproxybroadcastdynamic.js",
+                            "testName": "part1"
                         },
                         {
                             "test" : "testmojitproxybroadcastdynamic.js"
@@ -2008,7 +2008,7 @@
                 }
             },
             "testmergeparamsserver" : {
-                "group" : "smoke,common",
+                "group" : "smoke,common,merge",
                 "params" : {
                     "scenario": [
                         {
@@ -2023,13 +2023,19 @@
                            }
                         },
                         {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#mpttitle"
+                            }
+                        },
+                        {
                            "test" : "testmergeparams1server.js"
                         }
                      ]
                 }
             },
             "testmergeparamssimpleserver" : {
-                "group" : "smoke,common",
+                "group" : "smoke,common,merge",
                 "params" : {
                     "scenario": [
                         {
@@ -2044,13 +2050,19 @@
                            }
                         },
                         {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#mpttitle"
+                            }
+                        },
+                        {
                            "test" : "testmergeparamssimple1server.js"
                         }
                      ]
                 }
             },
             "testpostparamsserver" : {
-                "group" : "smoke,common",
+                "group" : "smoke,common,post",
                 "params" : {
                     "scenario": [
                         {
@@ -2065,13 +2077,19 @@
                            }
                         },
                         {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#iptitle"
+                            }
+                        },
+                        {
                            "test" : "testpostparams1server.js"
                         }
                      ]
                 }
             },
             "testpostparamssimpleserver" : {
-                "group" : "smoke,common",
+                "group" : "smoke,common,post",
                 "params" : {
                     "scenario": [
                         {
@@ -2086,7 +2104,13 @@
                            }
                         },
                         {
-                           "test" : "testpostparamssimple1server.js"
+                            "controller": "locator",
+                            "params": {
+                                 "value": "#iptitle"
+                            }
+                        },
+                        {
+                            "test" : "testpostparamssimple1server.js"
                         }
                      ]
                 }
