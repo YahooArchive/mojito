@@ -10,7 +10,7 @@
           }
     ],
     "scripts": {
-        "start": "mojito start"
+        "start": "node app.js"
     },
     "dependencies": {
         "debug": "*",
@@ -24,3 +24,4 @@
         "node": "*"
     }
 }
+

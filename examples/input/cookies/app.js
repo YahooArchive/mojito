@@ -16,20 +16,19 @@ app.set('port', process.env.PORT || 8666);
 libmojito.extend(app);
 
 app.use(libmojito.middleware());
-app.libmojito.attachRoutes();
-app.post('/tunnel', libmojito.tunnelMiddleware());
+app.mojito.attachRoutes();
 
 app.get('/status', function (req, res) {
     res.send('200 OK');
 });
-app.get('/', mojito.dispatch('server.pitch'));
+app.get('/', libmojito.dispatch('server.pitch'));
 
 // Example usage on how to execute anonymous mojit.
 app.get('/:mojitType/:mojitAction', function (req, res, next) {
     var type = req.params.mojitType,
         action = req.params.mojitAction;
 
-    mojito.dispatch(type + '.' + action)(req,res,next);
+    libmojito.dispatch(type + '.' + action)(req,res,next);
 });
 
 

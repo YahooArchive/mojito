@@ -19,8 +19,7 @@ app.set('port', process.env.PORT || 8666);
 libmojito.extend(app);
 
 app.use(libmojito.middleware());
-app.libmojito.attachRoutes();
-app.post('/tunnel', libmojito.tunnelMiddleware());
+app.mojito.attachRoutes();
 
 // "root": {
 //     "verbs": ["post"],

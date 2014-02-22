@@ -10,7 +10,7 @@
           }
     ],
     "scripts": {
-        "start": "mojito start"
+        "start": "node app.js"
     },
     "dependencies": {
         "debug": "*",
@@ -18,7 +18,7 @@
     },
     "devDependencies": {
         "mime": ">= 1.0.0",
-        "mojito-cli": ">= 0.2.0",
+        "mojito-cli": ">= 0.2.0"
     },
     "engines": {
         "node": "*"
