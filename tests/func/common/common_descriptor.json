@@ -970,6 +970,12 @@
                             }
                         },
                         {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#finalLazyResult"
+                            }
+                        },
+                        {
                             "test" : "testlazyloadclient.js"
                         }
                     ]
