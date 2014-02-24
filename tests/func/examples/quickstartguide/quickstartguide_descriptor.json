@@ -68,20 +68,20 @@
                             "page" : "$$config.baseUrl$$/read.html?blah"
                         },
                         {
-                           "controller": "locator",
-                           "params": {
-                                  "value": ".container .contents-nav .link-home",
-                                  "click": true
-                           }
+                            "controller": "locator",
+                            "params": {
+                                "value": ".container .contents-nav .link-home",
+                                "click": true
+                            }
                         },
                         {
-                           "controller": "locator",
-                           "params": {
-                                  "value": "head title"
-                           }
+                            "controller": "locator",
+                            "params": {
+                                "value": "head title"
+                            }
                         },
                         {
-                           "test" : "test_quickstartguide_homepage.js"
+                            "test" : "test_quickstartguide_homepage.js"
                         }
                      ]
                 }
