@@ -22,24 +22,39 @@
                             "page" : "$$config.baseUrl$$"
                         },
                         {
-                           "controller": "locator",
-                           "params": {
-                                  "value": ".container .toc ul li a",
-                                  "click": true
+                            "test" : "test_quickstartguide_homepage.js"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": ".container .toc ul li a",
+                                "click": true
                            }
                         },
                         {
-                           "test" : "test_quickstartguide_readpage.js"
+                            "controller": "locator",
+                            "params": {
+                                "value": ".container .contents-nav .link-prev"
+                            }
                         },
                         {
-                           "controller": "locator",
-                           "params": {
-                                  "value": ".container .contents-nav .link-home",
-                                  "click": true
+                            "test" : "test_quickstartguide_readpage.js"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": ".container .contents-nav .link-home",
+                                "click": true
                            }
                         },
                         {
-                           "test" : "test_quickstartguide_homepage.js"
+                            "controller": "locator",
+                            "params": {
+                                "value": "head title"
+                            }
+                        },
+                        {
+                            "test" : "test_quickstartguide_homepage.js"
                         }
                      ]
                 }
@@ -49,7 +64,7 @@
                 "params" : {
                     "scenario": [
                         {
-                           "test" : "test_quickstartguide_readpage_error.js",
+                            "test" : "test_quickstartguide_readpage_error.js",
                             "page" : "$$config.baseUrl$$/read.html?blah"
                         },
                         {
@@ -57,6 +72,12 @@
                            "params": {
                                   "value": ".container .contents-nav .link-home",
                                   "click": true
+                           }
+                        },
+                        {
+                           "controller": "locator",
+                           "params": {
+                                  "value": "head title"
                            }
                         },
                         {
