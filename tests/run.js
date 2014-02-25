@@ -49,15 +49,15 @@ function test(cmd) {
         arrowReportDir = cmd.reportFolder || cmd.funcPath + '/../..';
     }
     arrowReportDir = arrowReportDir + '/artifacts/arrowreport/';
-    
+
     try {
         wrench.rmdirSyncRecursive(arrowReportDir);
     } catch (e) {}
     wrench.mkdirSyncRecursive(arrowReportDir);
 
 
-    if (process.env['SELENIUM_HUB_URL']) {
-        remoteselenium = process.env['SELENIUM_HUB_URL'];
+    if (process.env.SELENIUM_HUB_URL) {
+        remoteselenium = process.env.SELENIUM_HUB_URL;
         console.log('selenium host.....' + remoteselenium);
         series.push(gethostip);
     }
@@ -372,22 +372,6 @@ function runFuncAppTests(cmd, callback) {
     //
     // TODO: Fix those tests
     skips = [
-        // TODO: HTML5 related tests : need to revisit
-        'html5apptest_descriptor.json',
-        // TODO: Context based static app config. Replaced with NodeJS
-        // environment
-        'configtest0_descriptor.json',
-        'configtest1_descriptor.json',
-        'configtest2_descriptor.json',
-        'configtest3_descriptor.json',
-        'configtest4_descriptor.json',
-        'configtest5_descriptor.json',
-        'configtest6_descriptor.json',
-        // TODO: uses context based app config to configure log level 
-        // on the client side. Need to revisit.
-        'simple_logging_descriptor.json',
-        //
-        'yui_module_descriptor.json'
     ];
     descriptors.forEach(function (descriptor) {
         var regex,
@@ -550,7 +534,8 @@ function runFuncTests(cmd, desc, port, thispid, callback) {
 
 function runMojitoApp(app, cliOptions, basePath, port, params, callback) {
     var cmdArgs = ['app.js'],
-        cmd = "node"; // actual cli command to startup the app
+        cmd = "node", // actual cli command to startup the app
+        thispid;
 
     console.log("---Starting application---");
     if (port) {

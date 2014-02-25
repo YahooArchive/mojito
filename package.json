@@ -47,6 +47,7 @@
         "benchmark": "1.x",
         "commander": "1.0.1",
         "express": "3.4.1",
+        "minimist": "~0.0.5",
         "mockery": "~1.4.0",
         "mojito-cli": "~0.1",
         "node-static": ">0.6.8",

@@ -13,6 +13,7 @@
           }
     ],
     "dependencies": {
+        "minimist": "~0.0.5",
         "mojito": ">= 0.1.0"
     },
     "engines": {
