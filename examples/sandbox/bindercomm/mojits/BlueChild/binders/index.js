@@ -4,12 +4,12 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('BlueChildBinderIndex', function(Y, NAME) {
+YUI.add('bluechild-binder-index', function(Y, NAME) {
 
 /**
- * The BlueChildBinderIndex module.
+ * The bluechild-binder-index module.
  *
- * @module BlueChildBinderIndex
+ * @module bluechild-binder-index
  */
 
     /**

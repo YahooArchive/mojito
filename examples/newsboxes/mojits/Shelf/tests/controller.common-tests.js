@@ -9,7 +9,7 @@
 /*global YUI,YUITest*/
 
 
-YUI.add('ShelfController-tests', function(Y, NAME) {
+YUI.add('shelf-tests', function(Y, NAME) {
 
     var suite = new YUITest.TestSuite(NAME),
         controller = null,
@@ -93,7 +93,7 @@ YUI.add('ShelfController-tests', function(Y, NAME) {
 
         setUp: function() {
             A.isNull(controller);
-            controller = Y.mojito.controllers.ShelfController;
+            controller = Y.mojito.controllers["shelf"];
             A.isNotNull(controller);
         },
 
@@ -144,6 +144,6 @@ YUI.add('ShelfController-tests', function(Y, NAME) {
 
 }, '0.0.1', {requires: [
     'mojito-test',
-    'ShelfController',
+    'shelf',
     'oop'
 ]});

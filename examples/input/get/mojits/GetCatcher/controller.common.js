@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('GetCatcher', function(Y, NAME) {
+YUI.add('getcatcher', function(Y, NAME) {
     
     Y.namespace('mojito.controllers')[NAME] = {
 

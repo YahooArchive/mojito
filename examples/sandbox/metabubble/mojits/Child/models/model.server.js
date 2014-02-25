@@ -4,12 +4,12 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('ChildModel', function(Y, NAME) {
+YUI.add('child-model', function(Y, NAME) {
 
 /**
- * The ChildModel module.
+ * The child-model module.
  *
- * @module ChildModel
+ * @module child-model
  */
 
     /**
@@ -18,7 +18,7 @@ YUI.add('ChildModel', function(Y, NAME) {
      * @class Model
      * @constructor
      */
-    Y.mojito.models.Child = {
+    Y.namespace("mojito.models")["child-model"] = {
 
         init: function(config) {
             this.config = config;

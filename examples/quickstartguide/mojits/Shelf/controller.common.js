@@ -19,7 +19,7 @@ For more info, visit: http://developer.yahoo.com/cocktails/mojito/docs/intro/moj
 Displays guide titles in a grid of tiles.
 @class ShelfController
 **/
-YUI.add('ShelfController', function (Y, NAME) {
+YUI.add('shelf', function (Y, NAME) {
     'use strict';
 
     /**
@@ -116,5 +116,5 @@ YUI.add('ShelfController', function (Y, NAME) {
     'mojito-composite-addon',
     'mojito-models-addon',
     'mojito-url-addon',
-    'GuideModel'
+    'guide-model'
 ]});

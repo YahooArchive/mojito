@@ -4,12 +4,12 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('Layout', function(Y, NAME) {
+YUI.add('layout', function(Y, NAME) {
 
 /**
- * The Layout module.
+ * The layout module.
  *
- * @module Layout
+ * @module layout
  */
 
     /**
@@ -32,4 +32,4 @@ YUI.add('Layout', function(Y, NAME) {
 
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito-composite-addon']});

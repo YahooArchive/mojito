@@ -4,12 +4,12 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('RedChildModel', function(Y, NAME) {
+YUI.add('redchild-model', function(Y, NAME) {
 
 /**
- * The RedChildModel module.
+ * The redchild-model module.
  *
- * @module RedChildModel
+ * @module redchild-model
  */
 
     /**

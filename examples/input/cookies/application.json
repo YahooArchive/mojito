@@ -9,8 +9,7 @@
                 "config": {
                     "deploy": true,
                     "child": {
-                        "type" : "ServerCookie",
-                        "action": "pitch"
+                        "type" : "ServerCookie"
                     }
                 }
             },

@@ -4,12 +4,12 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('YuiTweets', function(Y, NAME) {
+YUI.add('yuitweets', function(Y, NAME) {
 
 /**
- * The YuiTweets module.
+ * The yuitweets module.
  *
- * @module YuiTweets
+ * @module yuitweets
  */
 
     /**
@@ -27,14 +27,11 @@ YUI.add('YuiTweets', function(Y, NAME) {
          *        to the Mojito API.
          */
         index: function(ac) {
-// DOING
-            ac.models.get('yuiTweets').getTweets(function(err, yuiTweets) {
+            ac.models.get('yuitweets').getTweets(function(err, yuiTweets) {
                 ac.done({tweets: yuiTweets});
             });
         }
-
     };
-
 }, '0.0.1', {requires: [
     'mojito',
     'mojito-models-addon'

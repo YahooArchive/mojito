@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('ServerCookie', function(Y, NAME) {
+YUI.add('servercookie', function(Y, NAME) {
     
     Y.namespace('mojito.controllers')[NAME] = {
         
@@ -34,7 +34,7 @@ YUI.add('ServerCookie', function(Y, NAME) {
             ac.done();
         },
 
-        'catch': function(ac) {
+        catch: function(ac) {
             var cookies = ac.cookie.get(),
                 cookieArray = [];
             Y.Object.each(cookies, function(v, k) {

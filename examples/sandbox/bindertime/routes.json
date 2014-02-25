@@ -6,7 +6,6 @@
         "path": "/",
         "call": "frame.index"
     },
-
     "loader foo": {
         "verbs": ["get"],
         "path": "/:num/loadfoo",

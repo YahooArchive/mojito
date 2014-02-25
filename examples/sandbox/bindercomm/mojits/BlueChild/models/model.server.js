@@ -4,12 +4,12 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('BlueChildModel', function(Y, NAME) {
+YUI.add('bluechild-model', function(Y, NAME) {
 
 /**
- * The BlueChildModel module.
+ * The bluechild-model module.
  *
- * @module BlueChildModel
+ * @module bluechild-model
  */
 
     /**
@@ -18,7 +18,7 @@ YUI.add('BlueChildModel', function(Y, NAME) {
      * @class Model
      * @constructor
      */
-    Y.mojito.models.BlueChild = {
+    Y.mojito.models["bluechild-model"] = {
 
         init: function(config) {
             this.config = config;

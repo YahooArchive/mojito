@@ -4,12 +4,12 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('BlueChild', function(Y, NAME) {
+YUI.add('bluechild', function(Y, NAME) {
 
 /**
- * The BlueChild module.
+ * The bluechild module.
  *
- * @module BlueChild
+ * @module bluechild
  */
 
     /**
@@ -32,4 +32,4 @@ YUI.add('BlueChild', function(Y, NAME) {
 
     };
 
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito-config-addon']});

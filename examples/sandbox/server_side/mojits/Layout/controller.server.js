@@ -4,12 +4,12 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('Layout', function(Y, NAME) {
+YUI.add('layout', function(Y, NAME) {
 
 /**
- * The Layout module.
+ * The layout module.
  *
- * @module Layout
+ * @module layout
  */
 
     /**
@@ -29,12 +29,6 @@ YUI.add('Layout', function(Y, NAME) {
         index: function(ac) {
             console.log('parent req: ' + !!ac.http.getRequest());
             ac.composite.done();
-        },
-
-        redirect: function(ac) {
-            ac.http.redirect('/layout2/index');
         }
-
     };
-
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito-composite-addon', 'mojito-http-addon']});

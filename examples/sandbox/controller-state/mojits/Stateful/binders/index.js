@@ -4,8 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('StatefulBinderIndex', function(Y, NAME) {
-
+YUI.add('stateful-binder-index', function(Y, NAME) {
 
     Y.namespace('mojito.binders')[NAME] = {
 

@@ -1,6 +1,6 @@
 {
-    "name": "cc",
-    "description": "My Mojito application",
+    "name": "bindertime",
+    "description": "My controller-state app.",
     "version": "0.0.1",
     "contributors": [
           {
@@ -12,5 +12,12 @@
         "mojito": {
             "version": "*"
         }
+    },
+    "engines": {
+        "node": "> 0.8",
+        "npm": "> 1.0"
+    },
+    "dependencies": {
+        "mojito": "*"
     }
 }

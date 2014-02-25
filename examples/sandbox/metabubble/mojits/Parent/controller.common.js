@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('Parent', function(Y, NAME) {
+YUI.add('parent', function(Y, NAME) {
 
     Y.namespace('mojito.controllers')[NAME] = {
 
@@ -24,4 +24,4 @@ YUI.add('Parent', function(Y, NAME) {
 
     };
 
-}, '0.0.1', {requires: ['mojito-analytics-addon']});
+}, '0.0.1', {requires: ['mojito-analytics-addon', 'mojito-composite-addon']});

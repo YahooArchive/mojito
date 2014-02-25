@@ -9,7 +9,7 @@
 /*global YUI*/
 
 
-YUI.add('ShelfIndexBinder', function(Y, NAME) {
+YUI.add('shelf-binder-index', function(Y, NAME) {
 
     /**
      * Generates a color.

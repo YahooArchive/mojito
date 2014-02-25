@@ -26,7 +26,7 @@ For more info, visit: http://developer.yahoo.com/cocktails/mojito/docs/topics/mo
 /*global YUI,YUITest*/
 
 
-YUI.add('ShelfController-tests', function(Y, NAME) {
+YUI.add('shelf-tests', function(Y, NAME) {
 
     var suite = new YUITest.TestSuite(NAME),
         controller = null,
@@ -37,13 +37,13 @@ YUI.add('ShelfController-tests', function(Y, NAME) {
 
     suite.add(new YUITest.TestCase({
 
-        name: 'ShelfController tests',
+        name: 'shelf tests',
 
         // setup function is always called before each test runs
         setUp: function() {
             A.isNull(controller);
             // Fetches the controller we are going to test
-            controller = Y.mojito.controllers.ShelfController;
+            controller = Y.mojito.controllers["shelf"];
             A.isNotNull(controller);
         },
 
@@ -88,7 +88,7 @@ YUI.add('ShelfController-tests', function(Y, NAME) {
                 // Declares the addons will be used
                 addons: ['url'],
                 // Declares the models will be used
-				models: ['GuideModel']
+				models: ['guide']
             });
 
             // Sets up expectation objects with addon
@@ -113,7 +113,7 @@ YUI.add('ShelfController-tests', function(Y, NAME) {
             };
 
             // Sets up expectation objects with model
-            ac.models.GuideModel.expect({
+            ac.models["guide"].expect({
 				method: "getGuides",
 				args: [M.Value.Function],
 				run: function(cb){
@@ -154,6 +154,6 @@ YUI.add('ShelfController-tests', function(Y, NAME) {
 
 }, '0.0.1', {requires: [
     'mojito-test',
-    'ShelfController',
+    'shelf',
     'oop'
 ]});
