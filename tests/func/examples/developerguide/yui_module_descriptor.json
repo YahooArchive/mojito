@@ -16,8 +16,20 @@
             "yuimodule" : {
                  "group" : "developerguide,yui_module",
                  "params" : {
-                       "test" : "test_yuimodule.js",
-                       "page" : "$$config.baseUrl$$"
+                    "scenario": [
+                        {
+                           "page" : "$$config.baseUrl$$"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#notes"
+                            }
+                        },
+                        {
+                           "test" : "test_yuimodule.js"
+                        }
+                    ]
                 }
             }
         }     
