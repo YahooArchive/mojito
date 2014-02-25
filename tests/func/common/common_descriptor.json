@@ -638,7 +638,7 @@
                 }
             },
             "testcompositemojitrefreshclient" : {
-                "group" : "smoke,common,comp",
+                "group" : "smoke,common,comp,refresh",
                 "params" : {
                     "scenario": [
                         {
@@ -649,6 +649,12 @@
                             "params": {
                                 "value": "#composite_mojit_button",
                                 "click": true
+                            }
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#footertitle"
                             }
                         },
                         {
@@ -663,13 +669,19 @@
                             }
                         },
                         {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#footercomment"
+                            }
+                        },
+                        {
                             "test" : "testcompositemojitrefreshclient.js"
                         }
                     ]
                 }
             },
             "testcompositemojitrefresh1client" : {
-                "group" : "smoke,common,comp",
+                "group" : "smoke,common,comp,refresh",
                 "params" : {
                     "scenario": [
                         {
@@ -682,6 +694,12 @@
                             "params": {
                                 "value": "#footerfresh",
                                 "click": true
+                            }
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#footercomment"
                             }
                         },
                         {
