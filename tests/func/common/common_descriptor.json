@@ -843,6 +843,12 @@
                             }
                         },
                         {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#childred"
+                            }
+                        },
+                        {
                             "test" : "testmojitproxydestroychild.js"
                         }
                     ]

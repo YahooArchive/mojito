@@ -40,6 +40,13 @@
                             }
                         },
                         {
+                            "controller": "locator",
+                            "params": {
+                                "using": "xpath",
+                                "value": "/html/body/div/table/tbody/tr/td[2]/div/div/h3"
+                            }
+                        },
+                        {
                             "test" : "test_intermojit.js",
                             "testName": "second"
                         }
