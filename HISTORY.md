@@ -2,21 +2,144 @@ version @VERSION@
 =================
 
 Notes
------
+------------
 
 Deprecations, Removals
-----------------------
+------------
 
 Features
---------
+------------
+
+Bug Fixes
+------------
+
+Acknowledgements
+----------------
+
+
+version 0.9.0
+=================
+
+Notes
+------------
+
+This release introduces a set of new APIs and concepts.
+
+Please refer to some of the examples apps under the `examples/` folder to get
+an overview of what have changed.
+
+Deprecations, Removals
+------------
+
+* Mojito no longer supports `index.js` and `server.js` to start up the server.
+  Applications will instead instantiate Mojito as follows:
+
+      var libmojito = require('mojito'),
+          express = require('express'),
+          app;
+
+      app = express();
+      libmojito.extend(app, { /* context */ });
+      // at this point, access mojito instance via `app.mojito`
+
+* Middleware configuration is no longer supported via `application.json`.
+  Applications can register their middleware using the Express API. To enable
+  Mojito default list of middleware, use the following:
+
+      app.use(libmojito.middleware());
+
+  If you want to have more granular control, use the following:
+
+      app.use(libmojito.middleware['mojito-handler-static']());
+      app.use(libmojito.middleware['mojito-parser-body']());
+      app.use(libmojito.middleware['mojito-parser-cookies']());
+      app.use(myCustomContextualizerMiddleware());
+      app.use(libmojito.middleware['mojito-contextualizer']());
+      app.use(libmojito.middleware['mojito-handler-tunnel']());
+      app.use(anotherCustomMiddleware());
+
+* `routes.json` configuration is no longer loaded by default. To tell Mojito to
+  do so, use the following:
+
+      app.mojito.attachRoutes();
+
+  Applications can also pass in an array of route configuration names if
+  needed.
+
+* `ac.url.make()` and `Y.mojito.RouteMaker.make()` no longer throws exception.
+  Instead, the api returns `null` in order to provide the application more
+  control on how best to handle this error.
+
+* The `ac.url.find()` and `Y.mojito.RouteMaker.find()` methods are now
+  deprecated and will be removed in a future version.
+
+  Applications that rely on this API should familiaze with the `express-map`
+  package by querying the route object by `name` or `path`.
+
+* Expanded metadata is now removed. This means we will not longer support
+  synthetic modules that were expanded by default, e.g.:
+  `loader-yui3-base`, `loader-yui3-expanded` and `loader-app-resolved`.
+  If you are using any of those 3 entries in the YUI configuration,
+  you should use `loader-app` and loader-app-base` as your seed modules.
+  In fact we recommend to not customize `yui.config.seed` in your `application.json`
+
+
+Features
+------------
+
+* To register Mojito routes programmatically instead of using `routes.json`:
+
+```
+// app.js
+app.get('/foo', mojito.dispatch('foo.index'));
+app.map('/foo', 'foo');
+app.map('/foo', 'get#foo.index');
+```
+
+  In addition to setting up the path `/foo` to be routed to the Mojito
+  dispatcher, setup 2 additional "aliases". The second alias is the HTTP method
+  concatenated with the `call` value using the `#` delimeter.
+
+  This is equivalent to doing this in `routes.json` in previous releases.
+
+```
+[{
+    "settings": [ "master" ],
+    "foo": {
+        verbs: [ "get" ],
+        path: "/foo",
+        call: "foo.index",
+        params: { /* optional prams */ }
+    }
+}]
+```
+
+  For more detail information, please check any of the applications under
+  `examples/` folder.
+
+* `ac.config.getRoutes()` now returns the route configuration object using the
+  format from `express-map#getRouteMap()`.
+
+New Dependencies
+----------------
+
+* Mojito now leverages the following packages for its routing implementation: 
+  `express-map` and `express-annotations`
+
+Bug Fixes
+------------
+
+Acknowledgements
+----------------
+
+
+version 0.8.3
+=================
 
 Bug Fixes
 ---------
 
 * Issue #1306: ac.partial.render() throws error for handlebar custom helper
-
-Acknowledgements
-----------------
 
 version 0.8.2
 =================
@@ -45,6 +168,7 @@ Acknowledgements
 
 Special thanks to [David Gomez](https://github.com/gomezd) for his contributions to this release.
 
+
 version 0.8.0
 =============
 
@@ -59,6 +183,9 @@ Deprecations, Removals
 
 * **!Backwards-Incompatible Change!** Getting model instance by passing model 
   YUI module name to `ac.models.get` has been removed.
+* Cleanup: The `archetypes` directory containing boilerplate template code has been 
+  removed from the `mojito` package because the template code is located 
+  in [mojito-cli-create](https://github.com/yahoo/mojito-cli-create).
 
 Features
 --------
@@ -79,9 +206,14 @@ Bug Fixes
 ---------
 
 * Issue #1251: easy way to get contextualized models
+* PR #1264: better output handler response header check
+* PR #1270: removed `archetypes` directory and boilerplate template code for apps/mojits. 
+* PR #1278: added middleware and updated app configs so that apps can use mocked models.
 
 Acknowledgements
 ----------------
+
+Special thanks to [Jacques Arnoux](https://github.com/jarnoux) for contributing to this release.
 
 
 version 0.7.5
@@ -91,9 +223,8 @@ Bug Fixes
 ---------
 
 * Issue #1215: [regression] lang collection in metas is missing for controller 
-
-Acknowledgements
-----------------
+* Issue #1238 Lower Resource Store log messages for duplicate resources from
+  "info" to "debug"
 
 version 0.7.4
 =================
@@ -101,9 +232,9 @@ version 0.7.4
 Features
 --------
 * The `lib/store.js` has a new `getAppConfig()` function. This is a better choice
-  for reading the static application configuration than `createStore()`.
+for reading the static application configuration than `createStore()`.
 * The resource store now exposes the server's runtime YUI instance via the
-  `runtimeYUI` member. Resource store addons can access it via `this.get('host').runtimeYUI`.
+`runtimeYUI` member. Resource store addons can access it via `this.get('host').runtimeYUI`.
 
 version 0.7.3
 =================
