@@ -12,12 +12,22 @@
 var debug = require('debug')('app'),
     express = require('express'),
     libmojito = require('../../../../..'),
+    libmm = require('minimist'),
+    apputil = require('./util'),
     app,
+    argv,
+    context,
     dispatcherMiddleware;
+
+argv = libmm(process.argv.slice(2));
+context = argv.context || '';
+context = apputil.parseContext(context);
 
 app = express();
 app.set('port', process.env.PORT || 8666);
-libmojito.extend(app);
+libmojito.extend(app, {
+    context: context
+});
 
 app.use(libmojito.middleware());
 app.mojito.attachRoutes();

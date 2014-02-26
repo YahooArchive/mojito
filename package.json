@@ -1,6 +1,6 @@
 {
     "name": "mojito",
-    "version": "0.9.0-alpha.2",
+    "version": "0.9.0-beta.1",
     "description": "Mojito provides an architecture, components and tools for developers to build complex web applications faster.",
     "author": "Drew Folta <folta@yahoo-inc.com>",
     "contributors": [
@@ -47,6 +47,7 @@
         "benchmark": "1.x",
         "commander": "1.0.1",
         "express": "3.4.1",
+        "minimist": "~0.0.5",
         "mockery": "~1.4.0",
         "mojito-cli": "~0.1",
         "node-static": ">0.6.8",

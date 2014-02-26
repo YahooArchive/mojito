@@ -561,6 +561,12 @@
                             }
                         },
                         {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#childrenconfig"
+                            }
+                        },
+                        {
                             "test" : "testcompositemojitclient.js"
                         }
                     ]
@@ -632,7 +638,7 @@
                 }
             },
             "testcompositemojitrefreshclient" : {
-                "group" : "smoke,common,comp",
+                "group" : "smoke,common,comp,refresh",
                 "params" : {
                     "scenario": [
                         {
@@ -643,6 +649,12 @@
                             "params": {
                                 "value": "#composite_mojit_button",
                                 "click": true
+                            }
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#footertitle"
                             }
                         },
                         {
@@ -657,13 +669,19 @@
                             }
                         },
                         {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#footercomment"
+                            }
+                        },
+                        {
                             "test" : "testcompositemojitrefreshclient.js"
                         }
                     ]
                 }
             },
             "testcompositemojitrefresh1client" : {
-                "group" : "smoke,common,comp",
+                "group" : "smoke,common,comp,refresh",
                 "params" : {
                     "scenario": [
                         {
@@ -676,6 +694,12 @@
                             "params": {
                                 "value": "#footerfresh",
                                 "click": true
+                            }
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#footercomment"
                             }
                         },
                         {
@@ -970,6 +994,12 @@
                             }
                         },
                         {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#finalLazyResult"
+                            }
+                        },
+                        {
                             "test" : "testlazyloadclient.js"
                         }
                     ]
@@ -1103,6 +1133,12 @@
                             }
                         },
                         {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#childred"
+                            }
+                        },
+                        {
                             "test" : "testmojitproxybroadcaststaticlistenall.js",
                             "testName": "part1"
                         },
@@ -1111,6 +1147,12 @@
                             "params": {
                                 "value": "#sendbutton",
                                 "click": true
+                            }
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#childred"
                             }
                         },
                         {
@@ -1134,6 +1176,12 @@
                             }
                         },
                         {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#childred"
+                            }
+                        },
+                        {
                             "test" : "testmojitproxybroadcaststaticlisten2.js",
                             "testName": "part1"
                         },
@@ -1142,6 +1190,12 @@
                             "params": {
                                 "value": "#sendbutton",
                                 "click": true
+                            }
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#childred"
                             }
                         },
                         {
@@ -1165,6 +1219,12 @@
                             }
                         },
                         {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#childred"
+                            }
+                        },
+                        {
                             "test" : "testmojitproxybroadcaststaticlisten1.js",
                             "testName": "part1"
                         },
@@ -1173,6 +1233,12 @@
                             "params": {
                                 "value": "#sendbutton",
                                 "click": true
+                            }
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#childred"
                             }
                         },
                         {
@@ -1196,6 +1262,12 @@
                             }
                         },
                         {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#childred"
+                            }
+                        },
+                        {
                             "test" : "testmojitproxybroadcaststaticlisten.js",
                             "testName": "part1"
                         },
@@ -1204,6 +1276,12 @@
                             "params": {
                                 "value": "#sendbutton",
                                 "click": true
+                            }
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "#childred"
                             }
                         },
                         {

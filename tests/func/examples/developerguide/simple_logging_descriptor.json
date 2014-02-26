@@ -13,11 +13,23 @@
         },
 
         "dataprovider" : {    
-           "simplelogging" : {
+            "simplelogging" : {
                  "group" : "developerguide,simple_logging",
                  "params" : {
-                             "test" : "test_simple_logging.js",
-                             "page" : "$$config.baseUrl$$"
+                    "scenario": [
+                        {
+                            "page" : "$$config.baseUrl$$"
+                        },
+                        {
+                            "controller": "locator",
+                            "params": {
+                                "value": "div"
+                            }
+                        },
+                        {
+                            "test" : "test_simple_logging.js"
+                        }
+                    ]
                 }
             }
         }     
