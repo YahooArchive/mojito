@@ -42,6 +42,9 @@ Deprecations, Removals
       libmojito.extend(app, { /* context */ });
       // at this point, access mojito instance via `app.mojito`
 
+* `appPort` configuration is no longer supported via `application.json`.
+  Instead, the Express `app` instance should call `listen()` when ready.
+
 * Middleware configuration is no longer supported via `application.json`.
   Applications can register their middleware using the Express API. To enable
   Mojito default list of middleware, use the following:
