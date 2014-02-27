@@ -22,9 +22,6 @@
                             "page" : "$$config.baseUrl$$"
                         },
                         {
-                            "test" : "test_quickstartguide_homepage.js"
-                        },
-                        {
                             "controller": "locator",
                             "params": {
                                 "value": ".container .toc ul li a",

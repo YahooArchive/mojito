@@ -14,7 +14,7 @@ var express = require('express'),
     app;
 
 app = express();
-app.set('port', 8666);
+app.set('port', process.env.PORT || 8666);
 libmojito.extend(app);
 
 app.use(libmojito.middleware());
