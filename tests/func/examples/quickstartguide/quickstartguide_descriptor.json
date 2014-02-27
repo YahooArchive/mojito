@@ -5,7 +5,7 @@
         "name" : "quickstartguide",
 
         "config" :{
-            "baseUrl" : "http://localhost:8666",
+            "baseUrl" : "http://partialsight.corp.yahoo.com:8666",
             "application" : {
                 "name":"input",
                 "path": "../../../examples/quickstartguide"
@@ -20,9 +20,6 @@
                         {
                             "test" : "test_quickstartguide_homepage.js",
                             "page" : "$$config.baseUrl$$"
-                        },
-                        {
-                            "test" : "test_quickstartguide_homepage.js"
                         },
                         {
                             "controller": "locator",
