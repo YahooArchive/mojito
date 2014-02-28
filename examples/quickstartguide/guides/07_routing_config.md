@@ -34,7 +34,6 @@ path. In the `application.json` below, the `hello` instance of type
     [
       {
         "settings": [ "master" ],
-        "appPort": 8666,
         "specs": {
           "hello": {
             "type": "HelloMojit"

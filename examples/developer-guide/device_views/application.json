@@ -5,7 +5,6 @@
         "cache": false,
         "forceUpdate": true
     },
-    "appPort": 8666,
     "specs": {
       "device": {
         "type" : "device"
