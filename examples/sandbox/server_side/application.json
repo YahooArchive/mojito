@@ -4,25 +4,15 @@
         "specs": {
 
             "layout": {
-                "id": "layout",
                 "type": "Layout",
-                "children": {
-                    "foo": {
-                        "type": "MyServer"
+                "config": {
+                    "children": {
+                        "foo": {
+                             "type": "MyServer"
+                        }
                     }
                 }
             },
-
-            "layout2": {
-                "id": "layout2",
-                "type": "Layout",
-                "children": {
-                    "foo": {
-                        "type": "MyServer"
-                    }
-                }
-            },
-
             "foo": {
                 "id": "foo",
                 "type": "MyServer"

@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('Stateful', function(Y, NAME) {
+YUI.add('stateful', function(Y, NAME) {
 
     var time = new Date().getTime();
 
@@ -20,10 +20,10 @@ YUI.add('Stateful', function(Y, NAME) {
             ac.done();
         },
 
-        'catch': function(ac) {
+        catch: function(ac) {
             var self = this;
             this.logit('catch');
-            ac.models.get('Stateful').getData(function(err, data) {
+            ac.models.get('model').getData(function(err, data) {
                 ac.done({
                     ball: self.ball,
                     time: time,
@@ -41,5 +41,6 @@ YUI.add('Stateful', function(Y, NAME) {
 
 }, '0.0.1', {requires: [
     'mojito-models-addon',
-    'DOING'
+    'mojito-config-addon',
+    'mojito-params-addon'
 ]});

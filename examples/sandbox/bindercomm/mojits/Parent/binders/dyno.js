@@ -4,12 +4,12 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('ParentBinderDyno', function(Y, NAME) {
+YUI.add('parent-binder-dyno', function(Y, NAME) {
 
 /**
- * The ParentBinderIndex module.
+ * The parent-binder-dyno module.
  *
- * @module ParentBinderIndex
+ * @module parent-binder-dyno
  */
 
     /**

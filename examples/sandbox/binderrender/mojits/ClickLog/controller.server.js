@@ -4,14 +4,14 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('ClickLog', function(Y, NAME) {
+YUI.add('clicklog', function(Y, NAME) {
 
 /**
  * The ClickLog mojit which just shows running log of user clicks.
  * This mojit primarily exists to demonstrate rendering of views
  * in the binder.
  *
- * @module ClickLog
+ * @module clicklog
  */
 
     /**

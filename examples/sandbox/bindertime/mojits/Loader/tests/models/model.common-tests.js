@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('LoaderModel-tests', function(Y, NAME) {
+YUI.add('loader-model-tests', function(Y, NAME) {
     
     var suite = new YUITest.TestSuite(NAME),
         model = null,
@@ -15,7 +15,7 @@ YUI.add('LoaderModel-tests', function(Y, NAME) {
         name: 'Loader model user tests',
         
         setUp: function() {
-            model = Y.mojito.models.Loader;
+            model = Y.mojito.models["loader-model"];
         },
         tearDown: function() {
             model = null;
@@ -30,4 +30,4 @@ YUI.add('LoaderModel-tests', function(Y, NAME) {
     
     YUITest.TestRunner.add(suite);
     
-}, '0.0.1', {requires: ['mojito-test', 'LoaderModel']});
+}, '0.0.1', {requires: ['mojito-test', 'loader-model']});

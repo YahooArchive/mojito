@@ -4,12 +4,12 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('TweetView', function(Y, NAME) {
+YUI.add('tweetview', function(Y, NAME) {
 
 /**
- * The TweetView module.
+ * The tweetview module.
  *
- * @module TweetView
+ * @module tweetview
  */
 
     /**
@@ -33,7 +33,6 @@ YUI.add('TweetView', function(Y, NAME) {
                 ac.done({screenName: 'Nobody'});
                 return;
             }
-// DOING
             ac.models.get('twitter').getTweetsFor(screenName, function(err, tweets) {
                 ac.done({
                     screenName: screenName,
@@ -47,5 +46,6 @@ YUI.add('TweetView', function(Y, NAME) {
 }, '0.0.1', {requires: [
     'mojito',
     'mojito-models-addon',
-    'DOING'
+    'mojito-assets-addon',
+    'mojito-params-addon'
 ]});

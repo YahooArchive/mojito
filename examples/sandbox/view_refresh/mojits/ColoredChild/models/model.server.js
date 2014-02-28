@@ -4,9 +4,9 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('ColoredChildModel', function(Y, NAME) {
+YUI.add('coloredchild-model', function(Y, NAME) {
 
-    Y.mojito.models.ColoredChild = {
+    Y.namespace("mojito.models")[NAME] = {
 
         init: function(config) {
             this.config = config;

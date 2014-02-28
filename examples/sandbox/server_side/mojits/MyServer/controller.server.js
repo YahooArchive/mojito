@@ -4,12 +4,12 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('MyServer', function(Y, NAME) {
+YUI.add('myserver', function(Y, NAME) {
 
 /**
- * The MyServer module.
+ * The myserver module.
  *
- * @module MyServer
+ * @module myserver
  */
 
     /**

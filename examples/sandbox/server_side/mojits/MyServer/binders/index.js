@@ -4,12 +4,12 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('MyServerBinder', function(Y) {
+YUI.add('myserver-binder-index', function(Y, NAME) {
 
 /**
- * The MyServerBinder module.
+ * The myserver-binder-index module.
  *
- * @module MyServerBinder
+ * @module myserver-binder-index
  */
 
     /**
@@ -43,7 +43,6 @@ YUI.add('MyServerBinder', function(Y) {
 
     };
 
-    Y.namespace('mojito.binders.MyServer');
-    Y.mojito.binders.MyServer.index = binder;
+    Y.namespace("mojito.binders")[NAME] = binder;
 
 }, '0.0.1', {requires: []});

@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('ColoredChildBinderIndex', function(Y, NAME) {
+YUI.add('coloredchild-binder-index', function(Y, NAME) {
 
     Y.namespace('mojito.binders')[NAME] = {
 

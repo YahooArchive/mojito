@@ -7,7 +7,7 @@
 /*global YUI*/
 
 
-YUI.add('ReadModelRss', function (Y, NAME) {
+YUI.add('read-model-rss', function (Y, NAME) {
     'use strict';
 
     /**

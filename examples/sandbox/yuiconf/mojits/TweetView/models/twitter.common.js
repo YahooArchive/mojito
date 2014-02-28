@@ -4,26 +4,16 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('twitter', function(Y) {
+YUI.add('twitter', function(Y, NAME) {
 
     var cache = {};
 
-    Y.mojito.models.twitter = {
+    Y.namespace("mojito.models")[NAME] = {
 
         getTweetsFor: function(screenName, callback) {
-            var q = "SELECT * FROM twitter.user.timeline WHERE screen_name='" + screenName + "'";
-
-            if (cache[screenName]) {
-                return callback(null, cache[screenName]);
-            }
-
-            Y.YQL(q, function(rawYqlData) {
-                var tweets = rawYqlData.query.results.statuses.status;
-                cache[screenName] = tweets;
-                callback(null, tweets);
-            });
+            var tweets = [ { title: "A Tweet", "created_at": new Date().toString(), text: "Here's a tweet!", creator: screenName }];
+            callback(null, tweets);
         }
-
     };
 
-}, '0.0.1', {requires: ['yql', 'jsonp']});
+}, '0.0.1', {requires: ['jsonp']});

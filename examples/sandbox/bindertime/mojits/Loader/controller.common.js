@@ -4,12 +4,12 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('Loader', function(Y, NAME) {
+YUI.add('loader-controller', function(Y, NAME) {
 
 /**
- * The Loader module.
+ * The loader module.
  *
- * @module Loader
+ * @module loader
  */
 
     /**

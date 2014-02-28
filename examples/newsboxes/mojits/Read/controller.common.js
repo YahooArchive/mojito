@@ -7,7 +7,7 @@
 /*jslint anon:true*/
 /*global YUI*/
 
-YUI.add('ReadController', function(Y, NAME) {
+YUI.add('read', function(Y, NAME) {
     'use strict';
 
     /**
@@ -122,5 +122,5 @@ YUI.add('ReadController', function(Y, NAME) {
     'mojito-config-addon',
     'mojito-models-addon',
     'mojito-params-addon',
-    'ReadModelRss'
+    'read-model-rss'
 ]});

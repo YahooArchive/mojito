@@ -4,12 +4,12 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('ClientCookieBinder', function(Y) {
+YUI.add('clientcookie-binder', function(Y) {
 
 /**
- * The ClientCookieBinder module.
+ * The clientcookie-binder module.
  *
- * @module ClientCookieBinder
+ * @module clientcookie-binder
  */
 
     /**

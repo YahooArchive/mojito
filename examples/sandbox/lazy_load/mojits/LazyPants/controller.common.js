@@ -4,12 +4,12 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('LazyPants', function(Y, NAME) {
+YUI.add('lazypants', function(Y, NAME) {
 
 /**
- * The LazyPants module.
+ * The lazypants module.
  *
- * @module LazyPants
+ * @module lazypants
  */
 
     /**

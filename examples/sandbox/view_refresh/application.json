@@ -10,36 +10,36 @@
                         "type": "Parent",
                         "config": {
                             "children": {
-                                "1": {
+                                "one": {
                                     "type": "Parent",
                                     "config": {
                                         "children": {
-                                            "1": {
+                                            "one": {
                                                 "type": "Parent",
                                                 "config": {
                                                     "children": {
-                                                        "1": {
+                                                        "one": {
                                                             "type": "ColoredChild",
                                                             "config": {
                                                                 "text": "gold",
                                                                 "background": "black"
                                                             }
                                                         },
-                                                        "2": {
+                                                        "two": {
                                                             "type": "ColoredChild",
                                                             "config": {
                                                                 "text": "yellow",
                                                                 "background": "blue"
                                                             }
                                                         },
-                                                        "3": {
+                                                        "three": {
                                                             "type": "ColoredChild",
                                                             "config": {
                                                                 "text": "cyan",
                                                                 "background": "red"
                                                             }
                                                         },
-                                                        "4": {
+                                                        "four": {
                                                             "type": "ColoredChild",
                                                             "config": {
                                                                 "text": "orange",
@@ -49,21 +49,21 @@
                                                     }
                                                 }
                                             },
-                                            "2": {
+                                            "two": {
                                                 "type": "ColoredChild",
                                                 "config": {
                                                     "text": "yellow",
                                                     "background": "blue"
                                                 }
                                             },
-                                            "3": {
+                                            "three": {
                                                 "type": "ColoredChild",
                                                 "config": {
                                                     "text": "cyan",
                                                     "background": "red"
                                                 }
                                             },
-                                            "4": {
+                                            "four": {
                                                 "type": "ColoredChild",
                                                 "config": {
                                                     "text": "orange",
@@ -73,7 +73,7 @@
                                         }
                                     }
                                 },
-                                "2": {
+                                "two": {
                                     "type": "ColoredChild",
                                     "config": {
                                         "name": "one-2",
@@ -81,14 +81,14 @@
                                         "background": "blue"
                                     }
                                 },
-                                "3": {
+                                "three": {
                                     "type": "ColoredChild",
                                     "config": {
                                         "text": "cyan",
                                         "background": "brown"
                                     }
                                 },
-                                "4": {
+                                "four": {
                                     "type": "ColoredChild",
                                     "action": "alternative"
                                 }

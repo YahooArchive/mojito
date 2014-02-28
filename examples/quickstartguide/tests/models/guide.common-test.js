@@ -22,7 +22,7 @@ test both server and client models.
 For more info, visit: http://developer.yahoo.com/cocktails/mojito/docs/topics/mojito_testing.html#model-tests
 **/
 
-YUI.add('GuideModel-tests', function (Y, NAME) {
+YUI.add('guide-model-tests', function (Y, NAME) {
     'use strict';
     var suite = new YUITest.TestSuite(NAME),
     model = null,
@@ -31,13 +31,13 @@ YUI.add('GuideModel-tests', function (Y, NAME) {
 
     suite.add(new YUITest.TestCase({
 
-        name: 'GuideModel tests',
+        name: 'guide-model tests',
 
         // setup function is always called before each test runs
         setUp: function () {
             A.isNull(model);
             // Fetches the model we are going to test
-            model = Y.mojito.models.GuideModel;
+            model = Y.mojito.models["guide-model"];
             A.isNotNull(model);
         },
 
@@ -168,7 +168,7 @@ YUI.add('GuideModel-tests', function (Y, NAME) {
                 oldIntl = Y.Intl,
                 testIntl = {
                     get: function(translate_pool) {
-                        A.areSame('GuideModel', translate_pool);
+                        A.areSame('guide-model', translate_pool);
                         return {
                             READ_DIR_ERROR_NAME: "Read dir error",
                             READ_DIR_ERROR_MESSAGE: "Cannot read directory! Check file system!!"
@@ -855,4 +855,4 @@ YUI.add('GuideModel-tests', function (Y, NAME) {
     // Adds test cases into TestRunner
     YUITest.TestRunner.add(suite);
 
-}, '0.0.1', {requires: ['mojito-test', 'GuideModel']});
+}, '0.0.1', {requires: ['mojito-test', 'guide-model']});

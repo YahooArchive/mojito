@@ -4,12 +4,12 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('ChildBinderIndex', function(Y, NAME) {
+YUI.add('child-binder-index', function(Y, NAME) {
 
 /**
- * The ChildBinderIndex module.
+ * The child-binder-index module.
  *
- * @module ChildBinderIndex
+ * @module child-binder-index
  */
 
     /**

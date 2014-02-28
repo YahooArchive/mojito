@@ -4,7 +4,7 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('ParamGrabber', function(Y, NAME) {
+YUI.add('paramgrabber', function(Y, NAME) {
 
     Y.namespace('mojito.controllers')[NAME] = {
         

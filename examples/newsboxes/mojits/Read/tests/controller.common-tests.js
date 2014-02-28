@@ -9,7 +9,7 @@
 /*global YUI, YUITest*/
 
 
-YUI.add('ReadController-tests', function(Y, NAME) {
+YUI.add('read-tests', function(Y, NAME) {
     'use strict';
 
     var suite = new YUITest.TestSuite(NAME),
@@ -283,10 +283,10 @@ YUI.add('ReadController-tests', function(Y, NAME) {
 
     suite.add(new YUITest.TestCase({
 
-        name: 'ReadController tests',
+        name: 'read tests',
 
         setUp: function() {
-            controller = Y.mojito.controllers.ReadController;
+            controller = Y.mojito.controllers["read"];
         },
 
         tearDown: function() {
@@ -414,5 +414,5 @@ YUI.add('ReadController-tests', function(Y, NAME) {
 
 }, '0.0.1', {requires: [
     'mojito-test',
-    'ReadController'
+    'read'
 ]});

@@ -4,12 +4,12 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('RedChildBinderIndex', function(Y, NAME) {
+YUI.add('redchild-binder-index', function(Y, NAME) {
 
 /**
- * The RedChildBinderIndex module.
+ * The redchild-binder-index module.
  *
- * @module RedChildBinderIndex
+ * @module redchild-binder-index
  */
 
     /**

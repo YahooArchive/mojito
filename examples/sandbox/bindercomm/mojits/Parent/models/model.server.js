@@ -4,12 +4,12 @@
  * See the accompanying LICENSE file for terms.
  */
 
-YUI.add('ParentModel', function(Y, NAME) {
+YUI.add('parent-model', function(Y, NAME) {
 
 /**
- * The ParentModel module.
+ * The parent-model module.
  *
- * @module ParentModel
+ * @module parent-model
  */
 
     /**

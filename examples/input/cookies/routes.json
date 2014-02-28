@@ -1,22 +1,18 @@
 [{
     "settings": ["master"],
-
     "root": {
         "verbs": ["get"],
         "path": "/",
         "call": "server.index"
     },
-
     "clientframe": {
         "verbs": ["get"],
         "path": "/client/index",
         "call": "client.index"
     },
-
-    "default": {
+    "servercatch": {
         "verbs": ["get"],
-        "path": "/:module/:action",
-        "call": "{module}.{action}"
+        "path": "/server/catch",
+        "call": "server.catch"
     }
-
 }]
