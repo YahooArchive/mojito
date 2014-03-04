@@ -120,7 +120,6 @@ content from those child instances to its template.
    [
      {
        "settings": [ "master" ],
-       "appPort": "8666",
        "specs": {
          "layout": {
            "type": "PageLayout",
@@ -154,7 +153,6 @@ instance is now ``child``.
    [
      {
        "settings": [ "master" ],
-       "appPort": "8666",
        "specs": {
          "tribframe": {
            "type": "HTMLFrameMojit",
@@ -196,7 +194,6 @@ instance to be a composite mojit as well:
    [
      {
        "settings": [ "master" ],
-       "appPort": "8666",
        "specs": {
          "tribframe": {
            "type": "HTMLFrameMojit",
@@ -327,7 +324,7 @@ template, but how does the parent template attach the content created by our
      Y.namespace('mojito.controllers')[NAME] = {
 
        index: function(ac) {
-         Y.log("BodyMojit - controller.server.js index called");
+         Y.log("body - controller.server.js index called");
          ac.composite.done({
            title: "Statistics for YUI"
          });
@@ -403,7 +400,6 @@ Creating the Application
       [
         {
           "settings": [ "master" ],
-          "appPort": "8666",
           "specs": {
             "tribframe": {
               "type": "HTMLFrameMojit",
@@ -471,9 +467,9 @@ Creating the Application
       YUI.add('pagelayout', function(Y, NAME) {
 
         /**
-        * The PageLayout module.
+        * The pagelayout module.
         *
-        * @module PageLayout
+        * @module pagelayout
         */
 
         /**

@@ -266,7 +266,7 @@ methods in the controller namespace as shown below.
    ...
      Y.namespace('mojito.controllers')[NAME] = {
        index: function(ac) {
-         ac.done({ data: { status: “This is an example controller method.” }});
+         ac.done({ data: { status: "This is an example controller method.” }});
      };
    ...
 
@@ -285,14 +285,14 @@ documentation <http://handlebarsjs.com/>`_. When a controller function calls ``a
 an object as a parameter, the object can be passed to the template file. The value of the 
 property or key will replace the Handlebars expression.
 
-For example, in the controller function ``index`` below, the object ``{ status: “It’s working” }`` 
+For example, in the controller function ``index`` below, the object ``{ status: "It’s working” }`` 
 is passed by default to the template ``index.hb.html``.
 
 .. code-block:: javascript
 
    ...
      index: function(ac) {
-       ac.done({ status: “This is an example controller method.” });
+       ac.done({ status: "This is an example controller method.” });
    ...
 
 In the ``index.hb.html`` file below, the Handlebars expression ``{{status}}`` is replaced 
@@ -327,16 +327,16 @@ configurations with the same keys.
        "settings": [ "master" ],
        "config": {
          "gh_mojito”: "https://github.com/yahoo/mojito.git",
-         “gh_yui3”: “https://github.com/yui/yui3.git”
+         "gh_yui3”: "https://github.com/yui/yui3.git”
        }
       },
       {
         "settings": [ "environment:development" ],
         "config": {
           "gh_mojito”: "https://github.com/yahoo/mojito.git",
-          “gh_mojito_remote”: “git@github.com:yahoo/mojito.git”,
-          “gh_yui3”: “https://github.com/yui/yui3.git”,
-          “gh_yui3_remote”: “git@github.com:yui/yui3.git”
+          "gh_mojito_remote”: "git@github.com:yahoo/mojito.git”,
+          "gh_yui3”: "https://github.com/yui/yui3.git”,
+          "gh_yui3_remote”: "git@github.com:yui/yui3.git”
         }
       }
     ]
@@ -350,14 +350,14 @@ You just list key-value pairs:
      {
        "settings": [ "master" ],
        "gh_mojito”: "https://github.com/yahoo/mojito.git",
-       “gh_yui3”: “https://github.com/yui/yui3.git”
+       "gh_yui3”: "https://github.com/yui/yui3.git”
      },
      {
        "settings": [ "environment:development" ],
        "gh_mojito”: "https://github.com/yahoo/mojito.git",
-       “gh_mojito_remote”: “git@github.com:yahoo/mojito.git”,
-       “gh_yui3”: “https://github.com/yui/yui3.git”,
-       “gh_yui3_remote”: “git@github.com:yui/yui3.git”
+       "gh_mojito_remote": "git@github.com:yahoo/mojito.git”,
+       "gh_yui3”: "https://github.com/yui/yui3.git”,
+       "gh_yui3_remote”: "git@github.com:yui/yui3.git”
      }
    ]
 
@@ -393,7 +393,7 @@ being of type ``Github``.
        "settings": [ "master" ],
        "specs": {
          "github": {
-           "type": “Github”
+           "type": "Github”
          }
        }
      }
@@ -489,7 +489,6 @@ mojits and then configure mojit instances and routing paths.
       [
         {
           "settings": [ "master" ],
-          "appPort": "8666",
           "specs": {
             "github": {
               "type": "Github",
@@ -662,7 +661,7 @@ Route Not Being Found
 If you started the application, went to ``http://localhost:8666/body``, 
 and got the following error ``Cannot GET /body``, It appears that you started 
 Mojito from the wrong location. Try changing  to the application directory, which in this 
-example is ``02_mojits``, and then run ``mojito start``.
+example is ``02_mojits``, and then run ``app.js``.
 
 Error: listen EADDRINUSE
 ------------------------

@@ -224,22 +224,12 @@ where ``qs`` is your local copy of the ``quickstartguide`` application.
 Starting the Server
 -------------------
 
-The Mojito CLI utility also has the ``start`` command to start Mojito applications. 
-You can also use Node.js to start applications by running ``node server.js``, 
-but the Mojito command lets you select a port and a context for runtime 
-configurations.  Using contexts, you can specify a set of configurations 
-for a given runtime, such as having configurations for development or 
-apply certain configurations for iPhone devices. We'll discuss contexts 
-more in future chapters, but for now, just know that you can start an application
-with a base (starting) context that allows you to test your application in different
-runtime environments. 
+You use ``node`` and the ``app.js`` file to start your application.
 
-Use the following start the Mojito server and your applications:
+``$ node app.js``
 
-``$ mojito start [<port>] [--context "key1:value1,key2:value2,key3:value3"]``
-
-The port number specified in the command above overrides the port number in 
-the application configuration file ``application.json``. The default port number is 8666.
+The port number is specified in the ``app.js`` file. The default port number is 8666.
+You can also write Express middleware and use ``app.js`` to define routing configuration.
 
 
 .. _01_lesson-test:
@@ -403,7 +393,7 @@ Creating the Application
 #. Alright, we've tested and linted our application. Go ahead and start the application
    by running the following from your application directory.
    
-   ``$ mojito start``
+   ``$ node app.js``
 
    In future modules, we won't include steps for running tests and linting your code, but highly 
    recommend that you do this on your own to save yourself the headache of unraveling more
@@ -418,25 +408,38 @@ Creating the Application
 
    We haven't created a mojit instance, which is an in-memory instance created from the
    mojit code (mojit definition), but we'll do that in the next module.
-   Fortunately, Mojito creates for us an anonymous instance of the mojit ``Github`` by 
+   If you open ``app.js`` in an editor, you'll see we defined the following routing path:
+
+       app.get('/:mojit/:action', libmojito.dispatch("{mojit}.{action}"));
+
+   Mojito creates for us an anonymous instance of the mojit ``Github`` by 
    prepending ``@`` to the mojit name. As for ``'index'``, it's an action called from the mojit 
-   instance. 
+   instance. Thus, the defined path uses parameterized arguments that allow you to explicitly
+   state the anonymous instance and the action, which Mojito will then get from the path and execute.
 
      
 #. Stop the application with **Ctl-C**, and the restart it with a different port by 
-   specifying the port. 
-     
-   ``$ mojito start 8000``
+   exporting ``PORT=8000``:
+
+       $ export PORT=8000; 
+       $ node app.js
 
    You can now view the application at http://localhost:8000/@Github/index.
 #. As we discussed in our lesson, you can start an application in a given context, so that a 
    specific set of configurations are applied for a runtime environment. 
 
-   To start the application in the development context, use the option ``--context`` and   
-   pass  the string "environment:development". Again, you'll see your application at        
-   the URL `http://localhost:8666/@Github/index <http://localhost:8666/@Github/index>`_.
+   To start the application in the development context, pass the ``context`` object 
+   to ``libmojito.extend`` in ``app.js``. The ``context`` object in this case has
+   the key-value pair ``environment:development`` as shown below:
 
-   ``$ mojito start --context "environment:development"``
+   .. code-block:: javascript
+
+      libmojito.extend(app, {
+          context: {
+              environment: "development"
+          }
+      }); 
+#. Now when you restart your application, you'll be starting it with the ``development`` context. 
  
 If you open the file ``application.json``, you will see the property ``"settings"`` twice.  
 The string value given in the array assigned to ``"settings"`` is the context. 
@@ -486,7 +489,7 @@ running and that the Mojito server is listening to the same port::
    Error: listen EADDRINUSE
 
 Either stop the other application or start this application so that it listens
-to a different port: ``$ mojito start 8001``
+to a different port: ``$ export PORT=8001; node app.js``
 
 
 
@@ -504,10 +507,11 @@ Q\&A
 
 - Is there a way to configure your application to run on a different default port?
 
-  Yes, the ``application.json`` has a property ``appPort`` that allows you to define
-  the default port. See `Application Configuration <../intro/mojito_configuring.html#application-configuration>`_
-  for details about the available properties in the application configuration file.
+  Yes, in ``app.js``, you can define the port or use the value of the variable ``PORT``.
 
+  ``app.set('port', process.env.PORT || 8666);``
+
+  To set ``process.env.PORT``, you can do the following from shell CLI: ``$ export PORT=8000``
 
 .. _01_cli-test:
 
@@ -522,7 +526,7 @@ Questions
 - What is the command for getting coverage results for the mojit ``myMojit``?
 - Why would you start an application with a context?
 - What is an archetype and what are the available archetypes for applications?
-- Name two other Mojito CLI commands besides ``create``, ``test``, and ``start``.
+- Name two other Mojito CLI commands besides ``create`` and ``test``.
 
 .. _01_cli_test-addition_exs:
 

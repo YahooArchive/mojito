@@ -115,7 +115,6 @@ To set up and run ``configure_routing``:
       [
         {
           "settings": [ "master" ],
-          "appPort": 8666,
           "specs": {
             "mapped_mojit": {
               "type": "Routing"

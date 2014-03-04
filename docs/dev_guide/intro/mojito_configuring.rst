@@ -134,13 +134,7 @@ configuration Object
 |                                                        |                      |                   | Mojito logs a warning and invokes ``ac.error`` with a  |
 |                                                        |                      |                   | Timeout error.                                         |
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
-| ``appPort``                                            | number               | 8666              | The port number (1-65355) that the application         |
-|                                                        |                      |                   | will use.                                              |
-+--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
 | `builds <#builds-obj>`_                                | object               | N/A               | Specifies configuration for builds.                    |
-+--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
-| ``middleware``                                         | array of strings     | []                | A list of paths to the Node.js module that exports     |
-|                                                        |                      |                   | a Connect middleware function.                         |
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
 | ``mojitDirs``                                          | array of strings     | []                | The list of directories specifying where to find a     |
 |                                                        |                      |                   | single mojit type. The mojits specified by             |
@@ -1186,7 +1180,6 @@ path. In the ``application.json`` below, the ``hello`` instance of type
    [
      {
        "settings": [ "master" ],
-       "appPort": 8666,
        "specs": {
          "hello": {
            "type": "Hello"
@@ -1203,7 +1196,6 @@ path. In the ``application.json`` below, the ``hello`` instance of type
      -
        settings:
          - "master"
-       appPort: 8666
        specs: 
          hello: 
            type: "Hello"

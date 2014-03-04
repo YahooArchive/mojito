@@ -206,7 +206,6 @@ To set up and run ``device_views``:
       [
         {
           "settings": [ "master" ],
-          "appPort": 8666,
           "specs": {
             "device": {
               "type" : "device"

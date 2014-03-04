@@ -444,7 +444,6 @@ Creating the Application
       [
         {
           "settings": [ "master" ],
-          "appPort": "8666",
           "specs": {
             "tribframe": {
               "type": "HTMLFrameMojit",
