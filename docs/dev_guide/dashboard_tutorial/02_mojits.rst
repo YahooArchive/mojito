@@ -266,7 +266,7 @@ methods in the controller namespace as shown below.
    ...
      Y.namespace('mojito.controllers')[NAME] = {
        index: function(ac) {
-         ac.done({ data: { status: "This is an example controller method.” }});
+         ac.done({ data: { status: "This is an example controller method." }});
      };
    ...
 
@@ -285,14 +285,14 @@ documentation <http://handlebarsjs.com/>`_. When a controller function calls ``a
 an object as a parameter, the object can be passed to the template file. The value of the 
 property or key will replace the Handlebars expression.
 
-For example, in the controller function ``index`` below, the object ``{ status: "It’s working” }`` 
+For example, in the controller function ``index`` below, the object ``{ status: "It’s working" }`` 
 is passed by default to the template ``index.hb.html``.
 
 .. code-block:: javascript
 
    ...
      index: function(ac) {
-       ac.done({ status: "This is an example controller method.” });
+       ac.done({ status: "This is an example controller method." });
    ...
 
 In the ``index.hb.html`` file below, the Handlebars expression ``{{status}}`` is replaced 
