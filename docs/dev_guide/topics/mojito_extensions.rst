@@ -249,7 +249,7 @@ tunnel or static assets. Here is the default list in order:
    ]
 
 Mojito also provides a sugar method to use them in your ``Express`` application
-through ``app.use()``, just like any traditinal ``Connect`` middleware. This is
+through ``app.use()``, just like any traditional ``Connect`` middleware. This is
 the recommended way of using the default mojito middleware:
 
 .. code-block:: javascript

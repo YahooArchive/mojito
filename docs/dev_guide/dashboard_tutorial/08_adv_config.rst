@@ -125,8 +125,6 @@ such as `json2yaml <https://npmjs.org/package/json2yaml>`_.
    ---
    - settings:
      - master
-     # Port that Mojito will listen to for incoming requests
-     appPort: '8666'
      # The application name is statically defined to be `trib`
      staticHandling:
        appName: trib
@@ -430,7 +428,6 @@ specified by ``base``.
    [
      {
        "settings": [ "master" ],
-       "appPort": "8666",
        "yui":{
          "config": {
            "base": "http://yui.yahooapis.com/3.8.1/build/?",
@@ -571,16 +568,30 @@ then apply them.
 Base Context
 ************
 
-The base context is statically set when you start the application. If you remember the 
-`Mojito CLI Basics module <./01_cli.html>`_, you’ll recall there was a ``--context`` option. 
-This option allows you to start an application with a base context. Thus, if you want to 
-run your application in the ``environment:development`` context, you would use the following 
-command: ``$ mojito start --context "environment:production"``
+The base context is statically set when you start the application by passing the
+``context`` object to ``libmojito.extend`` in ``app.js`` as shown below:
+
+.. code-block:: javascript
+
+   libmojito.extend(app, {
+       context: {
+           runtime: 'server',
+           environment: 'development'
+       }
+   });
 
 The base context allows you to test your application in different environments. If you 
 wanted to see how your application would run on an iPhone and in a region where German 
-is spoken, you could start your application with the following base 
-context: ``$ mojito start --context “device:iphone,lang:de”``
+is spoken, you could pass the following ``context`` object to ``libmojito.extend``:
+
+.. code-block:: javascript
+
+   context: {
+       runtime: 'server',
+       device: 'iphone',
+       lang: 'de',
+       environment: 'development'
+   }
 
 When your application receives a request, you won’t be able to change the base context, 
 so Mojito also has a request context that can be applied based on the context of the 
@@ -1263,11 +1274,9 @@ Creating the Application
    of YUI. Go ahead and start your application and click the button to see the Mojito
    dashboard for the first time.
 #. Notice from your console that you're only seeing warning messages. Try restarting
-   the application with the ``environment:development`` context to see ``info`` log
-   messages as well. You'll now see the output from ``Y.log`` statement in the controller
-   of the ``PageLayout`` mojit. 
-
-   ``$ mojito start --context "environment:development"``
+   the application with the ``environment:development`` context (update ``app.js``) to 
+   see ``info`` log messages as well. You'll now see the output from ``Y.log`` 
+   statement in the controller of the ``PageLayout`` mojit. 
 
    If you want to suppress log messages, just start the application with the 
    ``environment:production`` context.
@@ -1469,8 +1478,9 @@ Terms
 `YAML <http://en.wikipedia.org/wiki/YAML>`_
 
 **base context** 
-   The context or environment that an application starts in. The base context is specified on the
-   command line with the ``--context`` option. For example: ``$ mojito start --context "environment:development"``
+   The context or environment that an application starts in. The base context is specified in the
+   ``context`` object that is passed to ``libmojito.extend`` in ``app.js``, where ``libmojito`` is
+   an instance of ``mojito``: ``var libmojito = require('mojito');``
 
 **request context** 
    The context of an incoming request or the runtime environment of the client. The Mojito

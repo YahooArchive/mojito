@@ -72,7 +72,6 @@ models or views in this tutorial.
       [
         {
           "settings": [ "master" ],
-          "appPort": 8666,
           "specs": {
             "hello": {
               "type": "Hello"
@@ -119,10 +118,11 @@ Start the Server
 
 #. Start the server.
 
-   ``$ mojito start``
+   ``$ node app.js``
 
 #. Open http://localhost:8666/ in a browser.
-#. The Web page should display the following::
+#. The Web page should display the following (you'll also see documentation links and 
+   instructions for running the ``quickstartguide`` application)::
 
       status
              Mojito is working.

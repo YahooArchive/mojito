@@ -158,7 +158,6 @@ General
           [
             {
               "settings": [ "master" ],
-              "appPort": "8666",
               "specs": {
                 "frame": {
                   "type": "HTMLFrameMojit",
@@ -457,9 +456,12 @@ Configuration
 .. _moj_config_port:
 .. topic:: **How do I configure the Mojito server to listen to specific port?** 
 
-    In the `configuration Object <../intro/mojito_configuring.html#configuration-object>`_ 
-    of ``application.json``, you set the ``appPort`` property to the port number that you 
-    want Mojito to listen to.
+    In ``app.js``, you define the port or use the value of the exported variable ``PORT`` with the
+    following line of code:
+    
+        app.set('port', process.env.PORT || 8666);
+
+    To define the variable ``process.env.PORT``, you do the following from the CLI: ``$ export PORT={port_number}``
                                                     
 ------------
     

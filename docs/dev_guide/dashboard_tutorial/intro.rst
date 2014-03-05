@@ -145,6 +145,7 @@ Before Starting
 
 What You Should Do
 ------------------
+
 We expect that you have read the `Introducing Mojito <../intro/>`_ and completed
 the `Mojito Quickstart <../getting_started/quickstart.html>`_.
 The introduction will give you an overview of Mojito, and the quickstart 
@@ -161,7 +162,7 @@ Requirements
 System
 ------
 
-OS X  or Linux-based machine
+OS X or Linux-based machine
 
 .. _dashboard_reqs-software:
 
