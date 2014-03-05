@@ -326,17 +326,17 @@ configurations with the same keys.
      {
        "settings": [ "master" ],
        "config": {
-         "gh_mojito”: "https://github.com/yahoo/mojito.git",
-         "gh_yui3”: "https://github.com/yui/yui3.git”
+         "gh_mojito": "https://github.com/yahoo/mojito.git",
+         "gh_yui3": "https://github.com/yui/yui3.git"
        }
       },
       {
         "settings": [ "environment:development" ],
         "config": {
-          "gh_mojito”: "https://github.com/yahoo/mojito.git",
-          "gh_mojito_remote”: "git@github.com:yahoo/mojito.git”,
-          "gh_yui3”: "https://github.com/yui/yui3.git”,
-          "gh_yui3_remote”: "git@github.com:yui/yui3.git”
+          "gh_mojito": "https://github.com/yahoo/mojito.git",
+          "gh_mojito_remote": "git@github.com:yahoo/mojito.git",
+          "gh_yui3": "https://github.com/yui/yui3.git",
+          "gh_yui3_remote": "git@github.com:yui/yui3.git"
         }
       }
     ]
@@ -349,15 +349,15 @@ You just list key-value pairs:
    [
      {
        "settings": [ "master" ],
-       "gh_mojito”: "https://github.com/yahoo/mojito.git",
-       "gh_yui3”: "https://github.com/yui/yui3.git”
+       "gh_mojito": "https://github.com/yahoo/mojito.git",
+       "gh_yui3": "https://github.com/yui/yui3.git"
      },
      {
        "settings": [ "environment:development" ],
-       "gh_mojito”: "https://github.com/yahoo/mojito.git",
-       "gh_mojito_remote": "git@github.com:yahoo/mojito.git”,
-       "gh_yui3”: "https://github.com/yui/yui3.git”,
-       "gh_yui3_remote”: "git@github.com:yui/yui3.git”
+       "gh_mojito": "https://github.com/yahoo/mojito.git",
+       "gh_mojito_remote": "git@github.com:yahoo/mojito.git",
+       "gh_yui3": "https://github.com/yui/yui3.git",
+       "gh_yui3_remote": "git@github.com:yui/yui3.git"
      }
    ]
 
@@ -393,7 +393,7 @@ being of type ``Github``.
        "settings": [ "master" ],
        "specs": {
          "github": {
-           "type": "Github”
+           "type": "Github"
          }
        }
      }
