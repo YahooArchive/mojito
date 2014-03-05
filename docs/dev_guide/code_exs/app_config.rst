@@ -101,9 +101,51 @@ To set up and run ``simple_config``:
         }
       ]
 
+#. Update your ``app.js`` with the following:
+
+   .. code-block:: javascript
+
+      'use strict';
+
+      var debug = require('debug')('app'),
+          express = require('express'),
+          libmojito = require('mojito'),
+          app;
+
+          app = express();
+          app.set('port', process.env.PORT || 8666);
+          libmojito.extend(app);
+
+          app.use(libmojito.middleware());
+          app.mojito.attachRoutes();
+
+          app.get('/status', function (req, res) {
+              res.send('200 OK');
+          });
+
+          app.listen(app.get('port'), function () {
+              debug('Server listening on port ' + app.get('port') + ' ' +
+              'in ' + app.get('env') + ' mode');
+          });
+          module.exports = app;
+#. Confirm that your ``package.json`` has the correct dependencies as shown below. If not,
+   update ``package.json``.
+
+   .. code-block:: javascript
+
+      "dependencies": {
+          "debug": "*",
+           "mojito": "~0.9.0"
+      },
+      "devDependencies": {
+          "mojito-cli": ">= 0.2.0"
+      },
+#. From the application directory, install the application dependencies:
+
+   ``$ npm install``
 #. From the application directory, run the server.
 
-   ``$ mojito start``
+   ``$ node app.js``
 #. To view your application, go to the URL:
 
    http://localhost:8666
