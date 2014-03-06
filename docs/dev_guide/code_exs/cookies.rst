@@ -144,6 +144,48 @@ To set up and run ``using_cookies``:
         }
       ]
 
+#. Update your ``app.js`` with the following:
+
+   .. code-block:: javascript
+
+      'use strict';
+
+      var debug = require('debug')('app'),
+          express = require('express'),
+          libmojito = require('mojito'),
+          app;
+
+          app = express();
+          app.set('port', process.env.PORT || 8666);
+          libmojito.extend(app);
+
+          app.use(libmojito.middleware());
+          app.mojito.attachRoutes();
+
+          app.get('/status', function (req, res) {
+              res.send('200 OK');
+          });
+
+          app.listen(app.get('port'), function () {
+              debug('Server listening on port ' + app.get('port') + ' ' +
+              'in ' + app.get('env') + ' mode');
+          });
+          module.exports = app;
+#. Confirm that your ``package.json`` has the correct dependencies as show below. If not,
+   update ``package.json``.
+
+   .. code-block:: javascript
+
+      "dependencies": {
+          "debug": "*",
+           "mojito": "~0.9.0"
+      },
+      "devDependencies": {
+          "mojito-cli": ">= 0.2.0"
+      },
+#. From the application directory, install the application dependencies:
+
+   ``$ npm install``
 #. Change to ``mojits/Cookie``.
 #. To set a cookie from your controller, replace the code in ``controller.server.js`` with 
    the following:
@@ -200,7 +242,7 @@ To set up and run ``using_cookies``:
 
 #. From the application directory, run the server.
 
-   ``$ mojito start``
+   ``$ node app.js``
 #. To view your application, go to the URL below:
 
    http://localhost:8666
