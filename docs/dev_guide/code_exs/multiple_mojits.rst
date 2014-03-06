@@ -47,7 +47,6 @@ forms a skeleton page of ``div`` tags that use content created by the child moji
    [
      {
        "settings": [ "master" ],
-       "appPort": 8666,
        "specs": {
          "parent": {
            "type": "Frame",

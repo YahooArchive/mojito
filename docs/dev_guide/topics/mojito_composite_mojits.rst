@@ -274,7 +274,6 @@ will resume executing the other child mojits.
    [
      {
        "settings": [ "master" ],
-       "appPort": 8666,
        "specs": {
          "parent": {
            "type": "Parent",

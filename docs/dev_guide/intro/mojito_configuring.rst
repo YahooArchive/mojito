@@ -106,7 +106,6 @@ directory. The file consists of an array of zero or more ``configuration``
 objects. Using the ``configuration`` object, you can configure the following 
 for your application:
 
-- port number
 - location of routing files
 - path to static assets
 - YUI 3
@@ -134,13 +133,7 @@ configuration Object
 |                                                        |                      |                   | Mojito logs a warning and invokes ``ac.error`` with a  |
 |                                                        |                      |                   | Timeout error.                                         |
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
-| ``appPort``                                            | number               | 8666              | The port number (1-65355) that the application         |
-|                                                        |                      |                   | will use.                                              |
-+--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
 | `builds <#builds-obj>`_                                | object               | N/A               | Specifies configuration for builds.                    |
-+--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
-| ``middleware``                                         | array of strings     | []                | A list of paths to the Node.js module that exports     |
-|                                                        |                      |                   | a Connect middleware function.                         |
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
 | ``mojitDirs``                                          | array of strings     | []                | The list of directories specifying where to find a     |
 |                                                        |                      |                   | single mojit type. The mojits specified by             |
@@ -211,6 +204,14 @@ configuration Object
           See `Static Configurations <../topics/mojito_using_contexts.html#static-configurations>`_
           for more information and a list of the static configurations.
 
+
+.. note:: Setting Default Port
+
+          The property ``appPort` has been deprecated and is no longer available after Mojito v0.8.  In Mojito 
+          v0.9 and later, you set the port in ``app.js`` with the following
+          code: ``app.set('port', process.env.PORT || 8666);``
+           
+          The variable ``process.env.PORT`` can be with the CLI: ``$ export PORT=800`` 
 
 .. _builds_obj:
 
@@ -1186,7 +1187,6 @@ path. In the ``application.json`` below, the ``hello`` instance of type
    [
      {
        "settings": [ "master" ],
-       "appPort": 8666,
        "specs": {
          "hello": {
            "type": "Hello"
@@ -1203,7 +1203,6 @@ path. In the ``application.json`` below, the ``hello`` instance of type
      -
        settings:
          - "master"
-       appPort: 8666
        specs: 
          hello: 
            type: "Hello"

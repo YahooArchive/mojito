@@ -16,11 +16,14 @@ Requirements
 Installation Steps
 ==================
 
-#. Globally install the Mojito CLI package (``mojito-cli``) from the npm registry 
+#. Globally install the Mojito CLI package v0.2.x (``mojito-cli``) from the npm registry 
    so that you can run Mojito commands. You may need to use ``sudo`` if 
    you run into permission errors.
 
-   ``$ npm install mojito-cli -g``
+   ``$ npm install mojito-cli@~0.2.0 -g``
+#. Do the same for the Mojito CLI utility for creating applications and mojits (``mojito-cli-create``):
+
+   ``$ npm install mojito-cli-create@0~0.1.1 -g``
 
 #. Confirm that Mojito has been installed by running the help command.
 
@@ -34,6 +37,8 @@ Create a Mojito Application
 #. ``$ mojito create app hello_world``
 #. ``$ cd hello_world``
 #. ``$ mojito create mojit myMojit``
+
+
 
 .. _mojito_quickstart-modify_app:
 
@@ -63,8 +68,9 @@ Running the Application
 
 #. From the ``hello_world`` application directory, start Mojito:
 
-   ``$ mojito start``
-#. Go to http://localhost:8666/@myMojit/index to see your application.
+   ``$ node app.js``
+#. Go to http://localhost:8666/@myMojit/index to see your application. You'll also find
+   the Mojito documentation and instructions for creating the ``quickstartguide`` application.
 #. Stop your application by pressing **Ctrl-C**.
 
 For a more in-depth tutorial, please see `Tutorial: Creating Your First Application <mojito_getting_started_tutorial.html>`_. 

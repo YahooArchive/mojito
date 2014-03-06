@@ -47,7 +47,6 @@ so Mojito will know to use the template ``index.iphone.hb.html`` if the context 
    [
      {
        "settings": [ "master" ],
-       "appPort": 8666,
        "specs": {
          "frame" : {
            "type" : "HTMLFrameMojit",
@@ -199,7 +198,6 @@ To create and run ``device_assets``:
       [
         {
           "settings": [ "master" ],
-          "appPort": 8666,
           "specs": {
             "frame" : {
               "type" : "HTMLFrameMojit",

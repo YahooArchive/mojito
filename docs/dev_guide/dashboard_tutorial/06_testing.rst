@@ -1205,7 +1205,7 @@ Creating the Application
    :ref:`Setting Up <06_intro-setting_up>`, so that you have Arrow and PhantomJS installed.
    
    #. Start PhantomJS in the background: ``$ node_modules/phantomjs/bin/phantomjs --webdriver=4445 &``
-   #. Start your application in the background as well: ``$ mojito start &``
+   #. Start your application in the background as well: ``$ node app.js &``
    #. Run your Arrow test with the descriptor: ``$ arrow --browser=phantomjs arrow_tests/test_tribapp_descriptor.json``
    #. You'll see ``INFO`` log messages describing the running of the tests, then ``debug`` statements,
       and finally the test result, which should be one passed test as shown below:

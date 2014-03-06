@@ -335,7 +335,6 @@ In the application configure file ``application.json`` below, the mojit instance
    [
      {
        "settings": [ "master" ],
-       "appPort": 8666,
        "specs": {
          "hello": {
            "type": "Hello"

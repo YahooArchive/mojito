@@ -492,7 +492,6 @@ using the Composite addon.
    [
      {
        "settings": ["master"],
-       "appPort": "8666",
        "specs": {
          "fm": {
            "type": "MyFrame",
@@ -528,7 +527,6 @@ your ``application.json`` might be similar to the following:
    [
      {
        "settings": [ "master" ],
-       "appPort": "8666",
        "specs": {
          "fm": {
            "type": "MyFrame",
@@ -602,7 +600,6 @@ application.json
    [
      {
        "settings": ["master"],
-       "appPort": "8666",
        "specs": {
          "ms": {
            "type": "IntlHTMLFrame",
