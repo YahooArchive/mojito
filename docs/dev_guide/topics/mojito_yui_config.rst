@@ -144,7 +144,7 @@ Synthetic Modules in Mojito
 What Are Synthetic Modules?
 ###########################
 
-When you run ``mojito start`` or use an alternative way to boot your application, 
+When you run ``node app.js`` or use an alternative way to boot your application, 
 the Mojito store analyzes the directory structure and dependencies to try to understand the 
 structure and then make assumptions. From this analysis, the synthetic modules 
 create application metadata that can be used by YUI Loader to load the application and 

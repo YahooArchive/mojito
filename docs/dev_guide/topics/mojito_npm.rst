@@ -99,19 +99,23 @@ run ``npm install`` from the Mojito application directory.
           "email": "nobody@yahoo-inc.com"
         }
       ],
-      "dependencies": {
-        "mojito": ">= 0.3.0",
-        "async": "~0.1",
-        "form_mojit" : "1.x"
+      "scripts": {
+          "start": "node app.js"
       },
       "engines": {
-        "node": ">=0.4.5"
+          "node": "> 0.8",
+          "npm": "> 1.0"
       },
-      "scripts": {
-        "start": "mojito start"
+      "dependencies": {
+          "debug": "*",
+          "node-markdown": "*",
+          "mojito": "~0.9.0"
+      },
+      "devDependencies": {
+          "mojito-cli": ">= 0.2.0"
       }
-   }
-   
+  }
+
    
 .. _author_npm_mod_shared_mojito_resource:
 

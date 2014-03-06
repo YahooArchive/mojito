@@ -168,15 +168,12 @@ Starting the Server
 
 Use the following to start the server and run the application.
 
-``$ mojito start [<port>] [--context "key1:value1,key2:value2,key3:value3"]``
+``$ node app.js``
 
-The port number specified in the command above overrides the port number in 
-the application configuration file, ``application.json``. The default port 
-number is 8666. See :ref:`Specifying Context <mj_cmdline-context>` to learn 
-how to use the ``--context`` option.
-
-.. note:: You can also start your application with Node.js by running the following command
-          from the application directory: ``$ node --debug server.js``
+.. note:: Mojito v0.8 and earlier used the Mojito CLI utility to start
+          applications (``mojito start``). If you have an older application
+          you need to create an ``app.js`` first and then use ``node app.js``
+          to start the application.
 
 .. _mj_cmdlne-js_lint:
 
@@ -335,16 +332,27 @@ The ``mojito gv`` command has the following options:
 Specifying Context
 ==================
 
-When configuration files are read, a context is applied to determine which 
-values will be used for a given key. The applied context is a combination of 
-the dynamic context determined for each HTTP request and a static context 
-specified when the server is started. See 
-`Using Context Configurations <../topics/mojito_using_contexts.html>`_ for 
-more information.
+You specify a base context in the ``app.js`` by passing a ``context`` object
+to the ``extend`` method. In the example snippet from ``app.js`` below, the 
+application when started will use the base context ``environment:staging``:
 
-The static context can be specified by a command-line option whose value 
-is a comma-separated list of key-value pairs. Each key-value pair is separated 
-by a colon. Try to avoid using whitespace, commas, and colons in the keys and values.
+.. code-block:: javascript
 
-``$ mojito start --context "key1:value1,key2:value2,key3:value3"``
+   var express = require('express'),
+       libmojito = require('mojito'),
+       app = express();
+
+   libmojito.extend(app, {
+       context: {
+           runtime: 'server',
+           environment: 'staging'
+       }
+   });
+
+Learn more about contexts in `Using Context Configurations <../topics/mojito_using_contexts.html>`_.
+
+.. note:: Mojito v0.8 and Earlier
+
+          In versions before Mojito v0.9, you use the Mojito CLI utility to specify a 
+          base context: ``$ mojito start --context "key1:value1,key2:value2,key3:value3"``
 
