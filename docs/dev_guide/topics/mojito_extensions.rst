@@ -234,7 +234,7 @@ Configuring Middleware
 ----------------------
 
 Mojito ships with a default list of middleware to facilitate the use of the
-mojito dispatcher. These middleware are responsible for augmenting the request
+Mojito dispatcher. These middleware are responsible for augmenting the request
 object for dispatcher to function, or just simply giving access to the RPC
 tunnel or static assets. Here is the default list in order:
 
@@ -248,9 +248,9 @@ tunnel or static assets. Here is the default list in order:
       'mojito-handler-tunnel'
    ]
 
-Mojito also provides a sugar method to use them in your ``Express`` application
-through ``app.use()``, just like any traditional ``Connect`` middleware. This is
-the recommended way of using the default mojito middleware:
+Mojito also provides a sugar method to use them in your Express application
+through the method ``app.use``, just like any traditional Connect middleware. This is
+the recommended way of using the default Mojito middleware:
 
 .. code-block:: javascript
 
@@ -262,17 +262,17 @@ the recommended way of using the default mojito middleware:
     libmojito.extend(app);
     app.use(libmojito.middleware());
 
-By calling ``libmojito.middleware()``, your express application will execute all
-default mojito middleware in the right order.
+By calling ``libmojito.middleware``, your Express application will execute
+the default Mojito middleware in the correct order.
 
 .. _extending_middleware-example:
 
 Example
 -------
 
-If the default list of mojito middleware does not fit your needs, you can use
-each individual middleware to provide a custom order and a custom organization,
-the following is an example of the mix-in between default mojito middleware and
+If the default list of mojito middleware does not fit your needs, you can 
+individually select middleware to provide a custom order and a custom organization.
+The following is an example of the mix-in between the default Mojito middleware and
 application specific middleware:
 
 .. code-block:: javascript
