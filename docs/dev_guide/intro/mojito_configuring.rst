@@ -1477,6 +1477,8 @@ The following URLs call the ``index`` and ``myAction`` functions in the controll
 
 - ``http://localhost:8666/bar/index``
 
+
+
 .. _regex_paths:
 
 Using Regular Expressions to Match Routing Paths
@@ -1531,6 +1533,280 @@ would call the ``index`` action:
 
 - ``http://localhost:8666/1_mojito``
 - ``http://localhost:8666/99_Mojitos``
+
+.. _appjs-routing:
+
+Configuring Routing in app.js
+-----------------------------
+
+As of Mojito v0.9, you can also define routing paths in ``app.js``, just as you would
+do for Express applications. 
+
+In the following sections, we are going to provide examples of how to configure routing
+in ``app.js`` to accomplish the same routing configurations in ``routes.json``. We'll 
+provide the example ``routes.json`` with its routing configuration and then give
+an equivalent routing configuration in ``app.js``.
+
+
+.. _appjs-routing-single:
+
+Single Route
+############
+
+**routes.json**
+
+.. code-block:: javascript
+
+   [
+       {
+           "settings": [ "master" ],
+           "hello index": {
+               "verbs": ["get"],
+               "path": "/",
+               "call": "hello.index"
+           }
+       }
+   ]
+
+**app.js**
+
+.. code-block:: javascript
+
+   var express = require('express'),
+       libmojito = require('mojito'),
+       app;
+
+   app = express();
+   libmojito.extend(app);
+
+   app.set('port', process.env.PORT || 8666);
+   app.use(libmojito.middleware());
+   app.mojito.attachRoutes();
+
+   // map "/" to "hello.index"
+   app.get('/', libmojito.dispatch('hello.index'));
+
+   app.listen(app.get('port'), function () {
+       debug('Server listening on port ' + app.get('port') + ' ' +
+             'in ' + app.get('env') + ' mode');
+   });
+
+.. _appjs-routing-multiple:
+
+Multiple Routes
+###############
+
+**routes.json**
+
+.. code-block:: javascript
+
+
+   [
+       {
+           "settings": [ "master" ],
+           "root": {
+               "verb": ["get"],
+               "path": "/*",
+               "call": "foo-1.index"
+           },
+           "foo_default": {
+               "verb": ["get"],
+               "path": "/foo",
+               "call": "foo-1.index"
+           },
+           "bar_default": {
+               "verb": ["get"],
+               "path": "/bar",
+               "call": "bar-1.index",
+               "params": { "page": 1, "log_request": true }
+           }
+       }
+   ]
+
+**app.js**
+
+.. code-block:: javascript
+
+
+   var express = require('express'),
+       libmojito = require('mojito'),
+       app;
+
+   app = express();
+   libmojito.extend(app);
+
+   app.set('port', process.env.PORT || 8666);
+   app.use(libmojito.middleware());
+   app.mojito.attachRoutes();
+    
+   // Remember that libmojito.dispatch() returns a middleware fn.
+   app.get('/bar', libmojito.dispatch('bar-1.index', {page: 1, log_request: true}));
+    
+   /* OR the verbose way
+       app.get('/bar', function (req, res, next) {
+           req.params.page = 1;
+           req.params.log_request = true;
+           next();
+       }, libmojito.dispatch('bar-1.index'));
+   */
+   app.get('/foo', libmojito.dispatch('foo-1.index'));
+   app.get('/*', libmojito.dispatch('foo-1.index'));
+
+   app.listen(app.get('port'), function () {
+       debug('Server listening on port ' + app.get('port') + ' ' +
+             'in ' + app.get('env') + ' mode');
+   });
+
+.. _appjs-routing-params:
+
+Adding Routing Parameters
+#########################
+
+**routes.json**
+
+.. code-block:: javascript
+
+   [
+       {
+           "settings": [ "master" ],
+           "root": {
+               "verb": ["get"],
+               "path": "/*",
+               "call": "foo-1.index",
+               "params": { "page": 1, "log_request": true }
+           }
+       }
+   ]
+
+**app.js**
+
+.. code-block:: javascript
+
+   var express = require('express'),
+       libmojito = require('mojito'),
+       app;
+
+   app = express();
+   libmojito.extend(app);
+
+   app.set('port', process.env.PORT || 8666);
+   app.use(libmojito.middleware());
+   app.mojito.attachRoutes();
+
+   libmojito.dispatch('foo-1.index', { page: 1, log_request: true}));
+   
+   /* OR the verbose way
+       app.get('/*', function (req, res, next) {
+           req.params.page = 1;
+           req.params.log_request = true;
+           next();
+       }, libmojito.dispatch('foo-1.index'));
+   */
+
+   app.listen(app.get('port'), function () {
+       debug('Server listening on port ' + app.get('port') + ' ' +
+             'in ' + app.get('env') + ' mode');
+   });
+
+.. _appjs-routing-parameterized:
+
+Using Parameterized Paths to Call a Mojit Action
+################################################
+
+
+**routes.json**
+
+.. code-block:: javascript
+
+   [
+       {
+           "settings": [ "master" ],
+           "_foo_action": {
+               "verb": ["get", "post", "put"],
+               "path": "/foo/:mojit_action",
+               "call": "@foo-1.{mojit_action}"
+           },
+           "_bar_action": {
+               "verb": ["get", "post", "put"],
+               "path": "/bar/:mojit_action",
+               "call": "@bar-1.{mojit_action}"
+           }
+       }
+   ]
+
+
+**app.js**
+
+.. code-block:: javascript
+
+   var express = require('express'),
+       libmojito = require('mojito'),
+       app;
+
+   app = express();
+   libmojito.extend(app);
+
+   app.set('port', process.env.PORT || 8666);
+   app.use(libmojito.middleware());
+   app.mojito.attachRoutes();
+
+   var methods = ['get', 'post', 'put'];
+
+   methods.forEach(function (verb) {
+
+       app.[verb]('/foo/:mojit_action', libmojito.dispatch('@foo-1.{mojit_action}'));
+       app.[verb]('/bar/:mojit_action', libmojito.dispatch('@bar-1.{mojit_action}'));
+
+   });
+
+   app.listen(app.get('port'), function () {
+       debug('Server listening on port ' + app.get('port') + ' ' +
+             'in ' + app.get('env') + ' mode');
+   });
+
+
+Using Regular Expressions to Match Routing Paths
+################################################
+
+**routes.json**
+
+.. code-block:: javascript
+
+   [
+       {
+           "settings": [ "master" ],
+           "regex_path": {
+               "verbs": ["get"],
+               "path": "/:matched_path",
+               "regex": { "matched_path": "\d{1,2}_[Mm]ojitos?" },
+               "call": "myMojit.index"
+           }
+       }
+   ]
+
+
+**app.js**
+
+.. code-block:: javascript
+
+   var express = require('express'),
+       libmojito = require('mojito'),
+       app;
+
+   app = express();
+   libmojito.extend(app);
+
+   app.set('port', process.env.PORT || 8666);
+   app.use(libmojito.middleware());
+   app.mojito.attachRoutes();
+
+
+   app.get(/\d{1,2}_[Mm]ojitos?/, libmojito.dispatch('myMojit.index'));
+
+   app.listen(app.get('port'), function () {
+       debug('Server listening on port ' + app.get('port') + ' ' +
+             'in ' + app.get('env') + ' mode');
+   });
 
 
 .. _generate_urls:
