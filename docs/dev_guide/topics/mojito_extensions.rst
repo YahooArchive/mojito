@@ -224,9 +224,15 @@ Introduction
 ------------
 
 Middleware is code that can handle (or modify) the HTTP request in the server. 
+As of Mojito v0.9, you no longer configure the middleware directory in
+``application.json`` and instead use ``app.js`` to include middleware, by either
+directly writing the middleware code into the file or including it.
+
 Because Mojito middleware is based on the HTTP middleware 
 `Connect <http://senchalabs.github.com/connect/>`_,  the code must follow 
-the Connect API.
+the Connect API. Next, we'll cover the available Mojito middleware and
+show examples how to include the Mojito middleware, select specific Mojito
+middleware modules, and write your write your own custom middleware.
 
 .. _extending_middleware-configure:
 
