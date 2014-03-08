@@ -21,7 +21,6 @@ General
 * :ref:`Does Mojito have API methods for handling caching? If not, what's the best way for Mojito 
   applications to handle caching? <moj_caching>`
 * :ref:`Can Mojito make runtime decisions to run client-side or server-side code? <moj_run_client_server>`
-* :ref:`Can Mojito be started with Node.js instead of using "mojito start"? <moj_node_start>`
 * :ref:`How can I improve the performance of my Mojito application? <moj_optimize_performance>`
 * :ref:`Can I start an application so that it listens to requests made to a specific IP address or hostname? <moj_ip_address>`
 
@@ -189,9 +188,16 @@ General
        .. note:: Your application has to deploy code to the client, so 
                 ``deploy`` must be set to ``true``.
 
-    #. Start your application with the context ``environment:development``:
+    #. Modify your ``app.js`` to start with the context ``environment:development``:
 
-       ``$ mojito start --context environment:development``
+       .. code-block:: javascript
+
+          libmojito.extend(app, {
+              context: {
+                  runtime: 'server',
+                  environment: 'development'
+              }
+          });
     #. Open your application in a browser.
     #. Modify code in your binders or templates.
     #. Refresh your browser to see the updates in your application.
@@ -236,14 +242,14 @@ General
        ``$ sudo npm install supervisor -g``
     #. From a Mojito application directory, start Mojito with ``supervisor``:
     
-       ``$ supervisor -x path/to/mojito/bin/mojito start``
+       ``$ supervisor -x node app.js``
     #. View your application in a browser.
     #. In a separate terminal window, make changes to the source code of the application.
     #. Refresh the page to view the modified application.
     
     .. note:: ``supervisor`` will only update files with extensions ``node`` or ``js`` by 
               default. To have ``supervisor`` watch files with other extensions, use the 
-              option ``-e`` or ``--extensions``: ``$ supervisor -e js,json,html -x path/to/mojito start``
+              option ``-e`` or ``--extensions``: ``$ supervisor -e js,json,html -x node app.js``
 
 ------------    
     
@@ -321,22 +327,6 @@ General
 ------------
   
     
-.. _moj_node_start:
-.. topic:: **Can Mojito be started with Node.js instead of using "mojito start"?**
-
-    Yes. Although there is not a standard way for starting Mojito with Node.js, you could 
-    run the following from your application directory::
-    
-       $ node --debug server.js
-    
-   
-    This will allow you to debug your server-side code with a tool such as 
-    `node-inspector <https://github.com/node-inspector/node-inspector>`_.
-
-------------
-
-
-
 .. _moj_optimize_performance:
 .. topic:: **How can I improve the performance of my Mojito application?**
 

@@ -9,6 +9,63 @@ your applications, so that they may be launched in hosting environments. We
 will look at what startup files are required for each version and provide 
 code examples.
 
+.. _startup_reqs-v0.9:
+
+Mojito v0.9 and Later
+=======================
+
+Version 0.9 removes the ``server.js`` and requires the addition of ``app.js`` to 
+boot applications. The ``app.js`` is structured much like the ``app.js`` of Express
+applications with Mojito included to dispatch mojits, attach routing and application configurations,
+and providing middleware. 
+
+Although your ``app.js`` can have many forms, from using Express-like syntax for defining 
+routing paths, adding middleware, etc., to using Mojito to do those same things, the 
+example ``app.js`` below can be the starting point or template for your applications.
+
+.. _startup_reqs-v0.9-appjs:
+
+app.js
+------
+
+.. code-block:: javascript
+
+   /*jslint node:true*/
+
+   'use strict';
+
+   var express = require('express'),
+       libmojito = require('mojito'),
+       app;
+
+   app = express();
+   app.set('port', process.env.PORT || 8666);
+   libmojito.extend(app);
+
+   app.use(libmojito.middleware());
+   app.mojito.attachRoutes();
+
+   app.get('/status', function (req, res) {
+       res.send('200 OK');
+   });
+
+   app.listen(app.get('port'), function () {
+       console.log('Server listening on port ' + app.get('port') + ' ' +
+                   'in ' + app.get('env') + ' mode');
+   });
+   module.exports = app;
+
+
+.. _startup_reqs-v0.9-appjs:
+
+server.js
+---------
+
+**OBSOLETE**
+
+The ``server.js`` file is not created by version 0.9. Remove from any 
+applications that are using versions 0.9 or greater.
+
 .. _startup_reqs-v0.4.8:
 
 Mojito v0.4.8 and Later
@@ -29,7 +86,7 @@ index.js
 **OBSOLETE**
 
 The ``index.js`` file is not created by version 0.4.7. Remove from any 
-applicationsthat are using versions 0.4.7 or greater.
+applications that are using versions 0.4.7 or greater.
 
 .. _startup_reqs_v0.4.8-server:
 

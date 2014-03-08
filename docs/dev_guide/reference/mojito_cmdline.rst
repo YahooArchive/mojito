@@ -168,15 +168,12 @@ Starting the Server
 
 Use the following to start the server and run the application.
 
-``$ mojito start [<port>] [--context "key1:value1,key2:value2,key3:value3"]``
+``$ node app.js``
 
-The port number specified in the command above overrides the port number in 
-the application configuration file, ``application.json``. The default port 
-number is 8666. See :ref:`Specifying Context <mj_cmdline-context>` to learn 
-how to use the ``--context`` option.
-
-.. note:: You can also start your application with Node.js by running the following command
-          from the application directory: ``$ node --debug server.js``
+.. note:: Mojito v0.8 and earlier used the Mojito CLI utility to start
+          applications (``mojito start``). If you have an older application
+          you need to create an ``app.js`` first and then use ``node app.js``
+          to start the application.
 
 .. _mj_cmdlne-js_lint:
 
@@ -267,47 +264,6 @@ Version Information
 .. note:: Showing the version of the application and mojit requires that they have a 
           ``package.json`` file.
 
-.. _mj_cmdlne-build_sys:
-
-Build System
-============
-
-Mojito comes with a build command for generating an HTML5 offline Mojito 
-application that runs in different environments. The command must be run inside 
-of the application you want built.
-
-``$ mojito build <type> [<output-path>] [--context "key1:value1,key2:value2,key3:value3"]``
-
-Output is written to ``{app-dir}/artifacts/builds/{type}`` by default. See 
-:ref:`Specifying Context <mj_cmdline-context>` to learn about the ``--context`` 
-option.
-
-.. _build_sys-types:
-
-Build Types
------------
-
-The following sections describe the available build type.
-
-.. _build_types-html5app:
-
-html5app
-########
-
-To build an HTML 5 application, use the the following:
-
-``$ mojito build html5app``
-
-This generates a HTML5 Offline Application with a ``cache.manifest`` listing 
-all the files that will be available offline. An ``index.hb.html`` page is 
-generated from the result of calling the Web root ``/`` of the Mojito 
-application that this command was run within. You can build other pages by 
-specifying the pages in the ``"builds": "html5app"`` object in 
-``application.json``. The `html5 <../intro/mojito_configuring.html#html5app-object>`_ 
-object lets you add the ``manifest`` attribute to the ``html`` element, 
-configure relative paths, and specify a list of URLs to pages to generate.
-
-
 .. _mj_cmdline-dependency:
 
 Dependency Graphs (Deprecated)
@@ -330,21 +286,53 @@ The ``mojito gv`` command has the following options:
 .. note:: To render the Graphviz files into GIF images, you need the `Graphviz - Graph 
           Visualization Software <http://www.graphviz.org/Download..php>`_.
 
+
+No Longer Supported
+===================
+
+As of Mojito v0.9, several command-line features are no longer supported.
+The following sections discuss what's not supported and offer possible solutions.
+
+.. _mj_cmdline-mojito_start:
+
+mojito start
+------------
+
+Applications are no longer started with ``mojito start``. You start applications
+with ``node`` and the boot file ``app.js``:
+
+``$ node app.js``
+
+.. _mj_cmdlne-build_sys:
+
+mojito build
+------------
+
+As of Mojito v0.9, the ``build`` command for creating HTML5 applications 
+from Mojito applications is no longer available.
+
 .. _mj_cmdline-context:
 
-Specifying Context
-==================
+Specifying Context: --context
+-----------------------------
 
-When configuration files are read, a context is applied to determine which 
-values will be used for a given key. The applied context is a combination of 
-the dynamic context determined for each HTTP request and a static context 
-specified when the server is started. See 
-`Using Context Configurations <../topics/mojito_using_contexts.html>`_ for 
-more information.
+You can no longer specify the base context with the ``--context`` option. 
+To specify a base context in Mojito v0.9 and later, you pass a ``context`` object
+to the ``extend`` method in the file ``app.js``. In the example snippet from 
+``app.js`` below, the application when started will use the base context ``environment:staging``:
 
-The static context can be specified by a command-line option whose value 
-is a comma-separated list of key-value pairs. Each key-value pair is separated 
-by a colon. Try to avoid using whitespace, commas, and colons in the keys and values.
+.. code-block:: javascript
 
-``$ mojito start --context "key1:value1,key2:value2,key3:value3"``
+   var express = require('express'),
+       libmojito = require('mojito'),
+       app = express();
+
+   libmojito.extend(app, {
+       context: {
+           runtime: 'server',
+           environment: 'staging'
+       }
+   });
+
+Learn more about contexts in `Using Context Configurations <../topics/mojito_using_contexts.html>`_.
 

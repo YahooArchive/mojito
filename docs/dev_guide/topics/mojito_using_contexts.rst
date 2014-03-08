@@ -44,27 +44,35 @@ for request contexts override those of the base context.
 Base Context
 ------------
 
-The base context is statically set with the ``--context`` option when you 
-start an application. 
+The base context is statically set in ``app.js`` by passing a ``context`` object
+to the ``extend`` method that is called from an instance of Mojito. You pass the
+instance of an Express application and the ``context`` object to ``extend`` to
+set the base context.
 
-.. _context_base-syntax:
+In the example ``app.js`` below, ``libmojito`` is an instance of Mojito, and ``app``
+is an instance of Express. You pass ``app`` to ``libmojito.extend`` as well as
+the ``context`` object that specifies the ``development`` environment.
 
-Syntax
-######
+.. code-block:: javascript
 
-The base context has the following syntax:
+   var express = require('express'),
+       libmojito = require('mojito'),
+       app = express();
 
-``"key1:value1[,key2:value2]"``
+   libmojito.extend(app, {
+       context: {
+           runtime: 'server',
+           environment: 'development'
+       }
+   });
 
-.. _context_base-ex:
+.. note:: Mojito v0.8.x and Earlier
 
-Example
-#######
-
-The following starts the application with the base context 
-``environment:production``:
-
-``$ mojito start --context "environment:production"``
+          In versions of Mojito before v0.9, you used the Mojito CLI utility to specify
+          the context with the ``--context`` option on the command line. We recommend
+          adapt your applications to Mojito v0.9, which in general only involves creating
+          the file ``app.js``, removing the ``server.js`` file, and using ``node app.js`` to
+          start applications.
 
 .. _context_configs_what-request:
 

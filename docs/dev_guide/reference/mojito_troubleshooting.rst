@@ -173,7 +173,8 @@ to start Mojito?*
 **A:**
 You probably have an instance of mojito already started/running (check the output from 
 ``ps aux | grep mojito``). Either stop the instance that is running or start a new 
-instance on another port such as in ``mojito start 8667``.
+instance on another port such as in ``$ export PORT=8667; node app.js``. Your
+``app.js`` has to have a line of code to set the port or use the environment variable ``PORT``.
 
 ------------
 
