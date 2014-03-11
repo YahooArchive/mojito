@@ -52,7 +52,7 @@ The inline comments offer a short explanation of the significant lines of the co
    app.use(libmojito.middleware());
 
    // Use the routes defined in `routes.json`.
-   app.mojito.attachRoutes();
+   app.libmojito.attachRoutes();
    
    // Define a simple routing path with Express-like syntax for doing a sanity check.
    app.get('/status', function (req, res) {
@@ -82,23 +82,12 @@ To start applications, install your application dependencies and use ``node`` di
 Configuring Routing
 ===================
 
-You can still use the routing paths that you configured in ``routes.json`` by adding
-the following life in ``app.js`` (if it's not there already):
+You configure routing in ``app.js``, much like you would do for Express applications, but
+in Mojito applications, you are explicitly executing actions of mojit instances when
+requests are received for a given path. See `Routing <mojito_routing.html>`_
+to learn how to define routes and explicitly dispatch mojit instances in ``app.js``.
 
-.. code-block:: javascript
 
-
-   // Create instances for Express and Mojito as well
-   // as allowing for debugging.
-   var debug = require('debug')('app'),
-       express = require('express'),
-       libmojito = require('mojito'),
-       app;   
-   // Use the routes defined in `routes.json`.
-   app.mojito.attachRoutes();
-
-You can also define routes and explicitly dispatch mojit instances in ``app.js``. Read
-the section `Configuring Routing in app.js <mojito_configuring.html#appjs-routing>`_.
 
 .. _appjs-middleware:
 

@@ -227,8 +227,7 @@ Defining Configurations for Contexts
 ====================================
 
 Configurations for contexts are defined in the application configuration file 
-``application.json``. Routing configurations for contexts are defined in the 
-routing configuration file ``routes.json``. Default configurations are defined 
+``application.json``.  Default configurations are defined 
 in the ``defaults.json`` file of a mojit. All configurations are merged when an 
 application starts. The configuration values in ``application.json`` override 
 those in ``defaults.json``.
@@ -238,17 +237,14 @@ those in ``defaults.json``.
 Configuration Objects
 ---------------------
 
-The ``application.json`` and ``routes.json`` files in the application directory 
+The ``application.json`` file in the application directory 
 and the ``defaults.json`` file in a mojit's directory consist of an array of 
 configuration objects. The configuration object has a ``settings`` array that 
 specifies the context. The configuration objects in ``application.json`` also 
 have a ``specs`` object containing mojit instances, which may also have a 
 ``config`` object that has data in the form of key-value pairs. The configuration 
 objects in ``defaults.json`` do not have a ``specs`` object because they do not 
-define mojits, but do have a ``config`` object for storing key-value pairs. The 
-``routes.json`` file specifies routing configuration such as the path, HTTP 
-methods, actions, and routing parameters, but does not contain a ``specs`` or 
-a ``config`` object.
+define mojits, but do have a ``config`` object for storing key-value pairs. 
 
 .. _context_configs_obj-setting:
 
@@ -480,32 +476,6 @@ to contexts for languages.
        "settings": [ "lang:fr" ],
        "config": {
          "gamma": "defaults.json - (when lang=fr is passed) the third!"
-       }
-     }
-   ]
-
-.. _context_configs_exs-routesjson:   
-
-routes.json
-###########
-
-.. code-block:: javascript
-
-   [
-     {
-       "settings": [ "master" ],
-       "prod_route": {
-         "verbs": ["get"],
-         "path": "/",
-         "call": "hello.index"
-       }
-     },
-     {
-       "settings": [ "environment:development"],
-       "dev_route" : {
-         "verbs": ["get"],
-         "path" : "/testing",
-         "call" : "dev_hello.index"
        }
      }
    ]

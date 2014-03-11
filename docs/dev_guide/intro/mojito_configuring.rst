@@ -150,7 +150,7 @@ configuration Object
 | ``routesFiles``                                        | array of strings     | ['routes.json']   | The list of files specifying where to find routing     |
 |                                                        |                      |                   | information. If a file doesn't start with a "/",       |
 |                                                        |                      |                   | it is taken as relative to the application             |
-|                                                        |                      |                   | directory.                                             |
+|                                                        |                      |                   | directory. Note, the ``routes.json`` is deprecated.    |
 +--------------------------------------------------------+----------------------+-------------------+--------------------------------------------------------+
 | ``selector``                                           | string               | N/A               | The version of the resource. A resource is either a    |
 |                                                        |                      |                   | file to Mojito or metadata to the `Resource Store <../ |
@@ -1044,8 +1044,8 @@ object.
 Using Mojit Instances
 #####################
 
-When a mojit instance is defined in ``application.json``, routing paths defined 
-in ``routes.json`` can be associated with an action of that mojit instance. 
+When a mojit instance is defined in ``application.json``, you can
+map an action of that mojit instance to a routing path in ``app.js``. 
 Actions are references to functions in the mojit controllers. When a client 
 makes an HTTP request on a defined routing path, the function in the mojit 
 controller that is referenced by the action from the mojit instance is called.
@@ -1075,31 +1075,46 @@ the ``index`` function in the controller of the ``Foo`` mojit.
 
 .. code-block:: javascript
 
-   [
-     {
-       "settings": [ "master" ],
-       "foo index": {
-         "verbs": ["get"],
-         "path": "/",
-         "call": "foo.index"
-       }
-     }
-   ]
+   use strict';
 
-.. _configure_mj-routing:
+   var debug = require('debug')('app'),
+       express = require('express'),
+       libmojito = require('mojito'),
+       app;
 
-Routing
-=======
+   app = express();
+   app.set('port', process.env.PORT || 8666);
+   libmojito.extend(app);
 
-In Mojito, routing is the mapping of URLs to specific mojit actions. This section 
-will describe the routing configuration file ``routes.json`` and the following 
-two ways to configure routing:
+   app.use(libmojito.middleware());
 
-- Map Routes to Specific Mojit Instances and Actions
-- Generate URLs from the Controller
+   app.get('/', libmojito.dispatch("foo.index.")); 
 
-See `Code Examples: Configuring Routing <../code_exs/route_config.html>`_ to 
-see an example of configuring routing in a Mojito application.
+   app.listen(app.get('port'), function () {
+       debug('Server listening on port ' + app.get('port') + ' ' +
+             'in ' + app.get('env') + ' mode');
+   });
+
+.. _configure_mj-routing_deprecated:
+
+Routing Configuration: routes.json (Deprecated)
+===============================================
+
+As of Mojito v0.9, you define routing paths in ``app.js``, just as you would
+do for Express applications. You can, however, until further notice, still
+use routing configured in ``routes.json`` by following the instructions
+in `Using Routing Defined in routes.json <mojito_routing.html#routing-routesjson>`_.
+
+We strongly suggest that you use ``app.js`` to define your routing paths and update
+the routing paths from older applications to use ``app.js`` as future versions of Mojito 
+may not allow you to use the routing path defined in``routes.json``. 
+See `Routing <mojito_routing.html>`_ for implementation details.
+
+
+.. note:: Regular Expressions for Matching Routing Paths
+
+          Using regular expressions for matching routing paths, however, is no longer supported
+          in Mojito v0.9 and later. You will need to 
 
 
 .. _configure_routing-file:
@@ -1472,341 +1487,9 @@ this case) would be then replace ``{mojit-action}}`` in the ``call`` property.
 The following URLs call the ``index`` and ``myAction`` functions in the controller.
 
 - ``http://localhost:8666/foo/index``
-
 - ``http://localhost:8666/foo/myAction``
-
 - ``http://localhost:8666/bar/index``
 
-
-
-.. _regex_paths:
-
-Using Regular Expressions to Match Routing Paths
-------------------------------------------------
-
-You can use the ``regex`` property of a routing object to define a key-value 
-pair that defines a path parameter and a regular expression. The key is prepended 
-with a colon when represented as a path parameter. For example, the key ``name`` 
-would be represented as ``:name`` as a path parameter: ``"path": "/:name"``.
-The associated value contains the regular expression that is matched against 
-the request URL. 
-
-For example, in the ``routes.json`` below, if the path of the request 
-matches the regular expression ``\\d{1,2}_[Mm]ojitos?``, the ``index``
-action of the mojit instance is called. 
-
-
-**routes.json**
-
-.. code-block:: javascript
-
-   [
-     {
-       "settings": [ "master" ],
-       "regex_path": {
-         "verbs": ["get"],
-         "path": "/:matched_path",
-         "regex": { "matched_path": "\\d{1,2}_[Mm]ojitos?" },
-         "call": "myMojit.index"
-       }
-     }
-   ]
-
-**routes.yaml**
-
-.. code-block:: yaml
-
-   ---
-     -
-       settings:
-         - "master"
-       regex_path:
-         verbs:
-           - "get"
-         path: "/:matched_path"
-         regex:
-           matched_path: "\\d{1,2}_[Mm]ojitos?"
-         call: "myMojit.index"
-
-Based on the above routing configuration, the following URLs 
-would call the ``index`` action:
-
-- ``http://localhost:8666/1_mojito``
-- ``http://localhost:8666/99_Mojitos``
-
-.. _appjs-routing:
-
-Configuring Routing in app.js
------------------------------
-
-As of Mojito v0.9, you can also define routing paths in ``app.js``, just as you would
-do for Express applications. 
-
-In the following sections, we are going to provide examples of how to configure routing
-in ``app.js`` to accomplish the same routing configurations in ``routes.json``. We'll 
-provide the example ``routes.json`` with its routing configuration and then give
-an equivalent routing configuration in ``app.js``.
-
-
-.. _appjs-routing-single:
-
-Single Route
-############
-
-**routes.json**
-
-.. code-block:: javascript
-
-   [
-       {
-           "settings": [ "master" ],
-           "hello index": {
-               "verbs": ["get"],
-               "path": "/",
-               "call": "hello.index"
-           }
-       }
-   ]
-
-**app.js**
-
-.. code-block:: javascript
-
-   var express = require('express'),
-       libmojito = require('mojito'),
-       app;
-
-   app = express();
-   libmojito.extend(app);
-
-   app.set('port', process.env.PORT || 8666);
-   app.use(libmojito.middleware());
-   app.mojito.attachRoutes();
-
-   // map "/" to "hello.index"
-   app.get('/', libmojito.dispatch('hello.index'));
-
-   app.listen(app.get('port'), function () {
-       debug('Server listening on port ' + app.get('port') + ' ' +
-             'in ' + app.get('env') + ' mode');
-   });
-
-.. _appjs-routing-multiple:
-
-Multiple Routes
-###############
-
-**routes.json**
-
-.. code-block:: javascript
-
-
-   [
-       {
-           "settings": [ "master" ],
-           "root": {
-               "verb": ["get"],
-               "path": "/*",
-               "call": "foo-1.index"
-           },
-           "foo_default": {
-               "verb": ["get"],
-               "path": "/foo",
-               "call": "foo-1.index"
-           },
-           "bar_default": {
-               "verb": ["get"],
-               "path": "/bar",
-               "call": "bar-1.index",
-               "params": { "page": 1, "log_request": true }
-           }
-       }
-   ]
-
-**app.js**
-
-.. code-block:: javascript
-
-
-   var express = require('express'),
-       libmojito = require('mojito'),
-       app;
-
-   app = express();
-   libmojito.extend(app);
-
-   app.set('port', process.env.PORT || 8666);
-   app.use(libmojito.middleware());
-   app.mojito.attachRoutes();
-    
-   // Remember that libmojito.dispatch() returns a middleware fn.
-   app.get('/bar', libmojito.dispatch('bar-1.index', {page: 1, log_request: true}));
-    
-   /* OR the verbose way
-       app.get('/bar', function (req, res, next) {
-           req.params.page = 1;
-           req.params.log_request = true;
-           next();
-       }, libmojito.dispatch('bar-1.index'));
-   */
-   app.get('/foo', libmojito.dispatch('foo-1.index'));
-   app.get('/*', libmojito.dispatch('foo-1.index'));
-
-   app.listen(app.get('port'), function () {
-       debug('Server listening on port ' + app.get('port') + ' ' +
-             'in ' + app.get('env') + ' mode');
-   });
-
-.. _appjs-routing-params:
-
-Adding Routing Parameters
-#########################
-
-**routes.json**
-
-.. code-block:: javascript
-
-   [
-       {
-           "settings": [ "master" ],
-           "root": {
-               "verb": ["get"],
-               "path": "/*",
-               "call": "foo-1.index",
-               "params": { "page": 1, "log_request": true }
-           }
-       }
-   ]
-
-**app.js**
-
-.. code-block:: javascript
-
-   var express = require('express'),
-       libmojito = require('mojito'),
-       app;
-
-   app = express();
-   libmojito.extend(app);
-
-   app.set('port', process.env.PORT || 8666);
-   app.use(libmojito.middleware());
-   app.mojito.attachRoutes();
-
-   libmojito.dispatch('foo-1.index', { page: 1, log_request: true}));
-   
-   /* OR the verbose way
-       app.get('/*', function (req, res, next) {
-           req.params.page = 1;
-           req.params.log_request = true;
-           next();
-       }, libmojito.dispatch('foo-1.index'));
-   */
-
-   app.listen(app.get('port'), function () {
-       debug('Server listening on port ' + app.get('port') + ' ' +
-             'in ' + app.get('env') + ' mode');
-   });
-
-.. _appjs-routing-parameterized:
-
-Using Parameterized Paths to Call a Mojit Action
-################################################
-
-
-**routes.json**
-
-.. code-block:: javascript
-
-   [
-       {
-           "settings": [ "master" ],
-           "_foo_action": {
-               "verb": ["get", "post", "put"],
-               "path": "/foo/:mojit_action",
-               "call": "@foo-1.{mojit_action}"
-           },
-           "_bar_action": {
-               "verb": ["get", "post", "put"],
-               "path": "/bar/:mojit_action",
-               "call": "@bar-1.{mojit_action}"
-           }
-       }
-   ]
-
-
-**app.js**
-
-.. code-block:: javascript
-
-   var express = require('express'),
-       libmojito = require('mojito'),
-       app;
-
-   app = express();
-   libmojito.extend(app);
-
-   app.set('port', process.env.PORT || 8666);
-   app.use(libmojito.middleware());
-   app.mojito.attachRoutes();
-
-   var methods = ['get', 'post', 'put'];
-
-   methods.forEach(function (verb) {
-
-       app.[verb]('/foo/:mojit_action', libmojito.dispatch('@foo-1.{mojit_action}'));
-       app.[verb]('/bar/:mojit_action', libmojito.dispatch('@bar-1.{mojit_action}'));
-
-   });
-
-   app.listen(app.get('port'), function () {
-       debug('Server listening on port ' + app.get('port') + ' ' +
-             'in ' + app.get('env') + ' mode');
-   });
-
-
-Using Regular Expressions to Match Routing Paths
-################################################
-
-**routes.json**
-
-.. code-block:: javascript
-
-   [
-       {
-           "settings": [ "master" ],
-           "regex_path": {
-               "verbs": ["get"],
-               "path": "/:matched_path",
-               "regex": { "matched_path": "\d{1,2}_[Mm]ojitos?" },
-               "call": "myMojit.index"
-           }
-       }
-   ]
-
-
-**app.js**
-
-.. code-block:: javascript
-
-   var express = require('express'),
-       libmojito = require('mojito'),
-       app;
-
-   app = express();
-   libmojito.extend(app);
-
-   app.set('port', process.env.PORT || 8666);
-   app.use(libmojito.middleware());
-   app.mojito.attachRoutes();
-
-
-   app.get(/\d{1,2}_[Mm]ojitos?/, libmojito.dispatch('myMojit.index'));
-
-   app.listen(app.get('port'), function () {
-       debug('Server listening on port ' + app.get('port') + ' ' +
-             'in ' + app.get('env') + ' mode');
-   });
 
 
 .. _generate_urls:
@@ -1814,24 +1497,14 @@ Using Regular Expressions to Match Routing Paths
 Generate URLs from the Controller
 ---------------------------------
 
-The Mojito JavaScript library contains the `Url addon <../../api/classes/Url.common.html>`_ 
+The Mojito API includes the `Url addon <../../api/classes/Url.common.html>`_ 
 that allows you to create a URL with the mojit instance, the action, and parameters from 
 the controller.
 
-In the code snippet below from ``routes.json``,  the mojit instance, the HTTP method, and 
-the action are specified in the ``"foo_default"`` object.
-
-.. code-block:: javascript
-
-   "foo_default": {
-     "verb": ["get"],
-     "path": "/foo",
-     "call": "foo-1.index"
-   }
 
 In this code snippet from ``controller.js``, the `Url addon <../../api/classes/Url.common.html>`_ 
-with the ``make`` method use the mojit instance and function specified in the 
-``routes.json`` above to create the URL ``/foo`` with the query string parameters 
+with the ``make`` method use	 the mojit instance ``foo-1`` defined in ``application.json`` 
+to create the URL ``/foo`` with the query string parameters 
 ``?foo=bar``.
 
 .. code-block:: javascript
@@ -1843,6 +1516,18 @@ with the ``make`` method use the mojit instance and function specified in the
    ...
 
 The ``index`` function above returns the following URL: ``http://localhost:8666/foo?foo=bar``
+
+
+No Longer Supported in routes.json
+----------------------------------
+
+As of Mojito v0.9, you can no longer use the ``regex`` project 
+in ``routes.json`` to define a key-value pair that defines a path parameter and 
+a regular expression. You can use regular expressions in ``app.js`` though to
+define a path parameter. See `Using Regular Expressions to Match Routing Paths <mojito_routing.html#appjs-routing-regex>`_
+to learn how.
+
+
 
 .. _mojito_configuring-access:
 
@@ -1892,8 +1577,8 @@ you would use ``ac.config.getAppConfig().specs`` as shown here:
 
 .. _access-routesjson:
 
-routes.json
-###########
+routes.json (Deprecated)
+########################
 
 The routing configuration can be accessed with the method ``getRoutes``
 of the ``Config`` addon.
