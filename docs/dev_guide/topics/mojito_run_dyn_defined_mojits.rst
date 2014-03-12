@@ -609,20 +609,26 @@ Application Configuration
      }
    ]
    
-``routes.json``
+``app.js``
 
 .. code-block:: javascript
 
-   [
-     {  
-       "settings" : [ "master" ],
-       "framed" : {
-         "verbs" : [ "get" ],
-         "path" : "/",  
-         "call" : "frame.index"
-       }        
-     }  
-   ]
+   var express = require('express'),
+       libmojito = require('mojito'),
+       app;
+
+   app = express();
+   libmojito.extend(app);
+
+   app.use(libmojito.middleware());
+   app.set('port', process.env.PORT || 8666);
+
+   // map "/" to "hello.index"
+   app.get('/', libmojito.dispatch('frame.index'));
+   app.listen(app.get('port'), function () {
+    debug('Server listening on port ' + app.get('port') + ' ' +
+               'in ' + app.get('env') + ' mode');
+   });
 
 .. _templates_ex_two-controllers:
 
@@ -827,20 +833,26 @@ Application Configuration
    ]
 
 
-``routes.json``
+``app.js``
 
 .. code-block:: javascript
 
-   [
-    {   
-      "settings" : [ "master" ],
-      "framed" : {
-        "verbs" : [ "get" ],
-        "path" : "/",   
-        "call" : "first_level.index"
-      }         
-    }   
-   ]
+   var express = require('express'),
+       libmojito = require('mojito'),
+       app;
+
+   app = express();
+   libmojito.extend(app);
+
+   app.use(libmojito.middleware());
+   app.set('port', process.env.PORT || 8666);
+
+   // map "/" to "hello.index"
+   app.get('/', libmojito.dispatch('first_level.index'));
+   app.listen(app.get('port'), function () {
+    debug('Server listening on port ' + app.get('port') + ' ' +
+               'in ' + app.get('env') + ' mode');
+   });
 
 .. _execute_ex-controllers:
 

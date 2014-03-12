@@ -23,10 +23,6 @@ The parent mojit instance defines its child mojits in the ``children`` object.
 In the example ``application.json`` below, the parent mojit instance is ``foo``, 
 which has the child mojit instances ``nav``, ``news``, and ``footer``. Each 
 mojit instance has a ``type`` that specifies the mojits that are instantiated. 
-Because the parent mojit has children, you cannot use an anonymous 
-mojit instance in ``routes.json`` to call an action. For example, in 
-``routes.json``, you could have ``"call": "foo.index"``, but not 
-``"call": "@MyComp.index"``. 
 
 .. code-block:: javascript
 

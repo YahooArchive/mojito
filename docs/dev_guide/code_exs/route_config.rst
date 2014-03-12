@@ -22,7 +22,7 @@ Implementation Notes
 Before you create routes for your application, you need to specify one or 
 more mojit instances that can be mapped to URLs. In the ``application.json`` 
 below, the ``mapped_mojit`` instance of the ``Routing`` mojit is created, which 
-can then be associated in a route defined in ``routes.json``.
+can then be associated in a route defined in ``app.js``.
 
 .. code-block:: javascript
 
@@ -37,56 +37,82 @@ can then be associated in a route defined in ``routes.json``.
      }
    ]
 
-The example ``routes.json`` below associates the ``mapped_mojit`` instance 
+The example ``app.js`` below associates the ``mapped_mojit`` instance 
 defined in ``application.json`` with a path and explicitly calls the 
 ``index`` action. If the controller for the ``Routing`` mojit had the function 
 ``myFunction``, you would use the following to call it: ``mapped_mojit.myFunction``.  
-Based on the ``custom-route`` route below, when an HTTP GET call is made on 
-the URL ``http:{domain}:8666/custom-route``, the ``index`` action is called 
-from the ``custom-route`` instance.
+When an HTTP GET call is made on  the URL ``http:{domain}:8666/custom-route``, the ``index`` 
+action is called from the ``custom-route`` instance.
 
 .. code-block:: javascript
 
-   [
-     {
-       "settings": ["master"],
-       "custom-route": {
-         "verbs": ["get"],
-         "path": "/custom-route",
-         "call": "mapped_mojit.index"
-       }
-     }
-   ]
+   'use strict';
+
+   var debug = require('debug')('app'),
+       express = require('express'),
+       libmojito = require('mojito'),
+       app;
+
+   app = express();
+   // Define the port to listen to or use the value given to the environment
+   // variable PORT. 
+   app.set('port', process.env.PORT || 8666);
+   libmojito.extend(app);
+
+   app.use(libmojito.middleware());
+   // Attach any routes in `routes.json`, which is deprecated.
+   app.mojito.attachRoutes();
+
+   // Defining route `/custom-route` and executing (dispatching)
+   // the action `index` of the mojit instance `mapped_mojit`.
+   app.get('/custom-route', libmojito.dispath('mapped_mojit.index'));
+
+   app.listen(app.get('port'), function () {
+      debug('Server listening on port ' + app.get('port') + ' ' +
+               'in ' + app.get('env') + ' mode');
+   });
+   module.exports = app;
 
 The name of the mojit instance is arbitrary. For example, the mojit instance 
 ``mapped_mojit`` above could have just as well been called ``mojit-route``. 
-Just remember that the name of the mojit instance in ``routes.json`` has to 
+Just remember that the name of the mojit instance in ``app.js`` has to 
 be defined and have a mojit type in ``application.json``.
 
-You can also configure multiple routes and use wildcards in ``routes.json``. 
-The modified ``routes.json`` below uses the wildcard to configure a route 
+You can also configure multiple routes and use wildcards in ``app.js``. 
+The modified ``app.js`` below uses the wildcard to configure a route 
 for handling HTTP POST requests and calls the method ``post_params`` from the 
 ``post-route`` mojit instance.
 
 .. code-block:: javascript
 
-   [
-     {
-       "settings": ["master"],
-       "custom-route": {
-         "verbs": ["get"],
-         "path": "/custom-route",
-         "call": "mapped_mojit.index"
-       },
-       "another-route": {
-         "verbs": ["post"],
-         "path": "/*",
-         "call": "mojit-post-route.post_params"
-       }
-     }
-   ]
+   'use strict';
 
-The ``routes.json`` above configures the routes below. Notice that the wildcard 
+   var debug = require('debug')('app'),
+       express = require('express'),
+       libmojito = require('mojito'),
+       app;
+
+   app = express();
+   // Define the port to listen to or use the value given to the environment
+   // variable PORT.
+   app.set('port', process.env.PORT || 8666);
+   libmojito.extend(app);
+
+   app.use(libmojito.middleware());
+   // Attach any routes in `routes.json`, which is deprecated.
+   app.mojito.attachRoutes();
+
+   // Defining the route `/*` and executing (dispatching)
+   // the action `post_params` of the mojit instance `post-route`.
+   app.post('/*', libmojito.dispath('post-route.post_params'));
+
+   app.listen(app.get('port'), function () {
+      debug('Server listening on port ' + app.get('port') + ' ' +
+               'in ' + app.get('env') + ' mode');
+   });
+   module.exports = app; 
+
+The ``app.js`` above configures the routes below. Notice that the wildcard 
 used for the path of ``"another-route"`` configures Mojito to execute 
 ``post_params`` when receiving any HTTP POST requests.
 
@@ -123,35 +149,6 @@ To set up and run ``configure_routing``:
         }
       ]
 
-#. To map routes to specific actions of the mojit instance, replace the 
-   code in ``routes.json`` with the following:
-
-   .. code-block:: javascript
-
-      [
-        {
-          "settings": ["master"],
-          "root_route": {
-            "verbs": ["get"],
-            "path": "/",
-            "call": "mapped_mojit.index"
-          },
-          "index_route": {
-            "verbs": ["get"],
-            "path": "/index",
-            "call": "mapped_mojit.index"
-          },
-          "show_route": {
-            "verbs": ["post"],
-            "path": "/show",
-            "call": "mapped_mojit.show"
-          }
-        }
-      ]
-
-   The ``mapped_mojit`` instance is created in ``application.json`` and 
-   configured here to be used when HTTP GET calls are made on the paths 
-   ``/index`` or ``/show``.
 
 #. Update your ``app.js`` with the following:
 
@@ -169,7 +166,18 @@ To set up and run ``configure_routing``:
           libmojito.extend(app);
 
           app.use(libmojito.middleware());
-          app.mojito.attachRoutes();
+
+          // Defining route `GET /` and executing (dispatching)
+          // the action `index` of the mojit instance `mapped_mojit`.
+          app.get('/', libmojito.dispath('mapped_mojit.index'));
+
+          // Defining route `GET /index` and executing (dispatching)
+          // the action `index` of the mojit instance `mapped_mojit`.
+          app.get('/index', libmojito.dispath('mapped_mojit.index'));
+
+          // Defining the route `POST /*` and executing (dispatching)
+          // the action `post_params` of the mojit instance `post-route`.
+          app.post('/show', libmojito.dispath('mapped_mojit.show'));
 
           app.get('/status', function (req, res) {
               res.send('200 OK');
@@ -180,6 +188,10 @@ To set up and run ``configure_routing``:
               'in ' + app.get('env') + ' mode');
           });
           module.exports = app;
+
+   The ``mapped_mojit`` instance created in ``application.json`` is 
+   configured here to be used when HTTP GET calls are made on the paths 
+   ``/index`` or ``/show`` and HTTP POST calls made on the path ``/show``.
 
 #. Confirm that your ``package.json`` has the correct dependencies as show below. If not,
    update ``package.json``.

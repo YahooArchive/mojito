@@ -345,21 +345,32 @@ In the application configure file ``application.json`` below, the mojit instance
 
 The controller for the ``Hello`` mojit has an ``index`` function that we 
 want to call when an HTTP GET call is made on the root path. To do this, the 
-route configuration file ``routes.json`` maps the ``hello`` instance and the 
-``index`` action to the root path with the ``path`` and ``call`` properties 
+you map the ``hello`` instance and the ``index`` action to the root path in ``app.js`` 
 as seen below.
 
 .. code-block:: javascript
 
-   [
-     {
-       "settings": [ "master" ],
-       "hello index": {
-         "path": "/",
-         "call": "hello.index"
-       }
-     }
-   ]
+   'use strict';
+
+   var debug = require('debug')('app'),
+       express = require('express'),
+       libmojito = require('mojito'),
+       app;
+
+   app = express();
+   app.set('port', process.env.PORT || 8666);
+   libmojito.extend(app);
+
+   app.use(libmojito.middleware());
+
+   // Map route '/' to the `index` action for the mojit
+   // instance `hello`.
+   app.get('/', libmojito.dispatch('hello.index'));
+
+   app.listen(app.get('port'), function () {
+       debug('Server listening on port ' + app.get('port') + ' ' +
+               'in ' + app.get('env') + ' mode');
+   });
 
 In the controller, any function that is defined in the 
 ``Y.namespace('mojito.controllers')[NAME]`` is available as a Mojito action. 

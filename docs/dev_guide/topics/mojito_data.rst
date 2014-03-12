@@ -201,38 +201,9 @@ specific routing conditions have been met.
 Setting Routing Parameters
 ##########################
 
-The routing parameters are set in the routing configuration file 
-``routes.json``. For each defined route, you can use the ``params`` 
-property to set routing parameters. Because ``routes.json`` allows you 
-to specify mojit actions for different paths and HTTP methods, you can 
-set routing parameters based on the routing configuration.
-
-For instance, in the ``routes.json`` below, the routing parameter ``coupon`` 
-is ``true`` when a POST call is made on the ``/coupon/form``, but when a 
-GET call is made on the same path, ``coupon`` is ``false``. The ``coupon`` 
-parameter could be used by the mojit controller to do something such as give 
-a coupon to a user posting information.
-
-.. code-block:: javascript
-
-   [
-     {
-       "settings": ["master"],
-       "post": {
-         "verbs": ["post"],
-         "path": "/coupon/form",
-         "call": "coupon.index",
-         "params": "coupon=true"
-       },
-       "get": {
-         "verbs": ["get"],
-         "path": "/coupon/form",
-         "call": "coupon.index",
-         "params": "coupon=false"
-       }
-     }
-   ]
-
+The routing parameters are set in ``app.js``. See
+`Adding Routing Parameters <../intro/mojito_routing.html#appjs-routing-params>`_
+to learn how to set routing parameters.
 
 .. _data_routing-get:
 
