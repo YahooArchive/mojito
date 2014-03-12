@@ -21,11 +21,18 @@ libmojito.extend(app);
 
 app.use(customContextualizerMiddleware());
 app.use(libmojito.middleware());
+
+// To use the routing configured in `routes.json`, which
+// is deprecated.
+// The controller uses the Url addon, which requires the
+// `routes.json` file.
 app.mojito.attachRoutes();
 
 app.get('/status', function (req, res) {
     res.send('200 OK');
 });
+
+app.get('/', libmojito.dispatch('frame.index'));
 
 app.listen(app.get('port'), function () {
     debug('Server listening on port ' + app.get('port') + ' ' +

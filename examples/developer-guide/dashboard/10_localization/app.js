@@ -18,6 +18,10 @@ app = express();
 app.set('port', process.env.PORT || 8666);
 libmojito.extend(app);
 
+// To use the routing configured in `routes.json`, which
+// is deprecated, you uncomment this line.
+// app.mojito.attachRoutes();
+
 app.use(libmojito.middleware());
 
 app.get('/', function (req, res, next) {

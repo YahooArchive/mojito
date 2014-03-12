@@ -65,7 +65,7 @@ action is called from the ``custom-route`` instance.
 
    // Defining route `/custom-route` and executing (dispatching)
    // the action `index` of the mojit instance `mapped_mojit`.
-   app.get('/custom-route', libmojito.dispath('mapped_mojit.index'));
+   app.get('/custom-route', libmojito.dispatch('mapped_mojit.index'));
 
    app.listen(app.get('port'), function () {
       debug('Server listening on port ' + app.get('port') + ' ' +
@@ -104,7 +104,7 @@ for handling HTTP POST requests and calls the method ``post_params`` from the
 
    // Defining the route `/*` and executing (dispatching)
    // the action `post_params` of the mojit instance `post-route`.
-   app.post('/*', libmojito.dispath('post-route.post_params'));
+   app.post('/*', libmojito.dispatch('post-route.post_params'));
 
    app.listen(app.get('port'), function () {
       debug('Server listening on port ' + app.get('port') + ' ' +
@@ -169,15 +169,15 @@ To set up and run ``configure_routing``:
 
           // Defining route `GET /` and executing (dispatching)
           // the action `index` of the mojit instance `mapped_mojit`.
-          app.get('/', libmojito.dispath('mapped_mojit.index'));
+          app.get('/', libmojito.dispatch('mapped_mojit.index'));
 
           // Defining route `GET /index` and executing (dispatching)
           // the action `index` of the mojit instance `mapped_mojit`.
-          app.get('/index', libmojito.dispath('mapped_mojit.index'));
+          app.get('/index', libmojito.dispatch('mapped_mojit.index'));
 
           // Defining the route `POST /*` and executing (dispatching)
           // the action `post_params` of the mojit instance `post-route`.
-          app.post('/show', libmojito.dispath('mapped_mojit.show'));
+          app.post('/show', libmojito.dispatch('mapped_mojit.show'));
 
           app.get('/status', function (req, res) {
               res.send('200 OK');

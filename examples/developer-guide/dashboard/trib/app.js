@@ -22,6 +22,10 @@ libmojito.extend(app);
 app.use(customContextualizerMiddleware());
 app.use(libmojito.middleware());
 
+// To use the routing configured in `routes.json`, which
+// is deprecated, you uncomment this line.
+// app.mojito.attachRoutes();
+
 app.get('/', function (req, res, next) {
     req.params.view_type = "yui";
     next();
@@ -31,10 +35,6 @@ app.get('/mojito', function (req, res, next) {
     req.params.view_type = "mojito";
     next();
 }, libmojito.dispatch('tribframe.index'));
-
-app.get('/header', libmojito.dispatch('header.index'));
-app.get('/body', libmojito.dispatch('body.index'));
-app.get('/footer', libmojito.dispatch('footer.index'));
 
 app.listen(app.get('port'), function () {
     debug('Server listening on port ' + app.get('port') + ' ' +
