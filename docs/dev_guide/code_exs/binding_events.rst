@@ -440,10 +440,41 @@ Using Paging
 The paging for this code example relies on the application configuration to set route 
 paths and the controller to create links to access previous and next pages.
 
-The ``routes.json`` file below configures two route paths for HTTP GET calls made on the 
-root path. The ``perpage`` configuration, however, requires a query string with the 
-``page`` parameter, which is used for paging. The ``page`` parameter has the value 
-``:page``, which is a variable that is assigned a value by the controller that we're 
+The root path is configured in ``app.js`` with the following:
+
+.. code-block:: javascript
+
+   var debug = require('debug')('app'),
+   express = require('express'),
+   libmojito = require('mojito'),
+   app;
+
+   app = express();
+   app.set('port', process.env.PORT || 8666);
+   libmojito.extend(app);
+   app.use(libmojito.middleware());
+
+   // To use the routing configured in `routes.json`, which
+   // is deprecated.
+   // The controller uses the Url addon, which requires the
+   // `routes.json` file.
+   app.mojito.attachRoutes();
+
+   app.get('/status', function (req, res) {
+       res.send('200 OK');
+   });
+
+   app.get('/', libmojito.dispatch('frame.index'));
+
+You may have noticed though that the ``app.js`` attaches the routing
+from ``routes.json``, which has been deprecated. This is because
+another routing page relies on the ``Url`` addon that requires the
+use of ``routes.json``.
+
+Thus, the ``routes.json`` file below configures the route path for HTTP GET 
+calls made on the  path ``/?page=:page``.  The ``page`` parameter is used for paging
+and is assigned the parameterized  variable ``:page``,
+which is assigned a value by the controller that we're 
 going to look shortly.
 
 .. code-block:: javascript
