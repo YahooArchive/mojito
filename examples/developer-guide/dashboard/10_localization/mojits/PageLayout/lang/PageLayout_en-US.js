@@ -9,7 +9,7 @@
 
 YUI.add("lang/PageLayout_en-US", function (Y) {
     Y.Intl.add(
-        "PageLayout",  // associated module
+        "pagelayout",  // associated module
         "en-US",    // BCP 47 language tag  
         // key-value pairs for this module and language
         {

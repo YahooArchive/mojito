@@ -19,6 +19,9 @@ app.set('port', process.env.PORT || 8666);
 libmojito.extend(app);
 
 app.use(libmojito.middleware());
+// To use the routing configured in `routes.json`, which
+// is deprecated, you uncomment this line.
+// app.mojito.attachRoutes();
 
 app.get('/', function (req, res, next) {
     req.params.view_type = "yui";

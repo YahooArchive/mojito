@@ -19,11 +19,26 @@ app.set('port', process.env.PORT || 8666);
 libmojito.extend(app);
 
 app.use(libmojito.middleware());
-app.mojito.attachRoutes();
+
+// To use the routing configured in `routes.json`, which
+// is deprecated, you uncomment this line.
+// app.mojito.attachRoutes();
 
 app.get('/status', function (req, res) {
     res.send('200 OK');
 });
+
+// Defining route `GET /` and executing (dispatching)
+// the action `index` of the mojit instance `mapped_mojit`.
+app.get('/', libmojito.dispatch('mapped_mojit.index'));
+
+// Defining route `GET /index` and executing (dispatching)
+// the action `index` of the mojit instance `mapped_mojit`.
+app.get('/index', libmojito.dispatch('mapped_mojit.index'));
+
+// Defining the route `POST /*` and executing (dispatching)
+// the action `post_params` of the mojit instance `post-route`.
+app.post('/show', libmojito.dispatch('mapped_mojit.show'));
 
 app.listen(app.get('port'), function () {
     debug('Server listening on port ' + app.get('port') + ' ' +

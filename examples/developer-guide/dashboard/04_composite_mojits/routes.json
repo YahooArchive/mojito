@@ -4,20 +4,5 @@
         "verbs": ["get"],
         "path": "/",
         "call": "tribframe.index"
-    },
-    "header": {
-        "verbs":["get"],
-        "path": "/header",
-        "call": "header.index"
-    },
-    "body": {
-        "verbs": ["get"],
-        "path": "/body",
-        "call": "body.index"
-    },
-    "footer": {
-        "verbs": ["get"],
-        "path": "/footer",
-        "call": "footer.index"
     }
 }]
