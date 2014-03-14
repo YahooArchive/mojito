@@ -62,7 +62,7 @@ globally available to all mojits. Those marked with an asterisk are not created 
 - ``mojits`` - directory storing the mojits. See `Mojit Files and Directories`_ 
   for a description of the directory contents.
 - ``package.json`` - configuration file for deploying the application.
-- ``routes.json`` - configuration file for mapping routing paths to actions.
+- ``routes.json`` - (deprecated) configuration file for mapping routing paths to actions.
 - ``yui_modules``\* - directory of JavaScript files that contain YUI modules added 
   with ``YUI.add``. These files are automatically included if required by a 
   YUI module.
@@ -175,7 +175,7 @@ rendering engine.
    |           |-- {view_name}.{view_engine}.html
    |           `-- {view_name}.{device}.{view_engine}.html
    |-- package.json
-   |-- routes.json
+   |-- routes.json (deprecated)
    |-- server.js
 
 

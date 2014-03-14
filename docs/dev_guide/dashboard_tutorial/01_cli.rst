@@ -190,7 +190,7 @@ Mojito offers the following four archetypes for applications:
 - ``simple`` - The minimal configuration and code needed to run an application.
 - ``default`` - This archetype is run if no command-line archetype option is specified.  
   The template file for setting up routing, ``routing.json``, is created for you.
-- ``full`` - The ``application.json`` and ``routes.json`` have more boilerplate code for 
+- ``full`` - The ``application.json`` has more boilerplate code for 
   you to use than the default application.
 - ``yahoo`` - This archetype was created so that the ``dimensions.json`` file that defines
   contexts would conform more closely to `Yahoo Configuration Bundles (YCB) <https://github.com/yahoo/ycb>`_.

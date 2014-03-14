@@ -141,22 +141,8 @@ To set up and run ``htmlframe_mojit``:
        }
      ]
 
-#. To configure routing, replace the code in ``routes.json`` with the following:
-
-   .. code-block:: javascript
-
-      [
-        {
-          "settings": [ "master" ],
-          "_framed_view": {
-            "verbs": ["get"],
-            "path": "/",
-            "call": "frame.index"
-            }
-        }
-      ]
-
-#. Update your ``app.js`` with the following:
+#. Update your ``app.js`` with the following to use Mojito's middleware, configure routing and the port, and 
+   have your application listen for requests:
 
    .. code-block:: javascript
 
@@ -172,12 +158,13 @@ To set up and run ``htmlframe_mojit``:
           libmojito.extend(app);
 
           app.use(libmojito.middleware());
-          app.mojito.attachRoutes();
 
+		
           app.get('/status', function (req, res) {
               res.send('200 OK');
           });
-
+          app.get('/', libmojito.dispatch('frame.index'));
+         
           app.listen(app.get('port'), function () {
               debug('Server listening on port ' + app.get('port') + ' ' +
               'in ' + app.get('env') + ' mode');

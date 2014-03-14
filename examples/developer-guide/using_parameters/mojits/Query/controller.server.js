@@ -52,7 +52,7 @@ YUI.add('Query', function (Y, NAME) {
             });
             actionContext.done(
                 {
-                    title: "Show all ROUTING parameters (see routes.json)",
+                    title: "Show all ROUTING parameters (see app.js)",
                     params: paramsArray
                 },
                 { name: 'index'}
@@ -69,7 +69,7 @@ YUI.add('Query', function (Y, NAME) {
             });
             actionContext.done(
                 {
-                    title: "Show all ROUTING parameters (see routes.json)",
+                    title: "Show all ROUTING parameters (see app.js)",
                     params: paramsArray
                 },
                 {name: 'index'}

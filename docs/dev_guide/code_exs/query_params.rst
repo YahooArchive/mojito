@@ -95,7 +95,7 @@ is available through the ``params`` variable.
    }, '0.0.1', {requires: ['dump', 'mojito-params-addon']});
 
 The ``example3`` function below uses ``params.getFromRoute()`` to access the 
-parameters that are specified in ``routes.json``, which we will look at in 
+parameters that are specified in ``app.js``, which we will look at in 
 the next code snippet.
 
 .. code-block:: javascript
@@ -110,7 +110,7 @@ the next code snippet.
        });
        actionContext.done(
          {
-           title: "Show all ROUTING parameters (see routes.json)",
+           title: "Show all ROUTING parameters (see app.js)",
            params: paramsArray
          },
          {name: 'index'}
@@ -119,7 +119,7 @@ the next code snippet.
    ...
    }, '0.0.1', {requires: ['dump', 'mojito-params-addon']});
 
-In the ``routes.json`` file below, you see parameters are set for the 
+In the ``app.js`` file below, you see parameters are set for the 
 ``example3`` and ``example4`` route. Notice that ``example3`` only accepts 
 HTTP GET calls, whereas ``example4`` allows both HTTP GET and POST calls. 
 Storing parameters in your routing configuration allows you to associate 
@@ -127,47 +127,34 @@ them with a function, an HTTP method, and a URL path.
 
 .. code-block:: javascript
 
-   [
-     {
-       "settings": ["master"],
-       "root": {
-         "verbs": ["get"],
-         "path": "/",
-         "call": "frame.index"
-       },
-       "example1": {
-         "verbs": ["get"],
-         "path": "/example1",
-         "call": "frame.example1"
-       },
-       "example2": {
-         "verbs": ["get", "post"],
-         "path": "/example2",
-         "call": "frame.example2"
-       },
-       "example3": {
-         "verbs": ["get"],
-         "path": "/example3",
-         "call": "frame.example3",
-         "params": { "from": "routing", "foo": "bar", "bar": "foo" }
-       },
-       "example4": {
-         "verbs": ["get", "post"],
-         "path": "/example4",
-         "call": "frame.example4",
-         "params": { "from": "routing", "foo3": "bar3" }
-       }
-     }
-   ]
+
+   var debug = require('debug')('app'),
+       express = require('express'),
+       libmojito = require('../../../'),
+       app;
+   
+   app = express();
+   app.set('port', process.env.PORT || 8666);
+   libmojito.extend(app);
+   
+   app.use(libmojito.middleware());
+   
+   app.get('/', libmojito.dispatch('frame.index'));
+   app.get('/example1', libmojito.dispatch('frame.example1'));
+   app.get('/example2', libmojito.dispatch('frame.example2'));
+   app.post('/example2', libmojito.dispatch('frame.example2'));
+   app.get('/example3', libmojito.dispatch('frame.example3', { "from": "routing", "foo": "bar", "bar": "foo" }));
+   app.get('/example4', libmojito.dispatch('frame.example4', { "from": "routing", "foo3": "bar3" }));
+   app.post('/example4', libmojito.dispatch('frame.example4', { "from": "routing", "foo3": "bar3" }));
    
 
 In the ``example4`` function below, you find the parameters catch-all method 
 ``params.getFromMerged``. Using ``params.getFromMerged``, you can get the query 
 string parameters, the POST body parameters, and the parameters set in 
-``routes.json`` at one time. You can also get a specific parameter by passing 
+``app.js`` at one time. You can also get a specific parameter by passing 
 a key to ``params.getFromMerged(key)``. For example, 
 ``params.getFromMerged("from")`` would return the value "routing" from the
- parameters set in the ``routes.json`` shown above.
+ parameters set in the ``app.js`` shown above.
 
 .. code-block:: javascript
 
@@ -185,7 +172,7 @@ a key to ``params.getFromMerged(key)``. For example,
        });
        actionContext.done(
          {
-           title: "Show all ROUTING parameters (see routes.json)",
+           title: "Show all ROUTING parameters (see app.js)",
            params: paramsArray
          },
          {name: 'index'}
@@ -246,44 +233,8 @@ To set up and run ``using_parameters``:
         }
       ]
 
-#. To configure the routing for your application, replace the code in ``routes.json`` with 
-   the following:
-
-   .. code-block:: javascript
-
-      [
-        {
-          "settings": ["master"],
-          "root": {
-            "verbs": ["get"],
-            "path": "/",
-            "call": "frame.index"
-          },
-          "example1": {
-            "verbs": ["get"],
-            "path": "/example1",
-            "call": "frame.example1"
-          },
-          "example2": {
-            "verbs": ["get", "post"],
-            "path": "/example2",
-            "call": "frame.example2"
-          },
-          "example3": {
-            "verbs": ["get"],
-            "path": "/example3",
-            "call": "frame.example3",
-            "params": { "from": "routing", "foo": "bar", "bar": "foo" }
-          },
-          "example4": {
-            "verbs": ["get", "post"],
-            "path": "/example4",
-            "call": "frame.example4",
-            "params": { "from": "routing", "foo3": "bar3" }
-          }
-        }
-      ]
-. Update your ``app.js`` with the following:
+#. Update your ``app.js`` with the following to use Mojito's middleware, configure routing and the port, and 
+   have your application listen for requests:
 
    .. code-block:: javascript
 
@@ -299,11 +250,17 @@ To set up and run ``using_parameters``:
           libmojito.extend(app);
 
           app.use(libmojito.middleware());
-          app.mojito.attachRoutes();
 
           app.get('/status', function (req, res) {
               res.send('200 OK');
           });
+          app.get('/', libmojito.dispatch('frame.index'));
+          app.get('/example1', libmojito.dispatch('frame.example1'));
+          app.get('/example2', libmojito.dispatch('frame.example2'));
+          app.post('/example2', libmojito.dispatch('frame.example2'));
+          app.get('/example3', libmojito.dispatch('frame.example3', { "from": "routing", "foo": "bar", "bar": "foo" }));
+          app.get('/example4', libmojito.dispatch('frame.example4', { "from": "routing", "foo3": "bar3" }));
+          app.post('/example4', libmojito.dispatch('frame.example4', { "from": "routing", "foo3": "bar3" }));
 
           app.listen(app.get('port'), function () {
               debug('Server listening on port ' + app.get('port') + ' ' +
@@ -381,7 +338,7 @@ To set up and run ``using_parameters``:
             });
             actionContext.done(
               {
-                title: "Show all ROUTING parameters (see routes.json)",
+                title: "Show all ROUTING parameters (see app.js)",
                 params: paramsArray
               },
               { name: 'index'}
@@ -401,7 +358,7 @@ To set up and run ``using_parameters``:
             });
             actionContext.done(
               {
-                title: "Show all ROUTING parameters (see routes.json)",
+                title: "Show all ROUTING parameters (see app.js)",
                 params: paramsArray
               },
               {name: 'index'}
@@ -455,7 +412,7 @@ To set up and run ``using_parameters``:
         </ul>
       </div>
 
-#. To display the key-value pairs set in ``routes.json``, create the template 
+#. To display the key-value pairs set in ``app.js``, create the template 
    ``views/example3.hb.html`` with the following:
 
    .. code-block:: html
@@ -511,11 +468,11 @@ To set up and run ``using_parameters``:
    submit the form on the page.
 
    http://localhost:8666/example2
-#. To see the parameters set in ``routes.json``, go to the URL below:
+#. To see the parameters set in ``app.js``, go to the URL below:
 
    http://localhost:8666/example3
 #. To see the query string parameters, the post body parameters, and those set in 
-   ``routes.json``, go to the URL below and submit the form on the page:
+   ``app.js``, go to the URL below and submit the form on the page:
 
    http://localhost:8666/example4?foo=bar&bar=foo
 
@@ -525,7 +482,7 @@ Source Code
 ===========
 
 - `Mojit Controller <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/using_parameters/mojits/Query/>`_
-- `Routing Configuration <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/using_parameters/routes.json>`_
+- `Routing Configuration <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/using_parameters/app.js>`_
 - `Using Parameters Application <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/using_parameters/>`_
 
 

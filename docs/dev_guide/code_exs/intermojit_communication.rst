@@ -82,7 +82,7 @@ The ``"deploy"`` property of the ``"frame"`` object is assigned the value
 Routing Configuration
 ---------------------
 
-In the ``routes.json`` below, two route paths are defined . The route 
+In the snippet from ``app.js`` below, two route paths are defined . The route 
 configuration for the root path specifies that the ``index`` method of 
 the ``frame`` instance of ``HTMLFrameMojit`` be called when HTTP GET calls 
 are received. Recall that the ``HTMLFrameMojit`` is the parent of the other 
@@ -91,21 +91,17 @@ function in the controller of the child mojit ``Master`` is called instead.
 
 .. code-block:: javascript
 
-   [
-     {
-       "settings": ["master"],
-       "root": {
-         "verbs": ["get"],
-         "path": "/",
-         "call": "frame.index"
-       },
-       "receiver": {
-         "verbs": ["get"],
-         "path": "/receiver/show",
-         "call": "receiver.show"
-       }
-     }
-   ]
+   var debug = require('debug')('app'),
+       express = require('express'),
+       libmojito = require('../../../'),
+       app;
+
+   app = express();
+   app.set('port', process.env.PORT || 8666);
+   libmojito.extend(app);
+
+   app.get('/', libmojito.dispatch('frame.index'));
+   app.get('/receiver/show', libmojito.dispatch('receiver.show'));
 
 .. _impl_notes-master_mojit:
 
@@ -384,28 +380,8 @@ To set up and run ``inter-mojit``:
         }
       ]
 
-#. To configure routing for the root path and the path ``/receiver/show``, replace the 
-   code in ``routes.json`` with the following:
-
-   .. code-block:: javascript
-
-      [
-        {
-          "settings": ["master"],
-          "root": {
-            "verbs": ["get"],
-            "path": "/",
-            "call": "frame.index"
-          },
-          "receiver": {
-            "verbs": ["get"],
-            "path": "/receiver/show",
-            "call": "receiver.show"
-          }
-        }
-      ]
-
-#. Update your ``app.js`` with the following:
+#. Update your ``app.js`` with the following to use Mojito's middleware, configure routing and the port, and 
+   have your application listen for requests:
 
    .. code-block:: javascript
 
@@ -421,11 +397,12 @@ To set up and run ``inter-mojit``:
           libmojito.extend(app);
 
           app.use(libmojito.middleware());
-          app.mojito.attachRoutes();
 
           app.get('/status', function (req, res) {
               res.send('200 OK');
           });
+          app.get('/', libmojito.dispatch('frame.index'));
+          app.get('/receiver/show', libmojito.dispatch('receiver.show'));
 
           app.listen(app.get('port'), function () {
               debug('Server listening on port ' + app.get('port') + ' ' +
@@ -671,5 +648,4 @@ Source Code
 - `Receiver Mojit Controller <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/inter-mojit/mojits/Receiver/controller.js>`_
 - `Receiver Mojit Binder <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/inter-mojit/mojits/Receiver/binders/binder.js>`_
 - `Inter-Mojit Application <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/inter-mojit/>`_
-
 

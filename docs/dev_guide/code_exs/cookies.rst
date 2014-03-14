@@ -124,27 +124,8 @@ To set up and run ``using_cookies``:
         }
       ]
 
-#. To configure routing, replace the code in ``routes.json`` with the following:
-
-   .. code-block:: javascript
-
-      [
-        {
-          "settings": ["master"],
-          "root": {
-            "verbs": ["get"],
-            "path": "/",
-            "call": "frame.index"
-          },
-          "example1": {
-            "verbs": ["get"],
-            "path": "/example1",
-            "call": "frame.example1"
-          }
-        }
-      ]
-
-#. Update your ``app.js`` with the following:
+#. Update your ``app.js`` with the following to use Mojito's middleware, configure routing and the port, and 
+   have your application listen for requests:
 
    .. code-block:: javascript
 
@@ -155,22 +136,25 @@ To set up and run ``using_cookies``:
           libmojito = require('mojito'),
           app;
 
-          app = express();
-          app.set('port', process.env.PORT || 8666);
-          libmojito.extend(app);
+      app = express();
+      app.set('port', process.env.PORT || 8666);
+      libmojito.extend(app);
+      
+      app.use(libmojito.middleware());
+      
+      app.get('/status', function (req, res) {
+          res.send('200 OK');
+      });
+      
+      app.get('/', libmojito.dispatch('frame.index'));
+      app.get('/example1', libmojito.dispatch('frame.example1'));
+      
+      app.listen(app.get('port'), function () {
+          debug('Server listening on port ' + app.get('port') + ' ' +
+                     'in ' + app.get('env') + ' mode');
+      });
+      module.exports = app;
 
-          app.use(libmojito.middleware());
-          app.mojito.attachRoutes();
-
-          app.get('/status', function (req, res) {
-              res.send('200 OK');
-          });
-
-          app.listen(app.get('port'), function () {
-              debug('Server listening on port ' + app.get('port') + ' ' +
-              'in ' + app.get('env') + ' mode');
-          });
-          module.exports = app;
 #. Confirm that your ``package.json`` has the correct dependencies as show below. If not,
    update ``package.json``.
 

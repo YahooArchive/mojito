@@ -86,21 +86,6 @@ To set up and run ``simple_config``:
         }
       ]
 
-#. To configure routing, replace the code in ``routes.json`` with the following:
-
-   .. code-block:: javascript
-
-      [
-        {
-          "settings": [ "master" ],
-          "simple": {
-            "verbs": ["get"],
-            "path": "/",
-            "call": "simple.index"
-          }
-        }
-      ]
-
 #. Update your ``app.js`` with the following to use Mojito's middleware, configure routing and the port, and 
    have your application listen for requests:
 

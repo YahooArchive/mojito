@@ -37,8 +37,7 @@ The global assets are located in the ``{app_dir}/assets`` directory as shown her
    |-- index.js
    |-- mojits/
    |-- package.json
-   |-- routes.json
-   |-- server.js
+   |-- routes.json (deprecated)
 
 In the ``simple`` mojit below, you see the local ``assets`` directory for CSS files only 
 available to the ``simple`` mojit:
@@ -156,7 +155,7 @@ To create and run ``simple_assets``:
         }
       ]
 
-#. Update your ``app.js`` with the following to use Mojito's middleware, configure routing and port, and 
+#. Update your ``app.js`` with the following to use Mojito's middleware, configure routing and the port, and 
    have your application listen for requests:
 
    .. code-block:: javascript

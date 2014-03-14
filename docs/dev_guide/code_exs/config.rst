@@ -11,7 +11,6 @@ instances, routing paths, logging levels, and more.
 
    app_config 
    route_config
-   generating_urls
    simple_logging
    using_configs
 

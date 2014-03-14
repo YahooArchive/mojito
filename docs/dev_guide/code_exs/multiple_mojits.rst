@@ -68,24 +68,6 @@ forms a skeleton page of ``div`` tags that use content created by the child moji
      }
    ]
 
-In ``routes.json``, the path set for each mojit is different, but the ``index`` function 
-from each mojit is called when GET calls are made. What's not obvious here is how the 
-``frame`` mojit gets output from the other mojits because that happens in the controller 
-of the ``frame`` mojit and not in the route configuration.
-
-.. code-block:: javascript
-
-   [
-     {
-       "settings": ["master"],
-       "root": {
-         "verbs": ["get"],
-         "path": "/",
-         "call": "frame.index"
-       }
-     }
-   ]
-
 In ``controller.server.js`` of the ``Frame``, the ``Composite`` addon allows the 
 parent mojit to execute the child mojits defined in ``application.json`` that we looked at 
 earlier. After the children mojits are executed, the data that is passed to the ``done`` 
@@ -173,22 +155,8 @@ To set up and run ``multiple_mojits``:
         }
       ]
 
-#. To configure routing, replace the code in ``routes.json`` with the following:
-
-   .. code-block:: javascript
-
-      [
-        {
-          "settings": ["master"],
-          "root": {
-            "verbs": ["get"],
-            "path": "/",
-            "call": "frame.index"
-          }
-        }
-      ]
-
-#. Update your ``app.js`` with the following:
+#. Update your ``app.js`` with the following to use Mojito's middleware, configure routing and the port, and 
+   have your application listen for requests:
 
    .. code-block:: javascript
 
@@ -204,11 +172,11 @@ To set up and run ``multiple_mojits``:
           libmojito.extend(app);
 
           app.use(libmojito.middleware());
-          app.mojito.attachRoutes();
 
           app.get('/status', function (req, res) {
               res.send('200 OK');
           });
+          app.get('/', libmojito.dispatch('parent.index'));
 
           app.listen(app.get('port'), function () {
               debug('Server listening on port ' + app.get('port') + ' ' +
