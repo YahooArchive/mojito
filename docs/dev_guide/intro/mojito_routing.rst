@@ -240,3 +240,46 @@ Based on the above regular expression, the following URLs would be matched:
 - http://localhost:8666/99_Mojitos
 
 
+.. _generate_urls:
+
+Generate URLs from the Controller
+=================================
+
+The Mojito API includes the `Url addon <../../api/classes/Url.common.html>`_ 
+that allows you to create a URL with the mojit instance, the action, and parameters from 
+the controller. 
+
+To create a URL based on routing paths, you have to register a routing path in ``app.js``
+with the ``app.map`` method. For example, in the ``app.js`` below, the routing path ``/``
+is defined with ``app.get``, but the ``Url`` addon cannot create a URL based on that 
+routing definition until ``app.map`` registers the route.
+
+.. code-block:: javascript
+
+   var debug = require('debug')('app'),
+       express = require('express'),
+       libmojito = require('../../../'),
+       app;
+
+   app = express();
+   app.set('port', process.env.PORT || 8666);
+   libmojito.extend(app);
+
+   app.get('/', libmojito.dispatch('hello.index'));
+   app.map('/', 'hello_index');
+
+
+In this code snippet from ``controller.js``, the `Url addon <../../api/classes/Url.common.html>`_ 
+with the ``make`` method uses the routing path ``hello_index`` registered in our
+example ``app.js`` above to to create the URL ``/`` with the query string parameters 
+``?foo=bar``.
+
+.. code-block:: javascript
+
+   ...
+     index: function(ac) {
+       ac.url.make('hello_index', 'index', null, 'GET', {'foo': 'bar'});
+     }
+   ...
+
+The ``index`` function above returns the following URL: ``http://localhost:8666/?foo=bar``
