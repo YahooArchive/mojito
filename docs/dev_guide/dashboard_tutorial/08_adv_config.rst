@@ -265,7 +265,7 @@ but for the sake of completeness, we'll look at how they work.
 Adding Parameters
 *****************
 
-As you can see in our ``routes.json`` shown below, we're going to have two routing
+As you can see from the snippet of our ``app.js`` shown below, we're going to have two routing
 paths. Each path passes a different value for the ``view_type`` parameter. 
 The controller can inspect the URL parameters defined here with the ``Params``
 addon. If the controller sees that the value for the ``view_type`` is ``yui``, it
@@ -274,23 +274,17 @@ the template for the Mojito dashboard is rendered.
 
 .. code-block:: javascript
 
-   [
-     {
-       "settings": [ "master" ],
-       "root": {
-         "verbs": ["get"],
-         "path": "/",
-         "call": "tribframe.index",
-         "params": {"view_type": "yui"}
-       },
-       "mojito_view":{
-         "verbs": ["get"],
-         "path": "/mojito",
-         "call": "tribframe.index",
-         "params": {"view_type": "mojito"}
-       }
-     }
-   ]
+   ...
+   app.get('/', function (req, res, next) {
+       req.params.view_type = "yui";
+       next();
+   }, libmojito.dispatch('tribframe.index'));
+
+   app.get('/mojito', function (req, res, next) {
+       req.params.view_type = "mojito";
+       next();
+   }, libmojito.dispatch('tribframe.index'));
+   ...
 
 .. _08_lesson_routing-regex:
 
@@ -323,7 +317,7 @@ Using Parameterized Paths
 *************************
 
 The parameterized paths allow you to have Mojito execute the correct action based
-on the request. In our example ``routes.json`` below, if the HTTP request 
+on the request. In our example ``app.js`` below, if the HTTP request 
 is made on the path ``/index``, the ``index`` method of the ``tribframe`` instance
 is executed. Likewise, if the HTTP request is made to ``/mojito/index``, the
 ``index`` method of ``tribframe`` instance is made, but the ``params`` property
@@ -333,24 +327,14 @@ the appropriate template.
 
 .. code-block:: javascript
 
-
-   [
-     {
-       "settings": [ "master" ],
-       "root": {
-         "verbs": ["get"],
-         "path": "/:mojit_action",
-         "call": "tribframe.{mojit_action}",
-         "params": {"view_type": "yui"}
-       },
-       "mojito_view":{
-         "verbs": ["get"],
-         "path": "/mojito/:mojit_action",
-         "call": "tribframe.{mojit_action}",
-         "params": {"view_type": "mojito"}
-       }
-     }
-   ]
+   app.get('/:action', function (req, res, next) {
+       req.params.view_type = "yui";
+       next();
+   }, libmojito.dispatch('tribframe.{action}'));
+   app.get('/mojito/:action', function (req, res, next) {
+       req.params.view_type = "mojito";
+       next();
+   }, libmojito.dispatch('tribframe.{action}'));
 
 .. _08_lesson_routing-yui:
 
@@ -618,9 +602,9 @@ need to use the query string parameters to request a context.
 Mojits
 ------
 
-We’ve already looked at the configuration files ``application.json`` and ``routes.json`` 
-to create mojit instances and define routing paths, but Mojito also has configuration files 
-that mojits can use to store key-value pairs and defaults. 
+We’ve already looked at the configuration file ``application.json``
+to create mojit instances and ``app.js`` for defining routing paths, but Mojito also has 
+configuration files that mojits can use to store key-value pairs and defaults. 
 
 .. _08_mojit-default:
 
@@ -774,30 +758,21 @@ Creating the Application
          }
      }
 
-#. We haven't touched ``routes.json`` for a long time. We're going to add
+#. We haven't touched ``app.js`` for a long time. We're going to add
    a route to get Mojito data, and add parameters that the controller will use to determine
-   what dashboard to display (YUI or Mojito). Replace the contents of ``routes.json`` with the
-   following:
+   what dashboard to display (YUI or Mojito). Replace the one routing path in ``app.js``
+   with the following just above the ``listen`` method:
 
    .. code-block:: javascript
 
-      [
-        {
-          "settings": [ "master" ],
-          "root": {
-            "verbs": ["get"],
-            "path": "/",
-            "call": "tribframe.index",
-            "params": {"view_type": "yui"}
-          },
-          "mojito_view":{
-            "verbs": ["get"],
-            "path": "/mojito",
-            "call": "tribframe.index",
-            "params": {"view_type": "mojito"}
-          }
-        }
-      ]
+      app.get('/', function (req, res, next) {
+          req.params.view_type = "yui";
+          next();
+      }, libmojito.dispatch('tribframe.index'));
+      app.get('/mojito', function (req, res, next) {
+          req.params.view_type = "mojito";
+          next();
+      }, libmojito.dispatch('tribframe.index'));
 
 #. Great, we're done with the changes to our application configuration. Now, let's simplify
    our mojit code by adding configuration values, starting with the ``Blog`` mojit. Replace
@@ -1268,7 +1243,7 @@ Creating the Application
           }, {"view": {"name": "mojito"}});
         }
       }
-#. That ought to do it for now. We used the configuration in ``routes.json`` to
+#. That ought to do it for now. We used the configuration in ``app.js`` to
    pass a view (template) name, stored configuration values in ``definition.json`` for
    our mojits, configured our application to have a static name and use a specific version
    of YUI. Go ahead and start your application and click the button to see the Mojito
@@ -1383,34 +1358,25 @@ Cannot GET /mojito
 ------------------
 
 If you click on the **See Mojito Dashboard** and see the following message, you
-probably haven't updated the ``routes.json`` to include a route path for ``/mojito``.
+probably haven't updated the ``app.js`` to include a route path for ``/mojito``.
 
 ::
 
    Cannot GET /mojito
 
-Confirm that ``routes.json`` has the following content:
+Confirm that ``app.js`` has the following content:
 
 .. code-block:: javascript
 
-   [
-     {
-       "settings": [ "master" ],
-       "root": {
-         "verbs": ["get"],
-         "path": "/",
-         "call": "tribframe.index",
-         "params": {"view_type": "yui"}
-       },
-       "mojito_view":{
-         "verbs": ["get"],
-         "path": "/mojito",
-         "call": "tribframe.index",
-         "params": {"view_type": "mojito"}
-       }
-     }
-   ]
+   app.get('/', function (req, res, next) {
+       req.params.view_type = "yui";
+       next();
+   }, libmojito.dispatch('tribframe.index'));
 
+   app.get('/mojito', function (req, res, next) {
+       req.params.view_type = "mojito";
+       next();
+   }, libmojito.dispatch('tribframe.index'));
 
 .. _08_adv_config-qa:    
 
@@ -1461,13 +1427,13 @@ Questions
 Additional Exercises
 --------------------
 
-- Convert the ``routes.json`` into ``routes.yaml``. Try using a JSON-to-YAML conversion
-  tool.
+- Convert the ``mojits/Twitter/definition.json`` into ``mojits/Twitter/definition.yaml``. 
+  Try using a JSON-to-YAML conversion tool.
 - Create a new configuration object in ``application.json`` that has the context 
   ``"device:android"`` that defines the selector ``android``. Then, create the
   template ``index.android.html`` for the ``Body`` mojit.
-- Modify the ``routes.json`` or ``routes.yaml`` file so that the route object 
-  ``mojito_view`` uses regular expressions to capture any path that has the word
+- Modify the ``app.js`` file to define a routing path 
+  that uses regular expressions to capture any path that has the word
   "yui" or "YUI" in it.
 
 .. _08_adv_config-term:  

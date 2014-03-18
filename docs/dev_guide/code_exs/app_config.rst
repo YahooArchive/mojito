@@ -35,22 +35,22 @@ The example ``application.json`` below specifies that the application use the mo
      }
    ]
 
-The routing configuration for Mojito applications is contained in ``routes.json``. 
-In this example ``routes.json``, the Mojito server is told to call the ``index`` 
+The routing configuration for Mojito applications is contained in ``app.js``. 
+In this example ``app.js``, the Mojito server is told to call the ``index`` 
 method in the controller when HTTP GET called on the root path.
 
 .. code-block:: javascript
 
-   [
-     {
-       "settings": [ "master" ],
-       "simple": {
-         "verbs": ["get"],
-         "path": "/",
-         "call": "simple.index"
-       }
-     }
-   ]
+   var debug = require('debug')('app'),
+       express = require('express'),
+       libmojito = require('../../../'),
+       app;
+
+   app = express();
+   app.set('port', process.env.PORT || 8666);
+   libmojito.extend(app);
+
+   app.get('/', libmojito.dispatch('simple.index'));
 
 The ``index`` method is a canned method in the controller when you create a 
 mojit. To learn how to create templates that get data from the controller, 
@@ -86,22 +86,8 @@ To set up and run ``simple_config``:
         }
       ]
 
-#. To configure routing, replace the code in ``routes.json`` with the following:
-
-   .. code-block:: javascript
-
-      [
-        {
-          "settings": [ "master" ],
-          "simple": {
-            "verbs": ["get"],
-            "path": "/",
-            "call": "simple.index"
-          }
-        }
-      ]
-
-#. Update your ``app.js`` with the following:
+#. Update your ``app.js`` with the following to use Mojito's middleware, configure routing and the port, and 
+   have your application listen for requests:
 
    .. code-block:: javascript
 
@@ -117,17 +103,19 @@ To set up and run ``simple_config``:
           libmojito.extend(app);
 
           app.use(libmojito.middleware());
-          app.mojito.attachRoutes();
 
           app.get('/status', function (req, res) {
               res.send('200 OK');
           });
+
+          app.get('/', libmojito.dispatch('simple.index'));
 
           app.listen(app.get('port'), function () {
               debug('Server listening on port ' + app.get('port') + ' ' +
               'in ' + app.get('env') + ' mode');
           });
           module.exports = app;
+
 #. Confirm that your ``package.json`` has the correct dependencies as shown below. If not,
    update ``package.json``.
 
@@ -156,5 +144,4 @@ Source Code
 ===========
 
 - `Simple Config Application <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/simple_config/>`_
-
 

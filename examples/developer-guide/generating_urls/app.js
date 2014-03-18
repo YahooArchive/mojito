@@ -19,20 +19,17 @@ app.set('port', process.env.PORT || 8666);
 libmojito.extend(app);
 
 app.use(libmojito.middleware());
-
-// This line allows you to use the routing
-// configuration in `routes.json`, which is deprecated.
-// In this example, you are using the Url addon to create an URL,
-// which depends on the routing configuration, so this line must
-// be uncommented.
-app.mojito.attachRoutes();
+// To use the routing configured in `routes.json`, which
+// is deprecated, you uncomment this line.
+// app.mojito.attachRoutes();
 
 app.get('/status', function (req, res) {
     res.send('200 OK');
 });
 
-app.get('/', libmojito.dispatch('mymojit.index'));
-app.get('/some-really-long-url-that-we-dont-need-to-remember-contactus', libmojito.dispatch('mymojit.contactus'));
+app.get('/', libmojito.dispatch("mymojit.index"));
+app.get('/some-really-long-url-that-we-dont-need-to-remember-contactus', libmojito.dispatch("mymojit.contactus"));
+app.map('/some-really-long-url-that-we-dont-need-to-remember-contactus', 'get#mymojit.contactus');
 
 app.listen(app.get('port'), function () {
     debug('Server listening on port ' + app.get('port') + ' ' +

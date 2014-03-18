@@ -25,60 +25,65 @@ Implementation Notes
 ====================
 
 The route paths for this code example are defined in the routing configuration file 
-``routes.json``. You can define any path and then associate that path with a mojit 
+``app.js``. You can define any path and then associate that path with a mojit 
 instance and an action. When the client makes an HTTP request on that path, the associated 
 action on the mojit instance defined in ``application.json`` will be executed. Before 
 creating the routes for the application, you first need to create the mojit instance.
 
-In the ``application.json`` below, you configure the application to use an instance of the 
+In the ``app.js`` below, you configure the application to use an instance of the 
 mojit ``GenerateURL``. The instance in this example is ``mymojit``, but the instance name 
 can be any string as defined by `RFC 4627 <http://www.ietf.org/rfc/rfc4627.txt>`_.
 
 .. code-block:: javascript
+   
+   var debug = require('debug')('app'),
+       express = require('express'),
+       libmojito = require('mojito'),
+       app;
 
-   [
-     {
-       "settings": [ "master" ],
-       "specs": {
-         "mymojit": {
-           "type": "GenerateURL"
-         }
-       }
-     }
-   ]
+   app = express();
+   app.set('port', process.env.PORT || 8666);
+   libmojito.extend(app);
+   app.get('/', libmojito.dispatch("mymojit.index"));
 
-In the ``routes.json``, you not only can define route paths, but you can also configure 
-Mojito to respond to specific HTTP methods called on those paths. The ``routes.json`` below 
+In the ``app.json``, you not only can define route paths, but you can also configure 
+Mojito to respond to specific HTTP methods called on those paths. The ``app.js`` below 
 defines two route paths that only respond to HTTP GET calls. When HTTP GET calls are made 
 on these two paths, Mojito executes different methods from the ``mymojit`` instance. The 
 ``index`` method is executed when the root path is called, and the ``contactus`` method 
-is executed when the ``/some-really-long-url-contactus`` path is called.  The 
-``routes.json`` file gives you the freedom to create route paths independent of the mojit 
-controller.
+is executed when the ``/some-really-long-url-contactus`` path is called.  
+The ``app.map`` method is used to register routes so that the ``Url`` addon can use these
+routes later to create a URL.
 
 .. code-block:: javascript
 
-   [
-     {
-       "settings": ["master"],
-       "root": {
-         "verbs": ["get"],
-         "path": "/",
-         "call": "mymojit.index"
-       },
-       "contactus": {
-         "verbs": ["get"],
-         "path": "/some-really-long-url-contactus",
-         "call": "mymojit.contactus"
-       }
-     }
-   ]
+   var debug = require('debug')('app'),
+       express = require('express'),
+       libmojito = require('../../../'),
+       app;
 
-The mojit controller, however, can use the ``Url`` addon to access the route paths defined 
-in ``routes.json`` to create URLs. For example, in the ``controller.server.js`` below, the 
+   app = express();
+   app.set('port', process.env.PORT || 8666);
+   libmojito.extend(app);
+   
+   app.use(libmojito.middleware());
+   //app.mojito.attachRoutes();
+   
+   app.get('/status', function (req, res) {
+       res.send('200 OK');
+   });
+   
+   app.get('/', libmojito.dispatch("mymojit.index"));
+   app.get('/some-really-long-url-that-we-dont-need-to-remember-contactus', libmojito.dispatch("mymojit.contactus"));
+   // The `map` method registers the route so that it can be referenced later, much like 
+   // the routes were configured in `routes.json` in Mojito v0.8.x and earlier.
+   app.map('/some-really-long-url-that-we-dont-need-to-remember-contactus', 'get#mymojit.contactus');
+
+The mojit controller, however, can use the ``Url`` addon to access routes that 
+were registered with ``app.map``. For example, in the ``controller.server.js`` below, the 
 route path that calls the ``contactus`` action is formed with ``url.make`` in the ``index`` 
 function. You just pass the instance and action to ``url.make`` to create the URL based on 
-the path defined in ``routes.json``.
+the path defined in ``app.js``.
 
 .. code-block:: javascript
 
@@ -126,27 +131,9 @@ To set up and run ``generating_urls``:
         }
       ]
 
-#. To configure routing paths, replace the code in ``routes.json`` with the following:
-
-   .. code-block:: javascript
-
-      [
-        {
-          "settings": ["master"],
-          "root": {
-            "verbs": ["get"],
-            "path": "/",
-            "call": "mymojit.index"
-          },
-          "contactus": {
-            "verbs": ["get"],
-            "path": "/some-really-long-url-that-we-dont-need-to-remember-contactus",
-            "call": "mymojit.contactus"
-          }
-        }
-      ]
-
-#. Update your ``app.js`` with the following:
+#. Update your ``app.js`` with the code below to use Mojito's middleware, configure routing and the port, and
+   have your application listen for requests. Notice that we're using ``app.map`` to register a routing path
+   for later use in the controller.
 
    .. code-block:: javascript
 
@@ -154,25 +141,24 @@ To set up and run ``generating_urls``:
 
       var debug = require('debug')('app'),
           express = require('express'),
-          libmojito = require('mojito'),
+          libmojito = require('../../../'),
           app;
 
-          app = express();
-          app.set('port', process.env.PORT || 8666);
-          libmojito.extend(app);
+      app = express();
+      app.set('port', process.env.PORT || 8666);
+      libmojito.extend(app);
 
-          app.use(libmojito.middleware());
-          app.mojito.attachRoutes();
+      app.use(libmojito.middleware());
 
-          app.get('/status', function (req, res) {
-              res.send('200 OK');
-          });
+      app.get('/', libmojito.dispatch("mymojit.index"));
+      app.get('/some-really-long-url-that-we-dont-need-to-remember-contactus', libmojito.dispatch("mymojit.contactus"));
+      app.map('/some-really-long-url-that-we-dont-need-to-remember-contactus', 'get#mymojit.contactus');
 
-          app.listen(app.get('port'), function () {
-              debug('Server listening on port ' + app.get('port') + ' ' +
-              'in ' + app.get('env') + ' mode');
-          });
-          module.exports = app;
+      app.listen(app.get('port'), function () {
+          debug('Server listening on port ' + app.get('port') + ' ' +
+               'in ' + app.get('env') + ' mode');
+      });
+      module.exports = app;
 
 #. Confirm that your ``package.json`` has the correct dependencies as show below. If not,
    update ``package.json``.
@@ -192,7 +178,7 @@ To set up and run ``generating_urls``:
    ``$ npm install``
 
 #. Change to ``mojits/GenerateURL``.
-#. Enable the controller to create a URL using the route paths defined in ``routes.json`` 
+#. Enable the controller to create a URL using the route path that we registered in ``app.js`` 
    by replacing the code in ``controller.server.js`` with the following:
 
    .. code-block:: javascript
@@ -220,7 +206,7 @@ To set up and run ``generating_urls``:
         <div>
           <p>This is the default page that is visible on the root path.</p>
           <p>The purpose of this demo is to show that as a developer, you don't have to remember any 
-          custom routing path you specify in routes.json configuration file.</p>
+          custom routing path you specify in app.js configuration file.</p>
           <p>All you need is the mojit identifier (e.g. mymojit), and the action that you are calling 
             on the mojit (e.g. contactus). See the mojits/GenURLMojit/controller.server.js for more details.
           </p>
@@ -255,7 +241,7 @@ To set up and run ``generating_urls``:
 Source Code
 ===========
 
-- `Routing Configuration <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/generating_urls/routes.json>`_
+- `Routing Configuration <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/generating_urls/app.js>`_
 - `Mojit Controller <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/generating_urls/mojits/GenURLMojit/controller.server.js>`_
 - `Generating URLs Application <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/generating_urls/>`_
 

@@ -37,8 +37,7 @@ The global assets are located in the ``{app_dir}/assets`` directory as shown her
    |-- index.js
    |-- mojits/
    |-- package.json
-   |-- routes.json
-   |-- server.js
+   |-- routes.json (deprecated)
 
 In the ``simple`` mojit below, you see the local ``assets`` directory for CSS files only 
 available to the ``simple`` mojit:
@@ -156,24 +155,8 @@ To create and run ``simple_assets``:
         }
       ]
 
-#. To configure routing, replace the code of the file ``routes.json`` with the 
-   following:
-
-   .. code-block:: javascript
-
-
-      [
-        {
-          "settings": [ "master" ],
-            "_simple_view": {
-            "verbs": ["get"],
-            "path": "/",
-            "call": "simple.index"
-          }
-        }
-      ]
-
-#. Update your ``app.js`` with the following:
+#. Update your ``app.js`` with the following to use Mojito's middleware, configure routing and the port, and 
+   have your application listen for requests:
 
    .. code-block:: javascript
 
@@ -183,23 +166,25 @@ To create and run ``simple_assets``:
           express = require('express'),
           libmojito = require('mojito'),
           app;
+      
+      app = express();
+      app.set('port', process.env.PORT || 8666);
+      libmojito.extend(app);
+      
+      app.use(libmojito.middleware());
+      
+      app.get('/status', function (req, res) {
+          res.send('200 OK');
+      });
+      
+      app.get('/', libmojito.dispatch('simple.index'));
+      
+      app.listen(app.get('port'), function () {
+          debug('Server listening on port ' + app.get('port') + ' ' +
+                     'in ' + app.get('env') + ' mode');
+      });
+      module.exports = app;
 
-          app = express();
-          app.set('port', process.env.PORT || 8666);
-          libmojito.extend(app);
-
-          app.use(libmojito.middleware());
-          app.mojito.attachRoutes();
-
-          app.get('/status', function (req, res) {
-              res.send('200 OK');
-          });
-
-          app.listen(app.get('port'), function () {
-              debug('Server listening on port ' + app.get('port') + ' ' +
-              'in ' + app.get('env') + ' mode');
-          });
-          module.exports = app;
 #. Confirm that your ``package.json`` has the correct dependencies as shown below. If not,
    update ``package.json``.
 

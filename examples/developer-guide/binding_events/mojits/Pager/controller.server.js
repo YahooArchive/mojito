@@ -1,4 +1,5 @@
 /*
+ *
  * Copyright (c) 2011-2013, Yahoo! Inc.  All rights reserved.
  * Copyrights licensed under the New BSD License.
  * See the accompanying LICENSE file for terms.
@@ -29,7 +30,7 @@ YUI.add('pager', function (Y, NAME) {
                 mergedParams[k] = params[k];
             }
         }
-        return actionContext.url.make('frame', 'index', Y.QueryString.stringify(mergedParams));
+        return "/?" + Y.QueryString.stringify(mergedParams);
     }
 
     /**
@@ -56,6 +57,7 @@ YUI.add('pager', function (Y, NAME) {
             // Data is an array of images
             model.getData('model', start, PAGE_SIZE, function(data) {
                 Y.log('DATA: ' + Y.dump(data));
+                // added line
                 var theData = {
                     data: data, // images
                     hasLink: false,
@@ -86,7 +88,6 @@ YUI.add('pager', function (Y, NAME) {
     'mojito',
     'mojito-models-addon',
     'mojito-params-addon',
-    'mojito-url-addon',
     'mojito-data-addon',
     'pager-model',
     'dump'

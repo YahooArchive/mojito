@@ -26,7 +26,7 @@ app.use(libmojito.middleware());
 // is deprecated.
 // The controller uses the Url addon, which requires the
 // `routes.json` file.
-app.mojito.attachRoutes();
+// app.mojito.attachRoutes();
 
 app.get('/status', function (req, res) {
     res.send('200 OK');
@@ -39,4 +39,3 @@ app.listen(app.get('port'), function () {
                'in ' + app.get('env') + ' mode');
 });
 module.exports = app;
-

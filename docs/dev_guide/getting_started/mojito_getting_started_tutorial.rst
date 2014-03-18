@@ -83,28 +83,21 @@ models or views in this tutorial.
    Here you have defined the instance ``hello`` of the ``Hello`` mojit, 
    which will allow you to call the functions in the mojit controller.
 
-#. To set up a new route for executing your mojit, create the routing 
-   configuration file ``routes.json`` with the following:
+#. To set up a new route for executing your mojit, define the routing 
+   path in file ``app.js`` by adding the following above the ``app.listen`` 
+   method:
 
    .. code-block:: javascript
 
-      [
-        {
-          "settings": [ "master" ],
-          "hello index": {
-            "verbs": ["get"],
-            "path": "/",
-            "call": "hello.index"
-          }
-        }
-      ]
+      app.get('/', libmojito.dispatch('hello.index'));
 
-   This ``routes.json`` file defines the routing paths, the accepted HTTP 
+   This ``app.js`` file defines the routing paths, the accepted HTTP 
    methods, and what action to take. The action is what method to call from 
    the mojit instance when a call is made on the defined path. 
-   The ``routes.json`` above configures Mojito to execute the ``index`` method 
+   The ``app.js`` above configures Mojito to execute the ``index`` method 
    from the ``hello`` instance (defined in ``application.json``) when receiving 
-   HTTP GET calls on the root path.
+   HTTP GET calls on the root path. The ``app.js`` is also used to 
+   include middleware, set the port, and use contexts (runtime environment).
 
 #. From the application directory, test your application. You will notice that 
    some tests are deferred.

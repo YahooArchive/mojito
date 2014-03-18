@@ -213,7 +213,7 @@ The ``ActionContext`` addons offer a lot of functionality. The list below
 shows you some of the functionality: 
 
 - access assets, such as CSS and JavaScript files
-- get configuration information (``application.json``, ``routes.json``, ``defaults.json``, 
+- get configuration information (``application.json``, ``defaults.json``, 
   ``definition.json``)
 - get and set cookies
 - localize content
@@ -414,24 +414,24 @@ schema to execute mojit actions:  ``http://{domain}:{port}/@{mojit_name}/{action
 
 As with using anonymous instances, you obviously don’t want to use these 
 default routes created by Mojito. You instead map routing paths to mojit 
-actions in the configuration file ``routes.json``.  The configuration object that 
+actions in the configuration file ``app.js``.  The configuration object that 
 defines routing information has properties for defining the routing path, HTTP 
 methods that are accepted, parameters, and the mojit actions to execute. In the 
-example ``routes.json`` below, the ``root`` object configures the application to execute 
+example ``app.js`` below, the application is configured to execute 
 the action index of the mojit ``github`` when an HTTP GET call is made to the path ``"/"``:
 
 .. code-block:: javascript
 
-   [
-     {
-       "settings": [ "master" ],
-       "root": {
-         "path": "/",
-         "call": "github.index",
-         "verbs": [ "get" ]
-       }
-     }
-   ]
+   var debug = require('debug')('app'),
+       express = require('express'),
+       libmojito = require('../../../../'),
+       app;
+   
+   app = express();
+   app.set('port', process.env.PORT || 8666);
+   libmojito.extend(app);
+   
+   app.get('/', libmojito.dispatch('github.index'));
 
 .. _02_lesson-http_req_mojit_action:
 
@@ -531,36 +531,15 @@ mojits and then configure mojit instances and routing paths.
 
 #. With those freshly created instances, we can now define routing paths 
    that execute mojit actions. Let’s create simple routing paths for 
-   each of our instances for testing purposes by modifying ``routes.json``
-   to look like the following:
+   each of our instances for testing purposes by adding the following 
+   defined paths to ``app.js`` beneath the ``/status`` path:
 
    .. code-block:: javascript
 
-      [
-        {
-          "settings": [ "master" ],
-          "root": {
-            "verbs": ["get"],
-            "path": "/",
-            "call": "github.index"
-          },
-          "header": {
-            "verbs":["get"],
-            "path": "/header",
-            "call": "header.index"
-          },
-          "body": {
-            "verbs": ["get"],
-            "path": "/body",
-            "call": "body.index"
-          },
-          "footer": {
-            "verbs": ["get"],
-            "path": "/footer",
-            "call": "footer.index"
-          }
-        }
-      ]
+      app.get('/', libmojito.dispatch('github.index'));
+      app.get('/header', libmojito.dispatch('header.index'));
+      app.get('/body', libmojito.dispatch('body.index'));
+      app.get('/footer', libmojito.dispatch('footer.index'));
 
 #. We have our instances and our routing paths. Let’s start our 
    application and try hitting the routing paths below. You’ll see the 

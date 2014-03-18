@@ -476,20 +476,30 @@ Creating the Application
   
 
 #. The mojit instance based on the ``HTMLFrameMojit`` is what we’ll use for the root path. 
-   Replace the content of ``routes.json`` with the following. 
+   Replace the content of ``app.js`` with the following. 
 
    .. code-block:: javascript
 
-     [
-       {
-         "settings": [ "master" ],
-         "root": {
-           "verbs": ["get"],
-           "path": "/",
-           "call": "tribframe.index"
-         }
-       }
-     ]
+      'use strict';
+      
+      var debug = require('debug')('app'),
+          express = require('express'),
+          libmojito = require('../../../../'),
+          app;
+      
+      app = express();
+      app.set('port', process.env.PORT || 8666);
+      libmojito.extend(app);
+      
+      app.use(libmojito.middleware());
+      
+      app.get('/', libmojito.dispatch('tribframe.index'));
+      
+      app.listen(app.get('port'), function () {
+          debug('Server listening on port ' + app.get('port') + ' ' +
+                     'in ' + app.get('env') + ' mode');
+      });
+      module.exports = app;
 
 #. Our frame mojit is configured to attach a CSS file to our page, so we’re still 
    going to need to add the CSS file to our application. Based on the static URL 
@@ -666,10 +676,10 @@ OK Message and No Page
 ----------------------
 
 If you only see the text **OK** in your page, but no errors, it could mean that your
-``routes.json`` has a syntax error. Unfortunately, running ``mojito jslint`` will only
+``app.js`` has a syntax error. Unfortunately, running ``mojito jslint`` will only
 find JSLint errors that are in JavaScript files, so you can either use another command-line
-utility to check for syntax errors, use the website http://jslint.com/ to test the ``routes.json``,
-or use Node.js to evaluate the JSON with the following command: ``node -e 'require("./routes.json");'``
+utility to check for syntax errors, use the website http://jslint.com/ to test the ``app.sj``,
+or use Node.js to evaluate the JSON with the following command: ``node -e 'require("./app.js");'``
 
 ..  03_frame_mojits-qa:
 

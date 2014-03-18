@@ -66,8 +66,7 @@ The directory structure of this example below shows the location of the global
    │       └── views
    │           └── index.hb.html
    ├── package.json
-   ├── routes.json
-   └── server.js
+   ├── routes.json (deprecated)
 
 .. _assets-notes-static_url:
 
@@ -199,21 +198,8 @@ To set up and run ``global_assets``:
         }
       ]
 
-#. To configure routing, replace the code in ``routes.json`` with the following:
-
-   .. code-block:: javascript
-
-      [
-        {
-          "settings": [ "master" ],
-          "/": {
-            "call": "ohhai.index",
-            "path": "/",
-            "verbs": ["get"]
-          }
-        }
-      ]
-. Update your ``app.js`` with the following:
+#. Update your ``app.js`` with the following to use Mojito's middleware, configure routing and the port, and 
+   have your application listen for requests:
 
    .. code-block:: javascript
 
@@ -229,8 +215,8 @@ To set up and run ``global_assets``:
           libmojito.extend(app);
 
           app.use(libmojito.middleware());
-          app.mojito.attachRoutes();
 
+          app.get('/', libmojito.dispatch('ohhai.index'));
           app.get('/status', function (req, res) {
               res.send('200 OK');
           });

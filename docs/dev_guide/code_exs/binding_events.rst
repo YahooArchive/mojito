@@ -440,29 +440,25 @@ Using Paging
 The paging for this code example relies on the application configuration to set route 
 paths and the controller to create links to access previous and next pages.
 
-The ``routes.json`` file below configures two route paths for HTTP GET calls made on the 
-root path. The ``perpage`` configuration, however, requires a query string with the 
-``page`` parameter, which is used for paging. The ``page`` parameter has the value 
-``:page``, which is a variable that is assigned a value by the controller that we're 
-going to look shortly.
+The root path is configured in ``app.js`` with the following:
 
 .. code-block:: javascript
 
-   [
-     {
-       "settings": ["master"],
-       "root": {
-         "verbs": ["get"],
-         "path": "/",
-         "call": "frame.index"
-       },
-       "perpage": {
-         "verbs": ["get"],
-         "path": "/?page=:page",
-         "call": "frame.index"
-       }
-     }
-   ]
+   var debug = require('debug')('app'),
+   express = require('express'),
+   libmojito = require('mojito'),
+   app;
+
+   app = express();
+   app.set('port', process.env.PORT || 8666);
+   libmojito.extend(app);
+   app.use(libmojito.middleware());
+
+   app.get('/status', function (req, res) {
+       res.send('200 OK');
+   });
+
+   app.get('/', libmojito.dispatch('frame.index'));
 
 The controller for ``Pager`` performs several functions:
 
@@ -540,7 +536,6 @@ you need to require the model in the ``requires`` array of the controller.
    }, '0.0.1', {requires: [
      'mojito', 
      'mojito-models-addon', 
-     'mojito-url-addon', 
      'mojito-params-addon', 
      'pager-model',
      'dump'
@@ -548,11 +543,12 @@ you need to require the model in the ``requires`` array of the controller.
 
 
 The URLs for the **prev** and **next** links are created by passing the mojit instance, 
-the method, and the query string parameters to the ``make`` method from the ``Url`` addon. 
+the method, and the query string parameters.
+
 The code snippet below creates the query string parameters with the 
 `YUI QueryString module <http://yuilibrary.com/yui/docs/api/modules/querystring.html>`_. 
 If the query string created by ``Y.QueryString.stringify`` is "page=2" , 
-``actionContext.url.make`` would return the URL ``{domain_name}:8666/?page=2``.
+the ``createLink`` method would return the URL ``{domain_name}:8666/?page=2``.
 
 .. code-block:: javascript
 
@@ -562,7 +558,7 @@ If the query string created by ``Y.QueryString.stringify`` is "page=2" ,
        for (var k in params) {
          mergedParams[k] = params[k];
        }
-       return actionContext.url.make('frame', 'index', Y.QueryString.stringify(mergedParams));
+       return "/?" + Y.QueryString.stringify(mergedParams));
      }
    ...
 
@@ -630,7 +626,6 @@ create URLs for the **next** and **prev** links.
    }, '0.0.1', {requires: [
      'mojito', 
      'mojito-models-addon', 
-     'mojito-url-addon', 
      'mojito-params-addon', 
      'pager-model',
      'dump'
@@ -672,27 +667,6 @@ To set up and run ``binding_events``:
         }
       ]
 
-#. To configure routing to call the ``index`` action from the instance of the 
-   ``HTMLFrameMojit``, replace the code in ``routes.json`` with the following:
-
-   .. code-block:: javascript
-
-      [
-        {
-          "settings": ["master"],
-          "root": {
-            "verbs": ["get"],
-            "path": "/",
-            "call": "frame.index"
-          },
-          "perpage": {
-            "verbs": ["get"],
-            "path": "/?page=:page",
-            "call": "frame.index"
-          }
-        }
-      ]
-
 #. Confirm that your ``app.js`` has the following content:
 
    .. code-block:: javascript
@@ -709,17 +683,18 @@ To set up and run ``binding_events``:
           libmojito.extend(app);
 
           app.use(libmojito.middleware());
-          app.mojito.attachRoutes();
 
           app.get('/status', function (req, res) {
               res.send('200 OK');
           });
+          app.get('/', libmojito.dispatch('frame.index'));
 
           app.listen(app.get('port'), function () {
               debug('Server listening on port ' + app.get('port') + ' ' +
               'in ' + app.get('env') + ' mode');
           });
           module.exports = app;
+
 #. Also, confirm that your ``package.json`` has the correct dependencies as show below. If not,
    update ``package.json``.
 
@@ -791,12 +766,11 @@ To set up and run ``binding_events``:
             for (var k in params) {
               mergedParams[k] = params[k];
             }
-            return actionContext.url.make('frame', 'index', Y.QueryString.stringify(mergedParams));
+            return "/?" + Y.QueryString.stringify(mergedParams);
           }
       }, '0.0.1', {requires: [
         'mojito', 
         'mojito-models-addon', 
-        'mojito-url-addon', 
         'mojito-params-addon', 
         'pager-model',
         'dump'

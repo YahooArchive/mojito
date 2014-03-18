@@ -1492,30 +1492,6 @@ The following URLs call the ``index`` and ``myAction`` functions in the controll
 
 
 
-.. _generate_urls:
-
-Generate URLs from the Controller
----------------------------------
-
-The Mojito API includes the `Url addon <../../api/classes/Url.common.html>`_ 
-that allows you to create a URL with the mojit instance, the action, and parameters from 
-the controller.
-
-
-In this code snippet from ``controller.js``, the `Url addon <../../api/classes/Url.common.html>`_ 
-with the ``make`` method use	 the mojit instance ``foo-1`` defined in ``application.json`` 
-to create the URL ``/foo`` with the query string parameters 
-``?foo=bar``.
-
-.. code-block:: javascript
-
-   ...
-     index: function(ac) {
-       ac.url.make('foo-1', 'index', null, 'GET',{'foo': 'bar'});
-     }
-   ...
-
-The ``index`` function above returns the following URL: ``http://localhost:8666/foo?foo=bar``
 
 
 No Longer Supported in routes.json
@@ -1577,10 +1553,11 @@ you would use ``ac.config.getAppConfig().specs`` as shown here:
 
 .. _access-routesjson:
 
-routes.json (Deprecated)
-########################
+app.js
+######
 
-The routing configuration can be accessed with the method ``getRoutes``
+One of the functions of the ``app.js`` is for defining routing paths. You
+can access the defined routing paths with the method ``getRoutes``
 of the ``Config`` addon.
 
 

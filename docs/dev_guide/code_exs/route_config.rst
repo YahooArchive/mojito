@@ -60,8 +60,6 @@ action is called from the ``custom-route`` instance.
    libmojito.extend(app);
 
    app.use(libmojito.middleware());
-   // Attach any routes in `routes.json`, which is deprecated.
-   app.mojito.attachRoutes();
 
    // Defining route `/custom-route` and executing (dispatching)
    // the action `index` of the mojit instance `mapped_mojit`.
@@ -72,6 +70,16 @@ action is called from the ``custom-route`` instance.
                'in ' + app.get('env') + ' mode');
    });
    module.exports = app;
+
+.. note:: Routing for Mojito v0.8 and Earlier
+ 
+          In versions of Mojito v0.8 and earler, routing was configured
+          in the file ``routes.json``. If you are converting an older 
+          application and want to use the routing configured in 
+          ``routes.json``, you can do so by calling 
+          ``app.mojito.attachRoutes()``, but be aware that
+          the ``routes.json`` file has been deprecated, so it may 
+          not be supported in the future.
 
 The name of the mojit instance is arbitrary. For example, the mojit instance 
 ``mapped_mojit`` above could have just as well been called ``mojit-route``. 
@@ -100,7 +108,7 @@ for handling HTTP POST requests and calls the method ``post_params`` from the
 
    app.use(libmojito.middleware());
    // Attach any routes in `routes.json`, which is deprecated.
-   app.mojito.attachRoutes();
+   // app.mojito.attachRoutes();
 
    // Defining the route `/*` and executing (dispatching)
    // the action `post_params` of the mojit instance `post-route`.
@@ -284,6 +292,6 @@ Source Code
 ===========
 
 - `Application Configuration <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/configure_routing/application.json>`_
-- `Route Configuration <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/configure_routing/routes.json>`_
+- `Route Configuration <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/configure_routing/app.js>`_
 - `Configure Routing Application <http://github.com/yahoo/mojito/tree/master/examples/developer-guide/configure_routing/>`_
 
