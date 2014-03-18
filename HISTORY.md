@@ -25,7 +25,7 @@ Notes
 
 This release introduces a set of new APIs and concepts.
 
-Please refer to some of the examples apps under the `examples/` folder to get
+Please refer to some of the examples apps under the [`examples/`](https://github.com/yahoo/mojito/tree/develop/examples) folder to get
 an overview of what have changed.
 
 Deprecations, Removals
@@ -76,14 +76,14 @@ Deprecations, Removals
 * The `ac.url.find()` and `Y.mojito.RouteMaker.find()` methods are now
   deprecated and will be removed in a future version.
 
-  Applications that rely on this API should familiaze with the `express-map`
+  Applications that rely on this API should familiarize with the `express-map`
   package by querying the route object by `name` or `path`.
 
 * Expanded metadata is now removed. This means we will not longer support
   synthetic modules that were expanded by default, e.g.:
   `loader-yui3-base`, `loader-yui3-expanded` and `loader-app-resolved`.
   If you are using any of those 3 entries in the YUI configuration,
-  you should use `loader-app` and loader-app-base` as your seed modules.
+  you should use `loader-app` and `loader-app-base` as your seed modules.
   In fact we recommend to not customize `yui.config.seed` in your `application.json`
 
 
@@ -101,7 +101,7 @@ app.map('/foo', 'get#foo.index');
 
   In addition to setting up the path `/foo` to be routed to the Mojito
   dispatcher, setup 2 additional "aliases". The second alias is the HTTP method
-  concatenated with the `call` value using the `#` delimeter.
+  concatenated with the `call` value using the `#` delimiter.
 
   This is equivalent to doing this in `routes.json` in previous releases.
 
@@ -118,23 +118,17 @@ app.map('/foo', 'get#foo.index');
 ```
 
   For more detail information, please check any of the applications under
-  `examples/` folder.
+  [`examples/`](https://github.com/yahoo/mojito/tree/develop/examples) folder.
 
 * `ac.config.getRoutes()` now returns the route configuration object using the
-  format from `express-map#getRouteMap()`.
+  format from [`express-map#getRouteMap()`](https://github.com/yahoo/express-map#appgetroutemapannotations).
 
 New Dependencies
 ----------------
 
 * Mojito now leverages the following packages for its routing implementation: 
-  `express-map` and `express-annotations`
-
-Bug Fixes
-------------
-
-Acknowledgements
-----------------
-
+  [`express-map`](https://github.com/yahoo/express-map#express-map) and
+  [`express-annotations`](https://github.com/yahoo/express-annotations#express-annotations)
 
 version 0.8.3
 =================
