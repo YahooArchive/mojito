@@ -18,9 +18,11 @@ using Mojito.
    mojito_quicktour
    mojito_architecture
    mojito_apps
+   mojito_appsjs
    mojito_mojits
    mojito_mvc
    mojito_conventions
+   mojito_routing
    mojito_configuring
    mojito_binders
    mojito_static_resources

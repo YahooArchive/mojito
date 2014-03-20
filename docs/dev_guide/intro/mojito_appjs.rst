@@ -154,5 +154,5 @@ Converting Mojito v0.8 and Earlier Applications
    - `Configuring Routing in app.js <mojito_configuring.html#appjs-routing>`_ 
    - `Middleware <../topics/mojito_extensions.html#middleware>`_
    - `Base Contexts <mojito_using_contexts.html#base-context>`_
-#. - See examples of app.js in the `code examples on GitHub <https://github.com/yahoo/mojito/tree/develop/examples/developer-guide>`_.
+#. See examples of app.js in the `code examples on GitHub <https://github.com/yahoo/mojito/tree/develop/examples/developer-guide>`_.
 

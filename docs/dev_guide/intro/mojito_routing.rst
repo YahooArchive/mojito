@@ -25,7 +25,7 @@ from your Mojito instance as shown below:
 your ``app.js``:
 
 .. code-block:: javascript
-   :emphasize-lines: 10,17
+   :emphasize-lines: 10-17
 
    'use strict';
    
@@ -124,7 +124,7 @@ In the example ``app.js`` below, routing paths for ``/foo``, ``/bar``, and
 ``/*`` are defined: 
 
 .. code-block:: javascript
-   :emphasize-lines: 8,11
+   :emphasize-lines: 8-11
 
    var express = require('express'),
        libmojito = require('mojito'),
@@ -155,7 +155,7 @@ In the example ``app.js`` below, the routing parameters ``page`` and
 To get the value for ``page`` using ``ac.params.getFromRoute("page")``. 
 
 .. code-block:: javascript
-   :emphasize-lines: 8,15
+   :emphasize-lines: 8-15
 
    var express = require('express'),
        libmojito = require('mojito'),
@@ -191,7 +191,7 @@ given in the path, the call to the action should have the following syntax:
 ``{mojit_instance}.(action}`` 
 
 .. code-block:: javascript
-   :emphasize-lines: 10,13
+   :emphasize-lines: 10-13
 
    var express = require('express'),
        libmojito = require('mojito'),
@@ -221,7 +221,7 @@ action of the mojit instance ``myMojit`` is called.
 
 
 .. code-block:: javascript
-   :emphasize-lines: 8,13
+   :emphasize-lines: 8-13
 
    var express = require('express'),
        libmojito = require('mojito'),
