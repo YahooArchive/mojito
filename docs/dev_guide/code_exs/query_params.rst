@@ -11,12 +11,12 @@ Using Query Parameters
 Summary
 =======
 
-This example shows how to access query parameters from the URL, the POST body, 
+This example shows how to access query parameters from the URL, the POST body,
 and the routing configuration of your Mojito application.
 
 The following topics will be covered:
 
-- using the `Params addon <../../api/classes/Params.common.html>`_ to access 
+- using the `Params addon <../../api/classes/Params.common.html>`_ to access
   parameters
 - setting and getting parameters from your route configuration
 
@@ -26,16 +26,16 @@ Implementation Notes
 ====================
 
 The mojit controller of this code example has four functions, each using
-methods from the ``Params`` addon to access different types of parameters. 
-Let's start by learning how to access the query string parameters in the 
+methods from the ``Params`` addon to access different types of parameters.
+Let's start by learning how to access the query string parameters in the
 first function.
 
-The ``example1`` function below gets all of the query string parameters using 
-``params.getFromUrl``. To get a specific parameter, just pass a key to 
-``params.getFromUrl(key)``. In the code below, the key-value pairs that are 
-fetched by ``params.getFromUrl()`` are wrapped in objects that are pushed to 
-the array ``paramsArray``. The array is assigned to ``params``, which is then 
-passed to the ``example1`` template. By default, the function sends data to the 
+The ``example1`` function below gets all of the query string parameters using
+``params.getFromUrl``. To get a specific parameter, just pass a key to
+``params.getFromUrl(key)``. In the code below, the key-value pairs that are
+fetched by ``params.getFromUrl()`` are wrapped in objects that are pushed to
+the array ``paramsArray``. The array is assigned to ``params``, which is then
+passed to the ``example1`` template. By default, the function sends data to the
 template with the same name.
 
 .. code-block:: javascript
@@ -68,8 +68,8 @@ template with the same name.
    }, '0.0.1', {requires: ['dump', 'mojito-params-addon']});
 
 The ``example2`` function below uses ``params.getFromBody()`` to extract
-parameters from the POST body. Once again, the array of objects containing 
-the key-value pairs is passed to the ``example2`` template, where the array 
+parameters from the POST body. Once again, the array of objects containing
+the key-value pairs is passed to the ``example2`` template, where the array
 is available through the ``params`` variable.
 
 .. code-block:: javascript
@@ -94,8 +94,8 @@ is available through the ``params`` variable.
    ...
    }, '0.0.1', {requires: ['dump', 'mojito-params-addon']});
 
-The ``example3`` function below uses ``params.getFromRoute()`` to access the 
-parameters that are specified in ``app.js``, which we will look at in 
+The ``example3`` function below uses ``params.getFromRoute()`` to access the
+parameters that are specified in ``app.js``, which we will look at in
 the next code snippet.
 
 .. code-block:: javascript
@@ -119,10 +119,10 @@ the next code snippet.
    ...
    }, '0.0.1', {requires: ['dump', 'mojito-params-addon']});
 
-In the ``app.js`` file below, you see parameters are set for the 
-``example3`` and ``example4`` route. Notice that ``example3`` only accepts 
-HTTP GET calls, whereas ``example4`` allows both HTTP GET and POST calls. 
-Storing parameters in your routing configuration allows you to associate 
+In the ``app.js`` file below, you see parameters are set for the
+``example3`` and ``example4`` route. Notice that ``example3`` only accepts
+HTTP GET calls, whereas ``example4`` allows both HTTP GET and POST calls.
+Storing parameters in your routing configuration allows you to associate
 them with a function, an HTTP method, and a URL path.
 
 .. code-block:: javascript
@@ -132,13 +132,13 @@ them with a function, an HTTP method, and a URL path.
        express = require('express'),
        libmojito = require('../../../'),
        app;
-   
+
    app = express();
    app.set('port', process.env.PORT || 8666);
    libmojito.extend(app);
-   
+
    app.use(libmojito.middleware());
-   
+
    app.get('/', libmojito.dispatch('frame.index'));
    app.get('/example1', libmojito.dispatch('frame.example1'));
    app.get('/example2', libmojito.dispatch('frame.example2'));
@@ -146,15 +146,15 @@ them with a function, an HTTP method, and a URL path.
    app.get('/example3', libmojito.dispatch('frame.example3', { "from": "routing", "foo": "bar", "bar": "foo" }));
    app.get('/example4', libmojito.dispatch('frame.example4', { "from": "routing", "foo3": "bar3" }));
    app.post('/example4', libmojito.dispatch('frame.example4', { "from": "routing", "foo3": "bar3" }));
-   
 
-In the ``example4`` function below, you find the parameters catch-all method 
-``params.getFromMerged``. Using ``params.getFromMerged``, you can get the query 
-string parameters, the POST body parameters, and the parameters set in 
-``app.js`` at one time. You can also get a specific parameter by passing 
-a key to ``params.getFromMerged(key)``. For example, 
+
+In the ``example4`` function below, you find the parameters catch-all method
+``params.getFromMerged``. Using ``params.getFromMerged``, you can get the query
+string parameters, the POST body parameters, and the parameters set in
+``app.js`` at one time. You can also get a specific parameter by passing
+a key to ``params.getFromMerged(key)``. For example,
 ``params.getFromMerged("from")`` would return the value "routing" from the
- parameters set in the ``app.js`` shown above.
+parameters set in the ``app.js`` shown above.
 
 .. code-block:: javascript
 
@@ -184,9 +184,9 @@ a key to ``params.getFromMerged(key)``. For example,
 The methods of the ``Params`` addon have the following aliases for simplification:
 
 +---------------------+--------------+
-| Method              | Alias        | 
+| Method              | Alias        |
 +=====================+==============+
-| ``getAll()``        | ``all()``    | 
+| ``getAll()``        | ``all()``    |
 +---------------------+--------------+
 | ``getFromBody()``   | ``body()``   |
 +---------------------+--------------+
@@ -194,13 +194,13 @@ The methods of the ``Params`` addon have the following aliases for simplificatio
 +---------------------+--------------+
 | ``getFromMerged()`` | ``merged()`` |
 +---------------------+--------------+
-| ``getfromRoute()``  | ``route()``  | 
+| ``getfromRoute()``  | ``route()``  |
 +---------------------+--------------+
 | ``getFromUrl()``    | ``url()``    |
 +---------------------+--------------+
 
 
-For more information, see the `Params addon <../../api/classes/Params.common.html>`_ in 
+For more information, see the `Params addon <../../api/classes/Params.common.html>`_ in
 the Mojito API documentation.
 
 .. _code_exs_qp-ex:
@@ -217,7 +217,7 @@ To set up and run ``using_parameters``:
 #. Create your mojit.
 
    ``$ mojito create mojit Query``
-#. To specify that your application use the mojit ``Query``, replace the code in 
+#. To specify that your application use the mojit ``Query``, replace the code in
    ``application.json`` with the following:
 
    .. code-block:: javascript
@@ -233,7 +233,7 @@ To set up and run ``using_parameters``:
         }
       ]
 
-#. Update your ``app.js`` with the following to use Mojito's middleware, configure routing and the port, and 
+#. Update your ``app.js`` with the following to use Mojito's middleware, configure routing and the port, and
    have your application listen for requests:
 
    .. code-block:: javascript
@@ -286,13 +286,13 @@ To set up and run ``using_parameters``:
    ``$ npm install``
 
 #. Change to ``mojits/Query``.
-#. Modify the controller to access different query parameters by replacing the code in 
+#. Modify the controller to access different query parameters by replacing the code in
    ``controller.server.js`` with the following:
 
    .. code-block:: javascript
 
       YUI.add('query', function(Y, NAME) {
-        Y.namespace('mojito.controllers')[NAME] = {   
+        Y.namespace('mojito.controllers')[NAME] = {
 
           index: function(actionContext) {
           actionContext.done('Mojito is working.');
@@ -367,7 +367,7 @@ To set up and run ``using_parameters``:
         };
       }, '0.0.1', {requires: ['dump', 'mojito-params-addon']});
 
-#. To display the key-value pairs from the query string parameters, create the template 
+#. To display the key-value pairs from the query string parameters, create the template
    ``views/example1.hb.html`` with the following:
 
    .. code-block:: html
@@ -382,7 +382,7 @@ To set up and run ``using_parameters``:
         </ul>
       </div>
 
-#. To display the key-value pairs from the POST request body parameters, create the 
+#. To display the key-value pairs from the POST request body parameters, create the
    template ``views/example2.hb.html`` with the following:
 
    .. code-block:: html
@@ -412,7 +412,7 @@ To set up and run ``using_parameters``:
         </ul>
       </div>
 
-#. To display the key-value pairs set in ``app.js``, create the template 
+#. To display the key-value pairs set in ``app.js``, create the template
    ``views/example3.hb.html`` with the following:
 
    .. code-block:: html
@@ -427,7 +427,7 @@ To set up and run ``using_parameters``:
         </ul>
       </div>
 
-#. To display all of the available parameters, create the template 
+#. To display all of the available parameters, create the template
    ``views/example4.hb.html`` with the following:
 
    .. code-block:: html
@@ -460,18 +460,18 @@ To set up and run ``using_parameters``:
 #. From the application directory, run the server.
 
    ``$ node app.js``
-#. To see the query string parameters fetched by the controller, go to the URL with the 
+#. To see the query string parameters fetched by the controller, go to the URL with the
    query string below:
 
    http://localhost:8666/example1?foo=bar&bar=foo
-#. To see the POST body parameters fetched by the controller, go to the URL below and 
+#. To see the POST body parameters fetched by the controller, go to the URL below and
    submit the form on the page.
 
    http://localhost:8666/example2
 #. To see the parameters set in ``app.js``, go to the URL below:
 
    http://localhost:8666/example3
-#. To see the query string parameters, the post body parameters, and those set in 
+#. To see the query string parameters, the post body parameters, and those set in
    ``app.js``, go to the URL below and submit the form on the page:
 
    http://localhost:8666/example4?foo=bar&bar=foo
