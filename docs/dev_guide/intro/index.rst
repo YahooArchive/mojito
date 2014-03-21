@@ -18,7 +18,7 @@ using Mojito.
    mojito_quicktour
    mojito_architecture
    mojito_apps
-   mojito_appsjs
+   mojito_appjs
    mojito_mojits
    mojito_mvc
    mojito_conventions
