@@ -26,7 +26,7 @@ Notes
 This release introduces a set of new APIs and concepts.
 
 Please refer to some of the examples apps under the [`examples/`](https://github.com/yahoo/mojito/tree/develop/examples) folder to get
-an overview of what have changed.
+an overview of what has changed.
 
 Deprecations, Removals
 ------------
