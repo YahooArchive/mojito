@@ -192,7 +192,7 @@ YQL comes with a wide range of built-in tables, and the developer community has
 contributed YQL Open Data Tables (ODT) as well. The table tells YQL how to 
 get the Web data, and the YQL statement (like an SQL query) tells YQL what 
 data to get from that table and how to filter that data. If you have questions,
-take a look at the `YQL Guide <http://developer.yahoo.com/yql/guide>`_. 
+take a look at the `YQL Guide <https://developer.yahoo.com/yql/guide>`_. 
 
 .. 05_lesson_yql-statements:
 
@@ -210,7 +210,7 @@ certainly show you many of the features that we’ve just discussed:
 ``select Title, Rating.AverageRating from local.search(20) where query="pizza" and city="New York" and state="NY" | sort(field="Rating.AverageRating") | reverse()``
 
 Try running the `local search query <http://y.ahoo.it/grM5T>`_ above in the 
-`YQL Console <http://developer.yahoo.com/yql/console>`_ to see the results returned
+`YQL Console <https://developer.yahoo.com/yql/console>`_ to see the results returned
 by YQL.
 
 .. 05_lesson_yql-web_service:
@@ -281,7 +281,7 @@ appropos hosted on GitHub. The results are handled by the method ``onDataReturn`
 Using the Mojito REST Module
 ----------------------------
 
-The `REST module <http://developer.yahoo.com/cocktails/mojito/api/classes/Y.mojito.lib.REST.html>`_ 
+The `REST module <https://developer.yahoo.com/cocktails/mojito/api/classes/Y.mojito.lib.REST.html>`_ 
 for Mojito provides an easy make HTTP calls to Web services
 
 To use the module, you add the string ``"mojito-rest-lib"`` to the ``requires`` array as 
@@ -1023,6 +1023,6 @@ Further Reading
 
 - `Data in Mojito <../topics/mojito_data.html>`_
 - `Calling YQL from a Mojit <../code_exs/calling_yql.html>`_
-- `YQL Guide <http://developer.yahoo.com/yql/guide>`_
-- `YQL Console <http://developer.yahoo.com/yql/console/>`_
+- `YQL Guide <https://developer.yahoo.com/yql/guide>`_
+- `YQL Console <https://developer.yahoo.com/yql/console/>`_
 

@@ -20,8 +20,8 @@ pass meta data that contains the view name, mojit definitions, binders, assets, 
 and a callback function. We'll look at the ``meta`` object more closely in the next
 section.
 
-See the `done method <http://developer.yahoo.com/cocktails/mojito/api/classes/ActionContext.html#method_done>`_
-in the `Mojito API Documentation <http://developer.yahoo.com/cocktails/mojito/api/>`_ for 
+See the `done method <https://developer.yahoo.com/cocktails/mojito/api/classes/ActionContext.html#method_done>`_
+in the `Mojito API Documentation <https://developer.yahoo.com/cocktails/mojito/api/>`_ for 
 more information about the parameters and to see the source code.
 
 
@@ -39,8 +39,8 @@ cases:
 
 - you want to render a different template than the default
 - a parent mojit is executing child mojits with the methods 
-  `ac.composite.done <http://developer.yahoo.com/cocktails/mojito/api/classes/Composite.common.html#method_done>`_ 
-  or `ac._dispatch <http://developer.yahoo.com/cocktails/mojito/api/classes/ActionContext.html#method__dispatch>`_. 
+  `ac.composite.done <https://developer.yahoo.com/cocktails/mojito/api/classes/Composite.common.html#method_done>`_ 
+  or `ac._dispatch <https://developer.yahoo.com/cocktails/mojito/api/classes/ActionContext.html#method__dispatch>`_. 
 
 In the first case, suppose you want the ``index`` function of your controller to use the template 
 ``foo.hb.html`` instead of the default ``index.hb.html``. You would call ``ac.done`` with the 

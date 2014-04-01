@@ -19,7 +19,7 @@ The following topics will be covered:
   ``actionContext`` object
 - getting and setting cookies from the mojit controller
 - using the `Cookie addon <../../api/classes/Cookie.server.html>`_ and the
-  `YUI Cookie module <http://developer.yahoo.com/yui/3/cookie/>`__ to get and set cookies
+  `YUI Cookie module <https://developer.yahoo.com/yui/3/cookie/>`__ to get and set cookies
 
 .. _code_exs_cookies-notes:
 
@@ -35,7 +35,7 @@ The ``index`` function in the ``controller.server.js`` below shows how to use ``
 and ``cookie.set``.  The ``cookie.set`` method also allows you to pass a third parameter
 that contains the domain, the path, and the expiration date of the cookie. For those
 familiar with YUI 3, these methods for getting and setting cookies should be familiar as
-Mojito uses the `YUI 3 Cookie Module <http://developer.yahoo.com/yui/3/api/Cookie.html>`_.
+Mojito uses the `YUI 3 Cookie Module <https://developer.yahoo.com/yui/3/api/Cookie.html>`_.
 
 .. code-block:: javascript
 
@@ -58,7 +58,7 @@ Mojito uses the `YUI 3 Cookie Module <http://developer.yahoo.com/yui/3/api/Cooki
 
 The code below from the ``index`` template interpolates the value of the variable
 ``{{request_cookie_value}}`` from the controller and uses the
-`YUI Cookie module <http://developer.yahoo.com/yui/3/api/module_cookie.html>`__ to set and
+`YUI Cookie module <https://developer.yahoo.com/yui/3/api/module_cookie.html>`__ to set and
 get a cookie. To use the YUI Cookie module, first include the module with ``YUI().use``
 and then call ``Y.Cookie.get`` and ``Y.Cookie.set``.
 

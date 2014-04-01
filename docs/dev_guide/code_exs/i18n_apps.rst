@@ -16,7 +16,7 @@ defaults and the capability to override the default languages of countries.
 
 The following topics will be covered:
 
-- including the `YUI Internationalization utility <http://developer.yahoo.com/yui/3/intl/>`_ 
+- including the `YUI Internationalization utility <https://developer.yahoo.com/yui/3/intl/>`_ 
   in the mojit controller
 - using the `Intl addon <../../api/classes/Intl.common.html>`_
 - specifying the `BCP 47 <ftp://ftp.rfc-editor.org/in-notes/bcp/bcp47.txt>`_ language tags. 
@@ -34,7 +34,7 @@ Implementation Notes
 Resources Bundles for Languages
 -------------------------------
 
-Mojito uses the `YUI 3 Internationalization <http://developer.yahoo.com/yui/3/intl/#switchingLangs>`_ 
+Mojito uses the `YUI 3 Internationalization <https://developer.yahoo.com/yui/3/intl/#switchingLangs>`_ 
 utility to support internationalization. To use the YUI Internationalization utility in 
 Mojito, you create resource bundles in JSON that specify the keys and values for the 
 strings that need localizing. 

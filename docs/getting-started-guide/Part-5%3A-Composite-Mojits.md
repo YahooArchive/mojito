@@ -7,7 +7,7 @@
 
 <div style="margin:1em; padding:0.4em; border:1px solid #F86; color:#844; background-color:#FEE;">
     <strong>NOTE:</strong>
-    If you haven't installed Mojito yet, you should go to <a href="http://developer.yahoo.com/cocktails/mojito/docs/quickstart/">part one of the Getting Started Guide</a> and do so!
+    If you haven't installed Mojito yet, you should go to <a href="https://developer.yahoo.com/cocktails/mojito/docs/quickstart/">part one of the Getting Started Guide</a> and do so!
 </div>
 
 In this Guide we'll create a page containing multiple mojits. One mojit will show a list of image thumbnails. The other will show details about the image chosen from the list.
@@ -128,7 +128,7 @@ And we are going to provide a shared model alongside the mojits directory at `mo
                 count = parseInt(count) || 10;
                 // The YQL docs say that the second number is the end, but in practice
                 // it appears to be the count.
-                // http://developer.yahoo.com/yql/guide/paging.html#remote_limits
+                // https://developer.yahoo.com/yql/guide/paging.html#remote_limits
                 q = 'select * from flickr.photos.search(' + start + ',' + count + ') where text="' + queryString + '"';
                     Y.YQL(q, function(rawYqlData) {
                         if (!rawYqlData || !rawYqlData.query || !rawYqlData.query.results) {

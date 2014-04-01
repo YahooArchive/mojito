@@ -193,7 +193,7 @@ controller outputs different results.
    ``actionContext`` object. 
 
    Models in Mojito rely on HTTP-based services to get data and do not generally connect
-   directly to a database through an ORM. We recommend `YQL <http://developer.yahoo.com/yql>`_
+   directly to a database through an ORM. We recommend `YQL <https://developer.yahoo.com/yql>`_
    to fetch data from Web services.
 
 #. Change to the ``tests`` directory.

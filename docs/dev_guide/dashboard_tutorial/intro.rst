@@ -35,7 +35,7 @@ following technology:
 
 - `Node.js <http://nodejs.org/>`_
 - `YUI <http://yuilibrary.com/>`_
-- `YQL <http://developer.yahoo.com/yql/>`_
+- `YQL <https://developer.yahoo.com/yql/>`_
 - `Handlebars <http://handlebarsjs.com/>`_
 - `npm <https://npmjs.org/>`_
 

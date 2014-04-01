@@ -819,7 +819,7 @@ Creating the Application
       }
 #. We're going to use the ``definition.json`` file to store YQL information as well.
    For the ``Gallery`` mojit, we're going to get data from the 
-   `YQL store <http://developer.yahoo.com/yql/guide/yql-cloud-chapter.html>`_, which is
+   `YQL store <https://developer.yahoo.com/yql/guide/yql-cloud-chapter.html>`_, which is
    a cloud storage that YQL can access. We're going have save the YQL store in 
    ``mojits/Gallery/definition.json`` as shown below:
 
@@ -1466,6 +1466,6 @@ Source Code
 Further Reading
 ===============
 
-- `Mojito Doc <http://developer.yahoo.com/cocktails/mojito/docs/>`_
+- `Mojito Doc <https://developer.yahoo.com/cocktails/mojito/docs/>`_
 
 

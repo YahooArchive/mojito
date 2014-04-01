@@ -227,7 +227,7 @@ API Methods
 ###########
 
 In addition to  the properties of the ``mojitProxy`` object, you can also use the methods 
-of the `MojitProxy class <http://developer.yahoo.com/cocktails/mojito/api/classes/MojitProxy.html>`_, 
+of the `MojitProxy class <https://developer.yahoo.com/cocktails/mojito/api/classes/MojitProxy.html>`_, 
 so that the binder can interact with the controller and other mojits. We’re going to focus 
 on a core set of the available methods and recommend you look at the API documentation to 
 complete the picture.
@@ -711,7 +711,7 @@ Creating the Application
    update the tests. First, in the controller, update the ``index`` method and add the 
    method ``githubMap`` outside the controller namespace to format the returned response 
    with the code below. We're using a YQL table that's in the 
-   `YQL hosted storage <http://developer.yahoo.com/yql/guide/yql-cloud-chapter.html>`_
+   `YQL hosted storage <https://developer.yahoo.com/yql/guide/yql-cloud-chapter.html>`_
    now (``store://gpgSGZAwQ3vaDaalPQZ44u``) 
 
    .. code-block:: javascript

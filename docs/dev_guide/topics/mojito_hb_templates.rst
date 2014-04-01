@@ -139,7 +139,7 @@ Handlebars comes with a set of simple monadic functions called
 you can call in Handlebars expressions. Some helpers are called 
 `block helpers <http://handlebarsjs.com/block_helpers.html>`_ because
 they are iterators. You can also create new helpers and register them
-using the `Helpers addon <http://developer.yahoo.com/cocktails/mojito/api/classes/Helpers.common.html>`_. 
+using the `Helpers addon <https://developer.yahoo.com/cocktails/mojito/api/classes/Helpers.common.html>`_. 
 We'll take a look how in Mojito application to use both simple helper and block helpers
 and then show you how to create and register your own helpers.
 
@@ -269,7 +269,7 @@ Mojito Applications
 
 To use custom Handlebars helpers in a Mojito application, you also need to register
 your helper, but instead of using ``registerHelper``, you use the 
-`Helpers addon <http://developer.yahoo.com/cocktails/mojito/api/classes/Helpers.common.html>`_.
+`Helpers addon <https://developer.yahoo.com/cocktails/mojito/api/classes/Helpers.common.html>`_.
 The ``Helpers`` addon has several methods for getting helpers, setting mojit-level
 helpers, or exposing helpers so that they can shared with other mojits.
 

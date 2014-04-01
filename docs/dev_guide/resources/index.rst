@@ -91,7 +91,7 @@ Community
 Developer Forums
 ----------------
 
-`YDN: Mojito Forum <http://developer.yahoo.com/forum/Yahoo-Mojito/>`_
+`YDN: Mojito Forum <https://developer.yahoo.com/forum/Yahoo-Mojito/>`_
 
 .. _res_community-twitter:
 
@@ -249,17 +249,17 @@ Articles
 Blogs
 #####
 
-- `Yahoo Announces Cocktails – Shaken, Not Stirred <http://developer.yahoo.com/blogs/ydn/posts/2011/11/yahoo-announces-cocktails-%E2%80%93-shaken-not-stirred/>`_
-- `How YQL powers Cocktails, the technology behind Livestand <http://developer.yahoo.com/blogs/ydn/posts/2011/11/how-yql-powers-cocktails-the-technology-behind-livestand/>`_
+- `Yahoo Announces Cocktails – Shaken, Not Stirred <https://developer.yahoo.com/blogs/ydn/posts/2011/11/yahoo-announces-cocktails-%E2%80%93-shaken-not-stirred/>`_
+- `How YQL powers Cocktails, the technology behind Livestand <https://developer.yahoo.com/blogs/ydn/posts/2011/11/how-yql-powers-cocktails-the-technology-behind-livestand/>`_
 
 .. _additional_resources-archived_docs:
 
 Archived Documentation
 ======================
 
-- Mojito v0.3 (`General <http://developer.yahoo.com/cocktails/mojito/v0.3/docs/>`_\/`API <http://developer.yahoo.com/cocktails/mojito/v0.3/docs/>`_)
-- Mojito v0.4 (`General <http://developer.yahoo.com/cocktails/mojito/v0.4/docs/>`_\/`API <http://developer.yahoo.com/cocktails/mojito/v0.4/api/>`_)
-- Mojito v0.5 (`General <http://developer.yahoo.com/cocktails/mojito/v0.5/docs/>`_\/`API <http://developer.yahoo.com/cocktails/mojito/v0.5/api/>`_)
-- Mojito v0.6 (`General <http://developer.yahoo.com/cocktails/mojito/v0.6/docs/>`_\/`API <http://developer.yahoo.com/cocktails/mojito/v0.6/api/>`_)
-- Mojito v0.7 (`General <http://developer.yahoo.com/cocktails/mojito/v0.7/docs/>`_\/`API <http://developer.yahoo.com/cocktails/mojito/v0.7/api/>`_)
-- Mojito v0.8 (`General <http://developer.yahoo.com/cocktails/mojito/v0.8/docs/>`_\/`API <http://developer.yahoo.com/cocktails/mojito/v0.8/api/>`_)
+- Mojito v0.3 (`General <https://developer.yahoo.com/cocktails/mojito/v0.3/docs/>`_\/`API <https://developer.yahoo.com/cocktails/mojito/v0.3/docs/>`_)
+- Mojito v0.4 (`General <https://developer.yahoo.com/cocktails/mojito/v0.4/docs/>`_\/`API <https://developer.yahoo.com/cocktails/mojito/v0.4/api/>`_)
+- Mojito v0.5 (`General <https://developer.yahoo.com/cocktails/mojito/v0.5/docs/>`_\/`API <https://developer.yahoo.com/cocktails/mojito/v0.5/api/>`_)
+- Mojito v0.6 (`General <https://developer.yahoo.com/cocktails/mojito/v0.6/docs/>`_\/`API <https://developer.yahoo.com/cocktails/mojito/v0.6/api/>`_)
+- Mojito v0.7 (`General <https://developer.yahoo.com/cocktails/mojito/v0.7/docs/>`_\/`API <https://developer.yahoo.com/cocktails/mojito/v0.7/api/>`_)
+- Mojito v0.8 (`General <https://developer.yahoo.com/cocktails/mojito/v0.8/docs/>`_\/`API <https://developer.yahoo.com/cocktails/mojito/v0.8/api/>`_)

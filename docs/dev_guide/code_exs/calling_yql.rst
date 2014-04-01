@@ -13,7 +13,7 @@ Summary
 
 This example shows how to use YQL to get Flickr images from a Mojito application. YQL 
 allows you to get data from many sources in the form of JSON, JSONP, and XML. For more 
-information about YQL, see the `YQL Guide <http://developer.yahoo.com/yql/guide/>`_. For 
+information about YQL, see the `YQL Guide <https://developer.yahoo.com/yql/guide/>`_. For 
 this example, you will need to 
 `get a Flickr API key <http://www.flickr.com/services/api/keys/apply/>`_.
 
@@ -22,7 +22,7 @@ The following topics will be covered:
 - forming a YQL statement to get Flickr photo information
 - creating a model for your mojit to get data
 - getting query string parameters with the ``Params`` addon
-- calling the YQL Web service with the `YQL Module of YUI <http://developer.yahoo.com/yui/3/yql/>`_
+- calling the YQL Web service with the `YQL Module of YUI <https://developer.yahoo.com/yui/3/yql/>`_
 
 
 .. _code_exs_yql-notes:
@@ -52,7 +52,7 @@ use the table to return Flickr photos whose title, description, or tags contain 
 "muppet". Click on the YQL statement to open the YQL Console, and then click the **TEST** 
 button to see the returned XML response.
 
-`select * from flickr.photos.search where text="muppets" and api_key="84921e87fb8f2fc338c3ff9bf51a412e" <http://developer.yahoo.com/yql/console/#h=select%20*%20from%20flickr.photos.search%20where%20has_geo%3D%22true%22%20and%20text%3D%22san%20francisco%22%20and%20api_key%3D%2284921e87fb8f2fc338c3ff9bf51a412e%22>`_
+`select * from flickr.photos.search where text="muppets" and api_key="84921e87fb8f2fc338c3ff9bf51a412e" <https://developer.yahoo.com/yql/console/#h=select%20*%20from%20flickr.photos.search%20where%20has_geo%3D%22true%22%20and%20text%3D%22san%20francisco%22%20and%20api_key%3D%2284921e87fb8f2fc338c3ff9bf51a412e%22>`_
 
 As you can see from the partial response from YQL below, the photo URIs are not returned, 
 just metadata about the photos. You need to extract metadata and use it to form the photo 
@@ -92,7 +92,7 @@ The mojit model for this code example does the following:
 
 In the example ``model.server.js`` below, the ``search`` function creates the YQL 
 statement and passes it to the ``YQL`` function made available by the 
-`YQL Module of YUI <http://developer.yahoo.com/yui/3/yql/>`_.
+`YQL Module of YUI <https://developer.yahoo.com/yui/3/yql/>`_.
 
 The ``YQL`` function makes the REST call to the YQL Web services, and the response is 
 passed to an anonymous function. This function extracts the fields from the response that 
@@ -180,7 +180,7 @@ The controller in this code example performs the following functions:
 The ``index`` function in the ``controller.server.js`` below uses the ``getFromUrl`` 
 method of the ``Params`` addon to get the query string parameters to form the YQL 
 statement. The YQL Statement and the 
-`paging and limit parameters <http://developer.yahoo.com/yql/guide/paging.html>`_ are then 
+`paging and limit parameters <https://developer.yahoo.com/yql/guide/paging.html>`_ are then 
 passed to the ``search`` function of the model.
 
 To access model functions from the controller, you use the Action Context (``ac``) object with the 

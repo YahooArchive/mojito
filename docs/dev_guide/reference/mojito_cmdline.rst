@@ -211,7 +211,7 @@ as ``--dir``.
 Documenting Code
 ================
 
-API documentation is generated using `YUI Doc <http://developer.yahoo.com/yui/yuidoc/>`_, 
+API documentation is generated using `YUI Doc <https://developer.yahoo.com/yui/yuidoc/>`_, 
 which is invoked using the Mojito command-line tool. Documentation output is 
 written to files in the locations specified below. Because it's based on YUI Doc,
 you can start a server that displays the documentation with the option ``--server`` and 

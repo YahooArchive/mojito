@@ -9,7 +9,7 @@ Mojito is built on top of YUI3 and run inside of Node.js.
 
 ## Installation
 
-See the Mojito: Quickstart at http://developer.yahoo.com/cocktails/mojito/docs/quickstart.
+See the Mojito: Quickstart at https://developer.yahoo.com/cocktails/mojito/docs/quickstart.
 
 ## First Application:  Hello, World
 

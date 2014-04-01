@@ -73,7 +73,7 @@ property to ``true`` in ``application.json`` as seen below.
 Getting Data with YQL in the Model
 ----------------------------------
 
-In the mojit model, the `YUI YQL Query Utility <http://developer.yahoo.com/yui/3/yql/>`_ 
+In the mojit model, the `YUI YQL Query Utility <https://developer.yahoo.com/yui/3/yql/>`_ 
 is used to get Flickr photo information. To access the utility in your model, 
 specify ``'yql'`` in the ``requires`` array as seen in the code snippet below:
 
@@ -90,7 +90,7 @@ for photos that have a title, description, or tags containing a string. For
 example, the YQL statement below returns Flickr photo information for those 
 photos that have a title, description, or tags containing the string "Manhattan". 
 
-Copy the query below into the `YQL Console <http://developer.yahoo.com/yql/console/>`_,
+Copy the query below into the `YQL Console <https://developer.yahoo.com/yql/console/>`_,
 replace ``{your_flickr_api_key}`` with your own Flickr API key, and then  click **TEST** 
 to see the returned XML response.
 
@@ -162,7 +162,7 @@ the ``images`` array that is sent to the controller through the ``callback`` fun
 
 For a more detailed explanation about how to use YQL in your Mojito application, see 
 `Calling YQL from a Mojit <calling_yql.html>`_. For more information about YQL, see the 
-`YQL Guide <http://developer.yahoo.com/yql/guide>`_.
+`YQL Guide <https://developer.yahoo.com/yql/guide>`_.
 
 .. _events_notes-bind_events:
 

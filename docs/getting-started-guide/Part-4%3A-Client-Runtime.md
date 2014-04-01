@@ -217,7 +217,7 @@ Let's start by modifying the model to take "start" and "count" parameters:
                 count = parseInt(count) || 10;
                 // The YQL docs say that the second number is the end, but in practice
                 // it appears to be the count.
-                // http://developer.yahoo.com/yql/guide/paging.html#remote_limits
+                // https://developer.yahoo.com/yql/guide/paging.html#remote_limits
                 q = 'select * from flickr.photos.search(' + start + ',' + count + ') where text="' + queryString + '"';
                 Y.YQL(q, function(rawYqlData) {
                     Y.log(rawYqlData);
@@ -333,7 +333,7 @@ For the controller, we'll make things a little simpler. We'll just expose a "pag
         'ModelFlickr'
     ], lang: ['de', 'en-US']});
 
-The controller is now providing the proper url string for the `previous` and `next` links to the view template. Inside the `selfUrl()` function, you can see we're calling `ac.url.make()` to create each URL. This [make](http://developer.yahoo.com/cocktails/mojito/api/Url.common.html#method_make) function is provided by an [**Action Context Addon**](http://developer.yahoo.com/cocktails/mojito/api/module_actioncontextaddon.html) called [`url`](http://developer.yahoo.com/cocktails/mojito/api/Url.common.html). It accepts the 'base' and 'action' of the mojit to route to, as well as stringified parameters to use to generate the route. In this case, we're making sure the current URL parameters are retained, except for the `page` parameter, which is overridden with the page we want to navigate to on click.
+The controller is now providing the proper url string for the `previous` and `next` links to the view template. Inside the `selfUrl()` function, you can see we're calling `ac.url.make()` to create each URL. This [make](https://developer.yahoo.com/cocktails/mojito/api/Url.common.html#method_make) function is provided by an [**Action Context Addon**](https://developer.yahoo.com/cocktails/mojito/api/module_actioncontextaddon.html) called [`url`](https://developer.yahoo.com/cocktails/mojito/api/Url.common.html). It accepts the 'base' and 'action' of the mojit to route to, as well as stringified parameters to use to generate the route. In this case, we're making sure the current URL parameters are retained, except for the `page` parameter, which is overridden with the page we want to navigate to on click.
 
 Now restart your server and point your browser again to [http://localhost:8666/flickr](http://localhost:8666/flickr). Now the links are working.
 
@@ -374,7 +374,7 @@ In order to make the Flickr mojit available to be execute via a Remote Procedure
         }
     ]
 
-Now that we've pulled this mojit out into a root-spec, we can invoke it from the client. But to do that, first we'll need to update the binder in `mojits/Flickr/binders.index.js`. Any binders found in a mojit binder directory are _always_ deployed to the client along with the Mojito client runtime. This is where you can write code against the DOM for each mojit. In our case, we want to write an event handler that intercepts clicks on the "previous" and "next" navigation links. Our binder below has `init` and `bind` functions. Mojito passes a "mojit proxy" into each binder, then if it finds a DOM node on the page that is associated with the binder, it also calls the `bind` function and passes in a [Y.Node](http://developer.yahoo.com/yui/3/api/Node.html) object.
+Now that we've pulled this mojit out into a root-spec, we can invoke it from the client. But to do that, first we'll need to update the binder in `mojits/Flickr/binders.index.js`. Any binders found in a mojit binder directory are _always_ deployed to the client along with the Mojito client runtime. This is where you can write code against the DOM for each mojit. In our case, we want to write an event handler that intercepts clicks on the "previous" and "next" navigation links. Our binder below has `init` and `bind` functions. Mojito passes a "mojit proxy" into each binder, then if it finds a DOM node on the page that is associated with the binder, it also calls the `bind` function and passes in a [Y.Node](https://developer.yahoo.com/yui/3/api/Node.html) object.
 
 `mojits/Flickr/binders/index.js`:
 

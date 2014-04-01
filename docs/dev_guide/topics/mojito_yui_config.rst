@@ -152,7 +152,7 @@ Mojito modules on demand. Without this metadata, the application cannot function
 
 Synthetic modules are not physical files. If you need
 to generate physical files for a CDN from the synthetic modules, you can 
-use `Shaker <http://developer.yahoo.com/cocktails/shaker/>`_. 
+use `Shaker <https://developer.yahoo.com/cocktails/shaker/>`_. 
 For production, we recommend using Shaker, especially in the case that your mojits contain 
 language resource bundles.
 
@@ -188,8 +188,8 @@ Creation of Synthetic Files
 
 In terms of extending Mojito's functionality, if you create a Resource Store addon, you 
 can create new synthetic modules and control the seed generation by piping into 
-`getAppSeedFiles <http://developer.yahoo.com/cocktails/mojito/api/classes/RSAddonYUI.html#method_getAppSeedFiles>`_ 
-method of the `RSAddonYUI Class <http://developer.yahoo.com/cocktails/mojito/api/classes/RSAddonYUI.html>`_. 
+`getAppSeedFiles <https://developer.yahoo.com/cocktails/mojito/api/classes/RSAddonYUI.html#method_getAppSeedFiles>`_ 
+method of the `RSAddonYUI Class <https://developer.yahoo.com/cocktails/mojito/api/classes/RSAddonYUI.html>`_. 
 
 .. _yui-getting_to_app:
 
@@ -657,5 +657,5 @@ The ``mojito-shaker`` 3.x extension will be able to control the configurations d
 by the ``app`` group if you decide to push your assets into a CDN like Amazon. Shaker will 
 also version the files and create the necessary rollups to accelerate caching and booting 
 in the client runtime. To learn how to use the ``mojito-shaker`` extension, 
-see the `Shaker documentation <http://developer.yahoo.com/cocktails/shaker/>`_.
+see the `Shaker documentation <https://developer.yahoo.com/cocktails/shaker/>`_.
 

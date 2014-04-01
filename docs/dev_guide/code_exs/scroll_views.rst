@@ -12,7 +12,7 @@ Summary
 =======
 
 This example shows how to include the 
-`YUI ScrollView Module <http://developer.yahoo.com/yui/3/scrollview/>`_ 
+`YUI ScrollView Module <https://developer.yahoo.com/yui/3/scrollview/>`_ 
 in your view.
 
 The following topics will be covered:
@@ -160,7 +160,7 @@ node, so the template ``index.hb.html`` must have a ``div`` element with the
    </div>
 
 For detailed instructions about YUI ScrollView, see 
-`ScrollView: Getting Started <http://developer.yahoo.com/yui/3/scrollview/#start>`_.
+`ScrollView: Getting Started <https://developer.yahoo.com/yui/3/scrollview/#start>`_.
 
 .. _code_exs_yui_views-setup:
 

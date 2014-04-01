@@ -84,8 +84,8 @@ Writing the Addon
 #################
 
 The ActionContext object and ActionContext addons simulate the 
-`YUI Base <http://developer.yahoo.com/yui/3/base/>`_ and 
-`YUI Plugin <http://developer.yahoo.com/yui/3/plugin/>`_ infrastructure, so  
+`YUI Base <https://developer.yahoo.com/yui/3/base/>`_ and 
+`YUI Plugin <https://developer.yahoo.com/yui/3/plugin/>`_ infrastructure, so  
 creating a new addon is similar to creating a new YUI Plugin.
 
 The addon must do the following:

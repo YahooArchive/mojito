@@ -166,7 +166,7 @@ object-relational mapping (ORM) with no intermediate service layer. With Mojito,
 do not directly connect to databases, but instead make HTTP requests to an existing
 service, thereby, the separating the application code completely from database queries.
 
-Mojito applications can use `YQL <http://developer.yahoo.com/yql>`_ to make requests to 
+Mojito applications can use `YQL <https://developer.yahoo.com/yql>`_ to make requests to 
 other Web services to get data as well, which gives the application code more control over 
 the requested data, but this again is not a direct database request as YQL is a RESTful 
 proxy that will make HTTP requests to other Web services based on rules defined in XML tables. 
@@ -175,7 +175,7 @@ This is an important point to remember for those developers who are coming from 
 and other frameworks that allow you to directly interact with a database. In general,
 your Mojito applications will need to make HTTP requests to a service that handles 
 database queries or to Web services. You can make HTTP requests with the 
-`Y.mojito.lib.REST Class <http://developer.yahoo.com/cocktails/mojito/api/classes/Y.mojito.lib.REST.html>`_.
+`Y.mojito.lib.REST Class <https://developer.yahoo.com/cocktails/mojito/api/classes/Y.mojito.lib.REST.html>`_.
 
 
 

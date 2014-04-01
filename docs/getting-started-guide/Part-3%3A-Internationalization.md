@@ -124,7 +124,7 @@ Now point your browser to [http://localhost:8666/flickr](http://localhost:8666/f
 
 This example shows how to localize your strings using YRB, and the YUI3 intl library.
 
-[YUI3 intl](http://developer.yahoo.com/yui/3/intl/)
+[YUI3 intl](https://developer.yahoo.com/yui/3/intl/)
 
 <hr/>
 <div class="paginate right"><a href="/tutorials.GettingStarted-Part4">Part 4</a></div>

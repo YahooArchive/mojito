@@ -482,7 +482,7 @@ could be any of the following:
 .. note:: The list of built-in ``ActionContext`` addons above is not complete. Mojito also
           has **Resource Store** (``rs``) and **View Engine** (``view-engine``) addons.
           See the `addons <https://github.com/yahoo/mojito/tree/develop/lib/app/addons>`_
-          directory in the Mojito source code and the `Mojito API <http://developer.yahoo.com/cocktails/mojito/api/>`_
+          directory in the Mojito source code and the `Mojito API <https://developer.yahoo.com/cocktails/mojito/api/>`_
           documentation for more information.
 
 .. _conventions_addons-custom:

@@ -771,7 +771,7 @@ Key Methods
     This method is called on each directory or file being walked and is used to decide if 
     the path is a resource version. The return value can be a bit confusing, so read the 
     API documentation carefully and feel free to post any questions that you have to the 
-    `Yahoo Mojito Forum <http://developer.yahoo.com/forum/Yahoo-Mojito/>`_.
+    `Yahoo Mojito Forum <https://developer.yahoo.com/forum/Yahoo-Mojito/>`_.
     
     Typically, you would hook into this method with the ``afterHostMethod`` method to 
     register your own resource version types. This method should work together with your 
@@ -1151,7 +1151,7 @@ Your addon is required to do the following:
 
 .. |RS| replace:: Resource Store
 .. |RSC| replace:: ResourceStore.server Class
-.. _RSC: http://developer.yahoo.com/cocktails/mojito/api/classes/ResourceStore.server.html
+.. _RSC: https://developer.yahoo.com/cocktails/mojito/api/classes/ResourceStore.server.html
 .. |YUIPlugin| replace:: YUI Plugin
 .. _YUIPlugin: http://yuilibrary.com/yui/docs/plugin/
 .. |SS| replace:: server.store.js
