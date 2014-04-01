@@ -20,7 +20,7 @@
         "express-state": "1.1.x",
         "express-map": "0.1.x",
         "glob": "3.2.x",
-        "js-yaml": "1.0.2",
+        "js-yaml": "3.0.x",
         "mime": "1.2.4",
         "request": "2.9.202",
         "semver": "1.0.14",

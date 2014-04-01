@@ -27,6 +27,7 @@ Notes
 * Express State dependency was upgraded to express-state@1.1.x
 * Express Map dependency was upgraded to express-map@0.1.x
 * Glob dependency was upgraded to glob@3.2.x
+* JS-YAML dependency was upgraded to js-yaml@3.0.x
 * Arrow devDependency was upgraded to yahoo-arrow@0.5.x
 
 
