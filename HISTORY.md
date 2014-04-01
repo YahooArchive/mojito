@@ -26,7 +26,9 @@ Notes
 * YUI dependency was upgraded to yui@3.15.x
 * Express State dependency was upgraded to express-state@1.1.x
 * Express Map dependency was upgraded to express-map@0.1.x
+* Glob dependency was upgraded to glob@3.2.x
 * Arrow devDependency was upgraded to yahoo-arrow@0.5.x
+
 
 Deprecations, Removals
 ----------------------
