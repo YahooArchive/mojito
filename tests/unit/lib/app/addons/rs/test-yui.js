@@ -543,7 +543,7 @@ YUI().use(
                 });
             });
             libasync.series(series, function(err) {
-                A.isNull(err, 'no errors for all tests');
+                A.isUndefined(err, 'no errors for all tests');
             });
         },
 
@@ -570,7 +570,7 @@ YUI().use(
                 });
             });
             libasync.series(series, function(err) {
-                A.isNull(err, 'no errors for all tests');
+                A.isUndefined(err, 'no errors for all tests');
             });
         },
 
