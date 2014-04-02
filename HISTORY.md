@@ -28,6 +28,7 @@ Notes
 * Express Map dependency was upgraded to express-map@0.1.x
 * Glob dependency was upgraded to glob@3.2.x
 * JS-YAML dependency was upgraded to js-yaml@3.0.x
+* Mime dependency was upgraded to mime@1.2.x
 * Arrow devDependency was upgraded to yahoo-arrow@0.5.x
 
 

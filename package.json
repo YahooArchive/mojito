@@ -21,7 +21,7 @@
         "express-map": "0.1.x",
         "glob": "3.2.x",
         "js-yaml": "3.0.x",
-        "mime": "1.2.4",
+        "mime": "1.2.x",
         "request": "2.9.202",
         "semver": "1.0.14",
         "ycb": "1.1.x",
