@@ -29,6 +29,7 @@ Notes
 * Glob dependency was upgraded to glob@3.2.x
 * JS-YAML dependency was upgraded to js-yaml@3.0.x
 * Mime dependency was upgraded to mime@1.2.x
+* Semver dependency was upgraded to semver@2.2.x
 * Arrow devDependency was upgraded to yahoo-arrow@0.5.x
 
 
