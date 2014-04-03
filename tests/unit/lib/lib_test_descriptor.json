@@ -8,15 +8,6 @@
         },
         "commonlib": "$$config.base$$/mojito-test.js,$$config.lib$$/app/autoload/util.common.js",
         "dataprovider" : {
-            "mojito": {
-                "params": {
-                    "lib": "$$config.lib$$/mojito.js",
-                    "test": "./test-mojito.js",
-                    "page": "$$config.base$$/mojito-test.html",
-                    "driver": "nodejs"
-                },
-                "group": "fw,unit,server"
-            },
             "output-handler.server": {
                 "params": {
                     "test": "./test-output-handler.server.js",

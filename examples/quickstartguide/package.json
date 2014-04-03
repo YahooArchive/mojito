@@ -18,7 +18,7 @@
         }
     ],
     "yahoo": {
-        "custodian":{
+        "custodian": {
             "email": "devel-ydesignmojits@yahoo-inc.com",
             "url": "https://github.com/yahoo/mojito/wiki/Mojito-Quickstart-Guide"
         },
@@ -43,4 +43,3 @@
         "mojito-cli": ">= 0.2.0"
     }
 }
-
