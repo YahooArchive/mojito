@@ -33,19 +33,6 @@ Notes
 * Express devDependency was upgraded to express@3.5.x
 * Arrow devDependency was upgraded to yahoo-arrow@0.5.x
 
-
-Deprecations, Removals
-----------------------
-
-Features
---------
-
-Bug Fixes
-----------
-
-Acknowledgements
-----------------
-
 version 0.9.0
 =================
 
