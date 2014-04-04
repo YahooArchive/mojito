@@ -31,7 +31,6 @@ Notes
 * Mime dependency was upgraded to mime@1.2.x
 * Semver dependency was upgraded to semver@2.2.x
 * Express devDependency was upgraded to express@3.5.x
-* Arrow devDependency was upgraded to yahoo-arrow@0.5.x
 
 version 0.9.0
 =================
