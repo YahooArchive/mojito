@@ -1,21 +1,3 @@
-version @VERSION@
-=================
-
-Notes
------
-
-Deprecations, Removals
-----------------------
-
-Features
---------
-
-Bug Fixes
----------
-
-Acknowledgements
-----------------
-
 version 0.9.2
 =================
 
