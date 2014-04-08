@@ -16,6 +16,20 @@ Bug Fixes
 Acknowledgements
 ----------------
 
+version 0.9.2
+=================
+
+Notes
+-----
+
+* YUI dependency was upgraded to yui@3.15.x
+* Express State dependency was upgraded to express-state@1.1.x
+* Express Map dependency was upgraded to express-map@0.1.x
+* Glob dependency was upgraded to glob@3.2.x
+* JS-YAML dependency was upgraded to js-yaml@3.0.x
+* Mime dependency was upgraded to mime@1.2.x
+* Semver dependency was upgraded to semver@2.2.x
+* Express devDependency was upgraded to express@3.5.x
 
 version 0.9.1
 =================
