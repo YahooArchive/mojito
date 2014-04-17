@@ -325,8 +325,8 @@
                         {
                            "controller": "locator",
                            "params": {
-                                  "value": "#a_headers",
-                                  "click": true
+                              "value": "#a_headers",
+                              "click": true
                            }
                         },
                         {
@@ -347,13 +347,10 @@
                             "params": {
                                 "value": "#p_simpleWS",
                                 "click": true
-                            }
-                        },
-                        {
-                            "controller": "locator",
-                            "params": {
-                                "value": "#output"
-                            }
+                            },
+                            "waitForElements": [
+                                "#output"
+                            ]
                         },
                         {
                             "test" : "testrestlib-SimpleWSCallClient.js"
@@ -373,25 +370,12 @@
                             "params": {
                                 "value": "#p_inspectResp",
                                 "click": true
-                            }
-                        },
-                        {
-                            "controller": "locator",
-                            "params": {
-                                "value": "#code"
-                            }
-                        },
-                        {
-                            "controller": "locator",
-                            "params": {
-                                "value": "#msg"
-                            }
-                        },
-                        {
-                            "controller": "locator",
-                            "params": {
-                                "value": "#output"
-                            }
+                            },
+                            "waitForElements": [
+                                "#code",
+                                "#msg",
+                                "#output"
+                            ]
                         },
                         {
                             "test" : "testrestlib-inspectResponseClient.js"
@@ -411,13 +395,10 @@
                             "params": {
                                 "value": "#p_inspectResp",
                                 "click": true
-                            }
-                        },
-                        {
-                            "controller": "locator",
-                            "params": {
-                                "value": "#headers"
-                            }
+                            },
+                            "waitForElements": [
+                                "#headers"
+                            ]
                         },
                         {
                             "test" : "testrestlib-inspectResponseHeaderClient.js"
@@ -437,13 +418,10 @@
                             "params": {
                                 "value": "#p_inspectErr",
                                 "click": true
-                            }
-                        },
-                        {
-                            "controller": "locator",
-                            "params": {
-                                "value": "#td_inspectErr"
-                            }
+                            },
+                            "waitForElements": [
+                                "#td_inspectErr"
+                            ]
                         },
                         {
                             "test" : "testrestlib-inspectErrorClient.js"
@@ -463,13 +441,10 @@
                             "params": {
                                 "value": "#p_getParam",
                                 "click": true
-                            }
-                        },
-                        {
-                            "controller": "locator",
-                            "params": {
-                                "value": "#output"
-                            }
+                            },
+                            "waitForElements": [
+                                "#output"
+                            ]
                         },
                         {
                             "test" : "testrestlib-GETWithParamsClient.js"
@@ -489,13 +464,10 @@
                             "params": {
                                 "value": "#p_getParamNegative",
                                 "click": true
-                            }
-                        },
-                        {
-                            "controller": "locator",
-                            "params": {
-                                "value": "#output"
-                            }
+                            },
+                            "waitForElements": [
+                                "#output"
+                            ]
                         },
                         {
                             "test" : "testrestlib-GETWithParamsNegativeClient.js"
@@ -515,13 +487,10 @@
                             "params": {
                                 "value": "#p_postParam",
                                 "click": true
-                            }
-                        },
-                        {
-                            "controller": "locator",
-                            "params": {
-                                "value": "#output"
-                            }
+                            },
+                            "waitForElements": [
+                                "#output"
+                            ]
                         },
                         {
                             "test" : "testrestlib-POSTWithParamsClient.js"
@@ -541,13 +510,10 @@
                             "params": {
                                 "value": "#p_postParamNegative",
                                 "click": true
-                            }
-                        },
-                        {
-                            "controller": "locator",
-                            "params": {
-                                "value": "#output"
-                            }
+                            },
+                            "waitForElements": [
+                                "#output"
+                            ]
                         },
                         {
                             "test" : "testrestlib-POSTWithParamsNegativeClient.js"
@@ -567,13 +533,10 @@
                             "params": {
                                 "value": "#p_putParam",
                                 "click": true
-                            }
-                        },
-                        {
-                            "controller": "locator",
-                            "params": {
-                                "value": "#output"
-                            }
+                            },
+                            "waitForElements": [
+                                "#output"
+                            ]
                         },
                         {
                             "test" : "testrestlib-PUTWithParamsClient.js"
@@ -593,13 +556,10 @@
                             "params": {
                                 "value": "#p_deleteParam",
                                 "click": true
-                            }
-                        },
-                        {
-                            "controller": "locator",
-                            "params": {
-                                "value": "#output"
-                            }
+                            },
+                            "waitForElements": [
+                                "#my_header"
+                            ]
                         },
                         {
                             "test" : "testrestlib-DELETEWithParamsClient.js"
@@ -619,13 +579,11 @@
                             "params": {
                                 "value": "#p_headers",
                                 "click": true
-                            }
-                        },
-                        {
-                            "controller": "locator",
-                            "params": {
-                                "value": "#my_header"
-                            }
+                            },
+                            "waitForElements": [
+                                "#output"
+                            ]
+
                         },
                         {
                             "test" : "testrestlib-HeadersClient.js"
@@ -734,7 +692,7 @@
                     ]
                 }
             }
-        }     
+        }
     },
 
     {

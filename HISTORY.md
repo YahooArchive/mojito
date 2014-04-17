@@ -1,5 +1,14 @@
+version 0.9.3
+=============
+
+Notes
+-----
+
+* Various improvements to the Resource Store, which reduce start up time.
+* Yahoo Arrow dependency was upgraded to yahoo-arrow@0.5.x
+
 version 0.9.2
-=================
+=============
 
 Notes
 -----
@@ -14,7 +23,7 @@ Notes
 * Express devDependency was upgraded to express@3.5.x
 
 version 0.9.1
-=================
+=============
 
 Notes
 -----
@@ -29,10 +38,10 @@ Notes
 * Express devDependency was upgraded to express@3.5.x
 
 version 0.9.0
-=================
+=============
 
 Notes
-------------
+-----
 
 This release introduces a set of new APIs and concepts.
 
@@ -40,7 +49,7 @@ Please refer to some of the examples apps under the [`examples/`](https://github
 an overview of what has changed.
 
 Deprecations, Removals
-------------
+----------------------
 
 * Mojito no longer supports `index.js` and `server.js` to start up the server.
   Applications will instead instantiate Mojito as follows:
@@ -99,7 +108,7 @@ Deprecations, Removals
 
 
 Features
-------------
+--------
 
 * To register Mojito routes programmatically instead of using `routes.json`:
 
@@ -142,7 +151,7 @@ New Dependencies
   [`express-annotations`](https://github.com/yahoo/express-annotations#express-annotations)
 
 version 0.8.3
-=================
+=============
 
 Bug Fixes
 ---------
