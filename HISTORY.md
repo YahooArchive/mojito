@@ -4,8 +4,10 @@ version 0.9.3
 Notes
 -----
 
-* Various improvements to the Resource Store, which reduce start up time.
-* Yahoo Arrow dependency was upgraded to yahoo-arrow@0.5.x
+* Various improvements to the Resource Store, which reduce start up time by 30% to 50%.
+* YUI dependency was upgraded to yui@3.16.x
+* Request dependency was upgraded to request@2.34.x
+* Yahoo Arrow devDependency was upgraded to yahoo-arrow@0.5.x
 
 version 0.9.2
 =============
