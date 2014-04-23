@@ -20,7 +20,8 @@ YUI().use('mojito-intl-addon', 'test', 'datatype-date', function(Y) {
                     context: { lang: 'foo' },
                     instance: {
                         controller: 'controller-yui-module-name',
-                        langs: { foo: true }
+                        langs: { foo: true },
+                        closestLang: 'foo'
                     }
                 };
 
@@ -55,7 +56,8 @@ YUI().use('mojito-intl-addon', 'test', 'datatype-date', function(Y) {
                     context: { lang: 'foo' },
                     instance: {
                         controller: 'controller-yui-module-name',
-                        langs: { foo: true }
+                        langs: { foo: true },
+                        closestLang: 'foo'
                     }
                 };
 
@@ -93,7 +95,8 @@ YUI().use('mojito-intl-addon', 'test', 'datatype-date', function(Y) {
                 context: { lang: 'foo' },
                 instance: {
                     controller: 'controller-yui-module-name',
-                    langs: { foo: true }
+                    langs: { foo: true },
+                    closestLang: 'foo'
                 }
             };
 
