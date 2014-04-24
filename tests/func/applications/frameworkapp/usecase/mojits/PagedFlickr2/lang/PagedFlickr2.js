@@ -3,7 +3,7 @@ YUI.add("lang/PagedFlickr2", function(Y) {
     Y.Intl.add(
 
         "PagedFlickr2",  // associated module
-        "en",           // BCP 47 language tag
+        "",           // BCP 47 language tag
 
         // key-value pairs for this module and language
         {
