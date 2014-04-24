@@ -12,7 +12,7 @@ Visit http://developer.yahoo.com/cocktails/mojito/docs/code_exs/i18n_apps.html f
 YUI.add("lang/Read_en-US", function (Y, NAME) {
     'use strict';
     Y.Intl.add(
-        "read",  // associated mojit
+        "Read",  // associated mojit
         "en-US",    // BCP 47 language tag
         // key-value pairs for this module and language
         {

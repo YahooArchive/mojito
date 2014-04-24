@@ -7,8 +7,8 @@
 /**
 Controller for Mojio
 
-After an application has been configured to use a mojit, the mojit controller can either do all of the work or 
-delegate the work to models and/or views. In the typical case, the mojit controller requests the model to 
+After an application has been configured to use a mojit, the mojit controller can either do all of the work or
+delegate the work to models and/or views. In the typical case, the mojit controller requests the model to
 retrieve data and then the controller serves that data to the views.
 For more info, visit: http://developer.yahoo.com/cocktails/mojito/docs/intro/mojito_mvc.html#controllers
 **/
@@ -20,7 +20,7 @@ For more info, visit: http://developer.yahoo.com/cocktails/mojito/docs/intro/moj
 Displays guide content in a horizontally flickable scrollview.
 @class ReadController
 **/
-YUI.add('read', function(Y, NAME) {
+YUI.add('Read', function(Y, NAME) {
     'use strict';
     var LIB_MD;// Markdown library
 
