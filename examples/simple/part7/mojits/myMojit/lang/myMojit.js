@@ -10,7 +10,7 @@ YUI.add("lang/myMojit", function (Y) {
 	Y.Intl.add(
 
 		"myMojit",
-		"en",
+		"",
 
 		{
 			TITLE: "My Mojit"
