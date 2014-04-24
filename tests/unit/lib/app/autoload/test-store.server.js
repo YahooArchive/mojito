@@ -272,7 +272,7 @@ YUI().use(
                     mojitResources: Y.clone(store._mojitResources, true)
                 };
                 // clear yui rs _langLoaderCreated such that the loaders are created again.
-                store.yui._ langLoaderCreated = {};
+                store.yui._langLoaderCreated = {};
                 store.preload();
                 var post = {
                     appRVs: Y.clone(store._appRVs, true),
