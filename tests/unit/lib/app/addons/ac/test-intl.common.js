@@ -39,6 +39,9 @@ YUI().use('mojito-intl-addon', 'test', 'datatype-date', function(Y) {
 
             var yIntl = Y.Intl;
             Y.Intl = mockYIntl;
+            Y.Intl._mod = function () {
+                return {};
+            };
 
             var addon = new Y.mojito.addons.ac.intl(command, adapter, ac);
             var value = addon.lang('key');
@@ -76,6 +79,10 @@ YUI().use('mojito-intl-addon', 'test', 'datatype-date', function(Y) {
             var yIntl = Y.Intl;
             Y.Intl = mockYIntl;
 
+            Y.Intl._mod = function () {
+                return {};
+            };
+
             var addon = new Y.mojito.addons.ac.intl(command, adapter, ac);
             var value = addon.lang('key', ['param1', 'param2']);
 
@@ -108,6 +115,9 @@ YUI().use('mojito-intl-addon', 'test', 'datatype-date', function(Y) {
             });
             var yIntl = Y.Intl;
             Y.Intl = mockYIntl;
+            Y.Intl._mod = function () {
+                return {};
+            };
 
             var mockYDataTypeDate = Mock();
             Mock.expect(mockYDataTypeDate, {
