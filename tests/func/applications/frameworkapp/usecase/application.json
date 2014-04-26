@@ -2,7 +2,14 @@
     {
         "settings": [ "master" ],
         "resourceStore": {
-            "lazyResolve": true
+            "lazyResolve": true,
+            "lazyLangs": true,
+            "lazyMojits": true
+        },
+        "yui": {
+            "config": {
+                "filter": "raw"
+            }
         },
         "specs": {
             "hello-1": {
