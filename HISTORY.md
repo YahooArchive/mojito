@@ -8,7 +8,7 @@ Features
   By default these options are set to false, and can be set to true under the `resourceStore` option in application.json.
   `lazyLangs` only loads the lang files necessary for a given request's lang context;
   this substantially reduces start up time for application that have many lang files.
-  Note that `lazyLangs` requires lang files to follow proper naming conventions ({mojitName}_ {locale}.js or {mojitName}.js for default lang, e.g. Main_es-ES.js or Main.js);
+  Note that `lazyLangs` requires lang files to follow proper naming conventions ({mojitName}_{locale}.js or {mojitName}.js for default lang, e.g. Main_es-ES.js or Main.js);
   default langs are specified with the empty string within the lang file.
   `lazyMojits` only loads mojits as they appear during a request;
   this option is especially useful for applications with many mojits that don't appear often.
