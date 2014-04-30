@@ -19,7 +19,7 @@ Features
 Bug Fixes
 ---------
 
-* Fixed issue where mojito-static-handler was sometimes setting the header max-age value to NaN.
+* Fixed issue where the mojito-handler-static middleware was sometimes setting the header max-age value to NaN.
 
 version 0.9.3
 =============
