@@ -1,3 +1,26 @@
+version 0.9.4
+=============
+
+Features
+--------
+
+* Added `resourceStore` > `lazyLangs`/`lazyMojits` options, which significantly improve start up time.
+  By default these options are set to false, set them to true under the `resourceStore` option in application.json.
+  `lazyLangs` only loads the lang files necessary for a given request's lang context;
+  this substantially reduces start up time for application that have many lang files.
+  Note that `lazyLangs` requires lang files to follow proper naming conventions (<mojitName>\_<locale>.js> or <mojitName>.js for default lang, e.g. Main_es-ES.js or Main.js);
+  default langs are specified with the empty string within the lang file.
+  `lazyMojits` only loads mojits as they appear during a request;
+  this option is especially useful for applications with many mojits that don't appear often.
+  After a resource is lazy loaded, it does not need to be loaded again in subsequent requests.
+  `lazyLangs`/`lazyMojits` are ideal options for large applications during development
+  when developers often have to restart an application and don't necessarily use all mojits or languages.
+
+Bug Fixes
+---------
+
+* Fixed issue where mojito-static-handler was sometimes setting the header max-age value to NaN.
+
 version 0.9.3
 =============
 
