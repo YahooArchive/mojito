@@ -12,7 +12,7 @@
             }
         },
 
-        "dataprovider" : {    
+        "dataprovider" : {
             "yuimodule" : {
                  "group" : "developerguide,yui_module",
                  "params" : {
@@ -24,7 +24,10 @@
                             "controller": "locator",
                             "params": {
                                 "value": "#notes"
-                            }
+                            },
+                            "waitForElements": [
+                                "#notes"
+                            ]
                         },
                         {
                            "test" : "test_yuimodule.js"
@@ -32,7 +35,7 @@
                     ]
                 }
             }
-        }     
+        }
     },
 
     {
