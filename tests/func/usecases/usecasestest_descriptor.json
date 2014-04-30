@@ -12,7 +12,7 @@
             }
         },
 
-        "dataprovider" : {     
+        "dataprovider" : {
             "hello" : {
                 "group" : "smoke,usecases,hello",
                 "params" : {
@@ -156,7 +156,10 @@
                             "controller": "locator",
                             "params": {
                                 "value": "#child_status"
-                            }
+                            },
+                            "waitForElements": [
+                                "#child_status"
+                            ]
                         },
                         {
                             "test" : "testi18nclient.js",
@@ -176,7 +179,10 @@
                             "controller": "locator",
                             "params": {
                                 "value": "#child_status"
-                            }
+                            },
+                            "waitForElements": [
+                                "#child_status"
+                            ]
                         },
                         {
                             "test" : "testi18nclient.js",
@@ -317,7 +323,7 @@
                     ]
                 }
             }
-        }     
+        }
     },
 
     {

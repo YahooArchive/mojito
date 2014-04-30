@@ -69,6 +69,10 @@ YUI().use('addon-rs-url', 'base', 'oop', 'test', function(Y) {
             return out;
         },
 
+        getMojitResourceVersions: function (mojit) {
+            return this._mojitRVs[mojit] || [];
+        },
+
         resolveResourceVersions: function() {
             // no-op
         },

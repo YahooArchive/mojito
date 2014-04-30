@@ -2,8 +2,8 @@ YUI.add("lang/i18n_Mojit", function(Y) {
 
     Y.Intl.add(
 
-        "i18n_Mojit",   
-        "en",    
+        "i18n_Mojit",
+        "",
 
         {
             TITLE: "Enjoy your Flickr Images in en!",

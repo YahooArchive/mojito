@@ -93,6 +93,10 @@ YUI().use(
             return out;
         },
 
+        getMojitResourceVersions: function (mojit) {
+            return this._mojitRVs[mojit] || [];
+        },
+
         findResourceVersionByConvention: function(source, mojitType) {
             // no-op
         },
@@ -530,7 +534,8 @@ YUI().use(
                     A.isObject(config.groups.app.modules['lang/PagedFlickr_en-US']);
                     A.isArray(config.groups.app.modules['lang/PagedFlickr_en-US'].requires);
                     AA.itemsAreEqual(['en-US'], config.groups.app.modules['PagedFlickr'].lang);
-                    AA.itemsAreEqual(['intl'], config.groups.app.modules['lang/PagedFlickr_en-US'].requires);
+                    // No longer parsing lang files, so we cant read its yui meta
+                    //AA.itemsAreEqual(['intl'], config.groups.app.modules['lang/PagedFlickr_en-US'].requires);
                     AA.itemsAreEqual(['lang/PagedFlickr_en-US.js'], config.groups.app.modules['lang/PagedFlickr_en-US'].path);
                     A.isObject(config.groups.app.modules['mojito-client']);
                     A.isArray(config.groups.app.modules['mojito-client'].requires);
