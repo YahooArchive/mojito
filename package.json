@@ -13,7 +13,8 @@
         "Michael Ridgway <mridgway@yahoo-inc.com>",
         "Caridy Patino <caridy@yahoo-inc.com>",
         "Alberto Chan <albertoc@yahoo-inc.com>",
-        "Lichun Zhan <lzhan@yahoo-inc.com>"
+        "Lichun Zhan <lzhan@yahoo-inc.com>",
+        "Albert Jimenez <jimenez@yahoo-inc.com>"
     ],
     "dependencies": {
         "debug": "0.8.x",
