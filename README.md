@@ -1,11 +1,11 @@
 <img src="http://www.blackducksoftware.com/files/images/Rookie_2012-125.png" alt="Black Duck OS 2012 Rookie of the Year" align="right" vspace="-50" />
 
-# Yahoo! Mojito
+# Yahoo! Mojito [![Build Status](https://secure.travis-ci.org/yahoo/mojito.svg?branch=develop)](http://travis-ci.org/yahoo/mojito)
 
 Mojito is the JavaScript library implementing Cocktails, a JavaScript-based
 on-line/off-line, multi-device, hosted application platform.
 
-[![Build Status](https://secure.travis-ci.org/yahoo/mojito.png?branch=develop)](http://travis-ci.org/yahoo/mojito)
+
 
 
 ## Quick Start 
