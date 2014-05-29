@@ -1,3 +1,11 @@
+version 0.9.5
+=============
+
+Notes
+-----
+
+* Better handling of translations in the Intl addon, which finds the best available lang while avoiding potential interference from a previously set language.
+
 version 0.9.4
 =============
 
