@@ -36,6 +36,11 @@ YUI().use('mojito-intl-addon', 'test', 'datatype-date', function(Y) {
                 args: [ac.instance.controller, 'key'],
                 returns: 'translation'
             });
+            Mock.expect(mockYIntl, {
+                method: 'lookupBestLang',
+                args: [Y.Mock.Value.String, Y.Mock.Value.Object],
+                returns: 'foo'
+            });
 
             var yIntl = Y.Intl;
             Y.Intl = mockYIntl;
@@ -75,6 +80,11 @@ YUI().use('mojito-intl-addon', 'test', 'datatype-date', function(Y) {
                 args: [ac.instance.controller, 'key'],
                 returns: 'translation {0} {1}'
             });
+            Mock.expect(mockYIntl, {
+                method: 'lookupBestLang',
+                args: [Y.Mock.Value.String, Y.Mock.Value.Object],
+                returns: 'foo'
+            });
 
             var yIntl = Y.Intl;
             Y.Intl = mockYIntl;
@@ -113,6 +123,12 @@ YUI().use('mojito-intl-addon', 'test', 'datatype-date', function(Y) {
                 args: ['datatype-date-format', 'foo'],
                 returns: 'true'
             });
+            Mock.expect(mockYIntl, {
+                method: 'lookupBestLang',
+                args: [Y.Mock.Value.String, Y.Mock.Value.Object],
+                returns: 'foo'
+            });
+
             var yIntl = Y.Intl;
             Y.Intl = mockYIntl;
             Y.Intl._mod = function () {
