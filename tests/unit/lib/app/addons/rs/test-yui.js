@@ -53,6 +53,7 @@ YUI().use(
             this._mojits = {};
             this.publish('getMojitTypeDetails', {emitFacade: true, preventable: false});
             this._appConfig = { yui: {} };
+            this.YUI = { add: function () {}, Env: { mods: {} } };
         },
 
         listAllMojits: function() {
@@ -347,6 +348,7 @@ YUI().use(
             store._fwConfig = store.config.readConfigSimple(libpath.join(mojitoRoot, 'config.json'));
             store._appConfigStatic = store.getStaticAppConfig();
             store.plug(Y.mojito.addons.rs.yui, { appRoot: fixtures, mojitoRoot: mojitoRoot } );
+            store.YUI = { add: function () {}, Env: { mods: {} } };
 
             var pkg = { name: 'test', version: '6.6.6' };
             var mojitType = 'testing';
