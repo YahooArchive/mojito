@@ -4,7 +4,7 @@ version 0.9.5
 Notes
 -----
 
-* Reduced start up time by up to 20% by capturing YUI module details and executing them in one step instead of two.
+* Reduced start up time by up to 25% by capturing YUI module details and executing them in one step instead of two.
 * Now YUI modules are only executed once, with the real runtime YUI object scoped.
 * Syntax errors are now reported with line numbers after failing to compile YUI modules.
 * Better handling of translations in the Intl addon, which finds the best available lang while avoiding potential interference from a previously set language.
