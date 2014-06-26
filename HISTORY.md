@@ -1,4 +1,5 @@
 version 0.10.0
+==============
 
 Deprecations, Removals
 ----------------------
@@ -6,8 +7,8 @@ Deprecations, Removals
 * The mojito-parser-body middleware is no longer directly using express.bodyParser,
 since it still uses the old version of connect bodyParser, which includes the deprecated multipart parser
 (see [bodyParser](http://www.senchalabs.org/connect/bodyParser.html)). This means that the mojito-parser-body
-no longer handles multipart requests such as file uploads. Application that must handle such request should use
-another parser (see the [explanation](https://github.com/senchalabs/connect/wiki/Connect-3.0#backwards-compatibility-changes) by Connect)
+no longer handles multipart requests such as file uploads. Applications that must handle such requests should use
+a separate multipart parser (see the [explanation](https://github.com/senchalabs/connect/wiki/Connect-3.0#backwards-compatibility-changes) by Connect)
 
 Features
 --------
