@@ -1,3 +1,24 @@
+version 0.10.0
+
+Deprecations, Removals
+----------------------
+
+* The mojito-parser-body middleware is no longer directly using express.bodyParser,
+since it still uses the old version of connect bodyParser, which includes the deprecated multipart parser
+(see [bodyParser](http://www.senchalabs.org/connect/bodyParser.html)). This means that the mojito-parser-body
+no longer handles multipart requests such as file uploads. Application that must handle such request should use
+another parser (see the [explanation](https://github.com/senchalabs/connect/wiki/Connect-3.0#backwards-compatibility-changes) by Connect)
+
+Features
+--------
+
+* Clearer and more specific error messages regarding invalid mojits and exceptions.
+
+Bug Fixes
+---------
+
+* Catching any uncaught exceptions during binder execution. This prevents binders error from interfering with each other and the mojito client.
+
 version 0.9.5
 =============
 
