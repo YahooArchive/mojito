@@ -403,13 +403,6 @@ YUI().use(
                 store.expandInstance(spec, ctx, function(err, instance) {
                     A.areSame(libpath.join(fixtures, 'mojits/PagedFlickr/views/index.iphone.hb.html'), instance.views.index['content-path']);
                 });
-            },
-
-            'augment getMojitTypeDetails with AC addons': function() {
-                var details = store.getMojitTypeDetails('server', {}, 'PagedFlickr');
-                // order matters
-                A.areSame(4, details.acAddons.length, 'number of AC addons');
-                A.areSame(JSON.stringify(['config','intl','params','url']), JSON.stringify(details.acAddons), 'correct order');
             }
 
         }));
