@@ -6,7 +6,7 @@ YUI({
     useBrowserConsole: true,
     logInclude: { TestRunner: true }
 }).use('node', 'node-event-simulate', 'test', 'console', function (Y) {
-   
+
     var suite = new Y.Test.Suite("Common: broadcaststaticlisten");
 
     suite.add(new Y.Test.Case({
@@ -20,6 +20,7 @@ YUI({
                 Y.Assert.areEqual('I\'m a blue child.', Y.all('#childblue').item(1).get('innerHTML').match(/I\'m a blue child./gi));
                 Y.Assert.areEqual('I\'m a green child.', Y.all('#childgreen').item(0).get('innerHTML').match(/I\'m a green child./gi));
                 Y.Assert.areEqual('I\'m a green child.', Y.all('#childgreen').item(1).get('innerHTML').match(/I\'m a green child./gi));
+                Y.Assert.areEqual('I\'m a purple child.', Y.all('#childpurple').item(0).get('innerHTML').match(/I\'m a purple child./gi));
                 Y.one('#message').set('value', "helloone");
                 Y.one('#child').set('value', "jeans");
             } else {
@@ -30,6 +31,7 @@ YUI({
                 Y.Assert.areEqual('I\'m a blue child.', Y.all('#childblue').item(1).get('innerHTML').match(/I\'m a blue child./gi));
                 Y.Assert.areEqual('I\'m a green child.', Y.all('#childgreen').item(0).get('innerHTML').match(/I\'m a green child./gi));
                 Y.Assert.areEqual('I\'m a green child.', Y.all('#childgreen').item(1).get('innerHTML').match(/I\'m a green child./gi));
+
             };
         }
 
