@@ -1,7 +1,7 @@
 /*
- * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
+ * Copyright (c) 2011-2014 Yahoo! Inc. All rights reserved.
  */
-YUI.add('RedChildModel', function(Y) {
+YUI.add('RedChildModel', function(Y, NAME) {
 
 /**
  * The RedChildModel module.
@@ -15,22 +15,10 @@ YUI.add('RedChildModel', function(Y) {
      * @class Model
      * @constructor
      */
-    Y.mojito.models.RedChild = {
+    function RedModel() {
+        this.color = 'red';
+    }
+    Y.mojito.models[NAME] = Y.mojito.util.extend(RedModel, Y.mojito.models.ColorChildModel);
 
-        init: function(config) {
-            this.config = config;
-        },
 
-        /**
-         * Method that will be invoked by the mojit controller to obtain data.
-         *
-         * @param callback {Function} The callback function to call when the
-         *        data has been retrieved.
-         */
-        getData: function(callback) {
-            callback({some:'data'});
-        }
-
-    };
-
-}, '0.0.1', {requires: []});
+}, '0.0.1', {requires: ['mojito-util', 'ColorChildModel']});
