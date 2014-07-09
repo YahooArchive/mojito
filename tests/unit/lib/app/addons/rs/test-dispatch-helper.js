@@ -30,9 +30,10 @@ YUI().use(
             store.preload();
 
             var details = store.getMojitTypeDetails('server', {}, 'PagedFlickr');
+
             // order matters
-            A.areSame(4, details.acAddons.length, 'number of AC addons');
-            A.areSame(JSON.stringify(['config','intl','params','url']), JSON.stringify(details.acAddons), 'correct order');
+            A.areSame(5, details.acAddons.length, 'number of AC addons');
+            A.areSame(JSON.stringify(['config','intl','params','url','models']), JSON.stringify(details.acAddons), 'correct order');
         }
 
 
