@@ -5,8 +5,9 @@ Features
 --------
 
 * Clearer and more specific error messages regarding invalid mojits and exceptions.
-* Routes.json now accepts an annotations object (See [express annotations](https://github.com/yahoo/express-annotations#express-annotations)). Also the 'client' annotation can be used to specify whether to expose the route to the client side; by default, routes are exposed to the client.
-    Ex: routes.json
+* Routes.json now accepts an annotations object (See [express annotations](https://github.com/yahoo/express-annotations#express-annotations)). Also the "client" annotation can be used to specify whether to expose the route to the client; by default, routes are exposed to the client.
+
+Ex routes.json:
 
     ```js
     ...
@@ -18,6 +19,7 @@ Features
             "client": false
          }
     }
+    ...
     ```
 
 Bug Fixes
