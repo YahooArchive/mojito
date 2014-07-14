@@ -9,18 +9,18 @@ Features
 
 Ex routes.json:
 
-    ```js
-    ...
-    "route": {
-         "verbs": ["get"],
-         "path": "/path",
-         "call": "spec.action",
-         "annotations": {
-            "client": false
-         }
-    }
-    ...
-    ```
+```js
+...
+"route": {
+     "verbs": ["get"],
+     "path": "/path",
+     "call": "spec.action",
+     "annotations": {
+        "client": false
+     }
+}
+...
+```
 
 Bug Fixes
 ---------
