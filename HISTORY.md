@@ -1,19 +1,24 @@
-version 0.10.0
+version 0.9.6
 ==============
-
-Deprecations, Removals
-----------------------
-
-* The [mojito-parser-body](https://github.com/yahoo/mojito/blob/develop/lib/app/middleware/mojito-parser-body.js) middleware no longer uses express.bodyParser,
-since express.bodyParser still uses the old version of connect bodyParser, which includes the deprecated multipart parser
-(see [bodyParser](http://www.senchalabs.org/connect/bodyParser.html)). This means that the mojito-parser-body
-no longer handles multipart requests such as file uploads. Applications that must handle such requests should use
-a separate multipart parser (see the [explanation](https://github.com/senchalabs/connect/wiki/Connect-3.0#backwards-compatibility-changes) by Connect)
 
 Features
 --------
 
 * Clearer and more specific error messages regarding invalid mojits and exceptions.
+* Routes.json now accepts an annotations object (See [express annotations](https://github.com/yahoo/express-annotations#express-annotations)). Also the 'client' annotation can be used to specify whether to expose the route to the client side; by default, routes are exposed to the client.
+    Ex: routes.json
+
+    ```js
+    ...
+    "route": {
+         "verbs": ["get"],
+         "path": "/path",
+         "call": "spec.action",
+         "annotations": {
+            "client": false
+         }
+    }
+    ```
 
 Bug Fixes
 ---------
