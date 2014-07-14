@@ -69,7 +69,8 @@ YUI().use('test', function (Y) {
                         // mock expect 'routes01.json'
                         root: ''
                     }
-                }
+                },
+                annotate: function () {}
             };
             router._app = app;
         },
