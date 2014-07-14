@@ -20,7 +20,7 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
         setUp: function() {
             addon = new Y.mojito.addons.ac.deploy(
                 {instance: {}}, // command
-                {page: { routes: { 'get': { } } } } // adapter
+                {page: { clientRoutes: { 'get': { } } } } // adapter
             );
             addon.ac = {
                 http: {
