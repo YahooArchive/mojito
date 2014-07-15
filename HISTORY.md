@@ -1,3 +1,32 @@
+version 0.9.6
+=============
+
+Features
+--------
+
+* Clearer and more specific error messages regarding invalid mojits and exceptions.
+* Routes.json now accepts an annotations object (see [express annotations](https://github.com/yahoo/express-annotations#express-annotations)). Also the "client" annotation can be used to specify whether to expose the route to the client; by default, routes are exposed to the client.
+
+Ex. routes.json:
+
+```js
+...
+"route": {
+     "verbs": ["get"],
+     "path": "/path",
+     "call": "spec.action",
+     "annotations": {
+        "client": false
+     }
+}
+...
+```
+
+Bug Fixes
+---------
+
+* Catching any uncaught exception during binder execution. This prevents binder errors from interfering with other binders and the mojito client.
+
 version 0.9.5
 =============
 

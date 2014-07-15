@@ -745,6 +745,7 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                     instance: {
                         id: 'id',
                         type: 'TypeGeneral',
+                        controller: 'GeneralController',
                         acAddons: [],
                         views: {}
                     }
@@ -764,7 +765,7 @@ YUI().use('mojito-action-context', 'test', function (Y) {
                 error = err;
             }
             A.isNotUndefined(error);
-            A.areSame("No method 'index' on controller type 'TypeGeneral'", error.message.toString());
+            A.areSame('Action "index" not defined by the controller named "GeneralController" of the "TypeGeneral" mojit.', error.message.toString());
         },
 
         'test controller __call': function() {
