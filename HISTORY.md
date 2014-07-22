@@ -10,7 +10,7 @@ Features
 object literals in addition to functions.
 * Controllers inherit the addons of any controllers that is listed in its requires array.
 
-Below is an example where the `ImageResult` controller extends the `Result` controller.
+Below is an example where the `ImageResult` controller extends the `Result` controller:
 
 mojits/Result/controller.server.js
 ```js
