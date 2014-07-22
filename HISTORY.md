@@ -6,11 +6,11 @@ Features
 
 * Controllers, models, and binders can be defined as a function with a prototype.
 * Support for easily extending YUI modules, including modules in a different mojit, by using `Y.mojito.Util.extend`.
-`Y.mojito.Util.extend`, defined in 'mojito-util' is the equivalent of [Y.extend](http://yuilibrary.com/yui/docs/api/classes/YUI.html#method_extend), and can accept
+`Y.mojito.Util.extend`, defined in 'mojito-util', is the equivalent of [Y.extend](http://yuilibrary.com/yui/docs/api/classes/YUI.html#method_extend), and can accept
 object literals in addition to functions.
-* Controllers inherit the addons of any controllers that it lists in its requires array.
+* Controllers inherit the addons of any controllers that is listed in its requires array.
 
-Below is an example where the ImageResult controller extends the Result controller.
+Below is an example where the `ImageResult` controller extends the `Result` controller.
 
 mojits/Result/controller.server.js
 ```js
@@ -25,7 +25,7 @@ YUI.add('ResultController', function (Y, NAME) {
         createResultObject: function (ac) {
             return {
                 title: ac.config.get('title'),
-                text: ac.config.get('text)
+                text: ac.config.get('text')
             };
         }
     };
@@ -46,7 +46,8 @@ YUI.add('ImageResultController', function (Y, NAME) {
             // Hook into the original createResultObject method, in order
             // to call this controllers' augmentResult method.
             Y.Do.after(this.augmentResult, this, 'createResultObject')
-        }
+        };
+        
     Y.namespace('mojito.controllers')[NAME] = ImageResultController;
 
     // Extend the ResultController, adding the augmentResult custom method.
@@ -65,11 +66,11 @@ YUI.add('ImageResultController', function (Y, NAME) {
 });
 ```
 
-The ImageResult controller uses `Y.mojito.Util.extend` in order to extend the Result controller and add
+The `ImageResult` controller uses `Y.mojito.Util.extend` in order to extend the `Result` controller and add
 custom methods. The controller is defined as a function that serves as a constructor.
-In this function, the controller hooks into createResultObject in order to call augmentResult after.
-Notice that the ImageResult controller does not have to re-specify the config addon in its requires array since
-this addon is inferred from the required ResultController.
+In this function, the controller hooks into `createResultObject` in order to call `augmentResult` after.
+Notice that the `ImageResult` controller does not have to re-specify the config addon in its requires array since
+this addon is inferred from the required `ResultController`.
 
 
 
