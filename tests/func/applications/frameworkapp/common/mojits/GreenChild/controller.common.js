@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2011 Yahoo! Inc. All rights reserved.
+ * Copyright (c) 2011-2014 Yahoo! Inc. All rights reserved.
  */
 YUI.add('GreenChild', function(Y, NAME) {
 
@@ -15,18 +15,6 @@ YUI.add('GreenChild', function(Y, NAME) {
      * @class Controller
      * @constructor
      */
-    Y.namespace('mojito.controllers')[NAME] = {
+    Y.namespace('mojito.controllers')[NAME] = Y.mojito.util.extend({}, Y.mojito.controllers.ColorChild);
 
-        /**
-         * Method corresponding to the 'index' action.
-         *
-         * @param ac {Object} The action context that provides access
-         *        to the Mojito API.
-         */
-        index: function(ac) {
-            ac.done({id: ac.config.get('id')});
-        }
-
-    };
-
-}, '0.0.1', {requires: ['mojito', 'mojito-config-addon']});
+}, '0.0.1', {requires: ['mojito-util', 'ColorChild', 'GreenChildModel']});

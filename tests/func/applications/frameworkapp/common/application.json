@@ -4,6 +4,10 @@
     "staticHandling": {
       "forceUpdate": true
     },
+    "resourceStore": {
+        "lazyMojits": true,
+        "lazyLangs": true
+    },
     "config": {
       "myconfig0": "This is myconfig0 from top application.json",
       "myconfig1": "This is myconfig1 from top application.json",
@@ -154,6 +158,9 @@
                           },
                           "sad": {
                             "type": "GreenChild"
+                          },
+                          "grape": {
+                            "type": "PurpleChild"
                           }
                         }
                       }
@@ -235,7 +242,7 @@
                 "bottom": {
                   "js": [
                     "/static/TestsLayout/assets/main.js"
-                    ] 
+                    ]
                 }
               }
             }

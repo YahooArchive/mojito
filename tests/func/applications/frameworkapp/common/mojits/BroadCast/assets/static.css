@@ -7,6 +7,9 @@
 .green {
     background-color: #00FF00;
 }
+.purple {
+    background-color: #DBA4DB;
+}
 .child {
     border:  solid 1px red;
 }

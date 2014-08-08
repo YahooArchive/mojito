@@ -1,7 +1,6 @@
 [
     {
         "settings": [ "master" ],
-        "config": {
-        }
+        "dependencies": [ "ColorChild" ]
     }
 ]

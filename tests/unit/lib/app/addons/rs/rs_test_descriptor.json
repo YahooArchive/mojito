@@ -16,6 +16,14 @@
                 },
                 "group": "fw,server"
             },
+            "dispatch-helper.server": {
+                "params": {
+                    "lib": "$$config.lib$$/app/addons/rs/dispatch-helper.js,$$config.lib$$/app/addons/rs/config.js,$$config.lib$$/app/addons/rs/selector.js,$$config.lib$$/app/addons/rs/yui.js,$$config.lib$$/app/autoload/store.server.js,$$config.lib$$/app/addons/rs/url.js",
+                    "test": "./test-dispatch-helper.js",
+                    "driver": "nodejs"
+                },
+                "group": "fw,server"
+            },
             "mime.server": {
                 "params": {
                     "lib": "$$config.lib$$/app/addons/rs/mime.js",

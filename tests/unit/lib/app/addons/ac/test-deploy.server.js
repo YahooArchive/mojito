@@ -61,6 +61,9 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
                 getAppConfig: function() {
                     return {};
                 },
+                _updateLoader: function () {
+                    return true;
+                },
                 yui: {
                     getYUIConfig: function() {
                         return {
@@ -117,6 +120,9 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
                 getRoutes: function() {
                     return ['routes'];
                 },
+                _updateLoader: function () {
+                    return true;
+                },
                 yui: {
                     getYUIConfig: function() {
                         return {
@@ -168,6 +174,9 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
                 },
                 getRoutes: function() {
                     return ['routes'];
+                },
+                _updateLoader: function () {
+                    return true;
                 },
                 yui: {
                     getYUIConfig: function() {
@@ -223,6 +232,9 @@ YUI().use('mojito-deploy-addon', 'test', 'json-parse', function(Y) {
                 },
                 getRoutes: function() {
                     return ['routes'];
+                },
+                _updateLoader: function () {
+                    return true;
                 },
                 yui: {
                     getYUIConfig: function() {

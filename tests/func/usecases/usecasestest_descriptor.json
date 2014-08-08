@@ -225,7 +225,7 @@
                            }
                         },
                         {
-                           "test" : "testpagedflickr.js?device=iphone"
+                           "test" : "testpagedflickr.js"
                         }
                     ]
                 }
