@@ -72,8 +72,6 @@ In this function, the controller hooks into `createResultObject` in order to cal
 Notice that the `ImageResult` controller does not have to re-specify the config addon in its requires array since
 this addon is inferred from the required `ResultController`.
 
-
-
 version 0.9.6
 =============
 
