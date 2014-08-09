@@ -5,7 +5,7 @@ Features
 --------
 
 * Controllers, models, and binders can be defined as a function with a prototype.
-* Support for easily extending YUI modules, including modules in a different mojit, by using `Y.mojito.Util.extend`.
+* Support for easily extending YUI modules in a different mojit, by using `Y.mojito.Util.extend`.
 `Y.mojito.Util.extend`, defined in 'mojito-util', is the equivalent of [Y.extend](http://yuilibrary.com/yui/docs/api/classes/YUI.html#method_extend), and can accept
 object literals in addition to functions.
 * Controllers inherit the addons of any controller that is listed in its requires array.
