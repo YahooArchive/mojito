@@ -8,7 +8,8 @@ Features
 * Support for easily extending YUI modules, including modules in a different mojit, by using `Y.mojito.Util.extend`.
 `Y.mojito.Util.extend`, defined in 'mojito-util', is the equivalent of [Y.extend](http://yuilibrary.com/yui/docs/api/classes/YUI.html#method_extend), and can accept
 object literals in addition to functions.
-* Controllers inherit the addons of any controllers that is listed in its requires array.
+* Controllers inherit the addons of any controller that is listed in its requires array.
+* Mojit dependencies can be specified in defaults.json, which ensures that required dependencies are loaded when `resourceStore.lazyMojits` is set to true.
 
 Below is an example where the `ImageResult` controller extends the `Result` controller:
 
@@ -44,7 +45,7 @@ YUI.add('ImageResultController', function (Y, NAME) {
         // Constructor for this controller.
         ImageResultController = function () {
             // Hook into the original createResultObject method, in order
-            // to call this controllers' augmentResult method.
+            // to call this controller's augmentResult method.
             Y.Do.after(this.augmentResult, this, 'createResultObject')
         };
         
@@ -66,11 +67,18 @@ YUI.add('ImageResultController', function (Y, NAME) {
 });
 ```
 
-The `ImageResult` controller uses `Y.mojito.Util.extend` in order to extend the `Result` controller and add
-custom methods. The controller is defined as a function that serves as a constructor.
-In this function, the controller hooks into `createResultObject` in order to call `augmentResult` after.
-Notice that the `ImageResult` controller does not have to re-specify the config addon in its requires array since
-this addon is inferred from the required `ResultController`.
+The `ImageResult` controller uses `Y.mojito.Util.extend` in order to extend the `Result` controller and add custom methods. The controller is defined as a function that serves as a constructor. In this function, the controller hooks into `createResultObject` in order to call `augmentResult` after. Notice that the `ImageResult` controller does not have to re-specify the config addon in its requires array since this addon is inferred from the required `ResultController`.
+
+**Note**:
+If `resourceStore.lazyMojits` is set to true, then mojits that depend on the resources of other mojits must let Mojito know of the dependencies. This ensures that once a mojit is lazy loaded, its dependency mojits are also loaded. Dependencies can be specified in the mojit's defaults.json. Below is how ImageResult's defaults.json would specify that it depends on resources in the Result mojit:
+
+ImageResult/defaults.json
+```js
+[{
+    "settings": ["master"],
+    "dependencies": ["Result"]
+}]
+```
 
 version 0.9.6
 =============
