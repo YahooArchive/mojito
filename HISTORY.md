@@ -4,7 +4,7 @@ version 0.9.8
 Features
 --------
 
-* Updated to the latest version of YUI (3.18.x)
+* Updated to the latest version of YUI (3.18.x).
 
 Bug Fixes
 ---------
