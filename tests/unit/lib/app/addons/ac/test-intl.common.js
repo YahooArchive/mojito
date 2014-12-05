@@ -19,7 +19,7 @@ YUI().use('mojito-intl-addon', 'test', 'datatype-date', function(Y) {
                 ac = {
                     context: { lang: 'foo' },
                     instance: {
-                        type: 'mojit-type',
+                        controller: 'controller-yui-module-name',
                         langs: { foo: true },
                         closestLang: 'foo'
                     }
@@ -63,7 +63,7 @@ YUI().use('mojito-intl-addon', 'test', 'datatype-date', function(Y) {
                 ac = {
                     context: { lang: 'foo' },
                     instance: {
-                        type: 'mojit-type',
+                        controller: 'controller-yui-module-name',
                         langs: { foo: true },
                         closestLang: 'foo'
                     }
