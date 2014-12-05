@@ -28,12 +28,12 @@ YUI().use('mojito-intl-addon', 'test', 'datatype-date', function(Y) {
             var mockYIntl = Mock();
             Mock.expect(mockYIntl, {
                 method: 'setLang',
-                args: [ac.instance.type, 'foo'],
+                args: [ac.instance.controller, 'foo'],
                 returns: 'true'
             });
             Mock.expect(mockYIntl, {
                 method: 'get',
-                args: [ac.instance.type, 'key'],
+                args: [ac.instance.controller, 'key'],
                 returns: 'translation'
             });
             Mock.expect(mockYIntl, {
@@ -72,12 +72,12 @@ YUI().use('mojito-intl-addon', 'test', 'datatype-date', function(Y) {
             var mockYIntl = Mock();
             Mock.expect(mockYIntl, {
                 method: 'setLang',
-                args: [ac.instance.type, 'foo'],
+                args: [ac.instance.controller, 'foo'],
                 returns: 'true'
             });
             Mock.expect(mockYIntl, {
                 method: 'get',
-                args: [ac.instance.type, 'key'],
+                args: [ac.instance.controller, 'key'],
                 returns: 'translation {0} {1}'
             });
             Mock.expect(mockYIntl, {
