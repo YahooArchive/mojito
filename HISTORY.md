@@ -1,3 +1,16 @@
+version 0.9.8
+=============
+
+Features
+--------
+
+* Updated to the latest version of YUI (3.18.x).
+
+Bug Fixes
+---------
+
+* Action context now inherits the addons required by any yui module required by a controller.
+
 version 0.9.7
 =============
 
@@ -48,7 +61,7 @@ YUI.add('ImageResultController', function (Y, NAME) {
             // to call this controller's augmentResult method.
             Y.Do.after(this.augmentResult, this, 'createResultObject')
         };
-        
+
     Y.namespace('mojito.controllers')[NAME] = ImageResultController;
 
     // Extend the ResultController, adding the augmentResult custom method.
