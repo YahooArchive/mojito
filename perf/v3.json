@@ -1,0 +1,14 @@
+{
+    "url": "http://freesia.corp.yahoo.com:8666/@HelloMojit/index",
+    "target": {
+        "versions": {
+            "node": "0.6.20",
+            "mojito": "0.3.30"
+        }
+    },
+    "harness": {
+        "warmupRequests": 1000,
+        "concurrency": 5,
+        "requests": 1000
+    }
+}
