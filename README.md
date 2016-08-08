@@ -51,6 +51,25 @@ Mojito contributors, however, should clone and make pull requests to the `develo
 start contributing, please read [Contributing Code to Mojito](https://github.com/yahoo/mojito/wiki/Contributing-Code-to-Mojito).
 
 
+Add a route to map "/" to your HelloMojit.index action.  Edit your routes.json so that it looks like:
+
+```
+[{
+    "settings": ["master"],
+    "hello index": {
+        "verbs": ["get"],
+        "path": "/",
+        "call": "hello.index"
+    }
+}]
+```
+
+The "hello" in "hello.index" maps to the application.json "hello" specs property.
+
+Go to URL:
+
+    http://localhost:8666/
+
 ## Documentation
 
 ### General
