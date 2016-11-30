@@ -1,6 +1,10 @@
 #!/bin/sh -ex
 # -e exits on any error; exit code is preserved
 
+../node_modules/.bin/selenium -p 4444 > /dev/null &
+# give selenium some time to start
+sleep 6
+
 ARGS="--browser phantomjs"
 #ARGS="$ARGS --reuseSession"
 #ARGS="$ARGS --baseUrl http://localhost:8666"
@@ -21,7 +25,7 @@ cd $(dirname $0)
 test=$1
 echo "running test: $test"
 
-if [ "$test" = "unit" ] 
+if [ "$test" = "unit" ]
 then
 
     # lint
