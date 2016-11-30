@@ -16,6 +16,14 @@ Bug Fixes
 Acknowledgements
 ----------------
 
+version 0.8.4
+=================
+
+Features
+--------
+
+* Updated `err.errno` to `err.code` to support more versions of node.js
+
 version 0.8.3
 =================
 
@@ -58,26 +66,26 @@ version 0.8.0
 Notes
 -----
 
-* **!IMPORTANT!** This release contains a notable backward-incompatible change. 
+* **!IMPORTANT!** This release contains a notable backward-incompatible change.
   See "Deprecations, Removals" below.
 
 Deprecations, Removals
 ----------------------
 
-* **!Backwards-Incompatible Change!** Getting model instance by passing model 
+* **!Backwards-Incompatible Change!** Getting model instance by passing model
   YUI module name to `ac.models.get` has been removed.
-* Cleanup: The `archetypes` directory containing boilerplate template code has been 
-  removed from the `mojito` package because the template code is located 
+* Cleanup: The `archetypes` directory containing boilerplate template code has been
+  removed from the `mojito` package because the template code is located
   in [mojito-cli-create](https://github.com/yahoo/mojito-cli-create).
 
 Features
 --------
 
 * Contextualized model support is added:
-  ac.models.get(modelName) will take the model's logical name (filename minus 
-  the affinity and context parts) and return contextualized model instance. 
+  ac.models.get(modelName) will take the model's logical name (filename minus
+  the affinity and context parts) and return contextualized model instance.
 
-  For example: 
+  For example:
   Different model files can be provided for different context settings under models directory:
   .../models/
              mymodel.common.iphone.js
@@ -90,7 +98,7 @@ Bug Fixes
 
 * Issue #1251: easy way to get contextualized models
 * PR #1264: better output handler response header check
-* PR #1270: removed `archetypes` directory and boilerplate template code for apps/mojits. 
+* PR #1270: removed `archetypes` directory and boilerplate template code for apps/mojits.
 * PR #1278: added middleware and updated app configs so that apps can use mocked models.
 
 Acknowledgements
@@ -105,7 +113,7 @@ version 0.7.5
 Bug Fixes
 ---------
 
-* Issue #1215: [regression] lang collection in metas is missing for controller 
+* Issue #1215: [regression] lang collection in metas is missing for controller
 * Issue #1238 Lower Resource Store log messages for duplicate resources from
   "info" to "debug"
 
