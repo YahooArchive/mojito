@@ -32,6 +32,14 @@
                 },
                 "group": "fw,server"
             },
+            "hotswap-yui.server": {
+                "params": {
+                    "lib": "$$config.lib$$/app/addons/rs/hotswap-yui.js,$$config.lib$$/app/addons/rs/config.js,$$config.lib$$/app/addons/rs/yui.js",
+                    "test": "./test-hotswap-yui.js",
+                    "driver": "nodejs"
+                },
+                "group": "fw,server"
+            },
             "selector.server": {
                 "params": {
                     "lib": "$$config.lib$$/app/addons/rs/selector.js,$$config.lib$$/app/addons/rs/config.js",
