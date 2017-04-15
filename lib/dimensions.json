@@ -10,6 +10,20 @@
                 }
             },
             {
+                "environment": {
+                    "development": {
+                        "dev": null,
+                        "test": null
+                    },
+                    "testing": null,
+                    "preproduction": null,
+                    "production": {
+                        "stage": null,
+                        "prod": null
+                    }
+                }
+            },
+            {
                 "device": {
                     "android": null,
                     "blackberry": null,
@@ -19,18 +33,6 @@
                     "kindle": null,
                     "opera-mini": null,
                     "palm": null
-                }
-            },
-            {
-                "environment": {
-                    "development": {
-                        "dev": null,
-                        "test": null
-                    },
-                    "production": {
-                        "stage": null,
-                        "prod": null
-                    }
                 }
             },
             {
