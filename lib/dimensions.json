@@ -2,6 +2,20 @@
     {
         "dimensions": [
             {
+                "environment": {
+                    "development": {
+                        "dev": null,
+                        "test": null
+                    },
+                    "testing": null,
+                    "preproduction": null, 
+                    "production": {
+                        "stage": null,
+                        "prod": null
+                    }
+                }
+            },
+            {
                 "runtime": {
                     "common": {
                         "client": null,
@@ -19,18 +33,6 @@
                     "kindle": null,
                     "opera-mini": null,
                     "palm": null
-                }
-            },
-            {
-                "environment": {
-                    "development": {
-                        "dev": null,
-                        "test": null
-                    },
-                    "production": {
-                        "stage": null,
-                        "prod": null
-                    }
                 }
             },
             {
