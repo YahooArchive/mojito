@@ -1,0 +1,84 @@
+{
+    "type": "array",
+    "id": "mojit default spec",
+    "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+            "settings": {
+                "type": "array",
+                "id": "context",
+                "required": true,
+                "items": {
+                    "type": "string"
+                }
+            },
+            "type": {
+                "type": "string"
+            },
+            "base": {
+                "type": "string"
+            },
+            "action": {
+                "type": "string"
+            },
+            "defer": {
+                "type": "boolean"
+            },
+            "propagateFailure": {
+                "type": "boolean"
+            },
+            "proxy": {
+                "type": "object",
+                "id": "spec",
+                "additionalProperties": false,
+                "properties": {
+                    "type": {
+                        "type": "string"
+                    },
+                    "base": {
+                        "type": "string"
+                    },
+                    "action": {
+                        "type": "string"
+                    },
+                    "defer": {
+                        "type": "boolean"
+                    },
+                    "propagateFailure": {
+                        "type": "boolean"
+                    },
+                    "proxy": {
+                        "$ref": "spec"
+                    },
+                    "config": {
+                        "type": "object",
+                        "id": "config",
+                        "properties": {
+                            "child": {
+                                "$ref": "spec"
+                            },
+                            "children": {
+                                "type": "object",
+                                "patternProperties": {
+                                    "^.*$": {
+                                        "$ref": "spec"
+                                    }
+                                }
+                            },
+                            "deploy": {
+                                "type": "boolean"
+                            },
+                            "title": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            },
+            "config": {
+                "$ref": "config"
+            }
+        }
+    }
+}

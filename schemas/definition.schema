@@ -1,0 +1,21 @@
+{
+    "type": "array",
+    "id": "definition configuration",
+    "items": {
+        "type": "object",
+        "id": "definition",
+        "additionalProperties": true,
+        "properties": {
+            "settings": {
+                "type": "array",
+                "id": "context",
+                "items": {
+                    "type": "string"
+                }
+            },
+            "appLevel": {
+                "type": "boolean"
+            }
+        }
+    }
+}

@@ -1,0 +1,66 @@
+{
+    "type": "array",
+    "id": "mojit default configuration",
+    "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+            "settings": {
+                "type": "array",
+                "id": "context",
+                "required": true,
+                "items": {
+                    "type": "string"
+                }
+            },
+            "config": {
+                "type": "object",
+                "id": "config",
+                "properties": {
+                    "child": {
+                        "type": "object",
+                        "id": "spec",
+                        "additionalProperties": false,
+                        "properties": {
+                            "type": {
+                                "type": "string"
+                            },
+                            "base": {
+                                "type": "string"
+                            },
+                            "action": {
+                                "type": "string"
+                            },
+                            "defer": {
+                                "type": "boolean"
+                            },
+                            "propagateFailure": {
+                                "type": "boolean"
+                            },
+                            "proxy": {
+                                "$ref": "spec"
+                            },
+                            "config": {
+                                "$ref": "config"
+                            }
+                        }
+                    },
+                    "children": {
+                        "type": "object",
+                        "patternProperties": {
+                            "^.*$": {
+                                "$ref": "spec"
+                            }
+                        }
+                    },
+                    "deploy": {
+                        "type": "boolean"
+                    },
+                    "title": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}

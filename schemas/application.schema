@@ -1,0 +1,256 @@
+{
+    "type": "array",
+    "id": "application configuration",
+    "items": {
+        "type": "object",
+        "id": "application",
+        "additionalProperties": true,
+        "properties": {
+            "settings": {
+                "type": "array",
+                "id": "context",
+                "required": true,
+                "items": {
+                    "type": "string"
+                }
+            },
+            "selector": {
+                "type": "string"
+            },
+            "appPort": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 65535
+            },
+            "actionTimeout": {
+                "type": "number",
+                "minimum": 0
+            },
+            "middleware": {
+                "type": "array",
+                "items": {
+                    "type": "string"
+                }
+            },
+            "mojitDirs": {
+                "type": "array",
+                "items": {
+                    "type": "string"
+                }
+            },
+            "mojitsDirs": {
+                "type": "array",
+                "items": {
+                    "type": "string"
+                }
+            },
+            "routesFiles": {
+                "type": "array",
+                "items": {
+                    "type": "string"
+                }
+            },
+            "tunnelPrefix": {
+                "type": "string"
+            },
+            "tunnelTimeout": {
+                "type": "number",
+                "minimum": 0
+            },
+            "builds": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "html5app": {
+                        "type": "object",
+                        "properties": {
+                            "attachManifest": {
+                                "type": "boolean"
+                            },
+                            "buildDir": {
+                                "type": "string"
+                            },
+                            "forceRelativePaths": {
+                                "type": "boolean"
+                            },
+                            "urls": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "hybridapp": {
+                        "type": "object",
+                        "properties": {
+                            "buildDir": {
+                                "type": "string"
+                            },
+                            "forceRelativePaths": {
+                                "type": "boolean"
+                            },
+                            "packages": {
+                                "type": "object"
+                            },
+                            "urls": {
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "viewEngine": {
+                "type": "object",
+                "properties": {
+                    "cacheTemplates" : {
+                        "type": "boolean"
+                    },
+                    "preloadTemplates": {
+                        "type": "boolean"
+                    }
+                }
+            },
+            "staticHandling": {
+                "type": "object",
+                "properties": {
+                    "appName": {
+                        "type": "string"
+                    },
+                    "cache": {
+                        "type": "boolean"
+                    },
+                    "forceUpdate": {
+                        "type": "boolean"
+                    },
+                    "frameworkName": {
+                        "type": "string"
+                    },
+                    "maxAge": {
+                        "type": "number"
+                    },
+                    "prefix": {
+                        "type": "string"
+                    }
+                }
+            },
+            "yui": {
+                "type": "object",
+                "properties": {
+                    "showConsoleInClient": {
+                        "type": "boolean"
+                    },
+                    "config": {
+                        "type": "object",
+                        "properties": {
+                            "base": {
+                                "type": "string"
+                            },
+                            "seed": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "combine": {
+                                "type": "boolean"
+                            },
+                            "comboBase": {
+                                "type": "string"
+                            },
+                            "comboSep": {
+                                "type": "string"
+                            },
+                            "root": {
+                                "type": "string"
+                            },
+                            "debug": {
+                                "type": "boolean"
+                            },
+                            "logExclude": {
+                                "type": "object",
+                                "patternProperties": {
+                                    "^.*$": {
+                                        "type": "boolean"
+                                    }
+                                }
+                            },
+                            "logInclude": {
+                                "type": "object",
+                                "patternProperties": {
+                                    "^.*$": {
+                                        "type": "boolean"
+                                    }
+                                }
+                            },
+                            "logLevel": {
+                                "type": "string",
+                                "enum": ["debug", "mojito", "info", "warn", "error", "none"]
+                            },
+                            "logLevelOrder": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string",
+                                    "enum": ["debug", "mojito", "info", "warn", "error", "none"]
+                                }
+                            }
+                         }
+                    }
+                }
+            },
+            "specs": {
+                "type": "object",
+                "id": "specs",
+                "patternProperties": {
+                    "^.*$": {
+                        "type": "object",
+                        "id": "spec",
+                        "additonalProperties": false,
+                        "properties": {
+                            "type": {
+                                "type": "string"
+                            },
+                            "base": {
+                                "type": "string"
+                            },
+                            "action": {
+                                "type": "string"
+                            },
+                            "defer": {
+                                "type": "boolean"
+                            },
+                            "propagateFailure": {
+                                "type": "boolean"
+                            },
+                            "proxy": {
+                                "$ref": "spec"
+                            },
+                            "config": {
+                                "type": "object",
+                                "properties": {
+                                    "child": {
+                                        "$ref": "spec"
+                                    },
+                                    "children": {
+                                        "$ref": "specs"
+                                    },
+                                    "deploy": {
+                                        "type": "boolean"
+                                    },
+                                    "title": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
