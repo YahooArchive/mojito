@@ -68,7 +68,7 @@ and displays the ``children`` object that lists the child mojits.
 
    YUI.add('parent', function(Y, NAME) {
      Y.namespace('mojito.controllers')[NAME] = { 
-       index: function(ac) {
+       init: function(config) {
          var app_config = ac.config.getAppConfig();
          // The app config contains the 'children' object that is
          // defined in application.json
